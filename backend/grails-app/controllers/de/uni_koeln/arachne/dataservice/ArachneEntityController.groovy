@@ -1,6 +1,7 @@
-package de.unikoeln.arachne.dataservice
+package de.uni_koeln.arachne.dataservice
 
 
+import de.uni_koeln.arachne.dataservice.ArachneEntity;
 import grails.converters.JSON
 
 class ArachneEntityController {

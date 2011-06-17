@@ -1,4 +1,4 @@
-package de.unikoeln.arachne.dataservice
+package de.uni_koeln.arachne.dataservice
 
 import grails.test.*
 
