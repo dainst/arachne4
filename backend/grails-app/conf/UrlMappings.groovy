@@ -1,9 +1,16 @@
 class UrlMappings {
 
 	static mappings = {
-		"/item/$id?" {
+		// preformatted 
+		"/entity/$id?" {
 			controller = "arachneEntity"
-			action = [GET:"show", PUT:"update", DELETE:"delete", POST:"save"]
+			action = [GET:"show"]
+		}
+		
+		// raw data
+		"/display/entity/$id?" {
+			controller = "arachneEntity"
+			action = [GET:"show"]
 		}
 		
 		"/$controller/$action?/$id?"{
