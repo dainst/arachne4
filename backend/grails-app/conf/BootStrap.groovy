@@ -1,4 +1,4 @@
-import de.uni_koeln.arachne.dataservice.ArachneEntity;
+import de.uni_koeln.arachne.dataservice.domain.ArachneEntity;
 
 import grails.util.Environment;
 

@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.dataservice
+package de.uni_koeln.arachne.dataservice.service
 
 import groovy.sql.Sql
 import javax.sql.DataSource
