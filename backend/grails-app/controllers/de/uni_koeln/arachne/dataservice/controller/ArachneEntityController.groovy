@@ -24,12 +24,12 @@ class ArachneEntityController {
 	 * Autowired data service accessing the <code>arachneentityidentification</code> table via ORM, this means using the ArachneEntity domain
 	 * class.
 	 */
-	def mysqlService
+	def mysqlService;
 	
 	/**
 	 * Allowed http request methods. This controller only supports <code>GET</code> requests.
 	 */
-    static allowedMethods = [show: "GET"]
+    static allowedMethods = [show: "GET"];
 
 	/**
 	 * Http request handler taking a <code>lang</code> respectively a <code>format</code> parameter.
@@ -37,40 +37,42 @@ class ArachneEntityController {
 	 * if no id is given in the URL. 
 	 */
     def show = {
-		def renderMap = [:]
+		def renderMap = [:];
 		
+		// debug information
 		printf("params.id = " + params.id);
 		
-		if(params.id && params.id.contains(":")) {
-			def constraintArray = params.id.split(":")
-			def resultMap = mysqlService.getData(constraintArray[0], constraintArray[1])
-			renderMap = [result : resultMap]
-			ArachneEntity arachneEntityInstance =  ArachneEntity.findWhere(tableName: constraintArray[0], foreignKey: constraintArray[1].toInteger())
+		if (params.id && params.id.contains(":")) {
+			def constraintArray = params.id.split(":");
+			def resultMap = mysqlService.getData(constraintArray[0], constraintArray[1]);
+			renderMap = [result : resultMap];
+			ArachneEntity arachneEntityInstance =  ArachneEntity.findWhere(tableName: constraintArray[0]
+				, foreignKey: constraintArray[1].toInteger());
 			
-			if(resultMap.size() > 0) {
-				if(arachneEntityInstance != null) {
-					renderMap["result"]["arachneId"] = arachneEntityInstance.id + ""
+			if (resultMap.size() > 0) {
+				if (arachneEntityInstance != null) {
+					renderMap["result"]["arachneId"] = arachneEntityInstance.id + "";
 				}
 			} else {
-				renderMap = [:]
-				renderMap["error"] = "no item found"
+				renderMap = [:];
+				renderMap["error"] = "no item found";
 			}
-		} else if(params.id && ArachneEntity.exists(params.id)) {
-			def arachneEntity = ArachneEntity.get(params.id)
-			renderMap = [result : mysqlService.getData(arachneEntity.tableName, arachneEntity.foreignKey+"")]
-			renderMap["result"]["arachneId"] = params.id
+		} else if (params.id && ArachneEntity.exists(params.id)) {
+			def arachneEntity = ArachneEntity.get(params.id);
+			renderMap = [result : mysqlService.getData(arachneEntity.tableName, arachneEntity.foreignKey + "")];
+			renderMap["result"]["arachneId"] = params.id;
 		} else {
-			if(params.id) {
-				renderMap = ["error" : "no item found"]
+			if (params.id) {
+				renderMap = ["error" : "no item found"];
 			} else {
 				response.sendError(404);
 			}
 		}
 		
-		String resp = renderMap as JSON
-		if(params.callback) {
+		String resp = renderMap as JSON;
+		if (params.callback) {
 			resp = params.callback + "(" + resp + ")"
 		}
-		render (contentType: "application/json", text: resp)
+		render(contentType: "application/json", text: resp)
     }
 }
