@@ -6,10 +6,6 @@ import javax.sql.DataSource
 
 /**
  * Dataservice class wrapping MySQL transactions.
- * <p>
- * Currently this is only an example and texting class. Some transactions are implemented just to show how and test if they work.
- * Methods will be documented as soon as the final structure of this class is complete.
- * DO NOT USE THIS CLASS.  
  */
 class MysqlService {
 
