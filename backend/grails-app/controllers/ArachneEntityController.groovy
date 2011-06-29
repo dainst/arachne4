@@ -1,7 +1,6 @@
-package de.uni_koeln.arachne.dataservice.controller
 
 
-import de.uni_koeln.arachne.dataservice.domain.ArachneEntity;
+
 import grails.converters.JSON
 
 
@@ -18,7 +17,7 @@ import grails.converters.JSON
  * <br>
  * The raw data output format is choosen by the given <code>format GET</code> parameter. The default format is <code>application/json</code>.
  */
-class ArachneEntityController {
+class ArachneEntityController extends RestController{
 
 	/**
 	 * Autowired data service accessing the <code>arachneentityidentification</code> table via ORM, this means using the ArachneEntity domain

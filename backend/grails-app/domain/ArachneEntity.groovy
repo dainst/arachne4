@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.dataservice.domain
+
 
 /**
  * 
