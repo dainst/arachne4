@@ -51,6 +51,13 @@ grails.spring.bean.packages = []
 // request parameters to mask when logging exceptions
 grails.exceptionresolver.params.exclude = ['password']
 
+// cas client configuration, required by CasClientPlugin
+cas {
+	urlPattern = '/entity/*'
+	// urlPattern = ['/oneurl/*', '/another', '/anotheranother/*']
+	disabled = false
+}
+
 // set per-environment serverURL stem for creating absolute links
 environments {
     production {
@@ -58,6 +65,9 @@ environments {
     }
     development {
         grails.serverURL = "http://localhost:8080/${appName}"
+		cas.loginUrl = 'http://crazyhorse.archaeologie.uni-koeln.de:8080/cas/login'
+		cas.validateUrl = 'https://crazyhorsye.archaeologie.uni-koeln.de:8080/cas/serviceValidate'
+		cas.serverName = 'http://localhost:8080/ArachneDataService/'
     }
     test {
         grails.serverURL = "http://localhost:8080/${appName}"
