@@ -65,9 +65,10 @@ environments {
     }
     development {
         grails.serverURL = "http://localhost:8080/${appName}"
-		cas.loginUrl = 'http://crazyhorse.archaeologie.uni-koeln.de:8080/cas/login'
-		cas.validateUrl = 'https://crazyhorsye.archaeologie.uni-koeln.de:8080/cas/serviceValidate'
-		cas.serverName = 'http://localhost:8080/ArachneDataService/'
+		cas.loginUrl = 'https://crazyhorse.archaeologie.uni-koeln.de/cas/login'
+		cas.validateUrl = 'https://crazyhorsye.archaeologie.uni-koeln.de/cas/serviceValidate'
+		//cas.serviceUrl = 'http://localhost:8080'
+		cas.serverName = 'localhost:8080'
     }
     test {
         grails.serverURL = "http://localhost:8080/${appName}"
