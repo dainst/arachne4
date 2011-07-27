@@ -24,7 +24,7 @@ class ArachneEntityController extends RestController{
 	 * class.
 	 */
 	def mysqlService;
-	
+	def userRightsService;
 	/**
 	 * Allowed http request methods. This controller only supports <code>GET</code> requests.
 	 */
@@ -37,7 +37,6 @@ class ArachneEntityController extends RestController{
 	 */
     def show = {
 		def renderMap = [:];
-		
 		// debug information
 		printf("params.id = " + params.id);
 		

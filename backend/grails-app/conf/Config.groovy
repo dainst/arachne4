@@ -1,3 +1,5 @@
+
+
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
 
@@ -26,6 +28,8 @@ grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
                       form: 'application/x-www-form-urlencoded',
                       multipartForm: 'multipart/form-data'
                     ]
+
+
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
@@ -66,7 +70,7 @@ environments {
     development {
         grails.serverURL = "http://localhost:8080/${appName}"
 		cas.loginUrl = 'https://crazyhorse.archaeologie.uni-koeln.de/cas/login'
-		cas.validateUrl = 'https://crazyhorsye.archaeologie.uni-koeln.de/cas/serviceValidate'
+		cas.validateUrl = 'https://crazyhorse.archaeologie.uni-koeln.de/cas/serviceValidate'
 		//cas.serviceUrl = 'http://localhost:8080'
 		cas.serverName = 'localhost:8080'
     }

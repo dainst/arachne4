@@ -18,7 +18,8 @@ environments {
             url = "jdbc:hsqldb:mem:devDB"
             */
 			dbCreate = "update"
-			url = "jdbc:mysql://crazyhorse.archaeologie.uni-koeln.de/arachne"
+			//The Zero date Behavior = convert to null ist notwenfig um Kaputte Timestamps zu ignorieren.
+			url = "jdbc:mysql://crazyhorse.archaeologie.uni-koeln.de/arachne?zeroDateTimeBehavior=convertToNull"
 			driverClassName = "com.mysql.jdbc.Driver"
 			username = "root"
 			password = "tosso"
