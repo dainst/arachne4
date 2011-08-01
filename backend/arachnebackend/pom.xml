@@ -151,7 +151,13 @@
    		 	<artifactId>javassist</artifactId>
     		<version>3.12.1.GA</version>
 		</dependency>
-		
+		<!--  CAS Client -->
+		<dependency>
+   			<groupId>org.jasig.cas.client</groupId>
+   			<artifactId>cas-client-core</artifactId>
+  			 <version>3.1.11</version>
+   			<type>jar</type>
+		</dependency>
 		
 	</dependencies>
 	<repositories>

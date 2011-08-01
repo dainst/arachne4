@@ -9,7 +9,7 @@ import de.uni_koeln.arachne.dao.BuildingDao;
 import de.uni_koeln.arachne.mapping.Building;
 
 @Service("buildingService")
-public class BuildingService implements IBuildingService {
+public class BuildingService {
 
 	@Autowired
 	private BuildingDao buildingDao;

@@ -22,5 +22,6 @@
 	
 	<!-- Imports user-defined @Controller beans that process client requests -->
 	<beans:import resource="controllers.xml" />
-	
+
+
 </beans:beans>

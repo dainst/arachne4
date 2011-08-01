@@ -10,15 +10,8 @@ import org.springframework.stereotype.Repository;
 import de.uni_koeln.arachne.mapping.Building;
 
 @Repository("buildingDao")
-public class BuildingDao implements IBuildingDAO {
+public class BuildingDao extends AbstractDao{
 
-	private HibernateTemplate hibernateTemplate;
-	
-	@Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        hibernateTemplate = new HibernateTemplate(sessionFactory);
-    }
-	
 	public Building findById(long id) {
 		return (Building)hibernateTemplate.get(Building.class, id);
 	}
