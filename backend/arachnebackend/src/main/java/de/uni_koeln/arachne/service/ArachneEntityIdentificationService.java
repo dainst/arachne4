@@ -3,9 +3,9 @@ package de.uni_koeln.arachne.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.uni_koeln.arachne.Util.ArachneId;
 import de.uni_koeln.arachne.dao.ArachneEntityDao;
 import de.uni_koeln.arachne.mapping.ArachneEntity;
+import de.uni_koeln.arachne.util.ArachneId;
 
 
 @Service("arachneEntityIdentificationService")

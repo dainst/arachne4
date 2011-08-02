@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import de.uni_koeln.arachne.Util.ArachneId;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.BuildingService;
 import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.util.ArachneId;
 
 
 /**
@@ -25,11 +25,14 @@ public class HomeController {
 
 	@Autowired
 	private BuildingService buildingService;
+	
 	@Autowired
 	private UserRightsService userRightsService;
+	
 	@Autowired
 	private ArachneEntityIdentificationService arachneEntityIdentificationService;
 	//private Session session = SessionUtil.getSessionFactory().getCurrentSession();
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */

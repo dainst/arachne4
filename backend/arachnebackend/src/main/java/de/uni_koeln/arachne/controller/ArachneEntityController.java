@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import de.uni_koeln.arachne.Util.ArachneId;
 import de.uni_koeln.arachne.responseobjects.JsonResponse;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
+import de.uni_koeln.arachne.util.ArachneId;
 
 @Controller
 public class ArachneEntityController {
