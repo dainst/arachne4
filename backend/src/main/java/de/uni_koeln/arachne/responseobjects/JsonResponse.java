@@ -1,9 +1,11 @@
 package de.uni_koeln.arachne.responseobjects;
 
+/**
+ * This class implements a basic JSON response object for wrapping the database query results.
+ */
 public class JsonResponse {
 	/**
 	 * JSON response object. A POJO for wrapping the database query results.
-	 * @author Reimar Grabowski
 	 */
 	Long itemId;
 
