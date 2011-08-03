@@ -25,7 +25,7 @@
         <property name="annotatedClasses">
             <list>
                 <value>de.uni_koeln.arachne.mapping.Building</value>
-                <value>de.uni_koeln.arachne.mapping.UserVerwaltung</value>
+                <value>de.uni_koeln.arachne.mapping.UserAdministration</value>
                 <value>de.uni_koeln.arachne.mapping.ArachneEntity</value>
             </list>
         </property>

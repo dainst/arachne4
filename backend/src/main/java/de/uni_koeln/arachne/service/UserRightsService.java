@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.UserVerwaltungDao;
-import de.uni_koeln.arachne.mapping.UserVerwaltung;
+import de.uni_koeln.arachne.mapping.UserAdministration;
 
 @Service("UserRightsService")
 public class UserRightsService {
@@ -26,7 +26,7 @@ public class UserRightsService {
 	/**
 	 * The Arachne user data set.
 	 */
-	private UserVerwaltung arachneUser = null;
+	private UserAdministration arachneUser = null;
 
 	/**
 	 * List of the groups the user has permissions to.

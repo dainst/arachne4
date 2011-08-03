@@ -8,7 +8,7 @@ import javax.persistence.Column;
 
 @Entity
 @Table(name="verwaltung_benutzer")
-public class UserVerwaltung {
+public class UserAdministration {
 
 		/**
 		 * This is the mapping of the possible connection between tables. 
