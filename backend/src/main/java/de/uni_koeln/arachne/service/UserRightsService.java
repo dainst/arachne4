@@ -138,7 +138,7 @@ public class UserRightsService {
 	 * This function collects all user data.
 	 * @return key/value-map with all the attributes of the user info
 	 */
-	public Map getUserData() {
+	public Map<String,String> getUserData() {
 		initializeUserData();
 		return userInfo;
 	}
