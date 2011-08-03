@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service;
 import de.uni_koeln.arachne.dao.UserVerwaltungDao;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 
+/**
+ * This class allows to query the current users rights. 
+ * It extracts the user name from the CAS ticket and looks up his rights in the database via hibernate.
+ * 
+ */
 @Service("UserRightsService")
 public class UserRightsService {
 	
@@ -66,21 +71,21 @@ public class UserRightsService {
 			//Splitting up all user permissions from the User dataset
 			userGroups = arachneUser.getRightGroups();
 			//Setting the user person information 
-			//TODO maybe better as object
+			/* TODO implement following as map
+			 "username":arachneUser.getUsername() ,
+			 "institution":arachneUser.getInstitution() ,
+			 "firstname":arachneUser.getFirstname(),
+			 "lastname":arachneUser.getLastname(),
+			 "email":arachneUser.getEmail(),
+			 "zip":arachneUser.getZip(),
+			 "place":arachneUser.getPlace(),
+			 "homepage":arachneUser.getHomepage(),
+			 "country":arachneUser.getCountry(),
+			 "telephone":arachneUser.getTelephone(),
+			*/
+			 
 			userInfo = null;
-			/*= [
-					 "username":arachneUser.getUsername() ,
-					 "institution":arachneUser.getInstitution() ,
-					 "firstname":arachneUser.getFirstname(),
-					 "lastname":arachneUser.getLastname(),
-					 "email":arachneUser.getEmail(),
-					 "zip":arachneUser.getZip(),
-					 "place":arachneUser.getPlace(),
-					 "homepage":arachneUser.getHomepage(),
-					 "country":arachneUser.getCountry(),
-					 "telephone":arachneUser.getTelephone(),
-					 	  ]
-			 */
+			
 			isSet = true;
 		}
 	}		
