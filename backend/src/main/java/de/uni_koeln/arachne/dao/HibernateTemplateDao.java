@@ -6,7 +6,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 
 
 
-public abstract class AbstractDao {
+public abstract class HibernateTemplateDao {
 	protected HibernateTemplate hibernateTemplate;
 	
 	@Autowired

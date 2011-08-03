@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import de.uni_koeln.arachne.mapping.ArachneEntity;
 
 @Repository("ArachneEntityDao")
-public class ArachneEntityDao extends AbstractDao {
+public class ArachneEntityDao extends HibernateTemplateDao {
 
 	/**
 	 * Retrives alternative Identifierys by Arachne Entity ID
