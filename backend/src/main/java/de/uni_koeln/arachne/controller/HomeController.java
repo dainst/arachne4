@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
-import de.uni_koeln.arachne.service.BuildingService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.ArachneId;
 
@@ -23,9 +22,6 @@ public class HomeController {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-	@Autowired
-	private BuildingService buildingService;
-	
 	@Autowired
 	private UserRightsService userRightsService;
 	
@@ -49,7 +45,6 @@ public class HomeController {
 		logger.info("ID "+ thing.getArachneEntityID());
 		
 		logger.info(username);
-		logger.info("Result get: " + (buildingService.findBuildingById(id).getId()));
 		ModelMap modelMap = new ModelMap();
 		//modelMap.addAttribute("buildingList", bl);
 		modelMap.addAttribute("TODO","ARRRRG");
