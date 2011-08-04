@@ -17,11 +17,20 @@ public class ArachneSingleEntityDataService {
 	
 	@Autowired
 	ArachneSingleDatasetDao arachneSingleDatasetDao;
-	
+	/**
+	 * This Function Retrives an Arachne Dataset by <code>ArachneId</code>
+	 * @param id an Identifier of the Type ArachneId
+	 * @return Instance of ArachneDataset that Represents the Dataset including Pictures etc
+	 */
 	public ArachneDataset getSingleEntityByArachneId( ArachneId id ){
-
-		return arachneSingleDatasetDao.getById(id);
+		ArachneDataset result;
+		result = arachneSingleDatasetDao.getById(id);
 		
+		String tableName =  id.getTableName(); 
+		if(!tableName.equals("marbilder") ){
+			
+		}
+		return result;
 	}
 	
 	

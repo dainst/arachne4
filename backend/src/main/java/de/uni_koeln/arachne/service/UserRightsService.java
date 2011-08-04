@@ -1,6 +1,8 @@
 package de.uni_koeln.arachne.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +10,14 @@ import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.UserVerwaltungDao;
 import de.uni_koeln.arachne.mapping.UserAdministration;
+import de.uni_koeln.arachne.util.ArachneUserRightsSingleton;
 
 /**
  * This class allows to query the current users rights. 
  * It extracts the user name from the CAS ticket and looks up his rights in the database via hibernate.
  * 
  */
-@Service("UserRightsService")
+@Service("userRightsService")
 public class UserRightsService {
 	
 	/**
@@ -37,7 +40,7 @@ public class UserRightsService {
 	 * List of the groups the user has permissions to.
 	 */
 	//private List<String> userGroups;
-	private String userGroups;
+	private List<String> userGroups;
 
 	/**
 	 * Map holding informations about the user.
@@ -58,7 +61,7 @@ public class UserRightsService {
 	 * gets the database row with the user data and formats it.
 	 * Else it does nothing.
 	 */
-	private void initializeUserData() {
+	public void initializeUserData() {
 		if (!isSet) {
 			//get username of validated CAS ticket
 			//String username = getSession().getAt(CASFilter.CAS_FILTER_USER);
@@ -66,10 +69,16 @@ public class UserRightsService {
 			//String username = "rKrempel";
 			//get User Information from the Database
 
-			arachneUser =   userVerwaltungDao.findById( new Long( 695));
+			arachneUser =   userVerwaltungDao.findById( new Long( 20));
 
 			//Splitting up all user permissions from the User dataset
-			userGroups = arachneUser.getRightGroups();
+			userGroups= new ArrayList<String>();
+			
+			String[] temp = (arachneUser.getRightGroups().split(","));
+			for (int i =0;i<temp.length;i++){
+				userGroups.add(temp[i]);
+			}
+			
 			//Setting the user person information 
 			/* TODO implement following as map
 			 "username":arachneUser.getUsername() ,
@@ -87,6 +96,8 @@ public class UserRightsService {
 			userInfo = null;
 			
 			isSet = true;
+			ArachneUserRightsSingleton.init(this.getUsername(), this.isAuthorizedForAllGroups(), this.isConfirmed(), arachneUser.getGroupID(), this.getUserGroups());
+			
 		}
 	}		
 
@@ -103,7 +114,7 @@ public class UserRightsService {
 	 * Looks up all group rights of the user.
 	 * @return returns a list of strings with the groups the user is in.
 	 */
-	public String getDataGroups(){
+	public List<String> getUserGroups(){
 		initializeUserData();
 		return userGroups;
 	}

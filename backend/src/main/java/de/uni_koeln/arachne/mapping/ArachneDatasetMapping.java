@@ -10,9 +10,8 @@ import de.uni_koeln.arachne.responseobjects.ArachneDataset;
 
 /**
  *Mapping Result set to a ArachneDataset Abstract Object
- * 
+ * Suits for Bauwerk, bauwerkteil, Topographie, Objekt, Releif, Realie,Sammlunge
  * @author Rasmus Krempel
- *
  */
 public class ArachneDatasetMapping implements RowMapper<ArachneDataset> {
 

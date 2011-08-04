@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import de.uni_koeln.arachne.responseobjects.ArachneDataset;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
+import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.ArachneId;
 
 /**
  * Handles http requests (currently only get) for <code>/entity<code>.
  */
 @Controller
-@RequestMapping(value="/entity", method=RequestMethod.GET)
+//@RequestMapping(value="/entity", method=RequestMethod.GET)
 public class ArachneEntityController {
 	
 	@Autowired
@@ -25,6 +26,9 @@ public class ArachneEntityController {
 
 	@Autowired
 	ArachneSingleEntityDataService arachneSingleEntityDataService;
+	@Autowired
+	UserRightsService userRightsService;
+	
     /**
      * Handles the http request.
      * It uses the <Code>ItemService</Code> class to fetch the data and wraps it 
@@ -35,7 +39,7 @@ public class ArachneEntityController {
 
     @RequestMapping(value="/entity/{itemId}", method=RequestMethod.GET)
     public @ResponseBody ArachneDataset handleGetItemRequest(@PathVariable("itemId") Long itemId) {
-    	
+    		userRightsService.initializeUserData();
     		ArachneId temp =arachneEntityIdentificationService.getByEntityID(itemId);
             //JsonResponse response = new JsonResponse();
             //response.setItemId(temp.getInternalKey());
