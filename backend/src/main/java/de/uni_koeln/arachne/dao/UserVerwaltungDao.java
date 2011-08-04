@@ -9,6 +9,6 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 public class UserVerwaltungDao extends HibernateTemplateDao{
 
 	public UserAdministration findById(long id) {
-		return (UserAdministration)hibernateTemplate.get(UserAdministration.class, id);
+		return (UserAdministration) hibernateTemplate.get(UserAdministration.class, id);
 	}
 }
