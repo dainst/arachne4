@@ -15,7 +15,7 @@ import de.uni_koeln.arachne.util.ArachneUserRightsSingleton;
 /**
  * This class allows to query the current users rights. 
  * It extracts the user name from the CAS ticket and looks up his rights in the database via hibernate.
- * 
+ * @author Rasmus Krempel
  */
 @Service("userRightsService")
 public class UserRightsService {
@@ -51,15 +51,10 @@ public class UserRightsService {
 	 * Private function to retrive the Session.
 	 * @return Session
 	 */
-	/*private HttpSession getSession() {
-			return RequestContextHolder.currentRequestAttributes().getSession();
-	}*/
 
 	/**
-	 * Method initializing access to the user data.
-	 * If the user data is not fetched yet, it fetches the user name from the CAS-Ticket, 
-	 * gets the database row with the user data and formats it.
-	 * Else it does nothing.
+	 * Method initializing access to the user data. 
+	 * If the user data is not fetched yet, it fetches the user name from the CAS-Ticket,  gets the database row with the user data and formats it. It also constructs the <code>ArachneUserRightsSingleton</code> which is Used by the sqlutils for example. 
 	 */
 	public void initializeUserData() {
 		if (!isSet) {

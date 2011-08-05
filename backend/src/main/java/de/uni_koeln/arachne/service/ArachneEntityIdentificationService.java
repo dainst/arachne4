@@ -14,8 +14,7 @@ public class ArachneEntityIdentificationService {
 	@Autowired
 	private ArachneEntityDao arachneEntityDao;
 	/**
-	 * get all Identifiers of a Dataset by Arachne Entity ID 
-	 * This is the External Reference ID for the Dataset in arachne
+	 * get all Identifiers of a Dataset by Arachne Entity ID. This is the External Reference ID for the Dataset in Arachne.
 	 * @param ArachneEntityID ArachneEntityID
 	 * @return an <code>ArachneId</code> object that contains all the Identification information
 	 */
@@ -25,7 +24,7 @@ public class ArachneEntityIdentificationService {
 	/**
 	 * get all Identifiers of a Dataset by Tablename and Primary key
 	 * @param table The Internal Table name in the Arachne Database
-	 * @param id The Internal Table key of the Dataset
+	 * @param id Internal tablekey of the Dataset
 	 * @return an <code>ArachneId</code> object that contains all the Identification information
 	 */
 	public ArachneId getByTablenameAndInternalKey(String table, Long id){

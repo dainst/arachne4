@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import de.uni_koeln.arachne.util.ArachneId;
 
 /**
- * This class Constructs a Query for a Singe Entity
+ * This class Constructs a Query for a Single Arachne-Entity.
  * @author Rasmus Krempel
  *
  */
@@ -13,11 +13,15 @@ public class ArachneSingeEntityQueryBuilder extends AbstractArachneSQLBuilder {
 	
 	protected ArachneId id;
 	protected ArachneSQLRightsConditionBuilder rcb;
-	
+	/**
+	 *constructs a condition to find the Dataset described in ArachneId. creates <code>UserRightsConditionBuilder</code> , Limits the Result count to 1. 
+	 * @param ident This is the <code>ArachneId</code> the SQL retrive statement should be written for
+	 */
 	public ArachneSingeEntityQueryBuilder(ArachneId ident) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		id = ident;
+		//Sets the Tablename
 		table = id.getTableName();
 		//Limits the Resultcount to 1
 		limit1 = true;
@@ -29,7 +33,6 @@ public class ArachneSingeEntityQueryBuilder extends AbstractArachneSQLBuilder {
 		cnd.setPart2(id.getInternalKey().toString());
 		conditions.add(cnd);
 	}
-	
 	@Override
 	protected String buildSQL(){
 		sql += "SELECT * FROM `"+table+"` WHERE 1";

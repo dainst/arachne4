@@ -28,7 +28,7 @@ public class ArachneId {
 	 * @param table String Tablename
 	 * @param key Long This is the 
 	 * @param aeid Long Arachne Identification Number
-	 * @param isDeleted boolean is Deleted?
+	 * @param isdel is Deleted?
 	 */
 	public ArachneId(String table,Long key, Long aeid, boolean isdel) {
 		arachneEntityID = aeid;

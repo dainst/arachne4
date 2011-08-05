@@ -8,7 +8,7 @@ import de.uni_koeln.arachne.responseobjects.ArachneDataset;
 import de.uni_koeln.arachne.util.ArachneId;
 
 /**
- * This Service Provides a Method to get a Singe Dataset out of the Database
+ * This Service Provides a Method to get a Single Dataset out of the Database
  * @author Rasmus Krempel
  *
  */
@@ -18,9 +18,9 @@ public class ArachneSingleEntityDataService {
 	@Autowired
 	ArachneSingleDatasetDao arachneSingleDatasetDao;
 	/**
-	 * This Function Retrives an Arachne Dataset by <code>ArachneId</code>
-	 * @param id an Identifier of the Type ArachneId
-	 * @return Instance of ArachneDataset that Represents the Dataset including Pictures etc
+	 * This Function Retrives an Arachne Dataset by <code>ArachneId</code>.
+	 * @param id an Identifier of the Type ArachneId.
+	 * @return Instance of ArachneDataset that Represents the Dataset.
 	 */
 	public ArachneDataset getSingleEntityByArachneId( ArachneId id ){
 		ArachneDataset result;

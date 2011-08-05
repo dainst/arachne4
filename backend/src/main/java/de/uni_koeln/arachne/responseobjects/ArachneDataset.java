@@ -52,6 +52,7 @@ public class ArachneDataset {
 	public ArachneDataset() {
 		sections = new HashMap<String,String>();
 		adminstrationInformations = new HashMap<String,String>();
+		title = "";
 	}	
 	
 	//get methods
@@ -91,8 +92,8 @@ public class ArachneDataset {
 	
 	/**
 	 * This Function sets a Single Section in the Sections Map
-	 * @param sectionlabel The Label of the Section Information
-	 * @param sectionvalue The Value that this Section has
+	 * @param sectionLabel The Label of the Section Information
+	 * @param sectionValue The Value that this Section has
 	 * @return returns false if the section value is overwrittten true if the Section is new to the Object
 	 */
 	

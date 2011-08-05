@@ -2,6 +2,11 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.List;
 
+/**
+ * this class is an abstract Implementation, it helps to construct SQL Statements to be used in the Arachne Database.
+ * @author Rasmus Krempel
+ *
+ */
 public abstract class AbstractArachneSQLBuilder {
 	protected String sql;
 	protected String table;
@@ -10,7 +15,10 @@ public abstract class AbstractArachneSQLBuilder {
 	 * With And connected Conditions
 	 */
 	protected List<Condition> conditions;
-	
+	/**
+	 * returns the build SQL query as <code>String</code>.
+	 * @return the SQL query String.
+	 */
 	public String getSQL(){		
 		buildSQL();
 		return sql;

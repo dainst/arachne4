@@ -4,19 +4,20 @@
 package de.uni_koeln.arachne.sqlutil;
 
 /**
- * This Toolbox contains a few Static Methods
- * they are representig a few annoying SQL String Conversion Problems etc
- * @author archaeopool
+ * This Toolbox contains a few Static Methods that do Standard string conversions, Like enclosing in backticks etc.
+ * This class is dedicated to catch all the Special cases in the Database, so if there are special cases this class should know about it.
+ * @author Rasmus Krempel
  *
  */
 public class ArachneSQLToolbox {
 	/**
 	 * Asserts the Name of the Primary key by the Tabename it comes from
-	 * @param tablename An Arachne internal Tablename example: bauwerk
+	 * @param tablename An Arachne internal Tablename example: bauwerk.
 	 * @return The name of the Primary key of that Table example PS_BauwerkID
 	 */
 	public static String generatePrimaryKeyName(String tablename){
-		
+		if(tablename.equals("marbilder"))
+			return "PS_MARBilderID";		
 		return "PS_" + ucfirst(tablename)+"ID";
 		
 	}
@@ -26,6 +27,10 @@ public class ArachneSQLToolbox {
 	 * @return The name of the Foreign key of that Table  example: PS_ObjektID
 	 */
 	public static String generateForeignKeyName(String tablename){
+		
+		if(tablename.equals("marbilder"))
+			return "FS_MARBilderID";
+		
 		
 		return "FS_" + ucfirst(tablename)+"ID";
 		
