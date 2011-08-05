@@ -33,7 +33,7 @@ public class Condition {
 	 * This Returns the Conditions as String Value
 	 */
 	public String toString(){
-		return part1 +" "+ operator + " " + part2;
+		return " "+ part1 +" "+ operator + " " + part2;
 	}
 	/**
 	 * Set the Operator

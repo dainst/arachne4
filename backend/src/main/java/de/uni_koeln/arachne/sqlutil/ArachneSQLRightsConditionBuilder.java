@@ -68,7 +68,7 @@ public class ArachneSQLRightsConditionBuilder {
 					first = false;
 				}
 				else{
-					result = result + " OR ";
+					result = result + " OR";
 				}
 				result+= cnd.toString();
 			}

@@ -32,10 +32,11 @@ public class ArachneSingeEntityQueryBuilder extends AbstractArachneSQLBuilder {
 	
 	@Override
 	protected String buildSQL(){
-		sql += "SELECT * FROM "+table+" WHERE 1";
+		sql += "SELECT * FROM `"+table+"` WHERE 1";
 		sql += this.buildAndConditions();
 		sql += rcb.getUserRightsSQLSnipplett();  
-		sql += this.appendLimitOne();  
+		sql += this.appendLimitOne();
+		sql += ";";
 		return sql;	
 	}
 
