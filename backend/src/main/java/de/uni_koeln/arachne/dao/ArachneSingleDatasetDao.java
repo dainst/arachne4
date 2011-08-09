@@ -20,18 +20,15 @@ public class ArachneSingleDatasetDao extends SQLDao {
 	 * @param id instance of <code>ArachneId</code> 
 	 * @return a Simple Representation of an Arachne Dataset.
 	 */
-	public ArachneDataset getById(ArachneId id){
+	public ArachneDataset getById(ArachneId id) {
 		
 		ArachneSingeEntityQueryBuilder qB = new ArachneSingeEntityQueryBuilder(id);
 		
 		String sql = qB.getSQL();
 
-		@SuppressWarnings("unchecked")
-		List<ArachneDataset> temp = (List<ArachneDataset>) this.executeSelectQuery(sql, new ArachneDatasetMapping());
-		ArachneDataset temp2 = temp.get(0);
+		List<?> temp = this.executeSelectQuery(sql, new ArachneDatasetMapping());
+		ArachneDataset temp2 = (ArachneDataset) temp.get(0);
 		temp2.setArachneId(id);
-		return temp2;
-		
+		return temp2;	
 	}
-	
 }

@@ -33,6 +33,7 @@ public class ArachneSingeEntityQueryBuilder extends AbstractArachneSQLBuilder {
 		cnd.setPart2(id.getInternalKey().toString());
 		conditions.add(cnd);
 	}
+	
 	@Override
 	protected String buildSQL(){
 		sql += "SELECT * FROM `"+table+"` WHERE 1";

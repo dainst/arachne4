@@ -26,6 +26,7 @@ public class ArachneEntityController {
 
 	@Autowired
 	ArachneSingleEntityDataService arachneSingleEntityDataService;
+	
 	@Autowired
 	UserRightsService userRightsService;
 	
@@ -40,10 +41,10 @@ public class ArachneEntityController {
     @RequestMapping(value="/entity/{itemId}", method=RequestMethod.GET)
     public @ResponseBody ArachneDataset handleGetItemRequest(@PathVariable("itemId") Long itemId) {
     		userRightsService.initializeUserData();
-    		ArachneId temp =arachneEntityIdentificationService.getByEntityID(itemId);
+    		ArachneId temp = arachneEntityIdentificationService.getByEntityID(itemId);
             //JsonResponse response = new JsonResponse();
             //response.setItemId(temp.getInternalKey());
-            ArachneDataset response=   arachneSingleEntityDataService.getSingleEntityByArachneId(temp);
+            ArachneDataset response = arachneSingleEntityDataService.getSingleEntityByArachneId(temp);
     		
     		return response;
     }
