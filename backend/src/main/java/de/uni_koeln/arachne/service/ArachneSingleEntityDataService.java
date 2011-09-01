@@ -22,18 +22,14 @@ public class ArachneSingleEntityDataService {
 	 * @param id an Identifier of the Type ArachneId.
 	 * @return Instance of ArachneDataset that Represents the Dataset.
 	 */
-	public ArachneDataset getSingleEntityByArachneId( ArachneId id ){
+	public ArachneDataset getSingleEntityByArachneId(ArachneId id) {
 		ArachneDataset result;
 		result = arachneSingleDatasetDao.getById(id);
 		
 		String tableName =  id.getTableName(); 
-		if(!tableName.equals("marbilder") ){
+		if (!tableName.equals("marbilder")) {
 			
 		}
 		return result;
 	}
-	
-	
-	
-	
 }
