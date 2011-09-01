@@ -18,7 +18,6 @@ public class ArachneDataset {
 	/**
 	 * Identification of the Dataset
 	 */
-	
 	protected ArachneId arachneId;
 	
 	/**
@@ -35,15 +34,18 @@ public class ArachneDataset {
 	 * The Informations of the Dataset that is not in the core Dataset Definitions
 	 */
 	protected Map<String,String> sections;
+	
 	/**
 	 * The context map Contains the Contexts of the 
 	 */
 	protected Map<String,List<ArachneDataset>> context;
+	
 	/**
 	 * The Images that are asociated with the dataset
 	 */
 	protected List<ArachneImage> images;
 	
+	// TODO remove
 	/**
 	 * The Administration Information of the Dataset
 	 */
@@ -125,8 +127,6 @@ public class ArachneDataset {
 	public void setAdminstrationInformation(String adminstrationInformationLabel, String adminstrationInformationValue) {
 		this.adminstrationInformations.put(adminstrationInformationLabel, adminstrationInformationValue);
 	}
+	
 	// is Methods
-	
-	
-	
 }
