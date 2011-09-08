@@ -62,7 +62,7 @@ public class ArachneDatasetMapping implements RowMapper<ArachneDataset> {
 			}
 			*/
 			//The rest of the Dataset
-			ds.setFields( meta.getTableName(i)+"."+ columnName, rs.getString(columnName));
+			ds.setFields(meta.getTableName(i)+"."+ columnName, rs.getString(columnName));
 		}
 		
 		
