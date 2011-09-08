@@ -1,9 +1,13 @@
 package de.uni_koeln.arachne.controller;
 
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,26 +42,29 @@ public class ArachneEntityController {
      * @return a JSON object containing the data
      */
 
-    @RequestMapping(value="/entity/{id}", method=RequestMethod.GET)
-    public @ResponseBody FormattedArachneEntity handleGetEntityRequest(@PathVariable("id") Long id) {
-    		userRightsService.initializeUserData();
-    		ArachneId temp = arachneEntityIdentificationService.getByEntityID(id);
-            //JsonResponse response = new JsonResponse();
-            //response.setItemId(temp.getInternalKey());
-            ArachneDataset temp2 = arachneSingleEntityDataService.getSingleEntityByArachneId(temp);
-    		
-            FormattedArachneEntity response = new FormattedArachneEntity();
-            response.setId(temp2.getArachneId().getArachneEntityID());
-            response.setCategory(temp2.getArachneId().getTableName());
-            response.setCategoryId(temp2.getArachneId().getInternalKey());
-            response.setContext(temp2.getContext());
-            response.setImages(temp2.getImages());
-            response.setLastModified(temp2.getLastModified());
-            response.setSections(temp2.getSections());
-            response.setTitle(temp2.getTitle());
-            
-    		return response;
-    }
+	@RequestMapping(value="/entity/{id}", method=RequestMethod.GET)
+	public @ResponseBody ArachneDataset handleGetEntityRequest(HttpServletRequest request, @PathVariable("id") Long id) {
+		System.out.println(request);
+		System.out.println(request.getRequestURL());
+		
+		userRightsService.initializeUserData();
+		ArachneId temp = arachneEntityIdentificationService.getByEntityID(id);
+		//JsonResponse response = new JsonResponse();
+		//response.setItemId(temp.getInternalKey());
+		ArachneDataset temp2 = arachneSingleEntityDataService.getSingleEntityByArachneId(temp);
+
+		FormattedArachneEntity response = new FormattedArachneEntity();
+		response.setId(temp2.getArachneId().getArachneEntityID());
+		response.setCategory(temp2.getArachneId().getTableName());
+		response.setCategoryId(temp2.getArachneId().getInternalKey());
+		response.setContext(temp2.getContext());
+		response.setImages(temp2.getImages());
+		response.setLastModified(temp2.getLastModified());
+		response.setSections(temp2.getSections());
+		response.setTitle(temp2.getTitle());
+
+		return temp2;
+	}
     
     /**
      * Handles http request for /{category}/{id}
