@@ -6,14 +6,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.responseobjects.ArachneDataset;
-import de.uni_koeln.arachne.responseobjects.FormattedArachneEntity;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
 import de.uni_koeln.arachne.service.UserRightsService;
@@ -52,17 +49,16 @@ public class ArachneEntityController {
 		//JsonResponse response = new JsonResponse();
 		//response.setItemId(temp.getInternalKey());
 		ArachneDataset temp2 = arachneSingleEntityDataService.getSingleEntityByArachneId(temp);
-
+		//For Testing reasons
+		/*
 		FormattedArachneEntity response = new FormattedArachneEntity();
 		response.setId(temp2.getArachneId().getArachneEntityID());
 		response.setCategory(temp2.getArachneId().getTableName());
 		response.setCategoryId(temp2.getArachneId().getInternalKey());
 		response.setContext(temp2.getContext());
 		response.setImages(temp2.getImages());
-		response.setLastModified(temp2.getLastModified());
-		response.setSections(temp2.getSections());
-		response.setTitle(temp2.getTitle());
-
+		response.setSections(temp2.getFields());
+		 */
 		return temp2;
 	}
     

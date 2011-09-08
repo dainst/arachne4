@@ -1,6 +1,5 @@
 package de.uni_koeln.arachne.responseobjects;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,20 +19,11 @@ public class ArachneDataset {
 	 */
 	protected ArachneId arachneId;
 	
-	/**
-	 * The Title of the Dataset
-	 */
-	protected String title;
-
-	/**
-	 * The date of the last Modification of the Dataset
-	 */
-	protected Date lastModified;
 	
 	/**
 	 * The Informations of the Dataset that is not in the core Dataset Definitions
 	 */
-	protected Map<String,String> sections;
+	protected Map<String,String> fields;
 	
 	/**
 	 * The context map Contains the Contexts of the 
@@ -45,16 +35,10 @@ public class ArachneDataset {
 	 */
 	protected List<ArachneImage> images;
 	
-	// TODO remove
-	/**
-	 * The Administration Information of the Dataset
-	 */
-	protected Map<String,String> adminstrationInformations;
+
 	
 	public ArachneDataset() {
-		sections = new HashMap<String,String>();
-		adminstrationInformations = new HashMap<String,String>();
-		title = "";
+		fields = new HashMap<String,String>();
 	}	
 	
 	//get methods
@@ -67,19 +51,12 @@ public class ArachneDataset {
 	public List<ArachneImage> getImages() {
 		return images;
 	}
-	public Date getLastModified() {
-		return lastModified;
-	}
-	public Map<String, String> getSections() {
-		return sections;
+	
+	public Map<String, String> getFields() {
+		return fields;
 	}
 
-	public String getTitle() {
-		return title;
-	}
-	public Map<String, String> getAdminstrationInformation() {
-		return adminstrationInformations;
-	}
+	
 	
 	//set methods
 	public void setContext(Map<String, List<ArachneDataset>> context) {
@@ -88,45 +65,35 @@ public class ArachneDataset {
 	public void setImages(List<ArachneImage> images) {
 		this.images = images;
 	}
-	public void setLastModified(Date lastModified) {
-		this.lastModified = lastModified;
-	}
+
 	
 	/**
 	 * This Function sets a Single Section in the Sections Map
-	 * @param sectionLabel The Label of the Section Information
-	 * @param sectionValue The Value that this Section has
-	 * @return returns false if the section value is overwrittten true if the Section is new to the Object
+	 * @param fieldsLabel The Label of the Section Information
+	 * @param fieldsValues The Value that this Section has
+	 * @return returns false if the section value is overwritten true if the Section is new to the Object
 	 */
 	
-	public boolean setSection(String sectionLabel, String sectionValue) {
-		if (this.sections.containsKey(sectionLabel)){
-			this.sections.put(sectionLabel, sectionValue);
+	public boolean setFields(String fieldsLabel, String fieldsValues) {
+		if (this.fields.containsKey(fieldsLabel)){
+			this.fields.put(fieldsLabel, fieldsValues);
 			return false;
 		}
 		else {
-			this.sections.put(sectionLabel, sectionValue);
+			this.fields.put(fieldsLabel, fieldsValues);
 			return true;
 		}
 	}
 	
-	public void setSections(Map<String, String> sections) {
-		this.sections = sections;
+	public void setFields(Map<String, String> sections) {
+		this.fields = sections;
 	}
 	
-	public void setTitle(String title) {
-		this.title = title;
-	}
+
 	public void setArachneId(ArachneId arachneId) {
 		this.arachneId = arachneId;
 	}
-	public void setAdminstrationInformations(
-			Map<String, String> adminstrationInformation) {
-		this.adminstrationInformations = adminstrationInformation;
-	}
-	public void setAdminstrationInformation(String adminstrationInformationLabel, String adminstrationInformationValue) {
-		this.adminstrationInformations.put(adminstrationInformationLabel, adminstrationInformationValue);
-	}
+
 	
 	// is Methods
 }

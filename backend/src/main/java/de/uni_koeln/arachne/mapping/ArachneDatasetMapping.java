@@ -28,6 +28,7 @@ public class ArachneDatasetMapping implements RowMapper<ArachneDataset> {
 				continue;
 			}
 			// Description and Last Modified
+			/*
 			if (columnName.contains("Kurzbeschreibung")){
 				ds.setTitle(rs.getString(columnName));
 				continue;
@@ -59,9 +60,9 @@ public class ArachneDatasetMapping implements RowMapper<ArachneDataset> {
 				ds.setAdminstrationInformation("Korrektor", rs.getString(columnName));
 				continue;
 			}
-			
+			*/
 			//The rest of the Dataset
-			ds.setSection(columnName, rs.getString(columnName));
+			ds.setFields( meta.getTableName(i)+"."+ columnName, rs.getString(columnName));
 		}
 		
 		
