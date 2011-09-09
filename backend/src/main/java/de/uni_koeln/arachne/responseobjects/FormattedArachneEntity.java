@@ -11,26 +11,12 @@ import java.util.Map;
  * @author Rasmus all alone
  *
  */
-public class FormattedArachneEntity {
-	/**
-	 * Identification of the Dataset
-	 */
-	protected Long id;
+public class FormattedArachneEntity extends BaseArachneEntity {
 	
 	/**
 	 * The Title of the Dataset
 	 */
 	protected String title;
-
-	/**
-	 * The tablename field of the ArachneEntity table
-	 */
-	protected String type;
-	
-	/**
-	 * The foreignKey field of the ArachneEntity table
-	 */
-	protected Long internalId;
 	
 	/**
 	 * The date of the last Modification of the Dataset
@@ -52,7 +38,6 @@ public class FormattedArachneEntity {
 	 */
 	protected List<ArachneImage> images;
 	
-		
 	public FormattedArachneEntity() {
 		sections = new HashMap<String,String>();
 		title = "";
@@ -76,36 +61,12 @@ public class FormattedArachneEntity {
 		}
 	}
 	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getTitle() {
 		return title;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public Long getInternalId() {
-		return internalId;
-	}
-
-	public void setInternalId(Long internalId) {
-		this.internalId = internalId;
 	}
 
 	public Date getLastModified() {

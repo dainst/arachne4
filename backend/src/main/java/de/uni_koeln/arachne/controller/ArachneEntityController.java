@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.responseobjects.ArachneDataset;
+import de.uni_koeln.arachne.responseobjects.FormattedArachneEntity;
 import de.uni_koeln.arachne.responseobjects.ResponseFactory;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
@@ -44,28 +45,18 @@ public class ArachneEntityController {
      */
 
 	@RequestMapping(value="/entity/{id}", method=RequestMethod.GET)
-	public @ResponseBody ArachneDataset handleGetEntityRequest(HttpServletRequest request, @PathVariable("id") Long id) {
+	public @ResponseBody FormattedArachneEntity handleGetEntityRequest(HttpServletRequest request, @PathVariable("id") Long id) {
+		// TODO remove debug
 		System.out.println(request);
 		System.out.println(request.getRequestURL());
 		
 		userRightsService.initializeUserData();
-		ArachneId temp = arachneEntityIdentificationService.getByEntityID(id);
-		//JsonResponse response = new JsonResponse();
-		//response.setItemId(temp.getInternalKey());
-		ArachneDataset temp2 = arachneSingleEntityDataService.getSingleEntityByArachneId(temp);
-		//For Testing reasons
-		/*
-		FormattedArachneEntity response = new FormattedArachneEntity();
-		response.setId(temp2.getArachneId().getArachneEntityID());
-		response.setCategory(temp2.getArachneId().getTableName());
-		response.setCategoryId(temp2.getArachneId().getInternalKey());
-		response.setContext(temp2.getContext());
-		response.setImages(temp2.getImages());
-		response.setSections(temp2.getFields());
-		 */
-		responseFactory.createFormattedArachneEntity(temp2);
+		ArachneId temp1 = arachneEntityIdentificationService.getByEntityID(id);
+		ArachneDataset temp2 = arachneSingleEntityDataService.getSingleEntityByArachneId(temp1);
 		
-		return temp2;
+		FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(temp2);
+		
+		return response;
 	}
     
     /**

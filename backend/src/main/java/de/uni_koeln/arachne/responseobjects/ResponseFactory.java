@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletContext;
 
 import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,10 @@ public class ResponseFactory {
 	    try {
 	    	SAXBuilder sb = new SAXBuilder();
 	    	Document doc = sb.build(xmlDocument.getFile());
+	    	Element display = doc.getRootElement().getChild("display");
+	    	String titleKey = display.getChild("title").getChild("field").getAttributeValue("name");
+	    	response.setTitle(dataset.fields.get(titleKey));
+	    	
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
