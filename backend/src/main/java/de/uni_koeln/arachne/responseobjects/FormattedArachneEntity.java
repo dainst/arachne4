@@ -24,6 +24,11 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	protected String subtitle;
 	
 	/**
+	 * Hierachical structured information of the dataset.
+	 */
+	protected Content content;
+	
+	/**
 	 * The date of the last Modification of the Dataset
 	 */
 	protected Date lastModified;
@@ -46,6 +51,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	public FormattedArachneEntity() {
 		sections = new HashMap<String,String>();
 		title = "";
+		subtitle = "";
 	}	
 	
 	/**
@@ -80,6 +86,14 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 
 	public void setSubtitle(String subtitle) {
 		this.subtitle = subtitle;
+	}
+	
+	public Content getContent() {
+		return content;
+	}
+
+	public void setContent(Content content) {
+		this.content = content;
 	}
 	
 	public Date getLastModified() {
