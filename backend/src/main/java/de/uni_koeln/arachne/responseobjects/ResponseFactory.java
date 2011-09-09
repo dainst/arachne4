@@ -1,6 +1,8 @@
 package de.uni_koeln.arachne.responseobjects;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 
@@ -61,6 +63,13 @@ public class ResponseFactory {
 	    	} else {
 	    		
 	    	}*/
+	    	
+	    	// set sections
+	    	List<Element> sections = display.getChild("sections").getChildren();
+	    	Iterator<Element> i = sections.iterator(); 
+	    	while (i.hasNext()) {
+	    		
+	    	}
 	    	
 	    	System.out.println(display.getChild("subtitle"));
 		} catch (JDOMException e) {
