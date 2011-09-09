@@ -35,6 +35,7 @@ public class ResponseFactory {
 	public FormattedArachneEntity createFormattedArachneEntity(ArachneDataset dataset) {
 		FormattedArachneEntity response = new FormattedArachneEntity();
 		
+		// set id content
 		ArachneId arachneId = dataset.getArachneId(); 
 		response.setId(arachneId.getArachneEntityID());
 		response.setType(arachneId.getTableName());
@@ -45,10 +46,23 @@ public class ResponseFactory {
 	    try {
 	    	SAXBuilder sb = new SAXBuilder();
 	    	Document doc = sb.build(xmlDocument.getFile());
+	    	
 	    	Element display = doc.getRootElement().getChild("display");
+	    	
+	    	// set title
 	    	String titleKey = display.getChild("title").getChild("field").getAttributeValue("name");
 	    	response.setTitle(dataset.fields.get(titleKey));
 	    	
+	    	// TODO implement when the xml definitions are fixed
+	    	// set subtitle
+	    	/*Element subtitle = display.getChild("subtitle");
+	    	if (subtitle.getChild("field") != null) {
+	    		
+	    	} else {
+	    		
+	    	}*/
+	    	
+	    	System.out.println(display.getChild("subtitle"));
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
