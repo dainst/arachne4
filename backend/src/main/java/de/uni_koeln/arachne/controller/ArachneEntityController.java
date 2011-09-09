@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.responseobjects.ArachneDataset;
+import de.uni_koeln.arachne.responseobjects.BaseArachneEntity;
 import de.uni_koeln.arachne.responseobjects.FormattedArachneEntity;
 import de.uni_koeln.arachne.responseobjects.ResponseFactory;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
@@ -45,7 +46,7 @@ public class ArachneEntityController {
      */
 
 	@RequestMapping(value="/entity/{id}", method=RequestMethod.GET)
-	public @ResponseBody FormattedArachneEntity handleGetEntityRequest(HttpServletRequest request, @PathVariable("id") Long id) {
+	public @ResponseBody BaseArachneEntity handleGetEntityRequest(HttpServletRequest request, @PathVariable("id") Long id) {
 		// TODO remove debug
 		System.out.println(request);
 		System.out.println(request.getRequestURL());
