@@ -72,8 +72,6 @@ public class ArachneEntityController {
     public @ResponseBody ArachneDataset handleGetCategoryIdRequest(@PathVariable("category") String category, @PathVariable("id") Long id) {
     		userRightsService.initializeUserData();
     		ArachneId temp = arachneEntityIdentificationService.getByTablenameAndInternalKey(category, id); 
-            //JsonResponse response = new JsonResponse();
-            //response.setItemId(temp.getInternalKey());
             ArachneDataset response = arachneSingleEntityDataService.getSingleEntityByArachneId(temp);
     		
     		return response;
