@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<category name="bauwerk">
+    <display>
+        <title>
+            <field name="bauwerk.KurzbeschreibungBauwerk"/>
+        </title>
+        <subtitle>
+            <section>
+                <section separator=" / ">
+                    <field type="bauwerk" property="OrtsnameModern">
+                        <ifEmtpy>
+                            <field type="ort" property="Stadt"/>
+                        </ifEmtpy>
+                    </field>
+                    <field type="bauwerk" property="OrtsnameAntik">
+                        <ifEmtpy>
+                            <field type="ort" property="Ort_antik"/>
+                        </ifEmtpy>
+                    </field>
+                </section>
+                <field type="ort" property="Aufbewahrungsort"/>
+            </section>
+        </subtitle>
+        <sections>
+            <section labelKey="Charakterisierung">
+                <section labelKey="Gebäudetyp">
+                    <field type="bauwerk" property="Gebaeudetyp"/>
+                    <field type="bauwerk" property="GebaeudetypSpeziell"/>
+                </section>            
+                <section labelKey="Bauordnung">
+                    <field type="bauwerk" property="Bauordnung"/>
+                    <field type="bauwerk" property="BauordnungBemerkung"/>
+                </section>
+                <!-- ... -->
+            </section>
+            <section labelKey="Aufbewahrung">
+                <entityList type="ortsbezug"/>
+            </section>
+        </sections>
+    </display>
+</category>
