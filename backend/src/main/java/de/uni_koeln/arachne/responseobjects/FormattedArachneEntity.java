@@ -25,12 +25,12 @@ public class FormattedArachneEntity {
 	/**
 	 * The tablename field of the ArachneEntity table
 	 */
-	protected String category;
+	protected String type;
 	
 	/**
 	 * The foreignKey field of the ArachneEntity table
 	 */
-	protected Long categoryId;
+	protected Long internalId;
 	
 	/**
 	 * The date of the last Modification of the Dataset
@@ -58,98 +58,6 @@ public class FormattedArachneEntity {
 		title = "";
 	}	
 	
-	
-	
-	public Long getId() {
-		return id;
-	}
-
-
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-
-
-	public String getTitle() {
-		return title;
-	}
-
-
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-
-
-	public String getCategory() {
-		return category;
-	}
-
-
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
-
-
-	public Long getCategoryId() {
-		return categoryId;
-	}
-
-
-
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
-	}
-
-
-
-	public Date getLastModified() {
-		return lastModified;
-	}
-
-
-
-	public void setLastModified(Date lastModified) {
-		this.lastModified = lastModified;
-	}
-
-
-
-	public Map<String, List<ArachneDataset>> getContext() {
-		return context;
-	}
-
-
-
-	public void setContext(Map<String, List<ArachneDataset>> context) {
-		this.context = context;
-	}
-
-
-
-	public List<ArachneImage> getImages() {
-		return images;
-	}
-
-
-
-	public void setImages(List<ArachneImage> images) {
-		this.images = images;
-	}
-
-
-
-	public Map<String, String> getSections() {
-		return sections;
-	}
-
-
-
 	/**
 	 * This Function sets a Single Section in the Sections Map
 	 * @param sectionLabel The Label of the Section Information
@@ -168,6 +76,66 @@ public class FormattedArachneEntity {
 		}
 	}
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Long getInternalId() {
+		return internalId;
+	}
+
+	public void setInternalId(Long internalId) {
+		this.internalId = internalId;
+	}
+
+	public Date getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(Date lastModified) {
+		this.lastModified = lastModified;
+	}
+
+	public Map<String, List<ArachneDataset>> getContext() {
+		return context;
+	}
+
+	public void setContext(Map<String, List<ArachneDataset>> context) {
+		this.context = context;
+	}
+
+	public List<ArachneImage> getImages() {
+		return images;
+	}
+
+	public void setImages(List<ArachneImage> images) {
+		this.images = images;
+	}
+
+	public Map<String, String> getSections() {
+		return sections;
+	}
+
 	public void setSections(Map<String, String> sections) {
 		this.sections = sections;
 	}

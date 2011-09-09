@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.responseobjects.ArachneDataset;
+import de.uni_koeln.arachne.responseobjects.ResponseFactory;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
 import de.uni_koeln.arachne.service.UserRightsService;
@@ -30,6 +31,9 @@ public class ArachneEntityController {
 	
 	@Autowired
 	UserRightsService userRightsService;
+	
+	@Autowired
+	ResponseFactory responseFactory;
 	
 	/**
 	 * Handles http request for /{id}
@@ -59,6 +63,8 @@ public class ArachneEntityController {
 		response.setImages(temp2.getImages());
 		response.setSections(temp2.getFields());
 		 */
+		responseFactory.createFormattedArachneEntity(temp2);
+		
 		return temp2;
 	}
     
