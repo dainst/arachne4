@@ -19,6 +19,11 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	protected String title;
 	
 	/**
+	 * The Subtitle of the Dataset
+	 */
+	protected String subtitle;
+	
+	/**
 	 * The date of the last Modification of the Dataset
 	 */
 	protected Date lastModified;
@@ -69,6 +74,14 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		this.title = title;
 	}
 
+	public String getSubtitle() {
+		return subtitle;
+	}
+
+	public void setSubtitle(String subtitle) {
+		this.subtitle = subtitle;
+	}
+	
 	public Date getLastModified() {
 		return lastModified;
 	}
