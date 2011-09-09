@@ -13,11 +13,24 @@ import org.springframework.web.context.support.ServletContextResource;
 
 import de.uni_koeln.arachne.util.ArachneId;
 
+/**
+ * Factory class to create the different kinds of responses from a dataset.
+ * The createX methods my access xml config files to create the response objects. These config files are found in the WEB-INF/xml/ directory.
+ * This class can be autowired.
+ */
 @Component
 public class ResponseFactory {
+	/**
+	 * ServletContext used to read the config xmls.
+	 */
 	@Autowired
 	private ServletContext servletContext;
 	
+	/**
+	 * Creates a formatted response object as used by the front-end.
+	 * @param dataset The dataset which encapsulates the SQL query results.
+	 * @return A <code>FormattedArachneEntity</code> instance which can be jsonized.
+	 */
 	public FormattedArachneEntity createFormattedArachneEntity(ArachneDataset dataset) {
 		FormattedArachneEntity response = new FormattedArachneEntity();
 		
