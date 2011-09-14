@@ -2,7 +2,7 @@ package de.uni_koeln.arachne.responseobjects;
 
 /**
  * Base class for content added to <code>FormattedArachneEntitiy</code>.
- * This class is used as entity as well as container for entities.
+ * This class is used both as an entity and as a container for entities.
  */
 public abstract class Content {
 	/**

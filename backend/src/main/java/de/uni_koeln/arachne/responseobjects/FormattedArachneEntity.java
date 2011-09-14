@@ -6,10 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
- * Response object class that returns preformatted JSON for the frontend.
- * @author Rasmus all alone
- *
+ * Response object class that returns preformatted output to the frontend.
+ * This class is serialized to JSON using <codeJackson</code>.
  */
 public class FormattedArachneEntity extends BaseArachneEntity {
 	
@@ -48,6 +46,9 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	 */
 	protected List<ArachneImage> images;
 	
+	/**
+	 * Parameterless constructor initializing sections, title and subtitle.
+	 */
 	public FormattedArachneEntity() {
 		sections = new HashMap<String,String>();
 		title = "";
@@ -60,7 +61,6 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	 * @param sectionValue The Value that this Section has
 	 * @return returns false if the section value is overwrittten true if the Section is new to the Object
 	 */
-	
 	public boolean setSection(String sectionLabel, String sectionValue) {
 		if (this.sections.containsKey(sectionLabel)){
 			this.sections.put(sectionLabel, sectionValue);
@@ -127,6 +127,4 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	public void setSections(Map<String, String> sections) {
 		this.sections = sections;
 	}
-	
-	// is Methods
 }

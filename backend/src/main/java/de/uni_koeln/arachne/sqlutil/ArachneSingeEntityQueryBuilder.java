@@ -16,8 +16,8 @@ public class ArachneSingeEntityQueryBuilder extends AbstractArachneSQLBuilder {
 	protected ArachneSQLRightsConditionBuilder rcb;
 	
 	/**
-	 *constructs a condition to find the Dataset described in ArachneId. creates <code>UserRightsConditionBuilder</code> , Limits the Result count to 1. 
-	 * @param ident This is the <code>ArachneId</code> the SQL retrive statement should be written for
+	 * Constructs a condition to find the Dataset described in ArachneId. creates <code>UserRightsConditionBuilder</code> , Limits the Result count to 1. 
+	 * @param ident This is the <code>ArachneId</code> the SQL retrieve statement should be written for
 	 */
 	public ArachneSingeEntityQueryBuilder(ArachneId ident) {
 		sql = "";
@@ -37,7 +37,7 @@ public class ArachneSingeEntityQueryBuilder extends AbstractArachneSQLBuilder {
 	}
 	
 	@Override
-	protected String buildSQL(){
+	protected String buildSQL() {
 		sql += "SELECT * FROM `" + table + "` WHERE 1";
 		sql += this.buildAndConditions();
 		sql += rcb.getUserRightsSQLSnipplett();  
@@ -45,5 +45,4 @@ public class ArachneSingeEntityQueryBuilder extends AbstractArachneSQLBuilder {
 		sql += ";";
 		return sql;	
 	}
-
 }
