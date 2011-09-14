@@ -1,7 +1,6 @@
 package de.uni_koeln.arachne.responseobjects;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -18,7 +17,7 @@ import de.uni_koeln.arachne.util.ArachneId;
 
 /**
  * Factory class to create the different kinds of responses from a dataset.
- * The createX methods my access xml config files to create the response objects. These config files are found in the WEB-INF/xml/ directory.
+ * The create... methods may access xml config files to create the response objects. These config files are found in the <code>WEB-INF/xml/ directory.</code>
  * This class can be autowired.
  */
 @Component
@@ -61,9 +60,8 @@ public class ResponseFactory {
 	    	} else {
 	    		titleStr = getStringFromSections(display.getChild("title").getChild("section"), dataset);
 	    	}
-	    		    	
 	    	response.setTitle(titleStr);
-	    	
+
 	    	// set subtitle
 	    	String subtitleStr = "";
 	    	Element subtitle = display.getChild("subtitle");
@@ -72,15 +70,7 @@ public class ResponseFactory {
 	    	} else {
 	    		subtitleStr = getStringFromSections(subtitle.getChild("section"), dataset);
 	    	}
-	    	response.setSubtitle(subtitleStr);
-	    	
-	    	// set sections
-	    	/*List<Element> sections = display.getChild("sections").getChildren();
-	    	Iterator<Element> i = sections.iterator(); 
-	    	while (i.hasNext()) {
-	    		
-	    	}*/
-	    	
+	    	response.setSubtitle(subtitleStr);	    	
 	    	
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
@@ -94,26 +84,32 @@ public class ResponseFactory {
 
 	/**
 	 * Function to extract content from the dataset depending on its xml definition file.
+	 * First the type of the object will be determined from the dataset (e.g. Bauwerk). Based on the type the corresponding xml file <code>$(TYPE).xml</code> is read.
+	 * The response is then created, according to the xml file, from the dataset.
 	 * @param section The xml section Element to parse.
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A concatenated string containing the sections content.
 	 */
 	private String getStringFromSections(Element section, ArachneDataset dataset) {
 		String result = "";
-		// TODO remove warning
+		// JDOM doesn't handle generics correctly so it issues a type safety warning
+		@SuppressWarnings("unchecked")
 		List<Element> children = section.getChildren();
 		String separator = "\n";
 		if (section.getAttributeValue("separator") != null) {
 			separator = section.getAttributeValue("separator");
 		}
+		
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
 				String key = e.getAttributeValue("name");
 				String datasetResult = dataset.fields.get(key);
 				if (datasetResult.isEmpty()) {
 					key = e.getAttributeValue("ifEmpty");
-					if ((key != null) || (!key.isEmpty())) {
-						datasetResult = dataset.fields.get(key);
+					if (key != null) {
+						if (!key.isEmpty()) {
+							datasetResult = dataset.fields.get(key);
+						}
 					}
 				}
 				if (!result.isEmpty() && !datasetResult.isEmpty()) {
