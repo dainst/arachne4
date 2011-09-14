@@ -44,6 +44,9 @@ public class ResponseFactory {
 		response.setInternalId(arachneId.getInternalKey());
 				
 		String filename = "/WEB-INF/xml/"+ response.getType() + ".xml";
+		
+		System.out.println("Reading: " + "/WEB-INF/xml/"+ response.getType() + ".xml");
+		
 		ServletContextResource xmlDocument = new ServletContextResource(servletContext, filename);
 	    try {
 	    	SAXBuilder sb = new SAXBuilder();
@@ -52,26 +55,33 @@ public class ResponseFactory {
 	    	Element display = doc.getRootElement().getChild("display");
 	    	
 	    	// set title
-	    	String titleKey = display.getChild("title").getChild("field").getAttributeValue("name");
-	    	response.setTitle(dataset.fields.get(titleKey));
-	    	
-	    	// TODO implement when the xml definitions are fixed
-	    	// set subtitle
-	    	/*Element subtitle = display.getChild("subtitle");
-	    	if (subtitle.getChild("field") != null) {
-	    		
+	    	String titleStr = "";
+	    	if (display.getChild("title").getChild("field") != null) {
+	    		titleStr = dataset.fields.get(display.getChild("title").getChild("field").getAttributeValue("name"));
 	    	} else {
-	    		
-	    	}*/
+	    		titleStr = getStringFromSections(display.getChild("title").getChild("section"), dataset);
+	    	}
+	    		    	
+	    	response.setTitle(titleStr);
+	    	
+	    	// set subtitle
+	    	String subtitleStr = "";
+	    	Element subtitle = display.getChild("subtitle");
+	    	if (subtitle.getChild("field") != null) {
+	    		subtitleStr = dataset.fields.get(subtitle.getChild("field").getAttributeValue("name"));
+	    	} else {
+	    		subtitleStr = getStringFromSections(subtitle.getChild("section"), dataset);
+	    	}
+	    	response.setSubtitle(subtitleStr);
 	    	
 	    	// set sections
-	    	List<Element> sections = display.getChild("sections").getChildren();
+	    	/*List<Element> sections = display.getChild("sections").getChildren();
 	    	Iterator<Element> i = sections.iterator(); 
 	    	while (i.hasNext()) {
 	    		
-	    	}
+	    	}*/
 	    	
-	    	System.out.println(display.getChild("subtitle"));
+	    	
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,5 +90,44 @@ public class ResponseFactory {
 			e.printStackTrace();
 		}
 		return response;
+	}
+
+	/**
+	 * Function to extract content from the dataset depending on its xml definition file.
+	 * @param section The xml section Element to parse.
+	 * @param dataset The dataset that contains the SQL query results.
+	 * @return A concatenated string containing the sections content.
+	 */
+	private String getStringFromSections(Element section, ArachneDataset dataset) {
+		String result = "";
+		// TODO remove warning
+		List<Element> children = section.getChildren();
+		String separator = "\n";
+		if (section.getAttributeValue("separator") != null) {
+			separator = section.getAttributeValue("separator");
+		}
+		for (Element e:children) {
+			if (e.getName().equals("field")) {
+				String key = e.getAttributeValue("name");
+				String datasetResult = dataset.fields.get(key);
+				if (datasetResult.isEmpty()) {
+					key = e.getAttributeValue("ifEmpty");
+					if ((key != null) || (!key.isEmpty())) {
+						datasetResult = dataset.fields.get(key);
+					}
+				}
+				if (!result.isEmpty() && !datasetResult.isEmpty()) {
+					result += separator;
+				}
+				result += datasetResult;
+			} else {
+				String datasetResult = getStringFromSections(e, dataset);
+				if (!result.isEmpty() && !datasetResult.isEmpty()) {
+					result += separator;
+				}
+				result += datasetResult;
+			}
+		}
+		return result;
 	}
 }

@@ -8,34 +8,23 @@
         <subtitle>
             <section>
                 <section separator=" / ">
-                    <field type="bauwerk" property="OrtsnameModern">
-                        <ifEmtpy>
-                            <field type="ort" property="Stadt"/>
-                        </ifEmtpy>
-                    </field>
-                    <field type="bauwerk" property="OrtsnameAntik">
-                        <ifEmtpy>
-                            <field type="ort" property="Ort_antik"/>
-                        </ifEmtpy>
-                    </field>
+                    <field name="bauwerk.OrtsnameModern" ifEmpty="bauwerk.Gebaeudetyp"/>
+                    <field name="bauwerk.Ausgrabung" ifEmpty="ort.Ort_antik"/>
                 </section>
-                <field type="ort" property="Aufbewahrungsort"/>
+                <field name="bauwerk.ErhaltungBauwerk"/>
             </section>
         </subtitle>
         <sections>
             <section labelKey="Charakterisierung">
                 <section labelKey="Gebäudetyp">
-                    <field type="bauwerk" property="Gebaeudetyp"/>
-                    <field type="bauwerk" property="GebaeudetypSpeziell"/>
+                    <field name="bauwerk.Gebaeudetyp"/>
+                    <field name="bauwerk.GebaeudetypSpeziell"/>
                 </section>            
                 <section labelKey="Bauordnung">
-                    <field type="bauwerk" property="Bauordnung"/>
-                    <field type="bauwerk" property="BauordnungBemerkung"/>
+                    <field name="bauwerk.Bauordnung"/>
+                    <field name="bauwerk.BauordnungBemerkung"/>
                 </section>
                 <!-- ... -->
-            </section>
-            <section labelKey="Aufbewahrung">
-                <entityList type="ortsbezug"/>
             </section>
         </sections>
     </display>
