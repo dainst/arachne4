@@ -12,7 +12,9 @@ import de.uni_koeln.arachne.util.ArachneId;
 public class ArachneSingeEntityQueryBuilder extends AbstractArachneSQLBuilder {
 	
 	protected ArachneId id;
+	
 	protected ArachneSQLRightsConditionBuilder rcb;
+	
 	/**
 	 *constructs a condition to find the Dataset described in ArachneId. creates <code>UserRightsConditionBuilder</code> , Limits the Result count to 1. 
 	 * @param ident This is the <code>ArachneId</code> the SQL retrive statement should be written for
@@ -29,14 +31,14 @@ public class ArachneSingeEntityQueryBuilder extends AbstractArachneSQLBuilder {
 		//The Primary key Identification condition
 		Condition cnd = new Condition();
 		cnd.setOperator("=");
-		cnd.setPart1(ArachneSQLToolbox.getQualifiedFieldname(table,ArachneSQLToolbox.generatePrimaryKeyName(table) ));
+		cnd.setPart1(ArachneSQLToolbox.getQualifiedFieldname(table, ArachneSQLToolbox.generatePrimaryKeyName(table)));
 		cnd.setPart2(id.getInternalKey().toString());
 		conditions.add(cnd);
 	}
 	
 	@Override
 	protected String buildSQL(){
-		sql += "SELECT * FROM `"+table+"` WHERE 1";
+		sql += "SELECT * FROM `" + table + "` WHERE 1";
 		sql += this.buildAndConditions();
 		sql += rcb.getUserRightsSQLSnipplett();  
 		sql += this.appendLimitOne();

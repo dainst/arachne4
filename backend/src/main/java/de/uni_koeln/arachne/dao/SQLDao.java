@@ -39,7 +39,7 @@ public class SQLDao {
 	 * @param rm The RowMapper that Maps the Result of the Query to the an Generic Object Type
 	 * @return Returns a List of objects as identified in the <code>RowMapper</code> or <code>null</code>
 	 */
-	protected List<?> executeSelectQuery(String sQLQuery,RowMapper<?> rm ) {
+	protected List<?> executeSelectQuery(String sQLQuery, RowMapper<?> rm) {
 		if (sQLQuery.contains("SELECT")) {
 			return jdbcTemplate.query(sQLQuery,rm);
 		} else {

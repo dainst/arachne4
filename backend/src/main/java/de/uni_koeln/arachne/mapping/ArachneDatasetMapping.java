@@ -9,8 +9,8 @@ import org.springframework.jdbc.core.RowMapper;
 import de.uni_koeln.arachne.responseobjects.ArachneDataset;
 
 /**
- *Mapping Result set to a ArachneDataset Abstract Object
- * Suits for Bauwerk, bauwerkteil, Topographie, Objekt, Releif, Realie,Sammlunge
+ * Mapping result set to a ArachneDataset abstract object
+ * Suits for Bauwerk, Bauwerksteil, Topographie, Objekt, Releif, Realie, Sammlung
  * @author Rasmus Krempel
  */
 public class ArachneDatasetMapping implements RowMapper<ArachneDataset> {
@@ -22,9 +22,9 @@ public class ArachneDatasetMapping implements RowMapper<ArachneDataset> {
 		int to = meta.getColumnCount();
 		for (int i = 1; i <= to; i++) {
 			String columnName = meta.getColumnLabel(i);
-			
+
 			//Keys dont Interest the Dataset
-			if ((columnName.contains("PS_") || columnName.contains("FS_")) && columnName.contains("ID") ){
+			if ((columnName.contains("PS_") || columnName.contains("FS_")) && columnName.contains("ID")) {
 				continue;
 			}
 			// Description and Last Modified
@@ -37,7 +37,7 @@ public class ArachneDatasetMapping implements RowMapper<ArachneDataset> {
 				ds.setLastModified(rs.getDate(columnName));
 				continue;
 			}
-			
+
 			//Administration information
 			if (columnName.contains("Arbeitsnotiz") ){
 				ds.setAdminstrationInformation("Arbeitsnotiz", rs.getString(columnName));
@@ -55,18 +55,15 @@ public class ArachneDatasetMapping implements RowMapper<ArachneDataset> {
 				ds.setAdminstrationInformation("oaipmhset", rs.getString(columnName));
 				continue;
 			}
-			
+
 			if (columnName.contains("Korrektor") ){
 				ds.setAdminstrationInformation("Korrektor", rs.getString(columnName));
 				continue;
 			}
-			*/
+			 */
 			//The rest of the Dataset
 			ds.setFields(meta.getTableName(i)+"."+ columnName, rs.getString(columnName));
 		}
-		
-		
 		return ds;
 	}
-
 }
