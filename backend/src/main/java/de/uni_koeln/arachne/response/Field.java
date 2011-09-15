@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.responseobjects;
+package de.uni_koeln.arachne.response;
 
 /**
  * Class to hold a single <code>String</code>.

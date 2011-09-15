@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.ArachneSingleDatasetDao;
-import de.uni_koeln.arachne.responseobjects.ArachneDataset;
+import de.uni_koeln.arachne.response.ArachneDataset;
 import de.uni_koeln.arachne.util.ArachneId;
 
 /**

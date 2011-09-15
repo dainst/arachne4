@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.ArachneDatasetMapping;
-import de.uni_koeln.arachne.responseobjects.ArachneDataset;
+import de.uni_koeln.arachne.response.ArachneDataset;
 import de.uni_koeln.arachne.sqlutil.ArachneSingeEntityQueryBuilder;
 import de.uni_koeln.arachne.util.ArachneId;
 /**

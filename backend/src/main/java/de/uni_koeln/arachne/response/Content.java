@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.responseobjects;
+package de.uni_koeln.arachne.response;
 
 /**
  * Base class for content added to <code>FormattedArachneEntitiy</code>.

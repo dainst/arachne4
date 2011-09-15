@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import de.uni_koeln.arachne.responseobjects.ArachneDataset;
+import de.uni_koeln.arachne.response.ArachneDataset;
 
 /**
  * Mapping result set to a ArachneDataset abstract object

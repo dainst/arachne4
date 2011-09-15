@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.responseobjects;
+package de.uni_koeln.arachne.response;
 
 import java.util.Date;
 import java.util.HashMap;

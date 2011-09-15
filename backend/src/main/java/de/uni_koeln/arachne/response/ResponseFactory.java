@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.responseobjects;
+package de.uni_koeln.arachne.response;
 
 import java.io.IOException;
 import java.util.List;

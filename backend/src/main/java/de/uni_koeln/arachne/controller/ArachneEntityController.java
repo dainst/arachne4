@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import de.uni_koeln.arachne.responseobjects.ArachneDataset;
-import de.uni_koeln.arachne.responseobjects.BaseArachneEntity;
-import de.uni_koeln.arachne.responseobjects.FormattedArachneEntity;
-import de.uni_koeln.arachne.responseobjects.ResponseFactory;
+import de.uni_koeln.arachne.response.ArachneDataset;
+import de.uni_koeln.arachne.response.BaseArachneEntity;
+import de.uni_koeln.arachne.response.FormattedArachneEntity;
+import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
 import de.uni_koeln.arachne.service.UserRightsService;
