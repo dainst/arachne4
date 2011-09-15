@@ -1,11 +1,11 @@
 package de.uni_koeln.arachne.response;
 
 /**
- * Class to hold a single <code>String</code>.
+ * Class to hold a single <code>String</code> value.
  */
 public class Field extends Content {
 	/**
-	 * The value the class holds.
+	 * The <code>String</code> value the class holds.
 	 */
 	private String value;
 
