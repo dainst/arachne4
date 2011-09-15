@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.response;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -35,6 +36,8 @@ public class ResponseFactory {
 	 * Creates a formatted response object as used by the front-end. The structure of this object is defined in the xml config files.
 	 * First the type of the object will be determined from the dataset (e.g. bauwerk). Based on the type the corresponding xml file <code>$(TYPE).xml</code> is read.
 	 * The response is then created, according to the xml file, from the dataset.
+	 * <br>
+	 * The validity of the xml file is not checked!!!
 	 * @param dataset The dataset which encapsulates the SQL query results.
 	 * @return A <code>FormattedArachneEntity</code> instance which can be jsonized.
 	 */
@@ -79,9 +82,25 @@ public class ResponseFactory {
 	    	
 	    	// set sections
 	    	Element sections = display.getChild("sections");
-	    	if (sections.getChild("section") != null) {
-	    		response.setContent(getContentFromSections(sections.getChild("section"), dataset));
+	    	List<Content> contentList = new ArrayList<Content>();
+	    	// JDOM doesn't handle generics correctly so it issues a type safety warning
+			@SuppressWarnings("unchecked")
+			List<Element> children = sections.getChildren();
+			for (Element e:children) {
+	    		contentList.add(getContentFromSections(e, dataset));
 	    	}
+			
+			if (!contentList.isEmpty()) {
+				if (contentList.size() == 1) {
+					response.setContent(contentList.get(0));
+				} else {
+					Section sectionContent = new Section();
+					for (Content c:contentList) {
+						sectionContent.add(c);
+					}
+					response.setContent(sectionContent);
+				}
+			}
 	    	
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
@@ -96,6 +115,8 @@ public class ResponseFactory {
 	/**
 	 * This function handles sections in the xml config files. It extracts the content from the dataset following the definitions in the xml files
 	 * and returns it as a <code>String</code>.
+	 * <br>
+	 * The validity of the xml file is not checked!!!
 	 * @param section The xml section Element to parse.
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A concatenated string containing the sections content.
@@ -140,23 +161,24 @@ public class ResponseFactory {
 	/**
 	 * This function handles sections in the xml config files. It extracts the content from the dataset following the definitions in the xml files
 	 * and returns it as <code>Content</code>.
+	 * <br>
+	 * The validity of the xml file is not checked!!!
 	 * @param parent The xml section <code>Element</code> to parse.
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A concatenated string containing the sections content.
 	 */
 	private Content getContentFromSections(Element section, ArachneDataset dataset) {
 		Section result = new Section();
+		result.setLabelKey(section.getAttributeValue("labelKey"));
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		@SuppressWarnings("unchecked")
 		List<Element> children = section.getChildren();
 		for (Element e:children) {
-			System.out.println("Element: " + e.getName());
 			if (e.getName().equals("field")) {
 				Field field = new Field();
 				field.setValue(dataset.fields.get(e.getAttributeValue("name")));
 				result.add(field);
 			} else {
-				result.setLabelKey(e.getAttributeValue("labelKey"));
 				result.add(getContentFromSections(e, dataset));
 			}
 		}
