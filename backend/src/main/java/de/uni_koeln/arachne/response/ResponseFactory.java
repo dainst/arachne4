@@ -17,7 +17,10 @@ import de.uni_koeln.arachne.util.ArachneId;
 
 /**
  * Factory class to create the different kinds of responses from a dataset.
- * The create... methods may access xml config files to create the response objects. These config files are found in the <code>WEB-INF/xml/ directory.</code>
+ * The <code>createX</code> methods may access xml config files to create the response objects. These config files are found in the <code>WEB-INF/xml/</code> directory.
+ * Currently only the <code>createFormattedArachneEntity</code> method uses these files so that the naming scheme <code>$(TYPE).xml</code> is sufficient. If other methods
+ * want to use different xml config files a new naming scheme is needed.
+ * <br>
  * This class can be autowired.
  */
 @Component
@@ -29,7 +32,9 @@ public class ResponseFactory {
 	private ServletContext servletContext;
 	
 	/**
-	 * Creates a formatted response object as used by the front-end.
+	 * Creates a formatted response object as used by the front-end. The structure of this object is defined in the xml config files.
+	 * First the type of the object will be determined from the dataset (e.g. bauwerk). Based on the type the corresponding xml file <code>$(TYPE).xml</code> is read.
+	 * The response is then created, according to the xml file, from the dataset.
 	 * @param dataset The dataset which encapsulates the SQL query results.
 	 * @return A <code>FormattedArachneEntity</code> instance which can be jsonized.
 	 */
@@ -70,7 +75,13 @@ public class ResponseFactory {
 	    	} else {
 	    		subtitleStr = getStringFromSections(subtitle.getChild("section"), dataset);
 	    	}
-	    	response.setSubtitle(subtitleStr);	    	
+	    	response.setSubtitle(subtitleStr);
+	    	
+	    	// set sections
+	    	Element sections = display.getChild("sections");
+	    	if (sections.getChild("section") != null) {
+	    		response.setContent(getContentFromSections(sections.getChild("section"), dataset));
+	    	}
 	    	
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
@@ -83,9 +94,8 @@ public class ResponseFactory {
 	}
 
 	/**
-	 * Function to extract content from the dataset depending on its xml definition file.
-	 * First the type of the object will be determined from the dataset (e.g. Bauwerk). Based on the type the corresponding xml file <code>$(TYPE).xml</code> is read.
-	 * The response is then created, according to the xml file, from the dataset.
+	 * This function handles sections in the xml config files. It extracts the content from the dataset following the definitions in the xml files
+	 * and returns it as a <code>String</code>.
 	 * @param section The xml section Element to parse.
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A concatenated string containing the sections content.
@@ -122,6 +132,32 @@ public class ResponseFactory {
 					result += separator;
 				}
 				result += datasetResult;
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * This function handles sections in the xml config files. It extracts the content from the dataset following the definitions in the xml files
+	 * and returns it as <code>Content</code>.
+	 * @param parent The xml section <code>Element</code> to parse.
+	 * @param dataset The dataset that contains the SQL query results.
+	 * @return A concatenated string containing the sections content.
+	 */
+	private Content getContentFromSections(Element section, ArachneDataset dataset) {
+		Section result = new Section();
+		// JDOM doesn't handle generics correctly so it issues a type safety warning
+		@SuppressWarnings("unchecked")
+		List<Element> children = section.getChildren();
+		for (Element e:children) {
+			System.out.println("Element: " + e.getName());
+			if (e.getName().equals("field")) {
+				Field field = new Field();
+				field.setValue(dataset.fields.get(e.getAttributeValue("name")));
+				result.add(field);
+			} else {
+				result.setLabelKey(e.getAttributeValue("labelKey"));
+				result.add(getContentFromSections(e, dataset));
 			}
 		}
 		return result;

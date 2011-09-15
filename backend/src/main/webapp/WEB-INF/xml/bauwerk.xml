@@ -16,7 +16,7 @@
         </subtitle>
         <sections>
             <section labelKey="Charakterisierung">
-                <section labelKey="Gebäudetyp">
+            	<section labelKey="Gebäudetyp">
                     <field name="bauwerk.Gebaeudetyp"/>
                     <field name="bauwerk.GebaeudetypSpeziell"/>
                 </section>            
