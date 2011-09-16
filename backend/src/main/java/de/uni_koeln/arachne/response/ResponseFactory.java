@@ -101,7 +101,7 @@ public class ResponseFactory {
 					}
 					response.setSections(sectionContent);
 				}
-			}
+			}		
 	    	
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
@@ -180,9 +180,14 @@ public class ResponseFactory {
 			if (e.getName().equals("field")) {
 				Field field = new Field();
 				field.setValue(dataset.fields.get(e.getAttributeValue("name")));
-				result.add(field);
+				if (!field.getValue().isEmpty()) {
+					result.add(field);
+				}
 			} else {
-				result.add(getContentFromSections(e, dataset));
+				Section nextSection = (Section)getContentFromSections(e, dataset);
+				if (!((Section)nextSection).getContent().isEmpty()) { 
+					result.add(nextSection);
+				}
 			}
 		}
 		return result;
