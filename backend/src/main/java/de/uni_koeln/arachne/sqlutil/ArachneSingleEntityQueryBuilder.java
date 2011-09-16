@@ -9,7 +9,7 @@ import de.uni_koeln.arachne.util.ArachneId;
  * @author Rasmus Krempel
  *
  */
-public class ArachneSingeEntityQueryBuilder extends AbstractArachneSQLBuilder {
+public class ArachneSingleEntityQueryBuilder extends AbstractArachneSQLBuilder {
 	
 	protected ArachneId id;
 	
@@ -19,7 +19,7 @@ public class ArachneSingeEntityQueryBuilder extends AbstractArachneSQLBuilder {
 	 * Constructs a condition to find the Dataset described in ArachneId. creates <code>UserRightsConditionBuilder</code> , Limits the Result count to 1. 
 	 * @param ident This is the <code>ArachneId</code> the SQL retrieve statement should be written for
 	 */
-	public ArachneSingeEntityQueryBuilder(ArachneId ident) {
+	public ArachneSingleEntityQueryBuilder(ArachneId ident) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		id = ident;

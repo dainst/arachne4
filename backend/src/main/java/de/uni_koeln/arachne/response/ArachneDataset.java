@@ -15,28 +15,29 @@ import de.uni_koeln.arachne.util.ArachneId;
 public class ArachneDataset {
 	
 	/**
-	 * Identification of the Dataset
+	 * Identification of the Dataset.
 	 */
 	protected ArachneId arachneId;
 	
 	
 	/**
-	 * The Informations of the Dataset that is not in the core Dataset Definitions
+	 * The Informations of the Dataset that is not in the core Dataset Definitions.
 	 */
 	protected Map<String,String> fields;
 	
 	/**
-	 * The context map Contains the Contexts of the 
+	 * The context map contains the contexts of the entity.
 	 */
 	protected Map<String,List<ArachneDataset>> context;
 	
 	/**
-	 * The Images that are asociated with the dataset
+	 * The Images that are asociated with the dataset.
 	 */
 	protected List<ArachneImage> images;
 	
-
-	
+	/**
+	 * Parameterless constructor.
+	 */
 	public ArachneDataset() {
 		fields = new HashMap<String,String>();
 	}	

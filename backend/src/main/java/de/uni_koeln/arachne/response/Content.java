@@ -10,11 +10,11 @@ public abstract class Content {
 	 */
 	protected String label;
 
-	public String getLabelKey() {
+	public String getLabel() {
 		return label;
 	}
 
-	public void setLabelKey(String labelKey) {
-		this.label = labelKey;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 }

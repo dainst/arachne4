@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.ArachneDatasetMapping;
 import de.uni_koeln.arachne.response.ArachneDataset;
-import de.uni_koeln.arachne.sqlutil.ArachneSingeEntityQueryBuilder;
+import de.uni_koeln.arachne.sqlutil.ArachneSingleEntityQueryBuilder;
 import de.uni_koeln.arachne.util.ArachneId;
 /**
  * Retrives Arachne Dataset By ID
@@ -22,7 +22,7 @@ public class ArachneSingleDatasetDao extends SQLDao {
 	 */
 	public ArachneDataset getById(ArachneId id) {
 		
-		ArachneSingeEntityQueryBuilder qB = new ArachneSingeEntityQueryBuilder(id);
+		ArachneSingleEntityQueryBuilder qB = new ArachneSingleEntityQueryBuilder(id);
 		
 		String sql = qB.getSQL();
 

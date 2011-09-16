@@ -6,25 +6,35 @@
             <field name="bauwerk.KurzbeschreibungBauwerk"/>
         </title>
         <subtitle>
-            <section>
+             <section>
                 <section separator=" / ">
-                    <field name="bauwerk.OrtsnameModern" ifEmpty="bauwerk.Gebaeudetyp"/>
-                    <field name="bauwerk.Ausgrabung" ifEmpty="ort.Ort_antik"/>
+                    <field name="bauwerk.OrtsnameModern" ifEmpty="ort.Stadt"/>
+                    <field name="bauwerk.OrtsnameAntik" ifEmtpy="ort.Ort_antik"/>
                 </section>
-                <field name="bauwerk.ErhaltungBauwerk"/>
+                <field name="ort.Aufbewahrungsort"/>
             </section>
         </subtitle>
         <sections>
-            <section labelKey="Charakterisierung">
-            	<section labelKey="Gebäudetyp">
+            <section label="Charakterisierung">
+            	<section label="Gebäudetyp" separator=", ">
                     <field name="bauwerk.Gebaeudetyp"/>
                     <field name="bauwerk.GebaeudetypSpeziell"/>
-                </section>            
-                <section labelKey="Bauordnung">
+                </section>  
+                <section label="Erhaltung">
+                	<field name="bauwerk.ErhaltungBauwerk"/>
+                </section>          
+                <section label="Bauordnung">
                     <field name="bauwerk.Bauordnung"/>
                     <field name="bauwerk.BauordnungBemerkung"/>
                 </section>
-                <!-- ... -->
+            </section>
+            <section label="Geschichte">
+            	<section label="Baugeschrichte">
+            	</section>
+            	<section label="Ausgrabung">
+            	</section>
+            	<section label="Bemerkungen">
+            	</section>
             </section>
         </sections>
     </display>
