@@ -15,6 +15,11 @@ public class Section extends Content {
 	}
 	
 	/**
+	 * The label used by the frontend.
+	 */
+	private String label;
+
+	/**
 	 * A list of content (either <code>Field</code> or <code>Section</code>).
 	 */
 	private List<Content> content;
@@ -30,5 +35,13 @@ public class Section extends Content {
 	
 	public List<Content> getContent() {
 		return content;
+	}
+	
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
 }
