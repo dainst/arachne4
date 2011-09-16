@@ -8,13 +8,13 @@ public abstract class Content {
 	/**
 	 * The labelKey used by the frontend.
 	 */
-	protected String labelKey;
+	protected String label;
 
 	public String getLabelKey() {
-		return labelKey;
+		return label;
 	}
 
 	public void setLabelKey(String labelKey) {
-		this.labelKey = labelKey;
+		this.label = labelKey;
 	}
 }

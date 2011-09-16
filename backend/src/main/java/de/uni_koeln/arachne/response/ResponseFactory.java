@@ -92,13 +92,13 @@ public class ResponseFactory {
 			
 			if (!contentList.isEmpty()) {
 				if (contentList.size() == 1) {
-					response.setContent(contentList.get(0));
+					response.setSections(contentList.get(0));
 				} else {
 					Section sectionContent = new Section();
 					for (Content c:contentList) {
 						sectionContent.add(c);
 					}
-					response.setContent(sectionContent);
+					response.setSections(sectionContent);
 				}
 			}
 	    	
