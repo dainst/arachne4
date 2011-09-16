@@ -58,7 +58,7 @@
             	<section label="Bemerkungen">
             		<field name="bauwerk.BauwerkBemerkungen"/>
             	</section>
-            	<section>
+            	<section label="Restaurierung">
             		<field name="bauwerk.Restaurierung"/>
             	</section>
             </section>

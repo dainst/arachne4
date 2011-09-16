@@ -95,6 +95,7 @@ public class ResponseFactory {
 					response.setSections(contentList.get(0));
 				} else {
 					Section sectionContent = new Section();
+					sectionContent.setLabel("ContainerSection");
 					for (Content c:contentList) {
 						sectionContent.add(c);
 					}
@@ -135,18 +136,20 @@ public class ResponseFactory {
 			if (e.getName().equals("field")) {
 				String key = e.getAttributeValue("name");
 				String datasetResult = dataset.fields.get(key);
-				if (datasetResult.isEmpty()) {
-					key = e.getAttributeValue("ifEmpty");
-					if (key != null) {
-						if (!key.isEmpty()) {
-							datasetResult = dataset.fields.get(key);
+				if (datasetResult != null) {
+					if (datasetResult.isEmpty()) {
+						key = e.getAttributeValue("ifEmpty");
+						if (key != null) {
+							if (!key.isEmpty()) {
+								datasetResult = dataset.fields.get(key);
+							}
 						}
 					}
-				}
-				if (!result.isEmpty() && !datasetResult.isEmpty()) {
-					result += separator;
-				}
-				result += datasetResult;
+					if (!result.isEmpty() && !datasetResult.isEmpty()) {
+						result += separator;
+					}
+					result += datasetResult;
+				} 
 			} else {
 				String datasetResult = getStringFromSections(e, dataset);
 				if (!result.isEmpty() && !datasetResult.isEmpty()) {
