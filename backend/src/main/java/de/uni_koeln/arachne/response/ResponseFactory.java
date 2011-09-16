@@ -169,7 +169,7 @@ public class ResponseFactory {
 	 */
 	private Content getContentFromSections(Element section, ArachneDataset dataset) {
 		Section result = new Section();
-		result.setLabelKey(section.getAttributeValue("labelKey"));
+		result.setLabel(section.getAttributeValue("label"));
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		@SuppressWarnings("unchecked")
 		List<Element> children = section.getChildren();
