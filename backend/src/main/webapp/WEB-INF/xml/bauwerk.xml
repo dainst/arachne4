@@ -8,13 +8,27 @@
         <subtitle>
              <section>
                 <section separator=" / ">
-                    <field name="bauwerk.OrtsnameModern" ifEmpty="ort.Stadt"/>
-                    <field name="bauwerk.OrtsnameAntik" ifEmtpy="ort.Ort_antik"/>
+                    <field name="bauwerk.Situation" />
+                    <field name="bauwerk.Situation" />
                 </section>
                 <field name="ort.Aufbewahrungsort"/>
             </section>
         </subtitle>
         <sections>
+        	<section label="Geographische Beschreibung">
+        		<section label="Situation">
+        			<field name="bauwerk.Situation"/>
+        		</section>
+        		<section label="Antike Landschaft">
+        			<field name="bauwerk.antikeGriechLandschaftBauwerk"/>
+        		</section>
+        		<section label="Regio Rom/Italien">
+        			<field name="bauwerk.RegioRomItalien"/>
+        		</section>
+        		<section label="Kulturepoche">
+        			<field name="bauwerk.BauwerkKulturkreis"/>
+        		</section>
+        	</section>
             <section label="Charakterisierung">
             	<section label="Gebäudetyp" separator=", ">
                     <field name="bauwerk.Gebaeudetyp"/>
@@ -22,6 +36,12 @@
                 </section>  
                 <section label="Erhaltung">
                 	<field name="bauwerk.ErhaltungBauwerk"/>
+                </section>
+                <section label="Beschreibung">
+                	<field name="bauwerk.BeschreibungBauwerk"/>
+                </section>
+                <section label="Architekt">
+                	<field name="bauwerk.Architekt"/>
                 </section>          
                 <section label="Bauordnung">
                     <field name="bauwerk.Bauordnung"/>
@@ -30,12 +50,19 @@
             </section>
             <section label="Geschichte">
             	<section label="Baugeschrichte">
+            		<field name="bauwerk.Geschichte"/>
             	</section>
             	<section label="Ausgrabung">
+            		<field name="bauwerk.Ausgrabung"/>
             	</section>
             	<section label="Bemerkungen">
+            		<field name="bauwerk.BauwerkBemerkungen"/>
+            	</section>
+            	<section>
+            		<field name="bauwerk.Restaurierung"/>
             	</section>
             </section>
+
         </sections>
     </display>
 </category>
