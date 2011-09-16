@@ -24,17 +24,12 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * Hierachical structured information of the dataset.
 	 */
-	protected Content content;
+	protected Content sections;
 	
 	/**
 	 * The date of the last Modification of the Dataset
 	 */
 	protected Date lastModified;
-	
-	/**
-	 * The Informations of the Dataset that is not in the core Dataset Definitions
-	 */
-	protected Map<String,String> sections;
 	
 	/**
 	 * The context map Contains the Contexts of the 
@@ -50,27 +45,9 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	 * Parameterless constructor initializing sections, title and subtitle.
 	 */
 	public FormattedArachneEntity() {
-		sections = new HashMap<String,String>();
 		title = "";
 		subtitle = "";
 	}	
-	
-	/**
-	 * This Function sets a Single Section in the Sections Map
-	 * @param sectionLabel The Label of the Section Information
-	 * @param sectionValue The Value that this Section has
-	 * @return returns false if the section value is overwrittten true if the Section is new to the Object
-	 */
-	public boolean setSection(String sectionLabel, String sectionValue) {
-		if (this.sections.containsKey(sectionLabel)){
-			this.sections.put(sectionLabel, sectionValue);
-			return false;
-		}
-		else {
-			this.sections.put(sectionLabel, sectionValue);
-			return true;
-		}
-	}
 	
 	public String getTitle() {
 		return title;
@@ -88,12 +65,12 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		this.subtitle = subtitle;
 	}
 	
-	public Content getContent() {
-		return content;
+	public Content getSections() {
+		return sections;
 	}
 
-	public void setContent(Content content) {
-		this.content = content;
+	public void setSections(Content content) {
+		sections = content;
 	}
 	
 	public Date getLastModified() {
@@ -118,13 +95,5 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 
 	public void setImages(List<ArachneImage> images) {
 		this.images = images;
-	}
-
-	public Map<String, String> getSections() {
-		return sections;
-	}
-
-	public void setSections(Map<String, String> sections) {
-		this.sections = sections;
 	}
 }
