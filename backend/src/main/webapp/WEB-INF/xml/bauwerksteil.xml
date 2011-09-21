@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<category name="bauwerksteil">
+    <display>
+        <title>
+        	<field name="bauwerksteil.BearbeiterBauwerksteil" prefix="BT" postfix=": " />
+            <field name="bauwerksteil.KurzbeschreibungBauwerksteil"/>
+        </title>
+        <subtitle>
+             <section>
+                
+            </section>
+        </subtitle>
+        <sections>
+        </sections>
+    </display>
+</category>
