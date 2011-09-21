@@ -155,6 +155,8 @@ public class ResponseFactory {
 			if (e.getName().equals("field")) {
 				String key = e.getAttributeValue("name");
 				String datasetResult = dataset.fields.get(key);
+				String postfix = e.getAttributeValue("postfix");
+				String prefix = e.getAttributeValue("prefix");		
 				if (datasetResult != null) {
 					if (datasetResult.isEmpty()) {
 						key = e.getAttributeValue("ifEmpty");
@@ -164,9 +166,11 @@ public class ResponseFactory {
 							}
 						}
 					}
-					if (!result.isEmpty() && !datasetResult.isEmpty()) {
+					if (!result.isEmpty() && !datasetResult.isEmpty() && postfix != null ) {
 						result += separator;
 					}
+					if(prefix != null) result = prefix + result;
+					if(postfix != null) result += postfix;
 					result += datasetResult;
 				} 
 			} else {
