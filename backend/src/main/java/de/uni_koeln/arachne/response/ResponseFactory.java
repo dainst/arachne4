@@ -172,7 +172,8 @@ public class ResponseFactory {
 	 */
 	private Content getContentFromSections(Element section, ArachneDataset dataset) {
 		Section result = new Section();
-		result.setLabel(section.getAttributeValue("label"));
+		//TODO Get translated label string for value of labelKey-attribute in the section element  
+		result.setLabel(section.getAttributeValue("labelKey"));
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		@SuppressWarnings("unchecked")
 		List<Element> children = section.getChildren();

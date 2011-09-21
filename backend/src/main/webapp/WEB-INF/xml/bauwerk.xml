@@ -8,61 +8,60 @@
         <subtitle>
              <section>
                 <section separator=" / ">
-                    <field name="bauwerk.Situation" />
-                    <field name="bauwerk.Situation" />
+                    <field name="bauwerk.OrtsnameModern" ifEmpty="ort.Stadt"/>
+                    <field name="bauwerk.OrtsnameAntik" ifEmtpy="ort.Ort_antik"/>
                 </section>
                 <field name="ort.Aufbewahrungsort"/>
             </section>
         </subtitle>
         <sections>
-        	<section label="Geographische Beschreibung">
-        		<section label="Situation">
+        	<section labelKey="Geographische Beschreibung">
+        		<section labelKey="Situation">
         			<field name="bauwerk.Situation"/>
         		</section>
-        		<section label="Antike Landschaft">
+        		<section labelKey="Antike Landschaft">
         			<field name="bauwerk.antikeGriechLandschaftBauwerk"/>
         		</section>
-        		<section label="Regio Rom/Italien">
+        		<section labelKey="Regio Rom/Italien">
         			<field name="bauwerk.RegioRomItalien"/>
         		</section>
-        		<section label="Kulturepoche">
+        		<section labelKey="Kulturepoche">
         			<field name="bauwerk.BauwerkKulturkreis"/>
         		</section>
         	</section>
-            <section label="Charakterisierung">
-            	<section label="Gebäudetyp" separator=", ">
+            <section labelKey="Charakterisierung">
+            	<section labelKey="Gebäudetyp" separator=", ">
                     <field name="bauwerk.Gebaeudetyp"/>
                     <field name="bauwerk.GebaeudetypSpeziell"/>
                 </section>  
-                <section label="Erhaltung">
+                <section labelKey="Erhaltung">
                 	<field name="bauwerk.ErhaltungBauwerk"/>
                 </section>
-                <section label="Beschreibung">
+                <section labelKey="Beschreibung">
                 	<field name="bauwerk.BeschreibungBauwerk"/>
                 </section>
-                <section label="Architekt">
+                <section labelKey="Architekt">
                 	<field name="bauwerk.Architekt"/>
                 </section>          
-                <section label="Bauordnung">
+                <section labelKey="Bauordnung">
                     <field name="bauwerk.Bauordnung"/>
                     <field name="bauwerk.BauordnungBemerkung"/>
                 </section>
             </section>
-            <section label="Geschichte">
-            	<section label="Baugeschrichte">
+            <section labelKey="Geschichte">
+            	<section labelKey="Baugeschrichte">
             		<field name="bauwerk.Geschichte"/>
             	</section>
-            	<section label="Ausgrabung">
+            	<section labelKey="Ausgrabung">
             		<field name="bauwerk.Ausgrabung"/>
             	</section>
-            	<section label="Bemerkungen">
+            	<section labelKey="Bemerkungen">
             		<field name="bauwerk.BauwerkBemerkungen"/>
             	</section>
-            	<section label="Restaurierung">
+            	<section labelKey="Restaurierung">
             		<field name="bauwerk.Restaurierung"/>
             	</section>
             </section>
-
         </sections>
     </display>
 </category>
