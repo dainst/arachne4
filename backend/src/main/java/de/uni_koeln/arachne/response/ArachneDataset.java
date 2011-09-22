@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.response;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,11 @@ import de.uni_koeln.arachne.util.ArachneId;
  *
  */
 public class ArachneDataset {
+	// TODO change implementation to something more portable
+	/**
+	 * workaround for implementing getUri;
+	 */
+	private final String baseUri = "http://localhost:8080/arachnedataservice/entity/";	
 	
 	/**
 	 * Identification of the Dataset.
@@ -28,7 +34,7 @@ public class ArachneDataset {
 	/**
 	 * The context map contains the contexts of the entity.
 	 */
-	protected Map<String,List<ArachneDataset>> context;
+	protected List<Link> context;
 	
 	/**
 	 * The Images that are asociated with the dataset.
@@ -40,13 +46,26 @@ public class ArachneDataset {
 	 */
 	public ArachneDataset() {
 		fields = new HashMap<String,String>();
+		context = new ArrayList<Link>();
 	}	
+	
+	/**
+	 * Returns the unique Uri of the dataset.
+	 * @return The unique Uri idenifying the dataset
+	 */
+	public String getUri() {
+		if (arachneId.getArachneEntityID() != null) {
+			return baseUri + arachneId.getArachneEntityID();
+		} else {
+			return "Invalid Uri! Ask later!";
+		}
+	}
 	
 	//get methods
 	public ArachneId getArachneId() {
 		return arachneId;
 	}
-	public Map<String, List<ArachneDataset>> getContext() {
+	public List<Link> getContext() {
 		return context;
 	}
 	public List<ArachneImage> getImages() {
@@ -60,7 +79,7 @@ public class ArachneDataset {
 	
 	
 	//set methods
-	public void setContext(Map<String, List<ArachneDataset>> context) {
+	public void setContext(List<Link> context) {
 		this.context = context;
 	}
 	public void setImages(List<ArachneImage> images) {
