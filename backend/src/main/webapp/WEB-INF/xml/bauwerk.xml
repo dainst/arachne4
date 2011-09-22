@@ -15,53 +15,55 @@
             </section>
         </subtitle>
         <sections>
-        	<section labelKey="Geographische Beschreibung">
-        		<section labelKey="Situation">
-        			<field name="bauwerk.Situation"/>
-        		</section>
-        		<section labelKey="Antike Landschaft">
-        			<field name="bauwerk.antikeGriechLandschaftBauwerk"/>
-        		</section>
-        		<section labelKey="Regio Rom/Italien">
-        			<field name="bauwerk.RegioRomItalien"/>
-        		</section>
-        		<section labelKey="Kulturepoche">
-        			<field name="bauwerk.BauwerkKulturkreis"/>
-        		</section>
-        	</section>
-            <section labelKey="Charakterisierung">
-            	<section labelKey="Gebäudetyp" separator=", ">
-                    <field name="bauwerk.Gebaeudetyp"/>
-                    <field name="bauwerk.GebaeudetypSpeziell"/>
-                </section>  
-                <section labelKey="Erhaltung">
-                	<field name="bauwerk.ErhaltungBauwerk"/>
-                </section>
-                <section labelKey="Beschreibung">
-                	<field name="bauwerk.BeschreibungBauwerk"/>
-                </section>
-                <section labelKey="Architekt">
-                	<field name="bauwerk.Architekt"/>
-                </section>          
-                <section labelKey="Bauordnung">
-                    <field name="bauwerk.Bauordnung"/>
-                    <field name="bauwerk.BauordnungBemerkung"/>
-                </section>
-            </section>
-            <section labelKey="Geschichte">
-            	<section labelKey="Baugeschrichte">
-            		<field name="bauwerk.Geschichte"/>
-            	</section>
-            	<section labelKey="Ausgrabung">
-            		<field name="bauwerk.Ausgrabung"/>
-            	</section>
-            	<section labelKey="Bemerkungen">
-            		<field name="bauwerk.BauwerkBemerkungen"/>
-            	</section>
-            	<section labelKey="Restaurierung">
-            		<field name="bauwerk.Restaurierung"/>
-            	</section>
-            </section>
+        	<section labelKey="Informationen zum Bauwerk">
+	        	<section labelKey="Geographische Beschreibung">
+	        		<section labelKey="Situation">
+	        			<field name="bauwerk.Situation"/>
+	        		</section>
+	        		<section labelKey="Antike Landschaft">
+	        			<field name="bauwerk.antikeGriechLandschaftBauwerk"/>
+	        		</section>
+	        		<section labelKey="Regio Rom/Italien">
+	        			<field name="bauwerk.RegioRomItalien"/>
+	        		</section>
+	        		<section labelKey="Kulturepoche">
+	        			<field name="bauwerk.BauwerkKulturkreis"/>
+	        		</section>
+	        	</section>
+	            <section labelKey="Charakterisierung">
+	            	<section labelKey="Gebäudetyp" separator=", ">
+	                    <field name="bauwerk.Gebaeudetyp"/>
+	                    <field name="bauwerk.GebaeudetypSpeziell"/>
+	                </section>  
+	                <section labelKey="Erhaltung">
+	                	<field name="bauwerk.ErhaltungBauwerk"/>
+	                </section>
+	                <section labelKey="Beschreibung">
+	                	<field name="bauwerk.BeschreibungBauwerk"/>
+	                </section>
+	                <section labelKey="Architekt">
+	                	<field name="bauwerk.Architekt"/>
+	                </section>          
+	                <section labelKey="Bauordnung">
+	                    <field name="bauwerk.Bauordnung"/>
+	                    <field name="bauwerk.BauordnungBemerkung"/>
+	                </section>
+	            </section>
+	            <section labelKey="Geschichte">
+	            	<section labelKey="Baugeschrichte">
+	            		<field name="bauwerk.Geschichte"/>
+	            	</section>
+	            	<section labelKey="Ausgrabung">
+	            		<field name="bauwerk.Ausgrabung"/>
+	            	</section>
+	            	<section labelKey="Bemerkungen">
+	            		<field name="bauwerk.BauwerkBemerkungen"/>
+	            	</section>
+	            	<section labelKey="Restaurierung">
+	            		<field name="bauwerk.Restaurierung"/>
+	            	</section>
+	            </section>
+	    	</section>
         </sections>
     </display>
 </category>

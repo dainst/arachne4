@@ -7,8 +7,9 @@
             <field name="bauwerksteil.KurzbeschreibungBauwerksteil"/>
         </title>
         <subtitle>
-             <section>
-                
+             <section separator=", ">
+                <field name="ort.Ort_antik" ifEmpty=""/>
+                <field name="ort.Stadt" ifEmpty=""/>
             </section>
         </subtitle>
         <sections>
