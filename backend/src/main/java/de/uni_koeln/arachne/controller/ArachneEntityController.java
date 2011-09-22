@@ -15,6 +15,7 @@ import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.FormattedArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
+import de.uni_koeln.arachne.service.ArachneSingleEntityContextService;
 import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.ArachneId;
@@ -30,6 +31,9 @@ public class ArachneEntityController {
 
 	@Autowired
 	ArachneSingleEntityDataService arachneSingleEntityDataService;
+	
+	@Autowired
+	ArachneSingleEntityContextService arachneSingleEntityContextService;
 	
 	@Autowired
 	UserRightsService userRightsService;
@@ -52,10 +56,11 @@ public class ArachneEntityController {
 		System.out.println(request.getRequestURL());
 		
 		userRightsService.initializeUserData();
-		ArachneId temp1 = arachneEntityIdentificationService.getByEntityID(id);
-		ArachneDataset temp2 = arachneSingleEntityDataService.getSingleEntityByArachneId(temp1);
+		ArachneId arachneId = arachneEntityIdentificationService.getByEntityID(id);
+		ArachneDataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
+		arachneSingleEntityContextService.addContext(arachneDataset);
 		
-		FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(temp2);
+		FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(arachneDataset);
 		
 		return response;
 	}
