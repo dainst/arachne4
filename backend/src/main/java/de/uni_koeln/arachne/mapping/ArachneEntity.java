@@ -20,20 +20,20 @@ public class ArachneEntity {
 	 */
 	@Id
 	@Column(name="ArachneEntityID")
-	private Long id;
+	private Long id = null;
 	
 	/**
 	 * Table name of the table the entity is located in (<code>TableName</code>).
 	 */
 	@Column(name="TableName")
-	String tableName;
+	String tableName = null;
 	
 	/**
 	 * Foreign key of the table (<code>ForeignKey</code>).
 	 * This is the primary key of the table referenced in the <code>TableName</code> field.
 	 */
 	@Column(name="ForeignKey")
-	Long foreignKey;
+	Long foreignKey = null;
 	
 	/**
 	 * Field indicating if the referenced data record has been deleted (<code>isDeleted</code>).
@@ -76,8 +76,4 @@ public class ArachneEntity {
 	public boolean isDeleted() {
 		return isDeleted;
 	}
-	
-	
-
-
 }
