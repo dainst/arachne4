@@ -15,4 +15,16 @@ public class ExternalLink extends Link {
 	String getUri2() {
 		return uri2;
 	}
+
+	public ArachneDataset getEntity() {
+		return entity;
+	}
+
+	public void setEntity(ArachneDataset entity) {
+		this.entity = entity;
+	}
+
+	public void setUri2(String uri2) {
+		this.uri2 = uri2;
+	}
 }
