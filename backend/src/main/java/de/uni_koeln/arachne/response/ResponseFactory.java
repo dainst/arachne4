@@ -62,15 +62,6 @@ public class ResponseFactory {
 	    	Element display = doc.getRootElement().getChild("display");
 	    	
 	    	// set title
-	    	/*
-	    	String titleStr = "";
-	    	if (display.getChild("title").getChild("field") != null) {
-	    		titleStr = dataset.fields.get(display.getChild("title").getChild("field").getAttributeValue("name"));
-	    	} else {
-	    		titleStr = getStringFromSections(display.getChild("title").getChild("section"), dataset);
-	    	}
-	    	response.setTitle(titleStr);
-			*/
 	    	Element title = display.getChild("title");
 	    	List<Content> titleList = new ArrayList<Content>();
 	    	@SuppressWarnings("unchecked")
