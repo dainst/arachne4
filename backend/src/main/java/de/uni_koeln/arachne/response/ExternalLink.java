@@ -7,12 +7,12 @@ public class ExternalLink extends Link {
 	protected String uri2;
 	
 	@Override
-	String getUri1() {
+	public String getUri1() {
 		return entity.getUri();
 	}
 
 	@Override
-	String getUri2() {
+	public String getUri2() {
 		return uri2;
 	}
 
