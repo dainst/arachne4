@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.ServletContextResource;
 
 import de.uni_koeln.arachne.util.ArachneId;
+import de.uni_koeln.arachne.response.ArachneLink;
 
 /**
  * Factory class to create the different kinds of responses from a dataset.
@@ -120,6 +121,22 @@ public class ResponseFactory {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	    
+	    // TODO real documentation needed!
+	    /*
+	     * adding CONTEXT
+	     */ 
+	    if(dataset.getContext().size() != 0) {
+	    	List<FormattedArachneEntity> context = new ArrayList<FormattedArachneEntity>();
+	    	for(Link lnk: dataset.getContext()) {
+	    		ArachneLink aLink = (ArachneLink)lnk;
+	    		FormattedArachneEntity contextResponse = createFormattedArachneEntity(aLink.getEntity1());
+	    		context.add(contextResponse);
+	    	}
+	    	
+	    	response.setContext(context);
+	    }
+	
 		return response;
 	}
 
