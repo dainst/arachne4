@@ -1,9 +1,7 @@
 package de.uni_koeln.arachne.response;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Response object class that returns preformatted output to the frontend.
@@ -34,8 +32,10 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * The context map Contains the Contexts of the 
 	 */
-	protected Map<String,List<ArachneDataset>> context;
+	protected List<FormattedArachneEntity> context;
 	
+	
+
 	/**
 	 * The Images that are asociated with the dataset
 	 */
@@ -81,11 +81,11 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		this.lastModified = lastModified;
 	}
 
-	public Map<String, List<ArachneDataset>> getContext() {
+	public List<FormattedArachneEntity> getContext() {
 		return context;
 	}
 
-	public void setContext(Map<String, List<ArachneDataset>> context) {
+	public void setContext(List<FormattedArachneEntity> context) {
 		this.context = context;
 	}
 
