@@ -2,8 +2,11 @@ package de.uni_koeln.arachne.context;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import de.uni_koeln.arachne.response.ArachneDataset;
 import de.uni_koeln.arachne.response.Link;
+import de.uni_koeln.arachne.service.ArachneContextService;
 
 public class ArachneContext {
 	// A Specified Context Type like Ort, Literatur, Literaturzitat.
@@ -20,11 +23,9 @@ public class ArachneContext {
 	private CompletionVersionEnum completionVersion;
 		
 	//A Link Point or equal maybe Static
-	/*
 	@Autowired
-	private ContextService CS;
-	*/
-	
+	private ArachneContextService CS;
+		
 	//Depth of The Context
 	private int depthLevel;
 
