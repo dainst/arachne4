@@ -58,8 +58,7 @@ public class ArachneEntityController {
 		userRightsService.initializeUserData();
 		ArachneId arachneId = arachneEntityIdentificationService.getByEntityID(id);
 		ArachneDataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
-		
-		arachneDataset.setContext(arachneSingleEntityContextService.getLinks(arachneDataset, "bauwerksteil", 0, 10));
+		arachneSingleEntityContextService.addContext(arachneDataset);
 		
 		FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(arachneDataset);
 		
