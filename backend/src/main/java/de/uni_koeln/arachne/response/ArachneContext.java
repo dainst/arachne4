@@ -6,51 +6,46 @@ import java.util.List;
 
 public class ArachneContext {
 	
-	/**
-	 * Draft!
-	 * Type of context as string
+	/*
+	 * A Specified Context Type like Ort, Literatur, Literaturzitat.
 	 */
-	protected String contextType;
+	protected String contextName;
 	
-	/**
-	 * Draft!
+	/*
+	 * ArachneDataset which is parent to this context-object
+	 */
+	protected ArachneDataset parent;
+	
+	/*
 	 * List of links of the context
 	 */
-	protected List<Link> links;
+	protected List<Link> contextEntities;
 	
+	/*
+	 * An Enumeration which Represents the State of the Context
+	 */
+	/*
+	protected Enum completion {
+		FULL, 		// Context is Completely existing with the Sufficent User Rights
+		LIMITED, 	// A Limited Number of Contexts ist Fetched minimum 1
+		FIRST, 		// The First Entity of this Context exists
+		EMPTY		// The Context is Empty		
+	}
+	
+	*/
+	/**
+	 * Constructor
+	 */
+	public ArachneContext(String type) {
+		contextEntities = new ArrayList<Link>();
+	}
+
 	
 	
 	
 	/*
-	 * Constructor
-	 */
-	public ArachneContext(String type) {
-		contextType = type;	
-		links = new ArrayList<Link>();
-	}
-
-	
-	
-	
-	/**
 	 * Getters and Setters
 	 */
-	
-	
-	public String getContextType() {
-		return contextType;
-	}
 
-	public void setContextType(String contextType) {
-		this.contextType = contextType;
-	}
-
-	public List<Link> getLinks() {
-		return links;
-	}
-
-	public void setLinks(List<Link> links) {
-		this.links = links;
-	}
 	
 }
