@@ -9,10 +9,91 @@
         <subtitle>
              <section separator=", ">
                 <field name="ort.Ort_antik" ifEmpty=""/>
-                <field name="ort.Stadt" ifEmpty=""/>
+                <field name="ort.Stadt" ifEmpty=""/>	
             </section>
         </subtitle>
-        <sections>
-        </sections>
+		<sections>
+			<section labelKey="Informationen zum Bauwerksteil">
+				
+				<section labelKey="Lokalisierung">
+					<section sectionKey="Aufbewahrung"/>
+				</section>
+				
+				<section labelKey="Charakterisierung">					
+					<section labelKey="Bauordnung" >
+						<field name="bauwerksteil.Bauordnung"/>
+					</section>
+					<section labelKey="Bauordnung des Bauwerksteils" separator=", " >
+						<field name="bauwerksteil.ArchitektonischeBauordnung"/>
+						<field name="bauwerksteil.BauordnungBemerkung"/>
+					</section> 		
+					<section labelKey="Architekt">
+						<field name="bauwerksteil.Architekt"/>
+					</section>        		
+					<section labelKey="Bezugsrichtung zum übergeordneten Bauteil" separator=", " >
+						<field name="bauwerksteil.Bezugsrichtung"/>
+						<field name="bauwerksteil.Bezugskommentar"/>
+					</section>
+					<section labelKey="Erhaltung">
+						<field name="bauwerksteil.ErhaltungBauwerksteil"/>
+					</section> 
+					<section labelKey="Beschreibung">
+						<field name="bauwerksteil.BeschreibungBauwerksteil"/>
+					</section> 	
+				</section>
+			
+				<section labelKey="Geschichte">	
+					<section labelKey="Ausgrabungen">
+						<field name="Ausgrabungen"/>
+					</section> 
+					<section labelKey="Restaurierung">
+						<field name="bauwerksteil.RestaurierungenBauwerksteil"/>
+					</section> 
+					<section labelKey="Baugeschichte" separator=", ">
+						<field name="bauwerksteil.GeschichteBauwerksteil"/>
+						<field name="bauwerksteil.BemerkungenBauwerksteil" />
+					</section> 	
+				</section>
+				
+				<section labelKey="Maße/Kontext">	
+					<section>
+						<field name="bauwerksteil.BreiteBauwerksteil" prefix="B " postfix=" cm"/>
+					</section> 
+					<section>
+						<field name="bauwerksteil.HoeheBauwerksteil" prefix="B " postfix=" cm"/>
+					</section> 
+					<section>
+						<field name="bauwerksteil.HoeheBauwerksteil" prefix="B " postfix=" cm"/>
+					</section>
+					<section>
+						<field name="bauwerksteil.HoeheBauwerksteil" prefix="B " postfix=" cm"/>
+					</section>					
+				</section>
+				
+				<section labelKey="Dekoration">
+					<section labelKey="Dekorationsart">
+						<field name="bauwerksteil.DekorationsartBauwerksteil"/> 
+					</section>
+				</section>
+				<section labelKey="Inschrift(en)">
+					<section>
+						<field name="bauwerksteil.InschriftBauwerksteil" />
+					</section>
+					<section>
+						<field name="bauwerksteil.LitInschriftBauwerksteil" />
+					</section> 
+				</section>
+				
+				<section labelKey="Datierung">
+					<section sectionKey="Datierung" />
+				</section>
+				<section labelKey="Literatur">
+					<section sectionKey="Literatur" />
+				</section>
+				<section labelKey="Fotoabzug">
+					<section sectionKey="Fotoabzug" />
+				</section>				
+			</section>	
+   		</sections>
     </display>
 </category>
