@@ -3,7 +3,6 @@ package de.uni_koeln.arachne.response;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ArachneContext {
 	
 	/*
@@ -25,14 +24,15 @@ public class ArachneContext {
 	 * An Enumeration which Represents the State of the Context
 	 */
 	/*
-	protected Enum completion {
+	protected Enum<> completion; 
+	{
 		FULL, 		// Context is Completely existing with the Sufficent User Rights
 		LIMITED, 	// A Limited Number of Contexts ist Fetched minimum 1
 		FIRST, 		// The First Entity of this Context exists
 		EMPTY		// The Context is Empty		
-	}
+	}*/
 	
-	*/
+	
 	/**
 	 * Constructor
 	 */
