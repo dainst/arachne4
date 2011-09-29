@@ -2,7 +2,9 @@ package de.uni_koeln.arachne.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import de.uni_koeln.arachne.response.Link;
+
+import de.uni_koeln.arachne.context.Contextualizer;
+import de.uni_koeln.arachne.context.Link;
 import de.uni_koeln.arachne.response.ArachneDataset;
 
 
@@ -17,21 +19,13 @@ public class ArachneContextService {
 	 * @param limit Quantity of contexts 
 	 * @return Returns a list of <code>Links</code> 
 	 */
-	public List<Link> getLinks(ArachneDataset parent, String contextName,Integer offset, Integer limit){
-
-	    Contextualizer ctLizer = getContextByContextName(contextName);
+	public List<Link> getLinks(ArachneDataset parent, String contextType, Integer offset, Integer limit) {
+	    Contextualizer ctLizer = getContextByContextName(contextType);
 	    //TODO ControllStructures
-	    
-	    
 	    return ctLizer.retrive(parent, offset, limit);
-
 	}
 
 	private Contextualizer getContextByContextName(String contextName) {
-		
-		
 		return null;
 	}
-	
-	
 }

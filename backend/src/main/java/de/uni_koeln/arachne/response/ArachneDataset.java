@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.uni_koeln.arachne.context.Link;
 import de.uni_koeln.arachne.util.ArachneId;
 /**
  * This class provides a low level Interface to Arachne Datasets.

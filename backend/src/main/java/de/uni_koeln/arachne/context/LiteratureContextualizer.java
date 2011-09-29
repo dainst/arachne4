@@ -3,8 +3,6 @@ package de.uni_koeln.arachne.context;
 import java.util.List;
 
 import de.uni_koeln.arachne.response.ArachneDataset;
-import de.uni_koeln.arachne.response.Link;
-import de.uni_koeln.arachne.service.Contextualizer;
 
 public class LiteratureContextualizer implements Contextualizer {
 

@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import de.uni_koeln.arachne.response.ArachneDataset;
-import de.uni_koeln.arachne.response.Link;
 import de.uni_koeln.arachne.service.ArachneContextService;
 
 /**
@@ -14,6 +13,12 @@ import de.uni_koeln.arachne.service.ArachneContextService;
  * The combination of context name and parent describes the two ends of a <code>Link</code>. 
  */
 public class ArachneContext {
+	/**
+	 * The Autowired Service which manages the Retrival etc.
+	 */
+	@Autowired
+	protected ArachneContextService contextService;
+	
 	/**
 	 * @param ctname The Name of the Contexts this class Manages
 	 * @param par The ArachneDataset this Context belongs to
@@ -56,12 +61,6 @@ public class ArachneContext {
 	 */
 	protected CompletionStateEnum completionState;
 		
-	/**
-	 * The Autowired Service which manages the Retrival etc.
-	 */
-	@Autowired
-	protected ArachneContextService contextService;
-	
 	/**
 	 * The depth of the context.
 	 */
@@ -143,8 +142,8 @@ public class ArachneContext {
 	 * @param offset And offset describing where to start getting context information.
 	 * @param limit The maximum number of contexts to retrieve.
 	 */
-	protected void retrieve(int offset, int Limit) {
-	    //List<Link> temporary = CS.getLinks(parent, contextName, offset, limit);
-	    //contextEntities.appendAll(temporary);
+	protected void retrieve(int offset, int limit) {
+	    List<Link> temporary = contextService.getLinks(parent, contextType, offset, limit);
+	    contextEntities.addAll(temporary);
 	}
 }

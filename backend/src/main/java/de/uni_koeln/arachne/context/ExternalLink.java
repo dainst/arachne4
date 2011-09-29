@@ -1,4 +1,6 @@
-package de.uni_koeln.arachne.response;
+package de.uni_koeln.arachne.context;
+
+import de.uni_koeln.arachne.response.ArachneDataset;
 
 // TODO add documentation
 public class ExternalLink extends Link {

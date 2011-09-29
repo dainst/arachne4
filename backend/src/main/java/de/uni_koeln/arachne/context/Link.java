@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.response;
+package de.uni_koeln.arachne.context;
 
 import java.util.Map;
 

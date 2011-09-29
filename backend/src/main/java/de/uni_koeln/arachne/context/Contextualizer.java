@@ -1,9 +1,9 @@
-package de.uni_koeln.arachne.service;
+package de.uni_koeln.arachne.context;
 
 import java.util.List;
 
 import de.uni_koeln.arachne.response.ArachneDataset;
-import de.uni_koeln.arachne.response.Link;
+
 /**
  * This Interface Describes the Minimum Functions a Context retrivers must Implement
  * 
@@ -14,6 +14,7 @@ public interface Contextualizer {
 	 * @return String that Describes the Context Tool Serves example "ort"
 	 */
 	public String getContextType();
+	
 	/**
 	 * 
 	 * @param Source The Dataset form which the Context is Created
@@ -22,5 +23,4 @@ public interface Contextualizer {
 	 * @return The Links that Represent the Context
 	 */
 	public List<Link> retrive(ArachneDataset Source, Integer offset, Integer limit);
-
 }
