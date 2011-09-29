@@ -14,6 +14,7 @@ import de.uni_koeln.arachne.response.ArachneDataset;
 import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.FormattedArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
+import de.uni_koeln.arachne.service.ArachneContextService;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
 import de.uni_koeln.arachne.service.UserRightsService;
@@ -32,6 +33,9 @@ public class ArachneEntityController {
 	ArachneSingleEntityDataService arachneSingleEntityDataService;
 	
 	@Autowired
+	ArachneContextService contextService;
+	
+	@Autowired
 	UserRightsService userRightsService;
 	
 	@Autowired
@@ -39,42 +43,46 @@ public class ArachneEntityController {
 	
 	/**
 	 * Handles http request for /{id}
-	 * It uses the <Code>ItemService</Code> class to fetch the data and wraps it 
-	 * in a <Code>JsonResponse</Code> object.
-     * @param itemId The id of the item to fetch
-     * @return a JSON object containing the data
+	 * @param itemId The unique entity id of the item to fetch.
+     * @return a response object containing the data (currently this a serialized to JSON by Jackson).
      */
-
 	@RequestMapping(value="/entity/{id}", method=RequestMethod.GET)
-	public @ResponseBody BaseArachneEntity handleGetEntityRequest(HttpServletRequest request, @PathVariable("id") Long id) {
-		// TODO remove debug
-		System.out.println(request);
-		System.out.println(request.getRequestURL());
-		
-		userRightsService.initializeUserData();
-		ArachneId arachneId = arachneEntityIdentificationService.getByEntityID(id);
-		ArachneDataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
-
-		FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(arachneDataset);
-		
-		return response;
+	public @ResponseBody BaseArachneEntity handleGetEntityIdRequest(HttpServletRequest request, @PathVariable("id") Long id) {
+		return getEntityRequestResponse(id, null);
 	}
     
     /**
      * Handles http request for /{category}/{id}
-     * It uses the <Code>ItemService</Code> class to fetch the data and wraps it 
-     * in a <Code>JsonResponse</Code> object.
-     * @param itemId The id of the item to fetch
-     * @return a JSON object containing the data
+     * @param category The database table to fetch the item from.
+     * @param id The internal id of the item to fetch
+     * @return a response object containing the data (currently this a serialized to JSON by Jackson).
      */
-    
     @RequestMapping(value="/entity/{category}/{id}", method=RequestMethod.GET)
-    public @ResponseBody ArachneDataset handleGetCategoryIdRequest(@PathVariable("category") String category, @PathVariable("id") Long id) {
-    		userRightsService.initializeUserData();
-    		ArachneId temp = arachneEntityIdentificationService.getByTablenameAndInternalKey(category, id); 
-            ArachneDataset response = arachneSingleEntityDataService.getSingleEntityByArachneId(temp);
-    		
-    		return response;
+    public @ResponseBody BaseArachneEntity handleGetCategoryIdRequest(@PathVariable("category") String category, @PathVariable("id") Long id) {
+    	return getEntityRequestResponse(id, category);
+    }
+
+    /**
+     * Internal function handling all http GET requests for <code>/entity/*</code>.
+     * It uses the <Code>ItemService</Code> class to fetch the data and wraps it in a response object.
+     * @param id The unique entity ID if no category is given else the internal ID.
+     * @param category The category to query or <code>null</code>.
+     * @return A response object derived from <code>BaseArachneEntity</code>.
+     */
+    private BaseArachneEntity getEntityRequestResponse(Long id, String category) {
+    	userRightsService.initializeUserData();
+    	ArachneId arachneId = null;
+    	
+    	if (category == null) {
+    		arachneId = arachneEntityIdentificationService.getId(id);
+    	} else {
+    		arachneId = arachneEntityIdentificationService.getId(category, id);
+    	}
+    	
+    	ArachneDataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
+    	FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(arachneDataset);
+    	
+    	return response;
     }
     
     //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,16 +94,10 @@ public class ArachneEntityController {
      * @param itemId The id of the item to fetch
      * @return a JSON object containing the data
      */
-
     @RequestMapping(value="/doc/{id}", method=RequestMethod.GET)
     public @ResponseBody ArachneDataset handleGetDocEntityRequest(@PathVariable("id") Long id) {
-    		userRightsService.initializeUserData();
-    		ArachneId temp = arachneEntityIdentificationService.getByEntityID(id);
-            //JsonResponse response = new JsonResponse();
-            //response.setItemId(temp.getInternalKey());
-            ArachneDataset response = arachneSingleEntityDataService.getSingleEntityByArachneId(temp);
-    		
-    		return response;
+    	// TODO implement me
+    	return null;
     }
 
     /**
@@ -105,16 +107,10 @@ public class ArachneEntityController {
      * @param itemId The id of the item to fetch
      * @return a JSON object containing the data
      */
-    
     @RequestMapping(value="doc/{category}/{id}", method=RequestMethod.GET)
     public @ResponseBody ArachneDataset handleGetDocCategoryIdRequest(@PathVariable("category") String category, @PathVariable("id") Long id) {
-    		userRightsService.initializeUserData();
-    		ArachneId temp = arachneEntityIdentificationService.getByEntityID(id);
-            //JsonResponse response = new JsonResponse();
-            //response.setItemId(temp.getInternalKey());
-            ArachneDataset response = arachneSingleEntityDataService.getSingleEntityByArachneId(temp);
-    		
-    		return response;
+    	// TODO implement me
+		return null;
     }
     
     //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -126,16 +122,10 @@ public class ArachneEntityController {
      * @param itemId The id of the item to fetch
      * @return a JSON object containing the data
      */
-
     @RequestMapping(value="/data/{id}", method=RequestMethod.GET)
     public @ResponseBody ArachneDataset handleGetDataEntityRequest(@PathVariable("id") Long id) {
-    		userRightsService.initializeUserData();
-    		ArachneId temp = arachneEntityIdentificationService.getByEntityID(id);
-            //JsonResponse response = new JsonResponse();
-            //response.setItemId(temp.getInternalKey());
-            ArachneDataset response = arachneSingleEntityDataService.getSingleEntityByArachneId(temp);
-    		
-    		return response;
+    	// TODO implement me
+		return null;
     }
     
     /**
@@ -145,15 +135,9 @@ public class ArachneEntityController {
      * @param itemId The id of the item to fetch
      * @return a JSON object containing the data
      */
-    
     @RequestMapping(value="data/{category}/{id}", method=RequestMethod.GET)
     public @ResponseBody ArachneDataset handleGetDataCategoryIdRequest(@PathVariable("category") String category, @PathVariable("id") Long id) {
-    		userRightsService.initializeUserData();
-    		ArachneId temp = arachneEntityIdentificationService.getByEntityID(id);
-            //JsonResponse response = new JsonResponse();
-            //response.setItemId(temp.getInternalKey());
-            ArachneDataset response = arachneSingleEntityDataService.getSingleEntityByArachneId(temp);
-    		
-    		return response;
+    	// TODO implement me
+    	return null;
     }
 }
