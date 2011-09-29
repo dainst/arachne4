@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.UserRightsService;
-import de.uni_koeln.arachne.util.ArachneId;
 
 
 /**
@@ -25,8 +23,6 @@ public class HomeController {
 	@Autowired
 	private UserRightsService userRightsService;
 	
-	@Autowired
-	private ArachneEntityIdentificationService arachneEntityIdentificationService;
 	//private Session session = SessionUtil.getSessionFactory().getCurrentSession();
 	
 	/**
@@ -34,21 +30,13 @@ public class HomeController {
 	 */
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public ModelAndView home() {
-		logger.info("Welcome home!");
-		//session.beginTransaction();
-		//session.load(Building.class, 1);
-		long id = 270001;
-		//List<Building> bl = buildingService.listBuilding();
-		String username = userRightsService.getUsername();
-		ArachneId thing = arachneEntityIdentificationService.getByTablenameAndInternalKey("Bauwerk",id);
+		logger.info("Welcome to Arachne4 alpha!");
 		
-		logger.info("ID "+ thing.getArachneEntityID());
+		String username = userRightsService.getUsername();
 		
 		logger.info(username);
 		ModelMap modelMap = new ModelMap();
-		//modelMap.addAttribute("buildingList", bl);
-		modelMap.addAttribute("TODO","ARRRRG");
-		modelMap.addAttribute("Shit",username);
+		modelMap.addAttribute("Username", username);
 		
 		return new ModelAndView("home", modelMap);
 	}

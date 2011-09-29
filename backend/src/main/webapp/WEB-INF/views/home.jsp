@@ -2,26 +2,14 @@
 <%@ page session="false" %>
 <html>
 <head>
-	<title>Home</title>
+	<title>Arachne welcome page.</title>
 </head>
 <body>
 <h1>
-	Query Result:
+	Welcome to Arachne4 alpha
 </h1>
-<c:forEach items="${buildingList}" var="building">
-	<td>id : ${building.id}</td>
-	<br/>
-	<td>entityGroup : ${building.entityGroupBuilding}</td>
-	<br/>
-	<td>architect : ${building.architect}</td>
-	<br/>
-	<td>excavation : ${building.excavation}</td>
-	<br/>
-	<td>buildingRegulation : ${building.buildingRegulation}</td>
-	<br/>
-	<td>shortDescription : ${building.shortDescription}</td>
-	<br/>
-	------------------------------------------
+<c:forEach items="${infoList}" var="info">
+	<td>username : ${infoList.username}</td>
 	<br/>
 </c:forEach>
 </body>
