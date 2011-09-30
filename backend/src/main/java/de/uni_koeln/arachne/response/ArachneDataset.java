@@ -83,8 +83,13 @@ public class ArachneDataset {
 	public void setContext(List<ArachneContext> context) {
 		this.context = context;
 	}
+	
 	public void setImages(List<ArachneImage> images) {
 		this.images = images;
+	}
+	
+	public void addContext(ArachneContext aContext) {
+		this.context.add(aContext);
 	}
 
 	
