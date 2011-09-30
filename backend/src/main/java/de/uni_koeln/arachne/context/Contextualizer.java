@@ -22,5 +22,5 @@ public interface Contextualizer {
 	 * @param limit The Number of Contextes to get
 	 * @return The Links that Represent the Context
 	 */
-	public List<Link> retrive(ArachneDataset Source, Integer offset, Integer limit);
+	public List<Link> retrive(ArachneDataset parent, Integer offset, Integer limit);
 }

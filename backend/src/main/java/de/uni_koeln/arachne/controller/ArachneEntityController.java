@@ -80,6 +80,7 @@ public class ArachneEntityController {
     	}
     	
     	ArachneDataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
+    	contextService.addContext(arachneDataset);
     	FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(arachneDataset);
     	
     	return response;

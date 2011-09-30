@@ -13,9 +13,10 @@ public class LiteratureContextualizer implements Contextualizer {
 	}
 
 	@Override
-	public List<Link> retrive(ArachneDataset Source, Integer offset,
-			Integer limit) {
-		// TODO Auto-generated method stub
+	public List<Link> retrive(ArachneDataset parent, Integer offset, Integer limit) {
+	
+		// TODO retrival implementation
+		System.out.println("im Contexualizer angekommen");
 		return null;
 	}
 
