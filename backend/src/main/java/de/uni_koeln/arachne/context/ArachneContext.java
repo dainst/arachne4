@@ -9,8 +9,8 @@ import de.uni_koeln.arachne.response.ArachneDataset;
 import de.uni_koeln.arachne.service.ArachneContextService;
 
 /**
- * This Class is a Wrapper that holds and manages contexts of <code>ArachneDatasets</code>. The links are fetched on demand.
- * The combination of context name and parent describes the two ends of a <code>Link</code>. 
+ * This Class is a wrapper that holds and manages contexts of <code>ArachneDatasets</code>. The links are fetched on demand.
+ * The combination of context type and parent describes the two ends of a <code>Link</code>. 
  */
 public class ArachneContext {
 	/**
@@ -19,12 +19,13 @@ public class ArachneContext {
 	protected ArachneContextService contextService;
 	
 	/**
-	 * @param ctname The Name of the Contexts this class Manages
-	 * @param par The ArachneDataset this Context belongs to
+	 * Constructor setting up all needed fields.
+	 * @param contextType The type of context this class manages.
+	 * @param parent The <code>ArachneDataset</code> this context belongs to.
 	 */
-	public ArachneContext(String ctname, ArachneDataset parent, ArachneContextService contextService) {
+	public ArachneContext(String contextType, ArachneDataset parent, ArachneContextService contextService) {
 		completionState = CompletionStateEnum.EMPTY;
-		contextType = ctname;
+		this.contextType = contextType;
 		this.parent = parent;
 		contextEntities = new ArrayList<Link>();
 		this.contextService = contextService;
@@ -46,18 +47,18 @@ public class ArachneContext {
 	 * An enumeration class representing the state of the context.
 	 */
 	protected enum CompletionStateEnum {
-		//Full means that the Context is Completely loaded
+		// the context is completely loaded
 		FULL, 
-		//Limited means that the Context contains more than one context but is not Complete
-		LIMITED, 
-		//Means that the Context has the First Element loaded
+		// the context contains more than one context but is not complete
+		LIMITED,
+		// only the first context element is loaded
 		FIRST, 
-		//The Context is Empty 
+		// the context is empty
 		EMPTY
 	};
 	
 	/**
-	 * The completion state of the context. Can be one of <code>FULL</code>
+	 * The completion state of the context. Can be one of <code>FULL</code>, <code>LIMITED</code>, <code>FIRST</code> or <code>EMPTY</code>.
 	 */
 	protected CompletionStateEnum completionState;
 		
@@ -129,11 +130,11 @@ public class ArachneContext {
 
 	/**
 	 * Internally used convenient function to retrieve a limited number of contexts.
-	 * Side effects: Sets <code>completionState</code>
-	 * @param number The number of contexts to retrieve
+	 * Side effect: Sets <code>completionState</code>
+	 * @param limit The number of contexts to retrieve
 	 */
-	protected void retrieveLimited(int number) {
-	    retrieve(contextEntities.size(), number - contextEntities.size());
+	protected void retrieveLimited(int limit) {
+	    retrieve(contextEntities.size(), limit - contextEntities.size());
 	    completionState = CompletionStateEnum.LIMITED;
 	}
 
