@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.uni_koeln.arachne.context.Link;
+import de.uni_koeln.arachne.context.ArachneContext;
 import de.uni_koeln.arachne.util.ArachneId;
 /**
  * This class provides a low level Interface to Arachne Datasets.
@@ -35,7 +35,7 @@ public class ArachneDataset {
 	/**
 	 * The context map contains the contexts of the entity.
 	 */
-	protected List<Link> context;
+	protected List<ArachneContext> context;
 	
 	/**
 	 * The Images that are asociated with the dataset.
@@ -47,7 +47,7 @@ public class ArachneDataset {
 	 */
 	public ArachneDataset() {
 		fields = new HashMap<String,String>();
-		context = new ArrayList<Link>();
+		context = new ArrayList<ArachneContext>();
 	}	
 	
 	/**
@@ -66,7 +66,7 @@ public class ArachneDataset {
 	public ArachneId getArachneId() {
 		return arachneId;
 	}
-	public List<Link> getContext() {
+	public List<ArachneContext> getContext() {
 		return context;
 	}
 	public List<ArachneImage> getImages() {
@@ -80,7 +80,7 @@ public class ArachneDataset {
 	
 	
 	//set methods
-	public void setContext(List<Link> context) {
+	public void setContext(List<ArachneContext> context) {
 		this.context = context;
 	}
 	public void setImages(List<ArachneImage> images) {
