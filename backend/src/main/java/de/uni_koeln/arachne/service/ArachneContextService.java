@@ -19,13 +19,11 @@ public class ArachneContextService {
 	 * @param parent ArachneDataset that will gain the added context
 	 */
 	public void addContext(ArachneDataset parent) {
-		
 		if (parent.getArachneId().getTableName().equals("bauwerk")) {
-			ArachneContext litContext = new ArachneContext("literatur", parent);
+			ArachneContext litContext = new ArachneContext("literatur", parent, this);
 			litContext.getLimitContext(10);
 			parent.addContext(litContext);
 		}
-		
 	}
 	
 	/**

@@ -14,20 +14,20 @@ import de.uni_koeln.arachne.service.ArachneContextService;
  */
 public class ArachneContext {
 	/**
-	 * The Autowired Service which manages the Retrival etc.
+	 * The service which manages the retrieval etc.
 	 */
-	@Autowired
 	protected ArachneContextService contextService;
 	
 	/**
 	 * @param ctname The Name of the Contexts this class Manages
 	 * @param par The ArachneDataset this Context belongs to
 	 */
-	public ArachneContext(String ctname, ArachneDataset parent) {
+	public ArachneContext(String ctname, ArachneDataset parent, ArachneContextService contextService) {
 		completionState = CompletionStateEnum.EMPTY;
 		contextType = ctname;
 		this.parent = parent;
 		contextEntities = new ArrayList<Link>();
+		this.contextService = contextService;
 	}
 	
 	/**
