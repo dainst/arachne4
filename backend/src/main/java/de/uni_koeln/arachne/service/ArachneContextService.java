@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.context.*;
@@ -14,6 +15,14 @@ import de.uni_koeln.arachne.response.ArachneDataset;
  */
 @Service("arachneContextService")
 public class ArachneContextService {
+	
+	/**
+	 * Service to access the 'Verknuepfungen' table. The information stored in that table is used
+	 * to determine which contexts the <code>addContext</code> method adds to a given dataset.
+	 */	
+	@Autowired
+	private ArachneConnectionService arachneConnectionService;
+	
 	/**
 	 * Method to append all context objects to the given dataset 
 	 * 
@@ -21,6 +30,8 @@ public class ArachneContextService {
 	 */
 	public void addContext(ArachneDataset parent) {
 		if (parent.getArachneId().getTableName().equals("bauwerk")) {
+			arachneConnectionService.getConnectionMap("bauwerk");
+			
 			ArachneContext litContext = new ArachneContext("literatur", parent, this);
 			litContext.getLimitContext(10);
 			parent.addContext(litContext);

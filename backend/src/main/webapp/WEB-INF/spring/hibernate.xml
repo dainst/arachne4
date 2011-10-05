@@ -28,6 +28,7 @@
             <list>
                 <value>de.uni_koeln.arachne.mapping.UserAdministration</value>
                 <value>de.uni_koeln.arachne.mapping.ArachneEntity</value>
+				<value>de.uni_koeln.arachne.mapping.ArachneConnection</value>            
             </list>
         </property>
         <property name="hibernateProperties">
