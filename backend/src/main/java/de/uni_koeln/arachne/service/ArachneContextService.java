@@ -30,7 +30,7 @@ public class ArachneContextService {
 	 */
 	public void addContext(ArachneDataset parent) {
 		if (parent.getArachneId().getTableName().equals("bauwerk")) {
-			arachneConnectionService.getConnectionMap("bauwerk");
+			arachneConnectionService.getConnectionList(parent.getArachneId().getTableName());
 			
 			ArachneContext litContext = new ArachneContext("literatur", parent, this);
 			litContext.getLimitContext(10);

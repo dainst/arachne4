@@ -5,6 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * ORM class for the connection table (<code>Verknuepfungen</code>).
+ * POJO for hibernate mapping.
+ */
 @Entity
 @Table(name="Verknuepfungen")
 public class ArachneConnection {

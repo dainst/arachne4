@@ -6,14 +6,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 
  * ORM class for the entity table (<code>arachneentityidentification</code>).
- * 
+ * POJO for hibernate mapping.
  */
 @Entity
 @Table(name="arachneentityidentification")
 public class ArachneEntity {
-
 	
 	/**
 	 * Primary key of the table (<code>ArachneEntityID</code>).
@@ -45,15 +43,13 @@ public class ArachneEntity {
 	boolean isDeleted;
 	
 	/**
-	 * Getter
-	 */
-	/**
 	 * The returns the Unique Arachne Identifier.
 	 * @return The Arachne Entity ID
 	 */
 	public Long getId() {
 		return id;
 	}
+	
 	/**
 	 * The Table Key of the Arachne.
 	 * @return Primary key of the Internal Arachne Dataset
@@ -69,6 +65,7 @@ public class ArachneEntity {
 	public String getTableName() {
 		return tableName;
 	}
+
 	/**
 	 * Check if the Dataset is Deleted.
 	 * @return true or False
