@@ -3,20 +3,21 @@ package de.uni_koeln.arachne.mapping;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import de.uni_koeln.arachne.response.ArachneDataset;
 
 /**
  * Mapping result set to a ArachneDataset abstract object
  * Suits for Bauwerk, Bauwerksteil, Topographie, Objekt, Releif, Realie, Sammlung
  * @author Rasmus Krempel
  */
-public class ArachneDatasetMapping implements RowMapper<ArachneDataset> {
+public class ArachneDatasetMapping implements RowMapper<Map<String,String>> {
 
-	public ArachneDataset mapRow(ResultSet rs, int rownum) throws SQLException {
-		ArachneDataset ds = new ArachneDataset();
+	public Map<String,String> mapRow(ResultSet rs, int rownum) throws SQLException {
+		Map<String,String> ds = new HashMap<String,String>();
 
 		ResultSetMetaData meta = rs.getMetaData();
 		int to = meta.getColumnCount();
@@ -62,7 +63,7 @@ public class ArachneDatasetMapping implements RowMapper<ArachneDataset> {
 			}
 			 */
 			//The rest of the Dataset
-			ds.setFields(meta.getTableName(i)+"."+ columnName, rs.getString(columnName));
+			ds.put(meta.getTableName(i)+"."+ columnName, rs.getString(columnName));
 		}
 		return ds;
 	}

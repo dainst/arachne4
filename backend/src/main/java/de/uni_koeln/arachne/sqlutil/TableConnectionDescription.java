@@ -30,9 +30,9 @@ public class TableConnectionDescription {
 	public TableConnectionDescription(String table1,String field1,String table2,String field2) {
 		
 		this.table1 =table1;
-		this.table2 =table1;
-		this.field1 =table1;
-		this.field2 =table1;
+		this.table2 =table2;
+		this.field1 =field1;
+		this.field2 =field2;
 		
 	}
 	/**
@@ -46,9 +46,9 @@ public class TableConnectionDescription {
 	public TableConnectionDescription(String table1,String field1,String table2,String field2,String crossTableName ) {
 		
 		this.table1 =table1;
-		this.table2 =table1;
-		this.field1 =table1;
-		this.field2 =table1;
+		this.table2 =table2;
+		this.field1 =field1;
+		this.field2 =field2;
 		this.crossTableName = crossTableName;
 		
 	}

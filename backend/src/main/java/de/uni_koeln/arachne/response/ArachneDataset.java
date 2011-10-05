@@ -11,7 +11,6 @@ import de.uni_koeln.arachne.util.ArachneId;
  * This class provides a low level Interface to Arachne Datasets.
  * Its Maps the core Infos to the Fields and stores the other Data in the Sections Map
  * It Also contains a List for The Images and annother Map for the Contexts
- * @author Rasmus Krempel
  *
  */
 public class ArachneDataset {
@@ -76,7 +75,9 @@ public class ArachneDataset {
 	public Map<String, String> getFields() {
 		return fields;
 	}
-
+	public String getField(String fieldName) {
+		return fields.get(fieldName);
+	}
 	
 	
 	//set methods
@@ -114,12 +115,16 @@ public class ArachneDataset {
 	public void setFields(Map<String, String> sections) {
 		this.fields = sections;
 	}
-	
+	public void appendFields(Map<String, String> sections) {
+		
+		
+		this.fields.putAll(sections);
+	}
 
 	public void setArachneId(ArachneId arachneId) {
 		this.arachneId = arachneId;
 	}
-
+	
 	
 	// is Methods
 }
