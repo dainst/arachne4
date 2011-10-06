@@ -22,6 +22,9 @@ public class ArachneConnection {
 	@Column(name="Teil2")
 	private String part2 = null;
 	
+	@Column(name="Tabelle")
+	private String table = null;
+	
 	@Column(name="Felder")
 	private String fields = null;
 	
@@ -40,6 +43,10 @@ public class ArachneConnection {
 		return part2;
 	}
 
+	public String getTable() {
+		return table;
+	}
+	
 	public String getFields() {
 		return fields;
 	}
