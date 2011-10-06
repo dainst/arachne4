@@ -115,9 +115,8 @@ public class ArachneDataset {
 	public void setFields(Map<String, String> sections) {
 		this.fields = sections;
 	}
+	
 	public void appendFields(Map<String, String> sections) {
-		
-		
 		this.fields.putAll(sections);
 	}
 
