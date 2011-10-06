@@ -145,6 +145,8 @@ public class ArachneContext {
 	 */
 	protected void retrieve(int offset, int limit) {
 	    List<Link> temporary = contextService.getLinks(parent, contextType, offset, limit);
-	    contextEntities.addAll(temporary);
+	    if (temporary != null) {
+	    	contextEntities.addAll(temporary);
+	    }
 	}
 }
