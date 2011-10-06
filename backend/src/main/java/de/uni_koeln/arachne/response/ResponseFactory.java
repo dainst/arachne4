@@ -112,6 +112,9 @@ public class ResponseFactory {
 					response.setSections(sectionContent);
 				}
 			}		
+			
+			// Set contexts
+			
 	    	
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block

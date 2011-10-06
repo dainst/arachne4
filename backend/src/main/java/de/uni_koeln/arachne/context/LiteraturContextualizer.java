@@ -4,7 +4,7 @@ import java.util.List;
 
 import de.uni_koeln.arachne.response.ArachneDataset;
 
-public class LiteratureContextualizer implements IContextualizer {
+public class LiteraturContextualizer implements IContextualizer {
 
 	@Override
 	public String getContextType() {

@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.service;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,22 @@ public class ArachneContextService {
 	private ArachneConnectionService arachneConnectionService;
 	
 	/**
-	 * Method to append all context objects to the given dataset 
+	 * Method to append all context objects to the given dataset.
+	 * Some context objects are universal like 'literatur' or 'ort'. They get included
+	 * for every dataset type. Other context objects are looked up based on the 'Verknuepfungen'
+	 * table.  
 	 * 
 	 * @param parent ArachneDataset that will gain the added context
 	 */
 	public void addContext(ArachneDataset parent) {
 		if (parent.getArachneId().getTableName().equals("bauwerk")) {
-			arachneConnectionService.getConnectionList(parent.getArachneId().getTableName());
+			List<String> connectionList = arachneConnectionService.getConnectionList(parent.getArachneId().getTableName());
+			Iterator<String> i = connectionList.iterator();
+			while (i.hasNext()) {
+				ArachneContext context = new ArachneContext(i.next(), parent, this);
+				//context.getLimitContext(10);
+				//parent.addContext(context);
+			}
 			
 			ArachneContext litContext = new ArachneContext("literatur", parent, this);
 			litContext.getLimitContext(10);
@@ -53,16 +63,26 @@ public class ArachneContextService {
 	}
 	
 	/**
-	 * Method creating an appropriate contextualizer.
+	 * Method creating an appropriate contextualizer. The class type is constructed from the <code>contextType</code>.
+	 * Then reflection is used to create the corresponding class instance.
 	 * 
 	 * @param contextType Name of a context of interest  
-	 * @return an appropriate contextualizer serving the specific context indicated by the given contextName
+	 * @return an appropriate contextualizer serving the specific context indicated by the <code>given contextType</code>
 	 */
 	private IContextualizer getContextByContextType(String contextType) {
+		Class [] classParam = null;
+		Object [] objectParam = null;
 		IContextualizer contextualizer = null;
-		if (contextType.equals("literatur")) {
-			contextualizer = new LiteratureContextualizer(); 
+		try {
+			String upperCaseContextType = contextType.substring(0, 1).toUpperCase() + contextType.substring(1).toLowerCase();
+			String className = "de.uni_koeln.arachne.context." + upperCaseContextType + "Contextualizer";
+			Class aClass = Class.forName(className);
+			java.lang.reflect.Constructor classConstructor = aClass.getConstructor(classParam);
+			return (IContextualizer)classConstructor.newInstance(objectParam);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
-		return contextualizer;
+		return null;
 	}
 }

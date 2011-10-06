@@ -26,12 +26,12 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	protected Content sections;
 	
 	/**
-	 * The date of the last Modification of the Dataset
+	 * The date of the last Modification of the dataset.
 	 */
 	protected Date lastModified;
 	
 	/**
-	 * The context map Contains the Contexts of the 
+	 * The context map Contains the Contexts of the dataset.
 	 */
 	protected Map<String,List<ArachneDataset>> context;
 	
@@ -41,7 +41,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	protected List<ArachneImage> images;
 	
 	/**
-	 * Parameterless constructor initializing sections, title and subtitle.
+	 * Parameterless constructor initializing title and subtitle.
 	 */
 	public FormattedArachneEntity() {
 		title = "";
