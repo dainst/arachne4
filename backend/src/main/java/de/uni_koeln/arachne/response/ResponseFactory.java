@@ -182,7 +182,7 @@ public class ResponseFactory {
 	 * The validity of the xml file is not checked!!!
 	 * @param parent The xml section <code>Element</code> to parse.
 	 * @param dataset The dataset that contains the SQL query results.
-	 * @return A concatenated string containing the sections content.
+	 * @return A <code>Content</code> object containing the sections content.
 	 */
 	private Content getContentFromSections(Element section, ArachneDataset dataset) {
 		Section result = new Section();
