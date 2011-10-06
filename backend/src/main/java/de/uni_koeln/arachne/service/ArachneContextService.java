@@ -38,8 +38,8 @@ public class ArachneContextService {
 			Iterator<String> i = connectionList.iterator();
 			while (i.hasNext()) {
 				ArachneContext context = new ArachneContext(i.next(), parent, this);
-				//context.getLimitContext(10);
-				//parent.addContext(context);
+				context.getLimitContext(10);
+				parent.addContext(context);
 			}
 			
 			ArachneContext litContext = new ArachneContext("literatur", parent, this);
@@ -58,18 +58,19 @@ public class ArachneContextService {
 	 * @return Returns a list of <code>Links</code> 
 	 */ 
 	public List<Link> getLinks(ArachneDataset parent, String contextType, Integer offset, Integer limit) {
-	    IContextualizer contextualizer = getContextByContextType(contextType);
+	    IContextualizer contextualizer = getContextualizerByContextType(contextType);
 	    return contextualizer.retrieve(parent, offset, limit);
 	}
 	
 	/**
-	 * Method creating an appropriate contextualizer. The class type is constructed from the <code>contextType</code>.
+	 * Method creating an appropriate contextualizer. The class name is constructed from the <code>contextType</code>.
 	 * Then reflection is used to create the corresponding class instance.
-	 * 
+	 * <br>
+	 * If no specialized <code>Contextualizer</code> class is found an instance of <code>GenericSQLContextualizer</code> is returned.
 	 * @param contextType Name of a context of interest  
 	 * @return an appropriate contextualizer serving the specific context indicated by the <code>given contextType</code>
 	 */
-	private IContextualizer getContextByContextType(String contextType) {
+	private IContextualizer getContextualizerByContextType(String contextType) {
 		Class [] classParam = null;
 		Object [] objectParam = null;
 		IContextualizer contextualizer = null;
@@ -79,7 +80,10 @@ public class ArachneContextService {
 			Class aClass = Class.forName(className);
 			java.lang.reflect.Constructor classConstructor = aClass.getConstructor(classParam);
 			return (IContextualizer)classConstructor.newInstance(objectParam);
-		} catch (Exception e) {
+		} catch (ClassNotFoundException e) {
+			return new GenericSQLContextualizer();
+		}
+		catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
