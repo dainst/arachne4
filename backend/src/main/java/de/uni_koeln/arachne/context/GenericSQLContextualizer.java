@@ -4,6 +4,10 @@ import java.util.List;
 
 import de.uni_koeln.arachne.response.ArachneDataset;
 
+/**
+ * This is the default <code>Contextualizer</code> the <code>ContextService</code> uses if 
+ * no specialized one is specified.   
+ */
 public class GenericSQLContextualizer implements IContextualizer {
 
 	@Override
