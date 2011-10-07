@@ -81,7 +81,7 @@ public class ArachneContextService {
 			java.lang.reflect.Constructor classConstructor = aClass.getConstructor(classParam);
 			return (IContextualizer)classConstructor.newInstance(objectParam);
 		} catch (ClassNotFoundException e) {
-			return new GenericSQLContextualizer();
+			return new GenericSQLContextualizer(contextType, arachneConnectionService);
 		}
 		catch (Exception e) {
 			// TODO: handle exception

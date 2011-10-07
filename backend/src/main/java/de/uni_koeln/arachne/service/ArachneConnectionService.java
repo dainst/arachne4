@@ -28,4 +28,14 @@ public class ArachneConnectionService {
 	public List<String> getConnectionList(String type) {
 		return arachneConnectionDao.getConnectionList(type);
 	}
+	
+	/**
+	 * Retrieves the name of the 'cross table' connecting two tables.
+	 * @param table1 First table name.
+	 * @param table2 Second table name.
+	 * @return The table name of the 'cross table'.
+	 */
+	public String getTableName(String table1, String table2) {
+		return arachneConnectionDao.getTableName(table1, table2);
+	}
 }

@@ -149,4 +149,8 @@ public class ArachneContext {
 	    	contextEntities.addAll(temporary);
 	    }
 	}
+	
+	public String getContextType() {
+		return this.contextType;
+	}
 }

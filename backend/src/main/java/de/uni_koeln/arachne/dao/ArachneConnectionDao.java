@@ -29,11 +29,29 @@ public class ArachneConnectionDao extends HibernateTemplateDao {
 	public List<String> getConnectionList(String type) {
 		@SuppressWarnings("unchecked")
 		List<ArachneConnection> queryResult = (List<ArachneConnection>) hibernateTemplate
-				.find("from ArachneConnection where Teil1 = " + "'" + type + "'");
+				.find("from ArachneConnection where Teil1 = '" + type + "'");
 		List<String> result = new ArrayList<String>();
 		for (int i=0; i<queryResult.size(); i++) {
 			 result.add(queryResult.get(i).getPart2());
 		}
 		return result;
+	}
+	
+	/**
+	 * Retrieves the name of the 'cross table' connecting two tables. If no table exists
+	 * <code>null</code> is returned.
+	 * @param table1 First table name.
+	 * @param table2 Second table name.
+	 * @return The table name of the 'cross table'.
+	 */
+	public String getTableName(String table1, String table2) {
+		@SuppressWarnings("unchecked")
+		List<ArachneConnection> queryResult = (List<ArachneConnection>) hibernateTemplate
+				.find("from ArachneConnection where Teil1 = '" + table1 + "' and Teil2 = '" + table2 + "'");
+		if (queryResult.size() > 0) {
+			return queryResult.get(0).getTable();
+		} else {
+			return null;
+		}
 	}
 }
