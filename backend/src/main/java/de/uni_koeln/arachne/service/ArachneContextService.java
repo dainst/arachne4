@@ -68,7 +68,7 @@ public class ArachneContextService {
 	 * <br>
 	 * If no specialized <code>Contextualizer</code> class is found an instance of <code>GenericSQLContextualizer</code> is returned.
 	 * @param contextType Name of a context of interest  
-	 * @return an appropriate contextualizer serving the specific context indicated by the <code>given contextType</code>
+	 * @return an appropriate contextualizer serving the specific context indicated by the given <code>contextType</code>
 	 */
 	private IContextualizer getContextualizerByContextType(String contextType) {
 		Class [] classParam = null;

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import de.uni_koeln.arachne.response.ArachneDataset;
 import de.uni_koeln.arachne.service.ArachneConnectionService;
+import de.uni_koeln.arachne.sqlutil.ArachneGenericFieldSQLQueryBuilder;
 
 /**
  * This is the default <code>Contextualizer</code> the <code>ContextService</code> uses if 
@@ -44,8 +45,11 @@ public class GenericSQLContextualizer implements IContextualizer {
 	@Override
 	public List<Link> retrieve(ArachneDataset parent, Integer offset,
 			Integer limit) {
-		String tableName = arachneConnectionService.getTableName(parent.getArachneId().getTableName(), contextType);
-		// TODO construct SQL statement from parent tablename and id and context type and tablename
+		String parentTableName = parent.getArachneId().getTableName();
+		String tableName = arachneConnectionService.getTableName(parentTableName, contextType);
+		ArachneGenericFieldSQLQueryBuilder queryBuilder = new ArachneGenericFieldSQLQueryBuilder(tableName, parentTableName
+					,parent.getArachneId().getInternalKey(), contextType);
+		queryBuilder.getSQL();
 		// TODO query arachneidentitytable for ids
 		// TODO fill links and return list
 		return null;

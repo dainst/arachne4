@@ -85,7 +85,4 @@ public class Condition {
 	public String getPart2() {
 		return part2;
 	}
-	
-	
-	
 }
