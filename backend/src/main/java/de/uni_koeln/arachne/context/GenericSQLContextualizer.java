@@ -18,7 +18,7 @@ public class GenericSQLContextualizer implements IContextualizer {
 
 	/**
 	 * Service to access the 'Verknuepfungen' table. The information stored in that table is used
-	 * to determine which contexts the <code>addContext</code> method adds to a given dataset.
+	 * to determine which table to query for context entities.
 	 */	
 	private ArachneConnectionService arachneConnectionService;
 	
@@ -45,7 +45,9 @@ public class GenericSQLContextualizer implements IContextualizer {
 	public List<Link> retrieve(ArachneDataset parent, Integer offset,
 			Integer limit) {
 		String tableName = arachneConnectionService.getTableName(parent.getArachneId().getTableName(), contextType);
-		System.out.println("GenericSQLContextualizer: " + contextType + " tablename: " + tableName);
+		// TODO construct SQL statement from parent tablename and id and context type and tablename
+		// TODO query arachneidentitytable for ids
+		// TODO fill links and return list
 		return null;
 	}
 
