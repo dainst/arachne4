@@ -5,8 +5,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import de.uni_koeln.arachne.dao.GenericFieldDao;
+import de.uni_koeln.arachne.dao.SQLDao;
 import de.uni_koeln.arachne.response.ArachneDataset;
 import de.uni_koeln.arachne.service.ArachneConnectionService;
+import de.uni_koeln.arachne.service.GenericFieldService;
 import de.uni_koeln.arachne.sqlutil.ArachneGenericFieldSQLQueryBuilder;
 
 /**
@@ -27,14 +30,21 @@ public class GenericSQLContextualizer implements IContextualizer {
 	 * The type of <code>Context<code> the <code>Contextualizer</code> retrieves.
 	 */
 	private String contextType;
+
+	/**
+	 * Used to query ids in 'cross tables'.
+	 */
+	private GenericFieldService genericFieldService;
 	
 	/**
 	 * Constructor initializing the type of the context. The type is used to retrieve the links.
 	 * @param contextType
+	 * @param genericFieldService 
 	 */
-	public GenericSQLContextualizer(String contextType, ArachneConnectionService arachneConnectionService) {
+	public GenericSQLContextualizer(String contextType, ArachneConnectionService arachneConnectionService, GenericFieldService genericFieldService) {
 		this.contextType = contextType;
 		this.arachneConnectionService = arachneConnectionService;
+		this.genericFieldService = genericFieldService;
 	}
 	
 	@Override
@@ -47,9 +57,7 @@ public class GenericSQLContextualizer implements IContextualizer {
 			Integer limit) {
 		String parentTableName = parent.getArachneId().getTableName();
 		String tableName = arachneConnectionService.getTableName(parentTableName, contextType);
-		ArachneGenericFieldSQLQueryBuilder queryBuilder = new ArachneGenericFieldSQLQueryBuilder(tableName, parentTableName
-					,parent.getArachneId().getInternalKey(), contextType);
-		queryBuilder.getSQL();
+		List<Long> contextIds = genericFieldService.getIdByFieldId(tableName, parentTableName, parent.getArachneId().getInternalKey(), contextType);
 		// TODO query arachneidentitytable for ids
 		// TODO fill links and return list
 		return null;

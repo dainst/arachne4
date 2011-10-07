@@ -25,6 +25,12 @@ public class ArachneContextService {
 	private ArachneConnectionService arachneConnectionService;
 	
 	/**
+	 * Service to access ids in 'cross tables'.
+	 */
+	@Autowired
+	private GenericFieldService genericFieldService;
+	
+	/**
 	 * Method to append all context objects to the given dataset.
 	 * Some context objects are universal like 'literatur' or 'ort'. They get included
 	 * for every dataset type. Other context objects are looked up based on the 'Verknuepfungen'
@@ -81,7 +87,7 @@ public class ArachneContextService {
 			java.lang.reflect.Constructor classConstructor = aClass.getConstructor(classParam);
 			return (IContextualizer)classConstructor.newInstance(objectParam);
 		} catch (ClassNotFoundException e) {
-			return new GenericSQLContextualizer(contextType, arachneConnectionService);
+			return new GenericSQLContextualizer(contextType, arachneConnectionService, genericFieldService);
 		}
 		catch (Exception e) {
 			// TODO: handle exception
