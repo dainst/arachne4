@@ -17,6 +17,9 @@ import de.uni_koeln.arachne.response.ArachneDataset;
 @Service("arachneContextService")
 public class ArachneContextService {
 	
+	@Autowired
+	private ArachneEntityIdentificationService arachneEntityIdentificationService;
+	
 	/**
 	 * Service to access the 'Verknuepfungen' table. The information stored in that table is used
 	 * to determine which contexts the <code>addContext</code> method adds to a given dataset.
@@ -29,6 +32,9 @@ public class ArachneContextService {
 	 */
 	@Autowired
 	private GenericFieldService genericFieldService;
+	
+	@Autowired
+	private ArachneSingleEntityDataService arachneSingleEntityDataService;
 	
 	/**
 	 * Method to append all context objects to the given dataset.
@@ -87,7 +93,8 @@ public class ArachneContextService {
 			java.lang.reflect.Constructor classConstructor = aClass.getConstructor(classParam);
 			return (IContextualizer)classConstructor.newInstance(objectParam);
 		} catch (ClassNotFoundException e) {
-			return new GenericSQLContextualizer(contextType, arachneConnectionService, genericFieldService);
+			return new GenericSQLContextualizer(contextType, arachneConnectionService, genericFieldService
+					, arachneEntityIdentificationService, arachneSingleEntityDataService);
 		}
 		catch (Exception e) {
 			// TODO: handle exception
