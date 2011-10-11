@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.ServletContextResource;
 
+import de.uni_koeln.arachne.context.ArachneContext;
+import de.uni_koeln.arachne.context.ArachneLink;
+import de.uni_koeln.arachne.context.Link;
 import de.uni_koeln.arachne.util.ArachneId;
 
 /**
@@ -115,6 +118,26 @@ public class ResponseFactory {
 			
 			// Set contexts
 			
+			Section contextContent = new Section();
+			contextContent.setLabel("Contexts");
+			
+		    for(ArachneContext aC: dataset.getContext()) { 
+		    	
+		    	Section specificContext = new Section();
+		    	specificContext.setLabel(aC.getContextType());
+		    	
+		    	for(Link link: aC.getallContexts()) {	    		
+		    		if(link.getClass().getSimpleName().equals("ArachneLink")) {
+		    			ArachneLink aL = (ArachneLink) link;
+		    			Section specificContextContent = new Section();
+		    			specificContextContent.setLabel(aL.getEntity2().getArachneId().getInternalKey().toString());
+		    			specificContext.add(specificContextContent);
+		    		}
+		    	}
+		    	contextContent.add(specificContext);
+		    }
+			
+		    response.setContext(contextContent);
 	    	
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block

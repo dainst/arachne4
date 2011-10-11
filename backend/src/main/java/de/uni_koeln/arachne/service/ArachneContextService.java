@@ -87,6 +87,7 @@ public class ArachneContextService {
 		Class [] classParam = new Class[2];
 		classParam[0] = ArachneEntityIdentificationService.class;
 		classParam[1] = GenericFieldService.class;
+		
 		//Initialization of contextualizer needs two params
 		Object [] objectParam = new Object[2];
 		objectParam[0] = arachneEntityIdentificationService;
