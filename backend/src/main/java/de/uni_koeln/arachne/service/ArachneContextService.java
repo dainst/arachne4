@@ -54,7 +54,7 @@ public class ArachneContextService {
 				parent.addContext(context);
 			}
 			
-			ArachneContext litContext = new ArachneContext("literatur", parent, this);
+			ArachneContext litContext = new ArachneContext("Literatur", parent, this);
 			litContext.getLimitContext(10);
 			parent.addContext(litContext);
 		}
