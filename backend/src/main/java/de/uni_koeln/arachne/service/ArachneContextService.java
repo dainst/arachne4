@@ -83,8 +83,15 @@ public class ArachneContextService {
 	 * @return an appropriate contextualizer serving the specific context indicated by the given <code>contextType</code>
 	 */
 	private IContextualizer getContextualizerByContextType(String contextType) {
-		Class [] classParam = null;
-		Object [] objectParam = null;
+		//Initialization of contextualizer needs two params
+		Class [] classParam = new Class[2];
+		classParam[0] = ArachneEntityIdentificationService.class;
+		classParam[1] = GenericFieldService.class;
+		//Initialization of contextualizer needs two params
+		Object [] objectParam = new Object[2];
+		objectParam[0] = arachneEntityIdentificationService;
+		objectParam[1] = genericFieldService;
+		
 		IContextualizer contextualizer = null;
 		try {
 			String upperCaseContextType = contextType.substring(0, 1).toUpperCase() + contextType.substring(1).toLowerCase();
