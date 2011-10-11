@@ -33,7 +33,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * The context map Contains the Contexts of the dataset.
 	 */
-	protected Map<String,List<ArachneDataset>> context;
+	protected Content context;
 	
 	/**
 	 * The Images that are asociated with the dataset
@@ -80,11 +80,11 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		this.lastModified = lastModified;
 	}
 
-	public Map<String, List<ArachneDataset>> getContext() {
+	public Content getContext() {
 		return context;
 	}
 
-	public void setContext(Map<String, List<ArachneDataset>> context) {
+	public void setContext(Content context) {
 		this.context = context;
 	}
 
