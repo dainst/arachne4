@@ -83,15 +83,21 @@ public class GenericSQLContextualizer implements IContextualizer {
 			ListIterator<Long> contextId = contextIds.listIterator(offset);
 			while (contextId.hasNext() && linkCount < limit) {
 				ArachneLink link = new ArachneLink();
-					//Performance for testing
-					ArachneDataset aDs = new ArachneDataset();
-				ArachneId id = arachneEntityIdentificationService.getId(contextType, contextId.next());
 				link.setEntity1(parent);
-				//for performance changed to empty dataset ONLY with arachneId
-				//link.setEntity2(arachneSingleEntityDataService.getSingleEntityByArachneId(id));
-					//performance testing
+				
+				
+				//improved Performance for testing ... less SQL-queries
+					ArachneDataset aDs = new ArachneDataset();
+					//Performance ... the arachneId is build without the identification-service
+				
+					ArachneId id = new ArachneId(tableName, contextId.next(), (long) 0, false);
 					aDs.setArachneId(id);
 					link.setEntity2(aDs);
+				
+				
+					//for performance changed to empty dataset ONLY with arachneId
+					//link.setEntity2(arachneSingleEntityDataService.getSingleEntityByArachneId(id));
+					
 				linkCount += 1;
 				System.out.println("Adding Link " + contextType + " number " + linkCount + "/" + limit + " of " + contextIds.size());
 				result.add(link);
