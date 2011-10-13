@@ -8,6 +8,10 @@ import org.springframework.jdbc.core.RowMapper;
 public class GenericFieldMapperString implements RowMapper<String> {
 	@Override
 	public String mapRow(ResultSet resultSet, int i) throws SQLException {
-		return resultSet.getString(1);
+		String result = resultSet.getString(1);
+		if (result.isEmpty()) {
+			return null;
+		}
+		return result;
 	}
 }

@@ -34,6 +34,8 @@ public class GenericFieldDao extends SQLDao {
 	public List<String> getStringField(String tableName, String field1, Long field1Id, String field2) {
 		ArachneGenericFieldSQLQueryBuilder queryBuilder = new ArachneGenericFieldSQLQueryBuilder(tableName, field1, field1Id, field2);
 		List<String> queryResult = (List<String>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperString());
+		// IMPORTANT because string casting can add null strings to the list
+		queryResult.remove(null);
 		if (!queryResult.isEmpty()) {
 			return queryResult;
 		} else {
