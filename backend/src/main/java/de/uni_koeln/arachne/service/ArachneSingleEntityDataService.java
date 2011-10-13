@@ -24,7 +24,7 @@ public class ArachneSingleEntityDataService {
 	List<TableConnectionDescription> subProjects;
 	
 	public ArachneSingleEntityDataService() {
-		
+		/*
 		// TODO Make This more Flexible
 		// This manages The TableConnectionDescriptions which provides Information about the sub projects
 		subProjects = new ArrayList<TableConnectionDescription>(9);
@@ -39,7 +39,7 @@ public class ArachneSingleEntityDataService {
 		subProjects.add( new TableConnectionDescription("objekt","PrimaryKey","objektterrakotten","PrimaryKey"));
 		// The display of book always requires the Zenon data
 		subProjects.add( new TableConnectionDescription("buch","bibid","zenon","001"));
-	
+		*/
 	}
 	
 	/**
@@ -54,7 +54,7 @@ public class ArachneSingleEntityDataService {
 		result = new ArachneDataset();
 		result.setArachneId(id);
 		result.setFields(tempDataMap);
-		
+		/*
 		String tableName =  id.getTableName(); 
 		if (tableName.equals("objekt") || tableName.equals("buch")) {
 			for (TableConnectionDescription tCD : subProjects) {
@@ -64,6 +64,7 @@ public class ArachneSingleEntityDataService {
 				}
 			}
 		}
+		*/
 		return result;
 	}
 }

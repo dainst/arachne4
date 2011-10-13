@@ -17,6 +17,7 @@ import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.service.ArachneContextService;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
+import de.uni_koeln.arachne.service.AttributeService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.ArachneId;
 
@@ -40,6 +41,9 @@ public class ArachneEntityController {
 	
 	@Autowired
 	ResponseFactory responseFactory;
+	
+	@Autowired
+	AttributeService attributeService;
 	
 	/**
 	 * Handles http request for /{id}
@@ -80,7 +84,11 @@ public class ArachneEntityController {
     	}
     	
     	ArachneDataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
-    	contextService.addContext(arachneDataset);
+    	attributeService.getExternalFields(arachneDataset);
+    	
+    	// TODO move to the approproate request handler
+    	//contextService.addContext(arachneDataset);
+    	
     	FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(arachneDataset);
     	
     	return response;
