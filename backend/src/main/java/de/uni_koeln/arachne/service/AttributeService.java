@@ -16,6 +16,7 @@ import org.springframework.web.context.support.ServletContextResource;
 
 import de.uni_koeln.arachne.response.ArachneDataset;
 import de.uni_koeln.arachne.response.Content;
+import de.uni_koeln.arachne.sqlutil.ArachneSQLToolbox;
 
 @Service("attributeService")
 public class AttributeService {
@@ -26,7 +27,22 @@ public class AttributeService {
 	@Autowired
 	private ServletContext servletContext;
 
-	public List<String> getExternalFields(ArachneDataset dataset) {	
+	@Autowired
+	GenericFieldService genericFieldService;
+	
+	public void addExternalFields(ArachneDataset dataset) {
+		List<String> externalFields = getExternalFields(dataset);
+		for (String currentField : externalFields) {
+			String[] tableAndField = currentField.split("\\.", 2);
+			System.out.println(dataset.getArachneId().getTableName() + " - " + tableAndField[0]);
+			String tableName = dataset.getArachneId().getTableName();
+			System.out.println("Query: " + genericFieldService.getStringField(tableAndField[0], tableName
+					, dataset.getArachneId().getInternalKey(), tableAndField[1]));
+		}
+		//List<Long> contextIds = genericFieldService.getIdByFieldId("literaturzitat_leftjoin_literatur", parentTableName, parent.getArachneId().getInternalKey(), "literatur");
+	}
+	
+	private List<String> getExternalFields(ArachneDataset dataset) {	
 		String filename = "/WEB-INF/xml/"+ dataset.getArachneId().getTableName() + ".xml";
 
 		ServletContextResource xmlDocument = new ServletContextResource(servletContext, filename);

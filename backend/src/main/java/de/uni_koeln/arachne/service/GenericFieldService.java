@@ -15,4 +15,8 @@ public class GenericFieldService {
 	public List<Long> getIdByFieldId(String tableName, String field1, Long field1Id, String field2) {
 		return genericFieldDao.getIdByFieldId(tableName, field1, field1Id, field2);
 	}
+	
+	public List<String> getStringField(String tableName, String field1, Long field1Id, String field2) {
+		return genericFieldDao.getStringField(tableName, field1, field1Id, field2);
+	}
 }

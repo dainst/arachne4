@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.GenericFieldMapperLong;
+import de.uni_koeln.arachne.mapping.GenericFieldMapperString;
 import de.uni_koeln.arachne.sqlutil.ArachneGenericFieldSQLQueryBuilder;
 
 /**
@@ -23,6 +24,16 @@ public class GenericFieldDao extends SQLDao {
 	public List<Long> getIdByFieldId(String tableName, String field1, Long field1Id, String field2) {
 		ArachneGenericFieldSQLQueryBuilder queryBuilder = new ArachneGenericFieldSQLQueryBuilder(tableName, field1, field1Id, field2);
 		List<Long> queryResult = (List<Long>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperLong());
+		if (!queryResult.isEmpty()) {
+			return queryResult;
+		} else {
+			return null;
+		}
+	}
+	
+	public List<String> getStringField(String tableName, String field1, Long field1Id, String field2) {
+		ArachneGenericFieldSQLQueryBuilder queryBuilder = new ArachneGenericFieldSQLQueryBuilder(tableName, field1, field1Id, field2);
+		List<String> queryResult = (List<String>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperString());
 		if (!queryResult.isEmpty()) {
 			return queryResult;
 		} else {

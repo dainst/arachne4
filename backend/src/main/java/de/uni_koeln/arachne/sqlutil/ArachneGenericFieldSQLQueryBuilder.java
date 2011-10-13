@@ -21,7 +21,7 @@ public class ArachneGenericFieldSQLQueryBuilder extends AbstractArachneSQLBuilde
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;
-		this.field2 = ArachneSQLToolbox.getQualifiedFieldname(table, ArachneSQLToolbox.generateForeignKeyName(field2));
+		this.field2 = ArachneSQLToolbox.getQualifiedFieldname(table, field2);
 		//rcb = new ArachneSQLRightsConditionBuilder(table);
 		// The key identification condition
 		Condition keyCondition = new Condition();
@@ -32,7 +32,7 @@ public class ArachneGenericFieldSQLQueryBuilder extends AbstractArachneSQLBuilde
 		// The field2 not null condition
 		Condition notNullCondition = new Condition();
 		notNullCondition.setOperator("IS NOT");
-		notNullCondition.setPart1(ArachneSQLToolbox.getQualifiedFieldname(table, ArachneSQLToolbox.generateForeignKeyName(field2)));
+		notNullCondition.setPart1(ArachneSQLToolbox.getQualifiedFieldname(table, field2));
 		notNullCondition.setPart2("NULL");
 		conditions.add(notNullCondition);
 	}
