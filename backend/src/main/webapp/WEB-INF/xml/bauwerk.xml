@@ -9,7 +9,7 @@
              <section>
                 <section separator=" / ">
                     <field name="bauwerk.OrtsnameModern" ifEmpty="ort.Stadt"/>
-                    <field name="bauwerk.OrtsnameAntik" ifEmtpy="ort.Ort_antik"/>
+                    <field name="bauwerk.OrtsnameAntik" ifEmpty="ort.Ort_antik"/>
                 </section>
                 <field name="ort.Aufbewahrungsort"/>
             </section>
