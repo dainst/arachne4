@@ -8,10 +8,10 @@
         <subtitle>
              <section>
                 <section separator=" / ">
-                    <field name="bauwerk.OrtsnameModern" ifEmpty="ort.Stadt"/>
-                    <field name="bauwerk.OrtsnameAntik" ifEmpty="ort.Ort_antik"/>
+                    <field name="bauwerk.OrtsnameModern" ifEmpty="ortsbezug_leftjoin_ort.Stadt"/>
+                    <field name="bauwerk.OrtsnameAntik" ifEmpty="ortsbezug_leftjoin_ort.Ort_antik"/>
                 </section>
-                <field name="ort.Aufbewahrungsort"/>
+                <field name="ortsbezug_leftjoin_ort.Aufbewahrungsort"/>
             </section>
         </subtitle>
         <sections>
@@ -50,7 +50,7 @@
 	                </section>
 	            </section>
 	            <section labelKey="Geschichte">
-	            	<section labelKey="Baugeschrichte">
+	            	<section labelKey="Baugeschichte">
 	            		<field name="bauwerk.Geschichte"/>
 	            	</section>
 	            	<section labelKey="Ausgrabung">
