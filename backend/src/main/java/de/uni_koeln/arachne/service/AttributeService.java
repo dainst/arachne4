@@ -2,7 +2,9 @@ package de.uni_koeln.arachne.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -31,15 +33,23 @@ public class AttributeService {
 	GenericFieldService genericFieldService;
 	
 	public void addExternalFields(ArachneDataset dataset) {
+		Map<String, String> externalFieldMap = new HashMap<String, String>();
 		List<String> externalFields = getExternalFields(dataset);
+		String tableName = dataset.getArachneId().getTableName();
 		for (String currentField : externalFields) {
 			String[] tableAndField = currentField.split("\\.", 2);
-			System.out.println(dataset.getArachneId().getTableName() + " - " + tableAndField[0]);
-			String tableName = dataset.getArachneId().getTableName();
-			System.out.println("Query: " + genericFieldService.getStringField(tableAndField[0], tableName
-					, dataset.getArachneId().getInternalKey(), tableAndField[1]));
+			List<String> queryResult = genericFieldService.getStringField(tableAndField[0], tableName
+					, dataset.getArachneId().getInternalKey(), tableAndField[1]);
+			if (queryResult != null) {
+				if (!queryResult.isEmpty()) {
+					System.out.println(currentField + "Query: " + queryResult.get(0));
+					// TODO handle multiple values
+					externalFieldMap.put(currentField, queryResult.get(0));
+				}
+			}
 		}
-		//List<Long> contextIds = genericFieldService.getIdByFieldId("literaturzitat_leftjoin_literatur", parentTableName, parent.getArachneId().getInternalKey(), "literatur");
+		
+		dataset.appendFields(externalFieldMap);
 	}
 	
 	private List<String> getExternalFields(ArachneDataset dataset) {	

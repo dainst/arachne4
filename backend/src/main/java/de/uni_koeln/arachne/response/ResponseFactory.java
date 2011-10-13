@@ -183,8 +183,10 @@ public class ResponseFactory {
 							}
 						}
 					}
-					if (!result.isEmpty() && !datasetResult.isEmpty() && postfix != null ) {
-						result += separator;
+					if (datasetResult != null) {
+						if (!result.isEmpty() && !datasetResult.isEmpty() && postfix != null ) {
+							result += separator;
+						}
 					}
 					if(prefix != null) result = prefix + result;
 					if(postfix != null) result += postfix;
