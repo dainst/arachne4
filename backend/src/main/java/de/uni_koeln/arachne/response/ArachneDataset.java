@@ -72,9 +72,6 @@ public class ArachneDataset {
 		return images;
 	}
 	
-	public Map<String, String> getFields() {
-		return fields;
-	}
 	public String getField(String fieldName) {
 		return fields.get(fieldName);
 	}
