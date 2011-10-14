@@ -25,7 +25,7 @@ import de.uni_koeln.arachne.sqlutil.ArachneSQLToolbox;
  * xml configuration file.
  */
 @Service("attributeService")
-public class AttributeService {
+public class ExternalFieldService {
 
 	/**
 	 * ServletContext used to read the config xmls.
