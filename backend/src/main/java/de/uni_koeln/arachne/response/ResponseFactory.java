@@ -117,7 +117,7 @@ public class ResponseFactory {
 			}		
 			
 			// Set contexts
-			
+			/*
 			Section contextContent = new Section();
 			contextContent.setLabel("Contexts");
 			
@@ -138,6 +138,7 @@ public class ResponseFactory {
 		    }
 			
 		    response.setContext(contextContent);
+	    	*/
 	    	
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
