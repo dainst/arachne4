@@ -222,8 +222,9 @@ public class ResponseFactory {
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
 				Field field = new Field();
-				field.setValue(dataset.fields.get(e.getAttributeValue("name")));
-				if (!"".equals(field.getValue())) {
+				String value = dataset.getField(e.getAttributeValue("name"));
+				if (value != null) {
+					field.setValue(value);
 					result.add(field);
 				}
 			} else {
