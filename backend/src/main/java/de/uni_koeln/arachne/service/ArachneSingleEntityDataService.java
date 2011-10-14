@@ -53,7 +53,7 @@ public class ArachneSingleEntityDataService {
 		Map<String, String> tempDataMap = arachneDataMapDao.getById(id);
 		result = new ArachneDataset();
 		result.setArachneId(id);
-		result.setFields(tempDataMap);
+		result.appendFields(tempDataMap);
 		/*
 		String tableName =  id.getTableName(); 
 		if (tableName.equals("objekt") || tableName.equals("buch")) {

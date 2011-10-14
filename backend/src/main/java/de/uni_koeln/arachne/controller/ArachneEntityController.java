@@ -84,7 +84,7 @@ public class ArachneEntityController {
     	}
     	
     	ArachneDataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
-    	attributeService.addExternalFields(arachneDataset);
+    	//attributeService.addExternalFields(arachneDataset);
     	
     	// TODO move to the approproate request handler
     	//contextService.addContext(arachneDataset);

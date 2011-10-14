@@ -223,7 +223,7 @@ public class ResponseFactory {
 			if (e.getName().equals("field")) {
 				Field field = new Field();
 				field.setValue(dataset.fields.get(e.getAttributeValue("name")));
-				if (!field.getValue().isEmpty()) {
+				if (!"".equals(field.getValue())) {
 					result.add(field);
 				}
 			} else {

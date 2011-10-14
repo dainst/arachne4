@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.response;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public class ArachneDataset {
 	 * Parameterless constructor.
 	 */
 	public ArachneDataset() {
-		fields = new HashMap<String,String>();
+		fields = new Hashtable<String,String>();
 		context = new ArrayList<ArachneContext>();
 	}	
 	
@@ -99,7 +100,7 @@ public class ArachneDataset {
 	 */
 	
 	public boolean setFields(String fieldsLabel, String fieldsValues) {
-		if (this.fields.containsKey(fieldsLabel)){
+		if (this.fields.containsKey(fieldsLabel)) {
 			this.fields.put(fieldsLabel, fieldsValues);
 			return false;
 		}
@@ -107,10 +108,6 @@ public class ArachneDataset {
 			this.fields.put(fieldsLabel, fieldsValues);
 			return true;
 		}
-	}
-	
-	public void setFields(Map<String, String> sections) {
-		this.fields = sections;
 	}
 	
 	public void appendFields(Map<String, String> sections) {

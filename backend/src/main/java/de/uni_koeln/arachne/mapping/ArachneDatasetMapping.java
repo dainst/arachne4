@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -17,7 +18,7 @@ import org.springframework.jdbc.core.RowMapper;
 public class ArachneDatasetMapping implements RowMapper<Map<String,String>> {
 
 	public Map<String,String> mapRow(ResultSet rs, int rownum) throws SQLException {
-		Map<String,String> ds = new HashMap<String,String>();
+		Map<String,String> dataset = new Hashtable<String,String>();
 
 		ResultSetMetaData meta = rs.getMetaData();
 		int to = meta.getColumnCount();
@@ -63,8 +64,11 @@ public class ArachneDatasetMapping implements RowMapper<Map<String,String>> {
 			}
 			 */
 			//The rest of the Dataset
-			ds.put(meta.getTableName(i)+"."+ columnName, rs.getString(columnName));
+			String columnValue = rs.getString(columnName);
+			if (!columnValue.isEmpty()) {
+				dataset.put(meta.getTableName(i) + "." + columnName, rs.getString(columnName));
+			}
 		}
-		return ds;
+		return dataset;
 	}
 }
