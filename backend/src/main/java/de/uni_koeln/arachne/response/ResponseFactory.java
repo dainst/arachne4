@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
+import org.hibernate.dialect.SAPDBDialect;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -18,6 +19,7 @@ import de.uni_koeln.arachne.context.ArachneContext;
 import de.uni_koeln.arachne.context.ArachneLink;
 import de.uni_koeln.arachne.context.Link;
 import de.uni_koeln.arachne.util.ArachneId;
+import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * Factory class to create the different kinds of responses from a dataset.
@@ -172,25 +174,23 @@ public class ResponseFactory {
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
 				String key = e.getAttributeValue("name");
-				String datasetResult = dataset.fields.get(key);
+				String datasetResult = dataset.getField(key);
 				String postfix = e.getAttributeValue("postfix");
 				String prefix = e.getAttributeValue("prefix");		
+				if (StrUtils.isEmptyOrNull(datasetResult)) {
+					key = e.getAttributeValue("ifEmpty");
+					if (key != null) {
+						if (!key.isEmpty()) {
+							datasetResult = dataset.getField(key);
+						}
+					}
+				}
 				if (datasetResult != null) {
-					if (datasetResult.isEmpty()) {
-						key = e.getAttributeValue("ifEmpty");
-						if (key != null) {
-							if (!key.isEmpty()) {
-								datasetResult = dataset.fields.get(key);
-							}
-						}
-					}
-					if (datasetResult != null) {
-						if (!result.isEmpty() && !datasetResult.isEmpty() && postfix != null ) {
-							result += separator;
-						}
-					}
 					if(prefix != null) result = prefix + result;
 					if(postfix != null) result += postfix;
+					if (!result.isEmpty() && !datasetResult.isEmpty()) {
+						result += separator;
+					}
 					result += datasetResult;
 				} 
 			} else {
