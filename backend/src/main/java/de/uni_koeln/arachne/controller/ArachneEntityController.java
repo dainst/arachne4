@@ -17,7 +17,6 @@ import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.service.ArachneContextService;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
-import de.uni_koeln.arachne.service.ExternalFieldService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.ArachneId;
 

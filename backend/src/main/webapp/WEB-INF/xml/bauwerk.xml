@@ -8,19 +8,19 @@
         <subtitle>
              <section>
                 <section separator=" / ">
-                    <field name="bauwerk.OrtsnameModern" ifEmpty="ortsbezug_leftjoin_ort.Stadt" />
-                    <field name="bauwerk.OrtsnameAntik" ifEmpty="ortsbezug_leftjoin_ort.Ort_antik" />
+                    <field name="bauwerk.OrtsnameModern" ifEmpty="ort.Stadt" />
+                    <field name="bauwerk.OrtsnameAntik" ifEmpty="ort.Ort_antik" />
                 </section>
-                <field name="ortsbezug_leftjoin_ort.Aufbewahrungsort"/>
+                <field name="ort.Aufbewahrungsort"/>
             </section>
         </subtitle>
         <sections>
         	<section labelKey="Informationen zum Bauwerk">
         		<section labelKey="Lokalisierung" separator=", ">
-        			<field name="ortsbezug_leftjoin_ort.Stadt"  />
-        			<field name="ortsbezug_leftjoin_ort.Land" />
-        			<field name="ortsbezug_leftjoin_ort.Countrycode" />
-        			<field name="ortsbezug_leftjoin_ort.Aufbewahrungsort" />
+        			<field name="ort.Stadt"  />
+        			<field name="ort.Land" />
+        			<field name="ort.Countrycode" />
+        			<field name="ort.Aufbewahrungsort" />
         		</section>
 	        	<section labelKey="Geographische Beschreibung">
 	        		<section labelKey="Situation">

@@ -1,18 +1,21 @@
 package de.uni_koeln.arachne.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import de.uni_koeln.arachne.mapping.ArachneDatasetMapping;
 import de.uni_koeln.arachne.mapping.GenericFieldMapperLong;
 import de.uni_koeln.arachne.mapping.GenericFieldMapperString;
 import de.uni_koeln.arachne.sqlutil.ArachneGenericFieldSQLQueryBuilder;
+import de.uni_koeln.arachne.sqlutil.GenericEntitiesSQLQueryBuilder;
 
 /**
  * Class to retrieve referenced ids from 'cross tables'.
  */
-@Repository("GenericFieldDao")
-public class GenericFieldDao extends SQLDao {
+@Repository("GenericSQLDao")
+public class GenericSQLDao extends SQLDao {
 	/**
 	 * Retrieves a list of ids from a 'cross table' field by a specified foreign key field and corresponding id or <code>null</code>.
 	 * @param tableName The 'cross table' to query.
@@ -41,5 +44,12 @@ public class GenericFieldDao extends SQLDao {
 		} else {
 			return null;
 		}
+	}
+	
+	public List<Map<String, String>> getEntitiesById(String tableName, String field1, Long field1Id) {
+		GenericEntitiesSQLQueryBuilder queryBuilder = new GenericEntitiesSQLQueryBuilder(tableName, field1, field1Id);
+		List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(queryBuilder.getSQL()
+				, new GenericEntitesMapper());
+		return queryResult;
 	}
 }

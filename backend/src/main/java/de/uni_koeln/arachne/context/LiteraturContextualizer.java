@@ -6,17 +6,17 @@ import java.util.ListIterator;
 
 import de.uni_koeln.arachne.response.ArachneDataset;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
-import de.uni_koeln.arachne.service.GenericFieldService;
+import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.util.ArachneId;
 
 public class LiteraturContextualizer implements IContextualizer {
 	
 	private ArachneEntityIdentificationService arachneEntityIdentificationService;
-	private GenericFieldService genericFieldService;
+	private GenericSQLService genericFieldService;
 	/**
 	 * constructor
 	 */
-	public LiteraturContextualizer(ArachneEntityIdentificationService arachneEntityIdentificationService, GenericFieldService genericFieldService) {
+	public LiteraturContextualizer(ArachneEntityIdentificationService arachneEntityIdentificationService, GenericSQLService genericFieldService) {
 		this.arachneEntityIdentificationService = arachneEntityIdentificationService;
 		this.genericFieldService = genericFieldService;
 		
@@ -69,7 +69,7 @@ public class LiteraturContextualizer implements IContextualizer {
 
 
 
-	public void setGenericFieldService(GenericFieldService genericFieldService) {
+	public void setGenericFieldService(GenericSQLService genericFieldService) {
 		this.genericFieldService = genericFieldService;
 	}
 

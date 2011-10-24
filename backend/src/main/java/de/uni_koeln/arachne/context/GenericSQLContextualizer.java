@@ -7,13 +7,13 @@ import java.util.ListIterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import de.uni_koeln.arachne.dao.GenericFieldDao;
+import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.dao.SQLDao;
 import de.uni_koeln.arachne.response.ArachneDataset;
 import de.uni_koeln.arachne.service.ArachneConnectionService;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
-import de.uni_koeln.arachne.service.GenericFieldService;
+import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.sqlutil.ArachneGenericFieldSQLQueryBuilder;
 import de.uni_koeln.arachne.util.ArachneId;
 
@@ -39,7 +39,7 @@ public class GenericSQLContextualizer implements IContextualizer {
 	/**
 	 * Used to query ids in 'cross tables'.
 	 */
-	private GenericFieldService genericFieldService;
+	private GenericSQLService genericFieldService;
 
 	private ArachneEntityIdentificationService arachneEntityIdentificationService;
 
@@ -53,7 +53,7 @@ public class GenericSQLContextualizer implements IContextualizer {
 	 * @param arachneSingleEntityDataService 
 	 */
 	public GenericSQLContextualizer(String contextType, ArachneConnectionService arachneConnectionService
-			, GenericFieldService genericFieldService, ArachneEntityIdentificationService arachneEntityIdentificationService
+			, GenericSQLService genericFieldService, ArachneEntityIdentificationService arachneEntityIdentificationService
 			, ArachneSingleEntityDataService arachneSingleEntityDataService) {
 		this.contextType = contextType;
 		this.arachneConnectionService = arachneConnectionService;

@@ -89,8 +89,10 @@ public class ArachneContext {
 	 * @return The First <code>Link</code> of the context.
 	 */
 	public Link getFirstContext() {
-		if (completionState == CompletionStateEnum.EMPTY)
+		System.out.println("getFirstContext: " + getContextType());
+		if (completionState == CompletionStateEnum.EMPTY) {
 			retrieveFirst();
+		}
 		return contextEntities.get(0);
 	}
 	

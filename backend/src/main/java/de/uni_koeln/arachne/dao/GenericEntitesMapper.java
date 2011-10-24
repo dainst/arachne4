@@ -1,9 +1,8 @@
-package de.uni_koeln.arachne.mapping;
+package de.uni_koeln.arachne.dao;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -11,14 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import de.uni_koeln.arachne.util.StrUtils;
 
-
-/**
- * Mapping result set to a ArachneDataset abstract object
- * Suits for Bauwerk, Bauwerksteil, Topographie, Objekt, Releif, Realie, Sammlung
- * @author Rasmus Krempel
- */
-public class ArachneDatasetMapping implements RowMapper<Map<String,String>> {
-
+public class GenericEntitesMapper implements RowMapper<Map<String,String>> {
 	public Map<String,String> mapRow(ResultSet rs, int rownum) throws SQLException {
 		Map<String,String> dataset = new Hashtable<String,String>();
 
@@ -28,7 +20,7 @@ public class ArachneDatasetMapping implements RowMapper<Map<String,String>> {
 			String columnName = meta.getColumnLabel(i);
 
 			//Keys dont Interest the Dataset
-			if ((columnName.contains("PS_") || columnName.contains("FS_")) && columnName.contains("ID")) {
+			if (columnName.contains("FS_") && columnName.contains("ID")) {
 				continue;
 			}
 			
