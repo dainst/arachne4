@@ -89,8 +89,8 @@ public class ArachneContext {
 	 * @return The First <code>Link</code> of the context.
 	 */
 	public Link getFirstContext() {
-	if (completionState != CompletionStateEnum.EMPTY)
-	    retrieveFirst();
+		if (completionState == CompletionStateEnum.EMPTY)
+			retrieveFirst();
 		return contextEntities.get(0);
 	}
 	
@@ -124,6 +124,7 @@ public class ArachneContext {
 	 * Side effect: Sets <code>completionState</code>
 	 */
 	protected void retrieveFirst() {
+		System.out.println("Reach out touch me!");
 	    retrieve(0, 1);
 	    completionState = CompletionStateEnum.FIRST;
 	}
