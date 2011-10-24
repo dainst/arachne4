@@ -124,8 +124,7 @@ public class ArachneContext {
 	 * Side effect: Sets <code>completionState</code>
 	 */
 	protected void retrieveFirst() {
-		System.out.println("Reach out touch me!");
-	    retrieve(0, 1);
+		retrieve(0, 1);
 	    completionState = CompletionStateEnum.FIRST;
 	}
 
