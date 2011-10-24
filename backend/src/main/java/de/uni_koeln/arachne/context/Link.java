@@ -9,7 +9,7 @@ import java.util.Map;
 public abstract class Link {
 	// TODO add correct documentation
 	/**
-	 * Holds the linType as defined in ???.
+	 * Holds the linkType as defined in ???.
 	 */
 	protected String linkType;
 	

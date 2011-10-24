@@ -69,6 +69,7 @@
 	            		<field name="bauwerk.Restaurierung" />
 	            	</section>
 	            </section>
+	            <!--
 	            <section labelKey="Datierung">
 	            	<section labelKey="Bauwerk">
 	            		<field name="datierung.AnfEpoche" postfix="," />
@@ -77,6 +78,7 @@
 	            		<field name="datierung.AnfDatvn" />
 	            	</section>
 	            </section>
+	            -->
 	    	</section>
         </sections>
     </display>

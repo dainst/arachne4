@@ -1,6 +1,8 @@
 package de.uni_koeln.arachne.context;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -30,7 +32,6 @@ public class OrtContextualizer implements IContextualizer {
 		return null;
 	}
 	
-	// TODO remove this
 	private Long linkCount = 0l;
 	
 	@Override
@@ -49,14 +50,20 @@ public class OrtContextualizer implements IContextualizer {
 				ArachneDataset dataset = new ArachneDataset();
 				String id = map.get("ortsbezug_leftjoin_ort.PS_OrtID");
 				ArachneId arachneId = arachneEntityIdentificationService.getId("Ort", Long.parseLong(id));
-				System.out.println("arachneId: " + arachneId.getArachneEntityID());
 				dataset.setArachneId(arachneId);
-				map.remove(id);
-				dataset.appendFields(map);
+				// rename ortsbezug_leftjoin_ort to ort
+				// this is how the contextualizer can set his own names
+				Map<String, String> resultMap = new HashMap<String, String>();
+				for (Map.Entry<String, String> entry: map.entrySet()) {
+					String key = entry.getKey();
+					if (!(key.contains("PS_") && key.contains("ID"))) {
+						String newKey = "ort." + key.split("\\.")[1];
+						resultMap.put(newKey, entry.getValue());
+					}
+				}
+				dataset.appendFields(resultMap);
 				link.setEntity1(parent);
 				link.setEntity2(dataset);
-				linkCount += 1;
-				System.out.println("Adding Link Ort " + " number " + linkCount + "  - limit = " + limit);
 				result.add(link);
 			}
 		}

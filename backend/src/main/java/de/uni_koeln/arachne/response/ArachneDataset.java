@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import de.uni_koeln.arachne.context.ArachneContext;
+import de.uni_koeln.arachne.context.ArachneLink;
 import de.uni_koeln.arachne.util.ArachneId;
+import de.uni_koeln.arachne.util.StrUtils;
 /**
  * This class provides a low level Interface to Arachne Datasets.
  * Its Maps the core Infos to the Fields and stores the other Data in the Sections Map
@@ -73,10 +75,46 @@ public class ArachneDataset {
 		return images;
 	}
 	
+	/**
+	 * Looks up a field in the </code>fields<code> list	or in the contexts and returns its value. The 
+	 * </code>fields<code> list is the preferred search location and only if a field is not found there the contexts are 
+	 * searched.
+	 * @param fieldName The full qualified fieldName to look up.
+	 * @return The value of the field or <code>null<code/> if the field is not found.
+	 */
 	public String getField(String fieldName) {
-		return fields.get(fieldName);
+		String result = getFieldFromFields(fieldName);
+		if (StrUtils.isEmptyOrNull(result)) {
+			result = getFieldFromContext(fieldName);
+		}
+		return result;
 	}
 	
+	/**
+	 * Looks up a field in the </code>fields<code> list and returns its value.
+	 * @param fieldName The full qualified fieldName to look up.
+	 * @return The value of the field or <code>null<code/> if the field is not found.
+	 */
+	public String getFieldFromFields(String fieldName) {
+		String result = fields.get(fieldName);
+		return result;
+	}
+	
+	/**
+	 * Looks up a field in the in the contexts and returns its value.
+	 * @param fieldName The full qualified fieldName to look up.
+	 * @return The value of the field or <code>null<code/> if the field is not found.
+	 */
+	public String getFieldFromContext(String fieldName) {
+		for (ArachneContext context: this.context) {
+			ArachneLink link = (ArachneLink)context.getFirstContext();
+			if (link != null) {
+				// we know that Entity1 is 'this'
+				return link.getEntity2().getFieldFromFields(fieldName);
+			}
+		}
+		return null;
+	}
 	
 	//set methods
 	public void setContext(List<ArachneContext> context) {
