@@ -42,9 +42,6 @@ public class ArachneEntityController {
 	@Autowired
 	ResponseFactory responseFactory;
 	
-	@Autowired
-	ExternalFieldService externalFieldService;
-	
 	/**
 	 * Handles http request for /{id}
 	 * @param itemId The unique entity id of the item to fetch.
@@ -84,10 +81,8 @@ public class ArachneEntityController {
     	}
     	
     	ArachneDataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
-    	externalFieldService.addExternalFields(arachneDataset);
-    	
-    	// TODO move to the approproate request handler
-    	//contextService.addContext(arachneDataset);
+    	    	
+    	contextService.addMandatoryContexts(arachneDataset);
     	
     	FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(arachneDataset);
     	
