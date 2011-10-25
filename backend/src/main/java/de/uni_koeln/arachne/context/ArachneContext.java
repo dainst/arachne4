@@ -3,8 +3,6 @@ package de.uni_koeln.arachne.context;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import de.uni_koeln.arachne.response.ArachneDataset;
 import de.uni_koeln.arachne.service.ArachneContextService;
 

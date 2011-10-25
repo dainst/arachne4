@@ -1,6 +1,5 @@
 package de.uni_koeln.arachne.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

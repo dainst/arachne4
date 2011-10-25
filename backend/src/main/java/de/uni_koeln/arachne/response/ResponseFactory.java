@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
-import org.hibernate.dialect.SAPDBDialect;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -15,9 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.ServletContextResource;
 
-import de.uni_koeln.arachne.context.ArachneContext;
-import de.uni_koeln.arachne.context.ArachneLink;
-import de.uni_koeln.arachne.context.Link;
 import de.uni_koeln.arachne.util.ArachneId;
 import de.uni_koeln.arachne.util.StrUtils;
 

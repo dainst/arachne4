@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import de.uni_koeln.arachne.mapping.ArachneDatasetMapping;
 import de.uni_koeln.arachne.mapping.GenericFieldMapperLong;
 import de.uni_koeln.arachne.mapping.GenericFieldMapperString;
 import de.uni_koeln.arachne.sqlutil.ArachneGenericFieldSQLQueryBuilder;

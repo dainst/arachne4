@@ -127,7 +127,6 @@ public class ArachneContextService {
 		objectParam[0] = arachneEntityIdentificationService;
 		objectParam[1] = genericFieldService;
 		
-		IContextualizer contextualizer = null;
 		try {
 			String upperCaseContextType = contextType.substring(0, 1).toUpperCase() + contextType.substring(1).toLowerCase();
 			String className = "de.uni_koeln.arachne.context." + upperCaseContextType + "Contextualizer";

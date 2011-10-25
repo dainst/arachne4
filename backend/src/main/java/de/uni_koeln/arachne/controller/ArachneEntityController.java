@@ -1,9 +1,6 @@
 package de.uni_koeln.arachne.controller;
 
 
-import java.util.Calendar;
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +70,7 @@ public class ArachneEntityController {
      * @return A response object derived from <code>BaseArachneEntity</code>.
      */
     private BaseArachneEntity getEntityRequestResponse(Long id, String category) {
-    	Long lDateTime = new Date().getTime();
+    	Long startTime = System.currentTimeMillis();
             	
     	userRightsService.initializeUserData();
     	ArachneId arachneId = null;
@@ -90,7 +87,7 @@ public class ArachneEntityController {
     	
     	FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(arachneDataset);
     	
-    	System.out.println("Response took " + (new Date().getTime() - lDateTime) + " ms");
+    	System.out.println("Response took " + (System.currentTimeMillis() - startTime) + " ms");
     	return response;
     }
     

@@ -2,12 +2,9 @@ package de.uni_koeln.arachne.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.ArachneConnection;
-import de.uni_koeln.arachne.mapping.ArachneEntity;
 
 /**
  * Data access class to retrieve information from the 'Verknuepfungen' table via hibernate.

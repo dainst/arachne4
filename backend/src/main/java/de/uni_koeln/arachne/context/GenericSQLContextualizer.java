@@ -1,20 +1,14 @@
 package de.uni_koeln.arachne.context;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import de.uni_koeln.arachne.dao.GenericSQLDao;
-import de.uni_koeln.arachne.dao.SQLDao;
 import de.uni_koeln.arachne.response.ArachneDataset;
 import de.uni_koeln.arachne.service.ArachneConnectionService;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
 import de.uni_koeln.arachne.service.GenericSQLService;
-import de.uni_koeln.arachne.sqlutil.ArachneGenericFieldSQLQueryBuilder;
 import de.uni_koeln.arachne.util.ArachneId;
 
 /**

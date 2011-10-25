@@ -1,7 +1,6 @@
 package de.uni_koeln.arachne.response;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;

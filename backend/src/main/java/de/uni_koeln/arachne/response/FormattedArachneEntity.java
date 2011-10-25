@@ -2,7 +2,6 @@ package de.uni_koeln.arachne.response;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Response object class that returns preformatted output to the frontend.

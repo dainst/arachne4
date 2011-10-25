@@ -2,8 +2,6 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.ArrayList;
 
-import de.uni_koeln.arachne.util.ArachneId;
-
 public class ArachneGenericFieldSQLQueryBuilder extends AbstractArachneSQLBuilder {
 
 	protected ArachneSQLRightsConditionBuilder rcb;
