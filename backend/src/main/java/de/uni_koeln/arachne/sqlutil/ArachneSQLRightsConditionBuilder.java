@@ -11,6 +11,7 @@ import de.uni_koeln.arachne.util.ArachneUserRightsSingleton;
  * @author Rasmus Krempel
  *
  */
+// TODO add info about tables where no user rights management is possible/needed 
 public class ArachneSQLRightsConditionBuilder {
 
 	
@@ -75,7 +76,5 @@ public class ArachneSQLRightsConditionBuilder {
 			result = result + ")";
 		}
 		return result;
-	}
-	
-	
+	}	
 }

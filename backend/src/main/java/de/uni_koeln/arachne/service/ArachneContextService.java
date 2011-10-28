@@ -40,7 +40,7 @@ public class ArachneContextService {
 	 * Service to access ids in 'cross tables'.
 	 */
 	@Autowired
-	private GenericSQLService genericFieldService;
+	private GenericSQLService genericSQLService;
 	
 	@Autowired
 	private ArachneSingleEntityDataService arachneSingleEntityDataService;
@@ -125,7 +125,7 @@ public class ArachneContextService {
 		//Initialization of contextualizer needs two params
 		Object [] objectParam = new Object[2];
 		objectParam[0] = arachneEntityIdentificationService;
-		objectParam[1] = genericFieldService;
+		objectParam[1] = genericSQLService;
 		
 		try {
 			String upperCaseContextType = contextType.substring(0, 1).toUpperCase() + contextType.substring(1).toLowerCase();
