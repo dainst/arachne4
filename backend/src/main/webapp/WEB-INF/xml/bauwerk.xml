@@ -3,82 +3,84 @@
 <category name="bauwerk">
     <display>
         <title>
-            <field name="bauwerk.KurzbeschreibungBauwerk" />
+            <field datasource="bauwerk.KurzbeschreibungBauwerk" />
         </title>
         <subtitle>
              <section>
                 <section separator=" / ">
-                    <field name="bauwerk.OrtsnameModern" ifEmpty="ort.Stadt" />
-                    <field name="bauwerk.OrtsnameAntik" ifEmpty="ort.Ort_antik" />
+                    <field datasource="bauwerk.OrtsnameModern" ifEmpty="ort.Stadt" />
+                    <field datasource="bauwerk.OrtsnameAntik" ifEmpty="ort.Ort_antik" />
                 </section>
-                <field name="ort.Aufbewahrungsort"/>
+                <field datasource="ort.Aufbewahrungsort"/>
             </section>
         </subtitle>
-        <sections>
+        <datasections>
         	<section labelKey="Informationen zum Bauwerk">
         		<section labelKey="Lokalisierung" separator=", ">
-        			<field name="ort.Stadt"  />
-        			<field name="ort.Land" />
-        			<field name="ort.Countrycode" />
-        			<field name="ort.Aufbewahrungsort" />
+        			<field datasource="ort.Stadt"  />
+        			<field datasource="ort.Land" />
+        			<field datasource="ort.Countrycode" />
+        			<field datasource="ort.Aufbewahrungsort" />
         		</section>
         		
 	        	<section labelKey="Geographische Beschreibung">
 	        		<section labelKey="Situation">
-	        			<field name="bauwerk.Situation" />
+	        			<field datasource="bauwerk.Situation" />
 	        		</section>
 	        		<section labelKey="Antike Landschaft">
-	        			<field name="bauwerk.antikeGriechLandschaftBauwerk"/>
+	        			<field datasource="bauwerk.antikeGriechLandschaftBauwerk"/>
 	        		</section>
 	        		<section labelKey="Regio Rom/Italien">
-	        			<field name="bauwerk.RegioRomItalien" />
+	        			<field datasource="bauwerk.RegioRomItalien" />
 	        		</section>
 	        		<section labelKey="Kulturepoche">
-	        			<field name="bauwerk.BauwerkKulturkreis" />
+	        			<field datasource="bauwerk.BauwerkKulturkreis" />
 	        		</section>
 	        	</section>
 	            <section labelKey="Charakterisierung">
 	            	<section labelKey="Gebäudetyp" separator=", ">
-	                    <field name="bauwerk.Gebaeudetyp" />
-	                    <field name="bauwerk.GebaeudetypSpeziell" />
+	                    <field datasource="bauwerk.Gebaeudetyp" />
+	                    <field datasource="bauwerk.GebaeudetypSpeziell" />
 	                </section>  
 	                <section labelKey="Erhaltung">
-	                	<field name="bauwerk.ErhaltungBauwerk" />
+	                	<field datasource="bauwerk.ErhaltungBauwerk" />
 	                </section>
 	                <section labelKey="Beschreibung">
-	                	<field name="bauwerk.BeschreibungBauwerk" />
+	                	<field datasource="bauwerk.BeschreibungBauwerk" />
 	                </section>
 	                <section labelKey="Architekt">
-	                	<field name="bauwerk.Architekt" />
+	                	<field datasource="bauwerk.Architekt" />
 	                </section>          
 	                <section labelKey="Bauordnung">
-	                    <field name="bauwerk.Bauordnung" />
-	                    <field name="bauwerk.BauordnungBemerkung" />
+	                    <field datasource="bauwerk.Bauordnung" />
+	                    <field datasource="bauwerk.BauordnungBemerkung" />
 	                </section>
 	            </section>
 	            <section labelKey="Geschichte">
 	            	<section labelKey="Baugeschichte">
-	            		<field name="bauwerk.Geschichte" />
+	            		<field datasource="bauwerk.Geschichte" />
 	            	</section>
 	            	<section labelKey="Ausgrabung">
-	            		<field name="bauwerk.Ausgrabung" />
+	            		<field datasource="bauwerk.Ausgrabung" />
 	            	</section>
 	            	<section labelKey="Bemerkungen">
-	            		<field name="bauwerk.BauwerkBemerkungen" />
+	            		<field datasource="bauwerk.BauwerkBemerkungen" />
 	            	</section>
 	            	<section labelKey="Restaurierung">
-	            		<field name="bauwerk.Restaurierung" />
+	            		<field datasource="bauwerk.Restaurierung" />
 	            	</section>
 	            </section>
+	            <!--
 	            <section labelKey="Datierung">
 	            	<section labelKey="Bauwerk">
-	            		<field name="datierung.AnfEpoche" postfix="," />
-	            		<field name="datierung.AnfDatZeitraum" />
-	            		<field name="datierung.AnfDatJh" />
-	            		<field name="datierung.AnfDatvn" />
+	            		<field datasource="datierung.AnfEpoche" postfix="," />
+	            		<field datasource="datierung.AnfDatZeitraum" />
+	            		<field datasource="datierung.AnfDatJh" />
+	            		<field datasource="datierung.AnfDatvn" />
 	            	</section>
 	            </section>
+	            -->
 	    	</section>
-        </sections>
+        </datasections>
     </display>
 </category>

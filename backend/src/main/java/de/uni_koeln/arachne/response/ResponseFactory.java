@@ -74,7 +74,7 @@ public class ResponseFactory {
 	    	
 	    	if(!titleList.isEmpty()) {
 	    		if (titleList.size() == 1) {
-	    			response.setTitle(dataset.fields.get(display.getChild("title").getChild("field").getAttributeValue("name")));
+	    			response.setTitle(dataset.fields.get(display.getChild("title").getChild("field").getAttributeValue("datasource")));
 				} else {
 					response.setTitle(getStringFromSections(title, dataset));
 				}
@@ -85,14 +85,14 @@ public class ResponseFactory {
 	    	String subtitleStr = "";
 	    	Element subtitle = display.getChild("subtitle");
 	    	if (subtitle.getChild("field") != null) {
-	    		subtitleStr = dataset.fields.get(subtitle.getChild("field").getAttributeValue("name"));
+	    		subtitleStr = dataset.fields.get(subtitle.getChild("field").getAttributeValue("datasource"));
 	    	} else {
 	    		subtitleStr = getStringFromSections(subtitle.getChild("section"), dataset);
 	    	}
 	    	response.setSubtitle(subtitleStr);
 	    	
 	    	// set sections
-	    	Element sections = display.getChild("sections");
+	    	Element sections = display.getChild("datasections");
 	    	List<Content> contentList = new ArrayList<Content>();
 	    	// JDOM doesn't handle generics correctly so it issues a type safety warning
 			@SuppressWarnings("unchecked")
@@ -169,7 +169,7 @@ public class ResponseFactory {
 		
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
-				String key = e.getAttributeValue("name");
+				String key = e.getAttributeValue("datasource");
 				String datasetResult = dataset.getField(key);
 				String postfix = e.getAttributeValue("postfix");
 				String prefix = e.getAttributeValue("prefix");		
@@ -219,7 +219,7 @@ public class ResponseFactory {
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
 				Field field = new Field();
-				String value = dataset.getField(e.getAttributeValue("name"));
+				String value = dataset.getField(e.getAttributeValue("datasource"));
 				String postfix = e.getAttributeValue("postfix");
 				String prefix = e.getAttributeValue("prefix");
 				if (value != null) {
