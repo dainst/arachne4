@@ -81,8 +81,11 @@ public class ArachneEntityController {
     		arachneId = arachneEntityIdentificationService.getId(category, id);
     	}
     	
+    	// TODO remove debug
+    	System.out.println("Request for entity: " + arachneId.getArachneEntityID() + " - type: " + arachneId.getTableName());
+    	
     	ArachneDataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
-    	    	
+    	    	    	
     	contextService.addMandatoryContexts(arachneDataset);
     	
     	FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(arachneDataset);
