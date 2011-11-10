@@ -51,9 +51,7 @@ public class ResponseFactory {
 		response.setType(arachneId.getTableName());
 		response.setInternalId(arachneId.getInternalKey());
 				
-		String filename = "/WEB-INF/xml/"+ response.getType() + ".xml";
-		
-		System.out.println("Reading: " + "/WEB-INF/xml/"+ response.getType() + ".xml");
+		String filename = StrUtils.getFilenameFromType(response.getType());
 		
 		ServletContextResource xmlDocument = new ServletContextResource(servletContext, filename);
 	    try {

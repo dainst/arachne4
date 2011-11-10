@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<category name="fallback">
+    <display>
+        <title>
+            <field datasource="bauwerk.KurzbeschreibungBauwerk" />
+        </title>
+        <subtitle>
+             <section>
+                <section separator=" / ">
+                    <field datasource="bauwerk.OrtsnameModern" ifEmpty="ort.Stadt" />
+                    <field datasource="bauwerk.OrtsnameAntik" ifEmpty="ort.Ort_antik" />
+                </section>
+                <field datasource="ort.Aufbewahrungsort"/>
+            </section>
+        </subtitle>
+        <datasections>
+        	<section labelKey="Lokalisierung" separator=", ">
+        		<field datasource="ort.Stadt"  />
+        		<field datasource="ort.Land" />
+        		<field datasource="ort.Countrycode" />
+        		<field datasource="ort.Aufbewahrungsort" />
+        	</section>
+        </datasections>
+    </display>
+</category>

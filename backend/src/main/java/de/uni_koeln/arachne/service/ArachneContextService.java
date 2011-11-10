@@ -17,6 +17,7 @@ import org.springframework.web.context.support.ServletContextResource;
 
 import de.uni_koeln.arachne.context.*;
 import de.uni_koeln.arachne.response.ArachneDataset;
+import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * This class handles creation and retrieval of contexts and adds them to datasets.
@@ -147,21 +148,21 @@ public class ArachneContextService {
 	}
 	
 	/**
-	 * Internally used method to get the external field names from the XML files.
-	 * It opens the XML file, creates the DOM and uses <code>getFields</code> to get the values from the dom.
+	 * Internally used method to get the external field names from the XML files. The name of the XML file to read
+	 * is constructed from the </code>type<code>. If no corresponding XML file is found <code>fallback.xml</code> is
+	 * used. The method then opens the XML file, creates the DOM and uses <code>getFields</code> to get the values from
+	 *  the dom.
 	 * @param type The of the xml file.
 	 * @return A list of full qualified external field names.
 	 */
 	private List<String> getExternalFields(String type) {	
-		String filename = "/WEB-INF/xml/"+ type + ".xml";
-
+		String filename = StrUtils.getFilenameFromType(type);
+		
 		ServletContextResource xmlDocument = new ServletContextResource(servletContext, filename);
 		try {
 			SAXBuilder sb = new SAXBuilder();
 			Document doc = sb.build(xmlDocument.getFile());
-
 			Element display = doc.getRootElement().getChild("display");
-
 			List<String> result = new ArrayList<String>();
 			result.addAll(getFields(display, type));
 			return result;		
