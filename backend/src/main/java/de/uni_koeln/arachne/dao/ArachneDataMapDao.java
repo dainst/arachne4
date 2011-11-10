@@ -18,24 +18,30 @@ import de.uni_koeln.arachne.util.ArachneId;
 @Repository("arachneDataMapDao")
 public class ArachneDataMapDao extends SQLDao {
 		/**
-		 * Gets a Map of Values by ID
+		 * Gets a map of values by Id
 		 * @param id instance of <code>ArachneId</code> 
-		 * @return a Simple Representation of a Map<String,String>.
+		 * @return a Simple representation of a Map<String,String> or <code>null</code>.
 		 */
 		public Map<String, String> getById(ArachneId id) {
 			
-			ArachneSingleEntityQueryBuilder qB = new ArachneSingleEntityQueryBuilder(id);
+			ArachneSingleEntityQueryBuilder queryBuilder = new ArachneSingleEntityQueryBuilder(id);
 			
-			String sql = qB.getSQL();
-
+			String sql = queryBuilder.getSQL();
+			// TODO remove debug
+			System.out.println("ArachneDatamapDao: " + queryBuilder.getSQL());
 			List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new ArachneDatasetMapping());
-			//achneDataset out= new  ArachneDataset();
-			Map<String,String> map =  temp.get(0);
-			return map;	
+			if (temp != null) {
+				if (!temp.isEmpty()) {
+					Map<String,String> map =  temp.get(0);
+					return map;
+				}
+			}
+			return null;
 		}
+		
 		/**
-		 * Gets a subdataset for a Main Dataset (Objekt -> Objektplastik) by using <code>ArachneSingleEntitySubTablesQueryBuilder</code> for query Building
-		 * @param ds Dataset for which the subdataset should be Retrived
+		 * Gets a subdataset for a main dataset (Objekt -> Objektplastik) by using <code>ArachneSingleEntitySubTablesQueryBuilder</code> for query Building
+		 * @param ds Dataset for which the subdataset should be retrieved
 		 * @param tdesc instance of <code>TableConnectionDescription</code> which represents the Connection between the Dataset and the Subdataset 
 		 * @return <code>Map<String,String></code> that contains the Description of the Subdataset, caution! The Subdataset is NOT automatically appended to the Dataset.
 		 */
@@ -56,6 +62,4 @@ public class ArachneDataMapDao extends SQLDao {
 				map=  temp.get(0);
 			return map;	
 		}
-		
-		
 	}

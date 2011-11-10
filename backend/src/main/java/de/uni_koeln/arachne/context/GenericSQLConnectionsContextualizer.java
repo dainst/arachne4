@@ -9,7 +9,9 @@ import de.uni_koeln.arachne.service.ArachneConnectionService;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
 import de.uni_koeln.arachne.service.GenericSQLService;
+import de.uni_koeln.arachne.sqlutil.ArachneSQLToolbox;
 import de.uni_koeln.arachne.util.ArachneId;
+import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * This is the default <code>Contextualizer</code> the <code>ContextService</code> uses if 
@@ -17,7 +19,7 @@ import de.uni_koeln.arachne.util.ArachneId;
  * <br>
  * It retrieves the links via SQL based on the <code>parent</code> type and the 'Verknuepfungen' table.  
  */
-public class GenericSQLContextualizer implements IContextualizer {
+public class GenericSQLConnectionsContextualizer implements IContextualizer {
 
 	/**
 	 * Service to access the 'Verknuepfungen' table. The information stored in that table is used
@@ -33,7 +35,7 @@ public class GenericSQLContextualizer implements IContextualizer {
 	/**
 	 * Used to query ids in 'cross tables'.
 	 */
-	private GenericSQLService genericFieldService;
+	private GenericSQLService genericSQLService;
 
 	private ArachneEntityIdentificationService arachneEntityIdentificationService;
 
@@ -42,16 +44,16 @@ public class GenericSQLContextualizer implements IContextualizer {
 	/**
 	 * Constructor initializing the type of the context. The type is used to retrieve the links.
 	 * @param contextType
-	 * @param genericFieldService 
+	 * @param genericSQLService 
 	 * @param arachneEntityIdentificationService 
 	 * @param arachneSingleEntityDataService 
 	 */
-	public GenericSQLContextualizer(String contextType, ArachneConnectionService arachneConnectionService
-			, GenericSQLService genericFieldService, ArachneEntityIdentificationService arachneEntityIdentificationService
+	public GenericSQLConnectionsContextualizer(String contextType, ArachneConnectionService arachneConnectionService
+			, GenericSQLService genericSQLService, ArachneEntityIdentificationService arachneEntityIdentificationService
 			, ArachneSingleEntityDataService arachneSingleEntityDataService) {
 		this.contextType = contextType;
 		this.arachneConnectionService = arachneConnectionService;
-		this.genericFieldService = genericFieldService;
+		this.genericSQLService = genericSQLService;
 		this.arachneEntityIdentificationService = arachneEntityIdentificationService;
 		this.arachneSingleEntityDataService = arachneSingleEntityDataService;
 	}
@@ -70,31 +72,35 @@ public class GenericSQLContextualizer implements IContextualizer {
 		String parentTableName = parent.getArachneId().getTableName();
 		// get 'cross table' name from the 'Verknuepfungen' table
 		String tableName = arachneConnectionService.getTableName(parentTableName, contextType);
-		// get context ids from 'cross table'
-		List<Long> contextIds = genericFieldService.getIdByFieldId(tableName, parentTableName, parent.getArachneId().getInternalKey(), contextType);
-		// get datasets, assemble the links and add them to the result list
-		if (contextIds != null) {
-			ListIterator<Long> contextId = contextIds.listIterator(offset);
-			while (contextId.hasNext() && linkCount < limit) {
-				ArachneLink link = new ArachneLink();
-				link.setEntity1(parent);
-				
-				
-				//improved Performance for testing ... less SQL-queries
+		System.out.println("tableName: " + tableName);
+		if (!StrUtils.isEmptyOrNull(tableName)) {
+			// get context ids from 'cross table'
+			List<Long> contextIds = genericSQLService.getIdByFieldId(tableName, parentTableName, parent.getArachneId()
+					.getInternalKey(), ArachneSQLToolbox.generateForeignKeyName(contextType));
+			// get datasets, assemble the links and add them to the result list
+			if (contextIds != null) {
+				ListIterator<Long> contextId = contextIds.listIterator(offset);
+				while (contextId.hasNext() && linkCount < limit) {
+					ArachneLink link = new ArachneLink();
+					link.setEntity1(parent);
+
+
+					//improved Performance for testing ... less SQL-queries
 					ArachneDataset aDs = new ArachneDataset();
 					//Performance ... the arachneId is build without the identification-service
-				
+
 					ArachneId id = new ArachneId(tableName, contextId.next(), (long) 0, false);
 					aDs.setArachneId(id);
 					link.setEntity2(aDs);
-				
-				
+
+
 					//for performance changed to empty dataset ONLY with arachneId
 					//link.setEntity2(arachneSingleEntityDataService.getSingleEntityByArachneId(id));
-					
-				linkCount += 1;
-				System.out.println("Adding Link " + contextType + " number " + linkCount + "/" + limit + " of " + contextIds.size());
-				result.add(link);
+
+					linkCount += 1;
+					System.out.println("Adding Link " + contextType + " number " + linkCount + "/" + limit + " of " + contextIds.size());
+					result.add(link);
+				}
 			}
 		}
 		return result;

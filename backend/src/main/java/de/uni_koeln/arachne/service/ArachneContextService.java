@@ -24,6 +24,7 @@ import de.uni_koeln.arachne.util.StrUtils;
  * Internally it uses <code>Contextualizers</code> to abstract the data access and allow to fetch contexts not only from
  * the Arachne database but from any other datasource (even external ones).  
  */
+// TODO create a common base class for all classes that need to read the xml configs (ResponseFactory)
 @Service("arachneContextService")
 public class ArachneContextService {
 	
@@ -55,7 +56,10 @@ public class ArachneContextService {
 	 */
 	public void addMandatoryContexts(ArachneDataset parent) {
 		List<String> externalFields = getExternalFields(parent.getArachneId().getTableName());
+		System.out.println("addMandatoryContexts: external fields: " + externalFields.size());
+
 		List<String> mandatoryContextTypes = new ArrayList<String>();
+
 		for (String currentField: externalFields) {
 			String[] contextTypes = currentField.split("\\.");
 			if (mandatoryContextTypes.isEmpty() || !mandatoryContextTypes.contains(contextTypes[0])) {
@@ -63,8 +67,9 @@ public class ArachneContextService {
 			}
 		}
 		System.out.println("Mandatory Contexts: " + mandatoryContextTypes);
-		for (String contextType: mandatoryContextTypes) {
-			ArachneContext context = new ArachneContext(contextType, parent, this);
+		Iterator<String> contextType = mandatoryContextTypes.iterator();
+		while (contextType.hasNext()) {
+			ArachneContext context = new ArachneContext(contextType.next(), parent, this);
 			context.getFirstContext();
 			parent.addContext(context);
 		}
@@ -129,15 +134,18 @@ public class ArachneContextService {
 		objectParam[1] = genericSQLService;
 		
 		try {
+			// TODO remove debug
+			System.out.println("ContexType: " + contextType);
 			String upperCaseContextType = contextType.substring(0, 1).toUpperCase() + contextType.substring(1).toLowerCase();
 			String className = "de.uni_koeln.arachne.context." + upperCaseContextType + "Contextualizer";
-			System.out.println("Trying to initialize class: " + className);
+			System.out.println("Trying to initialize class: " + className + "...");
 			Class aClass = Class.forName(className);
 			java.lang.reflect.Constructor classConstructor = aClass.getConstructor(classParam);
 			return (IContextualizer)classConstructor.newInstance(objectParam);
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			return new GenericSQLContextualizer(contextType, arachneConnectionService, genericSQLService
+			System.out.println("failed");
+			System.out.println("using GenericSQLConnectionsContextualizer instead");
+			return new GenericSQLConnectionsContextualizer(contextType, arachneConnectionService, genericSQLService
 					, arachneEntityIdentificationService, arachneSingleEntityDataService);
 		}
 		catch (Exception e) {
@@ -156,7 +164,10 @@ public class ArachneContextService {
 	 * @return A list of full qualified external field names.
 	 */
 	private List<String> getExternalFields(String type) {	
-		String filename = StrUtils.getFilenameFromType(type);
+		//TODO remove debug
+		System.out.println("ExternalFields - type: " + type);
+				
+		String filename = getFilenameFromType(type);
 		
 		ServletContextResource xmlDocument = new ServletContextResource(servletContext, filename);
 		try {
@@ -165,6 +176,7 @@ public class ArachneContextService {
 			Element display = doc.getRootElement().getChild("display");
 			List<String> result = new ArrayList<String>();
 			result.addAll(getFields(display, type));
+			System.out.println("getExternalFields - result: " + result);
 			return result;		
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
@@ -186,24 +198,43 @@ public class ArachneContextService {
 		List<String> result = new ArrayList<String>();
 		@SuppressWarnings("unchecked")
 		List<Element> children = element.getChildren();
-		for (Element e:children) {
-			result.addAll(getFields(e, parentType));
+		if (!children.isEmpty()) {
+			for (Element e:children) {
+				result.addAll(getFields(e, parentType));
+			}
 		}
 		
-		String nameValue = element.getAttributeValue("datasource"); 
-		if (nameValue != null) {
-			if (!nameValue.startsWith(parentType)) {
-				result.add(nameValue);
+		String datasourceValue = element.getAttributeValue("datasource");
+		if (!StrUtils.isEmptyOrNull(datasourceValue)) {
+			if (!datasourceValue.startsWith(parentType)) {
+				result.add(datasourceValue);
 			}
 		}
 		
 		String ifEmptyValue = element.getAttributeValue("ifEmpty");
-		if (ifEmptyValue != null) {
+		if (!StrUtils.isEmptyOrNull(ifEmptyValue)) {
 			if (!ifEmptyValue.startsWith(parentType)) {
 				result.add(ifEmptyValue);
 			}
 		}
 		
 		return result;
+	}
+	
+	/**
+	 * This function checks if a config file for the given type exists and returns its filename.
+	 * @param type Type of the config to look for.
+	 * @return The filename of the XML config file for the given type.
+	 */
+	private String getFilenameFromType(String type) {
+		String filename = "/WEB-INF/xml/"+ type + ".xml";
+		System.out.println("searching filename: " + filename);
+		ServletContextResource file = new ServletContextResource(servletContext, filename);
+		if (!file.exists()) {
+			filename = "/WEB-INF/xml/fallback.xml";
+		}
+		// TODO remove debug
+		System.out.println("filename: " + filename);
+		return filename;
 	}
 }

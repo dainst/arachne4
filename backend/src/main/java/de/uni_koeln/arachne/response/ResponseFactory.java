@@ -51,7 +51,7 @@ public class ResponseFactory {
 		response.setType(arachneId.getTableName());
 		response.setInternalId(arachneId.getInternalKey());
 				
-		String filename = StrUtils.getFilenameFromType(response.getType());
+		String filename = getFilenameFromType(response.getType());
 		
 		ServletContextResource xmlDocument = new ServletContextResource(servletContext, filename);
 	    try {
@@ -234,5 +234,22 @@ public class ResponseFactory {
 			}
 		}
 		return result;
+	}
+	
+	/**
+	 * This function checks if a config file for the given type exists and returns its filename.
+	 * @param type Type of the config to look for.
+	 * @return The filename of the XML config file for the given type.
+	 */
+	private String getFilenameFromType(String type) {
+		String filename = "/WEB-INF/xml/"+ type + ".xml";
+		System.out.println("searching filename: " + filename);
+		ServletContextResource file = new ServletContextResource(servletContext, filename);
+		if (!file.exists()) {
+			filename = "/WEB-INF/xml/fallback.xml";
+		}
+		// TODO remove debug
+		System.out.println("filename: " + filename);
+		return filename;
 	}
 }
