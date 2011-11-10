@@ -7,9 +7,12 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 
 /**
  * This is a Standard SQL Query Dao.
@@ -41,7 +44,13 @@ public class SQLDao {
 	 */
 	protected List<?> executeSelectQuery(String sQLQuery, RowMapper<?> rm) {
 		if (sQLQuery.contains("SELECT")) {
-			return jdbcTemplate.query(sQLQuery,rm);
+			try {
+				return jdbcTemplate.query(sQLQuery,rm);
+			} catch (DataAccessException e) {
+				System.out.println("DataAccessException! Most likely unknown column SQL syntax error.");
+				System.out.println("May be a rights managment problem as Literatur (for example) has no DatensatzGruppe field.");
+				return null;
+			}
 		} else {
 			return null;
 		}
