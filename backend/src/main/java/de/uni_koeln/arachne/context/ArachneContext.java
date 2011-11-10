@@ -77,9 +77,14 @@ public class ArachneContext {
 	 * @return The complete list of contexts.
 	 */
 	public List<Link> getallContexts() {
-	if (completionState != CompletionStateEnum.FULL)
-	    retrieveComplete();
-		return contextEntities;
+		if (completionState != CompletionStateEnum.FULL) {
+			retrieveComplete();
+		}
+		if (!contextEntities.isEmpty()) {
+			return contextEntities; 
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -90,7 +95,11 @@ public class ArachneContext {
 		if (completionState == CompletionStateEnum.EMPTY) {
 			retrieveFirst();
 		}
-		return contextEntities.get(0);
+		if (!contextEntities.isEmpty()) {
+			return contextEntities.get(0); 
+		} else {
+			return null;
+		}
 	}
 	
 	/**
@@ -106,7 +115,11 @@ public class ArachneContext {
 	    else
 	        completionState = CompletionStateEnum.LIMITED;
 
-	    return contextEntities;
+	    if (!contextEntities.isEmpty()) {
+			return contextEntities; 
+		} else {
+			return null;
+		}
 	}
 	
 	/**
