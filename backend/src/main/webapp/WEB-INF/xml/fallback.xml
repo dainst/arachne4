@@ -3,13 +3,26 @@
 <category name="fallback">
     <display>
         <title>
-            <field datasource="bauwerk.KurzbeschreibungBauwerk" />
+        	<field datasource="topographie.KurzbeschreibungTopographie" />
+        	<field datasource="buch.KurzbeschreibungBuch" />
+            <field datasource="marbilder.Pfad" />
+            <field datasource="objekt.KurzbeschreibungObjekt" />
+            <field datasource="literatur.Titel" />
+            <!-- 
+            <field datasource="realien.KurzbeschreibungRealien" />
+            <field datasource="relief.KurzbeschreibungRelief" />
+            <field datasource="reproduktion.KurzbeschreibungReproduktion" />
+            <field datasource="rezeption.KurzbeschreibungRezeption" />
+            <field datasource="sarkophag.KurzbeschreibungSarkophag" />
+            <field datasource="topographie.KurzbeschreibungTopographie" />
+            <field datasource="typus.KurzbeschreibungTypus" />
+            -->
         </title>
         <subtitle>
              <section>
                 <section separator=" / ">
-                    <field datasource="bauwerk.OrtsnameModern" ifEmpty="ort.Stadt" />
-                    <field datasource="bauwerk.OrtsnameAntik" ifEmpty="ort.Ort_antik" />
+                	<field datasource="ort.Stadt" />
+                    <field datasource="ort.Ort_antik" />
                 </section>
                 <field datasource="ort.Aufbewahrungsort"/>
             </section>
