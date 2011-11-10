@@ -137,8 +137,8 @@ public class ArachneContextService {
 			return (IContextualizer)classConstructor.newInstance(objectParam);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			//return new GenericSQLContextualizer(contextType, arachneConnectionService, genericFieldService
-			//		, arachneEntityIdentificationService, arachneSingleEntityDataService);
+			return new GenericSQLContextualizer(contextType, arachneConnectionService, genericSQLService
+					, arachneEntityIdentificationService, arachneSingleEntityDataService);
 		}
 		catch (Exception e) {
 			// TODO: handle exception
@@ -190,7 +190,7 @@ public class ArachneContextService {
 			result.addAll(getFields(e, parentType));
 		}
 		
-		String nameValue = element.getAttributeValue("name"); 
+		String nameValue = element.getAttributeValue("datasource"); 
 		if (nameValue != null) {
 			if (!nameValue.startsWith(parentType)) {
 				result.add(nameValue);
