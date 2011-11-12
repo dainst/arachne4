@@ -62,22 +62,13 @@ public class ResponseFactory {
 	    	
 	    	// set title
 	    	Element title = display.getChild("title");
-	    	List<Content> titleList = new ArrayList<Content>();
-	    	@SuppressWarnings("unchecked")
-	    	List<Element> titleChildren = title.getChildren();
-	    	
-	    	for(Element e:titleChildren) {
-	    		titleList.add(getContentFromSections(e, dataset));
+	    	String titleStr = "";
+	    	if (title.getChild("field") != null) {
+	    		titleStr = dataset.fields.get(title.getChild("field").getAttributeValue("datasource"));
+	    	} else {
+	    		titleStr = getStringFromSections(title.getChild("section"), dataset);
 	    	}
-	    	
-	    	if(!titleList.isEmpty()) {
-	    		if (titleList.size() == 1) {
-	    			response.setTitle(dataset.fields.get(display.getChild("title").getChild("field").getAttributeValue("datasource")));
-				} else {
-					response.setTitle(getStringFromSections(title, dataset));
-				}
-	    		
-	    	}
+	    	response.setTitle(titleStr);
 	    	
 	    	// set subtitle
 	    	String subtitleStr = "";

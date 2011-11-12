@@ -26,11 +26,12 @@ public class GenericSQLDao extends SQLDao {
 	public List<Long> getIdByFieldId(String tableName, String field1, Long field1Id, String field2) {
 		ArachneGenericFieldSQLQueryBuilder queryBuilder = new ArachneGenericFieldSQLQueryBuilder(tableName, field1, field1Id, field2);
 		List<Long> queryResult = (List<Long>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperLong());
-		if (!queryResult.isEmpty()) {
-			return queryResult;
-		} else {
-			return null;
+		if (queryResult != null) {
+			if (!queryResult.isEmpty()) {
+				return queryResult;
+			}
 		}
+		return null;
 	}
 	
 	public List<String> getStringField(String tableName, String field1, Long field1Id, String field2) {
