@@ -10,10 +10,13 @@ import de.uni_koeln.arachne.response.ArachneDataset;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.util.ArachneId;
+import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * This is the baseclass for all contextualizers that get their contexts from
- * 'leftjoin tables', most likely only the <code>Ort-</code> and <code>DatierungContextualizers</code>.
+ * 'leftjoin tables', most likely only the <code>Ort-</code> and <code>LiteraturContextualizers</code>.
+ * It can also be used to extract data from 'normal' tables by not setting <code>joinTableName</code> or setting it 
+ * to </code>null<code> in the constructor of the derived class.
  */
 public abstract class LeftJoinTableContextualizer implements IContextualizer {
 
@@ -43,6 +46,9 @@ public abstract class LeftJoinTableContextualizer implements IContextualizer {
 	
 	@Override
 	public List<Link> retrieve(ArachneDataset parent, Integer offset, Integer limit) {
+		if (StrUtils.isEmptyOrNull(joinTableName)) {
+			joinTableName = tableName;
+		}
 		List<Link> result = new ArrayList<Link>();
 		String parentTableName = parent.getArachneId().getTableName();
 		List<Map<String, String>> contextContents = genericSQLService.getEntitiesById(joinTableName

@@ -44,9 +44,15 @@ public class ArachneContextService {
 	@Autowired
 	private GenericSQLService genericSQLService;
 	
+	/**
+	 * Service to retrieve a single entity.
+	 */
 	@Autowired
 	private ArachneSingleEntityDataService arachneSingleEntityDataService;
 	
+	/**
+	 * Servlet context to load the XML config files. 
+	 */
 	@Autowired
 	private ServletContext servletContext; 
 	
