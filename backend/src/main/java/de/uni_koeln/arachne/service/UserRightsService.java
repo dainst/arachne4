@@ -64,7 +64,7 @@ public class UserRightsService {
 			//String username = "rKrempel";
 			//get User Information from the Database
 
-			arachneUser =   userVerwaltungDao.findById( new Long( 20));
+			arachneUser =   userVerwaltungDao.findById(Long.valueOf(20));
 
 			//Splitting up all user permissions from the User dataset
 			userGroups= new ArrayList<String>();

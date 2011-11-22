@@ -20,7 +20,7 @@ List<String> groups = new ArrayList<String>(1);
 		
 		groups.add("Arachne");
 		
-		ArachneId id = new ArachneId("bauwerk",new Long(27000),new Long(100),false);
+		ArachneId id = new ArachneId("bauwerk", Long.valueOf(27000), Long.valueOf(100),false);
 		ArachneUserRightsSingleton.init("Testman", false, true, 500, groups);
 		ArachneSingleEntityQueryBuilder seqb = new ArachneSingleEntityQueryBuilder(id);
 		assertEquals(seqb.getSQL(),"SELECT * FROM `bauwerk` WHERE 1 AND `bauwerk`.`PS_BauwerkID` = 27000 AND ( `bauwerk`.`DatensatzGruppeBauwerk` = \"Arachne\") Limit 1;");
