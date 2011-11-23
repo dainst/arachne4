@@ -24,7 +24,7 @@ import de.uni_koeln.arachne.util.StrUtils;
  * Internally it uses <code>Contextualizers</code> to abstract the data access and allow to fetch contexts not only from
  * the Arachne database but from any other datasource (even external ones).  
  */
-// TODO create a common base class for all classes that need to read the xml configs (ResponseFactory)
+// TODO create a common base class for all classes that need to read the xml configs if possible (ResponseFactory)
 @Service("arachneContextService")
 public class ArachneContextService {
 	
@@ -72,6 +72,7 @@ public class ArachneContextService {
 				mandatoryContextTypes.add(contextTypes[0]);
 			}
 		}
+				
 		System.out.println("Mandatory Contexts: " + mandatoryContextTypes);
 		Iterator<String> contextType = mandatoryContextTypes.iterator();
 		while (contextType.hasNext()) {
@@ -204,26 +205,42 @@ public class ArachneContextService {
 		List<String> result = new ArrayList<String>();
 		@SuppressWarnings("unchecked")
 		List<Element> children = element.getChildren();
-		if (!children.isEmpty()) {
-			for (Element e:children) {
-				result.addAll(getFields(e, parentType));
+		
+		if (element.getName() != "context") {
+			if (!children.isEmpty()) {
+				for (Element e:children) {
+					result.addAll(getFields(e, parentType));
+				}
+			}
+
+			String datasourceValue = element.getAttributeValue("datasource");
+			if (!StrUtils.isEmptyOrNull(datasourceValue)) {
+				if (!datasourceValue.startsWith(parentType)) {
+					result.add(datasourceValue);
+				}
+			}
+
+			String ifEmptyValue = element.getAttributeValue("ifEmpty");
+			if (!StrUtils.isEmptyOrNull(ifEmptyValue)) {
+				if (!ifEmptyValue.startsWith(parentType)) {
+					result.add(ifEmptyValue);
+				}
+			}
+		} else {
+			if (!children.isEmpty()) {
+				String context = element.getAttributeValue("type");
+				System.out.println("Found context tag. Type: " + context);
+				for (Element e:children) {
+					String datasourceValue = e.getAttributeValue("datasource");
+					if (!StrUtils.isEmptyOrNull(datasourceValue)) {
+						datasourceValue = context + datasourceValue;
+						if (!datasourceValue.startsWith(parentType)) {
+							result.add(datasourceValue);
+						}
+					}
+				}
 			}
 		}
-		
-		String datasourceValue = element.getAttributeValue("datasource");
-		if (!StrUtils.isEmptyOrNull(datasourceValue)) {
-			if (!datasourceValue.startsWith(parentType)) {
-				result.add(datasourceValue);
-			}
-		}
-		
-		String ifEmptyValue = element.getAttributeValue("ifEmpty");
-		if (!StrUtils.isEmptyOrNull(ifEmptyValue)) {
-			if (!ifEmptyValue.startsWith(parentType)) {
-				result.add(ifEmptyValue);
-			}
-		}
-		
 		return result;
 	}
 	
