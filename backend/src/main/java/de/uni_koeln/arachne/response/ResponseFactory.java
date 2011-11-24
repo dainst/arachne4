@@ -236,9 +236,42 @@ public class ResponseFactory {
 					
 				}
 			} else {
-				Section nextSection = (Section)getContentFromSections(e, dataset);
-				if (!((Section)nextSection).getContent().isEmpty()) { 
-					result.add(nextSection);
+				if (e.getName() == "context") {
+					Section nextSection = (Section)getContentFromContext(e, dataset);
+					if (!((Section)nextSection).getContent().isEmpty()) { 
+						result.add(nextSection);
+					}
+				} else {
+					Section nextSection = (Section)getContentFromSections(e, dataset);
+					if (!((Section)nextSection).getContent().isEmpty()) { 
+						result.add(nextSection);
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	private Content getContentFromContext(Element section, ArachneDataset dataset) {
+		System.out.println("ContentFromContext");
+		Section result = new Section();
+		String contextType = section.getAttributeValue("type");
+		//TODO Get translated label string for value of labelKey-attribute in the section element  
+		result.setLabel(section.getAttributeValue("labelKey"));
+		// JDOM doesn't handle generics correctly so it issues a type safety warning
+		@SuppressWarnings("unchecked")
+		List<Element> children = section.getChildren();
+		for (Element e:children) {
+			if (e.getName().equals("field")) {
+				Field field = new Field();
+				String value = dataset.getField(contextType + e.getAttributeValue("datasource"));
+				String postfix = e.getAttributeValue("postfix");
+				String prefix = e.getAttributeValue("prefix");
+				if (value != null) {
+					if(prefix != null) value = prefix + value;
+					if(postfix != null) value += postfix; 
+					field.setValue(value);
+					result.add(field);
 				}
 			}
 		}
