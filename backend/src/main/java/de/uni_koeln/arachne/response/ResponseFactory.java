@@ -214,8 +214,26 @@ public class ResponseFactory {
 				if (value != null) {
 					if(prefix != null) value = prefix + value;
 					if(postfix != null) value += postfix; 
-					field.setValue(value);
-					result.add(field);
+					
+					/*
+					 * If there are more than one field in this section add the value (incl. separator) to the previous filed
+					 */
+					if ( !result.getContent().isEmpty() ) {
+						
+						String separator = ", ";
+						if (e.getAttributeValue("separator") != null) {
+							separator = e.getAttributeValue("separator");
+						}
+						
+						int contentSize = result.getContent().size();
+						Field previousContent = (Field)result.getContent().get(contentSize-1);
+						previousContent.setValue(previousContent.getValue() + separator +value);
+						
+					} else {
+						field.setValue(value);
+						result.add(field);
+					}
+					
 				}
 			} else {
 				Section nextSection = (Section)getContentFromSections(e, dataset);
