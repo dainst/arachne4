@@ -205,6 +205,11 @@ public class ResponseFactory {
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		@SuppressWarnings("unchecked")
 		List<Element> children = section.getChildren();
+		String defaultSeparator = "\n";
+		String separator = section.getAttributeValue("separator"); 
+		if (section.getAttributeValue("separator") == null) {
+			separator = defaultSeparator;
+		}
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
 				Field field = new Field();
@@ -212,28 +217,18 @@ public class ResponseFactory {
 				String postfix = e.getAttributeValue("postfix");
 				String prefix = e.getAttributeValue("prefix");
 				if (value != null) {
-					if(prefix != null) value = prefix + value;
-					if(postfix != null) value += postfix; 
+					if (prefix != null) value = prefix + value;
+					if (postfix != null) value += postfix; 
 					
-					/*
-					 * If there are more than one field in this section add the value (incl. separator) to the previous filed
-					 */
-					if ( !result.getContent().isEmpty() ) {
-						
-						String separator = ", ";
-						if (e.getAttributeValue("separator") != null) {
-							separator = e.getAttributeValue("separator");
-						}
-						
+					// If there are more than one field in this section add the value (incl. separator) to the previous filed
+					if (!result.getContent().isEmpty()) {
 						int contentSize = result.getContent().size();
 						Field previousContent = (Field)result.getContent().get(contentSize-1);
 						previousContent.setValue(previousContent.getValue() + separator +value);
-						
 					} else {
 						field.setValue(value);
 						result.add(field);
 					}
-					
 				}
 			} else {
 				if (e.getName() == "context") {
@@ -252,15 +247,19 @@ public class ResponseFactory {
 		return result;
 	}
 	
-	private Content getContentFromContext(Element section, ArachneDataset dataset) {
-		System.out.println("ContentFromContext");
+	private Content getContentFromContext(Element context, ArachneDataset dataset) {
 		Section result = new Section();
-		String contextType = section.getAttributeValue("type");
+		String contextType = context.getAttributeValue("type");
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
-		result.setLabel(section.getAttributeValue("labelKey"));
+		result.setLabel(context.getAttributeValue("labelKey"));
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		@SuppressWarnings("unchecked")
-		List<Element> children = section.getChildren();
+		List<Element> children = context.getChildren();
+		String defaultSeparator = "\n";
+		String separator = context.getAttributeValue("separator"); 
+		if (context.getAttributeValue("separator") == null) {
+			separator = defaultSeparator;
+		}
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
 				Field field = new Field();
@@ -270,8 +269,14 @@ public class ResponseFactory {
 				if (value != null) {
 					if(prefix != null) value = prefix + value;
 					if(postfix != null) value += postfix; 
-					field.setValue(value);
-					result.add(field);
+					if (!result.getContent().isEmpty()) {
+						int contentSize = result.getContent().size();
+						Field previousContent = (Field)result.getContent().get(contentSize-1);
+						previousContent.setValue(previousContent.getValue() + separator +value);
+					} else {
+						field.setValue(value);
+						result.add(field);
+					}
 				}
 			}
 		}
