@@ -16,6 +16,7 @@ import de.uni_koeln.arachne.response.FormattedArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.service.ArachneContextService;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
+import de.uni_koeln.arachne.service.ArachneImageService;
 import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.ArachneId;
@@ -40,6 +41,9 @@ public class ArachneEntityController {
 	
 	@Autowired
 	ResponseFactory responseFactory;
+	
+	@Autowired
+	ArachneImageService arachneImageService;
 	
 	/**
 	 * Handles http request for /{id}
@@ -85,6 +89,8 @@ public class ArachneEntityController {
     	System.out.println("Request for entity: " + arachneId.getArachneEntityID() + " - type: " + arachneId.getTableName());
     	
     	ArachneDataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
+    	
+    	arachneImageService.addImages(arachneDataset);
     	    	    	
     	contextService.addMandatoryContexts(arachneDataset);
     	
