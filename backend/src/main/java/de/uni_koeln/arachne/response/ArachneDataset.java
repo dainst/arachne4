@@ -41,7 +41,8 @@ public class ArachneDataset {
 	/**
 	 * The Images that are asociated with the dataset.
 	 */
-	protected List<ArachneImage> images;
+	//protected List<ArachneImage> images;
+	protected List<String> images;
 	
 	/**
 	 * Parameterless constructor.
@@ -67,10 +68,15 @@ public class ArachneDataset {
 	public ArachneId getArachneId() {
 		return arachneId;
 	}
+	
 	public List<ArachneContext> getContext() {
 		return context;
 	}
-	public List<ArachneImage> getImages() {
+	
+	/*public List<ArachneImage> getImages() {
+		return images;
+	}*/
+	public List<String> getImages() {
 		return images;
 	}
 	
@@ -120,10 +126,13 @@ public class ArachneDataset {
 		this.context = context;
 	}
 	
-	public void setImages(List<ArachneImage> images) {
+	/*public void setImages(List<ArachneImage> images) {
+		this.images = images;
+	}*/
+	public void setImages(List<String> images) {
 		this.images = images;
 	}
-	
+		
 	public void addContext(ArachneContext aContext) {
 		this.context.add(aContext);
 	}

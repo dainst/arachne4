@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.GenericFieldMapperLong;
 import de.uni_koeln.arachne.mapping.GenericFieldMapperString;
+import de.uni_koeln.arachne.mapping.GenericFieldsMapperString;
 import de.uni_koeln.arachne.sqlutil.ArachneGenericFieldSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericEntitiesSQLQueryBuilder;
+import de.uni_koeln.arachne.sqlutil.GenericFieldsSQLQueryBuilder;
 
 /**
  * Class to retrieve referenced ids from 'cross tables'.
@@ -25,6 +27,7 @@ public class GenericSQLDao extends SQLDao {
 	 */
 	public List<Long> getIdByFieldId(String tableName, String field1, Long field1Id, String field2) {
 		ArachneGenericFieldSQLQueryBuilder queryBuilder = new ArachneGenericFieldSQLQueryBuilder(tableName, field1, field1Id, field2);
+		@SuppressWarnings("unchecked")
 		List<Long> queryResult = (List<Long>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperLong());
 		if (queryResult != null) {
 			if (!queryResult.isEmpty()) {
@@ -36,7 +39,22 @@ public class GenericSQLDao extends SQLDao {
 	
 	public List<String> getStringField(String tableName, String field1, Long field1Id, String field2) {
 		ArachneGenericFieldSQLQueryBuilder queryBuilder = new ArachneGenericFieldSQLQueryBuilder(tableName, field1, field1Id, field2);
+		@SuppressWarnings("unchecked")
 		List<String> queryResult = (List<String>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperString());
+		// IMPORTANT because string casting can add null strings to the list
+		if (queryResult != null) {
+			queryResult.remove(null);
+			if (!queryResult.isEmpty()) {
+				return queryResult;
+			}
+		}
+		return null;
+	}
+	
+	public List<List<String>> getStringFields(String tableName, String field1, Long field1Id, List<String> fields) {
+		GenericFieldsSQLQueryBuilder queryBuilder = new GenericFieldsSQLQueryBuilder(tableName, field1, field1Id, fields);
+		@SuppressWarnings("unchecked")
+		List<List<String>> queryResult = (List<List<String>>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldsMapperString());
 		// IMPORTANT because string casting can add null strings to the list
 		queryResult.remove(null);
 		if (!queryResult.isEmpty()) {
@@ -48,6 +66,7 @@ public class GenericSQLDao extends SQLDao {
 	
 	public List<Map<String, String>> getEntitiesById(String tableName, String field1, Long field1Id) {
 		GenericEntitiesSQLQueryBuilder queryBuilder = new GenericEntitiesSQLQueryBuilder(tableName, field1, field1Id);
+		@SuppressWarnings("unchecked")
 		List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(queryBuilder.getSQL()
 				, new GenericEntitesMapper());
 		return queryResult;

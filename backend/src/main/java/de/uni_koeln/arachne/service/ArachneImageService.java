@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,13 @@ public class ArachneImageService {
 	
 	public void addImages(ArachneDataset dataset) {
 		ArachneId arachneId = dataset.getArachneId();
+		ArrayList<String> fieldList = new ArrayList<String>(2);
+		//fieldList.add("PS_MARBilderID");
+		//fieldList.add("DateinameMarbilder");
+		//List<List<String>> images = genericSQLService.getStringFields("marbilder", arachneId.getTableName(), arachneId.getInternalKey(), fieldList);
 		List<String> images = genericSQLService.getStringField("marbilder", arachneId.getTableName(), arachneId.getInternalKey(), "PS_MARBilderID");
+		// TODO remove debug
 		System.out.println("ImageList: " + images);
+		dataset.setImages(images);
 	}
 }

@@ -103,6 +103,9 @@ public class ResponseFactory {
 				}
 			}		
 			
+			// Set images
+			response.setImages(dataset.getImages());
+			
 			// Set contexts
 			/*
 			Section contextContent = new Section();
@@ -267,8 +270,8 @@ public class ResponseFactory {
 				String postfix = e.getAttributeValue("postfix");
 				String prefix = e.getAttributeValue("prefix");
 				if (value != null) {
-					if(prefix != null) value = prefix + value;
-					if(postfix != null) value += postfix; 
+					if (prefix != null) value = prefix + value;
+					if (postfix != null) value += postfix; 
 					if (!result.getContent().isEmpty()) {
 						int contentSize = result.getContent().size();
 						Field previousContent = (Field)result.getContent().get(contentSize-1);
