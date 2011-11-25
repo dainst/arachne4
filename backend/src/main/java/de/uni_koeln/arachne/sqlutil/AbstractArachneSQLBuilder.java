@@ -36,7 +36,7 @@ public abstract class AbstractArachneSQLBuilder {
 	 * @return An SQL Snipplett with all the Condition as SQl Snipplett
 	 */
 	protected String buildAndConditions(){
-		String result = new String();
+		String result = "";
 
 		for (Condition cnd : conditions) {
 
