@@ -20,7 +20,7 @@ public class ArachneGenericFieldSQLQueryBuilder extends AbstractArachneSQLBuilde
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;
 		this.field2 = ArachneSQLToolbox.getQualifiedFieldname(table, field2);
-		//rcb = new ArachneSQLRightsConditionBuilder(table);
+		rcb = new ArachneSQLRightsConditionBuilder(table);
 		// The key identification condition
 		Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");
@@ -39,7 +39,7 @@ public class ArachneGenericFieldSQLQueryBuilder extends AbstractArachneSQLBuilde
 	protected String buildSQL() {
 		sql += "SELECT " + field2 + " FROM `" + table + "` WHERE 1";
 		sql += this.buildAndConditions();
-		//sql += rcb.getUserRightsSQLSnipplett();  
+		sql += rcb.getUserRightsSQLSnipplett();  
 		sql += ";";
 		// TODO remove debug output
 		System.out.println("GenericFieldQueryBuilder SQL: " + sql);
