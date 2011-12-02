@@ -3,10 +3,15 @@ package de.uni_koeln.arachne.response;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 /**
  * Response object class that returns preformatted output to the frontend.
  * This class is serialized to JSON using <codeJackson</code>.
  */
+@XmlRootElement
+@XmlSeeAlso({Section.class,Field.class})
 public class FormattedArachneEntity extends BaseArachneEntity {
 	
 	/**
@@ -87,7 +92,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	public void setContext(Content context) {
 		this.context = context;
 	}
-
+	
 	public List<Image> getImages() {
 		return images;
 	}

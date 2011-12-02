@@ -1,8 +1,11 @@
 package de.uni_koeln.arachne.response;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Class to hold a single <code>String</code> value.
  */
+@XmlRootElement
 public class Field extends Content {
 	/**
 	 * The <code>String</code> value the class holds.

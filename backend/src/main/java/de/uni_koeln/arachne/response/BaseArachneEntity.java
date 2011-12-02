@@ -1,5 +1,8 @@
 package de.uni_koeln.arachne.response;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class BaseArachneEntity {
 	/**
 	 * Identification of the Dataset

@@ -3,9 +3,13 @@ package de.uni_koeln.arachne.response;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * A class for organizing and holding content of either type <code>Field</code> or <code>Section</code>.
  */
+@XmlRootElement
 public class Section extends Content {
 	/**
 	 * Parameterless constructor.
@@ -33,6 +37,7 @@ public class Section extends Content {
 		return this.content.add(content);
 	}
 	
+	@XmlElementWrapper
 	public List<Content> getContent() {
 		return content;
 	}
