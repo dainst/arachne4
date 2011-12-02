@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  * Response object class that returns preformatted output to the frontend.
  * This class is serialized to JSON using <codeJackson</code>.
  */
-@XmlRootElement
+@XmlRootElement(name="entity")
 @XmlSeeAlso({Section.class,Field.class})
 public class FormattedArachneEntity extends BaseArachneEntity {
 	
