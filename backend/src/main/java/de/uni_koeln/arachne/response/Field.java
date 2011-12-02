@@ -19,6 +19,5 @@ public class Field extends Content {
 	
 	public String toString() {
 		return getValue();
-	}
-	
+	}	
 }

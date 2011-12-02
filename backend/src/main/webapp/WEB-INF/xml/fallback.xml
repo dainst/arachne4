@@ -30,12 +30,12 @@
             </section>
         </subtitle>
         <datasections>
-        	<section labelKey="Lokalisierung" separator=", ">
-        		<field datasource="ort.Stadt"  />
-        		<field datasource="ort.Land" />
-        		<field datasource="ort.Countrycode" />
-        		<field datasource="ort.Aufbewahrungsort" />
-        	</section>
+        	<context type="ort" labelKey="Lokalisierung" separator=", ">
+        		<field datasource=".Stadt"  />
+        		<field datasource=".Land" />
+        		<field datasource=".Countrycode" />
+        		<field datasource=".Aufbewahrungsort" />
+        	</context>
         </datasections>
     </display>
 </category>

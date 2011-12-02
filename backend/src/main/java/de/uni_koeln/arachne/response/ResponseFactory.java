@@ -43,6 +43,9 @@ public class ResponseFactory {
 	 * @return A <code>FormattedArachneEntity</code> instance which can be jsonized.
 	 */
 	public FormattedArachneEntity createFormattedArachneEntity(ArachneDataset dataset) {
+		// TODO remove debug
+		System.out.println("Constructing formatted response object...");
+		
 		FormattedArachneEntity response = new FormattedArachneEntity();
 		
 		// set id content
@@ -87,7 +90,11 @@ public class ResponseFactory {
 			@SuppressWarnings("unchecked")
 			List<Element> children = sections.getChildren();
 			for (Element e:children) {
-	    		contentList.add(getContentFromSections(e, dataset));
+				if (e.getName().equals("section")) {
+					contentList.add(getContentFromSections(e, dataset)); 
+				} else {
+					contentList.add(getContentFromContext(e, dataset));
+				}
 	    	}
 			
 			if (!contentList.isEmpty()) {
@@ -234,7 +241,7 @@ public class ResponseFactory {
 					}
 				}
 			} else {
-				if (e.getName() == "context") {
+				if (e.getName().equals("context")) {
 					Section nextSection = (Section)getContentFromContext(e, dataset);
 					if (!((Section)nextSection).getContent().isEmpty()) { 
 						result.add(nextSection);
@@ -291,6 +298,9 @@ public class ResponseFactory {
 					}
 				}
 			}
+		}
+		if (result.getContent().isEmpty()) {
+			return null;
 		}
 		return result;
 	}

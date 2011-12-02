@@ -44,4 +44,9 @@ public class Section extends Content {
 	public void setLabel(String label) {
 		this.label = label;
 	}
+	
+	@Override
+	public String toString() {
+		return label + ": " + content;
+	}
 }
