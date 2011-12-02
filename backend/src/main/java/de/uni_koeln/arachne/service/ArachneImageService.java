@@ -11,11 +11,19 @@ import de.uni_koeln.arachne.response.ArachneDataset;
 import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.util.ArachneId;
 
+/**
+ * This service class provides the means to retrieve images from the database.
+ */
 @Service("ArachneImageService")
 public class ArachneImageService {
 	@Autowired
 	GenericSQLService genericSQLService;
 	
+	/**
+	 * This method retrieves the images for a given dataset from the database and adds them to the datasets list
+	 * of images. 
+	 * @param dataset The dataset to add images to.
+	 */
 	public void addImages(ArachneDataset dataset) {
 		ArachneId arachneId = dataset.getArachneId();
 		ArrayList<String> fieldList = new ArrayList<String>(2);

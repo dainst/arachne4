@@ -48,7 +48,7 @@ public class ArachneEntityController {
 	/**
 	 * Handles http request for /{id}
 	 * @param itemId The unique entity id of the item to fetch.
-     * @return a response object containing the data (currently this a serialized to JSON by Jackson).
+     * @return A response object containing the data (currently this a serialized to JSON by Jackson).
      */
 	@RequestMapping(value="/entity/{id}", method=RequestMethod.GET)
 	public @ResponseBody BaseArachneEntity handleGetEntityIdRequest(HttpServletRequest request, @PathVariable("id") Long id) {
@@ -59,7 +59,7 @@ public class ArachneEntityController {
      * Handles http request for /{category}/{id}
      * @param category The database table to fetch the item from.
      * @param id The internal id of the item to fetch
-     * @return a response object containing the data (currently this a serialized to JSON by Jackson).
+     * @return A response object containing the data (currently this a serialized to JSON by Jackson).
      */
     @RequestMapping(value="/entity/{category}/{id}", method=RequestMethod.GET)
     public @ResponseBody BaseArachneEntity handleGetCategoryIdRequest(@PathVariable("category") String category, @PathVariable("id") Long id) {

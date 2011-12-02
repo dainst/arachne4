@@ -250,6 +250,15 @@ public class ResponseFactory {
 		return result;
 	}
 	
+	/**
+	 * This function handles context elements in the xml config files. It extracts the content from the dataset 
+	 * following the definitions in the xml files and returns it as <code>Content</code>.
+	 * <br>
+	 * The validity of the xml file is not checked!!!
+	 * @param context The xml context <code>Element</code> to parse.
+	 * @param dataset The dataset that contains the SQL query results.
+	 * @return A <code>Content</code> object containing the context sections content.
+	 */
 	private Content getContentFromContext(Element context, ArachneDataset dataset) {
 		Section result = new Section();
 		String contextType = context.getAttributeValue("type");

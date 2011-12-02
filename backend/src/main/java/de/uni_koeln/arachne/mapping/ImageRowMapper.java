@@ -7,6 +7,9 @@ import org.springframework.jdbc.core.RowMapper;
 
 import de.uni_koeln.arachne.response.Image;
 
+/*
+ * Customized <code>RowMapper</code> to map the SQL query result to an <code>Image</code>.
+ */
 public class ImageRowMapper implements RowMapper<Image> {
 	@Override
 	public Image mapRow(ResultSet resultSet, int i) throws SQLException {

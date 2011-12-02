@@ -7,13 +7,31 @@ import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 
+/**
+ * Generic <code>RowMapper</code> that maps the result rows of an SQL query to a <code>String</code> list.
+ * This class is only useful for queries that return multiple fields and must not be created via the parameterless 
+ * default constructor but the provided custom one. 
+ */
 public class GenericFieldsMapperString implements RowMapper<List<String>> {
-	private int lastRow = 0;	
+	/**
+	 * Number of rows to add to the result list.
+	 */
+	private int lastRow = 0;
 	
+	/**
+	 * Custom constructor initializing the <code>lastRow</code> property.
+	 * <br>
+	 * IMPORTANT: Always use this constructor to create instances of this class.
+	 * @param n The number of rows to map from the <code>ResultSet</code> to the result list.
+	 */
 	public GenericFieldsMapperString(int n) {
 		lastRow = n + 1;
 	}
-		
+	
+	/**
+	 * Method to map the rows from the <code>ResultSet</code> to the result list.
+	 * @return A string list containing the results of the SQL query.
+	 */
 	@Override
 	public List<String> mapRow(ResultSet resultSet, int i) throws SQLException {
 		List<String> result = new ArrayList<String>();

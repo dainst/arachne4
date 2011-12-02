@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A class for organizing and holding content of either <code>Field</code> or <code>Section</code>.
+ * A class for organizing and holding content of either type <code>Field</code> or <code>Section</code>.
  */
 public class Section extends Content {
 	/**

@@ -2,6 +2,10 @@ package de.uni_koeln.arachne.response;
 
 import de.uni_koeln.arachne.service.SQLResponseObject;
 
+/**
+ * This class is the standard container for images. It is derived from <code>SQLResponseObject</code> so that a
+ * specialized <code>RowMapper</code> can be used for retrieval from the database.
+ */
 public class Image extends SQLResponseObject {
 	/**
 	 * The primary key of the image.
