@@ -128,6 +128,7 @@ public class ArachneContextService {
 	 * @param contextType Type of a context of interest  
 	 * @return an appropriate contextualizer serving the specific context indicated by the given <code>contextType</code>
 	 */
+	@SuppressWarnings("rawtypes")
 	private IContextualizer getContextualizerByContextType(String contextType) {
 		// TODO The services should not be hardcoded but somehow specified by either contextType or contextualizer 
 		//Initialization of contextualizer needs two params
@@ -146,7 +147,7 @@ public class ArachneContextService {
 			String upperCaseContextType = contextType.substring(0, 1).toUpperCase() + contextType.substring(1).toLowerCase();
 			String className = "de.uni_koeln.arachne.context." + upperCaseContextType + "Contextualizer";
 			System.out.println("Trying to initialize class: " + className + "...");
-			Class aClass = Class.forName(className);
+			Class<?> aClass = Class.forName(className);
 			java.lang.reflect.Constructor classConstructor = aClass.getConstructor(classParam);
 			return (IContextualizer)classConstructor.newInstance(objectParam);
 		} catch (ClassNotFoundException e) {

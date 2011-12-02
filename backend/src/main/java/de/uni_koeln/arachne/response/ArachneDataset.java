@@ -42,7 +42,7 @@ public class ArachneDataset {
 	 * The Images that are asociated with the dataset.
 	 */
 	//protected List<ArachneImage> images;
-	protected List<String> images;
+	protected List<Image> images;
 	
 	/**
 	 * Parameterless constructor.
@@ -76,7 +76,7 @@ public class ArachneDataset {
 	/*public List<ArachneImage> getImages() {
 		return images;
 	}*/
-	public List<String> getImages() {
+	public List<Image> getImages() {
 		return images;
 	}
 	
@@ -129,7 +129,7 @@ public class ArachneDataset {
 	/*public void setImages(List<ArachneImage> images) {
 		this.images = images;
 	}*/
-	public void setImages(List<String> images) {
+	public void setImages(List<Image> images) {
 		this.images = images;
 	}
 		

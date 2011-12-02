@@ -38,7 +38,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	 * The Images that are asociated with the dataset
 	 */
 	//protected List<ArachneImage> images;
-	protected List<String> images;
+	protected List<Image> images;
 	
 	/**
 	 * Parameterless constructor initializing title and subtitle.
@@ -88,11 +88,11 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		this.context = context;
 	}
 
-	public List<String> getImages() {
+	public List<Image> getImages() {
 		return images;
 	}
 
-	public void setImages(List<String> images) {
+	public void setImages(List<Image> images) {
 		this.images = images;
 	}
 	/*public List<ArachneImage> getImages() {

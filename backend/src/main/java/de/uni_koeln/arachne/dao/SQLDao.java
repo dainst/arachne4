@@ -12,8 +12,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
-
 /**
  * This is a Standard SQL Query Dao.
  * The other it can execute Querys and Map them on special Dataset Instances.

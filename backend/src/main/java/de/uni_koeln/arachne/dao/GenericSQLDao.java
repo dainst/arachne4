@@ -1,13 +1,16 @@
 package de.uni_koeln.arachne.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.GenericFieldMapperLong;
 import de.uni_koeln.arachne.mapping.GenericFieldMapperString;
 import de.uni_koeln.arachne.mapping.GenericFieldsMapperString;
+import de.uni_koeln.arachne.service.SQLResponseObject;
 import de.uni_koeln.arachne.sqlutil.ArachneGenericFieldSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldsSQLQueryBuilder;
@@ -54,7 +57,8 @@ public class GenericSQLDao extends SQLDao {
 	public List<List<String>> getStringFields(String tableName, String field1, Long field1Id, List<String> fields) {
 		GenericFieldsSQLQueryBuilder queryBuilder = new GenericFieldsSQLQueryBuilder(tableName, field1, field1Id, fields);
 		@SuppressWarnings("unchecked")
-		List<List<String>> queryResult = (List<List<String>>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldsMapperString());
+		List<List<String>> queryResult = (List<List<String>>)this.executeSelectQuery(queryBuilder.getSQL(),
+				new GenericFieldsMapperString(fields.size()));
 		// IMPORTANT because string casting can add null strings to the list
 		queryResult.remove(null);
 		if (!queryResult.isEmpty()) {
@@ -70,5 +74,20 @@ public class GenericSQLDao extends SQLDao {
 		List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(queryBuilder.getSQL()
 				, new GenericEntitesMapper());
 		return queryResult;
+	}
+
+	public List<? extends SQLResponseObject> getStringFieldsWithCustomRowMapper(String tableName,
+			String field1, Long field1Id, ArrayList<String> fields, RowMapper<? extends SQLResponseObject> rowMapper) {
+		GenericFieldsSQLQueryBuilder queryBuilder = new GenericFieldsSQLQueryBuilder(tableName, field1, field1Id, fields);
+		@SuppressWarnings("unchecked")
+		List<? extends SQLResponseObject> queryResult = (List<? extends SQLResponseObject>)this.executeSelectQuery(
+				queryBuilder.getSQL(), rowMapper);
+		// IMPORTANT because string casting can add null strings to the list
+		queryResult.remove(null);
+		if (!queryResult.isEmpty()) {
+			return queryResult;
+		} else {
+			return null;
+		}
 	}
 }

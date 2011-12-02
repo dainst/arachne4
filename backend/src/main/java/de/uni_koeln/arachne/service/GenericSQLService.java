@@ -1,9 +1,11 @@
 package de.uni_koeln.arachne.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.GenericSQLDao;
@@ -27,5 +29,10 @@ public class GenericSQLService {
 	
 	public List<Map<String, String>> getEntitiesById(String tableName, String field1, Long field1Id) {
 		return genericSQLDao.getEntitiesById(tableName, field1, field1Id);
+	}
+
+	public List<? extends SQLResponseObject> getStringFieldsWithCustomRowmapper(String tableName, String field1
+			, Long field1Id, ArrayList<String> fields, RowMapper<? extends SQLResponseObject> rowMapper) {
+		return genericSQLDao.getStringFieldsWithCustomRowMapper(tableName, field1, field1Id, fields, rowMapper);
 	}
 }

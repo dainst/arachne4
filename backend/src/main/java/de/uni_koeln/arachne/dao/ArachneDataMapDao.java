@@ -29,6 +29,8 @@ public class ArachneDataMapDao extends SQLDao {
 			String sql = queryBuilder.getSQL();
 			// TODO remove debug
 			System.out.println("ArachneDatamapDao: " + queryBuilder.getSQL());
+			
+			@SuppressWarnings("unchecked")
 			List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new ArachneDatasetMapping());
 			if (temp != null) {
 				if (!temp.isEmpty()) {
@@ -51,6 +53,7 @@ public class ArachneDataMapDao extends SQLDao {
 			
 			String sql = qB.getSQL();
 			System.out.println(sql);
+			@SuppressWarnings("unchecked")
 			List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new ArachneDatasetMapping());
 			
 			//achneDataset out= new  ArachneDataset();
