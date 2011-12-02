@@ -33,6 +33,7 @@ public class GenericSQLDao extends SQLDao {
 		@SuppressWarnings("unchecked")
 		List<Long> queryResult = (List<Long>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperLong());
 		if (queryResult != null) {
+			queryResult.remove(null);
 			if (!queryResult.isEmpty()) {
 				return queryResult;
 			}
@@ -60,12 +61,13 @@ public class GenericSQLDao extends SQLDao {
 		List<List<String>> queryResult = (List<List<String>>)this.executeSelectQuery(queryBuilder.getSQL(),
 				new GenericFieldsMapperString(fields.size()));
 		// IMPORTANT because string casting can add null strings to the list
-		queryResult.remove(null);
-		if (!queryResult.isEmpty()) {
-			return queryResult;
-		} else {
-			return null;
+		if (queryResult != null) {
+			queryResult.remove(null);
+			if (!queryResult.isEmpty()) {
+				return queryResult;
+			}
 		}
+		return null;
 	}
 	
 	public List<Map<String, String>> getEntitiesById(String tableName, String field1, Long field1Id) {
@@ -73,7 +75,13 @@ public class GenericSQLDao extends SQLDao {
 		@SuppressWarnings("unchecked")
 		List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(queryBuilder.getSQL()
 				, new GenericEntitesMapper());
-		return queryResult;
+		if (queryResult != null) {
+			queryResult.remove(null);
+			if (!queryResult.isEmpty()) {
+				return queryResult;
+			}
+		}
+		return null;
 	}
 
 	public List<? extends SQLResponseObject> getStringFieldsWithCustomRowMapper(String tableName,
@@ -83,11 +91,12 @@ public class GenericSQLDao extends SQLDao {
 		List<? extends SQLResponseObject> queryResult = (List<? extends SQLResponseObject>)this.executeSelectQuery(
 				queryBuilder.getSQL(), rowMapper);
 		// IMPORTANT because string casting can add null strings to the list
-		queryResult.remove(null);
-		if (!queryResult.isEmpty()) {
-			return queryResult;
-		} else {
-			return null;
+		if (queryResult != null) {
+			queryResult.remove(null);
+			if (!queryResult.isEmpty()) {
+				return queryResult;
+			}
 		}
+		return null;
 	}
 }
