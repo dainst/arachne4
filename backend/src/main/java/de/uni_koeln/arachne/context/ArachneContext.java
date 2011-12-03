@@ -165,4 +165,8 @@ public class ArachneContext {
 	public String getContextType() {
 		return this.contextType;
 	}
+	
+	public String toString() {
+		return contextEntities.toString();
+	}
 }

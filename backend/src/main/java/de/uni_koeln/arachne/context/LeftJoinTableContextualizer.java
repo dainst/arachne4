@@ -61,10 +61,14 @@ public abstract class LeftJoinTableContextualizer implements IContextualizer {
 				ArachneLink link = new ArachneLink();
 				ArachneDataset dataset = new ArachneDataset();
 				String id = map.get(joinTableName + ".PS_" + Character.toUpperCase(tableName.charAt(0)) + tableName.substring(1) + "ID");
-				// TODO check if ID not found exception is needed
 				ArachneId arachneId = arachneEntityIdentificationService.getId(tableName, Long.parseLong(id));
+				if (arachneId == null) {
+					// The magic number zero ("0L") means that the entity is not in the "arachneentityidentificaton" table
+					arachneId = new ArachneId(joinTableName, Long.parseLong(id), 0L, false);
+				}
 				dataset.setArachneId(arachneId);
-				// rename ortsbezug_leftjoin_ort to ort
+				// TODO remove debug
+				System.out.println("LeftJoinTableContextualizer ID: " + arachneId.getArachneEntityID());
 				// this is how the contextualizer can set his own names
 				Map<String, String> resultMap = new HashMap<String, String>();
 				for (Map.Entry<String, String> entry: map.entrySet()) {

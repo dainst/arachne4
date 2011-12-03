@@ -111,11 +111,15 @@ public class ArachneDataset {
 	 * @return The value of the field or <code>null<code/> if the field is not found.
 	 */
 	public String getFieldFromContext(String fieldName) {
+		String result = null;
 		for (ArachneContext context: this.context) {
 			ArachneLink link = (ArachneLink)context.getFirstContext();
 			if (link != null) {
 				// we know that Entity1 is 'this'
-				return link.getEntity2().getFieldFromFields(fieldName);
+				result = link.getEntity2().getFieldFromFields(fieldName);
+				if (!StrUtils.isEmptyOrNull(result)) {
+					return result;
+				}
 			}
 		}
 		return null;
@@ -164,6 +168,8 @@ public class ArachneDataset {
 		this.arachneId = arachneId;
 	}
 	
-	
-	// is Methods
+	@Override
+	public String toString() {
+		return fields + ", " + context;
+	}
 }

@@ -45,6 +45,7 @@ public class ResponseFactory {
 	public FormattedArachneEntity createFormattedArachneEntity(ArachneDataset dataset) {
 		// TODO remove debug
 		System.out.println("Constructing formatted response object...");
+		System.out.println("dataset: " + dataset);
 		
 		FormattedArachneEntity response = new FormattedArachneEntity();
 		
@@ -243,13 +244,17 @@ public class ResponseFactory {
 			} else {
 				if (e.getName().equals("context")) {
 					Section nextSection = (Section)getContentFromContext(e, dataset);
-					if (!((Section)nextSection).getContent().isEmpty()) { 
-						result.add(nextSection);
+					if (nextSection != null) {
+						if (!((Section)nextSection).getContent().isEmpty()) { 
+							result.add(nextSection);
+						}
 					}
 				} else {
 					Section nextSection = (Section)getContentFromSections(e, dataset);
-					if (!((Section)nextSection).getContent().isEmpty()) { 
-						result.add(nextSection);
+					if (nextSection != null) {
+						if (!((Section)nextSection).getContent().isEmpty()) { 
+							result.add(nextSection);
+						}
 					}
 				}
 			}
