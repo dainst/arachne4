@@ -125,7 +125,7 @@ public class ArachneDataset {
 		return null;
 	}
 	
-	//set methods
+	// set methods
 	public void setContext(List<ArachneContext> context) {
 		this.context = context;
 	}

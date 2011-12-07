@@ -77,6 +77,12 @@
 	            		<field datasource=".AnfDatvn" />
 	            	</context>
 	            </section>
+	            <section labelKey="Literatur">
+	            	<context type="literatur" separator=" ">
+	            		<field datasource=".DAIRichtlinien" />
+	            		<field datasource=".Seite" />
+	            	</context>
+	            </section>
 	    	</section>
         </datasections>
     </display>

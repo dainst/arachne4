@@ -77,7 +77,7 @@ public class ArachneContextService {
 		Iterator<String> contextType = mandatoryContextTypes.iterator();
 		while (contextType.hasNext()) {
 			ArachneContext context = new ArachneContext(contextType.next(), parent, this);
-			context.getFirstContext();
+			context.getLimitContext(4);
 			parent.addContext(context);
 		}
 	}
