@@ -7,6 +7,7 @@ import java.util.Map;
 
 import de.uni_koeln.arachne.context.ArachneContext;
 import de.uni_koeln.arachne.context.ArachneLink;
+import de.uni_koeln.arachne.context.Link;
 import de.uni_koeln.arachne.util.ArachneId;
 import de.uni_koeln.arachne.util.StrUtils;
 /**
@@ -81,6 +82,22 @@ public class ArachneDataset {
 	}
 	
 	/**
+	 * This method returns the number of contexts of a given type. 
+	 * <br>
+	 * Side effect: If not all contexts a retrieved they will be retrieved now.
+	 * @param contextType The type of the context of interest
+	 * @return The number of context entities in this context
+	 */
+	public int getContextSize(String contextType) {
+		for (ArachneContext context: this.context) {
+			if (context.getContextType().equals(contextType)) {
+				return context.getContextSize();				
+			}
+		}
+		return 0;
+	}
+	
+	/**
 	 * Looks up a field in the </code>fields<code> list	or in the contexts and returns its value. The 
 	 * </code>fields<code> list is the preferred search location and only if a field is not found there the contexts are 
 	 * searched.
@@ -106,7 +123,7 @@ public class ArachneDataset {
 	}
 	
 	/**
-	 * Looks up a field in the in the contexts and returns its value.
+	 * Looks up a field in the contexts and returns its value.
 	 * @param fieldName The full qualified fieldName to look up.
 	 * @return The value of the field or <code>null<code/> if the field is not found.
 	 */
@@ -123,6 +140,58 @@ public class ArachneDataset {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Looks up a field in the contexts and returns its value.
+	 * @param fieldName The full qualified fieldName to look up.
+	 * @return The value of the field or <code>null<code/> if the field is not found.
+	 */
+	public String getFieldFromContext(String fieldName, int index) {
+		String result = null;
+		for (ArachneContext context: this.context) {
+			ArachneLink link = (ArachneLink)context.getContext(index);
+			if (link != null) {
+				// we know that Entity1 is 'this'
+				result = link.getEntity2().getFieldFromFields(fieldName);
+				if (!StrUtils.isEmptyOrNull(result)) {
+					return result;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Looks up a field in all contexts and returns their values as list.
+	 * Currently only internal links are supported.
+	 * @param fieldName The full qualified fieldName to look up.
+	 * @return The value of the fields or <code>null<code/> if the field is not found.
+	 */
+	public List<String> getFieldsFromContexts(String fieldName) {
+		List<String> result = new ArrayList<String>();
+		for (ArachneContext context: this.context) {
+			List<Link> links = context.getallContexts();
+			if (!links.isEmpty()) {
+				for (Link link: links) {
+					String tmpResult = null;
+					// TODO add support for external links
+					// we know that Entity1 is 'this'
+					if (link instanceof ArachneLink) {
+						ArachneLink internalLink = (ArachneLink)link;
+						tmpResult = internalLink.getEntity2().getFieldFromFields(fieldName);
+					}
+					if (!StrUtils.isEmptyOrNull(tmpResult)) {
+						result.add(tmpResult);
+					}
+				}
+			}
+		}
+		if (result.size() > 0) {
+			return result;
+		} else {
+			return null;
+		}
 	}
 	
 	// set methods

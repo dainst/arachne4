@@ -103,6 +103,25 @@ public class ArachneContext {
 	}
 	
 	/**
+	 * Returns one link element of the context.
+	 * @param index The index of the link element to retrieve.
+	 * @return The chosen <code>Link</code> of the context.
+	 */
+	public Link getContext(int index) {
+		int avilableContexts = contextEntities.size();
+		if (completionState != CompletionStateEnum.FULL) {
+			if (index >= avilableContexts) {
+				retrieve(avilableContexts, avilableContexts + index);
+			}
+		}
+		if (!contextEntities.isEmpty() && index<avilableContexts) {
+			return contextEntities.get(index); 
+		} else {
+			return null;
+		}
+	}
+	
+	/**
 	 * Return a given number of contexts or the maximum number of contexts.
 	 * @param number The number of contexts demanded.
 	 * @return The number of contexts (more or less).
@@ -160,6 +179,18 @@ public class ArachneContext {
 	    if (temporary != null) {
 	    	contextEntities.addAll(temporary);
 	    }
+	}
+	
+	/**
+	 * This method returns the number of context entities in this context. If not all contexts are retrieved already
+	 * it retrieves them.
+	 * @return
+	 */
+	public int getContextSize() {
+		if (completionState != CompletionStateEnum.FULL) {
+			retrieveComplete();
+		}
+		return contextEntities.size();
 	}
 	
 	public String getContextType() {

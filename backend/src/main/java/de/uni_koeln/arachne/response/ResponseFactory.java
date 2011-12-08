@@ -284,22 +284,24 @@ public class ResponseFactory {
 		if (context.getAttributeValue("separator") == null) {
 			separator = defaultSeparator;
 		}
-		for (Element e:children) {
-			if (e.getName().equals("field")) {
-				Field field = new Field();
-				String value = dataset.getField(contextType + e.getAttributeValue("datasource"));
-				String postfix = e.getAttributeValue("postfix");
-				String prefix = e.getAttributeValue("prefix");
-				if (value != null) {
-					if (prefix != null) value = prefix + value;
-					if (postfix != null) value += postfix; 
-					if (!result.getContent().isEmpty()) {
-						int contentSize = result.getContent().size();
-						Field previousContent = (Field)result.getContent().get(contentSize-1);
-						previousContent.setValue(previousContent.getValue() + separator +value);
-					} else {
-						field.setValue(value);
-						result.add(field);
+		for (int i = 0; i < dataset.getContextSize(contextType); i++) {
+			for (Element e: children) {
+				if (e.getName().equals("field")) {
+					Field field = new Field();
+					String value = dataset.getFieldFromContext(contextType + e.getAttributeValue("datasource"), i);
+					String postfix = e.getAttributeValue("postfix");
+					String prefix = e.getAttributeValue("prefix");
+					if (value != null) {
+						if (prefix != null) value = prefix + value;
+						if (postfix != null) value += postfix; 
+						if (!result.getContent().isEmpty()) {
+							int contentSize = result.getContent().size();
+							Field previousContent = (Field)result.getContent().get(contentSize-1);
+							previousContent.setValue(previousContent.getValue() + separator +value);
+						} else {
+							field.setValue(value);
+							result.add(field);
+						}
 					}
 				}
 			}
