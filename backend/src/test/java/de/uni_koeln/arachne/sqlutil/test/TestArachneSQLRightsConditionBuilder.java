@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import de.uni_koeln.arachne.sqlutil.ArachneSQLRightsConditionBuilder;
-import de.uni_koeln.arachne.util.ArachneUserRightsSingleton;
+import de.uni_koeln.arachne.sqlutil.SQLRightsConditionBuilder;
+import de.uni_koeln.arachne.util.UserRightsSingleton;
 
 
 
@@ -20,9 +20,9 @@ public class TestArachneSQLRightsConditionBuilder {
 		groups.add("Arachne");
 		
 		
-		ArachneUserRightsSingleton.init("Testman", false, true, 500, groups);
+		UserRightsSingleton.init("Testman", false, true, 500, groups);
 		
-		ArachneSQLRightsConditionBuilder rcb = new ArachneSQLRightsConditionBuilder("bauwerk");
+		SQLRightsConditionBuilder rcb = new SQLRightsConditionBuilder("bauwerk");
 		
 		assertEquals(rcb.getUserRightsSQLSnipplett(), " AND ( `bauwerk`.`DatensatzGruppeBauwerk` = \"Arachne\")");
 		
@@ -31,9 +31,9 @@ public class TestArachneSQLRightsConditionBuilder {
 		groups.add("Arachne");
 		groups.add("Oppenheim");
 		
-		ArachneUserRightsSingleton.init("Testman", false, true, 500, groups);
+		UserRightsSingleton.init("Testman", false, true, 500, groups);
 		
-		rcb = new ArachneSQLRightsConditionBuilder("bauwerk");
+		rcb = new SQLRightsConditionBuilder("bauwerk");
 		
 		assertEquals(rcb.getUserRightsSQLSnipplett(), " AND ( `bauwerk`.`DatensatzGruppeBauwerk` = \"Arachne\" OR `bauwerk`.`DatensatzGruppeBauwerk` = \"Oppenheim\")");
 		
@@ -43,9 +43,9 @@ public class TestArachneSQLRightsConditionBuilder {
 		groups.add("Arachne");
 		groups.add("Oppenheim");
 		
-		ArachneUserRightsSingleton.init("Testman", true, true, 900, groups);
+		UserRightsSingleton.init("Testman", true, true, 900, groups);
 		
-		rcb = new ArachneSQLRightsConditionBuilder("bauwerk");
+		rcb = new SQLRightsConditionBuilder("bauwerk");
 		
 		assertEquals(rcb.getUserRightsSQLSnipplett(), "");
 		

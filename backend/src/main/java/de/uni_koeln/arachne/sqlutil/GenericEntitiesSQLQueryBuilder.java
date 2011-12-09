@@ -2,9 +2,9 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.ArrayList;
 
-public class GenericEntitiesSQLQueryBuilder extends AbstractArachneSQLBuilder {
+public class GenericEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 
-	protected ArachneSQLRightsConditionBuilder rcb;
+	protected SQLRightsConditionBuilder rcb;
 	
 	/**
 	 * Constructs a condition to query a table.
@@ -20,7 +20,7 @@ public class GenericEntitiesSQLQueryBuilder extends AbstractArachneSQLBuilder {
 		// The key identification condition
 		Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");
-		keyCondition.setPart1(ArachneSQLToolbox.getQualifiedFieldname(table, ArachneSQLToolbox.generateForeignKeyName(field1)));
+		keyCondition.setPart1(SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generateForeignKeyName(field1)));
 		keyCondition.setPart2(field1Id.toString());
 		conditions.add(keyCondition);
 	}

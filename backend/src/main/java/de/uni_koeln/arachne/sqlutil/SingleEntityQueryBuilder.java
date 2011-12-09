@@ -9,17 +9,17 @@ import de.uni_koeln.arachne.util.ArachneId;
  * @author Rasmus Krempel
  *
  */
-public class ArachneSingleEntityQueryBuilder extends AbstractArachneSQLBuilder {
+public class SingleEntityQueryBuilder extends AbstractSQLBuilder {
 	
 	protected ArachneId id;
 	
-	protected ArachneSQLRightsConditionBuilder rcb;
+	protected SQLRightsConditionBuilder rcb;
 	
 	/**
 	 * Constructs a condition to find the Dataset described in ArachneId. creates <code>UserRightsConditionBuilder</code> , Limits the Result count to 1. 
 	 * @param ident This is the <code>ArachneId</code> the SQL retrieve statement should be written for
 	 */
-	public ArachneSingleEntityQueryBuilder(ArachneId ident) {
+	public SingleEntityQueryBuilder(ArachneId ident) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		id = ident;
@@ -27,11 +27,11 @@ public class ArachneSingleEntityQueryBuilder extends AbstractArachneSQLBuilder {
 		table = id.getTableName();
 		//Limits the Resultcount to 1
 		limit1 = true;
-		rcb = new ArachneSQLRightsConditionBuilder(table);
+		rcb = new SQLRightsConditionBuilder(table);
 		//The Primary key Identification condition
 		Condition cnd = new Condition();
 		cnd.setOperator("=");
-		cnd.setPart1(ArachneSQLToolbox.getQualifiedFieldname(table, ArachneSQLToolbox.generatePrimaryKeyName(table)));
+		cnd.setPart1(SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generatePrimaryKeyName(table)));
 		cnd.setPart2(id.getInternalKey().toString());
 		conditions.add(cnd);
 	}

@@ -11,7 +11,7 @@ import de.uni_koeln.arachne.mapping.GenericFieldMapperLong;
 import de.uni_koeln.arachne.mapping.GenericFieldMapperString;
 import de.uni_koeln.arachne.mapping.GenericFieldsMapperString;
 import de.uni_koeln.arachne.service.SQLResponseObject;
-import de.uni_koeln.arachne.sqlutil.ArachneGenericFieldSQLQueryBuilder;
+import de.uni_koeln.arachne.sqlutil.GenericFieldSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldsSQLQueryBuilder;
 
@@ -29,7 +29,7 @@ public class GenericSQLDao extends SQLDao {
 	 * @return a list of foreign ids or <code>null</code>.
 	 */
 	public List<Long> getIdByFieldId(String tableName, String field1, Long field1Id, String field2) {
-		ArachneGenericFieldSQLQueryBuilder queryBuilder = new ArachneGenericFieldSQLQueryBuilder(tableName, field1, field1Id, field2);
+		GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1, field1Id, field2);
 		@SuppressWarnings("unchecked")
 		List<Long> queryResult = (List<Long>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperLong());
 		if (queryResult != null) {
@@ -42,7 +42,7 @@ public class GenericSQLDao extends SQLDao {
 	}
 	
 	public List<String> getStringField(String tableName, String field1, Long field1Id, String field2) {
-		ArachneGenericFieldSQLQueryBuilder queryBuilder = new ArachneGenericFieldSQLQueryBuilder(tableName, field1, field1Id, field2);
+		GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1, field1Id, field2);
 		@SuppressWarnings("unchecked")
 		List<String> queryResult = (List<String>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperString());
 		// IMPORTANT because string casting can add null strings to the list

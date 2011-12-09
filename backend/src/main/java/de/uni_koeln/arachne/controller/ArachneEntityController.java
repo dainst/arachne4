@@ -14,7 +14,7 @@ import de.uni_koeln.arachne.response.ArachneDataset;
 import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.FormattedArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
-import de.uni_koeln.arachne.service.ArachneContextService;
+import de.uni_koeln.arachne.service.ContextService;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.ArachneImageService;
 import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
@@ -34,7 +34,7 @@ public class ArachneEntityController {
 	ArachneSingleEntityDataService arachneSingleEntityDataService;
 	
 	@Autowired
-	ArachneContextService contextService;
+	ContextService contextService;
 	
 	@Autowired
 	UserRightsService userRightsService;

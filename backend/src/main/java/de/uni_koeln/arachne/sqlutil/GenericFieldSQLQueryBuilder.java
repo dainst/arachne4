@@ -2,9 +2,9 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.ArrayList;
 
-public class ArachneGenericFieldSQLQueryBuilder extends AbstractArachneSQLBuilder {
+public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 
-	protected ArachneSQLRightsConditionBuilder rcb;
+	protected SQLRightsConditionBuilder rcb;
 	
 	private String field2;
 	
@@ -15,22 +15,22 @@ public class ArachneGenericFieldSQLQueryBuilder extends AbstractArachneSQLBuilde
 	 * @param field1Id The field Id.
 	 * @param field2 The field to query.
 	 */
-	public ArachneGenericFieldSQLQueryBuilder(String tableName, String field1, Long field1Id, String field2) {
+	public GenericFieldSQLQueryBuilder(String tableName, String field1, Long field1Id, String field2) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;
-		this.field2 = ArachneSQLToolbox.getQualifiedFieldname(table, field2);
-		rcb = new ArachneSQLRightsConditionBuilder(table);
+		this.field2 = SQLToolbox.getQualifiedFieldname(table, field2);
+		rcb = new SQLRightsConditionBuilder(table);
 		// The key identification condition
 		Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");
-		keyCondition.setPart1(ArachneSQLToolbox.getQualifiedFieldname(table, ArachneSQLToolbox.generateForeignKeyName(field1)));
+		keyCondition.setPart1(SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generateForeignKeyName(field1)));
 		keyCondition.setPart2(field1Id.toString());
 		conditions.add(keyCondition);
 		// The field2 not null condition
 		Condition notNullCondition = new Condition();
 		notNullCondition.setOperator("IS NOT");
-		notNullCondition.setPart1(ArachneSQLToolbox.getQualifiedFieldname(table, field2));
+		notNullCondition.setPart1(SQLToolbox.getQualifiedFieldname(table, field2));
 		notNullCondition.setPart2("NULL");
 		conditions.add(notNullCondition);
 	}

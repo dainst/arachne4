@@ -26,7 +26,7 @@ import de.uni_koeln.arachne.util.StrUtils;
  */
 // TODO create a common base class for all classes that need to read the xml configs if possible (ResponseFactory)
 @Service("arachneContextService")
-public class ArachneContextService {
+public class ContextService {
 	
 	@Autowired
 	private ArachneEntityIdentificationService arachneEntityIdentificationService;

@@ -3,8 +3,8 @@ package de.uni_koeln.arachne.sqlutil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenericFieldsSQLQueryBuilder extends AbstractArachneSQLBuilder {
-	protected ArachneSQLRightsConditionBuilder rcb;
+public class GenericFieldsSQLQueryBuilder extends AbstractSQLBuilder {
+	protected SQLRightsConditionBuilder rcb;
 	
 	private String field2;
 	
@@ -19,19 +19,19 @@ public class GenericFieldsSQLQueryBuilder extends AbstractArachneSQLBuilder {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;
-		rcb = new ArachneSQLRightsConditionBuilder(table);
+		rcb = new SQLRightsConditionBuilder(table);
 		// concatenate fields
-		field2 = ArachneSQLToolbox.getQualifiedFieldname(table, fields.get(0));
+		field2 = SQLToolbox.getQualifiedFieldname(table, fields.get(0));
 		int i = 1;
 		while (i<fields.size()) {
-			field2 += ", " + ArachneSQLToolbox.getQualifiedFieldname(table,fields.get(i));
+			field2 += ", " + SQLToolbox.getQualifiedFieldname(table,fields.get(i));
 			i++;
 		}
 		System.out.println("field2: " + field2);
 		// The key identification condition
 		Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");
-		keyCondition.setPart1(ArachneSQLToolbox.getQualifiedFieldname(table, ArachneSQLToolbox.generateForeignKeyName(field1)));
+		keyCondition.setPart1(SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generateForeignKeyName(field1)));
 		keyCondition.setPart2(field1Id.toString());
 		conditions.add(keyCondition);
 	}

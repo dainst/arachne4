@@ -7,7 +7,7 @@ import java.util.List;
  * @author Rasmus Krempel
  *
  */
-public abstract class AbstractArachneSQLBuilder {
+public abstract class AbstractSQLBuilder {
 	
 	protected String sql;
 	

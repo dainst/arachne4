@@ -9,7 +9,7 @@ package de.uni_koeln.arachne.sqlutil;
  * @author Rasmus Krempel
  *
  */
-public class ArachneSQLToolbox {
+public class SQLToolbox {
 	/**
 	 * Asserts the Name of the Primary key by the Tabename it comes from
 	 * @param tablename An Arachne internal Tablename example: bauwerk.

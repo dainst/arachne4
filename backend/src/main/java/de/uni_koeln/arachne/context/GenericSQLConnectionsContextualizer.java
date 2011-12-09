@@ -9,7 +9,7 @@ import de.uni_koeln.arachne.service.ArachneConnectionService;
 import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
 import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
 import de.uni_koeln.arachne.service.GenericSQLService;
-import de.uni_koeln.arachne.sqlutil.ArachneSQLToolbox;
+import de.uni_koeln.arachne.sqlutil.SQLToolbox;
 import de.uni_koeln.arachne.util.ArachneId;
 import de.uni_koeln.arachne.util.StrUtils;
 
@@ -76,7 +76,7 @@ public class GenericSQLConnectionsContextualizer implements IContextualizer {
 		if (!StrUtils.isEmptyOrNull(tableName)) {
 			// get context ids from 'cross table'
 			List<Long> contextIds = genericSQLService.getIdByFieldId(tableName, parentTableName, parent.getArachneId()
-					.getInternalKey(), ArachneSQLToolbox.generateForeignKeyName(contextType));
+					.getInternalKey(), SQLToolbox.generateForeignKeyName(contextType));
 			// get datasets, assemble the links and add them to the result list
 			if (contextIds != null) {
 				ListIterator<Long> contextId = contextIds.listIterator(offset);

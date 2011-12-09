@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.ArachneDatasetMapping;
 import de.uni_koeln.arachne.response.ArachneDataset;
-import de.uni_koeln.arachne.sqlutil.ArachneSingleEntityQueryBuilder;
-import de.uni_koeln.arachne.sqlutil.ArachneSingleEntitySubTablesQueryBuilder;
+import de.uni_koeln.arachne.sqlutil.SingleEntityQueryBuilder;
+import de.uni_koeln.arachne.sqlutil.SingleEntitySubTablesQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
 import de.uni_koeln.arachne.util.ArachneId;
 /**
@@ -24,7 +24,7 @@ public class ArachneDataMapDao extends SQLDao {
 		 */
 		public Map<String, String> getById(ArachneId id) {
 			
-			ArachneSingleEntityQueryBuilder queryBuilder = new ArachneSingleEntityQueryBuilder(id);
+			SingleEntityQueryBuilder queryBuilder = new SingleEntityQueryBuilder(id);
 			
 			String sql = queryBuilder.getSQL();
 			// TODO remove debug
@@ -49,7 +49,7 @@ public class ArachneDataMapDao extends SQLDao {
 		 */
 		public Map<String, String> getBySubDataset(ArachneDataset ds,TableConnectionDescription tdesc ) {
 			
-			ArachneSingleEntitySubTablesQueryBuilder qB = new ArachneSingleEntitySubTablesQueryBuilder(ds,tdesc);
+			SingleEntitySubTablesQueryBuilder qB = new SingleEntitySubTablesQueryBuilder(ds,tdesc);
 			
 			String sql = qB.getSQL();
 			System.out.println(sql);

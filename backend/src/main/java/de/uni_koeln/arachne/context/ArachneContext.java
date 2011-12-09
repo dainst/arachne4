@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.uni_koeln.arachne.response.ArachneDataset;
-import de.uni_koeln.arachne.service.ArachneContextService;
+import de.uni_koeln.arachne.service.ContextService;
 
 /**
  * This Class is a wrapper that holds and manages contexts of <code>ArachneDatasets</code>. The links are fetched on demand.
@@ -14,14 +14,14 @@ public class ArachneContext {
 	/**
 	 * The service which manages the retrieval etc.
 	 */
-	protected ArachneContextService contextService;
+	protected ContextService contextService;
 	
 	/**
 	 * Constructor setting up all needed fields.
 	 * @param contextType The type of context this class manages.
 	 * @param parent The <code>ArachneDataset</code> this context belongs to.
 	 */
-	public ArachneContext(String contextType, ArachneDataset parent, ArachneContextService contextService) {
+	public ArachneContext(String contextType, ArachneDataset parent, ContextService contextService) {
 		completionState = CompletionStateEnum.EMPTY;
 		this.contextType = contextType;
 		this.parent = parent;

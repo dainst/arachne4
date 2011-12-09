@@ -8,10 +8,10 @@ import de.uni_koeln.arachne.response.ArachneDataset;
  *  these do normally not Exist in Subprojects
  *	The Main Reason this is Implementet is for Objekt, Objekt has a lot of Subprojects which which are Optional. 
  */
-public class ArachneSingleEntitySubTablesQueryBuilder extends AbstractArachneSQLBuilder {
+public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 
 	
-	public ArachneSingleEntitySubTablesQueryBuilder(ArachneDataset ads,TableConnectionDescription tcd) {
+	public SingleEntitySubTablesQueryBuilder(ArachneDataset ads,TableConnectionDescription tcd) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 
@@ -47,9 +47,9 @@ public class ArachneSingleEntitySubTablesQueryBuilder extends AbstractArachneSQL
 		Condition cnd = new Condition();
 		cnd.setOperator("=");
 		if(targetField.equals("PrimaryKey"))
-			cnd.setPart1(ArachneSQLToolbox.getQualifiedFieldname(targetTable, ArachneSQLToolbox.generatePrimaryKeyName(targetTable)));
+			cnd.setPart1(SQLToolbox.getQualifiedFieldname(targetTable, SQLToolbox.generatePrimaryKeyName(targetTable)));
 		else
-			cnd.setPart1(ArachneSQLToolbox.getQualifiedFieldname(targetTable,targetField));
+			cnd.setPart1(SQLToolbox.getQualifiedFieldname(targetTable,targetField));
 		cnd.setPart2(info);
 		conditions.add(cnd);
 	}

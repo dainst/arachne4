@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.UserVerwaltungDao;
 import de.uni_koeln.arachne.mapping.UserAdministration;
-import de.uni_koeln.arachne.util.ArachneUserRightsSingleton;
+import de.uni_koeln.arachne.util.UserRightsSingleton;
 
 /**
  * This class allows to query the current users rights. 
@@ -91,7 +91,7 @@ public class UserRightsService {
 			userInfo = null;
 			
 			isSet = true;
-			ArachneUserRightsSingleton.init(this.getUsername(), this.isAuthorizedForAllGroups(), this.isConfirmed(), arachneUser.getGroupID(), this.getUserGroups());
+			UserRightsSingleton.init(this.getUsername(), this.isAuthorizedForAllGroups(), this.isConfirmed(), arachneUser.getGroupID(), this.getUserGroups());
 			
 		}
 	}		

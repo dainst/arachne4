@@ -3,7 +3,7 @@ package de.uni_koeln.arachne.sqlutil;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.uni_koeln.arachne.util.ArachneUserRightsSingleton;
+import de.uni_koeln.arachne.util.UserRightsSingleton;
 
 /**
  * This Object Builds up the User Rights Queston upon the User Rights Service.
@@ -12,13 +12,13 @@ import de.uni_koeln.arachne.util.ArachneUserRightsSingleton;
  *
  */
 // TODO add info about tables where no user rights management is possible/needed 
-public class ArachneSQLRightsConditionBuilder {
+public class SQLRightsConditionBuilder {
 
 	
 	private List<String> permissiongroups;
 	private String tableName;
 	
-	public ArachneSQLRightsConditionBuilder(String tn) {
+	public SQLRightsConditionBuilder(String tn) {
 		this.tableName =tn;
 	}
 	
@@ -33,7 +33,7 @@ public class ArachneSQLRightsConditionBuilder {
 		for (String perm : permissiongroups) {
 			Condition cnd = new Condition();
 			
-			cnd.setPart1( ArachneSQLToolbox.getQualifiedFieldname(tableName, "DatensatzGruppe"+ArachneSQLToolbox.ucfirst(tableName)));
+			cnd.setPart1( SQLToolbox.getQualifiedFieldname(tableName, "DatensatzGruppe"+SQLToolbox.ucfirst(tableName)));
 			cnd.setPart2("\""+perm +"\"");
 			cnd.setOperator("=");
 			conds.add( cnd);
@@ -49,7 +49,7 @@ public class ArachneSQLRightsConditionBuilder {
 	 */
 	public String getUserRightsSQLSnipplett(){
 		String result = "";
-		ArachneUserRightsSingleton userRights = ArachneUserRightsSingleton.getInstance(); 
+		UserRightsSingleton userRights = UserRightsSingleton.getInstance(); 
 		//in This case The User is Authorized to see Everything
 		if(userRights.isAuthorizedForAllGroups()){
 			return result;

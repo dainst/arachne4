@@ -8,10 +8,10 @@ import java.util.List;
  * @author Rasmus Krempel
  *
  */
-public class ArachneUserRightsSingleton {
+public class UserRightsSingleton {
 
 	
-	private static ArachneUserRightsSingleton instance;
+	private static UserRightsSingleton instance;
 	
 	/**
 	 * List of the groups the user has permissions to.
@@ -31,7 +31,7 @@ public class ArachneUserRightsSingleton {
 	private int permissionLevel;
 	
 	
-	private ArachneUserRightsSingleton(String un, boolean authall, boolean conf,int permlvl, List<String> grps) {
+	private UserRightsSingleton(String un, boolean authall, boolean conf,int permlvl, List<String> grps) {
 		userGroups = grps;
 		username = un;
 		authorizedForAllGroups = authall;
@@ -42,7 +42,7 @@ public class ArachneUserRightsSingleton {
 	 * Standard Singleton get Instance
 	 * @return Returns the Instance of this Singleton
 	 */
-	public static ArachneUserRightsSingleton getInstance() {
+	public static UserRightsSingleton getInstance() {
 
 		return instance;
 	}
@@ -55,7 +55,7 @@ public class ArachneUserRightsSingleton {
 	 * @param grps
 	 */
 	public static void init(String un, boolean authall, boolean conf,int permlvl, List<String> grps){
-		instance = new ArachneUserRightsSingleton(un, authall,conf,permlvl,  grps);
+		instance = new UserRightsSingleton(un, authall,conf,permlvl,  grps);
 	}
 	/**
 	 * Initializes user data if the user fulfills a specific clearance. 
