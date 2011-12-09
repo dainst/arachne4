@@ -42,7 +42,7 @@ public class ResponseFactory {
 	 * @param dataset The dataset which encapsulates the SQL query results.
 	 * @return A <code>FormattedArachneEntity</code> instance which can be jsonized.
 	 */
-	public FormattedArachneEntity createFormattedArachneEntity(ArachneDataset dataset) {
+	public FormattedArachneEntity createFormattedArachneEntity(Dataset dataset) {
 		// TODO remove debug
 		System.out.println("Constructing formatted response object...");
 		System.out.println("dataset: " + dataset);
@@ -157,7 +157,7 @@ public class ResponseFactory {
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A concatenated string containing the sections content.
 	 */
-	private String getStringFromSections(Element section, ArachneDataset dataset) {
+	private String getStringFromSections(Element section, Dataset dataset) {
 		String result = "";
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		@SuppressWarnings("unchecked")
@@ -209,7 +209,7 @@ public class ResponseFactory {
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Content</code> object containing the sections content.
 	 */
-	private Content getContentFromSections(Element section, ArachneDataset dataset) {
+	private Content getContentFromSections(Element section, Dataset dataset) {
 		Section result = new Section();
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
 		result.setLabel(section.getAttributeValue("labelKey"));
@@ -271,7 +271,7 @@ public class ResponseFactory {
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Content</code> object containing the context sections content.
 	 */
-	private Content getContentFromContext(Element context, ArachneDataset dataset) {
+	private Content getContentFromContext(Element context, Dataset dataset) {
 		Section result = new Section();
 		String contextType = context.getAttributeValue("type");
 		//TODO Get translated label string for value of labelKey-attribute in the section element  

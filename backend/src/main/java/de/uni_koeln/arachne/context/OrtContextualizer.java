@@ -1,10 +1,10 @@
 package de.uni_koeln.arachne.context;
 
-import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
+import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.GenericSQLService;
 
 public class OrtContextualizer extends LeftJoinTableContextualizer {
-	public OrtContextualizer(ArachneEntityIdentificationService arachneEntityIdentificationService
+	public OrtContextualizer(EntityIdentificationService arachneEntityIdentificationService
 			, GenericSQLService genericSQLService) {
 		super(arachneEntityIdentificationService, genericSQLService);
 		tableName = "ort";

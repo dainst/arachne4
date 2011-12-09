@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.ArachneDataMapDao;
-import de.uni_koeln.arachne.response.ArachneDataset;
+import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
 import de.uni_koeln.arachne.util.ArachneId;
 
@@ -16,13 +16,13 @@ import de.uni_koeln.arachne.util.ArachneId;
  *
  */
 @Service("arachneSingleEntityDataService")
-public class ArachneSingleEntityDataService {
+public class SingleEntityDataService {
 	
 	@Autowired
 	ArachneDataMapDao arachneDataMapDao;
 	List<TableConnectionDescription> subProjects;
 	
-	public ArachneSingleEntityDataService() {
+	public SingleEntityDataService() {
 		/*
 		// TODO Make This more Flexible
 		// This manages The TableConnectionDescriptions which provides Information about the sub projects
@@ -47,10 +47,10 @@ public class ArachneSingleEntityDataService {
 	 * @param id an Identifier of the Type ArachneId.
 	 * @return Instance of ArachneDataset that Represents the Dataset.
 	 */
-	public ArachneDataset getSingleEntityByArachneId(ArachneId id) {
-		ArachneDataset result;
+	public Dataset getSingleEntityByArachneId(ArachneId id) {
+		Dataset result;
 		Map<String, String> tempDataMap = arachneDataMapDao.getById(id);
-		result = new ArachneDataset();
+		result = new Dataset();
 		result.setArachneId(id);
 		if (tempDataMap != null) {
 			result.appendFields(tempDataMap);

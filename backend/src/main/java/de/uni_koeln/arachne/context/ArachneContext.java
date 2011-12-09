@@ -3,7 +3,7 @@ package de.uni_koeln.arachne.context;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.uni_koeln.arachne.response.ArachneDataset;
+import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.ContextService;
 
 /**
@@ -21,7 +21,7 @@ public class ArachneContext {
 	 * @param contextType The type of context this class manages.
 	 * @param parent The <code>ArachneDataset</code> this context belongs to.
 	 */
-	public ArachneContext(String contextType, ArachneDataset parent, ContextService contextService) {
+	public ArachneContext(String contextType, Dataset parent, ContextService contextService) {
 		completionState = CompletionStateEnum.EMPTY;
 		this.contextType = contextType;
 		this.parent = parent;
@@ -39,7 +39,7 @@ public class ArachneContext {
 	/**
 	 * The parent dataset. It describes where the contexts belongs to.
 	 */
-	protected ArachneDataset parent;
+	protected Dataset parent;
 
 	/**
 	 * An enumeration class representing the state of the context.

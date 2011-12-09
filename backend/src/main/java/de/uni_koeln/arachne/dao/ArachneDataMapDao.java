@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.ArachneDatasetMapping;
-import de.uni_koeln.arachne.response.ArachneDataset;
+import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.sqlutil.SingleEntityQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.SingleEntitySubTablesQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
@@ -47,7 +47,7 @@ public class ArachneDataMapDao extends SQLDao {
 		 * @param tdesc instance of <code>TableConnectionDescription</code> which represents the Connection between the Dataset and the Subdataset 
 		 * @return <code>Map<String,String></code> that contains the Description of the Subdataset, caution! The Subdataset is NOT automatically appended to the Dataset.
 		 */
-		public Map<String, String> getBySubDataset(ArachneDataset ds,TableConnectionDescription tdesc ) {
+		public Map<String, String> getBySubDataset(Dataset ds,TableConnectionDescription tdesc ) {
 			
 			SingleEntitySubTablesQueryBuilder qB = new SingleEntitySubTablesQueryBuilder(ds,tdesc);
 			

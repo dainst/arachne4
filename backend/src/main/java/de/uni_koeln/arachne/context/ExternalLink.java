@@ -1,6 +1,6 @@
 package de.uni_koeln.arachne.context;
 
-import de.uni_koeln.arachne.response.ArachneDataset;
+import de.uni_koeln.arachne.response.Dataset;
 
 /**
  * This class is a specialized <code>Link</code> to hold external links. This means that the right side of the link
@@ -12,7 +12,7 @@ public class ExternalLink extends Link {
 	/**
 	 * Left side of the link. In general this is the parent entity.
 	 */
-	protected ArachneDataset entity;
+	protected Dataset entity;
 	
 	/**
 	 * Right side of the link.
@@ -29,11 +29,11 @@ public class ExternalLink extends Link {
 		return uri2;
 	}
 
-	public ArachneDataset getEntity() {
+	public Dataset getEntity() {
 		return entity;
 	}
 
-	public void setEntity(ArachneDataset entity) {
+	public void setEntity(Dataset entity) {
 		this.entity = entity;
 	}
 

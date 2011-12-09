@@ -2,7 +2,7 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.ArrayList;
 
-import de.uni_koeln.arachne.response.ArachneDataset;
+import de.uni_koeln.arachne.response.Dataset;
 /**
  * This Class gets The Sub Projects Informations. This differs form the ArachneSingleEntityQueryBuilder that it doesnt check the User Rights.
  *  these do normally not Exist in Subprojects
@@ -11,7 +11,7 @@ import de.uni_koeln.arachne.response.ArachneDataset;
 public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 
 	
-	public SingleEntitySubTablesQueryBuilder(ArachneDataset ads,TableConnectionDescription tcd) {
+	public SingleEntitySubTablesQueryBuilder(Dataset ads,TableConnectionDescription tcd) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 

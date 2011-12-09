@@ -16,7 +16,7 @@ import de.uni_koeln.arachne.util.StrUtils;
  * It Also contains a List for The Images and annother Map for the Contexts
  *
  */
-public class ArachneDataset {
+public class Dataset {
 	// TODO change implementation to something more portable
 	/**
 	 * workaround for implementing getUri;
@@ -48,7 +48,7 @@ public class ArachneDataset {
 	/**
 	 * Parameterless constructor.
 	 */
-	public ArachneDataset() {
+	public Dataset() {
 		fields = new Hashtable<String,String>();
 		context = new ArrayList<ArachneContext>();
 	}	

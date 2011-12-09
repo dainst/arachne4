@@ -5,7 +5,7 @@ package de.uni_koeln.arachne.response;
  * @author Rasmus Krempel
  *
  */
-public class ArachneImage extends ArachneDataset {
+public class ArachneImage extends Dataset {
 
 	
 	

@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import de.uni_koeln.arachne.response.ArachneDataset;
+import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.FormattedArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.service.ContextService;
-import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
-import de.uni_koeln.arachne.service.ArachneImageService;
-import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
+import de.uni_koeln.arachne.service.EntityIdentificationService;
+import de.uni_koeln.arachne.service.ImageService;
+import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.ArachneId;
 
@@ -28,10 +28,10 @@ import de.uni_koeln.arachne.util.ArachneId;
 public class ArachneEntityController {
 	
 	@Autowired
-	ArachneEntityIdentificationService arachneEntityIdentificationService;
+	EntityIdentificationService arachneEntityIdentificationService;
 
 	@Autowired
-	ArachneSingleEntityDataService arachneSingleEntityDataService;
+	SingleEntityDataService arachneSingleEntityDataService;
 	
 	@Autowired
 	ContextService contextService;
@@ -43,7 +43,7 @@ public class ArachneEntityController {
 	ResponseFactory responseFactory;
 	
 	@Autowired
-	ArachneImageService arachneImageService;
+	ImageService arachneImageService;
 	
 	/**
 	 * Handles http request for /{id}
@@ -88,7 +88,7 @@ public class ArachneEntityController {
     	// TODO remove debug
     	System.out.println("Request for entity: " + arachneId.getArachneEntityID() + " - type: " + arachneId.getTableName());
     	
-    	ArachneDataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
+    	Dataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
     	
     	arachneImageService.addImages(arachneDataset);
     	    	    	
@@ -110,7 +110,7 @@ public class ArachneEntityController {
      * @return a JSON object containing the data
      */
     @RequestMapping(value="/doc/{id}", method=RequestMethod.GET)
-    public @ResponseBody ArachneDataset handleGetDocEntityRequest(@PathVariable("id") Long id) {
+    public @ResponseBody Dataset handleGetDocEntityRequest(@PathVariable("id") Long id) {
     	// TODO implement me
     	return null;
     }
@@ -123,7 +123,7 @@ public class ArachneEntityController {
      * @return a JSON object containing the data
      */
     @RequestMapping(value="doc/{category}/{id}", method=RequestMethod.GET)
-    public @ResponseBody ArachneDataset handleGetDocCategoryIdRequest(@PathVariable("category") String category, @PathVariable("id") Long id) {
+    public @ResponseBody Dataset handleGetDocCategoryIdRequest(@PathVariable("category") String category, @PathVariable("id") Long id) {
     	// TODO implement me
 		return null;
     }
@@ -138,7 +138,7 @@ public class ArachneEntityController {
      * @return a JSON object containing the data
      */
     @RequestMapping(value="/data/{id}", method=RequestMethod.GET)
-    public @ResponseBody ArachneDataset handleGetDataEntityRequest(@PathVariable("id") Long id) {
+    public @ResponseBody Dataset handleGetDataEntityRequest(@PathVariable("id") Long id) {
     	// TODO implement me
 		return null;
     }
@@ -151,7 +151,7 @@ public class ArachneEntityController {
      * @return a JSON object containing the data
      */
     @RequestMapping(value="data/{category}/{id}", method=RequestMethod.GET)
-    public @ResponseBody ArachneDataset handleGetDataCategoryIdRequest(@PathVariable("category") String category, @PathVariable("id") Long id) {
+    public @ResponseBody Dataset handleGetDataCategoryIdRequest(@PathVariable("category") String category, @PathVariable("id") Long id) {
     	// TODO implement me
     	return null;
     }

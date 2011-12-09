@@ -9,7 +9,7 @@ import de.uni_koeln.arachne.util.ArachneId;
 
 
 @Service("arachneEntityIdentificationService")
-public class ArachneEntityIdentificationService {
+public class EntityIdentificationService {
 	
 	@Autowired
 	private ArachneEntityDao arachneEntityDao;

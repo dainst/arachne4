@@ -2,7 +2,7 @@ package de.uni_koeln.arachne.context;
 
 import java.util.List;
 
-import de.uni_koeln.arachne.response.ArachneDataset;
+import de.uni_koeln.arachne.response.Dataset;
 
 /**
  * This Interface describes the minimum functions a context retriever must implement.
@@ -21,5 +21,5 @@ public interface IContextualizer {
 	 * @param limit The number of contexts to get.
 	 * @return The links that represent the contexts.
 	 */
-	public List<Link> retrieve(ArachneDataset parent, Integer offset, Integer limit);
+	public List<Link> retrieve(Dataset parent, Integer offset, Integer limit);
 }

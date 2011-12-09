@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.support.ServletContextResource;
 
 import de.uni_koeln.arachne.context.*;
-import de.uni_koeln.arachne.response.ArachneDataset;
+import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.util.StrUtils;
 
 /**
@@ -29,14 +29,14 @@ import de.uni_koeln.arachne.util.StrUtils;
 public class ContextService {
 	
 	@Autowired
-	private ArachneEntityIdentificationService arachneEntityIdentificationService;
+	private EntityIdentificationService arachneEntityIdentificationService;
 	
 	/**
 	 * Service to access the 'Verknuepfungen' table. The information stored in that table is used
 	 * to determine which contexts the <code>addContext</code> method adds to a given dataset.
 	 */	
 	@Autowired
-	private ArachneConnectionService arachneConnectionService;
+	private ConnectionService arachneConnectionService;
 	
 	/**
 	 * Service to access ids in 'cross tables'.
@@ -48,7 +48,7 @@ public class ContextService {
 	 * Service to retrieve a single entity.
 	 */
 	@Autowired
-	private ArachneSingleEntityDataService arachneSingleEntityDataService;
+	private SingleEntityDataService arachneSingleEntityDataService;
 	
 	/**
 	 * Servlet context to load the XML config files. 
@@ -60,7 +60,7 @@ public class ContextService {
 	 * This methods adds all contexts to the dataset that are found in the XML description.
 	 * @param parent The dataset to add the contexts to.
 	 */
-	public void addMandatoryContexts(ArachneDataset parent) {
+	public void addMandatoryContexts(Dataset parent) {
 		List<String> externalFields = getExternalFields(parent.getArachneId().getTableName());
 		System.out.println("addMandatoryContexts: external fields: " + externalFields.size());
 
@@ -90,7 +90,7 @@ public class ContextService {
 	 * 
 	 * @param parent ArachneDataset that will gain the added context
 	 */
-	public void addContext(ArachneDataset parent) {
+	public void addContext(Dataset parent) {
 		if (parent.getArachneId().getTableName().equals("bauwerk")) {
 			List<String> connectionList = arachneConnectionService.getConnectionList(parent.getArachneId().getTableName());
 			Iterator<String> i = connectionList.iterator();
@@ -115,7 +115,7 @@ public class ContextService {
 	 * @param limit Quantity of contexts 
 	 * @return Returns a list of <code>Links</code> 
 	 */ 
-	public List<Link> getLinks(ArachneDataset parent, String contextType, Integer offset, Integer limit) {
+	public List<Link> getLinks(Dataset parent, String contextType, Integer offset, Integer limit) {
 	    IContextualizer contextualizer = getContextualizerByContextType(contextType);
 	    return contextualizer.retrieve(parent, offset, limit);
 	}
@@ -133,7 +133,7 @@ public class ContextService {
 		// TODO The services should not be hardcoded but somehow specified by either contextType or contextualizer 
 		//Initialization of contextualizer needs two params
 		Class [] classParam = new Class[2];
-		classParam[0] = ArachneEntityIdentificationService.class;
+		classParam[0] = EntityIdentificationService.class;
 		classParam[1] = GenericSQLService.class;
 		
 		//Initialization of contextualizer needs two params

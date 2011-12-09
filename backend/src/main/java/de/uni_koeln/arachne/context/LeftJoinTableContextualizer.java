@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import de.uni_koeln.arachne.response.ArachneDataset;
-import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
+import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.util.ArachneId;
 import de.uni_koeln.arachne.util.StrUtils;
@@ -20,7 +20,7 @@ import de.uni_koeln.arachne.util.StrUtils;
  */
 public abstract class LeftJoinTableContextualizer implements IContextualizer {
 
-	private ArachneEntityIdentificationService arachneEntityIdentificationService;
+	private EntityIdentificationService arachneEntityIdentificationService;
 	private GenericSQLService genericSQLService;
 	
 	protected String tableName;
@@ -30,7 +30,7 @@ public abstract class LeftJoinTableContextualizer implements IContextualizer {
 	/**
 	 * Constructor setting the needed services.
 	 */
-	public LeftJoinTableContextualizer(ArachneEntityIdentificationService arachneEntityIdentificationService
+	public LeftJoinTableContextualizer(EntityIdentificationService arachneEntityIdentificationService
 			, GenericSQLService genericSQLService) {
 		this.arachneEntityIdentificationService = arachneEntityIdentificationService;
 		this.genericSQLService = genericSQLService;
@@ -46,7 +46,7 @@ public abstract class LeftJoinTableContextualizer implements IContextualizer {
 	private Long linkCount = 0l;
 	
 	@Override
-	public List<Link> retrieve(ArachneDataset parent, Integer offset, Integer limit) {
+	public List<Link> retrieve(Dataset parent, Integer offset, Integer limit) {
 		if (StrUtils.isEmptyOrNull(joinTableName)) {
 			joinTableName = tableName;
 		}
@@ -60,7 +60,7 @@ public abstract class LeftJoinTableContextualizer implements IContextualizer {
 			while (contextMap.hasNext() && linkCount < limit) {
 				Map<String, String> map = contextMap.next();
 				ArachneLink link = new ArachneLink();
-				ArachneDataset dataset = new ArachneDataset();
+				Dataset dataset = new Dataset();
 				String id = map.get(joinTableName + ".PS_" + Character.toUpperCase(tableName.charAt(0)) + tableName.substring(1) + "ID");
 				ArachneId arachneId = arachneEntityIdentificationService.getId(tableName, Long.parseLong(id));
 				if (arachneId == null) {

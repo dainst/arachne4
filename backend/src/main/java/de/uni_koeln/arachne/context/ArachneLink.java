@@ -1,6 +1,6 @@
 package de.uni_koeln.arachne.context;
 
-import de.uni_koeln.arachne.response.ArachneDataset;
+import de.uni_koeln.arachne.response.Dataset;
 
 /**
  * This class is a specialized <code>Link</code> to hold internal links. This means that both sides of the link
@@ -11,12 +11,12 @@ public class ArachneLink extends Link {
 	/**
 	 * Left side of the link. In general this is the parent entity.
 	 */
-	private ArachneDataset entity1; 
+	private Dataset entity1; 
 	
 	/**
 	 * Right side of the link.
 	 */
-	private ArachneDataset entity2;
+	private Dataset entity2;
 	
 	@Override
 	public String getUri1() {
@@ -28,19 +28,19 @@ public class ArachneLink extends Link {
 		return entity2.getUri();
 	}
 
-	public ArachneDataset getEntity1() {
+	public Dataset getEntity1() {
 		return entity1;
 	}
 
-	public void setEntity1(ArachneDataset entity1) {
+	public void setEntity1(Dataset entity1) {
 		this.entity1 = entity1;
 	}
 
-	public ArachneDataset getEntity2() {
+	public Dataset getEntity2() {
 		return entity2;
 	}
 
-	public void setEntity2(ArachneDataset entity2) {
+	public void setEntity2(Dataset entity2) {
 		this.entity2 = entity2;
 	}
 }

@@ -10,7 +10,7 @@ import de.uni_koeln.arachne.dao.ArachneConnectionDao;
  * Service class to query the 'Verknuepfungen' table.
  */
 @Service
-public class ArachneConnectionService {
+public class ConnectionService {
 	
 	/**
 	 * Hibernate DAO class.

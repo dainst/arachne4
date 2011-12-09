@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import de.uni_koeln.arachne.response.ArachneDataset;
-import de.uni_koeln.arachne.service.ArachneConnectionService;
-import de.uni_koeln.arachne.service.ArachneEntityIdentificationService;
-import de.uni_koeln.arachne.service.ArachneSingleEntityDataService;
+import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.service.ConnectionService;
+import de.uni_koeln.arachne.service.EntityIdentificationService;
+import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.sqlutil.SQLToolbox;
 import de.uni_koeln.arachne.util.ArachneId;
@@ -25,7 +25,7 @@ public class GenericSQLConnectionsContextualizer implements IContextualizer {
 	 * Service to access the 'Verknuepfungen' table. The information stored in that table is used
 	 * to determine which table to query for context entities.
 	 */	
-	private ArachneConnectionService arachneConnectionService;
+	private ConnectionService arachneConnectionService;
 	
 	/**
 	 * The type of <code>Context<code> the <code>Contextualizer</code> retrieves.
@@ -37,9 +37,9 @@ public class GenericSQLConnectionsContextualizer implements IContextualizer {
 	 */
 	private GenericSQLService genericSQLService;
 
-	private ArachneEntityIdentificationService arachneEntityIdentificationService;
+	private EntityIdentificationService arachneEntityIdentificationService;
 
-	private ArachneSingleEntityDataService arachneSingleEntityDataService;
+	private SingleEntityDataService arachneSingleEntityDataService;
 	
 	/**
 	 * Constructor initializing the type of the context. The type is used to retrieve the links.
@@ -48,9 +48,9 @@ public class GenericSQLConnectionsContextualizer implements IContextualizer {
 	 * @param arachneEntityIdentificationService 
 	 * @param arachneSingleEntityDataService 
 	 */
-	public GenericSQLConnectionsContextualizer(String contextType, ArachneConnectionService arachneConnectionService
-			, GenericSQLService genericSQLService, ArachneEntityIdentificationService arachneEntityIdentificationService
-			, ArachneSingleEntityDataService arachneSingleEntityDataService) {
+	public GenericSQLConnectionsContextualizer(String contextType, ConnectionService arachneConnectionService
+			, GenericSQLService genericSQLService, EntityIdentificationService arachneEntityIdentificationService
+			, SingleEntityDataService arachneSingleEntityDataService) {
 		this.contextType = contextType;
 		this.arachneConnectionService = arachneConnectionService;
 		this.genericSQLService = genericSQLService;
@@ -66,7 +66,7 @@ public class GenericSQLConnectionsContextualizer implements IContextualizer {
 	private Long linkCount = 0l;	
 	
 	@Override
-	public List<Link> retrieve(ArachneDataset parent, Integer offset,
+	public List<Link> retrieve(Dataset parent, Integer offset,
 			Integer limit) {
 		List<Link> result = new ArrayList<Link>();
 		String parentTableName = parent.getArachneId().getTableName();
@@ -86,7 +86,7 @@ public class GenericSQLConnectionsContextualizer implements IContextualizer {
 
 
 					//improved Performance for testing ... less SQL-queries
-					ArachneDataset aDs = new ArachneDataset();
+					Dataset aDs = new Dataset();
 					//Performance ... the arachneId is build without the identification-service
 
 					ArachneId id = new ArachneId(tableName, contextId.next(), (long) 0, false);

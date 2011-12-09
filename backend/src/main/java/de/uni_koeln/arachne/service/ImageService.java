@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.mapping.ImageRowMapper;
-import de.uni_koeln.arachne.response.ArachneDataset;
+import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.util.ArachneId;
 
@@ -15,7 +15,7 @@ import de.uni_koeln.arachne.util.ArachneId;
  * This service class provides the means to retrieve images from the database.
  */
 @Service("ArachneImageService")
-public class ArachneImageService {
+public class ImageService {
 	@Autowired
 	GenericSQLService genericSQLService;
 	
@@ -24,7 +24,7 @@ public class ArachneImageService {
 	 * of images. 
 	 * @param dataset The dataset to add images to.
 	 */
-	public void addImages(ArachneDataset dataset) {
+	public void addImages(Dataset dataset) {
 		ArachneId arachneId = dataset.getArachneId();
 		ArrayList<String> fieldList = new ArrayList<String>(2);
 		fieldList.add("PS_MARBilderID");
