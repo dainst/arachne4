@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<category name="topographie">
+    <display>
+        <title>
+            <field datasource="topographie.KurzbeschreibungTopographie" />
+        </title>
+        <subtitle>
+             <section>
+                <section separator=" / ">
+                    <field datasource="topographie.modernerOrt" ifEmpty="ort.Stadt" />
+                    <field datasource="topographie.antikerOrt" ifEmpty="ort.Ort_antik" />
+                </section>
+            </section>
+        </subtitle>
+        <datasections>
+        	<section labelKey="Informationen zur Topographie">
+        		<section labelKey="Lokalisierung">
+        			<context type="ort" separator=", ">
+        				<field datasource=".Stadt"  />
+        				<field datasource=".Land" />
+        				<field datasource=".Countrycode" />
+        				<field datasource=".Aufbewahrungsort" />
+        			</context>
+        			<!-- Doesn't work yet since the concatination implementation cannot handle it  
+        			<field datasource="topographie.antikeGriechLandschaftTopographie" prefix="Antike Landschaft: "/>
+        			<field datasource="topographie.antikeRoemProvinzTopographie" prefix="Römische Provinz: "/>
+        			 -->
+        		</section>
+        		<section labelKey="Beschreibung">
+	        		<field datasource="topographie.TopographieTypus" prefix="Kategorie: " />
+	        	</section>
+	            <context type="literatur" labelKey="Literatur" separator=" ">
+	            	<field datasource=".DAIRichtlinien" />
+	            	<field datasource=".Seite" />
+	            </context>
+	    	</section>
+        </datasections>
+    </display>
+</category>
