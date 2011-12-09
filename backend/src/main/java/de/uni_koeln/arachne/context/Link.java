@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.context;
 
 import java.util.Map;
 
+// TODO reevaluate this class regarding the fields map
 /**
  * Base class for holding links between URIs and additional information.
  *
@@ -18,11 +19,14 @@ public abstract class Link {
 	 */
 	protected Map<String, String> fields;
 	
-	// TODO add missing documentation
 	/**
-	 * 
+	 * Function to retrieve the URI of the left side of the link.
 	 */
 	abstract String getUri1();	
+	
+	/**
+	 * Function to retrieve the URI of the right side of the link.
+	 */
 	abstract String getUri2();
 	
 	public String getLinkType() {

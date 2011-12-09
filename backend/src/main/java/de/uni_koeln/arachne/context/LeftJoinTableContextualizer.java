@@ -36,6 +36,7 @@ public abstract class LeftJoinTableContextualizer implements IContextualizer {
 		this.genericSQLService = genericSQLService;
 	}
 	
+	// TODO check if this method is needed/makes sense
 	@Override
 	public String getContextType() {
 		// TODO Auto-generated method stub

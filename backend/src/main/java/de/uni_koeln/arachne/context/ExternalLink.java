@@ -2,10 +2,21 @@ package de.uni_koeln.arachne.context;
 
 import de.uni_koeln.arachne.response.ArachneDataset;
 
-// TODO add documentation
+/**
+ * This class is a specialized <code>Link</code> to hold external links. This means that the right side of the link
+ * is an entity fetched from an external source while the left side is an entity fetched from the database.
+ * The left side is represented as a <code>ArachneDataset</code> while the right side is represented as a URI.
+ */
 public class ExternalLink extends Link {
+	
+	/**
+	 * Left side of the link. In general this is the parent entity.
+	 */
 	protected ArachneDataset entity;
 	
+	/**
+	 * Right side of the link.
+	 */
 	protected String uri2;
 	
 	@Override

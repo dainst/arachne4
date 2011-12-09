@@ -2,11 +2,20 @@ package de.uni_koeln.arachne.context;
 
 import de.uni_koeln.arachne.response.ArachneDataset;
 
-// TODO add documentation
+/**
+ * This class is a specialized <code>Link</code> to hold internal links. This means that both sides of the link
+ * are entities fetched from the database. As such they a represented as <code>ArachneDatasets</code>. 
+ */
 public class ArachneLink extends Link {
 
+	/**
+	 * Left side of the link. In general this is the parent entity.
+	 */
 	private ArachneDataset entity1; 
 	
+	/**
+	 * Right side of the link.
+	 */
 	private ArachneDataset entity2;
 	
 	@Override
