@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.uni_koeln.arachne.dao.ArachneDataMapDao;
+import de.uni_koeln.arachne.dao.DataMapDao;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
 import de.uni_koeln.arachne.util.ArachneId;
@@ -19,7 +19,7 @@ import de.uni_koeln.arachne.util.ArachneId;
 public class SingleEntityDataService {
 	
 	@Autowired
-	ArachneDataMapDao arachneDataMapDao;
+	DataMapDao arachneDataMapDao;
 	List<TableConnectionDescription> subProjects;
 	
 	public SingleEntityDataService() {

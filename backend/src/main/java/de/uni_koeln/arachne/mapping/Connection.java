@@ -11,7 +11,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="Verknuepfungen")
-public class ArachneConnection {
+public class Connection {
 	@Id
 	@Column(name="PS_VerknuepfungenID")
 	private Long id = null;

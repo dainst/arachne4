@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 
-import de.uni_koeln.arachne.mapping.ArachneConnection;
+import de.uni_koeln.arachne.mapping.Connection;
 
 /**
  * Data access class to retrieve information from the 'Verknuepfungen' table via hibernate.
  */
 @Repository("ArachneConnectionDao")
-public class ArachneConnectionDao extends HibernateTemplateDao {
+public class ConnectionDao extends HibernateTemplateDao {
 	/**
 	 * @param primaryId Primary id of the entry.
 	 * @return an instance of the <code>ArachneConnection</code> table mapping.
 	 */
-	public ArachneConnection getByID(Long primaryId) {
-		return (ArachneConnection) hibernateTemplate.get(ArachneConnection.class, primaryId);
+	public Connection getByID(Long primaryId) {
+		return (Connection) hibernateTemplate.get(Connection.class, primaryId);
 	}
 	
 	/**
@@ -25,7 +25,7 @@ public class ArachneConnectionDao extends HibernateTemplateDao {
 	 */
 	public List<String> getConnectionList(String type) {
 		@SuppressWarnings("unchecked")
-		List<ArachneConnection> queryResult = (List<ArachneConnection>) hibernateTemplate
+		List<Connection> queryResult = (List<Connection>) hibernateTemplate
 				.find("from ArachneConnection where Teil1 = '" + type + "'");
 		List<String> result = new ArrayList<String>();
 		for (int i=0; i<queryResult.size(); i++) {
@@ -43,7 +43,7 @@ public class ArachneConnectionDao extends HibernateTemplateDao {
 	 */
 	public String getTableName(String table1, String table2) {
 		@SuppressWarnings("unchecked")
-		List<ArachneConnection> queryResult = (List<ArachneConnection>) hibernateTemplate
+		List<Connection> queryResult = (List<Connection>) hibernateTemplate
 				.find("from ArachneConnection where Teil1 = '" + table1 + "' and Teil2 = '" + table2 + "'");
 		if (queryResult.size() > 0) {
 			return queryResult.get(0).getTable();

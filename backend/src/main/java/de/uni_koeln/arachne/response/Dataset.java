@@ -5,7 +5,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import de.uni_koeln.arachne.context.ArachneContext;
+import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.context.ArachneLink;
 import de.uni_koeln.arachne.context.Link;
 import de.uni_koeln.arachne.util.ArachneId;
@@ -37,7 +37,7 @@ public class Dataset {
 	/**
 	 * The context map contains the contexts of the entity.
 	 */
-	protected List<ArachneContext> context;
+	protected List<Context> context;
 	
 	/**
 	 * The Images that are asociated with the dataset.
@@ -50,7 +50,7 @@ public class Dataset {
 	 */
 	public Dataset() {
 		fields = new Hashtable<String,String>();
-		context = new ArrayList<ArachneContext>();
+		context = new ArrayList<Context>();
 	}	
 	
 	/**
@@ -70,7 +70,7 @@ public class Dataset {
 		return arachneId;
 	}
 	
-	public List<ArachneContext> getContext() {
+	public List<Context> getContext() {
 		return context;
 	}
 	
@@ -89,7 +89,7 @@ public class Dataset {
 	 * @return The number of context entities in this context
 	 */
 	public int getContextSize(String contextType) {
-		for (ArachneContext context: this.context) {
+		for (Context context: this.context) {
 			if (context.getContextType().equals(contextType)) {
 				return context.getContextSize();				
 			}
@@ -129,7 +129,7 @@ public class Dataset {
 	 */
 	public String getFieldFromContext(String fieldName) {
 		String result = null;
-		for (ArachneContext context: this.context) {
+		for (Context context: this.context) {
 			ArachneLink link = (ArachneLink)context.getFirstContext();
 			if (link != null) {
 				// we know that Entity1 is 'this'
@@ -149,7 +149,7 @@ public class Dataset {
 	 */
 	public String getFieldFromContext(String fieldName, int index) {
 		String result = null;
-		for (ArachneContext context: this.context) {
+		for (Context context: this.context) {
 			ArachneLink link = (ArachneLink)context.getContext(index);
 			if (link != null) {
 				// we know that Entity1 is 'this'
@@ -170,7 +170,7 @@ public class Dataset {
 	 */
 	public List<String> getFieldsFromContexts(String fieldName) {
 		List<String> result = new ArrayList<String>();
-		for (ArachneContext context: this.context) {
+		for (Context context: this.context) {
 			List<Link> links = context.getallContexts();
 			if (!links.isEmpty()) {
 				for (Link link: links) {
@@ -195,7 +195,7 @@ public class Dataset {
 	}
 	
 	// set methods
-	public void setContext(List<ArachneContext> context) {
+	public void setContext(List<Context> context) {
 		this.context = context;
 	}
 	
@@ -206,7 +206,7 @@ public class Dataset {
 		this.images = images;
 	}
 		
-	public void addContext(ArachneContext aContext) {
+	public void addContext(Context aContext) {
 		this.context.add(aContext);
 	}
 

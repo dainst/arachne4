@@ -76,7 +76,7 @@ public class ContextService {
 		System.out.println("Mandatory Contexts: " + mandatoryContextTypes);
 		Iterator<String> contextType = mandatoryContextTypes.iterator();
 		while (contextType.hasNext()) {
-			ArachneContext context = new ArachneContext(contextType.next(), parent, this);
+			Context context = new Context(contextType.next(), parent, this);
 			context.getLimitContext(4);
 			parent.addContext(context);
 		}
@@ -95,12 +95,12 @@ public class ContextService {
 			List<String> connectionList = arachneConnectionService.getConnectionList(parent.getArachneId().getTableName());
 			Iterator<String> i = connectionList.iterator();
 			while (i.hasNext()) {
-				ArachneContext context = new ArachneContext(i.next(), parent, this);
+				Context context = new Context(i.next(), parent, this);
 				context.getLimitContext(10);
 				parent.addContext(context);
 			}
 			
-			ArachneContext litContext = new ArachneContext("Literatur", parent, this);
+			Context litContext = new Context("Literatur", parent, this);
 			litContext.getLimitContext(10);
 			parent.addContext(litContext);
 		}

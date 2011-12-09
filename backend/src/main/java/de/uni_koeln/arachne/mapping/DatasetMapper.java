@@ -16,7 +16,7 @@ import de.uni_koeln.arachne.util.StrUtils;
  * Suits for Bauwerk, Bauwerksteil, Topographie, Objekt, Releif, Realie, Sammlung
  * @author Rasmus Krempel
  */
-public class ArachneDatasetMapping implements RowMapper<Map<String,String>> {
+public class DatasetMapper implements RowMapper<Map<String,String>> {
 
 	public Map<String,String> mapRow(ResultSet rs, int rownum) throws SQLException {
 		Map<String,String> dataset = new Hashtable<String,String>();

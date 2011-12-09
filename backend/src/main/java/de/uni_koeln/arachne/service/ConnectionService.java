@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.uni_koeln.arachne.dao.ArachneConnectionDao;
+import de.uni_koeln.arachne.dao.ConnectionDao;
 
 /**
  * Service class to query the 'Verknuepfungen' table.
@@ -16,7 +16,7 @@ public class ConnectionService {
 	 * Hibernate DAO class.
 	 */
 	@Autowired
-	private ArachneConnectionDao arachneConnectionDao;
+	private ConnectionDao arachneConnectionDao;
 	
 	/**
 	 * Retrieves a list of connected tables from the table 'Verknuepfungen'.

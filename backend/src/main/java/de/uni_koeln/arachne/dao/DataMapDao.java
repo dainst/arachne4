@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import de.uni_koeln.arachne.mapping.ArachneDatasetMapping;
+import de.uni_koeln.arachne.mapping.DatasetMapper;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.sqlutil.SingleEntityQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.SingleEntitySubTablesQueryBuilder;
@@ -16,7 +16,7 @@ import de.uni_koeln.arachne.util.ArachneId;
  * Querys the DataBase and retrives the Result as Key/Value Map
  */
 @Repository("arachneDataMapDao")
-public class ArachneDataMapDao extends SQLDao {
+public class DataMapDao extends SQLDao {
 		/**
 		 * Gets a map of values by Id
 		 * @param id instance of <code>ArachneId</code> 
@@ -31,7 +31,7 @@ public class ArachneDataMapDao extends SQLDao {
 			System.out.println("ArachneDatamapDao: " + queryBuilder.getSQL());
 			
 			@SuppressWarnings("unchecked")
-			List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new ArachneDatasetMapping());
+			List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new DatasetMapper());
 			if (temp != null) {
 				if (!temp.isEmpty()) {
 					Map<String,String> map =  temp.get(0);
@@ -54,7 +54,7 @@ public class ArachneDataMapDao extends SQLDao {
 			String sql = qB.getSQL();
 			System.out.println(sql);
 			@SuppressWarnings("unchecked")
-			List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new ArachneDatasetMapping());
+			List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new DatasetMapper());
 			
 			//achneDataset out= new  ArachneDataset();
 			

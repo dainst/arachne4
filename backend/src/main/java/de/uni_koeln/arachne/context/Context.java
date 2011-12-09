@@ -10,7 +10,7 @@ import de.uni_koeln.arachne.service.ContextService;
  * This Class is a wrapper that holds and manages contexts of <code>ArachneDatasets</code>. The links are fetched on demand.
  * The combination of context type and parent describes the two ends of a <code>Link</code>. 
  */
-public class ArachneContext {
+public class Context {
 	/**
 	 * The service which manages the retrieval etc.
 	 */
@@ -21,7 +21,7 @@ public class ArachneContext {
 	 * @param contextType The type of context this class manages.
 	 * @param parent The <code>ArachneDataset</code> this context belongs to.
 	 */
-	public ArachneContext(String contextType, Dataset parent, ContextService contextService) {
+	public Context(String contextType, Dataset parent, ContextService contextService) {
 		completionState = CompletionStateEnum.EMPTY;
 		this.contextType = contextType;
 		this.parent = parent;
