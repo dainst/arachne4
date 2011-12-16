@@ -22,10 +22,10 @@
         				<field datasource=".Countrycode" />
         				<field datasource=".Aufbewahrungsort" />
         			</context>
-        			<!-- Doesn't work yet since the concatination implementation cannot handle it  
-        			<field datasource="topographie.antikeGriechLandschaftTopographie" prefix="Antike Landschaft: "/>
-        			<field datasource="topographie.antikeRoemProvinzTopographie" prefix="Römische Provinz: "/>
-        			 -->
+        			<section>
+        				<field datasource="topographie.antikeGriechLandschaftTopographie" prefix="Antike Landschaft: "/>
+        				<field datasource="topographie.antikeRoemProvinzTopographie" prefix="Römische Provinz: "/>
+        			</section>
         		</section>
         		<section labelKey="Beschreibung">
 	        		<field datasource="topographie.TopographieTypus" prefix="Kategorie: " />

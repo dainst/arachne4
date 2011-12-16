@@ -114,6 +114,9 @@ public class ResponseFactory {
 			// Set images
 			response.setImages(dataset.getImages());
 			
+			// Set facets
+			response.addFacet("TestFacet", "TestValue");
+			
 			// Set contexts
 			/*
 			Section contextContent = new Section();

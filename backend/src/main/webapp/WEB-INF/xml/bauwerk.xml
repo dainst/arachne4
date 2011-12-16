@@ -86,4 +86,9 @@
 	    	</section>
         </datasections>
     </display>
+    <facets>
+    	<facet name="facetName" labelKey="facetLabel">
+    		<field datasource="bauwerk.KurzbeschreibungBauwerk" />
+    	</facet>
+    </facets>
 </category>
