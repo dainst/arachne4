@@ -162,7 +162,7 @@ public class ResponseFactory {
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		@SuppressWarnings("unchecked")
 		List<Element> children = section.getChildren();
-		String separator = "\n";
+		String separator = "<br/>";
 		if (section.getAttributeValue("separator") != null) {
 			separator = section.getAttributeValue("separator");
 		}
@@ -216,7 +216,7 @@ public class ResponseFactory {
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		@SuppressWarnings("unchecked")
 		List<Element> children = section.getChildren();
-		String defaultSeparator = "\n";
+		String defaultSeparator = "<br/>";
 		String separator = section.getAttributeValue("separator"); 
 		if (section.getAttributeValue("separator") == null) {
 			separator = defaultSeparator;
@@ -276,14 +276,26 @@ public class ResponseFactory {
 		String contextType = context.getAttributeValue("type");
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
 		result.setLabel(context.getAttributeValue("labelKey"));
+		
+		String parentSeparator = null;
+		if (context.getParentElement().getName().equals("section")) {
+			parentSeparator = context.getParentElement().getAttributeValue("separator");
+		}
+		if (parentSeparator == null) {
+			parentSeparator = "<br/>";
+		}
+		
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		@SuppressWarnings("unchecked")
 		List<Element> children = context.getChildren();
-		String defaultSeparator = "\n";
+		String defaultSeparator = "<br/>";
 		String separator = context.getAttributeValue("separator"); 
 		if (context.getAttributeValue("separator") == null) {
 			separator = defaultSeparator;
 		}
+				
+		boolean followingContextField = false;
+		
 		for (int i = 0; i < dataset.getContextSize(contextType); i++) {
 			for (Element e: children) {
 				if (e.getName().equals("field")) {
@@ -297,7 +309,12 @@ public class ResponseFactory {
 						if (!result.getContent().isEmpty()) {
 							int contentSize = result.getContent().size();
 							Field previousContent = (Field)result.getContent().get(contentSize-1);
-							previousContent.setValue(previousContent.getValue() + separator +value);
+							if (followingContextField) {
+								followingContextField = false;
+								previousContent.setValue(previousContent.getValue() + parentSeparator + value);
+							} else {
+								previousContent.setValue(previousContent.getValue() + separator + value);
+							}
 						} else {
 							field.setValue(value);
 							result.add(field);
@@ -305,6 +322,7 @@ public class ResponseFactory {
 					}
 				}
 			}
+			followingContextField = true;
 		}
 		if (result.getContent().isEmpty()) {
 			return null;
