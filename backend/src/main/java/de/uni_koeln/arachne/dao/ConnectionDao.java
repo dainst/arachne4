@@ -44,7 +44,7 @@ public class ConnectionDao extends HibernateTemplateDao {
 	public String getTableName(String table1, String table2) {
 		@SuppressWarnings("unchecked")
 		List<Connection> queryResult = (List<Connection>) hibernateTemplate
-				.find("from ArachneConnection where Teil1 = '" + table1 + "' and Teil2 = '" + table2 + "'");
+				.find("from Connection where Teil1 = '" + table1 + "' and Teil2 = '" + table2 + "'");
 		if (queryResult.size() > 0) {
 			return queryResult.get(0).getTable();
 		} else {

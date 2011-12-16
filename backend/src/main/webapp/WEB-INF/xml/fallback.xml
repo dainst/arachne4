@@ -4,7 +4,6 @@
     <display>
         <title>
         	<section separator=" - ">
-	        	<field datasource="topographie.KurzbeschreibungTopographie" />
 	        	<field datasource="buch.KurzbeschreibungBuch" />
 	            <field datasource="marbilder.Pfad" />
 	            <field datasource="objekt.KurzbeschreibungObjekt" />
