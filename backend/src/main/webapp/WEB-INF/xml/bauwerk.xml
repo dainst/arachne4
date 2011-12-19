@@ -8,8 +8,16 @@
         <subtitle>
              <section>
                 <section separator=" / ">
-                    <field datasource="bauwerk.OrtsnameModern" ifEmpty="ort.Stadt" />
-                    <field datasource="bauwerk.OrtsnameAntik" ifEmpty="ort.Ort_antik" />
+                	<field datasource="bauwerk.OrtsnameModern">
+                    	<ifEmpty>
+                    		<field datasource="ort.Stadt" />
+                    	</ifEmpty> 
+                    </field>
+                    <field datasource="bauwerk.OrtsnameAntik">
+                    	<ifEmpty>
+                    		<field datasource="ort.Ort_antik" />
+                    	</ifEmpty> 
+                    </field>
                 </section>
                 <field datasource="ort.Aufbewahrungsort"/>
             </section>

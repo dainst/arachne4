@@ -8,8 +8,16 @@
         <subtitle>
              <section>
                 <section separator=" / ">
-                    <field datasource="topographie.modernerOrt" ifEmpty="ort.Stadt" />
-                    <field datasource="topographie.antikerOrt" ifEmpty="ort.Ort_antik" />
+                    <field datasource="topographie.modernerOrt">
+                    	<ifEmpty>
+                    		<field datasource="ort.Stadt" />
+                    	</ifEmpty>
+                    </field>
+                    <field datasource="topographie.antikerOrt">
+                    	<ifEmpty>
+                    		<field datasource="ort.Ort_antik" />
+                    	</ifEmpty>
+                    </field>
                 </section>
             </section>
         </subtitle>

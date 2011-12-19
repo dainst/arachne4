@@ -177,10 +177,14 @@ public class ResponseFactory {
 				String postfix = e.getAttributeValue("postfix");
 				String prefix = e.getAttributeValue("prefix");		
 				if (StrUtils.isEmptyOrNull(datasetResult)) {
-					key = e.getAttributeValue("ifEmpty");
-					if (key != null) {
-						if (!key.isEmpty()) {
-							datasetResult = dataset.getField(key);
+					Element ifEmptyElement = e.getChild("ifEmpty");
+					if (ifEmptyElement != null) {
+						// TODO discuss if multiple fields inside an ifEmpty tag make sense
+						key = ifEmptyElement.getChild("field").getAttributeValue("datasource");
+						if (key != null) {
+							if (!key.isEmpty()) {
+								datasetResult = dataset.getField(key);
+							}
 						}
 					}
 				}
