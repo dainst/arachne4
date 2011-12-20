@@ -34,9 +34,19 @@
         				<field datasource="topographie.antikeGriechLandschaftTopographie" prefix="Antike Landschaft: "/>
         				<field datasource="topographie.antikeRoemProvinzTopographie" prefix="Römische Provinz: "/>
         			</section>
+        			<section>
+        				<field datasource="topographie.Ausdehnung" prefix="Ausdehnung: "/> 
+        			</section>
         		</section>
         		<section labelKey="Beschreibung">
 	        		<field datasource="topographie.TopographieTypus" prefix="Kategorie: " />
+	        		<field datasource="topographie.freieBeschreibung" prefix="Freie Beschreibung: " />
+	        	</section>
+	        	<section labelKey="Geschichte">
+	        		<field datasource="topographie.GeschichteTopographie"  />
+	        	</section>
+	        	<section labelKey="Ausgrabungen">
+	        		<field datasource="topographie.Ausgrabungen"  />
 	        	</section>
 	            <context type="literatur" labelKey="Literatur" separator=" ">
 	            	<field datasource=".DAIRichtlinien" />
