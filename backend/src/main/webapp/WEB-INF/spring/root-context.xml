@@ -11,21 +11,21 @@
 	<import resource="hibernate.xml"/>
 	<context:component-scan base-package="de.uni_koeln.arachne"/>	
 	
-	<!-- 
+	<!--
 	<bean name="authenticationFilter" class="org.jasig.cas.client.authentication.AuthenticationFilter">
 	 	<property name="casServerLoginUrl" value="https://crazyhorse.archaeologie.uni-koeln.de/cas/login"/>
 	 	<property name="renew" value="false"/>
 		<property name="gateway" value="false"/>
-	 	<property name="service" value="http://localhost:8080/arachnedataservice/"/>
+	 	<property name="serverName" value="http://localhost:8080/"/>
 	 </bean>
 	 <bean name="ticketValidationFilter" class="org.jasig.cas.client.validation.Cas10TicketValidationFilter">
-    	<property name="service" value="http://localhost:8080/arachnedataservice/"/>
+    	<property name="serverName" value="http://localhost:8080/"/>
     	<property name="ticketValidator">
         <bean name="Cas10TicketValidator" class="org.jasig.cas.client.validation.Cas10TicketValidator">
             <constructor-arg index="0" value="https://crazyhorse.archaeologie.uni-koeln.de/cas" />
         </bean>
         </property>
-     </bean> -->
-	 
+     </bean>
+	 -->
 	 
 </beans>
