@@ -81,7 +81,7 @@
 	            	<context type="datierung" labelKey="Bauwerk" separator=" ">
 	            		<field datasource=".AnfEpoche" postfix="," />
 	            		<field datasource=".AnfDatZeitraum" />
-	            		<field datasource=".AnfDatJh" postfix=". Cent."/>
+	            		<field datasource=".AnfDatJh" postfix=". Jh."/>
 	            		<field datasource=".AnfDatvn" />
 	            	</context>
 	            </section>
