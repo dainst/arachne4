@@ -112,7 +112,7 @@ public class ResponseFactory {
 			}		
 			
 			// Set images
-			response.setImages(dataset.getImages());
+ 			response.setImages(dataset.getImages());
 			
 			// Set facets
 			response.addFacet("TestFacet", "TestValue");
@@ -301,36 +301,30 @@ public class ResponseFactory {
 			separator = defaultSeparator;
 		}
 				
-		boolean followingContextField = false;
-		
+		FieldList fieldList = new FieldList();
 		for (int i = 0; i < dataset.getContextSize(contextType); i++) {
 			for (Element e: children) {
 				if (e.getName().equals("field")) {
-					Field field = new Field();
 					String value = dataset.getFieldFromContext(contextType + e.getAttributeValue("datasource"), i);
 					String postfix = e.getAttributeValue("postfix");
 					String prefix = e.getAttributeValue("prefix");
 					if (value != null) {
 						if (prefix != null) value = prefix + value;
 						if (postfix != null) value += postfix; 
-						if (!result.getContent().isEmpty()) {
-							int contentSize = result.getContent().size();
-							Field previousContent = (Field)result.getContent().get(contentSize-1);
-							if (followingContextField) {
-								followingContextField = false;
-								previousContent.setValue(previousContent.getValue() + parentSeparator + value);
-							} else {
-								previousContent.setValue(previousContent.getValue() + separator + value);
-							}
+						String currentListValue = null;
+						if (!fieldList.isEmpty() && i < fieldList.size()) {
+							currentListValue = fieldList.get(i);
+						}
+						if (currentListValue != null) {
+							fieldList.modify(i, currentListValue + separator + value);
 						} else {
-							field.setValue(value);
-							result.add(field);
+							fieldList.add(value);
 						}
 					}
 				}
 			}
-			followingContextField = true;
 		}
+		result.add(fieldList);
 		if (result.getContent().isEmpty()) {
 			return null;
 		}
