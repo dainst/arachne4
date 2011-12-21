@@ -26,10 +26,6 @@ public class FieldList extends Content {
 		this.value.set(index, value);
 	}
 	
-	public boolean isEmpty() {
-		return this.value.isEmpty();
-	}
-	
 	public int size() {
 		return this.value.size();
 	}

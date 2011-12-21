@@ -312,7 +312,7 @@ public class ResponseFactory {
 						if (prefix != null) value = prefix + value;
 						if (postfix != null) value += postfix; 
 						String currentListValue = null;
-						if (!fieldList.isEmpty() && i < fieldList.size()) {
+						if (!fieldList.getValue().isEmpty() && i < fieldList.size()) {
 							currentListValue = fieldList.get(i);
 						}
 						if (currentListValue != null) {
