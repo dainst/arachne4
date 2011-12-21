@@ -85,12 +85,10 @@
 	            		<field datasource=".AnfDatvn" />
 	            	</context>
 	            </section>
-	            <section labelKey="Literatur">
-	            	<context type="literatur" separator=" ">
-	            		<field datasource=".DAIRichtlinien" />
-	            		<field datasource=".Seite" />
-	            	</context>
-	            </section>
+	            <context type="literatur" labelKey="Literatur" separator=" ">
+	            	<field datasource=".DAIRichtlinien" />
+	            	<field datasource=".Seite" />
+	            </context>
 	    	</section>
         </datasections>
     </display>
