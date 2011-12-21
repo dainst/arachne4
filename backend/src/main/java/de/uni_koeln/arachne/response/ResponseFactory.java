@@ -324,7 +324,13 @@ public class ResponseFactory {
 				}
 			}
 		}
-		result.add(fieldList);
+		if (fieldList.size() > 1) {
+			result.add(fieldList);
+		} else {
+			Field field = new Field();
+			field.setValue(fieldList.get(0));
+			result.add(field);
+		}
 		if (result.getContent().isEmpty()) {
 			return null;
 		}
