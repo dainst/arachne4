@@ -6,7 +6,7 @@
             <field datasource="bauwerk.KurzbeschreibungBauwerk" />
         </title>
         <subtitle>
-             <section>
+             <section separator=" / ">
                 <section separator=" / ">
                 	<field datasource="bauwerk.OrtsnameModern">
                     	<ifEmpty>

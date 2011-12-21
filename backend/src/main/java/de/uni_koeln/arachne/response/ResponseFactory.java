@@ -175,7 +175,7 @@ public class ResponseFactory {
 				String key = e.getAttributeValue("datasource");
 				String datasetResult = dataset.getField(key);
 				String postfix = e.getAttributeValue("postfix");
-				String prefix = e.getAttributeValue("prefix");		
+				String prefix = e.getAttributeValue("prefix");
 				if (StrUtils.isEmptyOrNull(datasetResult)) {
 					Element ifEmptyElement = e.getChild("ifEmpty");
 					if (ifEmptyElement != null) {
@@ -189,8 +189,8 @@ public class ResponseFactory {
 					}
 				}
 				if (datasetResult != null) {
-					if(prefix != null) result = prefix + result;
-					if(postfix != null) result += postfix;
+					if (prefix != null) result = prefix + result;
+					if (postfix != null) result += postfix;
 					if (!result.isEmpty() && !datasetResult.isEmpty()) {
 						result += separator;
 					}
