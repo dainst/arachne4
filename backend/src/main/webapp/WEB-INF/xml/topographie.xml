@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <category name="topographie">
     <display>
         <title>
@@ -55,4 +54,28 @@
 	    	</section>
         </datasections>
     </display>
+    <facets>
+    	<facet name="kategorie" labelKey="Kategorie">
+    		<field datasource="arachneentityidentification.TableName" />
+    	</facet>
+    	<facet name="ort" labelKey="Lokalisierung">
+	    	<context type="ort" separator=", ">
+		    	<field datasource=".Stadt" />
+		    	<field datasource=".Land" />
+	    	</context>
+    	</facet>
+    	<facet name="datierung-epoche" labelKey="Epoche">
+	    	<context type="datierung">
+		    	<field datasource=".AnfEpoche"/>
+	    	</context>
+    	</facet>
+    	<facet name="datierung-epoche" labelKey="Epoche">
+	    	<context type="datierung">
+		    	<field datasource=".EndEpoche"/>
+	    	</context>
+    	</facet>
+    	<facet name="topographietypus" labelKey="Art der Topographie">
+	    	<field datasource="topographie.TopographieTypus"/>
+    	</facet>
+    </facets>
 </category>

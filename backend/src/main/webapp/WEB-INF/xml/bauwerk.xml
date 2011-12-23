@@ -93,8 +93,27 @@
         </datasections>
     </display>
     <facets>
-    	<facet name="facetName" labelKey="facetLabel">
-    		<field datasource="bauwerk.KurzbeschreibungBauwerk" />
+    	<facet name="kategorie" labelKey="Kategorie">
+    		<field datasource="arachneentityidentification.TableName" />
+    	</facet>
+    	<facet name="ort" labelKey="Lokalisierung">
+	    	<context type="ort" separator=", ">
+		    	<field datasource=".Stadt" />
+		    	<field datasource=".Land" />
+	    	</context>
+    	</facet>
+    	<facet name="datierung-epoche" labelKey="Epoche">
+	    	<context type="datierung">
+		    	<field datasource=".AnfEpoche"/>
+	    	</context>
+    	</facet>
+    	<facet name="datierung-epoche" labelKey="Epoche">
+	    	<context type="datierung">
+		    	<field datasource=".EndEpoche"/>
+	    	</context>
+    	</facet>
+    	<facet name="gebaeudetyp" labelKey="Gebäudetyp">
+	    	<field datasource="bauwerk.Gebaeudetyp"/>
     	</facet>
     </facets>
 </category>
