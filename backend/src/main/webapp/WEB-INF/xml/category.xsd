@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://arachne.uni-koeln.de/schemas/category"
+    targetNamespace="http://arachne.uni-koeln.de/schemas/category"
+    elementFormDefault="qualified" attributeFormDefault="unqualified">
+    
+    <xs:element name="category">        
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="display" minOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="title" type="SectionContent" />
+                            <xs:element name="subtitle" type="SectionContent" />
+                            <xs:element name="datasections" type="SectionContent" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="facets" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="facet" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:choice>
+                                        <xs:element name="context" type="ContextContent" />
+                                        <xs:element name="field" type="FieldContent" />
+                                    </xs:choice>
+                                    <xs:attribute name="name" type="xs:string" use="required" />
+                                    <xs:attribute name="labelKey" type="xs:string" use="required" />
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:all>
+            <xs:attribute name="name" type="xs:string" use="required" />
+            <xs:attribute name="hasImage" type="xs:boolean" />
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:complexType name="SectionContent">
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
+            <xs:element name="section" type="SectionContent" />
+            <xs:element name="context" type="ContextContent" />
+            <xs:element name="field" type="FieldContent" />
+        </xs:choice>
+        <xs:attribute name="labelKey" type="xs:string" />
+        <xs:attribute name="separator" type="xs:string" />
+        <xs:attribute name="prefix" type="xs:string" />
+        <xs:attribute name="postfix" type="xs:string" />
+    </xs:complexType>
+    
+    <xs:complexType name="ContextContent">
+        <xs:sequence>
+            <xs:element name="field" type="FieldContent" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="type" type="xs:string" use="required" />
+        <xs:attribute name="labelKey" type="xs:string" />
+        <xs:attribute name="separator" type="xs:string" />
+    </xs:complexType>
+    
+    <xs:complexType name="FieldContent">
+        <xs:all minOccurs="0">
+            <xs:element name="ifEmpty">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element name="field" type="FieldContent"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+        <xs:attribute name="datasource" type="datasourceString" use="required"/>
+        <xs:attribute name="prefix" type="xs:string" />
+        <xs:attribute name="postfix" type="xs:string" />
+        <xs:attribute name="search" type="xs:string" />
+        <xs:attribute name="replace" type="xs:string" />
+        <xs:attribute name="separator" type="xs:string" />
+    </xs:complexType>
+    
+    <xs:simpleType name="datasourceString">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Za-z\-_]*\.[A-Za-z\-_]+" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+</xs:schema>

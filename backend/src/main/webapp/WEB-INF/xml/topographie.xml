@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<category name="topographie">
+
+<category name="topographie"
+	xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
     <display>
         <title>
             <field datasource="topographie.KurzbeschreibungTopographie" />
