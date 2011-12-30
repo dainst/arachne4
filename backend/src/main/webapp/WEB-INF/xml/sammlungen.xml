@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<category name="sammlungen"
+	xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+    <display>
+        <title>
+        	<section separator=" / ">
+            	<field datasource="sammlungen.KurzbeschreibungSammlungen" />
+            </section>
+        </title>
+        <subtitle>
+             <section separator=" / ">
+
+                    <field datasource="ort.Ort_antik" />
+
+                   	<field datasource="ort.Stadt" />
+
+            </section>
+        </subtitle>
+        <datasections>
+        	<section labelKey="Informationen zum Sammlungen">
+        		<section labelKey="Lokalisierung">
+	        		<section labelKey="Ort">
+	        			<field datasource="sammlungen.OrtSammlungen"/>
+	        		</section>
+	        		<section labelKey="Land">
+	        			<field datasource="sammlungen.LandSammlungen" />
+	        		</section>
+	        		<section labelKey="Aufstellung">
+	        			<field datasource="sammlungen.AufstellungSammlungen" />
+	        		</section>
+	        	</section>
+	        	<context type="ort" labelKey="Lokalisierung" separator=", ">
+        			<field datasource=".Stadt"  />
+        			<field datasource=".Land" />
+        			<field datasource=".Countrycode" />
+        			<field datasource=".Aufbewahrungsort" />
+        		</context>
+	        	
+	        	
+	        	<section labelKey="Sammlungskategorie"  separator="; ">
+	        		<field datasource="sammlungen.Sammlungskategorie"/>
+	        	</section>
+	        	
+	            <section labelKey="Geschichte"  separator="; ">
+	            	<section labelKey="Entstehung">
+	        			<field datasource="sammlungen.Entstehung" />
+	        		</section>
+	            
+	        		<section labelKey="Sammlung">
+	        			<field datasource="sammlungen.GeschichteSammlungen" />
+	        		</section>
+	        		<section labelKey="Auflösung">
+	        			<field datasource="sammlungen.AufloesungDatum" />
+	        			<field datasource="sammlungen.Aufloesung" />
+	        			<field datasource="sammlungen.AufloesungArt" />
+	        		</section>
+	        	</section>
+	        	
+	        	<!-- 
+	        	TODO Sammler und Personen müssen eingepflegt werden
+	        	 -->
+	        	
+	        	<section labelKey="Quellen"  separator="; ">
+	        		<field datasource="sammlungen.Quellen" />
+	        	</section>
+	        	
+	        	<context type="literatur" labelKey="Literatur" separator=" ">
+	            	<field datasource=".DAIRichtlinien" />
+	            	<field datasource=".Seite" />
+	            </context>
+
+	    	</section>
+        </datasections>
+    </display>
+    <facets>
+    <!-- 
+    	TODO Revise!
+     -->
+    	<facet name="kategorie" labelKey="Kategorie">
+    		<field datasource="arachneentityidentification.TableName" />
+    	</facet>
+    	<facet name="ort" labelKey="Lokalisierung">
+	    	<context type="ort" separator=", ">
+		    	<field datasource=".Stadt" />
+		    	<field datasource=".Land" />
+	    	</context>
+    	</facet>
+    	<facet name="datierung-epoche" labelKey="Epoche">
+	    	<context type="datierung">
+		    	<field datasource=".AnfEpoche"/>
+	    	</context>
+    	</facet>
+    	<facet name="datierung-epoche" labelKey="Epoche">
+	    	<context type="datierung">
+		    	<field datasource=".EndEpoche"/>
+	    	</context>
+    	</facet>
+    	<facet name="Sammlungskategorie" labelKey="Sammlungskategorie">
+	    	<field datasource="sammlungen.Sammlungskategorie"/>
+    	</facet>
+    </facets>
+</category>

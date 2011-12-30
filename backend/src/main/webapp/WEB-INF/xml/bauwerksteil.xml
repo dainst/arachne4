@@ -6,8 +6,10 @@
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
     <display>
         <title>
-        	<field datasource="bauwerksteil.BearbeiterBauwerksteil" prefix="BT" postfix=": " />
-            <field datasource="bauwerksteil.KurzbeschreibungBauwerksteil"/>
+        	<section separator=", ">
+        		<field datasource="bauwerksteil.BearbeiterBauwerksteil" prefix="BT" postfix=": " />
+            	<field datasource="bauwerksteil.KurzbeschreibungBauwerksteil"/>
+            </section>
         </title>
         <subtitle>
              <section separator=", ">

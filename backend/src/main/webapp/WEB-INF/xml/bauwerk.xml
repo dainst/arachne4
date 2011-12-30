@@ -6,7 +6,9 @@
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
     <display>
         <title>
-            <field datasource="bauwerk.KurzbeschreibungBauwerk" />
+        	<section separator=" / ">
+            	<field datasource="bauwerk.KurzbeschreibungBauwerk" />
+            </section>
         </title>
         <subtitle>
              <section separator=" / ">
