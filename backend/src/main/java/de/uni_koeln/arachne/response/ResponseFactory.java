@@ -9,6 +9,7 @@ import javax.servlet.ServletContext;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -61,31 +62,31 @@ public class ResponseFactory {
 	    try {
 	    	SAXBuilder sb = new SAXBuilder();
 	    	Document doc = sb.build(xmlDocument.getFile());
-	    	
-	    	Element display = doc.getRootElement().getChild("display");
+			//TODO Make Nicer XML Parsing is very quick and Dirty solution for my Problems 
+	    	Element display = doc.getRootElement().getChild("display",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category"));
 	    	
 	    	// set title
-	    	Element title = display.getChild("title");
+	    	Element title = display.getChild("title",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category"));
 	    	String titleStr = "";
 	    	if (title.getChild("field") != null) {
-	    		titleStr = dataset.fields.get(title.getChild("field").getAttributeValue("datasource"));
+	    		titleStr = dataset.fields.get(title.getChild("field",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category")).getAttributeValue("datasource"));
 	    	} else {
-	    		titleStr = getStringFromSections(title.getChild("section"), dataset);
+	    		titleStr = getStringFromSections(title.getChild("section",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category")), dataset);
 	    	}
 	    	response.setTitle(titleStr);
 	    	
 	    	// set subtitle
 	    	String subtitleStr = "";
-	    	Element subtitle = display.getChild("subtitle");
-	    	if (subtitle.getChild("field") != null) {
-	    		subtitleStr = dataset.fields.get(subtitle.getChild("field").getAttributeValue("datasource"));
+	    	Element subtitle = display.getChild("subtitle",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category"));
+	    	if (subtitle.getChild("field",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category")) != null) {
+	    		subtitleStr = dataset.fields.get(subtitle.getChild("field",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category")).getAttributeValue("datasource",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category")));
 	    	} else {
-	    		subtitleStr = getStringFromSections(subtitle.getChild("section"), dataset);
+	    		subtitleStr = getStringFromSections(subtitle.getChild("section",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category")), dataset);
 	    	}
 	    	response.setSubtitle(subtitleStr);
 	    	
 	    	// set sections
-	    	Element sections = display.getChild("datasections");
+	    	Element sections = display.getChild("datasections",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category"));
 	    	List<Content> contentList = new ArrayList<Content>();
 	    	// JDOM doesn't handle generics correctly so it issues a type safety warning
 			@SuppressWarnings("unchecked")
@@ -327,9 +328,11 @@ public class ResponseFactory {
 		if (fieldList.size() > 1) {
 			result.add(fieldList);
 		} else {
-			Field field = new Field();
-			field.setValue(fieldList.get(0));
-			result.add(field);
+			if(fieldList.size() == 1 ){
+				Field field = new Field();
+				field.setValue(fieldList.get(0));
+				result.add(field);
+			}
 		}
 		if (result.getContent().isEmpty()) {
 			return null;

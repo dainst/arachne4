@@ -10,6 +10,7 @@ import javax.servlet.ServletContext;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -181,7 +182,9 @@ public class ContextService {
 		try {
 			SAXBuilder sb = new SAXBuilder();
 			Document doc = sb.build(xmlDocument.getFile());
-			Element display = doc.getRootElement().getChild("display");
+			Element rootElement = doc.getRootElement();
+			//TODO Make Nicer XML Parsing is very quick and Dirty solution for my Problems 
+			Element display = rootElement.getChild("display",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category"));
 			List<String> result = new ArrayList<String>();
 			result.addAll(getFields(display, type));
 			System.out.println("getExternalFields - result: " + result);
