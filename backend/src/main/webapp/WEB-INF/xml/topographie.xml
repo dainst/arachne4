@@ -54,6 +54,7 @@
 	        		<field datasource="topographie.Ausgrabungen"  />
 	        	</section>
 	            <context type="literatur" labelKey="Literatur" separator=" ">
+	            	<field datasource=".tempLiteratur" />
 	            	<field datasource=".DAIRichtlinien" />
 	            	<field datasource=".Seite" />
 	            </context>

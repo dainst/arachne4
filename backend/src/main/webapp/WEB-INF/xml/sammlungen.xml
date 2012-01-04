@@ -28,17 +28,17 @@
 	        		<section labelKey="Land">
 	        			<field datasource="sammlungen.LandSammlungen" />
 	        		</section>
+	        		<context type="ort" separator=", ">
+        				<field datasource=".Stadt"  />
+        				<field datasource=".Land" />
+        				<field datasource=".Countrycode" />
+        				<field datasource=".Aufbewahrungsort" />
+        			</context>
 	        		<section labelKey="Aufstellung">
 	        			<field datasource="sammlungen.AufstellungSammlungen" />
 	        		</section>
 	        	</section>
-	        	<context type="ort" labelKey="Lokalisierung" separator=", ">
-        			<field datasource=".Stadt"  />
-        			<field datasource=".Land" />
-        			<field datasource=".Countrycode" />
-        			<field datasource=".Aufbewahrungsort" />
-        		</context>
-	        	
+	        		        	
 	        	
 	        	<section labelKey="Sammlungskategorie"  separator="; ">
 	        		<field datasource="sammlungen.Sammlungskategorie"/>
