@@ -62,31 +62,32 @@ public class ResponseFactory {
 	    try {
 	    	SAXBuilder sb = new SAXBuilder();
 	    	Document doc = sb.build(xmlDocument.getFile());
-			//TODO Make Nicer XML Parsing is very quick and Dirty solution for my Problems 
-	    	Element display = doc.getRootElement().getChild("display",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category"));
+	    	//TODO Make Nicer XML Parsing is very quick and Dirty solution for my Problems 
+	    	Namespace ns = Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category");
+	    	Element display = doc.getRootElement().getChild("display",ns);
 	    	
 	    	// set title
-	    	Element title = display.getChild("title",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category"));
+	    	Element title = display.getChild("title", ns);
 	    	String titleStr = "";
 	    	if (title.getChild("field") != null) {
-	    		titleStr = dataset.fields.get(title.getChild("field",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category")).getAttributeValue("datasource"));
+	    		titleStr = dataset.fields.get(title.getChild("field", ns).getAttributeValue("datasource"));
 	    	} else {
-	    		titleStr = getStringFromSections(title.getChild("section",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category")), dataset);
+	    		titleStr = getStringFromSections(title.getChild("section", ns), dataset);
 	    	}
 	    	response.setTitle(titleStr);
 	    	
 	    	// set subtitle
 	    	String subtitleStr = "";
-	    	Element subtitle = display.getChild("subtitle",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category"));
-	    	if (subtitle.getChild("field",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category")) != null) {
-	    		subtitleStr = dataset.fields.get(subtitle.getChild("field",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category")).getAttributeValue("datasource",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category")));
+	    	Element subtitle = display.getChild("subtitle", ns);
+	    	if (subtitle.getChild("field", ns) != null) {
+	    		subtitleStr = dataset.fields.get(subtitle.getChild("field", ns).getAttributeValue("datasource", ns));
 	    	} else {
-	    		subtitleStr = getStringFromSections(subtitle.getChild("section",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category")), dataset);
+	    		subtitleStr = getStringFromSections(subtitle.getChild("section", ns), dataset);
 	    	}
 	    	response.setSubtitle(subtitleStr);
 	    	
 	    	// set sections
-	    	Element sections = display.getChild("datasections",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category"));
+	    	Element sections = display.getChild("datasections", ns);
 	    	List<Content> contentList = new ArrayList<Content>();
 	    	// JDOM doesn't handle generics correctly so it issues a type safety warning
 			@SuppressWarnings("unchecked")
