@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.response;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,9 +49,9 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	protected List<Image> images;
 	
 	/**
-	 * 
+	 * The facets as defined in the xml file for the dataset.
 	 */
-	protected Map<String, String> facets;
+	protected List<Facet> facets;
 	
 	/**
 	 * Parameterless constructor initializing title and subtitle.
@@ -58,7 +59,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	public FormattedArachneEntity() {
 		title = "";
 		subtitle = "";
-		facets = new HashMap<String, String>(); 
+		facets = new ArrayList<Facet>(); 
 	}	
 	
 	public String getTitle() {
@@ -116,16 +117,16 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		this.images = images;
 	}*/
 	
-	public Map<String, String> getFacets() {
+	public List<Facet> getFacets() {
 		return this.facets;
 	}
 	
-	public void setFacets(Map<String, String> facets) {
+	public void setFacets(List<Facet> facets) {
 		this.facets = facets;
 	}
 	
 	// Convenience function to add a facet
-	public void addFacet(String key, String value) {
-		this.facets.put(key, value);
+	public void addFacet(Facet facet) {
+		this.facets.add(facet);
 	}
 }
