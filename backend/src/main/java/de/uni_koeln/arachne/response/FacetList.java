@@ -17,12 +17,9 @@ public class FacetList {
 	 * @param facet
 	 */
 	public void add(Facet facet) {
-		System.out.println("Add Facet: " + facet.getName());
 		if (getFacetByName(facet.getName()) > -1) {
-			// TODO only add values
-			System.out.println("Facet found: " + getFacetByName(facet.getName()));
+			data.get(getFacetByName(facet.getName())).addValues(facet.getValues());
 		} else {
-			System.out.println("Not in List");
 			data.add(facet);
 		}
 	}
@@ -53,7 +50,7 @@ public class FacetList {
 		int result = -1;
 		int i = 0;
 		while (i < data.size()) {
-			if (data.get(i).getName() == aName) {
+			if (data.get(i).getName().equals(aName)) {
 				result = i;
 				break;
 			}

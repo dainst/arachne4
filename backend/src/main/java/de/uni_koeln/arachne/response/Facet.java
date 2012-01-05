@@ -11,12 +11,12 @@ public class Facet {
 	private List<String> values = new ArrayList<String>();
 	
 	public Facet(String aName, String alabelKey) {
-		name = aName;
-		labelKey = alabelKey;
+		this.name = aName;
+		this.labelKey = alabelKey;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -37,5 +37,9 @@ public class Facet {
 
 	public void setValues(List<String> values) {
 		this.values = values;
+	}
+
+	public void addValues(List<String> values) {
+		this.values.addAll(values);		
 	}
 }

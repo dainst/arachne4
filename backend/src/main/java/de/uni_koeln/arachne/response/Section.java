@@ -12,13 +12,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Section extends Content {
 	/**
-	 * Parameterless constructor.
-	 */
-	public Section() {
-		content = new ArrayList<Content>();
-	}
-	
-	/**
 	 * The label used by the frontend.
 	 */
 	private String label;
@@ -26,7 +19,7 @@ public class Section extends Content {
 	/**
 	 * A list of content (either <code>Field</code> or <code>Section</code>).
 	 */
-	private List<Content> content;
+	private List<Content> content = new ArrayList<Content>();;
 	
 	/**
 	 * Convenient function that adds a content object to the list of <code>Content</code>.
@@ -39,11 +32,11 @@ public class Section extends Content {
 	
 	@XmlElementWrapper
 	public List<Content> getContent() {
-		return content;
+		return this.content;
 	}
 	
 	public String getLabel() {
-		return label;
+		return this.label;
 	}
 
 	public void setLabel(String label) {
@@ -52,6 +45,6 @@ public class Section extends Content {
 	
 	@Override
 	public String toString() {
-		return label + ": " + content;
+		return this.label + ": " + this.content;
 	}
 }

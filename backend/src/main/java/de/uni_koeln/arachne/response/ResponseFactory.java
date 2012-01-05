@@ -138,8 +138,12 @@ public class ResponseFactory {
  	 						values.add(dataset.getField(child.getAttributeValue("datasource")));
  	 					} else {
  	 						if (childName == "context") {
- 	 							Section section = (Section)getContentFromContext(child, dataset);
- 	 							
+ 	 							Section section = getContentFromContext(child, dataset);
+ 	 							if (section != null) {
+ 	 								for (Content c:section.getContent()) {
+ 	 									values.add(c.toString());
+ 	 								} 	 								
+ 	 							}
  	 						}
  	 					}
  	 					if (!values.isEmpty()) {
@@ -316,7 +320,7 @@ public class ResponseFactory {
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Content</code> object containing the context sections content.
 	 */
-	private Content getContentFromContext(Element context, Dataset dataset) {
+	private Section getContentFromContext(Element context, Dataset dataset) {
 		Section result = new Section();
 		String contextType = context.getAttributeValue("type");
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
