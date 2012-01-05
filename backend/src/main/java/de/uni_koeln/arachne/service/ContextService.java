@@ -183,10 +183,13 @@ public class ContextService {
 			SAXBuilder sb = new SAXBuilder();
 			Document doc = sb.build(xmlDocument.getFile());
 			Element rootElement = doc.getRootElement();
-			//TODO Make Nicer XML Parsing is very quick and Dirty solution for my Problems 
-			Element display = rootElement.getChild("display",Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category"));
+			//TODO Make Nicer XML Parsing is very quick and Dirty solution for my Problems
+			Namespace ns = Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category");
+			Element display = rootElement.getChild("display", ns);
+			Element facets = rootElement.getChild("facets", ns);
 			List<String> result = new ArrayList<String>();
 			result.addAll(getFields(display, type));
+			result.addAll(getFields(facets, type));
 			System.out.println("getExternalFields - result: " + result);
 			return result;		
 		} catch (JDOMException e) {

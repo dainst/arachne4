@@ -6,12 +6,14 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
+import org.apache.solr.client.solrj.response.FacetField;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.StringLiteral;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.ServletContextResource;
 
@@ -43,6 +45,7 @@ public class ResponseFactory {
 	 * @param dataset The dataset which encapsulates the SQL query results.
 	 * @return A <code>FormattedArachneEntity</code> instance which can be jsonized.
 	 */
+	@SuppressWarnings("unchecked")
 	public FormattedArachneEntity createFormattedArachneEntity(Dataset dataset) {
 		// TODO remove debug
 		System.out.println("Constructing formatted response object...");
@@ -90,7 +93,6 @@ public class ResponseFactory {
 	    	Element sections = display.getChild("datasections", ns);
 	    	List<Content> contentList = new ArrayList<Content>();
 	    	// JDOM doesn't handle generics correctly so it issues a type safety warning
-			@SuppressWarnings("unchecked")
 			List<Element> children = sections.getChildren();
 			for (Element e:children) {
 				if (e.getName().equals("section")) {
@@ -117,7 +119,41 @@ public class ResponseFactory {
  			response.setImages(dataset.getImages());
 			
 			// Set facets
-			response.addFacet("TestFacet", "TestValue");
+ 			FacetList facets = new FacetList();
+ 			
+ 			Element facetsElement = doc.getRootElement().getChild("facets", ns);
+ 			children.clear();
+ 			// JDOM doesn't handle generics correctly so it issues a type safety warning
+ 			children = facetsElement.getChildren();
+ 			for (Element e:children) {
+ 				if (e.getName().equals("facet")) {
+ 					String name = e.getAttributeValue("name");
+ 					String labelKey = e.getAttributeValue("labelKey");
+ 					Facet facet = new Facet(name, labelKey);
+ 					Element child = (Element)e.getChildren().get(0); 
+ 					if (child != null) {
+ 						List<String> values = new ArrayList<String>();
+ 	 					String childName = child.getName();
+ 						if (childName == "field") {
+ 	 						values.add(dataset.getField(child.getAttributeValue("datasource")));
+ 	 					} else {
+ 	 						if (childName == "context") {
+ 	 							Section section = (Section)getContentFromContext(child, dataset);
+ 	 							
+ 	 						}
+ 	 					}
+ 	 					if (!values.isEmpty()) {
+ 	 						facet.setValues(values);
+ 	 					}
+ 					}
+ 					if (!facet.getValues().isEmpty()) {
+ 						facets.add(facet);
+ 					}
+ 				}
+ 			}
+ 			
+ 			response.setFacets(facets.getList());
+ 			
 			
 			// Set contexts
 			/*
