@@ -135,13 +135,19 @@ public class ResponseFactory {
  						List<String> values = new ArrayList<String>();
  	 					String childName = child.getName();
  						if (childName == "field") {
- 	 						values.add(dataset.getField(child.getAttributeValue("datasource")));
+ 							String value = dataset.getField(child.getAttributeValue("datasource"));
+ 	 						if (value != null) {
+ 	 							values.add(value);
+ 	 						}
  	 					} else {
  	 						if (childName == "context") {
  	 							Section section = getContentFromContext(child, dataset);
  	 							if (section != null) {
  	 								for (Content c:section.getContent()) {
- 	 									values.add(c.toString());
+ 	 									String value = c.toString();
+ 	 									if (value != null) {
+ 	 										values.add(value);
+ 	 									}
  	 								} 	 								
  	 							}
  	 						}
@@ -149,9 +155,9 @@ public class ResponseFactory {
  	 					if (!values.isEmpty()) {
  	 						facet.setValues(values);
  	 					}
- 					}
- 					if (!facet.getValues().isEmpty()) {
- 						facets.add(facet);
+ 	 					if (!facet.getValues().isEmpty()) {
+ 	 						facets.add(facet);
+ 	 					}
  					}
  				}
  			}
