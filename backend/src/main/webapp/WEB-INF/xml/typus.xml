@@ -130,7 +130,7 @@ Hier werden keine Direkten Bilder verwendet sondern die Bilder des Hauptvertrete
     </display>
     <facets>
     	<facet name="kategorie" labelKey="Kategorie">
-    		<field datasource="arachneentityidentification.TableName" />
+    		<field datasource="dataset.TableName" />
     	</facet>
     	<!-- 
     	<facet name="ort" labelKey="Lokalisierung">

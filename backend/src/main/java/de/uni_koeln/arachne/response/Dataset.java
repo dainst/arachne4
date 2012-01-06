@@ -101,13 +101,25 @@ public class Dataset {
 	 * Looks up a field in the </code>fields<code> list	or in the contexts and returns its value. The 
 	 * </code>fields<code> list is the preferred search location and only if a field is not found there the contexts are 
 	 * searched.
+	 * <br>
+	 * "dataset" is a special contextualizer name that is used to reference data which is in every dataset like the internalId.
+	 * This functions returns such values, too.
 	 * @param fieldName The full qualified fieldName to look up.
 	 * @return The value of the field or <code>null<code/> if the field is not found.
 	 */
 	public String getField(String fieldName) {
-		String result = getFieldFromFields(fieldName);
-		if (StrUtils.isEmptyOrNull(result)) {
-			result = getFieldFromContext(fieldName);
+		String result = null;
+		if (fieldName.startsWith("dataset")) {
+			// the magic number is the dataset char count
+			String unqualifiedFieldName = fieldName.substring(8);
+			if (unqualifiedFieldName.equals("TableName")) {
+				result = arachneId.getTableName();
+			}
+		} else {
+			result = getFieldFromFields(fieldName);
+			if (StrUtils.isEmptyOrNull(result)) {
+				result = getFieldFromContext(fieldName);
+			}
 		}
 		return result;
 	}

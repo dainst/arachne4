@@ -80,7 +80,7 @@
     	TODO Revise!
      -->
     	<facet name="kategorie" labelKey="Kategorie">
-    		<field datasource="arachneentityidentification.TableName" />
+    		<field datasource="dataset.TableName" />
     	</facet>
     	<facet name="ort" labelKey="Lokalisierung">
 	    	<context type="ort" separator=", ">
