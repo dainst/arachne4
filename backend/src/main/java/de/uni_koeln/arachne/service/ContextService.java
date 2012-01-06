@@ -222,14 +222,14 @@ public class ContextService {
 
 			String datasourceValue = element.getAttributeValue("datasource");
 			if (!StrUtils.isEmptyOrNull(datasourceValue)) {
-				if (!datasourceValue.startsWith(parentType) && !datasourceValue.startsWith("dataset")) {
+				if (!datasourceValue.startsWith(parentType) && !datasourceValue.startsWith("Dataset")) {
 					result.add(datasourceValue);
 				}
 			}
 
 			String ifEmptyValue = element.getAttributeValue("ifEmpty");
 			if (!StrUtils.isEmptyOrNull(ifEmptyValue)) {
-				if (!ifEmptyValue.startsWith(parentType) && !datasourceValue.startsWith("dataset")) {
+				if (!ifEmptyValue.startsWith(parentType) && !datasourceValue.startsWith("Dataset")) {
 					result.add(ifEmptyValue);
 				}
 			}
@@ -241,7 +241,7 @@ public class ContextService {
 					String datasourceValue = e.getAttributeValue("datasource");
 					if (!StrUtils.isEmptyOrNull(datasourceValue)) {
 						datasourceValue = context + datasourceValue;
-						if (!datasourceValue.startsWith(parentType) && !datasourceValue.startsWith("dataset")) {
+						if (!datasourceValue.startsWith(parentType) && !datasourceValue.startsWith("Dataset")) {
 							result.add(datasourceValue);
 						}
 					}
