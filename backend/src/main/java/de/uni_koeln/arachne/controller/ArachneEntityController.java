@@ -90,13 +90,27 @@ public class ArachneEntityController {
     	
     	Dataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
     	
+    	long fetchTime = System.currentTimeMillis() - startTime;
+    	long nextTime = System.currentTimeMillis();
+    	
     	arachneImageService.addImages(arachneDataset);
-    	    	    	
+    	
+    	long imageTime = System.currentTimeMillis() - nextTime;
+    	nextTime = System.currentTimeMillis();
+    	
     	contextService.addMandatoryContexts(arachneDataset);
+    	
+    	long contextTime = System.currentTimeMillis() - nextTime;
+    	nextTime = System.currentTimeMillis();
     	
     	FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(arachneDataset);
     	
-    	System.out.println("Response took " + (System.currentTimeMillis() - startTime) + " ms");
+    	System.out.println("-- Fetching entity took " + fetchTime + " ms");
+    	System.out.println("-- Adding images took " + imageTime + " ms");
+    	System.out.println("-- Adding contexts took " + contextTime + " ms");
+    	System.out.println("-- Creating response took " + (System.currentTimeMillis() - nextTime) + " ms");
+    	System.out.println("-----------------------------------");
+    	System.out.println("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
     	return response;
     }
     
