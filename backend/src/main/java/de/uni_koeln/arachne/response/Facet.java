@@ -10,6 +10,9 @@ public class Facet {
 	
 	private List<String> values = new ArrayList<String>();
 	
+	public Facet() {
+	}
+	
 	public Facet(String aName, String alabelKey) {
 		this.name = aName;
 		this.labelKey = alabelKey;
