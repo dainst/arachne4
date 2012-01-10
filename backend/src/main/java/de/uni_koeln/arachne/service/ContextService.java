@@ -78,7 +78,7 @@ public class ContextService {
 		Iterator<String> contextType = mandatoryContextTypes.iterator();
 		while (contextType.hasNext()) {
 			Context context = new Context(contextType.next(), parent, this);
-			context.getLimitContext(4);
+			context.getFirstContext();
 			parent.addContext(context);
 		}
 	}
@@ -97,12 +97,12 @@ public class ContextService {
 			Iterator<String> i = connectionList.iterator();
 			while (i.hasNext()) {
 				Context context = new Context(i.next(), parent, this);
-				context.getLimitContext(10);
+				context.getFirstContext();
 				parent.addContext(context);
 			}
 			
 			Context litContext = new Context("Literatur", parent, this);
-			litContext.getLimitContext(10);
+			litContext.getFirstContext();
 			parent.addContext(litContext);
 		}
 	}

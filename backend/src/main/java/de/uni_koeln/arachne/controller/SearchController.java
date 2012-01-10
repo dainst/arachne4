@@ -37,10 +37,13 @@ public class SearchController {
 			SolrQuery query = new SolrQuery();
 		    query.setQuery(searchParam);
 		    query.setRows(1000);
-		    query.setShowDebugInfo(true);
+		    query.addFacetField("facet_kategorie");
+		    query.setFacet(true);
 		    //query.addSortField( "price", SolrQuery.ORDER.asc );
 		    QueryResponse rsp = server.query(query);
-		    //SolrDocumentList docs = rsp.getResults();
+		    rsp.getHeader();
+		    rsp.getFacetFields();
+		    SolrDocumentList docs = rsp.getResults();
 		    result = rsp.getResults();
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
