@@ -5,8 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import de.uni_koeln.arachne.dao.UserVerwaltungDao;
 import de.uni_koeln.arachne.mapping.UserAdministration;
@@ -58,13 +62,11 @@ public class UserRightsService {
 	 */
 	public void initializeUserData() {
 		if (!isSet) {
-			//get username of validated CAS ticket
-			//String username = getSession().getAt(CASFilter.CAS_FILTER_USER);
+			
+			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+	                .getRequestAttributes()).getRequest();
 
-			//String username = "rKrempel";
-			//get User Information from the Database
-
-			arachneUser =   userVerwaltungDao.findById(Long.valueOf(20));
+			arachneUser = userVerwaltungDao.findByName(request.getRemoteUser());
 
 			//Splitting up all user permissions from the User dataset
 			userGroups= new ArrayList<String>();

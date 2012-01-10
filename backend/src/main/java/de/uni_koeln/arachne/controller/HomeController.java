@@ -1,5 +1,7 @@
 package de.uni_koeln.arachne.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +34,12 @@ public class HomeController {
 	public ModelAndView home() {
 		logger.info("Welcome to Arachne4 alpha!");
 		
-		String username = userRightsService.getUsername();
-		
+		String username = userRightsService.getUsername();		
 		logger.info(username);
+		
+		List<String> groups = userRightsService.getUserGroups();
+		logger.info(groups.toString());
+		
 		ModelMap modelMap = new ModelMap();
 		modelMap.addAttribute("Username", username);
 		
