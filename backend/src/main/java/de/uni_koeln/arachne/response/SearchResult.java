@@ -1,6 +1,12 @@
 package de.uni_koeln.arachne.response;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.apache.solr.client.solrj.response.FacetField;
+import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.util.NamedList;
 
 // TODO implement me
 /**
@@ -8,5 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class SearchResult {
-	public String result = "";
+	public NamedList<Object> header = null;
+	public List<FacetField> facets = null;
+	public SolrDocumentList doc = null; 
 }

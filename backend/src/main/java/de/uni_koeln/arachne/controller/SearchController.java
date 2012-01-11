@@ -27,9 +27,9 @@ public class SearchController {
      * @return A response object containing the data (this is serialized to XML or JSON depending on content negotiation).
      */
 	@RequestMapping(value="/search", method=RequestMethod.GET)
-	public @ResponseBody SolrDocumentList handleSearchRequest(@RequestParam("q") String searchParam) {
+	public @ResponseBody SearchResult handleSearchRequest(@RequestParam("q") String searchParam) {
 		//SearchResult result = new SearchResult();
-		SolrDocumentList result = null;
+		SearchResult result = new SearchResult();
 		String url = "http://crazyhorse.archaeologie.uni-koeln.de:8080/solr3.4.0/";
 		SolrServer server = null;
 		try {
@@ -37,14 +37,14 @@ public class SearchController {
 			SolrQuery query = new SolrQuery();
 		    query.setQuery(searchParam);
 		    query.setRows(1000);
-		    query.addFacetField("facet_*");
+		    query.addFacetField("facet_kategorie");
 		    query.setFacet(true);
 		    //query.addSortField( "price", SolrQuery.ORDER.asc );
 		    QueryResponse rsp = server.query(query);
-		    rsp.getHeader();
-		    rsp.getFacetFields();
-		    SolrDocumentList docs = rsp.getResults();
-		    result = rsp.getResults();
+		    //result.header = rsp.getHeader();
+		    //result.facets = rsp.getFacetFields();
+		    System.out.println("Facets: " + rsp.getFacetFields());
+		    result.doc = rsp.getResults();
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
