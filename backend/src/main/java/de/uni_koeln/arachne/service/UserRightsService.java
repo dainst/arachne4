@@ -71,9 +71,11 @@ public class UserRightsService {
 			//Splitting up all user permissions from the User dataset
 			userGroups= new ArrayList<String>();
 			
+			if (arachneUser != null) {
 			String[] temp = (arachneUser.getRightGroups().split(","));
-			for (int i =0;i<temp.length;i++){
-				userGroups.add(temp[i]);
+				for (int i =0; i<temp.length; i++) {
+					userGroups.add(temp[i]);
+				}
 			}
 			
 			//Setting the user person information 
@@ -91,9 +93,12 @@ public class UserRightsService {
 			*/
 			 
 			userInfo = null;
-			
+			int userGroupID = -1;
+			if (arachneUser != null) {
+				userGroupID = arachneUser.getGroupID();
+			}
 			isSet = true;
-			UserRightsSingleton.init(this.getUsername(), this.isAuthorizedForAllGroups(), this.isConfirmed(), arachneUser.getGroupID(), this.getUserGroups());
+			UserRightsSingleton.init(this.getUsername(), this.isAuthorizedForAllGroups(), this.isConfirmed(), userGroupID, this.getUserGroups());
 			
 		}
 	}		
@@ -104,7 +109,11 @@ public class UserRightsService {
 	 */
 	public String getUsername(){
 		initializeUserData();
-		return arachneUser.getUsername();
+		if (arachneUser != null) {
+			return arachneUser.getUsername();
+		} else {
+			return "anonymous";
+		}
 	}
 	
 	/**
@@ -122,7 +131,11 @@ public class UserRightsService {
 	 */
 	public boolean isAuthorizedForAllGroups(){
 		initializeUserData();
-		return arachneUser.isAll_groups();
+		if (arachneUser != null) {
+			return arachneUser.isAll_groups();
+		} else {
+			return false;
+		}
 	}
 	
 	/**
@@ -131,7 +144,11 @@ public class UserRightsService {
 	 */
 	public boolean isConfirmed(){
 		initializeUserData();
-		return arachneUser.isLogin_permission();
+		if (arachneUser != null) {
+			return arachneUser.isLogin_permission();
+		} else {
+			return false;
+		}
 	}
 	
 	/**

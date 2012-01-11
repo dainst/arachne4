@@ -37,7 +37,7 @@ public class SearchController {
 			SolrQuery query = new SolrQuery();
 		    query.setQuery(searchParam);
 		    query.setRows(1000);
-		    query.addFacetField("facet_kategorie");
+		    query.addFacetField("facet_*");
 		    query.setFacet(true);
 		    //query.addSortField( "price", SolrQuery.ORDER.asc );
 		    QueryResponse rsp = server.query(query);

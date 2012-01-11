@@ -42,7 +42,7 @@
 	
 	
 	<!-- CAS Client Configuration -->
-
+	<!-- 
 	<filter>
 		<filter-name>CAS Authentication Filter</filter-name>
 		<filter-class>org.jasig.cas.client.authentication.AuthenticationFilter</filter-class>
@@ -88,5 +88,5 @@
 		<filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
+	-->
 </web-app>

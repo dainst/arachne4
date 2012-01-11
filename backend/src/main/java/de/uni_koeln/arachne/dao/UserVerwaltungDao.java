@@ -14,6 +14,10 @@ public class UserVerwaltungDao extends HibernateTemplateDao{
 
 	public UserAdministration findByName(String user) {
 		String hql = "from UserAdministration as user WHERE user.username LIKE ?";
-		return (UserAdministration) hibernateTemplate.find(hql,user).get(0);
+		UserAdministration result = null;
+		if (hibernateTemplate.find(hql,user).size() > 0) {
+			result = (UserAdministration)hibernateTemplate.find(hql,user).get(0);
+		}
+		return result;
 	}
 }

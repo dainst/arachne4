@@ -6,14 +6,12 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
-import org.apache.solr.client.solrj.response.FacetField;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.spel.ast.StringLiteral;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.ServletContextResource;
 
