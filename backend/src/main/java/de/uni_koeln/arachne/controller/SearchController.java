@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.controller;
 
 import java.net.MalformedURLException;
+import java.sql.Struct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.response.SearchResult;
+import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * Handles http requests (currently only get) for <code>/search<code>.
@@ -37,7 +39,7 @@ public class SearchController {
 														  @RequestParam(value = "limit", required = false) String limit,
 														  @RequestParam(value = "offset", required = false) String offset,
 														  @RequestParam(value = "fq", required = false) String facetValues) {
-		//SearchResult result = new SearchResult();
+		
 		SearchResult result = new SearchResult();
 		String url = "http://crazyhorse.archaeologie.uni-koeln.de:8080/solr3.4.0/";
 		SolrServer server = null;
@@ -50,6 +52,16 @@ public class SearchController {
 		    query.addFacetField("facet_ort");
 		    // TODO add category specific facets based on info from where?
 		    query.setFacet(true);
+		    if (!StrUtils.isEmptyOrNull(offset)) {
+		    	int intOffset = Integer.valueOf(offset);
+		    	query.setStart(intOffset);
+		    	result.setOffset(intOffset);
+		    }
+		    if (!StrUtils.isEmptyOrNull(limit)) {
+		    	int intLimit = Integer.valueOf(limit);
+		    	query.setRows(intLimit);
+		    	result.setLimit(intLimit);
+		    }		    
 		    
 		    QueryResponse response = server.query(query);
 		    result.setEntities(response.getResults());
