@@ -1,11 +1,15 @@
 package de.uni_koeln.arachne.controller;
 
 import java.net.MalformedURLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
+import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.springframework.stereotype.Controller;
@@ -43,14 +47,29 @@ public class SearchController {
 		    query.setQuery(searchParam);
 		    query.setRows(1000);
 		    query.addFacetField("facet_kategorie");
-		    // TODO add more facets based on info from where?
+		    query.addFacetField("facet_ort");
+		    // TODO add category specific facets based on info from where?
 		    query.setFacet(true);
+		    
 		    QueryResponse response = server.query(query);
-		    //result.header = rsp.getHeader();
-		    //result.facets = rsp.getFacetFields();
-		    System.out.println("Facets: " + response.getFacetFields());
 		    result.setEntities(response.getResults());
-		    result.setSize(result.getEntities().size());
+		    result.setSize(response.getResults().getNumFound());
+		    Map<String, Map<String, Long>> facets = new HashMap<String, Map<String, Long>>();
+		    
+		    List<FacetField> facetFields = response.getFacetFields();
+		    for (FacetField facetField: facetFields) {
+		       	List<FacetField.Count> facetItems = facetField.getValues();
+		    	Map<String, Long> facetValueMap = new HashMap<String, Long>(); 
+		    	for (FacetField.Count fcount: facetItems) {
+		    		facetValueMap.put(fcount.getName(), fcount.getCount());
+		    	}
+		       	if (!facetValueMap.isEmpty()) {
+		    		facets.put(facetField.getName(), facetValueMap);
+		    	}
+		    }
+		    if (!facets.isEmpty()) {
+		    	result.setFacets(facets);
+		    }
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

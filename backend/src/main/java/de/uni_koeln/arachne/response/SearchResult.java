@@ -12,18 +12,18 @@ import org.apache.solr.common.SolrDocumentList;
  */
 @XmlRootElement
 public class SearchResult {
-	private int size = 0;
+	private long size = 0;
 	private int limit = 0;
 	private int offset = 0;
-	private Map<String, Map<String, String>> facets = null;
+	private Map<String, Map<String, Long>> facets = null;
 	private SolrDocumentList entities = null;
 	
 	// getter/setter
 	
-	public int getSize() {
+	public long getSize() {
 		return size;
 	}
-	public void setSize(int size) {
+	public void setSize(long size) {
 		this.size = size;
 	}
 	public int getLimit() {
@@ -38,10 +38,10 @@ public class SearchResult {
 	public void setOffset(int offset) {
 		this.offset = offset;
 	}
-	public Map<String, Map<String, String>> getFacets() {
+	public Map<String, Map<String, Long>> getFacets() {
 		return facets;
 	}
-	public void setFacets(Map<String, Map<String, String>> facets) {
+	public void setFacets(Map<String, Map<String, Long>> facets) {
 		this.facets = facets;
 	}
 	public SolrDocumentList getEntities() {
