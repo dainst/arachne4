@@ -22,12 +22,17 @@ import de.uni_koeln.arachne.response.SearchResult;
 @Controller
 public class SearchController {
 	/**
-	 * Handles the http request.
+	 * Handles the http request. 
+	 * <br>
+	 * Currently the search result can only be serialized to JSON as JAXB cannot handle Maps.
 	 * @param searchParam The value of the search parameter.
      * @return A response object containing the data (this is serialized to XML or JSON depending on content negotiation).
      */
 	@RequestMapping(value="/search", method=RequestMethod.GET)
-	public @ResponseBody SearchResult handleSearchRequest(@RequestParam("q") String searchParam) {
+	public @ResponseBody SearchResult handleSearchRequest(@RequestParam("q") String searchParam,
+														  @RequestParam(value = "limit", required = false) String limit,
+														  @RequestParam(value = "offset", required = false) String offset,
+														  @RequestParam(value = "fq", required = false) String facetValues) {
 		//SearchResult result = new SearchResult();
 		SearchResult result = new SearchResult();
 		String url = "http://crazyhorse.archaeologie.uni-koeln.de:8080/solr3.4.0/";
@@ -38,13 +43,14 @@ public class SearchController {
 		    query.setQuery(searchParam);
 		    query.setRows(1000);
 		    query.addFacetField("facet_kategorie");
+		    // TODO add more facets based on info from where?
 		    query.setFacet(true);
-		    //query.addSortField( "price", SolrQuery.ORDER.asc );
-		    QueryResponse rsp = server.query(query);
+		    QueryResponse response = server.query(query);
 		    //result.header = rsp.getHeader();
 		    //result.facets = rsp.getFacetFields();
-		    System.out.println("Facets: " + rsp.getFacetFields());
-		    result.doc = rsp.getResults();
+		    System.out.println("Facets: " + response.getFacetFields());
+		    result.setEntities(response.getResults());
+		    result.setSize(result.getEntities().size());
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
