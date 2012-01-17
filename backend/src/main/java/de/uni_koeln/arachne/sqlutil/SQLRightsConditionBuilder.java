@@ -51,29 +51,31 @@ public class SQLRightsConditionBuilder {
 		String result = "";
 		UserRightsSingleton userRights = UserRightsSingleton.getInstance(); 
 		//in This case The User is Authorized to see Everything
-		if(userRights.isAuthorizedForAllGroups()){
+		if (userRights.isAuthorizedForAllGroups()) {
 			return result;
-		}
-		else{
+		} else {
 			//Get the Permission Groups
 			permissiongroups = userRights.getUserGroups();
-			//Convert the Permission Groups to real conditions
-			List<Condition> conds = buildConditions();
 			
-			
-			//Sum up and Build the String
-			result = result + " AND (";
-			boolean first = true;
-			for (Condition cnd : conds) {
-				if(first){
-					first = false;
+			if (!permissiongroups.isEmpty()) {
+				//Convert the Permission Groups to real conditions
+				List<Condition> conds = buildConditions();
+
+
+				//Sum up and Build the String
+				result = result + " AND (";
+				boolean first = true;
+				for (Condition cnd : conds) {
+					if(first){
+						first = false;
+					}
+					else{
+						result = result + " OR";
+					}
+					result+= cnd.toString();
 				}
-				else{
-					result = result + " OR";
-				}
-				result+= cnd.toString();
+				result = result + ")";
 			}
-			result = result + ")";
 		}
 		return result;
 	}	
