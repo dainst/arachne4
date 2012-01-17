@@ -142,9 +142,12 @@ public class ResponseFactory {
  	 							Section section = getContentFromContext(child, dataset);
  	 							if (section != null) {
  	 								for (Content c:section.getContent()) {
- 	 									String value = c.toString();
- 	 									if (value != null) {
- 	 										values.add(value);
+ 	 									if (c instanceof FieldList) {
+ 	 										for (String value: ((FieldList)c).getValue()) {
+ 	 											if (value != null) {
+ 	 												values.add(value);
+ 	 											}
+ 	 										}
  	 									}
  	 								} 	 								
  	 							}
