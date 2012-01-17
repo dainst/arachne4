@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.controller;
 import java.net.MalformedURLException;
 import java.sql.Struct;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.params.FacetParams;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +30,8 @@ import de.uni_koeln.arachne.util.StrUtils;
 @Controller
 public class SearchController {
 	/**
-	 * Handles the http request. 
+	 * Handles the http request.
+	 *  
 	 * <br>
 	 * Currently the search result can only be serialized to JSON as JAXB cannot handle Maps.
 	 * @param searchParam The value of the search parameter.
@@ -47,11 +50,14 @@ public class SearchController {
 			server = new CommonsHttpSolrServer(url);
 			SolrQuery query = new SolrQuery();
 		    query.setQuery(searchParam);
-		    query.setRows(1000);
+		    query.setRows(50);
 		    query.addFacetField("facet_kategorie");
 		    query.addFacetField("facet_ort");
 		    // TODO add category specific facets based on info from where?
 		    query.setFacet(true);
+		    query.setFacetMinCount(1);
+		    
+		    
 		    if (!StrUtils.isEmptyOrNull(offset)) {
 		    	int intOffset = Integer.valueOf(offset);
 		    	query.setStart(intOffset);
@@ -66,12 +72,12 @@ public class SearchController {
 		    QueryResponse response = server.query(query);
 		    result.setEntities(response.getResults());
 		    result.setSize(response.getResults().getNumFound());
-		    Map<String, Map<String, Long>> facets = new HashMap<String, Map<String, Long>>();
+		    Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
 		    
 		    List<FacetField> facetFields = response.getFacetFields();
 		    for (FacetField facetField: facetFields) {
 		       	List<FacetField.Count> facetItems = facetField.getValues();
-		    	Map<String, Long> facetValueMap = new HashMap<String, Long>(); 
+		    	Map<String, Long> facetValueMap = new LinkedHashMap<String, Long>(); 
 		    	for (FacetField.Count fcount: facetItems) {
 		    		facetValueMap.put(fcount.getName(), fcount.getCount());
 		    	}
