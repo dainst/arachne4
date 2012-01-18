@@ -148,6 +148,11 @@ public class ResponseFactory {
  	 												values.add(value);
  	 											}
  	 										}
+ 	 									} else {
+ 	 										String value = c.toString();
+ 	 										if (value != null) {
+ 	 											values.add(value);
+ 	 										}
  	 									}
  	 								} 	 								
  	 							}
