@@ -41,7 +41,8 @@ public class SearchController {
 	public @ResponseBody SearchResult handleSearchRequest(@RequestParam("q") String searchParam,
 														  @RequestParam(value = "limit", required = false) String limit,
 														  @RequestParam(value = "offset", required = false) String offset,
-														  @RequestParam(value = "fq", required = false) String facetValues) {
+														  @RequestParam(value = "fq", required = false) String facetValues,
+														  @RequestParam(value = "fl", required = false) String facetLimit) {
 		
 		SearchResult result = new SearchResult();
 		String url = "http://crazyhorse.archaeologie.uni-koeln.de:8080/solr3.4.0/";
@@ -56,8 +57,7 @@ public class SearchController {
 		    // TODO add category specific facets based on info from where?
 		    query.setFacet(true);
 		    query.setFacetMinCount(1);
-		    
-		    
+		    		    
 		    if (!StrUtils.isEmptyOrNull(offset)) {
 		    	int intOffset = Integer.valueOf(offset);
 		    	query.setStart(intOffset);
@@ -68,6 +68,11 @@ public class SearchController {
 		    	query.setRows(intLimit);
 		    	result.setLimit(intLimit);
 		    }		    
+		    if (!StrUtils.isEmptyOrNull(facetLimit)) {
+		    	int intFacetLimit = Integer.valueOf(facetLimit);
+		    	query.setFacetLimit(intFacetLimit);
+		    }
+		    
 		    
 		    QueryResponse response = server.query(query);
 		    result.setEntities(response.getResults());
