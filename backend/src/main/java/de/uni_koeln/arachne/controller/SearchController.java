@@ -77,12 +77,14 @@ public class SearchController {
 		    List<FacetField> facetFields = response.getFacetFields();
 		    for (FacetField facetField: facetFields) {
 		       	List<FacetField.Count> facetItems = facetField.getValues();
-		    	Map<String, Long> facetValueMap = new LinkedHashMap<String, Long>(); 
-		    	for (FacetField.Count fcount: facetItems) {
-		    		facetValueMap.put(fcount.getName(), fcount.getCount());
-		    	}
-		       	if (!facetValueMap.isEmpty()) {
-		    		facets.put(facetField.getName(), facetValueMap);
+		    	Map<String, Long> facetValueMap = new LinkedHashMap<String, Long>();
+		    	if (facetItems != null) {
+		    		for (FacetField.Count fcount: facetItems) {
+		    			facetValueMap.put(fcount.getName(), fcount.getCount());
+		    		}
+		    		if (!facetValueMap.isEmpty()) {
+		    			facets.put(facetField.getName(), facetValueMap);
+		    		}
 		    	}
 		    }
 		    if (!facets.isEmpty()) {
