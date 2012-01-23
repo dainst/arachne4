@@ -41,7 +41,7 @@ public class SearchController {
 	public @ResponseBody SearchResult handleSearchRequest(@RequestParam("q") String searchParam,
 														  @RequestParam(value = "limit", required = false) String limit,
 														  @RequestParam(value = "offset", required = false) String offset,
-														  @RequestParam(value = "fq", required = false) String facetValues,
+														  @RequestParam(value = "fq", required = false) String filterValues,
 														  @RequestParam(value = "fl", required = false) String facetLimit) {
 		
 		SearchResult result = new SearchResult();
@@ -49,15 +49,17 @@ public class SearchController {
 		SolrServer server = null;
 		try {
 			server = new CommonsHttpSolrServer(url);
-			SolrQuery query = new SolrQuery();
+			SolrQuery query = new SolrQuery("*:*");
 		    query.setQuery(searchParam);
+		    // default value for limit
 		    query.setRows(50);
+		    query.setFacetMinCount(1);
+		    // default facets to include
 		    query.addFacetField("facet_kategorie");
 		    query.addFacetField("facet_ort");
 		    // TODO add category specific facets based on info from where?
 		    query.setFacet(true);
-		    query.setFacetMinCount(1);
-		    		    
+		    		    		    
 		    if (!StrUtils.isEmptyOrNull(offset)) {
 		    	int intOffset = Integer.valueOf(offset);
 		    	query.setStart(intOffset);
@@ -72,8 +74,12 @@ public class SearchController {
 		    	int intFacetLimit = Integer.valueOf(facetLimit);
 		    	query.setFacetLimit(intFacetLimit);
 		    }
-		    
-		    
+		    if (!StrUtils.isEmptyOrNull(filterValues)) {
+		    	// TODO remove debug
+		    	System.out.println("fq: " + filterValues);
+		    	query.addFilterQuery(filterValues);
+		    }
+		    		    
 		    QueryResponse response = server.query(query);
 		    result.setEntities(response.getResults());
 		    result.setSize(response.getResults().getNumFound());
