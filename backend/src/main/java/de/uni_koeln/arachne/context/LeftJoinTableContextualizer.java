@@ -55,6 +55,7 @@ public abstract class LeftJoinTableContextualizer implements IContextualizer {
 		List<Map<String, String>> contextContents = genericSQLService.getEntitiesById(joinTableName
 				, parentTableName, parent.getArachneId().getInternalKey());
 		
+		// TODO for many context objects this is REALLY expensive - find a way to improve the performance
 		if (contextContents != null) {
 			ListIterator<Map<String, String>> contextMap = contextContents.listIterator(offset);
 			while (contextMap.hasNext() && linkCount < limit) {
