@@ -40,4 +40,15 @@
         	</context>
         </datasections>
     </display>
+    <facets>
+    	<facet name="kategorie" labelKey="Kategorie">
+    		<field datasource="Dataset.TableName" />
+    	</facet>
+    	<facet name="ort" labelKey="Lokalisierung">
+	    	<context type="ort" separator=", ">
+		    	<field datasource=".Stadt" />
+		    	<field datasource=".Land" />
+	    	</context>
+    	</facet>
+    </facets>
 </category>
