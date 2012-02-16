@@ -3,6 +3,10 @@ package de.uni_koeln.arachne.response;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class FieldList extends Content {
 	public FieldList() {
 		value = new ArrayList<String>();
@@ -10,6 +14,7 @@ public class FieldList extends Content {
 	
 	private List<String> value = null;
 	
+	@XmlElementWrapper
 	public List<String> getValue() {
 		return this.value;
 	}

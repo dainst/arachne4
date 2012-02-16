@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  * This class is serialized to JSON using <codeJackson</code>.
  */
 @XmlRootElement(name="entity")
-@XmlSeeAlso({Section.class,Field.class})
+@XmlSeeAlso({Section.class,Field.class,FieldList.class})
 public class FormattedArachneEntity extends BaseArachneEntity {
 	
 	/**
