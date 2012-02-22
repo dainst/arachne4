@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<category name="objekt"
+	xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+    <display>
+        <title>
+        	<section>
+            	<field datasource="objekt.KurzbeschreibungObjekt" />
+            </section>
+        </title>
+        <subtitle>
+             <section separator=", ">
+                <section separator=" / ">
+                    <field datasource="ort.Stadt" />
+                    <field datasource="ort.Ort_antik" />
+                </section>
+                <field datasource="ort.Aufbewahrungsort" />
+            </section>
+        </subtitle>
+        <datasections>
+        	<section labelKey="Informationen zum Objekt">
+        		<section labelKey="Lokalisierung">
+        			<context type="ort" separator=", ">
+        				<field datasource=".Stadt"  />
+        				<field datasource=".Land" />
+        				<field datasource=".Countrycode" />
+        				<field datasource=".Aufbewahrungsort" />
+        			</context>
+        		</section>
+        		<section labelKey="Herkunft">
+        			<field datasource="objekt.HerkFundKommentar" />
+        		</section>
+        		<section labelKey="Gattung/Funktion/Kulturepoche">
+        			<field datasource="objekt.GattungAllgemein" />
+        			<field datasource="objekt.Funktion" />
+        			<field datasource="objekt.zuMonument" prefix="zu Monument gehörig: " />
+        			<field datasource="objekt.Kulturkreis" prefix="Kulturepoche: " />
+        		</section>
+        		<context type="datierung" labelKey="Datierung" separator=" ">
+	            	<field datasource=".AnfEpoche" postfix="," />
+	            	<field datasource=".AnfDatZeitraum" />
+	            	<field datasource=".AnfDatJh" postfix=". Jh."/>
+	            	<field datasource=".AnfDatvn" />
+	            </context>
+	            <section labelKey="Technik">
+	            	<field datasource="objekt.Technik" />
+	            </section>
+	            <section labelKey="Material">
+	            	<field datasource="objekt.Material" />
+	            	<field datasource="objekt.Materialbeschreibung" />
+	            </section>
+	            <section labelKey="Maße">
+	            	<field datasource="objekt.BreiteGesamt" prefix="Breite: " postfix=" cm" />
+	            	<field datasource="objekt.HoeheGesamt" prefix="Höhe: " postfix=" cm" />
+	            	<field datasource="objekt.TiefeGesamt" prefix="Tiefe: " postfix=" cm" />
+	            </section>
+	            <context type="literatur" labelKey="Literatur" separator=" ">
+	            	<field datasource=".tempLiteratur" />
+	            	<field datasource=".DAIRichtlinien" />
+	            	<field datasource=".Seite" />
+	            </context>
+	    	</section>
+        </datasections>
+    </display>
+    <facets>
+    	<facet name="kategorie" labelKey="Kategorie">
+    		<field datasource="Dataset.TableName" />
+    	</facet>
+    	<facet name="ort" labelKey="Lokalisierung">
+	    	<context type="ort" separator=", ">
+		    	<field datasource=".Stadt" />
+		    	<field datasource=".Land" />
+	    	</context>
+    	</facet>
+    	<facet name="datierung-epoche" labelKey="Epoche">
+	    	<context type="datierung">
+		    	<field datasource=".AnfEpoche"/>
+	    	</context>
+    	</facet>
+    	<facet name="datierung-epoche" labelKey="Epoche">
+	    	<context type="datierung">
+		    	<field datasource=".EndEpoche"/>
+	    	</context>
+    	</facet>
+    	<facet name="objektgattung" labelKey="Gattung">
+	    	<field datasource="objekt.GattungAllgemein"/>
+    	</facet>
+    </facets>
+</category>

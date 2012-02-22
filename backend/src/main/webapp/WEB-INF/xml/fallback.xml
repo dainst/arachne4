@@ -9,7 +9,6 @@
         	<section separator=" - ">
 	        	<field datasource="buch.KurzbeschreibungBuch" />
 	            <field datasource="marbilder.Pfad" />
-	            <field datasource="objekt.KurzbeschreibungObjekt" />
 	            <field datasource="literatur.Titel" />
 	            <field datasource="realien.KurzbeschreibungRealien" />
 	            <field datasource="relief.KurzbeschreibungRelief" />
