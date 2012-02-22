@@ -57,6 +57,7 @@ public class SearchController {
 		    // default facets to include
 		    query.addFacetField("facet_kategorie");
 		    query.addFacetField("facet_ort");
+		    query.addFacetField("facet_datierung-epoche");
 		    // TODO add category specific facets based on info from where?
 		    query.setFacet(true);
 		    		    		    
