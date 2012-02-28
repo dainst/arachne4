@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- not sure how to really handle this, so it is far from complete -->
+<category name="realien"
+	xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+    <display>
+        <title>
+        	<section>
+            	<field datasource="realien.KurzbeschreibungRealien" />
+            </section>
+        </title>
+        <subtitle>
+             <section separator=", ">
+                <section separator=" / ">
+                    <field datasource="ort.Stadt" />
+                    <field datasource="ort.Ort_antik" />
+                </section>
+                <field datasource="ort.Aufbewahrungsort" />
+            </section>
+        </subtitle>
+        <datasections>
+        	<section labelKey="Informationen">
+        		<section labelKey="Bildkontext">
+        			<field datasource="realien.Lokalisierung" prefix="Lokalisierung: " />
+        		</section>
+        		<section labelKey="Erhaltung und Überarbeitung">
+        			<section separator=", ">
+        				<field datasource="realien.ErhaltungRealien" prefix="Erhaltungszustand: " />
+        				<field datasource="realien.ErhaltungszustandRealien" />
+        			</section>
+        			<section>
+        				<field datasource="realien.BearbeitungenRealien" prefix="Bearbeitungen: " />
+        			</section>
+        			<section>
+        				<field datasource="realien.BearbeitungenModernRealien" prefix="modern: " />
+        			</section>
+        		</section>
+        		<section labelKey="Figur">
+        			<section>
+        				<field datasource="realien.WesenRealien" prefix="Wesen: " />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="realien.BenennungAllgRealien" prefix="Benennung: " />
+        				<field datasource="realien.BenennungSpez" />
+        			</section>
+        			<section>
+        				<field datasource="realien.GeschlechtRealien" />
+        			</section>
+        			<section>
+        				<field datasource="realien.LebensalterRealien" prefix="Lebensalter: "/>
+        			</section>
+        		</section>
+        		<section labelKey="Haltung">
+        			<field datasource="realien.HaltungRealien" prefix="Haltung: " />
+        			<field datasource="realien.Richtung" />        		
+        		</section>
+        		<section labelKey="Bekleidung">
+        			<section>
+        				<field datasource="realien.bekleidetRealien" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="realien.KleidungAllg" prefix="Kleidung: " />
+        				<field datasource="realien.KleidungSpez" />
+        			</section>        		
+        		</section>
+        		<section labelKey="Haartracht">
+        			<section separator=", ">
+        				<field datasource="realien.HaartrachtAllg" prefix="Haartracht: " />
+        				<field datasource="realien.HaartrachtSpez" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="realien.KopfbedeckungAllg" prefix="Kopfbedeckung: " />
+        				<field datasource="realien.KopfbedeckungSpez" />
+        			</section>	        		
+        		</section>
+        		<!-- unfortunately realien seem not to be connected to a context so this does not work
+        		<section labelKey="Aufbewahrung">
+        			<context type="ort" separator=", ">
+        				<field datasource=".Stadt"  />
+        				<field datasource=".Land" />
+        				<field datasource=".Countrycode" />
+        				<field datasource=".Aufbewahrungsort" />
+        			</context>
+        		</section>
+        		<section labelKey="Datierung">
+	            	<context type="datierung" separator=" ">
+	            		<field datasource=".AnfEpoche" postfix="," />
+	            		<field datasource=".AnfDatZeitraum" />
+	            		<field datasource=".AnfDatJh" postfix=". Jh."/>
+	            		<field datasource=".AnfDatvn" />
+	            	</context>
+	            	<context type="datierung">
+	            		<field datasource=".DatVorschlagAutor" prefix="- nach: " postfix=" -"/>
+	            	</context>
+	            </section>
+        		<context type="literatur" labelKey="Literatur" separator=" ">
+	            	<field datasource=".tempLiteratur" />
+	            	<field datasource=".DAIRichtlinien" />
+	            	<field datasource=".Seite" />
+	            </context>
+	            -->
+	    	</section>
+        </datasections>
+    </display>
+    <facets>
+    	<facet name="kategorie" labelKey="Kategorie">
+    		<field datasource="Dataset.TableName" />
+    	</facet>
+    	<facet name="ort" labelKey="Lokalisierung">
+	    	<context type="ort" separator=", ">
+		    	<field datasource=".Stadt" />
+		    	<field datasource=".Land" />
+	    	</context>
+    	</facet>
+    	<facet name="datierung-epoche" labelKey="Epoche">
+	    	<context type="datierung">
+		    	<field datasource=".AnfEpoche"/>
+	    	</context>
+    	</facet>
+    	<facet name="datierung-epoche" labelKey="Epoche">
+	    	<context type="datierung">
+		    	<field datasource=".EndEpoche"/>
+	    	</context>
+    	</facet>
+    </facets>
+</category>
