@@ -292,7 +292,8 @@ public class ResponseFactory {
 					if (prefix != null) value = prefix + value;
 					if (postfix != null) value += postfix; 
 					
-					// If there are more than one field in this section add the value (incl. separator) to the previous filed
+					// TODO find better solution as the previous content may be a section
+					// If there are more than one field in this section add the value (incl. separator) to the previous field
 					if (!result.getContent().isEmpty()) {
 						int contentSize = result.getContent().size();
 						Field previousContent = (Field)result.getContent().get(contentSize-1);

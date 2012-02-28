@@ -63,6 +63,8 @@ public class ArachneEntityController {
      */
     @RequestMapping(value="/entity/{category}/{id}", method=RequestMethod.GET)
     public @ResponseBody BaseArachneEntity handleGetCategoryIdRequest(@PathVariable("category") String category, @PathVariable("id") Long id) {
+    	// TODO remove debug
+    	System.out.println("Request for category: " + category + " - id: " + id);
     	return getEntityRequestResponse(id, category);
     }
 
