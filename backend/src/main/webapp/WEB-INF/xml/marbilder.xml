@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- just very basic to have at least some definitions -->
+<category name="bilder"
+	xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+    <display>
+        <title>
+        	<section>
+            	<field datasource="marbilder.DateinameMarbilder" />
+            </section>
+        </title>
+        <subtitle>
+             <section>
+                <field datasource="marbilder.Scannummer" />
+            </section>
+        </subtitle>
+        <datasections>
+        	<section labelKey="Informationen zum Bild">
+        		<section labelKey="Allgemein">
+        			<field datasource="marbilder.DateinameMarbilder" prefix="Dateiname: " />
+        			<field datasource="marbilder.Dateiformat" prefix="Dateiformat: " />
+        			<field datasource="marbilder.Dateigroesse" prefix="Dateigröße: " postfix=" kb" />
+        			<field datasource="marbilder.AnzahlFigurenGruppen" prefix="Pfad: " />
+        			<field datasource="marbilder.Scannummer" prefix="Scannummer: " />
+        			<field datasource="marbilder.erstellt" prefix="Erstellt: " />
+        			<field datasource="marbilder.geaendert" prefix="Geändert: " />
+        		</section>
+        	</section>
+        </datasections>
+    </display>
+    <facets>
+    	<facet name="kategorie" labelKey="Kategorie">
+    		<field datasource="Dataset.TableName" />
+    	</facet>
+    </facets>
+</category>
