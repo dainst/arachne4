@@ -9,8 +9,8 @@
         	<section separator=" - ">
 	        	<field datasource="buch.KurzbeschreibungBuch" />
 	            <field datasource="literatur.Titel" />
-	            <field datasource="relief.KurzbeschreibungRelief" />
 	            <!--
+	            <field datasource="relief.KurzbeschreibungRelief" />
 	            <field datasource="marbilder.Pfad" />
 	            <field datasource="reproduktion.KurzbeschreibungReproduktion" />
 	            <field datasource="rezeption.KurzbeschreibungRezeption" />

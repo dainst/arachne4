@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- just very basic to have at least some definitions -->
+<category name="relief"
+	xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+    <display>
+        <title>
+        	<section>
+        		<!-- <field datasource="objekt.KurzbeschreibungObjekt" /> -->
+            	<field datasource="relief.KurzbeschreibungRelief" />
+            </section>
+        </title>
+        <subtitle>
+            <section separator=" ">
+                <field datasource="relief.Szenennummer" prefix="Szene" />
+            </section>
+        </subtitle>
+        <datasections>
+        	<section labelKey="Informationen zum Relief">
+        		<section labelKey="Position - Träger">
+        			<field datasource="relief.relevanteSeiteEins" />
+        		</section>
+        		<section labelKey="Erhaltung">
+        			<field datasource="relief.ErhaltungRelief" />
+        			<field datasource="relief.ErhaltungszustandRelief" prefix="Zustand: "/>
+        			<field datasource="relief.FarbresteRelief" prefix="Farbreste: "/>
+        			<field datasource="relief.BearbeitungenRelief" prefix="Bearbeitungen: " />
+        		</section>
+        		<section labelKey="Szenenbeschreibung">
+        			<field datasource="relief.BeschreibungVorne" prefix="Vordergrund: " />
+        			<field datasource="relief.BeschreibungHinten" prefix="Hintergrund: " />
+        			<field datasource="relief.DekorationRelief" prefix="Dekoration: " />
+        		</section>
+        		<section labelKey="Thematik">
+        			<field datasource="relief.Thematik" />
+        			<field datasource="relief.ThematikAlltag" prefix="Alltag: " />
+        			<field datasource="relief.ThematikBeruf" prefix="Beruf: " />
+        			<field datasource="relief.ThematikBukolisch" prefix="Bukolisch: " />
+        			<field datasource="relief.ThematikChristlich" prefix="Christlich: " />
+        			<field datasource="relief.ThematikDionysisch" prefix="Dionysisch: " />
+        			<field datasource="relief.ThematikHeerwesen" prefix="Heerwesen: " />
+        			<field datasource="relief.ThematikHistorisch" prefix="Historisch: " />
+        			<field datasource="relief.ThematikJagd" prefix="Jagd: " />
+        			<field datasource="relief.ThematikLebenslauf" prefix="Lebenslauf: " />
+        			<field datasource="relief.ThematikMythos" prefix="Mythos: " />
+        			<field datasource="relief.ThematikOrnamentik" prefix="Ornamentik: " />
+        			<field datasource="relief.ThematikReligion" prefix="Religion: " />
+        			<field datasource="relief.ThematikSonstiges" prefix="Sonstiges: " />
+        			<field datasource="relief.ThematikSport" prefix="Sport: " />
+        			<field datasource="relief.ThematikTransport" prefix="Transport: " />
+        		</section>
+        		<section labelKey="Figuren">
+        			<field datasource="relief.Personen" />
+        			<field datasource="relief.AnzahlFigurenRelief" prefix="Anzahl: " />
+        			<field datasource="relief.AnzahlGoetterMythWesen" prefix="Anzahl Götter/myth. Wesen: " />
+        			<field datasource="relief.PersonenGoetter" prefix="Götter: " />
+        			<field datasource="relief.PersonenGoetterWeitere" prefix="weitere: " />
+        			<field datasource="relief.PersonenMythWesen" prefix="Myth. Wesen: " />
+        			<field datasource="relief.PersonenMythWesenWeitere" prefix="weitere: " />
+        			<field datasource="relief.AnzahlHeroenMenschen" prefix="Anzahl Heroen/Menschen: " />
+        			<field datasource="relief.PersonenHeroen" prefix="Heroen: " />
+        			<field datasource="relief.PersonenHeroenWeitere" prefix="weitere: " />
+        			<field datasource="relief.PersonenMensch"  prefix="Menschen: " />
+        			<field datasource="relief.PersonenMenschWeitere" prefix="weitere: " />
+        			<field datasource="relief.AnzahlMaennlich" prefix="Anzahl männlich: " />
+        			<field datasource="relief.AnzahlWeiblich" prefix="Anzahl weiblich: " />
+        			<field datasource="relief.AnzahlTiere" prefix="Anzahl Tiere: " />
+        			<field datasource="relief.PersonenTiere" prefix="Tiere: " />
+        			<field datasource="relief.PersonenTiereWeitere" prefix="weitere: " />
+        			<field datasource="relief.AnzahlGegenstaende" prefix="Anzahl Gegenstände: " />
+        			<field datasource="relief.AnzahlUnbestimmt" prefix="Anzahl unbestimmt: " />
+        		</section>
+        	</section>
+        </datasections>
+    </display>
+    <facets>
+    	<facet name="kategorie" labelKey="Kategorie">
+    		<field datasource="Dataset.TableName" />
+    	</facet>
+    </facets>
+</category>

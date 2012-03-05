@@ -71,7 +71,7 @@ public class ResponseFactory {
 	    	Element title = display.getChild("title", ns);
 	    	String titleStr = "";
 	    	if (title.getChild("field") != null) {
-	    		titleStr = dataset.fields.get(title.getChild("field", ns).getAttributeValue("datasource"));
+	    		titleStr = dataset.getField(title.getChild("field", ns).getAttributeValue("datasource"));
 	    	} else {
 	    		titleStr = getStringFromSections(title.getChild("section", ns), dataset);
 	    	}
