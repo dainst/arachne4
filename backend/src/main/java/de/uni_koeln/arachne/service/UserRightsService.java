@@ -13,6 +13,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import de.uni_koeln.arachne.dao.UserVerwaltungDao;
+import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.util.UserRightsSingleton;
 
@@ -72,9 +73,8 @@ public class UserRightsService {
 			userGroups= new ArrayList<String>();
 			
 			if (arachneUser != null) {
-			String[] temp = (arachneUser.getRightGroups().split(","));
-				for (int i =0; i<temp.length; i++) {
-					userGroups.add(temp[i]);
+				for (DatasetGroup group : arachneUser.getDatasetGroups()) {
+					userGroups.add(group.getName());
 				}
 			}
 			
