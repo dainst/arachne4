@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.BaseArachneEntity;
+import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.FormattedArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.service.ContextService;
@@ -77,8 +77,7 @@ public class ArachneEntityController {
      */
     private BaseArachneEntity getEntityRequestResponse(Long id, String category) {
     	Long startTime = System.currentTimeMillis();
-            	
-    	userRightsService.initializeUserData();
+        
     	ArachneId arachneId = null;
     	
     	if (category == null) {

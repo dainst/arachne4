@@ -2,8 +2,13 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-import de.uni_koeln.arachne.util.UserRightsSingleton;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import de.uni_koeln.arachne.mapping.DatasetGroup;
+import de.uni_koeln.arachne.mapping.UserAdministration;
+import de.uni_koeln.arachne.service.UserRightsService;
 
 /**
  * This Object Builds up the User Rights Queston upon the User Rights Service.
@@ -14,8 +19,10 @@ import de.uni_koeln.arachne.util.UserRightsSingleton;
 // TODO add info about tables where no user rights management is possible/needed 
 public class SQLRightsConditionBuilder {
 
+	@Autowired
+	private UserRightsService userRightsservice;
 	
-	private List<String> permissiongroups;
+	private Set<DatasetGroup> permissiongroups;
 	private String tableName;
 	
 	public SQLRightsConditionBuilder(String tn) {
@@ -30,11 +37,11 @@ public class SQLRightsConditionBuilder {
 		
 		List<Condition> conds = new ArrayList<Condition>();
 		
-		for (String perm : permissiongroups) {
+		for (DatasetGroup group : permissiongroups) {
 			Condition cnd = new Condition();
 			
 			cnd.setPart1( SQLToolbox.getQualifiedFieldname(tableName, "DatensatzGruppe"+SQLToolbox.ucfirst(tableName)));
-			cnd.setPart2("\""+perm +"\"");
+			cnd.setPart2("\""+ group.getName() +"\"");
 			cnd.setOperator("=");
 			conds.add( cnd);
 			
@@ -49,18 +56,17 @@ public class SQLRightsConditionBuilder {
 	 */
 	public String getUserRightsSQLSnipplett(){
 		String result = "";
-		UserRightsSingleton userRights = UserRightsSingleton.getInstance(); 
+		UserAdministration user = userRightsservice.getCurrentUser();
 		//in This case The User is Authorized to see Everything
-		if (userRights.isAuthorizedForAllGroups()) {
+		if (user.isAll_groups()) {
 			return result;
 		} else {
 			//Get the Permission Groups
-			permissiongroups = userRights.getUserGroups();
+			permissiongroups = user.getDatasetGroups();
 			
 			if (!permissiongroups.isEmpty()) {
 				//Convert the Permission Groups to real conditions
 				List<Condition> conds = buildConditions();
-
 
 				//Sum up and Build the String
 				result = result + " AND (";

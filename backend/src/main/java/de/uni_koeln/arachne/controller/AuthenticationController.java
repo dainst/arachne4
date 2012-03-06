@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,18 +19,24 @@ import de.uni_koeln.arachne.dao.SessionDao;
 import de.uni_koeln.arachne.dao.UserVerwaltungDao;
 import de.uni_koeln.arachne.mapping.Session;
 import de.uni_koeln.arachne.mapping.UserAdministration;
+import de.uni_koeln.arachne.service.UserRightsService;
 
 /**
  * Handles http requests (currently only get) for <code>/auth<code>.
  */
 @Controller
 public class AuthenticationController {
+
+	private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 	
 	@Autowired
 	private UserVerwaltungDao userDao;
 	
 	@Autowired
 	private SessionDao sessionDao;
+	
+	@Autowired
+	private UserRightsService rightsService;
 	
 	/**
 	 * Handles login
@@ -45,6 +53,7 @@ public class AuthenticationController {
 		if (user != null && user.getPassword().equals(encryptedPassword)) {
 			sessionDao.deleteAllSessionsForUser(user.getId());
 			Session session = new Session();
+			logger.debug("Session-ID: " + request.getSession().getId());
 			session.setUserAdministration(user);
 			session.setTimestamp(new Date());
 			session.setSid(request.getSession().getId());
@@ -70,6 +79,7 @@ public class AuthenticationController {
 			HttpServletRequest request,
 			@PathVariable("id") String id) {
 		
+		rightsService.reset();
 		sessionDao.deleteSession(request.getSession().getId());
 		request.getSession().invalidate();
 		response.setStatus(204);
