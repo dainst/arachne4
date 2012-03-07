@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.mapping.UserAdministration;
-import de.uni_koeln.arachne.service.UserRightsService;
 
 /**
  * This Object Builds up the User Rights Queston upon the User Rights Service.
@@ -19,9 +16,6 @@ import de.uni_koeln.arachne.service.UserRightsService;
 // TODO add info about tables where no user rights management is possible/needed 
 public class SQLRightsConditionBuilder {
 
-	@Autowired
-	private UserRightsService userRightsService;
-	
 	private Set<DatasetGroup> permissiongroups;
 	private String tableName;
 
