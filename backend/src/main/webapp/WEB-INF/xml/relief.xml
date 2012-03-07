@@ -7,14 +7,14 @@
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
     <display>
         <title>
-        	<section>
-        		<!-- <field datasource="objekt.KurzbeschreibungObjekt" /> -->
-            	<field datasource="relief.KurzbeschreibungRelief" />
+        	<section separator=" ">
+        		<field datasource="objekt.KurzbeschreibungObjekt" />
             </section>
         </title>
         <subtitle>
             <section separator=" ">
-                <field datasource="relief.Szenennummer" prefix="Szene" />
+            	<field datasource="relief.Szenennummer" prefix="Szene" postfix=":" />
+                <field datasource="relief.KurzbeschreibungRelief" />
             </section>
         </subtitle>
         <datasections>
