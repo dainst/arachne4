@@ -2,6 +2,8 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.ArrayList;
 
+import de.uni_koeln.arachne.mapping.UserAdministration;
+
 public class GenericEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 
 	protected SQLRightsConditionBuilder rcb;
@@ -12,11 +14,11 @@ public class GenericEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	 * @param field1 The field for which the id is given.
 	 * @param field1Id The field Id.
 	 */
-	public GenericEntitiesSQLQueryBuilder(String tableName, String field1, Long field1Id) {
+	public GenericEntitiesSQLQueryBuilder(String tableName, String field1, Long field1Id, UserAdministration user) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;
-		//rcb = new ArachneSQLRightsConditionBuilder(table);
+		rcb = new SQLRightsConditionBuilder(table, user);
 		// The key identification condition
 		Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");
@@ -29,7 +31,7 @@ public class GenericEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	protected String buildSQL() {
 		sql += "SELECT * FROM `" + table + "` WHERE 1";
 		sql += this.buildAndConditions();
-		//sql += rcb.getUserRightsSQLSnipplett();  
+		sql += rcb.getUserRightsSQLSnipplett();  
 		sql += ";";
 		// TODO remove debug output
 		System.out.println("GenericEntitiesQueryBuilder SQL: " + sql);

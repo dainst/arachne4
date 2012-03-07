@@ -77,7 +77,7 @@ public class GenericSQLDao extends SQLDao {
 	}
 	
 	public List<Map<String, String>> getEntitiesById(String tableName, String field1, Long field1Id) {
-		GenericEntitiesSQLQueryBuilder queryBuilder = new GenericEntitiesSQLQueryBuilder(tableName, field1, field1Id);
+		GenericEntitiesSQLQueryBuilder queryBuilder = new GenericEntitiesSQLQueryBuilder(tableName, field1, field1Id, userRightsService.getCurrentUser());
 		@SuppressWarnings("unchecked")
 		List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(queryBuilder.getSQL()
 				, new GenericEntitesMapper());
