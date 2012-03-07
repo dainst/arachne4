@@ -242,9 +242,9 @@ public class ResponseFactory {
 						}
 					}
 				}
-				if (datasetResult != null) {
-					if (prefix != null) result = prefix + result;
-					if (postfix != null) result += postfix;
+				if (!StrUtils.isEmptyOrNull(datasetResult)) {
+					if (prefix != null) datasetResult = prefix + datasetResult;
+					if (postfix != null) datasetResult += postfix;
 					if (!result.isEmpty() && !datasetResult.isEmpty()) {
 						result += separator;
 					}
