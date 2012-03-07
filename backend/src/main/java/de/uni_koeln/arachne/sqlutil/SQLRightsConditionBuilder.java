@@ -20,13 +20,16 @@ import de.uni_koeln.arachne.service.UserRightsService;
 public class SQLRightsConditionBuilder {
 
 	@Autowired
-	private UserRightsService userRightsservice;
+	private UserRightsService userRightsService;
 	
 	private Set<DatasetGroup> permissiongroups;
 	private String tableName;
+
+	private UserAdministration user;
 	
-	public SQLRightsConditionBuilder(String tn) {
-		this.tableName =tn;
+	public SQLRightsConditionBuilder(String tn, UserAdministration user) {
+		this.tableName = tn;
+		this.user = user;
 	}
 	
 	/**
@@ -56,7 +59,6 @@ public class SQLRightsConditionBuilder {
 	 */
 	public String getUserRightsSQLSnipplett(){
 		String result = "";
-		UserAdministration user = userRightsservice.getCurrentUser();
 		//in This case The User is Authorized to see Everything
 		if (user.isAll_groups()) {
 			return result;

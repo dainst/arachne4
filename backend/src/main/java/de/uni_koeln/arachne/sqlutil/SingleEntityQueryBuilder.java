@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.ArrayList;
 
+import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.util.ArachneId;
 
 /**
@@ -18,8 +19,9 @@ public class SingleEntityQueryBuilder extends AbstractSQLBuilder {
 	/**
 	 * Constructs a condition to find the Dataset described in ArachneId. creates <code>UserRightsConditionBuilder</code> , Limits the Result count to 1. 
 	 * @param ident This is the <code>ArachneId</code> the SQL retrieve statement should be written for
+	 * @param user 
 	 */
-	public SingleEntityQueryBuilder(ArachneId ident) {
+	public SingleEntityQueryBuilder(ArachneId ident, UserAdministration user) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		id = ident;
@@ -27,7 +29,7 @@ public class SingleEntityQueryBuilder extends AbstractSQLBuilder {
 		table = id.getTableName();
 		//Limits the Resultcount to 1
 		limit1 = true;
-		rcb = new SQLRightsConditionBuilder(table);
+		rcb = new SQLRightsConditionBuilder(table,user);
 		//The Primary key Identification condition
 		Condition cnd = new Condition();
 		cnd.setOperator("=");

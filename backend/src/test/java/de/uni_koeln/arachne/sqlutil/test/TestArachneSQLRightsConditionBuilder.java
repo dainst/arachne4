@@ -1,54 +1,47 @@
 package de.uni_koeln.arachne.sqlutil.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Test;
 
+import de.uni_koeln.arachne.mapping.DatasetGroup;
+import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.sqlutil.SQLRightsConditionBuilder;
-import de.uni_koeln.arachne.util.UserRightsSingleton;
 
 
 
 public class TestArachneSQLRightsConditionBuilder {
+	
 	@Test
 	public void testArachneSQLRightsConditionBuilder(){
-		List<String> groups = new ArrayList<String>(1);
 		
-		groups.add("Arachne");
+		UserAdministration user = new UserAdministration();
+		Set<DatasetGroup> set = new HashSet<DatasetGroup>();
+		set.add(new DatasetGroup("Arachne"));
+		user.setDatasetGroups(set);
 		
 		
-		UserRightsSingleton.init("Testman", false, true, 500, groups);
-		
-		SQLRightsConditionBuilder rcb = new SQLRightsConditionBuilder("bauwerk");
+		SQLRightsConditionBuilder rcb = new SQLRightsConditionBuilder("bauwerk", user);
 		
 		assertEquals(rcb.getUserRightsSQLSnipplett(), " AND ( `bauwerk`.`DatensatzGruppeBauwerk` = \"Arachne\")");
 		
-		groups = new ArrayList<String>(2);
+		set.add(new DatasetGroup("Oppenheim"));
 		
-		groups.add("Arachne");
-		groups.add("Oppenheim");
+		rcb = new SQLRightsConditionBuilder("bauwerk", user);
 		
-		UserRightsSingleton.init("Testman", false, true, 500, groups);
+		assertTrue(rcb.getUserRightsSQLSnipplett().contains("`bauwerk`.`DatensatzGruppeBauwerk` = \"Arachne\""));
+		assertTrue(rcb.getUserRightsSQLSnipplett().contains("`bauwerk`.`DatensatzGruppeBauwerk` = \"Oppenheim\""));
 		
-		rcb = new SQLRightsConditionBuilder("bauwerk");
+		user.setAll_groups(true);
 		
-		assertEquals(rcb.getUserRightsSQLSnipplett(), " AND ( `bauwerk`.`DatensatzGruppeBauwerk` = \"Arachne\" OR `bauwerk`.`DatensatzGruppeBauwerk` = \"Oppenheim\")");
+		rcb = new SQLRightsConditionBuilder("bauwerk", user);
 		
-		
-		groups = new ArrayList<String>(2);
-		
-		groups.add("Arachne");
-		groups.add("Oppenheim");
-		
-		UserRightsSingleton.init("Testman", true, true, 900, groups);
-		
-		rcb = new SQLRightsConditionBuilder("bauwerk");
-		
-		assertEquals(rcb.getUserRightsSQLSnipplett(), "");
-		
+		assertEquals(rcb.getUserRightsSQLSnipplett(), "");		
 		
 	}
+	
 }

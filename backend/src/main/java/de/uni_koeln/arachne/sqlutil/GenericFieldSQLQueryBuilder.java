@@ -2,6 +2,8 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.ArrayList;
 
+import de.uni_koeln.arachne.mapping.UserAdministration;
+
 public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 
 	protected SQLRightsConditionBuilder rcb;
@@ -15,12 +17,12 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 	 * @param field1Id The field Id.
 	 * @param field2 The field to query.
 	 */
-	public GenericFieldSQLQueryBuilder(String tableName, String field1, Long field1Id, String field2) {
+	public GenericFieldSQLQueryBuilder(String tableName, String field1, Long field1Id, String field2, UserAdministration user) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;
 		this.field2 = SQLToolbox.getQualifiedFieldname(table, field2);
-		rcb = new SQLRightsConditionBuilder(table);
+		rcb = new SQLRightsConditionBuilder(table,user);
 		// The key identification condition
 		Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");

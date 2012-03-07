@@ -3,6 +3,8 @@ package de.uni_koeln.arachne.sqlutil;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uni_koeln.arachne.mapping.UserAdministration;
+
 public class GenericFieldsSQLQueryBuilder extends AbstractSQLBuilder {
 	protected SQLRightsConditionBuilder rcb;
 	
@@ -15,11 +17,11 @@ public class GenericFieldsSQLQueryBuilder extends AbstractSQLBuilder {
 	 * @param field1Id The field Id.
 	 * @param fields The fields to query.
 	 */
-	public GenericFieldsSQLQueryBuilder(String tableName, String field1, Long field1Id, List<String> fields) {
+	public GenericFieldsSQLQueryBuilder(String tableName, String field1, Long field1Id, List<String> fields, UserAdministration user) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;
-		rcb = new SQLRightsConditionBuilder(table);
+		rcb = new SQLRightsConditionBuilder(table, user);
 		// concatenate fields
 		field2 = SQLToolbox.getQualifiedFieldname(table, fields.get(0));
 		int i = 1;

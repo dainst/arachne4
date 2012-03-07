@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.DatasetMapper;
 import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.sqlutil.SingleEntityQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.SingleEntitySubTablesQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
@@ -17,14 +19,18 @@ import de.uni_koeln.arachne.util.ArachneId;
  */
 @Repository("arachneDataMapDao")
 public class DataMapDao extends SQLDao {
+		
+		@Autowired
+		private UserRightsService userRightsService;
+	
 		/**
 		 * Gets a map of values by Id
 		 * @param id instance of <code>ArachneId</code> 
 		 * @return a Simple representation of a Map<String,String> or <code>null</code>.
 		 */
-		public Map<String, String> getById(ArachneId id) {
+		public Map<String, String> getById(ArachneId id) {			
 			
-			SingleEntityQueryBuilder queryBuilder = new SingleEntityQueryBuilder(id);
+			SingleEntityQueryBuilder queryBuilder = new SingleEntityQueryBuilder(id,userRightsService.getCurrentUser());
 			
 			String sql = queryBuilder.getSQL();
 			// TODO remove debug

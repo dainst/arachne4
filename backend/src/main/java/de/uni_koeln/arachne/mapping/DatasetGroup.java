@@ -13,6 +13,14 @@ import org.codehaus.jackson.annotate.JsonValue;
 @Table(name="verwaltung_datensatzgruppen")
 public class DatasetGroup {
 	
+	public DatasetGroup() {
+		
+	}
+	
+	public DatasetGroup(String name) {
+		setName(name);
+	}
+	
 	@Id
 	@Column(name="dgid")
 	private int id;
