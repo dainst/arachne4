@@ -71,12 +71,14 @@ public class GenericSQLConnectionsContextualizer implements IContextualizer {
 		List<Link> result = new ArrayList<Link>();
 		String parentTableName = parent.getArachneId().getTableName();
 		// get 'cross table' name from the 'Verknuepfungen' table
+		System.out.println("parentTableName: " + parentTableName + " - contextType: " + contextType);
 		String tableName = arachneConnectionService.getTableName(parentTableName, contextType);
 		System.out.println("tableName: " + tableName);
 		if (!StrUtils.isEmptyOrNull(tableName)) {
 			// get context ids from 'cross table'
 			List<Long> contextIds = genericSQLService.getIdByFieldId(tableName, parentTableName, parent.getArachneId()
 					.getInternalKey(), SQLToolbox.generateForeignKeyName(contextType));
+			
 			// get datasets, assemble the links and add them to the result list
 			if (contextIds != null) {
 				ListIterator<Long> contextId = contextIds.listIterator(offset);
@@ -84,18 +86,19 @@ public class GenericSQLConnectionsContextualizer implements IContextualizer {
 					ArachneLink link = new ArachneLink();
 					link.setEntity1(parent);
 
-
-					//improved Performance for testing ... less SQL-queries
-					Dataset aDs = new Dataset();
-					//Performance ... the arachneId is build without the identification-service
-
-					ArachneId id = new ArachneId(tableName, contextId.next(), (long) 0, false);
-					aDs.setArachneId(id);
-					link.setEntity2(aDs);
-
-
-					//for performance changed to empty dataset ONLY with arachneId
-					//link.setEntity2(arachneSingleEntityDataService.getSingleEntityByArachneId(id));
+					// contexts can not be retrieved from the same table as the parent, so if the tables are the same
+					// set it to the contexts one (needed for example for relief)
+					if (tableName.equals(parentTableName)) {
+						tableName = contextType;
+					}
+					
+					ArachneId arachneId = arachneEntityIdentificationService.getId(tableName, contextId.next());
+					if (arachneId == null) {
+						// The magic number zero ("0L") means that the entity is not in the "arachneentityidentificaton" table
+						arachneId = new ArachneId(tableName, contextId.next(), 0L, false);
+					}
+					
+					link.setEntity2(arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId));
 
 					linkCount += 1;
 					System.out.println("Adding Link " + contextType + " number " + linkCount + "/" + limit + " of " + contextIds.size());
