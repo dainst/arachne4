@@ -7,26 +7,45 @@
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
     <display>
         <title>
-        	<section separator=" ">
+        	<section>
         		<field datasource="objekt.KurzbeschreibungObjekt" />
             </section>
         </title>
         <subtitle>
             <section separator=" ">
-            	<field datasource="relief.Szenennummer" prefix="Szene" postfix=":" />
+            	<field datasource="relief.Szenennummer" prefix="Szene " postfix=":" />
                 <field datasource="relief.KurzbeschreibungRelief" />
             </section>
         </subtitle>
         <datasections>
         	<section labelKey="Informationen zum Relief">
+        		<section labelKey="Größe">
+        			<field datasource="relief.SzeneBreite" prefix="Breite: " postfix=" cm" />
+        			<field datasource="relief.SzeneHoehe" prefix="Höhe: " postfix=" cm" />
+        			<field datasource="relief.Relieferhebung" prefix="Relieferhebung: " postfix=" cm" />
+        			<field datasource="relief.ursprGroesze" prefix="Ursprüngliche Größe: " />
+        		</section>
         		<section labelKey="Position - Träger">
-        			<field datasource="relief.relevanteSeiteEins" />
+        			<section separator=", ">
+        				<field datasource="relief.relevanteSeiteEins" />
+        				<field datasource="relief.relevanteSeiteZwei" />
+        				<field datasource="relief.relevanteSeiteDrei" />
+        				<field datasource="relief.relevanteSeiteVier" />
+        			</section>
+        			<section>
+        				<field datasource="relief.SpezifizierungPosition" />
+        				<field datasource="relief.SzeneIst" />
+        			</section>
         		</section>
         		<section labelKey="Erhaltung">
-        			<field datasource="relief.ErhaltungRelief" />
-        			<field datasource="relief.ErhaltungszustandRelief" prefix="Zustand: "/>
-        			<field datasource="relief.FarbresteRelief" prefix="Farbreste: "/>
-        			<field datasource="relief.BearbeitungenRelief" prefix="Bearbeitungen: " />
+        			<section separator=", ">
+        				<field datasource="relief.ErhaltungRelief" />
+        				<field datasource="relief.ErhaltungszustandRelief" />
+        			</section>
+        			<section>
+        				<field datasource="relief.FarbresteRelief" prefix="Farbe: "/>
+        				<field datasource="relief.BearbeitungenRelief" prefix="Bearbeitungen: " />
+        			</section>
         		</section>
         		<section labelKey="Szenenbeschreibung">
         			<field datasource="relief.BeschreibungVorne" prefix="Vordergrund: " />
@@ -34,26 +53,73 @@
         			<field datasource="relief.DekorationRelief" prefix="Dekoration: " />
         		</section>
         		<section labelKey="Thematik">
-        			<field datasource="relief.Thematik" />
-        			<field datasource="relief.ThematikAlltag" prefix="Alltag: " />
-        			<field datasource="relief.ThematikBeruf" prefix="Beruf: " />
-        			<field datasource="relief.ThematikBukolisch" prefix="Bukolisch: " />
-        			<field datasource="relief.ThematikChristlich" prefix="Christlich: " />
-        			<field datasource="relief.ThematikDionysisch" prefix="Dionysisch: " />
-        			<field datasource="relief.ThematikHeerwesen" prefix="Heerwesen: " />
-        			<field datasource="relief.ThematikHistorisch" prefix="Historisch: " />
-        			<field datasource="relief.ThematikJagd" prefix="Jagd: " />
-        			<field datasource="relief.ThematikLebenslauf" prefix="Lebenslauf: " />
-        			<field datasource="relief.ThematikMythos" prefix="Mythos: " />
-        			<field datasource="relief.ThematikOrnamentik" prefix="Ornamentik: " />
-        			<field datasource="relief.ThematikReligion" prefix="Religion: " />
-        			<field datasource="relief.ThematikSonstiges" prefix="Sonstiges: " />
-        			<field datasource="relief.ThematikSport" prefix="Sport: " />
-        			<field datasource="relief.ThematikTransport" prefix="Transport: " />
+        			<section>
+        				<field datasource="relief.Thematik" />
+        			</section>
+        			<section separator=", ">	
+        				<field datasource="relief.ThematikAlltag" prefix="Alltag: " />
+        				<field datasource="relief.HandlungAlltag" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="relief.ThematikBeruf" prefix="Beruf: " />
+        				<field datasource="relief.HandlungBeruf" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="relief.ThematikBukolisch" prefix="Bukolisch: " />
+        				<field datasource="relief.HandlungBukolisch" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="relief.ThematikChristlich" prefix="Christlich: " />
+        				<field datasource="relief.HandlungChristlich" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="relief.ThematikDionysisch" prefix="Dionysisch: " />
+        				<field datasource="relief.HandlungDionysisch" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="relief.ThematikHeerwesen" prefix="Heerwesen: " />
+        				<field datasource="relief.HandlungHeerwesen" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="relief.ThematikHistorisch" prefix="Historisch: " />
+        				<field datasource="relief.HandlungHistorisch" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="relief.ThematikJagd" prefix="Jagd: " />
+        				<field datasource="relief.HandlungJagd" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="relief.ThematikLebenslauf" prefix="Lebenslauf: " />
+        				<field datasource="relief.HandlungLebenslauf" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="relief.ThematikMythos" prefix="Mythos: " />
+        				<field datasource="relief.HandlungMythos" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="relief.ThematikOrnamentik" prefix="Ornamentik: " />
+        				<field datasource="relief.HandlungOrnamentik" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="relief.ThematikReligion" prefix="Religion: " />
+        				<field datasource="relief.HandlungReligion" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="relief.ThematikSonstiges" prefix="Sonstiges: " />
+        				<field datasource="relief.HandlungSonstiges" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="relief.ThematikSport" prefix="Sport: " />
+        				<field datasource="relief.HandlungSport" />
+        			</section>
+        			<section separator=", ">
+        				<field datasource="relief.ThematikTransport" prefix="Transport: " />
+        				<field datasource="relief.HandlungTransport" />
+        			</section>
         		</section>
         		<section labelKey="Figuren">
         			<field datasource="relief.Personen" />
-        			<field datasource="relief.AnzahlFigurenRelief" prefix="Anzahl: " />
+        			<field datasource="relief.AnzahlFigurenRelief" prefix="Anzahl Gesamt: " />
         			<field datasource="relief.AnzahlGoetterMythWesen" prefix="Anzahl Götter/myth. Wesen: " />
         			<field datasource="relief.PersonenGoetter" prefix="Götter: " />
         			<field datasource="relief.PersonenGoetterWeitere" prefix="weitere: " />
@@ -62,8 +128,8 @@
         			<field datasource="relief.AnzahlHeroenMenschen" prefix="Anzahl Heroen/Menschen: " />
         			<field datasource="relief.PersonenHeroen" prefix="Heroen: " />
         			<field datasource="relief.PersonenHeroenWeitere" prefix="weitere: " />
-        			<field datasource="relief.PersonenMensch"  prefix="Menschen: " />
-        			<field datasource="relief.PersonenMenschWeitere" prefix="weitere: " />
+        			<field datasource="relief.PersonenMenschen"  prefix="Menschen: " />
+        			<field datasource="relief.PersonenMenschenWeitere" prefix="weitere: " />
         			<field datasource="relief.AnzahlMaennlich" prefix="Anzahl männlich: " />
         			<field datasource="relief.AnzahlWeiblich" prefix="Anzahl weiblich: " />
         			<field datasource="relief.AnzahlTiere" prefix="Anzahl Tiere: " />
