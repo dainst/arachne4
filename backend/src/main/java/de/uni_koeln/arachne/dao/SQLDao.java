@@ -45,7 +45,7 @@ public class SQLDao {
 			try {
 				return jdbcTemplate.query(sQLQuery,rm);
 			} catch (DataAccessException e) {
-				System.out.println("DataAccessException! Most likely unknown column SQL syntax error.");
+				System.out.println("DataAccessException: " + e.getRootCause());
 				System.out.println("May be a rights managment problem as Literatur (for example) has no DatensatzGruppe field.");
 				return null;
 			}
