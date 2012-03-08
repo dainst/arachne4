@@ -18,12 +18,18 @@ public class SQLRightsConditionBuilder {
 
 	private Set<DatasetGroup> permissiongroups;
 	private String tableName;
-
 	private UserAdministration user;
+	private List<String> exludedTables = new ArrayList<String>();
+	
 	
 	public SQLRightsConditionBuilder(String tn, UserAdministration user) {
 		this.tableName = tn;
 		this.user = user;
+		// TODO find a better way to exclude specific tables
+		exludedTables.add("ortsbezug_leftjoin_ort");
+		exludedTables.add("datierung");
+		exludedTables.add("literaturzitat_leftjoin_literatur");
+		exludedTables.add("rezeptionsobjekte");
 	}
 	
 	/**
@@ -54,7 +60,7 @@ public class SQLRightsConditionBuilder {
 	public String getUserRightsSQLSnipplett(){
 		String result = "";
 		//in This case The User is Authorized to see Everything
-		if (user.isAll_groups()) {
+		if (user.isAll_groups() || exludedTables.contains(tableName)) {
 			return result;
 		} else {
 			//Get the Permission Groups
