@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- just very basic to have at least some definitions -->
+<category name="relief"
+	xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+    <display>
+        <title>
+        	<section>
+        		<field datasource="rezeption.KurzbeschreibungRezeption" />
+            </section>
+        </title>
+        <subtitle>
+            <section separator=" ">
+            	<field datasource="objekt.KurzbeschreibungObjekt" prefix="Rezipiertes Objekt: " />
+            </section>
+        </subtitle>
+        <datasections>
+        	<section labelKey="Informationen zur Rezeption">
+        		<section labelKey="Rezeptionsquelle">
+        			<field datasource="rezeption.Rezeptionsquelle" />
+        		</section>	
+        	</section>
+        </datasections>
+    </display>
+    <facets>
+    	<facet name="kategorie" labelKey="Kategorie">
+    		<field datasource="Dataset.TableName" />
+    	</facet>
+    </facets>
+</category>
