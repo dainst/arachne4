@@ -27,10 +27,9 @@ public class ImageService {
 	public void addImages(Dataset dataset) {
 		ArachneId arachneId = dataset.getArachneId();
 		ArrayList<String> fieldList = new ArrayList<String>(2);
-		fieldList.add("PS_MARBilderID");
 		fieldList.add("DateinameMarbilder");
 		@SuppressWarnings("unchecked")
-		List<Image> imageList = (List<Image>) genericSQLService.getStringFieldsWithCustomRowmapper("marbilder"
+		List<Image> imageList = (List<Image>) genericSQLService.getStringFieldsEntityIdJoinedWithCustomRowmapper("marbilder"
 				, arachneId.getTableName(), arachneId.getInternalKey(), fieldList, new ImageRowMapper());
 		// TODO remove debug
 		System.out.println("ImageList: " + imageList);

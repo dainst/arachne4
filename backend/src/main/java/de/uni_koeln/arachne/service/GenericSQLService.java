@@ -35,4 +35,9 @@ public class GenericSQLService {
 			, Long field1Id, ArrayList<String> fields, RowMapper<? extends SQLResponseObject> rowMapper) {
 		return genericSQLDao.getStringFieldsWithCustomRowMapper(tableName, field1, field1Id, fields, rowMapper);
 	}
+	
+	public List<? extends SQLResponseObject> getStringFieldsEntityIdJoinedWithCustomRowmapper(String tableName, String field1
+			, Long field1Id, ArrayList<String> fields, RowMapper<? extends SQLResponseObject> rowMapper) {
+		return genericSQLDao.getStringFieldsEntityIdJoinedWithCustomRowMapper(tableName, field1, field1Id, fields, rowMapper);
+	}
 }
