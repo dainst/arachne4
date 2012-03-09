@@ -3,8 +3,7 @@
  */
 package de.uni_koeln.arachne.controller;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.awt.image.BufferedImage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,12 +25,12 @@ import de.uni_koeln.arachne.util.ArachneId;
 /**
  * Handles http requests for images, currently only get
  * @author Sven Ole Clemens
- *
+ * @author Sebastian Cuy
  */
 @Controller
 public class ImageController {
 
-	private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ImageController.class);
 	
 	@Autowired
 	private EntityIdentificationService arachneEntityIdentificationService;
@@ -47,35 +46,13 @@ public class ImageController {
 	 * @return
 	 */
 	@RequestMapping(value = "/image/{id}", method = RequestMethod.GET)
-	public @ResponseBody byte[] getImage(
+	public @ResponseBody BufferedImage getImage(
 			@PathVariable("id") String id,
 			HttpServletRequest request,
 			HttpServletResponse response) {
-		logger.debug("Get image for id: " + id);
 		
-		ArachneId arachneId = arachneEntityIdentificationService.getId(Long.valueOf(id));
+		return getImageStream(id, ImageResolutionType.HIGH, request, response);
 		
-		if(!arachneId.getTableName().equals("marbilder")) {
-			response.setStatus(404);
-			return null;
-		}
-		
-		try {
-			
-			response.setStatus(200);
-			
-			return imageStreamService.getArachneImage(ImageResolutionType.HIGH, arachneId.getInternalKey());
-			
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		response.setStatus(404);
-		return null;
 	}
 	
 	/**
@@ -86,34 +63,13 @@ public class ImageController {
 	 * @return
 	 */
 	@RequestMapping(value = "/image/thumbnail/{id}", method = RequestMethod.GET)
-	public @ResponseBody byte[] getThumbnail(
+	public @ResponseBody BufferedImage getThumbnail(
 			@PathVariable("id") String id,
 			HttpServletRequest request,
 			HttpServletResponse response) {
+				
+		return getImageStream(id, ImageResolutionType.THUMBNAIL, request, response);
 		
-		ArachneId arachneId = arachneEntityIdentificationService.getId(Long.valueOf(id));
-		
-		if(!arachneId.getTableName().equals("marbilder")) {
-			response.setStatus(404);
-			return null;
-		}
-		
-		try {
-			
-			response.setStatus(200);
-			
-			return imageStreamService.getArachneImage(ImageResolutionType.THUMBNAIL, arachneId.getInternalKey());
-			
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		response.setStatus(404);
-		return null;
 	}
 	
 	/**
@@ -124,33 +80,35 @@ public class ImageController {
 	 * @return
 	 */
 	@RequestMapping(value = "/image/preview/{id}", method = RequestMethod.GET)
-	public @ResponseBody byte[] getPreview(
+	public @ResponseBody BufferedImage getPreview(
 			@PathVariable("id") String id,
 			HttpServletRequest request,
 			HttpServletResponse response) {
 		
+		return getImageStream(id, ImageResolutionType.PREVIEW, request, response);
+		
+	}
+	
+	private BufferedImage getImageStream(String id, ImageResolutionType res, HttpServletRequest request, HttpServletResponse response) {
+		
 		ArachneId arachneId = arachneEntityIdentificationService.getId(Long.valueOf(id));
 		
 		if(!arachneId.getTableName().equals("marbilder")) {
+			logger.error("Error: entityId {} does not refer to an image.");
 			response.setStatus(404);
 			return null;
 		}
 		
 		try {
-			
 			response.setStatus(200);
-			
-			return imageStreamService.getArachneImage(ImageResolutionType.PREVIEW, arachneId.getInternalKey());
-			
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			BufferedImage bufferedImage = imageStreamService.getArachneImage(res, arachneId.getInternalKey());
+			return bufferedImage;
+		} catch (Exception e) {
+			logger.error("Error while retrieving thumbnail with entity id from image service" + arachneId.getArachneEntityID(),e);			
+			response.setStatus(404);
+			return null;
 		}
 		
-		response.setStatus(404);
-		return null;
 	}
+	
 }

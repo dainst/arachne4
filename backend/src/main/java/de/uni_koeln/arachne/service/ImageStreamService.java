@@ -29,16 +29,14 @@ public class ImageStreamService {
 	 * @throws IOException 
 	 */
 	// TODO: change to the new Image-Server
-	public byte[] getArachneImage(ImageResolutionType imageResolutionType, Long id) throws IOException {
+	public BufferedImage getArachneImage(ImageResolutionType imageResolutionType, Long id) throws IOException {
 		
 		int width = imageResolutionType.width();
 		int height = imageResolutionType.height();
 		
 		URL url = new URL(repositoryLink + "/arachne/images/image.php?key=" + id + "&method=min&width=" + width + "&height=" + height);
 		BufferedImage bufferedImage = ImageIO.read(url.openStream());
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		ImageIO.write(bufferedImage, "jpg", byteArrayOutputStream);
-		return byteArrayOutputStream.toByteArray();
+		return bufferedImage;
 	}
 
 	/**
