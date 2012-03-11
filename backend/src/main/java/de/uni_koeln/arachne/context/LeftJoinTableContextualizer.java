@@ -52,9 +52,10 @@ public abstract class LeftJoinTableContextualizer implements IContextualizer {
 		}
 		List<Link> result = new ArrayList<Link>();
 		String parentTableName = parent.getArachneId().getTableName();
-		List<Map<String, String>> contextContents = genericSQLService.getEntitiesById(joinTableName
-				, parentTableName, parent.getArachneId().getInternalKey());
 		
+		List<Map<String, String>> contextContents = genericSQLService.getEntitiesEntityIdJoinedById(joinTableName
+				, parentTableName, parent.getArachneId().getInternalKey());
+				
 		// TODO for many context objects this is REALLY expensive - find a way to improve the performance
 		if (contextContents != null) {
 			ListIterator<Map<String, String>> contextMap = contextContents.listIterator(offset);
@@ -62,24 +63,36 @@ public abstract class LeftJoinTableContextualizer implements IContextualizer {
 				Map<String, String> map = contextMap.next();
 				ArachneLink link = new ArachneLink();
 				Dataset dataset = new Dataset();
-				String id = map.get(joinTableName + ".PS_" + Character.toUpperCase(tableName.charAt(0)) + tableName.substring(1) + "ID");
-				ArachneId arachneId = arachneEntityIdentificationService.getId(tableName, Long.parseLong(id));
-				if (arachneId == null) {
-					// The magic number zero ("0L") means that the entity is not in the "arachneentityidentificaton" table
-					arachneId = new ArachneId(joinTableName, Long.parseLong(id), 0L, false);
-				}
-				dataset.setArachneId(arachneId);
-				// TODO remove debug
-				System.out.println("LeftJoinTableContextualizer ID: " + arachneId.getArachneEntityID());
+				//String id = map.get(joinTableName + ".PS_" + Character.toUpperCase(tableName.charAt(0)) + tableName.substring(1) + "ID");
+				//ArachneId arachneId = arachneEntityIdentificationService.getId(tableName, Long.parseLong(id));
+				//if (arachneId == null) {
+				// The magic number zero ("0L") means that the entity is not in the "arachneentityidentificaton" table
+				//}
+				//dataset.setArachneId(arachneId);
 				// this is how the contextualizer can set his own names
+				Long foreignKey = 0L;
+				Long entityId = 0L;
+				boolean isDeleted = false;
 				Map<String, String> resultMap = new HashMap<String, String>();
 				for (Map.Entry<String, String> entry: map.entrySet()) {
 					String key = entry.getKey();
 					if (!(key.contains("PS_") && key.contains("ID"))) {
+						if (key.startsWith("arachneentityidentification")) {
+							if (key.endsWith("ArachneEntityID")) {
+								entityId = Long.parseLong(entry.getValue()); 
+							} else if (key.endsWith("ForeignKey")) {
+								foreignKey = Long.parseLong(entry.getValue());
+							} else if (key.endsWith("isDeleted")) {
+								isDeleted = Boolean.parseBoolean(entry.getValue());
+							} 
+														
+						}
 						String newKey = tableName + "." + key.split("\\.")[1];
 						resultMap.put(newKey, entry.getValue());
 					}
 				}
+				ArachneId arachneId = new ArachneId(tableName, foreignKey, entityId, isDeleted);
+				dataset.setArachneId(arachneId);
 				dataset.appendFields(resultMap);
 				link.setEntity1(parent);
 				link.setEntity2(dataset);

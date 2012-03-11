@@ -84,7 +84,7 @@ public class Dataset {
 	/**
 	 * This method returns the number of contexts of a given type. 
 	 * <br>
-	 * Side effect: If not all contexts a retrieved they will be retrieved now.
+	 * Side effect: If not all contexts are retrieved they will be retrieved now.
 	 * @param contextType The type of the context of interest
 	 * @return The number of context entities in this context
 	 */

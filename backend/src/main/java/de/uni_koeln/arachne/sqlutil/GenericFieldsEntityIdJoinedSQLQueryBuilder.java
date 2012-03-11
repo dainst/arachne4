@@ -5,11 +5,10 @@ import java.util.List;
 
 import de.uni_koeln.arachne.mapping.UserAdministration;
 
-public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends
-		AbstractSQLBuilder {
-protected SQLRightsConditionBuilder rcb;
+public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuilder {
 	
-	private String field2;
+	protected SQLRightsConditionBuilder rcb;
+		private String field2;
 	private String entityIdLeftJoin;
 	
 	/**

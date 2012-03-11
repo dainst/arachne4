@@ -13,6 +13,7 @@ import de.uni_koeln.arachne.mapping.GenericFieldMapperString;
 import de.uni_koeln.arachne.mapping.GenericFieldsMapperString;
 import de.uni_koeln.arachne.service.SQLResponseObject;
 import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.sqlutil.GenericEntitiesEntityIdJoinedSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldsEntityIdJoinedSQLQueryBuilder;
@@ -79,6 +80,21 @@ public class GenericSQLDao extends SQLDao {
 	
 	public List<Map<String, String>> getEntitiesById(String tableName, String field1, Long field1Id) {
 		GenericEntitiesSQLQueryBuilder queryBuilder = new GenericEntitiesSQLQueryBuilder(tableName, field1, field1Id, userRightsService.getCurrentUser());
+		@SuppressWarnings("unchecked")
+		List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(queryBuilder.getSQL()
+				, new GenericEntitesMapper());
+		if (queryResult != null) {
+			queryResult.remove(null);
+			if (!queryResult.isEmpty()) {
+				return queryResult;
+			}
+		}
+		return null;
+	}
+	
+	public List<Map<String, String>> getEntitiesEntityIdJoinedById(
+			String tableName, String field1, Long field1Id) {
+		GenericEntitiesEntityIdJoinedSQLQueryBuilder queryBuilder = new GenericEntitiesEntityIdJoinedSQLQueryBuilder(tableName, field1, field1Id, userRightsService.getCurrentUser());
 		@SuppressWarnings("unchecked")
 		List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(queryBuilder.getSQL()
 				, new GenericEntitesMapper());

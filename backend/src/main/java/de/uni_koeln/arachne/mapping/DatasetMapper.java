@@ -14,6 +14,8 @@ import de.uni_koeln.arachne.util.StrUtils;
 /**
  * Mapping result set to a ArachneDataset abstract object
  * Suits for Bauwerk, Bauwerksteil, Topographie, Objekt, Releif, Realie, Sammlung
+ * <br>
+ * If the query result contains the <code>ArachneEntityId</code> is added,
  * @author Rasmus Krempel
  */
 public class DatasetMapper implements RowMapper<Map<String,String>> {
@@ -33,6 +35,11 @@ public class DatasetMapper implements RowMapper<Map<String,String>> {
 			
 			//The rest of the Dataset
 			String columnValue = rs.getString(columnName);
+			if (columnName.contains("ArachneEntityIdentitficaton")) {
+				System.out.println(meta.getTableName(i) + "." + columnName + " ," + rs.getString(columnName));
+				continue;
+			}			
+						
 			if (!StrUtils.isEmptyOrNull(columnValue)) {
 				dataset.put(meta.getTableName(i) + "." + columnName, rs.getString(columnName));
 			}

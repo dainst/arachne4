@@ -31,6 +31,10 @@ public class GenericSQLService {
 		return genericSQLDao.getEntitiesById(tableName, field1, field1Id);
 	}
 
+	public List<Map<String, String>> getEntitiesEntityIdJoinedById(String tableName, String field1, Long field1Id) {
+		return genericSQLDao.getEntitiesEntityIdJoinedById(tableName, field1, field1Id);
+	}
+	
 	public List<? extends SQLResponseObject> getStringFieldsWithCustomRowmapper(String tableName, String field1
 			, Long field1Id, ArrayList<String> fields, RowMapper<? extends SQLResponseObject> rowMapper) {
 		return genericSQLDao.getStringFieldsWithCustomRowMapper(tableName, field1, field1Id, fields, rowMapper);
