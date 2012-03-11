@@ -78,7 +78,7 @@ public class ContextService {
 		Iterator<String> contextType = mandatoryContextTypes.iterator();
 		while (contextType.hasNext()) {
 			Context context = new Context(contextType.next(), parent, this);
-			context.getFirstContext();
+			context.getallContexts();
 			parent.addContext(context);
 		}
 	}

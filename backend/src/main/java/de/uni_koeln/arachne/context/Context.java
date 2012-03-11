@@ -184,7 +184,7 @@ public class Context {
 	/**
 	 * This method returns the number of context entities in this context. If not all contexts are retrieved already
 	 * it retrieves them.
-	 * @return
+	 * @return The number of context entities.
 	 */
 	public int getContextSize() {
 		if (completionState != CompletionStateEnum.FULL) {
