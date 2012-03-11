@@ -2,8 +2,6 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.ArrayList;
 
-import org.apache.log4j.Category;
-
 import de.uni_koeln.arachne.mapping.UserAdministration;
 
 public class GenericEntitiesEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuilder {
