@@ -1,7 +1,6 @@
 package de.uni_koeln.arachne.service;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 
