@@ -351,6 +351,21 @@ public class UserAdministration {
 		public void setDatasetGroups(Set<DatasetGroup> datasetGroups) {
 			this.datasetGroups = datasetGroups;
 		}
+
+		public boolean hasGroup(String group) {
+			
+			if(all_groups) {
+				return true;
+			}
+			
+			for(DatasetGroup datasetGroup : datasetGroups) {
+				if(datasetGroup.getName().equals(group)) {
+					return true;
+				}
+			}
+			
+			return false;
+		}
 	   	
 	   	
 

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @author Sven Ole Clemens
  *
  */
-@Service("AracheImageStreamService")
+@Service("aracheImageStreamService")
 public class ImageStreamService {
 	
 	/**

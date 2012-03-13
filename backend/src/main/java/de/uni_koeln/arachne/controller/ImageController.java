@@ -4,7 +4,6 @@
 package de.uni_koeln.arachne.controller;
 
 import java.awt.image.BufferedImage;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.ImageResolutionType;
+import de.uni_koeln.arachne.service.ImageRightsGroupService;
 import de.uni_koeln.arachne.service.ImageStreamService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.ArachneId;
@@ -44,6 +43,9 @@ public class ImageController {
 	
 	@Autowired
 	private ImageStreamService imageStreamService;
+
+	@Autowired
+	private ImageRightsGroupService imageRightsGroupService;
 	
 	/**
 	 * Handles the request for /image/{id} (id is the entityId for an image)
@@ -106,9 +108,17 @@ public class ImageController {
 			return null;
 		}
 		
-		UserAdministration currentUser = userRightsService.getCurrentUser();
-		
-		Set<DatasetGroup> datasetGroups = currentUser.getDatasetGroups();
+		// Check image rights
+		UserAdministration currentUser = userRightsService.getCurrentUser();		
+		if(!imageRightsGroupService.checkResolutionRight(arachneId, currentUser, res)) {
+			res = imageRightsGroupService.getMaxResolution(arachneId, currentUser);
+			
+			// Forbidden
+			if(res == null) {
+				response.setStatus(403);
+				return null;
+			}
+		}
 		
 		try {
 			response.setStatus(200);
