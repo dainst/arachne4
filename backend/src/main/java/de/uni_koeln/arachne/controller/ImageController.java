@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.mapping.UserAdministration;
+import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.ImageResolutionType;
 import de.uni_koeln.arachne.service.ImageRightsGroupService;
 import de.uni_koeln.arachne.service.ImageStreamService;
+import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.ArachneId;
 
@@ -46,6 +48,9 @@ public class ImageController {
 
 	@Autowired
 	private ImageRightsGroupService imageRightsGroupService;
+	
+	@Autowired
+	private SingleEntityDataService arachneSingleEntityDataService;
 	
 	/**
 	 * Handles the request for /image/{id} (id is the entityId for an image)
@@ -108,10 +113,13 @@ public class ImageController {
 			return null;
 		}
 		
+		Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
+		logger.debug("Retrieved Entity for image: {}", imageEntity);
+		
 		// Check image rights
 		UserAdministration currentUser = userRightsService.getCurrentUser();		
-		if(!imageRightsGroupService.checkResolutionRight(arachneId, currentUser, res)) {
-			res = imageRightsGroupService.getMaxResolution(arachneId, currentUser);
+		if(!imageRightsGroupService.checkResolutionRight(imageEntity, currentUser, res)) {
+			res = imageRightsGroupService.getMaxResolution(imageEntity, currentUser);
 			
 			// Forbidden
 			if(res == null) {
@@ -122,7 +130,7 @@ public class ImageController {
 		
 		try {
 			response.setStatus(200);
-			BufferedImage bufferedImage = imageStreamService.getArachneImage(res, arachneId.getInternalKey());
+			BufferedImage bufferedImage = imageStreamService.getArachneImage(res, imageEntity);
 			return bufferedImage;
 		} catch (Exception e) {
 			logger.error("Error while retrieving thumbnail with entity id from image service" + arachneId.getArachneEntityID(),e);			

@@ -41,10 +41,10 @@ public class ImageRightsGroupService {
 	 * @param res 
 	 * @return
 	 */
-	public boolean checkResolutionRight(ArachneId arachneId,
+	public boolean checkResolutionRight(Dataset imageEntity,
 			UserAdministration currentUser, ImageResolutionType res) {
 		
-		ImageResolutionType maxResolution = getMaxResolution(arachneId, currentUser);
+		ImageResolutionType maxResolution = getMaxResolution(imageEntity, currentUser);
 		
 		if (maxResolution != null && maxResolution.ordinal() >= res.ordinal()) {
 			return true;
@@ -59,11 +59,8 @@ public class ImageRightsGroupService {
 	 * user rights
 	 * @return
 	 */
-	public ImageResolutionType getMaxResolution(ArachneId arachneId,
+	public ImageResolutionType getMaxResolution(Dataset imageEntity,
 			UserAdministration currentUser) {
-		
-		Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
-		logger.debug("Retrieved Entity for image: {}", imageEntity);
 		
 		// if user doesn't have group he is not allowed to view the image in any resolution
 		if(imageEntity.getField("marbilder.BildrechteGruppe") == null) {
@@ -74,7 +71,7 @@ public class ImageRightsGroupService {
 		ImageRightsGroup imageRightsGroup = imageRightsDao.findByName(imageEntity.getField("marbilder.BildrechteGruppe"));
 		
 		if (imageRightsGroup == null) {
-			throw new IllegalStateException("image with entity id " + arachneId.getArachneEntityID() 
+			throw new IllegalStateException("image with entity id " + imageEntity.getArachneId() 
 					+ " has illegal rightsGroup " + imageEntity.getField("marbilder.BildrechteGruppe"));
 		}
 		

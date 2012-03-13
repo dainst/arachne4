@@ -7,9 +7,9 @@ package de.uni_koeln.arachne.service;
  */
 public enum ImageResolutionType {
 
-	THUMBNAIL(80, 80),
-	PREVIEW(300, 300),
-	HIGH(800, 800);
+	THUMBNAIL(150, 150),
+	PREVIEW(400, 400),
+	HIGH(0, 0);
 	
 	private final int height;
 	private final int width;

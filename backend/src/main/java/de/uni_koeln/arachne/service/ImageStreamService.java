@@ -1,12 +1,18 @@
 package de.uni_koeln.arachne.service;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import de.uni_koeln.arachne.response.Dataset;
 
 /**
  * This service class manages the access to external image repositories
@@ -15,6 +21,8 @@ import org.springframework.stereotype.Service;
  */
 @Service("aracheImageStreamService")
 public class ImageStreamService {
+	
+	private static Logger logger = LoggerFactory.getLogger(ImageStreamService.class);
 	
 	/**
 	 * ex: http://arachne.uni-koeln.de
@@ -28,14 +36,41 @@ public class ImageStreamService {
 	 * @throws IOException 
 	 */
 	// TODO: change to the new Image-Server
-	public BufferedImage getArachneImage(ImageResolutionType imageResolutionType, Long id) throws IOException {
+	public BufferedImage getArachneImage(ImageResolutionType imageResolutionType, Dataset imageEntity) throws IOException {
 		
 		int width = imageResolutionType.width();
 		int height = imageResolutionType.height();
 		
-		URL url = new URL(repositoryLink + "/arachne/images/image.php?key=" + id + "&method=min&width=" + width + "&height=" + height);
-		BufferedImage bufferedImage = ImageIO.read(url.openStream());
-		return bufferedImage;
+		URL url = new URL(imageEntity.getField("marbilder.Pfad"));
+		BufferedImage originalImage = ImageIO.read(url.openStream());
+		
+		// return original if no maximum size is specified
+		if (width == 0) {
+			return originalImage;
+		}
+		
+		int origWidth = originalImage.getWidth();
+		int origHeight = originalImage.getHeight();
+		float ratio = ((float) origWidth) / origHeight;
+		
+		if (ratio > 1) {
+			height = Math.round(width / ratio);
+		} else {
+			width = Math.round(height * ratio);
+		}
+		
+		Long startTime = System.currentTimeMillis();
+		
+		BufferedImage resizedImage = new BufferedImage(width, height, originalImage.getType());
+		Graphics2D g = resizedImage.createGraphics();
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		g.drawImage(originalImage, 0, 0, width, height, 0, 0, originalImage.getWidth(), originalImage.getHeight(), null);
+		g.dispose();
+		
+		logger.debug("Time taken for image resizing: {} ms", System.currentTimeMillis() - startTime);
+		
+		return resizedImage;
+		
 	}
 
 	/**
