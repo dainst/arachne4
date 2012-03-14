@@ -12,7 +12,6 @@ import de.uni_koeln.arachne.dao.ImageRightsDao;
 import de.uni_koeln.arachne.mapping.ImageRightsGroup;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.response.Dataset;
-import de.uni_koeln.arachne.util.ArachneId;
 
 /**
  * @author Sven Ole Clemens
@@ -39,12 +38,13 @@ public class ImageRightsGroupService {
 	 * @param arachneId
 	 * @param currentUser
 	 * @param res 
+	 * @param imageRightsGroup 
 	 * @return
 	 */
 	public boolean checkResolutionRight(Dataset imageEntity,
-			UserAdministration currentUser, ImageResolutionType res) {
+			UserAdministration currentUser, ImageResolutionType res, ImageRightsGroup imageRightsGroup) {
 		
-		ImageResolutionType maxResolution = getMaxResolution(imageEntity, currentUser);
+		ImageResolutionType maxResolution = getMaxResolution(imageEntity, currentUser, imageRightsGroup);
 		
 		if (maxResolution != null && maxResolution.ordinal() >= res.ordinal()) {
 			return true;
@@ -60,15 +60,13 @@ public class ImageRightsGroupService {
 	 * @return
 	 */
 	public ImageResolutionType getMaxResolution(Dataset imageEntity,
-			UserAdministration currentUser) {
+			UserAdministration currentUser, ImageRightsGroup imageRightsGroup) {
 		
 		// if user doesn't have group he is not allowed to view the image in any resolution
 		if(imageEntity.getField("marbilder.BildrechteGruppe") == null) {
 			logger.debug("user doesn't have dataset group of image");
 			return null;
 		}
-		
-		ImageRightsGroup imageRightsGroup = imageRightsDao.findByName(imageEntity.getField("marbilder.BildrechteGruppe"));
 		
 		if (imageRightsGroup == null) {
 			throw new IllegalStateException("image with entity id " + imageEntity.getArachneId() 
@@ -96,6 +94,33 @@ public class ImageRightsGroupService {
 			logger.debug("user has gid >= 500, returning HIGH");
 			return ImageResolutionType.HIGH;
 		}
+		
+	}
+
+	/**
+	 * Get the filename of the watermark based on the user and an image rights group.
+	 * @param imageEntity
+	 * @param currentUser
+	 * @param imageRightsGroup
+	 * @return
+	 */
+	public String getWatermarkFilename(Dataset imageEntity,
+			UserAdministration currentUser, ImageRightsGroup imageRightsGroup) {
+		
+		// if override_for_group is set and the user has that exact group, the user is allowed to view the image without watermark
+		if(!imageRightsGroup.getOverrideForGroup().isEmpty()) {
+			if(currentUser.hasGroup(imageRightsGroup.getOverrideForGroup())) {
+				logger.debug("user has override group, returning no watermark");
+				return "";
+			}
+		}
+		
+		if (currentUser.getGroupID() == 0) {
+			return imageRightsGroup.getWatermarkAnonymous();
+		} else if (currentUser.getGroupID() > 0 && currentUser.getGroupID() < 550) {
+			return imageRightsGroup.getWatermarkRegistered();
+		}
+		return "";
 		
 	}
 	

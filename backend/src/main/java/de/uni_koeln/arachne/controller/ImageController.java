@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import de.uni_koeln.arachne.dao.ImageRightsDao;
+import de.uni_koeln.arachne.mapping.ImageRightsGroup;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
@@ -45,6 +47,9 @@ public class ImageController {
 	
 	@Autowired
 	private ImageStreamService imageStreamService;
+
+	@Autowired
+	private ImageRightsDao imageRightsDao;
 
 	@Autowired
 	private ImageRightsGroupService imageRightsGroupService;
@@ -117,9 +122,11 @@ public class ImageController {
 		logger.debug("Retrieved Entity for image: {}", imageEntity);
 		
 		// Check image rights
-		UserAdministration currentUser = userRightsService.getCurrentUser();		
-		if(!imageRightsGroupService.checkResolutionRight(imageEntity, currentUser, res)) {
-			res = imageRightsGroupService.getMaxResolution(imageEntity, currentUser);
+		ImageRightsGroup imageRightsGroup = imageRightsDao.findByName(imageEntity.getField("marbilder.BildrechteGruppe"));
+		UserAdministration currentUser = userRightsService.getCurrentUser();
+		String watermarkFilename = imageRightsGroupService.getWatermarkFilename(imageEntity, currentUser, imageRightsGroup);
+		if(!imageRightsGroupService.checkResolutionRight(imageEntity, currentUser, res, imageRightsGroup)) {
+			res = imageRightsGroupService.getMaxResolution(imageEntity, currentUser, imageRightsGroup);
 			
 			// Forbidden
 			if(res == null) {
@@ -130,7 +137,7 @@ public class ImageController {
 		
 		try {
 			response.setStatus(200);
-			BufferedImage bufferedImage = imageStreamService.getArachneImage(res, imageEntity);
+			BufferedImage bufferedImage = imageStreamService.getArachneImage(res, imageEntity, watermarkFilename);
 			return bufferedImage;
 		} catch (Exception e) {
 			logger.error("Error while retrieving thumbnail with entity id from image service" + arachneId.getArachneEntityID(),e);			

@@ -4,12 +4,15 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.response.Dataset;
@@ -29,6 +32,9 @@ public class ImageStreamService {
 	 */
 	private String repositoryLink;
 	
+	@Autowired 
+	private ServletContext servletContext;
+	
 	/**
 	 * method to get a byte array representation of the image
 	 * @param id 
@@ -36,7 +42,7 @@ public class ImageStreamService {
 	 * @throws IOException 
 	 */
 	// TODO: change to the new Image-Server
-	public BufferedImage getArachneImage(ImageResolutionType imageResolutionType, Dataset imageEntity) throws IOException {
+	public BufferedImage getArachneImage(ImageResolutionType imageResolutionType, Dataset imageEntity, String watermarkFilename) throws IOException {
 		
 		int width = imageResolutionType.width();
 		int height = imageResolutionType.height();
@@ -46,7 +52,11 @@ public class ImageStreamService {
 		
 		// return original if no maximum size is specified
 		if (width == 0) {
-			return originalImage;
+			if (watermarkFilename == null || watermarkFilename.equals("")) {
+				return originalImage;
+			}
+			width = originalImage.getWidth();
+			height = originalImage.getHeight();
 		}
 		
 		int origWidth = originalImage.getWidth();
@@ -65,6 +75,20 @@ public class ImageStreamService {
 		Graphics2D g = resizedImage.createGraphics();
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		g.drawImage(originalImage, 0, 0, width, height, 0, 0, originalImage.getWidth(), originalImage.getHeight(), null);
+		
+		if (watermarkFilename != null && !watermarkFilename.isEmpty()) {
+			InputStream watermark = servletContext.getResourceAsStream("/WEB-INF/watermarks/" + watermarkFilename);
+			BufferedImage watermarkImage = ImageIO.read(watermark);
+			g.drawImage(
+					watermarkImage,
+					width-watermarkImage.getWidth(), 0,
+					width, watermarkImage.getHeight(),
+					0, 0,
+					watermarkImage.getWidth(), watermarkImage.getHeight(),
+					null
+				);
+		}
+		
 		g.dispose();
 		
 		logger.debug("Time taken for image resizing: {} ms", System.currentTimeMillis() - startTime);
