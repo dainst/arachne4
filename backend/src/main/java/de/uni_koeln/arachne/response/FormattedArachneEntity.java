@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
  * Response object class that returns preformatted output to the frontend.
- * This class is serialized to JSON using <codeJackson</code>.
+ * This class is serialized to JSON using <code>Jackson</code>.
  */
 @XmlRootElement(name="entity")
 @XmlSeeAlso({Section.class,Field.class,FieldList.class})

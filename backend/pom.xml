@@ -172,12 +172,11 @@
 			<version>3.12.1.GA</version>
 		</dependency>
 
-		<!-- CAS Client -->
+		<!-- c3p0 -->
 		<dependency>
-			<groupId>org.jasig.cas.client</groupId>
-			<artifactId>cas-client-core</artifactId>
-			<version>3.1.11</version>
-			<type>jar</type>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
 		</dependency>
 
 		<!-- SolrJ -->
