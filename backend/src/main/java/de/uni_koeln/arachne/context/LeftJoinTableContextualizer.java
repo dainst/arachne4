@@ -59,7 +59,7 @@ public abstract class LeftJoinTableContextualizer implements IContextualizer {
 		// TODO for many context objects this is REALLY expensive - find a way to improve the performance
 		if (contextContents != null) {
 			ListIterator<Map<String, String>> contextMap = contextContents.listIterator(offset);
-			while (contextMap.hasNext() && linkCount < limit) {
+			while (contextMap.hasNext() && (linkCount < limit || limit == -1)) {
 				Map<String, String> map = contextMap.next();
 				ArachneLink link = new ArachneLink();
 				Dataset dataset = new Dataset();
