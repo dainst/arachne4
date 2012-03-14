@@ -12,6 +12,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.response.SearchResult;
+import de.uni_koeln.arachne.util.SolrUrlString;
 import de.uni_koeln.arachne.util.StrUtils;
 
 /**
@@ -26,6 +28,10 @@ import de.uni_koeln.arachne.util.StrUtils;
  */
 @Controller
 public class SearchController {
+	
+	@Autowired
+	SolrUrlString solrUrl;
+	
 	/**
 	 * Handles the http request by querying the Solr index and returning the search result.
 	 * <br>
@@ -45,10 +51,9 @@ public class SearchController {
 														  @RequestParam(value = "fl", required = false) String facetLimit) {
 		
 		SearchResult result = new SearchResult();
-		String url = "http://crazyhorse.archaeologie.uni-koeln.de:8080/solr3.4.0/";
 		SolrServer server = null;
 		try {
-			server = new CommonsHttpSolrServer(url);
+			server = new CommonsHttpSolrServer(solrUrl.getSolrUrl());
 			SolrQuery query = new SolrQuery("*:*");
 		    query.setQuery(searchParam);
 		    // default value for limit

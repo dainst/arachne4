@@ -9,6 +9,10 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<import resource="hibernate.xml"/>
-	<context:component-scan base-package="de.uni_koeln.arachne"/>	
+	<context:component-scan base-package="de.uni_koeln.arachne"/>
+	
+	<bean id="solrUrl" class="de.uni_koeln.arachne.util.SolrUrlString">
+        <property name="solrUrl" value="${solrUrl}" />
+    </bean>	
 	 
 </beans>

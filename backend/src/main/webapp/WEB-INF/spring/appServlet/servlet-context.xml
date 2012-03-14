@@ -27,10 +27,6 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-	<bean name="imageStreamService"	class="de.uni_koeln.arachne.service.ImageStreamService">
-		<property name="repositoryLink" value="http://arachne.uni-koeln.de" />
-	</bean>
-
 	<!-- Imports user-defined @Controller beans that process client requests -->
 	<import resource="controllers.xml" />
 
