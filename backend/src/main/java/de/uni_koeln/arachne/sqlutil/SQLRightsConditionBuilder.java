@@ -26,10 +26,12 @@ public class SQLRightsConditionBuilder {
 		this.tableName = tn;
 		this.user = user;
 		// TODO find a better way to exclude specific tables
-		exludedTables.add("ortsbezug_leftjoin_ort");
 		exludedTables.add("datierung");
 		exludedTables.add("literaturzitat_leftjoin_literatur");
+		exludedTables.add("ort");
+		exludedTables.add("ortsbezug_leftjoin_ort");
 		exludedTables.add("rezeptionsobjekte");
+		exludedTables.add("sammler");
 	}
 	
 	/**

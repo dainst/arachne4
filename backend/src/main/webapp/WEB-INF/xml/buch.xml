@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- just very basic to have at least some definitions -->
+<category name="buch"
+	xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+    <display>
+        <title>
+        	<section>
+        		<field datasource="buch.BuchTitel">
+                    <ifEmpty>
+                    	<field datasource="buch.KurzbeschreibungBuch" />
+                	</ifEmpty> 
+                </field>
+            </section>
+        </title>
+        <subtitle>
+            <section>
+            	<field datasource="buch.alias" />
+            </section>
+        </subtitle>
+        <datasections>
+        	<section labelKey="Informationen zum Buch">
+        		<section labelKey="" prefix="Erscheinungsdatum">
+	            	<field datasource="buch.PubYearStart" prefix="frühestes geschätztes Publikationsjahr: " />
+	            	<field datasource="buch.PubYearEnd" prefix="spätestes geschätztes Publikationsjahr: " />
+	            </section>
+	            <section labelKey="Autor">
+	            	<field datasource="buch.BuchAutor" />
+	            </section>
+	            <section labelKey="Physische Beschreibung">
+	            	<field datasource="buch.BuchSeiten" prefix="Seiten: "/>
+	               	<field datasource="buch.HoeheGesamt" prefix="Höhe: " />
+	            	<field datasource="buch.BreiteGesamt" prefix="Breite: " />
+	            	<field datasource="buch.TiefeGesamt" prefix="Tiefe: " />
+	            </section>
+	            <context type="ort" labelKey="Lokalisierung" separator=", ">
+	            	<field datasource=".Stadt"  />
+        			<field datasource=".Land" />
+        			<field datasource=".Countrycode" />
+        			<field datasource=".Aufbewahrungsort" />
+	            </context>
+	            <section labelKey="BibId">
+	            	<field datasource="buch.bibid" />
+	            </section>
+        	</section>
+        </datasections>
+    </display>
+    <facets>
+    	<facet name="kategorie" labelKey="Kategorie">
+    		<field datasource="Dataset.TableName" />
+    	</facet>
+    </facets>
+</category>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- just very basic to have at least some definitions -->
+<category name="reproduktion"
+	xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+    <display>
+        <title>
+        	<section>
+        		<field datasource="reproduktion.KurzbeschreibungReproduktion" />
+        	</section>
+        </title>
+        <subtitle>
+            <section separator=", ">
+            	<field datasource="literatur.Ort" />
+            	<field datasource="literatur.Jahr" />
+            </section>
+        </subtitle>
+        <datasections>
+        	<section labelKey="Informationen zur Reproduktion">
+        		<context type="ort" labelKey="Lokalisierung" separator=", ">
+        			<field datasource=".Stadt"  />
+        			<field datasource=".Land" />
+        			<field datasource=".Countrycode" />
+        			<field datasource=".Aufbewahrungsort" />
+        		</context>
+        	   	<section labelKey="Herkunft">
+        			<field datasource="reproduktion.ArtErwerbung" prefix="Herkunft: " />
+        			<field datasource="reproduktion.Erwerbsdatum" prefix="Datum des Erwerbs: " />
+        		</section>
+        		<section labelKey="Beschreibung">
+        			<section>
+        				<field datasource="reproduktion.TechnikReproduktion" prefix="Technik: " />
+        				<field datasource="reproduktion.MaterialReproduktion" prefix="Material: " />
+        			</section>
+        			<section labelKey="Gattung" separator="; " >
+        				<field datasource="reproduktion.GattungAllg" />
+        				<field datasource="reproduktion.GattungSpeziell" />
+        			</section>
+        		</section>
+        		<section labelKey="Erhaltung">
+        			<section separator="; ">
+        				<field datasource="reproduktion.ErhaltungReproduktion" />
+        				<field datasource="reproduktion.ErhalteneFormReproduktion" />
+        			</section>
+        		</section>
+        		<section labelKey="Verhältnis Original und Reproduktion">
+        			<field datasource="reproduktion.AbguszMitAltenErgaenzungen" prefix="Reproduktion mit alten Ergänzungen: " />
+        		</section>
+        		<context type="literatur" labelKey="Literatur" separator=" ">
+	           		<field datasource=".DAIRichtlinien" />
+	           		<field datasource=".Seite" />
+	        	</context>
+	        </section>
+        </datasections>
+    </display>
+    <facets>
+    	<facet name="kategorie" labelKey="Kategorie">
+    		<field datasource="Dataset.TableName" />
+    	</facet>
+    </facets>
+</category>

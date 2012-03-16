@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- just very basic to have at least some definitions -->
+<category name="sammler"
+	xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+    <display>
+        <title>
+        	<section>
+        		<field datasource="sammler.Nachname" />
+        	</section>
+        </title>
+        <subtitle>
+        	<section>
+        		<field datasource="sammler.Vorname" />
+        	</section>
+        </subtitle>
+        <datasections>
+        	<section labelKey="Informationen zum Sammler">
+        		<section labelKey="Titel">
+	            	<field datasource="sammler.TitelSammler" />
+	            </section>
+        		<section labelKey="Beruf">
+	            	<field datasource="sammler.Beruf" />
+	            </section>
+	            <section labelKey="Geburt">
+	            	<field datasource="sammler.Geburtsdatum" prefix="Datum: " />
+	            	<field datasource="sammler.Geburtsort" prefix="Ort: " />
+	            	<field datasource="sammler.Geburtsland" prefix="Land: " />
+	            </section>
+	            <section labelKey="Tod">
+	            	<field datasource="sammler.Todesdatum" prefix="Datum: " />
+	            	<field datasource="sammler.Todesort" prefix="Ort: " />
+	            	<field datasource="sammler.Todesland" prefix="Land: " />
+	            </section>
+        	</section>
+        </datasections>
+    </display>
+    <facets>
+    	<facet name="kategorie" labelKey="Kategorie">
+    		<field datasource="Dataset.TableName" />
+    	</facet>
+    </facets>
+</category>
