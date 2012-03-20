@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.response.FailureResponse;
 import de.uni_koeln.arachne.response.FormattedArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.service.ContextService;
@@ -87,6 +88,10 @@ public class ArachneEntityController {
     	}
     	
     	// TODO remove debug
+    	if (arachneId == null) {
+    		System.out.println("Warning: Missing ArachneEntityID");
+    		return new FailureResponse("Failure! ArachneEntityID not found.");
+    	}
     	System.out.println("Request for entity: " + arachneId.getArachneEntityID() + " - type: " + arachneId.getTableName());
     	
     	Dataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
