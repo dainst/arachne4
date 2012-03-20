@@ -19,13 +19,13 @@ import org.springframework.web.context.support.ServletContextResource;
 import de.uni_koeln.arachne.context.*;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.util.StrUtils;
+import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 /**
  * This class handles creation and retrieval of contexts and adds them to datasets.
  * Internally it uses <code>Contextualizers</code> to abstract the data access and allow to fetch contexts not only from
  * the Arachne database but from any other datasource (even external ones).  
  */
-// TODO create a common base class for all classes that need to read the xml configs if possible (ResponseFactory)
 @Service("arachneContextService")
 public class ContextService {
 	
@@ -51,11 +51,11 @@ public class ContextService {
 	@Autowired
 	private SingleEntityDataService arachneSingleEntityDataService;
 	
-	/**
-	 * Servlet context to load the XML config files. 
+	/*
+	 * Utility class to work with the XML config files.
 	 */
 	@Autowired
-	private ServletContext servletContext; 
+	private XmlConfigUtil xmlConfigUtil;
 	
 	/**
 	 * This methods adds all contexts to the dataset that are found in the XML description.
@@ -176,9 +176,9 @@ public class ContextService {
 		//TODO remove debug
 		System.out.println("ExternalFields - type: " + type);
 				
-		String filename = getFilenameFromType(type);
+		String filename = xmlConfigUtil.getFilenameFromType(type);
 		
-		ServletContextResource xmlDocument = new ServletContextResource(servletContext, filename);
+		ServletContextResource xmlDocument = new ServletContextResource(xmlConfigUtil.getServletContext(), filename);
 		try {
 			SAXBuilder sb = new SAXBuilder();
 			Document doc = sb.build(xmlDocument.getFile());
@@ -249,22 +249,5 @@ public class ContextService {
 			}
 		}
 		return result;
-	}
-	
-	/**
-	 * This function checks if a config file for the given type exists and returns its filename.
-	 * @param type Type of the config to look for.
-	 * @return The filename of the XML config file for the given type.
-	 */
-	private String getFilenameFromType(String type) {
-		String filename = "/WEB-INF/xml/"+ type + ".xml";
-		System.out.println("searching filename: " + filename);
-		ServletContextResource file = new ServletContextResource(servletContext, filename);
-		if (!file.exists()) {
-			filename = "/WEB-INF/xml/fallback.xml";
-		}
-		// TODO remove debug
-		System.out.println("filename: " + filename);
-		return filename;
 	}
 }
