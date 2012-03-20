@@ -7,32 +7,25 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import de.uni_koeln.arachne.response.Dataset;
-import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.util.ArachneId;
 import de.uni_koeln.arachne.util.StrUtils;
 
 /**
- * This is the baseclass for all contextualizers that get their contexts from
- * 'leftjoin tables', most likely only the <code>Ort-</code> and <code>LiteraturContextualizers</code>.
- * It can also be used to extract data from 'normal' tables by not setting <code>joinTableName</code> or setting it 
- * to </code>null<code> in the constructor of the derived class.
+ * This is the baseclass for contextualizers that get their data from Arachne via SQL.
+ * For 'leftjoin tables' <code>joinTableName</code> must be set in the derived class. 
  */
-public abstract class LeftJoinTableContextualizer implements IContextualizer {
+public abstract class GenericSQLContextualizer implements IContextualizer {
 
-	private EntityIdentificationService arachneEntityIdentificationService;
 	private GenericSQLService genericSQLService;
 	
-	protected String tableName;
-	protected String joinTableName;
-	
-	
+	protected String tableName = null;
+	protected String joinTableName = null;
+		
 	/**
 	 * Constructor setting the needed services.
 	 */
-	public LeftJoinTableContextualizer(EntityIdentificationService arachneEntityIdentificationService
-			, GenericSQLService genericSQLService) {
-		this.arachneEntityIdentificationService = arachneEntityIdentificationService;
+	public GenericSQLContextualizer(GenericSQLService genericSQLService) {
 		this.genericSQLService = genericSQLService;
 	}
 	
@@ -63,12 +56,7 @@ public abstract class LeftJoinTableContextualizer implements IContextualizer {
 				Map<String, String> map = contextMap.next();
 				ArachneLink link = new ArachneLink();
 				Dataset dataset = new Dataset();
-				//String id = map.get(joinTableName + ".PS_" + Character.toUpperCase(tableName.charAt(0)) + tableName.substring(1) + "ID");
-				//ArachneId arachneId = arachneEntityIdentificationService.getId(tableName, Long.parseLong(id));
-				//if (arachneId == null) {
-				// The magic number zero ("0L") means that the entity is not in the "arachneentityidentificaton" table
-				//}
-				//dataset.setArachneId(arachneId);
+				
 				// this is how the contextualizer can set his own names
 				Long foreignKey = 0L;
 				Long entityId = 0L;
