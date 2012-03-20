@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.ServletContextResource;
 
 import de.uni_koeln.arachne.util.ArachneId;
-import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 /**
