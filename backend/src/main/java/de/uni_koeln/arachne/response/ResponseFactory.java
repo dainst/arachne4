@@ -53,10 +53,15 @@ public class ResponseFactory {
 		
 		// set id content
 		ArachneId arachneId = dataset.getArachneId(); 
+		String tableName = arachneId.getTableName();
 		response.setId(arachneId.getArachneEntityID());
-		response.setType(arachneId.getTableName());
+		response.setType(tableName);
 		response.setInternalId(arachneId.getInternalKey());
-				
+		
+		// set dataset group
+		String datasetGroupFieldName = tableName+".DatensatzGruppe"+tableName.substring(0,1).toUpperCase()+tableName.substring(1);
+		response.setDatasetGroup(dataset.getFieldFromFields(datasetGroupFieldName));		
+		
 		String filename = getFilenameFromType(response.getType());
 		
 		ServletContextResource xmlDocument = new ServletContextResource(servletContext, filename);
