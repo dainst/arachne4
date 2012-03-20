@@ -20,7 +20,7 @@ import de.uni_koeln.arachne.sqlutil.GenericFieldsEntityIdJoinedSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldsSQLQueryBuilder;
 
 /**
- * Class to retrieve referenced ids from 'cross tables'.
+ * Class to retrieve data via SQL.
  */
 @Repository("GenericSQLDao")
 public class GenericSQLDao extends SQLDao {
@@ -40,11 +40,9 @@ public class GenericSQLDao extends SQLDao {
 		GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1, field1Id, field2, userRightsService.getCurrentUser());
 		@SuppressWarnings("unchecked")
 		List<Long> queryResult = (List<Long>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperLong());
-		if (queryResult != null) {
-			queryResult.remove(null);
-			if (!queryResult.isEmpty()) {
-				return queryResult;
-			}
+
+		if (queryResult != null && !queryResult.isEmpty()) {
+			return queryResult;
 		}
 		return null;
 	}
@@ -53,12 +51,9 @@ public class GenericSQLDao extends SQLDao {
 		GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1, field1Id, field2, userRightsService.getCurrentUser());
 		@SuppressWarnings("unchecked")
 		List<String> queryResult = (List<String>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperString());
-		// IMPORTANT because string casting can add null strings to the list
-		if (queryResult != null) {
-			queryResult.remove(null);
-			if (!queryResult.isEmpty()) {
-				return queryResult;
-			}
+
+		if (queryResult != null && !queryResult.isEmpty()) {
+			return queryResult;
 		}
 		return null;
 	}
@@ -68,12 +63,9 @@ public class GenericSQLDao extends SQLDao {
 		@SuppressWarnings("unchecked")
 		List<List<String>> queryResult = (List<List<String>>)this.executeSelectQuery(queryBuilder.getSQL(),
 				new GenericFieldsMapperString(fields.size()));
-		// IMPORTANT because string casting can add null strings to the list
-		if (queryResult != null) {
-			queryResult.remove(null);
-			if (!queryResult.isEmpty()) {
-				return queryResult;
-			}
+
+		if (queryResult != null && !queryResult.isEmpty()) {
+			return queryResult;
 		}
 		return null;
 	}
@@ -83,11 +75,9 @@ public class GenericSQLDao extends SQLDao {
 		@SuppressWarnings("unchecked")
 		List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(queryBuilder.getSQL()
 				, new GenericEntitesMapper());
-		if (queryResult != null) {
-			queryResult.remove(null);
-			if (!queryResult.isEmpty()) {
-				return queryResult;
-			}
+
+		if (queryResult != null && !queryResult.isEmpty()) {
+			return queryResult;
 		}
 		return null;
 	}
@@ -98,11 +88,9 @@ public class GenericSQLDao extends SQLDao {
 		@SuppressWarnings("unchecked")
 		List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(queryBuilder.getSQL()
 				, new GenericEntitesMapper());
-		if (queryResult != null) {
-			queryResult.remove(null);
-			if (!queryResult.isEmpty()) {
-				return queryResult;
-			}
+
+		if (queryResult != null && !queryResult.isEmpty()) {
+			return queryResult;
 		}
 		return null;
 	}
@@ -113,12 +101,9 @@ public class GenericSQLDao extends SQLDao {
 		@SuppressWarnings("unchecked")
 		List<? extends SQLResponseObject> queryResult = (List<? extends SQLResponseObject>)this.executeSelectQuery(
 				queryBuilder.getSQL(), rowMapper);
-		// IMPORTANT because string casting can add null strings to the list
-		if (queryResult != null) {
-			queryResult.remove(null);
-			if (!queryResult.isEmpty()) {
-				return queryResult;
-			}
+		
+		if (queryResult != null && !queryResult.isEmpty()) {
+			return queryResult;
 		}
 		return null;
 	}
@@ -131,12 +116,9 @@ public class GenericSQLDao extends SQLDao {
 		@SuppressWarnings("unchecked")
 		List<? extends SQLResponseObject> queryResult = (List<? extends SQLResponseObject>)this.executeSelectQuery(
 				queryBuilder.getSQL(), rowMapper);
-		// IMPORTANT because string casting can add null strings to the list
-		if (queryResult != null) {
-			queryResult.remove(null);
-			if (!queryResult.isEmpty()) {
-				return queryResult;
-			}
+		
+		if (queryResult != null && !queryResult.isEmpty()) {
+			return queryResult;
 		}
 		return null;
 	}
