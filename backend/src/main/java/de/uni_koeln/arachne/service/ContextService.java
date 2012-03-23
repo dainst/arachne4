@@ -152,7 +152,9 @@ public class ContextService {
 		} catch (ClassNotFoundException e) {
 			System.out.println("failed");
 			System.out.println("using GenericSQLConnectionsContextualizer instead");
-			return new GenericSQLConnectionsContextualizer(contextType, arachneConnectionService, genericSQLService
+			//return new GenericSQLConnectionsContextualizer(contextType, arachneConnectionService, genericSQLService
+			//		, arachneEntityIdentificationService, arachneSingleEntityDataService);
+			return new SemanticConnectionsContextualizer(contextType, genericSQLService
 					, arachneEntityIdentificationService, arachneSingleEntityDataService);
 		}
 		catch (Exception e) {
