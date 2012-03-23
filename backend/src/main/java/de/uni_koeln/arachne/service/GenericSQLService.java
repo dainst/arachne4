@@ -23,8 +23,8 @@ public class GenericSQLService {
 		return genericSQLDao.getStringField(tableName, field1, field1Id, field2);
 	}
 	
-	public List<String> getConnectedEntities(String tableName, String field1, Long field1Id, String field2) {
-		return genericSQLDao.getConnectedEntities(tableName, field1, field1Id, field2);
+	public List<Map<String, String>> getConnectedEntities(String contextType, Long entityId) {
+		return genericSQLDao.getConnectedEntities(contextType, entityId);
 	}
 	
 	public List<List<String>> getStringFields(String tableName, String field1, Long field1Id, List<String> fields) {

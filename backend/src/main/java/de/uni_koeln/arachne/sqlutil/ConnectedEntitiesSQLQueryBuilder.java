@@ -16,10 +16,10 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	 * @param field1Id The field Id.
 	 * @param field2 The field to query.
 	 */
-	public ConnectedEntitiesSQLQueryBuilder(String tableName, String field1, Long field1Id, String field2, UserAdministration user) {
+	public ConnectedEntitiesSQLQueryBuilder(String contextType, Long entityId, UserAdministration user) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
-		table = tableName;
+		table = contextType;
 		this.field2 = SQLToolbox.getQualifiedFieldname(table, field2);
 		rcb = new SQLRightsConditionBuilder(table,user);
 		// The key identification condition
@@ -31,25 +31,27 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 			keyCondition.setPart1(SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generateForeignKeyName(field1)));
 		}*/
 		keyCondition.setPart1("Source");
-		keyCondition.setPart2(field1Id.toString());
+		keyCondition.setPart2(entityId.toString());
 		conditions.add(keyCondition);
 		// category selection condition
 		Condition categoryCondition = new Condition();
 		categoryCondition.setOperator("=");
 		categoryCondition.setPart1("TypeTarget");
-		categoryCondition.setPart2("\""+field1+"\"");
+		categoryCondition.setPart2("\""+contextType+"\"");
 		conditions.add(categoryCondition);
 		// The field2 not null condition
 		Condition notNullCondition = new Condition();
 		notNullCondition.setOperator("IS NOT");
 		notNullCondition.setPart1(SQLToolbox.getQualifiedFieldname(table, field2));
 		notNullCondition.setPart2("NULL");
-		conditions.add(notNullCondition);
+		//conditions.add(notNullCondition);
 	}
 	
 	@Override
 	protected String buildSQL() {
-		sql += "SELECT " + field2 + " FROM `" + table + "` WHERE 1";
+		sql += "SELECT * FROM `ArachneSemanticConnection` LEFT JOIN `" + table + "` ON " 
+				+ SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generatePrimaryKeyName(table)) + " = "
+				+ "`ArachneSemanticConnection`.`ForeignKeyTarget` WHERE 1";
 		sql += this.buildAndConditions();
 		sql += rcb.getUserRightsSQLSnipplett();  
 		sql += ";";

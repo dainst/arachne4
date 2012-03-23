@@ -43,12 +43,6 @@ public class ContextService {
 	@Autowired
 	private GenericSQLService genericSQLService;
 	
-	/**
-	 * Service to retrieve a single entity.
-	 */
-	@Autowired
-	private SingleEntityDataService arachneSingleEntityDataService;
-	
 	/*
 	 * Utility class to work with the XML config files.
 	 */
@@ -151,11 +145,8 @@ public class ContextService {
 			return (IContextualizer)classConstructor.newInstance(objectParam);
 		} catch (ClassNotFoundException e) {
 			System.out.println("failed");
-			System.out.println("using GenericSQLConnectionsContextualizer instead");
-			//return new GenericSQLConnectionsContextualizer(contextType, arachneConnectionService, genericSQLService
-			//		, arachneEntityIdentificationService, arachneSingleEntityDataService);
-			return new SemanticConnectionsContextualizer(contextType, genericSQLService
-					, arachneEntityIdentificationService, arachneSingleEntityDataService);
+			System.out.println("using SemanticConnectionsContextualizer instead");
+			return new SemanticConnectionsContextualizer(contextType, genericSQLService);
 		}
 		catch (Exception e) {
 			// TODO: handle exception

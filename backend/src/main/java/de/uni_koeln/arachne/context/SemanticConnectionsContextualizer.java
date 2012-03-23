@@ -1,17 +1,14 @@
 package de.uni_koeln.arachne.context;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
-
-import javax.persistence.Entity;
+import java.util.Map;
 
 import de.uni_koeln.arachne.response.Dataset;
-import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.GenericSQLService;
-import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.util.ArachneId;
-import de.uni_koeln.arachne.util.StrUtils;
 
 public class SemanticConnectionsContextualizer implements IContextualizer {
 
@@ -22,16 +19,9 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 	
 	private GenericSQLService genericSQLService;
 	
-	private EntityIdentificationService entityIdentificationService;
-	
-	private SingleEntityDataService singleEntityDataService;
-	
-	public SemanticConnectionsContextualizer(String contextType, GenericSQLService genericSQLService
-			,EntityIdentificationService entityIdentificationService, SingleEntityDataService singleEntityDataService) {
+	public SemanticConnectionsContextualizer(String contextType, GenericSQLService genericSQLService) {
 		this.contextType = contextType;
 		this.genericSQLService = genericSQLService;
-		this.entityIdentificationService = entityIdentificationService;
-		this.singleEntityDataService = singleEntityDataService;
 	}
 	
 	@Override
@@ -46,27 +36,43 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 		List<Link> result = new ArrayList<Link>();
 		String parentTableName = parent.getArachneId().getTableName();
 		System.out.println("parentTableName: " + parentTableName + " - contextType: " + contextType);
-		List<String> fields = new ArrayList<String>();
-		List<String> contextIds = genericSQLService.getConnectedEntities("ArachneSemanticConnection", contextType
-				, parent.getArachneId().getArachneEntityID(), "ForeignKeyTarget");
-		System.out.println("ContextIds: " + contextIds);
-		if (!StrUtils.isEmptyOrNull(contextIds)) {
-			// get datasets, assemble the links and add them to the result list
-			ListIterator<String> contextId = contextIds.listIterator(offset);
-			while (contextId.hasNext() && (linkCount < limit || limit == -1)) {
+		List<Map<String, String>> contextContents = genericSQLService.getConnectedEntities(contextType
+				, parent.getArachneId().getArachneEntityID());
+				
+		if (contextContents != null) {
+			ListIterator<Map<String, String>> contextMap = contextContents.listIterator(offset);
+			while (contextMap.hasNext() && (linkCount < limit || limit == -1)) {
+				Map<String, String> map = contextMap.next();
 				ArachneLink link = new ArachneLink();
-				link.setEntity1(parent);
-
-				ArachneId arachneId = entityIdentificationService.getId(contextType, Long.parseLong(contextId.next()));
-				if (arachneId == null) {
-					// The magic number zero ("0L") means that the entity is not in the "arachneentityidentificaton" table
-					arachneId = new ArachneId(contextType, Long.parseLong(contextId.next()), 0L, false);
+				Dataset dataset = new Dataset();
+				
+				// this is how the contextualizer can set his own names
+				Long foreignKey = 0L;
+				Long entityId = 0L;
+				boolean isDeleted = false;
+				Map<String, String> resultMap = new HashMap<String, String>();
+				for (Map.Entry<String, String> entry: map.entrySet()) {
+					String key = entry.getKey();
+					if (!(key.contains("PS_") && key.contains("ID"))) {
+						if (key.startsWith("arachneentityidentification")) {
+							if (key.endsWith("ArachneEntityID")) {
+								entityId = Long.parseLong(entry.getValue()); 
+							} else if (key.endsWith("ForeignKey")) {
+								foreignKey = Long.parseLong(entry.getValue());
+							} else if (key.endsWith("isDeleted")) {
+								isDeleted = Boolean.parseBoolean(entry.getValue());
+							} 
+														
+						}
+						String newKey = contextType + "." + key.split("\\.")[1];
+						resultMap.put(newKey, entry.getValue());
+					}
 				}
-
-				link.setEntity2(singleEntityDataService.getSingleEntityByArachneId(arachneId));
-
-				linkCount += 1;
-				System.out.println("Adding Link " + contextType + " number " + linkCount + "/" + limit + " of " + contextIds.size());
+				ArachneId arachneId = new ArachneId(contextType, foreignKey, entityId, isDeleted);
+				dataset.setArachneId(arachneId);
+				dataset.appendFields(resultMap);
+				link.setEntity1(parent);
+				link.setEntity2(dataset);
 				result.add(link);
 			}
 		}

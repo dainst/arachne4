@@ -59,10 +59,12 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
-	public List<String> getConnectedEntities(String tableName, String field1, Long field1Id, String field2) {
-		ConnectedEntitiesSQLQueryBuilder queryBuilder = new ConnectedEntitiesSQLQueryBuilder(tableName, field1, field1Id, field2, userRightsService.getCurrentUser());
+	public List<Map<String, String>> getConnectedEntities(String contextType, Long entityId) {
+		ConnectedEntitiesSQLQueryBuilder queryBuilder = new ConnectedEntitiesSQLQueryBuilder(contextType, entityId
+				, userRightsService.getCurrentUser());
 		@SuppressWarnings("unchecked")
-		List<String> queryResult = (List<String>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperString());
+		List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(queryBuilder.getSQL()
+				, new GenericEntitesMapper());
 
 		if (queryResult != null && !queryResult.isEmpty()) {
 			return queryResult;
