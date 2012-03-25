@@ -18,7 +18,7 @@ import de.uni_koeln.arachne.util.ArachneId;
  */
 public class SemanticConnectionsContextualizer implements IContextualizer {
 
-	private static final Logger logger = LoggerFactory.getLogger(SemanticConnectionsContextualizer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SemanticConnectionsContextualizer.class);
 	
 	/**
 	 * The type of <code>Context<code> the <code>Contextualizer</code> retrieves.
@@ -46,7 +46,7 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 		long queryTime = System.currentTimeMillis();
 		List<Map<String, String>> contextContents = genericSQLService.getConnectedEntities(contextType
 				, parent.getArachneId().getArachneEntityID());
-		logger.debug("Query time: " + String.valueOf(System.currentTimeMillis() - queryTime) + " ms");		
+		LOGGER.debug("Query time: " + String.valueOf(System.currentTimeMillis() - queryTime) + " ms");		
 		
 		if (contextContents != null) {
 			ListIterator<Map<String, String>> contextMap = contextContents.listIterator(offset);

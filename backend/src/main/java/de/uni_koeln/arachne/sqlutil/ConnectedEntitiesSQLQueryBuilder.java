@@ -9,11 +9,9 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 
 public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ConnectedEntitiesSQLQueryBuilder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectedEntitiesSQLQueryBuilder.class);
 	
-	protected SQLRightsConditionBuilder rcb;
-	
-	private String field2;
+	transient protected SQLRightsConditionBuilder rightsConditionBuilder;
 	
 	/**
 	 * Constructs a condition to query a field.
@@ -22,14 +20,13 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	 * @param field1Id The field Id.
 	 * @param field2 The field to query.
 	 */
-	public ConnectedEntitiesSQLQueryBuilder(String contextType, Long entityId, UserAdministration user) {
-		sql = "";
+	public ConnectedEntitiesSQLQueryBuilder(final String contextType, final Long entityId, final UserAdministration user) {
+		super();
 		conditions = new ArrayList<Condition>(1);
 		table = contextType;
-		this.field2 = SQLToolbox.getQualifiedFieldname(table, field2);
-		rcb = new SQLRightsConditionBuilder(table,user);
+		rightsConditionBuilder = new SQLRightsConditionBuilder(table,user);
 		// The key identification condition
-		Condition keyCondition = new Condition();
+		final Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");
 		/*if (field1.equals(tableName)) {
 			keyCondition.setPart1(SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generatePrimaryKeyName(field1)));
@@ -40,17 +37,11 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		keyCondition.setPart2(entityId.toString());
 		conditions.add(keyCondition);
 		// category selection condition
-		Condition categoryCondition = new Condition();
+		final Condition categoryCondition = new Condition();
 		categoryCondition.setOperator("=");
 		categoryCondition.setPart1("TypeTarget");
 		categoryCondition.setPart2("\""+contextType+"\"");
 		conditions.add(categoryCondition);
-		// The field2 not null condition
-		Condition notNullCondition = new Condition();
-		notNullCondition.setOperator("IS NOT");
-		notNullCondition.setPart1(SQLToolbox.getQualifiedFieldname(table, field2));
-		notNullCondition.setPart2("NULL");
-		//conditions.add(notNullCondition);
 	}
 	
 	@Override
@@ -59,9 +50,9 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 				+ SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generatePrimaryKeyName(table)) + " = "
 				+ "`ArachneSemanticConnection`.`ForeignKeyTarget` WHERE 1";
 		sql += this.buildAndConditions();
-		sql += rcb.getUserRightsSQLSnipplett();  
+		sql += rightsConditionBuilder.getUserRightsSQLSnipplett();  
 		sql += ";";
-		logger.debug(sql);
+		LOGGER.debug(sql);
 		return sql;
 	}
 }

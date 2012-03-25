@@ -32,19 +32,19 @@ public class ArachneEntityController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ArachneEntityController.class);
 	
 	@Autowired
-	private EntityIdentificationService entityIdentificationService;
+	transient private EntityIdentificationService entityIdentificationService;
 
 	@Autowired
-	private SingleEntityDataService singleEntityDataService;
+	transient private SingleEntityDataService singleEntityDataService;
 	
 	@Autowired
-	private ContextService contextService;
+	transient private ContextService contextService;
 	
 	@Autowired
-	private ResponseFactory responseFactory;
+	transient private ResponseFactory responseFactory;
 	
 	@Autowired
-	private ImageService imageService;
+	transient private ImageService imageService;
 	
 	/**
 	 * Handles http request for /{id}
@@ -78,9 +78,9 @@ public class ArachneEntityController {
      * @return A response object derived from <code>BaseArachneEntity</code>.
      */
     private BaseArachneEntity getEntityRequestResponse(final Long id, final String category) {
-    	Long startTime = System.currentTimeMillis();
+    	final Long startTime = System.currentTimeMillis();
         
-    	ArachneId arachneId = null;
+    	ArachneId arachneId;
     	
     	if (category == null) {
     		arachneId = entityIdentificationService.getId(id);
@@ -109,7 +109,7 @@ public class ArachneEntityController {
     	final long contextTime = System.currentTimeMillis() - nextTime;
     	nextTime = System.currentTimeMillis();
     	
-    	FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(arachneDataset);
+    	final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(arachneDataset);
     	
     	LOGGER.debug("-- Fetching entity took " + fetchTime + " ms");
     	LOGGER.debug("-- Adding images took " + imageTime + " ms");
@@ -130,7 +130,7 @@ public class ArachneEntityController {
      * @return a JSON object containing the data
      */
     @RequestMapping(value="/doc/{id}", method=RequestMethod.GET)
-    public @ResponseBody Dataset handleGetDocEntityRequest(@PathVariable("id") Long id) {
+    public @ResponseBody Dataset handleGetDocEntityRequest(@PathVariable("id") final Long id) {
     	// TODO implement me
     	return null;
     }
@@ -143,7 +143,8 @@ public class ArachneEntityController {
      * @return a JSON object containing the data
      */
     @RequestMapping(value="doc/{category}/{id}", method=RequestMethod.GET)
-    public @ResponseBody Dataset handleGetDocCategoryIdRequest(@PathVariable("category") String category, @PathVariable("id") Long id) {
+    public @ResponseBody Dataset handleGetDocCategoryIdRequest(@PathVariable("category") final String category
+    		, @PathVariable("id") final Long id) {
     	// TODO implement me
 		return null;
     }
@@ -158,7 +159,7 @@ public class ArachneEntityController {
      * @return a JSON object containing the data
      */
     @RequestMapping(value="/data/{id}", method=RequestMethod.GET)
-    public @ResponseBody Dataset handleGetDataEntityRequest(@PathVariable("id") Long id) {
+    public @ResponseBody Dataset handleGetDataEntityRequest(@PathVariable("id") final Long id) {
     	// TODO implement me
 		return null;
     }
@@ -171,7 +172,8 @@ public class ArachneEntityController {
      * @return a JSON object containing the data
      */
     @RequestMapping(value="data/{category}/{id}", method=RequestMethod.GET)
-    public @ResponseBody Dataset handleGetDataCategoryIdRequest(@PathVariable("category") String category, @PathVariable("id") Long id) {
+    public @ResponseBody Dataset handleGetDataCategoryIdRequest(@PathVariable("category") final String category
+    		, @PathVariable("id") final Long id) {
     	// TODO implement me
     	return null;
     }

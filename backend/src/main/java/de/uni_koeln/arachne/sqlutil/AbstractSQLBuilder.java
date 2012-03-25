@@ -9,11 +9,11 @@ import java.util.List;
  */
 public abstract class AbstractSQLBuilder {
 	
-	protected String sql;
+	protected String sql = null;
 	
-	protected String table;
+	protected String table = null;
 	
-	protected boolean limit1;
+	protected boolean limit1 = false;
 	
 	/**
 	 * With And connected Conditions
@@ -49,7 +49,7 @@ public abstract class AbstractSQLBuilder {
 	}
 	
 	protected String appendLimitOne(){
-		if(limit1){
+		if (limit1) {
 			return " Limit 1";
 		}
 		else{
