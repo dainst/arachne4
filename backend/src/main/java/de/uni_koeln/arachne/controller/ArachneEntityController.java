@@ -3,6 +3,8 @@ package de.uni_koeln.arachne.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,23 +30,25 @@ import de.uni_koeln.arachne.util.ArachneId;
 @Controller
 public class ArachneEntityController {
 	
+	private static final Logger logger = LoggerFactory.getLogger(ArachneEntityController.class);
+	
 	@Autowired
-	EntityIdentificationService arachneEntityIdentificationService;
+	private EntityIdentificationService arachneEntityIdentificationService;
 
 	@Autowired
-	SingleEntityDataService arachneSingleEntityDataService;
+	private SingleEntityDataService arachneSingleEntityDataService;
 	
 	@Autowired
-	ContextService contextService;
+	private ContextService contextService;
 	
 	@Autowired
-	UserRightsService userRightsService;
+	private UserRightsService userRightsService;
 	
 	@Autowired
-	ResponseFactory responseFactory;
+	private ResponseFactory responseFactory;
 	
 	@Autowired
-	ImageService arachneImageService;
+	private ImageService arachneImageService;
 	
 	/**
 	 * Handles http request for /{id}
@@ -64,8 +68,7 @@ public class ArachneEntityController {
      */
     @RequestMapping(value="/entity/{category}/{id}", method=RequestMethod.GET)
     public @ResponseBody BaseArachneEntity handleGetCategoryIdRequest(@PathVariable("category") String category, @PathVariable("id") Long id) {
-    	// TODO remove debug
-    	System.out.println("Request for category: " + category + " - id: " + id);
+    	logger.debug("Request for category: " + category + " - id: " + id);
     	return getEntityRequestResponse(id, category);
     }
 
@@ -87,12 +90,11 @@ public class ArachneEntityController {
     		arachneId = arachneEntityIdentificationService.getId(category, id);
     	}
     	
-    	// TODO remove debug
     	if (arachneId == null) {
-    		System.out.println("Warning: Missing ArachneEntityID");
+    		logger.debug("Warning: Missing ArachneEntityID");
     		return new FailureResponse("Failure! ArachneEntityID not found.");
     	}
-    	System.out.println("Request for entity: " + arachneId.getArachneEntityID() + " - type: " + arachneId.getTableName());
+    	logger.debug("Request for entity: " + arachneId.getArachneEntityID() + " - type: " + arachneId.getTableName());
     	
     	Dataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
     	

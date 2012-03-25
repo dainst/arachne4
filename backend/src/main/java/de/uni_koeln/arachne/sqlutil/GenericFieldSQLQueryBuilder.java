@@ -2,11 +2,16 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.uni_koeln.arachne.mapping.UserAdministration;
 
 public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 
-	protected SQLRightsConditionBuilder rcb;
+	private static final Logger logger = LoggerFactory.getLogger(GenericFieldsSQLQueryBuilder.class);
+	
+	protected SQLRightsConditionBuilder rightsConditionBuilder;
 	
 	private String field2;
 	
@@ -22,7 +27,7 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;
 		this.field2 = SQLToolbox.getQualifiedFieldname(table, field2);
-		rcb = new SQLRightsConditionBuilder(table,user);
+		rightsConditionBuilder = new SQLRightsConditionBuilder(table,user);
 		// The key identification condition
 		Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");
@@ -45,10 +50,9 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 	protected String buildSQL() {
 		sql += "SELECT " + field2 + " FROM `" + table + "` WHERE 1";
 		sql += this.buildAndConditions();
-		sql += rcb.getUserRightsSQLSnipplett();  
+		sql += rightsConditionBuilder.getUserRightsSQLSnipplett();  
 		sql += ";";
-		// TODO remove debug output
-		System.out.println("GenericFieldQueryBuilder SQL: " + sql);
+		logger.debug(sql);
 		return sql;
 	}
 }

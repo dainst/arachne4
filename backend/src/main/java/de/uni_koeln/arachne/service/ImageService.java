@@ -31,8 +31,6 @@ public class ImageService {
 		@SuppressWarnings("unchecked")
 		List<Image> imageList = (List<Image>) genericSQLService.getStringFieldsEntityIdJoinedWithCustomRowmapper("marbilder"
 				, arachneId.getTableName(), arachneId.getInternalKey(), fieldList, new ImageRowMapper());
-		// TODO remove debug
-		System.out.println("ImageList: " + imageList);
 		dataset.setImages(imageList);
 	}
 }

@@ -2,11 +2,16 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.uni_koeln.arachne.mapping.UserAdministration;
 
 public class GenericEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 
-	protected SQLRightsConditionBuilder rcb;
+	private static final Logger logger = LoggerFactory.getLogger(GenericEntitiesSQLQueryBuilder.class);
+	
+	protected SQLRightsConditionBuilder rightsConditionBuilder;
 	
 	/**
 	 * Constructs a condition to query a table.
@@ -18,7 +23,7 @@ public class GenericEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;
-		rcb = new SQLRightsConditionBuilder(table, user);
+		rightsConditionBuilder = new SQLRightsConditionBuilder(table, user);
 		// The key identification condition
 		Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");
@@ -31,10 +36,9 @@ public class GenericEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	protected String buildSQL() {
 		sql += "SELECT * FROM `" + table + "` WHERE 1";
 		sql += this.buildAndConditions();
-		sql += rcb.getUserRightsSQLSnipplett();  
+		sql += rightsConditionBuilder.getUserRightsSQLSnipplett();  
 		sql += ";";
-		// TODO remove debug output
-		System.out.println("GenericEntitiesQueryBuilder SQL: " + sql);
+		logger.debug(sql);
 		return sql;
 	}
 }

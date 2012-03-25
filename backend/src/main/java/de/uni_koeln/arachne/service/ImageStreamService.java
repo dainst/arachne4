@@ -25,7 +25,7 @@ import de.uni_koeln.arachne.response.Dataset;
 @Service("aracheImageStreamService")
 public class ImageStreamService {
 	
-	private static Logger logger = LoggerFactory.getLogger(ImageStreamService.class);
+	private static final Logger logger = LoggerFactory.getLogger(ImageStreamService.class);
 	
 	/**
 	 * ex: http://arachne.uni-koeln.de

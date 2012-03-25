@@ -13,7 +13,6 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
  * @author Rasmus Krempel
  *
  */
-// TODO add info about tables where no user rights management is possible/needed 
 public class SQLRightsConditionBuilder {
 
 	private Set<DatasetGroup> permissiongroups;
@@ -28,6 +27,7 @@ public class SQLRightsConditionBuilder {
 		// TODO find a better way to exclude specific tables
 		exludedTables.add("ArachneSemanticConnection");
 		exludedTables.add("datierung");
+		exludedTables.add("literatur");
 		exludedTables.add("literaturzitat_leftjoin_literatur");
 		exludedTables.add("ort");
 		exludedTables.add("ortsbezug_leftjoin_ort");

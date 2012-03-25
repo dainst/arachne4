@@ -9,6 +9,8 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.ServletContextResource;
@@ -26,6 +28,9 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
  */
 @Component
 public class ResponseFactory {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ResponseFactory.class);
+	
 	@Autowired
 	private XmlConfigUtil xmlConfigUtil;
 	
@@ -40,9 +45,7 @@ public class ResponseFactory {
 	 */
 	@SuppressWarnings("unchecked")
 	public FormattedArachneEntity createFormattedArachneEntity(Dataset dataset) {
-		// TODO remove debug
-		System.out.println("Constructing formatted response object...");
-		System.out.println("dataset: " + dataset);
+		logger.debug("dataset: " + dataset);
 		
 		FormattedArachneEntity response = new FormattedArachneEntity();
 		

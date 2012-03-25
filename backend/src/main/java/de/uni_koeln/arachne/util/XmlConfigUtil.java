@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.ServletContext;
 
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.ServletContextResource;
@@ -22,6 +24,9 @@ import de.uni_koeln.arachne.response.Section;
  */
 @Component("xmlConfigUtil")
 public class XmlConfigUtil {
+	
+	private static final Logger logger = LoggerFactory.getLogger(XmlConfigUtil.class);
+	
 	/**
 	 * Servlet context to load the XML config files. 
 	 */
@@ -39,8 +44,8 @@ public class XmlConfigUtil {
 		if (!file.exists()) {
 			filename = null;
 		}
-		// TODO remove debug
-		System.out.println("filename: " + filename);
+		
+		logger.debug("config file: " + filename);
 		return filename;
 	}
 	

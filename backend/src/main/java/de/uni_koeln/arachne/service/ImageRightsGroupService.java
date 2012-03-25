@@ -21,7 +21,7 @@ import de.uni_koeln.arachne.response.Dataset;
 @Service
 public class ImageRightsGroupService {
 	
-	private static Logger logger = LoggerFactory.getLogger(ImageRightsGroupService.class);
+	private static final Logger logger = LoggerFactory.getLogger(ImageRightsGroupService.class);
 	
 	@Autowired
 	SingleEntityDataService arachneSingleEntityDataService;

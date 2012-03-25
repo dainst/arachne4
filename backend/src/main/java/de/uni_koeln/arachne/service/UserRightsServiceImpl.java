@@ -26,7 +26,7 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 @Scope(value="request",proxyMode=ScopedProxyMode.INTERFACES)
 public class UserRightsServiceImpl implements UserRightsService {
 	
-	private static Logger logger = LoggerFactory.getLogger(UserRightsServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserRightsServiceImpl.class);
 	
 	/**
 	 * User management DAO instance.

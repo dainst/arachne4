@@ -6,12 +6,20 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.util.ArachneId;
 
+/**
+ * This contextualizer retrieves internal contexts (tables in the arachne database). 
+ */
 public class SemanticConnectionsContextualizer implements IContextualizer {
 
+	private static final Logger logger = LoggerFactory.getLogger(SemanticConnectionsContextualizer.class);
+	
 	/**
 	 * The type of <code>Context<code> the <code>Contextualizer</code> retrieves.
 	 */
@@ -35,10 +43,10 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 	public List<Link> retrieve(Dataset parent, Integer offset, Integer limit) {
 		List<Link> result = new ArrayList<Link>();
 		String parentTableName = parent.getArachneId().getTableName();
-		System.out.println("parentTableName: " + parentTableName + " - contextType: " + contextType);
+		long queryTime = System.currentTimeMillis();
 		List<Map<String, String>> contextContents = genericSQLService.getConnectedEntities(contextType
 				, parent.getArachneId().getArachneEntityID());
-				
+		logger.debug("Query time: " + String.valueOf(System.currentTimeMillis() - queryTime) + " ms");		
 		if (contextContents != null) {
 			ListIterator<Map<String, String>> contextMap = contextContents.listIterator(offset);
 			while (contextMap.hasNext() && (linkCount < limit || limit == -1)) {
@@ -47,6 +55,7 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 				Dataset dataset = new Dataset();
 				
 				// this is how the contextualizer can set his own names
+				// here the ArachneEntityID is extracted from the query result and  
 				Long foreignKey = 0L;
 				Long entityId = 0L;
 				boolean isDeleted = false;
@@ -54,6 +63,7 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 				for (Map.Entry<String, String> entry: map.entrySet()) {
 					String key = entry.getKey();
 					if (!(key.contains("PS_") && key.contains("ID"))) {
+						// get ArachneEntityID from  
 						if (key.startsWith("arachneentityidentification")) {
 							if (key.endsWith("ArachneEntityID")) {
 								entityId = Long.parseLong(entry.getValue()); 
@@ -62,8 +72,8 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 							} else if (key.endsWith("isDeleted")) {
 								isDeleted = Boolean.parseBoolean(entry.getValue());
 							} 
-														
 						}
+						
 						String newKey = contextType + "." + key.split("\\.")[1];
 						resultMap.put(newKey, entry.getValue());
 					}
@@ -78,5 +88,4 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 		}
 		return result;
 	}
-
 }

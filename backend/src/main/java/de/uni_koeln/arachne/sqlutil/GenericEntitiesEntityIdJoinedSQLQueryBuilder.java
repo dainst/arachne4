@@ -2,9 +2,14 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.uni_koeln.arachne.mapping.UserAdministration;
 
 public class GenericEntitiesEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuilder {
+	
+	private static final Logger logger = LoggerFactory.getLogger(GenericEntitiesEntityIdJoinedSQLQueryBuilder.class);
 	
 	protected SQLRightsConditionBuilder rcb;
 	private String entityIdLeftJoin;
@@ -47,8 +52,7 @@ public class GenericEntitiesEntityIdJoinedSQLQueryBuilder extends AbstractSQLBui
 		sql += this.buildAndConditions();
 		sql += rcb.getUserRightsSQLSnipplett();  
 		sql += ";";
-		// TODO remove debug output
-		System.out.println("GenericEntitiesEntityIdJoinedQueryBuilder SQL: " + sql);
+		logger.debug(sql);
 		return sql;
 	}
 }

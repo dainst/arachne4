@@ -10,6 +10,8 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.support.ServletContextResource;
@@ -26,6 +28,8 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
  */
 @Service("arachneContextService")
 public class ContextService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ContextService.class);
 	
 	@Autowired
 	private EntityIdentificationService arachneEntityIdentificationService;
@@ -55,8 +59,7 @@ public class ContextService {
 	 */
 	public void addMandatoryContexts(Dataset parent) {
 		List<String> externalFields = getExternalFields(parent.getArachneId().getTableName());
-		System.out.println("addMandatoryContexts: external fields: " + externalFields.size());
-
+		
 		List<String> mandatoryContextTypes = new ArrayList<String>();
 
 		for (String currentField: externalFields) {
@@ -66,7 +69,7 @@ public class ContextService {
 			}
 		}
 				
-		System.out.println("Mandatory Contexts: " + mandatoryContextTypes);
+		logger.debug("Mandatory Contexts: " + mandatoryContextTypes);
 		Iterator<String> contextType = mandatoryContextTypes.iterator();
 		while (contextType.hasNext()) {
 			Context context = new Context(contextType.next(), parent, this);
@@ -135,17 +138,14 @@ public class ContextService {
 		objectParam[1] = genericSQLService;
 		
 		try {
-			// TODO remove debug
-			System.out.println("ContexType: " + contextType);
 			String upperCaseContextType = contextType.substring(0, 1).toUpperCase() + contextType.substring(1).toLowerCase();
 			String className = "de.uni_koeln.arachne.context." + upperCaseContextType + "Contextualizer";
-			System.out.println("Trying to initialize class: " + className + "...");
+			logger.debug("Initializing class: " + className + "...");
 			Class<?> aClass = Class.forName(className);
 			java.lang.reflect.Constructor classConstructor = aClass.getConstructor(classParam);
 			return (IContextualizer)classConstructor.newInstance(objectParam);
 		} catch (ClassNotFoundException e) {
-			System.out.println("failed");
-			System.out.println("using SemanticConnectionsContextualizer instead");
+			logger.debug("FAILURE - using SemanticConnectionsContextualizer instead");
 			return new SemanticConnectionsContextualizer(contextType, genericSQLService);
 		}
 		catch (Exception e) {
@@ -164,9 +164,7 @@ public class ContextService {
 	 * @return A list of full qualified external field names.
 	 */
 	private List<String> getExternalFields(String type) {	
-		//TODO remove debug
-		System.out.println("ExternalFields - type: " + type);
-				
+		
 		String filename = xmlConfigUtil.getFilenameFromType(type);
 		
 		ServletContextResource xmlDocument = new ServletContextResource(xmlConfigUtil.getServletContext(), filename);
@@ -181,7 +179,6 @@ public class ContextService {
 			List<String> result = new ArrayList<String>();
 			result.addAll(getFields(display, type));
 			result.addAll(getFields(facets, type));
-			System.out.println("getExternalFields - result: " + result);
 			return result;		
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
@@ -227,7 +224,6 @@ public class ContextService {
 		} else {
 			if (!children.isEmpty()) {
 				String context = element.getAttributeValue("type");
-				System.out.println("Found context tag. Type: " + context);
 				for (Element e:children) {
 					String datasourceValue = e.getAttributeValue("datasource");
 					if (!StrUtils.isEmptyOrNull(datasourceValue)) {

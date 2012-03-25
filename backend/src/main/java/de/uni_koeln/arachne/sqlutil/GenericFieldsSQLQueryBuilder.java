@@ -3,9 +3,15 @@ package de.uni_koeln.arachne.sqlutil;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.uni_koeln.arachne.mapping.UserAdministration;
 
 public class GenericFieldsSQLQueryBuilder extends AbstractSQLBuilder {
+	
+	private static final Logger logger = LoggerFactory.getLogger(GenericFieldsSQLQueryBuilder.class);
+	
 	protected SQLRightsConditionBuilder rcb;
 	
 	private String field2;
@@ -48,8 +54,7 @@ public class GenericFieldsSQLQueryBuilder extends AbstractSQLBuilder {
 		sql += this.buildAndConditions();
 		sql += rcb.getUserRightsSQLSnipplett();  
 		sql += ";";
-		// TODO remove debug output
-		System.out.println("GenericFieldsQueryBuilder SQL: " + sql);
+		logger.debug(sql);
 		return sql;
 	}
 }

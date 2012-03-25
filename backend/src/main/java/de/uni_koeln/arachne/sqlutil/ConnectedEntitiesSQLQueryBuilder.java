@@ -2,9 +2,15 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.uni_koeln.arachne.mapping.UserAdministration;
 
 public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ConnectedEntitiesSQLQueryBuilder.class);
+	
 	protected SQLRightsConditionBuilder rcb;
 	
 	private String field2;
@@ -55,8 +61,7 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		sql += this.buildAndConditions();
 		sql += rcb.getUserRightsSQLSnipplett();  
 		sql += ";";
-		// TODO remove debug output
-		System.out.println("GenericFieldCustomQueryBuilder SQL: " + sql);
+		logger.debug(sql);
 		return sql;
 	}
 }

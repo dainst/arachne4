@@ -3,12 +3,19 @@ package de.uni_koeln.arachne.sqlutil;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.uni_koeln.arachne.mapping.UserAdministration;
 
 public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuilder {
 	
-	protected SQLRightsConditionBuilder rcb;
-		private String field2;
+	private static final Logger logger = LoggerFactory.getLogger(GenericFieldsEntityIdJoinedSQLQueryBuilder.class);
+	
+	protected SQLRightsConditionBuilder rightsConditionBuilder;
+	
+	private String field2;
+	
 	private String entityIdLeftJoin;
 	
 	/**
@@ -23,7 +30,7 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;
-		rcb = new SQLRightsConditionBuilder(table, user);
+		rightsConditionBuilder = new SQLRightsConditionBuilder(table, user);
 		// concatenate fields
 		field2 = SQLToolbox.getQualifiedFieldname(table, fields.get(0));
 		int i = 1;
@@ -33,8 +40,7 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 		}
 		// add ArachneEntityId to result
 		field2 += ", " + SQLToolbox.getQualifiedFieldname("arachneentityidentification", "ArachneEntityID");
-		System.out.println("field2: " + field2);
-		
+				
 		entityIdLeftJoin = "LEFT JOIN `arachneentityidentification` ON (`arachneentityidentification`.`TableName` = \"" 
 				+ table + "\" AND `arachneentityidentification`.`ForeignKey` = " 
 				+ SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generatePrimaryKeyName(table)) + ") ";
@@ -55,10 +61,9 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 	protected String buildSQL() {
 		sql += "SELECT " + field2 + " FROM `" + table +  "` "+ entityIdLeftJoin + " WHERE 1";
 		sql += this.buildAndConditions();
-		sql += rcb.getUserRightsSQLSnipplett();  
+		sql += rightsConditionBuilder.getUserRightsSQLSnipplett();  
 		sql += ";";
-		// TODO remove debug output
-		System.out.println("GenericFieldsEntityIdJoinedSQLQueryBuilder SQL: " + sql);
+		logger.debug(sql);
 		return sql;
 	}
 }
