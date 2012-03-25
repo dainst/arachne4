@@ -29,13 +29,13 @@ import de.uni_koeln.arachne.util.ArachneId;
 @Controller
 public class ArachneEntityController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ArachneEntityController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ArachneEntityController.class);
 	
 	@Autowired
-	private EntityIdentificationService arachneEntityIdentificationService;
+	private EntityIdentificationService entityIdentificationService;
 
 	@Autowired
-	private SingleEntityDataService arachneSingleEntityDataService;
+	private SingleEntityDataService singleEntityDataService;
 	
 	@Autowired
 	private ContextService contextService;
@@ -44,28 +44,30 @@ public class ArachneEntityController {
 	private ResponseFactory responseFactory;
 	
 	@Autowired
-	private ImageService arachneImageService;
+	private ImageService imageService;
 	
 	/**
 	 * Handles http request for /{id}
 	 * @param itemId The unique entity id of the item to fetch.
      * @return A response object containing the data (currently this a serialized to JSON by Jackson).
      */
-	@RequestMapping(value="/entity/{id}", method=RequestMethod.GET)
-	public @ResponseBody BaseArachneEntity handleGetEntityIdRequest(HttpServletRequest request, @PathVariable("id") Long id) {
-		return getEntityRequestResponse(id, null);
+	@RequestMapping(value="/entity/{entityId}", method=RequestMethod.GET)
+	public @ResponseBody BaseArachneEntity handleGetEntityIdRequest(final HttpServletRequest request
+			, @PathVariable("entityId") final Long entityId) {
+		return getEntityRequestResponse(entityId, null);
 	}
     
     /**
      * Handles http request for /{category}/{id}
      * @param category The database table to fetch the item from.
-     * @param id The internal id of the item to fetch
+     * @param categoryId The internal id of the item to fetch
      * @return A response object containing the data (currently this a serialized to JSON by Jackson).
      */
-    @RequestMapping(value="/entity/{category}/{id}", method=RequestMethod.GET)
-    public @ResponseBody BaseArachneEntity handleGetCategoryIdRequest(@PathVariable("category") String category, @PathVariable("id") Long id) {
-    	logger.debug("Request for category: " + category + " - id: " + id);
-    	return getEntityRequestResponse(id, category);
+    @RequestMapping(value="/entity/{category}/{categoryId}", method=RequestMethod.GET)
+    public @ResponseBody BaseArachneEntity handleGetCategoryIdRequest(@PathVariable("category") final String category
+    		, @PathVariable("categoryId") final Long categoryId) {
+    	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
+    	return getEntityRequestResponse(categoryId, category);
     }
 
     /**
@@ -75,46 +77,46 @@ public class ArachneEntityController {
      * @param category The category to query or <code>null</code>.
      * @return A response object derived from <code>BaseArachneEntity</code>.
      */
-    private BaseArachneEntity getEntityRequestResponse(Long id, String category) {
+    private BaseArachneEntity getEntityRequestResponse(final Long id, final String category) {
     	Long startTime = System.currentTimeMillis();
         
     	ArachneId arachneId = null;
     	
     	if (category == null) {
-    		arachneId = arachneEntityIdentificationService.getId(id);
+    		arachneId = entityIdentificationService.getId(id);
     	} else {
-    		arachneId = arachneEntityIdentificationService.getId(category, id);
+    		arachneId = entityIdentificationService.getId(category, id);
     	}
     	
     	if (arachneId == null) {
-    		logger.debug("Warning: Missing ArachneEntityID");
+    		LOGGER.debug("Warning: Missing ArachneEntityID");
     		return new FailureResponse("Failure! ArachneEntityID not found.");
     	}
-    	logger.debug("Request for entity: " + arachneId.getArachneEntityID() + " - type: " + arachneId.getTableName());
+    	LOGGER.debug("Request for entity: " + arachneId.getArachneEntityID() + " - type: " + arachneId.getTableName());
     	
-    	Dataset arachneDataset = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
+    	final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(arachneId);
     	
-    	long fetchTime = System.currentTimeMillis() - startTime;
+    	final long fetchTime = System.currentTimeMillis() - startTime;
     	long nextTime = System.currentTimeMillis();
     	
-    	arachneImageService.addImages(arachneDataset);
+    	imageService.addImages(arachneDataset);
     	
-    	long imageTime = System.currentTimeMillis() - nextTime;
+    	final long imageTime = System.currentTimeMillis() - nextTime;
     	nextTime = System.currentTimeMillis();
     	
     	contextService.addMandatoryContexts(arachneDataset);
     	
-    	long contextTime = System.currentTimeMillis() - nextTime;
+    	final long contextTime = System.currentTimeMillis() - nextTime;
     	nextTime = System.currentTimeMillis();
     	
     	FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(arachneDataset);
     	
-    	System.out.println("-- Fetching entity took " + fetchTime + " ms");
-    	System.out.println("-- Adding images took " + imageTime + " ms");
-    	System.out.println("-- Adding contexts took " + contextTime + " ms");
-    	System.out.println("-- Creating response took " + (System.currentTimeMillis() - nextTime) + " ms");
-    	System.out.println("-----------------------------------");
-    	System.out.println("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
+    	LOGGER.debug("-- Fetching entity took " + fetchTime + " ms");
+    	LOGGER.debug("-- Adding images took " + imageTime + " ms");
+    	LOGGER.debug("-- Adding contexts took " + contextTime + " ms");
+    	LOGGER.debug("-- Creating response took " + (System.currentTimeMillis() - nextTime) + " ms");
+    	LOGGER.debug("-----------------------------------");
+    	LOGGER.debug("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
     	return response;
     }
     
