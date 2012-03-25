@@ -9,9 +9,9 @@ import java.util.List;
  */
 public abstract class AbstractSQLBuilder {
 	
-	protected String sql = null;
+	protected String sql = "";
 	
-	protected String table = null;
+	protected String table = "";
 	
 	protected boolean limit1 = false;
 	
