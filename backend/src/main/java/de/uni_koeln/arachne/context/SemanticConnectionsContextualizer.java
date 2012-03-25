@@ -42,11 +42,12 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 	@Override
 	public List<Link> retrieve(Dataset parent, Integer offset, Integer limit) {
 		List<Link> result = new ArrayList<Link>();
-		String parentTableName = parent.getArachneId().getTableName();
+		
 		long queryTime = System.currentTimeMillis();
 		List<Map<String, String>> contextContents = genericSQLService.getConnectedEntities(contextType
 				, parent.getArachneId().getArachneEntityID());
 		logger.debug("Query time: " + String.valueOf(System.currentTimeMillis() - queryTime) + " ms");		
+		
 		if (contextContents != null) {
 			ListIterator<Map<String, String>> contextMap = contextContents.listIterator(offset);
 			while (contextMap.hasNext() && (linkCount < limit || limit == -1)) {

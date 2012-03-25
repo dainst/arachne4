@@ -21,7 +21,6 @@ import de.uni_koeln.arachne.service.ContextService;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.ImageService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
-import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.ArachneId;
 
 /**
@@ -40,9 +39,6 @@ public class ArachneEntityController {
 	
 	@Autowired
 	private ContextService contextService;
-	
-	@Autowired
-	private UserRightsService userRightsService;
 	
 	@Autowired
 	private ResponseFactory responseFactory;
