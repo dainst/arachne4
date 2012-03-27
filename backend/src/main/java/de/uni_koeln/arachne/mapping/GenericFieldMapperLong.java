@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 public class GenericFieldMapperLong implements RowMapper<Long> {
 	@Override
-	public Long mapRow(ResultSet resultSet, int i) throws SQLException {
+	public Long mapRow(final ResultSet resultSet, final int index) throws SQLException {
 		return resultSet.getLong(1);
 	}
 }

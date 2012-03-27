@@ -7,8 +7,8 @@ import org.springframework.jdbc.core.RowMapper;
 
 public class GenericFieldMapperString implements RowMapper<String> {
 	@Override
-	public String mapRow(ResultSet resultSet, int i) throws SQLException {
-		String result = resultSet.getString(1);
+	public String mapRow(final ResultSet resultSet, final int index) throws SQLException {
+		final String result = resultSet.getString(1);
 		if (result.isEmpty()) {
 			return null;
 		}

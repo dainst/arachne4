@@ -38,7 +38,7 @@ public class EntityIdentificationService {
 	 * @param ArachneEntityID ArachneEntityID
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
-	private ArachneId getByEntityId(Long arachneEntityId) {
+	private ArachneId getByEntityId(final Long arachneEntityId) {
 		return constructArachneID(arachneEntityDao.getByEntityID(arachneEntityId));
 	}
 	
@@ -46,11 +46,11 @@ public class EntityIdentificationService {
 	 * Gets all identifiers of a Dataset by tablename and primary key.
 	 * For convenience the public method <code>getArachneId</code> is overloaded.
 	 * @param table The internal table name in the Arachne database.
-	 * @param id internal table key of the dataset
+	 * @param internalId internal table key of the dataset
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
-	private ArachneId getByTablenameAndInternalKey(String table, Long id){
-		return constructArachneID(arachneEntityDao.getByTablenameAndInternalKey(table, id));
+	private ArachneId getByTablenameAndInternalKey(String table, final Long internalId){
+		return constructArachneID(arachneEntityDao.getByTablenameAndInternalKey(table, internalId));
 	}
 	
 	/**

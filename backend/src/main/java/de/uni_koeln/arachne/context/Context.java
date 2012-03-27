@@ -127,14 +127,17 @@ public class Context {
 	 * @return The number of contexts (more or less).
 	 */
 	public List<AbstractLink> getLimitContext(int number) {
-	if (completionState != CompletionStateEnum.LIMITED && completionState != CompletionStateEnum.FULL)
-	    retrieveLimited(number);
-	    if (number > contextEntities.size())
-	        completionState = CompletionStateEnum.FULL;
-	    else
-	        completionState = CompletionStateEnum.LIMITED;
+		if (completionState != CompletionStateEnum.LIMITED && completionState != CompletionStateEnum.FULL) {
+			retrieveLimited(number);
+		}
 
-	    if (contextEntities.isEmpty()) {
+		if (number > contextEntities.size()) {
+			completionState = CompletionStateEnum.FULL;
+		} else {
+			completionState = CompletionStateEnum.LIMITED;
+		}
+
+		if (contextEntities.isEmpty()) {
 			return null; 
 		} else {
 			return contextEntities;

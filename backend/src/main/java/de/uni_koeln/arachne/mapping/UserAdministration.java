@@ -84,13 +84,13 @@ public class UserAdministration {
 		 * Is the User allowed to see all groups
 		 */
 	   	@Column(name="all_groups")
-		boolean all_groups;
+		boolean all_groups; // NOPMD
 	   	
 		/**
 		 * Is the user allowed to Login
 		 */
 	   	@Column(name="login_permission")
-		boolean login_permission;
+		boolean login_permission; // NOPMD
 	   	
 		/**
 		 * Time of the last Login
@@ -299,28 +299,28 @@ public class UserAdministration {
 		/**
 		 * @return the all_groups
 		 */
-		public boolean isAll_groups() {
+		public boolean isAll_groups() { // NOPMD
 			return all_groups;
 		}
 
 		/**
 		 * @param all_groups the all_groups to set
 		 */
-		public void setAll_groups(boolean all_groups) {
+		public void setAll_groups(boolean all_groups) { // NOPMD
 			this.all_groups = all_groups;
 		}
 
 		/**
 		 * @return the login_permission
 		 */
-		public boolean isLogin_permission() {
+		public boolean isLogin_permission() { // NOPMD
 			return login_permission;
 		}
 
 		/**
 		 * @param login_permission the login_permission to set
 		 */
-		public void setLogin_permission(boolean login_permission) {
+		public void setLogin_permission(boolean login_permission) { // NOPMD
 			this.login_permission = login_permission;
 		}
 

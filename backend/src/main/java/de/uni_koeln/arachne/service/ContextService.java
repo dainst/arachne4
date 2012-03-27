@@ -89,9 +89,9 @@ public class ContextService {
 	public void addContext(Dataset parent) {
 		if (parent.getArachneId().getTableName().equals("bauwerk")) {
 			List<String> connectionList = arachneConnectionService.getConnectionList(parent.getArachneId().getTableName());
-			Iterator<String> i = connectionList.iterator();
-			while (i.hasNext()) {
-				Context context = new Context(i.next(), parent, this);
+			Iterator<String> iterator = connectionList.iterator();
+			while (iterator.hasNext()) {
+				Context context = new Context(iterator.next(), parent, this);
 				context.getFirstContext();
 				parent.addContext(context);
 			}

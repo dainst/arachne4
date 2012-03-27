@@ -72,14 +72,14 @@ public class ImageStreamService {
 		Long startTime = System.currentTimeMillis();
 		
 		BufferedImage resizedImage = new BufferedImage(width, height, originalImage.getType());
-		Graphics2D g = resizedImage.createGraphics();
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g.drawImage(originalImage, 0, 0, width, height, 0, 0, originalImage.getWidth(), originalImage.getHeight(), null);
+		Graphics2D graphics2D = resizedImage.createGraphics();
+		graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		graphics2D.drawImage(originalImage, 0, 0, width, height, 0, 0, originalImage.getWidth(), originalImage.getHeight(), null);
 		
 		if (watermarkFilename != null && !watermarkFilename.isEmpty()) {
 			InputStream watermark = servletContext.getResourceAsStream("/WEB-INF/watermarks/" + watermarkFilename);
 			BufferedImage watermarkImage = ImageIO.read(watermark);
-			g.drawImage(
+			graphics2D.drawImage(
 					watermarkImage,
 					width-watermarkImage.getWidth(), 0,
 					width, watermarkImage.getHeight(),
@@ -89,7 +89,7 @@ public class ImageStreamService {
 				);
 		}
 		
-		g.dispose();
+		graphics2D.dispose();
 		
 		LOGGER.debug("Time taken for image resizing: {} ms", System.currentTimeMillis() - startTime);
 		

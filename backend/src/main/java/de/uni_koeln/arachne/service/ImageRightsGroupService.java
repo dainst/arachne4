@@ -46,12 +46,7 @@ public class ImageRightsGroupService {
 		
 		ImageResolutionType maxResolution = getMaxResolution(imageEntity, currentUser, imageRightsGroup);
 		
-		if (maxResolution != null && maxResolution.ordinal() >= res.ordinal()) {
-			return true;
-		} else {
-			return false;
-		}
-		
+		return maxResolution != null && maxResolution.ordinal() >= res.ordinal();		
 	}
 
 	/**

@@ -87,8 +87,12 @@ public class XmlConfigUtil {
 					}
 				}
 				if (!StrUtils.isEmptyOrNull(datasetResult)) {
-					if (prefix != null) datasetResult = prefix + datasetResult;
-					if (postfix != null) datasetResult += postfix;
+					if (prefix != null) {
+						datasetResult = prefix + datasetResult;
+					}
+					if (postfix != null) { 
+						datasetResult += postfix;
+					}
 					if (!result.isEmpty() && !datasetResult.isEmpty()) {
 						result += separator;
 					}
@@ -133,18 +137,22 @@ public class XmlConfigUtil {
 				String postfix = e.getAttributeValue("postfix");
 				String prefix = e.getAttributeValue("prefix");
 				if (value != null) {
-					if (prefix != null) value = prefix + value;
-					if (postfix != null) value += postfix; 
+					if (prefix != null) {
+						value = prefix + value;
+					}
+					if (postfix != null) {
+						value += postfix; 
+					}
 					
 					// TODO find better solution as the previous content may be a section
 					// If there are more than one field in this section add the value (incl. separator) to the previous field
-					if (!result.getContent().isEmpty()) {
+					if (result.getContent().isEmpty()) {
+						field.setValue(value);
+						result.add(field);
+					} else {
 						int contentSize = result.getContent().size();
 						Field previousContent = (Field)result.getContent().get(contentSize-1);
 						previousContent.setValue(previousContent.getValue() + separator +value);
-					} else {
-						field.setValue(value);
-						result.add(field);
 					}
 				}
 			} else {
@@ -208,16 +216,20 @@ public class XmlConfigUtil {
 					String postfix = e.getAttributeValue("postfix");
 					String prefix = e.getAttributeValue("prefix");
 					if (value != null) {
-						if (prefix != null) value = prefix + value;
-						if (postfix != null) value += postfix; 
+						if (prefix != null) {
+							value = prefix + value;
+						}
+						if (postfix != null) {
+							value += postfix; 
+						}
 						String currentListValue = null;
 						if (!fieldList.getValue().isEmpty() && i < fieldList.size()) {
 							currentListValue = fieldList.get(i);
 						}
-						if (currentListValue != null) {
-							fieldList.modify(i, currentListValue + separator + value);
-						} else {
+						if (currentListValue == null) {
 							fieldList.add(value);
+						} else {
+							fieldList.modify(i, currentListValue + separator + value);
 						}
 					}
 				}

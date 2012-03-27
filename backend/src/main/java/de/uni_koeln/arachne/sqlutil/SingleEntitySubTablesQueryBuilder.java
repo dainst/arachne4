@@ -33,23 +33,22 @@ public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 		}
 		table = targetTable;
 		String info;
-		if(sourceField.equals("PrimaryKey"))
+		if (sourceField.equals("PrimaryKey")) {
 			 info = ads.getArachneId().getInternalKey().toString();
-		else
+		} else {
 			 info = ads.getField(sourceTable+"."+sourceField);
-		
-		
-		
-		
+		}
+				
 		//Limits the Result count to 1
 		limit1 = true;
 		//Building condition to find Subproject
 		Condition cnd = new Condition();
 		cnd.setOperator("=");
-		if(targetField.equals("PrimaryKey"))
+		if (targetField.equals("PrimaryKey")) {
 			cnd.setPart1(SQLToolbox.getQualifiedFieldname(targetTable, SQLToolbox.generatePrimaryKeyName(targetTable)));
-		else
+		} else {
 			cnd.setPart1(SQLToolbox.getQualifiedFieldname(targetTable,targetField));
+		}
 		cnd.setPart2(info);
 		conditions.add(cnd);
 	}
@@ -59,8 +58,9 @@ public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 	protected String buildSQL() {
 		sql += "SELECT * FROM `" + table + "` WHERE 1";
 		sql += this.buildAndConditions();
-		if(limit1)
+		if (limit1) {
 			sql += this.appendLimitOne();
+		}
 		sql += ";";
 		return sql;	
 	}

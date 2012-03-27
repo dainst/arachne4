@@ -61,11 +61,7 @@ public class TableConnectionDescription {
 	 * @return true if tbname is described in this connection
 	 */
 	public boolean linksTable(String tbname){
-		if(tbname.equals(table1) || tbname.equals(table2)){
-			return true;
-		}else{
-			return false;
-		}	
+		return tbname.equals(table1) || tbname.equals(table2);
 	}
 	
 	//Setter

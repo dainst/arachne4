@@ -1,6 +1,5 @@
 package de.uni_koeln.arachne.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -110,8 +109,9 @@ public class GenericSQLDao extends SQLDao {
 	}
 
 	public List<? extends SQLResponseObject> getStringFieldsWithCustomRowMapper(String tableName,
-			String field1, Long field1Id, ArrayList<String> fields, RowMapper<? extends SQLResponseObject> rowMapper) {
-		GenericFieldsSQLQueryBuilder queryBuilder = new GenericFieldsSQLQueryBuilder(tableName, field1, field1Id, fields, userRightsService.getCurrentUser());
+			String field1, Long field1Id, List<String> fields, RowMapper<? extends SQLResponseObject> rowMapper) {
+		GenericFieldsSQLQueryBuilder queryBuilder = new GenericFieldsSQLQueryBuilder(tableName, field1, field1Id
+				, fields, userRightsService.getCurrentUser());
 		@SuppressWarnings("unchecked")
 		List<? extends SQLResponseObject> queryResult = (List<? extends SQLResponseObject>)this.executeSelectQuery(
 				queryBuilder.getSQL(), rowMapper);
@@ -123,10 +123,10 @@ public class GenericSQLDao extends SQLDao {
 	}
 
 	public List<? extends SQLResponseObject> getStringFieldsEntityIdJoinedWithCustomRowMapper(
-			String tableName, String field1, Long field1Id,
-			ArrayList<String> fields,
-			RowMapper<? extends SQLResponseObject> rowMapper) {
-		GenericFieldsEntityIdJoinedSQLQueryBuilder queryBuilder = new GenericFieldsEntityIdJoinedSQLQueryBuilder(tableName, field1, field1Id, fields, userRightsService.getCurrentUser());
+			String tableName, String field1, Long field1Id, List<String> fields
+			, RowMapper<? extends SQLResponseObject> rowMapper) {
+		GenericFieldsEntityIdJoinedSQLQueryBuilder queryBuilder = new GenericFieldsEntityIdJoinedSQLQueryBuilder(
+				tableName, field1, field1Id, fields, userRightsService.getCurrentUser());
 		@SuppressWarnings("unchecked")
 		List<? extends SQLResponseObject> queryResult = (List<? extends SQLResponseObject>)this.executeSelectQuery(
 				queryBuilder.getSQL(), rowMapper);

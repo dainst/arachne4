@@ -33,7 +33,7 @@ public class GenericFieldsMapperString implements RowMapper<List<String>> {
 	 * @return A string list containing the results of the SQL query.
 	 */
 	@Override
-	public List<String> mapRow(ResultSet resultSet, int i) throws SQLException {
+	public List<String> mapRow(final ResultSet resultSet, final int index) throws SQLException {
 		List<String> result = new ArrayList<String>();
 		for (int row = 1; row < lastRow; row++) {
 			result.add(resultSet.getString(row));

@@ -7,7 +7,7 @@ public class BaseArachneEntity {
 	/**
 	 * Identification of the Dataset
 	 */
-	protected Long id = -1L;
+	protected Long entityId = -1L;
 	
 	/**
 	 * The tablename field of the ArachneEntity table
@@ -24,19 +24,19 @@ public class BaseArachneEntity {
 	 */
 	protected String datasetGroup = null;
 	
-	public Long getId() {
-		return id;
+	public Long getEntityId() {
+		return entityId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setEntityId(final Long entiyId) {
+		this.entityId = entiyId;
 	}
 
 	public String getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(final String type) {
 		this.type = type;
 	}
 

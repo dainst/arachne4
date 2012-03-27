@@ -18,7 +18,7 @@ public class ArachneEntity {
 	 */
 	@Id
 	@Column(name="ArachneEntityID")
-	private Long id = null;
+	private Long entityId = null;
 	
 	/**
 	 * Table name of the table the entity is located in (<code>TableName</code>).
@@ -47,7 +47,7 @@ public class ArachneEntity {
 	 * @return The Arachne Entity ID
 	 */
 	public Long getId() {
-		return id;
+		return entityId;
 	}
 	
 	/**

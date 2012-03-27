@@ -70,7 +70,7 @@ public class ImageController {
 			HttpServletRequest request,
 			HttpServletResponse response) {
 		
-		return getImageStream(id, ImageResolutionType.HIGH, request, response);
+		return getImageStream(id, ImageResolutionType.HIGH, response);
 		
 	}
 	
@@ -87,7 +87,7 @@ public class ImageController {
 			HttpServletRequest request,
 			HttpServletResponse response) {
 				
-		return getImageStream(id, ImageResolutionType.THUMBNAIL, request, response);
+		return getImageStream(id, ImageResolutionType.THUMBNAIL, response);
 		
 	}
 	
@@ -104,13 +104,14 @@ public class ImageController {
 			HttpServletRequest request,
 			HttpServletResponse response) {
 		
-		return getImageStream(id, ImageResolutionType.PREVIEW, request, response);
+		return getImageStream(id, ImageResolutionType.PREVIEW, response);
 		
 	}
 	
-	private BufferedImage getImageStream(String id, ImageResolutionType resolution, HttpServletRequest request
+	private BufferedImage getImageStream(String id, ImageResolutionType requestedResolution
 			, HttpServletResponse response) {
 		
+		ImageResolutionType resolution = requestedResolution;
 		ArachneId arachneId = arachneEntityIdentificationService.getId(Long.valueOf(id));
 		
 		if(!arachneId.getTableName().equals("marbilder")) {

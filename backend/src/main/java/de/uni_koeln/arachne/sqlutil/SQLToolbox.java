@@ -9,6 +9,7 @@ package de.uni_koeln.arachne.sqlutil;
  * @author Rasmus Krempel
  *
  */
+@SuppressWarnings("PMD")
 public class SQLToolbox {
 	/**
 	 * Asserts the Name of the Primary key by the Tabename it comes from

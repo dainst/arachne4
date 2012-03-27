@@ -33,10 +33,10 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 		rightsConditionBuilder = new SQLRightsConditionBuilder(table, user);
 		// concatenate fields
 		field2 = SQLToolbox.getQualifiedFieldname(table, fields.get(0));
-		int i = 1;
-		while (i<fields.size()) {
-			field2 += ", " + SQLToolbox.getQualifiedFieldname(table,fields.get(i));
-			i++;
+		int index = 1;
+		while (index<fields.size()) {
+			field2 += ", " + SQLToolbox.getQualifiedFieldname(table,fields.get(index));
+			index++;
 		}
 		// add ArachneEntityId to result
 		field2 += ", " + SQLToolbox.getQualifiedFieldname("arachneentityidentification", "ArachneEntityID");

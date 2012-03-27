@@ -30,10 +30,10 @@ public class GenericFieldsSQLQueryBuilder extends AbstractSQLBuilder {
 		rcb = new SQLRightsConditionBuilder(table, user);
 		// concatenate fields
 		field2 = SQLToolbox.getQualifiedFieldname(table, fields.get(0));
-		int i = 1;
-		while (i<fields.size()) {
-			field2 += ", " + SQLToolbox.getQualifiedFieldname(table,fields.get(i));
-			i++;
+		int index = 1;
+		while (index<fields.size()) {
+			field2 += ", " + SQLToolbox.getQualifiedFieldname(table,fields.get(index));
+			index++;
 		}
 		
 		// The key identification condition

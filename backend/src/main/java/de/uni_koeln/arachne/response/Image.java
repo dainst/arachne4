@@ -10,31 +10,31 @@ public class Image extends SQLResponseObject {
 	/**
 	 * The primary key of the image.
 	 */
-	private Long id = null;
+	private Long imageId = null;
 	
 	/**
 	 * The subtitle of the image.
 	 */
 	private String subtitle = null;
 
-	public Long getId() {
-		return id;
+	public Long getImageId() {
+		return imageId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setImageId(final Long imageId) {
+		this.imageId = imageId;
 	}
 
 	public String getSubtitle() {
 		return subtitle;
 	}
 
-	public void setSubtitle(String subtitle) {
+	public void setSubtitle(final String subtitle) {
 		this.subtitle = subtitle;
 	}
 	
 	@Override
 	public String toString() {
-		return "[" + String.valueOf(id) + ", " + subtitle + "]";
+		return "[" + String.valueOf(imageId) + ", " + subtitle + "]";
 	}
 }

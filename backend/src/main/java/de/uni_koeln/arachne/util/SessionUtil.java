@@ -10,6 +10,7 @@ import de.uni_koeln.arachne.response.ResponseFactory;
 /**
  * Utility class to retrieve the current SessionFactory or create a new one if none exists.
  */
+@SuppressWarnings("PMD")
 public class SessionUtil {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);

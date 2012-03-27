@@ -77,7 +77,7 @@ public class ArachneEntityController {
      * @param category The category to query or <code>null</code>.
      * @return A response object derived from <code>BaseArachneEntity</code>.
      */
-    private BaseArachneEntity getEntityRequestResponse(final Long id, final String category) {
+    private BaseArachneEntity getEntityRequestResponse(final Long id, final String category) { //NOPMD
     	final Long startTime = System.currentTimeMillis();
         
     	ArachneId arachneId;

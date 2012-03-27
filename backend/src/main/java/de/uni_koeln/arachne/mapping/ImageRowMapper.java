@@ -12,13 +12,13 @@ import de.uni_koeln.arachne.response.Image;
  */
 public class ImageRowMapper implements RowMapper<Image> {
 	@Override
-	public Image mapRow(ResultSet resultSet, int i) throws SQLException {
-		Image result = new Image();
+	public Image mapRow(final ResultSet resultSet, final int index) throws SQLException {
+		final Image result = new Image();
 		
 		result.setSubtitle(resultSet.getString(1));
-		result.setId(resultSet.getLong(2));
+		result.setImageId(resultSet.getLong(2));
 		
-		if (result.getId() == null) {
+		if (result.getImageId() == null) {
 			return null;
 		}
 		

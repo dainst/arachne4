@@ -48,13 +48,13 @@ public class FacetList {
 		}
 		
 		int result = -1;
-		int i = 0;
-		while (i < data.size()) {
-			if (data.get(i).getName().equals(aName)) {
-				result = i;
+		int index = 0;
+		while (index < data.size()) {
+			if (data.get(index).getName().equals(aName)) {
+				result = index;
 				break;
 			}
-			i++;
+			index++;
 		}
 				
 		return result;

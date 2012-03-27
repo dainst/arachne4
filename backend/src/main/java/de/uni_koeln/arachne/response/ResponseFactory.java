@@ -52,7 +52,7 @@ public class ResponseFactory {
 		// set id content
 		final ArachneId arachneId = dataset.getArachneId(); 
 		final String tableName = arachneId.getTableName();
-		response.setId(arachneId.getArachneEntityID());
+		response.setEntityId(arachneId.getArachneEntityID());
 		response.setType(tableName);
 		response.setInternalId(arachneId.getInternalKey());
 		
