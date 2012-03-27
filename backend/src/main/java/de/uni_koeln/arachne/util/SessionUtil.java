@@ -19,7 +19,7 @@ public class SessionUtil {
     static {
     	try {
     		SESSIONFACTORY = new Configuration().configure().buildSessionFactory();
-    	} catch (Throwable ex) {
+    	} catch (Exception ex) {
     		LOGGER.error("Initial SessionFactory creation failed." + ex);
     		throw new ExceptionInInitializerError(ex);
     	}
