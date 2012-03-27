@@ -10,7 +10,7 @@ import de.uni_koeln.arachne.mapping.Connection;
  * Data access class to retrieve information from the 'Verknuepfungen' table via hibernate.
  */
 @Repository("ArachneConnectionDao")
-public class ConnectionDao extends HibernateTemplateDao {
+public class ConnectionDao extends AbstractHibernateTemplateDao {
 	/**
 	 * @param primaryId Primary id of the entry.
 	 * @return an instance of the <code>ArachneConnection</code> table mapping.

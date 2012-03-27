@@ -6,11 +6,15 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import de.uni_koeln.arachne.response.ResponseFactory;
 
 /**
  * This is a Standard SQL Query Dao.
@@ -21,6 +25,8 @@ import org.springframework.stereotype.Repository;
 @Repository("sqlDao")
 public class SQLDao {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
+	
 	protected JdbcTemplate jdbcTemplate;
 	
 	protected DataSource dataSource;
@@ -45,8 +51,7 @@ public class SQLDao {
 			try {
 				return jdbcTemplate.query(sQLQuery,rm);
 			} catch (DataAccessException e) {
-				System.out.println("DataAccessException: " + e.getRootCause());
-				System.out.println("May be a rights managment problem as Literatur (for example) has no DatensatzGruppe field.");
+				LOGGER.error("DataAccessException: " + e.getRootCause());
 				return null;
 			}
 		} else {

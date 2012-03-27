@@ -27,7 +27,7 @@ import de.uni_koeln.arachne.service.UserRightsService;
 @Controller
 public class AuthenticationController {
 
-	private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
 	
 	@Autowired
 	private UserVerwaltungDao userDao;
@@ -53,7 +53,7 @@ public class AuthenticationController {
 		if (user != null && user.getPassword().equals(encryptedPassword)) {
 			sessionDao.deleteAllSessionsForUser(user.getId());
 			Session session = new Session();
-			logger.debug("Session-ID: " + request.getSession().getId());
+			LOGGER.debug("Session-ID: " + request.getSession().getId());
 			session.setUserAdministration(user);
 			session.setTimestamp(new Date());
 			session.setSid(request.getSession().getId());

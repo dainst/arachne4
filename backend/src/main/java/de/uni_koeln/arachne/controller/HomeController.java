@@ -25,7 +25,7 @@ import de.uni_koeln.arachne.service.UserRightsService;
 @Controller
 public class HomeController {
 
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 
 	@Autowired
 	private UserRightsService userRightsService;
@@ -38,20 +38,20 @@ public class HomeController {
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public ModelAndView home(HttpServletRequest request) {
 		
-		logger.debug("Welcome to Arachne4 alpha!");
+		LOGGER.debug("Welcome to Arachne4 alpha!");
 		
 		String sid = request.getSession().getId();
-		logger.debug("Session-ID: " + sid);
+		LOGGER.debug("Session-ID: " + sid);
 		
 		String username = userRightsService.getCurrentUser().getUsername();		
-		logger.debug("User: " + username);
+		LOGGER.debug("User: " + username);
 		
 		Set<DatasetGroup> groups = userRightsService.getCurrentUser().getDatasetGroups();
 		List<String> logGroups = new ArrayList<String>();
 		for (DatasetGroup group : groups) {
 			logGroups.add(group.getName());
 		}
-		logger.debug("Groups: " + logGroups.toString());
+		LOGGER.debug("Groups: " + logGroups.toString());
 		
 		ModelMap modelMap = new ModelMap();
 		modelMap.addAttribute("Username", username);

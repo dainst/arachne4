@@ -2,19 +2,25 @@ package de.uni_koeln.arachne.util;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import de.uni_koeln.arachne.response.ResponseFactory;
 
 /**
  * Utility class to retrieve the current SessionFactory or create a new one if none exists.
  */
 public class SessionUtil {
 	
-    private static final SessionFactory sessionFactory;
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
+	
+    private static final SessionFactory SESSIONFACTORY;
     
     static {
     	try {
-    		sessionFactory = new Configuration().configure().buildSessionFactory();
+    		SESSIONFACTORY = new Configuration().configure().buildSessionFactory();
     	} catch (Throwable ex) {
-    		System.err.println("Initial SessionFactory creation failed." + ex);
+    		LOGGER.error("Initial SessionFactory creation failed." + ex);
     		throw new ExceptionInInitializerError(ex);
     	}
     }
@@ -25,6 +31,6 @@ public class SessionUtil {
      * @return the current sessionFactory instance.
      */
     public static SessionFactory getSessionFactory() {
-        return sessionFactory;
+        return SESSIONFACTORY;
     }
 }

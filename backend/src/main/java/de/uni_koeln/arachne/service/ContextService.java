@@ -29,7 +29,7 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 @Service("arachneContextService")
 public class ContextService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ContextService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ContextService.class);
 	
 	@Autowired
 	private EntityIdentificationService arachneEntityIdentificationService;
@@ -69,7 +69,7 @@ public class ContextService {
 			}
 		}
 				
-		logger.debug("Mandatory Contexts: " + mandatoryContextTypes);
+		LOGGER.debug("Mandatory Contexts: " + mandatoryContextTypes);
 		Iterator<String> contextType = mandatoryContextTypes.iterator();
 		while (contextType.hasNext()) {
 			Context context = new Context(contextType.next(), parent, this);
@@ -111,7 +111,7 @@ public class ContextService {
 	 * @param limit Quantity of contexts 
 	 * @return Returns a list of <code>Links</code> 
 	 */ 
-	public List<Link> getLinks(Dataset parent, String contextType, Integer offset, Integer limit) {
+	public List<AbstractLink> getLinks(Dataset parent, String contextType, Integer offset, Integer limit) {
 	    IContextualizer contextualizer = getContextualizerByContextType(contextType);
 	    return contextualizer.retrieve(parent, offset, limit);
 	}
@@ -140,12 +140,12 @@ public class ContextService {
 		try {
 			String upperCaseContextType = contextType.substring(0, 1).toUpperCase() + contextType.substring(1).toLowerCase();
 			String className = "de.uni_koeln.arachne.context." + upperCaseContextType + "Contextualizer";
-			logger.debug("Initializing class: " + className + "...");
+			LOGGER.debug("Initializing class: " + className + "...");
 			Class<?> aClass = Class.forName(className);
 			java.lang.reflect.Constructor classConstructor = aClass.getConstructor(classParam);
 			return (IContextualizer)classConstructor.newInstance(objectParam);
 		} catch (ClassNotFoundException e) {
-			logger.debug("FAILURE - using SemanticConnectionsContextualizer instead");
+			LOGGER.debug("FAILURE - using SemanticConnectionsContextualizer instead");
 			return new SemanticConnectionsContextualizer(contextType, genericSQLService);
 		}
 		catch (Exception e) {

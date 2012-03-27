@@ -9,7 +9,7 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 
 public class GenericEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 
-	private static final Logger logger = LoggerFactory.getLogger(GenericEntitiesSQLQueryBuilder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntitiesSQLQueryBuilder.class);
 	
 	protected SQLRightsConditionBuilder rightsConditionBuilder;
 	
@@ -38,7 +38,7 @@ public class GenericEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		sql += this.buildAndConditions();
 		sql += rightsConditionBuilder.getUserRightsSQLSnipplett();  
 		sql += ";";
-		logger.debug(sql);
+		LOGGER.debug(sql);
 		return sql;
 	}
 }

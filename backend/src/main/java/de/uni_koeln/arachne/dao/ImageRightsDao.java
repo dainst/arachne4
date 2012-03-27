@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import de.uni_koeln.arachne.mapping.ImageRightsGroup;
 
 @Repository
-public class ImageRightsDao extends HibernateTemplateDao {
+public class ImageRightsDao extends AbstractHibernateTemplateDao {
 	
 	public ImageRightsGroup findByName(String name) {
 		@SuppressWarnings("unchecked")

@@ -37,7 +37,7 @@ import de.uni_koeln.arachne.util.ArachneId;
 @Controller
 public class ImageController {
 
-	private static final Logger logger = LoggerFactory.getLogger(ImageController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImageController.class);
 	
 	@Autowired
 	private UserRightsService userRightsService;
@@ -113,13 +113,13 @@ public class ImageController {
 		ArachneId arachneId = arachneEntityIdentificationService.getId(Long.valueOf(id));
 		
 		if(!arachneId.getTableName().equals("marbilder")) {
-			logger.error("Error: entityId {} does not refer to an image.");
+			LOGGER.error("Error: entityId {} does not refer to an image.");
 			response.setStatus(404);
 			return null;
 		}
 		
 		Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
-		logger.debug("Retrieved Entity for image: {}", imageEntity);
+		LOGGER.debug("Retrieved Entity for image: {}", imageEntity);
 		
 		// Check image rights
 		ImageRightsGroup imageRightsGroup = imageRightsDao.findByName(imageEntity.getField("marbilder.BildrechteGruppe"));
@@ -140,7 +140,7 @@ public class ImageController {
 			BufferedImage bufferedImage = imageStreamService.getArachneImage(res, imageEntity, watermarkFilename);
 			return bufferedImage;
 		} catch (Exception e) {
-			logger.error("Error while retrieving thumbnail with entity id from image service" + arachneId.getArachneEntityID(),e);			
+			LOGGER.error("Error while retrieving thumbnail with entity id from image service" + arachneId.getArachneEntityID(),e);			
 			response.setStatus(404);
 			return null;
 		}

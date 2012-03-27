@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Class to hold a single <code>String</code> value.
  */
 @XmlRootElement
-public class Field extends Content {
+public class Field extends AbstractContent {
 	/**
 	 * The <code>String</code> value the class holds.
 	 */

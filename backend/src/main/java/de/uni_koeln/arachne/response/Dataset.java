@@ -7,7 +7,7 @@ import java.util.Map;
 
 import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.context.ArachneLink;
-import de.uni_koeln.arachne.context.Link;
+import de.uni_koeln.arachne.context.AbstractLink;
 import de.uni_koeln.arachne.util.ArachneId;
 import de.uni_koeln.arachne.util.StrUtils;
 /**
@@ -191,9 +191,9 @@ public class Dataset {
 	public List<String> getFieldsFromContexts(String fieldName) {
 		List<String> result = new ArrayList<String>();
 		for (Context context: this.context) {
-			List<Link> links = context.getallContexts();
+			List<AbstractLink> links = context.getallContexts();
 			if (!links.isEmpty()) {
-				for (Link link: links) {
+				for (AbstractLink link: links) {
 					String tmpResult = null;
 					// TODO add support for external links
 					// we know that Entity1 is 'this'

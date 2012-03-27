@@ -25,7 +25,7 @@ import de.uni_koeln.arachne.response.Dataset;
 @Service("aracheImageStreamService")
 public class ImageStreamService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ImageStreamService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImageStreamService.class);
 	
 	/**
 	 * ex: http://arachne.uni-koeln.de
@@ -91,7 +91,7 @@ public class ImageStreamService {
 		
 		g.dispose();
 		
-		logger.debug("Time taken for image resizing: {} ms", System.currentTimeMillis() - startTime);
+		LOGGER.debug("Time taken for image resizing: {} ms", System.currentTimeMillis() - startTime);
 		
 		return resizedImage;
 		

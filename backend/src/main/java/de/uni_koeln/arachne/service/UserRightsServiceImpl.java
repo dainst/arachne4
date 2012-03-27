@@ -26,7 +26,7 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 @Scope(value="request",proxyMode=ScopedProxyMode.INTERFACES)
 public class UserRightsServiceImpl implements UserRightsService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(UserRightsServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserRightsServiceImpl.class);
 	
 	/**
 	 * User management DAO instance.
@@ -60,7 +60,7 @@ public class UserRightsServiceImpl implements UserRightsService {
 			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
 	                .getRequestAttributes()).getRequest();
 
-			logger.debug("Session-ID: " + request.getSession().getId());
+			LOGGER.debug("Session-ID: " + request.getSession().getId());
 			Session session = sessionDao.findById(request.getSession().getId());
 			if (session == null) {
 				arachneUser = userVerwaltungDao.findByName("anonymous");

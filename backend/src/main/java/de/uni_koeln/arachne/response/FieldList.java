@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class FieldList extends Content {
+public class FieldList extends AbstractContent {
 	public FieldList() {
 		value = new ArrayList<String>();
 	}

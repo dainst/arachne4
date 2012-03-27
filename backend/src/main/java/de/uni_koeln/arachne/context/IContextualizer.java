@@ -21,5 +21,5 @@ public interface IContextualizer {
 	 * @param limit The number of contexts to get.
 	 * @return The links that represent the contexts.
 	 */
-	public List<Link> retrieve(Dataset parent, Integer offset, Integer limit);
+	public List<AbstractLink> retrieve(Dataset parent, Integer offset, Integer limit);
 }

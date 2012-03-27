@@ -7,7 +7,7 @@ import de.uni_koeln.arachne.response.Dataset;
  * is an entity fetched from an external source while the left side is an entity fetched from the database.
  * The left side is represented as a <code>ArachneDataset</code> while the right side is represented as a URI.
  */
-public class ExternalLink extends Link {
+public class ExternalLink extends AbstractLink {
 	
 	/**
 	 * Left side of the link. In general this is the parent entity.

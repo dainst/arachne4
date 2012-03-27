@@ -10,7 +10,7 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 
 public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuilder {
 	
-	private static final Logger logger = LoggerFactory.getLogger(GenericFieldsEntityIdJoinedSQLQueryBuilder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericFieldsEntityIdJoinedSQLQueryBuilder.class);
 	
 	protected SQLRightsConditionBuilder rightsConditionBuilder;
 	
@@ -63,7 +63,7 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 		sql += this.buildAndConditions();
 		sql += rightsConditionBuilder.getUserRightsSQLSnipplett();  
 		sql += ";";
-		logger.debug(sql);
+		LOGGER.debug(sql);
 		return sql;
 	}
 }

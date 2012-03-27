@@ -40,8 +40,8 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 	private long linkCount = 0l;
 	
 	@Override
-	public List<Link> retrieve(Dataset parent, Integer offset, Integer limit) {
-		List<Link> result = new ArrayList<Link>();
+	public List<AbstractLink> retrieve(Dataset parent, Integer offset, Integer limit) {
+		List<AbstractLink> result = new ArrayList<AbstractLink>();
 		
 		long queryTime = System.currentTimeMillis();
 		List<Map<String, String>> contextContents = genericSQLService.getConnectedEntities(contextType

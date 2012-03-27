@@ -10,7 +10,7 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 
 public class GenericFieldsSQLQueryBuilder extends AbstractSQLBuilder {
 	
-	private static final Logger logger = LoggerFactory.getLogger(GenericFieldsSQLQueryBuilder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericFieldsSQLQueryBuilder.class);
 	
 	protected SQLRightsConditionBuilder rcb;
 	
@@ -35,7 +35,7 @@ public class GenericFieldsSQLQueryBuilder extends AbstractSQLBuilder {
 			field2 += ", " + SQLToolbox.getQualifiedFieldname(table,fields.get(i));
 			i++;
 		}
-		System.out.println("field2: " + field2);
+		
 		// The key identification condition
 		Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");
@@ -54,7 +54,7 @@ public class GenericFieldsSQLQueryBuilder extends AbstractSQLBuilder {
 		sql += this.buildAndConditions();
 		sql += rcb.getUserRightsSQLSnipplett();  
 		sql += ";";
-		logger.debug(sql);
+		LOGGER.debug(sql);
 		return sql;
 	}
 }

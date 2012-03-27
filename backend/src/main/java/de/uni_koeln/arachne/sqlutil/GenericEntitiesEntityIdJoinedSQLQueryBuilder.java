@@ -9,7 +9,7 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 
 public class GenericEntitiesEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuilder {
 	
-	private static final Logger logger = LoggerFactory.getLogger(GenericEntitiesEntityIdJoinedSQLQueryBuilder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntitiesEntityIdJoinedSQLQueryBuilder.class);
 	
 	protected SQLRightsConditionBuilder rcb;
 	private String entityIdLeftJoin;
@@ -27,8 +27,6 @@ public class GenericEntitiesEntityIdJoinedSQLQueryBuilder extends AbstractSQLBui
 		rcb = new SQLRightsConditionBuilder(table, user);
 		
 		// add ArachneEntityId to result
-		System.out.println("field1: " + field1);
-			
 		String categoryTable = table;
 		if (categoryTable.contains("_leftjoin_")) {
 			categoryTable = categoryTable.substring(categoryTable.indexOf("_leftjoin_") + 10);  
@@ -52,7 +50,7 @@ public class GenericEntitiesEntityIdJoinedSQLQueryBuilder extends AbstractSQLBui
 		sql += this.buildAndConditions();
 		sql += rcb.getUserRightsSQLSnipplett();  
 		sql += ";";
-		logger.debug(sql);
+		LOGGER.debug(sql);
 		return sql;
 	}
 }

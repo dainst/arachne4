@@ -21,7 +21,7 @@ import de.uni_koeln.arachne.response.Dataset;
 @Service
 public class ImageRightsGroupService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ImageRightsGroupService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImageRightsGroupService.class);
 	
 	@Autowired
 	SingleEntityDataService arachneSingleEntityDataService;
@@ -64,7 +64,7 @@ public class ImageRightsGroupService {
 		
 		// if user doesn't have group he is not allowed to view the image in any resolution
 		if(imageEntity.getField("marbilder.BildrechteGruppe") == null) {
-			logger.debug("user doesn't have dataset group of image");
+			LOGGER.debug("user doesn't have dataset group of image");
 			return null;
 		}
 		
@@ -76,22 +76,22 @@ public class ImageRightsGroupService {
 		// if override_for_group is set and the user has that exact group, the user is allowed to view the image in high resolution
 		if(!imageRightsGroup.getOverrideForGroup().isEmpty()) {
 			if(currentUser.hasGroup(imageRightsGroup.getOverrideForGroup())) {
-				logger.debug("user has override group, returning HIGH");
+				LOGGER.debug("user has override group, returning HIGH");
 				return ImageResolutionType.HIGH;
 			}
 		}
 		
 		// get maximum resolution for anonymous users
 		if(currentUser.getGroupID() == 0) {
-			logger.debug("user is anonymous, returning " + imageRightsGroup.getResolutionAnonymous());
+			LOGGER.debug("user is anonymous, returning " + imageRightsGroup.getResolutionAnonymous());
 			return imageRightsGroup.getResolutionAnonymous();
 		// get maximum resolution for registered user
 		} else if (currentUser.getGroupID() > 0 && currentUser.getGroupID() < 550) {
-			logger.debug("user is registered, returning " + imageRightsGroup.getResolutionRegistered());
+			LOGGER.debug("user is registered, returning " + imageRightsGroup.getResolutionRegistered());
 			return imageRightsGroup.getResolutionRegistered();
 		// users with gid >= 550 can view any resolution
 		} else {
-			logger.debug("user has gid >= 500, returning HIGH");
+			LOGGER.debug("user has gid >= 500, returning HIGH");
 			return ImageResolutionType.HIGH;
 		}
 		
@@ -110,7 +110,7 @@ public class ImageRightsGroupService {
 		// if override_for_group is set and the user has that exact group, the user is allowed to view the image without watermark
 		if(!imageRightsGroup.getOverrideForGroup().isEmpty()) {
 			if(currentUser.hasGroup(imageRightsGroup.getOverrideForGroup())) {
-				logger.debug("user has override group, returning no watermark");
+				LOGGER.debug("user has override group, returning no watermark");
 				return "";
 			}
 		}

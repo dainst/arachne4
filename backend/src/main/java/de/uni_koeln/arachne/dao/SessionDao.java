@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import de.uni_koeln.arachne.mapping.Session;
 
 @Repository("SessionDao")
-public class SessionDao extends HibernateTemplateDao {
+public class SessionDao extends AbstractHibernateTemplateDao {
 	
 	public Session findById(String sid) {
 		return (Session) hibernateTemplate.get(Session.class, sid);

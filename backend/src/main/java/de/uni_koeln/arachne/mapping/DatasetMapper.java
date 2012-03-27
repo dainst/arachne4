@@ -6,8 +6,11 @@ import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 
+import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.util.StrUtils;
 
 
@@ -20,6 +23,8 @@ import de.uni_koeln.arachne.util.StrUtils;
  */
 public class DatasetMapper implements RowMapper<Map<String,String>> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
+	
 	public Map<String,String> mapRow(ResultSet rs, int rownum) throws SQLException {
 		Map<String,String> dataset = new Hashtable<String,String>();
 
@@ -36,7 +41,7 @@ public class DatasetMapper implements RowMapper<Map<String,String>> {
 			//The rest of the Dataset
 			String columnValue = rs.getString(columnName);
 			if (columnName.contains("ArachneEntityIdentitficaton")) {
-				System.out.println(meta.getTableName(i) + "." + columnName + " ," + rs.getString(columnName));
+				LOGGER.debug(meta.getTableName(i) + "." + columnName + " ," + rs.getString(columnName));
 				continue;
 			}			
 						

@@ -9,7 +9,7 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 
 public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 
-	private static final Logger logger = LoggerFactory.getLogger(GenericFieldsSQLQueryBuilder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericFieldsSQLQueryBuilder.class);
 	
 	protected SQLRightsConditionBuilder rightsConditionBuilder;
 	
@@ -52,7 +52,7 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 		sql += this.buildAndConditions();
 		sql += rightsConditionBuilder.getUserRightsSQLSnipplett();  
 		sql += ";";
-		logger.debug(sql);
+		LOGGER.debug(sql);
 		return sql;
 	}
 }

@@ -124,10 +124,11 @@ public class SearchController {
 	/**
 	 * Converts the input string of query filter parameters to a string list of parameters.
 	 * The string is split at every occurence of ",facet_".
-	 * @param string The silter query string to convert.
+	 * @param filterString The silter query string to convert.
 	 * @return a string list containing the seperated parameters or <code>null</code> if the conversion fails.
 	 */
-	private List<String> filterQueryStringToStringList(String string) {
+	private List<String> filterQueryStringToStringList(String filterString) {
+		String string = filterString;
 		if (string.startsWith("facet_")) {
 			List<String> result = new ArrayList<String>();
 			int index = string.indexOf(",facet_");

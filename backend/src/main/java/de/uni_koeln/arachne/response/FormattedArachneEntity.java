@@ -27,7 +27,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * Hierachical structured information of the dataset.
 	 */
-	protected Content sections;
+	protected AbstractContent sections;
 	
 	/**
 	 * The date of the last Modification of the dataset.
@@ -37,7 +37,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * The context map Contains the Contexts of the dataset.
 	 */
-	protected Content context;
+	protected AbstractContent context;
 	
 	/**
 	 * The Images that are asociated with the dataset
@@ -75,11 +75,11 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		this.subtitle = subtitle;
 	}
 	
-	public Content getSections() {
+	public AbstractContent getSections() {
 		return sections;
 	}
 
-	public void setSections(Content content) {
+	public void setSections(AbstractContent content) {
 		sections = content;
 	}
 	
@@ -91,11 +91,11 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		this.lastModified = lastModified;
 	}
 
-	public Content getContext() {
+	public AbstractContent getContext() {
 		return context;
 	}
 
-	public void setContext(Content context) {
+	public void setContext(AbstractContent context) {
 		this.context = context;
 	}
 	

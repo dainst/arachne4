@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.ServletContextResource;
 
-import de.uni_koeln.arachne.response.Content;
+import de.uni_koeln.arachne.response.AbstractContent;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Field;
 import de.uni_koeln.arachne.response.FieldList;
@@ -25,7 +25,7 @@ import de.uni_koeln.arachne.response.Section;
 @Component("xmlConfigUtil")
 public class XmlConfigUtil {
 	
-	private static final Logger logger = LoggerFactory.getLogger(XmlConfigUtil.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(XmlConfigUtil.class);
 	
 	/**
 	 * Servlet context to load the XML config files. 
@@ -42,10 +42,10 @@ public class XmlConfigUtil {
 		String filename = "/WEB-INF/xml/"+ type + ".xml";
 		ServletContextResource file = new ServletContextResource(servletContext, filename);
 		if (!file.exists()) {
-			filename = null;
+			filename = "unknown";
 		}
 		
-		logger.debug("config file: " + filename);
+		LOGGER.debug("config file: " + filename);
 		return filename;
 	}
 	
@@ -114,7 +114,7 @@ public class XmlConfigUtil {
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Content</code> object containing the sections content.
 	 */
-	public Content getContentFromSections(Element section, Dataset dataset) {
+	public AbstractContent getContentFromSections(Element section, Dataset dataset) {
 		Section result = new Section();
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
 		result.setLabel(section.getAttributeValue("labelKey"));

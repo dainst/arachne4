@@ -29,7 +29,7 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 @Component
 public class ResponseFactory {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ResponseFactory.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
 	
 	@Autowired
 	private XmlConfigUtil xmlConfigUtil;
@@ -45,7 +45,7 @@ public class ResponseFactory {
 	 */
 	@SuppressWarnings("unchecked")
 	public FormattedArachneEntity createFormattedArachneEntity(Dataset dataset) {
-		logger.debug("dataset: " + dataset);
+		LOGGER.debug("dataset: " + dataset);
 		
 		FormattedArachneEntity response = new FormattedArachneEntity();
 		
@@ -96,7 +96,7 @@ public class ResponseFactory {
 	    	
 	    	// set sections
 	    	Element sections = display.getChild("datasections", ns);
-	    	List<Content> contentList = new ArrayList<Content>();
+	    	List<AbstractContent> contentList = new ArrayList<AbstractContent>();
 	    	// JDOM doesn't handle generics correctly so it issues a type safety warning
 			List<Element> children = sections.getChildren();
 			for (Element e:children) {
@@ -113,7 +113,7 @@ public class ResponseFactory {
 				} else {
 					Section sectionContent = new Section();
 					sectionContent.setLabel("ContainerSection");
-					for (Content c:contentList) {
+					for (AbstractContent c:contentList) {
 						sectionContent.add(c);
 					}
 					response.setSections(sectionContent);
@@ -148,7 +148,7 @@ public class ResponseFactory {
  	 						if (childName == "context") {
  	 							Section section = xmlConfigUtil.getContentFromContext(child, dataset);
  	 							if (section != null) {
- 	 								for (Content c:section.getContent()) {
+ 	 								for (AbstractContent c:section.getContent()) {
  	 									if (c instanceof FieldList) {
  	 										for (String value: ((FieldList)c).getValue()) {
  	 											if (value != null) {

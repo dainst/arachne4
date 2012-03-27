@@ -25,7 +25,7 @@ public class Context {
 		completionState = CompletionStateEnum.EMPTY;
 		this.contextType = contextType;
 		this.parent = parent;
-		contextEntities = new ArrayList<Link>();
+		contextEntities = new ArrayList<AbstractLink>();
 		this.contextService = contextService;
 	}
 	
@@ -68,7 +68,7 @@ public class Context {
 	/**
 	 * This list of <code>Link</code> contains the data of the context.
 	 */
-	public List<Link> contextEntities;
+	public List<AbstractLink> contextEntities;
 	
 	//The Context Getter
 	
@@ -76,7 +76,7 @@ public class Context {
 	 * Return every <code>Link</code> in this context.
 	 * @return The complete list of contexts.
 	 */
-	public List<Link> getallContexts() {
+	public List<AbstractLink> getallContexts() {
 		if (completionState != CompletionStateEnum.FULL) {
 			retrieveComplete();
 		}
@@ -91,7 +91,7 @@ public class Context {
 	 * Returns the first link element of the context.
 	 * @return The First <code>Link</code> of the context.
 	 */
-	public Link getFirstContext() {
+	public AbstractLink getFirstContext() {
 		if (completionState == CompletionStateEnum.EMPTY) {
 			retrieveFirst();
 		}
@@ -107,7 +107,7 @@ public class Context {
 	 * @param index The index of the link element to retrieve.
 	 * @return The chosen <code>Link</code> of the context.
 	 */
-	public Link getContext(int index) {
+	public AbstractLink getContext(int index) {
 		int avilableContexts = contextEntities.size();
 		if (completionState != CompletionStateEnum.FULL) {
 			if (index >= avilableContexts) {
@@ -126,7 +126,7 @@ public class Context {
 	 * @param number The number of contexts demanded.
 	 * @return The number of contexts (more or less).
 	 */
-	public List<Link> getLimitContext(int number) {
+	public List<AbstractLink> getLimitContext(int number) {
 	if (completionState != CompletionStateEnum.LIMITED && completionState != CompletionStateEnum.FULL)
 	    retrieveLimited(number);
 	    if (number > contextEntities.size())
@@ -175,7 +175,7 @@ public class Context {
 	 * @param limit The maximum number of contexts to retrieve.
 	 */
 	protected void retrieve(int offset, int limit) {
-	    List<Link> temporary = contextService.getLinks(parent, contextType, offset, limit);
+	    List<AbstractLink> temporary = contextService.getLinks(parent, contextType, offset, limit);
 	    if (temporary != null) {
 	    	contextEntities.addAll(temporary);
 	    }
