@@ -55,15 +55,15 @@ public class EntityIdentificationService {
 	
 	/**
 	 * Constructs an <code>ArachneId</code> instance.
-	 * @param ae The <code>ArachneEntity</code> for which the instance should be created.
+	 * @param arachneEntity The <code>ArachneEntity</code> for which the instance should be created.
 	 * @return The new instance or <code>null</code>.
 	 */
-	private ArachneId constructArachneID(ArachneEntity ae){
-		if (ae != null) {
-			ArachneId aid = new ArachneId(ae.getTableName(), ae.getForeignKey(), ae.getId(), ae.isDeleted());	
-			return aid;
+	private ArachneId constructArachneID(ArachneEntity arachneEntity){
+		if (arachneEntity == null) {
+			return null;	
 		} else {
-			return null;
+			return new ArachneId(arachneEntity.getTableName(), arachneEntity.getForeignKey(), arachneEntity.getId()
+					, arachneEntity.isDeleted());
 		}
 		
 	}

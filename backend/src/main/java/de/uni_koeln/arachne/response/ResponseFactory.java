@@ -32,7 +32,7 @@ public class ResponseFactory {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
 	
 	@Autowired
-	private XmlConfigUtil xmlConfigUtil;
+	private transient XmlConfigUtil xmlConfigUtil;
 	
 	/**
 	 * Creates a formatted response object as used by the front-end. The structure of this object is defined in the xml config files.
@@ -44,58 +44,58 @@ public class ResponseFactory {
 	 * @return A <code>FormattedArachneEntity</code> instance which can be jsonized.
 	 */
 	@SuppressWarnings("unchecked")
-	public FormattedArachneEntity createFormattedArachneEntity(Dataset dataset) {
+	public FormattedArachneEntity createFormattedArachneEntity(final Dataset dataset) {
 		LOGGER.debug("dataset: " + dataset);
 		
-		FormattedArachneEntity response = new FormattedArachneEntity();
+		final FormattedArachneEntity response = new FormattedArachneEntity();
 		
 		// set id content
-		ArachneId arachneId = dataset.getArachneId(); 
-		String tableName = arachneId.getTableName();
+		final ArachneId arachneId = dataset.getArachneId(); 
+		final String tableName = arachneId.getTableName();
 		response.setId(arachneId.getArachneEntityID());
 		response.setType(tableName);
 		response.setInternalId(arachneId.getInternalKey());
 		
 		// set dataset group
-		String datasetGroupFieldName = tableName+".DatensatzGruppe"+tableName.substring(0,1).toUpperCase()+tableName.substring(1);
+		final String datasetGroupFieldName = tableName+".DatensatzGruppe"+tableName.substring(0,1).toUpperCase()+tableName.substring(1);
 		response.setDatasetGroup(dataset.getFieldFromFields(datasetGroupFieldName));		
 		
-		String filename = xmlConfigUtil.getFilenameFromType(response.getType());
+		final String filename = xmlConfigUtil.getFilenameFromType(response.getType());
 		
-		if (filename == null) {
+		if (filename.equals("unknown")) {
 			return null;
 		}
 		
-		ServletContextResource xmlDocument = new ServletContextResource(xmlConfigUtil.getServletContext(), filename);
+		final ServletContextResource xmlDocument = new ServletContextResource(xmlConfigUtil.getServletContext(), filename);
 	    try {
-	    	SAXBuilder sb = new SAXBuilder();
-	    	Document doc = sb.build(xmlDocument.getFile());
+	    	final SAXBuilder saxBuilder = new SAXBuilder();
+	    	final Document doc = saxBuilder.build(xmlDocument.getFile());
 	    	//TODO Make Nicer XML Parsing is very quick and Dirty solution for my Problems 
-	    	Namespace ns = Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category");
-	    	Element display = doc.getRootElement().getChild("display",ns);
+	    	final Namespace nameSpace = Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category");
+	    	final Element display = doc.getRootElement().getChild("display",nameSpace);
 	    	
 	    	// set title
-	    	Element title = display.getChild("title", ns);
+	    	Element title = display.getChild("title", nameSpace);
 	    	String titleStr = "";
-	    	if (title.getChild("field") != null) {
-	    		titleStr = dataset.getField(title.getChild("field", ns).getAttributeValue("datasource"));
+	    	if (title.getChild("field") == null) {
+	    		titleStr = xmlConfigUtil.getStringFromSections(title.getChild("section", nameSpace), dataset);
 	    	} else {
-	    		titleStr = xmlConfigUtil.getStringFromSections(title.getChild("section", ns), dataset);
+	    		titleStr = dataset.getField(title.getChild("field", nameSpace).getAttributeValue("datasource"));
 	    	}
 	    	response.setTitle(titleStr);
 	    	
 	    	// set subtitle
 	    	String subtitleStr = "";
-	    	Element subtitle = display.getChild("subtitle", ns);
-	    	if (subtitle.getChild("field", ns) != null) {
-	    		subtitleStr = dataset.fields.get(subtitle.getChild("field", ns).getAttributeValue("datasource", ns));
+	    	Element subtitle = display.getChild("subtitle", nameSpace);
+	    	if (subtitle.getChild("field", nameSpace) == null) {
+	    		subtitleStr = xmlConfigUtil.getStringFromSections(subtitle.getChild("section", nameSpace), dataset);
 	    	} else {
-	    		subtitleStr = xmlConfigUtil.getStringFromSections(subtitle.getChild("section", ns), dataset);
+	    		subtitleStr = dataset.fields.get(subtitle.getChild("field", nameSpace).getAttributeValue("datasource", nameSpace));
 	    	}
 	    	response.setSubtitle(subtitleStr);
 	    	
 	    	// set sections
-	    	Element sections = display.getChild("datasections", ns);
+	    	Element sections = display.getChild("datasections", nameSpace);
 	    	List<AbstractContent> contentList = new ArrayList<AbstractContent>();
 	    	// JDOM doesn't handle generics correctly so it issues a type safety warning
 			List<Element> children = sections.getChildren();
@@ -126,12 +126,12 @@ public class ResponseFactory {
 			// Set facets
  			FacetList facets = new FacetList();
  			
- 			Element facetsElement = doc.getRootElement().getChild("facets", ns);
+ 			Element facetsElement = doc.getRootElement().getChild("facets", nameSpace);
  			children.clear();
  			// JDOM doesn't handle generics correctly so it issues a type safety warning
  			children = facetsElement.getChildren();
  			for (Element e:children) {
- 				if (e.getName().equals("facet")) {
+ 				if ("facet".equals(e.getName())) {
  					String name = e.getAttributeValue("name");
  					String labelKey = e.getAttributeValue("labelKey");
  					Facet facet = new Facet(name, labelKey);
@@ -139,13 +139,13 @@ public class ResponseFactory {
  					if (child != null) {
  						List<String> values = new ArrayList<String>();
  	 					String childName = child.getName();
- 						if (childName == "field") {
+ 						if ("field".equals(childName)) {
  							String value = dataset.getField(child.getAttributeValue("datasource"));
  	 						if (value != null) {
  	 							values.add(value);
  	 						}
  	 					} else {
- 	 						if (childName == "context") {
+ 	 						if ("context".equals(childName)) {
  	 							Section section = xmlConfigUtil.getContentFromContext(child, dataset);
  	 							if (section != null) {
  	 								for (AbstractContent c:section.getContent()) {

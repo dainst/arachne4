@@ -40,22 +40,22 @@ public class ImageController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageController.class);
 	
 	@Autowired
-	private UserRightsService userRightsService;
+	private final UserRightsService userRightsService;
 	
 	@Autowired
-	private EntityIdentificationService arachneEntityIdentificationService;
+	private final EntityIdentificationService arachneEntityIdentificationService;
 	
 	@Autowired
-	private ImageStreamService imageStreamService;
+	private final ImageStreamService imageStreamService;
 
 	@Autowired
-	private ImageRightsDao imageRightsDao;
+	private final ImageRightsDao imageRightsDao;
 
 	@Autowired
-	private ImageRightsGroupService imageRightsGroupService;
+	private final ImageRightsGroupService imageRightsGroupService;
 	
 	@Autowired
-	private SingleEntityDataService arachneSingleEntityDataService;
+	private final SingleEntityDataService arachneSingleEntityDataService;
 	
 	/**
 	 * Handles the request for /image/{id} (id is the entityId for an image)
@@ -108,7 +108,8 @@ public class ImageController {
 		
 	}
 	
-	private BufferedImage getImageStream(String id, ImageResolutionType res, HttpServletRequest request, HttpServletResponse response) {
+	private BufferedImage getImageStream(String id, ImageResolutionType resolution, HttpServletRequest request
+			, HttpServletResponse response) {
 		
 		ArachneId arachneId = arachneEntityIdentificationService.getId(Long.valueOf(id));
 		
@@ -125,11 +126,11 @@ public class ImageController {
 		ImageRightsGroup imageRightsGroup = imageRightsDao.findByName(imageEntity.getField("marbilder.BildrechteGruppe"));
 		UserAdministration currentUser = userRightsService.getCurrentUser();
 		String watermarkFilename = imageRightsGroupService.getWatermarkFilename(imageEntity, currentUser, imageRightsGroup);
-		if(!imageRightsGroupService.checkResolutionRight(imageEntity, currentUser, res, imageRightsGroup)) {
-			res = imageRightsGroupService.getMaxResolution(imageEntity, currentUser, imageRightsGroup);
+		if(!imageRightsGroupService.checkResolutionRight(imageEntity, currentUser, resolution, imageRightsGroup)) {
+			resolution = imageRightsGroupService.getMaxResolution(imageEntity, currentUser, imageRightsGroup);
 			
 			// Forbidden
-			if(res == null) {
+			if (resolution == null) {
 				response.setStatus(403);
 				return null;
 			}
@@ -137,7 +138,7 @@ public class ImageController {
 		
 		try {
 			response.setStatus(200);
-			BufferedImage bufferedImage = imageStreamService.getArachneImage(res, imageEntity, watermarkFilename);
+			BufferedImage bufferedImage = imageStreamService.getArachneImage(resolution, imageEntity, watermarkFilename);
 			return bufferedImage;
 		} catch (Exception e) {
 			LOGGER.error("Error while retrieving thumbnail with entity id from image service" + arachneId.getArachneEntityID(),e);			

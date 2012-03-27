@@ -80,10 +80,10 @@ public class Context {
 		if (completionState != CompletionStateEnum.FULL) {
 			retrieveComplete();
 		}
-		if (!contextEntities.isEmpty()) {
-			return contextEntities; 
+		if (contextEntities.isEmpty()) {
+			return  null;
 		} else {
-			return null;
+			return contextEntities;
 		}
 	}
 
@@ -95,10 +95,10 @@ public class Context {
 		if (completionState == CompletionStateEnum.EMPTY) {
 			retrieveFirst();
 		}
-		if (!contextEntities.isEmpty()) {
-			return contextEntities.get(0); 
+		if (contextEntities.isEmpty()) {
+			return null; 
 		} else {
-			return null;
+			return contextEntities.get(0);
 		}
 	}
 	
@@ -134,10 +134,10 @@ public class Context {
 	    else
 	        completionState = CompletionStateEnum.LIMITED;
 
-	    if (!contextEntities.isEmpty()) {
-			return contextEntities; 
+	    if (contextEntities.isEmpty()) {
+			return null; 
 		} else {
-			return null;
+			return contextEntities;
 		}
 	}
 	

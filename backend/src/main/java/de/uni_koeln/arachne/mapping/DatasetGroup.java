@@ -18,7 +18,7 @@ public class DatasetGroup {
 	}
 	
 	public DatasetGroup(String name) {
-		setName(name);
+		this.name = name;
 	}
 	
 	@Id

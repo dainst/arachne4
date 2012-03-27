@@ -25,10 +25,11 @@ public class ArachneEntityDao extends AbstractHibernateTemplateDao {
 	public ArachneEntity getByTablenameAndInternalKey(String table, Long id){
 		@SuppressWarnings("unchecked")
 		List<ArachneEntity> liste =  (List<ArachneEntity>) hibernateTemplate.find("from ArachneEntity where ForeignKey like "+id+" and TableName like '"+table+"'" );
-		if(!liste.isEmpty())
-			return (ArachneEntity) liste.get(0);
-		else
+		if (liste.isEmpty()) {
 			return null;
+		} else {
+			return (ArachneEntity) liste.get(0);
+		}
 	}
 	
 	

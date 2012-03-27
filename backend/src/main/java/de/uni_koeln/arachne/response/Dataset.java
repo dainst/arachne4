@@ -58,10 +58,10 @@ public class Dataset {
 	 * @return The unique Uri idenifying the dataset
 	 */
 	public String getUri() {
-		if (arachneId.getArachneEntityID() != null) {
-			return baseUri + arachneId.getArachneEntityID();
-		} else {
+		if (arachneId.getArachneEntityID() == null) {
 			return "Invalid Uri! Ask later!";
+		} else {
+			return baseUri + arachneId.getArachneEntityID();
 		}
 	}
 	

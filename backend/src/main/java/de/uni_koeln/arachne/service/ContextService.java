@@ -201,7 +201,20 @@ public class ContextService {
 		@SuppressWarnings("unchecked")
 		List<Element> children = element.getChildren();
 		
-		if (element.getName() != "context") {
+		if (element.getName() == "context") {
+			if (!children.isEmpty()) {
+				String context = element.getAttributeValue("type");
+				for (Element e:children) {
+					String datasourceValue = e.getAttributeValue("datasource");
+					if (!StrUtils.isEmptyOrNull(datasourceValue)) {
+						datasourceValue = context + datasourceValue;
+						if (!datasourceValue.startsWith(parentType) && !datasourceValue.startsWith("Dataset")) {
+							result.add(datasourceValue);
+						}
+					}
+				}
+			}
+		} else {
 			if (!children.isEmpty()) {
 				for (Element e:children) {
 					result.addAll(getFields(e, parentType));
@@ -219,19 +232,6 @@ public class ContextService {
 			if (!StrUtils.isEmptyOrNull(ifEmptyValue)) {
 				if (!ifEmptyValue.startsWith(parentType) && !datasourceValue.startsWith("Dataset")) {
 					result.add(ifEmptyValue);
-				}
-			}
-		} else {
-			if (!children.isEmpty()) {
-				String context = element.getAttributeValue("type");
-				for (Element e:children) {
-					String datasourceValue = e.getAttributeValue("datasource");
-					if (!StrUtils.isEmptyOrNull(datasourceValue)) {
-						datasourceValue = context + datasourceValue;
-						if (!datasourceValue.startsWith(parentType) && !datasourceValue.startsWith("Dataset")) {
-							result.add(datasourceValue);
-						}
-					}
 				}
 			}
 		}
