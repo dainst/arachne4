@@ -40,22 +40,22 @@ public class ImageController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageController.class);
 	
 	@Autowired
-	private final UserRightsService userRightsService;
+	private UserRightsService userRightsService;
 	
 	@Autowired
-	private final EntityIdentificationService arachneEntityIdentificationService;
+	private EntityIdentificationService arachneEntityIdentificationService;
 	
 	@Autowired
-	private final ImageStreamService imageStreamService;
+	private ImageStreamService imageStreamService;
 
 	@Autowired
-	private final ImageRightsDao imageRightsDao;
+	private ImageRightsDao imageRightsDao;
 
 	@Autowired
-	private final ImageRightsGroupService imageRightsGroupService;
+	private ImageRightsGroupService imageRightsGroupService;
 	
 	@Autowired
-	private final SingleEntityDataService arachneSingleEntityDataService;
+	private SingleEntityDataService arachneSingleEntityDataService;
 	
 	/**
 	 * Handles the request for /image/{id} (id is the entityId for an image)
