@@ -49,10 +49,10 @@ public class AuthenticationController {
 			HttpServletResponse response,
 			HttpServletRequest request) {
 		
-		UserAdministration user = userDao.findByName(username);
+		final UserAdministration user = userDao.findByName(username);
 		if (user != null && user.getPassword().equals(encryptedPassword)) {
 			sessionDao.deleteAllSessionsForUser(user.getId());
-			Session session = new Session();
+			final Session session = new Session();
 			LOGGER.debug("Session-ID: " + request.getSession().getId());
 			session.setUserAdministration(user);
 			session.setTimestamp(new Date());
@@ -73,11 +73,11 @@ public class AuthenticationController {
 	 * Handles logout
 	 * @return
 	 */
-	@RequestMapping(value="/sessions/{id}", method=RequestMethod.DELETE)
+	@RequestMapping(value="/sessions/{sessionId}", method=RequestMethod.DELETE)
 	public void destroySession(
 			HttpServletResponse response,
 			HttpServletRequest request,
-			@PathVariable("id") String id) {
+			@PathVariable("sessionId") String sessionId) {
 		
 		rightsService.reset();
 		sessionDao.deleteSession(request.getSession().getId());

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.ArachneEntityDao;
 import de.uni_koeln.arachne.mapping.ArachneEntity;
-import de.uni_koeln.arachne.util.ArachneId;
+import de.uni_koeln.arachne.util.EntityId;
 
 
 @Service("arachneEntityIdentificationService")
@@ -19,17 +19,18 @@ public class EntityIdentificationService {
 	 * @param arachneEntityId
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
-	public ArachneId getId(final Long arachneEntityId) {
+	public EntityId getId(final Long arachneEntityId) {
 		return getByEntityId(arachneEntityId);
 	}
+	
 	
 	/**
 	 * Gets all identifiers of a dataset by Arachne entity ID. This is the external reference ID for the dataset in Arachne.
 	 * @param arachneEntityId
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
-	public ArachneId getId(final String table, final Long id) {
-		return getByTablenameAndInternalKey(table, id);
+	public EntityId getId(final String table, final Long internalKey) {
+		return getByTablenameAndInternalKey(table, internalKey);
 	}
 	
 	/**
@@ -38,7 +39,7 @@ public class EntityIdentificationService {
 	 * @param ArachneEntityID ArachneEntityID
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
-	private ArachneId getByEntityId(final Long arachneEntityId) {
+	private EntityId getByEntityId(final Long arachneEntityId) {
 		return constructArachneID(arachneEntityDao.getByEntityID(arachneEntityId));
 	}
 	
@@ -49,7 +50,7 @@ public class EntityIdentificationService {
 	 * @param internalId internal table key of the dataset
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
-	private ArachneId getByTablenameAndInternalKey(final String table, final Long internalId){
+	private EntityId getByTablenameAndInternalKey(final String table, final Long internalId){
 		return constructArachneID(arachneEntityDao.getByTablenameAndInternalKey(table, internalId));
 	}
 	
@@ -58,11 +59,11 @@ public class EntityIdentificationService {
 	 * @param arachneEntity The <code>ArachneEntity</code> for which the instance should be created.
 	 * @return The new instance or <code>null</code>.
 	 */
-	private ArachneId constructArachneID(final ArachneEntity arachneEntity){
+	private EntityId constructArachneID(final ArachneEntity arachneEntity){
 		if (arachneEntity == null) {
 			return null;	
 		} else {
-			return new ArachneId(arachneEntity.getTableName(), arachneEntity.getForeignKey(), arachneEntity.getId()
+			return new EntityId(arachneEntity.getTableName(), arachneEntity.getForeignKey(), arachneEntity.getId()
 					, arachneEntity.isDeleted());
 		}
 		

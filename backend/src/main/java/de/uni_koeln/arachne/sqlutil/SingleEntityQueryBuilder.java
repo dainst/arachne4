@@ -3,7 +3,7 @@ package de.uni_koeln.arachne.sqlutil;
 import java.util.ArrayList;
 
 import de.uni_koeln.arachne.mapping.UserAdministration;
-import de.uni_koeln.arachne.util.ArachneId;
+import de.uni_koeln.arachne.util.EntityId;
 
 /**
  * This class Constructs a Query for a Single Arachne-Entity.
@@ -12,37 +12,37 @@ import de.uni_koeln.arachne.util.ArachneId;
  */
 public class SingleEntityQueryBuilder extends AbstractSQLBuilder {
 	
-	protected transient ArachneId id;
+	protected transient EntityId entityId;
 	
-	protected transient SQLRightsConditionBuilder rcb;
+	protected transient SQLRightsConditionBuilder rightsConditionBuilder;
 	
 	/**
 	 * Constructs a condition to find the Dataset described in ArachneId. creates <code>UserRightsConditionBuilder</code> , Limits the Result count to 1. 
 	 * @param ident This is the <code>ArachneId</code> the SQL retrieve statement should be written for
 	 * @param user 
 	 */
-	public SingleEntityQueryBuilder(ArachneId ident, UserAdministration user) {
+	public SingleEntityQueryBuilder(EntityId ident, UserAdministration user) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
-		id = ident;
+		entityId = ident;
 		//Sets the Tablename
-		table = id.getTableName();
+		table = entityId.getTableName();
 		//Limits the Resultcount to 1
 		limit1 = true;
-		rcb = new SQLRightsConditionBuilder(table,user);
+		rightsConditionBuilder = new SQLRightsConditionBuilder(table,user);
 		//The Primary key Identification condition
-		Condition cnd = new Condition();
-		cnd.setOperator("=");
-		cnd.setPart1(SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generatePrimaryKeyName(table)));
-		cnd.setPart2(id.getInternalKey().toString());
-		conditions.add(cnd);
+		final Condition condition = new Condition();
+		condition.setOperator("=");
+		condition.setPart1(SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generatePrimaryKeyName(table)));
+		condition.setPart2(entityId.getInternalKey().toString());
+		conditions.add(condition);
 	}
 	
 	@Override
 	protected String buildSQL() {
 		sql += "SELECT * FROM `" + table + "` WHERE 1";
 		sql += this.buildAndConditions();
-		sql += rcb.getUserRightsSQLSnipplett();  
+		sql += rightsConditionBuilder.getUserRightsSQLSnipplett();  
 		sql += this.appendLimitOne();
 		sql += ";";
 		return sql;	

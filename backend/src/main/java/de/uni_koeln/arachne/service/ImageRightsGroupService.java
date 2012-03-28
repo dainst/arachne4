@@ -41,10 +41,10 @@ public class ImageRightsGroupService {
 	 * @param imageRightsGroup 
 	 * @return
 	 */
-	public boolean checkResolutionRight(Dataset imageEntity,
-			UserAdministration currentUser, ImageResolutionType res, ImageRightsGroup imageRightsGroup) {
+	public boolean checkResolutionRight(final Dataset imageEntity,
+			final UserAdministration currentUser, final ImageResolutionType res, final ImageRightsGroup imageRightsGroup) {
 		
-		ImageResolutionType maxResolution = getMaxResolution(imageEntity, currentUser, imageRightsGroup);
+		final ImageResolutionType maxResolution = getMaxResolution(imageEntity, currentUser, imageRightsGroup);
 		
 		return maxResolution != null && maxResolution.ordinal() >= res.ordinal();		
 	}

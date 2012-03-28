@@ -26,7 +26,7 @@ public class Section extends AbstractContent {
 	 * @param content the <code>Content</code> object to be added.
 	 * @return a <code>boolean</code> indicating success.
 	 */
-	public boolean add(AbstractContent content) {
+	public boolean add(final AbstractContent content) {
 		return this.content.add(content);
 	}
 	
@@ -39,7 +39,7 @@ public class Section extends AbstractContent {
 		return this.label;
 	}
 
-	public void setLabel(String label) {
+	public void setLabel(final String label) {
 		this.label = label;
 	}
 	

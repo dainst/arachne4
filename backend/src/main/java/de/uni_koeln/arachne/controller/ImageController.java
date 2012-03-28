@@ -27,7 +27,7 @@ import de.uni_koeln.arachne.service.ImageRightsGroupService;
 import de.uni_koeln.arachne.service.ImageStreamService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.service.UserRightsService;
-import de.uni_koeln.arachne.util.ArachneId;
+import de.uni_koeln.arachne.util.EntityId;
 
 /**
  * Handles http requests for images, currently only get
@@ -59,60 +59,60 @@ public class ImageController {
 	
 	/**
 	 * Handles the request for /image/{id} (id is the entityId for an image)
-	 * @param id
+	 * @param entityId
 	 * @param request
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value = "/image/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/image/{entityId}", method = RequestMethod.GET)
 	public @ResponseBody BufferedImage getImage(
-			@PathVariable("id") String id,
+			@PathVariable("entityId") String entityId,
 			HttpServletRequest request,
 			HttpServletResponse response) {
 		
-		return getImageStream(id, ImageResolutionType.HIGH, response);
+		return getImageStream(entityId, ImageResolutionType.HIGH, response);
 		
 	}
 	
 	/**
 	 * Handles the request for /image/thumbnail/{id} (id is the entityId for an image)
-	 * @param id
+	 * @param entityId
 	 * @param request
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value = "/image/thumbnail/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
 	public @ResponseBody BufferedImage getThumbnail(
-			@PathVariable("id") String id,
+			@PathVariable("entityId") String entityId,
 			HttpServletRequest request,
 			HttpServletResponse response) {
 				
-		return getImageStream(id, ImageResolutionType.THUMBNAIL, response);
+		return getImageStream(entityId, ImageResolutionType.THUMBNAIL, response);
 		
 	}
 	
 	/**
 	 * Handles the request for /image/preview/{id} (id is the entityId for an image)
-	 * @param id
+	 * @param entityId
 	 * @param request
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value = "/image/preview/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/image/preview/{entityId}", method = RequestMethod.GET)
 	public @ResponseBody BufferedImage getPreview(
-			@PathVariable("id") String id,
+			@PathVariable("entityId") String entityId,
 			HttpServletRequest request,
 			HttpServletResponse response) {
 		
-		return getImageStream(id, ImageResolutionType.PREVIEW, response);
+		return getImageStream(entityId, ImageResolutionType.PREVIEW, response);
 		
 	}
 	
-	private BufferedImage getImageStream(String id, ImageResolutionType requestedResolution
+	private BufferedImage getImageStream(String entityId, ImageResolutionType requestedResolution
 			, HttpServletResponse response) {
 		
 		ImageResolutionType resolution = requestedResolution;
-		ArachneId arachneId = arachneEntityIdentificationService.getId(Long.valueOf(id));
+		final EntityId arachneId = arachneEntityIdentificationService.getId(Long.valueOf(entityId));
 		
 		if(!arachneId.getTableName().equals("marbilder")) {
 			LOGGER.error("Error: entityId {} does not refer to an image.");
@@ -120,13 +120,13 @@ public class ImageController {
 			return null;
 		}
 		
-		Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
+		final Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
 		LOGGER.debug("Retrieved Entity for image: {}", imageEntity);
 		
 		// Check image rights
-		ImageRightsGroup imageRightsGroup = imageRightsDao.findByName(imageEntity.getField("marbilder.BildrechteGruppe"));
-		UserAdministration currentUser = userRightsService.getCurrentUser();
-		String watermarkFilename = imageRightsGroupService.getWatermarkFilename(imageEntity, currentUser, imageRightsGroup);
+		final ImageRightsGroup imageRightsGroup = imageRightsDao.findByName(imageEntity.getField("marbilder.BildrechteGruppe"));
+		final UserAdministration currentUser = userRightsService.getCurrentUser();
+		final String watermarkFilename = imageRightsGroupService.getWatermarkFilename(imageEntity, currentUser, imageRightsGroup);
 		if(!imageRightsGroupService.checkResolutionRight(imageEntity, currentUser, resolution, imageRightsGroup)) {
 			resolution = imageRightsGroupService.getMaxResolution(imageEntity, currentUser, imageRightsGroup);
 			
@@ -139,7 +139,7 @@ public class ImageController {
 		
 		try {
 			response.setStatus(200);
-			BufferedImage bufferedImage = imageStreamService.getArachneImage(resolution, imageEntity, watermarkFilename);
+			final BufferedImage bufferedImage = imageStreamService.getArachneImage(resolution, imageEntity, watermarkFilename);
 			return bufferedImage;
 		} catch (Exception e) {
 			LOGGER.error("Error while retrieving thumbnail with entity id from image service" + arachneId.getArachneEntityID(),e);			

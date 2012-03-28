@@ -15,7 +15,7 @@ import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.sqlutil.SingleEntityQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.SingleEntitySubTablesQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
-import de.uni_koeln.arachne.util.ArachneId;
+import de.uni_koeln.arachne.util.EntityId;
 /**
  * Querys the DataBase and retrives the Result as Key/Value Map
  */
@@ -32,7 +32,7 @@ public class DataMapDao extends SQLDao {
 	 * @param arachneId instance of <code>ArachneId</code> 
 	 * @return a Simple representation of a Map<String,String> or <code>null</code>.
 	 */
-	public Map<String, String> getById(final ArachneId arachneId) {			
+	public Map<String, String> getById(final EntityId arachneId) {			
 
 		final SingleEntityQueryBuilder queryBuilder = new SingleEntityQueryBuilder(arachneId,userRightsService.getCurrentUser());
 
@@ -44,7 +44,7 @@ public class DataMapDao extends SQLDao {
 		final List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new DatasetMapper());
 		if (temp != null) {
 			if (!temp.isEmpty()) {
-				Map<String,String> map =  temp.get(0);
+				final Map<String,String> map =  temp.get(0);
 				return map;
 			}
 		}
@@ -59,12 +59,12 @@ public class DataMapDao extends SQLDao {
 	 */
 	public Map<String, String> getBySubDataset(Dataset dataset,TableConnectionDescription tdesc ) {
 
-		SingleEntitySubTablesQueryBuilder qB = new SingleEntitySubTablesQueryBuilder(dataset,tdesc);
+		final SingleEntitySubTablesQueryBuilder queryBuilder = new SingleEntitySubTablesQueryBuilder(dataset,tdesc);
 
-		String sql = qB.getSQL();
+		final String sql = queryBuilder.getSQL();
 		LOGGER.debug(sql);
 		@SuppressWarnings("unchecked")
-		List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new DatasetMapper());
+		final List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new DatasetMapper());
 
 		//achneDataset out= new  ArachneDataset();
 

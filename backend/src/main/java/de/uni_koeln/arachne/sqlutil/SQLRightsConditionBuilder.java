@@ -21,8 +21,8 @@ public class SQLRightsConditionBuilder {
 	private transient List<String> exludedTables = new ArrayList<String>();
 	
 	
-	public SQLRightsConditionBuilder(String tn, UserAdministration user) {
-		this.tableName = tn;
+	public SQLRightsConditionBuilder(String tableName, UserAdministration user) {
+		this.tableName = tableName;
 		this.user = user;
 		// TODO find a better way to exclude specific tables
 		exludedTables.add("ArachneSemanticConnection");
@@ -41,18 +41,18 @@ public class SQLRightsConditionBuilder {
 	 */
 	private List<Condition> buildConditions(){
 		
-		List<Condition> conds = new ArrayList<Condition>();
+		final List<Condition> conditions = new ArrayList<Condition>();
 		
 		for (DatasetGroup group : permissiongroups) {
-			Condition cnd = new Condition();
+			final Condition condition = new Condition();
 			
-			cnd.setPart1( SQLToolbox.getQualifiedFieldname(tableName, "DatensatzGruppe"+SQLToolbox.ucfirst(tableName)));
-			cnd.setPart2("\""+ group.getName() +"\"");
-			cnd.setOperator("=");
-			conds.add( cnd);
+			condition.setPart1( SQLToolbox.getQualifiedFieldname(tableName, "DatensatzGruppe"+SQLToolbox.ucfirst(tableName)));
+			condition.setPart2("\""+ group.getName() +"\"");
+			condition.setOperator("=");
+			conditions.add( condition);
 			
 		}
-		return conds;
+		return conditions;
 	}
 	
 	/**
@@ -71,12 +71,12 @@ public class SQLRightsConditionBuilder {
 			
 			if (!permissiongroups.isEmpty()) {
 				//Convert the Permission Groups to real conditions
-				List<Condition> conds = buildConditions();
+				final List<Condition> conditions = buildConditions();
 
 				//Sum up and Build the String
 				result = result + " AND (";
 				boolean first = true;
-				for (Condition cnd : conds) {
+				for (Condition cnd : conditions) {
 					if(first){
 						first = false;
 					}

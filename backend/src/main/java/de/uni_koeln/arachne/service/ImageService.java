@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import de.uni_koeln.arachne.mapping.ImageRowMapper;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
-import de.uni_koeln.arachne.util.ArachneId;
+import de.uni_koeln.arachne.util.EntityId;
 
 /**
  * This service class provides the means to retrieve images from the database.
@@ -25,11 +25,11 @@ public class ImageService {
 	 * @param dataset The dataset to add images to.
 	 */
 	public void addImages(Dataset dataset) {
-		ArachneId arachneId = dataset.getArachneId();
-		ArrayList<String> fieldList = new ArrayList<String>(2);
+		final EntityId arachneId = dataset.getArachneId();
+		final ArrayList<String> fieldList = new ArrayList<String>(2);
 		fieldList.add("DateinameMarbilder");
 		@SuppressWarnings("unchecked")
-		List<Image> imageList = (List<Image>) genericSQLService.getStringFieldsEntityIdJoinedWithCustomRowmapper("marbilder"
+		final List<Image> imageList = (List<Image>) genericSQLService.getStringFieldsEntityIdJoinedWithCustomRowmapper("marbilder"
 				, arachneId.getTableName(), arachneId.getInternalKey(), fieldList, new ImageRowMapper());
 		dataset.setImages(imageList);
 	}

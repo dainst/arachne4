@@ -23,7 +23,7 @@ public class DatasetGroup {
 	
 	@Id
 	@Column(name="dgid")
-	private int id;
+	private int dgid; // NOPMD
 	@Column(name="dgname")
 	private String name;
 	/**
@@ -32,13 +32,13 @@ public class DatasetGroup {
 	@XmlTransient
 	@JsonIgnore
 	public int getId() {
-		return id;
+		return dgid;
 	}
 	/**
-	 * @param id the id to set
+	 * @param dgid the id to set
 	 */
-	public void setId(int id) {
-		this.id = id;
+	public void setId(int dgid) {
+		this.dgid = dgid;
 	}
 	/**
 	 * @return the name

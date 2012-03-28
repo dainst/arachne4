@@ -30,7 +30,7 @@ public class UserAdministration {
 		 */
 		@Id
 		@Column(name="uid")
-		private long id;
+		private long uid; // NOPMD
 		/**
 		 * GroupID
 		 */
@@ -102,14 +102,14 @@ public class UserAdministration {
 		 * @return the id
 		 */
 		public long getId() {
-			return id;
+			return uid;
 		}
 
 		/**
-		 * @param id the id to set
+		 * @param uid the id to set
 		 */
-		public void setId(long id) {
-			this.id = id;
+		public void setId(final long uid) {
+			this.uid = uid;
 		}
 
 		/**
@@ -122,7 +122,7 @@ public class UserAdministration {
 		/**
 		 * @param groupID the groupID to set
 		 */
-		public void setGroupID(int groupID) {
+		public void setGroupID(final int groupID) {
 			this.groupID = groupID;
 		}
 
@@ -136,7 +136,7 @@ public class UserAdministration {
 		/**
 		 * @param username the username to set
 		 */
-		public void setUsername(String username) {
+		public void setUsername(final String username) {
 			this.username = username;
 		}
 

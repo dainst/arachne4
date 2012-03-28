@@ -58,21 +58,21 @@ public class ContextService {
 	 * @param parent The dataset to add the contexts to.
 	 */
 	public void addMandatoryContexts(Dataset parent) {
-		List<String> externalFields = getExternalFields(parent.getArachneId().getTableName());
+		final List<String> externalFields = getExternalFields(parent.getArachneId().getTableName());
 		
-		List<String> mandatoryContextTypes = new ArrayList<String>();
+		final List<String> mandatoryContextTypes = new ArrayList<String>();
 
 		for (String currentField: externalFields) {
-			String[] contextTypes = currentField.split("\\.");
+			final String[] contextTypes = currentField.split("\\.");
 			if (mandatoryContextTypes.isEmpty() || !mandatoryContextTypes.contains(contextTypes[0])) {
 				mandatoryContextTypes.add(contextTypes[0]);
 			}
 		}
 				
 		LOGGER.debug("Mandatory Contexts: " + mandatoryContextTypes);
-		Iterator<String> contextType = mandatoryContextTypes.iterator();
+		final Iterator<String> contextType = mandatoryContextTypes.iterator();
 		while (contextType.hasNext()) {
-			Context context = new Context(contextType.next(), parent, this);
+			final Context context = new Context(contextType.next(), parent, this);
 			context.getallContexts();
 			parent.addContext(context);
 		}
@@ -88,15 +88,15 @@ public class ContextService {
 	 */
 	public void addContext(Dataset parent) {
 		if (parent.getArachneId().getTableName().equals("bauwerk")) {
-			List<String> connectionList = arachneConnectionService.getConnectionList(parent.getArachneId().getTableName());
-			Iterator<String> iterator = connectionList.iterator();
+			final List<String> connectionList = arachneConnectionService.getConnectionList(parent.getArachneId().getTableName());
+			final Iterator<String> iterator = connectionList.iterator();
 			while (iterator.hasNext()) {
-				Context context = new Context(iterator.next(), parent, this);
+				final Context context = new Context(iterator.next(), parent, this);
 				context.getFirstContext();
 				parent.addContext(context);
 			}
 			
-			Context litContext = new Context("Literatur", parent, this);
+			final Context litContext = new Context("Literatur", parent, this);
 			litContext.getFirstContext();
 			parent.addContext(litContext);
 		}
@@ -111,8 +111,8 @@ public class ContextService {
 	 * @param limit Quantity of contexts 
 	 * @return Returns a list of <code>Links</code> 
 	 */ 
-	public List<AbstractLink> getLinks(Dataset parent, String contextType, Integer offset, Integer limit) {
-	    IContextualizer contextualizer = getContextualizerByContextType(contextType);
+	public List<AbstractLink> getLinks(final Dataset parent, final String contextType, final Integer offset, final Integer limit) {
+		final IContextualizer contextualizer = getContextualizerByContextType(contextType);
 	    return contextualizer.retrieve(parent, offset, limit);
 	}
 	
@@ -138,11 +138,11 @@ public class ContextService {
 		objectParam[1] = genericSQLService;
 		
 		try {
-			String upperCaseContextType = contextType.substring(0, 1).toUpperCase() + contextType.substring(1).toLowerCase();
-			String className = "de.uni_koeln.arachne.context." + upperCaseContextType + "Contextualizer";
+			final String upperCaseContextType = contextType.substring(0, 1).toUpperCase() + contextType.substring(1).toLowerCase();
+			final String className = "de.uni_koeln.arachne.context." + upperCaseContextType + "Contextualizer";
 			LOGGER.debug("Initializing class: " + className + "...");
-			Class<?> aClass = Class.forName(className);
-			java.lang.reflect.Constructor classConstructor = aClass.getConstructor(classParam);
+			final Class<?> aClass = Class.forName(className);
+			final java.lang.reflect.Constructor classConstructor = aClass.getConstructor(classParam);
 			return (IContextualizer)classConstructor.newInstance(objectParam);
 		} catch (ClassNotFoundException e) {
 			LOGGER.debug("FAILURE - using SemanticConnectionsContextualizer instead");
@@ -165,17 +165,17 @@ public class ContextService {
 	 */
 	private List<String> getExternalFields(String type) {	
 		
-		String filename = xmlConfigUtil.getFilenameFromType(type);
+		final String filename = xmlConfigUtil.getFilenameFromType(type);
 		
-		ServletContextResource xmlDocument = new ServletContextResource(xmlConfigUtil.getServletContext(), filename);
+		final ServletContextResource xmlDocument = new ServletContextResource(xmlConfigUtil.getServletContext(), filename);
 		try {
-			SAXBuilder sb = new SAXBuilder();
-			Document doc = sb.build(xmlDocument.getFile());
-			Element rootElement = doc.getRootElement();
+			final SAXBuilder saxBuilder = new SAXBuilder();
+			final Document doc = saxBuilder.build(xmlDocument.getFile());
+			final Element rootElement = doc.getRootElement();
 			//TODO Make Nicer XML Parsing is very quick and Dirty solution for my Problems
-			Namespace ns = Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category");
-			Element display = rootElement.getChild("display", ns);
-			Element facets = rootElement.getChild("facets", ns);
+			Namespace nameSpace = Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category");
+			Element display = rootElement.getChild("display", nameSpace);
+			Element facets = rootElement.getChild("facets", nameSpace);
 			List<String> result = new ArrayList<String>();
 			result.addAll(getFields(display, type));
 			result.addAll(getFields(facets, type));

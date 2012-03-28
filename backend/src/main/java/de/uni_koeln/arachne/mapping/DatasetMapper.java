@@ -25,13 +25,13 @@ public class DatasetMapper implements RowMapper<Map<String,String>> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
 	
-	public Map<String,String> mapRow(ResultSet rs, int rownum) throws SQLException {
-		Map<String,String> dataset = new Hashtable<String,String>();
+	public Map<String,String> mapRow(ResultSet resultSet, int rownum) throws SQLException {
+		final Map<String,String> dataset = new Hashtable<String,String>();
 
-		ResultSetMetaData meta = rs.getMetaData();
-		int to = meta.getColumnCount();
-		for (int i = 1; i <= to; i++) {
-			String columnName = meta.getColumnLabel(i);
+		final ResultSetMetaData meta = resultSet.getMetaData();
+		final int count = meta.getColumnCount();
+		for (int i = 1; i <= count; i++) {
+			final String columnName = meta.getColumnLabel(i);
 
 			//Keys dont Interest the Dataset
 			if ((columnName.contains("PS_") || columnName.contains("FS_")) && columnName.contains("ID")) {
@@ -39,14 +39,14 @@ public class DatasetMapper implements RowMapper<Map<String,String>> {
 			}
 			
 			//The rest of the Dataset
-			String columnValue = rs.getString(columnName);
+			final String columnValue = resultSet.getString(columnName);
 			if (columnName.contains("ArachneEntityIdentitficaton")) {
-				LOGGER.debug(meta.getTableName(i) + "." + columnName + " ," + rs.getString(columnName));
+				LOGGER.debug(meta.getTableName(i) + "." + columnName + " ," + resultSet.getString(columnName));
 				continue;
 			}			
 						
 			if (!StrUtils.isEmptyOrNull(columnValue)) {
-				dataset.put(meta.getTableName(i) + "." + columnName, rs.getString(columnName));
+				dataset.put(meta.getTableName(i) + "." + columnName, resultSet.getString(columnName));
 			}
 		}
 		return dataset;

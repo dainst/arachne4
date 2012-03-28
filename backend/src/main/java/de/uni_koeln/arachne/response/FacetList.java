@@ -39,10 +39,10 @@ public class FacetList {
 	 * Returns the index of a facet by name.
 	 * <br>
 	 * It does a linear search as facet lists are small.
-	 * @param aName String The name of the facet to find.
+	 * @param name String The name of the facet to find.
 	 * @return int The index of the found <code>Facet</code> or <code>-1</code> if no facet was found.
 	 */
-	private int getFacetByName(String aName) {
+	private int getFacetByName(final String name) {
 		if (data.isEmpty()) {
 			return -1;
 		}
@@ -50,7 +50,7 @@ public class FacetList {
 		int result = -1;
 		int index = 0;
 		while (index < data.size()) {
-			if (data.get(index).getName().equals(aName)) {
+			if (data.get(index).getName().equals(name)) {
 				result = index;
 				break;
 			}

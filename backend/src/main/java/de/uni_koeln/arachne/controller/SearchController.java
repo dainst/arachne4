@@ -50,11 +50,11 @@ public class SearchController {
 														  @RequestParam(value = "fq", required = false) String filterValues,
 														  @RequestParam(value = "fl", required = false) String facetLimit) {
 		
-		SearchResult result = new SearchResult();
+		final SearchResult result = new SearchResult();
 		SolrServer server = null;
 		try {
 			server = new CommonsHttpSolrServer(solrUrl.getSolrUrl());
-			SolrQuery query = new SolrQuery("*:*");
+			final SolrQuery query = new SolrQuery("*:*");
 		    query.setQuery(searchParam);
 		    // default value for limit
 		    query.setRows(50);
@@ -67,21 +67,21 @@ public class SearchController {
 		    query.setFacet(true);
 		    		    		    
 		    if (!StrUtils.isEmptyOrNull(offset)) {
-		    	int intOffset = Integer.valueOf(offset);
+		    	final int intOffset = Integer.valueOf(offset);
 		    	query.setStart(intOffset);
 		    	result.setOffset(intOffset);
 		    }
 		    if (!StrUtils.isEmptyOrNull(limit)) {
-		    	int intLimit = Integer.valueOf(limit);
+		    	final int intLimit = Integer.valueOf(limit);
 		    	query.setRows(intLimit);
 		    	result.setLimit(intLimit);
 		    }		    
 		    if (!StrUtils.isEmptyOrNull(facetLimit)) {
-		    	int intFacetLimit = Integer.valueOf(facetLimit);
+		    	final int intFacetLimit = Integer.valueOf(facetLimit);
 		    	query.setFacetLimit(intFacetLimit);
 		    }
 		    if (!StrUtils.isEmptyOrNull(filterValues)) {
-		    	List<String> filterValueList = filterQueryStringToStringList(filterValues); 
+		    	final List<String> filterValueList = filterQueryStringToStringList(filterValues); 
 		    	if (!StrUtils.isEmptyOrNull(filterValueList)) {
 		    		for (String filterValue: filterValueList) {
 		    			query.addFilterQuery(filterValue);
@@ -89,15 +89,15 @@ public class SearchController {
 		    	}
 		    }
 		    		    
-		    QueryResponse response = server.query(query);
+		    final QueryResponse response = server.query(query);
 		    result.setEntities(response.getResults());
 		    result.setSize(response.getResults().getNumFound());
-		    Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
+		    final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
 		    
-		    List<FacetField> facetFields = response.getFacetFields();
+		    final List<FacetField> facetFields = response.getFacetFields();
 		    for (FacetField facetField: facetFields) {
-		       	List<FacetField.Count> facetItems = facetField.getValues();
-		    	Map<String, Long> facetValueMap = new LinkedHashMap<String, Long>();
+		    	final List<FacetField.Count> facetItems = facetField.getValues();
+		    	final Map<String, Long> facetValueMap = new LinkedHashMap<String, Long>();
 		    	if (facetItems != null) {
 		    		for (FacetField.Count fcount: facetItems) {
 		    			facetValueMap.put(fcount.getName(), fcount.getCount());
@@ -130,10 +130,10 @@ public class SearchController {
 	private List<String> filterQueryStringToStringList(String filterString) {
 		String string = filterString;
 		if (string.startsWith("facet_")) {
-			List<String> result = new ArrayList<String>();
+			final List<String> result = new ArrayList<String>();
 			int index = string.indexOf(",facet_");
 			while (index != -1) {
-				String subString = string.substring(0, index);
+				final String subString = string.substring(0, index);
 				string = string.substring(index + 1);
 				index = string.indexOf(",facet_");
 				result.add(subString);

@@ -33,7 +33,7 @@ public class ImageRightsGroup {
 	/**
 	 * @param bgid the bgid to set
 	 */
-	public void setBgid(String bgid) {
+	public void setBgid(final String bgid) {
 		this.bgid = bgid;
 	}
 	/**

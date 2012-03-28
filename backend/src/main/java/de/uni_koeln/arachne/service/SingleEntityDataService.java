@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import de.uni_koeln.arachne.dao.DataMapDao;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
-import de.uni_koeln.arachne.util.ArachneId;
+import de.uni_koeln.arachne.util.EntityId;
 
 /**
  * This Service Provides a Method to get a Single Dataset out of the Database
@@ -42,16 +42,16 @@ public class SingleEntityDataService {
 	}
 	
 	/**
-	 * This Function Retrives an Arachne Dataset by <code>ArachneId</code>.
+	 * This Function Retrives an Arachne Dataset by <code>EntityId</code>.
 	 * This Function handles Exceptions!
-	 * @param id an Identifier of the Type ArachneId.
+	 * @param entityId an Identifier of the Type ArachneId.
 	 * @return Instance of ArachneDataset that Represents the Dataset.
 	 */
-	public Dataset getSingleEntityByArachneId(ArachneId id) {
+	public Dataset getSingleEntityByArachneId(EntityId entityId) {
 		Dataset result;
-		Map<String, String> tempDataMap = arachneDataMapDao.getById(id);
+		final Map<String, String> tempDataMap = arachneDataMapDao.getById(entityId);
 		result = new Dataset();
-		result.setArachneId(id);
+		result.setArachneId(entityId);
 		if (tempDataMap != null) {
 			result.appendFields(tempDataMap);
 		}

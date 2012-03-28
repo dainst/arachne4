@@ -11,7 +11,7 @@ import de.uni_koeln.arachne.response.Dataset;
 public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 
 	
-	public SingleEntitySubTablesQueryBuilder(Dataset ads,TableConnectionDescription tcd) {
+	public SingleEntitySubTablesQueryBuilder(final Dataset dataset, final TableConnectionDescription tableConnectionDescription) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 
@@ -20,37 +20,37 @@ public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 		
 		String sourceTable;
 		String sourceField;		
-		if(tcd.getTable1().equals(ads.getArachneId().getTableName())){
-			targetTable =tcd.getTable2();
-			targetField =tcd.getField2();
-			sourceTable =tcd.getTable1();
-			sourceField  =tcd.getField1();
+		if(tableConnectionDescription.getTable1().equals(dataset.getArachneId().getTableName())){
+			targetTable = tableConnectionDescription.getTable2();
+			targetField = tableConnectionDescription.getField2();
+			sourceTable = tableConnectionDescription.getTable1();
+			sourceField = tableConnectionDescription.getField1();
 		}else{
-			targetTable =tcd.getTable1();
-			targetField =tcd.getField1();
-			sourceTable =tcd.getTable2();
-			sourceField  =tcd.getField2();
+			targetTable = tableConnectionDescription.getTable1();
+			targetField = tableConnectionDescription.getField1();
+			sourceTable = tableConnectionDescription.getTable2();
+			sourceField = tableConnectionDescription.getField2();
 		}
 		table = targetTable;
 		String info;
 		if (sourceField.equals("PrimaryKey")) {
-			 info = ads.getArachneId().getInternalKey().toString();
+			 info = dataset.getArachneId().getInternalKey().toString();
 		} else {
-			 info = ads.getField(sourceTable+"."+sourceField);
+			 info = dataset.getField(sourceTable+"."+sourceField);
 		}
 				
 		//Limits the Result count to 1
 		limit1 = true;
 		//Building condition to find Subproject
-		Condition cnd = new Condition();
-		cnd.setOperator("=");
+		final Condition condition = new Condition();
+		condition.setOperator("=");
 		if (targetField.equals("PrimaryKey")) {
-			cnd.setPart1(SQLToolbox.getQualifiedFieldname(targetTable, SQLToolbox.generatePrimaryKeyName(targetTable)));
+			condition.setPart1(SQLToolbox.getQualifiedFieldname(targetTable, SQLToolbox.generatePrimaryKeyName(targetTable)));
 		} else {
-			cnd.setPart1(SQLToolbox.getQualifiedFieldname(targetTable,targetField));
+			condition.setPart1(SQLToolbox.getQualifiedFieldname(targetTable,targetField));
 		}
-		cnd.setPart2(info);
-		conditions.add(cnd);
+		condition.setPart2(info);
+		conditions.add(condition);
 	}
 	
 	

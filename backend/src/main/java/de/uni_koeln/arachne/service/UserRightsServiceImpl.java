@@ -32,23 +32,23 @@ public class UserRightsServiceImpl implements UserRightsService {
 	 * User management DAO instance.
 	 */
 	@Autowired
-	private UserVerwaltungDao userVerwaltungDao;
+	private UserVerwaltungDao userVerwaltungDao; // NOPMD
 	
 	/**
 	 * Session management DAO instance.
 	 */
 	@Autowired
-	private SessionDao sessionDao;
+	private SessionDao sessionDao; // NOPMD
 
 	/**
 	 * Flag that indicates if the User Data is loaded.
 	 */
-	private boolean isSet = false;
+	private transient boolean isSet = false;
 
 	/**
 	 * The Arachne user data set.
 	 */
-	private UserAdministration arachneUser = null;
+	private transient UserAdministration arachneUser = null;
 
 	/**
 	 * Method initializing access to the user data. 
@@ -57,11 +57,11 @@ public class UserRightsServiceImpl implements UserRightsService {
 	private void initializeUserData() {
 		if (!isSet) {
 			
-			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+			final HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
 	                .getRequestAttributes()).getRequest();
 
 			LOGGER.debug("Session-ID: " + request.getSession().getId());
-			Session session = sessionDao.findById(request.getSession().getId());
+			final Session session = sessionDao.findById(request.getSession().getId());
 			if (session == null) {
 				arachneUser = userVerwaltungDao.findByName("anonymous");
 			} else {

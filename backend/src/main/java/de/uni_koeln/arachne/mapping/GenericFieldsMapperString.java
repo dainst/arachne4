@@ -22,10 +22,10 @@ public class GenericFieldsMapperString implements RowMapper<List<String>> {
 	 * Custom constructor initializing the <code>lastRow</code> property.
 	 * <br>
 	 * IMPORTANT: Always use this constructor to create instances of this class.
-	 * @param n The number of rows to map from the <code>ResultSet</code> to the result list.
+	 * @param rowCount The number of rows to map from the <code>ResultSet</code> to the result list.
 	 */
-	public GenericFieldsMapperString(int n) {
-		lastRow = n + 1;
+	public GenericFieldsMapperString(int rowCount) {
+		lastRow = rowCount + 1;
 	}
 	
 	/**
@@ -34,7 +34,7 @@ public class GenericFieldsMapperString implements RowMapper<List<String>> {
 	 */
 	@Override
 	public List<String> mapRow(final ResultSet resultSet, final int index) throws SQLException {
-		List<String> result = new ArrayList<String>();
+		final List<String> result = new ArrayList<String>();
 		for (int row = 1; row < lastRow; row++) {
 			result.add(resultSet.getString(row));
 		}

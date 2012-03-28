@@ -31,7 +31,7 @@ public class XmlConfigUtil {
 	 * Servlet context to load the XML config files. 
 	 */
 	@Autowired
-	private ServletContext servletContext;
+	private ServletContext servletContext; // NOPMD
 	
 	/**
 	 * This function checks if a config file for the given type exists and returns its filename.
@@ -40,7 +40,7 @@ public class XmlConfigUtil {
 	 */
 	public String getFilenameFromType(String type) {
 		String filename = "/WEB-INF/xml/"+ type + ".xml";
-		ServletContextResource file = new ServletContextResource(servletContext, filename);
+		final ServletContextResource file = new ServletContextResource(servletContext, filename);
 		if (!file.exists()) {
 			filename = "unknown";
 		}
@@ -62,7 +62,7 @@ public class XmlConfigUtil {
 		String result = "";
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		@SuppressWarnings("unchecked")
-		List<Element> children = section.getChildren();
+		final List<Element> children = section.getChildren();
 		String separator = "<br/>";
 		if (section.getAttributeValue("separator") != null) {
 			separator = section.getAttributeValue("separator");
@@ -72,10 +72,10 @@ public class XmlConfigUtil {
 			if (e.getName().equals("field")) {
 				String key = e.getAttributeValue("datasource");
 				String datasetResult = dataset.getField(key);
-				String postfix = e.getAttributeValue("postfix");
-				String prefix = e.getAttributeValue("prefix");
+				final String postfix = e.getAttributeValue("postfix");
+				final String prefix = e.getAttributeValue("prefix");
 				if (StrUtils.isEmptyOrNull(datasetResult)) {
-					Element ifEmptyElement = e.getChild("ifEmpty");
+					final Element ifEmptyElement = e.getChild("ifEmpty");
 					if (ifEmptyElement != null) {
 						// TODO discuss if multiple fields inside an ifEmpty tag make sense
 						key = ifEmptyElement.getChild("field").getAttributeValue("datasource");
@@ -99,7 +99,7 @@ public class XmlConfigUtil {
 					result += datasetResult;
 				} 
 			} else {
-				String datasetResult = getStringFromSections(e, dataset);
+				final String datasetResult = getStringFromSections(e, dataset);
 				if (!result.isEmpty() && !datasetResult.isEmpty()) {
 					result += separator;
 				}
@@ -119,23 +119,23 @@ public class XmlConfigUtil {
 	 * @return A <code>Content</code> object containing the sections content.
 	 */
 	public AbstractContent getContentFromSections(Element section, Dataset dataset) {
-		Section result = new Section();
+		final Section result = new Section();
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
 		result.setLabel(section.getAttributeValue("labelKey"));
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		@SuppressWarnings("unchecked")
-		List<Element> children = section.getChildren();
-		String defaultSeparator = "<br/>";
+		final List<Element> children = section.getChildren();
+		final String defaultSeparator = "<br/>";
 		String separator = section.getAttributeValue("separator"); 
 		if (section.getAttributeValue("separator") == null) {
 			separator = defaultSeparator;
 		}
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
-				Field field = new Field();
+				final Field field = new Field();
 				String value = dataset.getField(e.getAttributeValue("datasource"));
-				String postfix = e.getAttributeValue("postfix");
-				String prefix = e.getAttributeValue("prefix");
+				final String postfix = e.getAttributeValue("postfix");
+				final String prefix = e.getAttributeValue("prefix");
 				if (value != null) {
 					if (prefix != null) {
 						value = prefix + value;
@@ -150,21 +150,21 @@ public class XmlConfigUtil {
 						field.setValue(value);
 						result.add(field);
 					} else {
-						int contentSize = result.getContent().size();
-						Field previousContent = (Field)result.getContent().get(contentSize-1);
+						final int contentSize = result.getContent().size();
+						final Field previousContent = (Field)result.getContent().get(contentSize-1);
 						previousContent.setValue(previousContent.getValue() + separator +value);
 					}
 				}
 			} else {
 				if (e.getName().equals("context")) {
-					Section nextSection = (Section)getContentFromContext(e, dataset);
+					final Section nextSection = (Section)getContentFromContext(e, dataset);
 					if (nextSection != null) {
 						if (!((Section)nextSection).getContent().isEmpty()) { 
 							result.add(nextSection);
 						}
 					}
 				} else {
-					Section nextSection = (Section)getContentFromSections(e, dataset);
+					final Section nextSection = (Section)getContentFromSections(e, dataset);
 					if (nextSection != null) {
 						if (!((Section)nextSection).getContent().isEmpty()) { 
 							result.add(nextSection);
@@ -186,8 +186,8 @@ public class XmlConfigUtil {
 	 * @return A <code>Content</code> object containing the context sections content.
 	 */
 	public Section getContentFromContext(Element context, Dataset dataset) {
-		Section result = new Section();
-		String contextType = context.getAttributeValue("type");
+		final Section result = new Section();
+		final String contextType = context.getAttributeValue("type");
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
 		result.setLabel(context.getAttributeValue("labelKey"));
 		

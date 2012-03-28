@@ -29,7 +29,7 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 		this.field2 = SQLToolbox.getQualifiedFieldname(table, field2);
 		rightsConditionBuilder = new SQLRightsConditionBuilder(table,user);
 		// The key identification condition
-		Condition keyCondition = new Condition();
+		final Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");
 		if (field1.equals(tableName)) {
 			keyCondition.setPart1(SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generatePrimaryKeyName(field1)));
@@ -39,7 +39,7 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 		keyCondition.setPart2(field1Id.toString());
 		conditions.add(keyCondition);
 		// The field2 not null condition
-		Condition notNullCondition = new Condition();
+		final Condition notNullCondition = new Condition();
 		notNullCondition.setOperator("IS NOT");
 		notNullCondition.setPart1(SQLToolbox.getQualifiedFieldname(table, field2));
 		notNullCondition.setPart2("NULL");

@@ -25,7 +25,7 @@ public class GenericEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		table = tableName;
 		rightsConditionBuilder = new SQLRightsConditionBuilder(table, user);
 		// The key identification condition
-		Condition keyCondition = new Condition();
+		final Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");
 		keyCondition.setPart1(SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generateForeignKeyName(field1)));
 		keyCondition.setPart2(field1Id.toString());

@@ -10,21 +10,21 @@ import org.junit.Test;
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.sqlutil.SingleEntityQueryBuilder;
-import de.uni_koeln.arachne.util.ArachneId;
+import de.uni_koeln.arachne.util.EntityId;
 
 
 public class TestArachneSingeEntityQueryBuilder {
 	@Test
 	public void testArachneSingeEntityQueryBuilder(){
 		
-		UserAdministration user = new UserAdministration();
-		Set<DatasetGroup> set = new HashSet<DatasetGroup>();
+		final UserAdministration user = new UserAdministration();
+		final Set<DatasetGroup> set = new HashSet<DatasetGroup>();
 		set.add(new DatasetGroup("Arachne"));
 		user.setDatasetGroups(set);
 		
-		ArachneId id = new ArachneId("bauwerk", Long.valueOf(27000), Long.valueOf(100),false);
-		SingleEntityQueryBuilder seqb = new SingleEntityQueryBuilder(id,user);
-		assertEquals(seqb.getSQL(),"SELECT * FROM `bauwerk` WHERE 1 AND `bauwerk`.`PS_BauwerkID` = 27000 AND ( `bauwerk`.`DatensatzGruppeBauwerk` = \"Arachne\") Limit 1;");
+		final EntityId entityId = new EntityId("bauwerk", Long.valueOf(27000), Long.valueOf(100),false);
+		final SingleEntityQueryBuilder queryBuilder = new SingleEntityQueryBuilder(entityId,user);
+		assertEquals(queryBuilder.getSQL(),"SELECT * FROM `bauwerk` WHERE 1 AND `bauwerk`.`PS_BauwerkID` = 27000 AND ( `bauwerk`.`DatensatzGruppeBauwerk` = \"Arachne\") Limit 1;");
 		
 		
 	}

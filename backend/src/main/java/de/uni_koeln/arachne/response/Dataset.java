@@ -8,7 +8,7 @@ import java.util.Map;
 import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.context.ArachneLink;
 import de.uni_koeln.arachne.context.AbstractLink;
-import de.uni_koeln.arachne.util.ArachneId;
+import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.StrUtils;
 /**
  * This class provides a low level Interface to Arachne Datasets.
@@ -26,7 +26,7 @@ public class Dataset {
 	/**
 	 * Identification of the Dataset.
 	 */
-	protected ArachneId arachneId;
+	protected EntityId arachneId;
 	
 	
 	/**
@@ -66,7 +66,7 @@ public class Dataset {
 	}
 	
 	//get methods
-	public ArachneId getArachneId() {
+	public EntityId getArachneId() {
 		return arachneId;
 	}
 	
@@ -88,7 +88,7 @@ public class Dataset {
 	 * @param contextType The type of the context of interest
 	 * @return The number of context entities in this context
 	 */
-	public int getContextSize(String contextType) {
+	public int getContextSize(final String contextType) {
 		for (Context context: this.context) {
 			if (context.getContextType().equals(contextType)) {
 				return context.getContextSize();				
@@ -111,7 +111,7 @@ public class Dataset {
 		String result = null;
 		if (fieldName.startsWith("Dataset")) {
 			// the magic number is the dataset char count
-			String unqualifiedFieldName = fieldName.substring(8);
+			final String unqualifiedFieldName = fieldName.substring(8);
 			if (unqualifiedFieldName.equals("Id")) {
 				result = String.valueOf(arachneId.getArachneEntityID());
 			} else {
@@ -138,7 +138,7 @@ public class Dataset {
 	 * @return The value of the field or <code>null<code/> if the field is not found.
 	 */
 	public String getFieldFromFields(String fieldName) {
-		String result = fields.get(fieldName);
+		final String result = fields.get(fieldName);
 		return result;
 	}
 	
@@ -150,7 +150,7 @@ public class Dataset {
 	public String getFieldFromContext(String fieldName) {
 		String result = null;
 		for (Context context: this.context) {
-			ArachneLink link = (ArachneLink)context.getFirstContext();
+			final ArachneLink link = (ArachneLink)context.getFirstContext();
 			if (link != null) {
 				// we know that Entity1 is 'this'
 				result = link.getEntity2().getFieldFromFields(fieldName);
@@ -170,7 +170,7 @@ public class Dataset {
 	public String getFieldFromContext(String fieldName, int index) {
 		String result = null;
 		for (Context context: this.context) {
-			ArachneLink link = (ArachneLink)context.getContext(index);
+			final ArachneLink link = (ArachneLink)context.getContext(index);
 			if (link != null) {
 				// we know that Entity1 is 'this'
 				result = link.getEntity2().getFieldFromFields(fieldName);
@@ -189,16 +189,16 @@ public class Dataset {
 	 * @return The value of the fields or <code>null<code/> if the field is not found.
 	 */
 	public List<String> getFieldsFromContexts(String fieldName) {
-		List<String> result = new ArrayList<String>();
+		final List<String> result = new ArrayList<String>();
 		for (Context context: this.context) {
-			List<AbstractLink> links = context.getallContexts();
+			final List<AbstractLink> links = context.getallContexts();
 			if (!links.isEmpty()) {
 				for (AbstractLink link: links) {
 					String tmpResult = null;
 					// TODO add support for external links
 					// we know that Entity1 is 'this'
 					if (link instanceof ArachneLink) {
-						ArachneLink internalLink = (ArachneLink)link;
+						final ArachneLink internalLink = (ArachneLink)link;
 						tmpResult = internalLink.getEntity2().getFieldFromFields(fieldName);
 					}
 					if (!StrUtils.isEmptyOrNull(tmpResult)) {
@@ -253,7 +253,7 @@ public class Dataset {
 		this.fields.putAll(sections);
 	}
 
-	public void setArachneId(ArachneId arachneId) {
+	public void setArachneId(EntityId arachneId) {
 		this.arachneId = arachneId;
 	}
 	

@@ -40,20 +40,20 @@ public class HomeController {
 		
 		LOGGER.debug("Welcome to Arachne4 alpha!");
 		
-		String sid = request.getSession().getId();
-		LOGGER.debug("Session-ID: " + sid);
+		final String sessionId = request.getSession().getId();
+		LOGGER.debug("Session-ID: " + sessionId);
 		
-		String username = userRightsService.getCurrentUser().getUsername();		
+		final String username = userRightsService.getCurrentUser().getUsername();		
 		LOGGER.debug("User: " + username);
 		
-		Set<DatasetGroup> groups = userRightsService.getCurrentUser().getDatasetGroups();
-		List<String> logGroups = new ArrayList<String>();
+		final Set<DatasetGroup> groups = userRightsService.getCurrentUser().getDatasetGroups();
+		final List<String> logGroups = new ArrayList<String>();
 		for (DatasetGroup group : groups) {
 			logGroups.add(group.getName());
 		}
 		LOGGER.debug("Groups: " + logGroups.toString());
 		
-		ModelMap modelMap = new ModelMap();
+		final ModelMap modelMap = new ModelMap();
 		modelMap.addAttribute("Username", username);
 		
 		return new ModelAndView("home", modelMap);

@@ -21,7 +21,7 @@ public class Context {
 	 * @param contextType The type of context this class manages.
 	 * @param parent The <code>ArachneDataset</code> this context belongs to.
 	 */
-	public Context(String contextType, Dataset parent, ContextService contextService) {
+	public Context(final String contextType, final Dataset parent, final ContextService contextService) {
 		completionState = CompletionStateEnum.EMPTY;
 		this.contextType = contextType;
 		this.parent = parent;
@@ -108,7 +108,7 @@ public class Context {
 	 * @return The chosen <code>Link</code> of the context.
 	 */
 	public AbstractLink getContext(int index) {
-		int avilableContexts = contextEntities.size();
+		final int avilableContexts = contextEntities.size();
 		if (completionState != CompletionStateEnum.FULL) {
 			if (index >= avilableContexts) {
 				retrieve(avilableContexts, avilableContexts + index);
@@ -178,7 +178,7 @@ public class Context {
 	 * @param limit The maximum number of contexts to retrieve.
 	 */
 	protected void retrieve(int offset, int limit) {
-	    List<AbstractLink> temporary = contextService.getLinks(parent, contextType, offset, limit);
+		final List<AbstractLink> temporary = contextService.getLinks(parent, contextType, offset, limit);
 	    if (temporary != null) {
 	    	contextEntities.addAll(temporary);
 	    }

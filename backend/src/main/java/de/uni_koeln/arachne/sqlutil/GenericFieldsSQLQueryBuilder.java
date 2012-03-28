@@ -37,7 +37,7 @@ public class GenericFieldsSQLQueryBuilder extends AbstractSQLBuilder {
 		}
 		
 		// The key identification condition
-		Condition keyCondition = new Condition();
+		final Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");
 		if (field1.equals(tableName)) {
 			keyCondition.setPart1(SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generatePrimaryKeyName(field1)));

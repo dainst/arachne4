@@ -79,7 +79,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		return sections;
 	}
 
-	public void setSections(AbstractContent content) {
+	public void setSections(final AbstractContent content) {
 		sections = content;
 	}
 	
@@ -87,7 +87,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		return lastModified;
 	}
 
-	public void setLastModified(Date lastModified) {
+	public void setLastModified(final Date lastModified) {
 		this.lastModified = lastModified;
 	}
 
@@ -95,7 +95,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		return context;
 	}
 
-	public void setContext(AbstractContent context) {
+	public void setContext(final AbstractContent context) {
 		this.context = context;
 	}
 	

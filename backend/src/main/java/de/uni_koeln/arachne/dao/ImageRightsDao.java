@@ -11,8 +11,8 @@ public class ImageRightsDao extends AbstractHibernateTemplateDao {
 	
 	public ImageRightsGroup findByName(String name) {
 		@SuppressWarnings("unchecked")
-		List<ImageRightsGroup> result = (List<ImageRightsGroup>) hibernateTemplate.find("from ImageRightsGroup where name like ?", name);
-		if(result.isEmpty()) {
+		final List<ImageRightsGroup> result = (List<ImageRightsGroup>) hibernateTemplate.find("from ImageRightsGroup where name like ?", name);
+		if (result.isEmpty()) {
 			return null;
 		} else {
 			return result.get(0);

@@ -25,9 +25,9 @@ public class ConnectionDao extends AbstractHibernateTemplateDao {
 	 */
 	public List<String> getConnectionList(String type) {
 		@SuppressWarnings("unchecked")
-		List<Connection> queryResult = (List<Connection>) hibernateTemplate
+		final List<Connection> queryResult = (List<Connection>) hibernateTemplate
 				.find("from ArachneConnection where Teil1 = '" + type + "'");
-		List<String> result = new ArrayList<String>();
+		final List<String> result = new ArrayList<String>();
 		for (int i=0; i<queryResult.size(); i++) {
 			 result.add(queryResult.get(i).getPart2());
 		}
@@ -43,7 +43,7 @@ public class ConnectionDao extends AbstractHibernateTemplateDao {
 	 */
 	public String getTableName(String table1, String table2) {
 		@SuppressWarnings("unchecked")
-		List<Connection> queryResult = (List<Connection>) hibernateTemplate
+		final List<Connection> queryResult = (List<Connection>) hibernateTemplate
 				.find("from Connection where Teil1 = '" + table1 + "' and Teil2 = '" + table2 + "'");
 		if (queryResult.size() > 0) {
 			return queryResult.get(0).getTable();

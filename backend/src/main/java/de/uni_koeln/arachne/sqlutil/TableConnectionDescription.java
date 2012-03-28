@@ -54,15 +54,15 @@ public class TableConnectionDescription {
 	
 	/**
 	 * Checks for the tablename if one of the Things Lists this
-	 * @param tbname The name of The Table to check
+	 * @param tableName The name of The Table to check
 	 * @return true if tbname is described in this connection
 	 */
-	public boolean linksTable(String tbname){
-		return tbname.equals(table1) || tbname.equals(table2);
+	public boolean linksTable(final String tableName){
+		return tableName.equals(table1) || tableName.equals(table2);
 	}
 	
 	//Setter
-	public void setCrosstableName(String crosstableName) {
+	public void setCrosstableName(final String crosstableName) {
 		this.crossTableName = crosstableName;
 		if(crosstableName == null || crosstableName.isEmpty()){
 			connectionByCrosstable = false;
@@ -70,16 +70,16 @@ public class TableConnectionDescription {
 			connectionByCrosstable = true;
 		}	
 	}
-	public void setField1(String field1) {
+	public void setField1(final String field1) {
 		this.field1 = field1;
 	}
-	public void setField2(String field2) {
+	public void setField2(final String field2) {
 		this.field2 = field2;
 	}
-	public void setTable1(String table1) {
+	public void setTable1(final String table1) {
 		this.table1 = table1;
 	}
-	public void setTable2(String table2) {
+	public void setTable2(final String table2) {
 		this.table2 = table2;
 	}
 	

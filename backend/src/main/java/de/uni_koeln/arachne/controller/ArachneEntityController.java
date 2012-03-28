@@ -21,7 +21,7 @@ import de.uni_koeln.arachne.service.ContextService;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.ImageService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
-import de.uni_koeln.arachne.util.ArachneId;
+import de.uni_koeln.arachne.util.EntityId;
 
 /**
  * Handles http requests (currently only get) for <code>/entity<code>.
@@ -80,7 +80,7 @@ public class ArachneEntityController {
     private BaseArachneEntity getEntityRequestResponse(final Long id, final String category) { //NOPMD
     	final Long startTime = System.currentTimeMillis();
         
-    	ArachneId arachneId;
+    	EntityId arachneId;
     	
     	if (category == null) {
     		arachneId = entityIdentificationService.getId(id);
@@ -129,8 +129,8 @@ public class ArachneEntityController {
      * @param itemId The id of the item to fetch
      * @return a JSON object containing the data
      */
-    @RequestMapping(value="/doc/{id}", method=RequestMethod.GET)
-    public @ResponseBody Dataset handleGetDocEntityRequest(@PathVariable("id") final Long id) {
+    @RequestMapping(value="/doc/{entityId}", method=RequestMethod.GET)
+    public @ResponseBody Dataset handleGetDocEntityRequest(@PathVariable("entityId") final Long entityId) {
     	// TODO implement me
     	return null;
     }
@@ -142,9 +142,9 @@ public class ArachneEntityController {
      * @param itemId The id of the item to fetch
      * @return a JSON object containing the data
      */
-    @RequestMapping(value="doc/{category}/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="doc/{category}/{categoryId}", method=RequestMethod.GET)
     public @ResponseBody Dataset handleGetDocCategoryIdRequest(@PathVariable("category") final String category
-    		, @PathVariable("id") final Long id) {
+    		, @PathVariable("categoryId") final Long categoryId) {
     	// TODO implement me
 		return null;
     }
@@ -152,14 +152,14 @@ public class ArachneEntityController {
     //////////////////////////////////////////////////////////////////////////////////////////////////
     
     /**
-     * Handles http request for /doc/{id}
+     * Handles http request for /data/{id}
      * It uses the <Code>ItemService</Code> class to fetch the data and wraps it 
      * in a <Code>JsonResponse</Code> object.
      * @param itemId The id of the item to fetch
      * @return a JSON object containing the data
      */
-    @RequestMapping(value="/data/{id}", method=RequestMethod.GET)
-    public @ResponseBody Dataset handleGetDataEntityRequest(@PathVariable("id") final Long id) {
+    @RequestMapping(value="/data/{entityId}", method=RequestMethod.GET)
+    public @ResponseBody Dataset handleGetDataEntityRequest(@PathVariable("entityId") final Long entityId) {
     	// TODO implement me
 		return null;
     }
@@ -171,9 +171,9 @@ public class ArachneEntityController {
      * @param itemId The id of the item to fetch
      * @return a JSON object containing the data
      */
-    @RequestMapping(value="data/{category}/{id}", method=RequestMethod.GET)
+    @RequestMapping(value="data/{category}/{categoryId}", method=RequestMethod.GET)
     public @ResponseBody Dataset handleGetDataCategoryIdRequest(@PathVariable("category") final String category
-    		, @PathVariable("id") final Long id) {
+    		, @PathVariable("categoryId") final Long categoryId) {
     	// TODO implement me
     	return null;
     }

@@ -19,8 +19,8 @@ public class TestArachneSQLRightsConditionBuilder {
 	@Test
 	public void testArachneSQLRightsConditionBuilder(){
 		
-		UserAdministration user = new UserAdministration();
-		Set<DatasetGroup> set = new HashSet<DatasetGroup>();
+		final UserAdministration user = new UserAdministration();
+		final Set<DatasetGroup> set = new HashSet<DatasetGroup>();
 		set.add(new DatasetGroup("Arachne"));
 		user.setDatasetGroups(set);
 		

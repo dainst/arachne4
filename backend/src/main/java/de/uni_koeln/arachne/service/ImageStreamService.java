@@ -47,8 +47,8 @@ public class ImageStreamService {
 		int width = imageResolutionType.width();
 		int height = imageResolutionType.height();
 		
-		URL url = new URL(imageEntity.getField("marbilder.Pfad"));
-		BufferedImage originalImage = ImageIO.read(url.openStream());
+		final URL url = new URL(imageEntity.getField("marbilder.Pfad"));
+		final BufferedImage originalImage = ImageIO.read(url.openStream());
 		
 		// return original if no maximum size is specified
 		if (width == 0) {
@@ -59,9 +59,9 @@ public class ImageStreamService {
 			height = originalImage.getHeight();
 		}
 		
-		int origWidth = originalImage.getWidth();
-		int origHeight = originalImage.getHeight();
-		float ratio = ((float) origWidth) / origHeight;
+		final int origWidth = originalImage.getWidth();
+		final int origHeight = originalImage.getHeight();
+		final float ratio = ((float) origWidth) / origHeight;
 		
 		if (ratio > 1) {
 			height = Math.round(width / ratio);
@@ -69,16 +69,16 @@ public class ImageStreamService {
 			width = Math.round(height * ratio);
 		}
 		
-		Long startTime = System.currentTimeMillis();
+		final Long startTime = System.currentTimeMillis();
 		
-		BufferedImage resizedImage = new BufferedImage(width, height, originalImage.getType());
-		Graphics2D graphics2D = resizedImage.createGraphics();
+		final BufferedImage resizedImage = new BufferedImage(width, height, originalImage.getType());
+		final Graphics2D graphics2D = resizedImage.createGraphics();
 		graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		graphics2D.drawImage(originalImage, 0, 0, width, height, 0, 0, originalImage.getWidth(), originalImage.getHeight(), null);
 		
 		if (watermarkFilename != null && !watermarkFilename.isEmpty()) {
-			InputStream watermark = servletContext.getResourceAsStream("/WEB-INF/watermarks/" + watermarkFilename);
-			BufferedImage watermarkImage = ImageIO.read(watermark);
+			final InputStream watermark = servletContext.getResourceAsStream("/WEB-INF/watermarks/" + watermarkFilename);
+			final BufferedImage watermarkImage = ImageIO.read(watermark);
 			graphics2D.drawImage(
 					watermarkImage,
 					width-watermarkImage.getWidth(), 0,

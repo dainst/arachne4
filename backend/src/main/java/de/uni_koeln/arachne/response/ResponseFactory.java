@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.ServletContextResource;
 
-import de.uni_koeln.arachne.util.ArachneId;
+import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 /**
@@ -50,7 +50,7 @@ public class ResponseFactory {
 		final FormattedArachneEntity response = new FormattedArachneEntity();
 		
 		// set id content
-		final ArachneId arachneId = dataset.getArachneId(); 
+		final EntityId arachneId = dataset.getArachneId(); 
 		final String tableName = arachneId.getTableName();
 		response.setEntityId(arachneId.getArachneEntityID());
 		response.setType(tableName);
@@ -75,7 +75,7 @@ public class ResponseFactory {
 	    	final Element display = doc.getRootElement().getChild("display",nameSpace);
 	    	
 	    	// set title
-	    	Element title = display.getChild("title", nameSpace);
+	    	final Element title = display.getChild("title", nameSpace);
 	    	String titleStr = "";
 	    	if (title.getChild("field") == null) {
 	    		titleStr = xmlConfigUtil.getStringFromSections(title.getChild("section", nameSpace), dataset);
@@ -86,7 +86,7 @@ public class ResponseFactory {
 	    	
 	    	// set subtitle
 	    	String subtitleStr = "";
-	    	Element subtitle = display.getChild("subtitle", nameSpace);
+	    	final Element subtitle = display.getChild("subtitle", nameSpace);
 	    	if (subtitle.getChild("field", nameSpace) == null) {
 	    		subtitleStr = xmlConfigUtil.getStringFromSections(subtitle.getChild("section", nameSpace), dataset);
 	    	} else {
@@ -95,8 +95,8 @@ public class ResponseFactory {
 	    	response.setSubtitle(subtitleStr);
 	    	
 	    	// set sections
-	    	Element sections = display.getChild("datasections", nameSpace);
-	    	List<AbstractContent> contentList = new ArrayList<AbstractContent>();
+	    	final Element sections = display.getChild("datasections", nameSpace);
+	    	final List<AbstractContent> contentList = new ArrayList<AbstractContent>();
 	    	// JDOM doesn't handle generics correctly so it issues a type safety warning
 			List<Element> children = sections.getChildren();
 			for (Element e:children) {
@@ -111,7 +111,7 @@ public class ResponseFactory {
 				if (contentList.size() == 1) {
 					response.setSections(contentList.get(0));
 				} else {
-					Section sectionContent = new Section();
+					final Section sectionContent = new Section();
 					sectionContent.setLabel("ContainerSection");
 					for (AbstractContent c:contentList) {
 						sectionContent.add(c);
@@ -124,23 +124,23 @@ public class ResponseFactory {
  			response.setImages(dataset.getImages());
 			
 			// Set facets
- 			FacetList facets = new FacetList();
+ 			final FacetList facets = new FacetList();
  			
- 			Element facetsElement = doc.getRootElement().getChild("facets", nameSpace);
+ 			final Element facetsElement = doc.getRootElement().getChild("facets", nameSpace);
  			children.clear();
  			// JDOM doesn't handle generics correctly so it issues a type safety warning
  			children = facetsElement.getChildren();
  			for (Element e:children) {
  				if ("facet".equals(e.getName())) {
- 					String name = e.getAttributeValue("name");
- 					String labelKey = e.getAttributeValue("labelKey");
- 					Facet facet = new Facet(name, labelKey);
- 					Element child = (Element)e.getChildren().get(0); 
+ 					final String name = e.getAttributeValue("name");
+ 					final String labelKey = e.getAttributeValue("labelKey");
+ 					final Facet facet = new Facet(name, labelKey);
+ 					final Element child = (Element)e.getChildren().get(0); 
  					if (child != null) {
- 						List<String> values = new ArrayList<String>();
- 	 					String childName = child.getName();
+ 						final List<String> values = new ArrayList<String>();
+ 						final String childName = child.getName();
  						if ("field".equals(childName)) {
- 							String value = dataset.getField(child.getAttributeValue("datasource"));
+ 							final String value = dataset.getField(child.getAttributeValue("datasource"));
  	 						if (value != null) {
  	 							values.add(value);
  	 						}
