@@ -54,12 +54,12 @@ public class DataMapDao extends SQLDao {
 	/**
 	 * Gets a subdataset for a main dataset (Objekt -> Objektplastik) by using <code>ArachneSingleEntitySubTablesQueryBuilder</code> for query Building
 	 * @param dataset Dataset for which the subdataset should be retrieved
-	 * @param tdesc instance of <code>TableConnectionDescription</code> which represents the Connection between the Dataset and the Subdataset 
+	 * @param tableConnectionDescription instance of <code>TableConnectionDescription</code> which represents the Connection between the Dataset and the Subdataset 
 	 * @return <code>Map<String,String></code> that contains the Description of the Subdataset, caution! The Subdataset is NOT automatically appended to the Dataset.
 	 */
-	public Map<String, String> getBySubDataset(Dataset dataset,TableConnectionDescription tdesc ) {
+	public Map<String, String> getBySubDataset(final Dataset dataset, final TableConnectionDescription tableConnectionDescription ) {
 
-		final SingleEntitySubTablesQueryBuilder queryBuilder = new SingleEntitySubTablesQueryBuilder(dataset,tdesc);
+		final SingleEntitySubTablesQueryBuilder queryBuilder = new SingleEntitySubTablesQueryBuilder(dataset,tableConnectionDescription);
 
 		final String sql = queryBuilder.getSQL();
 		LOGGER.debug(sql);

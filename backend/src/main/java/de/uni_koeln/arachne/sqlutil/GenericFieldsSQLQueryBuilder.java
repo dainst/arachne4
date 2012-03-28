@@ -23,7 +23,8 @@ public class GenericFieldsSQLQueryBuilder extends AbstractSQLBuilder {
 	 * @param field1Id The field Id.
 	 * @param fields The fields to query.
 	 */
-	public GenericFieldsSQLQueryBuilder(String tableName, String field1, Long field1Id, List<String> fields, UserAdministration user) {
+	public GenericFieldsSQLQueryBuilder(final String tableName, final String field1, final Long field1Id, final List<String> fields
+			, final UserAdministration user) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;

@@ -16,12 +16,12 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 public class SQLRightsConditionBuilder {
 
 	private transient Set<DatasetGroup> permissiongroups;
-	private transient String tableName;
-	private transient UserAdministration user;
-	private transient List<String> exludedTables = new ArrayList<String>();
+	private transient final String tableName;
+	private transient final UserAdministration user;
+	private transient final List<String> exludedTables = new ArrayList<String>();
 	
 	
-	public SQLRightsConditionBuilder(String tableName, UserAdministration user) {
+	public SQLRightsConditionBuilder(final String tableName, final UserAdministration user) {
 		this.tableName = tableName;
 		this.user = user;
 		// TODO find a better way to exclude specific tables

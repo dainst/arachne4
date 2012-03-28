@@ -17,7 +17,7 @@ public class SolrUrlString {
 		return solrUrl;
 	}
 
-	public void setSolrUrl(String url) {
+	public void setSolrUrl(final String url) {
 		solrUrl = url;
 	}
 }

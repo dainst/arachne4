@@ -14,37 +14,37 @@ public class GenericSQLService {
 	@Autowired
 	protected GenericSQLDao genericSQLDao; // NOPMD
 	
-	public List<Long> getIdByFieldId(String tableName, String field1, Long field1Id, String field2) {
+	public List<Long> getIdByFieldId(final String tableName, final String field1, final Long field1Id, final String field2) {
 		return genericSQLDao.getIdByFieldId(tableName, field1, field1Id, field2);
 	}
 	
-	public List<String> getStringField(String tableName, String field1, Long field1Id, String field2) {
+	public List<String> getStringField(final String tableName, final String field1, final Long field1Id, final String field2) {
 		return genericSQLDao.getStringField(tableName, field1, field1Id, field2);
 	}
 	
-	public List<Map<String, String>> getConnectedEntities(String contextType, Long entityId) {
+	public List<Map<String, String>> getConnectedEntities(final String contextType, final Long entityId) {
 		return genericSQLDao.getConnectedEntities(contextType, entityId);
 	}
 	
-	public List<List<String>> getStringFields(String tableName, String field1, Long field1Id, List<String> fields) {
+	public List<List<String>> getStringFields(final String tableName, final String field1, final Long field1Id, final List<String> fields) {
 		return genericSQLDao.getStringFields(tableName, field1, field1Id, fields);
 	}
 	
-	public List<Map<String, String>> getEntitiesById(String tableName, String field1, Long field1Id) {
+	public List<Map<String, String>> getEntitiesById(final String tableName, final String field1, final Long field1Id) {
 		return genericSQLDao.getEntitiesById(tableName, field1, field1Id);
 	}
 
-	public List<Map<String, String>> getEntitiesEntityIdJoinedById(String tableName, String field1, Long field1Id) {
+	public List<Map<String, String>> getEntitiesEntityIdJoinedById(final String tableName, final String field1, final Long field1Id) {
 		return genericSQLDao.getEntitiesEntityIdJoinedById(tableName, field1, field1Id);
 	}
 	
-	public List<? extends SQLResponseObject> getStringFieldsWithCustomRowmapper(String tableName, String field1
-			, Long field1Id, List<String> fields, RowMapper<? extends SQLResponseObject> rowMapper) {
+	public List<? extends SQLResponseObject> getStringFieldsWithCustomRowmapper(final String tableName, final String field1
+			, final Long field1Id, final List<String> fields, final RowMapper<? extends SQLResponseObject> rowMapper) {
 		return genericSQLDao.getStringFieldsWithCustomRowMapper(tableName, field1, field1Id, fields, rowMapper);
 	}
 	
-	public List<? extends SQLResponseObject> getStringFieldsEntityIdJoinedWithCustomRowmapper(String tableName, String field1
-			, Long field1Id, List<String> fields, RowMapper<? extends SQLResponseObject> rowMapper) {
+	public List<? extends SQLResponseObject> getStringFieldsEntityIdJoinedWithCustomRowmapper(final String tableName, final String field1
+			, final Long field1Id, final List<String> fields, final RowMapper<? extends SQLResponseObject> rowMapper) {
 		return genericSQLDao.getStringFieldsEntityIdJoinedWithCustomRowMapper(tableName, field1, field1Id, fields, rowMapper);
 	}
 }

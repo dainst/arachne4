@@ -13,7 +13,7 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	protected transient SQLRightsConditionBuilder rightsConditionBuilder;
 	
-	private transient String field2;
+	private transient final String field2;
 	
 	/**
 	 * Constructs a condition to query a field.
@@ -22,7 +22,7 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 	 * @param field1Id The field Id.
 	 * @param field2 The field to query.
 	 */
-	public GenericFieldSQLQueryBuilder(String tableName, String field1, Long field1Id, String field2, UserAdministration user) {
+	public GenericFieldSQLQueryBuilder(final String tableName, final String field1, final Long field1Id, final String field2, final UserAdministration user) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;

@@ -35,7 +35,7 @@ public class SQLDao {
 	 * @param dataSource An SQl Datasource
 	 */
 	@Autowired
-	public void setDataSource(DataSource dataSource) {
+	public void setDataSource(final DataSource dataSource) {
 		this.dataSource = dataSource;
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
@@ -46,7 +46,7 @@ public class SQLDao {
 	 * @param rowMapper The RowMapper that Maps the Result of the Query to the an Generic Object Type
 	 * @return Returns a List of objects as identified in the <code>RowMapper</code> or <code>null</code>
 	 */
-	protected List<?> executeSelectQuery(String sQLQuery, RowMapper<?> rowMapper) {
+	protected List<?> executeSelectQuery(final String sQLQuery, final RowMapper<?> rowMapper) {
 		if (sQLQuery.contains("SELECT")) {
 			try {
 				return jdbcTemplate.query(sQLQuery,rowMapper);

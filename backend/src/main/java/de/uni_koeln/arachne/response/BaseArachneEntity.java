@@ -44,7 +44,7 @@ public class BaseArachneEntity {
 		return internalId;
 	}
 
-	public void setInternalId(Long internalId) {
+	public void setInternalId(final Long internalId) {
 		this.internalId = internalId;
 	}
 
@@ -52,7 +52,7 @@ public class BaseArachneEntity {
 		return datasetGroup;
 	}
 
-	public void setDatasetGroup(String datasetGroup) {
+	public void setDatasetGroup(final String datasetGroup) {
 		this.datasetGroup = datasetGroup;
 	}
 }

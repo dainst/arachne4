@@ -146,7 +146,7 @@ public class ResponseFactory {
  	 						}
  	 					} else {
  	 						if ("context".equals(childName)) {
- 	 							Section section = xmlConfigUtil.getContentFromContext(child, dataset);
+ 	 							final Section section = xmlConfigUtil.getContentFromContext(child, dataset);
  	 							if (section != null) {
  	 								for (AbstractContent c:section.getContent()) {
  	 									if (c instanceof FieldList) {
@@ -156,7 +156,7 @@ public class ResponseFactory {
  	 											}
  	 										}
  	 									} else {
- 	 										String value = c.toString();
+ 	 										final String value = c.toString();
  	 										if (value != null) {
  	 											values.add(value);
  	 										}

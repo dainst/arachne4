@@ -63,7 +63,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
@@ -71,7 +71,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		return subtitle;
 	}
 
-	public void setSubtitle(String subtitle) {
+	public void setSubtitle(final String subtitle) {
 		this.subtitle = subtitle;
 	}
 	
@@ -103,7 +103,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		return images;
 	}
 
-	public void setImages(List<Image> images) {
+	public void setImages(final List<Image> images) {
 		this.images = images;
 	}
 	/*public List<ArachneImage> getImages() {
@@ -118,12 +118,12 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		return this.facets;
 	}
 	
-	public void setFacets(List<Facet> facets) {
+	public void setFacets(final List<Facet> facets) {
 		this.facets = facets;
 	}
 	
 	// Convenience function to add a facet
-	public void addFacet(Facet facet) {
+	public void addFacet(final Facet facet) {
 		this.facets.add(facet);
 	}
 }

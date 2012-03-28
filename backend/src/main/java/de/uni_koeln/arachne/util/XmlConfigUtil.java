@@ -38,7 +38,7 @@ public class XmlConfigUtil {
 	 * @param type Type of the config to look for.
 	 * @return The filename of the XML config file for the given type or <code>null</code>.
 	 */
-	public String getFilenameFromType(String type) {
+	public String getFilenameFromType(final String type) {
 		String filename = "/WEB-INF/xml/"+ type + ".xml";
 		final ServletContextResource file = new ServletContextResource(servletContext, filename);
 		if (!file.exists()) {
@@ -58,7 +58,7 @@ public class XmlConfigUtil {
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A concatenated string containing the sections content.
 	 */
-	public String getStringFromSections(Element section, Dataset dataset) {
+	public String getStringFromSections(final Element section, final Dataset dataset) {
 		String result = "";
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		@SuppressWarnings("unchecked")
@@ -118,7 +118,7 @@ public class XmlConfigUtil {
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Content</code> object containing the sections content.
 	 */
-	public AbstractContent getContentFromSections(Element section, Dataset dataset) {
+	public AbstractContent getContentFromSections(final Element section, final Dataset dataset) {
 		final Section result = new Section();
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
 		result.setLabel(section.getAttributeValue("labelKey"));
@@ -185,7 +185,7 @@ public class XmlConfigUtil {
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Content</code> object containing the context sections content.
 	 */
-	public Section getContentFromContext(Element context, Dataset dataset) {
+	public Section getContentFromContext(final Element context, final Dataset dataset) {
 		final Section result = new Section();
 		final String contextType = context.getAttributeValue("type");
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
@@ -201,20 +201,20 @@ public class XmlConfigUtil {
 		
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		@SuppressWarnings("unchecked")
-		List<Element> children = context.getChildren();
-		String defaultSeparator = "<br/>";
+		final List<Element> children = context.getChildren();
+		final String defaultSeparator = "<br/>";
 		String separator = context.getAttributeValue("separator"); 
 		if (context.getAttributeValue("separator") == null) {
 			separator = defaultSeparator;
 		}
 				
-		FieldList fieldList = new FieldList();
+		final FieldList fieldList = new FieldList();
 		for (int i = 0; i < dataset.getContextSize(contextType); i++) {
 			for (Element e: children) {
 				if (e.getName().equals("field")) {
 					String value = dataset.getFieldFromContext(contextType + e.getAttributeValue("datasource"), i);
-					String postfix = e.getAttributeValue("postfix");
-					String prefix = e.getAttributeValue("prefix");
+					final String postfix = e.getAttributeValue("postfix");
+					final String prefix = e.getAttributeValue("prefix");
 					if (value != null) {
 						if (prefix != null) {
 							value = prefix + value;
@@ -239,7 +239,7 @@ public class XmlConfigUtil {
 			result.add(fieldList);
 		} else {
 			if(fieldList.size() == 1 ){
-				Field field = new Field();
+				final Field field = new Field();
 				field.setValue(fieldList.get(0));
 				result.add(field);
 			}

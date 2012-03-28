@@ -24,7 +24,7 @@ public class ImageService {
 	 * of images. 
 	 * @param dataset The dataset to add images to.
 	 */
-	public void addImages(Dataset dataset) {
+	public void addImages(final Dataset dataset) {
 		final EntityId arachneId = dataset.getArachneId();
 		final ArrayList<String> fieldList = new ArrayList<String>(2);
 		fieldList.add("DateinameMarbilder");

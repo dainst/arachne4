@@ -16,7 +16,7 @@ public class FailureResponse extends BaseArachneEntity {
 		type = "Failure";	
 	}
 	
-	public FailureResponse(String message) {
+	public FailureResponse(final String message) {
 		type = "Failure";
 		this.message = message;
 	}
@@ -25,7 +25,7 @@ public class FailureResponse extends BaseArachneEntity {
 		return message;
 	}
 
-	public void setMessage(String message) {
+	public void setMessage(final String message) {
 		this.message = message;
 	}	
 }

@@ -36,7 +36,7 @@ public class GenericSQLDao extends SQLDao {
 	 * @param field2 The key field to be queried.
 	 * @return a list of foreign ids or <code>null</code>.
 	 */
-	public List<Long> getIdByFieldId(String tableName, String field1, Long field1Id, String field2) {
+	public List<Long> getIdByFieldId(final String tableName, final String field1, final Long field1Id, final String field2) {
 		final GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1, field1Id, field2, userRightsService.getCurrentUser());
 		@SuppressWarnings("unchecked")
 		final List<Long> queryResult = (List<Long>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperLong());
@@ -47,7 +47,7 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
-	public List<String> getStringField(String tableName, String field1, Long field1Id, String field2) {
+	public List<String> getStringField(final String tableName, final String field1, final Long field1Id, final String field2) {
 		final GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1, field1Id, field2, userRightsService.getCurrentUser());
 		@SuppressWarnings("unchecked")
 		final List<String> queryResult = (List<String>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperString());
@@ -58,7 +58,7 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
-	public List<Map<String, String>> getConnectedEntities(String contextType, Long entityId) {
+	public List<Map<String, String>> getConnectedEntities(final String contextType, final Long entityId) {
 		final ConnectedEntitiesSQLQueryBuilder queryBuilder = new ConnectedEntitiesSQLQueryBuilder(contextType, entityId
 				, userRightsService.getCurrentUser());
 		@SuppressWarnings("unchecked")
@@ -71,7 +71,7 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
-	public List<List<String>> getStringFields(String tableName, String field1, Long field1Id, List<String> fields) {
+	public List<List<String>> getStringFields(final String tableName, final String field1, final Long field1Id, final List<String> fields) {
 		final GenericFieldsSQLQueryBuilder queryBuilder = new GenericFieldsSQLQueryBuilder(tableName, field1, field1Id, fields, userRightsService.getCurrentUser());
 		@SuppressWarnings("unchecked")
 		final List<List<String>> queryResult = (List<List<String>>)this.executeSelectQuery(queryBuilder.getSQL(),
@@ -83,7 +83,7 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
-	public List<Map<String, String>> getEntitiesById(String tableName, String field1, Long field1Id) {
+	public List<Map<String, String>> getEntitiesById(final String tableName, final String field1, final Long field1Id) {
 		final GenericEntitiesSQLQueryBuilder queryBuilder = new GenericEntitiesSQLQueryBuilder(tableName, field1, field1Id, userRightsService.getCurrentUser());
 		@SuppressWarnings("unchecked")
 		final List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(queryBuilder.getSQL()
@@ -95,8 +95,7 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
-	public List<Map<String, String>> getEntitiesEntityIdJoinedById(
-			String tableName, String field1, Long field1Id) {
+	public List<Map<String, String>> getEntitiesEntityIdJoinedById(final String tableName, final String field1, final Long field1Id) {
 		final GenericEntitiesEntityIdJoinedSQLQueryBuilder queryBuilder = new GenericEntitiesEntityIdJoinedSQLQueryBuilder(tableName, field1, field1Id, userRightsService.getCurrentUser());
 		@SuppressWarnings("unchecked")
 		final List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(queryBuilder.getSQL()
@@ -108,8 +107,8 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 
-	public List<? extends SQLResponseObject> getStringFieldsWithCustomRowMapper(String tableName,
-			String field1, Long field1Id, List<String> fields, RowMapper<? extends SQLResponseObject> rowMapper) {
+	public List<? extends SQLResponseObject> getStringFieldsWithCustomRowMapper(final String tableName,
+			final String field1, final Long field1Id, final List<String> fields, final RowMapper<? extends SQLResponseObject> rowMapper) {
 		final GenericFieldsSQLQueryBuilder queryBuilder = new GenericFieldsSQLQueryBuilder(tableName, field1, field1Id
 				, fields, userRightsService.getCurrentUser());
 		@SuppressWarnings("unchecked")
@@ -123,8 +122,8 @@ public class GenericSQLDao extends SQLDao {
 	}
 
 	public List<? extends SQLResponseObject> getStringFieldsEntityIdJoinedWithCustomRowMapper(
-			String tableName, String field1, Long field1Id, List<String> fields
-			, RowMapper<? extends SQLResponseObject> rowMapper) {
+			final String tableName, final String field1, final Long field1Id, final List<String> fields
+			, final RowMapper<? extends SQLResponseObject> rowMapper) {
 		final GenericFieldsEntityIdJoinedSQLQueryBuilder queryBuilder = new GenericFieldsEntityIdJoinedSQLQueryBuilder(
 				tableName, field1, field1Id, fields, userRightsService.getCurrentUser());
 		@SuppressWarnings("unchecked")

@@ -107,7 +107,7 @@ public class Context {
 	 * @param index The index of the link element to retrieve.
 	 * @return The chosen <code>Link</code> of the context.
 	 */
-	public AbstractLink getContext(int index) {
+	public AbstractLink getContext(final int index) {
 		final int avilableContexts = contextEntities.size();
 		if (completionState != CompletionStateEnum.FULL) {
 			if (index >= avilableContexts) {
@@ -126,7 +126,7 @@ public class Context {
 	 * @param number The number of contexts demanded.
 	 * @return The number of contexts (more or less).
 	 */
-	public List<AbstractLink> getLimitContext(int number) {
+	public List<AbstractLink> getLimitContext(final int number) {
 		if (completionState != CompletionStateEnum.LIMITED && completionState != CompletionStateEnum.FULL) {
 			retrieveLimited(number);
 		}
@@ -167,7 +167,7 @@ public class Context {
 	 * Side effect: Sets <code>completionState</code>
 	 * @param limit The number of contexts to retrieve
 	 */
-	protected void retrieveLimited(int limit) {
+	protected void retrieveLimited(final int limit) {
 	    retrieve(contextEntities.size(), limit - contextEntities.size());
 	    completionState = CompletionStateEnum.LIMITED;
 	}
@@ -177,7 +177,7 @@ public class Context {
 	 * @param offset And offset describing where to start getting context information.
 	 * @param limit The maximum number of contexts to retrieve.
 	 */
-	protected void retrieve(int offset, int limit) {
+	protected void retrieve(final int offset, final int limit) {
 		final List<AbstractLink> temporary = contextService.getLinks(parent, contextType, offset, limit);
 	    if (temporary != null) {
 	    	contextEntities.addAll(temporary);

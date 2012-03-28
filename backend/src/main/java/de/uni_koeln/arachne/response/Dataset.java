@@ -107,7 +107,7 @@ public class Dataset {
 	 * @param fieldName The full qualified fieldName to look up.
 	 * @return The value of the field or <code>null<code/> if the field is not found.
 	 */
-	public String getField(String fieldName) {
+	public String getField(final String fieldName) {
 		String result = null;
 		if (fieldName.startsWith("Dataset")) {
 			// the magic number is the dataset char count
@@ -137,7 +137,7 @@ public class Dataset {
 	 * @param fieldName The full qualified fieldName to look up.
 	 * @return The value of the field or <code>null<code/> if the field is not found.
 	 */
-	public String getFieldFromFields(String fieldName) {
+	public String getFieldFromFields(final String fieldName) {
 		final String result = fields.get(fieldName);
 		return result;
 	}
@@ -147,7 +147,7 @@ public class Dataset {
 	 * @param fieldName The full qualified fieldName to look up.
 	 * @return The value of the field or <code>null<code/> if the field is not found.
 	 */
-	public String getFieldFromContext(String fieldName) {
+	public String getFieldFromContext(final String fieldName) {
 		String result = null;
 		for (Context context: this.context) {
 			final ArachneLink link = (ArachneLink)context.getFirstContext();
@@ -167,7 +167,7 @@ public class Dataset {
 	 * @param fieldName The full qualified fieldName to look up.
 	 * @return The value of the field or <code>null<code/> if the field is not found.
 	 */
-	public String getFieldFromContext(String fieldName, int index) {
+	public String getFieldFromContext(final String fieldName, final int index) {
 		String result = null;
 		for (Context context: this.context) {
 			final ArachneLink link = (ArachneLink)context.getContext(index);
@@ -188,7 +188,7 @@ public class Dataset {
 	 * @param fieldName The full qualified fieldName to look up.
 	 * @return The value of the fields or <code>null<code/> if the field is not found.
 	 */
-	public List<String> getFieldsFromContexts(String fieldName) {
+	public List<String> getFieldsFromContexts(final String fieldName) {
 		final List<String> result = new ArrayList<String>();
 		for (Context context: this.context) {
 			final List<AbstractLink> links = context.getallContexts();
@@ -215,19 +215,19 @@ public class Dataset {
 	}
 	
 	// set methods
-	public void setContext(List<Context> context) {
+	public void setContext(final List<Context> context) {
 		this.context = context;
 	}
 	
 	/*public void setImages(List<ArachneImage> images) {
 		this.images = images;
 	}*/
-	public void setImages(List<Image> images) {
+	public void setImages(final List<Image> images) {
 		this.images = images;
 	}
 		
-	public void addContext(Context aContext) {
-		this.context.add(aContext);
+	public void addContext(final Context context) {
+		this.context.add(context);
 	}
 
 	
@@ -238,22 +238,21 @@ public class Dataset {
 	 * @return returns false if the section value is overwritten true if the Section is new to the Object
 	 */
 	
-	public boolean setFields(String fieldsLabel, String fieldsValues) {
+	public boolean setFields(final String fieldsLabel, final String fieldsValues) {
 		if (this.fields.containsKey(fieldsLabel)) {
 			this.fields.put(fieldsLabel, fieldsValues);
 			return false;
-		}
-		else {
+		} else {
 			this.fields.put(fieldsLabel, fieldsValues);
 			return true;
 		}
 	}
 	
-	public void appendFields(Map<String, String> sections) {
+	public void appendFields(final Map<String, String> sections) {
 		this.fields.putAll(sections);
 	}
 
-	public void setArachneId(EntityId arachneId) {
+	public void setArachneId(final EntityId arachneId) {
 		this.arachneId = arachneId;
 	}
 	

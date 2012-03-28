@@ -19,7 +19,7 @@ public class GenericEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	 * @param field1 The field for which the id is given.
 	 * @param field1Id The field Id.
 	 */
-	public GenericEntitiesSQLQueryBuilder(String tableName, String field1, Long field1Id, UserAdministration user) {
+	public GenericEntitiesSQLQueryBuilder(final String tableName, final String field1, final Long field1Id, final UserAdministration user) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;

@@ -32,7 +32,7 @@ public class ArachneLink extends AbstractLink {
 		return entity1;
 	}
 
-	public void setEntity1(Dataset entity1) {
+	public void setEntity1(final Dataset entity1) {
 		this.entity1 = entity1;
 	}
 
@@ -40,7 +40,7 @@ public class ArachneLink extends AbstractLink {
 		return entity2;
 	}
 
-	public void setEntity2(Dataset entity2) {
+	public void setEntity2(final Dataset entity2) {
 		this.entity2 = entity2;
 	}
 }

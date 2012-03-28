@@ -10,13 +10,13 @@ public class FacetList {
 	/**
 	 * Data of the class.
 	 */
-	private transient List<Facet> data = new ArrayList<Facet>();
+	private transient final List<Facet> data = new ArrayList<Facet>();
 	
 	/**
 	 * Adds a facet to the list. If a facet of the same name already exists it adds the values to this facet.
 	 * @param facet
 	 */
-	public void add(Facet facet) {
+	public void add(final Facet facet) {
 		if (getFacetByName(facet.getName()) > -1) {
 			data.get(getFacetByName(facet.getName())).addValues(facet.getValues());
 		} else {

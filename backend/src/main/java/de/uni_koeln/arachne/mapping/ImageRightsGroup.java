@@ -45,7 +45,7 @@ public class ImageRightsGroup {
 	/**
 	 * @param resolutionAnonymous the resolutionAnonymous to set
 	 */
-	public void setResolutionAnonymous(ImageResolutionType resolutionAnonymous) {
+	public void setResolutionAnonymous(final ImageResolutionType resolutionAnonymous) {
 		this.resolutionAnonymous = resolutionAnonymous;
 	}
 	/**
@@ -57,7 +57,7 @@ public class ImageRightsGroup {
 	/**
 	 * @param watermarkAnonymous the watermarkAnonymous to set
 	 */
-	public void setWatermarkAnonymous(String watermarkAnonymous) {
+	public void setWatermarkAnonymous(final String watermarkAnonymous) {
 		this.watermarkAnonymous = watermarkAnonymous;
 	}
 	/**
@@ -69,7 +69,7 @@ public class ImageRightsGroup {
 	/**
 	 * @param resolutionRegistered the resolutionRegistered to set
 	 */
-	public void setResolutionRegistered(ImageResolutionType resolutionRegistered) {
+	public void setResolutionRegistered(final ImageResolutionType resolutionRegistered) {
 		this.resolutionRegistered = resolutionRegistered;
 	}
 	/**
@@ -81,7 +81,7 @@ public class ImageRightsGroup {
 	/**
 	 * @param watermarkRegistered the watermarkRegistered to set
 	 */
-	public void setWatermarkRegistered(String watermarkRegistered) {
+	public void setWatermarkRegistered(final String watermarkRegistered) {
 		this.watermarkRegistered = watermarkRegistered;
 	}
 	/**
@@ -93,7 +93,7 @@ public class ImageRightsGroup {
 	/**
 	 * @param overrideForGroup the overrideForGroup to set
 	 */
-	public void setOverrideForGroup(String overrideForGroup) {
+	public void setOverrideForGroup(final String overrideForGroup) {
 		this.overrideForGroup = overrideForGroup;
 	}
 	

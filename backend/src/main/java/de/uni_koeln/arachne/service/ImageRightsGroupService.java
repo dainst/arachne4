@@ -54,8 +54,8 @@ public class ImageRightsGroupService {
 	 * user rights
 	 * @return
 	 */
-	public ImageResolutionType getMaxResolution(Dataset imageEntity,
-			UserAdministration currentUser, ImageRightsGroup imageRightsGroup) {
+	public ImageResolutionType getMaxResolution(final Dataset imageEntity,
+			final UserAdministration currentUser, final ImageRightsGroup imageRightsGroup) {
 		
 		// if user doesn't have group he is not allowed to view the image in any resolution
 		if(imageEntity.getField("marbilder.BildrechteGruppe") == null) {
@@ -99,8 +99,8 @@ public class ImageRightsGroupService {
 	 * @param imageRightsGroup
 	 * @return
 	 */
-	public String getWatermarkFilename(Dataset imageEntity,
-			UserAdministration currentUser, ImageRightsGroup imageRightsGroup) {
+	public String getWatermarkFilename(final Dataset imageEntity,
+			final UserAdministration currentUser, final ImageRightsGroup imageRightsGroup) {
 		
 		// if override_for_group is set and the user has that exact group, the user is allowed to view the image without watermark
 		if(!imageRightsGroup.getOverrideForGroup().isEmpty()) {

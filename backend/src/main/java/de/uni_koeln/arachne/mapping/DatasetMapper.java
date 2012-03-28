@@ -25,7 +25,7 @@ public class DatasetMapper implements RowMapper<Map<String,String>> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
 	
-	public Map<String,String> mapRow(ResultSet resultSet, int rownum) throws SQLException {
+	public Map<String,String> mapRow(final ResultSet resultSet, final int rownum) throws SQLException {
 		final Map<String,String> dataset = new Hashtable<String,String>();
 
 		final ResultSetMetaData meta = resultSet.getMetaData();

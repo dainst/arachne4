@@ -44,11 +44,11 @@ public class SearchController {
 	 * @return A response object containing the data (this is serialized to XML or JSON depending on content negotiation).
 	 */
 	@RequestMapping(value="/search", method=RequestMethod.GET)
-	public @ResponseBody SearchResult handleSearchRequest(@RequestParam("q") String searchParam,
-														  @RequestParam(value = "limit", required = false) String limit,
-														  @RequestParam(value = "offset", required = false) String offset,
-														  @RequestParam(value = "fq", required = false) String filterValues,
-														  @RequestParam(value = "fl", required = false) String facetLimit) {
+	public @ResponseBody SearchResult handleSearchRequest(@RequestParam("q") final String searchParam,
+														  @RequestParam(value = "limit", required = false) final String limit,
+														  @RequestParam(value = "offset", required = false) final String offset,
+														  @RequestParam(value = "fq", required = false) final String filterValues,
+														  @RequestParam(value = "fl", required = false) final String facetLimit) {
 		
 		final SearchResult result = new SearchResult();
 		SolrServer server = null;
@@ -127,7 +127,7 @@ public class SearchController {
 	 * @param filterString The silter query string to convert.
 	 * @return a string list containing the seperated parameters or <code>null</code> if the conversion fails.
 	 */
-	private List<String> filterQueryStringToStringList(String filterString) {
+	private List<String> filterQueryStringToStringList(final String filterString) {
 		String string = filterString;
 		if (string.startsWith("facet_")) {
 			final List<String> result = new ArrayList<String>();

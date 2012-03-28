@@ -19,7 +19,7 @@ public abstract class AbstractHibernateTemplateDao {
 	 * @param sessionFactory
 	 */
 	@Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
+    public void setSessionFactory(final SessionFactory sessionFactory) {
         hibernateTemplate = new HibernateTemplate(sessionFactory);
     }
 	

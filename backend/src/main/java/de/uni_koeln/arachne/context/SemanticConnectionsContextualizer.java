@@ -23,11 +23,11 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 	/**
 	 * The type of <code>Context<code> the <code>Contextualizer</code> retrieves.
 	 */
-	private transient String contextType;
+	private transient final String contextType;
 	
-	private transient GenericSQLService genericSQLService;
+	private transient final GenericSQLService genericSQLService;
 	
-	private transient long linkCount = 0l;
+	private transient final long linkCount = 0l;
 	
 	public SemanticConnectionsContextualizer(final String contextType, final GenericSQLService genericSQLService) {
 		this.contextType = contextType;
@@ -40,7 +40,7 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 	}
 	
 	@Override
-	public List<AbstractLink> retrieve(Dataset parent, Integer offset, Integer limit) {
+	public List<AbstractLink> retrieve(final Dataset parent, final Integer offset, final Integer limit) {
 		final List<AbstractLink> result = new ArrayList<AbstractLink>();
 		
 		final long queryTime = System.currentTimeMillis();

@@ -57,7 +57,7 @@ public class ContextService {
 	 * This methods adds all contexts to the dataset that are found in the XML description.
 	 * @param parent The dataset to add the contexts to.
 	 */
-	public void addMandatoryContexts(Dataset parent) {
+	public void addMandatoryContexts(final Dataset parent) {
 		final List<String> externalFields = getExternalFields(parent.getArachneId().getTableName());
 		
 		final List<String> mandatoryContextTypes = new ArrayList<String>();
@@ -86,7 +86,7 @@ public class ContextService {
 	 * 
 	 * @param parent ArachneDataset that will gain the added context
 	 */
-	public void addContext(Dataset parent) {
+	public void addContext(final Dataset parent) {
 		if (parent.getArachneId().getTableName().equals("bauwerk")) {
 			final List<String> connectionList = arachneConnectionService.getConnectionList(parent.getArachneId().getTableName());
 			final Iterator<String> iterator = connectionList.iterator();
@@ -125,7 +125,7 @@ public class ContextService {
 	 * @return an appropriate contextualizer serving the specific context indicated by the given <code>contextType</code>
 	 */
 	@SuppressWarnings("rawtypes")
-	private IContextualizer getContextualizerByContextType(String contextType) {
+	private IContextualizer getContextualizerByContextType(final String contextType) {
 		// TODO The services should not be hardcoded but somehow specified by either contextType or contextualizer 
 		//Initialization of contextualizer needs two params
 		Class [] classParam = new Class[2];
@@ -163,7 +163,7 @@ public class ContextService {
 	 * @param type The of the xml file.
 	 * @return A list of full qualified external field names.
 	 */
-	private List<String> getExternalFields(String type) {	
+	private List<String> getExternalFields(final String type) {	
 		
 		final String filename = xmlConfigUtil.getFilenameFromType(type);
 		
@@ -173,10 +173,10 @@ public class ContextService {
 			final Document doc = saxBuilder.build(xmlDocument.getFile());
 			final Element rootElement = doc.getRootElement();
 			//TODO Make Nicer XML Parsing is very quick and Dirty solution for my Problems
-			Namespace nameSpace = Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category");
-			Element display = rootElement.getChild("display", nameSpace);
-			Element facets = rootElement.getChild("facets", nameSpace);
-			List<String> result = new ArrayList<String>();
+			final Namespace nameSpace = Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category");
+			final Element display = rootElement.getChild("display", nameSpace);
+			final Element facets = rootElement.getChild("facets", nameSpace);
+			final List<String> result = new ArrayList<String>();
 			result.addAll(getFields(display, type));
 			result.addAll(getFields(facets, type));
 			return result;		
@@ -196,14 +196,14 @@ public class ContextService {
 	 * @param parentType The type of the <code>ArachneDataset</code>.
 	 * @return A list of full qualified external field names.
 	 */
-	private List<String> getFields(Element element, String parentType) {
-		List<String> result = new ArrayList<String>();
+	private List<String> getFields(final Element element, final String parentType) {
+		final List<String> result = new ArrayList<String>();
 		@SuppressWarnings("unchecked")
-		List<Element> children = element.getChildren();
+		final List<Element> children = element.getChildren();
 		
 		if (element.getName() == "context") {
 			if (!children.isEmpty()) {
-				String context = element.getAttributeValue("type");
+				final String context = element.getAttributeValue("type");
 				for (Element e:children) {
 					String datasourceValue = e.getAttributeValue("datasource");
 					if (!StrUtils.isEmptyOrNull(datasourceValue)) {
@@ -221,14 +221,14 @@ public class ContextService {
 				}
 			}
 
-			String datasourceValue = element.getAttributeValue("datasource");
+			final String datasourceValue = element.getAttributeValue("datasource");
 			if (!StrUtils.isEmptyOrNull(datasourceValue)) {
 				if (!datasourceValue.startsWith(parentType) && !datasourceValue.startsWith("Dataset")) {
 					result.add(datasourceValue);
 				}
 			}
 
-			String ifEmptyValue = element.getAttributeValue("ifEmpty");
+			final String ifEmptyValue = element.getAttributeValue("ifEmpty");
 			if (!StrUtils.isEmptyOrNull(ifEmptyValue)) {
 				if (!ifEmptyValue.startsWith(parentType) && !datasourceValue.startsWith("Dataset")) {
 					result.add(ifEmptyValue);

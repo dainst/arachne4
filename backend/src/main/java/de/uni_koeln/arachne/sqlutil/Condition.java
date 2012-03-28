@@ -45,21 +45,21 @@ public class Condition {
 	 * Set the Operator
 	 * @param operator Operator like : "LIKE", "IS NOT", "=" etc
 	 */
-	public void setOperator(String operator) {
+	public void setOperator(final String operator) {
 		this.operator = operator;
 	}
 	/**
 	 * Set the First part of the condition Field etc
 	 * @param part1 First part of the Condition normaly a Field name
 	 */
-	public void setPart1(String part1) {
+	public void setPart1(final String part1) {
 		this.part1 = part1;
 	}
 	/**
 	 * Set the Target Value of the Condition something like a Value
 	 * @param part2
 	 */
-	public void setPart2(String part2) {
+	public void setPart2(final String part2) {
 		this.part2 = part2;
 	}
 	

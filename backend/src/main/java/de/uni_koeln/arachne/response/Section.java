@@ -19,7 +19,7 @@ public class Section extends AbstractContent {
 	/**
 	 * A list of content (either <code>Field</code> or <code>Section</code>).
 	 */
-	private transient List<AbstractContent> content = new ArrayList<AbstractContent>();;
+	private transient final List<AbstractContent> content = new ArrayList<AbstractContent>();
 	
 	/**
 	 * Convenient function that adds a content object to the list of <code>Content</code>.

@@ -14,7 +14,7 @@ public enum ImageResolutionType {
 	private final int height;
 	private final int width;
 	
-	ImageResolutionType(int height, int width) {
+	ImageResolutionType(final int height, final int width) {
 		this.height = height;
 		this.width = width;
 	}

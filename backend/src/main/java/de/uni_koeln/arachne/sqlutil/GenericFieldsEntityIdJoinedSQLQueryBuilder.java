@@ -16,7 +16,7 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 	
 	private transient String field2;
 	
-	private transient String entityIdLeftJoin;
+	private transient final String entityIdLeftJoin;
 	
 	/**
 	 * Constructs a condition to query multiple fields. The <code>ArachneEntityId</code> is automatically retrieved by
@@ -26,7 +26,8 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 	 * @param field1Id The field Id.
 	 * @param fields The fields to query.
 	 */
-	public GenericFieldsEntityIdJoinedSQLQueryBuilder(String tableName, String field1, Long field1Id, List<String> fields, UserAdministration user) {
+	public GenericFieldsEntityIdJoinedSQLQueryBuilder(final String tableName, final String field1, final Long field1Id, final List<String> fields
+			, final UserAdministration user) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;

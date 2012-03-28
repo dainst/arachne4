@@ -66,9 +66,9 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/{entityId}", method = RequestMethod.GET)
 	public @ResponseBody BufferedImage getImage(
-			@PathVariable("entityId") String entityId,
-			HttpServletRequest request,
-			HttpServletResponse response) {
+			@PathVariable("entityId") final String entityId,
+			final HttpServletRequest request,
+			final HttpServletResponse response) {
 		
 		return getImageStream(entityId, ImageResolutionType.HIGH, response);
 		
@@ -83,9 +83,9 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
 	public @ResponseBody BufferedImage getThumbnail(
-			@PathVariable("entityId") String entityId,
-			HttpServletRequest request,
-			HttpServletResponse response) {
+			@PathVariable("entityId") final String entityId,
+			final HttpServletRequest request,
+			final HttpServletResponse response) {
 				
 		return getImageStream(entityId, ImageResolutionType.THUMBNAIL, response);
 		
@@ -100,16 +100,16 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/preview/{entityId}", method = RequestMethod.GET)
 	public @ResponseBody BufferedImage getPreview(
-			@PathVariable("entityId") String entityId,
-			HttpServletRequest request,
-			HttpServletResponse response) {
+			@PathVariable("entityId") final String entityId,
+			final HttpServletRequest request,
+			final HttpServletResponse response) {
 		
 		return getImageStream(entityId, ImageResolutionType.PREVIEW, response);
 		
 	}
 	
-	private BufferedImage getImageStream(String entityId, ImageResolutionType requestedResolution
-			, HttpServletResponse response) {
+	private BufferedImage getImageStream(final String entityId, final ImageResolutionType requestedResolution
+			, final HttpServletResponse response) {
 		
 		ImageResolutionType resolution = requestedResolution;
 		final EntityId arachneId = arachneEntityIdentificationService.getId(Long.valueOf(entityId));

@@ -24,8 +24,8 @@ public class GenericFieldsMapperString implements RowMapper<List<String>> {
 	 * IMPORTANT: Always use this constructor to create instances of this class.
 	 * @param rowCount The number of rows to map from the <code>ResultSet</code> to the result list.
 	 */
-	public GenericFieldsMapperString(int rowCount) {
-		lastRow = rowCount + 1;
+	public GenericFieldsMapperString(final int rowCount) {
+		this.lastRow = rowCount + 1;
 	}
 	
 	/**

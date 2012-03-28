@@ -29,7 +29,7 @@ public class Session {
 	/**
 	 * @param sid the sid to set
 	 */
-	public void setSid(String sid) {
+	public void setSid(final String sid) {
 		this.sid = sid;
 	}
 	/**
@@ -41,7 +41,7 @@ public class Session {
 	/**
 	 * @param user the user to set
 	 */
-	public void setUserAdministration(UserAdministration user) {
+	public void setUserAdministration(final UserAdministration user) {
 		this.user = user;
 	}
 	/**
@@ -53,7 +53,7 @@ public class Session {
 	/**
 	 * @param timestamp the timestamp to set
 	 */
-	public void setTimestamp(Date timestamp) {
+	public void setTimestamp(final Date timestamp) {
 		this.timestamp = timestamp;
 	}
 	/**
@@ -65,7 +65,7 @@ public class Session {
 	/**
 	 * @param ipaddress the ipaddress to set
 	 */
-	public void setIpaddress(String ipaddress) {
+	public void setIpaddress(final String ipaddress) {
 		this.ipaddress = ipaddress;
 	}
 	/**
@@ -77,7 +77,7 @@ public class Session {
 	/**
 	 * @param useragent the useragent to set
 	 */
-	public void setUseragent(String useragent) {
+	public void setUseragent(final String useragent) {
 		this.useragent = useragent;
 	}
 	

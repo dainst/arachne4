@@ -36,7 +36,7 @@ public class AuthenticationController {
 	private SessionDao sessionDao; // NOPMD
 	
 	@Autowired
-	private UserRightsService rightsService; // NOPMD
+	private UserRightsService rightsService; // NOPMD 
 	
 	/**
 	 * Handles login
@@ -44,10 +44,10 @@ public class AuthenticationController {
 	 */
 	@RequestMapping(value="/sessions", method=RequestMethod.POST)
 	public @ResponseBody Session createSession(
-			@RequestParam("user") String username, 
-			@RequestParam("password") String encryptedPassword,
-			HttpServletResponse response,
-			HttpServletRequest request) {
+			@RequestParam("user") final String username, 
+			@RequestParam("password") final String encryptedPassword,
+			final HttpServletResponse response,
+			final HttpServletRequest request) {
 		
 		final UserAdministration user = userDao.findByName(username);
 		if (user != null && user.getPassword().equals(encryptedPassword)) {
@@ -75,9 +75,9 @@ public class AuthenticationController {
 	 */
 	@RequestMapping(value="/sessions/{sessionId}", method=RequestMethod.DELETE)
 	public void destroySession(
-			HttpServletResponse response,
-			HttpServletRequest request,
-			@PathVariable("sessionId") String sessionId) {
+			final HttpServletResponse response,
+			final HttpServletRequest request,
+			@PathVariable("sessionId") final String sessionId) {
 		
 		rightsService.reset();
 		sessionDao.deleteSession(request.getSession().getId());

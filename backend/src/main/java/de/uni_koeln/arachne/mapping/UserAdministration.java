@@ -84,13 +84,13 @@ public class UserAdministration {
 		 * Is the User allowed to see all groups
 		 */
 	   	@Column(name="all_groups")
-		boolean all_groups; // NOPMD
+		boolean all_groups;  // NOPMD
 	   	
 		/**
 		 * Is the user allowed to Login
 		 */
 	   	@Column(name="login_permission")
-		boolean login_permission; // NOPMD
+		boolean login_permission;  // NOPMD
 	   	
 		/**
 		 * Time of the last Login
@@ -152,7 +152,7 @@ public class UserAdministration {
 		/**
 		 * @param password the password to set
 		 */
-		public void setPassword(String password) {
+		public void setPassword(final String password) {
 			this.password = password;
 		}
 
@@ -166,7 +166,7 @@ public class UserAdministration {
 		/**
 		 * @param institution the institution to set
 		 */
-		public void setInstitution(String institution) {
+		public void setInstitution(final String institution) {
 			this.institution = institution;
 		}
 
@@ -180,7 +180,7 @@ public class UserAdministration {
 		/**
 		 * @param firstname the firstname to set
 		 */
-		public void setFirstname(String firstname) {
+		public void setFirstname(final String firstname) {
 			this.firstname = firstname;
 		}
 
@@ -194,7 +194,7 @@ public class UserAdministration {
 		/**
 		 * @param lastname the lastname to set
 		 */
-		public void setLastname(String lastname) {
+		public void setLastname(final String lastname) {
 			this.lastname = lastname;
 		}
 
@@ -208,7 +208,7 @@ public class UserAdministration {
 		/**
 		 * @param email the email to set
 		 */
-		public void setEmail(String email) {
+		public void setEmail(final String email) {
 			this.email = email;
 		}
 
@@ -222,7 +222,7 @@ public class UserAdministration {
 		/**
 		 * @param street the street to set
 		 */
-		public void setStreet(String street) {
+		public void setStreet(final String street) {
 			this.street = street;
 		}
 
@@ -236,7 +236,7 @@ public class UserAdministration {
 		/**
 		 * @param zip the zip to set
 		 */
-		public void setZip(String zip) {
+		public void setZip(final String zip) {
 			this.zip = zip;
 		}
 
@@ -250,7 +250,7 @@ public class UserAdministration {
 		/**
 		 * @param place the place to set
 		 */
-		public void setPlace(String place) {
+		public void setPlace(final String place) {
 			this.place = place;
 		}
 
@@ -264,7 +264,7 @@ public class UserAdministration {
 		/**
 		 * @param homepage the homepage to set
 		 */
-		public void setHomepage(String homepage) {
+		public void setHomepage(final String homepage) {
 			this.homepage = homepage;
 		}
 
@@ -278,7 +278,7 @@ public class UserAdministration {
 		/**
 		 * @param country the country to set
 		 */
-		public void setCountry(String country) {
+		public void setCountry(final String country) {
 			this.country = country;
 		}
 
@@ -292,7 +292,7 @@ public class UserAdministration {
 		/**
 		 * @param telephone the telephone to set
 		 */
-		public void setTelephone(String telephone) {
+		public void setTelephone(final String telephone) {
 			this.telephone = telephone;
 		}
 
@@ -306,21 +306,21 @@ public class UserAdministration {
 		/**
 		 * @param all_groups the all_groups to set
 		 */
-		public void setAll_groups(boolean all_groups) { // NOPMD
+		public void setAll_groups(final boolean all_groups) { // NOPMD 
 			this.all_groups = all_groups;
 		}
 
 		/**
 		 * @return the login_permission
 		 */
-		public boolean isLogin_permission() { // NOPMD
+		public boolean isLogin_permission() { // NOPMD 
 			return login_permission;
 		}
 
 		/**
 		 * @param login_permission the login_permission to set
 		 */
-		public void setLogin_permission(boolean login_permission) { // NOPMD
+		public void setLogin_permission(final boolean login_permission) { // NOPMD 
 			this.login_permission = login_permission;
 		}
 
@@ -334,7 +334,7 @@ public class UserAdministration {
 		/**
 		 * @param lastLogin the lastLogin to set
 		 */
-		public void setLastLogin(Date lastLogin) {
+		public void setLastLogin(final Date lastLogin) {
 			this.lastLogin = lastLogin;
 		}
 
@@ -348,11 +348,11 @@ public class UserAdministration {
 		/**
 		 * @param datasetGroups the datasetGroups to set
 		 */
-		public void setDatasetGroups(Set<DatasetGroup> datasetGroups) {
+		public void setDatasetGroups(final Set<DatasetGroup> datasetGroups) {
 			this.datasetGroups = datasetGroups;
 		}
 
-		public boolean hasGroup(String group) {
+		public boolean hasGroup(final String group) {
 			
 			if(all_groups) {
 				return true;

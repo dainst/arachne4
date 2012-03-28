@@ -33,11 +33,11 @@ public class ExternalLink extends AbstractLink {
 		return entity;
 	}
 
-	public void setEntity(Dataset entity) {
+	public void setEntity(final Dataset entity) {
 		this.entity = entity;
 	}
 
-	public void setUri2(String uri2) {
+	public void setUri2(final String uri2) {
 		this.uri2 = uri2;
 	}
 }

@@ -21,7 +21,7 @@ public class SingleEntityQueryBuilder extends AbstractSQLBuilder {
 	 * @param ident This is the <code>ArachneId</code> the SQL retrieve statement should be written for
 	 * @param user 
 	 */
-	public SingleEntityQueryBuilder(EntityId ident, UserAdministration user) {
+	public SingleEntityQueryBuilder(final EntityId ident, final UserAdministration user) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		entityId = ident;

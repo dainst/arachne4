@@ -36,7 +36,7 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value="/", method=RequestMethod.GET)
-	public ModelAndView home(HttpServletRequest request) {
+	public ModelAndView home(final HttpServletRequest request) {
 		
 		LOGGER.debug("Welcome to Arachne4 alpha!");
 		

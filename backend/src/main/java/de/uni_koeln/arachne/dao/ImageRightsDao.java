@@ -9,7 +9,7 @@ import de.uni_koeln.arachne.mapping.ImageRightsGroup;
 @Repository
 public class ImageRightsDao extends AbstractHibernateTemplateDao {
 	
-	public ImageRightsGroup findByName(String name) {
+	public ImageRightsGroup findByName(final String name) {
 		@SuppressWarnings("unchecked")
 		final List<ImageRightsGroup> result = (List<ImageRightsGroup>) hibernateTemplate.find("from ImageRightsGroup where name like ?", name);
 		if (result.isEmpty()) {

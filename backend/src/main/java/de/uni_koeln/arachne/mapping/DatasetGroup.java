@@ -17,7 +17,7 @@ public class DatasetGroup {
 		
 	}
 	
-	public DatasetGroup(String name) {
+	public DatasetGroup(final String name) {
 		this.name = name;
 	}
 	
@@ -37,7 +37,7 @@ public class DatasetGroup {
 	/**
 	 * @param dgid the id to set
 	 */
-	public void setId(int dgid) {
+	public void setId(final int dgid) {
 		this.dgid = dgid;
 	}
 	/**
@@ -50,7 +50,7 @@ public class DatasetGroup {
 	/**
 	 * @param name the name to set
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 

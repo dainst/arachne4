@@ -6,6 +6,7 @@ package de.uni_koeln.arachne.response;
  * This class is used both as an entity and as a container for entities.
  * Empty class just for the sake of the composite pattern.
  */
-public abstract class AbstractContent { // NOPMD
+@SuppressWarnings("PMD")
+public abstract class AbstractContent { 
 	
 }

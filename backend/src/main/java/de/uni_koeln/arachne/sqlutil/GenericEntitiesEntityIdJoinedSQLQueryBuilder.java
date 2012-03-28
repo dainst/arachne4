@@ -12,7 +12,7 @@ public class GenericEntitiesEntityIdJoinedSQLQueryBuilder extends AbstractSQLBui
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntitiesEntityIdJoinedSQLQueryBuilder.class);
 	
 	protected transient SQLRightsConditionBuilder rcb;
-	private transient String entityIdLeftJoin;
+	private transient final String entityIdLeftJoin;
 		
 	/**
 	 * Constructs a condition to query a table.
@@ -20,7 +20,7 @@ public class GenericEntitiesEntityIdJoinedSQLQueryBuilder extends AbstractSQLBui
 	 * @param field1 The field for which the id is given.
 	 * @param field1Id The field Id.
 	 */
-	public GenericEntitiesEntityIdJoinedSQLQueryBuilder(String tableName, String field1, Long field1Id, UserAdministration user) {
+	public GenericEntitiesEntityIdJoinedSQLQueryBuilder(final String tableName, final String field1, final Long field1Id, final UserAdministration user) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;

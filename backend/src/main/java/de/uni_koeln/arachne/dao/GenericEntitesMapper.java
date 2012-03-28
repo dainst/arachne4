@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import de.uni_koeln.arachne.util.StrUtils;
 
 public class GenericEntitesMapper implements RowMapper<Map<String,String>> {
-	public Map<String,String> mapRow(ResultSet resultSet, int rownum) throws SQLException {
+	public Map<String,String> mapRow(final ResultSet resultSet, final int rownum) throws SQLException {
 		final Map<String,String> dataset = new Hashtable<String,String>();
 
 		final ResultSetMetaData meta = resultSet.getMetaData();

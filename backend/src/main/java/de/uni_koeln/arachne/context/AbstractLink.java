@@ -32,13 +32,13 @@ public abstract class AbstractLink {
 	public String getLinkType() {
 		return linkType;
 	}
-	public void setLinkType(String linkType) {
+	public void setLinkType(final String linkType) {
 		this.linkType = linkType;
 	}
 	public Map<String, String> getFields() {
 		return fields;
 	}
-	public void setFields(Map<String, String> fields) {
+	public void setFields(final Map<String, String> fields) {
 		this.fields = fields;
 	}
 }

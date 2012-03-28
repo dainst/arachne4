@@ -15,7 +15,7 @@ public class ConnectionDao extends AbstractHibernateTemplateDao {
 	 * @param primaryId Primary id of the entry.
 	 * @return an instance of the <code>ArachneConnection</code> table mapping.
 	 */
-	public Connection getByID(Long primaryId) {
+	public Connection getByID(final Long primaryId) {
 		return (Connection) hibernateTemplate.get(Connection.class, primaryId);
 	}
 	
@@ -23,7 +23,7 @@ public class ConnectionDao extends AbstractHibernateTemplateDao {
 	 * Retrieves a list of 'contexts' that are connected to <code>type</code>.
 	 * @param type The table name to seek connected tables for. 
 	 */
-	public List<String> getConnectionList(String type) {
+	public List<String> getConnectionList(final String type) {
 		@SuppressWarnings("unchecked")
 		final List<Connection> queryResult = (List<Connection>) hibernateTemplate
 				.find("from ArachneConnection where Teil1 = '" + type + "'");
@@ -41,7 +41,7 @@ public class ConnectionDao extends AbstractHibernateTemplateDao {
 	 * @param table2 Second table name.
 	 * @return The table name of the 'cross table'.
 	 */
-	public String getTableName(String table1, String table2) {
+	public String getTableName(final String table1, final String table2) {
 		@SuppressWarnings("unchecked")
 		final List<Connection> queryResult = (List<Connection>) hibernateTemplate
 				.find("from Connection where Teil1 = '" + table1 + "' and Teil2 = '" + table2 + "'");

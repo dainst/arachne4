@@ -42,7 +42,8 @@ public class ImageStreamService {
 	 * @throws IOException 
 	 */
 	// TODO: change to the new Image-Server
-	public BufferedImage getArachneImage(ImageResolutionType imageResolutionType, Dataset imageEntity, String watermarkFilename) throws IOException {
+	public BufferedImage getArachneImage(final ImageResolutionType imageResolutionType, final Dataset imageEntity
+			, final String watermarkFilename) throws IOException {
 		
 		int width = imageResolutionType.width();
 		int height = imageResolutionType.height();
@@ -107,7 +108,7 @@ public class ImageStreamService {
 	/**
 	 * @param repositoryLink the repositoryLink to set
 	 */
-	public void setRepositoryLink(String repositoryLink) {
+	public void setRepositoryLink(final String repositoryLink) {
 		this.repositoryLink = repositoryLink;
 	}
 	

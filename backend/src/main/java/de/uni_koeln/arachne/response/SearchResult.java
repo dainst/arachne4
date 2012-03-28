@@ -23,31 +23,31 @@ public class SearchResult {
 	public long getSize() {
 		return size;
 	}
-	public void setSize(long size) {
+	public void setSize(final long size) {
 		this.size = size;
 	}
 	public int getLimit() {
 		return limit;
 	}
-	public void setLimit(int limit) {
+	public void setLimit(final int limit) {
 		this.limit = limit;
 	}
 	public int getOffset() {
 		return offset;
 	}
-	public void setOffset(int offset) {
+	public void setOffset(final int offset) {
 		this.offset = offset;
 	}
 	public Map<String, Map<String, Long>> getFacets() {
 		return facets;
 	}
-	public void setFacets(Map<String, Map<String, Long>> facets) {
+	public void setFacets(final Map<String, Map<String, Long>> facets) {
 		this.facets = facets;
 	}
 	public SolrDocumentList getEntities() {
 		return entities;
 	}
-	public void setEntities(SolrDocumentList entities) {
+	public void setEntities(final SolrDocumentList entities) {
 		this.entities = entities;
 	} 
 }

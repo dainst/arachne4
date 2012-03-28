@@ -8,11 +8,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class FieldList extends AbstractContent {
-	public FieldList() {
-		value = new ArrayList<String>();
-	}
 	
 	private transient List<String> value = null;
+	
+	public FieldList() {
+		this.value = new ArrayList<String>();
+	}
 	
 	@XmlElementWrapper
 	public List<String> getValue() {

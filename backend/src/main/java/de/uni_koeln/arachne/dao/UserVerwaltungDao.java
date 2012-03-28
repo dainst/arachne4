@@ -8,11 +8,11 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 @Repository("UserVerwaltungDao")
 public class UserVerwaltungDao extends AbstractHibernateTemplateDao{
 
-	public UserAdministration findById(long uid) {
+	public UserAdministration findById(final long uid) {
 		return (UserAdministration) hibernateTemplate.get(UserAdministration.class, uid);
 	}
 
-	public UserAdministration findByName(String user) {
+	public UserAdministration findByName(final String user) {
 		final String hql = "from UserAdministration as user WHERE user.username LIKE ?";
 		UserAdministration result = null;
 		if (hibernateTemplate.find(hql,user).size() > 0) {
