@@ -12,7 +12,7 @@ import de.uni_koeln.arachne.dao.GenericSQLDao;
 @Service
 public class GenericSQLService {
 	@Autowired
-	protected GenericSQLDao genericSQLDao;
+	protected GenericSQLDao genericSQLDao; // NOPMD
 	
 	public List<Long> getIdByFieldId(String tableName, String field1, Long field1Id, String field2) {
 		return genericSQLDao.getIdByFieldId(tableName, field1, field1Id, field2);

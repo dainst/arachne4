@@ -9,16 +9,16 @@ import java.util.List;
  */
 public abstract class AbstractSQLBuilder {
 	
-	protected String sql = "";
+	protected transient String sql = "";
 	
-	protected String table = "";
+	protected transient String table = "";
 	
-	protected boolean limit1 = false;
+	protected transient boolean limit1 = false;
 	
 	/**
 	 * With And connected Conditions
 	 */
-	protected List<Condition> conditions;
+	protected transient List<Condition> conditions;
 	
 	/**
 	 * returns the build SQL query as <code>String</code>.

@@ -30,13 +30,13 @@ public class AuthenticationController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
 	
 	@Autowired
-	private UserVerwaltungDao userDao;
+	private UserVerwaltungDao userDao; // NOPMD
 	
 	@Autowired
-	private SessionDao sessionDao;
+	private SessionDao sessionDao; // NOPMD
 	
 	@Autowired
-	private UserRightsService rightsService;
+	private UserRightsService rightsService; // NOPMD
 	
 	/**
 	 * Handles login

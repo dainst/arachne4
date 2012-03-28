@@ -13,13 +13,10 @@ public class TableConnectionDescription {
 	//Fieldname of field2 or PrimaryKey or ForeignKey
 	protected String field2;
 	//Is it a Connection by Crosstable
-	protected boolean connectionByCrosstable;
+	protected transient boolean connectionByCrosstable;
 	//The name of the Crosstable
-	protected String crossTableName;
+	protected transient String crossTableName;
 	
-	public TableConnectionDescription() {
-
-	}
 	/**
 	 * 
 	 * @param table1 table1
@@ -27,7 +24,7 @@ public class TableConnectionDescription {
 	 * @param table2 table2
 	 * @param field2 field2
 	 */
-	public TableConnectionDescription(String table1,String field1,String table2,String field2) {
+	public TableConnectionDescription(final String table1, final String field1, final String table2, final String field2) {
 		
 		this.table1 =table1;
 		this.table2 =table2;
@@ -43,7 +40,7 @@ public class TableConnectionDescription {
 	 * @param field2 field2
 	 * @param crossTableName CrossTable name
 	 */
-	public TableConnectionDescription(String table1,String field1,String table2,String field2,String crossTableName ) {
+	public TableConnectionDescription(final String table1, final String field1, final String table2, final String field2, final String crossTableName ) {
 		
 		this.table1 =table1;
 		this.table2 =table2;

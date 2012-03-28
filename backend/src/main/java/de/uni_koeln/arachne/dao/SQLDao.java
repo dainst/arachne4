@@ -27,9 +27,9 @@ public class SQLDao {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
 	
-	protected JdbcTemplate jdbcTemplate;
+	protected transient JdbcTemplate jdbcTemplate;
 	
-	protected DataSource dataSource;
+	protected transient DataSource dataSource;
 	/**
 	 * Through this Function the Datasource is Automaticly injected
 	 * @param dataSource An SQl Datasource

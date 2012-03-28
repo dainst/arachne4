@@ -28,7 +28,7 @@ public class HomeController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 
 	@Autowired
-	private UserRightsService userRightsService;
+	private UserRightsService userRightsService; // NOPMD
 	
 	//private Session session = SessionUtil.getSessionFactory().getCurrentSession();
 	

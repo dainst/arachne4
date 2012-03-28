@@ -21,7 +21,7 @@ public class Dataset {
 	/**
 	 * workaround for implementing getUri;
 	 */
-	private final String baseUri = "http://localhost:8080/arachnedataservice/entity/";	
+	private transient final String baseUri = "http://localhost:8080/arachnedataservice/entity/";	
 	
 	/**
 	 * Identification of the Dataset.
@@ -32,7 +32,7 @@ public class Dataset {
 	/**
 	 * The Informations of the Dataset that is not in the core Dataset Definitions.
 	 */
-	protected Map<String,String> fields;
+	protected transient Map<String,String> fields;
 	
 	/**
 	 * The context map contains the contexts of the entity.

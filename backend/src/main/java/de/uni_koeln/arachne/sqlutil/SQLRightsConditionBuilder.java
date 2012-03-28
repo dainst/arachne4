@@ -15,10 +15,10 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
  */
 public class SQLRightsConditionBuilder {
 
-	private Set<DatasetGroup> permissiongroups;
-	private String tableName;
-	private UserAdministration user;
-	private List<String> exludedTables = new ArrayList<String>();
+	private transient Set<DatasetGroup> permissiongroups;
+	private transient String tableName;
+	private transient UserAdministration user;
+	private transient List<String> exludedTables = new ArrayList<String>();
 	
 	
 	public SQLRightsConditionBuilder(String tn, UserAdministration user) {

@@ -19,7 +19,7 @@ import de.uni_koeln.arachne.util.ArachneId;
 public class SingleEntityDataService {
 	
 	@Autowired
-	DataMapDao arachneDataMapDao;
+	DataMapDao arachneDataMapDao; // NOPMD
 	List<TableConnectionDescription> subProjects;
 	
 	public SingleEntityDataService() {

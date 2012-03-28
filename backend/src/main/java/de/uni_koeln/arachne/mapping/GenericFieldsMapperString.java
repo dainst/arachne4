@@ -16,7 +16,7 @@ public class GenericFieldsMapperString implements RowMapper<List<String>> {
 	/**
 	 * Number of rows to add to the result list.
 	 */
-	private int lastRow = 0;
+	private transient int lastRow = 0;
 	
 	/**
 	 * Custom constructor initializing the <code>lastRow</code> property.

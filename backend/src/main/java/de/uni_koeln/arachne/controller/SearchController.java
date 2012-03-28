@@ -30,7 +30,7 @@ import de.uni_koeln.arachne.util.StrUtils;
 public class SearchController {
 	
 	@Autowired
-	SolrUrlString solrUrl;
+	SolrUrlString solrUrl; // NOPMD
 	
 	/**
 	 * Handles the http request by querying the Solr index and returning the search result.

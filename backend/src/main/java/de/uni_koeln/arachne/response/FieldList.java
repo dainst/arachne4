@@ -12,22 +12,22 @@ public class FieldList extends AbstractContent {
 		value = new ArrayList<String>();
 	}
 	
-	private List<String> value = null;
+	private transient List<String> value = null;
 	
 	@XmlElementWrapper
 	public List<String> getValue() {
 		return this.value;
 	}
 	
-	public void add(String value) {
+	public void add(final String value) {
 		this.value.add(value);
 	}
 	
-	public String get(int index) {
+	public String get(final int index) {
 		return this.value.get(index);
 	}
 	
-	public void modify(int index, String value) {
+	public void modify(final int index, final String value) {
 		this.value.set(index, value);
 	}
 	

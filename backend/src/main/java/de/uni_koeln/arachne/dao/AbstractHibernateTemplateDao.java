@@ -13,9 +13,9 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
  *
  */
 public abstract class AbstractHibernateTemplateDao {
-	protected HibernateTemplate hibernateTemplate;
+	protected transient HibernateTemplate hibernateTemplate;
 	/**
-	 * Let the context injet the session Factory
+	 * Let the context inject the session Factory
 	 * @param sessionFactory
 	 */
 	@Autowired

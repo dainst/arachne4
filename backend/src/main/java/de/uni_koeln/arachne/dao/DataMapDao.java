@@ -25,7 +25,7 @@ public class DataMapDao extends SQLDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataMapDao.class);
 	
 	@Autowired
-	private UserRightsService userRightsService;
+	private UserRightsService userRightsService; // NOPMD
 	
 	/**
 	 * Gets a map of values by Id

@@ -10,7 +10,7 @@ public class FacetList {
 	/**
 	 * Data of the class.
 	 */
-	private List<Facet> data = new ArrayList<Facet>();
+	private transient List<Facet> data = new ArrayList<Facet>();
 	
 	/**
 	 * Adds a facet to the list. If a facet of the same name already exists it adds the values to this facet.

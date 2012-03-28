@@ -33,7 +33,7 @@ public class ImageStreamService {
 	private String repositoryLink;
 	
 	@Autowired 
-	private ServletContext servletContext;
+	private ServletContext servletContext; // NOPMD
 	
 	/**
 	 * method to get a byte array representation of the image

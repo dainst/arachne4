@@ -14,7 +14,7 @@ public class Context {
 	/**
 	 * The service which manages the retrieval etc.
 	 */
-	protected ContextService contextService;
+	protected transient ContextService contextService;
 	
 	/**
 	 * Constructor setting up all needed fields.
@@ -34,12 +34,12 @@ public class Context {
 	 *  In most cases the context type is the name of the table used for the query.
 	 *  For external contexts (not implemented yet) a different scheme is used.
 	 */
-	protected String contextType;
+	protected transient String contextType;
 
 	/**
 	 * The parent dataset. It describes where the contexts belongs to.
 	 */
-	protected Dataset parent;
+	protected transient Dataset parent;
 
 	/**
 	 * An enumeration class representing the state of the context.
@@ -58,7 +58,7 @@ public class Context {
 	/**
 	 * The completion state of the context. Can be one of <code>FULL</code>, <code>LIMITED</code>, <code>FIRST</code> or <code>EMPTY</code>.
 	 */
-	protected CompletionStateEnum completionState;
+	protected transient CompletionStateEnum completionState;
 		
 	/**
 	 * The depth of the context.
@@ -68,7 +68,7 @@ public class Context {
 	/**
 	 * This list of <code>Link</code> contains the data of the context.
 	 */
-	public List<AbstractLink> contextEntities;
+	public transient List<AbstractLink> contextEntities;
 	
 	//The Context Getter
 	

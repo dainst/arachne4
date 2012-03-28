@@ -26,7 +26,7 @@ import de.uni_koeln.arachne.sqlutil.GenericFieldsSQLQueryBuilder;
 public class GenericSQLDao extends SQLDao {
 	
 	@Autowired
-	private UserRightsService userRightsService;
+	private UserRightsService userRightsService; // NOPMD
 	
 	/**
 	 * Retrieves a list of ids from a 'cross table' field by a specified foreign key field and corresponding id or <code>null</code>.

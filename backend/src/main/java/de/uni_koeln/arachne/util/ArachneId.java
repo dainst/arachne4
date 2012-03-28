@@ -6,22 +6,22 @@ public class ArachneId {
 	/**
 	 * This is the outer Arachne entity ID.
 	 */
-	protected Long arachneEntityID;
+	protected transient Long arachneEntityID;
 
 	/**
 	 * This is the internal table name of Arachne.
 	 */
-	protected String tableName;
+	protected transient String tableName;
 
 	/**
 	 * This is the internal key which is used inside the Arachne.
 	 */
-	protected Long internalKey;
+	protected transient Long internalKey;
 
 	/**
 	 * Flag indicating if the dataset exists or was deleted.
 	 */
-	protected boolean isDeleted;
+	protected transient boolean isDeleted;
 
 	/**
 	 * This Constructor gets Tablename and Internal key as Identification
@@ -30,7 +30,7 @@ public class ArachneId {
 	 * @param aeid Long Arachne Identification Number
 	 * @param isdel is Deleted?
 	 */
-	public ArachneId(String table,Long key, Long aeid, boolean isdel) {
+	public ArachneId(final String table, final Long key, final Long aeid, final boolean isdel) {
 		arachneEntityID = aeid;
 		tableName = table;
 		internalKey = key;

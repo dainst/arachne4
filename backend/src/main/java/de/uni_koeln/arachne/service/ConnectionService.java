@@ -16,14 +16,14 @@ public class ConnectionService {
 	 * Hibernate DAO class.
 	 */
 	@Autowired
-	private ConnectionDao arachneConnectionDao;
+	private ConnectionDao arachneConnectionDao; // NOPMD
 	
 	/**
 	 * Retrieves a list of connected tables from the table 'Verknuepfungen'.
 	 * @param type The name of the table connections are searched for. 
 	 * @return List of connections.
 	 */
-	public List<String> getConnectionList(String type) {
+	public List<String> getConnectionList(final String type) {
 		return arachneConnectionDao.getConnectionList(type);
 	}
 	
@@ -33,7 +33,7 @@ public class ConnectionService {
 	 * @param table2 Second table name.
 	 * @return The table name of the 'cross table'.
 	 */
-	public String getTableName(String table1, String table2) {
+	public String getTableName(final String table1, final String table2) {
 		return arachneConnectionDao.getTableName(table1, table2);
 	}
 }

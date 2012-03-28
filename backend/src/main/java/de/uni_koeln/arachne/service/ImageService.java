@@ -17,7 +17,7 @@ import de.uni_koeln.arachne.util.ArachneId;
 @Service("ArachneImageService")
 public class ImageService {
 	@Autowired
-	GenericSQLService genericSQLService;
+	GenericSQLService genericSQLService; // NOPMD
 	
 	/**
 	 * This method retrieves the images for a given dataset from the database and adds them to the datasets list

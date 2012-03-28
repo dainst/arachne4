@@ -11,7 +11,7 @@ public class GenericEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntitiesSQLQueryBuilder.class);
 	
-	protected SQLRightsConditionBuilder rightsConditionBuilder;
+	protected transient SQLRightsConditionBuilder rightsConditionBuilder;
 	
 	/**
 	 * Constructs a condition to query a table.

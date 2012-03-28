@@ -11,9 +11,9 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericFieldsSQLQueryBuilder.class);
 	
-	protected SQLRightsConditionBuilder rightsConditionBuilder;
+	protected transient SQLRightsConditionBuilder rightsConditionBuilder;
 	
-	private String field2;
+	private transient String field2;
 	
 	/**
 	 * Constructs a condition to query a field.

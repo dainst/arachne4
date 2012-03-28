@@ -12,14 +12,14 @@ import de.uni_koeln.arachne.util.ArachneId;
 public class EntityIdentificationService {
 	
 	@Autowired
-	private ArachneEntityDao arachneEntityDao;
+	private ArachneEntityDao arachneEntityDao; // NOPMD
 	
 	/**
 	 * Gets all identifiers of a dataset by Arachne entity ID. This is the external reference ID for the dataset in Arachne.
 	 * @param arachneEntityId
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
-	public ArachneId getId(Long arachneEntityId) {
+	public ArachneId getId(final Long arachneEntityId) {
 		return getByEntityId(arachneEntityId);
 	}
 	
@@ -28,7 +28,7 @@ public class EntityIdentificationService {
 	 * @param arachneEntityId
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
-	public ArachneId getId(String table, Long id) {
+	public ArachneId getId(final String table, final Long id) {
 		return getByTablenameAndInternalKey(table, id);
 	}
 	
@@ -49,7 +49,7 @@ public class EntityIdentificationService {
 	 * @param internalId internal table key of the dataset
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
-	private ArachneId getByTablenameAndInternalKey(String table, final Long internalId){
+	private ArachneId getByTablenameAndInternalKey(final String table, final Long internalId){
 		return constructArachneID(arachneEntityDao.getByTablenameAndInternalKey(table, internalId));
 	}
 	
@@ -58,7 +58,7 @@ public class EntityIdentificationService {
 	 * @param arachneEntity The <code>ArachneEntity</code> for which the instance should be created.
 	 * @return The new instance or <code>null</code>.
 	 */
-	private ArachneId constructArachneID(ArachneEntity arachneEntity){
+	private ArachneId constructArachneID(final ArachneEntity arachneEntity){
 		if (arachneEntity == null) {
 			return null;	
 		} else {

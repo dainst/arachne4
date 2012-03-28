@@ -12,9 +12,9 @@ import de.uni_koeln.arachne.util.ArachneId;
  */
 public class SingleEntityQueryBuilder extends AbstractSQLBuilder {
 	
-	protected ArachneId id;
+	protected transient ArachneId id;
 	
-	protected SQLRightsConditionBuilder rcb;
+	protected transient SQLRightsConditionBuilder rcb;
 	
 	/**
 	 * Constructs a condition to find the Dataset described in ArachneId. creates <code>UserRightsConditionBuilder</code> , Limits the Result count to 1. 

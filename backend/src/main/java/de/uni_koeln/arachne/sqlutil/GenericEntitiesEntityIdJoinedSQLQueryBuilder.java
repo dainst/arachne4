@@ -11,8 +11,8 @@ public class GenericEntitiesEntityIdJoinedSQLQueryBuilder extends AbstractSQLBui
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntitiesEntityIdJoinedSQLQueryBuilder.class);
 	
-	protected SQLRightsConditionBuilder rcb;
-	private String entityIdLeftJoin;
+	protected transient SQLRightsConditionBuilder rcb;
+	private transient String entityIdLeftJoin;
 		
 	/**
 	 * Constructs a condition to query a table.

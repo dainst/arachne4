@@ -12,11 +12,11 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericFieldsEntityIdJoinedSQLQueryBuilder.class);
 	
-	protected SQLRightsConditionBuilder rightsConditionBuilder;
+	protected transient SQLRightsConditionBuilder rightsConditionBuilder;
 	
-	private String field2;
+	private transient String field2;
 	
-	private String entityIdLeftJoin;
+	private transient String entityIdLeftJoin;
 	
 	/**
 	 * Constructs a condition to query multiple fields. The <code>ArachneEntityId</code> is automatically retrieved by
