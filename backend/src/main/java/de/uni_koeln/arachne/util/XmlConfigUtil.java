@@ -59,7 +59,7 @@ public class XmlConfigUtil {
 	 * @return A concatenated string containing the sections content.
 	 */
 	public String getStringFromSections(final Element section, final Dataset dataset) {
-		String result = "";
+		final StringBuffer result = new StringBuffer("");
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		@SuppressWarnings("unchecked")
 		final List<Element> children = section.getChildren();
@@ -67,46 +67,54 @@ public class XmlConfigUtil {
 		if (section.getAttributeValue("separator") != null) {
 			separator = section.getAttributeValue("separator");
 		}
-		
+
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
 				String key = e.getAttributeValue("datasource");
-				String datasetResult = dataset.getField(key);
+				final String initialValue = dataset.getField(key);
+				StringBuffer datasetResult = null;
+				if (initialValue != null) {
+					datasetResult = new StringBuffer(initialValue);
+				} 
+
 				final String postfix = e.getAttributeValue("postfix");
 				final String prefix = e.getAttributeValue("prefix");
-				if (StrUtils.isEmptyOrNull(datasetResult)) {
+
+				if (datasetResult == null) {
 					final Element ifEmptyElement = e.getChild("ifEmpty");
 					if (ifEmptyElement != null) {
 						// TODO discuss if multiple fields inside an ifEmpty tag make sense
 						key = ifEmptyElement.getChild("field").getAttributeValue("datasource");
-						if (key != null) {
-							if (!key.isEmpty()) {
-								datasetResult = dataset.getField(key);
+						if (key != null && !key.isEmpty()) {
+							final String ifEmptyValue = dataset.getField(key);
+							if (ifEmptyValue != null) {
+								datasetResult = new StringBuffer(ifEmptyValue); 
 							}
 						}
 					}
 				}
+
 				if (!StrUtils.isEmptyOrNull(datasetResult)) {
 					if (prefix != null) {
-						datasetResult = prefix + datasetResult;
+						datasetResult.insert(0, prefix);
 					}
 					if (postfix != null) { 
-						datasetResult += postfix;
+						datasetResult.append(postfix);
 					}
-					if (!result.isEmpty() && !datasetResult.isEmpty()) {
-						result += separator;
+					if (!(result.length() < 1) && !(datasetResult.length() < 1)) {
+						result.append(separator);
 					}
-					result += datasetResult;
+					result.append(datasetResult);
 				} 
 			} else {
 				final String datasetResult = getStringFromSections(e, dataset);
-				if (!result.isEmpty() && !datasetResult.isEmpty()) {
-					result += separator;
+				if (!(result.length() < 1) && !datasetResult.isEmpty()) {
+					result.append(separator);
 				}
-				result += datasetResult;
+				result.append(datasetResult);
 			}
 		}
-		return result;
+		return result.toString();
 	}
 	
 	/**
@@ -133,26 +141,30 @@ public class XmlConfigUtil {
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
 				final Field field = new Field();
-				String value = dataset.getField(e.getAttributeValue("datasource"));
+				StringBuffer value = null;
+				final String initialValue = dataset.getField(e.getAttributeValue("datasource"));
+				if (initialValue != null) {
+					value = new StringBuffer(initialValue);
+				}
 				final String postfix = e.getAttributeValue("postfix");
 				final String prefix = e.getAttributeValue("prefix");
 				if (value != null) {
 					if (prefix != null) {
-						value = prefix + value;
+						value.insert(0, prefix);
 					}
 					if (postfix != null) {
-						value += postfix; 
+						value.append(postfix); 
 					}
 					
 					// TODO find better solution as the previous content may be a section
 					// If there are more than one field in this section add the value (incl. separator) to the previous field
 					if (result.getContent().isEmpty()) {
-						field.setValue(value);
+						field.setValue(value.toString());
 						result.add(field);
 					} else {
 						final int contentSize = result.getContent().size();
 						final Field previousContent = (Field)result.getContent().get(contentSize-1);
-						previousContent.setValue(previousContent.getValue() + separator +value);
+						previousContent.setValue(previousContent.getValue() + separator + value);
 					}
 				}
 			} else {
@@ -212,22 +224,26 @@ public class XmlConfigUtil {
 		for (int i = 0; i < dataset.getContextSize(contextType); i++) {
 			for (Element e: children) {
 				if (e.getName().equals("field")) {
-					String value = dataset.getFieldFromContext(contextType + e.getAttributeValue("datasource"), i);
+					final String initialValue = dataset.getFieldFromContext(contextType + e.getAttributeValue("datasource"), i);
+					StringBuffer value = null;
+					if (initialValue != null) {
+						value = new StringBuffer(initialValue);
+					}
 					final String postfix = e.getAttributeValue("postfix");
 					final String prefix = e.getAttributeValue("prefix");
 					if (value != null) {
 						if (prefix != null) {
-							value = prefix + value;
+							value.insert(0, prefix);
 						}
 						if (postfix != null) {
-							value += postfix; 
+							value.append(postfix); 
 						}
 						String currentListValue = null;
 						if (!fieldList.getValue().isEmpty() && i < fieldList.size()) {
 							currentListValue = fieldList.get(i);
 						}
 						if (currentListValue == null) {
-							fieldList.add(value);
+							fieldList.add(value.toString());
 						} else {
 							fieldList.modify(i, currentListValue + separator + value);
 						}
