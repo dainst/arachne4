@@ -13,14 +13,7 @@ public class StrUtils {
 	 * @return <code>true</code> or <code>false</code>
 	 */
 	public static boolean isEmptyOrNull(String string) {
-		if (string == null) {
-			return true;
-		} else {
-			if (string.isEmpty()) {
-				return true;
-			}
-			return false;
-		}
+		return string == null || string.isEmpty();
 	}
 	
 	/**
@@ -29,13 +22,6 @@ public class StrUtils {
 	 * @return <code>true</code> or <code>false</code>
 	 */
 	public static boolean isEmptyOrNull(List<String> stringList) {
-		if (stringList == null) {
-			return true;
-		} else {
-			if (stringList.isEmpty()) {
-				return true;
-			}
-			return false;
-		}
+		return stringList == null || stringList.isEmpty();
 	}
 }
