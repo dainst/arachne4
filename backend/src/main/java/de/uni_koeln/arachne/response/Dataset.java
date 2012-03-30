@@ -21,7 +21,7 @@ public class Dataset {
 	/**
 	 * workaround for implementing getUri;
 	 */
-	private transient final String baseUri = "http://localhost:8080/arachnedataservice/entity/";	
+	private transient static final String BASEURI = "http://localhost:8080/arachnedataservice/entity/";	
 	
 	/**
 	 * Identification of the Dataset.
@@ -61,7 +61,7 @@ public class Dataset {
 		if (arachneId.getArachneEntityID() == null) {
 			return "Invalid Uri! Ask later!";
 		} else {
-			return baseUri + arachneId.getArachneEntityID();
+			return BASEURI + arachneId.getArachneEntityID();
 		}
 	}
 	

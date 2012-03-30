@@ -201,7 +201,7 @@ public class ContextService {
 		@SuppressWarnings("unchecked")
 		final List<Element> children = element.getChildren();
 		
-		if (element.getName() == "context") {
+		if ("context".equals(element.getName())) {
 			if (!children.isEmpty()) {
 				final String context = element.getAttributeValue("type");
 				for (Element e:children) {

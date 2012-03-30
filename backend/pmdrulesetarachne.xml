@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <ruleset xmlns="http://pmd.sf.net/ruleset/1.0.0" name="pmdrulesetarachne" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd" xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd">
-   <description>PMD Plugin rule set for Arachne 4</description>
-   <exclude-pattern/>
+   <description>PMD Plugin Arachne rule set</description>
    <rule ref="rulesets/typeresolution.xml/LooseCoupling"/>
    <rule ref="rulesets/typeresolution.xml/CloneMethodMustImplementCloneable"/>
    <rule ref="rulesets/typeresolution.xml/UnusedImports"/>
@@ -116,7 +115,6 @@
    <rule ref="rulesets/j2ee.xml/DoNotUseThreads"/>
    <rule ref="rulesets/optimizations.xml/LocalVariableCouldBeFinal"/>
    <rule ref="rulesets/optimizations.xml/MethodArgumentCouldBeFinal"/>
-   <rule ref="rulesets/optimizations.xml/AvoidInstantiatingObjectsInLoops"/>
    <rule ref="rulesets/optimizations.xml/UseArrayListInsteadOfVector"/>
    <rule ref="rulesets/optimizations.xml/SimplifyStartsWith"/>
    <rule ref="rulesets/optimizations.xml/UseStringBufferForStringAppends"/>
@@ -170,7 +168,6 @@
    <rule ref="rulesets/imports.xml/TooManyStaticImports"/>
    <rule ref="rulesets/junit.xml/JUnitStaticSuite"/>
    <rule ref="rulesets/junit.xml/JUnitSpelling"/>
-   <rule ref="rulesets/junit.xml/JUnitAssertionsShouldIncludeMessage"/>
    <rule ref="rulesets/junit.xml/JUnitTestsShouldIncludeAssert"/>
    <rule ref="rulesets/junit.xml/TestClassWithoutTestCases"/>
    <rule ref="rulesets/junit.xml/UnnecessaryBooleanAssertion"/>

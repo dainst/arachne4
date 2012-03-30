@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.uni_koeln.arachne.response.SearchResult;
 import de.uni_koeln.arachne.util.SolrUrlString;
 import de.uni_koeln.arachne.util.StrUtils;
@@ -28,6 +31,8 @@ import de.uni_koeln.arachne.util.StrUtils;
  */
 @Controller
 public class SearchController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 	
 	@Autowired
 	SolrUrlString solrUrl; // NOPMD
@@ -112,10 +117,10 @@ public class SearchController {
 		    }
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 		}
 			    
 	    return result;

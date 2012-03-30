@@ -139,8 +139,7 @@ public class ImageController {
 		
 		try {
 			response.setStatus(200);
-			final BufferedImage bufferedImage = imageStreamService.getArachneImage(resolution, imageEntity, watermarkFilename);
-			return bufferedImage;
+			return imageStreamService.getArachneImage(resolution, imageEntity, watermarkFilename);
 		} catch (Exception e) {
 			LOGGER.error("Error while retrieving thumbnail with entity id from image service" + arachneId.getArachneEntityID(),e);			
 			response.setStatus(404);

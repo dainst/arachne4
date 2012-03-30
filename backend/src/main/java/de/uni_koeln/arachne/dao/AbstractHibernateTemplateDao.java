@@ -12,7 +12,9 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
  * @author Rasmus Krempel
  *
  */
-public abstract class AbstractHibernateTemplateDao {
+// TODO abstract classes without abstract methods make no sense, check if this base class is needed
+public abstract class AbstractHibernateTemplateDao { // NOPMD
+	
 	protected transient HibernateTemplate hibernateTemplate;
 	/**
 	 * Let the context inject the session Factory

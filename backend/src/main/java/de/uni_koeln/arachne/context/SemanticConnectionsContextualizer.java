@@ -27,7 +27,7 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 	
 	private transient final GenericSQLService genericSQLService;
 	
-	private transient final long linkCount = 0l;
+	private transient long linkCount = 0l;
 	
 	public SemanticConnectionsContextualizer(final String contextType, final GenericSQLService genericSQLService) {
 		this.contextType = contextType;
@@ -46,7 +46,7 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 		final long queryTime = System.currentTimeMillis();
 		final List<Map<String, String>> contextContents = genericSQLService.getConnectedEntities(contextType
 				, parent.getArachneId().getArachneEntityID());
-		LOGGER.debug("Query time: " + String.valueOf(System.currentTimeMillis() - queryTime) + " ms");		
+		LOGGER.debug("Query time: " + (System.currentTimeMillis() - queryTime) + " ms");		
 		
 		if (contextContents != null) {
 			final ListIterator<Map<String, String>> contextMap = contextContents.listIterator(offset);
@@ -54,6 +54,8 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 				final Map<String, String> map = contextMap.next();
 				final ArachneLink link = new ArachneLink();
 				final Dataset dataset = new Dataset();
+				
+				linkCount++;
 				
 				// this is how the contextualizer can set his own names
 				// here the ArachneEntityID is extracted from the query result and  

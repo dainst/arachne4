@@ -35,6 +35,6 @@ public class Image extends SQLResponseObject {
 	
 	@Override
 	public String toString() {
-		return "[" + String.valueOf(imageId) + ", " + subtitle + "]";
+		return "[" + imageId + ", " + subtitle + "]";
 	}
 }
