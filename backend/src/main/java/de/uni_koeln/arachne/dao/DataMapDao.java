@@ -44,8 +44,7 @@ public class DataMapDao extends SQLDao {
 		final List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new DatasetMapper());
 		if (temp != null) {
 			if (!temp.isEmpty()) {
-				final Map<String,String> map =  temp.get(0);
-				return map;
+				return temp.get(0);
 			}
 		}
 		return null;

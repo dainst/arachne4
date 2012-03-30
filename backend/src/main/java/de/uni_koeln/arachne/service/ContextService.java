@@ -150,7 +150,7 @@ public class ContextService {
 		}
 		catch (Exception e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 		}
 		return null;
 	}
@@ -182,10 +182,10 @@ public class ContextService {
 			return result;		
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 		}
 		return null;
 	}

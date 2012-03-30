@@ -14,7 +14,7 @@ import org.codehaus.jackson.annotate.JsonValue;
 public class DatasetGroup {
 	
 	public DatasetGroup() {
-		
+		// needed for spring autowiring
 	}
 	
 	public DatasetGroup(final String name) {

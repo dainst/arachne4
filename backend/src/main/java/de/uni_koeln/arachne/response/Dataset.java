@@ -112,13 +112,13 @@ public class Dataset {
 		if (fieldName.startsWith("Dataset")) {
 			// the magic number is the dataset char count
 			final String unqualifiedFieldName = fieldName.substring(8);
-			if (unqualifiedFieldName.equals("Id")) {
+			if ("Id".equals(unqualifiedFieldName)) {
 				result = String.valueOf(arachneId.getArachneEntityID());
 			} else {
-				if (unqualifiedFieldName.equals("internalId")) {
+				if ("internalId".equals(unqualifiedFieldName)) {
 					result = String.valueOf(arachneId.getInternalKey());
 				} else {
-					if (unqualifiedFieldName.equals("TableName")) {
+					if ("TableName".equals(unqualifiedFieldName)) {
 						result = arachneId.getTableName();
 					}
 				}
@@ -138,8 +138,7 @@ public class Dataset {
 	 * @return The value of the field or <code>null<code/> if the field is not found.
 	 */
 	public String getFieldFromFields(final String fieldName) {
-		final String result = fields.get(fieldName);
-		return result;
+		return fields.get(fieldName);
 	}
 	
 	/**
@@ -207,10 +206,10 @@ public class Dataset {
 				}
 			}
 		}
-		if (result.size() > 0) {
-			return result;
-		} else {
+		if (result.isEmpty()) {
 			return null;
+		} else {
+			return result;
 		}
 	}
 	

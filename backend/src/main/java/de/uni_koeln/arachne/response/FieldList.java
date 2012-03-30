@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class FieldList extends AbstractContent {
 	
-	private transient List<String> value = null;
+	private transient final List<String> value;
 	
 	public FieldList() {
 		this.value = new ArrayList<String>();

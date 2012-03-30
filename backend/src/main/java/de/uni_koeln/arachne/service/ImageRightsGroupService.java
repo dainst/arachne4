@@ -30,6 +30,7 @@ public class ImageRightsGroupService {
 	ImageRightsDao imageRightsDao;
 
 	public ImageRightsGroupService() {
+		// needed for spring autowiring
 	}
 
 	/**

@@ -33,7 +33,7 @@ public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 		}
 		table = targetTable;
 		String info;
-		if (sourceField.equals("PrimaryKey")) {
+		if ("PrimaryKey".equals(sourceField)) {
 			 info = dataset.getArachneId().getInternalKey().toString();
 		} else {
 			 info = dataset.getField(sourceTable+"."+sourceField);
@@ -44,7 +44,7 @@ public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 		//Building condition to find Subproject
 		final Condition condition = new Condition();
 		condition.setOperator("=");
-		if (targetField.equals("PrimaryKey")) {
+		if ("PrimaryKey".equals(targetField)) {
 			condition.setPart1(SQLToolbox.getQualifiedFieldname(targetTable, SQLToolbox.generatePrimaryKeyName(targetTable)));
 		} else {
 			condition.setPart1(SQLToolbox.getQualifiedFieldname(targetTable,targetField));

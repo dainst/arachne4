@@ -62,7 +62,7 @@ public class ResponseFactory {
 		
 		final String filename = xmlConfigUtil.getFilenameFromType(response.getType());
 		
-		if (filename.equals("unknown")) {
+		if ("unknown".equals(filename)) {
 			return null;
 		}
 		
@@ -204,10 +204,10 @@ public class ResponseFactory {
 	    	
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error(e.getMessage());
 		}
 		return response;
 	}
