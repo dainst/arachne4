@@ -61,33 +61,32 @@ public class SQLRightsConditionBuilder {
 	 * @return A String that represents the user permission SQl statements its empty if the User is allowed to see everything
 	 */
 	public String getUserRightsSQLSnipplett(){
-		String result = "";
+		final StringBuffer result = new StringBuffer("");
 		//in This case The User is Authorized to see Everything
 		if (user.isAll_groups() || exludedTables.contains(tableName)) {
-			return result;
+			return result.toString();
 		} else {
 			//Get the Permission Groups
 			permissiongroups = user.getDatasetGroups();
-			
+
 			if (!permissiongroups.isEmpty()) {
 				//Convert the Permission Groups to real conditions
 				final List<Condition> conditions = buildConditions();
 
 				//Sum up and Build the String
-				result = result + " AND (";
+				result.append(" AND (");
 				boolean first = true;
 				for (Condition cnd : conditions) {
-					if(first){
+					if (first) {
 						first = false;
+					} else {
+						result.append(" OR");
 					}
-					else{
-						result = result + " OR";
-					}
-					result+= cnd.toString();
+					result.append(cnd.toString());
 				}
-				result = result + ")";
+				result.append(')');
 			}
 		}
-		return result;
+		return result.toString();
 	}	
 }

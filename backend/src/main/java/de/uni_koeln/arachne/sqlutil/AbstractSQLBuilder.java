@@ -36,7 +36,7 @@ public abstract class AbstractSQLBuilder {
 	 * @return An SQL Snipplett with all the Condition as SQl Snipplett
 	 */
 	protected String buildAndConditions(){
-		StringBuffer result = new StringBuffer("");
+		final StringBuffer result = new StringBuffer("");
 
 		for (Condition cnd : conditions) {
 			result.append(" AND");

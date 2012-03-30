@@ -205,9 +205,9 @@ public class ContextService {
 			if (!children.isEmpty()) {
 				final String context = element.getAttributeValue("type");
 				for (Element e:children) {
-					String datasourceValue = e.getAttributeValue("datasource");
+					String datasourceValue = e.getAttributeValue("datasource");  
 					if (!StrUtils.isEmptyOrNull(datasourceValue)) {
-						datasourceValue = context + datasourceValue;
+						datasourceValue = context + datasourceValue; // NOPMD
 						if (!datasourceValue.startsWith(parentType) && !datasourceValue.startsWith("Dataset")) {
 							result.add(datasourceValue);
 						}
@@ -235,6 +235,7 @@ public class ContextService {
 				}
 			}
 		}
+		
 		return result;
 	}
 }
