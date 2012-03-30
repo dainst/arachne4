@@ -155,7 +155,7 @@ public class XmlConfigUtil {
 					if (postfix != null) {
 						value.append(postfix); 
 					}
-					
+
 					// TODO find better solution as the previous content may be a section
 					// If there are more than one field in this section add the value (incl. separator) to the previous field
 					if (result.getContent().isEmpty()) {
@@ -170,17 +170,13 @@ public class XmlConfigUtil {
 			} else {
 				if (e.getName().equals("context")) {
 					final Section nextSection = (Section)getContentFromContext(e, dataset);
-					if (nextSection != null) {
-						if (!((Section)nextSection).getContent().isEmpty()) { 
-							result.add(nextSection);
-						}
+					if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
+						result.add(nextSection);
 					}
 				} else {
 					final Section nextSection = (Section)getContentFromSections(e, dataset);
-					if (nextSection != null) {
-						if (!((Section)nextSection).getContent().isEmpty()) { 
-							result.add(nextSection);
-						}
+					if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
+						result.add(nextSection);
 					}
 				}
 			}

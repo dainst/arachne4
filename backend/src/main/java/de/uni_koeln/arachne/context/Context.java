@@ -109,11 +109,11 @@ public class Context {
 	 */
 	public AbstractLink getContext(final int index) {
 		final int avilableContexts = contextEntities.size();
-		if (completionState != CompletionStateEnum.FULL) {
-			if (index >= avilableContexts) {
+		
+		if (completionState != CompletionStateEnum.FULL && index >= avilableContexts) {
 				retrieve(avilableContexts, avilableContexts + index);
-			}
 		}
+		
 		if (!contextEntities.isEmpty() && index<avilableContexts) {
 			return contextEntities.get(index); 
 		} else {

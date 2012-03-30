@@ -70,11 +70,9 @@ public class ImageRightsGroupService {
 		}
 		
 		// if override_for_group is set and the user has that exact group, the user is allowed to view the image in high resolution
-		if(!imageRightsGroup.getOverrideForGroup().isEmpty()) {
-			if(currentUser.hasGroup(imageRightsGroup.getOverrideForGroup())) {
-				LOGGER.debug("user has override group, returning HIGH");
-				return ImageResolutionType.HIGH;
-			}
+		if (!imageRightsGroup.getOverrideForGroup().isEmpty() && currentUser.hasGroup(imageRightsGroup.getOverrideForGroup())) {
+			LOGGER.debug("user has override group, returning HIGH");
+			return ImageResolutionType.HIGH;
 		}
 		
 		// get maximum resolution for anonymous users
@@ -104,11 +102,9 @@ public class ImageRightsGroupService {
 			final UserAdministration currentUser, final ImageRightsGroup imageRightsGroup) {
 		
 		// if override_for_group is set and the user has that exact group, the user is allowed to view the image without watermark
-		if(!imageRightsGroup.getOverrideForGroup().isEmpty()) {
-			if(currentUser.hasGroup(imageRightsGroup.getOverrideForGroup())) {
+		if(!imageRightsGroup.getOverrideForGroup().isEmpty() &&  currentUser.hasGroup(imageRightsGroup.getOverrideForGroup())) {
 				LOGGER.debug("user has override group, returning no watermark");
 				return "";
-			}
 		}
 		
 		if (currentUser.getGroupID() == 0) {
