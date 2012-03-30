@@ -36,23 +36,20 @@ public abstract class AbstractSQLBuilder {
 	 * @return An SQL Snipplett with all the Condition as SQl Snipplett
 	 */
 	protected String buildAndConditions(){
-		String result = "";
+		StringBuffer result = new StringBuffer("");
 
 		for (Condition cnd : conditions) {
-
-				result+= " AND";
-				
-			result+=cnd.toString();
+			result.append(" AND");
+			result.append(cnd.toString());
 		}
-		
-		return result;	
+
+		return result.toString();	
 	}
 	
 	protected String appendLimitOne(){
 		if (limit1) {
 			return " Limit 1";
-		}
-		else{
+		} else {
 			return "";
 		}
 	}
