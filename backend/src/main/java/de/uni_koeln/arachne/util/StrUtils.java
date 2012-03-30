@@ -24,4 +24,13 @@ public class StrUtils {
 	public static boolean isEmptyOrNull(List<String> stringList) {
 		return stringList == null || stringList.isEmpty();
 	}
+
+	/**
+	 * This method returns if a <code>StringBuffer</code> is empty or <code>null</code>.
+	 * @param stringBuffer
+	 * @return
+	 */
+	public static boolean isEmptyOrNull(StringBuffer stringBuffer) {
+		return stringBuffer == null || stringBuffer.length() < 1;
+	}
 }
