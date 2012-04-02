@@ -75,7 +75,12 @@
    <rule ref="rulesets/logging-java.xml/LoggerIsNotStaticFinal"/>
    <rule ref="rulesets/logging-java.xml/SystemPrintln"/>
    <rule ref="rulesets/logging-java.xml/AvoidPrintStackTrace"/>
-   <rule ref="rulesets/strings.xml/AvoidDuplicateLiterals"/>
+   <rule ref="rulesets/strings.xml/AvoidDuplicateLiterals">
+      <properties>
+         <property name="threshold" value="10"/>
+         <property name="skipAnnotations" value="true"/>
+      </properties>
+   </rule>	
    <rule ref="rulesets/strings.xml/StringInstantiation"/>
    <rule ref="rulesets/strings.xml/StringToString"/>
    <rule ref="rulesets/strings.xml/InefficientStringBuffering"/>
