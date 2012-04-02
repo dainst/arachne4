@@ -34,8 +34,17 @@ public class SearchController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 	
+	SolrServer server = null;
+	
 	@Autowired
-	SolrUrlString solrUrl; // NOPMD
+	public SearchController(SolrUrlString solrUrl) {
+		try {
+			server = new CommonsHttpSolrServer(solrUrl.getSolrUrl());
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.error(e.getMessage());
+		}
+	}
 	
 	/**
 	 * Handles the http request by querying the Solr index and returning the search result.
@@ -56,9 +65,7 @@ public class SearchController {
 														  @RequestParam(value = "fl", required = false) final String facetLimit) {
 		
 		final SearchResult result = new SearchResult();
-		SolrServer server = null;
 		try {
-			server = new CommonsHttpSolrServer(solrUrl.getSolrUrl());
 			final SolrQuery query = new SolrQuery("*:*");
 		    query.setQuery(searchParam);
 		    // default value for limit
@@ -76,15 +83,18 @@ public class SearchController {
 		    	query.setStart(intOffset);
 		    	result.setOffset(intOffset);
 		    }
+		    
 		    if (!StrUtils.isEmptyOrNull(limit)) {
 		    	final int intLimit = Integer.valueOf(limit);
 		    	query.setRows(intLimit);
 		    	result.setLimit(intLimit);
-		    }		    
+		    }
+		    
 		    if (!StrUtils.isEmptyOrNull(facetLimit)) {
 		    	final int intFacetLimit = Integer.valueOf(facetLimit);
 		    	query.setFacetLimit(intFacetLimit);
 		    }
+		    
 		    if (!StrUtils.isEmptyOrNull(filterValues)) {
 		    	final List<String> filterValueList = filterQueryStringToStringList(filterValues); 
 		    	if (!StrUtils.isEmptyOrNull(filterValueList)) {
@@ -112,12 +122,11 @@ public class SearchController {
 		    		}
 		    	}
 		    }
+		    
 		    if (!facets.isEmpty()) {
 		    	result.setFacets(facets);
 		    }
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			LOGGER.error(e.getMessage());
+		    
 		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
 			LOGGER.error(e.getMessage());
