@@ -201,16 +201,14 @@ public class ContextService {
 		@SuppressWarnings("unchecked")
 		final List<Element> children = element.getChildren();
 		
-		if ("context".equals(element.getName())) {
-			if (!children.isEmpty()) {
-				final String context = element.getAttributeValue("type");
-				for (Element e:children) {
-					String datasourceValue = e.getAttributeValue("datasource");  
-					if (!StrUtils.isEmptyOrNull(datasourceValue)) {
-						datasourceValue = context + datasourceValue; // NOPMD
-						if (!datasourceValue.startsWith(parentType) && !datasourceValue.startsWith("Dataset")) {
-							result.add(datasourceValue);
-						}
+		if ("context".equals(element.getName()) && !children.isEmpty()) {
+			final String context = element.getAttributeValue("type");
+			for (Element e:children) {
+				String datasourceValue = e.getAttributeValue("datasource");  
+				if (!StrUtils.isEmptyOrNull(datasourceValue)) {
+					datasourceValue = context + datasourceValue; // NOPMD
+					if (!datasourceValue.startsWith(parentType) && !datasourceValue.startsWith("Dataset")) {
+						result.add(datasourceValue);
 					}
 				}
 			}

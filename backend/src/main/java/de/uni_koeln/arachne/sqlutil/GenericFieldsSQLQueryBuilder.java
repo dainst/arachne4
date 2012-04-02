@@ -14,7 +14,7 @@ public class GenericFieldsSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	protected transient SQLRightsConditionBuilder rcb;
 	
-	private transient String field2;
+	private transient String field2; // NOPMD - false positive
 	
 	/**
 	 * Constructs a condition to query a field.

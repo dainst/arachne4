@@ -19,6 +19,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @XmlRootElement
 @Entity
 @Table(name="verwaltung_benutzer")
+@SuppressWarnings("PMD")
 public class UserAdministration {
 
 		/**

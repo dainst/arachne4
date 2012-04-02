@@ -14,7 +14,7 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 	
 	protected transient SQLRightsConditionBuilder rightsConditionBuilder;
 	
-	private transient String field2;
+	private transient String field2; // NOPMD - false positive
 	
 	private transient final String entityIdLeftJoin;
 	
