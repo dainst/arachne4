@@ -70,42 +70,7 @@ public class XmlConfigUtil {
 
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
-				String key = e.getAttributeValue("datasource");
-				final String initialValue = dataset.getField(key);
-				StringBuffer datasetResult = null;
-				if (initialValue != null) {
-					datasetResult = new StringBuffer(initialValue);
-				} 
-
-				final String postfix = e.getAttributeValue("postfix");
-				final String prefix = e.getAttributeValue("prefix");
-
-				if (datasetResult == null) {
-					final Element ifEmptyElement = e.getChild("ifEmpty");
-					if (ifEmptyElement != null) {
-						// TODO discuss if multiple fields inside an ifEmpty tag make sense
-						key = ifEmptyElement.getChild("field").getAttributeValue("datasource");
-						if (key != null && !key.isEmpty()) {
-							final String ifEmptyValue = dataset.getField(key);
-							if (ifEmptyValue != null) {
-								datasetResult = new StringBuffer(ifEmptyValue); 
-							}
-						}
-					}
-				}
-
-				if (!StrUtils.isEmptyOrNull(datasetResult)) {
-					if (prefix != null) {
-						datasetResult.insert(0, prefix);
-					}
-					if (postfix != null) { 
-						datasetResult.append(postfix);
-					}
-					if (!(result.length() < 1) && !(datasetResult.length() < 1)) {
-						result.append(separator);
-					}
-					result.append(datasetResult);
-				} 
+				getFieldString(dataset, result, separator, e); 
 			} else {
 				final String datasetResult = getStringFromSections(e, dataset);
 				if (!(result.length() < 1) && !datasetResult.isEmpty()) {
@@ -116,10 +81,58 @@ public class XmlConfigUtil {
 		}
 		return result.toString();
 	}
+
+	private void getFieldString(final Dataset dataset, final StringBuffer result, final String separator
+			, final Element element) {
+		
+		final String initialValue = dataset.getField(element.getAttributeValue("datasource"));
+		StringBuffer datasetResult = null;
+		if (initialValue != null) {
+			datasetResult = new StringBuffer(initialValue);
+		} 
+
+		final String postfix = element.getAttributeValue("postfix");
+		final String prefix = element.getAttributeValue("prefix");
+
+		if (datasetResult == null) {
+			datasetResult = getIfEmpty(dataset, element);
+		}
+
+		if (!StrUtils.isEmptyOrNull(datasetResult)) {
+			if (prefix != null) {
+				datasetResult.insert(0, prefix);
+			}
+			if (postfix != null) { 
+				datasetResult.append(postfix);
+			}
+			if (!(result.length() < 1) && !(datasetResult.length() < 1)) {
+				result.append(separator);
+			}
+			result.append(datasetResult);
+		}
+	}
+
+	private StringBuffer getIfEmpty(final Dataset dataset, final Element element) {
+		
+		String key;
+		StringBuffer result = null;
+		final Element ifEmptyElement = element.getChild("ifEmpty");
+		if (ifEmptyElement != null) {
+			// TODO discuss if multiple fields inside an ifEmpty tag make sense
+			key = ifEmptyElement.getChild("field").getAttributeValue("datasource");
+			if (key != null && !key.isEmpty()) {
+				final String ifEmptyValue = dataset.getField(key);
+				if (ifEmptyValue != null) {
+					result = new StringBuffer(ifEmptyValue); 
+				}
+			}
+		}
+		return result;
+	}
 	
 	/**
-	 * This function handles sections in the xml config files. It extracts the content from the dataset following the definitions in the xml files
-	 * and returns it as <code>Content</code>.
+	 * This function handles sections in the xml config files. It extracts the content from the dataset following the 
+	 * definitions in the xml files and returns it as <code>Content</code>.
 	 * <br>
 	 * The validity of the xml file is not checked!!!
 	 * @param parent The xml section <code>Element</code> to parse.
@@ -140,33 +153,7 @@ public class XmlConfigUtil {
 		}
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
-				final Field field = new Field();
-				StringBuffer value = null;
-				final String initialValue = dataset.getField(e.getAttributeValue("datasource"));
-				if (initialValue != null) {
-					value = new StringBuffer(initialValue);
-				}
-				final String postfix = e.getAttributeValue("postfix");
-				final String prefix = e.getAttributeValue("prefix");
-				if (value != null) {
-					if (prefix != null) {
-						value.insert(0, prefix);
-					}
-					if (postfix != null) {
-						value.append(postfix); 
-					}
-
-					// TODO find better solution as the previous content may be a section
-					// If there are more than one field in this section add the value (incl. separator) to the previous field
-					if (result.getContent().isEmpty()) {
-						field.setValue(value.toString());
-						result.add(field);
-					} else {
-						final int contentSize = result.getContent().size();
-						final Field previousContent = (Field)result.getContent().get(contentSize-1);
-						previousContent.setValue(previousContent.getValue() + separator + value);
-					}
-				}
+				getContentFromField(dataset, result, separator, e);
 			} else {
 				if (e.getName().equals("context")) {
 					final Section nextSection = (Section)getContentFromContext(e, dataset);
@@ -182,6 +169,38 @@ public class XmlConfigUtil {
 			}
 		}
 		return result;
+	}
+
+	private void getContentFromField(final Dataset dataset,	final Section result, final String separator
+			, final Element element) {
+		
+		final Field field = new Field();
+		StringBuffer value = null;
+		final String initialValue = dataset.getField(element.getAttributeValue("datasource"));
+		if (initialValue != null) {
+			value = new StringBuffer(initialValue);
+		}
+		final String postfix = element.getAttributeValue("postfix");
+		final String prefix = element.getAttributeValue("prefix");
+		if (value != null) {
+			if (prefix != null) {
+				value.insert(0, prefix);
+			}
+			if (postfix != null) {
+				value.append(postfix); 
+			}
+
+			// TODO find better solution as the previous content may be a section
+			// If there are more than one field in this section add the value (incl. separator) to the previous field
+			if (result.getContent().isEmpty()) {
+				field.setValue(value.toString());
+				result.add(field);
+			} else {
+				final int contentSize = result.getContent().size();
+				final Field previousContent = (Field)result.getContent().get(contentSize-1);
+				previousContent.setValue(previousContent.getValue() + separator + value);
+			}
+		}
 	}
 	
 	/**
@@ -218,48 +237,63 @@ public class XmlConfigUtil {
 				
 		final FieldList fieldList = new FieldList();
 		for (int i = 0; i < dataset.getContextSize(contextType); i++) {
-			for (Element e: children) {
-				if (e.getName().equals("field")) {
-					final String initialValue = dataset.getFieldFromContext(contextType + e.getAttributeValue("datasource"), i);
-					StringBuffer value = null;
-					if (initialValue != null) {
-						value = new StringBuffer(initialValue);
-					}
-					final String postfix = e.getAttributeValue("postfix");
-					final String prefix = e.getAttributeValue("prefix");
-					if (value != null) {
-						if (prefix != null) {
-							value.insert(0, prefix);
-						}
-						if (postfix != null) {
-							value.append(postfix); 
-						}
-						String currentListValue = null;
-						if (!fieldList.getValue().isEmpty() && i < fieldList.size()) {
-							currentListValue = fieldList.get(i);
-						}
-						if (currentListValue == null) {
-							fieldList.add(value.toString());
-						} else {
-							fieldList.modify(i, currentListValue + separator + value);
-						}
-					}
-				}
-			}
+			getFields(dataset, contextType, children, separator, fieldList, i);
 		}
+		
 		if (fieldList.size() > 1) {
 			result.add(fieldList);
 		} else {
-			if(fieldList.size() == 1 ){
+			if (fieldList.size() == 1 ) {
 				final Field field = new Field();
 				field.setValue(fieldList.get(0));
 				result.add(field);
 			}
 		}
+		
 		if (result.getContent().isEmpty()) {
 			return null;
 		}
+		
 		return result;
+	}
+
+	private void getFields(final Dataset dataset, final String contextType,	final List<Element> children
+			, final String separator, final FieldList fieldList, final int index) {
+		
+		for (Element e: children) {
+			if (e.getName().equals("field")) {
+				getField(dataset, contextType, separator, fieldList, index, e);
+			}
+		}
+	}
+
+	private void getField(final Dataset dataset, final String contextType, final String separator
+			, final FieldList fieldList, final int index, final Element element) {
+		
+		final String initialValue = dataset.getFieldFromContext(contextType + element.getAttributeValue("datasource"), index);
+		StringBuffer value = null;
+		if (initialValue != null) {
+			value = new StringBuffer(initialValue);
+		}
+		final String postfix = element.getAttributeValue("postfix");
+		final String prefix = element.getAttributeValue("prefix");
+		if (value != null) {
+			if (prefix != null) {
+				value.insert(0, prefix);
+			}
+			if (postfix != null) {
+				value.append(postfix); 
+			}
+			String currentListValue = null;
+			if (!fieldList.getValue().isEmpty() && index < fieldList.size()) {
+				currentListValue = fieldList.get(index);
+			}
+			if (currentListValue == null) {
+				fieldList.add(value.toString());
+			} else {
+				fieldList.modify(index, currentListValue + separator + value);
+			}
+		}
 	}
 	
 	public ServletContext getServletContext() {
