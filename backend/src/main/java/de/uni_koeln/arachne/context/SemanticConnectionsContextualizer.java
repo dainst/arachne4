@@ -51,14 +51,11 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 		if (contextContents != null) {
 			final ListIterator<Map<String, String>> contextMap = contextContents.listIterator(offset);
 			while (contextMap.hasNext() && (linkCount < limit || limit == -1)) {
-				final Map<String, String> map = contextMap.next();
 				final ArachneLink link = new ArachneLink();
-								
-				linkCount++;
-				
 				link.setEntity1(parent);
-				link.setEntity2(createDatasetFromQueryResults(map));
+				link.setEntity2(createDatasetFromQueryResults(contextMap.next()));
 				result.add(link);
+				linkCount++;
 			}
 		}
 		return result;
