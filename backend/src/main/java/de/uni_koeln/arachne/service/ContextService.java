@@ -47,7 +47,7 @@ public class ContextService {
 	@Autowired
 	private GenericSQLService genericSQLService; // NOPMD
 	
-	/*
+	/**
 	 * Utility class to work with the XML config files.
 	 */
 	@Autowired
@@ -202,36 +202,48 @@ public class ContextService {
 		final List<Element> children = element.getChildren();
 		
 		if ("context".equals(element.getName()) && !children.isEmpty()) {
-			final String context = element.getAttributeValue("type");
-			for (Element e:children) {
-				String datasourceValue = e.getAttributeValue("datasource");  
-				if (!StrUtils.isEmptyOrNull(datasourceValue)) {
-					datasourceValue = context + datasourceValue; // NOPMD
-					if (!datasourceValue.startsWith(parentType) && !datasourceValue.startsWith("Dataset")) {
-						result.add(datasourceValue);
-					}
-				}
-			}
+			getFieldsFromContext(element, parentType, result, children);
 		} else {
-			if (!children.isEmpty()) {
-				for (Element e:children) {
-					result.addAll(getFields(e, parentType));
-				}
-			}
-
-			final String datasourceValue = element.getAttributeValue("datasource");
-			if (!StrUtils.isEmptyOrNull(datasourceValue) && !datasourceValue.startsWith(parentType) 
-					&& !datasourceValue.startsWith("Dataset")) {
-				result.add(datasourceValue);
-			}
-
-			final String ifEmptyValue = element.getAttributeValue("ifEmpty");
-			if (!StrUtils.isEmptyOrNull(ifEmptyValue) && !ifEmptyValue.startsWith(parentType) 
-					&& !datasourceValue.startsWith("Dataset")) {
-				result.add(ifEmptyValue);
-			}
+			getFieldsFromField(element, parentType, result, children);
 		}
 		
 		return result;
+	}
+
+	private void getFieldsFromField(final Element element, final String parentType, final List<String> result,
+			final List<Element> children) {
+		
+		if (!children.isEmpty()) {
+			for (Element e:children) {
+				result.addAll(getFields(e, parentType));
+			}
+		}
+
+		final String datasourceValue = element.getAttributeValue("datasource");
+		if (!StrUtils.isEmptyOrNull(datasourceValue) && !datasourceValue.startsWith(parentType) 
+				&& !datasourceValue.startsWith("Dataset")) {
+			result.add(datasourceValue);
+		}
+
+		final String ifEmptyValue = element.getAttributeValue("ifEmpty");
+		if (!StrUtils.isEmptyOrNull(ifEmptyValue) && !ifEmptyValue.startsWith(parentType) 
+				&& !datasourceValue.startsWith("Dataset")) {
+			result.add(ifEmptyValue);
+		}
+	}
+
+	private void getFieldsFromContext(final Element element, final String parentType, final List<String> result,
+			final List<Element> children) {
+		
+		final String context = element.getAttributeValue("type");
+		for (Element e:children) {
+			String datasourceValue = e.getAttributeValue("datasource");  
+			if (!StrUtils.isEmptyOrNull(datasourceValue)) {
+				datasourceValue = context + datasourceValue; // NOPMD
+				if (!datasourceValue.startsWith(parentType) && !datasourceValue.startsWith("Dataset")) {
+					result.add(datasourceValue);
+				}
+			}
+		}
 	}
 }
