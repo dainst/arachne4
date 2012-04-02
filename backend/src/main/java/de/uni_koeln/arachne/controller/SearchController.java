@@ -34,16 +34,18 @@ public class SearchController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 	
-	SolrServer server = null;
+	private transient final SolrServer server;
 	
 	@Autowired
-	public SearchController(SolrUrlString solrUrl) {
+	public SearchController(final SolrUrlString solrUrl) {
+		SolrServer server = null;
 		try {
 			server = new CommonsHttpSolrServer(solrUrl.getSolrUrl());
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			LOGGER.error(e.getMessage());
 		}
+		this.server = server;
 	}
 	
 	/**
@@ -78,31 +80,8 @@ public class SearchController {
 		    // TODO add category specific facets based on info from where?
 		    query.setFacet(true);
 		    		    		    
-		    if (!StrUtils.isEmptyOrNull(offset)) {
-		    	final int intOffset = Integer.valueOf(offset);
-		    	query.setStart(intOffset);
-		    	result.setOffset(intOffset);
-		    }
-		    
-		    if (!StrUtils.isEmptyOrNull(limit)) {
-		    	final int intLimit = Integer.valueOf(limit);
-		    	query.setRows(intLimit);
-		    	result.setLimit(intLimit);
-		    }
-		    
-		    if (!StrUtils.isEmptyOrNull(facetLimit)) {
-		    	final int intFacetLimit = Integer.valueOf(facetLimit);
-		    	query.setFacetLimit(intFacetLimit);
-		    }
-		    
-		    if (!StrUtils.isEmptyOrNull(filterValues)) {
-		    	final List<String> filterValueList = filterQueryStringToStringList(filterValues); 
-		    	if (!StrUtils.isEmptyOrNull(filterValueList)) {
-		    		for (String filterValue: filterValueList) {
-		    			query.addFilterQuery(filterValue);
-		    		}
-		    	}
-		    }
+		    setSearchParameters(limit, offset, filterValues, facetLimit,
+					result, query);
 		    		    
 		    final QueryResponse response = server.query(query);
 		    result.setEntities(response.getResults());
@@ -134,12 +113,50 @@ public class SearchController {
 			    
 	    return result;
 	}
+
+	/**
+	 * Helper function to set the search parameters for the Solr query. The first four parameters are the same as used
+	 *  in handle search request.
+	 *
+	 * @param result The query result.
+	 * @param query The query to set the parameters on.
+	 */
+	private void setSearchParameters(final String limit, final String offset,
+			final String filterValues, final String facetLimit,
+			final SearchResult result, final SolrQuery query) {
+		
+		if (!StrUtils.isEmptyOrNull(offset)) {
+			final int intOffset = Integer.valueOf(offset);
+			query.setStart(intOffset);
+			result.setOffset(intOffset);
+		}
+		
+		if (!StrUtils.isEmptyOrNull(limit)) {
+			final int intLimit = Integer.valueOf(limit);
+			query.setRows(intLimit);
+			result.setLimit(intLimit);
+		}
+		
+		if (!StrUtils.isEmptyOrNull(facetLimit)) {
+			final int intFacetLimit = Integer.valueOf(facetLimit);
+			query.setFacetLimit(intFacetLimit);
+		}
+		
+		if (!StrUtils.isEmptyOrNull(filterValues)) {
+			final List<String> filterValueList = filterQueryStringToStringList(filterValues); 
+			if (!StrUtils.isEmptyOrNull(filterValueList)) {
+				for (String filterValue: filterValueList) {
+					query.addFilterQuery(filterValue);
+				}
+			}
+		}
+	}
 	
 	/**
 	 * Converts the input string of query filter parameters to a string list of parameters.
-	 * The string is split at every occurence of ",facet_".
-	 * @param filterString The silter query string to convert.
-	 * @return a string list containing the seperated parameters or <code>null</code> if the conversion fails.
+	 * The string is split at every occurrence of ",facet_".
+	 * @param filterString The filter query string to convert.
+	 * @return a string list containing the separated parameters or <code>null</code> if the conversion fails.
 	 */
 	private List<String> filterQueryStringToStringList(final String filterString) {
 		String string = filterString;
