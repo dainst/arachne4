@@ -43,7 +43,6 @@ public class ResponseFactory {
 	 * @param dataset The dataset which encapsulates the SQL query results.
 	 * @return A <code>FormattedArachneEntity</code> instance which can be jsonized.
 	 */
-	@SuppressWarnings("unchecked")
 	public FormattedArachneEntity createFormattedArachneEntity(final Dataset dataset) {
 		LOGGER.debug("dataset: " + dataset);
 		
@@ -75,107 +74,22 @@ public class ResponseFactory {
 	    	final Element display = doc.getRootElement().getChild("display",nameSpace);
 	    	
 	    	// set title
-	    	final Element title = display.getChild("title", nameSpace);
-	    	String titleStr = "";
-	    	if (title.getChild("field") == null) {
-	    		titleStr = xmlConfigUtil.getStringFromSections(title.getChild("section", nameSpace), dataset);
-	    	} else {
-	    		titleStr = dataset.getField(title.getChild("field", nameSpace).getAttributeValue("datasource"));
-	    	}
+	    	final String titleStr = getTitleString(dataset, nameSpace, display);
 	    	response.setTitle(titleStr);
 	    	
 	    	// set subtitle
-	    	String subtitleStr = "";
-	    	final Element subtitle = display.getChild("subtitle", nameSpace);
-	    	if (subtitle.getChild("field", nameSpace) == null) {
-	    		subtitleStr = xmlConfigUtil.getStringFromSections(subtitle.getChild("section", nameSpace), dataset);
-	    	} else {
-	    		subtitleStr = dataset.fields.get(subtitle.getChild("field", nameSpace).getAttributeValue("datasource", nameSpace));
-	    	}
+	    	final String subtitleStr = getSubTitle(dataset, nameSpace, display);
 	    	response.setSubtitle(subtitleStr);
 	    	
-	    	// set sections
-	    	final Element sections = display.getChild("datasections", nameSpace);
-	    	final List<AbstractContent> contentList = new ArrayList<AbstractContent>();
-	    	// JDOM doesn't handle generics correctly so it issues a type safety warning
-			List<Element> children = sections.getChildren();
-			for (Element e:children) {
-				if (e.getName().equals("section")) {
-					contentList.add(xmlConfigUtil.getContentFromSections(e, dataset)); 
-				} else {
-					contentList.add(xmlConfigUtil.getContentFromContext(e, dataset));
-				}
-	    	}
-			
-			if (!contentList.isEmpty()) {
-				if (contentList.size() == 1) {
-					response.setSections(contentList.get(0));
-				} else {
-					final Section sectionContent = new Section();
-					sectionContent.setLabel("ContainerSection");
-					for (AbstractContent c:contentList) {
-						sectionContent.add(c);
-					}
-					response.setSections(sectionContent);
-				}
-			}		
+	    	// set datasections
+	    	setSections(dataset, nameSpace, display, response);
 			
 			// Set images
  			response.setImages(dataset.getImages());
 			
 			// Set facets
- 			final FacetList facets = new FacetList();
- 			
- 			final Element facetsElement = doc.getRootElement().getChild("facets", nameSpace);
- 			children.clear();
- 			// JDOM doesn't handle generics correctly so it issues a type safety warning
- 			children = facetsElement.getChildren();
- 			for (Element e:children) {
- 				if ("facet".equals(e.getName())) {
- 					final String name = e.getAttributeValue("name");
- 					final String labelKey = e.getAttributeValue("labelKey");
- 					final Facet facet = new Facet(name, labelKey);
- 					final Element child = (Element)e.getChildren().get(0); 
- 					if (child != null) {
- 						final List<String> values = new ArrayList<String>();
- 						final String childName = child.getName();
- 						if ("field".equals(childName)) {
- 							final String value = dataset.getField(child.getAttributeValue("datasource"));
- 	 						if (value != null) {
- 	 							values.add(value);
- 	 						}
- 	 					} else {
- 	 						if ("context".equals(childName)) {
- 	 							final Section section = xmlConfigUtil.getContentFromContext(child, dataset);
- 	 							if (section != null) {
- 	 								for (AbstractContent c:section.getContent()) {
- 	 									if (c instanceof FieldList) {
- 	 										for (String value: ((FieldList)c).getValue()) {
- 	 											if (value != null) {
- 	 												values.add(value);
- 	 											}
- 	 										}
- 	 									} else {
- 	 										final String value = c.toString();
- 	 										if (value != null) {
- 	 											values.add(value);
- 	 										}
- 	 									}
- 	 								} 	 								
- 	 							}
- 	 						}
- 	 					}
- 	 					if (!values.isEmpty()) {
- 	 						facet.setValues(values);
- 	 					}
- 	 					if (!facet.getValues().isEmpty()) {
- 	 						facets.add(facet);
- 	 					}
- 					}
- 				}
- 			}
- 			
- 			response.setFacets(facets.getList());
+ 			final Element facets = doc.getRootElement().getChild("facets", nameSpace);
+ 			response.setFacets(getFacets(dataset, facets).getList());
  			
 			
 			// Set contexts
@@ -183,12 +97,12 @@ public class ResponseFactory {
 			Section contextContent = new Section();
 			contextContent.setLabel("Contexts");
 			
-		    for(ArachneContext aC: dataset.getContext()) { 
+		    for (Context aC: dataset.getContext()) { 
 		    	
 		    	Section specificContext = new Section();
 		    	specificContext.setLabel(aC.getContextType());
 		    	
-		    	for(Link link: aC.getallContexts()) {	    		
+		    	for(AbstractLink link: aC.getallContexts()) {	    		
 		    		if(link.getClass().getSimpleName().equals("ArachneLink")) {
 		    			ArachneLink aL = (ArachneLink) link;
 		    			Section specificContextContent = new Section();
@@ -210,5 +124,117 @@ public class ResponseFactory {
 			LOGGER.error(e.getMessage());
 		}
 		return response;
+	}
+
+	private String getTitleString(final Dataset dataset, final Namespace nameSpace, final Element display) {
+		
+		String result = "";
+		final Element title = display.getChild("title", nameSpace);
+    	if (title.getChild("field") == null) {
+    		result = xmlConfigUtil.getStringFromSections(title.getChild("section", nameSpace), dataset);
+    	} else {
+    		result = dataset.getField(title.getChild("field", nameSpace).getAttributeValue("datasource"));
+    	}
+    	return result;
+	}
+	
+	private String getSubTitle(final Dataset dataset, final Namespace nameSpace, final Element display) {
+		
+		String result = "";
+		final Element subtitle = display.getChild("subtitle", nameSpace);
+		if (subtitle.getChild("field", nameSpace) == null) {
+			result = xmlConfigUtil.getStringFromSections(subtitle.getChild("section", nameSpace), dataset);
+		} else {
+			result = dataset.fields.get(subtitle.getChild("field", nameSpace).getAttributeValue("datasource", nameSpace));
+		}
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void setSections(final Dataset dataset, final Namespace nameSpace, final Element display, final FormattedArachneEntity response) { 
+
+		final Element sections = display.getChild("datasections", nameSpace);
+		final List<AbstractContent> contentList = new ArrayList<AbstractContent>();
+		// JDOM doesn't handle generics correctly so it issues a type safety warning
+		final List<Element> children = sections.getChildren();
+		for (Element e:children) {
+			if (e.getName().equals("section")) {
+				contentList.add(xmlConfigUtil.getContentFromSections(e, dataset)); 
+			} else {
+				contentList.add(xmlConfigUtil.getContentFromContext(e, dataset));
+			}
+		}
+
+
+		if (!contentList.isEmpty()) {
+			if (contentList.size() == 1) {
+				response.setSections(contentList.get(0));
+			} else {
+				final Section sectionContent = new Section();
+				sectionContent.setLabel("ContainerSection");
+				for (AbstractContent c:contentList) {
+					sectionContent.add(c);
+				}
+				response.setSections(sectionContent);
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private FacetList getFacets(final Dataset dataset, final Element facets) {
+		
+		final FacetList result = new FacetList();
+		// JDOM doesn't handle generics correctly so it issues a type safety warning
+		final List<Element> children = facets.getChildren();
+		for (Element e:children) {
+			if ("facet".equals(e.getName())) {
+				final String name = e.getAttributeValue("name");
+				final String labelKey = e.getAttributeValue("labelKey");
+				final Facet facet = new Facet(name, labelKey);
+				final Element child = (Element)e.getChildren().get(0); 
+				if (child != null) {
+					final List<String> values = new ArrayList<String>();
+					final String childName = child.getName();
+					if ("field".equals(childName)) {
+						final String value = dataset.getField(child.getAttributeValue("datasource"));
+						if (value != null) {
+							values.add(value);
+						}
+					} else {
+						if ("context".equals(childName)) {
+							getFacetContext(dataset, child, values);
+						}
+					}
+					if (!values.isEmpty()) {
+						facet.setValues(values);
+					}
+					if (!facet.getValues().isEmpty()) {
+						result.add(facet);
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	private void getFacetContext(final Dataset dataset, final Element child, final List<String> values) {
+		
+		final Section section = xmlConfigUtil.getContentFromContext(child, dataset);
+		if (section != null) {
+			for (AbstractContent c:section.getContent()) {
+				if (c instanceof FieldList) {
+					for (String value: ((FieldList)c).getValue()) {
+						if (value != null) {
+							values.add(value);
+						}
+					}
+				} else {
+					final String value = c.toString();
+					if (value != null) {
+						values.add(value);
+					}
+				}
+			} 	 								
+		}
 	}
 }
