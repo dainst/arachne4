@@ -26,6 +26,10 @@ public class GenericSQLService {
 		return genericSQLDao.getConnectedEntities(contextType, entityId);
 	}
 	
+	public List<Long> getConnectedEntityIds(final Long entityId) {
+		return genericSQLDao.getConnectedEntityIds(entityId);
+	}
+	
 	public List<List<String>> getStringFields(final String tableName, final String field1, final Long field1Id, final List<String> fields) {
 		return genericSQLDao.getStringFields(tableName, field1, field1Id, fields);
 	}

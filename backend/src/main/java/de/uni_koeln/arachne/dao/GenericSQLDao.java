@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import de.uni_koeln.arachne.mapping.EntityIdMapper;
 import de.uni_koeln.arachne.mapping.GenericFieldMapperLong;
 import de.uni_koeln.arachne.mapping.GenericFieldMapperString;
 import de.uni_koeln.arachne.mapping.GenericFieldsMapperString;
 import de.uni_koeln.arachne.service.SQLResponseObject;
 import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.sqlutil.ConnectedEntityIdsSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericEntitiesEntityIdJoinedSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.ConnectedEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldSQLQueryBuilder;
@@ -65,6 +67,18 @@ public class GenericSQLDao extends SQLDao {
 		final List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(queryBuilder.getSQL()
 				, new GenericEntitesMapper());
 
+		if (queryResult != null && !queryResult.isEmpty()) {
+			return queryResult;
+		}
+		return null;
+	}
+	
+	public List<Long> getConnectedEntityIds(final Long entityId) {
+		final ConnectedEntityIdsSQLQueryBuilder queryBuilder = new ConnectedEntityIdsSQLQueryBuilder(entityId, userRightsService.getCurrentUser());
+		@SuppressWarnings("unchecked")
+		final List<Long> queryResult = (List<Long>)this.executeSelectQuery(queryBuilder.getSQL()
+				, new EntityIdMapper());
+		
 		if (queryResult != null && !queryResult.isEmpty()) {
 			return queryResult;
 		}

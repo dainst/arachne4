@@ -14,6 +14,7 @@ import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uni_koeln.arachne.response.SearchResult;
+import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.util.SolrUrlString;
 import de.uni_koeln.arachne.util.StrUtils;
 
@@ -33,6 +35,9 @@ import de.uni_koeln.arachne.util.StrUtils;
 public class SearchController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
+	
+	@Autowired
+	private GenericSQLService genericSQLService; // NOPMD
 	
 	private transient final SolrServer server;
 	
@@ -112,6 +117,67 @@ public class SearchController {
 		}
 			    
 	    return result;
+	}
+	
+	@RequestMapping(value="/context/{entityId}", method=RequestMethod.GET)
+	public @ResponseBody SearchResult handleContextRequest(@PathVariable("entityId") final Long entityId) {
+		final SearchResult result = new SearchResult();
+		final List<Long> contextIds = genericSQLService.getConnectedEntityIds(entityId);
+		
+		try {
+			final SolrQuery query = new SolrQuery("*:*");
+			final StringBuffer queryStr = new StringBuffer("(");
+			
+			for (int i = 0; i < contextIds.size();i++) {
+				queryStr.append("id:");
+				queryStr.append(contextIds.get(i));
+				if (i < contextIds.size() - 1) {
+					queryStr.append(" OR ");
+				} else {
+					queryStr.append(')');
+				}
+			}
+			
+			query.setQuery(queryStr.toString());
+			// default value for limit
+			query.setRows(50);
+			query.setFacetMinCount(1);
+			// default facets to include
+			query.addFacetField("facet_kategorie");
+			query.addFacetField("facet_ort");
+			query.addFacetField("facet_datierung-epoche");
+			// TODO add category specific facets based on info from where?
+			query.setFacet(true);
+
+			final QueryResponse response = server.query(query);
+			result.setEntities(response.getResults());
+			result.setSize(response.getResults().getNumFound());
+			final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
+
+			final List<FacetField> facetFields = response.getFacetFields();
+			for (FacetField facetField: facetFields) {
+				final List<FacetField.Count> facetItems = facetField.getValues();
+				final Map<String, Long> facetValueMap = new LinkedHashMap<String, Long>();
+				if (facetItems != null) {
+					for (FacetField.Count fcount: facetItems) {
+						facetValueMap.put(fcount.getName(), fcount.getCount());
+					}
+					if (!facetValueMap.isEmpty()) {
+						facets.put(facetField.getName(), facetValueMap);
+					}
+				}
+			}
+
+			if (!facets.isEmpty()) {
+				result.setFacets(facets);
+			}
+
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			LOGGER.error(e.getMessage());
+		}
+
+		return result;
 	}
 
 	/**
