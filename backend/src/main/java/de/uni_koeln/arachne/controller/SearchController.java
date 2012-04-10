@@ -13,6 +13,7 @@ import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,6 @@ import org.slf4j.LoggerFactory;
 
 import de.uni_koeln.arachne.response.SearchResult;
 import de.uni_koeln.arachne.service.GenericSQLService;
-import de.uni_koeln.arachne.util.SolrUrlString;
 import de.uni_koeln.arachne.util.StrUtils;
 
 /**
@@ -42,13 +42,13 @@ public class SearchController {
 	private transient final SolrServer server;
 	
 	@Autowired
-	public SearchController(final SolrUrlString solrUrl) {
+	public SearchController(final @Value("#{config.solrUrl})") String solrUrl) {
+		LOGGER.info("SolrUrl: " + solrUrl);
 		SolrServer server = null;
 		try {
-			server = new CommonsHttpSolrServer(solrUrl.getSolrUrl());
+			server = new CommonsHttpSolrServer(solrUrl);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			LOGGER.error(e.getMessage());
+			LOGGER.error("Setting up SolrServer: " + e.getMessage());
 		}
 		this.server = server;
 	}

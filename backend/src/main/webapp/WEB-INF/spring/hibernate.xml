@@ -4,19 +4,12 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean
-        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location">
-            <value>WEB-INF/classes/application.properties</value>
-        </property>
-    </bean>
-	
-    <bean id="dataSource"
+	<bean id="dataSource"
         class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="driverClass" value="${jdbc.driverClassName}" />
-        <property name="jdbcUrl" value="${jdbc.url}" />
-        <property name="user" value="${jdbc.username}" />
-        <property name="password" value="${jdbc.password}" />
+        <property name="driverClass" value="#{config.jdbcDriverClassName}" />
+        <property name="jdbcUrl" value="#{config.jdbcUrl}" />
+        <property name="user" value="#{config.jdbcUsername}" />
+        <property name="password" value="#{config.jdbcPassword}" />
         <property name="minPoolSize" value="1" />
         <property name="maxPoolSize" value="5" />
     </bean>
