@@ -85,8 +85,7 @@ public class SearchController {
 		    // TODO add category specific facets based on info from where?
 		    query.setFacet(true);
 		    		    		    
-		    setSearchParameters(limit, offset, filterValues, facetLimit,
-					result, query);
+		    setSearchParameters(limit, offset, filterValues, facetLimit, result, query);
 		    		    
 		    final QueryResponse response = server.query(query);
 		    result.setEntities(response.getResults());
@@ -119,8 +118,24 @@ public class SearchController {
 	    return result;
 	}
 	
+	/**
+	 * Handles the http request by querying the Solr index for contexts of a given entity and returning the result.
+	 * <br>
+	 * Currently the search result can only be serialized to JSON as JAXB cannot handle Maps.
+	 * @param entityId The id of the entity of interest. 
+	 * @param limit The maximum number of returned entities. (optional)
+	 * @param offset The offset into the list of entities (used for paging). (optional)
+	 * @param filterValues The values of the solr filter query. (optional)
+	 * @param facetLimit The maximum number of facet results. (optional)
+	 * @return A response object containing the data (this is serialized to XML or JSON depending on content negotiation).
+	 */
 	@RequestMapping(value="/context/{entityId}", method=RequestMethod.GET)
-	public @ResponseBody SearchResult handleContextRequest(@PathVariable("entityId") final Long entityId) {
+	public @ResponseBody SearchResult handleContextRequest(@PathVariable("entityId") final Long entityId,
+			@RequestParam(value = "limit", required = false) final String limit,
+			@RequestParam(value = "offset", required = false) final String offset,
+			@RequestParam(value = "fq", required = false) final String filterValues,
+			@RequestParam(value = "fl", required = false) final String facetLimit) {
+		
 		final SearchResult result = new SearchResult();
 		final List<Long> contextIds = genericSQLService.getConnectedEntityIds(entityId);
 		
@@ -148,6 +163,8 @@ public class SearchController {
 			query.addFacetField("facet_datierung-epoche");
 			// TODO add category specific facets based on info from where?
 			query.setFacet(true);
+			
+			setSearchParameters(limit, offset, filterValues, facetLimit, result, query);
 
 			final QueryResponse response = server.query(query);
 			result.setEntities(response.getResults());

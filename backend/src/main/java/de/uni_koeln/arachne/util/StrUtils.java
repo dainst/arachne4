@@ -18,7 +18,7 @@ public class StrUtils {
 	
 	/**
 	 * This method returns if a <code>List<String></code> is empty or <code>null</code>.
-	 * @param stringlist to test.
+	 * @param stringList to test.
 	 * @return <code>true</code> or <code>false</code>
 	 */
 	public static boolean isEmptyOrNull(List<String> stringList) {
@@ -28,7 +28,7 @@ public class StrUtils {
 	/**
 	 * This method returns if a <code>StringBuffer</code> is empty or <code>null</code>.
 	 * @param stringBuffer
-	 * @return
+	 * @return <code>true</code> or <code>false</code>
 	 */
 	public static boolean isEmptyOrNull(StringBuffer stringBuffer) {
 		return stringBuffer == null || stringBuffer.length() < 1;

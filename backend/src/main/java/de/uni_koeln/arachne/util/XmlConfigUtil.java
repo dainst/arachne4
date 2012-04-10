@@ -135,7 +135,7 @@ public class XmlConfigUtil {
 	 * definitions in the xml files and returns it as <code>Content</code>.
 	 * <br>
 	 * The validity of the xml file is not checked!!!
-	 * @param parent The xml section <code>Element</code> to parse.
+	 * @param section The xml section <code>Element</code> to parse.
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Content</code> object containing the sections content.
 	 */

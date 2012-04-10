@@ -62,7 +62,7 @@ public class ImageController {
 	 * @param entityId
 	 * @param request
 	 * @param response
-	 * @return
+	 * @return The requested image (?)
 	 */
 	@RequestMapping(value = "/image/{entityId}", method = RequestMethod.GET)
 	public @ResponseBody BufferedImage getImage(
@@ -79,7 +79,7 @@ public class ImageController {
 	 * @param entityId
 	 * @param request
 	 * @param response
-	 * @return
+	 * @return The requested image (?)
 	 */
 	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
 	public @ResponseBody BufferedImage getThumbnail(
@@ -96,7 +96,7 @@ public class ImageController {
 	 * @param entityId
 	 * @param request
 	 * @param response
-	 * @return
+	 * @return The requested image (?)
 	 */
 	@RequestMapping(value = "/image/preview/{entityId}", method = RequestMethod.GET)
 	public @ResponseBody BufferedImage getPreview(

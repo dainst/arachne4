@@ -16,7 +16,7 @@ public interface IContextualizer {
 	
 	/**
 	 * Retrieval function to get the contexts. They may be fetched from the database or an external data source.
-	 * @param source The dataset for which the context is created.
+	 * @param parent The dataset for which the context is created.
 	 * @param offset Sets which context is the first to get.
 	 * @param limit The number of contexts to get.
 	 * @return The links that represent the contexts.

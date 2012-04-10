@@ -71,7 +71,6 @@ public class AuthenticationController {
 	
 	/**
 	 * Handles logout
-	 * @return
 	 */
 	@RequestMapping(value="/sessions/{sessionId}", method=RequestMethod.DELETE)
 	public void destroySession(

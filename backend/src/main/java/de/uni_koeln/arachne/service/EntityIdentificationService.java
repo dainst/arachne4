@@ -25,33 +25,34 @@ public class EntityIdentificationService {
 	
 	
 	/**
-	 * Gets all identifiers of a dataset by Arachne entity ID. This is the external reference ID for the dataset in Arachne.
-	 * @param arachneEntityId
+	 * Gets all identifiers of a dataset by table name and internal key. This is the external reference ID for the dataset in Arachne.
+	 * @param tableName The name of the SQL table.
+	 * @param internalKey The internalkey of the entity. 
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
-	public EntityId getId(final String table, final Long internalKey) {
-		return getByTablenameAndInternalKey(table, internalKey);
+	public EntityId getId(final String tableName, final Long internalKey) {
+		return getByTablenameAndInternalKey(tableName, internalKey);
 	}
 	
 	/**
 	 * Gets all identifiers of a dataset by Arachne entity ID. This is the external reference ID for the dataset in Arachne.
-	 * For convenience the public method <code>getArachneId</code> is overloaded.
-	 * @param ArachneEntityID ArachneEntityID
+	 * For convenience the public method <code>getId</code> is overloaded.
+	 * @param entityId The Arachne entity ID.
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
-	private EntityId getByEntityId(final Long arachneEntityId) {
-		return constructArachneID(arachneEntityDao.getByEntityID(arachneEntityId));
+	private EntityId getByEntityId(final Long entityId) {
+		return constructArachneID(arachneEntityDao.getByEntityID(entityId));
 	}
 	
 	/**
 	 * Gets all identifiers of a Dataset by tablename and primary key.
 	 * For convenience the public method <code>getArachneId</code> is overloaded.
-	 * @param table The internal table name in the Arachne database.
-	 * @param internalId internal table key of the dataset
+	 * @param tableName The internal table name in the Arachne database.
+	 * @param internalKey internal table key of the dataset
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
-	private EntityId getByTablenameAndInternalKey(final String table, final Long internalId){
-		return constructArachneID(arachneEntityDao.getByTablenameAndInternalKey(table, internalId));
+	private EntityId getByTablenameAndInternalKey(final String tableName, final Long internalKey){
+		return constructArachneID(arachneEntityDao.getByTablenameAndInternalKey(tableName, internalKey));
 	}
 	
 	/**

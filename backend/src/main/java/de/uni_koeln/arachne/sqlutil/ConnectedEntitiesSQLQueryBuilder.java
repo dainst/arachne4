@@ -15,10 +15,9 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	/**
 	 * Constructs a condition to query a field.
-	 * @param tableName The name of the table of the query.
-	 * @param field1 The field for which the id is given.
-	 * @param field1Id The field Id.
-	 * @param field2 The field to query.
+	 * @param contextType The type of the context.
+	 * @param entityId The id of the entity the context belongs to.
+	 * @param user The user information used for authorizing.
 	 */
 	public ConnectedEntitiesSQLQueryBuilder(final String contextType, final Long entityId, final UserAdministration user) {
 		super();

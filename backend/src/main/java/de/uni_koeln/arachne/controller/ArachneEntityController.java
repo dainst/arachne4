@@ -48,7 +48,7 @@ public class ArachneEntityController {
 	
 	/**
 	 * Handles http request for /{id}
-	 * @param itemId The unique entity id of the item to fetch.
+	 * @param entityId The unique entity id of the item to fetch.
      * @return A response object containing the data (currently this a serialized to JSON by Jackson).
      */
 	@RequestMapping(value="/entity/{entityId}", method=RequestMethod.GET)
@@ -126,7 +126,7 @@ public class ArachneEntityController {
      * Handles http request for /doc/{id}
      * It uses the <Code>ItemService</Code> class to fetch the data and wraps it 
      * in a <Code>JsonResponse</Code> object.
-     * @param itemId The id of the item to fetch
+     * @param entityId The id of the item to fetch
      * @return a JSON object containing the data
      */
     @RequestMapping(value="/doc/{entityId}", method=RequestMethod.GET)
@@ -139,7 +139,7 @@ public class ArachneEntityController {
      * Handles http request for /doc/{category}/{id}
      * It uses the <Code>ItemService</Code> class to fetch the data and wraps it 
      * in a <Code>JsonResponse</Code> object.
-     * @param itemId The id of the item to fetch
+     * @param categoryId The id of the item to fetch
      * @return a JSON object containing the data
      */
     @RequestMapping(value="doc/{category}/{categoryId}", method=RequestMethod.GET)
@@ -155,7 +155,7 @@ public class ArachneEntityController {
      * Handles http request for /data/{id}
      * It uses the <Code>ItemService</Code> class to fetch the data and wraps it 
      * in a <Code>JsonResponse</Code> object.
-     * @param itemId The id of the item to fetch
+     * @param entityId The id of the item to fetch
      * @return a JSON object containing the data
      */
     @RequestMapping(value="/data/{entityId}", method=RequestMethod.GET)
@@ -168,7 +168,7 @@ public class ArachneEntityController {
      * Handles http request for /doc/{category}/{id}
      * It uses the <Code>ItemService</Code> class to fetch the data and wraps it 
      * in a <Code>JsonResponse</Code> object.
-     * @param itemId The id of the item to fetch
+     * @param categoryId The id of the item to fetch
      * @return a JSON object containing the data
      */
     @RequestMapping(value="data/{category}/{categoryId}", method=RequestMethod.GET)

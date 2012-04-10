@@ -106,7 +106,7 @@ public class ContextService {
 	 * This function retrieves the contexts according to the given criteria.
 	 * It uses a context specific contextualizer to fetch the data.
 	 * @param parent Instance of an <code>ArachneDataset</code> that will receive the context
-	 * @param contextName String that describes the context-type
+	 * @param contextType String that describes the context-type
 	 * @param offset Starting position for context listing
 	 * @param limit Quantity of contexts 
 	 * @return Returns a list of <code>Links</code> 
