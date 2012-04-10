@@ -42,7 +42,7 @@ public class SearchController {
 	private transient final SolrServer server;
 	
 	@Autowired
-	public SearchController(final @Value("#{config.solrUrl})") String solrUrl) {
+	public SearchController(final @Value("#{config.solrUrl}") String solrUrl) {
 		LOGGER.info("SolrUrl: " + solrUrl);
 		SolrServer server = null;
 		try {
@@ -111,7 +111,7 @@ public class SearchController {
 		    }
 		    
 		} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
 			LOGGER.error(e.getMessage());
 		}
 			    
