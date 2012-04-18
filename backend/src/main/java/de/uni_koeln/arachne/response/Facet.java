@@ -14,6 +14,12 @@ public class Facet {
 		this.name = name;
 		this.labelKey = labelKey;
 	}
+	
+	/**
+	 * Emtpy no-args constructor to make JAXB happy
+	 */
+	public Facet() {
+	}
 
 	public String getName() {
 		return this.name;
