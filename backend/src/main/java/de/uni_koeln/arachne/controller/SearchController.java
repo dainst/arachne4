@@ -42,7 +42,7 @@ public class SearchController {
 	private GenericSQLService genericSQLService; // NOPMD
 	
 	@Autowired
-	private UserRightsService userRightsService;
+	private UserRightsService userRightsService; // NOPMD
 	
 	private transient final SolrServer server;
 	
@@ -79,7 +79,8 @@ public class SearchController {
 		final SearchResult result = new SearchResult();
 		try {
 			final SolrQuery query = new SolrQuery("*:*");
-			StringBuffer fullSearchParam = new StringBuffer("(");
+			final StringBuffer fullSearchParam = new StringBuffer(64);
+			fullSearchParam.append('(');
 			fullSearchParam.append(searchParam);
 			fullSearchParam.append(" AND (");
 			boolean first = true;

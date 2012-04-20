@@ -15,10 +15,8 @@ public class Facet {
 		this.labelKey = labelKey;
 	}
 	
-	/**
-	 * Emtpy no-args constructor to make JAXB happy
-	 */
 	public Facet() {
+		// Emtpy no-args constructor to make JAXB happy
 	}
 
 	public String getName() {
