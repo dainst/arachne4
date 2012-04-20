@@ -56,7 +56,13 @@ public class ResponseFactory {
 		response.setInternalId(arachneId.getInternalKey());
 		
 		// set dataset group
-		final String datasetGroupFieldName = tableName+".DatensatzGruppe"+tableName.substring(0,1).toUpperCase()+tableName.substring(1);
+		// workaround for table marbilder as it does not adhere to the naming conventions
+		String datasetGroupFieldName = null;
+		if ("marbilder".equals(tableName)) {
+			datasetGroupFieldName = "marbilder.DatensatzGruppeMARBilder";
+		} else {
+			datasetGroupFieldName = tableName+".DatensatzGruppe"+tableName.substring(0,1).toUpperCase()+tableName.substring(1);
+		}
 		response.setDatasetGroup(dataset.getFieldFromFields(datasetGroupFieldName));		
 		
 		final String filename = xmlConfigUtil.getFilenameFromType(response.getType());
