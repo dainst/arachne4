@@ -24,8 +24,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.response.SearchResult;
 import de.uni_koeln.arachne.service.GenericSQLService;
+import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.StrUtils;
 
 /**
@@ -38,6 +40,9 @@ public class SearchController {
 	
 	@Autowired
 	private GenericSQLService genericSQLService; // NOPMD
+	
+	@Autowired
+	private UserRightsService userRightsService;
 	
 	private transient final SolrServer server;
 	
@@ -74,7 +79,22 @@ public class SearchController {
 		final SearchResult result = new SearchResult();
 		try {
 			final SolrQuery query = new SolrQuery("*:*");
-		    query.setQuery(searchParam);
+			StringBuffer fullSearchParam = new StringBuffer("(");
+			fullSearchParam.append(searchParam);
+			fullSearchParam.append(" AND (");
+			boolean first = true;
+			for (DatasetGroup datasetGroup: userRightsService.getCurrentUser().getDatasetGroups()) {
+				if (first) {
+					fullSearchParam.append("datasetGroup:");
+					first = false;
+				} else {
+					fullSearchParam.append(" OR datasetGroup:");
+				}
+				fullSearchParam.append(datasetGroup.getName());
+			}			
+			fullSearchParam.append("))");
+			LOGGER.debug("FullSearchParam: " + fullSearchParam);
+			query.setQuery(fullSearchParam.toString());
 		    // default value for limit
 		    query.setRows(50);
 		    query.setFacetMinCount(1);
@@ -86,7 +106,7 @@ public class SearchController {
 		    query.setFacet(true);
 		    		    		    
 		    setSearchParameters(limit, offset, filterValues, facetLimit, result, query);
-		    		    
+		    
 		    final QueryResponse response = server.query(query);
 		    result.setEntities(response.getResults());
 		    result.setSize(response.getResults().getNumFound());
