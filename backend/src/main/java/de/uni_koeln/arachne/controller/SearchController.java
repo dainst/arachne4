@@ -82,19 +82,8 @@ public class SearchController {
 			final StringBuffer fullSearchParam = new StringBuffer(64);
 			fullSearchParam.append('(');
 			fullSearchParam.append(searchParam);
-			fullSearchParam.append(" AND (");
-			boolean first = true;
-			for (DatasetGroup datasetGroup: userRightsService.getCurrentUser().getDatasetGroups()) {
-				if (first) {
-					fullSearchParam.append("datasetGroup:");
-					first = false;
-				} else {
-					fullSearchParam.append(" OR datasetGroup:");
-				}
-				fullSearchParam.append(datasetGroup.getName());
-			}			
-			fullSearchParam.append("))");
-			LOGGER.debug("FullSearchParam: " + fullSearchParam);
+			appendAccessControl(fullSearchParam);
+			LOGGER.debug("fullSearchParam: " + fullSearchParam);
 			query.setQuery(fullSearchParam.toString());
 		    // default value for limit
 		    query.setRows(50);
@@ -138,7 +127,7 @@ public class SearchController {
 			    
 	    return result;
 	}
-	
+
 	/**
 	 * Handles the http request by querying the Solr index for contexts of a given entity and returning the result.
 	 * <br>
@@ -162,9 +151,9 @@ public class SearchController {
 		
 		try {
 			final SolrQuery query = new SolrQuery("*:*");
-			final StringBuffer queryStr = new StringBuffer("(");
-			
-			for (int i = 0; i < contextIds.size();i++) {
+			final StringBuffer queryStr = new StringBuffer(64);
+			queryStr.append("((");
+			for (int i = 0; i < contextIds.size(); i++) {
 				queryStr.append("id:");
 				queryStr.append(contextIds.get(i));
 				if (i < contextIds.size() - 1) {
@@ -173,7 +162,8 @@ public class SearchController {
 					queryStr.append(')');
 				}
 			}
-			
+			appendAccessControl(queryStr);
+			LOGGER.debug("queryStr: " + queryStr.toString());
 			query.setQuery(queryStr.toString());
 			// default value for limit
 			query.setRows(50);
@@ -218,6 +208,26 @@ public class SearchController {
 		return result;
 	}
 
+	/**
+	 * Method to append access control based on the dataset groups of the current user.
+	 * The <code>StringBuffer</code> given to this method must start with a <code>(</code>. 
+	 * @param queryStr The query string to append the access control to.
+	 */
+	private void appendAccessControl(final StringBuffer queryStr) {
+		queryStr.append(" AND (");
+		boolean first = true;
+		for (DatasetGroup datasetGroup: userRightsService.getCurrentUser().getDatasetGroups()) {
+			if (first) {
+				queryStr.append("datasetGroup:");
+				first = false;
+			} else {
+				queryStr.append(" OR datasetGroup:");
+			}
+			queryStr.append(datasetGroup.getName());
+		}			
+		queryStr.append("))");
+	}
+	
 	/**
 	 * Helper function to set the search parameters for the Solr query. The first four parameters are the same as used
 	 *  in handle search request.
