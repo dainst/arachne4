@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.controller;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.Dataset;
-import de.uni_koeln.arachne.response.FailureResponse;
 import de.uni_koeln.arachne.response.FormattedArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.service.ContextService;
@@ -49,25 +49,25 @@ public class ArachneEntityController {
 	/**
 	 * Handles http request for /{id}
 	 * @param entityId The unique entity id of the item to fetch.
-     * @return A response object containing the data (currently this a serialized to JSON by Jackson).
+     * @return A response object containing the data (this is serialized to JSON or XML depending on content negotiation).
      */
 	@RequestMapping(value="/entity/{entityId}", method=RequestMethod.GET)
 	public @ResponseBody BaseArachneEntity handleGetEntityIdRequest(final HttpServletRequest request
-			, @PathVariable("entityId") final Long entityId) {
-		return getEntityRequestResponse(entityId, null);
+			, @PathVariable("entityId") final Long entityId, final HttpServletResponse response) {
+		return getEntityRequestResponse(entityId, null, response);
 	}
     
     /**
      * Handles http request for /{category}/{id}
      * @param category The database table to fetch the item from.
      * @param categoryId The internal id of the item to fetch
-     * @return A response object containing the data (currently this a serialized to JSON by Jackson).
+     * @return A response object containing the data (this is serialized to JSON or XML depending on content negotiation).
      */
     @RequestMapping(value="/entity/{category}/{categoryId}", method=RequestMethod.GET)
     public @ResponseBody BaseArachneEntity handleGetCategoryIdRequest(@PathVariable("category") final String category
-    		, @PathVariable("categoryId") final Long categoryId) {
+    		, @PathVariable("categoryId") final Long categoryId, final HttpServletResponse response) {
     	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
-    	return getEntityRequestResponse(categoryId, category);
+    	return getEntityRequestResponse(categoryId, category, response);
     }
 
     /**
@@ -77,7 +77,8 @@ public class ArachneEntityController {
      * @param category The category to query or <code>null</code>.
      * @return A response object derived from <code>BaseArachneEntity</code>.
      */
-    private BaseArachneEntity getEntityRequestResponse(final Long id, final String category) { //NOPMD
+    private BaseArachneEntity getEntityRequestResponse(final Long id, final String category //NOPMD
+    		, final HttpServletResponse response) { 
     	final Long startTime = System.currentTimeMillis();
         
     	EntityId arachneId;
@@ -90,7 +91,8 @@ public class ArachneEntityController {
     	
     	if (arachneId == null) {
     		LOGGER.debug("Warning: Missing ArachneEntityID");
-    		return new FailureResponse("Failure! ArachneEntityID not found.");
+    		response.setStatus(404);
+    		return null;
     	}
     	LOGGER.debug("Request for entity: " + arachneId.getArachneEntityID() + " - type: " + arachneId.getTableName());
     	
@@ -109,7 +111,7 @@ public class ArachneEntityController {
     	final long contextTime = System.currentTimeMillis() - nextTime;
     	nextTime = System.currentTimeMillis();
     	
-    	final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(arachneDataset);
+    	final FormattedArachneEntity result = responseFactory.createFormattedArachneEntity(arachneDataset);
     	
     	LOGGER.debug("-- Fetching entity took " + fetchTime + " ms");
     	LOGGER.debug("-- Adding images took " + imageTime + " ms");
@@ -117,7 +119,7 @@ public class ArachneEntityController {
     	LOGGER.debug("-- Creating response took " + (System.currentTimeMillis() - nextTime) + " ms");
     	LOGGER.debug("-----------------------------------");
     	LOGGER.debug("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
-    	return response;
+    	return result;
     }
     
     //////////////////////////////////////////////////////////////////////////////////////////////////
