@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrRequest.METHOD;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
@@ -131,6 +132,11 @@ public class SearchController {
 	/**
 	 * Handles the http request by querying the Solr index for contexts of a given entity and returning the result.
 	 * <br>
+	 * Since the queries can get quite large the HTTP POST method is used instead of GET to submit the query to Solr.
+	 * Nonetheless the query may fail with <code>Bad request</code>. This indicates that the maximum number of boolean
+	 * clauses is reached (although Solr should throw a <code>maxBoolean</code> exception it does not). The only way to 
+	 * solve this problem is to increase the number of allowed boolean clauses in <code>solrconfig.xml</code>.
+	 * <br> 
 	 * Currently the search result can only be serialized to JSON as JAXB cannot handle Maps.
 	 * @param entityId The id of the entity of interest. 
 	 * @param limit The maximum number of returned entities. (optional)
@@ -152,9 +158,8 @@ public class SearchController {
 		try {
 			final SolrQuery query = new SolrQuery("*:*");
 			final StringBuffer queryStr = new StringBuffer(64);
-			queryStr.append("((");
-			for (int i = 0; i < contextIds.size(); i++) {
-				queryStr.append("id:");
+			queryStr.append("(id:(");
+			for (int i = 0; i < contextIds.size() ; i++) {
 				queryStr.append(contextIds.get(i));
 				if (i < contextIds.size() - 1) {
 					queryStr.append(" OR ");
@@ -163,7 +168,6 @@ public class SearchController {
 				}
 			}
 			appendAccessControl(queryStr);
-			LOGGER.debug("queryStr: " + queryStr.toString());
 			query.setQuery(queryStr.toString());
 			// default value for limit
 			query.setRows(50);
@@ -177,11 +181,11 @@ public class SearchController {
 			
 			setSearchParameters(limit, offset, filterValues, facetLimit, result, query);
 
-			final QueryResponse response = server.query(query);
+			final QueryResponse response = server.query(query, METHOD.POST);
 			result.setEntities(response.getResults());
 			result.setSize(response.getResults().getNumFound());
 			final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
-
+			
 			final List<FacetField> facetFields = response.getFacetFields();
 			for (FacetField facetField: facetFields) {
 				final List<FacetField.Count> facetItems = facetField.getValues();
@@ -201,7 +205,6 @@ public class SearchController {
 			}
 
 		} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
 			LOGGER.error(e.getMessage());
 		}
 
