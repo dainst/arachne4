@@ -48,7 +48,9 @@ public class SearchController {
 	private transient final SolrServer server;
 	
 	@Autowired
-	public SearchController(final @Value("#{config.solrUrl}") String solrUrl) {
+	public SearchController(final @Value("#{config.solrProtocol}") String solrPotocol, final @Value("#{config.solrIp}") String solrIp,
+			final @Value("#{config.solrPort}") int solrPort, final @Value("#{config.solrName}") String solrName) {
+		final String solrUrl = solrPotocol+"://"+solrIp+':'+solrPort+'/'+solrName;
 		LOGGER.info("SolrUrl: " + solrUrl);
 		SolrServer server = null;
 		try {
