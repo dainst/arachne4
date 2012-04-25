@@ -54,6 +54,10 @@ public class ArachneEntityController {
 	@RequestMapping(value="/entity/{entityId}", method=RequestMethod.GET)
 	public @ResponseBody BaseArachneEntity handleGetEntityIdRequest(final HttpServletRequest request
 			, @PathVariable("entityId") final Long entityId, final HttpServletResponse response) {
+		LOGGER.debug(request.getLocalAddr());
+		LOGGER.debug(request.getPathInfo());
+		LOGGER.debug(request.getRemoteAddr());
+		LOGGER.debug(request.getRemoteHost());
 		return getEntityRequestResponse(entityId, null, response);
 	}
     
