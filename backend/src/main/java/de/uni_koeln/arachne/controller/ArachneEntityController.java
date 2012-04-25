@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,17 +48,26 @@ public class ArachneEntityController {
 	transient private ImageService imageService;
 	
 	/**
-	 * Handles http request for /{id}
+	 * Handles http request for /solr/{entityId}
+	 * This mapping should only be used by Solr for indexing. It wraps the standard entity request but disables authorization.
+	 * Requests are only allowed from the same IP-address as the Solr server configured in <code>src/main/resources/config/application.properties</code>. 
+	 */
+	@RequestMapping(value="/entity/solr/{entityId}", method=RequestMethod.GET)
+	public @ResponseBody BaseArachneEntity handleSolrIndexingRequest(final HttpServletRequest request
+			, @PathVariable("entityId") final Long entityId, final HttpServletResponse response, final @Value("#{config.solrIp}") String solrUrl) {
+		LOGGER.debug(request.getRemoteAddr());
+		LOGGER.debug(solrUrl);
+		return null;
+	}
+	
+	/**
+	 * Handles http request for /{entityId}
 	 * @param entityId The unique entity id of the item to fetch.
      * @return A response object containing the data (this is serialized to JSON or XML depending on content negotiation).
      */
 	@RequestMapping(value="/entity/{entityId}", method=RequestMethod.GET)
 	public @ResponseBody BaseArachneEntity handleGetEntityIdRequest(final HttpServletRequest request
 			, @PathVariable("entityId") final Long entityId, final HttpServletResponse response) {
-		LOGGER.debug(request.getLocalAddr());
-		LOGGER.debug(request.getPathInfo());
-		LOGGER.debug(request.getRemoteAddr());
-		LOGGER.debug(request.getRemoteHost());
 		return getEntityRequestResponse(entityId, null, response);
 	}
     
