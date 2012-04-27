@@ -111,8 +111,14 @@ public class ArachneEntityController {
     /**
      * Internal function handling all http GET requests for <code>/entity/*</code>.
      * It uses the <Code>ItemService</Code> class to fetch the data and wraps it in a response object.
+     * <br>
+     * If the entity is not found a HTTP 404 error message is returned.
+     * <br>
+     * If the user does not have permission to see an entity a HTTP 403 status message is returned.
      * @param id The unique entity ID if no category is given else the internal ID.
      * @param category The category to query or <code>null</code>.
+     * @param response The <code>HttpServeletRsponse</code> object.
+     * @param currentUser The user initiating the request.
      * @return A response object derived from <code>BaseArachneEntity</code>.
      */
     private BaseArachneEntity getEntityRequestResponse(final Long id, final String category //NOPMD
