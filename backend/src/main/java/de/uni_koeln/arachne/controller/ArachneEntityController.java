@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.Dataset;
@@ -127,11 +128,18 @@ public class ArachneEntityController {
     	}
     	
     	if (arachneId == null) {
-    		LOGGER.debug("Warning: Missing ArachneEntityID");
     		response.setStatus(404);
     		return null;
     	}
+    	
     	LOGGER.debug("Request for entity: " + arachneId.getArachneEntityID() + " - type: " + arachneId.getTableName());
+    	
+    	final String datasetGroupName = singleEntityDataService.getDatasetGroup(arachneId);
+    	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
+    	if (!datasetGroup.isInDatasetGroups(currentUser.getDatasetGroups())) {
+    		response.setStatus(403);
+    		return null;
+    	}
     	
     	final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(arachneId, currentUser);
     	

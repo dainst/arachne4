@@ -11,6 +11,7 @@ import de.uni_koeln.arachne.mapping.EntityIdMapper;
 import de.uni_koeln.arachne.mapping.GenericFieldMapperLong;
 import de.uni_koeln.arachne.mapping.GenericFieldMapperString;
 import de.uni_koeln.arachne.mapping.GenericFieldsMapperString;
+import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.service.SQLResponseObject;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.sqlutil.ConnectedEntityIdsSQLQueryBuilder;
@@ -49,8 +50,11 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
-	public List<String> getStringField(final String tableName, final String field1, final Long field1Id, final String field2) {
-		final GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1, field1Id, field2, userRightsService.getCurrentUser());
+	public List<String> getStringField(final String tableName, final String field1, final Long field1Id
+			, final String field2, final UserAdministration currentUser) {
+		
+		final GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1
+				, field1Id, field2, currentUser);
 		@SuppressWarnings("unchecked")
 		final List<String> queryResult = (List<String>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperString());
 

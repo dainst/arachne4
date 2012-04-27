@@ -36,6 +36,15 @@ public class SQLToolbox {
 		return "FS_" + ucfirst(tablename)+"ID";
 		
 	}
+	
+	public static String generateDatasetGroupName(String tableName) {
+		if ("marbilder".equals(tableName)) {
+			return "DatensatzGruppeMARBilder";
+		} else {
+			return "DatensatzGruppe"+tableName.substring(0,1).toUpperCase()+tableName.substring(1);
+		}
+	}
+	
 	/**
 	 * Just encloses a Sting in Backticks
 	 * @param in a String example: Stuff

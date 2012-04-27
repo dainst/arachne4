@@ -1,5 +1,8 @@
 package de.uni_koeln.arachne.mapping;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -24,8 +27,10 @@ public class DatasetGroup {
 	@Id
 	@Column(name="dgid")
 	private int dgid; // NOPMD
+	
 	@Column(name="dgname")
 	private String name;
+	
 	/**
 	 * @return the id
 	 */
@@ -34,6 +39,7 @@ public class DatasetGroup {
 	public int getId() {
 		return dgid;
 	}
+	
 	/**
 	 * @param dgid the id to set
 	 */
@@ -43,10 +49,12 @@ public class DatasetGroup {
 	/**
 	 * @return the name
 	 */
+	
 	@JsonValue
 	public String getName() {
 		return name;
 	}
+	
 	/**
 	 * @param name the name to set
 	 */
@@ -54,4 +62,18 @@ public class DatasetGroup {
 		this.name = name;
 	}
 
+	/**
+	 * Function to determine if a name of a dataset group is in a set of dataset groups.
+	 * @return <code>True</code> if the name is contained within the set <code>False</code> if it is not.
+	 */
+	@XmlTransient
+	@JsonIgnore
+	public boolean isInDatasetGroups(final Set<DatasetGroup> datasetGroups) {
+		for (DatasetGroup datasetGroup: datasetGroups) {
+			if (this.getName().equals(datasetGroup.getName())) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.DataMapDao;
+import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.sqlutil.SQLToolbox;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
 import de.uni_koeln.arachne.util.EntityId;
 
@@ -22,6 +24,9 @@ public class SingleEntityDataService {
 	
 	@Autowired
 	DataMapDao arachneDataMapDao; // NOPMD
+	
+	@Autowired
+	GenericSQLDao genericSqlDao; // NOPMD
 	
 	private final transient List<TableConnectionDescription> subProjects;
 	
@@ -75,5 +80,22 @@ public class SingleEntityDataService {
 		}
 		
 		return result;
+	}
+
+	/**
+	 * Retrieves the dataset group of an entity.
+	 * @param arachneId The id of the entity of interest. 
+	 * @return The dataset group of the entity.
+	 */
+	public String getDatasetGroup(final EntityId arachneId) {
+		final String tableName = arachneId.getTableName();
+		final Long field1Id = arachneId.getInternalKey();
+		final String field2 = SQLToolbox.generateDatasetGroupName(tableName);
+		
+		// disable rights checking to allow retrieval of the dataset group
+		final UserAdministration user = new UserAdministration();
+		user.setAll_groups(true);
+		
+		return genericSqlDao.getStringField(tableName, tableName, field1Id, field2, user).get(0);
 	}
 }
