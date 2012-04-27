@@ -50,11 +50,16 @@ public class SearchController {
 	@Autowired
 	public SearchController(final @Value("#{config.solrProtocol}") String solrPotocol, final @Value("#{config.solrIp}") String solrIp,
 			final @Value("#{config.solrPort}") int solrPort, final @Value("#{config.solrName}") String solrName) {
-		final String solrUrl = solrPotocol+"://"+solrIp+':'+solrPort+'/'+solrName;
-		LOGGER.info("SolrUrl: " + solrUrl);
+		
 		SolrServer server = null;
 		try {
-			server = new CommonsHttpSolrServer(solrUrl);
+			final String solrUrl = solrPotocol+"://"+solrIp+':'+solrPort+'/'+solrName;
+			LOGGER.info("SolrUrl: " + solrUrl);
+			if (StrUtils.isValidIPAddress(solrIp)) {
+				server = new CommonsHttpSolrServer(solrUrl);
+			} else {
+				throw new MalformedURLException("solrIp " + solrIp + " is not a valid IP address.");
+			}
 		} catch (MalformedURLException e) {
 			LOGGER.error("Setting up SolrServer: " + e.getMessage());
 		}

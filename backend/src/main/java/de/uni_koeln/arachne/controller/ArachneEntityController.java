@@ -1,9 +1,12 @@
 package de.uni_koeln.arachne.controller;
 
 
+import java.net.MalformedURLException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,7 @@ import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.ImageService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * Handles http requests (currently only get) for <code>/entity<code>.
@@ -54,9 +58,22 @@ public class ArachneEntityController {
 	 */
 	@RequestMapping(value="/entity/solr/{entityId}", method=RequestMethod.GET)
 	public @ResponseBody BaseArachneEntity handleSolrIndexingRequest(final HttpServletRequest request
-			, @PathVariable("entityId") final Long entityId, final HttpServletResponse response, final @Value("#{config.solrIp}") String solrUrl) {
+			, @PathVariable("entityId") final Long entityId, final HttpServletResponse response, final @Value("#{config.solrIp}") String solrIp) {
 		LOGGER.debug(request.getRemoteAddr());
-		LOGGER.debug(solrUrl);
+		LOGGER.debug(solrIp);
+		try {
+			if (StrUtils.isValidIPAddress(solrIp)) {
+				if (solrIp.equals(request.getRemoteAddr())) {
+
+				} else {
+					response.setStatus(403);
+				}
+			} else {
+				throw new MalformedURLException("solrIp " + solrIp + " is not a valid IP address.");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+		}
 		return null;
 	}
 	

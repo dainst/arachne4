@@ -39,7 +39,7 @@ public class StrUtils {
 	 * @param ipAddress The string to check for validity
 	 * @return A boolean value indicating if the given string is a valid IP address.
 	 */
-	public static boolean ValidateIPAddress(String ipAddress)
+	public static boolean isValidIPAddress(String ipAddress)
 	{
 	    String[] parts = ipAddress.split( "\\." );
 
