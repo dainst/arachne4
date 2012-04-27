@@ -1,6 +1,5 @@
 package de.uni_koeln.arachne.mapping;
 
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.Column;

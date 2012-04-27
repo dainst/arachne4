@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.GenericSQLDao;
+import de.uni_koeln.arachne.mapping.UserAdministration;
 
 @Service
 public class GenericSQLService {
@@ -18,8 +19,9 @@ public class GenericSQLService {
 		return genericSQLDao.getIdByFieldId(tableName, field1, field1Id, field2);
 	}
 	
-	public List<String> getStringField(final String tableName, final String field1, final Long field1Id, final String field2) {
-		return genericSQLDao.getStringField(tableName, field1, field1Id, field2);
+	public List<String> getStringField(final String tableName, final String field1, final Long field1Id
+			, final String field2, final UserAdministration currentUser) {
+		return genericSQLDao.getStringField(tableName, field1, field1Id, field2, currentUser);
 	}
 	
 	public List<Map<String, String>> getConnectedEntities(final String contextType, final Long entityId) {
