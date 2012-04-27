@@ -2,6 +2,8 @@ package de.uni_koeln.arachne.controller;
 
 
 import java.net.MalformedURLException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import de.uni_koeln.arachne.mapping.DatasetGroup;
+import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.FormattedArachneEntity;
@@ -25,6 +29,7 @@ import de.uni_koeln.arachne.service.ContextService;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.ImageService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
+import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.StrUtils;
 
@@ -37,19 +42,22 @@ public class ArachneEntityController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ArachneEntityController.class);
 	
 	@Autowired
-	transient private EntityIdentificationService entityIdentificationService;
+	private transient EntityIdentificationService entityIdentificationService;
 
 	@Autowired
-	transient private SingleEntityDataService singleEntityDataService;
+	private transient SingleEntityDataService singleEntityDataService;
 	
 	@Autowired
-	transient private ContextService contextService;
+	private transient ContextService contextService;
 	
 	@Autowired
-	transient private ResponseFactory responseFactory;
+	private transient ResponseFactory responseFactory;
 	
 	@Autowired
-	transient private ImageService imageService;
+	private transient ImageService imageService;
+		
+	@Autowired
+	private transient UserRightsService userRightsService; // NOPMD
 	
 	/**
 	 * Handles http request for /solr/{entityId}
@@ -59,17 +67,19 @@ public class ArachneEntityController {
 	@RequestMapping(value="/entity/solr/{entityId}", method=RequestMethod.GET)
 	public @ResponseBody BaseArachneEntity handleSolrIndexingRequest(final HttpServletRequest request
 			, @PathVariable("entityId") final Long entityId, final HttpServletResponse response, final @Value("#{config.solrIp}") String solrIp) {
-		LOGGER.debug(request.getRemoteAddr());
-		LOGGER.debug(solrIp);
+		
 		try {
-			if (StrUtils.isValidIPAddress(solrIp)) {
+			if (StrUtils.isValidIPAddress(solrIp) && StrUtils.isValidIPAddress(request.getRemoteAddr())) {
 				if (solrIp.equals(request.getRemoteAddr())) {
-
+					final UserAdministration solrUser = new UserAdministration();
+					solrUser.setUsername("SolrIndexing");
+					solrUser.setAll_groups(true);
+					return getEntityRequestResponse(entityId, null, response, solrUser);
 				} else {
 					response.setStatus(403);
 				}
 			} else {
-				throw new MalformedURLException("solrIp " + solrIp + " is not a valid IP address.");
+				throw new MalformedURLException("Invalid IP address.");
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
@@ -85,7 +95,7 @@ public class ArachneEntityController {
 	@RequestMapping(value="/entity/{entityId}", method=RequestMethod.GET)
 	public @ResponseBody BaseArachneEntity handleGetEntityIdRequest(final HttpServletRequest request
 			, @PathVariable("entityId") final Long entityId, final HttpServletResponse response) {
-		return getEntityRequestResponse(entityId, null, response);
+		return getEntityRequestResponse(entityId, null, response, userRightsService.getCurrentUser());
 	}
     
     /**
@@ -98,7 +108,7 @@ public class ArachneEntityController {
     public @ResponseBody BaseArachneEntity handleGetCategoryIdRequest(@PathVariable("category") final String category
     		, @PathVariable("categoryId") final Long categoryId, final HttpServletResponse response) {
     	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
-    	return getEntityRequestResponse(categoryId, category, response);
+    	return getEntityRequestResponse(categoryId, category, response, userRightsService.getCurrentUser());
     }
 
     /**
@@ -109,7 +119,7 @@ public class ArachneEntityController {
      * @return A response object derived from <code>BaseArachneEntity</code>.
      */
     private BaseArachneEntity getEntityRequestResponse(final Long id, final String category //NOPMD
-    		, final HttpServletResponse response) { 
+    		, final HttpServletResponse response, final UserAdministration currentUser) { 
     	final Long startTime = System.currentTimeMillis();
         
     	EntityId arachneId;
@@ -127,7 +137,7 @@ public class ArachneEntityController {
     	}
     	LOGGER.debug("Request for entity: " + arachneId.getArachneEntityID() + " - type: " + arachneId.getTableName());
     	
-    	final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(arachneId);
+    	final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(arachneId, currentUser);
     	
     	final long fetchTime = System.currentTimeMillis() - startTime;
     	long nextTime = System.currentTimeMillis();

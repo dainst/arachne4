@@ -6,12 +6,11 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.DatasetMapper;
+import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.response.Dataset;
-import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.sqlutil.SingleEntityQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.SingleEntitySubTablesQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
@@ -24,17 +23,14 @@ public class DataMapDao extends SQLDao {
 		
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataMapDao.class);
 	
-	@Autowired
-	private UserRightsService userRightsService; // NOPMD
-	
 	/**
 	 * Gets a map of values by Id
 	 * @param arachneId instance of <code>ArachneId</code> 
 	 * @return a Simple representation of a Map<String,String> or <code>null</code>.
 	 */
-	public Map<String, String> getById(final EntityId arachneId) {			
+	public Map<String, String> getById(final EntityId arachneId, final UserAdministration currentUser) {			
 
-		final SingleEntityQueryBuilder queryBuilder = new SingleEntityQueryBuilder(arachneId,userRightsService.getCurrentUser());
+		final SingleEntityQueryBuilder queryBuilder = new SingleEntityQueryBuilder(arachneId, currentUser);
 
 		final String sql = queryBuilder.getSQL();
 		
@@ -55,8 +51,9 @@ public class DataMapDao extends SQLDao {
 	 * @return <code>Map<String,String></code> that contains the Description of the Subdataset, caution! The Subdataset is NOT automatically appended to the Dataset.
 	 */
 	public Map<String, String> getBySubDataset(final Dataset dataset, final TableConnectionDescription tableConnectionDescription ) {
-
-		final SingleEntitySubTablesQueryBuilder queryBuilder = new SingleEntitySubTablesQueryBuilder(dataset,tableConnectionDescription);
+		// TODO add authorization
+		final SingleEntitySubTablesQueryBuilder queryBuilder = new SingleEntitySubTablesQueryBuilder(dataset
+				,tableConnectionDescription);
 
 		final String sql = queryBuilder.getSQL();
 		LOGGER.debug(sql);

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.DataMapDao;
+import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
 import de.uni_koeln.arachne.util.EntityId;
@@ -53,9 +54,9 @@ public class SingleEntityDataService {
 	 * @param entityId an Identifier of the Type ArachneId.
 	 * @return Instance of ArachneDataset that Represents the Dataset.
 	 */
-	public Dataset getSingleEntityByArachneId(final EntityId entityId) {
+	public Dataset getSingleEntityByArachneId(final EntityId entityId, final UserAdministration currentUser) {
 		Dataset result;
-		final Map<String, String> tempDataMap = arachneDataMapDao.getById(entityId);
+		final Map<String, String> tempDataMap = arachneDataMapDao.getById(entityId, currentUser);
 		result = new Dataset();
 		result.setArachneId(entityId);
 		if (tempDataMap != null) {

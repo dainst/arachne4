@@ -120,7 +120,8 @@ public class ImageController {
 			return null;
 		}
 		
-		final Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
+		final Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId
+				, userRightsService.getCurrentUser());
 		LOGGER.debug("Retrieved Entity for image: {}", imageEntity);
 		
 		// Check image rights
