@@ -33,4 +33,26 @@ public class StrUtils {
 	public static boolean isEmptyOrNull(StringBuffer stringBuffer) {
 		return stringBuffer == null || stringBuffer.length() < 1;
 	}
+	
+	/**
+	 * Function to check if a given string is a valid IP address.
+	 * @param ipAddress The string to check for validity
+	 * @return A boolean value indicating if the given string is a valid IP address.
+	 */
+	public static boolean ValidateIPAddress(String ipAddress)
+	{
+	    String[] parts = ipAddress.split( "\\." );
+
+	    if (parts.length != 3) {
+	        return false;
+	    }
+
+	    for (String string : parts) {
+	        int i = Integer.parseInt(string);
+	        if ((i < 0) || (i > 255)) {
+	            return false;
+	        }
+	    }
+	    return true;
+	}
 }
