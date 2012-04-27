@@ -36,6 +36,8 @@ import de.uni_koeln.arachne.util.StrUtils;
 @Controller
 public class ArachneEntityController {
 	
+	private static final String SOLR_INDEXING = "SolrIndexing";
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ArachneEntityController.class);
 	
 	@Autowired
@@ -69,7 +71,7 @@ public class ArachneEntityController {
 			if (StrUtils.isValidIPAddress(solrIp) && StrUtils.isValidIPAddress(request.getRemoteAddr())) {
 				if (solrIp.equals(request.getRemoteAddr())) {
 					final UserAdministration solrUser = new UserAdministration();
-					solrUser.setUsername("SolrIndexing");
+					solrUser.setUsername(SOLR_INDEXING);
 					solrUser.setAll_groups(true);
 					return getEntityRequestResponse(entityId, null, response, solrUser);
 				} else {
@@ -142,7 +144,10 @@ public class ArachneEntityController {
     	
     	final String datasetGroupName = singleEntityDataService.getDatasetGroup(arachneId);
     	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
-    	if (!datasetGroup.isInDatasetGroups(currentUser.getDatasetGroups())) {
+    	
+    	if ((!SOLR_INDEXING.equals(currentUser.getUsername())) 
+    			&& (!datasetGroup.isInDatasetGroups(currentUser.getDatasetGroups()))) {
+    		
     		response.setStatus(403);
     		return null;
     	}
