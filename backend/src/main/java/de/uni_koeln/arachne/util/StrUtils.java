@@ -43,7 +43,7 @@ public class StrUtils {
 	{
 	    String[] parts = ipAddress.split( "\\." );
 
-	    if (parts.length != 3) {
+	    if (parts.length != 4) {
 	        return false;
 	    }
 
