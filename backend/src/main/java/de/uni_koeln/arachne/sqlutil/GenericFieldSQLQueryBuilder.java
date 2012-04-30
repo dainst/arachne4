@@ -36,7 +36,7 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 		} else {
 			keyCondition.setPart1(SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generateForeignKeyName(field1)));
 		}
-		keyCondition.setPart2(field1Id.toString());
+		keyCondition.setPart2("\"" + field1Id.toString() + "\"");
 		conditions.add(keyCondition);
 		// The field2 not null condition
 		final Condition notNullCondition = new Condition();

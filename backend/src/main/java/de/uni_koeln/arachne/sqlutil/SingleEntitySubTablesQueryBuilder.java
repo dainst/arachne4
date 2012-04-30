@@ -17,26 +17,27 @@ public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 
 		String targetTable;
 		String targetField;
-		
 		String sourceTable;
 		String sourceField;		
-		if(tableConnectionDescription.getTable1().equals(dataset.getArachneId().getTableName())){
+		
+		if (tableConnectionDescription.getTable1().equals(dataset.getArachneId().getTableName())) {
 			targetTable = tableConnectionDescription.getTable2();
 			targetField = tableConnectionDescription.getField2();
 			sourceTable = tableConnectionDescription.getTable1();
 			sourceField = tableConnectionDescription.getField1();
-		}else{
+		} else {
 			targetTable = tableConnectionDescription.getTable1();
 			targetField = tableConnectionDescription.getField1();
 			sourceTable = tableConnectionDescription.getTable2();
 			sourceField = tableConnectionDescription.getField2();
 		}
+		
 		table = targetTable;
 		String info;
 		if ("PrimaryKey".equals(sourceField)) {
-			 info = dataset.getArachneId().getInternalKey().toString();
+			info = dataset.getArachneId().getInternalKey().toString();
 		} else {
-			 info = dataset.getField(sourceTable+"."+sourceField);
+			info = dataset.getField(sourceTable+"."+sourceField);
 		}
 				
 		//Limits the Result count to 1
@@ -49,7 +50,7 @@ public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 		} else {
 			condition.setPart1(SQLToolbox.getQualifiedFieldname(targetTable,targetField));
 		}
-		condition.setPart2(info);
+		condition.setPart2("\"" + info + "\"");
 		conditions.add(condition);
 	}
 	
