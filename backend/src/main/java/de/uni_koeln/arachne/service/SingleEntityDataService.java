@@ -14,6 +14,7 @@ import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.sqlutil.SQLToolbox;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * This Service Provides a Method to get a Single Dataset out of the Database
@@ -84,6 +85,7 @@ public class SingleEntityDataService {
 
 	/**
 	 * Retrieves the dataset group of an entity.
+	 * If an entity does not have a dataset group () <code>"Arachne"</code> is returned.
 	 * @param arachneId The id of the entity of interest. 
 	 * @return The dataset group of the entity.
 	 */
@@ -96,6 +98,12 @@ public class SingleEntityDataService {
 		final UserAdministration user = new UserAdministration();
 		user.setAll_groups(true);
 		
-		return genericSqlDao.getStringField(tableName, tableName, field1Id, field2, user).get(0);
+		final List<String> result = genericSqlDao.getStringField(tableName, tableName, field1Id, field2, user);
+		
+		if (StrUtils.isEmptyOrNull(result)) {
+			return "Arachne";
+		} else {
+			return result.get(0);
+		}
 	}
 }
