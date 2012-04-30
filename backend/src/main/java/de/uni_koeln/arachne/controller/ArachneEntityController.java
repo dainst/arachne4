@@ -68,8 +68,11 @@ public class ArachneEntityController {
 			, @PathVariable("entityId") final Long entityId, final HttpServletResponse response, final @Value("#{config.solrIp}") String solrIp) {
 		
 		try {
+			LOGGER.debug(request.getLocalAddr());
+			LOGGER.debug(request.getRemoteAddr());
 			if (StrUtils.isValidIPAddress(solrIp) && StrUtils.isValidIPAddress(request.getRemoteAddr())) {
-				if (solrIp.equals(request.getRemoteAddr())) {
+				if (solrIp.equals(request.getRemoteAddr()) || request.getRemoteAddr().equals(request.getLocalAddr())) {
+					LOGGER.debug("Valid Solr request.");
 					final UserAdministration solrUser = new UserAdministration();
 					solrUser.setUsername(SOLR_INDEXING);
 					solrUser.setAll_groups(true);
@@ -145,6 +148,7 @@ public class ArachneEntityController {
     	final String datasetGroupName = singleEntityDataService.getDatasetGroup(arachneId);
     	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
     	
+    	LOGGER.debug("Is Solr indexer: " + SOLR_INDEXING.equals(currentUser.getUsername()));
     	if ((!SOLR_INDEXING.equals(currentUser.getUsername())) 
     			&& (!datasetGroup.isInDatasetGroups(currentUser.getDatasetGroups()))) {
     		
