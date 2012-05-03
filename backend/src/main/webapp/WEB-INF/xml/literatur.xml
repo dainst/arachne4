@@ -7,10 +7,7 @@
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
     <display>
         <title>
-        	<section separator=", ">
-        		<field datasource="literatur.Titel" />
-        		<field datasource="literatur.Band" />
-            </section>
+        	<field datasource="literatur.DAIRichtlinien" />
         </title>
         <subtitle>
             <section separator=", ">
@@ -20,9 +17,10 @@
         </subtitle>
         <datasections>
         	<section labelKey="Informationen zur Literatur">
-        		<section labelKey="">
-	            	<field datasource="literatur.DAIRichtlinien" />
-	            </section>
+        		<section separator=", ">
+        			<field datasource="literatur.Titel" />
+        			<field datasource="literatur.Band" />
+            	</section>
         	</section>
         </datasections>
     </display>
