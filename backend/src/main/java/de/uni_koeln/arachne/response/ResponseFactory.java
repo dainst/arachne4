@@ -136,7 +136,7 @@ public class ResponseFactory {
 		
 		String result = "";
 		final Element title = display.getChild("title", nameSpace);
-    	if (title.getChild("field") == null) {
+    	if (title.getChild("field", nameSpace) == null) {
     		result = xmlConfigUtil.getStringFromSections(title.getChild("section", nameSpace), dataset);
     	} else {
     		result = dataset.getField(title.getChild("field", nameSpace).getAttributeValue("datasource"));
