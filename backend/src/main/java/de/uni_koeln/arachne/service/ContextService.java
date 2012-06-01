@@ -181,10 +181,8 @@ public class ContextService {
 			result.addAll(getFields(facets, type));
 			return result;		
 		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
 			LOGGER.error(e.getMessage());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			LOGGER.error(e.getMessage());
 		}
 		return null;
