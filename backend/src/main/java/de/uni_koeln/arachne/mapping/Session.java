@@ -35,7 +35,7 @@ public class Session {
 	/**
 	 * @return the user
 	 */
-	public UserAdministration getUserAdmistration() {
+	public UserAdministration getUserAdministration() {
 		return user;
 	}
 	/**

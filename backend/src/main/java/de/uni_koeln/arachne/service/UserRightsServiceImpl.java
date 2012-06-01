@@ -65,7 +65,7 @@ public class UserRightsServiceImpl implements UserRightsService {
 			if (session == null) {
 				arachneUser = userVerwaltungDao.findByName("anonymous");
 			} else {
-				arachneUser = session.getUserAdmistration();
+				arachneUser = session.getUserAdministration();
 			}
 			
 			isSet = true;
