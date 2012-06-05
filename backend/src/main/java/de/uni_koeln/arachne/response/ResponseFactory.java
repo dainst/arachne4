@@ -135,7 +135,7 @@ public class ResponseFactory {
 		String result = "";
 		final Element title = display.getChild("title", nameSpace);
     	if (title.getChild("field", nameSpace) == null) {
-    		result = xmlConfigUtil.getStringFromSections(title.getChild("section", nameSpace), dataset);
+    		result = xmlConfigUtil.getStringFromSections(dataset, nameSpace, title.getChild("section", nameSpace));
     	} else {
     		result = dataset.getField(title.getChild("field", nameSpace).getAttributeValue("datasource"));
     	}
@@ -147,7 +147,7 @@ public class ResponseFactory {
 		String result = "";
 		final Element subtitle = display.getChild("subtitle", nameSpace);
 		if (subtitle.getChild("field", nameSpace) == null) {
-			result = xmlConfigUtil.getStringFromSections(subtitle.getChild("section", nameSpace), dataset);
+			result = xmlConfigUtil.getStringFromSections(dataset, nameSpace, subtitle.getChild("section", nameSpace));
 		} else {
 			result = dataset.fields.get(subtitle.getChild("field", nameSpace).getAttributeValue("datasource", nameSpace));
 		}

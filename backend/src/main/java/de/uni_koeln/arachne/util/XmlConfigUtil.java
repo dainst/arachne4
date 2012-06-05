@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.ServletContext;
 
 import org.jdom.Element;
+import org.jdom.Namespace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ public class XmlConfigUtil {
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A concatenated string containing the sections content.
 	 */
-	public String getStringFromSections(final Element section, final Dataset dataset) {
+	public String getStringFromSections(final Dataset dataset, final Namespace nameSpace, final Element section) {
 		final StringBuffer result = new StringBuffer("");
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		@SuppressWarnings("unchecked")
@@ -70,9 +71,9 @@ public class XmlConfigUtil {
 
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
-				getFieldString(dataset, result, separator, e); 
+				getFieldString(dataset, nameSpace, result, separator, e); 
 			} else {
-				final String datasetResult = getStringFromSections(e, dataset);
+				final String datasetResult = getStringFromSections(dataset, nameSpace, e);
 				if (!(result.length() < 1) && !datasetResult.isEmpty()) {
 					result.append(separator);
 				}
@@ -82,7 +83,7 @@ public class XmlConfigUtil {
 		return result.toString();
 	}
 
-	private void getFieldString(final Dataset dataset, final StringBuffer result, final String separator
+	private void getFieldString(final Dataset dataset, final Namespace nameSpace, final StringBuffer result, final String separator
 			, final Element element) {
 		
 		final String initialValue = dataset.getField(element.getAttributeValue("datasource"));
@@ -95,7 +96,7 @@ public class XmlConfigUtil {
 		final String prefix = element.getAttributeValue("prefix");
 
 		if (datasetResult == null) {
-			datasetResult = getIfEmpty(dataset, element);
+			datasetResult = getIfEmpty(dataset, nameSpace, element);
 		}
 
 		if (!StrUtils.isEmptyOrNull(datasetResult)) {
@@ -112,14 +113,14 @@ public class XmlConfigUtil {
 		}
 	}
 
-	private StringBuffer getIfEmpty(final Dataset dataset, final Element element) {
+	private StringBuffer getIfEmpty(final Dataset dataset, final Namespace nameSpace, final Element element) {
 		
 		String key;
 		StringBuffer result = null;
-		final Element ifEmptyElement = element.getChild("ifEmpty");
+		final Element ifEmptyElement = element.getChild("ifEmpty", nameSpace);
 		if (ifEmptyElement != null) {
 			// TODO discuss if multiple fields inside an ifEmpty tag make sense
-			key = ifEmptyElement.getChild("field").getAttributeValue("datasource");
+			key = ifEmptyElement.getChild("field", nameSpace).getAttributeValue("datasource");
 			if (key != null && !key.isEmpty()) {
 				final String ifEmptyValue = dataset.getField(key);
 				if (ifEmptyValue != null) {
