@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
-import org.jdom.Element;
-import org.jdom.Namespace;
+import org.jdom2.Element;
+import org.jdom2.Namespace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +61,6 @@ public class XmlConfigUtil {
 	 */
 	public String getStringFromSections(final Dataset dataset, final Namespace nameSpace, final Element section) {
 		final StringBuffer result = new StringBuffer("");
-		// JDOM doesn't handle generics correctly so it issues a type safety warning
-		@SuppressWarnings("unchecked")
 		final List<Element> children = section.getChildren();
 		String separator = "<br/>";
 		if (section.getAttributeValue("separator") != null) {
@@ -144,8 +142,6 @@ public class XmlConfigUtil {
 		final Section result = new Section();
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
 		result.setLabel(section.getAttributeValue("labelKey"));
-		// JDOM doesn't handle generics correctly so it issues a type safety warning
-		@SuppressWarnings("unchecked")
 		final List<Element> children = section.getChildren();
 		final String defaultSeparator = "<br/>";
 		String separator = section.getAttributeValue("separator"); 
@@ -227,8 +223,6 @@ public class XmlConfigUtil {
 			parentSeparator = "<br/>";
 		}
 		
-		// JDOM doesn't handle generics correctly so it issues a type safety warning
-		@SuppressWarnings("unchecked")
 		final List<Element> children = context.getChildren();
 		final String defaultSeparator = "<br/>";
 		String separator = context.getAttributeValue("separator"); 

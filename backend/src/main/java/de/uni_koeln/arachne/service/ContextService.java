@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.Namespace;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.Namespace;
+import org.jdom2.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -196,7 +196,7 @@ public class ContextService {
 	 */
 	private List<String> getFields(final Element element, final String parentType) {
 		final List<String> result = new ArrayList<String>();
-		@SuppressWarnings("unchecked")
+		
 		final List<Element> children = element.getChildren();
 		
 		if ("context".equals(element.getName()) && !children.isEmpty()) {
