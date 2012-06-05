@@ -110,7 +110,7 @@ public class Dataset {
 	public String getField(final String fieldName) {
 		String result = null;
 		if (fieldName.startsWith("Dataset")) {
-			// the magic number is the dataset char count
+			// the magic number is the "dataset." char count
 			final String unqualifiedFieldName = fieldName.substring(8);
 			if ("Id".equals(unqualifiedFieldName)) {
 				result = String.valueOf(arachneId.getArachneEntityID());
