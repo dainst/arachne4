@@ -28,6 +28,10 @@ public class Dataset {
 	 */
 	protected EntityId arachneId;
 	
+	/**
+	 * The image to show as preview.
+	 */
+	protected Long thumbnailId;
 	
 	/**
 	 * The Informations of the Dataset that is not in the core Dataset Definitions.
@@ -74,11 +78,12 @@ public class Dataset {
 		return context;
 	}
 	
-	/*public List<ArachneImage> getImages() {
-		return images;
-	}*/
 	public List<Image> getImages() {
 		return images;
+	}
+	
+	public Long getThumbnailId() {
+		return thumbnailId;
 	}
 	
 	/**
@@ -218,11 +223,12 @@ public class Dataset {
 		this.context = context;
 	}
 	
-	/*public void setImages(List<ArachneImage> images) {
-		this.images = images;
-	}*/
 	public void setImages(final List<Image> images) {
 		this.images = images;
+	}
+	
+	public void setThumbnailId(final Long thumbnailId) {
+		this.thumbnailId = thumbnailId;
 	}
 		
 	public void addContext(final Context context) {

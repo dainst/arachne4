@@ -55,6 +55,9 @@ public class ResponseFactory {
 		response.setType(tableName);
 		response.setInternalId(arachneId.getInternalKey());
 		
+		// set thumbnailId
+		response.setThumbnailId(dataset.getThumbnailId());
+		
 		// set dataset group
 		// workaround for table marbilder as it does not adhere to the naming conventions
 		String datasetGroupFieldName = null;

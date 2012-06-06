@@ -20,8 +20,8 @@ public class ImageService {
 	GenericSQLService genericSQLService; // NOPMD
 	
 	/**
-	 * This method retrieves the images for a given dataset from the database and adds them to the datasets list
-	 * of images. 
+	 * This method retrieves the image ids for a given dataset from the database and adds them to the datasets list
+	 * of images. It also finds the preview thumbnail from this list and adds it to the dataset.    
 	 * @param dataset The dataset to add images to.
 	 */
 	public void addImages(final Dataset dataset) {
@@ -32,5 +32,25 @@ public class ImageService {
 		final List<Image> imageList = (List<Image>) genericSQLService.getStringFieldsEntityIdJoinedWithCustomRowmapper("marbilder"
 				, arachneId.getTableName(), arachneId.getInternalKey(), fieldList, new ImageRowMapper());
 		dataset.setImages(imageList);
+		// get thumbnail from imageList
+		if (imageList != null && !imageList.isEmpty()) {
+			Image thumbnail = imageList.get(0);
+			if (imageList.size()>1) {
+				Integer lowestNumber = Integer.parseInt(thumbnail.getSubtitle().split(",")[1].split("\\.")[0]);
+				for (Image potentialThumbnail: imageList) {
+					if (potentialThumbnail.getSubtitle().contains(",")) {
+						final Integer currentNumber = Integer.parseInt(potentialThumbnail.getSubtitle().split(",")[1].split("\\.")[0]);
+						if (currentNumber<lowestNumber) {
+							thumbnail = potentialThumbnail;
+							lowestNumber = currentNumber;
+						}
+					} else {
+						thumbnail = potentialThumbnail;
+						break;
+					}
+				}
+			}
+			dataset.setThumbnailId(thumbnail.getImageId());
+		}
 	}
 }

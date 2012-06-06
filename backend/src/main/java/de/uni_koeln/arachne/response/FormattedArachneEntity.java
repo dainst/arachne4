@@ -40,10 +40,14 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	protected AbstractContent context;
 	
 	/**
-	 * The Images that are asociated with the dataset
+	 * The Images that are associated with the dataset
 	 */
-	//protected List<ArachneImage> images;
 	protected List<Image> images;
+	
+	/**
+	 * The image id of the thumbnail of the dataset
+	 */
+	protected Long thumbnailId; 
 	
 	/**
 	 * The facets as defined in the xml file for the dataset.
@@ -102,20 +106,21 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	public List<Image> getImages() {
 		return images;
 	}
+	
+	public Long getThumbnailId() {
+		return thumbnailId;
+	}
 
+	public List<Facet> getFacets() {
+		return this.facets;
+	}
+	
 	public void setImages(final List<Image> images) {
 		this.images = images;
 	}
-	/*public List<ArachneImage> getImages() {
-		return images;
-	}
-
-	public void setImages(List<ArachneImage> images) {
-		this.images = images;
-	}*/
 	
-	public List<Facet> getFacets() {
-		return this.facets;
+	public void setThumbnailId(final Long thumbnailId) {
+		this.thumbnailId = thumbnailId;
 	}
 	
 	public void setFacets(final List<Facet> facets) {
