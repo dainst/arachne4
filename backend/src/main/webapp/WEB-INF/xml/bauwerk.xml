@@ -62,7 +62,10 @@
 	                </section>
 	                <section labelKey="Architekt">
 	                	<field datasource="bauwerk.Architekt" />
-	                </section>          
+	                </section>
+	                <section labelKey="Antiker Kontext">
+	                	<field datasource="bauwerk.Kontext" />
+	                </section>    
 	                <section labelKey="Bauordnung">
 	                    <field datasource="bauwerk.Bauordnung" />
 	                    <field datasource="bauwerk.BauordnungBemerkung" />
