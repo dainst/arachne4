@@ -39,29 +39,50 @@ public class ImageService {
 		dataset.setImages(imageList);
 		// get thumbnail from imageList
 		if (imageList != null && !imageList.isEmpty()) {
-			Image thumbnail = imageList.get(0);
-			if (imageList.size()>1 && thumbnail.getSubtitle().contains(",")) {
-				Integer lowestNumber = Integer.parseInt(thumbnail.getSubtitle().split(",")[1].split("\\.")[0]);
-				for (Image potentialThumbnail: imageList) {
-					if (potentialThumbnail.getSubtitle().contains(",")) {
-						try {
-							final Integer currentNumber = Integer.parseInt(potentialThumbnail.getSubtitle().split(",")[1].split("\\.")[0]);
-							if (currentNumber<lowestNumber) {
-								thumbnail = potentialThumbnail;
-								lowestNumber = currentNumber;
-							}
-						} catch (NumberFormatException e) {
-							// ignore images where the part after the comma is not a number
-							// TODO check if this is correct
-							LOGGER.debug(e.getMessage());
-						}
-					} else {
+			dataset.setThumbnailId(findThumbnailId(imageList));
+		}
+	}
+
+	/**
+	 * This method finds the thumbnailId by finding the image whose filename does not contain a comma or the filename with the
+	 *  lowest number after the comma.
+	 * @param imageList
+	 * @param thumbnail
+	 * @return The image id of the thumbnail.
+	 */
+	private Long findThumbnailId(final List<Image> imageList) {
+		Image thumbnail = imageList.get(0);
+		if (imageList.size()>1 && thumbnail.getSubtitle().contains(",")) {
+			Integer lowestNumber = extractNumberFromImageFilename(thumbnail.getSubtitle());
+			for (Image potentialThumbnail: imageList) {
+				if (potentialThumbnail.getSubtitle().contains(",")) {
+					final Integer currentNumber = extractNumberFromImageFilename(potentialThumbnail.getSubtitle());
+					if (currentNumber<lowestNumber) {
 						thumbnail = potentialThumbnail;
-						break;
+						lowestNumber = currentNumber;
 					}
+				} else {
+					thumbnail = potentialThumbnail;
+					break;
 				}
 			}
-			dataset.setThumbnailId(thumbnail.getImageId());
 		}
+		return thumbnail.getImageId();
+	}
+	
+	// TODO check if the parsing must be extended to include numbers not only consisting of digits
+	/**
+	 * This method finds the number after the comma of a given image filename.
+	 * @returns The extracted number as <code>Integer</code> or <code>Integer.MAX_VALUE</code> in case of a parsing error.
+	 */
+	private Integer extractNumberFromImageFilename(final String imageFilename) {
+		Integer result = Integer.MAX_VALUE;
+		try {
+			result = Integer.parseInt(imageFilename.split(",")[1].split("\\.")[0]); 
+		} catch (NumberFormatException e) {
+			// ignore images where the part after the comma is not a number
+			LOGGER.debug(e.getMessage());
+		}
+		return result;
 	}
 }
