@@ -35,7 +35,7 @@ public class ImageService {
 		// get thumbnail from imageList
 		if (imageList != null && !imageList.isEmpty()) {
 			Image thumbnail = imageList.get(0);
-			if (imageList.size()>1) {
+			if (imageList.size()>1 && thumbnail.getSubtitle().contains(",")) {
 				Integer lowestNumber = Integer.parseInt(thumbnail.getSubtitle().split(",")[1].split("\\.")[0]);
 				for (Image potentialThumbnail: imageList) {
 					if (potentialThumbnail.getSubtitle().contains(",")) {
