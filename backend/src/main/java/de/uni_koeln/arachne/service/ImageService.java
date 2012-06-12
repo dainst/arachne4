@@ -3,6 +3,8 @@ package de.uni_koeln.arachne.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,9 @@ import de.uni_koeln.arachne.util.EntityId;
  */
 @Service("ArachneImageService")
 public class ImageService {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImageService.class);
+	
 	@Autowired
 	GenericSQLService genericSQLService; // NOPMD
 	
@@ -39,10 +44,16 @@ public class ImageService {
 				Integer lowestNumber = Integer.parseInt(thumbnail.getSubtitle().split(",")[1].split("\\.")[0]);
 				for (Image potentialThumbnail: imageList) {
 					if (potentialThumbnail.getSubtitle().contains(",")) {
-						final Integer currentNumber = Integer.parseInt(potentialThumbnail.getSubtitle().split(",")[1].split("\\.")[0]);
-						if (currentNumber<lowestNumber) {
-							thumbnail = potentialThumbnail;
-							lowestNumber = currentNumber;
+						try {
+							final Integer currentNumber = Integer.parseInt(potentialThumbnail.getSubtitle().split(",")[1].split("\\.")[0]);
+							if (currentNumber<lowestNumber) {
+								thumbnail = potentialThumbnail;
+								lowestNumber = currentNumber;
+							}
+						} catch (NumberFormatException e) {
+							// ignore images where the part after the comma is not a number
+							// TODO check if this is correct
+							LOGGER.debug(e.getMessage());
 						}
 					} else {
 						thumbnail = potentialThumbnail;
