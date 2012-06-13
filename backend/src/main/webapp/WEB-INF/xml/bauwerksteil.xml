@@ -4,26 +4,26 @@
 	xmlns="http://arachne.uni-koeln.de/schemas/category"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-        	<section separator=", ">
-        		<field datasource="bauwerksteil.BearbeiterBauwerksteil" prefix="BT" postfix=": " />
-            	<field datasource="bauwerksteil.KurzbeschreibungBauwerksteil"/>
-            </section>
-        </title>
-        <subtitle>
-             <section separator=", ">
-                <field datasource="ort.Ort_antik" />
-                <field datasource="ort.Stadt" />	
-            </section>
-        </subtitle>
+	<display>
+		<title>
+			<section separator=", ">
+				<field datasource="bauwerksteil.BearbeiterBauwerksteil" prefix="BT" postfix=": " />
+				<field datasource="bauwerksteil.KurzbeschreibungBauwerksteil"/>
+			</section>
+		</title>
+		<subtitle>
+			<section separator=", ">
+				<field datasource="ort.Ort_antik" />
+				<field datasource="ort.Stadt" />	
+			</section>
+		</subtitle>
 		<datasections>
 			<section labelKey="Informationen zum Bauwerksteil">
 				
 				<!--
-				<section labelKey="Lokalisierung">
+					<section labelKey="Lokalisierung">
 					<section sectionKey="Aufbewahrung"/>
-				</section>
+					</section>
 				-->
 				
 				<section labelKey="Charakterisierung">					
@@ -48,13 +48,13 @@
 						<field datasource="bauwerksteil.BeschreibungBauwerksteil"/>
 					</section> 	
 				</section>
-			
+				
 				<section labelKey="Geschichte">
-					<!--	
+					
 					<section labelKey="Ausgrabungen">
-						<field datasource="Ausgrabungen"/>
+						<field datasource="bauwerksteil.Ausgrabungen"/>
 					</section>
-					--> 
+					
 					<section labelKey="Restaurierung">
 						<field datasource="bauwerksteil.RestaurierungenBauwerksteil"/>
 					</section> 
@@ -66,17 +66,22 @@
 				
 				<section labelKey="Maße/Kontext">	
 					<section>
+						<field datasource="bauwerksteil.KontextBauwerksteil" prefix="Kontext des Bauwerksteils: " />
+					</section>
+					<section>
 						<field datasource="bauwerksteil.BreiteBauwerksteil" prefix="B " postfix=" cm"/>
 					</section> 
 					<section>
-						<field datasource="bauwerksteil.HoeheBauwerksteil" prefix="B " postfix=" cm"/>
+						<field datasource="bauwerksteil.HoeheBauwerksteil" prefix="H " postfix=" cm"/>
 					</section> 
 					<section>
-						<field datasource="bauwerksteil.HoeheBauwerksteil" prefix="B " postfix=" cm"/>
+						<field datasource="bauwerksteil.TiefeBauwerksteil" prefix="T " postfix=" cm"/>
 					</section>
-					<section>
-						<field datasource="bauwerksteil.HoeheBauwerksteil" prefix="B " postfix=" cm"/>
-					</section>					
+					<!--  
+						<section>
+						<field datasource="bauwerksteil.HoeheBauwerksteil" prefix="H " postfix=" cm"/>
+						</section>
+					-->					
 				</section>
 				
 				<section labelKey="Dekoration">
@@ -94,28 +99,28 @@
 				</section>
 				
 				<!-- 
-				<section labelKey="Datierung">
+					<section labelKey="Datierung">
 					<section sectionKey="Datierung" />
-				</section>
-				<section labelKey="Literatur">
+					</section>
+					<section labelKey="Literatur">
 					<section sectionKey="Literatur" />
-				</section>
-				<section labelKey="Fotoabzug">
+					</section>
+					<section labelKey="Fotoabzug">
 					<section sectionKey="Fotoabzug" />
-				</section>
+					</section>
 				-->				
 			</section>	
-   		</datasections>
-    </display>
-    <facets>
-    	<facet name="kategorie" labelKey="Kategorie">
-    		<field datasource="Dataset.TableName" />
-    	</facet>
-    	<facet name="ort" labelKey="Lokalisierung">
-	    	<context type="ort" separator=", ">
-		    	<field datasource=".Stadt" />
-		    	<field datasource=".Land" />
-	    	</context>
-    	</facet>
-    </facets>
+		</datasections>
+	</display>
+	<facets>
+		<facet name="kategorie" labelKey="Kategorie">
+			<field datasource="Dataset.TableName" />
+		</facet>
+		<facet name="ort" labelKey="Lokalisierung">
+			<context type="ort" separator=", ">
+				<field datasource=".Stadt" />
+				<field datasource=".Land" />
+			</context>
+		</facet>
+	</facets>
 </category>
