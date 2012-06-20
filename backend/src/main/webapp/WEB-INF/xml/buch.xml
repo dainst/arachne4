@@ -30,6 +30,18 @@
 					<field datasource="buch.BuchAuthorQualifier" postfix=": " />
 					<field datasource="buch.BuchAuthor" />
 				</section>
+				<section labelKey="Titel">
+					<field datasource="buch.BuchTitel" />
+				</section>
+				<section labelKey="Publikationsort">
+					<field datasource="buch.BuchOrt" />
+				</section>
+				<section labelKey="Verleger">
+					<field datasource="buch.BuchVerleger" />
+				</section>
+				<section labelKey="Publikationsdatum">
+					<field datasource="buch.BuchJahr" />
+				</section>
 				<section labelKey="Physische Beschreibung">
 					<field datasource="buch.BuchSeiten" prefix="Seiten: "/>
 					<field datasource="buch.HoeheGesamt" prefix="Höhe: " />
