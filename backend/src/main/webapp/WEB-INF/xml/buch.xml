@@ -13,7 +13,6 @@
 						<field datasource="buch.KurzbeschreibungBuch" />
 					</ifEmpty> 
 				</field>
-				<field datasource="buch.Band" prefix="Band " />
 			</section>
 		</title>
 		<subtitle>
@@ -23,7 +22,7 @@
 		</subtitle>
 		<datasections>
 			<section labelKey="Informationen zum Buch">
-				<section labelKey="" prefix="Erscheinungsdatum">
+				<section labelKey="Erscheinungsdatum">
 					<field datasource="buch.PubYearStart" prefix="frühestes geschätztes Publikationsjahr: " />
 					<field datasource="buch.PubYearEnd" prefix="spätestes geschätztes Publikationsjahr: " />
 				</section>
@@ -31,30 +30,11 @@
 					<field datasource="buch.BuchAuthorQualifier" postfix=": " />
 					<field datasource="buch.BuchAuthor" />
 				</section>
-				<section labelKey="Publikationsort">
-					<field datasource="buch.BuchOrt" />
-				</section>
-				<section labelKey="Verleger">
-					<field datasource="buch.BuchVerleger" />
-				</section>
-				<section labelKey="Publikationsdatum">
-					<field datasource="buch.BuchJahr" />
-				</section>
 				<section labelKey="Physische Beschreibung">
-					<field datasource="BuchPhysikalischeBeschreibung" />
 					<field datasource="buch.BuchSeiten" prefix="Seiten: "/>
 					<field datasource="buch.HoeheGesamt" prefix="Höhe: " />
 					<field datasource="buch.BreiteGesamt" prefix="Breite: " />
 					<field datasource="buch.TiefeGesamt" prefix="Tiefe: " />
-				</section>
-				<section labelKay="Anzahl Seiten">
-					<field datasource="BuchSeiten" />
-				</section>
-				<section labelKey="Besitzvergangenheit">
-					<field datasource="buch.BuchBesitzvergangenheit" />
-				</section>
-				<section labelKay="weitere Personen">
-					<field datasource="BuchWeiterePersonen" />
 				</section>
 				<context type="ort" labelKey="Lokalisierung" separator=", ">
 					<field datasource=".Stadt"  />
@@ -62,7 +42,7 @@
 					<field datasource=".Countrycode" />
 					<field datasource=".Aufbewahrungsort" />
 				</context>
-				<section labelKey="Zenon Systemnummer">
+				<section labelKey="BibId">
 					<field datasource="buch.bibid" />
 				</section>
 				
@@ -72,8 +52,23 @@
 				<section labelKey="Cover">
 					<field datasource="buch.Cover" />
 				</section>
+				<section labelKey="Band">
+					<field datasource="buch.Band" />
+				</section>
 				<section labelKey="Einzelband">
 					<field datasource="buch.Einzelband" />
+				</section>
+				<!--  
+					<section labelKey="Autor">
+					<field datasource="buch.BuchAuthorQulifier" />
+					<field datasource="buch.BuchAuthor" />
+					</section>
+				-->
+				<section labelKey="Buch Jahr">
+					<field datasource="buch.BuchJahr" />
+				</section>
+				<section labelKey="Publikationsort">
+					<field datasource="buch.BuchOrt" />
 				</section>
 				<section labelKey="Externer Permalink">
 					<field datasource="buch.BuchPermalinkExtern" />
