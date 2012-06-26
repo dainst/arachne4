@@ -112,7 +112,7 @@ public class ImageController {
 					responseHeaders.setContentType(MediaType.TEXT_PLAIN);
 					return new ResponseEntity<Object>(stringBuilder.toString(), responseHeaders, HttpStatus.OK);
 				} else {
-					responseHeaders.setContentType(MediaType.IMAGE_PNG);
+					responseHeaders.setContentType(MediaType.IMAGE_JPEG);
 					return new ResponseEntity<Object>(ImageIO.read(connection.getInputStream()), responseHeaders, HttpStatus.OK);
 				}
 			}
@@ -143,7 +143,7 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/{entityId}", method = RequestMethod.GET)
 	public @ResponseBody BufferedImage getImage(
-			@PathVariable("entityId") final String entityId,
+			@PathVariable("entityId") final Long entityId,
 			final HttpServletRequest request,
 			final HttpServletResponse response) {
 		
@@ -159,7 +159,7 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
 	public @ResponseBody BufferedImage getThumbnail(
-			@PathVariable("entityId") final String entityId,
+			@PathVariable("entityId") final Long entityId,
 			final HttpServletRequest request,
 			final HttpServletResponse response) {
 				
@@ -175,18 +175,18 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/preview/{entityId}", method = RequestMethod.GET)
 	public @ResponseBody BufferedImage getPreview(
-			@PathVariable("entityId") final String entityId,
+			@PathVariable("entityId") final Long entityId,
 			final HttpServletRequest request,
 			final HttpServletResponse response) {
 		
 		return getImageStream(entityId, ImageResolutionType.PREVIEW, response);
 	}
 	
-	private BufferedImage getImageStream(final String entityId, final ImageResolutionType requestedResolution
+	private BufferedImage getImageStream(final Long entityId, final ImageResolutionType requestedResolution
 			, final HttpServletResponse response) {
 		
 		ImageResolutionType resolution = requestedResolution;
-		final EntityId arachneId = arachneEntityIdentificationService.getId(Long.valueOf(entityId));
+		final EntityId arachneId = arachneEntityIdentificationService.getId(entityId);
 		
 		if(!arachneId.getTableName().equals("marbilder")) {
 			LOGGER.error("Error: entityId {} does not refer to an image.");
