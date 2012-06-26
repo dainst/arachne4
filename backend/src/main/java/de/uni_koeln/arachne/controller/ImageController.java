@@ -1,6 +1,3 @@
-/**
- * 
- */
 package de.uni_koeln.arachne.controller;
 
 import java.io.BufferedReader;
@@ -73,6 +70,21 @@ public class ImageController {
 	@Autowired
 	private SingleEntityDataService arachneSingleEntityDataService; // NOPMD
 	
+	private final transient String imageServerUrl;
+	private final transient String imagePath;
+	private final transient int imageServerReadTimeout;
+	
+	@Autowired
+	public ImageController(final @Value("#{config.imageServerUrl}") String imageServerUrl,
+			final @Value("#{config.imagePath}") String imagePath,
+			final @Value("#{config.imageServerReadTimeout}") int imageServerReadTimeout) {
+			
+		this.imageServerUrl = imageServerUrl;
+		this.imagePath = imagePath;
+		this.imageServerReadTimeout = imageServerReadTimeout;
+		LOGGER.info("ImageServerUrl: " + imageServerUrl);
+	}
+	
 	/**
 	 * This method handles requests from the <code>mooviewer</code> to the image server.
 	 * @param imageServerUrl
@@ -82,11 +94,7 @@ public class ImageController {
 	 * @return
 	 */
 	@RequestMapping(value = "/image/viewer", method = RequestMethod.GET)
-	public ResponseEntity<Object> getFromImageServer(
-			final @Value("#{config.imageServerUrl}") String imageServerUrl,
-			final @Value("#{config.imageServerReadTimeout}") Integer imageServerReadTimeout,
-			final HttpServletRequest request,
-			final HttpServletResponse response) {
+	public ResponseEntity<Object> getFromImageServer(final HttpServletRequest request, final HttpServletResponse response) {
 		
 		LOGGER.debug("Viewer called.");
 		
@@ -143,62 +151,37 @@ public class ImageController {
 	/**
 	 * Handles the request for /image/{id} (id is the entityId for an image)
 	 * @param entityId
-	 * @param request
 	 * @param response
 	 * @return The requested image
 	 */
 	@RequestMapping(value = "/image/{entityId}", method = RequestMethod.GET)
-	public ResponseEntity<Object> getImage(
-			@PathVariable("entityId") final long entityId,
-			final @Value("#{config.imageServerUrl}") String imageServerUrl,
-			final @Value("#{config.imagePath}") String imagePath,
-			final @Value("#{config.imageServerReadTimeout}") int imageServerReadTimeout,
-			final HttpServletRequest request,
-			final HttpServletResponse response) {
-		
-		return getImageFromServer(imageServerUrl, imagePath, imageServerReadTimeout, -1, HIGH, response);
+	public ResponseEntity<Object> getImage(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		return getImageFromServer(-1, HIGH, response);
 	}
 	
 	/**
 	 * Handles the request for /image/thumbnail/{id} (id is the entityId for an image)
 	 * @param entityId
-	 * @param request
 	 * @param response
 	 * @return The requested image
 	 */
 	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
-	public ResponseEntity<Object> getThumbnail(
-			@PathVariable("entityId") final long entityId,
-			final @Value("#{config.imageServerUrl}") String imageServerUrl,
-			final @Value("#{config.imagePath}") String imagePath,
-			final @Value("#{config.imageServerReadTimeout}") int imageServerReadTimeout,
-			final HttpServletRequest request,
-			final HttpServletResponse response) {
-		
-		return getImageFromServer(imageServerUrl, imagePath, imageServerReadTimeout, -1, THUMBNAIL, response);
+	public ResponseEntity<Object> getThumbnail(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		return getImageFromServer(-1, THUMBNAIL, response);
 	}
 	
 	/**
 	 * Handles the request for /image/preview/{id} (id is the entityId for an image)
 	 * @param entityId
-	 * @param request
 	 * @param response
 	 * @return The requested image
 	 */
 	@RequestMapping(value = "/image/preview/{entityId}", method = RequestMethod.GET)
-	public ResponseEntity<Object> getPreview(
-			@PathVariable("entityId") final long entityId,
-			final @Value("#{config.imageServerUrl}") String imageServerUrl,
-			final @Value("#{config.imagePath}") String imagePath,
-			final @Value("#{config.imageServerReadTimeout}") int imageServerReadTimeout,
-			final HttpServletRequest request,
-			final HttpServletResponse response) {
-		
-		return getImageFromServer(imageServerUrl, imagePath, imageServerReadTimeout, -1, PREVIEW, response);
+	public ResponseEntity<Object> getPreview(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		return getImageFromServer(-1, PREVIEW, response);
 	}
 	
-	private ResponseEntity<Object> getImageFromServer(final String imageServerUrl, final String imagePath, final int imageServerReadTimeout,
-			final long entityId, final int requestedResolution, final HttpServletResponse response) {
+	private ResponseEntity<Object> getImageFromServer(final long entityId, final int requestedResolution, final HttpServletResponse response) {
 		
 		HttpURLConnection connection = null;
 		// TODO replace when the correct images are accessible by the image server
