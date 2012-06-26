@@ -5,11 +5,8 @@ package de.uni_koeln.arachne.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -38,7 +35,6 @@ import de.uni_koeln.arachne.dao.ImageRightsDao;
 import de.uni_koeln.arachne.mapping.ImageRightsGroup;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.response.Dataset;
-import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.ImageResolutionType;
 import de.uni_koeln.arachne.service.ImageRightsGroupService;
@@ -75,6 +71,14 @@ public class ImageController {
 	@Autowired
 	private SingleEntityDataService arachneSingleEntityDataService; // NOPMD
 	
+	/**
+	 * This method handles requests from the <code>mooviewer</code> to the image server.
+	 * @param imageServerUrl
+	 * @param imageServerReadTimeout
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping(value = "/image/viewer", method = RequestMethod.GET)
 	public ResponseEntity<Object> getFromImageServer(
 			final @Value("#{config.imageServerUrl}") String imageServerUrl,
