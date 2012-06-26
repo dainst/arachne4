@@ -3,7 +3,6 @@
  */
 package de.uni_koeln.arachne.controller;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,14 +28,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.dao.ImageRightsDao;
 import de.uni_koeln.arachne.mapping.ImageRightsGroup;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
-import de.uni_koeln.arachne.service.ImageResolutionType;
 import de.uni_koeln.arachne.service.ImageRightsGroupService;
 import de.uni_koeln.arachne.service.ImageStreamService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
@@ -52,6 +49,11 @@ import de.uni_koeln.arachne.util.EntityId;
 public class ImageController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageController.class);
+	
+	// width for the different image types
+	private static final int THUMBNAIL = 150;
+	private static final int PREVIEW = 400;
+	private static final int HIGH = 0;
 	
 	@Autowired
 	private UserRightsService userRightsService; // NOPMD
@@ -134,7 +136,7 @@ public class ImageController {
 			connection = null;
 		}
 						
-		response.setStatus(403);
+		response.setStatus(404);
 		return null;
 	}
 	
@@ -143,15 +145,18 @@ public class ImageController {
 	 * @param entityId
 	 * @param request
 	 * @param response
-	 * @return The requested image (?)
+	 * @return The requested image
 	 */
 	@RequestMapping(value = "/image/{entityId}", method = RequestMethod.GET)
-	public @ResponseBody BufferedImage getImage(
-			@PathVariable("entityId") final Long entityId,
+	public ResponseEntity<Object> getImage(
+			@PathVariable("entityId") final long entityId,
+			final @Value("#{config.imageServerUrl}") String imageServerUrl,
+			final @Value("#{config.imagePath}") String imagePath,
+			final @Value("#{config.imageServerReadTimeout}") int imageServerReadTimeout,
 			final HttpServletRequest request,
 			final HttpServletResponse response) {
 		
-		return getImageStream(entityId, ImageResolutionType.HIGH, response);
+		return getImageFromServer(imageServerUrl, imagePath, imageServerReadTimeout, -1, HIGH, response);
 	}
 	
 	/**
@@ -159,15 +164,18 @@ public class ImageController {
 	 * @param entityId
 	 * @param request
 	 * @param response
-	 * @return The requested image (?)
+	 * @return The requested image
 	 */
 	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
-	public @ResponseBody BufferedImage getThumbnail(
-			@PathVariable("entityId") final Long entityId,
+	public ResponseEntity<Object> getThumbnail(
+			@PathVariable("entityId") final long entityId,
+			final @Value("#{config.imageServerUrl}") String imageServerUrl,
+			final @Value("#{config.imagePath}") String imagePath,
+			final @Value("#{config.imageServerReadTimeout}") int imageServerReadTimeout,
 			final HttpServletRequest request,
 			final HttpServletResponse response) {
-				
-		return getImageStream(entityId, ImageResolutionType.THUMBNAIL, response);
+		
+		return getImageFromServer(imageServerUrl, imagePath, imageServerReadTimeout, -1, THUMBNAIL, response);
 	}
 	
 	/**
@@ -175,56 +183,83 @@ public class ImageController {
 	 * @param entityId
 	 * @param request
 	 * @param response
-	 * @return The requested image (?)
+	 * @return The requested image
 	 */
 	@RequestMapping(value = "/image/preview/{entityId}", method = RequestMethod.GET)
-	public @ResponseBody BufferedImage getPreview(
-			@PathVariable("entityId") final Long entityId,
+	public ResponseEntity<Object> getPreview(
+			@PathVariable("entityId") final long entityId,
+			final @Value("#{config.imageServerUrl}") String imageServerUrl,
+			final @Value("#{config.imagePath}") String imagePath,
+			final @Value("#{config.imageServerReadTimeout}") int imageServerReadTimeout,
 			final HttpServletRequest request,
 			final HttpServletResponse response) {
 		
-		return getImageStream(entityId, ImageResolutionType.PREVIEW, response);
+		return getImageFromServer(imageServerUrl, imagePath, imageServerReadTimeout, -1, PREVIEW, response);
 	}
 	
-	private BufferedImage getImageStream(final Long entityId, final ImageResolutionType requestedResolution
-			, final HttpServletResponse response) {
+	private ResponseEntity<Object> getImageFromServer(final String imageServerUrl, final String imagePath, final int imageServerReadTimeout,
+			final long entityId, final int requestedResolution, final HttpServletResponse response) {
 		
-		ImageResolutionType resolution = requestedResolution;
-		final EntityId arachneId = arachneEntityIdentificationService.getId(entityId);
-		
-		if(!arachneId.getTableName().equals("marbilder")) {
-			LOGGER.error("Error: entityId {} does not refer to an image.");
-			response.setStatus(404);
-			return null;
-		}
-		
-		final Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId
-				, userRightsService.getCurrentUser());
-		LOGGER.debug("Retrieved Entity for image: {}", imageEntity);
-		
-		// Check image rights
-		final ImageRightsGroup imageRightsGroup = imageRightsDao.findByName(imageEntity.getField("marbilder.BildrechteGruppe"));
-		final UserAdministration currentUser = userRightsService.getCurrentUser();
-		final String watermarkFilename = imageRightsGroupService.getWatermarkFilename(imageEntity, currentUser, imageRightsGroup);
-		if(!imageRightsGroupService.checkResolutionRight(imageEntity, currentUser, resolution, imageRightsGroup)) {
-			resolution = imageRightsGroupService.getMaxResolution(imageEntity, currentUser, imageRightsGroup);
+		HttpURLConnection connection = null;
+		// TODO replace when the correct images are accessible by the image server
+		String imageName = "ptif_test.tif";
+		if (entityId>0) {
+			final EntityId arachneId = arachneEntityIdentificationService.getId(entityId);
 			
-			// Forbidden
-			if (resolution == null) {
-				response.setStatus(403);
+			if(!arachneId.getTableName().equals("marbilder")) {
+				LOGGER.error("EntityId {} does not refer to an image.", entityId);
+				response.setStatus(404);
 				return null;
 			}
+			
+			final Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId
+					, userRightsService.getCurrentUser());
+			// TODO get correct image name not the old one
+			imageName = imageEntity.getField("marbilder.Pfad");
+			LOGGER.debug("Image: " + entityId + ": " + imageName);
+			
+			// TODO implement watermarking
+			// Check image rights
+			/*final ImageRightsGroup imageRightsGroup = imageRightsDao.findByName(imageEntity.getField("marbilder.BildrechteGruppe"));
+			final UserAdministration currentUser = userRightsService.getCurrentUser();
+			final String watermarkFilename = imageRightsGroupService.getWatermarkFilename(imageEntity, currentUser, imageRightsGroup);
+			if(!imageRightsGroupService.checkResolutionRight(imageEntity, currentUser, resolution, imageRightsGroup)) {
+				resolution = imageRightsGroupService.getMaxResolution(imageEntity, currentUser, imageRightsGroup);
+				
+				// Forbidden
+				if (resolution == null) {
+					response.setStatus(403);
+					return null;
+				}
+			}*/
 		}
 		
 		try {
-			response.setStatus(200);
-			return imageStreamService.getArachneImage(resolution, imageEntity, watermarkFilename);
-		} catch (Exception e) {
-			LOGGER.error("Error while retrieving thumbnail with entity id from image service" + arachneId.getArachneEntityID(),e);			
-			response.setStatus(404);
-			return null;
+			final URL serverAdress = new URL(imageServerUrl + "?FIF=" + imagePath + imageName + "&SDS=0,90&CNT=1.0&WID="
+					+ requestedResolution + "&QLT=99&CVT=jpeg");
+			connection = (HttpURLConnection)serverAdress.openConnection();			
+			connection.setRequestMethod("GET");
+			connection.setReadTimeout(imageServerReadTimeout);
+			connection.connect();
+			
+			if (connection.getResponseCode() == 200) {
+				final HttpHeaders responseHeaders = new HttpHeaders();
+				responseHeaders.setContentType(MediaType.IMAGE_JPEG);
+				return new ResponseEntity<Object>(ImageIO.read(connection.getInputStream()), responseHeaders, HttpStatus.OK);
+			}
+		} catch (MalformedURLException e) {
+			LOGGER.error(e.getMessage());
+		} catch (ProtocolException e) {
+			LOGGER.error(e.getMessage());
+		} catch (SocketTimeoutException e) {
+			LOGGER.error(e.getMessage());
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage());
+		} finally {
+			connection.disconnect();
+			connection = null;
 		}
-		
-	}
-	
+						
+		return null;
+	}	
 }
