@@ -163,7 +163,7 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/{entityId}", method = RequestMethod.GET)
 	public void getImage(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(-1, HIGH, response);
+		getImageFromServer(entityId, HIGH, response);
 	}
 	
 	/**
@@ -173,7 +173,7 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
 	public void getThumbnail(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(-1, THUMBNAIL, response);
+		getImageFromServer(entityId, THUMBNAIL, response);
 	}
 	
 	/**
@@ -183,7 +183,7 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/preview/{entityId}", method = RequestMethod.GET)
 	public void getPreview(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(-1, PREVIEW, response);
+		getImageFromServer(entityId, PREVIEW, response);
 	}
 	
 	/**
@@ -193,25 +193,57 @@ public class ImageController {
 	 * <code>ImageController.PREVIEW</code> and <code>ImageController.HIGH</code> are currently in use but any integer value is allowed.
 	 * @param response The outgoing HTTP response.
 	 */
-	private HttpServletResponse getImageFromServer(final long entityId, final int requestedResolution, final HttpServletResponse response) {
+	private void getImageFromServer(final long entityId, final int requestedResolution, final HttpServletResponse response) {
 		
 		HttpURLConnection connection = null;
+		
+		String imageName = getImageName(entityId);
 		// TODO replace when the correct images are accessible by the image server
-		String imageName = "ptif_test.tif";
+		imageName = "ptif_test.tif";
+		
+		try {
+			final URL serverAdress = new URL(imageServerUrl + "?FIF=" + imagePath + imageName + "&SDS=0,90&CNT=1.0&WID="
+					+ requestedResolution + "&QLT=99&CVT=jpeg");
+			connection = (HttpURLConnection)serverAdress.openConnection();			
+			connection.setRequestMethod("GET");
+			connection.setReadTimeout(imageServerReadTimeout);
+			connection.connect();
+			
+			if (connection.getResponseCode() == 200) {
+				response.setContentType("image/jpeg");
+				final OutputStream outputStream = response.getOutputStream();
+				ImageIO.write(ImageIO.read(connection.getInputStream()), "jpg", outputStream);
+				response.setStatus(200);
+			}
+		} catch (MalformedURLException e) {
+			LOGGER.error(e.getMessage());
+		} catch (ProtocolException e) {
+			LOGGER.error(e.getMessage());
+		} catch (SocketTimeoutException e) {
+			LOGGER.error(e.getMessage());
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage());
+		} finally {
+			connection.disconnect();
+			connection = null;
+		}
+	}
+
+	private String getImageName(final long entityId) {
+		String result = null;
 		if (entityId>0) {
 			final EntityId arachneId = arachneEntityIdentificationService.getId(entityId);
 			
 			if(!arachneId.getTableName().equals("marbilder")) {
 				LOGGER.error("EntityId {} does not refer to an image.", entityId);
-				response.setStatus(404);
-				return null;
+				//response.setStatus(404);
 			}
 			
 			final Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId
 					, userRightsService.getCurrentUser());
 			// TODO get correct image name not the old one
-			imageName = imageEntity.getField("marbilder.Pfad");
-			LOGGER.debug("Image: " + entityId + ": " + imageName);
+			result = imageEntity.getField("marbilder.Pfad");
+			LOGGER.debug("Image: " + entityId + ": " + result);
 			
 			// TODO implement watermarking
 			// Check image rights
@@ -228,34 +260,6 @@ public class ImageController {
 				}
 			}*/
 		}
-		
-		try {
-			final URL serverAdress = new URL(imageServerUrl + "?FIF=" + imagePath + imageName + "&SDS=0,90&CNT=1.0&WID="
-					+ requestedResolution + "&QLT=99&CVT=jpeg");
-			connection = (HttpURLConnection)serverAdress.openConnection();			
-			connection.setRequestMethod("GET");
-			connection.setReadTimeout(imageServerReadTimeout);
-			connection.connect();
-			
-			if (connection.getResponseCode() == 200) {
-				response.setContentType("image/jpeg");
-				final OutputStream outputStream = response.getOutputStream();
-				ImageIO.write(ImageIO.read(connection.getInputStream()), "jpg", outputStream);
-				//return response;
-			}
-		} catch (MalformedURLException e) {
-			LOGGER.error(e.getMessage());
-		} catch (ProtocolException e) {
-			LOGGER.error(e.getMessage());
-		} catch (SocketTimeoutException e) {
-			LOGGER.error(e.getMessage());
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage());
-		} finally {
-			connection.disconnect();
-			connection = null;
-		}
-						
-		return null;
+		return result;
 	}	
 }
