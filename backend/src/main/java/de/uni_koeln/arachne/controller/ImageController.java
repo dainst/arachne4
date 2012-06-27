@@ -74,7 +74,14 @@ public class ImageController {
 	private final transient String imagePath;
 	private final transient int imageServerReadTimeout;
 	
+	
 	@Autowired
+	/**
+	 * Autowired constructor to initialize the image server parameters set in application.properties.
+	 * @param imageServerUrl
+	 * @param imagePath
+	 * @param imageServerReadTimeout
+	 */
 	public ImageController(final @Value("#{config.imageServerUrl}") String imageServerUrl,
 			final @Value("#{config.imagePath}") String imagePath,
 			final @Value("#{config.imageServerReadTimeout}") int imageServerReadTimeout) {
@@ -87,11 +94,9 @@ public class ImageController {
 	
 	/**
 	 * This method handles requests from the <code>mooviewer</code> to the image server.
-	 * @param imageServerUrl
-	 * @param imageServerReadTimeout
-	 * @param request
-	 * @param response
-	 * @return
+	 * @param request The incoming HTTP request.
+	 * @param response The outgoing HTTP response.
+	 * @return Either the meta data or the image returned by the image server.
 	 */
 	@RequestMapping(value = "/image/viewer", method = RequestMethod.GET)
 	public ResponseEntity<Object> getFromImageServer(final HttpServletRequest request, final HttpServletResponse response) {
@@ -149,10 +154,10 @@ public class ImageController {
 	}
 	
 	/**
-	 * Handles the request for /image/{id} (id is the entityId for an image)
-	 * @param entityId
-	 * @param response
-	 * @return The requested image
+	 * Handles the request for /image/{entityId}. 
+	 * @param entityId The unique ID of the image.
+	 * @param response The outgoing HTTP response.
+	 * @return The requested image.
 	 */
 	@RequestMapping(value = "/image/{entityId}", method = RequestMethod.GET)
 	public ResponseEntity<Object> getImage(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
@@ -160,10 +165,10 @@ public class ImageController {
 	}
 	
 	/**
-	 * Handles the request for /image/thumbnail/{id} (id is the entityId for an image)
-	 * @param entityId
-	 * @param response
-	 * @return The requested image
+	 * Handles the request for /image/thumbnail/{entityId}.
+	 * @param entityId The unique ID of the image.
+	 * @param response The outgoing HTTP response.
+	 * @return The requested image.
 	 */
 	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
 	public ResponseEntity<Object> getThumbnail(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
@@ -171,16 +176,24 @@ public class ImageController {
 	}
 	
 	/**
-	 * Handles the request for /image/preview/{id} (id is the entityId for an image)
-	 * @param entityId
-	 * @param response
-	 * @return The requested image
+	 * Handles the request for /image/preview/{entityId}.
+	 * @param entityId The unique ID of the image.
+	 * @param response The outgoing HTTP response.
+	 * @return The requested image.
 	 */
 	@RequestMapping(value = "/image/preview/{entityId}", method = RequestMethod.GET)
 	public ResponseEntity<Object> getPreview(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
 		return getImageFromServer(-1, PREVIEW, response);
 	}
 	
+	/**
+	 * This private method retrieves images from the image server. 
+	 * @param entityId The unique ID of the image.
+	 * @param requestedResolution The requested resolution. Only the constants <code>ImageController.THUMBNAIL</code>, 
+	 * <code>ImageController.PREVIEW</code> and <code>ImageController.HIGH</code> are currently in use but any integer value is allowed.
+	 * @param response The outgoing HTTP response.
+	 * @return The requested image wrapped in a <code>ResponseEntity&lt;Object&gt;</code>.
+	 */
 	private ResponseEntity<Object> getImageFromServer(final long entityId, final int requestedResolution, final HttpServletResponse response) {
 		
 		HttpURLConnection connection = null;
