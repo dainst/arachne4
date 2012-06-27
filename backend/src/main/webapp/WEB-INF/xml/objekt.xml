@@ -62,6 +62,319 @@
 	            	<field datasource=".Seite" />
 	            </context>
 	    	</section>
+	    	<section labelKey="Informationen zum Lebewesen">
+	    		<section labelKey="Lebewesen">
+	    	<section labelKey="Personen allgemein">
+	    		<section labelKey="Anzahl Personen">
+	    			<field datasource="objektlebewesen.lPersonen" />
+	    		</section>
+	    		<section labelKey="Spezifikation  Personengruppe">
+	    			<field datasource="objektlebewesen.SpezPerson" />
+	    	    </section>
+	    	    </section>
+	    	    <section labelKey="Personen spezifikation">
+	    		<section labelKey="Alter">
+	    			<field datasource="objektlebewesen.lAlter"/>
+	    		</section>
+	    		<section labelKey="Geschlecht">
+	    			<field datasource="objektlebewesen.lGeschlecht" />
+	    		</section>
+	    		<section labelKey="Ethnie">
+	    			<field datasource="objektlebewesen.lEthnie" />
+	    		</section>
+	    		
+	    		<section labelKey="Identifizierung">
+	    			<field datasource="objektlebewesen.Identifizierung"  />
+	    			<field datasource="objektlebewesen.spezIdentifizierung" />
+	    		</section>
+	    		<section labelKey="Sujet">
+	    			<field datasource="objektlebewesen.Sujet" />
+	    			<field datasource="objektlebewesen.SpezSujet" />
+	    		</section>
+	    		</section>
+	    		<section labelKey="Tiere">
+	    			<field datasource="objektlebewesen.Tiere" />
+	    		</section>
+	    		</section>
+	    		<section labelKey="Objekte">
+	    			<section labelKey="Verkehr">
+	    				<field datasource="objektlebewesen.Verkehr" />
+	    				<field datasource="objektlebewesen.SpezVerkehr" />
+	    			</section>
+	    			<section labelKey="Gegenstände">
+	    				<field datasource="objektlebewesen.Gegenstaende" />
+	    			</section>
+	    		</section>
+	    		</section>
+	    		<section labelKey="Informationen zur Keramik">
+	    			<section labelKey="Aussehen">
+	    				<section labelKey="Gefäßtyp">
+	    					<field datasource="objektkeramik.GesaesstypKeramik" />
+	    				</section>
+	    					<section labelKey="Gefäßform">
+	    						<field datasource="objektkeramik.GefaessformenKeramik" />
+	    					</section>
+	    				</section>
+	    				<section labelKey="Herstellungstechnik">
+	    					<field datasource="objektkeramik.HerstellungstechnikKeramik" />
+	    				</section>
+	    				<section labelKey="Maltechnik">
+	    					<field datasource="objektkeramik.MaltechnikKeramik" />
+	    				</section>
+	    				<section labelKey="Dekorationstechnik">
+	    					<field datasource="objektkeramik.DekorationKeramik" />
+	    				</section>
+	    				<section labelKey="Ware">
+	    					<field datasource="objektkeramik.WareKeramik" />
+	    					<field datasource="objektkeramim.SpezifizierungWareKermaik" />
+	    				</section>
+	    				<section labelKey="Informationen zum Maler">
+	    					<section labelKey="Maler">
+	    						<field datasource="objektkeramik.MalerKeramik" />
+	    					</section>
+	    					<section labelKey="Werkstatt/Gruppe/Umkreis des Malers">
+	    						<field datasource="objektkeramik.MalerWerkstattGruppeUmkreisKeramik" />
+	    					</section>
+	    					<section labelKey="Signiert">
+	    						<field datasource="objektkeramik.MalerSigniertKeramik" />
+	    					</section>
+	    				</section>
+	    				<section labelKey="Informationen zum Töpfer">
+	    					<section labelKey="Töpfer">
+	    						<field datasource="objektkeramik.ToepferKeramik" />
+	    					</section>
+	    					<section labelKey="Werkstatt/Gruppe/Umkreis des Töpfers">
+	    						<field datasource="objektkeramik.ToepferWerkstattGruppeUmkreisKeramik" />
+	    					</section>
+	    					<section labelKey="Signiert">
+	    						<field datasource="objektkeramik.ToepferSigniertKeramik" />
+	    					</section>
+	    				</section>
+	    				<section labelKey="Provenienz">
+	    					<field datasource="objektkeramik.ProvenienzKeramik" />
+	    				</section>
+	    				<section labelKey="Dekoration">
+	    					<section labelKey="Motive">
+	    						<field datasource="objektkeramik.MotiveKeramik" />
+	    						<field datasource="objektkeramik.SpezifizierungMotiveKeramik" />
+	    					</section>	    										
+	       				</section>
+	       				<section labelKey="Spezifizierung Material">
+	       					<section labelKey="Oberflächenfarbe">
+	       						<field datasource="objektkeramik.Oberflaechenfarbe" />
+	       					</section>
+	       					<section labelKey="Scherbenfarbe">
+	       						<field datasource="objektkeramik.Scherbenfarbe" />
+	       					</section>
+	       					<section labelKey="Korngröße der Magerung">
+	       						<field datasource="objektkeramik.KrongroesseMagerung" />
+	       					</section>
+	       					<section labelKey="Einschluesse">
+	       						<field datasource="objektkeramik.Einschluesse" />
+	       					</section>
+	       					<section labelKey="Bruchmuster">
+	       						<field datasource="objektkeramik.Bruchmuster" />
+	       					</section>
+	       					<section labelKey="Analyse">
+	       						<field datasource="objektkeramik.Analysen" />
+	       					</section>
+	       				</section>	    				
+	    		</section>
+        		<section labelKey="Information zur Plastik">
+        			<section labelKey="Bennung und Charakterisierung">
+        				<section labelKey="Benennung">
+        					<field datasource="objektplastik.Benennung" />        			
+        				</section>
+        				<section labelKey="Rufname">
+        					<field datasource="objektplastik.Rufname" />
+        				</section>
+        				<section separator="; ">
+        					<field datasource="objektplastik.VorbildWesen" />        					
+        					<field datasource="objektplastik.VorbildWesen2" />        					
+        					<field datasource="objektplastik.VorbildStatus" />
+        					<field datasource="objektplastik.Darstellungsweise" />
+        					<field datasource="objektplastik.Geschlecht" />
+        					<field datasource="objektplastik.LebensAlter" />
+        				</section>
+        			</section>
+        			<section labelKey="Künstlerische Umsetzung">
+        				<section labelKey="Provenienz">
+        					<field datasource="objektplastik.Provenienz" />
+        				</section>
+        				<section labelKey="Stilnachahmung">
+        					<field datasource="objektplastik.Stilnachahmung" /> 
+        				</section>
+        				<section labelKey="Künstler">
+        					<field datasource="objektplastik.Kuenstler" />
+        					<field datasource="objektplastik.Vergleiche" />
+        				</section>
+        				<section labelKey="Typus">
+        					<field datasource="objektplastik.Typus" />
+        				</section>        			
+        			</section>
+        			<section labelKey="Sujet">
+        				<section labelKey="Anzahl Figuren">
+        					<field datasource="objektplastik.AnzahlFiguren" />
+        				</section>
+        				<section separator="; ">
+        					<field datasource="objektplastik.Thema" />
+        					<field datasource="objektplastik.ThemaGoetter" />
+        					<field datasource="objektplastik.ThemaHeroen" />
+        					<field datasource="objektplastik.ThemaMythos" />
+        					<field datasource="objektplastik.ThemaMenschen" />
+        					<field datasource="objektplastik.ThemaPflanzen" />
+        					<field datasource="objektplastik.ThemaTiere" />
+        					<field datasource="objektplastik.ThemeWeitere" />
+        					<field datasource="objektplastik.ThemaFrei" />
+        				</section>
+        				<section labelKey="Vergleiche">
+        					<field datasource="objektplastik.VergleicheSujet" />
+        				</section>
+        			</section> 
+        			<section labelKey="Form und Maße">
+        				<section labelKey="Form" separator="; ">
+        					<field datasource="objektplastik.Form" />
+        					<field datasource="objektplastik.erhalteneForm" />
+        					<field datasource="objektplastik.FormatRundplastik" />
+        				</section>
+        				<section labelKey="Messung Kopf">
+        					<field datasource="objektplastik.MessungKopf" />
+        				</section>
+        				<section labelKey="Höhe Kopf">
+        					<field datasource="objektplastik.HoeheKopf" />
+        				</section>
+        				<section labelKey="MessungStatue">
+        					<field datasource="objektplastik.MessungStatue" />
+        				</section>
+        				<section labelKey="Höhe Statue">
+        					<field datasource="objektplastik.HoeheStatue" />
+        				</section>
+        				<section labelKey="Höhe ursprünglich">
+        					<field datasource="objektplastik.HoeheUrspruenglich" />
+        				</section>
+        			</section>
+        			<section labelKey="Haltung">
+        				<section labelKey="Aufstellung">
+        					<field datasource="objektplastik.Aufstellung" />
+        				</section>
+        				<section>
+        					 <field datasource="objektplastik.Haltung" />
+        				</section>
+        				<section labelKey="Tätigkeit">
+        					<field datasource="objektplastik.Taetigkeit" />
+        				</section>
+        				<section labelKey="Standbein">
+        					<field datasource="objektplastik.Standbein" />
+        				</section>
+        				<section labelKey="Stütze">
+        					<field datasource="objektplastik.Statuenstuetze" />
+        				</section>
+        				<section labelKey="Arm links">
+        					<section labelKey="Arm">
+        						<field datasource="objektplastik.HaltungArmLinks" />
+        					</section>
+        					<section labelKey="Hand">
+        						<field datasource="objektplastik.HaltungHandLinks" />
+        					</section>
+        				</section>
+        				<section labelKey="Arm rechts">
+        					<section labelKey="Arm">
+        						<field datasource="objektplastik.HaltungArmRechts" />
+        					</section>
+        					<section>
+        						<field datasource="objektplastik.HaltungHandRechts" />
+        					</section>
+        				</section>        				
+        			</section>
+        			<section labelKey="Kopfdetails">
+        				<section labelKey="Kopfwendung">
+        					<field datasource="objektplastik.Kopfwendung" />
+        				</section>
+        				<section labelKey="Augenbildung">
+        					<field datasource="objektplastik.Augenbildung" />
+        				</section>
+        				<section labelKey="Haar">
+        					<section labelKey="Frisur">
+        						<field datasource="objektplastik.Haarfrisur" />
+        					</section>
+        					<section labelKey="Zopf">
+        						<field datasource="objektplastik.Heerzopf" />
+        					</section>
+        					<section labelKey="Stirnhaar">
+        						<field datasource="objektplastik.Stirnhaar" />
+        					</section>
+        				</section>
+        				<section labelKey="Kopfbedeckung" separator=" ">
+        					<field datasource="objektplastik.Kopfbedeckung" />
+        					<field datasource="objektplastik.Kopfbeschreibung" />	
+        				</section>       				
+         			</section>    
+         			<section labelKey="Bekleidung" separator="; ">
+         				<field datasource="objektplastik.bekleidet" />
+         				<field datasource="objektplastik.Bekleidung" />
+         				<field datasource="objektplastik.BekleidungZusatz" />
+         				<section labelKey="Gürtung">
+         					<field datasource="objektplastik.Guertung" />
+         				</section>
+         				<section labelKey="Schuhwerk">
+         					<field datasource="objektplastik.Schuhwerk" />
+         				</section>
+         				<section>
+         				<field datasource="objektplastik.BekleidungBeschreibung" />
+         				</section>
+         			</section>
+         			<section labelKey="Attribute">
+         				<section labelKey="Allgemein">
+         				<field datasource="objektplastik.AttributeAllgemein" />
+         				</section>
+         				<section labelKey="Figur">
+         					<field datasource="objektplastik.AttributeFigur" />
+         				</section>
+         				<section labelKey="Gegenstand">
+         					<field datasource="objektplastik.AttributeGegenstand" />
+         				</section>
+         				<section labelKey="Götterattribut">
+         					<field datasource="objektplastik.AttributeGoetterattribut" /> 
+         				</section>
+         				<section labelKey="Militaria">
+         					<field datasource="objektplastik.AttributeMilitaria" />
+         				</section>
+         				<section labelKey="Pflanze">
+         					<field datasource="objektplastik.AttributePlfanze" />
+         				</section>
+         				<section labelKey="Schmuck">
+         					<field datasource="objektplastik.AttributeSchmuck" />
+         				</section>
+         				<section labelKey="Tier">
+         					<field datasource="objektplastik.AttributeTier"/>
+         				</section>
+         				<section separator=" ">
+         					<field datasource="objektplastik.AttributeSonstige" />
+         					<field datasource="objektplastik.AttributeBeschreibung" />
+         				</section>
+         				<section labelKey="Dekoration" separator=" ">
+         					<field datasource="objektplastik.Dekorationsrt"/>
+         					<field datasource="objektplastik.Dekoration" />
+         				</section>
+         			</section> 	
+         			<section labelKey="Reliefträger">
+         				<section labelKey="Objekt ist">
+         					<field datasource="objektplastik.reliefiert" />
+         				</section>
+         				<section labelKey="Reliefträger" separator=" ">
+         					<field datasource="objektplastik.TraegerAllgemein" />
+         					<field datasource="objektplastik.FormatRelieftraeger" />
+         					<field datasource="objektplastik.Relieftypus"/>
+         				</section>
+         			</section>
+         			<section labelKey="Bemerkungen" >
+         				<field datasource="objektplastik.wissKommentar" />
+         				<field datasource="objektplastik.Bemerkungen" />
+         			</section>
+         					
+        		</section>
+	    	
+
         </datasections>
     </display>
     <facets>
