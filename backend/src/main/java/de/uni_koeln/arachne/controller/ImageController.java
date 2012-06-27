@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -131,8 +132,10 @@ public class ImageController {
 					responseHeaders.setContentType(MediaType.TEXT_PLAIN);
 					return new ResponseEntity<Object>(stringBuilder.toString(), responseHeaders, HttpStatus.OK);
 				} else {
-					responseHeaders.setContentType(MediaType.IMAGE_JPEG);
-					return new ResponseEntity<Object>(ImageIO.read(connection.getInputStream()), responseHeaders, HttpStatus.OK);
+					response.setContentType("image/jpeg");
+					final OutputStream outputStream = response.getOutputStream();
+					ImageIO.write(ImageIO.read(connection.getInputStream()), "jpg", outputStream);
+					return null;
 				}
 			}
 		
@@ -157,44 +160,40 @@ public class ImageController {
 	 * Handles the request for /image/{entityId}. 
 	 * @param entityId The unique ID of the image.
 	 * @param response The outgoing HTTP response.
-	 * @return The requested image.
 	 */
 	@RequestMapping(value = "/image/{entityId}", method = RequestMethod.GET)
-	public ResponseEntity<Object> getImage(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		return getImageFromServer(-1, HIGH, response);
+	public void getImage(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		getImageFromServer(-1, HIGH, response);
 	}
 	
 	/**
 	 * Handles the request for /image/thumbnail/{entityId}.
 	 * @param entityId The unique ID of the image.
 	 * @param response The outgoing HTTP response.
-	 * @return The requested image.
 	 */
 	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
-	public ResponseEntity<Object> getThumbnail(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		return getImageFromServer(-1, THUMBNAIL, response);
+	public void getThumbnail(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		getImageFromServer(-1, THUMBNAIL, response);
 	}
 	
 	/**
 	 * Handles the request for /image/preview/{entityId}.
 	 * @param entityId The unique ID of the image.
 	 * @param response The outgoing HTTP response.
-	 * @return The requested image.
 	 */
 	@RequestMapping(value = "/image/preview/{entityId}", method = RequestMethod.GET)
-	public ResponseEntity<Object> getPreview(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		return getImageFromServer(-1, PREVIEW, response);
+	public void getPreview(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		getImageFromServer(-1, PREVIEW, response);
 	}
 	
 	/**
-	 * This private method retrieves images from the image server. 
+	 * This private method retrieves images from the image server and writes them as JPEG directly to the HTTP response. 
 	 * @param entityId The unique ID of the image.
 	 * @param requestedResolution The requested resolution. Only the constants <code>ImageController.THUMBNAIL</code>, 
 	 * <code>ImageController.PREVIEW</code> and <code>ImageController.HIGH</code> are currently in use but any integer value is allowed.
 	 * @param response The outgoing HTTP response.
-	 * @return The requested image wrapped in a <code>ResponseEntity&lt;Object&gt;</code>.
 	 */
-	private ResponseEntity<Object> getImageFromServer(final long entityId, final int requestedResolution, final HttpServletResponse response) {
+	private HttpServletResponse getImageFromServer(final long entityId, final int requestedResolution, final HttpServletResponse response) {
 		
 		HttpURLConnection connection = null;
 		// TODO replace when the correct images are accessible by the image server
@@ -239,9 +238,10 @@ public class ImageController {
 			connection.connect();
 			
 			if (connection.getResponseCode() == 200) {
-				final HttpHeaders responseHeaders = new HttpHeaders();
-				responseHeaders.setContentType(MediaType.IMAGE_JPEG);
-				return new ResponseEntity<Object>(ImageIO.read(connection.getInputStream()), responseHeaders, HttpStatus.OK);
+				response.setContentType("image/jpeg");
+				final OutputStream outputStream = response.getOutputStream();
+				ImageIO.write(ImageIO.read(connection.getInputStream()), "jpg", outputStream);
+				//return response;
 			}
 		} catch (MalformedURLException e) {
 			LOGGER.error(e.getMessage());
