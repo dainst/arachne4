@@ -26,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import de.uni_koeln.arachne.dao.ImageRightsDao;
 import de.uni_koeln.arachne.mapping.ImageRightsGroup;
@@ -94,22 +95,32 @@ public class ImageController {
 	}
 	
 	/**
-	 * This method handles requests from the <code>mooviewer</code> to the image server.
+	 * This method handles requests from the <code>mooviewer</code> to the image server. If meta data is requested plain text is
+	 * returned wrapped in a <code>ResponseEntity&ltString&gt</code> else a JPEG image is returned via the <code>HttpServletResponse</code>.
+	 * @param entityId the unique image ID. (mandatory)
 	 * @param request The incoming HTTP request.
 	 * @param response The outgoing HTTP response.
 	 * @return Either the meta data or the image returned by the image server.
 	 */
-	@RequestMapping(value = "/image/viewer", method = RequestMethod.GET)
-	public ResponseEntity<Object> getFromImageServer(final HttpServletRequest request, final HttpServletResponse response) {
+	@RequestMapping(value = "/image/iipviewer", method = RequestMethod.GET)
+	public ResponseEntity<String> getFromImageServer(@RequestParam(value = "FIF", required = true) final long entityId,
+			final HttpServletRequest request, final HttpServletResponse response) {
 		
-		LOGGER.debug("Viewer called.");
-		
-		LOGGER.debug("Request: " + request.getQueryString());
-		
+		LOGGER.debug("Received Request: " + request.getQueryString());
+				
 		HttpURLConnection connection = null;
-						
+		
+		String imageName = getImageName(entityId);
+		// TODO replace when the correct images are accessible by the image server
+		imageName = "ptif_test.tif";
+		
+		final String remainingQueryString = request.getQueryString().split("&", 2)[1];
+		final String fullQueryString = "?FIF=" + imagePath + imageName + "&" + remainingQueryString;
+		
+		LOGGER.debug("Sent Request: " + fullQueryString);
+		
 		try {
-			final URL serverAdress = new URL(imageServerUrl + "?" + request.getQueryString());
+			final URL serverAdress = new URL(imageServerUrl + fullQueryString);
 			connection = (HttpURLConnection)serverAdress.openConnection();			
 			connection.setRequestMethod("GET");
 			connection.setReadTimeout(imageServerReadTimeout);
@@ -130,7 +141,7 @@ public class ImageController {
 					}
 
 					responseHeaders.setContentType(MediaType.TEXT_PLAIN);
-					return new ResponseEntity<Object>(stringBuilder.toString(), responseHeaders, HttpStatus.OK);
+					return new ResponseEntity<String>(stringBuilder.toString(), responseHeaders, HttpStatus.OK);
 				} else {
 					response.setContentType("image/jpeg");
 					final OutputStream outputStream = response.getOutputStream();
