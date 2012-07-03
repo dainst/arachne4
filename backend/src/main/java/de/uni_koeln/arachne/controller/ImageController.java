@@ -33,7 +33,6 @@ import de.uni_koeln.arachne.mapping.ImageRightsGroup;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
-import de.uni_koeln.arachne.service.ImageResolutionType;
 import de.uni_koeln.arachne.service.ImageRightsGroupService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.service.UserRightsService;
@@ -68,22 +67,34 @@ public class ImageController {
 	private final transient String imagePath;
 	private final transient int imageServerReadTimeout;
 	
+	private final transient int resolution_HIGH;
+	private final transient int resolution_THUMBNAIL;
+	private final transient int resolution_PREVIEW;
 	
-	@Autowired
 	/**
-	 * Autowired constructor to initialize the image server parameters set in application.properties.
-	 * @param imageServerUrl
-	 * @param imagePath
-	 * @param imageServerReadTimeout
+	 * Constructor to initialize the image server parameters set in application.properties.
+	 * @param imageServerUrl URL of the image server instance.
+	 * @param imagePath Local image path on the server.
+	 * @param imageServerReadTimeout Read timeout for HTTP requests accessing the image server.
+	 * @param resolutionHIGH Width for high resolution images.
+	 * @param resolutionTHUMBNAIL Width for thumbnail images.
+	 * @param resolutionPREVIEW Width for preview resolution images.
 	 */
+	@Autowired
 	public ImageController(final @Value("#{config.imageServerUrl}") String imageServerUrl,
 			final @Value("#{config.imagePath}") String imagePath,
-			final @Value("#{config.imageServerReadTimeout}") int imageServerReadTimeout) {
+			final @Value("#{config.imageServerReadTimeout}") int imageServerReadTimeout,
+			final @Value("#{config.imageResolutionHIGH}") int resolutionHIGH,
+			final @Value("#{config.imageResolutionTHUMBNAIL}") int resolutionTHUMBNAIL,
+			final @Value("#{config.imageResolutionPREVIEW}") int resolutionPREVIEW) {
 			
 		this.imageServerUrl = imageServerUrl;
 		this.imagePath = imagePath;
 		this.imageServerReadTimeout = imageServerReadTimeout;
 		LOGGER.info("ImageServerUrl: " + imageServerUrl);
+		this.resolution_HIGH = resolutionHIGH;
+		this.resolution_PREVIEW = resolutionPREVIEW;
+		this.resolution_THUMBNAIL = resolutionTHUMBNAIL;
 	}
 	
 	/**
@@ -102,7 +113,7 @@ public class ImageController {
 				
 		HttpURLConnection connection = null;
 		
-		final ImageProperties imageProperties = getImageProperties(entityId, ImageResolutionType.HIGH);
+		final ImageProperties imageProperties = getImageProperties(entityId, resolution_HIGH);
 		
 		if (imageProperties.httpResponseCode == 200) {
 			String imageName = imageProperties.name;
@@ -173,7 +184,7 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/{entityId}", method = RequestMethod.GET)
 	public void getImage(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, ImageResolutionType.HIGH, response);
+		getImageFromServer(entityId, resolution_HIGH, response);
 	}
 	
 	/**
@@ -183,7 +194,7 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
 	public void getThumbnail(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, ImageResolutionType.THUMBNAIL, response);
+		getImageFromServer(entityId, resolution_THUMBNAIL, response);
 	}
 	
 	/**
@@ -193,7 +204,7 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/preview/{entityId}", method = RequestMethod.GET)
 	public void getPreview(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, ImageResolutionType.PREVIEW, response);
+		getImageFromServer(entityId, resolution_PREVIEW, response);
 	}
 	
 	/**
@@ -203,7 +214,7 @@ public class ImageController {
 	 * <code>ImageController.PREVIEW</code> and <code>ImageController.HIGH</code> are currently in use but any integer value is allowed.
 	 * @param response The outgoing HTTP response.
 	 */
-	private void getImageFromServer(final long entityId, final ImageResolutionType requestedResolution, final HttpServletResponse response) {
+	private void getImageFromServer(final long entityId, final int requestedResolution, final HttpServletResponse response) {
 		
 		HttpURLConnection connection = null;
 		
@@ -212,7 +223,7 @@ public class ImageController {
 		if (imageProperties.httpResponseCode == 200) {
 			String imageName = imageProperties.name;
 			final String watermark = imageProperties.watermark;
-			final ImageResolutionType resolution = imageProperties.resolution;
+			final int resolution = imageProperties.resolution;
 			
 			// TODO replace when the correct images are accessible by the image server
 			imageName = "ptif_test.tif";
@@ -220,7 +231,7 @@ public class ImageController {
 			try {
 				// TODO use watermarks when they are fully implemented on the server side
 				final URL serverAdress = new URL(imageServerUrl + "?FIF=" + imagePath + imageName + "&SDS=0,90&CNT=1.0&WID="
-						+ resolution.getWidth() + "&QLT=99&CVT=jpeg");
+						+ resolution + "&QLT=99&CVT=jpeg");
 				connection = (HttpURLConnection)serverAdress.openConnection();			
 				connection.setRequestMethod("GET");
 				connection.setReadTimeout(imageServerReadTimeout);
@@ -255,10 +266,10 @@ public class ImageController {
 	 * @param entityId The unique image ID.
 	 * @return A HTTP response code indicating success or failure.
 	 */
-	private ImageProperties getImageProperties(final long entityId, final ImageResolutionType requestedResolution) {
+	private ImageProperties getImageProperties(final long entityId, final int requestedResolution) {
 		String imageName = null;
 		String watermark = null;
-		ImageResolutionType resolution = requestedResolution;
+		int resolution = requestedResolution;
 		
 		if (entityId>0) {
 			final EntityId arachneId = arachneEntityIdentificationService.getId(entityId);
@@ -283,7 +294,7 @@ public class ImageController {
 				resolution = imageRightsGroupService.getMaxResolution(imageEntity, currentUser, imageRightsGroup);
 				
 				// Forbidden
-				if (resolution == null) {
+				if (resolution == -1) {
 					return new ImageProperties(imageName, resolution, watermark, 403);
 				}
 			}
@@ -297,13 +308,13 @@ public class ImageController {
 	private class ImageProperties {
 		public final transient String name;
 		
-		public final transient ImageResolutionType resolution;
+		public final transient int resolution;
 		
 		public final transient String watermark;
 		
 		public final transient int httpResponseCode;
 		
-		public ImageProperties(final String imageName, final ImageResolutionType resolution, final String watermark, final int httpResponseCode) {
+		public ImageProperties(final String imageName, final int resolution, final String watermark, final int httpResponseCode) {
 			this.name = imageName;
 			this.resolution = resolution;
 			this.watermark = watermark;

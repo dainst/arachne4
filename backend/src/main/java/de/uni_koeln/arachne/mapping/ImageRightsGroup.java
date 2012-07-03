@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import de.uni_koeln.arachne.service.ImageResolutionType;
-
 @Entity
 @Table(name="verwaltung_bildrechtegruppen")
 public class ImageRightsGroup {
@@ -14,11 +12,11 @@ public class ImageRightsGroup {
 	@Id
 	private String bgid;
 	@Column(name="resolution_anonymous")
-	private ImageResolutionType resolutionAnonymous;
+	private String resolutionAnonymous;
 	@Column(name="watermark_anonymous")
 	private String watermarkAnonymous;
 	@Column(name="resolution_registered")
-	private ImageResolutionType resolutionRegistered;
+	private String resolutionRegistered;
 	@Column(name="watermark_registered")
 	private String watermarkRegistered;
 	@Column(name="override_for_group")
@@ -39,13 +37,13 @@ public class ImageRightsGroup {
 	/**
 	 * @return the resolutionAnonymous
 	 */
-	public ImageResolutionType getResolutionAnonymous() {
+	public String getResolutionAnonymous() {
 		return resolutionAnonymous;
 	}
 	/**
 	 * @param resolutionAnonymous the resolutionAnonymous to set
 	 */
-	public void setResolutionAnonymous(final ImageResolutionType resolutionAnonymous) {
+	public void setResolutionAnonymous(final String resolutionAnonymous) {
 		this.resolutionAnonymous = resolutionAnonymous;
 	}
 	/**
@@ -63,13 +61,13 @@ public class ImageRightsGroup {
 	/**
 	 * @return the resolutionRegistered
 	 */
-	public ImageResolutionType getResolutionRegistered() {
+	public String getResolutionRegistered() {
 		return resolutionRegistered;
 	}
 	/**
 	 * @param resolutionRegistered the resolutionRegistered to set
 	 */
-	public void setResolutionRegistered(final ImageResolutionType resolutionRegistered) {
+	public void setResolutionRegistered(final String resolutionRegistered) {
 		this.resolutionRegistered = resolutionRegistered;
 	}
 	/**
