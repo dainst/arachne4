@@ -33,8 +33,8 @@ import de.uni_koeln.arachne.mapping.ImageRightsGroup;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
+import de.uni_koeln.arachne.service.ImageResolutionType;
 import de.uni_koeln.arachne.service.ImageRightsGroupService;
-import de.uni_koeln.arachne.service.ImageStreamService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
@@ -49,20 +49,12 @@ public class ImageController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageController.class);
 	
-	// width for the different image types
-	private static final int THUMBNAIL = 150;
-	private static final int PREVIEW = 400;
-	private static final int HIGH = 0;
-	
 	@Autowired
 	private UserRightsService userRightsService; // NOPMD
 	
 	@Autowired
 	private EntityIdentificationService arachneEntityIdentificationService; // NOPMD
 	
-	@Autowired
-	private ImageStreamService imageStreamService; // NOPMD
-
 	@Autowired
 	private ImageRightsDao imageRightsDao; // NOPMD
 
@@ -110,60 +102,67 @@ public class ImageController {
 				
 		HttpURLConnection connection = null;
 		
-		String imageName = getImageName(entityId);
-		// TODO replace when the correct images are accessible by the image server
-		imageName = "ptif_test.tif";
+		final ImageProperties imageProperties = getImageProperties(entityId, ImageResolutionType.HIGH);
 		
-		final String remainingQueryString = request.getQueryString().split("&", 2)[1];
-		final String fullQueryString = "?FIF=" + imagePath + imageName + "&" + remainingQueryString;
-		
-		LOGGER.debug("Sent Request: " + fullQueryString);
-		
-		try {
-			final URL serverAdress = new URL(imageServerUrl + fullQueryString);
-			connection = (HttpURLConnection)serverAdress.openConnection();			
-			connection.setRequestMethod("GET");
-			connection.setReadTimeout(imageServerReadTimeout);
-			connection.connect();
-			
-			if (connection.getResponseCode() == 200) {
-				final HttpHeaders responseHeaders = new HttpHeaders();
+		if (imageProperties.httpResponseCode == 200) {
+			String imageName = imageProperties.name;
 
-				// check if viewer calls for metadata - if the request query string contains "obj=IIP" it does
-				if (request.getQueryString().contains("obj=IIP")) {
-					final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			// TODO replace when the correct images are accessible by the image server
+			imageName = "ptif_test.tif";
 
-					final StringBuilder stringBuilder = new StringBuilder();
-					String line = null;
+			final String remainingQueryString = request.getQueryString().split("&", 2)[1];
+			final String fullQueryString = "?FIF=" + imagePath + imageName + "&" + remainingQueryString;
 
-					while ((line = bufferedReader.readLine()) != null) {
-						stringBuilder.append(line  + '\n');
+			LOGGER.debug("Sent Request: " + fullQueryString);
+
+			try {
+				final URL serverAdress = new URL(imageServerUrl + fullQueryString);
+				connection = (HttpURLConnection)serverAdress.openConnection();			
+				connection.setRequestMethod("GET");
+				connection.setReadTimeout(imageServerReadTimeout);
+				connection.connect();
+
+				if (connection.getResponseCode() == 200) {
+					final HttpHeaders responseHeaders = new HttpHeaders();
+
+					// check if viewer calls for metadata - if the request query string contains "obj=IIP" it does
+					if (request.getQueryString().contains("obj=IIP")) {
+						final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+						final StringBuilder stringBuilder = new StringBuilder();
+						String line = null;
+
+						while ((line = bufferedReader.readLine()) != null) {
+							stringBuilder.append(line  + '\n');
+						}
+
+						responseHeaders.setContentType(MediaType.TEXT_PLAIN);
+						return new ResponseEntity<String>(stringBuilder.toString(), responseHeaders, HttpStatus.OK);
+					} else {
+						response.setContentType("image/jpeg");
+						final OutputStream outputStream = response.getOutputStream();
+						ImageIO.write(ImageIO.read(connection.getInputStream()), "jpg", outputStream);
+						// no return object needed as the result is directly written to the HTTPResponse
+						return null;
 					}
-
-					responseHeaders.setContentType(MediaType.TEXT_PLAIN);
-					return new ResponseEntity<String>(stringBuilder.toString(), responseHeaders, HttpStatus.OK);
-				} else {
-					response.setContentType("image/jpeg");
-					final OutputStream outputStream = response.getOutputStream();
-					ImageIO.write(ImageIO.read(connection.getInputStream()), "jpg", outputStream);
-					return null;
 				}
+
+			} catch (MalformedURLException e) {
+				LOGGER.error(e.getMessage());
+			} catch (ProtocolException e) {
+				LOGGER.error(e.getMessage());
+			} catch (SocketTimeoutException e) {
+				LOGGER.error(e.getMessage());
+			} catch (IOException e) {
+				LOGGER.error(e.getMessage());
+			} finally {
+				connection.disconnect();
+				connection = null;
 			}
-		
-		} catch (MalformedURLException e) {
-			LOGGER.error(e.getMessage());
-		} catch (ProtocolException e) {
-			LOGGER.error(e.getMessage());
-		} catch (SocketTimeoutException e) {
-			LOGGER.error(e.getMessage());
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage());
-		} finally {
-			connection.disconnect();
-			connection = null;
+		} else {
+			response.setStatus(imageProperties.httpResponseCode);
 		}
-						
-		response.setStatus(404);
+		
 		return null;
 	}
 	
@@ -174,7 +173,7 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/{entityId}", method = RequestMethod.GET)
 	public void getImage(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, HIGH, response);
+		getImageFromServer(entityId, ImageResolutionType.HIGH, response);
 	}
 	
 	/**
@@ -184,7 +183,7 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
 	public void getThumbnail(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, THUMBNAIL, response);
+		getImageFromServer(entityId, ImageResolutionType.THUMBNAIL, response);
 	}
 	
 	/**
@@ -194,7 +193,7 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/preview/{entityId}", method = RequestMethod.GET)
 	public void getPreview(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, PREVIEW, response);
+		getImageFromServer(entityId, ImageResolutionType.PREVIEW, response);
 	}
 	
 	/**
@@ -204,73 +203,111 @@ public class ImageController {
 	 * <code>ImageController.PREVIEW</code> and <code>ImageController.HIGH</code> are currently in use but any integer value is allowed.
 	 * @param response The outgoing HTTP response.
 	 */
-	private void getImageFromServer(final long entityId, final int requestedResolution, final HttpServletResponse response) {
+	private void getImageFromServer(final long entityId, final ImageResolutionType requestedResolution, final HttpServletResponse response) {
 		
 		HttpURLConnection connection = null;
 		
-		String imageName = getImageName(entityId);
-		// TODO replace when the correct images are accessible by the image server
-		imageName = "ptif_test.tif";
+		final ImageProperties imageProperties = getImageProperties(entityId, requestedResolution);
 		
-		try {
-			final URL serverAdress = new URL(imageServerUrl + "?FIF=" + imagePath + imageName + "&SDS=0,90&CNT=1.0&WID="
-					+ requestedResolution + "&QLT=99&CVT=jpeg");
-			connection = (HttpURLConnection)serverAdress.openConnection();			
-			connection.setRequestMethod("GET");
-			connection.setReadTimeout(imageServerReadTimeout);
-			connection.connect();
+		if (imageProperties.httpResponseCode == 200) {
+			String imageName = imageProperties.name;
+			final String watermark = imageProperties.watermark;
+			final ImageResolutionType resolution = imageProperties.resolution;
 			
-			if (connection.getResponseCode() == 200) {
-				response.setContentType("image/jpeg");
-				final OutputStream outputStream = response.getOutputStream();
-				ImageIO.write(ImageIO.read(connection.getInputStream()), "jpg", outputStream);
-				response.setStatus(200);
+			// TODO replace when the correct images are accessible by the image server
+			imageName = "ptif_test.tif";
+
+			try {
+				// TODO use watermarks when they are fully implemented on the server side
+				final URL serverAdress = new URL(imageServerUrl + "?FIF=" + imagePath + imageName + "&SDS=0,90&CNT=1.0&WID="
+						+ resolution.getWidth() + "&QLT=99&CVT=jpeg");
+				connection = (HttpURLConnection)serverAdress.openConnection();			
+				connection.setRequestMethod("GET");
+				connection.setReadTimeout(imageServerReadTimeout);
+				connection.connect();
+
+				if (connection.getResponseCode() == 200) {
+					response.setContentType("image/jpeg");
+					final OutputStream outputStream = response.getOutputStream();
+					ImageIO.write(ImageIO.read(connection.getInputStream()), "jpg", outputStream);
+					response.setStatus(200);
+				}
+			} catch (MalformedURLException e) {
+				LOGGER.error(e.getMessage());
+			} catch (ProtocolException e) {
+				LOGGER.error(e.getMessage());
+			} catch (SocketTimeoutException e) {
+				LOGGER.error(e.getMessage());
+			} catch (IOException e) {
+				LOGGER.error(e.getMessage());
+			} finally {
+				connection.disconnect();
+				connection = null;
 			}
-		} catch (MalformedURLException e) {
-			LOGGER.error(e.getMessage());
-		} catch (ProtocolException e) {
-			LOGGER.error(e.getMessage());
-		} catch (SocketTimeoutException e) {
-			LOGGER.error(e.getMessage());
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage());
-		} finally {
-			connection.disconnect();
-			connection = null;
+		} else {
+			response.setStatus(imageProperties.httpResponseCode);
 		}
 	}
 
-	private String getImageName(final long entityId) {
-		String result = null;
+	/**
+	 * Method to retrieve the name of the image, the allowed maximum resolution and the watermark to use. Maximum resolution and watermark
+	 * depend on the rights of the currently logged in user.
+	 * @param entityId The unique image ID.
+	 * @return A HTTP response code indicating success or failure.
+	 */
+	private ImageProperties getImageProperties(final long entityId, final ImageResolutionType requestedResolution) {
+		String imageName = null;
+		String watermark = null;
+		ImageResolutionType resolution = requestedResolution;
+		
 		if (entityId>0) {
 			final EntityId arachneId = arachneEntityIdentificationService.getId(entityId);
 			
 			if(!arachneId.getTableName().equals("marbilder")) {
 				LOGGER.error("EntityId {} does not refer to an image.", entityId);
-				//response.setStatus(404);
+				return new ImageProperties(imageName, resolution, watermark, 404);
 			}
 			
 			final Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId
 					, userRightsService.getCurrentUser());
 			// TODO get correct image name not the old one
-			result = imageEntity.getField("marbilder.Pfad");
-			LOGGER.debug("Image: " + entityId + ": " + result);
+			imageName = imageEntity.getField("marbilder.Pfad");
+			LOGGER.debug("Image: " + entityId + ": " + imageName);
 			
 			// TODO implement watermarking
 			// Check image rights
-			/*final ImageRightsGroup imageRightsGroup = imageRightsDao.findByName(imageEntity.getField("marbilder.BildrechteGruppe"));
+			final ImageRightsGroup imageRightsGroup = imageRightsDao.findByName(imageEntity.getField("marbilder.BildrechteGruppe"));
 			final UserAdministration currentUser = userRightsService.getCurrentUser();
-			final String watermarkFilename = imageRightsGroupService.getWatermarkFilename(imageEntity, currentUser, imageRightsGroup);
+			watermark = imageRightsGroupService.getWatermarkFilename(imageEntity, currentUser, imageRightsGroup);
 			if(!imageRightsGroupService.checkResolutionRight(imageEntity, currentUser, resolution, imageRightsGroup)) {
 				resolution = imageRightsGroupService.getMaxResolution(imageEntity, currentUser, imageRightsGroup);
 				
 				// Forbidden
 				if (resolution == null) {
-					response.setStatus(403);
-					return null;
+					return new ImageProperties(imageName, resolution, watermark, 403);
 				}
-			}*/
+			}
 		}
-		return result;
+		return new ImageProperties(imageName, resolution, watermark, 200);
 	}	
+	
+	/**
+	 * Inner class to return multiple values from the getImageProperties method.
+	 */
+	private class ImageProperties {
+		public final transient String name;
+		
+		public final transient ImageResolutionType resolution;
+		
+		public final transient String watermark;
+		
+		public final transient int httpResponseCode;
+		
+		public ImageProperties(final String imageName, final ImageResolutionType resolution, final String watermark, final int httpResponseCode) {
+			this.name = imageName;
+			this.resolution = resolution;
+			this.watermark = watermark;
+			this.httpResponseCode = httpResponseCode;
+		}
+	}
 }

@@ -7,23 +7,17 @@ package de.uni_koeln.arachne.service;
  */
 public enum ImageResolutionType {
 
-	THUMBNAIL(150, 150),
-	PREVIEW(400, 400),
-	HIGH(0, 0);
+	THUMBNAIL(150),
+	PREVIEW(400),
+	HIGH(0);
 	
-	private final int height;
 	private final int width;
 	
-	ImageResolutionType(final int height, final int width) {
-		this.height = height;
+	ImageResolutionType(final int width) {
 		this.width = width;
 	}
 	
-	public int height() {
-		return height;
-	}
-	
-	public int width() {
+	public int getWidth() {
 		return width;
 	}
 }
