@@ -13,12 +13,34 @@
         	</section>	
         </title>
         <subtitle>
-        	<section>
+        	<section separator=", ">
             	<field datasource="person.VornameSonst" />
+            	<field datasource="person.Cognomen" />
+            	<field datasource="person.Beiname" />	
             </section>
         </subtitle>
         <datasections>
         	<section labelKey="Informationen zur Person">
+        		<section labelKey="Informationen zum Namen ">
+        			<section labelKey="Namenssynonyme" separator="; ">
+        				<field datasource="person.VornameSonstSynonym1" />
+            			<field datasource="person.VornameSonstSynonym2" />
+            			<field datasource="person.VornameSonstSynonym3" />
+            			<field datasource="person.VornameSonstSynonym4" />
+        			</section>
+        			<section labelKey="Synonyme Vatersname" separator="; "> 
+        	 			<field datasource="person.FamVatersnameSonstSynonym1" />
+        				<field datasource="person.FamVatersnameSonstSynonym2" />
+        	 			<field datasource="person.FamVatersnameSonstSynonym3" />
+        	 			<field datasource="person.FamVatersnameSonstSynonym4" />
+        		</section>
+        		<section labelKey="Synonyme Cognomen" separator="; ">
+        			<field datasource="person.CognomenSynonym1" />
+        			<field datasource="person.CognomenSynonym2" />
+        			<field datasource="person.CognomenSynonym3" />
+        			<field datasource="person.CognomenSynonym4" />
+        		</section>
+        	</section>
         		<section labelKey="Beschreibung">
 	            	<field datasource="person.Kurzbeschreibung" />
 	            </section>
