@@ -24,12 +24,17 @@
 	            	<field datasource="ort.Longitude" prefix="Long: " />
 	            	<field datasource="ort.Latitude" prefix="Lat: " />
 	            	<field datasource="ort.Genauigkeit" />
+	            	<field datasource="ort.Aufbewahrungsort"/>
 	            </section>
+	            
         		<section labelKey="Ländercode">
-	            	<field datasource="ort.Countrycode" />
+	            	<field datasource="ort.Countrycode" />	            	
 	            </section>
 	            <section labelKey="Kontinentcode">
 	            	<field datasource="ort.continentCode" />
+	            </section>
+	            <section labelKey="GeonamesID">
+	            	<field datasource="ort.Geonamesid" />
 	            </section>
         	</section>
         </datasections>
