@@ -153,5 +153,17 @@
 		<facet name="kategorie" labelKey="Kategorie">
 			<field datasource="Dataset.TableName" />
 		</facet>
+		<facet name="autor" labelKey="Autor">
+			<field datasource="buch.BuchAuthor" />
+		</facet>
+		<facet name="titel" labelKey="Titel">
+			<field datasource="buch.BuchTitel" />
+		</facet>
+		<facet name="jahr" labelKey="Jahr">
+			<field datasource="buch.BuchJahr" />
+		</facet>
+		<facet name="schlagwort" labelKey="Schlagwort">
+			<field datasource="buch.BuchSchlagwort" />
+		</facet>
 	</facets>
 </category>
