@@ -21,8 +21,14 @@
         		<section labelKey="Größe">
         			<field datasource="relief.SzeneBreite" prefix="Breite: " postfix=" cm" />
         			<field datasource="relief.SzeneHoehe" prefix="Höhe: " postfix=" cm" />
+        			<field datasource="relief.Reliefgrunddicke" prefix="Reliefgrunddicke: "/>
         			<field datasource="relief.Relieferhebung" prefix="Relieferhebung: " postfix=" cm" />
+        			<field datasource="relief.SzeneDurchmesser" prefix="Durchmesser: " />
         			<field datasource="relief.ursprGroesze" prefix="Ursprüngliche Größe: " />
+        		</section>
+        		<section labelKey="Identifizierung">
+        			<field datasource="relief.SzenennrLiteratur" prefix="Szenen Nr.: " />
+        			<field datasource="relief.SzenennrLiteraturAutor" prefix="nach: "/>        			
         		</section>
         		<section labelKey="Position - Träger">
         			<section separator=", ">
@@ -30,6 +36,9 @@
         				<field datasource="relief.relevanteSeiteZwei" />
         				<field datasource="relief.relevanteSeiteDrei" />
         				<field datasource="relief.relevanteSeiteVier" />
+        				<field datasource="relief.PositionGefaessRelief" />
+        				<field datasource="relief.PositionMosaikRelief" />
+        				<field datasource="relief.Ausrichtung" />
         			</section>
         			<section>
         				<field datasource="relief.SpezifizierungPosition" />
@@ -40,6 +49,8 @@
         			<section separator=", ">
         				<field datasource="relief.ErhaltungRelief" />
         				<field datasource="relief.ErhaltungszustandRelief" />
+        				<field datasource="relief.BearbeitungenAntikRelief" prefix="antik: " />
+        				<field datasource="relief.BearbeitungenModernRelief" prefix="modern: " />
         			</section>
         			<section>
         				<field datasource="relief.FarbresteRelief" prefix="Farbe: "/>
@@ -50,6 +61,9 @@
         			<field datasource="relief.BeschreibungVorne" prefix="Vordergrund: " />
         			<field datasource="relief.BeschreibungHinten" prefix="Hintergrund: " />
         			<field datasource="relief.DekorationRelief" prefix="Dekoration: " />
+        			<field datasource="relief.BildImBild" />
+        			<field datasource="relief.BemerkungRelief" prefix="Bemerkung: "/>
+        			<field datasource="relief.VergleicheRelief" />
         		</section>
         		<section labelKey="Thematik">
         			<section>
@@ -120,23 +134,33 @@
         			<field datasource="relief.Personen" />
         			<field datasource="relief.AnzahlFigurenRelief" prefix="Anzahl Gesamt: " />
         			<field datasource="relief.AnzahlGoetterMythWesen" prefix="Anzahl Götter/myth. Wesen: " />
+        			<field datasource="relief.AnzahlHeroenMenschen" prefix="Anzahl Heroen/Menschen: " />
+        			<field datasource="relief.AnzahlMaennlich" prefix="Anzahl männlich: " />
+        			<field datasource="relief.AnzahlWeiblich" prefix="Anzahl weiblich: " />
+        			<field datasource="relief.AnzahlTiere" prefix="Anzahl Tiere: " />
+        			<field datasource="relief.AnzahlUnbestimmt" prefix="Anzahl unbestimmt: " />
         			<field datasource="relief.PersonenGoetter" prefix="Götter: " />
         			<field datasource="relief.PersonenGoetterWeitere" prefix="weitere: " />
         			<field datasource="relief.PersonenMythWesen" prefix="Myth. Wesen: " />
         			<field datasource="relief.PersonenMythWesenWeitere" prefix="weitere: " />
-        			<field datasource="relief.AnzahlHeroenMenschen" prefix="Anzahl Heroen/Menschen: " />
         			<field datasource="relief.PersonenHeroen" prefix="Heroen: " />
         			<field datasource="relief.PersonenHeroenWeitere" prefix="weitere: " />
         			<field datasource="relief.PersonenMenschen"  prefix="Menschen: " />
         			<field datasource="relief.PersonenMenschenWeitere" prefix="weitere: " />
-        			<field datasource="relief.AnzahlMaennlich" prefix="Anzahl männlich: " />
-        			<field datasource="relief.AnzahlWeiblich" prefix="Anzahl weiblich: " />
-        			<field datasource="relief.AnzahlTiere" prefix="Anzahl Tiere: " />
+        			<field datasource="relief.PersonenIdentifiziert" prefix="identifiziert: " />
         			<field datasource="relief.PersonenTiere" prefix="Tiere: " />
         			<field datasource="relief.PersonenTiereWeitere" prefix="weitere: " />
         			<field datasource="relief.AnzahlGegenstaende" prefix="Anzahl Gegenstände: " />
-        			<field datasource="relief.AnzahlUnbestimmt" prefix="Anzahl unbestimmt: " />
+        			
         		</section>
+        		<section labelKey="Inschrift">
+        			<field datasource="relief.InschriftSpracheRelief" prefix="Sprache: " />
+        			<field datasource="relief.InschriftRelief" />
+        			<field datasource="relief.InschriftCorpusRelief" />
+        			<field datasource="relief.InschriftKommentarRelief" />
+        			<field datasource="relief.InschriftPublikationRelief" prefix="Publickation: " />        			
+        		</section>
+
         	</section>
         </datasections>
     </display>
