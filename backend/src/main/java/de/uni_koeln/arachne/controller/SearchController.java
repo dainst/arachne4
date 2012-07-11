@@ -162,6 +162,10 @@ public class SearchController {
 		final SearchResult result = new SearchResult();
 		final List<Long> contextIds = genericSQLService.getConnectedEntityIds(entityId);
 		
+		if (contextIds == null) { 
+			return new SearchResult();
+		}
+		
 		try {
 			final SolrQuery query = new SolrQuery("*:*");
 			final StringBuffer queryStr = new StringBuffer(64);
@@ -214,7 +218,7 @@ public class SearchController {
 		} catch (SolrServerException e) {
 			LOGGER.error(e.getMessage());
 		}
-
+		
 		return result;
 	}
 
