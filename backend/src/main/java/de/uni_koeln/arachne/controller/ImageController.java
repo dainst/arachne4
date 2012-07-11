@@ -37,6 +37,7 @@ import de.uni_koeln.arachne.service.ImageRightsGroupService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * Handles http requests for images, currently only get
@@ -63,7 +64,9 @@ public class ImageController {
 	@Autowired
 	private SingleEntityDataService arachneSingleEntityDataService; // NOPMD
 	
-	private final transient String imageServerUrl;
+	private final transient String imageServerPath;
+	private final transient String imageServerName;
+	private final transient String imageServerExtension;
 	private final transient String imagePath;
 	private final transient int imageServerReadTimeout;
 	
@@ -81,17 +84,21 @@ public class ImageController {
 	 * @param resolutionPREVIEW Width for preview resolution images.
 	 */
 	@Autowired
-	public ImageController(final @Value("#{config.imageServerUrl}") String imageServerUrl,
+	public ImageController(final @Value("#{config.imageServerPath}") String imageServerPath,
+			final @Value("#{config.imageServerName}") String imageServerName,
+			final @Value("#{config.imageServerExtension}") String imageServerExtension,
 			final @Value("#{config.imagePath}") String imagePath,
 			final @Value("#{config.imageServerReadTimeout}") int imageServerReadTimeout,
 			final @Value("#{config.imageResolutionHIGH}") int resolutionHIGH,
 			final @Value("#{config.imageResolutionTHUMBNAIL}") int resolutionTHUMBNAIL,
 			final @Value("#{config.imageResolutionPREVIEW}") int resolutionPREVIEW) {
 			
-		this.imageServerUrl = imageServerUrl;
+		this.imageServerPath = imageServerPath;
+		this.imageServerName = imageServerName;
+		this.imageServerExtension = imageServerExtension;
 		this.imagePath = imagePath;
 		this.imageServerReadTimeout = imageServerReadTimeout;
-		LOGGER.info("ImageServerUrl: " + imageServerUrl);
+		LOGGER.info("ImageServerUrl: " + imageServerPath + imageServerName + imageServerExtension);
 		this.resolution_HIGH = resolutionHIGH;
 		this.resolution_PREVIEW = resolutionPREVIEW;
 		this.resolution_THUMBNAIL = resolutionTHUMBNAIL;
@@ -114,10 +121,21 @@ public class ImageController {
 		HttpURLConnection connection = null;
 		
 		final ImageProperties imageProperties = getImageProperties(entityId, resolution_HIGH);
-		
+				
 		if (imageProperties.httpResponseCode == 200) {
+			// TODO check if this is enough or if getImageProperties has to be adapted
+			if (imageProperties.resolution != resolution_HIGH) {
+				response.setStatus(403);
+				return null;
+			}
+			
 			String imageName = imageProperties.name;
-
+			String imageServerInstance = imageProperties.watermark;
+			
+			if (StrUtils.isEmptyOrNull(imageServerInstance)) {
+				imageServerInstance = imageServerName;
+			}
+			
 			// TODO replace when the correct images are accessible by the image server
 			imageName = "ptif_test.tif";
 
@@ -127,7 +145,7 @@ public class ImageController {
 			LOGGER.debug("Sent Request: " + fullQueryString);
 
 			try {
-				final URL serverAdress = new URL(imageServerUrl + fullQueryString);
+				final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + fullQueryString);
 				connection = (HttpURLConnection)serverAdress.openConnection();			
 				connection.setRequestMethod("GET");
 				connection.setReadTimeout(imageServerReadTimeout);
@@ -183,7 +201,7 @@ public class ImageController {
 	 * @param response The outgoing HTTP response.
 	 */
 	@RequestMapping(value = "/image/{entityId}", method = RequestMethod.GET)
-	public void getImage(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+	public void getImage(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
 		getImageFromServer(entityId, resolution_HIGH, response);
 	}
 	
@@ -193,7 +211,7 @@ public class ImageController {
 	 * @param response The outgoing HTTP response.
 	 */
 	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
-	public void getThumbnail(	@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+	public void getThumbnail(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
 		getImageFromServer(entityId, resolution_THUMBNAIL, response);
 	}
 	
@@ -222,16 +240,21 @@ public class ImageController {
 		
 		if (imageProperties.httpResponseCode == 200) {
 			String imageName = imageProperties.name;
-			final String watermark = imageProperties.watermark;
+			String imageServerInstance = imageProperties.watermark;
 			final int resolution = imageProperties.resolution;
 			
+			if (StrUtils.isEmptyOrNull(imageServerInstance)) {
+				imageServerInstance = imageServerName;
+			}
+			
+			LOGGER.debug("Watermark: " + imageServerInstance);
 			// TODO replace when the correct images are accessible by the image server
 			imageName = "ptif_test.tif";
 
 			try {
 				// TODO use watermarks when they are fully implemented on the server side
-				final URL serverAdress = new URL(imageServerUrl + "?FIF=" + imagePath + imageName + "&SDS=0,90&CNT=1.0&WID="
-						+ resolution + "&QLT=99&CVT=jpeg");
+				final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + "?FIF=" + imagePath + imageName 
+						+ "&SDS=0,90&CNT=1.0&WID=" + resolution + "&QLT=99&CVT=jpeg");
 				connection = (HttpURLConnection)serverAdress.openConnection();			
 				connection.setRequestMethod("GET");
 				connection.setReadTimeout(imageServerReadTimeout);
@@ -303,7 +326,7 @@ public class ImageController {
 	}	
 	
 	/**
-	 * Inner class to return multiple values from the getImageProperties method.
+	 * Inner class to wrap multiple return values from the <code>getImageProperties</code> method.
 	 */
 	private class ImageProperties {
 		public final transient String name;
