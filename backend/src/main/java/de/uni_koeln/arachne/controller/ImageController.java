@@ -145,7 +145,13 @@ public class ImageController {
 			LOGGER.debug("Sent Request: " + fullQueryString);
 
 			try {
-				final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + fullQueryString);
+				final URL serverAdress;
+				// if the overview image is requested get it without watermark
+				if (request.getQueryString().contains("jtl=")) {
+					serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + fullQueryString);
+				} else {
+					serverAdress = new URL(imageServerPath + imageServerName + imageServerExtension + fullQueryString);
+				}
 				connection = (HttpURLConnection)serverAdress.openConnection();			
 				connection.setRequestMethod("GET");
 				connection.setReadTimeout(imageServerReadTimeout);
