@@ -158,7 +158,7 @@
         			<field datasource="relief.InschriftRelief" />
         			<field datasource="relief.InschriftCorpusRelief" />
         			<field datasource="relief.InschriftKommentarRelief" />
-        			<field datasource="relief.InschriftPublikationRelief" prefix="Publickation: " />        			
+        			<field datasource="relief.InschriftPublikationRelief" prefix="Publikation: " />        			
         		</section>
 
         	</section>
@@ -167,6 +167,36 @@
     <facets>
     	<facet name="kategorie" labelKey="Kategorie">
     		<field datasource="Dataset.TableName" />
+    	</facet>
+    	<facet name="bearbeitungen" labelKey="Bearbeitungen">
+    		<field datasource="relief.BearbeitungenRelief" />
+    	</facet>
+    	<facet name="dekoration" labelKey="Dekoration">
+    		<field datasource="relief.DekorationRelief" />
+    	</facet>
+    	<facet name="erhaltung" labelKey="Erhaltung">
+    		<field datasource="relief.ErhaltungRelief" />
+    	</facet>
+    	<facet name="personen" labelKey="Personen">
+    		<field datasource="relief.Personen" />
+    	</facet>
+    	<facet name="personengoetter" labelKey="Götter">
+    		<field datasource="relief.PersonenGoetter" />
+    	</facet>
+    	<facet name="personenheroen" labelKey="Heroen">
+    		<field datasource="relief.PersonenHeroen" />
+    	</facet>
+    	<facet name="personenmenschen" labelKey="Menschen">
+    		<field datasource="relief.PersonenMenschen" />
+    	</facet>
+    	<facet name="personenmythwesen" labelKey="Mythische Wesen">
+    		<field datasource="relief.PersonenMythWesen" />
+    	</facet>
+    	<facet name="personentiere" labelKey="Tiere">
+    		<field datasource="relief.PersonenTiere" />
+    	</facet>
+    	<facet name="thematik" labelKey="Thematik">
+    		<field datasource="relief.Thematik" />
     	</facet>
     </facets>
 </category>

@@ -234,5 +234,26 @@
 				<field datasource=".EndEpoche"/>
 			</context>
 		</facet>
+		<facet name="realienart" labelKey="Motivart">
+			<field datasource="realien.Realienart"/>
+		</facet>
+		<facet name="attributallg" labelKey="Attribute allgemein">
+			<field datasource="realien.AttributAllg"/>
+		</facet>
+		<facet name="bearbeitungen" labelKey="Bearbeitungen">
+			<field datasource="realien.BearbeitungenRealien"/>
+		</facet>
+		<facet name="bennenungallg" labelKey="Allgemeine Bennenung">
+			<field datasource="realien.BenennungAllgRealien"/>
+		</facet>
+		<facet name="bewaffnung" labelKey="Bewaffnung">
+			<field datasource="realien.BewaffnungAllg"/>
+		</facet>
+		<facet name="dekoration" labelKey="Dekoration Bildträger">
+			<field datasource="realien.DekorationRealien"/>
+		</facet>
+		<facet name="wesen" labelKey="Wesen">
+			<field datasource="realien.WesenRealien"/>
+		</facet>
 	</facets>
 </category>

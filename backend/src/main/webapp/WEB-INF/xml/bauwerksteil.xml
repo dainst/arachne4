@@ -122,5 +122,8 @@
 				<field datasource=".Land" />
 			</context>
 		</facet>
+		<facet name="dekorationsart" labelKey="Dekorationsart">
+			<field datasource="bauwerksteil.DekorationsartBauwerksteil" />
+		</facet>
 	</facets>
 </category>

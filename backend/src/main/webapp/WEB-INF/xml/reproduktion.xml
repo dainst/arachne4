@@ -59,5 +59,35 @@
     	<facet name="kategorie" labelKey="Kategorie">
     		<field datasource="Dataset.TableName" />
     	</facet>
+    	<facet name="bearbeitungen" labelKey="Bearbeitungen">
+    		<field datasource="reproduktion.BearbeitungenReproduktion" />
+    	</facet>
+    	<facet name="ergaenzungen" labelKey="Ergaenzungen">
+    		<field datasource="reproduktion.ErgaenzungenReproduktion" />
+    	</facet>
+    	<facet name="erhaltung" labelKey="Erhaltung">
+    		<field datasource="reproduktion.ErhaltungReproduktion" />
+    	</facet>    	
+    	<facet name="gattungallgemein" labelKey="Gattung">
+    		<field datasource="reproduktion.GattungAllg" />
+    	</facet>   
+    	<facet name="gattungspeziell" labelKey="Gattung Zusatz">
+    		<field datasource="reproduktion.GattungSpeziell" />
+    	</facet>
+    	<facet name="gottgoettin" labelKey="Gottheit">
+    		<field datasource="reproduktion.GottGoettin" />
+    	</facet> 
+    	<facet name="mischwesen" labelKey="Mischwesen">
+    		<field datasource="reproduktion.Mischwesen" />
+    	</facet>
+    	<facet name="material" labelKey="Material">
+    		<field datasource="reproduktion.MaterialReproduktion" />
+    	</facet> 
+    	<facet name="technik" labelKey="Technik">
+    		<field datasource="reproduktion.TechnikReproduktion" />
+    	</facet> 
+    	<facet name="grundform" labelKey="Grundform">
+    		<field datasource="reproduktion.GrundformReproduktion" />
+    	</facet> 
     </facets>
 </category>

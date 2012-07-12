@@ -101,5 +101,8 @@
     	<facet name="Sammlungskategorie" labelKey="Sammlungskategorie">
 	    	<field datasource="sammlungen.Sammlungskategorie"/>
     	</facet>
+    	<facet name="herkunftsland" labelKey="Herkunftsländer">
+    		<field datasource="sammlungen.Herkunftsland"/>
+    	</facet>
     </facets>
 </category>

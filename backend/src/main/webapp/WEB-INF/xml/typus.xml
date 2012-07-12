@@ -153,5 +153,17 @@ Hier werden keine Direkten Bilder verwendet sondern die Bilder des Hauptvertrete
     	<facet name="klassifizierung" labelKey="Art des Typus">
 	    	<field datasource="typus.Klassifizierung"/>
     	</facet>
+    	<facet name="bekleidung" labelKey="Bekleidung">
+    		<field datasource="typus.BekleidungTypus"/>
+    	</facet>
+    	<facet name="bildschema" labelKey="Bildschema">
+    		<field datasource="typus.Bildschema"/>
+    	</facet>
+    	<facet name="haltung" labelKey="Haltung">
+    		<field datasource="typus.HaltungTypus"/>
+    	</facet>
+    	<facet name="roemgriech" labelKey="Gattung">
+    		<field datasource="typus.RoemGriech"/>
+    	</facet>
     </facets>
 </category>

@@ -7,16 +7,18 @@
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
     <display>
         <title>
-        	<section separator=", ">
-        		<field datasource="person.FamVatersnameSonst" />
+        	<section separator=" ">
+        		<field datasource="person.Titel" />
+        		<field datasource="person.VornameSonst" />
         		<field datasource="person.Namenszusatz" />
+        		<field datasource="person.FamVatersnameSonst" />        		
+        		<field datasource="person.Beiname" />
+        		<field datasource="person.Cognomen" />
         	</section>	
         </title>
         <subtitle>
         	<section separator=", ">
-            	<field datasource="person.VornameSonst" />
-            	<field datasource="person.Cognomen" />
-            	<field datasource="person.Beiname" />	
+        		<field datasource="person.Kurzbeschreibung" />            		
             </section>
         </subtitle>
         <datasections>
@@ -59,6 +61,15 @@
     <facets>
     	<facet name="kategorie" labelKey="Kategorie">
     		<field datasource="Dataset.TableName" />
+    	</facet>
+    	<facet name="titel" labelKey="Titel">
+    		<field datasource="person.Titel" />
+    	</facet>
+    	<facet name="geschlecht" labelKey="Geschlecht">
+    		<field datasource="person.Geschlecht" />
+    	</facet>
+    	<facet name="ethnienationalitaet" labelKey="Nationalität">
+    		<field datasource="person.EthnieNationalitaet" />
     	</facet>
     </facets>
 </category>

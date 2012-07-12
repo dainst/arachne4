@@ -42,6 +42,9 @@
 	        		<section labelKey="Antike Landschaft">
 	        			<field datasource="bauwerk.antikeGriechLandschaftBauwerk"/>
 	        		</section>
+        			<section labelKey="Römische Provinz">
+        				<field datasource="bauwerk.antikeRoemProvinzBauwerk"/>
+        			</section>
 	        		<section labelKey="Regio Rom/Italien">
 	        			<field datasource="bauwerk.RegioRomItalien" />
 	        		</section>
@@ -120,8 +123,29 @@
 		    	<field datasource=".EndEpoche"/>
 	    	</context>
     	</facet>
-    	<facet name="gebaeudetyp" labelKey="Gebäudetyp">
+    	<facet name="gebaeudetyp" labelKey="Gebäudetyp allgemein">
 	    	<field datasource="bauwerk.Gebaeudetyp"/>
     	</facet>
+    	<facet name="gebaeudetypspeziell" labelKey="Gebäudetyp speziell">
+    		<field datasource="bauwerk.GebaeudetypSpeziell"/>
+    	</facet>  
+    	<facet name="kontext" labelKey="Antiker Kontext">
+    		<field datasource="bauwerk.Kontext"/>
+    	</facet>       	
+    	<facet name="bauordnung" labelKey="Bauordnung">
+	    	<field datasource="bauwerk.Bauordnung"/>
+    	</facet>
+    	<facet name="kulturkreis" labelKey="Kulturkreis">
+	    	<field datasource="bauwerk.BauwerkKulturkreis"/>
+    	</facet>  
+    	<facet name="antikegriechlandschaft" labelKey="Antike Landschaft">
+    		<field datasource="bauwerk.antikeGriechLandschaftBauwerk"/>
+    	</facet>      	
+    	<facet name="antikeroemprovinz" labelKey="Römische Provinz">
+    		<field datasource="bauwerk.antikeRoemProvinzBauwerk"/>
+    	</facet>  
+    	<facet name="regioromitalien" labelKey="Regio Rom/Italien">
+    		<field datasource="bauwerk.RegioRomItalien"/>
+    	</facet>  	
     </facets>
 </category>

@@ -396,5 +396,41 @@
 		<facet name="objektgattung" labelKey="Gattung">
 			<field datasource="objekt.GattungAllgemein"/>
 		</facet>
+		<facet name="applizierteelemente" labelKey="Applizierte Elemente">
+			<field datasource="objekt.ApplizierteElemente"/>
+		</facet>	
+		<facet name="bearbeitungen" labelKey="Bearbeitungen">
+			<field datasource="objekt.Bearbeitungen"/>
+		</facet>
+		<facet name="erhaltung" labelKey="Erhaltung">
+			<field datasource="objekt.Erhaltung"/>
+		</facet>
+		<facet name="funktion" labelKey="Allgemeine Funktion">
+			<field datasource="objekt.Funktion"/>
+		</facet>
+		<facet name="funktionaleverwendung" labelKey="Spezielle Funktion">
+			<field datasource="objekt.funktionaleVerwendung"/>
+		</facet>			
+		<facet name="kulturkreis" labelKey="Kulturepoche">
+			<field datasource="objekt.Kulturkreis"/>
+		</facet>			
+		<facet name="material" labelKey="Material allgemein">
+			<field datasource="objekt.Material"/>
+		</facet>	
+		<facet name="materialbeschreibung" labelKey="Material speziell">
+			<field datasource="objekt.Materialbeschreibung"/>			
+		</facet>	
+		<facet name="technik" labelKey="Technik">
+			<field datasource="objekt.Technik"/>			
+		</facet>	
+		<facet name="antikegriechlandschaft" labelKey="Antike Landschaft">
+			<field datasource="objekt.Bearbeitungen"/>
+		</facet>	
+		<facet name="antikeroemprovinz" labelKey="Römische Provinz">
+			<field datasource="objekt.antikeRoemProvinz"/>
+		</facet>
+		<facet name="schmuckspezifizierung" labelKey="Schmuck Spezifizierung">
+			<field datasource="objekt.SchmuckSpezifizierung"/>
+		</facet>
 	</facets>
 </category>

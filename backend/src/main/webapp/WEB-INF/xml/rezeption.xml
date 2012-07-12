@@ -74,5 +74,26 @@
     	<facet name="kategorie" labelKey="Kategorie">
     		<field datasource="Dataset.TableName" />
     	</facet>
+    	<facet name="gattungallgemein" labelKey="Gattung allgemein">
+    		<field datasource="rezeption.GattungAllgemeinRezeption" />
+    	</facet>
+    	<facet name="erhaltung" labelKey="Erhaltung">
+    		<field datasource="rezeption.ErhaltungRezeption" />
+    	</facet>
+    	<facet name="kulturkreis" labelKey="Kulturepoche">
+    		<field datasource="rezeption.KulturkreisRezeption" />
+    	</facet>
+    	<facet name="material" labelKey="Material">
+    		<field datasource="rezeption.MaterialRezeption" />
+    	</facet>
+    	<facet name="bearbeitungen" labelKey="Bearbeitungen">
+    		<field datasource="rezeption.BearbeitungenRezeption" />
+    	</facet>
+    	<facet name="fundstaat" labelKey="Fundstaat">
+    		<field datasource="rezeption.FundstaatRezeption" />
+    	</facet>
+    	<facet name="funktion" labelKey="Anlass">
+    		<field datasource="rezeption.FunktionRezeption" />
+    	</facet>
     </facets>
 </category>

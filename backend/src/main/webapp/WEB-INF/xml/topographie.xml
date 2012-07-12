@@ -84,5 +84,14 @@
     	<facet name="topographietypus" labelKey="Art der Topographie">
 	    	<field datasource="topographie.TopographieTypus"/>
     	</facet>
+    	<facet name="antikegriechlandschaft" labelKey="Antike Landschaft">
+    		<field datasource="topographie.antikeGriechLandschaftTopographie"/>
+    	</facet>
+    	<facet name="regioromitalien" labelKey="Regio Rom/Italien">
+    		<field datasource="topographie.RegioRomItalienTopographie"/>
+    	</facet>
+    	<facet name="antikeroemprovinz" labelKey="Römische Provinz">
+    		<field datasource="topographie.antikeRoemProvinzTopographie"/>
+    	</facet>
     </facets>
 </category>
