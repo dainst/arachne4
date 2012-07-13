@@ -49,6 +49,11 @@
 				<section labelKey="Material">
 					<field datasource="objekt.Material"/>
 					<field datasource="objekt.Materialbeschreibung"/>
+					<field datasource="objekt.MaterialBemerkung" prefix="Bemerkung: "/>
+				</section>
+				<section labelKey="Erhaltung">
+					<field datasource="objekt.Erhaltung"/>
+					<field datasource="objekt.Erhaltungszustand"/>
 				</section>
 				<section labelKey="Maße">
 					<field datasource="objekt.BreiteGesamt" prefix="Breite: " postfix=" cm"/>
