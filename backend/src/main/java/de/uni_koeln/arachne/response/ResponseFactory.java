@@ -165,9 +165,15 @@ public class ResponseFactory {
 		final List<Element> children = sections.getChildren();
 		for (Element e:children) {
 			if (e.getName().equals("section")) {
-				contentList.add(xmlConfigUtil.getContentFromSections(e, dataset)); 
+				final Section section = (Section)xmlConfigUtil.getContentFromSections(e, dataset);
+				if (!section.getContent().isEmpty()) {
+					contentList.add(section);
+				}
 			} else {
-				contentList.add(xmlConfigUtil.getContentFromContext(e, dataset));
+				final Section section = (Section)xmlConfigUtil.getContentFromContext(e, dataset);
+				if (!section.getContent().isEmpty()) {
+					contentList.add(section);
+				}
 			}
 		}
 
