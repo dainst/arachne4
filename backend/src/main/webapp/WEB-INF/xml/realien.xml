@@ -115,17 +115,21 @@
 				</section>
 				<section labelKey="Militaria">
 					<section labelKey="Kriegskleidung">
-						<field datasource="realien.Kriegskleidung"/>
-						<field datasource="realien.Kriegsguertung" prefix="Gürtung: "/>
-						<field datasource="realien.Kriegsschuhwerk" prefix="Schuhwerk: "/>
-						<field datasource="realien.Panzerung" prefix="Panzer: "/>
-						<field datasource="realien.BemerkMilitaerkleidung" prefix="Bemerkung: "/>
+						<section>
+							<field datasource="realien.Kriegskleidung"/>
+							<field datasource="realien.Kriegsguertung" prefix="Gürtung: "/>
+							<field datasource="realien.Kriegsschuhwerk" prefix="Schuhwerk: "/>
+							<field datasource="realien.Panzerung" prefix="Panzer: "/>
+							<field datasource="realien.BemerkMilitaerkleidung" prefix="Bemerkung: "/>
+						</section>
 						<section labelKey="Rangzeichen" separator="; ">
 							<field datasource="realien.Rangzeichen"/>
 							<field datasource="realien.Auszeichnung"/>
 						</section>
-						<field datasource="realien.Feldzeichen" prefix="Feldzeichen: "/>
-						<field datasource="realien.BemerkMilitaerzeichen" prefix="Bemerkung: "/>
+						<section>
+							<field datasource="realien.Feldzeichen" prefix="Feldzeichen: "/>
+							<field datasource="realien.BemerkMilitaerzeichen" prefix="Bemerkung: "/>
+						</section>	
 					</section>
 					<section labelKey="Waffen">
 						<field datasource="realien.Nahkampfwaffen" prefix="Nahkampfwaffen: "/>
