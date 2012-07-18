@@ -41,8 +41,10 @@
         			<field datasource="rezeption.MaterialbeschreibungRezeption" />		
         		</section>
         		<section labelKey="Erhaltung" separator="; ">
-        			<field datasource="rezeption.ErhaltungRezeption" />
-        			<field datasource="rezeption.ErhaltungszustandRezeption" />
+        			<section>
+        				<field datasource="rezeption.ErhaltungRezeption" />
+        				<field datasource="rezeption.ErhaltungszustandRezeption" />
+        			</section>
         			<section labelKey="Bearbeitungen:" separator="; ">
         				<field datasource="rezeption.BearbeitungenRezeption" />
         				<field datasource="rezeption.BearbeitungenModernRezeption" />	

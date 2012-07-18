@@ -19,7 +19,9 @@
 					<field datasource="ort.Stadt"/>
 					<field datasource="ort.Ort_antik"/>
 				</section>
-				<field datasource="ort.Aufbewahrungsort"/>
+				<section>
+					<field datasource="ort.Aufbewahrungsort"/>
+				</section>
 			</section>
 		</subtitle>
 		<datasections>
@@ -80,8 +82,10 @@
 				</section>
 
 				<section labelKey="Haartracht" separator=", ">
-					<field datasource="realien.HaartrachtAllg" prefix="Haartracht: "/>
-					<field datasource="realien.HaartrachtSpez"/>
+					<section>
+						<field datasource="realien.HaartrachtAllg" prefix="Haartracht: "/>
+						<field datasource="realien.HaartrachtSpez"/>
+					</section>
 					<section separator=", ">
 						<field datasource="realien.KopfbedeckungAllg" prefix="Kopfbedeckung: "/>
 						<field datasource="realien.KopfbedeckungSpez"/>

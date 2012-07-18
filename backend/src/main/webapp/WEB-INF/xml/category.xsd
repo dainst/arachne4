@@ -41,10 +41,12 @@
     </xs:element>
     
     <xs:complexType name="SectionContent">
-        <xs:choice minOccurs="1" maxOccurs="unbounded">
-            <xs:element name="section" type="SectionContent" />
-            <xs:element name="context" type="ContextContent" />
-            <xs:element name="field" type="FieldContent" />
+        <xs:choice minOccurs="1" maxOccurs="1">
+        	<xs:choice maxOccurs="unbounded">
+            	<xs:element name="section" type="SectionContent" />
+            	<xs:element  name="context" type="ContextContent" />
+        	</xs:choice>
+            <xs:element maxOccurs="unbounded" name="field" type="FieldContent" />
         </xs:choice>
         <xs:attribute name="labelKey" type="xs:string" />
         <xs:attribute name="separator" type="xs:string" />

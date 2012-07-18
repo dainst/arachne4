@@ -24,7 +24,9 @@
                     	</ifEmpty> 
                     </field>
                 </section>
-                <field datasource="ort.Aufbewahrungsort"/>
+                <section>
+                	<field datasource="ort.Aufbewahrungsort"/>
+            	</section>
             </section>
         </subtitle>
         <datasections>

@@ -16,7 +16,9 @@
                     <field datasource="ort.Stadt" />
                     <field datasource="ort.Ort_antik" />
                 </section>
-                <field datasource="ort.Aufbewahrungsort" />
+                <section>
+                	<field datasource="ort.Aufbewahrungsort" />
+                </section>
             </section>
         </subtitle>
         <datasections>

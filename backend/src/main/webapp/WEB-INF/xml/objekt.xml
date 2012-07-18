@@ -15,7 +15,9 @@
 					<field datasource="ort.Stadt"/>
 					<field datasource="ort.Ort_antik"/>
 				</section>
-				<field datasource="ort.Aufbewahrungsort"/>
+				<section>
+					<field datasource="ort.Aufbewahrungsort"/>
+				</section>
 			</section>
 		</subtitle>
 		<datasections>
@@ -314,9 +316,11 @@
 					</section>
 				</section>
 				<section labelKey="Bekleidung" separator="; ">
-					<field datasource="objektplastik.bekleidet"/>
-					<field datasource="objektplastik.Bekleidung"/>
-					<field datasource="objektplastik.BekleidungZusatz"/>
+					<section>
+						<field datasource="objektplastik.bekleidet"/>
+						<field datasource="objektplastik.Bekleidung"/>
+						<field datasource="objektplastik.BekleidungZusatz"/>
+					</section>
 					<section labelKey="Gürtung">
 						<field datasource="objektplastik.Guertung"/>
 					</section>
