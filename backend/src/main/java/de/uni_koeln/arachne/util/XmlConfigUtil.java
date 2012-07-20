@@ -1,11 +1,16 @@
 package de.uni_koeln.arachne.util;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 
+import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
+import org.jdom2.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -289,6 +294,35 @@ public class XmlConfigUtil {
 				fieldList.modify(index, currentListValue + separator + value);
 			}
 		}
+	}
+	
+	public List<String> getFacetsFromXMLFile(final String category) {
+		final String filename = getFilenameFromType(category);
+		if ("unknown".equals(filename)) {
+			return null;
+		}
+		
+		final List<String> facetList = new ArrayList<String>();
+		
+		final ServletContextResource xmlDocument = new ServletContextResource(getServletContext(), filename);
+	    try {
+	    	final SAXBuilder saxBuilder = new SAXBuilder();
+	    	final Document doc = saxBuilder.build(xmlDocument.getFile());
+	    	//TODO Make Nicer XML Parsing is very quick and Dirty solution for my Problems 
+	    	final Namespace nameSpace = Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category");
+	    	
+			// Get facets
+ 			final Element facets = doc.getRootElement().getChild("facets", nameSpace);
+ 			for (Element e: facets.getChildren()) {
+ 				facetList.add(e.getAttributeValue("name")); 				
+ 			}
+ 			return facetList;
+		} catch (JDOMException e) {
+			LOGGER.error(e.getMessage());
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage());
+		}
+		return null;
 	}
 	
 	public ServletContext getServletContext() {

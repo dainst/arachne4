@@ -30,6 +30,7 @@ import de.uni_koeln.arachne.response.SearchResult;
 import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.StrUtils;
+import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 /**
  * Handles http requests (currently only get) for <code>/search<code>.
@@ -44,6 +45,9 @@ public class SearchController {
 	
 	@Autowired
 	private UserRightsService userRightsService; // NOPMD
+	
+	@Autowired
+	private transient XmlConfigUtil xmlConfigUtil;
 	
 	private transient final SolrServer server;
 	
@@ -100,7 +104,18 @@ public class SearchController {
 		    query.addFacetField("facet_kategorie");
 		    query.addFacetField("facet_ort");
 		    query.addFacetField("facet_datierung-epoche");
-		    // TODO add category specific facets based on info from where?
+		    // add category specific facets
+		    if (filterValues != null && filterValues.contains("facet_kategorie")) {
+		    	final String category = getCategoryFromFilterValues(filterValues);
+		    	final List<String> facets = xmlConfigUtil.getFacetsFromXMLFile(category);
+		    	if (!StrUtils.isEmptyOrNull(facets)) {
+		    		for (String facet: facets) {
+		    			LOGGER.debug("adding: " + "facet_" + facet);
+		    			query.addFacetField("facet_" + facet);
+		    		}
+		    	}
+		    }
+		    
 		    query.setFacet(true);
 		    		    		    
 		    setSearchParameters(limit, offset, filterValues, facetLimit, result, query);
@@ -134,6 +149,25 @@ public class SearchController {
 		}
 			    
 	    return result;
+	}
+
+	/**
+	 * Parses the filter query parameter string and extracts the value for the key "facet_kategorie".
+	 * @param filterValues
+	 * @return The category name or <code>null</code> if none is found.
+	 */
+	private String getCategoryFromFilterValues(final String filterValues) {
+		//String string = filterValues;
+		if (filterValues.startsWith("facet_")) {
+			final int beginIndex = filterValues.indexOf("facet_kategorie:") + 16;
+			int endIndex = filterValues.indexOf(",facet", beginIndex);
+			if (endIndex < 0) {
+				endIndex = filterValues.length();
+			}
+			return filterValues.substring(beginIndex, endIndex);
+		} else {
+			return null;
+		}
 	}
 
 	/**
