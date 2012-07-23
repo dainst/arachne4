@@ -1,14 +1,7 @@
 package de.uni_koeln.arachne.controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
+import java.io.*;
+import java.net.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
