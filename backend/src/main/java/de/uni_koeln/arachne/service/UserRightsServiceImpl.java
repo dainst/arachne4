@@ -32,13 +32,13 @@ public class UserRightsServiceImpl implements UserRightsService {
 	 * User management DAO instance.
 	 */
 	@Autowired
-	private UserVerwaltungDao userVerwaltungDao; // NOPMD
+	private transient UserVerwaltungDao userVerwaltungDao; 
 	
 	/**
 	 * Session management DAO instance.
 	 */
 	@Autowired
-	private SessionDao sessionDao; // NOPMD
+	private transient SessionDao sessionDao; 
 
 	/**
 	 * Flag that indicates if the User Data is loaded.

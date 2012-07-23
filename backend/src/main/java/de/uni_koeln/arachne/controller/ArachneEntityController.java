@@ -56,7 +56,7 @@ public class ArachneEntityController {
 	private transient ImageService imageService;
 		
 	@Autowired
-	private transient UserRightsService userRightsService; // NOPMD
+	private transient UserRightsService userRightsService; 
 	
 	/**
 	 * Handles http request for /solr/{entityId}

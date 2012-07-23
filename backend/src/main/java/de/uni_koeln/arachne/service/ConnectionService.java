@@ -16,7 +16,7 @@ public class ConnectionService {
 	 * Hibernate DAO class.
 	 */
 	@Autowired
-	private ConnectionDao arachneConnectionDao; // NOPMD
+	private transient ConnectionDao arachneConnectionDao; 
 	
 	/**
 	 * Retrieves a list of connected tables from the table 'Verknuepfungen'.

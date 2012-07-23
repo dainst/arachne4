@@ -32,26 +32,26 @@ public class ContextService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ContextService.class);
 	
 	@Autowired
-	private EntityIdentificationService arachneEntityIdentificationService; // NOPMD
+	private transient EntityIdentificationService arachneEntityIdentificationService; 
 	
 	/**
 	 * Service to access the 'Verknuepfungen' table. The information stored in that table is used
 	 * to determine which contexts the <code>addContext</code> method adds to a given dataset.
 	 */	
 	@Autowired
-	private ConnectionService arachneConnectionService; // NOPMD
+	private transient ConnectionService arachneConnectionService; 
 	
 	/**
 	 * Service to access ids in 'cross tables'.
 	 */
 	@Autowired
-	private GenericSQLService genericSQLService; // NOPMD
+	private transient GenericSQLService genericSQLService; 
 	
 	/**
 	 * Utility class to work with the XML config files.
 	 */
 	@Autowired
-	private XmlConfigUtil xmlConfigUtil; // NOPMD
+	private transient XmlConfigUtil xmlConfigUtil; 
 	
 	/**
 	 * This methods adds all contexts to the dataset that are found in the XML description.

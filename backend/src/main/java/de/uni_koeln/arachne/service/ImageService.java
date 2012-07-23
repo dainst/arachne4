@@ -22,7 +22,7 @@ public class ImageService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageService.class);
 	
 	@Autowired
-	GenericSQLService genericSQLService; // NOPMD
+	private transient GenericSQLService genericSQLService; 
 	
 	/**
 	 * This method retrieves the image ids for a given dataset from the database and adds them to the datasets list

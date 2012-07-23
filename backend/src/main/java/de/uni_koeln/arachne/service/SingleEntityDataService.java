@@ -24,10 +24,10 @@ import de.uni_koeln.arachne.util.StrUtils;
 public class SingleEntityDataService {
 	
 	@Autowired
-	DataMapDao arachneDataMapDao; // NOPMD
+	private transient DataMapDao arachneDataMapDao; 
 	
 	@Autowired
-	GenericSQLDao genericSqlDao; // NOPMD
+	private transient GenericSQLDao genericSqlDao; 
 	
 	private final transient List<TableConnectionDescription> subProjects;
 	

@@ -12,7 +12,7 @@ import de.uni_koeln.arachne.dao.GenericSQLDao;
 @Service
 public class GenericSQLService {
 	@Autowired
-	protected GenericSQLDao genericSQLDao; // NOPMD
+	protected transient GenericSQLDao genericSQLDao; 
 	
 	public List<Map<String, String>> getConnectedEntities(final String contextType, final Long entityId) {
 		return genericSQLDao.getConnectedEntities(contextType, entityId);

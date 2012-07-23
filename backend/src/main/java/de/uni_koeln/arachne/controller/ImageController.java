@@ -50,19 +50,19 @@ public class ImageController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageController.class);
 	
 	@Autowired
-	private UserRightsService userRightsService; // NOPMD
+	private transient UserRightsService userRightsService; 
 	
 	@Autowired
-	private EntityIdentificationService arachneEntityIdentificationService; // NOPMD
+	private transient EntityIdentificationService arachneEntityIdentificationService; 
 	
 	@Autowired
-	private ImageRightsDao imageRightsDao; // NOPMD
+	private transient ImageRightsDao imageRightsDao; 
 
 	@Autowired
-	private ImageRightsGroupService imageRightsGroupService; // NOPMD
+	private transient ImageRightsGroupService imageRightsGroupService; 
 	
 	@Autowired
-	private SingleEntityDataService arachneSingleEntityDataService; // NOPMD
+	private transient SingleEntityDataService arachneSingleEntityDataService; 
 	
 	private final transient String imageServerPath;
 	private final transient String imageServerName;

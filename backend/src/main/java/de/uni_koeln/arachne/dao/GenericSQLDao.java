@@ -24,7 +24,7 @@ import de.uni_koeln.arachne.sqlutil.GenericFieldsEntityIdJoinedSQLQueryBuilder;
 public class GenericSQLDao extends SQLDao {
 	
 	@Autowired
-	private UserRightsService userRightsService; // NOPMD
+	private transient UserRightsService userRightsService; 
 	
 	public List<String> getStringField(final String tableName, final String field1, final Long field1Id
 			, final String field2, final UserAdministration currentUser) {

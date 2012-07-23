@@ -12,7 +12,7 @@ import de.uni_koeln.arachne.util.EntityId;
 public class EntityIdentificationService {
 	
 	@Autowired
-	private ArachneEntityDao arachneEntityDao; // NOPMD
+	private transient ArachneEntityDao arachneEntityDao; 
 	
 	/**
 	 * Gets all identifiers of a dataset by Arachne entity ID. This is the external reference ID for the dataset in Arachne.

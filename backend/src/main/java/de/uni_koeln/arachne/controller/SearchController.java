@@ -41,10 +41,10 @@ public class SearchController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 	
 	@Autowired
-	private GenericSQLService genericSQLService; // NOPMD
+	private transient GenericSQLService genericSQLService; 
 	
 	@Autowired
-	private UserRightsService userRightsService; // NOPMD
+	private transient UserRightsService userRightsService; 
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;

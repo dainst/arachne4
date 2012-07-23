@@ -37,7 +37,7 @@ public class XmlConfigUtil {
 	 * Servlet context to load the XML config files. 
 	 */
 	@Autowired
-	private ServletContext servletContext; // NOPMD
+	private transient ServletContext servletContext;
 	
 	/**
 	 * This function checks if a config file for the given type exists and returns its filename.

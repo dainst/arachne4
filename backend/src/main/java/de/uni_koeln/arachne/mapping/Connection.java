@@ -14,22 +14,22 @@ import javax.persistence.Table;
 public class Connection {
 	@Id
 	@Column(name="PS_VerknuepfungenID")
-	private Long internalId = null;  // NOPMD
+	private Long internalId = null; // NOPMD
 	
 	@Column(name="Teil1")
-	private String part1 = null;  // NOPMD
+	private String part1 = null; // NOPMD
 
 	@Column(name="Teil2")
-	private String part2 = null;  // NOPMD
+	private String part2 = null; // NOPMD
 	
 	@Column(name="Tabelle")
-	private String table = null;  // NOPMD
+	private String table = null; // NOPMD
 	
 	@Column(name="Felder")
-	private String fields = null;  // NOPMD
+	private String fields = null; // NOPMD
 	
 	@Column(name="Type")
-	private String type = null;  // NOPMD
+	private String type = null; // NOPMD
 
 	public Long getId() {
 		return internalId;

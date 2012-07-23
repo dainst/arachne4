@@ -24,14 +24,14 @@ public class ArachneEntity {
 	 * Table name of the table the entity is located in (<code>TableName</code>).
 	 */
 	@Column(name="TableName")
-	String tableName = null;  // NOPMD
+	String tableName = null; // NOPMD
 	
 	/**
 	 * Foreign key of the table (<code>ForeignKey</code>).
 	 * This is the primary key of the table referenced in the <code>TableName</code> field.
 	 */
 	@Column(name="ForeignKey")
-	Long foreignKey = null;  // NOPMD
+	Long foreignKey = null; // NOPMD
 	
 	/**
 	 * Field indicating if the referenced data record has been deleted (<code>isDeleted</code>).
@@ -39,7 +39,7 @@ public class ArachneEntity {
 	 */
 	
 	@Column(name="isDeleted")
-	boolean isDeleted;  // NOPMD
+	boolean isDeleted; // NOPMD
 	
 	/**
 	 * The returns the Unique Arachne Identifier.
