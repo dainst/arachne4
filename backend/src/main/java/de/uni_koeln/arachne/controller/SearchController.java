@@ -104,18 +104,7 @@ public class SearchController {
 		    query.addFacetField("facet_kategorie");
 		    query.addFacetField("facet_ort");
 		    query.addFacetField("facet_datierung-epoche");
-		    // add category specific facets
-		    if (filterValues != null && filterValues.contains("facet_kategorie")) {
-		    	final String category = getCategoryFromFilterValues(filterValues);
-		    	final List<String> facets = xmlConfigUtil.getFacetsFromXMLFile(category);
-		    	if (!StrUtils.isEmptyOrNull(facets)) {
-		    		for (String facet: facets) {
-		    			LOGGER.debug("adding: " + "facet_" + facet);
-		    			query.addFacetField("facet_" + facet);
-		    		}
-		    	}
-		    }
-		    
+		    		    
 		    query.setFacet(true);
 		    		    		    
 		    setSearchParameters(limit, offset, filterValues, facetLimit, result, query);
@@ -144,30 +133,10 @@ public class SearchController {
 		    }
 		    
 		} catch (SolrServerException e) {
-			e.printStackTrace();
 			LOGGER.error(e.getMessage());
 		}
 			    
 	    return result;
-	}
-
-	/**
-	 * Parses the filter query parameter string and extracts the value for the key "facet_kategorie".
-	 * @param filterValues
-	 * @return The category name or <code>null</code> if none is found.
-	 */
-	private String getCategoryFromFilterValues(final String filterValues) {
-		//String string = filterValues;
-		if (filterValues.startsWith("facet_")) {
-			final int beginIndex = filterValues.indexOf("facet_kategorie:") + 16;
-			int endIndex = filterValues.indexOf(",facet", beginIndex);
-			if (endIndex < 0) {
-				endIndex = filterValues.length();
-			}
-			return filterValues.substring(beginIndex, endIndex);
-		} else {
-			return null;
-		}
 	}
 
 	/**
@@ -279,7 +248,8 @@ public class SearchController {
 	/**
 	 * Helper function to set the search parameters for the Solr query. The first four parameters are the same as used
 	 *  in handle search request.
-	 *
+	 * Side effect: If the search request contains the filter query parameter "category" the category specific facets are added to the query.
+	 *  See <code>addCategorySpecificFacets</code>. 
 	 * @param result The query result.
 	 * @param query The query to set the parameters on.
 	 */
@@ -307,10 +277,46 @@ public class SearchController {
 		if (!StrUtils.isEmptyOrNull(filterValues)) {
 			final List<String> filterValueList = filterQueryStringToStringList(filterValues); 
 			if (!StrUtils.isEmptyOrNull(filterValueList)) {
+				addCategorySpecificFacets(filterValueList, query);
 				for (String filterValue: filterValueList) {
 					query.addFilterQuery(filterValue);
 				}
 			}
+		}
+	}
+	
+	/**
+	 * This method adds the facets to the search query that are defined in the XML file of a category. It looks for the key 
+	 * <code>"facet_kategorie"</code> and parses its value to try to open the corresponding XML file(s). 
+	 * @param filterValueList The filter query parameter string as list.
+	 * @param query The outgoing Solr search query.
+	 */
+	private void addCategorySpecificFacets(final List<String> filterValueList, final SolrQuery query) {
+		for (String filterValue: filterValueList) {
+			if (filterValue.startsWith("facet_kategorie")) {
+				filterValue = filterValue.substring(16);
+				// the only multicategory query that makes sense is "OR" combined 
+				filterValue = filterValue.replace("OR", "");
+				filterValue = filterValue.replace("(", "");
+				filterValue = filterValue.replace(")", "");
+				filterValue = filterValue.trim();
+				filterValue = filterValue.replaceAll("\"", "");
+				filterValue = filterValue.replaceAll("\\s+", " ");
+				
+				final String[] categories = filterValue.split("\\s");
+				if (categories.length > 0) {
+					for (int i = 0; i < categories.length; i++) {
+						final List<String> facets = xmlConfigUtil.getFacetsFromXMLFile(categories[i]);
+						if (!StrUtils.isEmptyOrNull(facets)) {
+							for (String facet: facets) {
+								query.addFacetField("facet_" + facet);
+							}
+						}
+					}
+				}
+				// no need to process more than one parameter
+				return;
+		    }
 		}
 	}
 	
