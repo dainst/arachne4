@@ -109,28 +109,7 @@ public class SearchController {
 		    		    		    
 		    setSearchParameters(limit, offset, filterValues, facetLimit, result, query);
 		    
-		    final QueryResponse response = server.query(query);
-		    result.setEntities(response.getResults());
-		    result.setSize(response.getResults().getNumFound());
-		    final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
-		    
-		    final List<FacetField> facetFields = response.getFacetFields();
-		    for (FacetField facetField: facetFields) {
-		    	final List<FacetField.Count> facetItems = facetField.getValues();
-		    	final Map<String, Long> facetValueMap = new LinkedHashMap<String, Long>();
-		    	if (facetItems != null) {
-		    		for (FacetField.Count fcount: facetItems) {
-		    			facetValueMap.put(fcount.getName(), fcount.getCount());
-		    		}
-		    		if (!facetValueMap.isEmpty()) {
-		    			facets.put(facetField.getName(), facetValueMap);
-		    		}
-		    	}
-		    }
-		    
-		    if (!facets.isEmpty()) {
-		    	result.setFacets(facets);
-		    }
+		    executeAndProcessQuery(result, query, METHOD.POST);
 		    
 		} catch (SolrServerException e) {
 			LOGGER.error(e.getMessage());
@@ -195,29 +174,7 @@ public class SearchController {
 			
 			setSearchParameters(limit, offset, filterValues, facetLimit, result, query);
 
-			final QueryResponse response = server.query(query, METHOD.POST);
-			result.setEntities(response.getResults());
-			result.setSize(response.getResults().getNumFound());
-			final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
-			
-			final List<FacetField> facetFields = response.getFacetFields();
-			for (FacetField facetField: facetFields) {
-				final List<FacetField.Count> facetItems = facetField.getValues();
-				final Map<String, Long> facetValueMap = new LinkedHashMap<String, Long>();
-				if (facetItems != null) {
-					for (FacetField.Count fcount: facetItems) {
-						facetValueMap.put(fcount.getName(), fcount.getCount());
-					}
-					if (!facetValueMap.isEmpty()) {
-						facets.put(facetField.getName(), facetValueMap);
-					}
-				}
-			}
-
-			if (!facets.isEmpty()) {
-				result.setFacets(facets);
-			}
-
+			executeAndProcessQuery(result, query, METHOD.POST);
 		} catch (SolrServerException e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -225,6 +182,37 @@ public class SearchController {
 		return result;
 	}
 
+	/**
+	 * This method sends a query to the Solr server and fills the <code>SearchResult</code> instance. 
+	 * @param result A <code>SearchResult</code> object to fill.
+	 * @param query The query that shall be executed.
+	 * @throws SolrServerException
+	 */
+	private void executeAndProcessQuery(final SearchResult result, final SolrQuery query, final METHOD method) throws SolrServerException {
+		final QueryResponse response = server.query(query, method);
+		result.setEntities(response.getResults());
+		result.setSize(response.getResults().getNumFound());
+		final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
+		
+		final List<FacetField> facetFields = response.getFacetFields();
+		for (FacetField facetField: facetFields) {
+			final List<FacetField.Count> facetItems = facetField.getValues();
+			final Map<String, Long> facetValueMap = new LinkedHashMap<String, Long>();
+			if (facetItems != null) {
+				for (FacetField.Count fcount: facetItems) {
+					facetValueMap.put(fcount.getName(), fcount.getCount());
+				}
+				if (!facetValueMap.isEmpty()) {
+					facets.put(facetField.getName(), facetValueMap);
+				}
+			}
+		}
+		
+		if (!facets.isEmpty()) {
+			result.setFacets(facets);
+		}
+	}
+	
 	/**
 	 * Method to append access control based on the dataset groups of the current user.
 	 * The <code>StringBuffer</code> given to this method must start with a <code>(</code>. 
