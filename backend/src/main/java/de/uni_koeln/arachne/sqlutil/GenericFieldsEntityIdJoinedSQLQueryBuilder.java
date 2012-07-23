@@ -14,7 +14,7 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 	
 	protected transient SQLRightsConditionBuilder rightsConditionBuilder;
 	
-	private transient String field2; 
+	private transient final String field2; 
 	
 	private transient final String entityIdLeftJoin;
 	
@@ -33,14 +33,17 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 		table = tableName;
 		rightsConditionBuilder = new SQLRightsConditionBuilder(table, user);
 		// concatenate fields
-		field2 = SQLToolbox.getQualifiedFieldname(table, fields.get(0));
+		final StringBuilder field2 = new StringBuilder(SQLToolbox.getQualifiedFieldname(table, fields.get(0)));
 		int index = 1;
 		while (index<fields.size()) {
-			field2 += ", " + SQLToolbox.getQualifiedFieldname(table,fields.get(index));
+			field2.append(", ");
+			field2.append(SQLToolbox.getQualifiedFieldname(table,fields.get(index)));
 			index++;
 		}
 		// add ArachneEntityId to result
-		field2 += ", " + SQLToolbox.getQualifiedFieldname("arachneentityidentification", "ArachneEntityID");
+		field2.append(", "); 
+		field2.append(SQLToolbox.getQualifiedFieldname("arachneentityidentification", "ArachneEntityID"));
+		this.field2 = field2.toString();
 				
 		entityIdLeftJoin = "LEFT JOIN `arachneentityidentification` ON (`arachneentityidentification`.`TableName` = \"" 
 				+ table + "\" AND `arachneentityidentification`.`ForeignKey` = " 
