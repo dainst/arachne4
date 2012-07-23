@@ -90,24 +90,15 @@ public class SearchController {
 		
 		final SearchResult result = new SearchResult();
 		try {
-			final SolrQuery query = new SolrQuery("*:*");
 			final StringBuffer fullSearchParam = new StringBuffer(64);
 			fullSearchParam.append('(');
 			fullSearchParam.append(searchParam);
 			appendAccessControl(fullSearchParam);
 			LOGGER.debug("fullSearchParam: " + fullSearchParam);
-			query.setQuery(fullSearchParam.toString());
-		    // default value for limit
-		    query.setRows(50);
-		    query.setFacetMinCount(1);
-		    // default facets to include
-		    query.addFacetField("facet_kategorie");
-		    query.addFacetField("facet_ort");
-		    query.addFacetField("facet_datierung-epoche");
-		    		    
-		    query.setFacet(true);
-		    		    		    
-		    setSearchParameters(limit, offset, filterValues, facetLimit, result, query);
+			
+			final SolrQuery query = getQueryWithDefaults(fullSearchParam.toString());
+			
+			setSearchParameters(limit, offset, filterValues, facetLimit, result, query);
 		    
 		    executeAndProcessQuery(result, query, METHOD.POST);
 		    
@@ -149,7 +140,6 @@ public class SearchController {
 		}
 		
 		try {
-			final SolrQuery query = new SolrQuery("*:*");
 			final StringBuffer queryStr = new StringBuffer(64);
 			queryStr.append("(id:(");
 			for (int i = 0; i < contextIds.size() ; i++) {
@@ -161,17 +151,9 @@ public class SearchController {
 				}
 			}
 			appendAccessControl(queryStr);
-			query.setQuery(queryStr.toString());
-			// default value for limit
-			query.setRows(50);
-			query.setFacetMinCount(1);
-			// default facets to include
-			query.addFacetField("facet_kategorie");
-			query.addFacetField("facet_ort");
-			query.addFacetField("facet_datierung-epoche");
-			// TODO add category specific facets based on info from where?
-			query.setFacet(true);
 			
+			final SolrQuery query = getQueryWithDefaults(queryStr.toString());
+						
 			setSearchParameters(limit, offset, filterValues, facetLimit, result, query);
 
 			executeAndProcessQuery(result, query, METHOD.POST);
@@ -182,6 +164,29 @@ public class SearchController {
 		return result;
 	}
 
+	/**
+	 * Constructs a new <code>SolrQuery</code> with default values from the given query string. 
+	 * @param queryString The <code>String</code> to construct the query from.
+	 * @return The new <code>SolrQuery</code>
+	 */
+	private SolrQuery getQueryWithDefaults(final String queryString) {
+		final SolrQuery query = new SolrQuery("*:*");
+		query.setQuery(queryString);
+	    
+		// default value for limit
+	    query.setRows(50);
+	    query.setFacetMinCount(1);
+	    
+	    // default facets to include
+	    query.addFacetField("facet_kategorie");
+	    query.addFacetField("facet_ort");
+	    query.addFacetField("facet_datierung-epoche");
+	    		    
+	    query.setFacet(true);
+	    
+	    return query;
+	}
+	
 	/**
 	 * This method sends a query to the Solr server and fills the <code>SearchResult</code> instance. 
 	 * @param result A <code>SearchResult</code> object to fill.
