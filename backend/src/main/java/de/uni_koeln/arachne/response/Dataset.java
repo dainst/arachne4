@@ -108,7 +108,7 @@ public class Dataset {
 	 * searched.
 	 * <br>
 	 * "dataset" is a special contextualizer name that is used to reference data which is in every dataset (basically the <code>ArachneEntityId</code> object).
-	 * This functions returns these values, too, as it is faster than doing the look up again via the contextualizer mechanism.
+	 * This function returns these values, too, as it is faster than doing the look up again via the contextualizer mechanism.
 	 * @param fieldName The full qualified fieldName to look up.
 	 * @return The value of the field or <code>null<code/> if the field is not found.
 	 */

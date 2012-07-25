@@ -55,10 +55,9 @@ public class SingleEntityDataService {
 	}
 	
 	/**
-	 * This Function Retrives an Arachne Dataset by <code>EntityId</code>.
-	 * This Function handles Exceptions!
-	 * @param entityId an Identifier of the Type ArachneId.
-	 * @return Instance of ArachneDataset that Represents the Dataset.
+	 * This Function retrieves an Arachne dataset by <code>EntityId</code>.
+	 * @param entityId The unique identifier of the type <code>EntityId</code>.
+	 * @return Instance of <code>Dataset</code> that represents the dataset.
 	 */
 	public Dataset getSingleEntityByArachneId(final EntityId entityId, final UserAdministration currentUser) {
 		Dataset result;
