@@ -143,27 +143,39 @@ public class XmlConfigUtil {
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Content</code> object containing the sections content.
 	 */
-	public AbstractContent getContentFromSections(final Element section, final Dataset dataset) {
+	public AbstractContent getContentFromSections(final Element section, final Dataset dataset, final int groupId) {
 		final Section result = new Section();
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
 		result.setLabel(section.getAttributeValue("labelKey"));
+		
 		final List<Element> children = section.getChildren();
+		
 		final String defaultSeparator = "<br/>";
 		String separator = section.getAttributeValue("separator"); 
 		if (section.getAttributeValue("separator") == null) {
 			separator = defaultSeparator;
 		}
+		
+		final String minGroupIdStr = section.getAttributeValue("minGroupId");
+		if (!StrUtils.isEmptyOrNull(minGroupIdStr)) {
+			final int minGroupId = Integer.parseInt(minGroupIdStr);
+			LOGGER.debug(section.getAttributeValue("labelKey") + " minGroupId: " + minGroupId + " - user groupId: " + groupId);
+			if (groupId < minGroupId) {
+				return null;
+			}
+		}
+						
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
 				getContentFromField(dataset, result, separator, e);
 			} else {
 				if (e.getName().equals("context")) {
-					final Section nextSection = (Section)getContentFromContext(e, dataset);
+					final Section nextSection = (Section)getContentFromContext(e, dataset, groupId);
 					if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
 						result.add(nextSection);
 					}
 				} else {
-					final Section nextSection = (Section)getContentFromSections(e, dataset);
+					final Section nextSection = (Section)getContentFromSections(e, dataset, groupId);
 					if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
 						result.add(nextSection);
 					}
@@ -214,7 +226,7 @@ public class XmlConfigUtil {
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Content</code> object containing the context sections content.
 	 */
-	public Section getContentFromContext(final Element context, final Dataset dataset) {
+	public Section getContentFromContext(final Element context, final Dataset dataset, final int groupId) {
 		final Section result = new Section();
 		final String contextType = context.getAttributeValue("type");
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
@@ -255,6 +267,10 @@ public class XmlConfigUtil {
 		}
 		
 		return result;
+	}
+	
+	public Section getContentFromContext(final Element context, final Dataset dataset) {
+		return getContentFromContext(context, dataset, -1);
 	}
 
 	private void getFields(final Dataset dataset, final String contextType,	final List<Element> children

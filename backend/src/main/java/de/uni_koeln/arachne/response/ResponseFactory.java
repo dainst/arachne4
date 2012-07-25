@@ -43,7 +43,7 @@ public class ResponseFactory {
 	 * @param dataset The dataset which encapsulates the SQL query results.
 	 * @return A <code>FormattedArachneEntity</code> instance which can be jsonized.
 	 */
-	public FormattedArachneEntity createFormattedArachneEntity(final Dataset dataset) {
+	public FormattedArachneEntity createFormattedArachneEntity(final Dataset dataset, final int groupId) {
 		LOGGER.debug("dataset: " + dataset);
 		
 		final FormattedArachneEntity response = new FormattedArachneEntity();
@@ -94,7 +94,7 @@ public class ResponseFactory {
 	    	response.setSubtitle(subtitleStr);
 	    	
 	    	// set datasections
-	    	setSections(dataset, nameSpace, display, response);
+	    	setSections(dataset, nameSpace, display, response, groupId);
 			
 			// Set images
  			response.setImages(dataset.getImages());
@@ -160,7 +160,8 @@ public class ResponseFactory {
 		return result;
 	}
 	
-	private void setSections(final Dataset dataset, final Namespace nameSpace, final Element display, final FormattedArachneEntity response) { 
+	private void setSections(final Dataset dataset, final Namespace nameSpace, final Element display, final FormattedArachneEntity response
+			, final int groupId) {
 
 		final Element sections = display.getChild("datasections", nameSpace);
 		final List<AbstractContent> contentList = new ArrayList<AbstractContent>();
@@ -168,12 +169,12 @@ public class ResponseFactory {
 		final List<Element> children = sections.getChildren();
 		for (Element e:children) {
 			if (e.getName().equals("section")) {
-				final Section section = (Section)xmlConfigUtil.getContentFromSections(e, dataset);
+				final Section section = (Section)xmlConfigUtil.getContentFromSections(e, dataset, groupId);
 				if (!section.getContent().isEmpty()) {
 					contentList.add(section);
 				}
 			} else {
-				final Section section = (Section)xmlConfigUtil.getContentFromContext(e, dataset);
+				final Section section = (Section)xmlConfigUtil.getContentFromContext(e, dataset, groupId);
 				if (!section.getContent().isEmpty()) {
 					contentList.add(section);
 				}
