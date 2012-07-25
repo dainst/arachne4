@@ -52,6 +52,7 @@
         <xs:attribute name="separator" type="xs:string" />
         <xs:attribute name="prefix" type="xs:string" />
         <xs:attribute name="postfix" type="xs:string" />
+        <xs:attribute name="minGroupId" type="xs:string" />
     </xs:complexType>
     
     <xs:complexType name="ContextContent">
@@ -61,6 +62,7 @@
         <xs:attribute name="type" type="xs:string" use="required" />
         <xs:attribute name="labelKey" type="xs:string" />
         <xs:attribute name="separator" type="xs:string" />
+        <xs:attribute name="minGroupId" type="xs:string" />
     </xs:complexType>
     
     <xs:complexType name="FieldContent">
@@ -79,6 +81,7 @@
         <xs:attribute name="search" type="xs:string" />
         <xs:attribute name="replace" type="xs:string" />
         <xs:attribute name="separator" type="xs:string" />
+        <xs:attribute name="minGroupId" type="xs:string" />
     </xs:complexType>
     
     <xs:simpleType name="datasourceString">
