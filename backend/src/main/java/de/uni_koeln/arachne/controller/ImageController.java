@@ -106,7 +106,7 @@ public class ImageController {
 	 * @return Either the meta data or the image returned by the image server.
 	 */
 	@RequestMapping(value = "/image/iipviewer", method = RequestMethod.GET)
-	public ResponseEntity<String> getFromImageServer(@RequestParam(value = "FIF", required = true) final long entityId,
+	public ResponseEntity<String> getDataForIIPViewer(@RequestParam(value = "FIF", required = true) final long entityId,
 			final HttpServletRequest request, final HttpServletResponse response) {
 		
 		LOGGER.debug("Received Request: " + request.getQueryString());
