@@ -111,86 +111,90 @@ public class ImageController {
 		
 		LOGGER.debug("Received Request: " + request.getQueryString());
 				
-		HttpURLConnection connection = null;
-		
 		final ImageProperties imageProperties = getImageProperties(entityId, resolution_HIGH);
 				
-		if (imageProperties.httpResponseCode == 200) {
-			// TODO check if this is enough or if getImageProperties has to be adapted
-			if (imageProperties.resolution != resolution_HIGH) {
-				response.setStatus(403);
-				return null;
-			}
-			
-			String imageName = imageProperties.name;
-			String imageServerInstance = imageProperties.watermark;
-			
-			if (StrUtils.isEmptyOrNull(imageServerInstance)) {
-				imageServerInstance = imageServerName;
-			}
-			
-			// TODO replace when the correct images are accessible by the image server
-			imageName = "ptif_test.tif";
-
-			final String remainingQueryString = request.getQueryString().split("&", 2)[1];
-			final String fullQueryString = "?FIF=" + imagePath + imageName + "&" + remainingQueryString;
-
-			LOGGER.debug("Sent Request: " + fullQueryString);
-
-			try {
-				final URL serverAdress;
-				// if the overview image is requested get it without watermark
-				if (request.getQueryString().contains("jtl=")) {
-					serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + fullQueryString);
-				} else {
-					serverAdress = new URL(imageServerPath + imageServerName + imageServerExtension + fullQueryString);
-				}
-				connection = (HttpURLConnection)serverAdress.openConnection();			
-				connection.setRequestMethod("GET");
-				connection.setReadTimeout(imageServerReadTimeout);
-				connection.connect();
-
-				if (connection.getResponseCode() == 200) {
-					final HttpHeaders responseHeaders = new HttpHeaders();
-
-					// check if viewer calls for metadata - if the request query string contains "obj=IIP" it does
-					if (request.getQueryString().contains("obj=IIP")) {
-						final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-						final StringBuilder stringBuilder = new StringBuilder();
-						String line = null;
-
-						while ((line = bufferedReader.readLine()) != null) {
-							stringBuilder.append(line  + '\n');
-						}
-
-						responseHeaders.setContentType(MediaType.TEXT_PLAIN);
-						return new ResponseEntity<String>(stringBuilder.toString(), responseHeaders, HttpStatus.OK);
-					} else {
-						response.setContentType("image/jpeg");
-						final OutputStream outputStream = response.getOutputStream();
-						ImageIO.write(ImageIO.read(connection.getInputStream()), "jpg", outputStream);
-						// no return object needed as the result is directly written to the HTTPResponse
-						return null;
-					}
-				}
-
-			} catch (MalformedURLException e) {
-				LOGGER.error(e.getMessage());
-			} catch (ProtocolException e) {
-				LOGGER.error(e.getMessage());
-			} catch (SocketTimeoutException e) {
-				LOGGER.error(e.getMessage());
-			} catch (IOException e) {
-				LOGGER.error(e.getMessage());
-			} finally {
-				connection.disconnect();
-				connection = null;
-			}
-		} else {
+		if (imageProperties.httpResponseCode != 200) {
 			response.setStatus(imageProperties.httpResponseCode);
+			return null;
 		}
 		
+		// TODO check if this is enough or if getImageProperties has to be adapted
+		if (imageProperties.resolution != resolution_HIGH) {
+			response.setStatus(403);
+			return null;
+		}
+
+		String imageName = imageProperties.name;
+		String imageServerInstance = imageProperties.watermark;
+
+		if (StrUtils.isEmptyOrNull(imageServerInstance)) {
+			imageServerInstance = imageServerName;
+		}
+
+		// TODO replace when the correct images are accessible by the image server
+		imageName = "ptif_test.tif";
+
+		final String remainingQueryString = request.getQueryString().split("&", 2)[1];
+		final String fullQueryString = "?FIF=" + imagePath + imageName + "&" + remainingQueryString;
+
+		LOGGER.debug("Sent Request: " + fullQueryString);
+
+		return getIIPViewerDataFromImageServer(request, response, imageServerInstance, fullQueryString);
+	}
+
+	private ResponseEntity<String> getIIPViewerDataFromImageServer(final HttpServletRequest request, final HttpServletResponse response,
+			final String imageServerInstance, final String fullQueryString) {
+		
+		HttpURLConnection connection = null;
+		try {
+			final URL serverAdress;
+			// if the overview image is requested get it without watermark
+			if (request.getQueryString().contains("jtl=")) {
+				serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + fullQueryString);
+			} else {
+				serverAdress = new URL(imageServerPath + imageServerName + imageServerExtension + fullQueryString);
+			}
+			connection = (HttpURLConnection)serverAdress.openConnection();			
+			connection.setRequestMethod("GET");
+			connection.setReadTimeout(imageServerReadTimeout);
+			connection.connect();
+
+			if (connection.getResponseCode() == 200) {
+				final HttpHeaders responseHeaders = new HttpHeaders();
+
+				// check if viewer calls for metadata - if the request query string contains "obj=IIP" it does
+				if (request.getQueryString().contains("obj=IIP")) {
+					final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+					final StringBuilder stringBuilder = new StringBuilder();
+					String line = null;
+
+					while ((line = bufferedReader.readLine()) != null) {
+						stringBuilder.append(line  + '\n');
+					}
+
+					responseHeaders.setContentType(MediaType.TEXT_PLAIN);
+					return new ResponseEntity<String>(stringBuilder.toString(), responseHeaders, HttpStatus.OK);
+				} else {
+					response.setContentType("image/jpeg");
+					final OutputStream outputStream = response.getOutputStream();
+					ImageIO.write(ImageIO.read(connection.getInputStream()), "jpg", outputStream);
+					// no return object needed as the result is directly written to the HTTPResponse
+					return null;
+				}
+			}
+		} catch (MalformedURLException e) {
+			LOGGER.error(e.getMessage());
+		} catch (ProtocolException e) {
+			LOGGER.error(e.getMessage());
+		} catch (SocketTimeoutException e) {
+			LOGGER.error(e.getMessage());
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage());
+		} finally {
+			connection.disconnect();
+			connection = null;
+		}
 		return null;
 	}
 	
