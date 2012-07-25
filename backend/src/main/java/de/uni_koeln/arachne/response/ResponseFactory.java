@@ -68,6 +68,9 @@ public class ResponseFactory {
 		}
 		response.setDatasetGroup(dataset.getFieldFromFields(datasetGroupFieldName));		
 		
+		// set lastModified
+		response.setLastModified(dataset.getFieldFromFields(tableName + ".lastModified"));
+		
 		final String filename = xmlConfigUtil.getFilenameFromType(response.getType());
 		
 		if ("unknown".equals(filename)) {
