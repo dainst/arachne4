@@ -149,7 +149,7 @@
 					</section>
 					<section labelKey="Schutzwaffen">
 						<field datasource="realien.Helm" prefix="Helm: "/>
-						<field datasource="realien.Schild" prefix="Schld: "/>
+						<field datasource="realien.Schild" prefix="Schild: "/>
 						<field datasource="realien.BemerkSchutzwaffen" prefix="Bemerkung: "/>
 					</section>
 				</section>
