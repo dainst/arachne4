@@ -169,7 +169,7 @@ public class Dataset {
 	/**
 	 * Looks up a field in the contexts and returns its value.
 	 * @param fieldName The full qualified fieldName to look up.
-	 * @return The value of the field or <code>null<code/> if the field is not found.
+	 * @return The value of the field or <code>null</code> if the field is not found.
 	 */
 	public String getFieldFromContext(final String fieldName, final int index) {
 		String result = null;

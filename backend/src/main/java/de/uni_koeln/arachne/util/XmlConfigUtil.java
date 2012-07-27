@@ -144,6 +144,11 @@ public class XmlConfigUtil {
 	 * @return A <code>Content</code> object containing the sections content.
 	 */
 	public AbstractContent getContentFromSections(final Element section, final Dataset dataset, final int groupId) {
+		
+		if (!hasMinGroupId(section.getAttributeValue("minGroupId"), groupId)) {
+			return null;
+		}
+		
 		final Section result = new Section();
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
 		result.setLabel(section.getAttributeValue("labelKey"));
@@ -155,19 +160,10 @@ public class XmlConfigUtil {
 		if (section.getAttributeValue("separator") == null) {
 			separator = defaultSeparator;
 		}
-		
-		final String minGroupIdStr = section.getAttributeValue("minGroupId");
-		if (!StrUtils.isEmptyOrNull(minGroupIdStr)) {
-			final int minGroupId = Integer.parseInt(minGroupIdStr);
-			LOGGER.debug(section.getAttributeValue("labelKey") + " minGroupId: " + minGroupId + " - user groupId: " + groupId);
-			if (groupId < minGroupId) {
-				return null;
-			}
-		}
-						
+								
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
-				getContentFromField(dataset, result, separator, e);
+				addFieldToResult(e, result, dataset, separator, groupId);
 			} else {
 				if (e.getName().equals("context")) {
 					final Section nextSection = (Section)getContentFromContext(e, dataset, groupId);
@@ -185,8 +181,20 @@ public class XmlConfigUtil {
 		return result;
 	}
 
-	private void getContentFromField(final Dataset dataset,	final Section result, final String separator
-			, final Element element) {
+	/**
+	 * Procedure to add a <code>Field</code> from the dataset to the result <code>Section</code>.
+	 * @param dataset The current dataset.
+	 * @param result The <code>Section</code> the field belongs to.
+	 * @param separator The currently active separator.
+	 * @param element The description of the field as XML element.
+	 * @param groupId The current users groupId.
+	 */
+	private void addFieldToResult(final Element element, final Section result, final Dataset dataset
+			, final String separator, final int groupId) {
+		
+		if (!hasMinGroupId(element.getAttributeValue("minGroupId"), groupId)) {
+			return;
+		}
 		
 		final Field field = new Field();
 		StringBuffer value = null;
@@ -224,9 +232,15 @@ public class XmlConfigUtil {
 	 * The validity of the xml file is not checked!!!
 	 * @param context The xml context <code>Element</code> to parse.
 	 * @param dataset The dataset that contains the SQL query results.
-	 * @return A <code>Content</code> object containing the context sections content.
+	 * @param grouId The groupId of the current user.
+	 * @return A <code>Section</code> object containing the context sections content or <code>null</code> if access is denied.
 	 */
 	public Section getContentFromContext(final Element context, final Dataset dataset, final int groupId) {
+		
+		if (!hasMinGroupId(context.getAttributeValue("minGroupId"), groupId)) {
+			return null;
+		}
+		
 		final Section result = new Section();
 		final String contextType = context.getAttributeValue("type");
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
@@ -249,7 +263,7 @@ public class XmlConfigUtil {
 				
 		final FieldList fieldList = new FieldList();
 		for (int i = 0; i < dataset.getContextSize(contextType); i++) {
-			getFields(dataset, contextType, children, separator, fieldList, i);
+			addFieldsToFieldList(children, fieldList, i, dataset, contextType, separator, groupId);
 		}
 		
 		if (fieldList.size() > 1) {
@@ -273,18 +287,44 @@ public class XmlConfigUtil {
 		return getContentFromContext(context, dataset, -1);
 	}
 
-	private void getFields(final Dataset dataset, final String contextType,	final List<Element> children
-			, final String separator, final FieldList fieldList, final int index) {
+	/**
+	 * This function adds the values of all fields of a context to the <code>FieldList</code>. It retrieves the values and formats 
+	 * the output according to the XML description of the fields.
+	 * @param children The XML descriptions of the fields to add.
+	 * @param fieldList The values of the fields in this context.
+	 * @param index The index of the context (as <code>Contexts</code> are multivalued a single dataset may have several contexts of a given type).
+	 * @param dataset The current dataset.
+	 * @param contextType The type of the context.
+	 * @param separator the currently active separator.
+	 * @param grouId The groupId of the current user.
+	 */
+	private void addFieldsToFieldList(final List<Element> children, final FieldList fieldList, final int index
+			, final Dataset dataset, final String contextType,	final String separator, final int groupId) {
 		
 		for (Element e: children) {
 			if (e.getName().equals("field")) {
-				getField(dataset, contextType, separator, fieldList, index, e);
+				addFieldToFieldList(e, fieldList, index, dataset, contextType, separator, groupId);
 			}
 		}
 	}
 
-	private void getField(final Dataset dataset, final String contextType, final String separator
-			, final FieldList fieldList, final int index, final Element element) {
+	/**
+	 * This function adds the value of a field of a context to the <code>FieldList</code>. It retrieves the value and formats 
+	 * the output according to the XML description of this field.
+	 * @param element The XML description of the field to add.
+	 * @param fieldList The values of the fields in this context.
+	 * @param index The index of the context (as <code>Contexts</code> are multivalued a single dataset may have several contexts of a given type).
+	 * @param dataset The current dataset.
+	 * @param contextType The type of the context.
+	 * @param separator the currently active separator.
+	 * @param grouId The groupId of the current user.
+	 */
+	private void addFieldToFieldList(final Element element, final FieldList fieldList, final int index
+			,final Dataset dataset, final String contextType, final String separator, final int groupId) {
+		
+		if (!hasMinGroupId(element.getAttributeValue("minGroupId"), groupId)) {
+			return;
+		}
 		
 		final String initialValue = dataset.getFieldFromContext(contextType + element.getAttributeValue("datasource"), index);
 		StringBuffer value = null;
@@ -310,6 +350,24 @@ public class XmlConfigUtil {
 				fieldList.modify(index, currentListValue + separator + value);
 			}
 		}
+	}
+	
+	/**
+	 * This function compares the given string with the given integer value and returns <code>true</code> if the string value is less than
+	 * the integer value or if <code>minGroupIdStr</code> is <code>null</code>. This is used to check which content the currently logged in user is allowed to see.   
+	 * @param minGroupIdStr A string containing the minimum groupId as integer value.
+	 * @param groupId The groupId of the currently logged in user as <code>int</code>.
+	 * @return A boolean value indicating if the current user is allowed to see the content.
+	 */
+	private boolean hasMinGroupId(final String minGroupIdStr, final int groupId) {
+		if (!StrUtils.isEmptyOrNull(minGroupIdStr)) {
+			final int minGroupId = Integer.parseInt(minGroupIdStr);
+			LOGGER.debug("minGroupId: " + minGroupId + " - user groupId: " + groupId);
+			if (groupId < minGroupId) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public List<String> getFacetsFromXMLFile(final String category) {
