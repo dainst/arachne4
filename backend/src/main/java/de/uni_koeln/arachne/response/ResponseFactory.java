@@ -80,10 +80,9 @@ public class ResponseFactory {
 		final ServletContextResource xmlDocument = new ServletContextResource(xmlConfigUtil.getServletContext(), filename);
 	    try {
 	    	final SAXBuilder saxBuilder = new SAXBuilder();
-	    	final Document doc = saxBuilder.build(xmlDocument.getFile());
-	    	//TODO Make Nicer XML Parsing is very quick and Dirty solution for my Problems 
-	    	final Namespace nameSpace = Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category");
-	    	final Element display = doc.getRootElement().getChild("display",nameSpace);
+	    	final Document document = saxBuilder.build(xmlDocument.getFile());
+	    	final Namespace nameSpace = document.getRootElement().getNamespace();
+	    	final Element display = document.getRootElement().getChild("display",nameSpace);
 	    	
 	    	// set title
 	    	final String titleStr = getTitleString(dataset, nameSpace, display);
@@ -100,7 +99,7 @@ public class ResponseFactory {
  			response.setImages(dataset.getImages());
 			
 			// Set facets
- 			final Element facets = doc.getRootElement().getChild("facets", nameSpace);
+ 			final Element facets = document.getRootElement().getChild("facets", nameSpace);
  			response.setFacets(getFacets(dataset, facets).getList());
  			
 			

@@ -401,12 +401,11 @@ public class XmlConfigUtil {
 		final ServletContextResource xmlDocument = new ServletContextResource(getServletContext(), filename);
 	    try {
 	    	final SAXBuilder saxBuilder = new SAXBuilder();
-	    	final Document doc = saxBuilder.build(xmlDocument.getFile());
-	    	//TODO Make Nicer XML Parsing is very quick and Dirty solution for my Problems 
-	    	final Namespace nameSpace = Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category");
+	    	final Document document = saxBuilder.build(xmlDocument.getFile());
+	    	final Namespace nameSpace = document.getRootElement().getNamespace();
 	    	
 			// Get facets
- 			final Element facets = doc.getRootElement().getChild("facets", nameSpace);
+ 			final Element facets = document.getRootElement().getChild("facets", nameSpace);
  			for (Element e: facets.getChildren()) {
  				facetList.add(e.getAttributeValue("name")); 				
  			}

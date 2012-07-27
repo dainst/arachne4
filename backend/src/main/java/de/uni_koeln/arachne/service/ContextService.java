@@ -157,10 +157,10 @@ public class ContextService {
 	
 	/**
 	 * Internally used method to get the external field names from the XML files. The name of the XML file to read
-	 * is constructed from the </code>type<code>. If no corresponding XML file is found <code>fallback.xml</code> is
-	 * used. The method then opens the XML file, creates the DOM and uses <code>getFields</code> to get the values from
+	 * is constructed from the </code>type<code>. If no corresponding XML file is found <code>null</code> is
+	 * returned. The method then opens the XML file, creates the DOM and uses <code>getFields</code> to get the values from
 	 *  the dom.
-	 * @param type The of the xml file.
+	 * @param type The type of the xml file.
 	 * @return A list of full qualified external field names.
 	 */
 	private List<String> getExternalFields(final String type) {	
@@ -170,10 +170,9 @@ public class ContextService {
 		final ServletContextResource xmlDocument = new ServletContextResource(xmlConfigUtil.getServletContext(), filename);
 		try {
 			final SAXBuilder saxBuilder = new SAXBuilder();
-			final Document doc = saxBuilder.build(xmlDocument.getFile());
-			final Element rootElement = doc.getRootElement();
-			//TODO Make Nicer XML Parsing is very quick and Dirty solution for my Problems
-			final Namespace nameSpace = Namespace.getNamespace("http://arachne.uni-koeln.de/schemas/category");
+			final Document document = saxBuilder.build(xmlDocument.getFile());
+			final Element rootElement = document.getRootElement();
+			final Namespace nameSpace = rootElement.getNamespace();
 			final Element display = rootElement.getChild("display", nameSpace);
 			final Element facets = rootElement.getChild("facets", nameSpace);
 			final List<String> result = new ArrayList<String>();
