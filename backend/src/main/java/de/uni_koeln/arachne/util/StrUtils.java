@@ -26,12 +26,12 @@ public class StrUtils {
 	}
 
 	/**
-	 * This method returns if a <code>StringBuffer</code> is empty or <code>null</code>.
-	 * @param stringBuffer
+	 * This method returns if a <code>StringBuilder</code> is empty or <code>null</code>.
+	 * @param stringBuilder
 	 * @return <code>true</code> or <code>false</code>
 	 */
-	public static boolean isEmptyOrNull(StringBuffer stringBuffer) {
-		return stringBuffer == null || stringBuffer.length() < 1;
+	public static boolean isEmptyOrNull(StringBuilder stringBuilder) {
+		return stringBuilder == null || stringBuilder.length() < 1;
 	}
 	
 	/**

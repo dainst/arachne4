@@ -26,7 +26,7 @@ import de.uni_koeln.arachne.response.Section;
 /**
  * This class provides functions to find a XML config file by type, extract information based on the XML element from
  * the dataset and grants access to the servlet context.
- * If some class wants to work with the XML config files it should use this class via autowiring or as base class.
+ * If a class wants to work with the XML config files it should use this class via autowiring or as base class.
  */
 @Component("xmlConfigUtil")
 public class XmlConfigUtil {
@@ -34,7 +34,7 @@ public class XmlConfigUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger(XmlConfigUtil.class);
 	
 	/**
-	 * Servlet context to load the XML config files. 
+	 * The servlet context needed to load the XML config files. 
 	 */
 	@Autowired
 	private transient ServletContext servletContext;
@@ -42,7 +42,7 @@ public class XmlConfigUtil {
 	/**
 	 * This function checks if a config file for the given type exists and returns its filename.
 	 * @param type Type of the config to look for.
-	 * @return The filename of the XML config file for the given type or <code>null</code>.
+	 * @return The filename of the XML config file for the given type or <code>"unknown"</code> if no config file is found.
 	 */
 	public String getFilenameFromType(final String type) {
 		String filename = "/WEB-INF/xml/"+ type + ".xml";
@@ -65,7 +65,7 @@ public class XmlConfigUtil {
 	 * @return A concatenated string containing the sections content.
 	 */
 	public String getStringFromSections(final Dataset dataset, final Namespace nameSpace, final Element section) {
-		final StringBuffer result = new StringBuffer("");
+		final StringBuilder result = new StringBuilder("");
 		final List<Element> children = section.getChildren();
 		String separator = "<br/>";
 		if (section.getAttributeValue("separator") != null) {
@@ -74,7 +74,7 @@ public class XmlConfigUtil {
 
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
-				getFieldString(dataset, nameSpace, result, separator, e); 
+				addFieldStringToResult(e, result, dataset, nameSpace, separator); 
 			} else {
 				final String datasetResult = getStringFromSections(dataset, nameSpace, e);
 				if (!(result.length() < 1) && !datasetResult.isEmpty()) {
@@ -86,20 +86,28 @@ public class XmlConfigUtil {
 		return result.toString();
 	}
 
-	private void getFieldString(final Dataset dataset, final Namespace nameSpace, final StringBuffer result, final String separator
-			, final Element element) {
+	/**
+	 * This function adds the content of a field of the dataset as defined in the XML description to the result <code>StringBuilder</code>. 
+	 * @param element The XML element describing the field. 
+	 * @param result The <code>StringBuilder</code> to add the content to.
+	 * @param dataset The current dataset.
+	 * @param nameSpace The current namespace.
+	 * @param separator The current separator.
+	 */
+	private void addFieldStringToResult(final Element element, final StringBuilder result, final Dataset dataset, final Namespace nameSpace
+			, final String separator) {
 		
 		final String initialValue = dataset.getField(element.getAttributeValue("datasource"));
-		StringBuffer datasetResult = null;
+		StringBuilder datasetResult = null;
 		if (initialValue != null) {
-			datasetResult = new StringBuffer(initialValue);
+			datasetResult = new StringBuilder(initialValue);
 		} 
 
 		final String postfix = element.getAttributeValue("postfix");
 		final String prefix = element.getAttributeValue("prefix");
 
 		if (datasetResult == null) {
-			datasetResult = getIfEmpty(dataset, nameSpace, element);
+			datasetResult = getIfEmpty(element, dataset, nameSpace);
 		}
 
 		if (!StrUtils.isEmptyOrNull(datasetResult)) {
@@ -116,10 +124,17 @@ public class XmlConfigUtil {
 		}
 	}
 
-	private StringBuffer getIfEmpty(final Dataset dataset, final Namespace nameSpace, final Element element) {
+	/**
+	 * Returns the content of a field of the dataset as defined inside an <code>ifEmtpy</code> tag in the XML config file.
+	 * @param element The XML element describing the parent of the <code>ifEmpty</code> element.
+	 * @param dataset The current dataset.
+	 * @param nameSpace The current namespace.
+	 * @return A <code>StringBuilder</code> containing the formatted value.
+	 */
+	private StringBuilder getIfEmpty(final Element element, final Dataset dataset, final Namespace nameSpace) {
 		
 		String key;
-		StringBuffer result = null;
+		StringBuilder result = null;
 		final Element ifEmptyElement = element.getChild("ifEmpty", nameSpace);
 		if (ifEmptyElement != null) {
 			// TODO discuss if multiple fields inside an ifEmpty tag make sense
@@ -127,7 +142,7 @@ public class XmlConfigUtil {
 			if (key != null && !key.isEmpty()) {
 				final String ifEmptyValue = dataset.getField(key);
 				if (ifEmptyValue != null) {
-					result = new StringBuffer(ifEmptyValue); 
+					result = new StringBuilder(ifEmptyValue); 
 				}
 			}
 		}
@@ -370,6 +385,11 @@ public class XmlConfigUtil {
 		return true;
 	}
 	
+	/**
+	 * This method looks up which facets are defined in an XML file describing a category and returns them as a list. 
+	 * @param category The name of the category.
+	 * @return A <code>List&lt;String></code>
+	 */
 	public List<String> getFacetsFromXMLFile(final String category) {
 		final String filename = getFilenameFromType(category);
 		if ("unknown".equals(filename)) {
@@ -399,6 +419,10 @@ public class XmlConfigUtil {
 		return null;
 	}
 	
+	/**
+	 * Simple getter to grant access to the <code>ServletContext</code>.
+	 * @return The current servlet context.
+	 */
 	public ServletContext getServletContext() {
 		return servletContext;
 	}
