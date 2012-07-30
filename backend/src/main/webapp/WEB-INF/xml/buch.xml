@@ -78,6 +78,7 @@
 				-->
 				<section labelKey="Buch Jahr">
 					<field datasource="buch.BuchJahr" />
+					<field datasource="buch.BuchEntstehungszeitraum" prefix="Entstehungszeitraum: " />
 				</section>
 				<section labelKey="Publikationsort">
 					<field datasource="buch.BuchOrt" />
