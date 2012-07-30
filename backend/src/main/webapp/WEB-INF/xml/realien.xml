@@ -26,8 +26,16 @@
 		</subtitle>
 		<datasections>
 			<section labelKey="Informationen">
-				<section labelKey="Bildkontext">
+				<section labelKey="Anzahl">
+					<field datasource="realien.AnzahlGegenstaendeRealien" />
+				</section>
+				<section labelKey="Bildkontext und Größe">
 					<field datasource="realien.Lokalisierung" prefix="Lokalisierung: "/>
+					<field datasource="realien.RealienHoehe" prefix="Höhe: "/>
+					<field datasource="realien.RealienBreite" prefix="Breite: "/>
+					<field datasource="realien.RealienTiefe" prefix="Tiefe: "/>
+					<field datasource="realien.RealienDurchmesser" prefix="Durchmesser: "/>
+					<field datasource="realien.ursprGroeszeRealien" prefix="ursprüngliche Größe: "/>
 				</section>
 				<section labelKey="Erhaltung und Überarbeitung">
 					<section separator=", ">
@@ -35,20 +43,24 @@
 						<field datasource="realien.ErhaltungszustandRealien"/>
 					</section>
 					<section>
+						<field datasource="realien.FarbresteRealien" prefix="farbreste: " />
 						<field datasource="realien.BearbeitungenRealien" prefix="Bearbeitungen: "/>
 					</section>
 					<section>
 						<field datasource="realien.BearbeitungenModernRealien" prefix="modern: "/>
+						<field datasource="realien.BearbeitungenAntikRealien" prefix="antik: " />
 					</section>
 				</section>
 				<section labelKey="Figur">
 					<section>
 						<field datasource="realien.WesenRealien" prefix="Wesen: "/>
+						<field datasource="realien.BemerkFigur" prefix="Bemerkung: " />
 					</section>
 					<section separator=", ">
 						<field datasource="realien.BenennungAllgRealien" prefix="Benennung: "/>
 						<field datasource="realien.BenennungSpez"/>
 					</section>
+						
 					<section>
 						<field datasource="realien.GeschlechtRealien"/>
 					</section>
@@ -111,6 +123,7 @@
 					<field datasource="realien.TiereSonstige" prefix="Sonstige: "/>
 					<field datasource="realien.TiereFuntkion" prefix="Funktion: "/>
 					<field datasource="realien.TiereAttribut" prefix="Attriubte: "/>
+					<field datasource="realien.TiereFunktion" prefix="Funktion: "/>
 					<field datasource="realien.BemerkTiere" prefix="Bemerkung: "/>
 				</section>
 				<section labelKey="Pflanzen">
@@ -133,6 +146,7 @@
 						<section>
 							<field datasource="realien.Feldzeichen" prefix="Feldzeichen: "/>
 							<field datasource="realien.BemerkMilitaerzeichen" prefix="Bemerkung: "/>
+							
 						</section>	
 					</section>
 					<section labelKey="Waffen">
@@ -160,13 +174,15 @@
 					<field datasource="realien.GefaeszeSalbe" prefix="Salbengefäße: "/>
 					<field datasource="realien.GefaeszeSalben" prefix="Salbengefäße: "/>
 					<field datasource="realien.GefaeszeGieszen" prefix="Gießgefäße: "/>
+					<field datasource="realien.GefaeszeSonstige" prefix="Sonstige: "/>
 					<field datasource="realien.BemerkGefaesse" prefix="Bemerkung: "/>
 					<field datasource="realien.GeraeteHaushalt" prefix="Haushaltsgeräte: "/>
 					<field datasource="realien.GeraeteKosmetik" prefix="Kosmetika: "/>
-					<field datasource="realien.GerateWerkzeuge" prefix="Werkzeuge:"/>
+					<field datasource="realien.GeraeteWerkzeuge" prefix="Werkzeuge:"/>
 					<field datasource="realien.GeraeteSonstige" prefix="Sonstige: "/>
 					<field datasource="realien.BemerkGeraet" prefix="Bemerkung: "/>
 					<field datasource="realien.Musikinstrumente" prefix="Musikinstrumente: "/>
+					<field datasource="realien.BemerkMusikinstrumente" prefix="Bemerkung: " />
 				</section>
 				<section labelKey="Mobiliar">
 					<field datasource="realien.MobiliarAufbewahrung" prefix="Mobiliar: "/>
@@ -181,7 +197,7 @@
 					<field datasource="realien.MonumentTempel" prefix="Tempel: "/>
 					<field datasource="realien.MonumentKunstwerk" prefix="Kunstwerk: "/>
 					<field datasource="realien.MonumentSonstiges" prefix="Sonstiges: "/>
-					<field datasource="realien.BemerkMonument" prefix="Bemerkung: "/>
+					<field datasource="realien.BemerkMonumente" prefix="Bemerkung: "/>
 				</section>
 				<section labelKey="Dekoration">
 					<field datasource="realien.DekorationRealien"/>
