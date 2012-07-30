@@ -20,12 +20,32 @@
         	<section labelKey="Informationen zum Bild">
         		<section labelKey="Allgemein">
         			<field datasource="marbilder.DateinameMarbilder" prefix="Dateiname: " />
+        			<field datasource="marbilder.BestandsnameMarbilder" prefix="Bestandsname: " />
+        			<field datasource="marbilder.ProjekttitelMarbilder" prefix="Projekttitel: "/>
         			<field datasource="marbilder.Dateiformat" prefix="Dateiformat: " />
         			<field datasource="marbilder.Dateigroesse" prefix="Dateigröße: " postfix=" kb" />
-        			<field datasource="marbilder.AnzahlFigurenGruppen" prefix="Pfad: " />
-        			<field datasource="marbilder.Scannummer" prefix="Scannummer: " />
+        			<field datasource="marbilder.AnzahlFigurenGruppen" prefix="Pfad: " />     
+        			<field datasource="marbilder.Scanquelle" prefix="Scanquelle: "/>
         			<field datasource="marbilder.erstellt" prefix="Erstellt: " />
         			<field datasource="marbilder.geaendert" prefix="Geändert: " />
+        			<field datasource="marbilder.Vorlagenart" prefix="Vorlagenart: "/>
+        		</section>
+        		<section labelKey="Angaben zum Bild/ zur Photohraphie">
+        			<field datasource="marbilder.Bildbeschreibung" prefix="Bildbeschreibung: "/>
+        			<field datasource="marbilder.Bildausschnitt" prefix="Bildausschnitt: "/>
+        			<field datasource="marbilder.Kommentar" prefix="Kommentar: "/>        		
+        	 		<field datasource="marbilder.AnsichtObjekt" prefix="Ansicht des Objekts: "/>
+        			<field datasource="marbilder.Fotograf" prefix="Fotograf: "/>
+        			<field datasource="marbilder.BildtraegerMarbilder" prefix="Bildträger:" />
+        			<field datasource="marbilder.FilmNr" prefix="Filmnummer: "/>
+        			<field datasource="marbilder.NegativNr" prefix="Negativnummer: "/>
+        			<field datasource="marbilder.Scannummer" prefix="Scannummer: " />
+        			<field datasource="marbilder.Fotodatum" prefix="Fotodatum: "/>
+        			<field datasource="marbilder.Bemerkung" prefix="Bemerkung: "/>
+        		
+        			
+        			
+        			
         		</section>
         	</section>
         </datasections>
