@@ -20,6 +20,19 @@
         	<section labelKey="Informationen zur Buchseite">
         		<section labelKey="">
 	            	<field datasource="buchseite.image" prefix="Dateiname: " />
+	            	<field datasource="buchseite.Inventarnummern" prefix="Negativnummern: " />
+	            	<field datasource="buchseite.InventarbucheiteInfos" prefix="Information zur Inventarbuchseite: "/>
+	           		<field datasource="buchseite.BuchseiteInhalt" prefix="Inhaltsbeschreibung der Buchseite: " />	 
+	            	<field datasource="buchseite.Originalpaginierung" prefix="Originialpaginierung: "/>
+	            	<field datasource="buchseite.BuchseiteDokumenttyp" prefix="Typ der Buchseite: " />
+	            	<field datasource="buchseite.BuchseiteAnmerkungenKossack" prefix="Anmerkungen Kossack: " />
+	            	<field datasource="buchseite.BuchseitePermalinkExtern" prefix="Permalink: "	/>
+	            </section>
+	           
+	            <section labelKey="">
+	            	
+	            	<field datasource="buchseite.Inventarnummern" prefix="Negativnummer: " />
+	            	
 	            </section>
         	</section>
         </datasections>
