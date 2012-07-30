@@ -98,6 +98,10 @@
 	            		<field datasource=".AnfDatvn" />
 	            	</context>
 	            </section>
+	            <section labelKey="Katalog">
+	            	<field datasource="bauwerk.Katalogtext" prefix="Katalogtext: " />
+	            	<field datasource="bauwerk.Katalognummer" prefix="Katalognummer: "/>
+	            </section>
 	            <context type="literatur" labelKey="Literatur" separator=" ">
 	            	<field datasource=".DAIRichtlinien" />
 	            	<field datasource=".Seite" />
