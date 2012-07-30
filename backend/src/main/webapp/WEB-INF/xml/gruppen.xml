@@ -38,6 +38,7 @@
         			</section>
         		</section>
         		<section labelKey="Überlieferungen">
+        			<field datasource="gruppen.Nachweise"  />
         			<field datasource="gruppen.ArchaeologZeugnisse" />
         			<field datasource="gruppen.AntikeSchriftquellen" />
         		</section>
