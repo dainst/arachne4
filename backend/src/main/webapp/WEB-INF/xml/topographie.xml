@@ -45,7 +45,10 @@
         		</section>
         		<section labelKey="Beschreibung">
 	        		<field datasource="topographie.TopographieTypus" prefix="Kategorie: " />
+	        		<field datasource="topographie.TopographieTypusZusatz" prefix="Zusatz: "/>
+	        		<field datasource="topographie.antikeQuellen" prefix="antike Quellen: "/>
 	        		<field datasource="topographie.freieBeschreibung" prefix="Freie Beschreibung: " />
+	        		<field datasource="topographie.KommentarTopographie" prefix="Kommentar: "/>
 	        	</section>
 	        	<section labelKey="Geschichte">
 	        		<field datasource="topographie.GeschichteTopographie"  />
