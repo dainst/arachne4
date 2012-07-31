@@ -25,35 +25,51 @@
         			<field datasource="rezeption.StandortRezeption" />
         			<field datasource="rezeption.StandstaatRezeption" />
         			<field datasource="rezeption.AufbewahrungsortRezeption" />
+        			<field datasource="rezeption.InvNrRezeption" />
         		</section>
-        		<section labelKey="Fundort/Herkunft">
-        			<field datasource="rezeption.FundortRezeption" />
+        		<section labelKey="Fundort/Herkunft" >
+        			<section separator="; ">
+        				<field datasource="rezeption.FundstaatRezeption" />
+        				<field datasource="rezeption.FundortRezeption" />
+        				<field datasource="rezeption.FundkontextRezeption"/>
+        				<field datasource="rezeption.FunddatumRezeption" />
+        				<field datasource="rezeption.verschollen" />
+        			</section>
+        			<section>
         			<field datasource="rezeption.HerkunftSlgRezeption" />
-        			<field datasource="rezeption.HerkunftKommentar" />
+        			<field datasource="rezeption.HerkunftKommentar" />       
+        			<field datasource="rezeption.AntikerAufstellungsortRezeption" prefix="Antiker Aufstellungsort: " /> 			
+        			</section>
         		</section>
         		<section labelKey="Maße">
         			<field datasource="rezeption.HoeheGesamtRezeption" prefix="Höhe: " postfix=" cm" />
         			<field datasource="rezeption.BreiteGesamtRezeption" prefix="Breite: " postfix=" cm" />
         			<field datasource="rezeption.DurchmesserGesamtRezeption" prefix="Durchmesser: " postfix=" cm" />
+        			<field datasource="rezeption.TiefeGesamtRezeption" prefix="Tiefe: " postfix=" cm" />
+        			<field datasource="rezeption.spiegelverkehrt" prefix="Spiegelverkehrt: "/>
         		</section>
         		<section labelKey="Material" separator=", ">
         			<field datasource="rezeption.MaterialRezeption" />
         			<field datasource="rezeption.MaterialbeschreibungRezeption" />		
         		</section>
-        		<section labelKey="Erhaltung" separator="; ">
-        			<section>
+        		<section labelKey="Erhaltung" >
+        			<section separator="; ">
         				<field datasource="rezeption.ErhaltungRezeption" />
         				<field datasource="rezeption.ErhaltungszustandRezeption" />
+        				<field datasource="rezeption.FarbresteRezeption" />
         			</section>
-        			<section labelKey="Bearbeitungen:" separator="; ">
-        				<field datasource="rezeption.BearbeitungenRezeption" />
-        				<field datasource="rezeption.BearbeitungenModernRezeption" />	
+        			<section separator="; ">
+        				<field datasource="rezeption.BearbeitungenRezeption"  prefix="Bearbeitungen: "/>
+        				<field datasource="rezeption.BearbeitungenModernRezeption" />        				
         			</section>
         		</section>
         		<section labelKey="Gattung">
         			<field datasource="rezeption.GattungAllgemeinRezeption" />
-        			<field datasource="rezeption.KulturkreisRezeption" prefix="Kulturepoche: " />
+        			<field datasource="rezeption.KulturkreisRezeption" prefix="Kulturepoche: " />        			
         			<field datasource="rezeption.FunktionRezeption" prefix="Funktion: "/>
+        			<field datasource="rezeption.FunktionaleVerwendungRezeption" /> 
+        			<field datasource="rezeption.AuftraggeberRezeption" prefix="Auftraggeber: "/>
+        			<field datasource="rezeption.AdressatRezeption" prefix="Adressat: "/>
         		</section>
         		<section labelKey="Beschreibung Clarac">
         			<field datasource="rezeption.KopfparameterClarac" prefix="Kopfnotation: "/>
@@ -64,6 +80,17 @@
         		<section labelKey="Stichwerk">
         			<field datasource="rezeption.ergImStich" prefix="Ergänzungen im Stichwerk festgehalten: "/>
         			<field datasource="rezeption.DarstellungErgaenzt" prefix="Stichwerk ist ergänzte Darstellung: " />
+        			<field datasource="rezeption.Stichbesonderheiten" prefix="Besonderheiten: "/>
+        		</section>
+        		<section labelKey="Inschriften">
+        			<field datasource="rezeption.InschriftCorpusRezeption" prefix="Corpus: "/>
+        			<field datasource="rezeption.InschriftSpracheRezeption" prefix="Sprache: "/>
+        			<field datasource="rezeption.InschriftRezeption" />
+        			<field datasource="rezeption.InschriftKommentarRezeption" />
+        		</section>
+        		<section labelKey="Kommentar">
+        			<field datasource="rezeption.wissKommentarRezeption" />
+        			<field datasource="rezeption.KatalogtextRezeption" prefix="Katalogtext: "/>
         		</section>
         		<context type="literatur" labelKey="Literatur" separator=" ">
 	            	<field datasource=".DAIRichtlinien" />
