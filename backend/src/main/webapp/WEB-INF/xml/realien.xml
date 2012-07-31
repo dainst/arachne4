@@ -30,6 +30,7 @@
 					<field datasource="realien.AnzahlGegenstaendeRealien" />
 				</section>
 				<section labelKey="Bildkontext und Größe">
+				<field datasource="realien.Realienart" prefix="Motivart: "/>
 					<field datasource="realien.Lokalisierung" prefix="Lokalisierung: "/>
 					<field datasource="realien.RealienHoehe" prefix="Höhe: "/>
 					<field datasource="realien.RealienBreite" prefix="Breite: "/>
@@ -53,6 +54,7 @@
 				</section>
 				<section labelKey="Figur">
 					<section>
+						<field datasource="realien.Name" prefix="Name: " />
 						<field datasource="realien.WesenRealien" prefix="Wesen: "/>
 						<field datasource="realien.BemerkFigur" prefix="Bemerkung: " />
 					</section>
