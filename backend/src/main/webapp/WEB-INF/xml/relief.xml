@@ -62,7 +62,7 @@
         			<field datasource="relief.BeschreibungHinten" prefix="Hintergrund: " />
         			<field datasource="relief.DekorationRelief" prefix="Dekoration: " />
         			<field datasource="relief.BildImBild" />
-        			<field datasource="relief.BemerkungRelief" prefix="Bemerkung: "/>
+        			<field datasource="relief.BemerkungenRelief" />
         			<field datasource="relief.VergleicheRelief" />
         		</section>
         		<section labelKey="Thematik">
