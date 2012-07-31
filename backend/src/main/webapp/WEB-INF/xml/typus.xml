@@ -79,7 +79,7 @@ Hier werden keine Direkten Bilder verwendet sondern die Bilder des Hauptvertrete
 	                    <field datasource="typus.KopfwendungTypus" />
 	                </section>
 	                <section labelKey="Bart">
-	                    <field datasource="typus.Bartrracht" />
+	                    <field datasource="typus.Barttracht" />
 	                </section>
 	                <section labelKey="Stirnhaar">
 	                    <field datasource="typus.StirnhaarTypus" />
