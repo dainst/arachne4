@@ -34,6 +34,10 @@
 	            	<field datasource="sammler.Todesort" prefix="Ort: " />
 	            	<field datasource="sammler.Todesland" prefix="Land: " />
 	            </section>
+	            <section>
+	            	<field datasource="sammler.Verwandschaftsverhaeltnis" prefix="Verwandschaftsverhältnis: "/>
+	            	<field datasource="sammler.Sammlerreihenfolge" prefix="Sammlernummer: "/>
+	            </section>
         	</section>
         </datasections>
     </display>
