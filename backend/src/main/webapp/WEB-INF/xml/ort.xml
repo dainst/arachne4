@@ -11,6 +11,7 @@
         		<field datasource="ort.Stadt" />
         		<field datasource="ort.Ort_antik" prefix="(" postfix=") " />
         		<field datasource="ort.Land" />
+        		<field datasource="ort.Aufbewahrungsort" />
             </section>
         </title>
         <subtitle>
