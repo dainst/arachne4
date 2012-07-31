@@ -27,6 +27,7 @@
 	        		</section>
 	        		<section labelKey="Land">
 	        			<field datasource="sammlungen.LandSammlungen" />
+	        			<field datasource="sammlungen.Herkunftsland" prefix="Herkunftsland: "/>
 	        		</section>
 	        		<context type="ort" separator=", ">
         				<field datasource=".Stadt"  />
@@ -37,27 +38,34 @@
 	        		<section labelKey="Aufstellung">
 	        			<field datasource="sammlungen.AufstellungSammlungen" />
 	        		</section>
-	        	</section>
-	        		        	
+	        	</section>	        		        	
 	        	
-	        	<section labelKey="Sammlungskategorie"  separator="; ">
+	        	<section labelKey="Sammlungskategorie">
 	        		<field datasource="sammlungen.Sammlungskategorie"/>
+	        		<field datasource="sammlungen.Vasen" />
+	        		<field datasource="sammlungen.vollstaendig" prefix="Vollständig: "/>
+	        		<field datasource="sammlungen.Weiterverarbeitung" prefix="Weiterverarbeitet: "/>
 	        	</section>
 	        	
 	            <section labelKey="Geschichte"  separator="; ">
 	            	<section labelKey="Entstehung">
+	            	<field datasource="sammlungen.EntstehungDatum" />
 	        			<field datasource="sammlungen.Entstehung" />
-	        		</section>
-	            
-	        		<section labelKey="Sammlung">
-	        			<field datasource="sammlungen.GeschichteSammlungen" />
+	        		</section>	            
+	        		<section>
+	        			<field datasource="sammlungen.GeschichteSammlungen" />	        			        			
 	        		</section>
 	        		<section labelKey="Auflösung">
 	        			<field datasource="sammlungen.AufloesungDatum" />
 	        			<field datasource="sammlungen.Aufloesung" />
 	        			<field datasource="sammlungen.AufloesungArt" />
-	        		</section>
+	        		</section>    	
+	        		
 	        	</section>
+	        	<section labelKey="Kommentar">
+	        			<field datasource="sammlungen.Hinweise" />
+	        			<field datasource="sammlungen.AnmerkungSammlungen" />
+	        		</section>
 	        	
 	        	<!-- 
 	        	TODO Sammler und Personen müssen eingepflegt werden
