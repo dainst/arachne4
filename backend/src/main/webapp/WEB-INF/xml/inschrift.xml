@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<category name="inschrift"
+    xmlns="http://arachne.uni-koeln.de/schemas/category"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+    <display>
+        <title>
+            <section>
+                <field datasource="inschrift.Inschrift" />
+            </section>
+        </title>
+        <subtitle>
+            <section>                
+                    <field datasource="inschrift.Sprache">                        
+                    </field>                          
+            </section>
+        </subtitle>
+        <datasections>
+            <section labelKey="Informationen zur Inschrift">                
+                <section labelKey="Allgemeine Informationen">
+                    <section labelKey="Text der Inschrift">
+                        <field datasource="inschrift.Inschrift" />
+                    </section>
+                    <section labelKey="Sprache bzw. Schrift">
+                        <field datasource="inschrift.Sprache"/>
+                    </section>
+                    <section labelKey="Kommentar">
+                        <field datasource="inschrift.Kommentar"/>
+                    </section>                    
+                </section> 
+                <section labelKey="Datierung">
+                    <context type="datierung" labelKey="Inschrift" separator=" ">
+                        <field datasource=".AnfEpoche" postfix="," />
+                        <field datasource=".AnfDatZeitraum" />
+                        <field datasource=".AnfDatJh" postfix=". Jh."/>
+                        <field datasource=".AnfDatvn" />
+                    </context>
+                </section>
+                <context type="literatur" labelKey="Literatur" separator=" ">
+                    <field datasource=".DAIRichtlinien" />
+                    <field datasource=".Seite" />
+                </context>
+            </section>
+        </datasections>
+    </display>
+    <facets>
+        <facet name="kategorie" labelKey="Kategorie">
+            <field datasource="Dataset.TableName" />
+        </facet>
+        <facet name="datierung-epoche" labelKey="Epoche">
+            <context type="datierung">
+                <field datasource=".AnfEpoche"/>
+            </context>
+        </facet>
+        <facet name="datierung-epoche" labelKey="Epoche">
+            <context type="datierung">
+                <field datasource=".EndEpoche"/>
+            </context>
+        </facet>
+        <facet name="sprache" labelKey="Sprache bzw. Schrift">
+            <field datasource="inschrift.Sprache"/>
+        </facet>        
+    </facets>
+</category>
