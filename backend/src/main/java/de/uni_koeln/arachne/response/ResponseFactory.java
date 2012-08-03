@@ -1,8 +1,11 @@
 package de.uni_koeln.arachne.response;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -69,7 +72,14 @@ public class ResponseFactory {
 		response.setDatasetGroup(dataset.getFieldFromFields(datasetGroupFieldName));		
 		
 		// set lastModified
-		response.setLastModified(dataset.getFieldFromFields(tableName + ".lastModified"));
+		Date lastModified;
+		try {
+			lastModified = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS", Locale.GERMAN).parse(
+					dataset.getFieldFromFields(tableName + ".lastModified"));
+		} catch (Exception e) {
+			lastModified = null;
+		}
+		response.setLastModified(lastModified);
 		
 		final String filename = xmlConfigUtil.getFilenameFromType(response.getType());
 		

@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.response;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -31,7 +32,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * The date of the last Modification of the dataset.
 	 */
-	protected String lastModified;
+	protected Date lastModified;
 	
 	/**
 	 * The context map Contains the Contexts of the dataset.
@@ -86,11 +87,11 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		sections = content;
 	}
 	
-	public String getLastModified() {
+	public Date getLastModified() {
 		return lastModified;
 	}
 
-	public void setLastModified(final String lastModified) {
+	public void setLastModified(final Date lastModified) {
 		this.lastModified = lastModified;
 	}
 
