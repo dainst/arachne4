@@ -436,6 +436,225 @@
 					<field datasource="objektplastik.Bemerkungen"/>
 				</section>
 			</section>
+			<section labelKey="Informationen zu Terrakotten">
+				<section labelKey="Technik">				
+					<section>
+						<field datasource="objektterrakotten.Terrakottentyp" />
+						<field datasource="objektterrakotten.Beschreibung" prefix="Beschreibung: "/>				
+					</section>
+					<section  labelKey="Serie Kopf" separator=", ">
+						<field datasource="objektterrakotten.MatrserKopf" />
+						<field datasource="objektterrakotten.GenerationKopf" />
+						<field datasource="objektterrakotten.VariationKopf" />
+					</section>
+					<section labelKey="Serie Körper" separator=", ">
+						<field datasource="objektterrakotten.MatrserKoerper" />
+						<field datasource="objektterrakotten.GenerationKoerper" />
+						<field datasource="objektterrakotten.VariationKoerper" />
+					</section>
+					<section labelKey="Serie Kopf mit Körper">
+						<field datasource="objektterrakotten.MatrserKopfKoerper" />
+						<field datasource="objektterrakotten.GenerationKopfKoerper" />
+						<field datasource="objektterrakotten.VariationKopfKoerper" />
+						<field datasource="objektterrakotten.Variationsart" />
+						<field datasource="objektterrakotten.StammCode" />
+					</section>
+					<section>
+						<field datasource="objektterrakotten.PatrizenqualitaetPur" prefix="Qualität: "/>
+						<field datasource="objektterrakotten.Anbringung" prefix="Anbringung: "/>
+					</section>
+				</section>
+				<section labelKey="Bearbeitung" separator="; ">
+					<field datasource="objektterrakotten.depotfremdeRepliken" />
+					<field datasource="objektterrakotten.Aufnahmedesiderate" />
+					<field datasource="objektterrakotten.KatalogtextNoelke" />
+					<field datasource="objektterrakotten.persNotizen" />
+					<field datasource="objektterrakotten.KomplexDatierung" />
+					<field datasource="objektterrakotten.Besonderheit" />
+				</section>
+			</section>
+			<section labelKey="Informationen zur Bauornamentik">
+				<section labelKey="Bauglied">
+					<field datasource="objektbauornamentik.Bauglied" />
+					<field datasource="objektbauornamentik.MaszeBauglied" prefix="Maße: "/>
+					<field datasource="objektbauornamentik.ProvenienzBauornamentik" prefix="Provenienz" />
+					<field datasource="objektbauornamentik.BemerkungenBauornamentik" />
+				</section>
+				<section labelKey="Bauwerk">
+					<field datasource="objektbauornamentik.Gebaeudetyp" />
+					<field datasource="objektbauornamentik.BauwerkKulturkreis" />
+					<field datasource="objektbauornamentik.Bauordnung" prefix="Bauordnung: " />
+					<field datasource="objektbauornamentik.Architekt" prefix="Architekt: "/>
+					<field datasource="objektbauornamentik.Bauphase" prefix="Bauphase: "/>
+					<field datasource="objektbauornamentik.Position" prefix="Position: "/>
+				</section>
+				<section labelKey="Unterbau" separator="; ">
+					<field datasource="objektbauornamentik.Unterbau" />
+					<field datasource="objektbauornamentik.UnterbauEuthynterie" />
+					<field datasource="objektbauornamentik.UnterbauBoden" />
+					<field datasource="objektbauornamentik.UnterbauPodium" />
+					<field datasource="objektbauornamentik.UnterbauPiedestal" />
+					<field datasource="objektbauornamentik.UnterbauKrepis" />
+					<field datasource="objektbauornamentik.UnterbauTreppenstufen" />
+					<field datasource="objektbauornamentik.UnterbauSitzstufen" />
+					<field datasource="objektbauornamentik.UnterbauBeschreibung" />
+				</section>
+				<section labelKey="Aufgehendes" separator=";  ">
+					<field datasource="objektbauornamentik.Aufgehends"/>
+					<field datasource="objektbauornamentik.AufgehendesBogen" />
+					<field datasource="objektbauornamentik.AufgehendesWand" />
+					<field datasource="objektbauornamentik.AufgehendesDecke"/>
+					<field datasource="objektbauornamentik.AufgehendesFenster"/>
+					<field datasource="objektbauornamentik.AufgehendesTuer" />
+					<field datasource="objektbauornamentik.AufgehendesSonstiges" />
+					<field datasource="objektbauornamentik.AufgehendesBeschreibung" />
+				</section>
+				<section labelKey="Stütze / Säule" separator="; ">
+					<field datasource="objektbauornamentik.Saeule" />
+					<field datasource="objektbauornamentik.SaeuleStuetze" />
+					<field datasource="objektbauornamentik.SaeulePlinthe" />
+					<field datasource="objektbauornamentik.SaeuleBasis" />
+					<field datasource="objektbauornamentik.SaeuleSchaft" />
+					<field datasource="objektbauornamentik.SaeuleKapitell" />
+					<field datasource="objektbauornamentik.SaeuleBeschreibung" />
+				</section>
+				<section labelKey="Gebälkt / Dach" separator="; " >
+					<field datasource="objektbauornamentik.Gebaelk" />
+					<field datasource="objektbauornamentik.GebaelkArchitrav" />
+					<field datasource="objektbauornamentik.GebaelkFries" />
+					<field datasource="objektbauornamentik.GebaelkGesims" />
+					<field datasource="objektbauornamentik.GebaelkGiebel" />
+					<field datasource="objektbauornamentik.GebaelkSima" />
+					<field datasource="objektbauornamentik.GebaelkAttika" />
+					<field datasource="objektbauornamentik.GebaelkDach" />
+					<field datasource="objektbauornamentik.GebaelkBeschreibung" />
+				</section>
+				<section labelKey="Dekor">
+					<section>
+						<field datasource="objektbauornamnetik.reliefiertBauornament" />
+					</section>
+					<section labelKey="Dekorationsart" separator="; ">
+						<field datasource="objektbauronamentik.DekorationsartBauornament" />
+						<field datasource="objektbauornamentik.Dekorationsart2" />
+						<field datasource="objektbauornamentik.BemerkungenDekor" />
+						<field datasource="objektbauornamentik.VergleicheBauornament" />
+					</section>
+				</section>
+				<section labelKey="Motivkomplexe">
+					<field datasource="objektbauornamentik.Komplex" />
+					<field datasource="objektbauornamentik.KomplexPalmetten" />
+					<field datasource="objektbauornamentik.KomplexAkanthusPalmetten" />
+					<field datasource="objektbauornamentik.KomplexBluetenfries" />
+					<field datasource="objektbauornamentik.KomplexRanke" />
+					<field datasource="objektbauornamentik.KomplexGirlande" />
+					<field datasource="objektbauornamentik.KomplexKandelaber" />
+					<field datasource="objektbauornamentik.KomplexSonstFriese" />
+					<field datasource="objektbauornamentik.KomplexKapitelle" />
+					<field datasource="objektbauornamentik.KomplexBasen" />
+					<field datasource="objektbauornamentik.KomplexBeschreibung" />
+				</section>
+				<section labelKey="EinzelMotiv">
+					<section labelKey="Gegenständliche" separator="; ">
+						<field datasource="objektbauornamnentik.GegenstMotiv" />
+						<field datasource="objektbauornamentik.GegenstMotivAnzahl" />
+						<field datasource="objektbauornamnentik.GegenstMotivBeschreibung" />
+					</section>
+					<section labelKey="Abstrakte" separator="; ">
+						<field datasource="objektbauornamentik.abstraktMotiv" />
+						<field datasource="objektbauornamentik.abstraktMotivMaeander" />
+						<field datasource="objektbauornamentik.abstraktMotivBeschreibung" />					
+					</section>
+					<section labelKey="Pflanzliche">
+						<field datasource="objektbauornamentik.pflanzMotiv" />
+						<field datasource="objektbauornamentik.pflanzMotivPalmette" />
+						<field datasource="objektbauornamentik.pflanzMotivAkanthus" />
+						<field datasource="objektbauornamentik.pflanzMotivBlatt" />
+						<field datasource="objektbauornamentik.pflanzMotivBluete" />
+						<field datasource="objektbauornamentik.pflanzMotivCaulis" />
+						<field datasource="objektbauornamentik.pflanzMotivFrucht" />
+						<field datasource="objektbauornamentik.pflanzMotivDorKyma" />
+						<field datasource="objektbauornamentik.pflanzMotivIonKyma" />
+						<field datasource="objektbauornamentik.pflanzMotivLesbKyma" />
+						<field datasource="objektbauornamentik.pflanzMotivHelix" />
+						<field datasource="objektbauornamentik.pflanzMotivBeschreibung" />
+					</section>
+				</section>
+ 			</section>
+ 			<section labelKey="Information zum Gemälde">
+ 				<section labelKey="Kerndaten - neuzeitliche Gemälde">
+ 					<field datasource="objektgemaelde.KuenstlerGemaelde" prefix="Künstler: "/>
+ 					<field datasource="objektgemaelde.KuenstlerVorbildGemaelde" prefix="Künstler Vorbild: "/>
+ 					<field datasource="objektgemaelde.BeschreibungGemaelde" prefix="Beschreibung: " />
+ 					<field datasource="objektgemaelde.TechnikGemaeldeCheck" prefix="Technik: "/>
+ 					<field datasource="objektgemaelde.TechnikGemaelde" prefix="Spezifikiation Technik: "/>
+ 					<field datasource="objektgemaelde.GemaeldeMatTraeger" prefix="Material Träger: "/>
+ 					<field datasource="objektgemaelde.SpezGemaeldeMatTraeger" prefix="Spezifikation Material Träger: "/>
+ 					<field datasource="objektgemaelde.GemaeldeMatMalerei" prefix="Material Malerei: " />
+ 					<field datasource="objektgemaelde.SpezGemaeldeMatMalerei" prefix="Spezifikation Material Malerei: "/>
+ 					<field datasource="objektgemaelde.Beschreibung" prefix="Beschreibung: "/>
+ 					<field datasource="objektgemaelde.ZustandGemaelde" prefix="Zustand: "/>
+ 					<field datasource="objektgemaelde.RestaurierungGemaelde" prefix="Restaurierungen: "/>
+ 				</section>
+ 				<section labelKey="Kerndaten - Antike Flächenkunst">
+ 					<field datasource="objektgemaelde.KuenstlerFlaechenkunst" prefix="Künstler: "/>
+ 					<field datasource="objektgemaelde.BeschreibungFlaechenkunst" prefix="Beschreibung: "/>
+ 					<field datasource="objektgemaelde.RestaurierungenFlaechenkunst" prefix="Restaurierungen: "/>
+ 					<field datasource="objektgemaelde.DekorationsartObjektgemaelde" prefix="Dekorationsart: "/>
+ 					<field datasource="objektgemaelde.MalereistilObjektgemaelde" prefix="Malereistil: "/>
+ 					<field datasource="objektgemaelde.MarmorsorteObjektgemaelde" prefix="Marmorsorte: "/>
+ 					<field datasource="objektgeamelde.MarmorinkrustationenStilObjektgemaelde" prefix="Stil der Marmorinkrustationen: "/>
+ 					
+ 				</section>
+ 				<section labelKey="Bezeichnung">
+ 					<field datasource="objektgemaelde.Bezeichnet" prefix="Bezeichnet: "/>
+ 					<field datasource="objektgemaelde.UntenLinks" prefix="Unten Links: "/>
+ 					<field datasource="objektgemaelde.UntenMitte" prefix="Unten Mitte: "/>
+ 					<field datasource="objektgemaelde.UntenRechts" prefix="Unten Rechts: "/>
+ 					<field datasource="objektgemaelde.ObenLinks" prefix="Oben Links: "/>
+ 					<field datasource="objektgemaelde.ObenMitte" prefix="Oben Mitte: "/>
+ 					<field datasource="objektgemaelde.ObenRechts" prefix="Oben Rechts: "/>
+ 				</section>
+ 				<section labelKey="Maße">
+ 					<field datasource="objektgemaelde.BildMasze" prefix="Bildmaße: "/>
+ 					<field datasource="objektgemaelde.PlatteMasze" prefix="Plattenmaße: "/>
+ 					<field datasource="objektgemaelde.BlattMasze" prefix="Blattmaße: "/>
+ 				</section>
+ 			</section>
+ 			<section labelKey="Informationen zum Mosaik">
+ 				<section labelKey="Technik">
+ 						<section>
+ 					<field datasource="objektmosaik.HerstellungstechnikMosaik" />
+ 						</section>
+ 						<section labelKey="Material" separator="; ">
+ 							<field datasource="objektmosaik.MaterialMosaik" />
+ 							<field datasource="objektmosaik.MaterialSpezifizierungMosaik" />
+ 						</section>
+ 						<section labelKey="Anbringung" separator="; ">
+ 							<field datasource="objektmosaik.AnbringungMosaik" />
+ 							<field datasource="objektmosaik.AnbringungSpezifizerungMosaik" />
+ 						</section>
+ 				</section>
+ 				<section labelKey="Künstler">
+ 					<field datasource="objektmosaik.KuenstlerMosaik"/>
+ 					<field datasource="objektmosaik.SigniertMosaik" prefix="Signiert: " />
+ 					<field datasource="objektmosaik.VorbildMosaik" prefix="Vorbild: "/>
+ 				</section>
+ 				<section labelKey="Dekoration">
+ 					<section labelKey="Farbigkeit" separator="; ">
+ 						<field datasource="objektmosaik.FarbigkeitMosaik" />
+ 						<field datasource="objektmosaik.FarbigkeitSpezifizierungMosaik"/>
+ 					</section>
+ 					<section labelKey="Rahmung des Mosaiks" separator="; ">
+ 						<field datasource="objektmosaik.RahmungMosaik"/>
+ 						<field datasource="objektmosaik.RahmungSpezifizierungMosaik"/>
+ 					</section>
+ 					<section labelKey="Dekor" separator="; ">
+ 						<field datasource="objektmosaik.DekorMosaik" />
+ 						<field datasource="objektmosaik.DekorSpezifizierungMosaik" />
+ 					</section>
+ 				</section>
+ 				
+ 			</section>
 		</datasections>
 	</display>
 	<facets>
