@@ -22,6 +22,9 @@
                     <section labelKey="Text der Inschrift">
                         <field datasource="inschrift.Inschrift" />
                     </section>
+                    <section labelKey="Übersetzung">
+                        <field datasource="inschrift.Uebersetzung" />
+                    </section>
                     <section labelKey="Sprache bzw. Schrift">
                         <field datasource="inschrift.Sprache"/>
                     </section>
@@ -38,8 +41,17 @@
                     </context>
                 </section>
                 <context type="literatur" labelKey="Literatur" separator=" ">
-                    <field datasource=".DAIRichtlinien" />
-                    <field datasource=".Seite" />
+                    <field datasource=".Abkuerzungen">
+                        <ifEmpty>
+                            <field datasource=".DAIRichtlinien" />
+                        </ifEmpty>
+                    </field>
+                    <field datasource=".Corpuszitat">
+                        <ifEmpty>
+                            <field datasource=".Seite"/>
+                        </ifEmpty>
+                    </field>
+                    <field datasource=".Onlinequelle" prefix="(" postfix=")" />
                 </context>
             </section>
         </datasections>
