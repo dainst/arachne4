@@ -531,10 +531,11 @@
 				</section>
 				<section labelKey="Dekor">
 					<section>
-						<field datasource="objektbauornamnetik.reliefiertBauornament" />
+						<field datasource="objektbauornamentik.reliefiertBauornament" />
+						<field datasource="objektbauornamentik.Profil" prefix="Profil: " />
 					</section>
 					<section labelKey="Dekorationsart" separator="; ">
-						<field datasource="objektbauronamentik.DekorationsartBauornament" />
+						<field datasource="objektbauornamentik.DekorationsartBauornament" />
 						<field datasource="objektbauornamentik.Dekorationsart2" />
 						<field datasource="objektbauornamentik.BemerkungenDekor" />
 						<field datasource="objektbauornamentik.VergleicheBauornament" />
@@ -557,7 +558,7 @@
 					<section labelKey="Gegenständliche" separator="; ">
 						<field datasource="objektbauornamnentik.GegenstMotiv" />
 						<field datasource="objektbauornamentik.GegenstMotivAnzahl" />
-						<field datasource="objektbauornamnentik.GegenstMotivBeschreibung" />
+						<field datasource="objektbauornamentik.GegenstMotivBeschreibung" />
 					</section>
 					<section labelKey="Abstrakte" separator="; ">
 						<field datasource="objektbauornamentik.abstraktMotiv" />
@@ -631,7 +632,7 @@
  						</section>
  						<section labelKey="Anbringung" separator="; ">
  							<field datasource="objektmosaik.AnbringungMosaik" />
- 							<field datasource="objektmosaik.AnbringungSpezifizerungMosaik" />
+ 							<field datasource="objektmosaik.AnbringungSpezifizierungMosaik" />
  						</section>
  				</section>
  				<section labelKey="Künstler">
@@ -652,8 +653,102 @@
  						<field datasource="objektmosaik.DekorMosaik" />
  						<field datasource="objektmosaik.DekorSpezifizierungMosaik" />
  					</section>
+ 				</section> 				
+ 			</section>
+ 			<section labelKey="Informationen zum Objekt: Träger von Siegelabdrücken">
+ 				<section labelKey="Identifikation">
+ 					<field datasource="objektplomben.pINVNR" prefix="Inventarnummer: " />
+ 					<field datasource="objektplomben.pMUSEUM" prefix="Museum / Sammlung: "/>
  				</section>
- 				
+ 				<section labelKey="Herkunft">
+ 					<field datasource="objektplomben.pFUNDLAND" prefix="Fundland: "/>
+ 					<field datasource="objektplomben.pORTREGION" prefix="Fundort: "/>
+ 					<field datasource="objektplomben.pFLORTSTEIL" prefix="Flur / Grabungsstätte: "/>
+ 					<field datasource="objektplomben.pFUNDPLATZ" prefix="Fundstelle: "/>
+ 					<field datasource="objektplomben.pPLATZTYPUS" prefix="Platztypus: "/>
+ 					<field datasource="objektplomben.pKONTEXTDAT" prefix="Kontextdatierung: "/>
+ 					<field datasource="objektplomben.pBEREICH" prefix="Bereich: "/>
+ 				</section>
+ 				<section labelKey="Form / Typus">
+ 					<field datasource="objektplomben.pPLOMBENFORM" prefix="Plombenform: "/>
+ 				</section>
+ 				<section labelKey="Erhaltung">
+ 					<field datasource="objektplomben.pERHALTUNG" />
+ 				</section>
+ 				<section labelKey="Beschriftung">
+ 					<field datasource="objektplomben.pSCHRIFT" prefix="Schriftzeichen"/>
+ 				</section>
+ 				<section labelKey="Verknüpfter Siegelabdruck Nummer">
+ 					<field datasource="objektplomben.pCMSNR" prefix="CMS - Nummer: "/>
+ 				</section>
+ 			</section>
+ 			<section labelKey="Informationen zum Objekt: Siegel">
+ 				<section labelKey="Identifikation">
+ 					<field datasource="objektsiegel.CMSNR" prefix="CMS - Nummer: "/>
+ 					<field datasource="objektsiegel.sINVNR" prefix="Inventarnummer: "/>
+ 					<field datasource="objektsiegel.sMUSEUM" prefix="Muserum / Sammlung: "/>
+ 				</section>
+ 				<section labelKey="Herkunft">
+ 					<field datasource="objektsiegel.FUNDLAND" prefix="Fundland: "/>
+ 					<field datasource="objektsiegel.ORTREGION" prefix="Fundort: "/>
+ 					<field datasource="objektsiegel.FLORTSTEIL" prefix="Flur / Grabungsstätte: "/>
+ 					<field datasource="objektsiegel.FUNDPLATZ" prefix="Fundstelle: "/>
+ 					<field datasource="objektsiegel.PLATZTYPUS" prefix="Platztypus: "/>
+ 					<field datasource="objektsiegel.KONTEXTDAT" prefix="Kontextdatierung: "/>
+ 					<field datasource="objektsiegel.BEREICH" prefix="Bereich: "/>
+ 				</section>
+ 				<section labelKey="Form">
+ 					<field datasource="objektsiegel.SITYPUS" prefix="Siegelform: "/>
+ 					<field datasource="objektsiegel.SIFANZAHL" prefix="Zahl der Siegelflächen: "/>
+ 					<field datasource="objektsiegel.SIFWOELBUNG" prefix="Wölbung der Siegelfläche: "/>
+ 					<field datasource="objektsiegel.SIFUMRISS" prefix="Umriss der Siegelfläche: "/>
+ 					<field datasource="objektsiegel.SINEBENS" prefix="Nebenseite des Siegels: "/>
+ 					<field datasource="objektsiegel.BOHRUNGEN" prefix="Art der Durchbohrung: "/>
+ 				</section>
+ 				<section labelKey="Material und Technik">
+ 					<field datasource="objektsiegel.SIFMAT" prefix="Material: "/>
+ 					<field datasource="objektsiegel.MATERIALGRUPPE" prefix="Materialgruppe: "/>
+ 					<field datasource="objektsiegel.DEKORTECH" prefix="Bearbeitungstechnik: "/>
+ 					<field datasource="objektsiegel.SONSTMERK" prefix="Sonstige Merkmale: "/>
+ 				</section>
+ 				<section labelKey="Maße und Erhaltung">
+ 					<field datasource="objektsiegel.SILAENGE" prefix="Länge: "/>
+ 					<field datasource="objektsiegel.SIBREITE" prefix="Breite: "/>
+ 					<field datasource="objektsiegel.SIDICKE" prefix="Dicke: "/>
+ 					<field datasource="objektsiegel.FADENMAX" prefix="Bohrkanal max: "/>
+ 					<field datasource="objektsiegel.FADENMIN" prefix="Bohrkanal min: "/>
+ 					<field datasource="objektsiegel.SIZUSTAND" prefix="Zustand: "/>
+ 					<field datasource="objektsiegel.SIFRAGMENT" prefix="Fragment: "/>
+ 				</section>
+ 				<section labelKey="Allgemeine Informationen zum Dekor">
+ 					<field datasource="objektsiegel.DEKORTYPUS" prefix="Dekortypus: "/>
+ 					<field datasource="objektsiegel.KOMPOSITIO" prefix="Komposition: " />
+ 					<field datasource="objektsiegel.GRUPPE" prefix="Gruppe: " />
+ 					<field datasource="objektsiegel.HANDLUNG" prefix="Handlung: "/>
+ 					<field datasource="objektsiegel.UNKLASS" prefix="Sonstiger Dekor: "/>
+ 				</section>
+ 				<section labelKey="Stilistische Einordnung">
+ 					<field datasource="objektsiegel.STILGRUPPE" prefix="Stilgruppe: "/>
+ 					<field datasource="objektsiegel.STILDAT" prefix="Stilistische Datierung: "/>
+ 					<field datasource="objektsiegel.ZEITSTUFE" prefix="Zeitstufe: "/>
+ 				</section>
+ 				<section labelKey="Ornamente">
+ 					<field datasource="objektsiegel.MAKROORNAMENT" prefix="Makroornament: "/>
+ 					<field datasource="objektsiegel.STANDARDORN" prefix="Standardornament: "/>
+ 				</section>
+ 				<section labelKey="Schriftzeichen">
+ 					<field datasource="objektsiegel.SCHRIFT" prefix="Schrift: "/>
+ 				</section>
+ 				<section labelKey="Figürliche Motive außer Lebewesen">
+ 					<field datasource="objektsiegel.GELAENDE" prefix="Gelände: "/>
+ 					<field datasource="objektsiegel.sPFLANZEN" prefix="Pflanzen: " />
+ 					<field datasource="objektsiegel.SYMBOLE" prefix="Symbole: "/>
+ 					<field datasource="objektsiegel.MOEBELBAU" prefix="Möbel / Bauten: "/>
+ 					<field datasource="objektsiegel.GERAETE" prefix="Geräte: "/>
+ 				</section>
+ 				<section labelKey="Kommentar">
+ 					<field datasource="objektsiegel.KOMMENTAR"/>
+ 				</section>
  			</section>
 		</datasections>
 	</display>
