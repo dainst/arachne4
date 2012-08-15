@@ -18,19 +18,11 @@
         </subtitle>
         <datasections>
             <section labelKey="Informationen zur Inschrift">                
-                <section labelKey="Allgemeine Informationen">
-                    <section labelKey="Text der Inschrift">
-                        <field datasource="inschrift.Inschrift" />
-                    </section>
-                    <section labelKey="Übersetzung">
-                        <field datasource="inschrift.Uebersetzung" />
-                    </section>
-                    <section labelKey="Sprache bzw. Schrift">
-                        <field datasource="inschrift.Sprache"/>
-                    </section>
-                    <section labelKey="Kommentar">
-                        <field datasource="inschrift.Kommentar"/>
-                    </section>                    
+                <section labelKey="Allgemeine Informationen">                   
+                        <field datasource="inschrift.Inschrift" prefix="Text der Inschrift" />                    
+                        <field datasource="inschrift.Uebersetzung" prefix="Übersetzung: " />                  
+                        <field datasource="inschrift.Sprache" prefix="Sprache / Schrift: "/> 
+                        <field datasource="inschrift.Kommentar" prefix="Kommentar: "/>                                
                 </section> 
                 <section labelKey="Datierung">
                     <context type="datierung" labelKey="Inschrift" separator=" ">
