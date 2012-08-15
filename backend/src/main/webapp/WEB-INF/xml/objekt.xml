@@ -685,6 +685,7 @@
  			<section labelKey="Informationen zum Objekt: Siegel">
  				<section labelKey="Identifikation">
  					<field datasource="objektsiegel.CMSNR" prefix="CMS - Nummer: "/>
+ 					<field datasource="objektsiegel.CMSBand" prefix="CMS - Band: "/>
  					<field datasource="objektsiegel.sINVNR" prefix="Inventarnummer: "/>
  					<field datasource="objektsiegel.sMUSEUM" prefix="Muserum / Sammlung: "/>
  				</section>
