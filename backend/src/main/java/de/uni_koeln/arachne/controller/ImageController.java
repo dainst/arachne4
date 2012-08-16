@@ -132,7 +132,7 @@ public class ImageController {
 		}
 
 		// TODO replace when the correct images are accessible by the image server
-		imageName = "ptif_test.tif";
+		imageName = "bookscans/volumes/0000/0006/adam_collectionpolignac/tiled/BOOK-collectionpolignac-0034_164.ptif";
 
 		final String remainingQueryString = request.getQueryString().split("&", 2)[1];
 		final String fullQueryString = "?FIF=" + imagePath + imageName + "&" + remainingQueryString;
@@ -252,12 +252,12 @@ public class ImageController {
 			
 			LOGGER.debug("Watermark: " + imageServerInstance);
 			// TODO replace when the correct images are accessible by the image server
-			imageName = "ptif_test.tif";
-
+			imageName = "bookscans/volumes/0000/0006/adam_collectionpolignac/tiled/BOOK-collectionpolignac-0034_164.ptif";
 			try {
 				// TODO use watermarks when they are fully implemented on the server side
 				final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + "?FIF=" + imagePath + imageName 
 						+ "&SDS=0,90&CNT=1.0&WID=" + resolution + "&QLT=99&CVT=jpeg");
+				LOGGER.debug("Full server adress: " + serverAdress);
 				connection = (HttpURLConnection)serverAdress.openConnection();			
 				connection.setRequestMethod("GET");
 				connection.setReadTimeout(imageServerReadTimeout);
@@ -308,7 +308,7 @@ public class ImageController {
 			final Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId
 					, userRightsService.getCurrentUser());
 			// TODO get correct image name not the old one
-			imageName = imageEntity.getField("marbilder.Pfad");
+			imageName = imageEntity.getField("marbilder.DateinameMarbilder");
 			LOGGER.debug("Image: " + entityId + ": " + imageName);
 			
 			// TODO implement watermarking
