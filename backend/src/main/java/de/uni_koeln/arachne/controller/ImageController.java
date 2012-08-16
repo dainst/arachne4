@@ -132,8 +132,7 @@ public class ImageController {
 		}
 
 		// TODO replace when the correct images are accessible by the image server
-		imageName = "bookscans/volumes/0000/0006/adam_collectionpolignac/tiled/BOOK-collectionpolignac-0034_164.ptif";
-
+		imageName = "volumes/0000/0003/FADatenbankabb0021/FA-S4124-2_80425.ptif";
 		final String remainingQueryString = request.getQueryString().split("&", 2)[1];
 		final String fullQueryString = "?FIF=" + imagePath + imageName + "&" + remainingQueryString;
 
@@ -252,7 +251,7 @@ public class ImageController {
 			
 			LOGGER.debug("Watermark: " + imageServerInstance);
 			// TODO replace when the correct images are accessible by the image server
-			imageName = "bookscans/volumes/0000/0006/adam_collectionpolignac/tiled/BOOK-collectionpolignac-0034_164.ptif";
+			imageName = "volumes/0000/0003/FADatenbankabb0021/FA-S4124-2_80425.ptif";
 			try {
 				// TODO use watermarks when they are fully implemented on the server side
 				final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + "?FIF=" + imagePath + imageName 
@@ -300,17 +299,20 @@ public class ImageController {
 		if (entityId>0) {
 			final EntityId arachneId = arachneEntityIdentificationService.getId(entityId);
 			
-			if(!arachneId.getTableName().equals("marbilder")) {
+			if (!arachneId.getTableName().equals("marbilder")) {
 				LOGGER.error("EntityId {} does not refer to an image.", entityId);
 				return new ImageProperties(imageName, resolution, watermark, 404);
 			}
 			
 			final Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId
 					, userRightsService.getCurrentUser());
-			// TODO get correct image name not the old one
+			
 			imageName = imageEntity.getField("marbilder.DateinameMarbilder");
 			LOGGER.debug("Image: " + entityId + ": " + imageName);
-			
+			// imageName == null means the user is not allowed to access the image dataset in 'marbilder'
+			if (StrUtils.isEmptyOrNull(imageName)) {
+				return new ImageProperties(imageName, resolution, watermark, 403);
+			}
 			// TODO implement watermarking
 			// Check image rights
 			final ImageRightsGroup imageRightsGroup = imageRightsDao.findByName(imageEntity.getField("marbilder.BildrechteGruppe"));
