@@ -132,7 +132,7 @@ public class ImageController {
 		}
 
 		// TODO replace when the correct images are accessible by the image server
-		imageName = "volumes/0000/0003/FADatenbankabb0021/FA-S4124-2_80425.ptif";
+		imageName = "arachne4webimage-objects-000008/FA-S19655-05_94060,04.ptif";
 		final String remainingQueryString = request.getQueryString().split("&", 2)[1];
 		final String fullQueryString = "?FIF=" + imagePath + imageName + "&" + remainingQueryString;
 
@@ -251,7 +251,7 @@ public class ImageController {
 			
 			LOGGER.debug("Watermark: " + imageServerInstance);
 			// TODO replace when the correct images are accessible by the image server
-			imageName = "volumes/0000/0003/FADatenbankabb0021/FA-S4124-2_80425.ptif";
+			imageName = "arachne4webimage-objects-000008/FA-S19655-05_94060,04.ptif";
 			try {
 				// TODO use watermarks when they are fully implemented on the server side
 				final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + "?FIF=" + imagePath + imageName 
@@ -313,7 +313,7 @@ public class ImageController {
 			if (StrUtils.isEmptyOrNull(imageName)) {
 				return new ImageProperties(imageName, resolution, watermark, 403);
 			}
-			// TODO implement watermarking
+			
 			// Check image rights
 			final ImageRightsGroup imageRightsGroup = imageRightsDao.findByName(imageEntity.getField("marbilder.BildrechteGruppe"));
 			final UserAdministration currentUser = userRightsService.getCurrentUser();
