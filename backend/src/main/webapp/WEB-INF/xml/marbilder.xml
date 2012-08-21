@@ -29,6 +29,7 @@
         			<field datasource="marbilder.erstellt" prefix="Erstellt: " />
         			<field datasource="marbilder.geaendert" prefix="Geändert: " />
         			<field datasource="marbilder.Vorlagenart" prefix="Vorlagenart: "/>
+        			
         		</section>
         		<section labelKey="Angaben zum Bild/ zur Photohraphie">
         			<field datasource="marbilder.Bildbeschreibung" prefix="Bildbeschreibung: "/>
@@ -42,10 +43,9 @@
         			<field datasource="marbilder.Scannummer" prefix="Scannummer: " />
         			<field datasource="marbilder.Fotodatum" prefix="Fotodatum: "/>
         			<field datasource="marbilder.Bemerkung" prefix="Bemerkung: "/>
-        		
-        			
-        			
-        			
+        		</section>
+        		<section labelKey="Pfad" minGroupId="600">
+        			<field datasource="marbilder.Pfad"/>
         		</section>
         	</section>
         </datasections>
