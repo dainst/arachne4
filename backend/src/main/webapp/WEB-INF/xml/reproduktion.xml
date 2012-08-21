@@ -133,6 +133,38 @@
         			<field datasource="reproduktion.BemerkungenReproduktion" />
         			<field datasource="reproduktion.wissKommentarRepro" />
         		</section>
+        		<section labelKey="Für Bearbeiter" minGroupId="600">
+        			<section>
+        				<field datasource="reproduktion.Bezugsquelle" prefix="Bezugsquelle: "/>
+        				<field datasource="reproduktion.Preis" prefix="Preis: "/>
+        				<field datasource="reproduktion.PreisImEigenenVerkauf" prefix="Verkaufspreis: "/>
+        				<field datasource="reproduktion.Versicherung" prefix="Versicherung: "/>
+        				<field datasource="reproduktion.Versicherungswert" prefix="Versicherungswert: "/>
+        				<field datasource="reproduktion.FuehrungsblattVorhanden" prefix="Führungsblatt: "/>
+        				<field datasource="reproduktion.Besitzverhaeltnisse" prefix="Besitzverhältnisse: "/>
+        				<field datasource="reproduktion.Vertraege" prefix="Verträge: "/>
+        				<field datasource="reproduktion.ImportTemp" prefix="Import: "/>
+        				<field datasource="reproduktion.IstEntliehen" prefix="Verliehen: "/>
+        				<field datasource="reproduktion.Entleihung" />
+        				<field datasource="reproduktion.ReproWiederbeschaffung" prefix="Wiederbeschaffung: "/>
+        			</section>
+        			<section labelKey="Restauration">
+        				<field datasource="reproduktion.ReproRestauroBeschreibungVorzustand" prefix="Vorzustand: "/>
+        				<field datasource="reproduktion.ReproRestauroBeschreibung" prefix="Beschreibung: "/>
+        				<field datasource="reproduktion.ReproRestauroMasznahmen" prefix="Maßnahmen: "/>
+        				<field datasource="reproduktion.ReproRestauroMasznahmenFruehere" prefix="Frühere Maßnahmen: " />
+        				<field datasource="reproduktion.ReproRestauroRestaurier" prefix="Restaurierator: "/> 
+        				<field datasource="reproduktion.ReproRestauroMaterialBemerk" prefix="Bemerkung Material: "/>
+        				<field datasource="reproduktion.ReproRestauroZeitraum" prefix="Zeitraum: "/>
+        				<field datasource="reproduktion.ReproRestauroDurchgefuehrtVon" prefix="Durchgeführt von: "/>
+        				<field datasource="reproduktion.ReproRestauroAnalyseMasznahmenMethoden" prefix="Analyse Maßnahmen: "/>
+        				<field datasource="reproduktion.ReproRestauroAnalyseDurchgefuehrtVon" prefix="Analyst: "/>
+        				<field datasource="reproduktion.ReproRestauroAnalyseZeitraum" prefix="Zeitraum: " />
+        				<field datasource="reproduktion.ReproRestauroAnalyseErgebnis" prefix="Ergebnis: "/>
+        		
+        				
+        			</section>
+        		</section>
            		<context type="literatur" labelKey="Literatur" separator=" ">
 	           		<field datasource=".DAIRichtlinien" />
 	           		<field datasource=".Seite" />
