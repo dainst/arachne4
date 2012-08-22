@@ -119,10 +119,10 @@ public class ImageController {
 		}
 		
 		// TODO check if this is enough or if getImageProperties has to be adapted
-		if (imageProperties.resolution != resolution_HIGH) {
+		/*if (imageProperties.resolution != resolution_HIGH) {
 			response.setStatus(403);
 			return null;
-		}
+		}*/
 
 		String imageName = imageProperties.name;
 		String imageServerInstance = imageProperties.watermark;
@@ -131,8 +131,6 @@ public class ImageController {
 			imageServerInstance = imageServerName;
 		}
 
-		// TODO replace when the correct images are accessible by the image server
-		imageName = "arachne4webimage-objects-000008/FA-S19655-05_94060,04.ptif";
 		final String remainingQueryString = request.getQueryString().split("&", 2)[1];
 		final String fullQueryString = "?FIF=" + imagePath + imageName + "&" + remainingQueryString;
 
@@ -153,6 +151,7 @@ public class ImageController {
 			} else {
 				serverAdress = new URL(imageServerPath + imageServerName + imageServerExtension + fullQueryString);
 			}
+			LOGGER.debug("SA: " + serverAdress);
 			connection = (HttpURLConnection)serverAdress.openConnection();			
 			connection.setRequestMethod("GET");
 			connection.setReadTimeout(imageServerReadTimeout);
@@ -250,10 +249,8 @@ public class ImageController {
 			}
 			
 			LOGGER.debug("Watermark: " + imageServerInstance);
-			// TODO replace when the correct images are accessible by the image server
-			imageName = "arachne4webimage-objects-000008/FA-S19655-05_94060,04.ptif";
+			
 			try {
-				// TODO use watermarks when they are fully implemented on the server side
 				final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + "?FIF=" + imagePath + imageName 
 						+ "&SDS=0,90&CNT=1.0&WID=" + resolution + "&QLT=99&CVT=jpeg");
 				LOGGER.debug("Full server adress: " + serverAdress);
@@ -307,7 +304,7 @@ public class ImageController {
 			final Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId
 					, userRightsService.getCurrentUser());
 			
-			imageName = imageEntity.getField("marbilder.DateinameMarbilder");
+			imageName = imageEntity.getField("marbilder.PfadNeu");
 			LOGGER.debug("Image: " + entityId + ": " + imageName);
 			// imageName == null means the user is not allowed to access the image dataset in 'marbilder'
 			if (StrUtils.isEmptyOrNull(imageName)) {
