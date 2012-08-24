@@ -119,10 +119,10 @@ public class ImageController {
 		}
 		
 		// TODO check if this is enough or if getImageProperties has to be adapted
-		/*if (imageProperties.resolution != resolution_HIGH) {
+		if (imageProperties.resolution != resolution_HIGH) {
 			response.setStatus(403);
 			return null;
-		}*/
+		}
 
 		String imageName = imageProperties.name;
 		String imageServerInstance = imageProperties.watermark;
