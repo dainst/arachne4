@@ -45,10 +45,9 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	@Override
 	protected String buildSQL() {
-		// TODO revert back to ArachneSematicConnection when testing is done
-		sql += "SELECT * FROM `ArachneSemanticConnection_test` LEFT JOIN `" + table + "` ON " 
+		sql += "SELECT * FROM `SemanticConnection` LEFT JOIN `" + table + "` ON " 
 				+ SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generatePrimaryKeyName(table)) + " = "
-				+ "`ArachneSemanticConnection_test`.`ForeignKeyTarget` WHERE 1";
+				+ "`SemanticConnection`.`ForeignKeyTarget` WHERE 1";
 		sql += this.buildAndConditions();
 		sql += rightsConditionBuilder.getUserRightsSQLSnipplett();  
 		sql += ";";

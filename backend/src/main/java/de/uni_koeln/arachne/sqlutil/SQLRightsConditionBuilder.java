@@ -25,7 +25,7 @@ public class SQLRightsConditionBuilder {
 		this.tableName = tableName;
 		this.user = user;
 		// TODO find a better way to exclude specific tables
-		exludedTables.add("ArachneSemanticConnection");
+		exludedTables.add("SemanticConnection");
 		exludedTables.add("datierung");
 		exludedTables.add("literatur");
 		exludedTables.add("literaturzitat_leftjoin_literatur");

@@ -32,7 +32,7 @@ public class ConnectedEntityIdsSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	@Override
 	protected String buildSQL() {
-		sql += "SELECT `Target` FROM `ArachneSemanticConnection` WHERE 1";
+		sql += "SELECT `Target` FROM `SemanticConnection` WHERE 1";
 		sql += this.buildAndConditions();
 		//sql += rightsConditionBuilder.getUserRightsSQLSnipplett();
 		sql += ";";
