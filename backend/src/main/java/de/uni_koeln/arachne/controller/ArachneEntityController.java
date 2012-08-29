@@ -36,8 +36,6 @@ import de.uni_koeln.arachne.util.StrUtils;
 @Controller
 public class ArachneEntityController {
 	
-	private static final String SOLR_INDEXING = "SolrIndexing";
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(ArachneEntityController.class);
 	
 	@Autowired
@@ -73,10 +71,8 @@ public class ArachneEntityController {
 			if (StrUtils.isValidIPAddress(solrIp) && StrUtils.isValidIPAddress(request.getRemoteAddr())) {
 				if (solrIp.equals(request.getRemoteAddr()) || request.getRemoteAddr().equals(request.getLocalAddr())) {
 					LOGGER.debug("Valid Solr request.");
-					final UserAdministration solrUser = new UserAdministration();
-					solrUser.setUsername(SOLR_INDEXING);
-					solrUser.setAll_groups(true);
-					return getEntityRequestResponse(entityId, null, response, solrUser);
+					userRightsService.setUserSolr();					
+					return getEntityRequestResponse(entityId, null, response, userRightsService.getCurrentUser());
 				} else {
 					response.setStatus(403);
 				}
@@ -148,8 +144,8 @@ public class ArachneEntityController {
     	final String datasetGroupName = singleEntityDataService.getDatasetGroup(arachneId);
     	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
     	
-    	LOGGER.debug("Is Solr indexer: " + SOLR_INDEXING.equals(currentUser.getUsername()));
-    	if ((!SOLR_INDEXING.equals(currentUser.getUsername())) 
+    	LOGGER.debug("Is Solr indexer: " + UserRightsService.SOLR_INDEXING.equals(currentUser.getUsername()));
+    	if ((!UserRightsService.SOLR_INDEXING.equals(currentUser.getUsername())) 
     			&& (!datasetGroup.isInDatasetGroups(currentUser.getDatasetGroups()))) {
     		
     		response.setStatus(403);

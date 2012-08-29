@@ -39,7 +39,7 @@ public class UserRightsServiceImpl implements UserRightsService {
 	 */
 	@Autowired
 	private transient SessionDao sessionDao; 
-
+	
 	/**
 	 * Flag that indicates if the User Data is loaded.
 	 */
@@ -71,6 +71,17 @@ public class UserRightsServiceImpl implements UserRightsService {
 			isSet = true;
 			
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.uni_koeln.arachne.service.UserRightsService#setUserSolr()
+	 */
+	@Override
+	public void setUserSolr() {
+		arachneUser = new UserAdministration();
+		arachneUser.setUsername(SOLR_INDEXING);
+		arachneUser.setAll_groups(true);
+		this.isSet = true;
 	}
 
 	/* (non-Javadoc)
