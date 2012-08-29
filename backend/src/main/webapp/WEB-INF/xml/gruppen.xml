@@ -56,6 +56,14 @@
         			<field datasource="gruppen.AuftraggeberGruppen" />
         			<field datasource="gruppen.AdressatGruppen" />
         		</section>
+        		<section labelKey="Herkunft" separator=" ,">
+        			<field datasource="gruppen.FundstaatGruppen" />
+        			<field datasource="gruppen.FundortGruppen"/>
+        			<field datasource="gruppen.FundkontextGruppen" />
+        			<field datasource="gruppen.FunddatumGruppen" />
+        			<field datasource="gruppen.HerkunftGruppen" />
+        			<field datasource="gruppen.HerkFundKommentarGruppen"/>        			
+        		</section>
         		<section labelKey="Thematik">
         			<field datasource="gruppen.ThematikGruppen" />
         			<field datasource="gruppen.ThematikMenschen" />
