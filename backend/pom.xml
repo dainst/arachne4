@@ -167,9 +167,9 @@
 
 		<!-- javassist -->
 		<dependency>
-			<groupId>javassist</groupId>
+			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.12.1.GA</version>
+			<version>3.16.1-GA</version>
 		</dependency>
 
 		<!-- c3p0 -->
