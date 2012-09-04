@@ -157,6 +157,13 @@
 			<artifactId>jdom</artifactId>
 			<version>2.0.2</version>
 		</dependency>
+		
+		<!-- Xerces XML Parser -->
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.10.0</version>
+		</dependency>
 
 		<!-- Jackson JSON Mapper -->
 		<dependency>

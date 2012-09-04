@@ -10,6 +10,7 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.input.sax.XMLReaderSAX2Factory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,7 @@ public class ContextService {
 	 */
 	public void addMandatoryContexts(final Dataset parent) {
 		final List<String> externalFields = getExternalFields(parent.getArachneId().getTableName());
-		
+				
 		final List<String> mandatoryContextTypes = new ArrayList<String>();
 
 		for (String currentField: externalFields) {
@@ -169,7 +170,7 @@ public class ContextService {
 		
 		final ServletContextResource xmlDocument = new ServletContextResource(xmlConfigUtil.getServletContext(), filename);
 		try {
-			final SAXBuilder saxBuilder = new SAXBuilder();
+			final SAXBuilder saxBuilder = new SAXBuilder(new XMLReaderSAX2Factory(false, "org.apache.xerces.parsers.SAXParser"));
 			final Document document = saxBuilder.build(xmlDocument.getFile());
 			final Element rootElement = document.getRootElement();
 			final Namespace nameSpace = rootElement.getNamespace();
