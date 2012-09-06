@@ -124,7 +124,7 @@ public class ImageController {
 			return null;
 		}
 
-		String imageName = imageProperties.name;
+		final String imageName = imageProperties.name;
 		String imageServerInstance = imageProperties.watermark;
 
 		if (StrUtils.isEmptyOrNull(imageServerInstance)) {
@@ -240,7 +240,7 @@ public class ImageController {
 		final ImageProperties imageProperties = getImageProperties(entityId, requestedResolution);
 		
 		if (imageProperties.httpResponseCode == 200) {
-			String imageName = imageProperties.name;
+			final String imageName = imageProperties.name;
 			String imageServerInstance = imageProperties.watermark;
 			final int resolution = imageProperties.resolution;
 			
