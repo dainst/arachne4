@@ -1,20 +1,16 @@
 package de.uni_koeln.arachne.service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
-import org.jdom2.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.support.ServletContextResource;
 
 import de.uni_koeln.arachne.context.*;
 import de.uni_koeln.arachne.response.Dataset;
@@ -164,14 +160,11 @@ public class ContextService {
 	 * @return A list of full qualified external field names.
 	 */
 	private List<String> getExternalFields(final String type) {	
-		long time = System.currentTimeMillis();
-		//final SAXBuilder saxBuilder = xmlConfigUtil.getXMLParser();
-		//final Document document = saxBuilder.build(xmlDocument.getFile());
 		final Document document = xmlConfigUtil.getDocument(type);
 		if (document == null) {
 			return null;
 		}
-		LOGGER.debug("Getting document 1: " + (System.currentTimeMillis() - time) + " ms");
+		
 		final Element rootElement = document.getRootElement();
 		final Namespace nameSpace = rootElement.getNamespace();
 		final Element display = rootElement.getChild("display", nameSpace);

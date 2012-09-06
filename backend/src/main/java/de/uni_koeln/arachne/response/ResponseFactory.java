@@ -1,6 +1,5 @@
 package de.uni_koeln.arachne.response;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,14 +8,11 @@ import java.util.Locale;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
-import org.jdom2.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.ServletContextResource;
 
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
@@ -81,11 +77,7 @@ public class ResponseFactory {
 		}
 		response.setLastModified(lastModified);
 		
-	   	long time = System.currentTimeMillis();
-    	//final SAXBuilder saxBuilder = xmlConfigUtil.getXMLParser();
-    	//final Document document = saxBuilder.build(xmlDocument.getFile());
 	   	final Document document = xmlConfigUtil.getDocument(tableName);
-    	LOGGER.debug("Getting document 2: " + (System.currentTimeMillis() - time) + " ms");
     	final Namespace nameSpace = document.getRootElement().getNamespace();
     	final Element display = document.getRootElement().getChild("display",nameSpace);
     		    	

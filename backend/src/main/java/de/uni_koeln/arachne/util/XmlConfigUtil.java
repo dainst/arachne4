@@ -2,7 +2,9 @@ package de.uni_koeln.arachne.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -42,12 +44,16 @@ public class XmlConfigUtil {
 	
 	private transient SAXBuilder xmlParser = null;
 	
+	private transient final Map<String, Document> xmlConfigDocuments = new HashMap<String, Document>();
+	
+	// TODO add method to clear config file cache
+	
 	/**
 	 * This function checks if a config file for the given type exists and returns its filename.
 	 * @param type Type of the config to look for.
 	 * @return The filename of the XML config file for the given type or <code>"unknown"</code> if no config file is found.
 	 */
-	public String getFilenameFromType(final String type) {
+	private String getFilenameFromType(final String type) {
 		String filename = "/WEB-INF/xml/"+ type + ".xml";
 		final ServletContextResource file = new ServletContextResource(servletContext, filename);
 		if (!file.exists()) {
@@ -62,7 +68,7 @@ public class XmlConfigUtil {
 	 * This method returns a XML parser to build the DOM. The parser is only set up once and can be reused.
 	 * @return A SAXBuilder object.
 	 */
-	public SAXBuilder getXMLParser() {
+	private SAXBuilder getXMLParser() {
 		if (xmlParser == null) {
 			xmlParser =	new SAXBuilder(new XMLReaderSAX2Factory(false, "org.apache.xerces.parsers.SAXParser"));
 			// explicitly disable validation
@@ -78,24 +84,31 @@ public class XmlConfigUtil {
 	 * @return A XML document or <code>null</code> if none is found.
 	 */
 	public Document getDocument(final String type) {
-		final String filename = getFilenameFromType(type);
-		if ("unknown".equals(filename)) {
-			return null;
+		final Document cachedDocument = xmlConfigDocuments.get(type);
+		if (cachedDocument == null) {
+			final String filename = getFilenameFromType(type);
+			if ("unknown".equals(filename)) {
+				return null;
+			}
+			
+			final ServletContextResource xmlDocument = new ServletContextResource(servletContext, filename);
+			final SAXBuilder saxBuilder = getXMLParser();
+			
+			try {
+				final Document document = saxBuilder.build(xmlDocument.getFile());
+				xmlConfigDocuments.put(type, document);
+				return document;
+			} catch (JDOMException e) {
+				LOGGER.error(e.getMessage());
+			} catch (IOException e) {
+				LOGGER.error(e.getMessage());
+			}
+			
+	    	return null;
+		} else {
+			LOGGER.info("Returning cached Document!");
+			return cachedDocument;
 		}
-		
-		final ServletContextResource xmlDocument = new ServletContextResource(servletContext, filename);
-		final SAXBuilder saxBuilder = getXMLParser();
-		
-		try {
-			final Document document = saxBuilder.build(xmlDocument.getFile());
-			return document;
-		} catch (JDOMException e) {
-			LOGGER.error(e.getMessage());
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage());
-		}
-		
-    	return null;
 	}
 	
 	/**
