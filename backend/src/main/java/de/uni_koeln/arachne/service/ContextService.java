@@ -164,27 +164,22 @@ public class ContextService {
 	 * @return A list of full qualified external field names.
 	 */
 	private List<String> getExternalFields(final String type) {	
-		
-		final String filename = xmlConfigUtil.getFilenameFromType(type);
-		
-		final ServletContextResource xmlDocument = new ServletContextResource(xmlConfigUtil.getServletContext(), filename);
-		try {
-			final SAXBuilder saxBuilder = xmlConfigUtil.getXMLParser();
-			final Document document = saxBuilder.build(xmlDocument.getFile());
-			final Element rootElement = document.getRootElement();
-			final Namespace nameSpace = rootElement.getNamespace();
-			final Element display = rootElement.getChild("display", nameSpace);
-			final Element facets = rootElement.getChild("facets", nameSpace);
-			final List<String> result = new ArrayList<String>();
-			result.addAll(getFields(display, type));
-			result.addAll(getFields(facets, type));
-			return result;		
-		} catch (JDOMException e) {
-			LOGGER.error(e.getMessage());
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage());
+		long time = System.currentTimeMillis();
+		//final SAXBuilder saxBuilder = xmlConfigUtil.getXMLParser();
+		//final Document document = saxBuilder.build(xmlDocument.getFile());
+		final Document document = xmlConfigUtil.getDocument(type);
+		if (document == null) {
+			return null;
 		}
-		return null;
+		LOGGER.debug("Getting document 1: " + (System.currentTimeMillis() - time) + " ms");
+		final Element rootElement = document.getRootElement();
+		final Namespace nameSpace = rootElement.getNamespace();
+		final Element display = rootElement.getChild("display", nameSpace);
+		final Element facets = rootElement.getChild("facets", nameSpace);
+		final List<String> result = new ArrayList<String>();
+		result.addAll(getFields(display, type));
+		result.addAll(getFields(facets, type));
+		return result;		
 	}
 	
 	/**

@@ -81,67 +81,57 @@ public class ResponseFactory {
 		}
 		response.setLastModified(lastModified);
 		
-		final String filename = xmlConfigUtil.getFilenameFromType(response.getType());
+	   	long time = System.currentTimeMillis();
+    	//final SAXBuilder saxBuilder = xmlConfigUtil.getXMLParser();
+    	//final Document document = saxBuilder.build(xmlDocument.getFile());
+	   	final Document document = xmlConfigUtil.getDocument(tableName);
+    	LOGGER.debug("Getting document 2: " + (System.currentTimeMillis() - time) + " ms");
+    	final Namespace nameSpace = document.getRootElement().getNamespace();
+    	final Element display = document.getRootElement().getChild("display",nameSpace);
+    		    	
+    	// set title
+    	final String titleStr = getTitleString(dataset, nameSpace, display);
+    	response.setTitle(titleStr);
+    	
+    	// set subtitle
+    	final String subtitleStr = getSubTitle(dataset, nameSpace, display);
+    	response.setSubtitle(subtitleStr);
+    	
+    	// set datasections
+    	setSections(dataset, nameSpace, display, response, groupId);
 		
-		if ("unknown".equals(filename)) {
-			return null;
-		}
+		// Set images
+		response.setImages(dataset.getImages());
 		
-		final ServletContextResource xmlDocument = new ServletContextResource(xmlConfigUtil.getServletContext(), filename);
-	    try {
-	    	final SAXBuilder saxBuilder = xmlConfigUtil.getXMLParser();
-	    	final Document document = saxBuilder.build(xmlDocument.getFile());
-	    	final Namespace nameSpace = document.getRootElement().getNamespace();
-	    	final Element display = document.getRootElement().getChild("display",nameSpace);
-
-	    	// set title
-	    	final String titleStr = getTitleString(dataset, nameSpace, display);
-	    	response.setTitle(titleStr);
+		// Set facets
+		final Element facets = document.getRootElement().getChild("facets", nameSpace);
+		response.setFacets(getFacets(dataset, facets).getList());
+		
+		
+		// Set contexts
+		/*
+		Section contextContent = new Section();
+		contextContent.setLabel("Contexts");
+		
+	    for (Context aC: dataset.getContext()) { 
 	    	
-	    	// set subtitle
-	    	final String subtitleStr = getSubTitle(dataset, nameSpace, display);
-	    	response.setSubtitle(subtitleStr);
+	    	Section specificContext = new Section();
+	    	specificContext.setLabel(aC.getContextType());
 	    	
-	    	// set datasections
-	    	setSections(dataset, nameSpace, display, response, groupId);
-			
-			// Set images
- 			response.setImages(dataset.getImages());
-			
-			// Set facets
- 			final Element facets = document.getRootElement().getChild("facets", nameSpace);
- 			response.setFacets(getFacets(dataset, facets).getList());
- 			
-			
-			// Set contexts
-			/*
-			Section contextContent = new Section();
-			contextContent.setLabel("Contexts");
-			
-		    for (Context aC: dataset.getContext()) { 
-		    	
-		    	Section specificContext = new Section();
-		    	specificContext.setLabel(aC.getContextType());
-		    	
-		    	for(AbstractLink link: aC.getallContexts()) {	    		
-		    		if(link.getClass().getSimpleName().equals("ArachneLink")) {
-		    			ArachneLink aL = (ArachneLink) link;
-		    			Section specificContextContent = new Section();
-		    			specificContextContent.setLabel(aL.getEntity2().getArachneId().getInternalKey().toString());
-		    			specificContext.add(specificContextContent);
-		    		}
-		    	}
-		    	contextContent.add(specificContext);
-		    }
-			
-		    response.setContext(contextContent);
-	    	*/
+	    	for(AbstractLink link: aC.getallContexts()) {	    		
+	    		if(link.getClass().getSimpleName().equals("ArachneLink")) {
+	    			ArachneLink aL = (ArachneLink) link;
+	    			Section specificContextContent = new Section();
+	    			specificContextContent.setLabel(aL.getEntity2().getArachneId().getInternalKey().toString());
+	    			specificContext.add(specificContextContent);
+	    		}
+	    	}
+	    	contextContent.add(specificContext);
+	    }
+		
+	    response.setContext(contextContent);
+    	*/
 	    	
-		} catch (JDOMException e) {
-			LOGGER.error(e.getMessage());
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage());
-		}
 		return response;
 	}
 

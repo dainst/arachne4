@@ -72,6 +72,33 @@ public class XmlConfigUtil {
 	}
 	
 	/**
+	 * This method retrieves a XML document based on the type. It tries to find the corresponding XML file, parses it
+	 * and constructs the DOM. Already parsed documents are cached and simply returned. 
+	 * @param type The type of the dataset.
+	 * @return A XML document or <code>null</code> if none is found.
+	 */
+	public Document getDocument(final String type) {
+		final String filename = getFilenameFromType(type);
+		if ("unknown".equals(filename)) {
+			return null;
+		}
+		
+		final ServletContextResource xmlDocument = new ServletContextResource(servletContext, filename);
+		final SAXBuilder saxBuilder = getXMLParser();
+		
+		try {
+			final Document document = saxBuilder.build(xmlDocument.getFile());
+			return document;
+		} catch (JDOMException e) {
+			LOGGER.error(e.getMessage());
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage());
+		}
+		
+    	return null;
+	}
+	
+	/**
 	 * This function handles sections in the xml config files. It extracts the content from the dataset following the definitions in the xml files
 	 * and returns it as a <code>String</code>.
 	 * <br>
