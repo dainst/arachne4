@@ -40,6 +40,8 @@ public class XmlConfigUtil {
 	@Autowired
 	private transient ServletContext servletContext;
 	
+	private transient SAXBuilder xmlParser = null;
+	
 	/**
 	 * This function checks if a config file for the given type exists and returns its filename.
 	 * @param type Type of the config to look for.
@@ -54,6 +56,19 @@ public class XmlConfigUtil {
 		
 		LOGGER.debug("config file: " + filename);
 		return filename;
+	}
+	
+	/**
+	 * This method returns a XML parser to build the DOM. The parser is only set up once and can be reused.
+	 * @return A SAXBuilder object.
+	 */
+	public SAXBuilder getXMLParser() {
+		if (xmlParser == null) {
+			xmlParser =	new SAXBuilder(new XMLReaderSAX2Factory(false, "org.apache.xerces.parsers.SAXParser"));
+			// explicitly disable validation
+			xmlParser.setFeature("http://xml.org/sax/features/validation", false);
+		}
+		return xmlParser;
 	}
 	
 	/**
