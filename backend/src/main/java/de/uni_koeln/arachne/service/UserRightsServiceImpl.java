@@ -83,6 +83,14 @@ public class UserRightsServiceImpl implements UserRightsService {
 		arachneUser.setAll_groups(true);
 		this.isSet = true;
 	}
+	
+	/* (non-Javadoc)
+	 * @see de.uni_koeln.arachne.service.UserRightsService#isUserSolr()
+	 */
+	@Override
+	public boolean isUserSolr() {
+		return isSet && SOLR_INDEXING.equals(arachneUser.getUsername());
+	}
 
 	/* (non-Javadoc)
 	 * @see de.uni_koeln.arachne.service.UserRightsService#getCurrentUser()

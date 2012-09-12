@@ -18,6 +18,12 @@ public interface UserRightsService {
 	public abstract void setUserSolr();
 	
 	/**
+	 * Is the current user the Solr user.
+	 * @return <code>true</code>if the current user is Solr.
+	 */
+	public abstract boolean isUserSolr();
+	
+	/**
 	 * Method to reset the current user (e.g. for logout)
 	 */
 	public abstract void reset();
