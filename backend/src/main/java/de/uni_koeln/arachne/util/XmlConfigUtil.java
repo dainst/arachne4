@@ -106,7 +106,6 @@ public class XmlConfigUtil {
 			
 	    	return null;
 		} else {
-			LOGGER.info("Returning cached Document!");
 			return cachedDocument;
 		}
 	}
