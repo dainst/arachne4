@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
@@ -32,6 +33,9 @@ public class ResponseFactory {
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
+	
+	@Autowired
+	private transient UserRightsService userRightsService;
 	
 	/**
 	 * Creates a formatted response object as used by the front-end. The structure of this object is defined in the xml config files.
@@ -187,6 +191,12 @@ public class ResponseFactory {
 		}
 	}
 	
+	/**
+	 * This function retrieves the facets from the current config document and the corresponding values from the dataset.
+	 * @param dataset The current dataset.
+	 * @param facets The facet element of the current config file.
+	 * @return A list of facets.
+	 */
 	private FacetList getFacets(final Dataset dataset, final Element facets) {
 		
 		final FacetList result = new FacetList();
@@ -204,11 +214,15 @@ public class ResponseFactory {
 					if ("field".equals(childName)) {
 						final String value = dataset.getField(child.getAttributeValue("datasource"));
 						if (value != null) {
-							values.add(value);
+							if (userRightsService.isUserSolr()) {
+								values.add(name + "$" + value);
+							} else {
+								values.add(value);
+							}
 						}
 					} else {
 						if ("context".equals(childName)) {
-							getFacetContext(dataset, child, values);
+							getFacetContext(dataset, child, values, name);
 						}
 					}
 					if (!values.isEmpty()) {
@@ -222,8 +236,15 @@ public class ResponseFactory {
 		}
 		return result;
 	}
-
-	private void getFacetContext(final Dataset dataset, final Element child, final List<String> values) {
+	
+	/**
+	 * This function retrieves the facets from a context element and the corresponding values from the dataset.
+	 * @param dataset The current dataset.
+	 * @param child The context element of the current facet element.
+	 * @param values A list of facets to add the new facets to.
+	 * @param name The name of the current facet.
+	 */
+	private void getFacetContext(final Dataset dataset, final Element child, final List<String> values, final String name) {
 		
 		final Section section = xmlConfigUtil.getContentFromContext(child, dataset);
 		if (section != null) {
@@ -231,13 +252,21 @@ public class ResponseFactory {
 				if (c instanceof FieldList) {
 					for (String value: ((FieldList)c).getValue()) {
 						if (value != null) {
-							values.add(value);
+							if (userRightsService.isUserSolr()) {
+								values.add(name + "$" + value);
+							} else {
+								values.add(value);
+							}
 						}
 					}
 				} else {
 					final String value = c.toString();
 					if (value != null) {
-						values.add(value);
+						if (userRightsService.isUserSolr()) {
+							values.add(name + "$" + value);
+						} else {
+							values.add(value);
+						}
 					}
 				}
 			} 	 								
