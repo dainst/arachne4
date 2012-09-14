@@ -57,9 +57,10 @@ public class ArachneEntityController {
 	private transient UserRightsService userRightsService; 
 	
 	/**
-	 * Handles http request for /solr/{entityId}
+	 * Handles http requests for /solr/{entityId}
 	 * This mapping should only be used by Solr for indexing. It wraps the standard entity request but disables authorization.
-	 * Requests are only allowed from the same IP-address as the Solr server configured in <code>src/main/resources/config/application.properties</code>. 
+	 * Requests are only allowed from the same IP-address as the Solr server configured in <code>src/main/resources/config/application.properties</code> 
+	 * or from localhost (to make sure it works even if Solr is running on the same server as the backend). 
 	 */
 	@RequestMapping(value="/entity/solr/{entityId}", method=RequestMethod.GET)
 	public @ResponseBody BaseArachneEntity handleSolrIndexingRequest(final HttpServletRequest request
