@@ -3,8 +3,10 @@ package de.uni_koeln.arachne.util;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 
@@ -473,11 +475,33 @@ public class XmlConfigUtil {
 		return null;
 	}
 	
+	// TODO check if this is needed
 	/**
 	 * Simple getter to grant access to the <code>ServletContext</code>.
 	 * @return The current servlet context.
 	 */
 	public ServletContext getServletContext() {
 		return servletContext;
+	}
+	
+	/**
+	 * This method constructs a string list of the cached XML config document names.
+	 * @return A list of the cached config document names. 
+	 */
+	public List<String> getXMLConfigDocumentList() {
+		final List<String> result = new ArrayList<String>(); 
+		if (!xmlConfigDocuments.keySet().isEmpty()) {
+			for (Map.Entry<String, Document> entry: xmlConfigDocuments.entrySet()) {
+				result.add(entry.getKey());
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Method to clear the current XML config document cache.
+	 */
+	public void clearDocumentCache() {
+		xmlConfigDocuments.clear();
 	}
 }

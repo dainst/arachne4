@@ -5,6 +5,7 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 public interface UserRightsService {
 
 	public static final String SOLR_INDEXING = "SolrIndexing";
+	public static final int MIN_ADMIN_ID = 800;
 	
 	/**
 	 * Get the current arachne user
