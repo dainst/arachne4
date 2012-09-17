@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.solr.common.SolrDocumentList;
 
-// TODO implement me
 /**
  * Class representing a search result. This class is the return type of a search request.
  */

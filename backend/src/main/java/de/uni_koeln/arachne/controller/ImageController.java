@@ -118,7 +118,6 @@ public class ImageController {
 			return null;
 		}
 		
-		// TODO check if this is enough or if getImageProperties has to be adapted
 		if (imageProperties.resolution != resolution_HIGH) {
 			response.setStatus(403);
 			return null;

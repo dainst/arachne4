@@ -2,7 +2,6 @@ package de.uni_koeln.arachne.context;
 
 import java.util.Map;
 
-// TODO reevaluate this class regarding the fields map
 /**
  * Base class for holding links between URIs and additional information.
  *

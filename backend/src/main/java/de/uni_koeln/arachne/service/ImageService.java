@@ -70,7 +70,6 @@ public class ImageService {
 		return thumbnail.getImageId();
 	}
 	
-	// TODO check if the parsing must be extended to include numbers not only consisting of digits
 	/**
 	 * This method finds the number after the comma of a given image filename.
 	 * @returns The extracted number as <code>Integer</code> or <code>Integer.MAX_VALUE</code> in case of a parsing error.

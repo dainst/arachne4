@@ -45,8 +45,6 @@ public class XmlConfigUtil {
 	
 	private transient final Map<String, Document> xmlConfigDocuments = new HashMap<String, Document>();
 	
-	// TODO add method to clear config file cache
-	
 	/**
 	 * This function checks if a config file for the given type exists and returns its filename.
 	 * @param type Type of the config to look for.
@@ -472,7 +470,6 @@ public class XmlConfigUtil {
 		return null;
 	}
 	
-	// TODO check if this is needed
 	/**
 	 * Simple getter to grant access to the <code>ServletContext</code>.
 	 * @return The current servlet context.
