@@ -39,6 +39,7 @@ public class AdminController {
 	public @ResponseBody StatusResponse handleAdminRequest(final HttpServletResponse response,
 			@RequestParam(value = "command", required = false) final String command) {
 		
+		LOGGER.debug("User GroupID: " + userRightsService.getCurrentUser().getGroupID());
 		if (userRightsService.getCurrentUser().getGroupID() >= UserRightsService.MIN_ADMIN_ID) {
 			if (StrUtils.isEmptyOrNull(command)) {
 				return getCachedDocuments();
