@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<category name="sarkophag"
+    xmlns="http://arachne.uni-koeln.de/schemas/category"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<display>
+		<title>
+			<section>
+				<field datasource="sarkophag.KurzbeschreibungSarkophag" />
+			</section>
+		</title>
+		<subtitle>
+			<section>
+				<field datasource="sarkophag.KurzbeschreibungSarkophag" />
+			</section>
+		</subtitle>
+		<datasections>
+			<section labelKey="Informationen zum Sarkophag">
+				<section labelKey="Herkunft">
+					<section separator=", ">
+						<field datasource="sarkophag.Fundstaat" />
+						<field datasource="sarkophag.Fundort" />
+						<field datasource="sarkophag.Fundkontext" />
+					</section>
+					<context type="objekt" separator=", ">
+						<field datasource=".FunddatumObjekt" />
+						<field datasource=".Herkunft" />
+						<field datasource=".HerkFundKommentar" />
+					</context>
+				</section>
+				<section labelKey="Thematik">
+					<section labelKey="Allgemein">
+						<field datasource="sarkophag.Thematik" />
+						<field datasource="sarkophag.ThematikFrei" />
+					</section>
+					<section labelKey="Deckel">
+						<field datasource="sarkophag.ThematikDeckel" prefix="Thematik: " />
+						<field datasource="sarkophag.ThematikDeckelVorderseite" prefix="Hauptthema: " />
+						<field datasource="sarkophag.ThematikDeckelNebenseiten" prefix="Nebenthema: " />
+					</section>
+					<section labelKey="Kasten">
+						<field datasource="sarkophag.ThematikKasten" prefix="Thematik: " />
+						<field datasource="sarkophag.ThematikKastenVorderseite" prefix="Hauptthema: " />
+						<field datasource="sarkophag.ThematikKastenNebenseiten" prefix="Nebenthema: " />
+					</section>
+				</section>
+				<section labelKey="Dekoration">
+					<field datasource="sarkophag.Dekoration" />
+				</section>
+				<section labelKey="Material">
+					<field datasource="sarkophag.Material" />
+				</section>
+			</section>
+		</datasections>
+	</display>
+	<facets>
+    	<facet name="kategorie" labelKey="Kategorie">
+    		<field datasource="Dataset.TableName" />
+    	</facet>
+    	<facet name="ort" labelKey="Lokalisierung">
+    		<field datasource="Dataset.TableName" />
+    	</facet>
+	</facets>
+</category>
