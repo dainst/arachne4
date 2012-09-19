@@ -151,7 +151,7 @@ public class ArachneEntityController {
     		return null;
     	}
     	
-    	final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(arachneId, currentUser);
+    	final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(arachneId);
     	
     	final long fetchTime = System.currentTimeMillis() - startTime;
     	long nextTime = System.currentTimeMillis();

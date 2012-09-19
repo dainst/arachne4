@@ -2,7 +2,6 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.ArrayList;
 
-import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.util.EntityId;
 
 /**
@@ -21,7 +20,7 @@ public class SingleEntityQueryBuilder extends AbstractSQLBuilder {
 	 * @param ident This is the <code>ArachneId</code> the SQL retrieve statement should be written for
 	 * @param user 
 	 */
-	public SingleEntityQueryBuilder(final EntityId ident, final UserAdministration user) {
+	public SingleEntityQueryBuilder(final EntityId ident) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		entityId = ident;

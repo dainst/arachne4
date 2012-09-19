@@ -59,9 +59,9 @@ public class SingleEntityDataService {
 	 * @param entityId The unique identifier of the type <code>EntityId</code>.
 	 * @return Instance of <code>Dataset</code> that represents the dataset.
 	 */
-	public Dataset getSingleEntityByArachneId(final EntityId entityId, final UserAdministration currentUser) {
+	public Dataset getSingleEntityByArachneId(final EntityId entityId) {
 		Dataset result;
-		final Map<String, String> tempDataMap = arachneDataMapDao.getById(entityId, currentUser);
+		final Map<String, String> tempDataMap = arachneDataMapDao.getById(entityId);
 		result = new Dataset();
 		result.setArachneId(entityId);
 		if (tempDataMap != null) {

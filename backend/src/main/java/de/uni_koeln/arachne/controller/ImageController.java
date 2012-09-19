@@ -300,8 +300,7 @@ public class ImageController {
 				return new ImageProperties(imageName, resolution, watermark, 404);
 			}
 			
-			final Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId
-					, userRightsService.getCurrentUser());
+			final Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
 			
 			imageName = imageEntity.getField("marbilder.PfadNeu");
 			LOGGER.debug("Image: " + entityId + ": " + imageName);

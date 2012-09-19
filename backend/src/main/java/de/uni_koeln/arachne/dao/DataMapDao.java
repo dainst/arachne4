@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.DatasetMapper;
-import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.sqlutil.SingleEntityQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.SingleEntitySubTablesQueryBuilder;
@@ -28,9 +27,9 @@ public class DataMapDao extends SQLDao {
 	 * @param arachneId instance of <code>ArachneId</code> 
 	 * @return a Simple representation of a Map<String,String> or <code>null</code>.
 	 */
-	public Map<String, String> getById(final EntityId arachneId, final UserAdministration currentUser) {			
+	public Map<String, String> getById(final EntityId arachneId) {			
 
-		final SingleEntityQueryBuilder queryBuilder = new SingleEntityQueryBuilder(arachneId, currentUser);
+		final SingleEntityQueryBuilder queryBuilder = new SingleEntityQueryBuilder(arachneId);
 
 		final String sql = queryBuilder.getSQL();
 		
