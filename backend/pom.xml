@@ -288,9 +288,9 @@
     				<source>${java-version}</source>
     				<target>${java-version}</target>
     				<complianceLevel>${java-version}</complianceLevel>
-  					<verbose>true</verbose>
+  					<verbose>false</verbose>
     				<Xlint>ignore</Xlint>
-    				<showWeaveInfo>true</showWeaveInfo>
+    				<showWeaveInfo>false</showWeaveInfo>
     				<aspectLibraries>
       					<aspectLibrary>
         					<groupId>org.springframework</groupId>
