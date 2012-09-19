@@ -94,7 +94,7 @@ public class ResponseFactory {
     	response.setSubtitle(subtitleStr);
     	
     	// set datasections
-    	setSections(dataset, nameSpace, display, response, groupId);
+    	setSections(dataset, nameSpace, display, response);
 		
 		// Set images
 		response.setImages(dataset.getImages());
@@ -155,8 +155,8 @@ public class ResponseFactory {
 		return result;
 	}
 	
-	private void setSections(final Dataset dataset, final Namespace nameSpace, final Element display, final FormattedArachneEntity response
-			, final int groupId) {
+	private void setSections(final Dataset dataset, final Namespace nameSpace, final Element display
+			, final FormattedArachneEntity response) {
 
 		final Element sections = display.getChild("datasections", nameSpace);
 		final List<AbstractContent> contentList = new ArrayList<AbstractContent>();
@@ -164,12 +164,12 @@ public class ResponseFactory {
 		final List<Element> children = sections.getChildren();
 		for (Element e:children) {
 			if (e.getName().equals("section")) {
-				final Section section = (Section)xmlConfigUtil.getContentFromSections(e, dataset, groupId);
+				final Section section = (Section)xmlConfigUtil.getContentFromSections(e, dataset);
 				if (section != null && !section.getContent().isEmpty()) {
 					contentList.add(section);
 				}
 			} else {
-				final Section section = (Section)xmlConfigUtil.getContentFromContext(e, dataset, groupId);
+				final Section section = (Section)xmlConfigUtil.getContentFromContext(e, dataset);
 				if (section != null && !section.getContent().isEmpty()) {
 					contentList.add(section);
 				}

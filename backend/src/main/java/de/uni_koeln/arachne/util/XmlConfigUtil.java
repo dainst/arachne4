@@ -24,6 +24,7 @@ import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Field;
 import de.uni_koeln.arachne.response.FieldList;
 import de.uni_koeln.arachne.response.Section;
+import de.uni_koeln.arachne.service.IUserRightsService;
 
 /**
  * This class provides functions to find a XML config file by type, extract information based on the XML element from
@@ -40,6 +41,9 @@ public class XmlConfigUtil {
 	 */
 	@Autowired
 	private transient ServletContext servletContext;
+	
+	@Autowired
+	private transient IUserRightsService userRightsService;
 	
 	private transient SAXBuilder xmlParser = null;
 	
@@ -210,9 +214,9 @@ public class XmlConfigUtil {
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Content</code> object containing the sections content.
 	 */
-	public AbstractContent getContentFromSections(final Element section, final Dataset dataset, final int groupId) {
+	public AbstractContent getContentFromSections(final Element section, final Dataset dataset) {
 		
-		if (!hasMinGroupId(section.getAttributeValue("minGroupId"), groupId)) {
+		if (!hasMinGroupId(section.getAttributeValue("minGroupId"))) {
 			return null;
 		}
 		
@@ -230,15 +234,15 @@ public class XmlConfigUtil {
 								
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
-				addFieldToResult(e, result, dataset, separator, groupId);
+				addFieldToResult(e, result, dataset, separator);
 			} else {
 				if (e.getName().equals("context")) {
-					final Section nextSection = (Section)getContentFromContext(e, dataset, groupId);
+					final Section nextSection = (Section)getContentFromContext(e, dataset);
 					if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
 						result.add(nextSection);
 					}
 				} else {
-					final Section nextSection = (Section)getContentFromSections(e, dataset, groupId);
+					final Section nextSection = (Section)getContentFromSections(e, dataset);
 					if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
 						result.add(nextSection);
 					}
@@ -254,12 +258,11 @@ public class XmlConfigUtil {
 	 * @param result The <code>Section</code> the field belongs to.
 	 * @param separator The currently active separator.
 	 * @param element The description of the field as XML element.
-	 * @param groupId The current users groupId.
 	 */
 	private void addFieldToResult(final Element element, final Section result, final Dataset dataset
-			, final String separator, final int groupId) {
+			, final String separator) {
 		
-		if (!hasMinGroupId(element.getAttributeValue("minGroupId"), groupId)) {
+		if (!hasMinGroupId(element.getAttributeValue("minGroupId"))) {
 			return;
 		}
 		
@@ -299,12 +302,11 @@ public class XmlConfigUtil {
 	 * The validity of the xml file is not checked!!!
 	 * @param context The xml context <code>Element</code> to parse.
 	 * @param dataset The dataset that contains the SQL query results.
-	 * @param grouId The groupId of the current user.
 	 * @return A <code>Section</code> object containing the context sections content or <code>null</code> if access is denied.
 	 */
-	public Section getContentFromContext(final Element context, final Dataset dataset, final int groupId) {
+	public Section getContentFromContext(final Element context, final Dataset dataset) {
 		
-		if (!hasMinGroupId(context.getAttributeValue("minGroupId"), groupId)) {
+		if (!hasMinGroupId(context.getAttributeValue("minGroupId"))) {
 			return null;
 		}
 		
@@ -330,7 +332,7 @@ public class XmlConfigUtil {
 				
 		final FieldList fieldList = new FieldList();
 		for (int i = 0; i < dataset.getContextSize(contextType); i++) {
-			addFieldsToFieldList(children, fieldList, i, dataset, contextType, separator, groupId);
+			addFieldsToFieldList(children, fieldList, i, dataset, contextType, separator);
 		}
 		
 		if (fieldList.size() > 1) {
@@ -350,10 +352,6 @@ public class XmlConfigUtil {
 		return result;
 	}
 	
-	public Section getContentFromContext(final Element context, final Dataset dataset) {
-		return getContentFromContext(context, dataset, -1);
-	}
-
 	/**
 	 * This function adds the values of all fields of a context to the <code>FieldList</code>. It retrieves the values and formats 
 	 * the output according to the XML description of the fields.
@@ -363,14 +361,13 @@ public class XmlConfigUtil {
 	 * @param dataset The current dataset.
 	 * @param contextType The type of the context.
 	 * @param separator the currently active separator.
-	 * @param grouId The groupId of the current user.
 	 */
 	private void addFieldsToFieldList(final List<Element> children, final FieldList fieldList, final int index
-			, final Dataset dataset, final String contextType,	final String separator, final int groupId) {
+			, final Dataset dataset, final String contextType,	final String separator) {
 		
 		for (Element e: children) {
 			if (e.getName().equals("field")) {
-				addFieldToFieldList(e, fieldList, index, dataset, contextType, separator, groupId);
+				addFieldToFieldList(e, fieldList, index, dataset, contextType, separator);
 			}
 		}
 	}
@@ -384,12 +381,11 @@ public class XmlConfigUtil {
 	 * @param dataset The current dataset.
 	 * @param contextType The type of the context.
 	 * @param separator the currently active separator.
-	 * @param grouId The groupId of the current user.
 	 */
 	private void addFieldToFieldList(final Element element, final FieldList fieldList, final int index
-			,final Dataset dataset, final String contextType, final String separator, final int groupId) {
+			,final Dataset dataset, final String contextType, final String separator) {
 		
-		if (!hasMinGroupId(element.getAttributeValue("minGroupId"), groupId)) {
+		if (!hasMinGroupId(element.getAttributeValue("minGroupId"))) {
 			return;
 		}
 		
@@ -420,14 +416,15 @@ public class XmlConfigUtil {
 	}
 	
 	/**
-	 * This function compares the given string with the given integer value and returns <code>true</code> if the string value is less than
-	 * the integer value or if <code>minGroupIdStr</code> is <code>null</code>. This is used to check which content the currently logged in user is allowed to see.   
+	 * This function compares the given string with the groupID of the current user and returns <code>true</code> if the string value 
+	 * is less than the groupID value or if <code>minGroupIdStr</code> is <code>null</code>. This is used to check which content the 
+	 * currently logged in user is allowed to see.   
 	 * @param minGroupIdStr A string containing the minimum groupId as integer value.
-	 * @param groupId The groupId of the currently logged in user as <code>int</code>.
 	 * @return A boolean value indicating if the current user is allowed to see the content.
 	 */
-	private boolean hasMinGroupId(final String minGroupIdStr, final int groupId) {
+	private boolean hasMinGroupId(final String minGroupIdStr) {
 		if (!StrUtils.isEmptyOrNull(minGroupIdStr)) {
+			final int groupId = userRightsService.getCurrentUser().getGroupID();
 			final int minGroupId = Integer.parseInt(minGroupIdStr);
 			LOGGER.debug("minGroupId: " + minGroupId + " - user groupId: " + groupId);
 			if (groupId < minGroupId) {
