@@ -29,7 +29,7 @@ public class SingleEntityQueryBuilder extends AbstractSQLBuilder {
 		table = entityId.getTableName();
 		//Limits the Resultcount to 1
 		limit1 = true;
-		rightsConditionBuilder = new SQLRightsConditionBuilder(table,user);
+		rightsConditionBuilder = new SQLRightsConditionBuilder(table);
 		//The Primary key Identification condition
 		final Condition condition = new Condition();
 		condition.setOperator("=");

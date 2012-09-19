@@ -28,7 +28,7 @@ import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.ImageRightsGroupService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
-import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.StrUtils;
 
@@ -43,7 +43,7 @@ public class ImageController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageController.class);
 	
 	@Autowired
-	private transient UserRightsService userRightsService; 
+	private transient IUserRightsService userRightsService; 
 	
 	@Autowired
 	private transient EntityIdentificationService arachneEntityIdentificationService; 

@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.mapping.UserAdministration;
+import de.uni_koeln.arachne.service.IUserRightsService;
 
 /**
  * This Object Builds up the User Rights Queston upon the User Rights Service.
@@ -13,17 +17,20 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
  * @author Rasmus Krempel
  *
  */
+@Configurable(preConstruction=true)
 public class SQLRightsConditionBuilder {
 
+	@Autowired
+	private transient IUserRightsService userRightsService;
+	
 	private transient Set<DatasetGroup> permissiongroups;
 	private transient final String tableName;
 	private transient final UserAdministration user;
 	private transient final List<String> exludedTables = new ArrayList<String>();
 	
-	
-	public SQLRightsConditionBuilder(final String tableName, final UserAdministration user) {
+	public SQLRightsConditionBuilder(final String tableName) {
 		this.tableName = tableName;
-		this.user = user;
+		this.user = userRightsService.getCurrentUser();
 		// TODO find a better way to exclude specific tables
 		exludedTables.add("SemanticConnection");
 		exludedTables.add("datierung");
@@ -39,7 +46,7 @@ public class SQLRightsConditionBuilder {
 	 * Builds the <code>Condition</code>s out of the permissiongroups the user is in 
 	 * @return List of <code>Condition</code> Objects that ensure the user gets what he is allowed to see
 	 */
-	private List<Condition> buildConditions(){
+	private List<Condition> buildConditions() {
 		
 		final List<Condition> conditions = new ArrayList<Condition>();
 		
@@ -60,7 +67,7 @@ public class SQLRightsConditionBuilder {
 	 * ready to append it to the SQL <code>WHERE</code> statement.
 	 * @return A String that represents the user permission SQl statements its empty if the User is allowed to see everything
 	 */
-	public String getUserRightsSQLSnipplett(){
+	public String getUserRightsSQLSnipplett() {
 		final StringBuffer result = new StringBuffer("");
 		//in This case The User is Authorized to see Everything
 		if (user.isAll_groups() || exludedTables.contains(tableName)) {
@@ -87,6 +94,8 @@ public class SQLRightsConditionBuilder {
 				result.append(')');
 			}
 		}
+		
 		return result.toString();
-	}	
+	}
+	
 }

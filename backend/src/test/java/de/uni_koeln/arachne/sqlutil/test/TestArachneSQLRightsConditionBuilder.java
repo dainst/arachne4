@@ -13,7 +13,7 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.sqlutil.SQLRightsConditionBuilder;
 
 
-
+// TODO test may not work - check it
 public class TestArachneSQLRightsConditionBuilder {
 	
 	@Test
@@ -25,20 +25,20 @@ public class TestArachneSQLRightsConditionBuilder {
 		user.setDatasetGroups(set);
 		
 		
-		SQLRightsConditionBuilder rcb = new SQLRightsConditionBuilder("bauwerk", user);
+		SQLRightsConditionBuilder rcb = new SQLRightsConditionBuilder("bauwerk");
 		
 		assertEquals(rcb.getUserRightsSQLSnipplett(), " AND ( `bauwerk`.`DatensatzGruppeBauwerk` = \"Arachne\")");
 		
 		set.add(new DatasetGroup("Oppenheim"));
 		
-		rcb = new SQLRightsConditionBuilder("bauwerk", user);
+		rcb = new SQLRightsConditionBuilder("bauwerk");
 		
 		assertTrue(rcb.getUserRightsSQLSnipplett().contains("`bauwerk`.`DatensatzGruppeBauwerk` = \"Arachne\""));
 		assertTrue(rcb.getUserRightsSQLSnipplett().contains("`bauwerk`.`DatensatzGruppeBauwerk` = \"Oppenheim\""));
 		
 		user.setAll_groups(true);
 		
-		rcb = new SQLRightsConditionBuilder("bauwerk", user);
+		rcb = new SQLRightsConditionBuilder("bauwerk");
 		
 		assertEquals(rcb.getUserRightsSQLSnipplett(), "");		
 		

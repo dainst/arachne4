@@ -23,7 +23,7 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		super();
 		conditions = new ArrayList<Condition>(1);
 		table = contextType;
-		rightsConditionBuilder = new SQLRightsConditionBuilder(table,user);
+		rightsConditionBuilder = new SQLRightsConditionBuilder(table);
 		// The key identification condition
 		final Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");

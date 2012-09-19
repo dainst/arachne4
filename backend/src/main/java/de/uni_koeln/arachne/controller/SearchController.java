@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.response.SearchResult;
 import de.uni_koeln.arachne.service.GenericSQLService;
-import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
@@ -44,7 +44,7 @@ public class SearchController {
 	private transient GenericSQLService genericSQLService; 
 	
 	@Autowired
-	private transient UserRightsService userRightsService; 
+	private transient IUserRightsService userRightsService; 
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;

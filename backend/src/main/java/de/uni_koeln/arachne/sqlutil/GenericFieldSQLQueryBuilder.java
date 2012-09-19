@@ -27,7 +27,7 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;
 		this.field2 = SQLToolbox.getQualifiedFieldname(table, field2);
-		rightsConditionBuilder = new SQLRightsConditionBuilder(table,user);
+		rightsConditionBuilder = new SQLRightsConditionBuilder(table);
 		// The key identification condition
 		final Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");

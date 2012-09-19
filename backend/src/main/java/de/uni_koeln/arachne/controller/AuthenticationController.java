@@ -19,7 +19,7 @@ import de.uni_koeln.arachne.dao.SessionDao;
 import de.uni_koeln.arachne.dao.UserVerwaltungDao;
 import de.uni_koeln.arachne.mapping.Session;
 import de.uni_koeln.arachne.mapping.UserAdministration;
-import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.service.IUserRightsService;
 
 /**
  * Handles http requests (currently only get) for <code>/auth<code>.
@@ -36,7 +36,7 @@ public class AuthenticationController {
 	private transient SessionDao sessionDao; 
 	
 	@Autowired
-	private transient UserRightsService rightsService; 
+	private transient IUserRightsService rightsService; 
 	
 	/**
 	 * Handles login

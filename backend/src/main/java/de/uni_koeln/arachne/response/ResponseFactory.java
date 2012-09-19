@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
@@ -35,7 +35,7 @@ public class ResponseFactory {
 	private transient XmlConfigUtil xmlConfigUtil;
 	
 	@Autowired
-	private transient UserRightsService userRightsService;
+	private transient IUserRightsService userRightsService;
 	
 	/**
 	 * Creates a formatted response object as used by the front-end. The structure of this object is defined in the xml config files.

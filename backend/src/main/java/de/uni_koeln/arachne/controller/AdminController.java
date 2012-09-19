@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
@@ -25,7 +26,7 @@ public class AdminController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
 	
 	@Autowired
-	private transient UserRightsService userRightsService;
+	private transient IUserRightsService userRightsService;
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;

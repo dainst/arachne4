@@ -31,7 +31,7 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;
-		rightsConditionBuilder = new SQLRightsConditionBuilder(table, user);
+		rightsConditionBuilder = new SQLRightsConditionBuilder(table);
 		// concatenate fields
 		final StringBuilder field2 = new StringBuilder(SQLToolbox.getQualifiedFieldname(table, fields.get(0)));
 		int index = 1;

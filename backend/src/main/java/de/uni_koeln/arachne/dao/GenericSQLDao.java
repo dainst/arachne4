@@ -11,7 +11,7 @@ import de.uni_koeln.arachne.mapping.EntityIdMapper;
 import de.uni_koeln.arachne.mapping.GenericFieldMapperString;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.service.SQLResponseObject;
-import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.sqlutil.ConnectedEntityIdsSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.ConnectedEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldSQLQueryBuilder;
@@ -24,7 +24,7 @@ import de.uni_koeln.arachne.sqlutil.GenericFieldsEntityIdJoinedSQLQueryBuilder;
 public class GenericSQLDao extends SQLDao {
 	
 	@Autowired
-	private transient UserRightsService userRightsService; 
+	private transient IUserRightsService userRightsService; 
 	
 	public List<String> getStringField(final String tableName, final String field1, final Long field1Id
 			, final String field2, final UserAdministration currentUser) {

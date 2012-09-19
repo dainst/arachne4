@@ -12,6 +12,7 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<context:component-scan base-package="de.uni_koeln.arachne"/>
+	<context:spring-configured />
 	<util:properties id="config" location="classpath:config/application.properties"/>
 	<import resource="hibernate.xml"/>
 	

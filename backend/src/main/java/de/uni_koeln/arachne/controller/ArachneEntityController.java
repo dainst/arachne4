@@ -26,7 +26,7 @@ import de.uni_koeln.arachne.service.ContextService;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.ImageService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
-import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.StrUtils;
 
@@ -54,7 +54,7 @@ public class ArachneEntityController {
 	private transient ImageService imageService;
 		
 	@Autowired
-	private transient UserRightsService userRightsService; 
+	private transient IUserRightsService userRightsService; 
 	
 	/**
 	 * Handles http requests for /solr/{entityId}

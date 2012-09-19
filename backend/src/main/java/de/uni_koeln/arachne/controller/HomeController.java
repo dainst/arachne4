@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.uni_koeln.arachne.mapping.DatasetGroup;
-import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.service.IUserRightsService;
 
 
 /**
@@ -28,7 +28,7 @@ public class HomeController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 
 	@Autowired
-	private transient UserRightsService userRightsService; 
+	private transient IUserRightsService userRightsService; 
 	
 	//private Session session = SessionUtil.getSessionFactory().getCurrentSession();
 	
