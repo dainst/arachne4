@@ -10,7 +10,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest.METHOD;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class SearchController {
 			final String solrUrl = solrPotocol+"://"+solrIp+':'+solrPort+'/'+solrName;
 			LOGGER.info("SolrUrl: " + solrUrl);
 			if (StrUtils.isValidIPAddress(solrIp)) {
-				server = new CommonsHttpSolrServer(solrUrl);
+				server = new HttpSolrServer(solrUrl);
 			} else {
 				throw new MalformedURLException("solrIp " + solrIp + " is not a valid IP address.");
 			}
