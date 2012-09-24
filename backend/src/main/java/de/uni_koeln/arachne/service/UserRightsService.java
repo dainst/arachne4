@@ -1,5 +1,7 @@
 package de.uni_koeln.arachne.service;
 
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import de.uni_koeln.arachne.dao.SessionDao;
 import de.uni_koeln.arachne.dao.UserVerwaltungDao;
+import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.mapping.Session;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 
@@ -107,5 +110,20 @@ public class UserRightsService implements IUserRightsService {
 	public void reset() {
 		arachneUser = null;
 		isSet = false;
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.uni_koeln.arachne.service.UserRightsService#userHasDatasetGroup()
+	 */
+	@Override
+	public boolean userHasDatasetGroup(final DatasetGroup datasetGroup) {
+		final Set<DatasetGroup> datasetGroups = this.getCurrentUser().getDatasetGroups();
+		final String datasetGroupName = datasetGroup.getName();
+		for (DatasetGroup currentDatasetGroup: datasetGroups) {
+			if (currentDatasetGroup.getName().equals(datasetGroupName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -1,7 +1,5 @@
 package de.uni_koeln.arachne.mapping;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -59,20 +57,5 @@ public class DatasetGroup {
 	 */
 	public void setName(final String name) {
 		this.name = name;
-	}
-
-	/**
-	 * Function to determine if a name of a dataset group is in a set of dataset groups.
-	 * @return <code>True</code> if the name is contained within the set <code>False</code> if it is not.
-	 */
-	@XmlTransient
-	@JsonIgnore
-	public boolean isInDatasetGroups(final Set<DatasetGroup> datasetGroups) {
-		for (DatasetGroup datasetGroup: datasetGroups) {
-			if (this.getName().equals(datasetGroup.getName())) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

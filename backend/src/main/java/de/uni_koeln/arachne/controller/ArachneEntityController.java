@@ -146,7 +146,7 @@ public class ArachneEntityController {
     	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
     	
     	LOGGER.debug("Is Solr indexer: " + userRightsService.isUserSolr());
-    	if ((!userRightsService.isUserSolr()) && (!datasetGroup.isInDatasetGroups(currentUser.getDatasetGroups()))) {
+    	if ((!userRightsService.isUserSolr()) && (!userRightsService.userHasDatasetGroup(datasetGroup))) {
     		response.setStatus(403);
     		return null;
     	}

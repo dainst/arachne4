@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.DataMapDao;
 import de.uni_koeln.arachne.dao.GenericSQLDao;
-import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.sqlutil.SQLToolbox;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
@@ -94,10 +93,7 @@ public class SingleEntityDataService {
 		final String field2 = SQLToolbox.generateDatasetGroupName(tableName);
 		
 		// disable rights checking to allow retrieval of the dataset group
-		final UserAdministration user = new UserAdministration();
-		user.setAll_groups(true);
-		
-		final List<String> result = genericSqlDao.getStringField(tableName, tableName, field1Id, field2, user);
+		final List<String> result = genericSqlDao.getStringField(tableName, tableName, field1Id, field2, true);
 		
 		if (StrUtils.isEmptyOrNull(result)) {
 			return "Arachne";

@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.service;
 
+import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 
 public interface IUserRightsService {
@@ -20,9 +21,16 @@ public interface IUserRightsService {
 	
 	/**
 	 * Is the current user the Solr user.
-	 * @return <code>true</code>if the current user is Solr.
+	 * @return <code>true</code> if the current user is Solr.
 	 */
 	public abstract boolean isUserSolr();
+	
+	/**
+	 * Is the given <code>Datasetgroup</code> in the users <code>Set</code> of <code>DatasetGroups</code>.
+	 * @param datasetGroup A <code>DatasetGroup</code> to check against the user groups.
+	 * @return <code>true</code> if the given <code>DatasetGroup</code> is in the users <code>Set</code>.
+	 */
+	public boolean userHasDatasetGroup(final DatasetGroup datasetGroup);
 	
 	/**
 	 * Method to reset the current user (e.g. for logout)
