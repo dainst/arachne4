@@ -166,7 +166,7 @@ public class ArachneEntityController {
     	final long contextTime = System.currentTimeMillis() - nextTime;
     	nextTime = System.currentTimeMillis();
     	
-    	final FormattedArachneEntity result = responseFactory.createFormattedArachneEntity(arachneDataset, currentUser.getGroupID());
+    	final FormattedArachneEntity result = responseFactory.createFormattedArachneEntity(arachneDataset);
     	
     	LOGGER.debug("-- Fetching entity took " + fetchTime + " ms");
     	LOGGER.debug("-- Adding images took " + imageTime + " ms");

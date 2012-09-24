@@ -46,7 +46,7 @@ public class ResponseFactory {
 	 * @param dataset The dataset which encapsulates the SQL query results.
 	 * @return A <code>FormattedArachneEntity</code> instance which can be jsonized.
 	 */
-	public FormattedArachneEntity createFormattedArachneEntity(final Dataset dataset, final int groupId) {
+	public FormattedArachneEntity createFormattedArachneEntity(final Dataset dataset) {
 		LOGGER.debug("dataset: " + dataset);
 		
 		final FormattedArachneEntity response = new FormattedArachneEntity();
