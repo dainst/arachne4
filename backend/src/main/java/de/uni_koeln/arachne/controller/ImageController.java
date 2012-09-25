@@ -23,12 +23,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import de.uni_koeln.arachne.dao.ImageRightsDao;
 import de.uni_koeln.arachne.mapping.ImageRightsGroup;
-import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.ImageRightsGroupService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
-import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.StrUtils;
 
@@ -41,9 +39,6 @@ import de.uni_koeln.arachne.util.StrUtils;
 public class ImageController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageController.class);
-	
-	@Autowired
-	private transient IUserRightsService userRightsService; 
 	
 	@Autowired
 	private transient EntityIdentificationService arachneEntityIdentificationService; 
@@ -311,10 +306,9 @@ public class ImageController {
 			
 			// Check image rights
 			final ImageRightsGroup imageRightsGroup = imageRightsDao.findByName(imageEntity.getField("marbilder.BildrechteGruppe"));
-			final UserAdministration currentUser = userRightsService.getCurrentUser();
-			watermark = imageRightsGroupService.getWatermarkFilename(imageEntity, currentUser, imageRightsGroup);
-			if(!imageRightsGroupService.checkResolutionRight(imageEntity, currentUser, resolution, imageRightsGroup)) {
-				resolution = imageRightsGroupService.getMaxResolution(imageEntity, currentUser, imageRightsGroup);
+			watermark = imageRightsGroupService.getWatermarkFilename(imageEntity, imageRightsGroup);
+			if(!imageRightsGroupService.checkResolutionRight(imageEntity, resolution, imageRightsGroup)) {
+				resolution = imageRightsGroupService.getMaxResolution(imageEntity, imageRightsGroup);
 				
 				// Forbidden
 				if (resolution == -1) {

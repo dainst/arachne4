@@ -29,6 +29,9 @@ public class ImageRightsGroupService {
 	
 	@Autowired
 	ImageRightsDao imageRightsDao;
+	
+	@Autowired
+	IUserRightsService userRightsService;
 
 	private final transient int resolution_HIGH;
 	private final transient int resolution_THUMBNAIL;
@@ -59,10 +62,10 @@ public class ImageRightsGroupService {
 	 * @param imageRightsGroup 
 	 * @return
 	 */
-	public boolean checkResolutionRight(final Dataset imageEntity,
-			final UserAdministration currentUser, final int resolution, final ImageRightsGroup imageRightsGroup) {
+	public boolean checkResolutionRight(final Dataset imageEntity, final int resolution
+			, final ImageRightsGroup imageRightsGroup) {
 		
-		final int maxResolution = getMaxResolution(imageEntity, currentUser, imageRightsGroup);
+		final int maxResolution = getMaxResolution(imageEntity, imageRightsGroup);
 		
 		LOGGER.debug("checkResolution: " + resolution + " - " + maxResolution);
 		
@@ -82,8 +85,9 @@ public class ImageRightsGroupService {
 	 * user rights
 	 * @return
 	 */
-	public int getMaxResolution(final Dataset imageEntity,
-			final UserAdministration currentUser, final ImageRightsGroup imageRightsGroup) {
+	public int getMaxResolution(final Dataset imageEntity, final ImageRightsGroup imageRightsGroup) {
+		
+		final UserAdministration currentUser = userRightsService.getCurrentUser();
 		
 		// if user doesn't have group he is not allowed to view the image in any resolution
 		if(imageEntity.getField("marbilder.BildrechteGruppe") == null) {
@@ -137,8 +141,9 @@ public class ImageRightsGroupService {
 	 * @param imageRightsGroup
 	 * @return
 	 */
-	public String getWatermarkFilename(final Dataset imageEntity,
-			final UserAdministration currentUser, final ImageRightsGroup imageRightsGroup) {
+	public String getWatermarkFilename(final Dataset imageEntity, final ImageRightsGroup imageRightsGroup) {
+		
+		final UserAdministration currentUser = userRightsService.getCurrentUser(); 
 		
 		// if override_for_group is set and the user has that exact group, the user is allowed to view the image without watermark
 		if(!imageRightsGroup.getOverrideForGroup().isEmpty() &&  currentUser.hasGroup(imageRightsGroup.getOverrideForGroup())) {
