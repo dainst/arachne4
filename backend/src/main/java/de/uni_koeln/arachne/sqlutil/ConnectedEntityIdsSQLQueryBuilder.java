@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uni_koeln.arachne.mapping.UserAdministration;
-
-
 public class ConnectedEntityIdsSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectedEntitiesSQLQueryBuilder.class);
@@ -18,7 +15,8 @@ public class ConnectedEntityIdsSQLQueryBuilder extends AbstractSQLBuilder {
 	 * Constructs a condition to query a field.
 	 * @param entityId The entityId of the object of interest.
 	 */
-	public ConnectedEntityIdsSQLQueryBuilder(final Long entityId, final UserAdministration user) {
+	// TODO IMPORTANT - check if rights management must be enabled
+	public ConnectedEntityIdsSQLQueryBuilder(final Long entityId) {
 		super();
 		conditions = new ArrayList<Condition>(1);
 		//rightsConditionBuilder = new SQLRightsConditionBuilder(table, user);

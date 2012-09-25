@@ -6,8 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uni_koeln.arachne.mapping.UserAdministration;
-
 public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericFieldsEntityIdJoinedSQLQueryBuilder.class);
@@ -26,8 +24,8 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 	 * @param field1Id The field Id.
 	 * @param fields The fields to query.
 	 */
-	public GenericFieldsEntityIdJoinedSQLQueryBuilder(final String tableName, final String field1, final Long field1Id, final List<String> fields
-			, final UserAdministration user) {
+	public GenericFieldsEntityIdJoinedSQLQueryBuilder(final String tableName, final String field1, final Long field1Id
+			, final List<String> fields	) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;

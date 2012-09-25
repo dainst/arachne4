@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uni_koeln.arachne.mapping.UserAdministration;
-
 public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectedEntitiesSQLQueryBuilder.class);
@@ -19,7 +17,7 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	 * @param entityId The id of the entity the context belongs to.
 	 * @param user The user information used for authorizing.
 	 */
-	public ConnectedEntitiesSQLQueryBuilder(final String contextType, final Long entityId, final UserAdministration user) {
+	public ConnectedEntitiesSQLQueryBuilder(final String contextType, final Long entityId) {
 		super();
 		conditions = new ArrayList<Condition>(1);
 		table = contextType;
