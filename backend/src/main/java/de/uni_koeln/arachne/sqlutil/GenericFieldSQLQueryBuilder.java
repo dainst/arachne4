@@ -23,7 +23,7 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 	 * @param field2 The field to query.
 	 */
 	public GenericFieldSQLQueryBuilder(final String tableName, final String field1, final Long field1Id, final String field2
-			, boolean disableAuthorization) {
+			, final boolean disableAuthorization) {
 		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;

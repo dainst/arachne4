@@ -21,7 +21,7 @@ import de.uni_koeln.arachne.sqlutil.GenericFieldsEntityIdJoinedSQLQueryBuilder;
 public class GenericSQLDao extends SQLDao {
 	
 	public List<String> getStringField(final String tableName, final String field1, final Long field1Id
-			, final String field2, boolean disableAuthorization) {
+			, final String field2, final boolean disableAuthorization) {
 		final GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1
 				, field1Id, field2, disableAuthorization);
 		@SuppressWarnings("unchecked")
