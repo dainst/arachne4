@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.mapping.DatasetGroup;
-import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.FormattedArachneEntity;
@@ -73,7 +72,7 @@ public class ArachneEntityController {
 				if (solrIp.equals(request.getRemoteAddr()) || request.getRemoteAddr().equals(request.getLocalAddr())) {
 					LOGGER.debug("Valid Solr request.");
 					userRightsService.setUserSolr();					
-					return getEntityRequestResponse(entityId, null, response, userRightsService.getCurrentUser());
+					return getEntityRequestResponse(entityId, null, response);
 				} else {
 					response.setStatus(403);
 				}
@@ -94,7 +93,7 @@ public class ArachneEntityController {
 	@RequestMapping(value="/entity/{entityId}", method=RequestMethod.GET)
 	public @ResponseBody BaseArachneEntity handleGetEntityIdRequest(final HttpServletRequest request
 			, @PathVariable("entityId") final Long entityId, final HttpServletResponse response) {
-		return getEntityRequestResponse(entityId, null, response, userRightsService.getCurrentUser());
+		return getEntityRequestResponse(entityId, null, response);
 	}
     
     /**
@@ -107,7 +106,7 @@ public class ArachneEntityController {
     public @ResponseBody BaseArachneEntity handleGetCategoryIdRequest(@PathVariable("category") final String category
     		, @PathVariable("categoryId") final Long categoryId, final HttpServletResponse response) {
     	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
-    	return getEntityRequestResponse(categoryId, category, response, userRightsService.getCurrentUser());
+    	return getEntityRequestResponse(categoryId, category, response);
     }
 
     /**
@@ -124,7 +123,7 @@ public class ArachneEntityController {
      * @return A response object derived from <code>BaseArachneEntity</code>.
      */
     private BaseArachneEntity getEntityRequestResponse(final Long id, final String category //NOPMD
-    		, final HttpServletResponse response, final UserAdministration currentUser) { 
+    		, final HttpServletResponse response) { 
     	final Long startTime = System.currentTimeMillis();
         
     	EntityId arachneId;
