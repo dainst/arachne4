@@ -56,8 +56,10 @@
 	        	</section>
 	            <section labelKey="Charakterisierung">
 	            	<section labelKey="Gebäudetyp" separator=", ">
-	                    <field datasource="bauwerk.Gebaeudetyp" />
-	                    <field datasource="bauwerk.GebaeudetypSpeziell" />
+	            		<section>  
+	                    	<field datasource="bauwerk.Gebaeudetyp" />
+	                    	<field datasource="bauwerk.GebaeudetypSpeziell" />
+	                    </section>  
 	                </section>  
 	                <section labelKey="Erhaltung">
 	                	<field datasource="bauwerk.ErhaltungBauwerk" />
@@ -105,6 +107,7 @@
 	            <context type="literatur" labelKey="Literatur" separator=" ">
 	            	<field datasource=".DAIRichtlinien" />
 	            	<field datasource=".Seite" />
+	            	<linkField labelKey="ZenonID" datasource=".ZenonID" prefix="http://opac.dainst.org/entity/" postfix=".html" />
 	            </context>
 	    	</section>
         </datasections>

@@ -10,7 +10,7 @@ public class Field extends AbstractContent {
 	/**
 	 * The <code>String</code> value the class holds.
 	 */
-	private String value;
+	protected String value;
 
 	public String getValue() {
 		return value;

@@ -93,7 +93,7 @@ public class ResponseFactory {
     	final String subtitleStr = getSubTitle(dataset, nameSpace, display);
     	response.setSubtitle(subtitleStr);
     	
-    	// set datasections
+    	// set datasection
     	setSections(dataset, nameSpace, display, response);
 		
 		// Set images
@@ -160,7 +160,7 @@ public class ResponseFactory {
 
 		final Element sections = display.getChild("datasections", nameSpace);
 		final List<AbstractContent> contentList = new ArrayList<AbstractContent>();
-		// JDOM doesn't handle generics correctly so it issues a type safety warning
+		
 		final List<Element> children = sections.getChildren();
 		for (Element e:children) {
 			if (e.getName().equals("section")) {

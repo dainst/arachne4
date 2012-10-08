@@ -23,6 +23,7 @@ import de.uni_koeln.arachne.response.AbstractContent;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Field;
 import de.uni_koeln.arachne.response.FieldList;
+import de.uni_koeln.arachne.response.LinkField;
 import de.uni_koeln.arachne.response.Section;
 import de.uni_koeln.arachne.service.IUserRightsService;
 
@@ -235,16 +236,20 @@ public class XmlConfigUtil {
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
 				addFieldToResult(e, result, dataset, separator);
-			} else {
-				if (e.getName().equals("context")) {
-					final Section nextSection = (Section)getContentFromContext(e, dataset);
-					if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
-						result.add(nextSection);
-					}
+			} else { 
+				if (e.getName().equals("linkField")) {
+					addLinkFieldToResult(e, result, dataset, separator);
 				} else {
-					final Section nextSection = (Section)getContentFromSections(e, dataset);
-					if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
-						result.add(nextSection);
+					if (e.getName().equals("context")) {
+						final Section nextSection = (Section)getContentFromContext(e, dataset);
+						if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
+							result.add(nextSection);
+						}
+					} else {
+						final Section nextSection = (Section)getContentFromSections(e, dataset);
+						if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
+							result.add(nextSection);
+						}
 					}
 				}
 			}
@@ -291,6 +296,53 @@ public class XmlConfigUtil {
 				final int contentSize = result.getContent().size();
 				final Field previousContent = (Field)result.getContent().get(contentSize-1);
 				previousContent.setValue(previousContent.getValue() + separator + value);
+			}
+		}
+	}
+	
+	/**
+	 * Procedure to add a <code>LinkField</code> from the dataset to the result <code>Section</code>.
+	 * @param dataset The current dataset.
+	 * @param result The <code>Section</code> the field belongs to.
+	 * @param separator The currently active separator.
+	 * @param element The description of the field as XML element.
+	 */
+	private void addLinkFieldToResult(final Element element, final Section result, final Dataset dataset
+			, final String separator) {
+
+		if (!hasMinGroupId(element.getAttributeValue("minGroupId"))) {
+			return;
+		}
+
+		final String labelKey = element.getAttributeValue("labelKey");
+		if (!StrUtils.isEmptyOrNull(labelKey)) {
+			final LinkField linkField = new LinkField(labelKey);
+			StringBuffer value = null;
+			final String initialValue = dataset.getField(element.getAttributeValue("datasource"));
+			if (initialValue != null) {
+				value = new StringBuffer(initialValue);
+			}
+			final String postfix = element.getAttributeValue("postfix");
+			final String prefix = element.getAttributeValue("prefix");
+			if (value != null) {
+				if (prefix != null) {
+					value.insert(0, prefix);
+				}
+				if (postfix != null) {
+					value.append(postfix); 
+				}
+				
+				linkField.setValue(value.toString());
+				
+				// TODO find better solution as the previous content may be a section
+				// If there are more than one field in this section add the value (incl. separator) to the previous field
+				if (result.getContent().isEmpty()) {
+					result.add(linkField);
+				} else {
+					final int contentSize = result.getContent().size();
+					final Field previousContent = (Field)result.getContent().get(contentSize-1);
+					previousContent.setValue(previousContent.getValue() + separator + linkField.getValue());
+				}
 			}
 		}
 	}
@@ -366,7 +418,7 @@ public class XmlConfigUtil {
 			, final Dataset dataset, final String contextType,	final String separator) {
 		
 		for (Element e: children) {
-			if (e.getName().equals("field")) {
+			if (e.getName().equals("field") || e.getName().equals("linkField")) {
 				addFieldToFieldList(e, fieldList, index, dataset, contextType, separator);
 			}
 		}
@@ -403,6 +455,14 @@ public class XmlConfigUtil {
 			if (postfix != null) {
 				value.append(postfix); 
 			}
+			
+			// handle linkFields
+			final String labelKey = element.getAttributeValue("labelKey");
+			if (!StrUtils.isEmptyOrNull(labelKey)) {
+				value.insert(0, "<a href=\"");
+				value.append("\">" + labelKey + "</a>");
+			}
+			
 			String currentListValue = null;
 			if (!fieldList.getValue().isEmpty() && index < fieldList.size()) {
 				currentListValue = fieldList.get(index);

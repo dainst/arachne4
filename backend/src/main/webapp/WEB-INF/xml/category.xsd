@@ -46,7 +46,10 @@
             	<xs:element name="section" type="SectionContent" />
             	<xs:element  name="context" type="ContextContent" />
         	</xs:choice>
-            <xs:element maxOccurs="unbounded" name="field" type="FieldContent" />
+        	<xs:choice maxOccurs="unbounded">
+            	<xs:element name="field" type="FieldContent" />
+            	<xs:element name="linkField" type="LinkFieldContent" />
+        	</xs:choice>
         </xs:choice>
         <xs:attribute name="labelKey" type="xs:string" />
         <xs:attribute name="separator" type="xs:string" />
@@ -56,9 +59,10 @@
     </xs:complexType>
     
     <xs:complexType name="ContextContent">
-        <xs:sequence>
-            <xs:element name="field" type="FieldContent" maxOccurs="unbounded"/>
-        </xs:sequence>
+    	<xs:choice maxOccurs="unbounded">
+            <xs:element name="field" type="FieldContent" />
+            <xs:element name="linkField" type="LinkFieldContent" />
+        </xs:choice>
         <xs:attribute name="type" type="xs:string" use="required" />
         <xs:attribute name="labelKey" type="xs:string" />
         <xs:attribute name="separator" type="xs:string" />
@@ -80,6 +84,24 @@
         <xs:attribute name="postfix" type="xs:string" />
         <xs:attribute name="search" type="xs:string" />
         <xs:attribute name="replace" type="xs:string" />
+        <xs:attribute name="separator" type="xs:string" />
+        <xs:attribute name="minGroupId" type="xs:string" />
+    </xs:complexType>
+    
+    <xs:complexType name="LinkFieldContent">
+        <xs:all minOccurs="0">
+            <xs:element name="ifEmpty">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element name="linkField" type="LinkFieldContent"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+        <xs:attribute name="datasource" type="datasourceString" use="required"/>
+        <xs:attribute name="labelKey" type="xs:string" use="required"/>
+        <xs:attribute name="prefix" type="xs:string" />
+        <xs:attribute name="postfix" type="xs:string" />
         <xs:attribute name="separator" type="xs:string" />
         <xs:attribute name="minGroupId" type="xs:string" />
     </xs:complexType>
