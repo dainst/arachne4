@@ -273,8 +273,7 @@ public class ResponseFactory {
 		}
 	}
 
-	public BaseArachneEntity createResponseForDeletedEntity() {
-		// TODO Auto-generated method stub - implement me as fast as possible
-		return null;
+	public BaseArachneEntity createResponseForDeletedEntity(EntityId entityId) {
+		return new DeletedArachneEntity(entityId);
 	}
 }

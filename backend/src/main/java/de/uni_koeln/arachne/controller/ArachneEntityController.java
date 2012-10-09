@@ -142,7 +142,7 @@ public class ArachneEntityController {
     	LOGGER.debug("Request for entity: " + arachneId.getArachneEntityID() + " - type: " + arachneId.getTableName());
     	
     	if (arachneId.isDeleted()) {
-    		return responseFactory.createResponseForDeletedEntity();
+    		return responseFactory.createResponseForDeletedEntity(arachneId);
     	}
     	
     	final String datasetGroupName = singleEntityDataService.getDatasetGroup(arachneId);
