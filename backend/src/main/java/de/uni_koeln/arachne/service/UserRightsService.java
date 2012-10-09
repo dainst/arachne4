@@ -60,11 +60,18 @@ public class UserRightsService implements IUserRightsService {
 	private void initializeUserData() {
 		if (!isSet) {
 			
-			final HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
-	                .getRequestAttributes()).getRequest();
-
-			LOGGER.debug("Session-ID: " + request.getSession().getId());
-			final Session session = sessionDao.findById(request.getSession().getId());
+			Session session = null;
+			HttpServletRequest request = null;
+						
+			if (RequestContextHolder.getRequestAttributes() != null) {
+				request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+			}
+						
+			if (request != null) {
+				LOGGER.debug("Session-ID: " + request.getSession().getId());
+				session = sessionDao.findById(request.getSession().getId());
+			}
+			
 			if (session == null) {
 				arachneUser = userVerwaltungDao.findByName("anonymous");
 			} else {

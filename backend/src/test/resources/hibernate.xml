@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="dataSource"
+        class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="#{config.jdbcDriverClassName}" />
+        <property name="jdbcUrl" value="#{config.jdbcUrl}" />
+        <property name="user" value="#{config.jdbcUsername}" />
+        <property name="password" value="#{config.jdbcPassword}" />
+        <property name="minPoolSize" value="1" />
+        <property name="maxPoolSize" value="20" />
+        <property name="maxIdleTime" value="1800" />
+    </bean>
+
+    <bean id="sessionFactory"
+        class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+
+        <property name="dataSource" ref="dataSource" />
+        <property name="annotatedClasses">
+            <list>
+                <value>de.uni_koeln.arachne.mapping.UserAdministration</value>
+                <value>de.uni_koeln.arachne.mapping.ArachneEntity</value>
+				<value>de.uni_koeln.arachne.mapping.Connection</value>
+				<value>de.uni_koeln.arachne.mapping.Session</value>
+				<value>de.uni_koeln.arachne.mapping.DatasetGroup</value>
+				<value>de.uni_koeln.arachne.mapping.ImageRightsGroup</value>       
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.show_sql">false</prop>
+            </props>
+        </property>
+    </bean>
+</beans>
