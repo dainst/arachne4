@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import de.uni_koeln.arachne.response.StatusResponse;
 import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.StrUtils;
