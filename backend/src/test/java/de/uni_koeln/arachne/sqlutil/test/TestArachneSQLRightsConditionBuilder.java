@@ -24,7 +24,7 @@ public class TestArachneSQLRightsConditionBuilder {
 	
 	@Test
 	public void testArachneSQLRightsConditionBuilder(){
-		SQLRightsConditionBuilder rcb = new SQLRightsConditionBuilder("bauwerk");
+		final SQLRightsConditionBuilder rcb = new SQLRightsConditionBuilder("bauwerk");
 		
 		assertTrue(rcb.getUserRightsSQLSnipplett().contains("`bauwerk`.`DatensatzGruppeBauwerk` = \"Arachne\""));
 		assertTrue(rcb.getUserRightsSQLSnipplett().contains("`bauwerk`.`DatensatzGruppeBauwerk` = \"Oppenheim\""));
