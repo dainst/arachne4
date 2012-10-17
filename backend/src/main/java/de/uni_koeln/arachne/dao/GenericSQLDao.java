@@ -42,7 +42,7 @@ public class GenericSQLDao extends SQLDao {
 		final ConnectedEntitiesSQLQueryBuilder queryBuilder = new ConnectedEntitiesSQLQueryBuilder(contextType, entityId);
 		@SuppressWarnings("unchecked")
 		final List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(queryBuilder.getSQL()
-				, new GenericEntitesMapper());
+				, new GenericEntitiesMapper("AdditionalInfosJSON"));
 
 		if (queryResult != null && !queryResult.isEmpty()) {
 			return queryResult;
