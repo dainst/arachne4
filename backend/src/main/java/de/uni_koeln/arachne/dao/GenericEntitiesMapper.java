@@ -4,18 +4,22 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 
+import de.uni_koeln.arachne.sqlutil.ConnectedEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.util.StrUtils;
 
 public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectedEntitiesSQLQueryBuilder.class);
+	
 	private final transient String jsonField;
 
 	public GenericEntitiesMapper(final String jsonField) {
@@ -40,19 +44,20 @@ public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 			if (!StrUtils.isEmptyOrNull(columnValue)) {
 				if (columnName.equals(jsonField)) {
 					try {
-						Map<String,String> result = new ObjectMapper().readValue(columnValue, HashMap.class);
-						System.out.println(result);
-						System.out.println(dataset);
+						@SuppressWarnings("unchecked")
+						final Map<String,String> result = new ObjectMapper().readValue(columnValue, Map.class);
+						LOGGER.debug(result.toString());
+						LOGGER.debug(dataset.toString());
 						dataset.putAll(result);
 					}
 					catch (JsonParseException e) {
-						System.out.println("FUCKERS!!! " + e.getMessage());
+						LOGGER.error(e.getMessage());
 					}
 					catch (JsonMappingException e) {
-						System.out.println("FUCKERS!!! " + e.getMessage());
+						LOGGER.error(e.getMessage());
 					}
 					catch (IOException e) {
-						System.out.println("FUCKERS!!! " + e.getMessage());
+						LOGGER.error(e.getMessage());
 					}
 				} else {
 					dataset.put(meta.getTableName(i) + "." + columnName, columnValue);
