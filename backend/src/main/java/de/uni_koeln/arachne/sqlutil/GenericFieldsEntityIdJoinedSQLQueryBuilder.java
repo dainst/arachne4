@@ -26,7 +26,6 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 	 */
 	public GenericFieldsEntityIdJoinedSQLQueryBuilder(final String tableName, final String field1, final Long field1Id
 			, final List<String> fields	) {
-		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;
 		rightsConditionBuilder = new SQLRightsConditionBuilder(table);
@@ -61,11 +60,17 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 	
 	@Override
 	protected String buildSQL() {
-		sql += "SELECT " + field2 + " FROM `" + table +  "` "+ entityIdLeftJoin + " WHERE 1";
-		sql += this.buildAndConditions();
-		sql += rightsConditionBuilder.getUserRightsSQLSnipplett();  
-		sql += ";";
-		LOGGER.debug(sql);
-		return sql;
+		sql.append("SELECT ");
+		sql.append(field2);
+		sql.append(" FROM `");
+		sql.append(table);
+		sql.append("` ");
+		sql.append(entityIdLeftJoin);
+		sql.append(" WHERE 1");
+		sql.append(this.buildAndConditions());
+		sql.append(rightsConditionBuilder.getUserRightsSQLSnipplett());  
+		sql.append(";");
+		LOGGER.debug(sql.toString());
+		return sql.toString();
 	}
 }

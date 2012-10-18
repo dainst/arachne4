@@ -21,7 +21,6 @@ public class SingleEntityQueryBuilder extends AbstractSQLBuilder {
 	 * @param user 
 	 */
 	public SingleEntityQueryBuilder(final EntityId ident) {
-		sql = "";
 		conditions = new ArrayList<Condition>(1);
 		entityId = ident;
 		//Sets the Tablename
@@ -39,11 +38,11 @@ public class SingleEntityQueryBuilder extends AbstractSQLBuilder {
 	
 	@Override
 	protected String buildSQL() {
-		sql += "SELECT * FROM `" + table + "` WHERE 1";
-		sql += this.buildAndConditions();
-		sql += rightsConditionBuilder.getUserRightsSQLSnipplett();  
-		sql += this.appendLimitOne();
-		sql += ";";
-		return sql;	
+		sql.append("SELECT * FROM `" + table + "` WHERE 1");
+		sql.append(this.buildAndConditions());
+		sql.append(rightsConditionBuilder.getUserRightsSQLSnipplett());  
+		sql.append(this.appendLimitOne());
+		sql.append(";");
+		return sql.toString();	
 	}
 }

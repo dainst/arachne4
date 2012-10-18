@@ -24,7 +24,7 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 	 */
 	public GenericFieldSQLQueryBuilder(final String tableName, final String field1, final Long field1Id, final String field2
 			, final boolean disableAuthorization) {
-		sql = "";
+		
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;
 		this.field2 = SQLToolbox.getQualifiedFieldname(table, field2);
@@ -55,11 +55,15 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	@Override
 	protected String buildSQL() {
-		sql += "SELECT " + field2 + " FROM `" + table + "` WHERE 1";
-		sql += this.buildAndConditions();
-		sql += rightsCondition;
-		sql += ";";
-		LOGGER.debug(sql);
-		return sql;
+		sql.append("SELECT ");
+		sql.append(field2);
+		sql.append(" FROM `");
+		sql.append(table);
+		sql.append("` WHERE 1");
+		sql.append(this.buildAndConditions());
+		sql.append(rightsCondition);
+		sql.append(";");
+		LOGGER.debug(sql.toString());
+		return sql.toString();
 	}
 }

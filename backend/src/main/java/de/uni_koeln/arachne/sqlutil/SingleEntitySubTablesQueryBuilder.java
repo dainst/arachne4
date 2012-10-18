@@ -12,7 +12,6 @@ public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 
 	
 	public SingleEntitySubTablesQueryBuilder(final Dataset dataset, final TableConnectionDescription tableConnectionDescription) {
-		sql = "";
 		conditions = new ArrayList<Condition>(1);
 
 		String targetTable;
@@ -57,13 +56,15 @@ public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 	
 	@Override
 	protected String buildSQL() {
-		sql += "SELECT * FROM `" + table + "` WHERE 1";
-		sql += this.buildAndConditions();
+		sql.append("SELECT * FROM `");
+		sql.append(table);
+		sql.append("` WHERE 1");
+		sql.append(this.buildAndConditions());
 		if (limit1) {
-			sql += this.appendLimitOne();
+			sql.append(this.appendLimitOne());
 		}
-		sql += ";";
-		return sql;	
+		sql.append(";");
+		return sql.toString();	
 	}
 
 }

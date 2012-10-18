@@ -8,8 +8,10 @@ import java.util.List;
  *
  */
 public abstract class AbstractSQLBuilder {
-	
-	protected transient String sql = "";
+	/**
+	 * Holds the sql statement.
+	 */
+	protected transient StringBuilder sql = new StringBuilder(32);
 	
 	protected transient String table = "";
 	
@@ -26,7 +28,7 @@ public abstract class AbstractSQLBuilder {
 	 */
 	public String getSQL(){		
 		buildSQL();
-		return sql;
+		return sql.toString();
 	}
 	
 	protected abstract String buildSQL();
