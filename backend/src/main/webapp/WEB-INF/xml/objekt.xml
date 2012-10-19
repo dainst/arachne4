@@ -24,7 +24,7 @@
 			<section labelKey="Informationen zum Objekt">
 				<section labelKey="Lokalisierung">
 					<context type="ort" separator=", ">
-						<field datasource=".Art"/>
+						<field datasource=".ArtOrtsangabe"/>
 						<field datasource=".Stadt"/>
 						<field datasource=".Land"/>
 						<field datasource=".Countrycode"/>

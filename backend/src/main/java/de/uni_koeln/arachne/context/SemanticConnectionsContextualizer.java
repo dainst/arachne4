@@ -61,31 +61,36 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 		return result;
 	}
 
+	/**
+	 * Creates a new dataset which is a context from the results of an SQL query.
+	 * @param map The SQL query result.
+	 * @return The newly created dataset.
+	 */
 	private Dataset createDatasetFromQueryResults(final Map<String, String> map) {
 
 		final Dataset result = new Dataset();
-		// this is how the contextualizer can set his own names
+		
 		Long foreignKey = 0L;
 		Long eId = 0L;
-		boolean isDeleted = false;
+
 		final Map<String, String> resultMap = new HashMap<String, String>();
 		for (Map.Entry<String, String> entry: map.entrySet()) {
 			final String key = entry.getKey();
-			if (!(key.contains("PS_") && key.contains("ID"))) {
+			if (!(key.contains("PS_") && key.contains("ID")) && !(key.contains("Source")) && !(key.contains("Type"))) {
 				// get ArachneEntityID from context query result  
-				if ("arachneentityidentification.ArachneEntityID".equals(key)) {
+				if ("semanticconnection.Target".equals(key)) {
 					eId = Long.parseLong(entry.getValue()); 
-				} else if ("arachneentityidentification.ForeignKey".equals(key)) {
+					continue;
+				} else if ("semanticconnection.ForeignKeyTarget".equals(key)) {
 					foreignKey = Long.parseLong(entry.getValue());
-				} else if ("arachneentityidentification.isDeleted".equals(key)) {
-					isDeleted = Boolean.parseBoolean(entry.getValue());
+					continue;
 				} 
 
-				final String newKey = contextType + "." + key.split("\\.")[1];
-				resultMap.put(newKey, entry.getValue());
+				resultMap.put(key, entry.getValue());
 			}
 		}
-		final EntityId entityId = new EntityId(contextType, foreignKey, eId, isDeleted);
+
+		final EntityId entityId = new EntityId(contextType, foreignKey, eId, false);
 		result.setArachneId(entityId);
 		result.appendFields(resultMap);
 		return result;

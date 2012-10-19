@@ -47,8 +47,8 @@ public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 						@SuppressWarnings("unchecked")
 						final Map<String,String> result = new ObjectMapper().readValue(columnValue, Map.class);
 						LOGGER.debug(result.toString());
-						LOGGER.debug(dataset.toString());
 						dataset.putAll(result);
+						LOGGER.debug(dataset.toString());
 					}
 					catch (JsonParseException e) {
 						LOGGER.error(e.getMessage());
