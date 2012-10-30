@@ -1,8 +1,5 @@
 /**
- * 
+ * This package contains classes that are needed to run test which require spring autowiring or AspectJ.
  */
-/**
- * @author satan
- *
- */
+
 package de.uni_koeln.arachne.test;
