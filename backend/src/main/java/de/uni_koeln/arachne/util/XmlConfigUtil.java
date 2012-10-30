@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.context.support.ServletContextResource;
 
 import de.uni_koeln.arachne.response.AbstractContent;
@@ -33,14 +34,13 @@ import de.uni_koeln.arachne.service.IUserRightsService;
  * If a class wants to work with the XML config files it should use this class via autowiring or as base class.
  */
 @Component("xmlConfigUtil")
-public class XmlConfigUtil {
+public class XmlConfigUtil implements ServletContextAware {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(XmlConfigUtil.class);
 	
 	/**
-	 * The servlet context needed to load the XML config files. 
+	 * The servlet context is needed to load the XML config files. 
 	 */
-	@Autowired
 	private transient ServletContext servletContext;
 	
 	@Autowired
@@ -49,6 +49,10 @@ public class XmlConfigUtil {
 	private transient SAXBuilder xmlParser = null;
 	
 	private transient final Map<String, Document> xmlConfigDocuments = new HashMap<String, Document>();
+	
+	public void setServletContext(final ServletContext servletContext) {
+		this.servletContext = servletContext;
+	}
 	
 	/**
 	 * This function checks if a config file for the given type exists and returns its filename.
