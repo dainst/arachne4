@@ -46,13 +46,18 @@ public class StrUtils {
 	    if (parts.length != 4) {
 	        return false;
 	    }
-
-	    for (String string : parts) {
-	        int i = Integer.parseInt(string);
-	        if ((i < 0) || (i > 255)) {
-	            return false;
-	        }
+	    
+	    try {
+	    	for (String string : parts) {
+	    		int i = Integer.parseInt(string);
+	    		if ((i < 0) || (i > 255)) {
+	    			return false;
+	    		}
+	    	}
+	    } catch (NumberFormatException e) {
+	    	return false;
 	    }
+	    
 	    return true;
 	}
 }
