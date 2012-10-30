@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.util.tests;
+package de.uni_koeln.arachne.util;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -15,7 +15,7 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import de.uni_koeln.arachne.testconfig.WebContextTestExecutionListener;
-import de.uni_koeln.arachne.util.XmlConfigUtil;
+
 
 @RunWith(SpringJUnit4ClassRunner.class) 
 @ContextConfiguration(locations={"classpath:test-context.xml"}) 

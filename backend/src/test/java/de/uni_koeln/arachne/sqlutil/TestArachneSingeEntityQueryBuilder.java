@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.sqlutil.tests;
+package de.uni_koeln.arachne.sqlutil;
 
 import static org.junit.Assert.assertTrue;
 
@@ -11,8 +11,8 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import de.uni_koeln.arachne.sqlutil.SQLRightsConditionBuilder;
 import de.uni_koeln.arachne.testconfig.WebContextTestExecutionListener;
+import de.uni_koeln.arachne.util.EntityId;
 
 @RunWith(SpringJUnit4ClassRunner.class) 
 @ContextConfiguration(locations={"classpath:test-context.xml"}) 
@@ -20,13 +20,18 @@ import de.uni_koeln.arachne.testconfig.WebContextTestExecutionListener;
 	DependencyInjectionTestExecutionListener.class,
 	DirtiesContextTestExecutionListener.class,
 	TransactionalTestExecutionListener.class })
-public class TestArachneSQLRightsConditionBuilder {
-	
+public class TestArachneSingeEntityQueryBuilder {
 	@Test
-	public void testArachneSQLRightsConditionBuilder(){
-		final SQLRightsConditionBuilder rcb = new SQLRightsConditionBuilder("bauwerk");
+	public void testArachneSingeEntityQueryBuilder(){
+		final EntityId entityId = new EntityId("bauwerk", Long.valueOf(27000), Long.valueOf(100),false);
+		final SingleEntityQueryBuilder queryBuilder = new SingleEntityQueryBuilder(entityId);
 		
-		assertTrue(rcb.getUserRightsSQLSnipplett().contains("`bauwerk`.`DatensatzGruppeBauwerk` = \"Arachne\""));
-		assertTrue(rcb.getUserRightsSQLSnipplett().contains("`bauwerk`.`DatensatzGruppeBauwerk` = \"Oppenheim\""));
-	}	
+		// do not test for equality as "Oppenheim" and "Arachne" may be switched
+		final String sqlQuery = queryBuilder.getSQL();
+		assertTrue(sqlQuery.startsWith("SELECT * FROM `bauwerk` WHERE 1 AND `bauwerk`.`PS_BauwerkID` = 27000 AND"));
+		assertTrue(sqlQuery.contains("`bauwerk`.`DatensatzGruppeBauwerk` = \"Oppenheim\""));
+		assertTrue(sqlQuery.contains(" OR "));
+		assertTrue(sqlQuery.contains("`bauwerk`.`DatensatzGruppeBauwerk` = \"Arachne\""));
+		assertTrue(sqlQuery.endsWith("Limit 1;"));
+	}
 }

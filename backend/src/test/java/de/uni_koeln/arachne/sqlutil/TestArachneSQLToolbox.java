@@ -1,11 +1,8 @@
-package de.uni_koeln.arachne.sqlutil.tests;
+package de.uni_koeln.arachne.sqlutil;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import de.uni_koeln.arachne.sqlutil.SQLToolbox;
-
 
 public class TestArachneSQLToolbox {
 	@Test
