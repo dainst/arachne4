@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.util;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +31,11 @@ public class TestXmlConfigUtil {
 	public void setUp() {
 		xmlConfigUtil = new XmlConfigUtil();
 		xmlConfigUtil.setServletContext(new MockServletContext("file:src/main/webapp"));
+	}
+	
+	@After
+	public void tearDown() {
+		xmlConfigUtil = null;
 	}
 	
 	@Test
