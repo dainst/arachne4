@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-	Context 'Ort' contains fields from table 'ortsbezug' that are not yet implemented in the  
-	AdditionalInfosJSON-Field of the SemanticConnection table and thus may not be visible at the moment.
--->
-
 <category name="sarkophag"
     xmlns="http://arachne.uni-koeln.de/schemas/category"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -118,10 +113,34 @@
 				<section labelKey="Material">
 					<field datasource="sarkophag.Material" />
 				</section>
-        		<context type="literatur" labelKey="Literatur" separator=" ">
+        		<context type="literatur" labelKey="Literatur" separator=", ">
 	            	<field datasource=".DAIRichtlinien" />
 	            	<field datasource=".Seite" />
+	            	<field datasource=".Anmerkung" prefix="Anm. " /> <!-- AdditionalInfosJSON -->
+	            	<field datasource=".Abbildung" prefix="Abb. " /> <!-- AdditionalInfosJSON -->
+	            	<field datasource=".Katnummer" prefix="Kat.Nr. " /> <!-- AdditionalInfosJSON -->
+	            	<field datasource=".Tafel" prefix="Taf. " /> <!-- AdditionalInfosJSON -->
+	            	<field datasource=".Figur" prefix="Fig. " /> <!-- AdditionalInfosJSON -->
+	            	<field datasource=".Beilage" prefix="Beil. " /> <!-- AdditionalInfosJSON -->
+	            	<field datasource=".subVoce" prefix="s.v. " /> <!-- AdditionalInfosJSON -->
+	            	<field datasource=".KommentarLitZitat" prefix="(" postfix=")" /> <!-- AdditionalInfosJSON -->
+	            	<field datasource=".Supplement" prefix="Supplement: " /> <!-- AdditionalInfosJSON -->
 	            </context>
+				<section labelKey="Zugehörige Datensätze in Arachne">
+		            <context type="gruppen" labelKey="Mehrteilige Denkmäler" separator=" ">
+		            	<field datasource=".KurzbeschreibungGruppen" />
+		            </context>
+		            <context type="objekt" labelKey="Einzelobjekte">
+		            	<field datasource=".KurzbeschreibungObjekt" />
+		            </context>
+		            <context type="relief" labelKey="Szenen" separator=" ">
+		            	<field datasource=".Szenennummer" prefix="Szene " postfix=":" />
+		            	<field datasource=".KurzbeschreibungRelief" />
+		            </context>
+		            <context type="realien" labelKey="Einzelmotive">
+		            	<field datasource=".KurzbeschreibungRealien" />
+		            </context>
+				</section>
 			</section>
 		</datasections>
 	</display>
