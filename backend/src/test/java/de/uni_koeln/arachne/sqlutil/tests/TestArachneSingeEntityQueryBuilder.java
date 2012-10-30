@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.sqlutil.test;
+package de.uni_koeln.arachne.sqlutil.tests;
 
 import static org.junit.Assert.assertTrue;
 
@@ -12,7 +12,7 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import de.uni_koeln.arachne.sqlutil.SingleEntityQueryBuilder;
-import de.uni_koeln.arachne.test.WebContextTestExecutionListener;
+import de.uni_koeln.arachne.testconfig.WebContextTestExecutionListener;
 import de.uni_koeln.arachne.util.EntityId;
 
 @RunWith(SpringJUnit4ClassRunner.class) 

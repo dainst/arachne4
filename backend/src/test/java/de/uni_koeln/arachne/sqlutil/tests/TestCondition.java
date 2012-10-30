@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.sqlutil.test;
+package de.uni_koeln.arachne.sqlutil.tests;
 
 import static org.junit.Assert.assertEquals;
 

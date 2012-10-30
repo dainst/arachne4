@@ -1,6 +1,6 @@
-package de.uni_koeln.arachne.sqlutil.test;
+package de.uni_koeln.arachne.util.tests;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,8 +11,8 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import de.uni_koeln.arachne.sqlutil.SQLRightsConditionBuilder;
-import de.uni_koeln.arachne.test.WebContextTestExecutionListener;
+import de.uni_koeln.arachne.testconfig.WebContextTestExecutionListener;
+import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class) 
 @ContextConfiguration(locations={"classpath:test-context.xml"}) 
@@ -20,13 +20,10 @@ import de.uni_koeln.arachne.test.WebContextTestExecutionListener;
 	DependencyInjectionTestExecutionListener.class,
 	DirtiesContextTestExecutionListener.class,
 	TransactionalTestExecutionListener.class })
-public class TestArachneSQLRightsConditionBuilder {
-	
+public class TestXmlConfigUtil {
 	@Test
-	public void testArachneSQLRightsConditionBuilder(){
-		final SQLRightsConditionBuilder rcb = new SQLRightsConditionBuilder("bauwerk");
-		
-		assertTrue(rcb.getUserRightsSQLSnipplett().contains("`bauwerk`.`DatensatzGruppeBauwerk` = \"Arachne\""));
-		assertTrue(rcb.getUserRightsSQLSnipplett().contains("`bauwerk`.`DatensatzGruppeBauwerk` = \"Oppenheim\""));
-	}	
+	public void testXmlConfigUtil() {
+		final XmlConfigUtil xmlConfigUtil = new XmlConfigUtil();
+		assertNotNull(xmlConfigUtil);
+	}
 }

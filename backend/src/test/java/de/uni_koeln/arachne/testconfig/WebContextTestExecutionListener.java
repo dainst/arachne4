@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.test;
+package de.uni_koeln.arachne.testconfig;
 
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.support.GenericApplicationContext;
