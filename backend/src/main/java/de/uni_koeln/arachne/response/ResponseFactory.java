@@ -273,7 +273,7 @@ public class ResponseFactory {
 		}
 	}
 
-	public BaseArachneEntity createResponseForDeletedEntity(EntityId entityId) {
+	public BaseArachneEntity createResponseForDeletedEntity(final EntityId entityId) {
 		return new DeletedArachneEntity(entityId);
 	}
 }
