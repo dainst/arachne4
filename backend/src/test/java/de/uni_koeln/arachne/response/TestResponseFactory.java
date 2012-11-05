@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.response;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.After;
@@ -26,7 +27,8 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 	TransactionalTestExecutionListener.class })
 public class TestResponseFactory {
 	private transient ResponseFactory responseFactory;
-		
+	private transient FormattedArachneEntity response;	
+	
 	@Before
 	public void setUp() {
 		final XmlConfigUtil xmlConfigUtil = new XmlConfigUtil();
@@ -34,6 +36,17 @@ public class TestResponseFactory {
 		
 		responseFactory = new ResponseFactory();
 		responseFactory.setXmlConfigUtil(xmlConfigUtil);
+		
+		final Dataset dataset = new Dataset();
+		
+		dataset.setArachneId(new EntityId("test", 0L, 0L, false));
+		dataset.setFields("test.Title", "Title of the Test");
+		dataset.setFields("test.Subtitle", "Subtitle of the Test");
+		
+		dataset.setFields("test.DataPrefix", "success");
+		dataset.setFields("test.DataPostfix", "PostfixTest");
+		
+		response = responseFactory.createFormattedArachneEntity(dataset);
 	}
 	
 	@After
@@ -43,11 +56,26 @@ public class TestResponseFactory {
 	
 	@Test
 	public void testCreateFormattedArachneEntity() {
-		final Dataset dataset = new Dataset();
-		
-		dataset.setArachneId(new EntityId("test", 0L, 0L, false));
-		
-		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(dataset);
 		assertNotNull(response);
+	}
+	
+	@Test
+	public void testType() {
+		assertEquals("test", response.getType());
+	}
+	
+	@Test
+	public void testTitle() {
+		assertEquals("Title of the Test", response.getTitle());
+	}
+	
+	@Test
+	public void testSubtitle() {
+		assertEquals("Subtitle of the Test", response.getSubtitle());
+	}
+	
+	@Test
+	public void testDatasectionLabel() {
+		assertEquals("Testdata", ((Section)response.getSections()).getLabel());
 	}
 }

@@ -17,14 +17,14 @@
 		</title>
 		<subtitle>
 			<section>
-				<field datasource="test.SubTitel" />
+				<field datasource="test.Subtitle" />
 			</section>
 		</subtitle>
 		<datasections>
-			<section labelKey="Informationen zum Test">
-				<section labelKey="Test-Daten">
-					<field datasource="test.data1" prefix="Data1: " />
-					<field datasource="test.data2" postfix=" of Data2" />
+			<section labelKey="Testdata">
+				<section labelKey="Testdata prefix/postfix">
+					<field datasource="test.DataPrefix" prefix="PrefixTest=" />
+					<field datasource="test.DataPostfix" postfix="=success" />
 				</section>
 			</section>
 		</datasections>
