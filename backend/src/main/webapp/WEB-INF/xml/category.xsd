@@ -8,17 +8,17 @@
     <xs:element name="category">        
         <xs:complexType>
             <xs:all>
-                <xs:element name="display" minOccurs="1">
+                <xs:element name="display" minOccurs="1" maxOccurs="1">
                     <xs:complexType>
                         <xs:sequence>
                         	<!-- shouldn't title and subtitle may be only of a single field? -->
-                            <xs:element name="title" type="SectionContent" />
-                            <xs:element name="subtitle" type="SectionContent" />
-                            <xs:element name="datasections" type="SectionContent" />
+                            <xs:element name="title" type="SectionContent" minOccurs="1" maxOccurs="1" />
+                            <xs:element name="subtitle" type="SectionContent" minOccurs="1" maxOccurs="1" />
+                            <xs:element name="datasections" type="SectionContent" minOccurs="1" maxOccurs="1" />
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="facets" minOccurs="0">
+                <xs:element name="facets" minOccurs="1" maxOccurs="1">
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element name="facet" maxOccurs="unbounded">
