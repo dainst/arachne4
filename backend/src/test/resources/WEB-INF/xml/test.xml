@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- just very basic to have at least some definitions -->
+<category name="test"
+	xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<display>
+		<title>
+			<section>
+				<field datasource="test.MissingTitle">
+					<ifEmpty>
+						<field datasource="test.Title" />
+					</ifEmpty> 
+				</field>
+			</section>
+		</title>
+		<subtitle>
+			<section>
+				<field datasource="test.SubTitel" />
+			</section>
+		</subtitle>
+		<datasections>
+			<section labelKey="Informationen zum Test">
+				<section labelKey="Test-Daten">
+					<field datasource="test.data1" prefix="Data1: " />
+					<field datasource="test.data2" postfix=" of Data2" />
+				</section>
+			</section>
+		</datasections>
+	</display>
+	<facets>
+		<facet name="kategorie" labelKey="Kategorie">
+			<field datasource="Dataset.TableName" />
+		</facet>
+	</facets>
+</category>

@@ -12,6 +12,7 @@ import org.jdom2.Namespace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
 
 import de.uni_koeln.arachne.service.IUserRightsService;
@@ -27,12 +28,18 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
  * This class can be autowired.
  */
 @Component
+@Configurable(preConstruction=true)
 public class ResponseFactory {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
+	
+	// needed for testing
+	public void setXmlConfigUtil(final XmlConfigUtil xmlConfigUtil) {
+		this.xmlConfigUtil = xmlConfigUtil;
+	}
 	
 	@Autowired
 	private transient IUserRightsService userRightsService;
