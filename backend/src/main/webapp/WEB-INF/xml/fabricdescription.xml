@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category name="fabricdescription" xmlns="http://arachne.uni-koeln.de/schemas/category"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category file:/Users/Patrick/Documents/workspaceSTS/ArachneDataService/src/main/webapp/WEB-INF/xml/category.xsd">
+    <display>
+        <title>
+            <section separator=" / ">
+                <field datasource="fabricdescription.Manufacture"/>
+            </section>
+        </title>
+        <subtitle>
+            <section separator=" / ">
+                <field datasource="fabricdescription.Hardness"/>
+            </section>
+        </subtitle>
+
+        <datasections>
+            <section labelKey="Informationen zur Fabricdescription">
+                <section labelKey="Informationen zur Bruchstelle">
+                    <field datasource="fabricdescription.ColourOfBreakQualifierVon"/>
+                    <field datasource="fabricdescription.ColourOfBreakVon"/>
+                    <field datasource="fabricdescription.ColourOfBreakQualifierBis"/>
+                    <field datasource="fabricdescription.ColourOfBreakBis"/>
+                    <field datasource="fabricdescription.ColourOfBreakMunsellVon"/>
+                    <field datasource="fabricdescription.ColourOfBreakMunsellBis"/>
+                    <field datasource="fabricdescription.Zoning"/>
+                </section>
+                <section labelKey="Informationen zum Kern">
+                    <field datasource="fabricdescription.ColourOfCoreQualifierVon"/>
+                    <field datasource="fabricdescription.ColourOfCoreVon"/>
+                    <field datasource="fabricdescription.ColourOfCoreQualifierBis"/>
+                    <field datasource="fabricdescription.ColourOfCoreBis"/>
+                    <field datasource="fabricdescription.ColourOfCoreMunsellVon"/>
+                    <field datasource="fabricdescription.ColourOfCoreMunsellBis"/>
+                </section>
+                <section labelKey="Informationen zur Außenhülle">
+                    <field datasource="fabricdescription.ColourOfOutsideQualifierVon"/>
+                    <field datasource="fabricdescription.ColourOfOutsideVon"/>
+                    <field datasource="fabricdescription.ColourOfOutsideQualifierBis"/>
+                    <field datasource="fabricdescription.ColourOfOutsideBis"/>
+                    <field datasource="fabricdescription.ColourOfOutsideMunsellVon"/>
+                    <field datasource="fabricdescription.ColourOfOutsideMunsellBis"/>
+                </section>
+                <section labelKey="Informationen zur Struktur">
+                    <field datasource="fabricdescription.Manufacture"/>
+                    <field datasource="fabricdescription.Hardness"/>
+                    <field datasource="fabricdescription.Fracture"/>
+                    <field datasource="fabricdescription.Porosity"/>
+                    <field datasource="fabricdescription.Comments"/>
+                </section>
+                <section labelKey="Informationen zur Oberfläche">
+                    <field datasource="fabricdescription.SurfaceFeel"/>
+                    <field datasource="fabricdescription.ColourQualifierFreeVon"/>
+                    <field datasource="fabricdescription.ColourFreeVon"/>
+                    <field datasource="fabricdescription.ColourQualifierFreeBis"/>
+                    <field datasource="fabricdescription.ColourFreeBis"/>
+                    <field datasource="fabricdescription.ColourMunsellVon"/>
+                    <field datasource="fabricdescription.ColourMunsellBis"/>
+                </section>
+                <section labelKey="Einschlüsse">
+                    <context type="einschluss" labelKey="Einschlüsse" separator=" ">
+                        <field datasource=".Einschlussart"/>
+                        <field datasource=".Haeufigkeit"/>
+                        <field datasource=".DurchschnittlicheGroesse"/>
+                        <field datasource=".Verteilung"/>
+                    </context>
+                </section>
+
+                <section labelKey="Datierung">
+                    <context type="datierung" labelKey="Datierung" separator=" ">
+                        <field datasource=".AnfEpoche" postfix=","/>
+                        <field datasource=".AnfDatZeitraum"/>
+                        <field datasource=".AnfDatJh" postfix=". Jh."/>
+                        <field datasource=".AnfDatvn"/>
+                    </context>
+                </section>
+
+                <section labelKey="Lokalisierung">
+                    <context type="ort" separator=", ">
+                        <field datasource=".ArtOrtsangabe"/>
+                        <field datasource=".Stadt"/>
+                        <field datasource=".Land"/>
+                        <field datasource=".Countrycode"/>
+                        <field datasource=".Aufbewahrungsort"/>
+                    </context>
+                </section>
+            </section>
+
+
+        </datasections>
+    </display>
+    <facets>
+        <facet name="kategorie" labelKey="Kategorie">
+            <field datasource="Dataset.TableName"/>
+        </facet>
+    </facets>
+</category>

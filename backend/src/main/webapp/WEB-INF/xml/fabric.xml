@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category name="fabric" xmlns="http://arachne.uni-koeln.de/schemas/category"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category file:/Users/Patrick/Documents/workspaceSTS/ArachneDataService/src/main/webapp/WEB-INF/xml/category.xsd">
+    <display>
+        <title>
+            <section separator=" / ">
+                <field datasource="fabric.Origin"/>
+                <field datasource="fabric.CommonName"/>
+            </section>
+        </title>
+        <subtitle>
+            <section separator=" / ">
+                <field datasource="fabric.Name"/>        
+            </section>
+        </subtitle>
+        
+        <datasections>
+            <section labelKey="Fabricdescription">
+                <context type="fabricdescription" labelKey="Fabricdescription" separator=" ">
+                    <field datasource=".ColourOfBreakQualifierVon"/>
+                    <field datasource=".ColourOfBreakVon"/>
+                    <field datasource=".ColourOfBreakQualifierBis"/>
+                    <field datasource=".ColourOfBreakBis"/>
+                    <field datasource=".Zoning" />
+                    <field datasource=".ColourOfCoreQualifierVon"/>
+                    <field datasource=".ColourOfCoreVon"/>
+                    <field datasource=".ColourOfCoreQualifierBis"/>
+                    <field datasource=".ColourOfCoreBis"/>
+                    <field datasource=".ColourOfOutsideQualifierVon"/>
+                    <field datasource=".ColourOfOutsideVon"/>
+                    <field datasource=".ColourOfOutsideQualifierBis"/>
+                    <field datasource=".ColourOfOutsideBis"/>
+                    <field datasource=".Manufacture" />
+                    <field datasource=".Hardness" />
+                    <field datasource=".Porosity" />
+                    <field datasource=".SurfaceFeel"/>
+                    <field datasource=".ColourQualifierFreeVon"/>
+                    <field datasource=".ColourFreeVon"/>
+                    <field datasource=".ColourQualifierFreeBis"/>
+                    <field datasource=".ColourFreeBis"/>
+                </context>
+            </section>
+        </datasections>
+    </display>
+    <facets>
+        <facet name="kategorie" labelKey="Kategorie">
+            <field datasource="Dataset.TableName" />
+        </facet>
+    </facets>
+</category>

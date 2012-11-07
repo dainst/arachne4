@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category name="morphology" xmlns="http://arachne.uni-koeln.de/schemas/category"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category file:/Users/Patrick/Documents/workspaceSTS/ArachneDataService/src/main/webapp/WEB-INF/xml/category.xsd">
+    <display>
+        <title>
+            <section separator=" / ">
+                <section separator=" / ">
+                    <section separator=" / ">
+                        <field datasource="morphology.Level6">
+                            <ifEmpty>
+                                <field datasource="morphology.Level5" >
+                                    <ifEmpty>
+                                        <field datasource="morphology.Level4" >
+                                            <ifEmpty>
+                                                <field datasource="morphology.Level3" >
+                                                    <ifEmpty>
+                                                        <field datasource="morphology.Level2" >
+                                                            <ifEmpty>
+                                                                <field datasource="morphology.Level1" />
+                                                            </ifEmpty>
+                                                        </field>
+                                                    </ifEmpty>
+                                                </field>
+                                            </ifEmpty>
+                                        </field>    
+                                    </ifEmpty>
+                                </field>
+                            </ifEmpty> 
+                        </field>
+                    </section>
+                </section>
+            </section>
+        </title>
+
+        <subtitle>
+            <section separator=" / ">
+                <field datasource="morphology.Level1"/>
+            </section>
+        </subtitle>
+
+        <datasections>
+            <section labelKey="Informationen zur Morphology">
+                <field datasource="morphology.Level1"/>
+                <field datasource="morphology.Level2"/>
+                <field datasource="morphology.Level3"/>
+                <field datasource="morphology.Level4"/>
+                <field datasource="morphology.Level5"/>
+                <field datasource="morphology.Level6"/>
+            </section>
+            <section labelKey="Datierung">
+                <context type="datierung" labelKey="Datierung" separator=" ">
+                    <field datasource=".AnfEpoche" postfix=","/>
+                    <field datasource=".AnfDatZeitraum"/>
+                    <field datasource=".AnfDatJh" postfix=". Jh."/>
+                    <field datasource=".AnfDatvn"/>
+                </context>
+            </section>
+            <context type="literatur" labelKey="Literatur" separator=" ">
+                <field datasource=".tempLiteratur"/>
+                <field datasource=".DAIRichtlinien"/>
+                <field datasource=".Seite"/>
+            </context>
+        </datasections>
+    </display>
+    <facets>
+        <facet name="kategorie" labelKey="Kategorie">
+            <field datasource="Dataset.TableName" />
+        </facet>
+    </facets>
+</category>

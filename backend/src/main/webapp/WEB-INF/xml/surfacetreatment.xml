@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category name="surfacetreatment" xmlns="http://arachne.uni-koeln.de/schemas/category"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category file:/Users/Patrick/Documents/workspaceSTS/ArachneDataService/src/main/webapp/WEB-INF/xml/category.xsd">
+    <display>
+        <title>
+            <section separator=" / ">
+                <field datasource="surfacetreatment.Bezeichner"/>
+            </section>
+        </title>
+        <subtitle>
+            <section separator=" / ">
+                <field datasource="surfacetreatment.Bezeichner"/>
+            </section>
+        </subtitle>
+
+        <datasections>
+            <section labelKey="Surfacetreatment Actions">
+                <context type="surfacetreatmentaction" labelKey="Oberflächenbehandlungen"
+                    separator=" ">
+                    <field datasource=".MomentOfSurfaceTreatmentAction"/>
+                    <field datasource=".TreatmentPosition"/>
+                    <field datasource=".PartOfSurfaceTreated"/>
+                    <field datasource=".Condition"/>
+                    <field datasource=".NumberOfSherds"/>
+
+                    <field datasource=".TreatmentAction"/>
+                    <field datasource=".TreatmentActionSubCoating"/>
+                    <field datasource=".IncisionDescription"/>
+                    <field datasource=".StampedStamp"/>
+                    <field datasource=".AddedMaterialType"/>
+                </context>
+            </section>
+        </datasections>
+    </display>
+    <facets>
+        <facet name="kategorie" labelKey="Kategorie">
+            <field datasource="Dataset.TableName"/>
+        </facet>
+    </facets>
+</category>

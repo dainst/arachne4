@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category name="surfacetreatmentaction" xmlns="http://arachne.uni-koeln.de/schemas/category"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category file:/Users/Patrick/Documents/workspaceSTS/ArachneDataService/src/main/webapp/WEB-INF/xml/category.xsd">
+    <display>
+        <title>
+            <section separator=" / ">
+                <context type="surfacetreatment" separator=" ">
+                    <field datasource=".Bezeichner"/>
+                </context>
+            </section>
+        </title>
+        <subtitle>
+            <section separator=" / ">
+                <field datasource="surfacetreatmentaction.TreatmentAction"/>
+                <field datasource="surfacetreatmentaction.TreatmentPosition"/>           
+            </section>
+        </subtitle>
+        
+        <datasections>
+            <section labelKey="Informationen zur Oberflächenbehandlung">
+                <field datasource="surfacetreatmentaction.MomentOfSurfaceTreatmentAction"/>
+                <field datasource="surfacetreatmentaction.TreatmentPosition"/> 
+                <field datasource="surfacetreatmentaction.PartOfSurfaceTreated"/>
+                <field datasource="surfacetreatmentaction.Condition"/>
+                <field datasource="surfacetreatmentaction.NumberOfSherds"/> 
+            </section>
+            <section labelKey="Informationen zur Behandlungstechnik">
+                <field datasource="surfacetreatmentaction.TreatmentAction"/>
+                <field datasource="surfacetreatmentaction.TreatmentActionSubCoating"/> 
+                <field datasource="surfacetreatmentaction.IncisionDescription"/>
+                <field datasource="surfacetreatmentaction.StampedStamp"/> 
+                <field datasource="surfacetreatmentaction.AddedMaterialType"/> 
+            </section>
+            <section labelKey="Beschreibung der Oberflächenbehandlung">
+                <field datasource="surfacetreatmentaction.Thickness"/>
+                <field datasource="surfacetreatmentaction.Glossiness"/> 
+                <field datasource="surfacetreatmentaction.Conservation"/>
+                <field datasource="surfacetreatmentaction.Quality"/> 
+                <field datasource="surfacetreatmentaction.Homogenity"/> 
+                <field datasource="surfacetreatmentaction.Adherence"/> 
+                <field datasource="surfacetreatmentaction.Alignment"/> 
+                <field datasource="surfacetreatmentaction.FreeDescription"/> 
+            </section>
+            <section labelKey="Farbinformationen">
+                <field datasource="surfacetreatmentaction.ColourFreeQualifierVon"/>
+                <field datasource="surfacetreatmentaction.ColourFreeVon"/> 
+                <field datasource="surfacetreatmentaction.ColourFreeQualifierBis"/>
+                <field datasource="surfacetreatmentaction.ColourFreeBis"/> 
+                <field datasource="surfacetreatmentaction.ColourMunsellVon"/> 
+                <field datasource="surfacetreatmentaction.ColourMunsellBis"/> 
+            </section>
+           </datasections>
+    </display>
+    <facets>
+        <facet name="kategorie" labelKey="Kategorie">
+            <field datasource="Dataset.TableName" />
+        </facet>
+    </facets>
+</category>

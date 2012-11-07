@@ -102,7 +102,7 @@
         		<section labelKey="Beschriftung">
         			<field datasource="reproduktion.Beschriftung" />
         			<field datasource="reproduktion.ReproBezeichnet" prefix="Bezeichnung: "/>
-        			<field datasource="reprodultion.ReproUntenLinks" prefix="Unten-links: " />
+        			<field datasource="reproduktion.ReproUntenLinks" prefix="Unten-links: " />
         			<field datasource="reproduktion.ReproUntenRechts" prefix="Unten-rechts: " />
         			<field datasource="reproduktion.ReproUntenMitte" prefix="Unten-mitte: " />
         			<field datasource="reproduktion.ReproObenLinks" prefix="Oben-links: "/>

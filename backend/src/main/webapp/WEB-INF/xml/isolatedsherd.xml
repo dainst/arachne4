@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category name="isolatedsherd" xmlns="http://arachne.uni-koeln.de/schemas/category"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category file:/Users/Patrick/Documents/workspaceSTS/ArachneDataService/src/main/webapp/WEB-INF/xml/category.xsd">
+    <display>
+        <title>
+            <section separator=" / ">
+                <field datasource="isolatedsherd.InventoryNumber"/>
+                <field datasource="isolatedsherd.NitonAnalysisID"/>
+            </section>
+        </title>
+        <subtitle>
+            <section separator=" / ">
+                <field datasource="isolatedsherd.SherdType"/>
+            </section>
+        </subtitle>
+        
+        <datasections>
+            <section labelKey="Informationen zum Keramikfragment">
+                <field datasource="isolatedsherd.SherdType"/>
+                <field datasource="isolatedsherd.Diameter" postfix="cm"/>
+                <field datasource="isolatedsherd.Height" postfix="cm"/>
+                <field datasource="isolatedsherd.Width" postfix="cm"/>
+                <field datasource="isolatedsherd.Length" postfix="cm"/>
+                <field datasource="isolatedsherd.Thickness" postfix="cm"/>
+                <field datasource="isolatedsherd.Weight" postfix="g"/>
+                <field datasource="isolatedsherd.RimPercentage" postfix="%"/>
+            </section>
+            <section labelKey="Informationen zur Oberflaechenbehandlung">
+                <context type="surfacetreatment" labelKey="Oberflächenbehandlung" separator=" ">
+                    <field datasource=".Bezeichner"/>
+                    <field datasource=".ConnectedActions"></field>
+              </context>
+            </section>
+            <section labelKey="Lokalisierung">
+                <context type="ort" separator=", ">
+                    <field datasource=".ArtOrtsangabe"/>
+                    <field datasource=".Stadt"/>
+                    <field datasource=".Land"/>
+                    <field datasource=".Countrycode"/>
+                    <field datasource=".Aufbewahrungsort"/>
+                </context>
+            </section>
+        </datasections>
+    </display>
+    <facets>
+        <facet name="kategorie" labelKey="Kategorie">
+            <field datasource="Dataset.TableName" />
+        </facet>
+    </facets>
+</category>

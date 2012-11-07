@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category name="einschluss" xmlns="http://arachne.uni-koeln.de/schemas/category"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category file:/Users/Patrick/Documents/workspaceSTS/ArachneDataService/src/main/webapp/WEB-INF/xml/category.xsd">
+    <display>
+        <title>
+            <section separator=" / ">
+                <field datasource="einschluss.Einschlussart"/>
+            </section>
+        </title>
+        <subtitle>
+            <section separator=" / ">
+                <field datasource="einschluss.Einschlussart"/>
+            </section>
+        </subtitle>
+        
+        <datasections>
+            <section labelKey="Informationen zum Einschluss">
+                <field datasource="einschluss.Einschlussart"/>
+                <field datasource="einschluss.Haeufigkeit"/>
+                <field datasource="einschluss.DurchschnittlicheGroesse"/>
+                <field datasource="einschluss.Verteilung"/>
+                <field datasource="einschluss.Form"/>
+                <field datasource="einschluss.Opacity"/>
+                <field datasource="einschluss.ColourQualifierVon"/>
+                <field datasource="einschluss.ColourFreeVon"/>
+                <field datasource="einschluss.ColourQualifierBis"/>
+                <field datasource="einschluss.ColourFreeBis"/>
+                <field datasource="einschluss.Opacity"/>
+            </section>
+        </datasections>
+    </display>
+    <facets>
+        <facet name="kategorie" labelKey="Kategorie">
+            <field datasource="Dataset.TableName" />
+        </facet>
+    </facets>
+</category>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category name="befund" xmlns="http://arachne.uni-koeln.de/schemas/category"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category file:/Users/Patrick/Documents/workspaceSTS/ArachneDataService/src/main/webapp/WEB-INF/xml/category.xsd">
+    <display>
+        <title>
+            <section separator=" / ">
+                <field datasource="befund.Grabungsort"/>
+                <field datasource="befund.Befund"/>
+                <field datasource="befund.Areal"/>
+            </section>
+        </title>
+        <subtitle>
+            <section separator=" / ">
+                <field datasource="befund.Grabungsort"/>
+            </section>
+        </subtitle>
+
+        <datasections>
+            <section labelKey="Informationen zum Befund">
+                <field datasource="befund.Grabungsort"/>
+                <field datasource="befund.Befund"/>
+                <field datasource="befund.Areal"/>
+                <field datasource="befund.Kommentar"/>
+            </section>
+            <section labelKey="Datierung">
+                <context type="datierung" labelKey="Datierung" separator=" ">
+                    <field datasource=".AnfEpoche" postfix=","/>
+                    <field datasource=".AnfDatZeitraum"/>
+                    <field datasource=".AnfDatJh" postfix=". Jh."/>
+                    <field datasource=".AnfDatvn"/>
+                </context>
+            </section>
+            <section labelKey="Lokalisierung">
+                <context type="ort" separator=", ">
+                    <field datasource=".ArtOrtsangabe"/>
+                    <field datasource=".Stadt"/>
+                    <field datasource=".Land"/>
+                    <field datasource=".Countrycode"/>
+                    <field datasource=".Aufbewahrungsort"/>
+                </context>
+            </section>
+            <section labelKey="Verbundene Hauptobjekte">
+                <context type="mainabstract.morphology" separator=", " labelKey="Morphologie">
+                    <field datasource=".Level1"/>
+                    <field datasource=".Level2"/>
+                    <field datasource=".Level3"/>
+                    <field datasource=".Level4"/>
+                    <field datasource=".Level5"/>
+                    <field datasource=".Level6"/>
+                </context>
+                <context type="mainabstract" labelKey="Intene Typnummer" separator=", ">
+                    <field datasource=".GrabungsinterneTypennummer"/>
+                    <field datasource=".GrabungsinterneTypennummerSub"/>
+                </context>
+                <context type="mainabstract.fabric" separator=", " labelKey="Fabric">
+                    <field datasource=".Name"/>
+                    <field datasource=".CommonName"/>
+                </context>
+            </section>
+            <context type="mainabstract.isolatedsherd" separator=", "
+                labelKey="Verbundene Keramikfragmente">
+                <field datasource=".SherdType" />
+                <field datasource=".InventoryNumber" />
+                <field datasource=".NitonAnalysisNumber" />
+            </context>
+        </datasections>
+    </display>
+    <facets>
+        <facet name="kategorie" labelKey="Kategorie">
+            <field datasource="Dataset.TableName"/>
+        </facet>
+    </facets>
+</category>

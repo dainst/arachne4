@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category name="mainabstract" xmlns="http://arachne.uni-koeln.de/schemas/category"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category file:/Users/Patrick/Documents/workspaceSTS/ArachneDataService/src/main/webapp/WEB-INF/xml/category.xsd">
+    <display>
+        <title>
+            <section separator=" / ">
+                <field datasource="befund.Grabungsort" />
+                <field datasource="befund.Befund"></field>
+            </section>
+        </title>
+        <subtitle>
+            <section separator=" / ">
+                <section separator=" / ">
+                    <field datasource="mainabstract.GrabungsinterneTypennummer" />
+                    <field datasource="mainabstract.GrabungsinterneTypennummerSub" />
+                    <field datasource="morphology.Level6">
+                        <ifEmpty>
+                            <field datasource="morphology.Level5" >
+                                <ifEmpty>
+                                    <field datasource="morphology.Level4" >
+                                        <ifEmpty>
+                                            <field datasource="morphology.Level3" >
+                                                <ifEmpty>
+                                                    <field datasource="morphology.Level2" >
+                                                        <ifEmpty>
+                                                            <field datasource="morphology.Level1" />
+                                                        </ifEmpty>
+                                                    </field>
+                                                </ifEmpty>
+                                            </field>
+                                        </ifEmpty>
+                                    </field>    
+                                 </ifEmpty>
+                             </field>
+                         </ifEmpty> 
+                    </field>
+                </section>
+            </section>
+        </subtitle>
+        <datasections>
+            <section labelKey="Informationen zum Abstract">
+                <section labelKey="Befund">
+                    <context type="befund" labelKey="Befund" separator=", ">
+                        <field datasource=".Grabungsort"  />
+                        <field datasource=".Befund" />
+                        <field datasource=".Areal" />
+                    </context>
+                </section>
+                <section labelKey="Morphology">
+                    <context type="morphology" labelKey="Morphology / Typologie" separator=", ">
+                        <field datasource=".Level1"  />
+                        <field datasource=".Level2"  />
+                        <field datasource=".Level3"  />
+                        <field datasource=".Level4"  />
+                        <field datasource=".Level5"  />
+                        <field datasource=".Level6"  />
+                    </context>
+                    <section labelKey="Interne Typnummer">
+                        <field datasource="mainabstract.GrabungsinterneTypennummer" />
+                        <field datasource="mainabstract.GrabungsinterneTypennummerSub" />
+                    </section>
+                </section>
+                
+                <section labelKey="Datierung">
+                    <context type="datierung" labelKey="Datierung" separator=" ">
+                        <field datasource=".AnfEpoche" postfix="," />
+                        <field datasource=".AnfDatZeitraum" />
+                        <field datasource=".AnfDatJh" postfix=". Jh."/>
+                        <field datasource=".AnfDatvn" />
+                    </context>
+                </section>
+                
+                <section labelKey="Keramikfragmente">
+                    <context type="isolatedsherd" labelKey="Keramikfragmente" separator=" ">
+                        <field datasource=".SherdType" />
+                        <field datasource=".InventoryNumber" />
+                        <field datasource=".NitonAnalysisNumber" />
+                    </context>
+                </section>
+                
+                <section labelKey="Quantifizierung">
+                    <context type="quantities" labelKey="Quantifizierung" separator=" ">
+                        <field datasource=".RimCount" />
+                        <field datasource=".RimWeight" postfix="g"/>
+                        <field datasource=".RimPercentage" postfix="%"/>
+                        <field datasource=".HandleCount" />
+                        <field datasource=".HandleWeight" postfix="g"/>
+                        <field datasource=".BaseCount" />
+                        <field datasource=".BaseWeight" postfix="g"/>
+                        <field datasource=".BodySherdCount" />
+                        <field datasource=".BodySherdWeight" postfix="g"/>
+                        <field datasource=".OthersCount" />
+                        <field datasource=".OthersWeight" postfix="g"/>
+                        <field datasource=".Joins" />
+                        <field datasource=".MNI" />
+                        <field datasource=".MNIWeighted" />
+                        <field datasource=".MXI" />
+                    </context>
+                </section>                      
+            </section>
+        </datasections>
+    </display>
+    <facets>
+        <facet name="kategorie" labelKey="Kategorie">
+            <field datasource="Dataset.TableName" />
+        </facet>
+    </facets>
+</category>

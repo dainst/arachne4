@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category name="individualvessel" xmlns="http://arachne.uni-koeln.de/schemas/category"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category file:/Users/Patrick/Documents/workspaceSTS/ArachneDataService/src/main/webapp/WEB-INF/xml/category.xsd">
+    <display>
+        <title>
+            <section separator=" / ">
+                <field datasource="individualvessel.InventoryNumber"/>
+            </section>
+        </title>
+        <subtitle>
+            <section separator=" / ">
+                <field datasource="individualvessel.RimCount"/>
+            </section>
+        </subtitle>
+        <datasections>
+            <section labelKey="Quantifizierung des Gefäßes">
+                <field datasource="individualvessel.RimCount"/>
+                <field datasource="individualvessel.HanldeCount"/>
+                <field datasource="individualvessel.BaseCount"/>
+                <field datasource="individualvessel.BodySherdCount"/>
+                <field datasource="individualvessel.OthersCount"/>
+                <field datasource="individualvessel.Joins"/>
+                <field datasource="individualvessel.RimPercentage"/>
+            </section>
+            <section labelKey="Maße des Gefäßes">
+                <field datasource="individualvessel.Height" postfix="cm"/>
+                <field datasource="individualvessel.Width" postfix="cm"/>
+                <field datasource="individualvessel.Length" postfix="cm"/>
+                <field datasource="individualvessel.Thickness" postfix="cm"/>
+                <field datasource="individualvessel.BaseDiameter" postfix="cm"/>
+                <field datasource="individualvessel.RimDiameter" postfix="cm"/>
+                <field datasource="individualvessel.WidestDiameter" postfix="cm"/>
+                <field datasource="individualvessel.Volume" postfix="cm³"/>
+            </section>
+        </datasections>
+    </display>
+    <facets>
+        <facet name="kategorie" labelKey="Kategorie">
+            <field datasource="Dataset.TableName" />
+        </facet>
+    </facets>
+</category>
