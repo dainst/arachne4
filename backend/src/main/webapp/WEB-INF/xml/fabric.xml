@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <category name="fabric" xmlns="http://arachne.uni-koeln.de/schemas/category"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category file:/Users/Patrick/Documents/workspaceSTS/ArachneDataService/src/main/webapp/WEB-INF/xml/category.xsd">
+    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
     <display>
         <title>
             <section separator=" / ">
