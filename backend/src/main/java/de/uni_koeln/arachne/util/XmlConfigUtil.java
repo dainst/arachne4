@@ -339,6 +339,7 @@ public class XmlConfigUtil implements ServletContextAware {
 				}
 				
 				linkField.setValue(value.toString());
+				linkField.convertValueToLink();
 				
 				// TODO find better solution as the previous content may be a section
 				// If there are more than one field in this section add the value (incl. separator) to the previous field

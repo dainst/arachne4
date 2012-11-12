@@ -49,6 +49,11 @@ public class TestResponseFactory {
 		dataset.setFields("test.DataSeparatorBefore", "first");
 		dataset.setFields("test.DataSeparatorAfter", "second");
 		
+		dataset.setFields("test.DataLink1", "http://testserver.com/link1.html");
+		dataset.setFields("test.DataLink2", "link2");
+		dataset.setFields("test.DataNoLink1", "Start");
+		dataset.setFields("test.DataNoLink2", "End");
+		
 		response = responseFactory.createFormattedArachneEntity(dataset);
 	}
 	
@@ -83,7 +88,7 @@ public class TestResponseFactory {
 	}
 	
 	@Test
-	public void testPrefixPostfix() {
+	public void testFieldPrefixPostfix() {
 		final Section FirstInnerSection = (Section)(((Section)response.getSections()).getContent()).get(0);
 		assertEquals("Testdata prefix/postfix", FirstInnerSection.getLabel());
 		
@@ -92,11 +97,21 @@ public class TestResponseFactory {
 	}
 	
 	@Test
-	public void testSeparator() {
+	public void testFieldSeparator() {
 		final Section SecondInnerSection = (Section)(((Section)response.getSections()).getContent()).get(1);
 		assertEquals("Testdata separator", SecondInnerSection.getLabel());
 		
 		final Field concatenatedField = ((Field)SecondInnerSection.getContent().get(0));
 		assertEquals("first-second", concatenatedField.getValue());
+	}
+	
+	@Test
+	public void testLinkField() {
+		final Section ThirdInnerSection = (Section)(((Section)response.getSections()).getContent()).get(2);
+		assertEquals("Testdata linkField", ThirdInnerSection.getLabel());
+		
+		final Field concatenatedField = ((Field)ThirdInnerSection.getContent().get(0));
+		assertEquals("Start<br/><a href=\"http://testserver.com/link1.html\">TestLink1</a><br/><a href=\"" +
+				"http://testserver.com/link2.html\">TestLink2</a><br/>End", concatenatedField.getValue());
 	}
 }

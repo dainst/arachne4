@@ -26,15 +26,10 @@ public class LinkField extends Field {
 	}
 	
 	/**
-	 * Returns a HTML tag that is created from <code>value</code> and <code>labelKey</code>.
+	 * Returns a String containing the values of this class as HTML link.
+	 * @return A HTML tag that is created from <code>value</code> and <code>labelKey</code>.
 	 */
-	@Override
-	public String getValue() {
-		return "<a href=\"" + this.value + "\">" + this.labelKey + "</a>";
-	}
-	
-	@Override
-	public String toString() {
-		return getValue();
+	public void convertValueToLink() {
+		this.value = "<a href=\"" + this.value + "\">" + this.labelKey + "</a>";
 	}
 }
