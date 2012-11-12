@@ -46,6 +46,9 @@ public class TestResponseFactory {
 		dataset.setFields("test.DataPrefix", "success");
 		dataset.setFields("test.DataPostfix", "PostfixTest");
 		
+		dataset.setFields("test.DataSeparatorBefore", "first");
+		dataset.setFields("test.DataSeparatorAfter", "second");
+		
 		response = responseFactory.createFormattedArachneEntity(dataset);
 	}
 	
@@ -86,5 +89,14 @@ public class TestResponseFactory {
 		
 		final Field concatenatedField = ((Field)FirstInnerSection.getContent().get(0));
 		assertEquals("PrefixTest=success<br/>PostfixTest=success", concatenatedField.getValue());
+	}
+	
+	@Test
+	public void testSeparator() {
+		final Section SecondInnerSection = (Section)(((Section)response.getSections()).getContent()).get(1);
+		assertEquals("Testdata separator", SecondInnerSection.getLabel());
+		
+		final Field concatenatedField = ((Field)SecondInnerSection.getContent().get(0));
+		assertEquals("first-second", concatenatedField.getValue());
 	}
 }

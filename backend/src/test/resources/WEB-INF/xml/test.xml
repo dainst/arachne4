@@ -34,6 +34,10 @@
 					<field datasource="test.DataPrefix" prefix="PrefixTest=" />
 					<field datasource="test.DataPostfix" postfix="=success" />
 				</section>
+				<section labelKey="Testdata separator" separator="-">
+					<field datasource="test.DataSeparatorBefore" />
+					<field datasource="test.DataSeparatorAfter" />
+				</section>
 			</section>
 		</datasections>
 	</display>
