@@ -10,7 +10,15 @@
 			<section>
 				<field datasource="test.MissingTitle">
 					<ifEmpty>
-						<field datasource="test.Title" />
+						<field datasource="test.AnotherMissingTitle">
+							<ifEmpty>
+								<field datasource="test.YetAnotherMissingTitle">
+									<ifEmpty>
+										<field datasource="test.Title" />
+									</ifEmpty>
+								</field>
+							</ifEmpty>
+						</field>
 					</ifEmpty> 
 				</field>
 			</section>

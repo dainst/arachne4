@@ -204,6 +204,8 @@ public class XmlConfigUtil implements ServletContextAware {
 				final String ifEmptyValue = dataset.getField(key);
 				if (ifEmptyValue != null) {
 					result = new StringBuilder(ifEmptyValue); 
+				} else {
+					result = getIfEmpty(ifEmptyElement.getChild("field", nameSpace), dataset, nameSpace);
 				}
 			}
 		}
