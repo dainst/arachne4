@@ -78,4 +78,13 @@ public class TestResponseFactory {
 	public void testDatasectionLabel() {
 		assertEquals("Testdata", ((Section)response.getSections()).getLabel());
 	}
+	
+	@Test
+	public void testPrefixPostfix() {
+		final Section FirstInnerSection = (Section)(((Section)response.getSections()).getContent()).get(0);
+		assertEquals("Testdata prefix/postfix", FirstInnerSection.getLabel());
+		
+		final Field concatenatedField = ((Field)FirstInnerSection.getContent().get(0));
+		assertEquals("PrefixTest=success<br/>PostfixTest=success", concatenatedField.getValue());
+	}
 }
