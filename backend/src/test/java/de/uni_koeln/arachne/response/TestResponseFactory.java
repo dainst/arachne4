@@ -26,8 +26,8 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 	DirtiesContextTestExecutionListener.class,
 	TransactionalTestExecutionListener.class })
 public class TestResponseFactory {
-	private transient ResponseFactory responseFactory;
-	private transient FormattedArachneEntity response;	
+	private transient ResponseFactory responseFactory = null;
+	private transient Dataset dataset = null;	
 	
 	@Before
 	public void setUp() {
@@ -37,9 +37,10 @@ public class TestResponseFactory {
 		responseFactory = new ResponseFactory();
 		responseFactory.setXmlConfigUtil(xmlConfigUtil);
 		
-		final Dataset dataset = new Dataset();
+		dataset = new Dataset();
 		
 		dataset.setArachneId(new EntityId("test", 0L, 0L, false));
+				
 		dataset.setFields("test.Title", "Title of the Test");
 		dataset.setFields("test.Subtitle", "Subtitle of the Test");
 		
@@ -53,8 +54,6 @@ public class TestResponseFactory {
 		dataset.setFields("test.DataLink2", "link2");
 		dataset.setFields("test.DataNoLink1", "Start");
 		dataset.setFields("test.DataNoLink2", "End");
-		
-		response = responseFactory.createFormattedArachneEntity(dataset);
 	}
 	
 	@After
@@ -64,31 +63,48 @@ public class TestResponseFactory {
 	
 	@Test
 	public void testCreateFormattedArachneEntity() {
+		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(dataset);
 		assertNotNull(response);
 	}
 	
 	@Test
+	public void testCreateResponseForDeletedEntity() {
+		final EntityId deletedEntityId = new EntityId("test", 0L, 0L, true);
+		final DeletedArachneEntity response = (DeletedArachneEntity)responseFactory.createResponseForDeletedEntity(deletedEntityId);
+		assertNotNull(response);
+		assertEquals("test", response.getType());
+		assertEquals(Long.valueOf(0), response.getEntityId());
+		assertEquals(Long.valueOf(0), response.getInternalId());
+		assertEquals("This entity has been deleted.", response.getMessage());
+	}
+	
+	@Test
 	public void testType() {
+		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(dataset);
 		assertEquals("test", response.getType());
 	}
 	
 	@Test
 	public void testTitle() {
+		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(dataset);
 		assertEquals("Title of the Test", response.getTitle());
 	}
 	
 	@Test
 	public void testSubtitle() {
+		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(dataset);
 		assertEquals("Subtitle of the Test", response.getSubtitle());
 	}
 	
 	@Test
 	public void testDatasectionLabel() {
+		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(dataset);
 		assertEquals("Testdata", ((Section)response.getSections()).getLabel());
 	}
 	
 	@Test
 	public void testFieldPrefixPostfix() {
+		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(dataset);
 		final Section FirstInnerSection = (Section)(((Section)response.getSections()).getContent()).get(0);
 		assertEquals("Testdata prefix/postfix", FirstInnerSection.getLabel());
 		
@@ -98,6 +114,7 @@ public class TestResponseFactory {
 	
 	@Test
 	public void testFieldSeparator() {
+		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(dataset);
 		final Section SecondInnerSection = (Section)(((Section)response.getSections()).getContent()).get(1);
 		assertEquals("Testdata separator", SecondInnerSection.getLabel());
 		
@@ -107,6 +124,7 @@ public class TestResponseFactory {
 	
 	@Test
 	public void testLinkField() {
+		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(dataset);
 		final Section ThirdInnerSection = (Section)(((Section)response.getSections()).getContent()).get(2);
 		assertEquals("Testdata linkField", ThirdInnerSection.getLabel());
 		
