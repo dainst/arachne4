@@ -21,7 +21,7 @@
 		<xerces-version>2.10.0</xerces-version>
 		<jackson-version>1.9.11</jackson-version>
 		<org.javassist-version>3.16.1-GA</org.javassist-version>
-		<c3p0-version>0.9.2-pre4</c3p0-version>
+		<c3p0-version>0.9.2-pre5</c3p0-version>
 		<solrj-version>3.6.1</solrj-version>
 	</properties>
 	<dependencies>
