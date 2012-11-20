@@ -161,8 +161,8 @@
 		<!-- JDom -->
 		<dependency>
 			<groupId>org.jdom</groupId>
-			<artifactId>jdom</artifactId>
-			<version>2.0.2</version>
+			<artifactId>jdom2</artifactId>
+			<version>2.0.3</version>
 		</dependency>
 		
 		<!-- Xerces XML Parser -->
