@@ -116,6 +116,7 @@
         		<context type="literatur" labelKey="Literatur" separator=", ">
 	            	<field datasource=".DAIRichtlinien" />
 	            	<field datasource=".Seite" />
+	            	<linkField labelKey="ZenonID" datasource=".ZenonID" prefix="http://testopac.dainst.org/#zenon/book/" />
 	            	<field datasource=".Anmerkung" prefix="Anm. " /> <!-- AdditionalInfosJSON -->
 	            	<field datasource=".Abbildung" prefix="Abb. " /> <!-- AdditionalInfosJSON -->
 	            	<field datasource=".Katnummer" prefix="Kat.Nr. " /> <!-- AdditionalInfosJSON -->

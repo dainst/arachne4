@@ -60,6 +60,7 @@
 	            	<field datasource=".tempLiteratur" />
 	            	<field datasource=".DAIRichtlinien" />
 	            	<field datasource=".Seite" />
+	            	<linkField labelKey="ZenonID" datasource=".ZenonID" prefix="http://testopac.dainst.org/#zenon/book/" />
 	            </context>
 	    	</section>
         </datasections>

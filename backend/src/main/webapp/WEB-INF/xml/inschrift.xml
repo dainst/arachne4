@@ -44,6 +44,7 @@
                         </ifEmpty>
                     </field>
                     <field datasource=".Onlinequelle" prefix="(" postfix=")" />
+                    <linkField labelKey="ZenonID" datasource=".ZenonID" prefix="http://testopac.dainst.org/#zenon/book/" />
                 </context>
             </section>
         </datasections>
