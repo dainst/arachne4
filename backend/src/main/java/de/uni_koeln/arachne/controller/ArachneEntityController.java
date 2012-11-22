@@ -86,7 +86,9 @@ public class ArachneEntityController {
 	}
 	
 	/**
-	 * Handles http request for /{entityId}
+	 * Handles http request for /{entityId}.
+	 * Requests for /entity/* return formatted data. This will be sent out either as JSON or as XML. The response format is set 
+	 * by Springs content negotiation mechanism.
 	 * @param entityId The unique entity id of the item to fetch.
      * @return A response object containing the data (this is serialized to JSON or XML depending on content negotiation).
      */
@@ -98,6 +100,8 @@ public class ArachneEntityController {
     
     /**
      * Handles http request for /{category}/{id}
+     * Requests for /entity/* return formatted data. This will be sent out either as JSON or as XML. The response format is set 
+	 * by Springs content negotiation mechanism.
      * @param category The database table to fetch the item from.
      * @param categoryId The internal id of the item to fetch
      * @return A response object containing the data (this is serialized to JSON or XML depending on content negotiation).
@@ -111,7 +115,7 @@ public class ArachneEntityController {
 
     /**
      * Internal function handling all http GET requests for <code>/entity/*</code>.
-     * It uses the <Code>ItemService</Code> class to fetch the data and wraps it in a response object.
+     * It fetches the data for a given entity and returns it as a response object.
      * <br>
      * If the entity is not found a HTTP 404 error message is returned.
      * <br>
@@ -119,7 +123,6 @@ public class ArachneEntityController {
      * @param id The unique entity ID if no category is given else the internal ID.
      * @param category The category to query or <code>null</code>.
      * @param response The <code>HttpServeletRsponse</code> object.
-     * @param currentUser The user initiating the request.
      * @return A response object derived from <code>BaseArachneEntity</code>.
      */
     private BaseArachneEntity getEntityRequestResponse(final Long id, final String category //NOPMD
@@ -184,10 +187,7 @@ public class ArachneEntityController {
     
     /**
      * Handles http request for /doc/{id}
-     * It uses the <Code>ItemService</Code> class to fetch the data and wraps it 
-     * in a <Code>JsonResponse</Code> object.
-     * @param entityId The id of the item to fetch
-     * @return a JSON object containing the data
+     * Not implemented!
      */
     @RequestMapping(value="/doc/{entityId}", method=RequestMethod.GET)
     public @ResponseBody Dataset handleGetDocEntityRequest(@PathVariable("entityId") final Long entityId) {
@@ -197,10 +197,7 @@ public class ArachneEntityController {
 
     /**
      * Handles http request for /doc/{category}/{id}
-     * It uses the <Code>ItemService</Code> class to fetch the data and wraps it 
-     * in a <Code>JsonResponse</Code> object.
-     * @param categoryId The id of the item to fetch
-     * @return a JSON object containing the data
+     * Not implemented!
      */
     @RequestMapping(value="doc/{category}/{categoryId}", method=RequestMethod.GET)
     public @ResponseBody Dataset handleGetDocCategoryIdRequest(@PathVariable("category") final String category
@@ -212,29 +209,94 @@ public class ArachneEntityController {
     //////////////////////////////////////////////////////////////////////////////////////////////////
     
     /**
-     * Handles http request for /data/{id}
-     * It uses the <Code>ItemService</Code> class to fetch the data and wraps it 
-     * in a <Code>JsonResponse</Code> object.
-     * @param entityId The id of the item to fetch
-     * @return a JSON object containing the data
+     * Handles http request for /data/{id}.
+     * Requests for /data/* return the raw data.
+     * Currently the dataset can only be returned as JSON since JAXB cannot handle maps.
+     * @param entityId The unique entityID.
+     * @param response The outgoing HTTP response.
+     * @return The <code>Dataset</code> of the requested entity.
      */
     @RequestMapping(value="/data/{entityId}", method=RequestMethod.GET)
-    public @ResponseBody Dataset handleGetDataEntityRequest(@PathVariable("entityId") final Long entityId) {
-    	// TODO implement me
-		return null;
+    public @ResponseBody Dataset handleGetDataEntityRequest(@PathVariable("entityId") final Long entityId, final HttpServletResponse response) {
+    	return getDataRequestResponse(entityId, null, response);
     }
     
     /**
-     * Handles http request for /doc/{category}/{id}
-     * It uses the <Code>ItemService</Code> class to fetch the data and wraps it 
-     * in a <Code>JsonResponse</Code> object.
-     * @param categoryId The id of the item to fetch
-     * @return a JSON object containing the data
+     * Handles http request for /data/{category}/{id}.
+     * Requests for /data/* return the raw data.
+     * Currently the dataset can only be returned as JSON since JAXB cannot handle maps.
+     * @param categoryId The internal ID of the requested entity.
+     * @param category The category to query.
+     * @param response The outgoing HTTP response.
+     * @return The <code>Dataset</code> of the requested entity
      */
     @RequestMapping(value="data/{category}/{categoryId}", method=RequestMethod.GET)
     public @ResponseBody Dataset handleGetDataCategoryIdRequest(@PathVariable("category") final String category
-    		, @PathVariable("categoryId") final Long categoryId) {
-    	// TODO implement me
-    	return null;
+    		, @PathVariable("categoryId") final Long categoryId, final HttpServletResponse response) {
+    	return getDataRequestResponse(categoryId, category, response);
+    }
+    
+    /**
+     * Internal function handling all http GET requests for <code>/data/*</code>.
+     * It fetches the data for a given entity and returns the <code>Dataset</code>.
+     * <br>
+     * If the entity is not found a HTTP 404 error message is returned.
+     * <br>
+     * If the user does not have permission to see an entity a HTTP 403 status message is returned.
+     * @param id The unique entity ID if no category is given else the internal ID.
+     * @param category The category to query or <code>null</code>.
+     * @param response The <code>HttpServeletRsponse</code> object.
+     * @return The <code>Dataset</code> of the requested entity.
+     */
+    private Dataset getDataRequestResponse(final Long id, final String category, final HttpServletResponse response) { // NOPMD
+    	final Long startTime = System.currentTimeMillis();
+        
+    	EntityId arachneId;
+    	
+    	if (category == null) {
+    		arachneId = entityIdentificationService.getId(id);
+    	} else {
+    		arachneId = entityIdentificationService.getId(category, id);
+    	}
+    	
+    	if (arachneId == null) {
+    		response.setStatus(404);
+    		return null;
+    	}
+    	
+    	LOGGER.debug("Request for entity: " + arachneId.getArachneEntityID() + " - type: " + arachneId.getTableName());
+    	
+    	final String datasetGroupName = singleEntityDataService.getDatasetGroup(arachneId);
+    	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
+    	
+    	if (!userRightsService.userHasDatasetGroup(datasetGroup)) {
+    		response.setStatus(403);
+    		return null;
+    	}
+    	
+    	final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(arachneId);
+    	
+    	final long fetchTime = System.currentTimeMillis() - startTime;
+    	long nextTime = System.currentTimeMillis();
+    	
+    	imageService.addImages(arachneDataset);
+    	
+    	final long imageTime = System.currentTimeMillis() - nextTime;
+    	nextTime = System.currentTimeMillis();
+    	
+    	// TODO find a way to handle contexts or discuss if we want to add them at all
+    	//contextService.addMandatoryContexts(arachneDataset);
+    	
+    	final long contextTime = System.currentTimeMillis() - nextTime;
+    	nextTime = System.currentTimeMillis();
+    	
+    	LOGGER.debug("-- Fetching entity took " + fetchTime + " ms");
+    	LOGGER.debug("-- Adding images took " + imageTime + " ms");
+    	LOGGER.debug("-- Adding contexts took " + contextTime + " ms");
+    	LOGGER.debug("-----------------------------------");
+    	LOGGER.debug("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
+    	LOGGER.debug("Dataset: " + arachneDataset);    	
+    	
+    	return arachneDataset;
     }
 }

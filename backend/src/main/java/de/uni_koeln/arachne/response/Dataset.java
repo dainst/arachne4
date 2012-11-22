@@ -36,7 +36,7 @@ public class Dataset {
 	/**
 	 * The Informations of the Dataset that is not in the core Dataset Definitions.
 	 */
-	protected transient Map<String,String> fields;
+	protected Map<String,String> fields;
 	
 	/**
 	 * The context map contains the contexts of the entity.
@@ -84,6 +84,10 @@ public class Dataset {
 	
 	public Long getThumbnailId() {
 		return thumbnailId;
+	}
+	
+	public Map<String, String> getFields() {
+		return fields;
 	}
 	
 	/**
