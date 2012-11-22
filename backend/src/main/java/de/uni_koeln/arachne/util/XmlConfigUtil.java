@@ -200,7 +200,6 @@ public class XmlConfigUtil implements ServletContextAware {
 		StringBuilder result = null;
 		final Element ifEmptyElement = element.getChild("ifEmpty", nameSpace);
 		if (ifEmptyElement != null) {
-			// TODO discuss if multiple fields inside an ifEmpty tag make sense
 			key = ifEmptyElement.getChild("field", nameSpace).getAttributeValue("datasource");
 			if (key != null && !key.isEmpty()) {
 				final String ifEmptyValue = dataset.getField(key);

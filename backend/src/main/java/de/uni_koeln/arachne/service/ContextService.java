@@ -122,7 +122,7 @@ public class ContextService {
 	 */
 	@SuppressWarnings("rawtypes")
 	private IContextualizer getContextualizerByContextType(final String contextType) {
-		// TODO The services should not be hardcoded but somehow specified by either contextType or contextualizer 
+		// If a contextualizer needs more services just add them here.
 		// Initialization of contextualizer needs two params
 		Class [] classParam = new Class[2];
 		classParam[0] = EntityIdentificationService.class;

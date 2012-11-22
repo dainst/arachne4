@@ -58,9 +58,7 @@ public class DataMapDao extends SQLDao {
 		LOGGER.debug(sql);
 		@SuppressWarnings("unchecked")
 		final List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new DatasetMapper());
-
-		//achneDataset out= new  ArachneDataset();
-
+		
 		Map<String,String> map;  
 		if (temp.isEmpty()) {
 			map = new HashMap<String,String>();
