@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 /**
@@ -221,7 +222,10 @@ public class ResponseFactory {
 					if ("field".equals(childName)) {
 						String value = dataset.getField(child.getAttributeValue("datasource"));
 						if (value == null) {
-							value = xmlConfigUtil.getIfEmpty(child, dataset, nameSpace).toString();									
+							final StringBuilder ifEmtpyValue = xmlConfigUtil.getIfEmpty(child, dataset, nameSpace);
+							if (!StrUtils.isEmptyOrNull(ifEmtpyValue)) {
+								value = ifEmtpyValue.toString();
+							}
 						}
 						
 						if (value != null) {
