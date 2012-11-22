@@ -204,10 +204,10 @@ public class XmlConfigUtil implements ServletContextAware {
 			key = ifEmptyElement.getChild("field", nameSpace).getAttributeValue("datasource");
 			if (key != null && !key.isEmpty()) {
 				final String ifEmptyValue = dataset.getField(key);
-				if (ifEmptyValue != null) {
-					result = new StringBuilder(ifEmptyValue); 
+				if (ifEmptyValue == null) {
+					result = getIfEmpty(ifEmptyElement.getChild("field", nameSpace), dataset, nameSpace); 
 				} else {
-					result = getIfEmpty(ifEmptyElement.getChild("field", nameSpace), dataset, nameSpace);
+					result = new StringBuilder(ifEmptyValue);
 				}
 			}
 		}
