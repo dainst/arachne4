@@ -58,7 +58,7 @@ public class AdminController {
 	}
 
 	/**
-	 * Returns a list of cached xml config documents wrapped in a <code>SatusResponse</code>.
+	 * Returns a list of cached xml config documents wrapped in a <code>StatusResponse</code>.
 	 * @return A <code>StatusResponse</code>.
 	 */
 	private StatusResponse getCachedDocuments() {
