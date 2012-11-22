@@ -3,6 +3,9 @@ package de.uni_koeln.arachne.context;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.ContextService;
 
@@ -10,10 +13,12 @@ import de.uni_koeln.arachne.service.ContextService;
  * This Class is a wrapper that holds and manages contexts of <code>ArachneDatasets</code>. The links are fetched on demand.
  * The combination of context type and parent describes the two ends of a <code>Link</code>. 
  */
+@Configurable(preConstruction=true)
 public class Context {
 	/**
 	 * The service which manages the retrieval etc.
 	 */
+	@Autowired
 	protected transient ContextService contextService;
 	
 	/**
@@ -21,12 +26,11 @@ public class Context {
 	 * @param contextType The type of context this class manages.
 	 * @param parent The <code>ArachneDataset</code> this context belongs to.
 	 */
-	public Context(final String contextType, final Dataset parent, final ContextService contextService) {
+	public Context(final String contextType, final Dataset parent) {
 		completionState = CompletionStateEnum.EMPTY;
 		this.contextType = contextType;
 		this.parent = parent;
 		contextEntities = new ArrayList<AbstractLink>();
-		this.contextService = contextService;
 	}
 	
 	/**
@@ -70,7 +74,7 @@ public class Context {
 	 */
 	public transient List<AbstractLink> contextEntities;
 	
-	//The Context Getter
+	// The Context Getter
 	
 	/**
 	 * Return every <code>Link</code> in this context.

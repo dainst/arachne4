@@ -68,7 +68,7 @@ public class ContextService {
 		LOGGER.debug("Mandatory Contexts: " + mandatoryContextTypes);
 		final Iterator<String> contextType = mandatoryContextTypes.iterator();
 		while (contextType.hasNext()) {
-			final Context context = new Context(contextType.next(), parent, this);
+			final Context context = new Context(contextType.next(), parent);
 			context.getallContexts();
 			parent.addContext(context);
 		}
@@ -87,12 +87,12 @@ public class ContextService {
 			final List<String> connectionList = arachneConnectionService.getConnectionList(parent.getArachneId().getTableName());
 			final Iterator<String> iterator = connectionList.iterator();
 			while (iterator.hasNext()) {
-				final Context context = new Context(iterator.next(), parent, this);
+				final Context context = new Context(iterator.next(), parent);
 				context.getFirstContext();
 				parent.addContext(context);
 			}
 			
-			final Context litContext = new Context("Literatur", parent, this);
+			final Context litContext = new Context("Literatur", parent);
 			litContext.getFirstContext();
 			parent.addContext(litContext);
 		}
@@ -123,12 +123,12 @@ public class ContextService {
 	@SuppressWarnings("rawtypes")
 	private IContextualizer getContextualizerByContextType(final String contextType) {
 		// TODO The services should not be hardcoded but somehow specified by either contextType or contextualizer 
-		//Initialization of contextualizer needs two params
+		// Initialization of contextualizer needs two params
 		Class [] classParam = new Class[2];
 		classParam[0] = EntityIdentificationService.class;
 		classParam[1] = GenericSQLService.class;
 		
-		//Initialization of contextualizer needs two params
+		// Initialization of contextualizer needs two params
 		Object [] objectParam = new Object[2];
 		objectParam[0] = arachneEntityIdentificationService;
 		objectParam[1] = genericSQLService;
