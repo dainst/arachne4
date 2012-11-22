@@ -108,7 +108,7 @@ public class ResponseFactory {
 		
 		// Set facets
 		final Element facets = document.getRootElement().getChild("facets", nameSpace);
-		response.setFacets(getFacets(dataset, facets).getList());
+		response.setFacets(getFacets(dataset, nameSpace,facets).getList());
 		
 		
 		// Set contexts
@@ -204,7 +204,7 @@ public class ResponseFactory {
 	 * @param facets The facet element of the current config file.
 	 * @return A list of facets.
 	 */
-	private FacetList getFacets(final Dataset dataset, final Element facets) {
+	private FacetList getFacets(final Dataset dataset, final Namespace nameSpace ,final Element facets) {
 		
 		final FacetList result = new FacetList();
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
@@ -219,7 +219,11 @@ public class ResponseFactory {
 					final List<String> values = new ArrayList<String>();
 					final String childName = child.getName();
 					if ("field".equals(childName)) {
-						final String value = dataset.getField(child.getAttributeValue("datasource"));
+						String value = dataset.getField(child.getAttributeValue("datasource"));
+						if (value == null) {
+							value = xmlConfigUtil.getIfEmpty(child, dataset, nameSpace).toString();									
+						}
+						
 						if (value != null) {
 							if (userRightsService.isUserSolr()) {
 								values.add(name + "$" + value);

@@ -54,6 +54,8 @@ public class TestResponseFactory {
 		dataset.setFields("test.DataLink2", "link2");
 		dataset.setFields("test.DataNoLink1", "Start");
 		dataset.setFields("test.DataNoLink2", "End");
+		
+		dataset.setFields("test.facetTest", "TestFacet");
 	}
 	
 	@After
@@ -131,5 +133,15 @@ public class TestResponseFactory {
 		final Field concatenatedField = ((Field)ThirdInnerSection.getContent().get(0));
 		assertEquals("Start<br/><a href=\"http://testserver.com/link1.html\">TestLink1</a><br/><a href=\"" +
 				"http://testserver.com/link2.html\">TestLink2</a><br/>End", concatenatedField.getValue());
+	}
+	
+	@Test
+	public void testFacets() {
+		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(dataset);
+		assertEquals("kategorie", response.getFacets().get(0).getName());
+		assertEquals("test", response.getFacets().get(0).getValues().get(0));
+		
+		assertEquals("ifEmptyFacet", response.getFacets().get(1).getName());
+		assertEquals("TestFacet", response.getFacets().get(1).getValues().get(0));
 	}
 }

@@ -51,5 +51,12 @@
 		<facet name="kategorie" labelKey="Kategorie">
 			<field datasource="Dataset.TableName" />
 		</facet>
+		<facet name="ifEmptyFacet" labelKey="IfEmptyFacet">
+			<field datasource="test.MissingFacet">
+				<ifEmpty>
+					<field datasource="test.facetTest" />
+				</ifEmpty>
+			</field>
+		</facet>
 	</facets>
 </category>
