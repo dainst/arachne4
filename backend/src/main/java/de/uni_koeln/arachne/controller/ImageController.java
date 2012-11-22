@@ -59,8 +59,9 @@ public class ImageController {
 	private final transient int imageServerReadTimeout;
 	
 	private final transient int resolution_HIGH;
-	private final transient int resolution_THUMBNAIL;
 	private final transient int resolution_PREVIEW;
+	private final transient int resolution_THUMBNAIL;
+	private final transient int resolution_ICON;
 	
 	/**
 	 * Constructor to initialize the image server parameters set in application.properties.
@@ -78,8 +79,9 @@ public class ImageController {
 			final @Value("#{config.imagePath}") String imagePath,
 			final @Value("#{config.imageServerReadTimeout}") int imageServerReadTimeout,
 			final @Value("#{config.imageResolutionHIGH}") int resolutionHIGH,
+			final @Value("#{config.imageResolutionPREVIEW}") int resolutionPREVIEW,
 			final @Value("#{config.imageResolutionTHUMBNAIL}") int resolutionTHUMBNAIL,
-			final @Value("#{config.imageResolutionPREVIEW}") int resolutionPREVIEW) {
+			final @Value("#{config.imageResolutionICON}") int resolutionICON) {
 			
 		this.imageServerPath = imageServerPath;
 		this.imageServerName = imageServerName;
@@ -90,6 +92,7 @@ public class ImageController {
 		this.resolution_HIGH = resolutionHIGH;
 		this.resolution_PREVIEW = resolutionPREVIEW;
 		this.resolution_THUMBNAIL = resolutionTHUMBNAIL;
+		this.resolution_ICON = resolutionICON;
 	}
 	
 	/**
@@ -133,6 +136,16 @@ public class ImageController {
 		return getIIPViewerDataFromImageServer(request, response, imageServerInstance, fullQueryString);
 	}
 
+	/**
+	 * Here the real work for the <code>getDataForIIPViewer</code> is done. This method sends a HTTP-request to the image server and
+	 * either gets the meta data or a tile of the requested image. If meta data is fetched it is returned. If an image tile is fetched 
+	 * it is written to the HTTP response output stream and <code>null</code> is returned.
+	 * @param request The incoming HTTP request
+	 * @param response The outgoing HTTP response
+	 * @param imageServerInstance The inastance of the image server to use. Sets which watermark is used.
+	 * @param fullQueryString The full query string sent by an IIPImage client.
+	 * @return Either the meta data of an image wrapped in a <code>ResponseEntity</code> or <code>null</code>.
+	 */
 	private ResponseEntity<String> getIIPViewerDataFromImageServer(final HttpServletRequest request, final HttpServletResponse response,
 			final String imageServerInstance, final String fullQueryString) {
 		
@@ -201,16 +214,6 @@ public class ImageController {
 	}
 	
 	/**
-	 * Handles the request for /image/thumbnail/{entityId}.
-	 * @param entityId The unique ID of the image.
-	 * @param response The outgoing HTTP response.
-	 */
-	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
-	public void getThumbnail(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, resolution_THUMBNAIL, response);
-	}
-	
-	/**
 	 * Handles the request for /image/preview/{entityId}.
 	 * @param entityId The unique ID of the image.
 	 * @param response The outgoing HTTP response.
@@ -221,10 +224,31 @@ public class ImageController {
 	}
 	
 	/**
+	 * Handles the request for /image/thumbnail/{entityId}.
+	 * @param entityId The unique ID of the image.
+	 * @param response The outgoing HTTP response.
+	 */
+	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
+	public void getThumbnail(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		getImageFromServer(entityId, resolution_THUMBNAIL, response);
+	}
+	
+	/**
+	 * Handles the request for /image/icon/{entityId}.
+	 * @param entityId The unique ID of the image.
+	 * @param response The outgoing HTTP response.
+	 */
+	@RequestMapping(value = "/image/icon/{entityId}", method = RequestMethod.GET)
+	public void getIcon(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		getImageFromServer(entityId, resolution_ICON, response);
+	}
+	
+	/**
 	 * This private method retrieves images from the image server and writes them as JPEG directly to the HTTP response. 
 	 * @param entityId The unique ID of the image.
-	 * @param requestedResolution The requested resolution. Only the constants <code>ImageController.THUMBNAIL</code>, 
-	 * <code>ImageController.PREVIEW</code> and <code>ImageController.HIGH</code> are currently in use but any integer value is allowed.
+	 * @param requestedResolution The requested resolution. Only the constants <code>ImageController.ICON</code>, 
+	 * <code>ImageController.THUMBNAIL</code>, <code>ImageController.PREVIEW</code> and <code>ImageController.HIGH</code> 
+	 * are currently in use but any integer value is allowed.
 	 * @param response The outgoing HTTP response.
 	 */
 	private void getImageFromServer(final long entityId, final int requestedResolution, final HttpServletResponse response) {
@@ -246,7 +270,7 @@ public class ImageController {
 			
 			try {
 				final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + "?FIF=" + imagePath + imageName 
-						+ "&SDS=0,90&CNT=1.0&WID=" + resolution + "&QLT=99&CVT=jpeg");
+						+ "&SDS=0,90&CNT=1.0&WID=" + resolution + "&HEI=" + resolution + "&QLT=99&CVT=jpeg");
 				LOGGER.debug("Full server adress: " + serverAdress);
 				connection = (HttpURLConnection)serverAdress.openConnection();			
 				connection.setRequestMethod("GET");
@@ -280,7 +304,8 @@ public class ImageController {
 	 * Method to retrieve the name of the image, the allowed maximum resolution and the watermark to use. Maximum resolution and watermark
 	 * depend on the rights of the currently logged in user.
 	 * @param entityId The unique image ID.
-	 * @return A HTTP response code indicating success or failure.
+	 * @return An instance of <code>ImagePorperties</code> containing the name, maximum resolution and watermark of the requested image
+	 * as well as an HTTP response code indicating success or failure.
 	 */
 	private ImageProperties getImageProperties(final long entityId, final int requestedResolution) {
 		String imageName = null;
