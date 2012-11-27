@@ -8,12 +8,17 @@ import java.util.List;
 @SuppressWarnings("PMD")
 public class StrUtils {	
 	/**
-	 * This method returns if a <code>String</code> is empty or <code>null</code>.
+	 * This method returns if a <code>String</code> is empty or <code>null</code> or has the value "0".
 	 * @param string to test.
 	 * @return <code>true</code> or <code>false</code>
 	 */
 	public static boolean isEmptyOrNull(String string) {
-		return string == null || string.isEmpty();
+		boolean result = string == null || string.isEmpty();
+		if (result) {
+			return result;
+		} else {
+			return "0".equals(string);
+		}
 	}
 	
 	/**
