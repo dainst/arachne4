@@ -144,4 +144,6 @@ public class TestResponseFactory { // NOPMD
 		assertEquals("ifEmptyFacet", response.getFacets().get(1).getName());
 		assertEquals("TestFacet", response.getFacets().get(1).getValues().get(0));
 	}
+	
+	// TODO add test for context tag - the current context implementation makes it nearly impossible to test
 }

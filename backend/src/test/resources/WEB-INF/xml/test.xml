@@ -44,6 +44,9 @@
 					<linkField datasource="test.DataLink2" labelKey="TestLink2" prefix="http://testserver.com/" postfix=".html"/>
 					<field datasource="test.DataNoLink2" />					
 				</section>
+				<context type="testContext">
+					<field datasource=".value1" />
+				</context>
 			</section>
 		</datasections>
 	</display>
