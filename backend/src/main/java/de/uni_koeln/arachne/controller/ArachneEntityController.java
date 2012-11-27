@@ -269,7 +269,7 @@ public class ArachneEntityController {
     	final String datasetGroupName = singleEntityDataService.getDatasetGroup(arachneId);
     	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
     	
-    	if (!userRightsService.userHasDatasetGroup(datasetGroup)) {
+    	if (!userRightsService.userHasDatasetGroup(datasetGroup) || !(userRightsService.getCurrentUser().getGroupID()>=500)) {
     		response.setStatus(403);
     		return null;
     	}
