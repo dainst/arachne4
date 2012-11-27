@@ -30,7 +30,7 @@ import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.StrUtils;
 
 /**
- * Handles http requests (currently only get) for <code>/entity<code>.
+ * Handles http requests (currently only get) for <code>/entity<code> and <code>/data</code>.
  */
 @Controller
 public class ArachneEntityController {
