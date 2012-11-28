@@ -43,6 +43,9 @@ public class ContextService {
 	@Autowired
 	private transient GenericSQLService genericSQLService; 
 	
+	@Autowired
+	private transient SingleEntityDataService singleEntityDataService;
+	
 	/**
 	 * Utility class to work with the XML config files.
 	 */
@@ -123,15 +126,17 @@ public class ContextService {
 	@SuppressWarnings("rawtypes")
 	private IContextualizer getContextualizerByContextType(final String contextType) {
 		// If a contextualizer needs more services just add them here.
-		// Initialization of contextualizer needs two params
-		Class [] classParam = new Class[2];
+		// Initialization of contextualizer needs three params
+		Class [] classParam = new Class[3];
 		classParam[0] = EntityIdentificationService.class;
 		classParam[1] = GenericSQLService.class;
-		
-		// Initialization of contextualizer needs two params
-		Object [] objectParam = new Object[2];
+		classParam[2] = SingleEntityDataService.class;
+				
+		// Initialization of contextualizer needs three params
+		Object [] objectParam = new Object[3];
 		objectParam[0] = arachneEntityIdentificationService;
 		objectParam[1] = genericSQLService;
+		objectParam[2] = singleEntityDataService;
 		
 		try {
 			final String upperCaseContextType = contextType.substring(0, 1).toUpperCase() + contextType.substring(1).toLowerCase();
