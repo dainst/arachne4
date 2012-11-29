@@ -44,7 +44,8 @@
         <xs:choice minOccurs="1" maxOccurs="1">
         	<xs:choice maxOccurs="unbounded">
             	<xs:element name="section" type="SectionContent" />
-            	<xs:element  name="context" type="ContextContent" />
+            	<xs:element name="context" type="ContextContent" />
+            	<xs:element name="include" type="IncludeContent" />
         	</xs:choice>
         	<xs:choice maxOccurs="unbounded">
             	<xs:element name="field" type="FieldContent" />
@@ -67,6 +68,10 @@
         <xs:attribute name="labelKey" type="xs:string" />
         <xs:attribute name="separator" type="xs:string" />
         <xs:attribute name="minGroupId" type="xs:string" />
+    </xs:complexType>
+    
+    <xs:complexType name="IncludeContent">
+    	<xs:attribute name="type" type="xs:string" use="required" />
     </xs:complexType>
     
     <xs:complexType name="FieldContent">

@@ -50,6 +50,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	
 	private transient final Map<String, Document> xmlConfigDocuments = new HashMap<String, Document>();
 	
+	private transient final Map<String, Element> xmlIncludeElements = new HashMap<String, Element>();
+	
 	public void setServletContext(final ServletContext servletContext) {
 		this.servletContext = servletContext;
 	}
@@ -59,7 +61,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param type Type of the config to look for.
 	 * @return The filename of the XML config file for the given type or <code>"unknown"</code> if no config file is found.
 	 */
-	private String getFilenameFromType(final String type) {
+	private String getDocumentFilenameFromType(final String type) {
 		String filename = "/WEB-INF/xml/"+ type + ".xml";
 		final ServletContextResource file = new ServletContextResource(servletContext, filename);
 		if (!file.exists()) {
@@ -92,28 +94,139 @@ public class XmlConfigUtil implements ServletContextAware {
 	public Document getDocument(final String type) {
 		final Document cachedDocument = xmlConfigDocuments.get(type);
 		if (cachedDocument == null) {
-			final String filename = getFilenameFromType(type);
-			if ("unknown".equals(filename)) {
-				return null;
-			}
-			
-			final ServletContextResource xmlDocument = new ServletContextResource(servletContext, filename);
-			final SAXBuilder saxBuilder = getXMLParser();
-			
-			try {
-				final Document document = saxBuilder.build(xmlDocument.getFile());
-				xmlConfigDocuments.put(type, document);
-				return document;
-			} catch (JDOMException e) {
-				LOGGER.error(e.getMessage());
-			} catch (IOException e) {
-				LOGGER.error(e.getMessage());
-			}
-			
-	    	return null;
+			return getDocumentFromFile(type);
 		} else {
 			return cachedDocument;
 		}
+	}
+	
+	private Document getDocumentFromFile(final String type) {
+		final String filename = getDocumentFilenameFromType(type);
+		if ("unknown".equals(filename)) {
+			return null;
+		}
+		
+		final ServletContextResource xmlDocument = new ServletContextResource(servletContext, filename);
+		final SAXBuilder saxBuilder = getXMLParser();
+		
+		try {
+			final Document document = saxBuilder.build(xmlDocument.getFile());
+			replaceIncludesInDocument(document);
+			xmlConfigDocuments.put(type, document);
+			return document;
+		} catch (JDOMException e) {
+			LOGGER.error(e.getMessage());
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage());
+		}
+		
+    	return null;
+	}
+	
+	/**
+	 * Replaces include elements with the elements from the corresponding XML include files.
+	 * @param document
+	 */
+	private void replaceIncludesInDocument(final Document document) {
+		// parse to find include tags
+		final Element rootElement = document.getRootElement();
+		final Namespace nameSpace = rootElement.getNamespace();
+		final Element display = rootElement.getChild("display", nameSpace);
+		replaceInclude(display);
+		//final Element facets = rootElement.getChild("facets", nameSpace);
+		// extract elements from include tags
+		// add elements to document
+	}
+	
+	/**
+	 * Recursive method to find all include tags in an <code>Element</code> and replace them by their corresponding real <code>Element</code>.
+	 * @param element The DOM element to scan for include elements.
+	 */
+	private void replaceInclude(final Element element) {
+		final List<Element> children = element.getChildren();
+		
+		if (!children.isEmpty()) {
+			for (Element e: children) {
+				if ("include".equals(e.getName())) {
+					element.addContent(getInclude(e));
+					element.removeContent(e);
+				} else {
+					if (!"field".equals(e.getName())) {
+						replaceInclude(e);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * This method replaces an include element in the DOM by the corresponding real element. The real element is fetched either from the 
+	 * cache of include elements or read from file and then added to the cached elements list.
+	 * @param include The include element to replace.
+	 * @return The real element the include element is replaced with.
+	 */
+	private Element getInclude(final Element include) {
+		final String type = include.getAttributeValue("type");
+		
+		final Element cachedElement = xmlIncludeElements.get(type);
+		if (cachedElement == null) {
+			return getElementFromFile(type);
+		} else {
+			return cachedElement;
+		}
+	}
+	
+	/**
+	 * Reads an include XML file and returns the contained <code>Element</code>.
+	 * @param type The type of the include element.
+	 * @return The <code>Element</code> extracted from the DOM of the XML include file.
+	 */
+	private Element getElementFromFile(final String type) {
+		final String filename = getIncludeFilenameFromType(type);
+		if ("unknown".equals(filename)) {
+			return null;
+		}
+		
+		final ServletContextResource xmlDocument = new ServletContextResource(servletContext, filename);
+		final SAXBuilder saxBuilder = getXMLParser();
+		
+		try {
+			final Document document = saxBuilder.build(xmlDocument.getFile());
+			final Element rootElement = document.getRootElement();
+			final Namespace nameSpace = rootElement.getNamespace();
+			// the include element is either a single section or context
+			Element element = rootElement.getChild("section", nameSpace);
+			if (element == null) {
+				element = rootElement.getChild("context", nameSpace);
+			}
+			if (element != null) {
+				element.detach();
+				xmlIncludeElements.put(type, element);
+			}
+			return element;
+		} catch (JDOMException e) {
+			LOGGER.error(e.getMessage());
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage());
+		}
+		
+    	return null;
+	}
+	
+	/**
+	 * This function checks if an include file for the given type exists and returns its filename.
+	 * @param type Type of the include to look for.
+	 * @return The filename of the XML include file for the given type or <code>"unknown"</code> if no include file is found.
+	 */
+	private String getIncludeFilenameFromType(final String type) {
+		String filename = "/WEB-INF/xml/"+ type + "_inc.xml";
+		final ServletContextResource file = new ServletContextResource(servletContext, filename);
+		if (!file.exists()) {
+			filename = "unknown";
+		}
+		
+		LOGGER.debug("include file: " + filename);
+		return filename;
 	}
 	
 	/**
@@ -508,7 +621,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @return A <code>List&lt;String></code>
 	 */
 	public List<String> getFacetsFromXMLFile(final String category) {
-		final String filename = getFilenameFromType(category);
+		final String filename = getDocumentFilenameFromType(category);
 		if ("unknown".equals(filename)) {
 			return null;
 		}

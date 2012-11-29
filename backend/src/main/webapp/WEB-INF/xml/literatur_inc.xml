@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<includeSection
+	xmlns="http://arachne.uni-koeln.de/schemas/include"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
+	
+	<context type="literatur" labelKey="Literatur" separator=" ">
+		<field datasource=".DAIRichtlinien" />
+		<field datasource=".Seite" />
+		<linkField labelKey="ZenonID" datasource=".ZenonID"
+			prefix="http://testopac.dainst.org/#zenon/book/" />
+	</context>
+</includeSection>
