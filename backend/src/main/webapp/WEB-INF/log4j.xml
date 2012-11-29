@@ -12,7 +12,7 @@
 	
 	<!-- Application Loggers -->
 	<logger name="de.uni_koeln.arachne">
-		<level value="debug" />
+		<level value="info" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
