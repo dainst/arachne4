@@ -118,12 +118,7 @@
 					<field datasource="objekt.InschriftKommentar" />  
 					<field datasource="objekt.InschriftPublikation"/>
 				</section>
-				<context type="literatur" labelKey="Literatur" separator=" ">
-					<field datasource=".tempLiteratur"/>
-					<field datasource=".DAIRichtlinien"/>
-					<field datasource=".Seite"/>
-					<linkField labelKey="ZenonID" datasource=".ZenonID" prefix="http://testopac.dainst.org/#zenon/book/" />
-				</context>
+				<include type="literatur" />
 				<section labelKey="Für Bearbeiter" minGroupId="600">
 				<section labelKey="Berlin">
 					<field datasource="objekt.BerlinInstitution" prefix="Institution: "/>

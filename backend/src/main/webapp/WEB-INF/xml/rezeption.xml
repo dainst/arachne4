@@ -92,11 +92,7 @@
         			<field datasource="rezeption.wissKommentarRezeption" />
         			<field datasource="rezeption.KatalogtextRezeption" prefix="Katalogtext: "/>
         		</section>
-        		<context type="literatur" labelKey="Literatur" separator=" ">
-	            	<field datasource=".DAIRichtlinien" />
-	            	<field datasource=".Seite" />
-	            	<linkField labelKey="ZenonID" datasource=".ZenonID" prefix="http://testopac.dainst.org/#zenon/book/" />
-	            </context>
+        		<include type="literatur" />
         	</section>
         </datasections>
     </display>
