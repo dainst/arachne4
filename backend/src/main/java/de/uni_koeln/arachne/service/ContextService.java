@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.service;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +29,7 @@ public class ContextService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ContextService.class);
 	
 	@Autowired
-	private transient EntityIdentificationService arachneEntityIdentificationService; 
+	private transient EntityIdentificationService entityIdentificationService; 
 	
 	/**
 	 * Service to access the 'Verknuepfungen' table. The information stored in that table is used
@@ -125,26 +126,18 @@ public class ContextService {
 	 */
 	@SuppressWarnings("rawtypes")
 	private IContextualizer getContextualizerByContextType(final String contextType) {
-		// If a contextualizer needs more services just add them here.
-		// Initialization of contextualizer needs three params
-		Class [] classParam = new Class[3];
-		classParam[0] = EntityIdentificationService.class;
-		classParam[1] = GenericSQLService.class;
-		classParam[2] = SingleEntityDataService.class;
-				
-		// Initialization of contextualizer needs three params
-		Object [] objectParam = new Object[3];
-		objectParam[0] = arachneEntityIdentificationService;
-		objectParam[1] = genericSQLService;
-		objectParam[2] = singleEntityDataService;
-		
 		try {
 			final String upperCaseContextType = contextType.substring(0, 1).toUpperCase() + contextType.substring(1).toLowerCase();
 			final String className = "de.uni_koeln.arachne.context." + upperCaseContextType + "Contextualizer";
 			LOGGER.debug("Initializing class: " + className + "...");
 			final Class<?> aClass = Class.forName(className);
-			final java.lang.reflect.Constructor classConstructor = aClass.getConstructor(classParam);
-			return (IContextualizer)classConstructor.newInstance(objectParam);
+			final java.lang.reflect.Constructor classConstructor = aClass.getConstructor();
+			final AbstractContextualizer contextualizer = (AbstractContextualizer)classConstructor.newInstance();
+			// set services
+			contextualizer.setEntityIdentificationService(entityIdentificationService);
+			contextualizer.setGenericSQLService(genericSQLService);
+			contextualizer.setSingleEntityDataService(singleEntityDataService);
+			return contextualizer;
 		} catch (ClassNotFoundException e) {
 			LOGGER.debug("FAILURE - using SemanticConnectionsContextualizer instead");
 			return new SemanticConnectionsContextualizer(contextType, genericSQLService);
