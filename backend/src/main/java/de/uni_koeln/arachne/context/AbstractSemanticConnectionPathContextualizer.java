@@ -19,7 +19,8 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractSemanticConnectionPathContextualizer.class);
 	//This Restricts the Types that Lie on the Path Now Its Only fixed Types AND "ALL" For Every Type
-	protected List<String> typeStepRestrictions = null;
+	
+	protected ContextPath contextPath;
 
 	protected String contextualizerName =null;
 	//TODO Advanced typeStepRestrictions with Array that act as white or Blacklists
@@ -28,7 +29,7 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 	
 	
 	public AbstractSemanticConnectionPathContextualizer() {
-
+		this.contextPath = new ContextPath();
 		this.setupContextPath();
 		//Infere contextualizername!
 		if(contextualizerName == null){
@@ -42,7 +43,10 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 	}
 	
 	@Override
-	public abstract String getContextType();
+	public String getContextType(){
+		return this.contextPath.getTargetType();
+		
+	}
 	/**
 	 * This method has to be declared in the Initialised Contextualizer. It setups the path that has to be followed to geht the Desired Context 
 	 */
@@ -57,7 +61,7 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 		//TODO Implement limit offset restriction
 		//TODO IF Preformence Problems Occure : Implement structure to optimize retrival technique by given paramters.
 		
-		List<Long> connectedEntities = this.genericSQLService.getPathConnectedEntityIds(parent.getArachneId().getArachneEntityID(),typeStepRestrictions);
+		List<Long> connectedEntities = this.genericSQLService.getPathConnectedEntityIds(parent.getArachneId().getArachneEntityID(),contextPath);
 		//Retrival Succsessfull Then Build result
 		if(connectedEntities != null){
 			List<AbstractLink> out = new ArrayList<AbstractLink>(connectedEntities.size());

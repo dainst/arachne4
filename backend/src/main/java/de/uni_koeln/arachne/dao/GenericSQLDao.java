@@ -8,11 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import de.uni_koeln.arachne.context.ContextPath;
 import de.uni_koeln.arachne.mapping.EntityIdMapper;
 import de.uni_koeln.arachne.mapping.GenericFieldMapperString;
 import de.uni_koeln.arachne.service.SQLResponseObject;
 import de.uni_koeln.arachne.sqlutil.ConnectedEntityIdsSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.ConnectedEntitiesSQLQueryBuilder;
+import de.uni_koeln.arachne.sqlutil.ConnectedPathEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldsEntityIdJoinedSQLQueryBuilder;
 
@@ -65,49 +67,13 @@ public class GenericSQLDao extends SQLDao {
 		}
 		return null;
 	}
-	public List<Long> getPathConnectedEntityIds(final Long entityId, List<String> typeStepRestriction) {
-		
-		//First Things doesnt belong here
-		//First Things
-		//TODO Create SQL builder
-		StringBuilder BSPQuery = new StringBuilder( "SELECT e"+ (typeStepRestriction.size()-1) +".Target FROM SemanticConnection e0, ");
-		
-		
-		//Declare the Variables
-		for(int i =0;  i< typeStepRestriction.size()-2;i++ ){ 
-			BSPQuery.append( " SemanticConnection e"+(i+1)+" ,");
-		}
-		if(typeStepRestriction.size() >1)
-			BSPQuery.append( " SemanticConnection e"+(typeStepRestriction.size()-1)+" ");
-		//BSPQuery.append( " SemanticConnection e"+typeStepRestriction.size()+" WHERE");
-		
-		BSPQuery.append( " WHERE 1 AND ");
-		
-		//Chain Logic e1.Target = e2.Source ... e2.Target = e3.source ETC
-		
-		
-		for(int i =0;  i< typeStepRestriction.size()-1;i++ ){ 
-			BSPQuery.append( " e"+i+".Target = e"+(i+1)+".Source AND ");
-		}
-		
-		
-		//This Sets the Source ID
-		BSPQuery.append( " e0.Source ="+entityId+ " AND");
-		
-		for(int i =0;  i< typeStepRestriction.size();i++ ){
-			String temp = typeStepRestriction.get(i);
-			if(!"*".equals(temp)){
-				BSPQuery.append(" e"+i+".TypeTarget = \""+typeStepRestriction.get(i)+"\" AND ");
-			}
-		
-		}
-		//BSPQuery.append(" e"+(typeStepRestriction.size()-1)+".TypeTarget = \""+typeStepRestriction.get(typeStepRestriction.size()-1)+"\"");
-								
-		BSPQuery.append("1 GROUP BY e"+(typeStepRestriction.size()-1)+".Target");
-		LOGGER.debug(BSPQuery.toString());
+	public List<Long> getPathConnectedEntityIds(final Long entityId, ContextPath contextPath) {
+		ConnectedPathEntitiesSQLQueryBuilder sqlBuilder = new ConnectedPathEntitiesSQLQueryBuilder(contextPath, entityId);
+		String sql= sqlBuilder.getSQL();
+		LOGGER.debug(sql);
 		
 		@SuppressWarnings("unchecked")
-		final List<Long> queryResult = (List<Long>)this.executeSelectQuery(BSPQuery.toString()
+		final List<Long> queryResult = (List<Long>)this.executeSelectQuery(sql.toString()
 				, new EntityIdMapper());
 		
 		if (queryResult != null && !queryResult.isEmpty()) {

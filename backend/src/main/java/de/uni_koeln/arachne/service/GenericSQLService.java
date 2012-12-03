@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
+import de.uni_koeln.arachne.context.ContextPath;
 import de.uni_koeln.arachne.dao.GenericSQLDao;
 
 @Service
@@ -21,8 +22,8 @@ public class GenericSQLService {
 	public List<Long> getConnectedEntityIds(final Long entityId) {
 		return genericSQLDao.getConnectedEntityIds(entityId);
 	}
-	public List<Long> getPathConnectedEntityIds(final Long entityId,List<String> path) {
-		return genericSQLDao.getPathConnectedEntityIds(entityId,path);
+	public List<Long> getPathConnectedEntityIds(final Long entityId,ContextPath contextPath) {
+		return genericSQLDao.getPathConnectedEntityIds(entityId,contextPath);
 	}
 	public List<? extends SQLResponseObject> getStringFieldsEntityIdJoinedWithCustomRowmapper(final String tableName, final String field1
 			, final Long field1Id, final List<String> fields, final RowMapper<? extends SQLResponseObject> rowMapper) {
