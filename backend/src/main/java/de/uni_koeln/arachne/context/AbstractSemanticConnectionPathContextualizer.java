@@ -3,7 +3,11 @@ package de.uni_koeln.arachne.context;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.service.ContextService;
 import de.uni_koeln.arachne.util.EntityId;
 /**
  * This abstract Class Provides a simple prototype to Control the Retrival of Contexts that Use more than one Category Step. 
@@ -13,10 +17,11 @@ import de.uni_koeln.arachne.util.EntityId;
  */
 public abstract class AbstractSemanticConnectionPathContextualizer extends AbstractContextualizer {
 	
-	
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractSemanticConnectionPathContextualizer.class);
 	//This Restricts the Types that Lie on the Path Now Its Only fixed Types AND "ALL" For Every Type
 	protected List<String> typeStepRestrictions = null;
 
+	protected String contextualizerName =null;
 	//TODO Advanced typeStepRestrictions with Array that act as white or Blacklists
 	//TODO Restrict the the Special Values on the Way Like "Fundort" etc.
 	
@@ -25,6 +30,15 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 	public AbstractSemanticConnectionPathContextualizer() {
 
 		this.setupContextPath();
+		//Infere contextualizername!
+		if(contextualizerName == null){
+			
+			String classname = this.getClass().toString();
+			
+			contextualizerName = classname.substring(classname.lastIndexOf(".")+1, classname.length()-"Contextualizer".length());
+			LOGGER.debug("Infered Name "+contextualizerName);
+			
+		}
 	}
 	
 	@Override
@@ -37,6 +51,8 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 	@Override
 	public List<AbstractLink> retrieve(Dataset parent, Integer offset,
 			Integer limit) {
+		
+		
 		
 		//TODO Implement limit offset restriction
 		//TODO IF Preformence Problems Occure : Implement structure to optimize retrival technique by given paramters.
@@ -53,8 +69,10 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 					continue;
 				
 				EntityId tempident = this.entityIdentificationService.getId(long1);
-				Dataset tempentity = this.singleEntityDataService.getSingleEntityByArachneId(tempident);
-				link.setEntity2(tempentity);
+				Dataset tempdataset 	= this.singleEntityDataService.getSingleEntityByArachneId(tempident);
+				tempdataset.renameFieldsPrefix(contextualizerName);
+				
+				link.setEntity2(tempdataset);
 				out.add(link);
 			
 			
