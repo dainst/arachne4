@@ -9,7 +9,7 @@ public class ContextPath {
 	//The Restriction of the Connection types the Path must have. an Empty String means that there are no Restrictions
 	protected List<String> semanticConnectionRestrictions= null;
 	//TODO Implement an Mechanism that can Restict Values of Fields i the Additional JSON Fields
-	protected List<String> FieldValueRestrictions = null;
+	protected List<String> fieldValueRestrictions = null;
 	
 	
 	/**
@@ -31,7 +31,7 @@ public class ContextPath {
 	 * 
 	 * @param typeStepRestrictions Add a List of Types that restrict the Path Where ALL is means that a Seap has no restriction
 	 */
-	public void setTypeStepRestrictions(List<String> typeStepRestrictions) {
+	public void setTypeStepRestrictions(final List<String> typeStepRestrictions) {
 		this.typeStepRestrictions = typeStepRestrictions;
 	}
 	
@@ -39,17 +39,17 @@ public class ContextPath {
 	 * 
 	 * @param typeStepRestriction add Element to the Steprestriction Path
 	 */
-	public void addTypeStepRestriction(String typeStepRestriction) {
-		if(this.typeStepRestrictions ==null)
+	public void addTypeStepRestriction(final String typeStepRestriction) {
+		if (this.typeStepRestrictions == null) {
 			this.typeStepRestrictions = new ArrayList<String>(3);
+		}
 		this.typeStepRestrictions.add(typeStepRestriction);
 	}
 	/**
 	 * 
 	 * @param semanticConnectionRestrictions List of Conection Type Restictions if a Field is Empty it wont be restricted 
 	 */
-	public void setSemanticConnectionRestrictions(
-			List<String> semanticConnectionRestrictions) {
+	public void setSemanticConnectionRestrictions(final List<String> semanticConnectionRestrictions) {
 		this.semanticConnectionRestrictions = semanticConnectionRestrictions;
 	}
 	

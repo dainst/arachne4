@@ -67,23 +67,21 @@ public class GenericSQLDao extends SQLDao {
 		}
 		return null;
 	}
-	public List<Long> getPathConnectedEntityIds(final Long entityId, ContextPath contextPath) {
-		ConnectedPathEntitiesSQLQueryBuilder sqlBuilder = new ConnectedPathEntitiesSQLQueryBuilder(contextPath, entityId);
-		String sql= sqlBuilder.getSQL();
+	
+	public List<Long> getPathConnectedEntityIds(final Long entityId, final ContextPath contextPath) {
+		final ConnectedPathEntitiesSQLQueryBuilder sqlBuilder = new ConnectedPathEntitiesSQLQueryBuilder(contextPath, entityId);
+		final String sql= sqlBuilder.getSQL();
 		LOGGER.debug(sql);
 		
 		@SuppressWarnings("unchecked")
-		final List<Long> queryResult = (List<Long>)this.executeSelectQuery(sql.toString()
-				, new EntityIdMapper());
+		final List<Long> queryResult = (List<Long>)this.executeSelectQuery(sql, new EntityIdMapper());
 		
 		if (queryResult != null && !queryResult.isEmpty()) {
 			return queryResult;
 		}
 		return null;
 	}
-	
-	
-	
+		
 	public List<? extends SQLResponseObject> getStringFieldsEntityIdJoinedWithCustomRowMapper(
 			final String tableName, final String field1, final Long field1Id, final List<String> fields
 			, final RowMapper<? extends SQLResponseObject> rowMapper) {

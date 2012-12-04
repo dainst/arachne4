@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uni_koeln.arachne.response.Dataset;
-import de.uni_koeln.arachne.service.ContextService;
 import de.uni_koeln.arachne.util.EntityId;
 /**
  * This abstract Class Provides a simple prototype to Control the Retrival of Contexts that Use more than one Category Step. 
@@ -20,9 +19,9 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractSemanticConnectionPathContextualizer.class);
 	//This Restricts the Types that Lie on the Path Now Its Only fixed Types AND "ALL" For Every Type
 	
-	protected ContextPath contextPath;
+	protected transient ContextPath contextPath;
 
-	protected String contextualizerName =null;
+	protected transient String contextualizerName = null;
 	//TODO Advanced typeStepRestrictions with Array that act as white or Blacklists
 	//TODO Restrict the the Special Values on the Way Like "Fundort" etc.
 	
@@ -32,12 +31,12 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 		this.contextPath = new ContextPath();
 		this.setupContextPath();
 		//Infere contextualizername!
-		if(contextualizerName == null){
+		if (contextualizerName == null) {
 			
-			String classname = this.getClass().toString();
+			final String classname = this.getClass().toString();
 			
-			contextualizerName = classname.substring(classname.lastIndexOf(".")+1, classname.length()-"Contextualizer".length());
-			LOGGER.debug("Infered Name "+contextualizerName);
+			contextualizerName = classname.substring(classname.lastIndexOf('.')+1, classname.length()-"Contextualizer".length());
+			LOGGER.debug("Infered Name: " + contextualizerName);
 			
 		}
 	}
@@ -53,35 +52,31 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 	protected abstract void setupContextPath();
 	
 	@Override
-	public List<AbstractLink> retrieve(Dataset parent, Integer offset,
-			Integer limit) {
-		
-		
-		
+	public List<AbstractLink> retrieve(final Dataset parent, final Integer offset, final Integer limit) {
+				
 		//TODO Implement limit offset restriction
 		//TODO IF Preformence Problems Occure : Implement structure to optimize retrival technique by given paramters.
 		
-		List<Long> connectedEntities = this.genericSQLService.getPathConnectedEntityIds(parent.getArachneId().getArachneEntityID(),contextPath);
+		final List<Long> connectedEntities = this.genericSQLService.getPathConnectedEntityIds(parent.getArachneId()
+				.getArachneEntityID(),contextPath);
 		//Retrival Succsessfull Then Build result
-		if(connectedEntities != null){
-			List<AbstractLink> out = new ArrayList<AbstractLink>(connectedEntities.size());
+		if (connectedEntities != null) {
+			final List<AbstractLink> out = new ArrayList<AbstractLink>(connectedEntities.size());
 			for (Long long1 : connectedEntities) {
 			
 				final ArachneLink link = new ArachneLink();
 				link.setEntity1(parent);
-				if(long1 == 0)
+				if (long1 == 0) {
 					continue;
+				}
 				
-				EntityId tempident = this.entityIdentificationService.getId(long1);
-				Dataset tempdataset 	= this.singleEntityDataService.getSingleEntityByArachneId(tempident);
-				tempdataset.renameFieldsPrefix(contextualizerName);
+				final EntityId tempIdent = this.entityIdentificationService.getId(long1);
+				final Dataset tempDataset = this.singleEntityDataService.getSingleEntityByArachneId(tempIdent);
+				tempDataset.renameFieldsPrefix(contextualizerName);
 				
-				link.setEntity2(tempdataset);
-				out.add(link);
-			
-			
-			}
-		
+				link.setEntity2(tempDataset);
+				out.add(link);			
+			}		
 			return out;
 		}
 		

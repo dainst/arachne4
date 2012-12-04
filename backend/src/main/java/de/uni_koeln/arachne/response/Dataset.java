@@ -56,41 +56,39 @@ public class Dataset {
 	public Dataset() {
 		fields = new Hashtable<String,String>();
 		context = new ArrayList<Context>();
-	}	
+	}
+	
 	/**
 	 * changes the Prefix of the Internal key. It CHANGES ALL PREFIXES in the fields list
 	 * @param newPrefix The PRefix that replaces the old Prefix
 	 */
-	public void renameFieldsPrefix(String newPrefix){
-		
-		Set<String> oldkeys = fields.keySet();
-		Map<String,String> newfields = new Hashtable<String,String>(fields.size());
+	public void renameFieldsPrefix(final String newPrefix){
+		final Set<String> oldkeys = fields.keySet();
+		final Map<String,String> newfields = new Hashtable<String,String>(fields.size());
 		
 		for (String oldkey : oldkeys) {	
-			String newkey = newPrefix+oldkey.substring( oldkey.lastIndexOf("."),oldkey.length());
+			final String newkey = newPrefix+oldkey.substring( oldkey.lastIndexOf("."),oldkey.length());
 			newfields.put(newkey, fields.get(oldkey));
 		}
 		
-		fields = newfields;
-		
-		
+		fields = newfields;		
 	}
+	
 	/**
 	 * changes the Prefix of the Internal key.
 	 * @param oldPrefix the old Prefix
 	 * @param newPrefix The new prefix that replaces the old one
 	 */
-
-	
-	public void renameFieldsPrefix(String oldPrefix, String newPrefix){
+	public void renameFieldsPrefix(final String oldPrefix, final String newPrefix){
 		
-		Set<String> oldkeys = fields.keySet();
-		Map<String,String> newfields = new Hashtable<String,String>(fields.size());
+		final Set<String> oldkeys = fields.keySet();
+		final Map<String,String> newfields = new Hashtable<String,String>(fields.size());
 		
-		for (String oldkey : oldkeys) {	
-			if(!oldkey.startsWith(oldPrefix))
+		for (String oldkey: oldkeys) {
+			if (!oldkey.startsWith(oldPrefix)) {
 				continue;
-			String newkey = newPrefix+oldkey.substring( oldkey.lastIndexOf("."),oldkey.length());
+			}
+			final String newkey = newPrefix+oldkey.substring(oldkey.lastIndexOf("."), oldkey.length());
 			newfields.put(newkey, fields.get(oldkey));
 		}
 		

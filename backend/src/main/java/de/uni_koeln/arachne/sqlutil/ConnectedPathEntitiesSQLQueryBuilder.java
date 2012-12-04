@@ -11,18 +11,18 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectedEntitiesSQLQueryBuilder.class);
 	
-	transient protected SQLRightsConditionBuilder rightsConditionBuilder;
+	protected transient SQLRightsConditionBuilder rightsConditionBuilder;
 	
-	protected ContextPath contextPath;
+	protected transient ContextPath contextPath;
 	//Entity ID that is the Startingpoint of the PATH
-	protected Long entityStart; 
+	protected transient Long entityStart; 
 	
 	//TODO Implement Version with Key Table Solution
 	protected String table;
 	
 	protected Long foreignKey;
 	
-	public ConnectedPathEntitiesSQLQueryBuilder(ContextPath contextPath, Long entityStart) {
+	public ConnectedPathEntitiesSQLQueryBuilder(final ContextPath contextPath, final Long entityStart) {
 		this.contextPath = contextPath;
 		this.entityStart = entityStart;
 		
@@ -33,17 +33,18 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		//First Things doesnt belong here
 		//First Things
 		
-		List<String> typeStepRestrictions = this.contextPath.getTypeStepRestrictions();
+		final List<String> typeStepRestrictions = this.contextPath.getTypeStepRestrictions();
 		
 		sql.append( "SELECT e"+ (typeStepRestrictions.size()-1) +".Target FROM SemanticConnection e0, ");
 		
 		
 		//Declare the Variables
-		for(int i =0;  i< typeStepRestrictions.size()-2;i++ ){ 
+		for (int i = 0;  i < typeStepRestrictions.size() - 2; i++) { 
 			sql.append( " SemanticConnection e"+(i+1)+" ,");
 		}
-		if(typeStepRestrictions.size() >1)
+		if (typeStepRestrictions.size() > 1) {
 			sql.append( " SemanticConnection e"+(typeStepRestrictions.size()-1)+" ");
+		}
 		//BSPQuery.append( " SemanticConnection e"+typeStepRestriction.size()+" WHERE");
 		
 		sql.append( " WHERE 1 AND ");
@@ -58,9 +59,9 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		//This Sets the Source ID
 		sql.append( " e0.Source ="+entityStart+ " AND");
 		
-		for(int i =0;  i< typeStepRestrictions.size();i++ ){
-			String temp = typeStepRestrictions.get(i);
-			if(!"ALL".equals(temp)){
+		for (int i =0;  i < typeStepRestrictions.size(); i++) {
+			final String temp = typeStepRestrictions.get(i);
+			if (!"ALL".equals(temp)) {
 				sql.append(" e"+i+".TypeTarget = \""+typeStepRestrictions.get(i)+"\" AND ");
 			}
 		
@@ -69,14 +70,14 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 								
 		sql.append("1 GROUP BY e"+(typeStepRestrictions.size()-1)+".Target");
 
-		
+		LOGGER.debug(sql.toString());
 		return sql.toString();
 	}
 	
 	
 	private StringBuilder buildLenghtChain(){
-		List<String> typeStepRestrictions = this.contextPath.getTypeStepRestrictions();
-		StringBuilder out = new StringBuilder(); 
+		final List<String> typeStepRestrictions = this.contextPath.getTypeStepRestrictions();
+		final StringBuilder out = new StringBuilder(); 
 		for(int i =0;  i< typeStepRestrictions.size()-1;i++ ){ 
 			out.append( " e"+i+".Target = e"+(i+1)+".Source AND ");
 		}
