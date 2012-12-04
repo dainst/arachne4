@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.util;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletContext;
@@ -146,7 +147,8 @@ public class XmlConfigUtil implements ServletContextAware {
 		final List<Element> children = element.getChildren();
 		
 		if (!children.isEmpty()) {
-			for (Element e: children) {
+			final List<Element> staticChildren = new ArrayList<Element>(children);
+			for (Element e: staticChildren) {
 				if ("include".equals(e.getName())) {
 					element.addContent(getInclude(e));
 					element.removeContent(e);
@@ -172,7 +174,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		if (cachedElement == null) {
 			return getElementFromFile(type);
 		} else {
-			return cachedElement;
+			return cachedElement.clone();
 		}
 	}
 	
@@ -201,7 +203,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			}
 			if (element != null) {
 				element.detach();
-				xmlIncludeElements.put(type, element);
+				xmlIncludeElements.put(type, element.clone());
 			}
 			return element;
 		} catch (JDOMException e) {
