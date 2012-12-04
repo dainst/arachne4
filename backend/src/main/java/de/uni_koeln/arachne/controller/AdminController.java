@@ -44,11 +44,11 @@ public class AdminController {
 		LOGGER.debug("User GroupID: " + userRightsService.getCurrentUser().getGroupID());
 		if (userRightsService.getCurrentUser().getGroupID() >= UserRightsService.MIN_ADMIN_ID) {
 			if (StrUtils.isEmptyOrNull(command)) {
-				return getCachedDocuments();
+				return getCache();
 			} else {
 				if ("clear-cache".equals(command)) {
-					xmlConfigUtil.clearDocumentCache();
-					return new StatusResponse("Document cache cleared.");
+					xmlConfigUtil.clearCache();
+					return new StatusResponse("Cache cleared.");
 				}
 				return new StatusResponse("Unsupported command.");
 			}
@@ -58,11 +58,11 @@ public class AdminController {
 	}
 
 	/**
-	 * Returns a list of cached xml config documents wrapped in a <code>StatusResponse</code>.
+	 * Returns a list of cached xml config documents and include elements wrapped in a <code>StatusResponse</code>.
 	 * @return A <code>StatusResponse</code>.
 	 */
-	private StatusResponse getCachedDocuments() {
-		final StringBuilder result = new StringBuilder("Cached Documents:");
+	private StatusResponse getCache() {
+		final StringBuilder result = new StringBuilder("Cached documents:");
 		final List<String> cachedDocuments = xmlConfigUtil.getXMLConfigDocumentList();
 		if (cachedDocuments.isEmpty()) {
 			result.append(" none");
@@ -71,6 +71,17 @@ public class AdminController {
 				result.append(" " + document + ".xml");
 			}
 		}
+		
+		result.append(" - Cached include elements:");
+		final List<String> cachedElements = xmlConfigUtil.getXMLIncludeElementList();
+		if (cachedElements.isEmpty()) {
+			result.append(" none");
+		} else {
+			for (String element: cachedElements) {
+				result.append(" " + element + "_inc.xml");
+			}
+		}
+		
 		return new StatusResponse(result.toString());
 	}
 }

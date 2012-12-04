@@ -675,11 +675,26 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 		return result;
 	}
+	
+	/**
+	 * This method constructs a string list of the cached XML include element names.
+	 * @return A list of the cached include element names. 
+	 */
+	public List<String> getXMLIncludeElementList() {
+		final List<String> result = new ArrayList<String>(); 
+		if (!xmlIncludeElements.keySet().isEmpty()) {
+			for (Map.Entry<String, Element> entry: xmlIncludeElements.entrySet()) {
+				result.add(entry.getKey());
+			}
+		}
+		return result;
+	}
 
 	/**
-	 * Method to clear the current XML config document cache.
+	 * Convenience method to clear the current XML config document and include element cache.
 	 */
-	public void clearDocumentCache() {
+	public void clearCache() {
 		xmlConfigDocuments.clear();
+		xmlIncludeElements.clear();
 	}
 }
