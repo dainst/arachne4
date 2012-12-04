@@ -56,11 +56,7 @@
                     <field datasource=".AnfDatvn"/>
                 </context>
             </section>
-            <context type="literatur" labelKey="Literatur" separator=" ">
-                <field datasource=".tempLiteratur"/>
-                <field datasource=".DAIRichtlinien"/>
-                <field datasource=".Seite"/>
-            </context>
+            <include type="literatur" />
         </datasections>
     </display>
     <facets>
