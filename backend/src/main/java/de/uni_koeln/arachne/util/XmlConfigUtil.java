@@ -100,6 +100,11 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 	}
 	
+	/**
+	 * Function to load a xml category file from disk, build a document and put the resulting document into the cache.  
+	 * @param type A <code>String</code> specifying the category type.
+	 * @return A fully assembled document.
+	 */
 	private Document getDocumentFromFile(final String type) {
 		final String filename = getDocumentFilenameFromType(type);
 		if ("unknown".equals(filename)) {
