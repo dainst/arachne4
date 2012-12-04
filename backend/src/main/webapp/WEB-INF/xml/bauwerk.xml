@@ -31,12 +31,9 @@
         </subtitle>
         <datasections>
         	<section labelKey="Informationen zum Bauwerk">
-        		<context type="ort" labelKey="Lokalisierung" separator=", ">
-        			<field datasource=".Stadt"  />
-        			<field datasource=".Land" />
-        			<field datasource=".Countrycode" />
-        			<field datasource=".Aufbewahrungsort" />
-        		</context>
+        		<section labelKey="Lokalisierung">
+        			<include type="ort" />
+        		</section>
         		<section labelKey="Geographische Beschreibung">
 	        		<section labelKey="Situation">
 	        			<field datasource="bauwerk.Situation" />

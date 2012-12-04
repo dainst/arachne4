@@ -29,12 +29,7 @@
         <datasections>
         	<section labelKey="Informationen zur Topographie">
         		<section labelKey="Lokalisierung">
-        			<context type="ort" separator=", ">
-        				<field datasource=".Stadt"  />
-        				<field datasource=".Land" />
-        				<field datasource=".Countrycode" />
-        				<field datasource=".Aufbewahrungsort" />
-        			</context>
+        			<include type="ort" />
         			<section>
         				<field datasource="topographie.antikeGriechLandschaftTopographie" prefix="Antike Landschaft: "/>
         				<field datasource="topographie.antikeRoemProvinzTopographie" prefix="Römische Provinz: "/>

@@ -43,12 +43,7 @@
         			<field datasource="gruppen.AntikeSchriftquellen" />
         		</section>
         		<section labelKey="Lokalisierung">
-        			<context type="ort" separator=", ">
-        				<field datasource=".Stadt"  />
-        				<field datasource=".Land" />
-        				<field datasource=".Countrycode" />
-        				<field datasource=".Aufbewahrungsort" />
-        			</context>
+        			<include type="ort" />
         		</section>
         		<section labelKey="Aufstellung" separator=", ">
         			<field datasource="gruppen.Aufstellungskontext" />

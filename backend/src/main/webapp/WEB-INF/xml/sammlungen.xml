@@ -29,12 +29,7 @@
 	        			<field datasource="sammlungen.LandSammlungen" />
 	        			<field datasource="sammlungen.Herkunftsland" prefix="Herkunftsland: "/>
 	        		</section>
-	        		<context type="ort" separator=", ">
-        				<field datasource=".Stadt"  />
-        				<field datasource=".Land" />
-        				<field datasource=".Countrycode" />
-        				<field datasource=".Aufbewahrungsort" />
-        			</context>
+	        		<include type="ort" />
 	        		<section labelKey="Aufstellung">
 	        			<field datasource="sammlungen.AufstellungSammlungen" />
 	        		</section>

@@ -48,12 +48,7 @@
 					<field datasource="buch.BreiteGesamt" prefix="Breite: " />
 					<field datasource="buch.TiefeGesamt" prefix="Tiefe: " />
 				</section>
-				<context type="ort" labelKey="Lokalisierung" separator=", ">
-					<field datasource=".Stadt"  />
-					<field datasource=".Land" />
-					<field datasource=".Countrycode" />
-					<field datasource=".Aufbewahrungsort" />
-				</context>
+				<include type="ort" />
 				<section labelKey="BibId">
 					<field datasource="buch.bibid" />
 				</section>

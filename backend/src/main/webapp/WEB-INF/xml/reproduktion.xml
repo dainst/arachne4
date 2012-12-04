@@ -19,12 +19,7 @@
         </subtitle>
         <datasections>
         	<section labelKey="Informationen zur Reproduktion">
-        		<context type="ort" labelKey="Lokalisierung" separator=", ">
-        			<field datasource=".Stadt"  />
-        			<field datasource=".Land" />
-        			<field datasource=".Countrycode" />
-        			<field datasource=".Aufbewahrungsort" />
-        		</context>
+        		<include type="ort" />
         	   	<section labelKey="Herkunft">
         	   		<field datasource="reproduktion.HerkunftSlg" prefix="Herkunft: " />        			
         			<field datasource="reproduktion.Erwerbsdatum" prefix="Datum des Erwerbs: " />  
