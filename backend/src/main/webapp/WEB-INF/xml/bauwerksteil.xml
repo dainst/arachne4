@@ -20,11 +20,7 @@
 		<datasections>
 			<section labelKey="Informationen zum Bauwerksteil">
 				
-				<!--
-					<section labelKey="Lokalisierung">
-					<section sectionKey="Aufbewahrung"/>
-					</section>
-				-->
+				<include type="ort" />
 				
 				<section labelKey="Charakterisierung">					
 					<section labelKey="Bauordnung" >
@@ -76,12 +72,7 @@
 					</section> 
 					<section>
 						<field datasource="bauwerksteil.TiefeBauwerksteil" prefix="T " postfix=" cm"/>
-					</section>
-					<!--  
-						<section>
-						<field datasource="bauwerksteil.HoeheBauwerksteil" prefix="H " postfix=" cm"/>
-						</section>
-					-->					
+					</section>			
 				</section>
 				
 				<section labelKey="Dekoration">
@@ -98,15 +89,13 @@
 					</section> 
 				</section>
 				
+				<include type="datierung" />
+				
+				<include type="literatur" />
+				
 				<!-- 
-					<section labelKey="Datierung">
-					<section sectionKey="Datierung" />
-					</section>
-					<section labelKey="Literatur">
-					<section sectionKey="Literatur" />
-					</section>
 					<section labelKey="Fotoabzug">
-					<section sectionKey="Fotoabzug" />
+						<section sectionKey="Fotoabzug" />
 					</section>
 				-->				
 			</section>	
