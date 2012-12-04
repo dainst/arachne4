@@ -22,9 +22,7 @@
 		</subtitle>
 		<datasections>
 			<section labelKey="Informationen zum Objekt">
-				<section labelKey="Lokalisierung">
-					<include type="ort" />
-				</section>
+				<include type="ort" />
 				<section labelKey="Herkunft" separator=" ,">
 					<field datasource="objekt.Herkunft" />
 					<field datasource="objekt.HerkFundKommentar"/>
@@ -49,12 +47,7 @@
 					<field datasource="objekt.FreieBeschreibung" />
 					<field datasource="objekt.Spolie" />
 				</section>
-				<context type="datierung" labelKey="Datierung" separator=" ">
-					<field datasource=".AnfEpoche" postfix=","/>
-					<field datasource=".AnfDatZeitraum"/>
-					<field datasource=".AnfDatJh" postfix=". Jh."/>
-					<field datasource=".AnfDatvn"/>
-				</context>
+				<include type="datierung" />
 				<section labelKey="Technik">
 					<field datasource="objekt.Technik"/>
 					<field datasource="objekt.TechnikDetails"/>

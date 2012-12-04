@@ -12,11 +12,8 @@
         </title>
         <subtitle>
              <section separator=" / ">
-
                     <field datasource="ort.Ort_antik" />
-
                    	<field datasource="ort.Stadt" />
-
             </section>
         </subtitle>
         <datasections>

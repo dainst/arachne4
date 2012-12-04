@@ -32,9 +32,7 @@
                     <field datasource=".ConnectedActions"></field>
               </context>
             </section>
-            <section labelKey="Lokalisierung">
-            	<include type="ort" />
-            </section>
+            <include type="ort" />
         </datasections>
     </display>
     <facets>

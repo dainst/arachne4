@@ -62,14 +62,7 @@
                     </section>
                 </section>
                 
-                <section labelKey="Datierung">
-                    <context type="datierung" labelKey="Datierung" separator=" ">
-                        <field datasource=".AnfEpoche" postfix="," />
-                        <field datasource=".AnfDatZeitraum" />
-                        <field datasource=".AnfDatJh" postfix=". Jh."/>
-                        <field datasource=".AnfDatvn" />
-                    </context>
-                </section>
+                <include type="datierung" />
                 
                 <section labelKey="Keramikfragmente">
                     <context type="isolatedsherd" labelKey="Keramikfragmente" separator=" ">

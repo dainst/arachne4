@@ -48,14 +48,7 @@
                 <field datasource="morphology.Level5"/>
                 <field datasource="morphology.Level6"/>
             </section>
-            <section labelKey="Datierung">
-                <context type="datierung" labelKey="Datierung" separator=" ">
-                    <field datasource=".AnfEpoche" postfix=","/>
-                    <field datasource=".AnfDatZeitraum"/>
-                    <field datasource=".AnfDatJh" postfix=". Jh."/>
-                    <field datasource=".AnfDatvn"/>
-                </context>
-            </section>
+            <include type="datierung" />
             <include type="literatur" />
         </datasections>
     </display>

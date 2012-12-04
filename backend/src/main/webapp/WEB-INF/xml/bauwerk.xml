@@ -31,9 +31,7 @@
         </subtitle>
         <datasections>
         	<section labelKey="Informationen zum Bauwerk">
-        		<section labelKey="Lokalisierung">
-        			<include type="ort" />
-        		</section>
+        		<include type="ort" />
         		<section labelKey="Geographische Beschreibung">
 	        		<section labelKey="Situation">
 	        			<field datasource="bauwerk.Situation" />
@@ -89,14 +87,7 @@
 	            		<field datasource="bauwerk.Restaurierung" />
 	            	</section>
 	            </section>
-	            <section labelKey="Datierung">
-	            	<context type="datierung" labelKey="Bauwerk" separator=" ">
-	            		<field datasource=".AnfEpoche" postfix="," />
-	            		<field datasource=".AnfDatZeitraum" />
-	            		<field datasource=".AnfDatJh" postfix=". Jh."/>
-	            		<field datasource=".AnfDatvn" />
-	            	</context>
-	            </section>
+	            <include type="datierung" />
 	            <section labelKey="Katalog">
 	            	<field datasource="bauwerk.Katalogtext" prefix="Katalogtext: " />
 	            	<field datasource="bauwerk.Katalognummer" prefix="Katalognummer: "/>

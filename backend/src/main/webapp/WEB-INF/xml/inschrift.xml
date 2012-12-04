@@ -24,14 +24,7 @@
                         <field datasource="inschrift.Sprache" prefix="Sprache / Schrift: "/> 
                         <field datasource="inschrift.Kommentar" prefix="Kommentar: "/>                                
                 </section> 
-                <section labelKey="Datierung">
-                    <context type="datierung" labelKey="Inschrift" separator=" ">
-                        <field datasource=".AnfEpoche" postfix="," />
-                        <field datasource=".AnfDatZeitraum" />
-                        <field datasource=".AnfDatJh" postfix=". Jh."/>
-                        <field datasource=".AnfDatvn" />
-                    </context>
-                </section>
+               	<include type="datierung" />
                 <context type="literatur" labelKey="Literatur" separator=" ">
                     <field datasource=".Abkuerzungen">
                         <ifEmpty>

@@ -42,9 +42,7 @@
         			<field datasource="gruppen.ArchaeologZeugnisse" />
         			<field datasource="gruppen.AntikeSchriftquellen" />
         		</section>
-        		<section labelKey="Lokalisierung">
-        			<include type="ort" />
-        		</section>
+        		<include type="ort" />
         		<section labelKey="Aufstellung" separator=", ">
         			<field datasource="gruppen.Aufstellungskontext" />
         			<field datasource="gruppen.FunktionGruppen" />

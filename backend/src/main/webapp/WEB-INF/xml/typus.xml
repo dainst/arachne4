@@ -17,14 +17,11 @@ Hier werden keine Direkten Bilder verwendet sondern die Bilder des Hauptvertrete
         </title>
         <subtitle>
              <section>
-                          
 				<!-- 
 				Strange Has no Subtitle , 
 				this is Something is something taken from the Data 
 				-->
                     <field datasource="typus.moderneLandschaft"/>
-
-
             </section>
         </subtitle>
         <datasections>
@@ -111,15 +108,7 @@ Hier werden keine Direkten Bilder verwendet sondern die Bilder des Hauptvertrete
 	                	<field datasource="typus.KommentarKopien" />
 	                </section>
 	            </section>
-	            <section labelKey="Datierung">
-	            	<context type="datierung" labelKey="Typus" separator=" ">
-	            		<field datasource=".AnfEpoche" postfix="," />
-	            		<field datasource=".AnfDatZeitraum" />
-	            		<field datasource=".AnfDatJh" postfix=". Jh."/>
-	            		<field datasource=".AnfDatvn" />
-	            	</context>
-	            </section>
-	            
+	            <include type="datierung" />
 	            <include type="literatur" />
 	    	</section>
         </datasections>
