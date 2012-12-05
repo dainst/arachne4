@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<includeSection
-	xmlns="http://arachne.uni-koeln.de/schemas/include"
+<includeSection xmlns="http://arachne.uni-koeln.de/schemas/include"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
-	
-	<context type="ort" labelKey="Lokalisierung" separator=", ">
-		<field datasource=".ArtOrtsangabe" />
-		<field datasource=".Stadt" />
-		<field datasource=".Land" />
-		<field datasource=".Countrycode" />
-		<field datasource=".Aufbewahrungsort" />
-	</context>
+
+	<section labelKey="Lokalisierung" separator=", ">
+		<context type="ort" separator=", ">
+			<field datasource=".Stadt" />
+			<field datasource=".Ort_antik" prefix="(" postfix=") " />
+			<field datasource=".Land" />
+			<field datasource=".Countrycode" prefix="(" postfix=") " />
+			<field datasource=".Aufbewahrungsort" />
+			<field datasource=".Zusatz" /> <!-- AdditionalInfosJSON -->
+			<field datasource=".BerlinIdentNr" prefix="Berlin Ident.Nr. " /> <!-- AdditionalInfosJSON -->
+			<field datasource=".AltInvNr" prefix="Alte Inv.-Nr. " /> <!-- AdditionalInfosJSON -->
+			<field datasource=".InvNr" prefix="Inv.-Nr. " /> <!-- AdditionalInfosJSON -->
+			<field datasource=".ArtOrtsangabe" search="Aufbewahrung Automatisch erstellt"
+				replace="Aufbewahrungsort" prefix="- Ortsangabe ist " postfix=" -" /> <!-- AdditionalInfosJSON -->
+		</context>
+	</section>
 </includeSection>

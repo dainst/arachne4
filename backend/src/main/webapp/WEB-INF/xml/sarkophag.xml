@@ -29,20 +29,7 @@
 				<field datasource="Sarcophagusimages.images" />
 			</section>
 			<section labelKey="Informationen zum Sarkophag">
-				<section labelKey="Aufbewahrung" separator=", ">
-					<context type="ort" separator=", ">
-						<field datasource=".Stadt" />
-						<field datasource=".Ort_antik" prefix="(" postfix=") " />
-						<field datasource=".Land" />
-						<field datasource=".Countrycode" prefix="(" postfix=") " />
-						<field datasource=".Aufbewahrungsort" />
-						<field datasource=".Zusatz" /> <!-- AdditionalInfosJSON -->
-						<field datasource=".BerlinIdentNr" prefix="Berlin Ident.Nr. " /> <!-- AdditionalInfosJSON -->
-						<field datasource=".AltInvNr" prefix="Alte Inv.-Nr. " /> <!-- AdditionalInfosJSON -->
-						<field datasource=".InvNr" prefix="Inv.-Nr. " /> <!-- AdditionalInfosJSON -->
-						<field datasource=".ArtOrtsangabe" search="Aufbewahrung Automatisch erstellt" replace="Aufbewahrungsort" prefix="- Ortsangabe ist " postfix=" -" /> <!-- AdditionalInfosJSON --> 
-					</context>
-				</section>
+				<include type="ort" />
 				<section labelKey="Herkunft">
 					<section separator=", ">
 						<field datasource="sarkophag.Fundstaat" />
