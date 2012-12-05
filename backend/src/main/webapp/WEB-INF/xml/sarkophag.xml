@@ -22,6 +22,12 @@
 			</section>
 		</subtitle>
 		<datasections>
+			<context type="Sarcophagusimages">
+				<field datasource=".thisisjustadummyfield" />
+			</context>
+			<section labelKey="SarcophagusImages">
+				<field datasource="Sarcophagusimages.images" />
+			</section>
 			<section labelKey="Informationen zum Sarkophag">
 				<section labelKey="Aufbewahrung" separator=", ">
 					<context type="ort" separator=", ">
