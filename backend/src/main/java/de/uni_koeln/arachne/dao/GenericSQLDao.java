@@ -82,7 +82,7 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
-	public List<Map<String, String>> getPathConnectedEntities(final Long entityId, ContextPath contextPath) {
+	public List<Map<String, String>> getPathConnectedEntities(final Long entityId, final ContextPath contextPath) {
 		final ConnectedPathEntitiesSQLQueryBuilder sqlBuilder = new ConnectedPathEntitiesSQLQueryBuilder(contextPath, entityId);
 		final String sql= sqlBuilder.getSQL();
 		LOGGER.debug(sql);
