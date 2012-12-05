@@ -27,6 +27,10 @@ public class GenericSQLService {
 		return genericSQLDao.getPathConnectedEntityIds(entityId, contextPath);
 	}
 	
+	public List<Map<String, String>> getPathConnectedEntities(final Long entityId,final ContextPath contextPath) {
+		return genericSQLDao.getPathConnectedEntities(entityId,contextPath);
+	}	
+	
 	public List<? extends SQLResponseObject> getStringFieldsEntityIdJoinedWithCustomRowmapper(final String tableName, final String field1
 			, final Long field1Id, final List<String> fields, final RowMapper<? extends SQLResponseObject> rowMapper) {
 		return genericSQLDao.getStringFieldsEntityIdJoinedWithCustomRowMapper(tableName, field1, field1Id, fields, rowMapper);
