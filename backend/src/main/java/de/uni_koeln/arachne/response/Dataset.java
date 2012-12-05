@@ -51,6 +51,11 @@ public class Dataset {
 	protected List<Image> images;
 	
 	/**
+	 * Genric field for additional content
+	 */
+	protected Object additionalContent; 
+	
+	/**
 	 * Parameterless constructor.
 	 */
 	public Dataset() {
@@ -127,6 +132,10 @@ public class Dataset {
 	
 	public Map<String, String> getFields() {
 		return fields;
+	}
+	
+	public Object getAdditionalContent() {
+		return additionalContent;
 	}
 	
 	/**
@@ -274,6 +283,10 @@ public class Dataset {
 		this.thumbnailId = thumbnailId;
 	}
 		
+	public void setAdditionalContent(final Object additionalContent) {
+		this.additionalContent = additionalContent;
+	}
+	
 	public void addContext(final Context context) {
 		this.context.add(context);
 	}
