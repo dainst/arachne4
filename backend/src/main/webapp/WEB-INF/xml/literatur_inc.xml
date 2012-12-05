@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<includeSection
-	xmlns="http://arachne.uni-koeln.de/schemas/include"
+<includeSection xmlns="http://arachne.uni-koeln.de/schemas/include"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
-	
-	<context type="literatur" labelKey="Literatur" separator=" ">
+
+	<context type="literatur" labelKey="Literatur" separator=", ">
 		<field datasource=".tempLiteratur" />
 		<field datasource=".DAIRichtlinien" />
 		<field datasource=".Seite" />
-		<linkField labelKey="ZenonID" datasource=".ZenonID"	prefix="http://testopac.dainst.org/#zenon/book/" />
+		<field datasource=".Anmerkung" prefix="Anm. " /> <!-- AdditionalInfosJSON -->
+		<field datasource=".Abbildung" prefix="Abb. " /> <!-- AdditionalInfosJSON -->
+		<field datasource=".Katnummer" prefix="Kat.Nr. " /> <!-- AdditionalInfosJSON -->
+		<field datasource=".Tafel" prefix="Taf. " /> <!-- AdditionalInfosJSON -->
+		<field datasource=".Figur" prefix="Fig. " /> <!-- AdditionalInfosJSON -->
+		<field datasource=".Beilage" prefix="Beil. " /> <!-- AdditionalInfosJSON -->
+		<field datasource=".subVoce" prefix="s.v. " /> <!-- AdditionalInfosJSON -->
+		<field datasource=".KommentarLitZitat" prefix="(" postfix=")" /> <!-- AdditionalInfosJSON -->
+		<field datasource=".Supplement" prefix="Supplement: " /> <!-- AdditionalInfosJSON -->
+		<linkField labelKey="ZenonID" datasource=".ZenonID"
+			prefix="http://testopac.dainst.org/#zenon/book/" />
 	</context>
 </includeSection>

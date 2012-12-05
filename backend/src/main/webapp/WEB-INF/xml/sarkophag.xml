@@ -68,20 +68,7 @@
 				<section labelKey="Material">
 					<field datasource="sarkophag.Material" />
 				</section>
-        		<context type="literatur" labelKey="Literatur" separator=", ">
-	            	<field datasource=".DAIRichtlinien" />
-	            	<field datasource=".Seite" />
-	            	<linkField labelKey="ZenonID" datasource=".ZenonID" prefix="http://testopac.dainst.org/#zenon/book/" />
-	            	<field datasource=".Anmerkung" prefix="Anm. " /> <!-- AdditionalInfosJSON -->
-	            	<field datasource=".Abbildung" prefix="Abb. " /> <!-- AdditionalInfosJSON -->
-	            	<field datasource=".Katnummer" prefix="Kat.Nr. " /> <!-- AdditionalInfosJSON -->
-	            	<field datasource=".Tafel" prefix="Taf. " /> <!-- AdditionalInfosJSON -->
-	            	<field datasource=".Figur" prefix="Fig. " /> <!-- AdditionalInfosJSON -->
-	            	<field datasource=".Beilage" prefix="Beil. " /> <!-- AdditionalInfosJSON -->
-	            	<field datasource=".subVoce" prefix="s.v. " /> <!-- AdditionalInfosJSON -->
-	            	<field datasource=".KommentarLitZitat" prefix="(" postfix=")" /> <!-- AdditionalInfosJSON -->
-	            	<field datasource=".Supplement" prefix="Supplement: " /> <!-- AdditionalInfosJSON -->
-	            </context>
+        		<include type="literatur" />
 				<section labelKey="Zugehörige Datensätze in Arachne">
 		            <context type="gruppen" labelKey="Mehrteilige Denkmäler" separator=" ">
 		            	<field datasource=".KurzbeschreibungGruppen" />
