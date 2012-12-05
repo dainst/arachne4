@@ -81,7 +81,21 @@ public class GenericSQLDao extends SQLDao {
 		}
 		return null;
 	}
-		
+	
+	public List<Map<String, String>> getPathConnectedEntities(final Long entityId, ContextPath contextPath) {
+		final ConnectedPathEntitiesSQLQueryBuilder sqlBuilder = new ConnectedPathEntitiesSQLQueryBuilder(contextPath, entityId);
+		final String sql= sqlBuilder.getSQL();
+		LOGGER.debug(sql);
+		@SuppressWarnings("unchecked")
+		final List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(sql
+				, new GenericEntitiesMapper("AdditionalInfosJSON"));
+
+		if (queryResult != null && !queryResult.isEmpty()) {
+			return queryResult;
+		}
+		return null;
+	}
+	
 	public List<? extends SQLResponseObject> getStringFieldsEntityIdJoinedWithCustomRowMapper(
 			final String tableName, final String field1, final Long field1Id, final List<String> fields
 			, final RowMapper<? extends SQLResponseObject> rowMapper) {
