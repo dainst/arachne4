@@ -90,26 +90,26 @@ public class ResponseFactory {
 		response.setLastModified(lastModified);
 		
 	   	final Document document = xmlConfigUtil.getDocument(tableName);
-    	final Namespace nameSpace = document.getRootElement().getNamespace();
-    	final Element display = document.getRootElement().getChild("display",nameSpace);
+    	final Namespace namespace = document.getRootElement().getNamespace();
+    	final Element display = document.getRootElement().getChild("display", namespace);
     		    	
     	// set title
-    	final String titleStr = getTitleString(dataset, nameSpace, display);
+    	final String titleStr = getTitleString(dataset, namespace, display);
     	response.setTitle(titleStr);
     	
     	// set subtitle
-    	final String subtitleStr = getSubTitle(dataset, nameSpace, display);
+    	final String subtitleStr = getSubTitle(dataset, namespace, display);
     	response.setSubtitle(subtitleStr);
     	
     	// set datasection
-    	setSections(dataset, nameSpace, display, response);
+    	setSections(dataset, namespace, display, response);
 		
 		// Set images
 		response.setImages(dataset.getImages());
 		
 		// Set facets
-		final Element facets = document.getRootElement().getChild("facets", nameSpace);
-		response.setFacets(getFacets(dataset, nameSpace,facets).getList());
+		final Element facets = document.getRootElement().getChild("facets", namespace);
+		response.setFacets(getFacets(dataset, namespace, facets).getList());
 		
 		response.setAdditionalContent(dataset.getAdditionalContent());
 		// Set contexts
@@ -138,41 +138,72 @@ public class ResponseFactory {
 	    	
 		return response;
 	}
+	
+	/**
+	 * Method to construct a response object for a deleted entity.
+	 * @param entityId The ID of the entity.
+	 * @return A custom response object for the deleted entity. 
+	 */
+	public BaseArachneEntity createResponseForDeletedEntity(final EntityId entityId) {
+		return new DeletedArachneEntity(entityId);
+	}
 
-	private String getTitleString(final Dataset dataset, final Namespace nameSpace, final Element display) {
+	/**
+	 * Retrieves the title for the response.
+	 * @param dataset The current dataset.
+	 * @param namespace The document namespace.
+	 * @param display The display element.
+	 * @return A <code>String</code> containing the concatenated values of the <code>title</code> tag.
+	 */
+	private String getTitleString(final Dataset dataset, final Namespace namespace, final Element display) {
 		
 		String result = "";
-		final Element title = display.getChild("title", nameSpace);
-    	if (title.getChild("field", nameSpace) == null) {
-    		result = xmlConfigUtil.getStringFromSections(dataset, nameSpace, title.getChild("section", nameSpace));
+		final Element title = display.getChild("title", namespace);
+    	if (title.getChild("field", namespace) == null) {
+    		result = contentListToString(getContentList(dataset, namespace, title));
     	} else {
-    		result = dataset.getField(title.getChild("field", nameSpace).getAttributeValue("datasource"));
+    		result = dataset.getField(title.getChild("field", namespace).getAttributeValue("datasource"));
     	}
     	return result;
 	}
 	
-	private String getSubTitle(final Dataset dataset, final Namespace nameSpace, final Element display) {
+	/**
+	 * Retrieves the subtitle for the response.
+	 * @param dataset The current dataset.
+	 * @param namespace The document namespace.
+	 * @param display The display element.
+	 * @return A <code>String</code> containing the concatenated values of the <code>subtitle</code> tag.
+	 */
+	private String getSubTitle(final Dataset dataset, final Namespace namespace, final Element display) {
 		
 		String result = "";
-		final Element subtitle = display.getChild("subtitle", nameSpace);
-		if (subtitle.getChild("field", nameSpace) == null) {
-			result = xmlConfigUtil.getStringFromSections(dataset, nameSpace, subtitle.getChild("section", nameSpace));
+		final Element subtitle = display.getChild("subtitle", namespace);
+		if (subtitle.getChild("field", namespace) == null) {
+			result = contentListToString(getContentList(dataset, namespace, subtitle));
 		} else {
-			result = dataset.fields.get(subtitle.getChild("field", nameSpace).getAttributeValue("datasource", nameSpace));
+			result = dataset.fields.get(subtitle.getChild("field", namespace).getAttributeValue("datasource"));
 		}
 		return result;
 	}
 	
-	private void setSections(final Dataset dataset, final Namespace nameSpace, final Element display
+	/**
+	 * Sets the sections of the response according to the definitions in the corresponing xml config file. 
+	 * @param dataset The current dataset.
+	 * @param namespace The document namespace.
+	 * @param display The display element.
+	 * @param response The response object to add the sections to.
+	 */
+	// TODO refactor to use the getContentList method
+	private void setSections(final Dataset dataset, final Namespace namespace, final Element display
 			, final FormattedArachneEntity response) {
 
-		final Element sections = display.getChild("datasections", nameSpace);
+		final Element sections = display.getChild("datasections", namespace);
 		final List<AbstractContent> contentList = new ArrayList<AbstractContent>();
 		
 		final List<Element> children = sections.getChildren();
 		for (Element e:children) {
 			if (e.getName().equals("section")) {
-				final Section section = (Section)xmlConfigUtil.getContentFromSections(e, dataset);
+				final Section section = (Section)xmlConfigUtil.getContentFromSections(e, namespace, dataset);
 				if (section != null && !section.getContent().isEmpty()) {
 					contentList.add(section);
 				}
@@ -183,7 +214,6 @@ public class ResponseFactory {
 				}
 			}
 		}
-
 
 		if (!contentList.isEmpty()) {
 			if (contentList.size() == 1) {
@@ -198,6 +228,55 @@ public class ResponseFactory {
 			}
 		}
 	}
+
+	/**
+	 * Internal function to retrieve the contents of a <code>section</code> or <code>context</code>.
+	 * @param dataset The current dataset.
+	 * @param namespace The document namespace.
+	 * @param element The DOM element to retrieve the content of.
+	 * @return A list containing the content of the passed in element.
+	 */
+	private List<AbstractContent> getContentList(final Dataset dataset, final Namespace namespace, final Element element) {
+
+		final List<AbstractContent> contentList = new ArrayList<AbstractContent>();
+		
+		final List<Element> children = element.getChildren();
+		for (Element e:children) {
+			if (e.getName().equals("section")) {
+				final Section section = (Section)xmlConfigUtil.getContentFromSections(e, namespace, dataset);
+				if (section != null && !section.getContent().isEmpty()) {
+					contentList.add(section);
+				}
+			} else {
+				final Section section = (Section)xmlConfigUtil.getContentFromContext(e, dataset);
+				if (section != null && !section.getContent().isEmpty()) {
+					contentList.add(section);
+				}
+			}
+		}
+
+		if (!contentList.isEmpty()) {
+			return contentList;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Converts a list of <code>AbstractContent</code> objects to a <code>string</code>.
+	 * @param contentList The list to convert.
+	 * @return The flattened representation of the list content.
+	 */
+	private String contentListToString(final List<AbstractContent> contentList) {
+		if (contentList != null) {
+			String result = contentList.toString();
+			if (!result.isEmpty()) {
+				result = result.substring(1, result.length() - 1);
+			}
+			return result;
+		}
+		return "";
+	}
 	
 	/**
 	 * This function retrieves the facets from the current config document and the corresponding values from the dataset.
@@ -205,7 +284,7 @@ public class ResponseFactory {
 	 * @param facets The facet element of the current config file.
 	 * @return A list of facets.
 	 */
-	private FacetList getFacets(final Dataset dataset, final Namespace nameSpace ,final Element facets) {
+	private FacetList getFacets(final Dataset dataset, final Namespace namespace, final Element facets) {
 		
 		final FacetList result = new FacetList();
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
@@ -222,7 +301,7 @@ public class ResponseFactory {
 					if ("field".equals(childName)) {
 						String value = dataset.getField(child.getAttributeValue("datasource"));
 						if (value == null) {
-							final StringBuilder ifEmtpyValue = xmlConfigUtil.getIfEmpty(child, dataset, nameSpace);
+							final StringBuilder ifEmtpyValue = xmlConfigUtil.getIfEmpty(child, namespace, dataset);
 							if (!StrUtils.isEmptyOrNull(ifEmtpyValue)) {
 								value = ifEmtpyValue.toString();
 							}
@@ -286,9 +365,5 @@ public class ResponseFactory {
 				}
 			} 	 								
 		}
-	}
-
-	public BaseArachneEntity createResponseForDeletedEntity(final EntityId entityId) {
-		return new DeletedArachneEntity(entityId);
 	}
 }

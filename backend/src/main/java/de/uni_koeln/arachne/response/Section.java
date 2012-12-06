@@ -1,10 +1,14 @@
 package de.uni_koeln.arachne.response;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * A class for organizing and holding content of either type <code>Field</code> or <code>Section</code>.
@@ -15,6 +19,8 @@ public class Section extends AbstractContent {
 	 * The label used by the frontend.
 	 */
 	private String label;
+	
+	private String separator;
 
 	/**
 	 * A list of content (either <code>Field</code> or <code>Section</code>).
@@ -43,8 +49,32 @@ public class Section extends AbstractContent {
 		this.label = label;
 	}
 	
+	@JsonIgnore
+	@XmlTransient
+	public String getSeparator() {
+		return this.separator;
+	}
+	
+	public void setSeparator(final String separator) {
+		this.separator = separator;
+	}
+	
 	@Override
 	public String toString() {
-		return this.label + ": " + this.content;
+		final StringBuilder stringBuilder = new StringBuilder();
+		
+		final Iterator<AbstractContent> iterator = content.iterator();
+		while (iterator.hasNext()) {
+			final AbstractContent currentContent = (AbstractContent) iterator.next();
+			stringBuilder.append(currentContent.toString());
+			if (iterator.hasNext()) {
+				stringBuilder.append(separator);
+			}
+		}
+		
+		if (label == null) {
+			return stringBuilder.toString();
+		}
+		return label + ": " + stringBuilder.toString();
 	}
 }

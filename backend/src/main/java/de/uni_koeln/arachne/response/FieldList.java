@@ -35,4 +35,15 @@ public class FieldList extends AbstractContent {
 	public int size() {
 		return this.value.size();
 	}
+	
+	@Override
+	public String toString() {
+		final StringBuilder result = new StringBuilder();
+		for (String currentValue: value) {
+			result.append(currentValue);
+			result.append(' ');
+		}
+				
+		return result.toString().trim();
+	}
 }

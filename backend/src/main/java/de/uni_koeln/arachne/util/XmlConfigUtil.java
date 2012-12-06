@@ -199,11 +199,11 @@ public class XmlConfigUtil implements ServletContextAware {
 		try {
 			final Document document = saxBuilder.build(xmlDocument.getFile());
 			final Element rootElement = document.getRootElement();
-			final Namespace nameSpace = rootElement.getNamespace();
+			final Namespace namespace = rootElement.getNamespace();
 			// the include element is either a single section or context
-			Element element = rootElement.getChild("section", nameSpace);
+			Element element = rootElement.getChild("section", namespace);
 			if (element == null) {
-				element = rootElement.getChild("context", nameSpace);
+				element = rootElement.getChild("context", namespace);
 			}
 			if (element != null) {
 				element.detach();
@@ -236,75 +236,6 @@ public class XmlConfigUtil implements ServletContextAware {
 	}
 	
 	/**
-	 * This function handles sections in the xml config files. It extracts the content from the dataset following the definitions in the xml files
-	 * and returns it as a <code>String</code>.
-	 * <br>
-	 * The validity of the xml file is not checked!!!
-	 * @param section The xml section Element to parse.
-	 * @param dataset The dataset that contains the SQL query results.
-	 * @return A concatenated string containing the sections content.
-	 */
-	public String getStringFromSections(final Dataset dataset, final Namespace nameSpace, final Element section) {
-		final StringBuilder result = new StringBuilder("");
-		final List<Element> children = section.getChildren();
-		String separator = "<br/>";
-		if (section.getAttributeValue("separator") != null) {
-			separator = section.getAttributeValue("separator");
-		}
-
-		for (Element e:children) {
-			if (e.getName().equals("field")) {
-				addFieldStringToResult(e, result, dataset, nameSpace, separator); 
-			} else {
-				final String datasetResult = getStringFromSections(dataset, nameSpace, e);
-				if (!(result.length() < 1) && !datasetResult.isEmpty()) {
-					result.append(separator);
-				}
-				result.append(datasetResult);
-			}
-		}
-		return result.toString();
-	}
-
-	/**
-	 * This function adds the content of a field of the dataset as defined in the XML description to the result <code>StringBuilder</code>. 
-	 * @param element The XML element describing the field. 
-	 * @param result The <code>StringBuilder</code> to add the content to.
-	 * @param dataset The current dataset.
-	 * @param nameSpace The current namespace.
-	 * @param separator The current separator.
-	 */
-	private void addFieldStringToResult(final Element element, final StringBuilder result, final Dataset dataset, final Namespace nameSpace
-			, final String separator) {
-		
-		final String initialValue = dataset.getField(element.getAttributeValue("datasource"));
-		StringBuilder datasetResult = null;
-		if (initialValue != null) {
-			datasetResult = new StringBuilder(initialValue);
-		} 
-
-		final String postfix = element.getAttributeValue("postfix");
-		final String prefix = element.getAttributeValue("prefix");
-
-		if (datasetResult == null) {
-			datasetResult = getIfEmpty(element, dataset, nameSpace);
-		}
-
-		if (!StrUtils.isEmptyOrNull(datasetResult)) {
-			if (prefix != null) {
-				datasetResult.insert(0, prefix);
-			}
-			if (postfix != null) { 
-				datasetResult.append(postfix);
-			}
-			if (!(result.length() < 1) && !(datasetResult.length() < 1)) {
-				result.append(separator);
-			}
-			result.append(datasetResult);
-		}
-	}
-
-	/**
 	 * Returns the content of a field of the dataset as defined inside an <code>ifEmtpy</code> tag in the XML config file.
 	 * It is safe to use even if the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.
 	 * @param element The XML element describing the parent of the <code>ifEmpty</code> element.
@@ -313,17 +244,17 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @return A <code>StringBuilder</code> containing the formatted value or <code>null</code> if no value could be retrieved or
 	 * the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.
 	 */
-	public StringBuilder getIfEmpty(final Element element, final Dataset dataset, final Namespace nameSpace) {
+	public StringBuilder getIfEmpty(final Element element, final Namespace namespace, final Dataset dataset) {
 		
 		String key;
 		StringBuilder result = null;
-		final Element ifEmptyElement = element.getChild("ifEmpty", nameSpace);
+		final Element ifEmptyElement = element.getChild("ifEmpty", namespace);
 		if (ifEmptyElement != null) {
-			key = ifEmptyElement.getChild("field", nameSpace).getAttributeValue("datasource");
+			key = ifEmptyElement.getChild("field", namespace).getAttributeValue("datasource");
 			if (key != null && !key.isEmpty()) {
 				final String ifEmptyValue = dataset.getField(key);
 				if (ifEmptyValue == null) {
-					result = getIfEmpty(ifEmptyElement.getChild("field", nameSpace), dataset, nameSpace); 
+					result = getIfEmpty(ifEmptyElement.getChild("field", namespace), namespace ,dataset); 
 				} else {
 					result = new StringBuilder(ifEmptyValue);
 				}
@@ -341,7 +272,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Content</code> object containing the sections content.
 	 */
-	public AbstractContent getContentFromSections(final Element section, final Dataset dataset) {
+	public AbstractContent getContentFromSections(final Element section, final Namespace namespace, final Dataset dataset) {
 		
 		if (!hasMinGroupId(section.getAttributeValue("minGroupId"))) {
 			return null;
@@ -358,10 +289,11 @@ public class XmlConfigUtil implements ServletContextAware {
 		if (section.getAttributeValue("separator") == null) {
 			separator = defaultSeparator;
 		}
+		result.setSeparator(separator);
 								
 		for (Element e:children) {
 			if (e.getName().equals("field")) {
-				addFieldToResult(e, result, dataset, separator);
+				addFieldToResult(e, namespace, result, dataset, separator);
 			} else { 
 				if (e.getName().equals("linkField")) {
 					addLinkFieldToResult(e, result, dataset, separator);
@@ -372,7 +304,7 @@ public class XmlConfigUtil implements ServletContextAware {
 							result.add(nextSection);
 						}
 					} else {
-						final Section nextSection = (Section)getContentFromSections(e, dataset);
+						final Section nextSection = (Section)getContentFromSections(e, namespace, dataset);
 						if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
 							result.add(nextSection);
 						}
@@ -390,7 +322,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param separator The currently active separator.
 	 * @param element The description of the field as XML element.
 	 */
-	private void addFieldToResult(final Element element, final Section result, final Dataset dataset
+	private void addFieldToResult(final Element element, final Namespace namespace, final Section result, final Dataset dataset
 			, final String separator) {
 		
 		if (!hasMinGroupId(element.getAttributeValue("minGroupId"))) {
@@ -398,10 +330,12 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 		
 		final Field field = new Field();
-		StringBuffer value = null;
+		StringBuilder value = null;
 		final String initialValue = dataset.getField(element.getAttributeValue("datasource"));
-		if (initialValue != null) {
-			value = new StringBuffer(initialValue);
+		if (initialValue == null) {
+			value = getIfEmpty(element, namespace, dataset);
+		} else {
+			value = new StringBuilder(initialValue);
 		}
 		final String postfix = element.getAttributeValue("postfix");
 		final String prefix = element.getAttributeValue("prefix");
@@ -638,10 +572,10 @@ public class XmlConfigUtil implements ServletContextAware {
 	    try {
 	    	final SAXBuilder saxBuilder = new SAXBuilder(new XMLReaderSAX2Factory(false, "org.apache.xerces.parsers.SAXParser"));
 	    	final Document document = saxBuilder.build(xmlDocument.getFile());
-	    	final Namespace nameSpace = document.getRootElement().getNamespace();
+	    	final Namespace namespace = document.getRootElement().getNamespace();
 	    	
 			// Get facets
- 			final Element facets = document.getRootElement().getChild("facets", nameSpace);
+ 			final Element facets = document.getRootElement().getChild("facets", namespace);
  			for (Element e: facets.getChildren()) {
  				facetList.add(e.getAttributeValue("name")); 				
  			}
