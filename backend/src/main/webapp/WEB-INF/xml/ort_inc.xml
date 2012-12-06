@@ -7,9 +7,9 @@
 	<section labelKey="Lokalisierung" separator=", ">
 		<context type="ort" separator=", ">
 			<field datasource=".Stadt" />
-			<field datasource=".Ort_antik" prefix="(" postfix=") " />
+			<field datasource=".Ort_antik" prefix="(" postfix=")" />
 			<field datasource=".Land" />
-			<field datasource=".Countrycode" prefix="(" postfix=") " />
+			<field datasource=".Countrycode" prefix="(" postfix=")" />
 			<field datasource=".Aufbewahrungsort" />
 			<field datasource=".Zusatz" /> <!-- AdditionalInfosJSON -->
 			<field datasource=".BerlinIdentNr" prefix="Berlin Ident.Nr. " /> <!-- AdditionalInfosJSON -->
