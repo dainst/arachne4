@@ -211,7 +211,7 @@ public class ArachneEntityController {
     /**
      * Handles http request for /data/{id}.
      * Requests for /data/* return the raw data.
-     * Currently the dataset can only be returned as JSON since JAXB cannot handle maps.
+     * Depending on content negotiation either JSON or XML is returned.
      * @param entityId The unique entityID.
      * @param response The outgoing HTTP response.
      * @return The <code>Dataset</code> of the requested entity.
@@ -224,7 +224,7 @@ public class ArachneEntityController {
     /**
      * Handles http request for /data/{category}/{id}.
      * Requests for /data/* return the raw data.
-     * Currently the dataset can only be returned as JSON since JAXB cannot handle maps.
+     * Depending on content negotiation either JSON or XML is returned.
      * @param categoryId The internal ID of the requested entity.
      * @param category The category to query.
      * @param response The outgoing HTTP response.
@@ -286,7 +286,7 @@ public class ArachneEntityController {
     	
     	// TODO find a way to handle contexts or discuss if we want to add them at all
     	//contextService.addMandatoryContexts(arachneDataset);
-    	
+    	    	
     	final long contextTime = System.currentTimeMillis() - nextTime;
     	nextTime = System.currentTimeMillis();
     	

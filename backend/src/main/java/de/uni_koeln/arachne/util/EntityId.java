@@ -1,6 +1,9 @@
 package de.uni_koeln.arachne.util;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class EntityId {
 
 	/**
@@ -36,22 +39,33 @@ public class EntityId {
 		this.internalKey = internalKey;
 		this.deleted = deleted;
 	}
+	
+	/**
+	 * Parameterless default constructor.
+	 */
+	public EntityId() {
+		// just to make JAXB happy
+	}
 
 	/**
 	 * Internal (why <code>public</code> if function is internal???) function that gets the Missing Data
 	 */
+	@XmlElement
 	public Long getInternalKey() {
 		return internalKey;
 	}
-
+	
+	@XmlElement
 	public String getTableName() {
 		return tableName;
 	}
 
+	@XmlElement
 	public Long getArachneEntityID() {
 		return arachneEntityID;
 	}
 
+	@XmlElement
 	public boolean isDeleted() {
 		return deleted;
 	}

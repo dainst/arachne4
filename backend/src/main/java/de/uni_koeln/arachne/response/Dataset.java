@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.context.ArachneLink;
 import de.uni_koeln.arachne.context.AbstractLink;
@@ -17,6 +20,7 @@ import de.uni_koeln.arachne.util.StrUtils;
  * It Also contains a List for The Images and annother Map for the Contexts
  *
  */
+@XmlRootElement
 public class Dataset {
 	// TODO change implementation to something more portable
 	/**
@@ -130,6 +134,7 @@ public class Dataset {
 		return thumbnailId;
 	}
 	
+	@XmlElement
 	public Map<String, String> getFields() {
 		return fields;
 	}
