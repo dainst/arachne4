@@ -24,6 +24,11 @@ public class BaseArachneEntity {
 	 */
 	protected String datasetGroup = null;
 	
+	/**
+	 * Field for additional content of any type.
+	 */
+	protected Object additionalContent = null;
+	
 	public Long getEntityId() {
 		return entityId;
 	}
@@ -54,5 +59,13 @@ public class BaseArachneEntity {
 
 	public void setDatasetGroup(final String datasetGroup) {
 		this.datasetGroup = datasetGroup;
+	}
+	
+	public Object getAdditionalContent() {
+		return additionalContent;
+	}
+	
+	public void setAdditionalContent(final Object additionalContent) {
+		this.additionalContent = additionalContent;
 	}
 }
