@@ -442,6 +442,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		if (context.getAttributeValue("separator") == null) {
 			separator = defaultSeparator;
 		}
+		result.setSeparator(separator);
 				
 		final FieldList fieldList = new FieldList();
 		for (int i = 0; i < dataset.getContextSize(contextType); i++) {
