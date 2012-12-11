@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 
-import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.util.StrUtils;
 
 
@@ -23,7 +22,7 @@ import de.uni_koeln.arachne.util.StrUtils;
  */
 public class DatasetMapper implements RowMapper<Map<String,String>> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DatasetMapper.class);
 	
 	public Map<String,String> mapRow(final ResultSet resultSet, final int rownum) throws SQLException {
 		final Map<String,String> dataset = new Hashtable<String,String>();

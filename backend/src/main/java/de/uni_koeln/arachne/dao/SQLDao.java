@@ -14,8 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import de.uni_koeln.arachne.response.ResponseFactory;
-
 /**
  * This is a Standard SQL Query Dao.
  * The other it can execute Querys and Map them on special Dataset Instances.
@@ -25,7 +23,7 @@ import de.uni_koeln.arachne.response.ResponseFactory;
 @Repository("sqlDao")
 public class SQLDao {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SQLDao.class);
 	
 	protected transient JdbcTemplate jdbcTemplate;
 	

@@ -24,6 +24,13 @@ public class ImageService {
 	@Autowired
 	private transient GenericSQLService genericSQLService; 
 	
+	private transient final List<String> excludeList;
+	
+	public ImageService() {
+		excludeList = new ArrayList<String>();
+		excludeList.add("sarkophag");
+	}
+	
 	/**
 	 * This method retrieves the image ids for a given dataset from the database and adds them to the datasets list
 	 * of images. It also finds the preview thumbnail from this list and adds it to the dataset.    
@@ -31,15 +38,20 @@ public class ImageService {
 	 */
 	public void addImages(final Dataset dataset) {
 		final EntityId arachneId = dataset.getArachneId();
-		final ArrayList<String> fieldList = new ArrayList<String>(2);
-		fieldList.add("DateinameMarbilder");
-		@SuppressWarnings("unchecked")
-		final List<Image> imageList = (List<Image>) genericSQLService.getStringFieldsEntityIdJoinedWithCustomRowmapper("marbilder"
-				, arachneId.getTableName(), arachneId.getInternalKey(), fieldList, new ImageRowMapper());
-		dataset.setImages(imageList);
-		// get thumbnail from imageList
-		if (imageList != null && !imageList.isEmpty()) {
-			dataset.setThumbnailId(findThumbnailId(imageList));
+		// TODO find a better way to exclude categories, maybe a list of some kind
+		if (excludeList.contains(arachneId.getTableName())) {
+			return;
+		} else {
+			final ArrayList<String> fieldList = new ArrayList<String>(2);
+			fieldList.add("DateinameMarbilder");
+			@SuppressWarnings("unchecked")
+			final List<Image> imageList = (List<Image>) genericSQLService.getStringFieldsEntityIdJoinedWithCustomRowmapper("marbilder"
+					, arachneId.getTableName(), arachneId.getInternalKey(), fieldList, new ImageRowMapper());
+			dataset.setImages(imageList);
+			// get thumbnail from imageList
+			if (imageList != null && !imageList.isEmpty()) {
+				dataset.setThumbnailId(findThumbnailId(imageList));
+			}
 		}
 	}
 

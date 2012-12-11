@@ -5,15 +5,13 @@ import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uni_koeln.arachne.response.ResponseFactory;
-
 /**
  * Utility class to retrieve the current SessionFactory or create a new one if none exists.
  */
 @SuppressWarnings("PMD")
 public class SessionUtil {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SessionUtil.class);
 	
     private static final SessionFactory SESSIONFACTORY;
     
