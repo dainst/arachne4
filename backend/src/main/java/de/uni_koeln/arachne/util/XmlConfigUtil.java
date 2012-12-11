@@ -626,6 +626,88 @@ public class XmlConfigUtil implements ServletContextAware {
 	}
 
 	/**
+	 * Internally used method to get the external field names from the XML files. The name of the XML file to read
+	 * is constructed from the </code>type<code>. If no corresponding XML file is found <code>null</code> is
+	 * returned. The method then opens the XML file, creates the DOM and uses <code>getFields</code> to get the values from
+	 *  the dom.
+	 * @param type The type of the xml file.
+	 * @return A list of full qualified external field names.
+	 */
+	public List<String> getExternalFields(final String type) {	
+		final Document document = getDocument(type);
+		if (document == null) {
+			return null;
+		}
+		
+		final Element rootElement = document.getRootElement();
+		final Namespace nameSpace = rootElement.getNamespace();
+		final Element display = rootElement.getChild("display", nameSpace);
+		final Element facets = rootElement.getChild("facets", nameSpace);
+		final List<String> result = new ArrayList<String>();
+		result.addAll(getFields(display, type));
+		result.addAll(getFields(facets, type));
+		return result;		
+	}
+	
+	/**
+	 * Recursive function adding all external fields of an <code>Element</code> and its children to the result list.
+	 * @param element The XML node to check for external fields.
+	 * @param parentType The type of the <code>ArachneDataset</code>.
+	 * @return A list of full qualified external field names.
+	 */
+	private List<String> getFields(final Element element, final String parentType) {
+		final List<String> result = new ArrayList<String>();
+		
+		final List<Element> children = element.getChildren();
+		
+		if ("context".equals(element.getName()) && !children.isEmpty()) {
+			getFieldsFromContext(element, parentType, result, children);
+		} else {
+			getFieldsFromField(element, parentType, result, children);
+		}
+		
+		return result;
+	}
+
+	
+	private void getFieldsFromField(final Element element, final String parentType, final List<String> result,
+			final List<Element> children) {
+		
+		if (!children.isEmpty()) {
+			for (Element e:children) {
+				result.addAll(getFields(e, parentType));
+			}
+		}
+
+		final String datasourceValue = element.getAttributeValue("datasource");
+		if (!StrUtils.isEmptyOrNull(datasourceValue) && !datasourceValue.startsWith(parentType) 
+				&& !datasourceValue.startsWith("Dataset")) {
+			result.add(datasourceValue);
+		}
+
+		final String ifEmptyValue = element.getAttributeValue("ifEmpty");
+		if (!StrUtils.isEmptyOrNull(ifEmptyValue) && !ifEmptyValue.startsWith(parentType) 
+				&& !datasourceValue.startsWith("Dataset")) {
+			result.add(ifEmptyValue);
+		}
+	}
+
+	private void getFieldsFromContext(final Element element, final String parentType, final List<String> result,
+			final List<Element> children) {
+		
+		final String context = element.getAttributeValue("type");
+		for (Element e:children) {
+			String datasourceValue = e.getAttributeValue("datasource");  
+			if (!StrUtils.isEmptyOrNull(datasourceValue)) {
+				datasourceValue = context + datasourceValue; // NOPMD
+				if (!datasourceValue.startsWith(parentType) && !datasourceValue.startsWith("Dataset")) {
+					result.add(datasourceValue);
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Convenience method to clear the current XML config document and include element cache.
 	 */
 	public void clearCache() {
