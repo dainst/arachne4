@@ -193,29 +193,13 @@ public class ResponseFactory {
 	 * @param display The display element.
 	 * @param response The response object to add the sections to.
 	 */
-	// TODO refactor to use the getContentList method
 	private void setSections(final Dataset dataset, final Namespace namespace, final Element display
 			, final FormattedArachneEntity response) {
 
 		final Element sections = display.getChild("datasections", namespace);
-		final List<AbstractContent> contentList = new ArrayList<AbstractContent>();
+		final List<AbstractContent> contentList = getContentList(dataset, namespace, sections);
 		
-		final List<Element> children = sections.getChildren();
-		for (Element e:children) {
-			if (e.getName().equals("section")) {
-				final Section section = (Section)xmlConfigUtil.getContentFromSections(e, namespace, dataset);
-				if (section != null && !section.getContent().isEmpty()) {
-					contentList.add(section);
-				}
-			} else {
-				final Section section = (Section)xmlConfigUtil.getContentFromContext(e, dataset);
-				if (section != null && !section.getContent().isEmpty()) {
-					contentList.add(section);
-				}
-			}
-		}
-
-		if (!contentList.isEmpty()) {
+		if (contentList != null) {
 			if (contentList.size() == 1) {
 				response.setSections(contentList.get(0));
 			} else {
