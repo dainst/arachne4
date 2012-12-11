@@ -52,6 +52,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	
 	private transient final Map<String, Element> xmlIncludeElements = new HashMap<String, Element>();
 	
+	private transient final Map<String, List<String>> mandatoryContextNames = new HashMap<String, List<String>>();
+	
 	public void setServletContext(final ServletContext servletContext) {
 		this.servletContext = servletContext;
 	}
@@ -626,14 +628,37 @@ public class XmlConfigUtil implements ServletContextAware {
 	}
 
 	/**
-	 * Internally used method to get the external field names from the XML files. The name of the XML file to read
-	 * is constructed from the </code>type<code>. If no corresponding XML file is found <code>null</code> is
-	 * returned. The method then opens the XML file, creates the DOM and uses <code>getFields</code> to get the values from
-	 *  the dom.
-	 * @param type The type of the xml file.
+	 * This method returns the list of context names that are needed to retrieve all data for a given category. The list is only 
+	 * created if it is not cached.
+	 * @param type The category of the parent dataset.
+	 * @return A list containing the names of the mandatory contexts.
+	 */
+	public List<String> getMandatoryContextNames(final String type) {
+		final List<String> cachedContextList = mandatoryContextNames.get(type);
+		if (cachedContextList == null) {
+			final List<String> externalFields = getExternalFields(type);
+			final List<String> mandatoryContextTypes = new ArrayList<String>();
+
+			for (String currentField: externalFields) {
+				final String[] contextTypes = currentField.split("\\.");
+				if (mandatoryContextTypes.isEmpty() || !mandatoryContextTypes.contains(contextTypes[0])) {
+					mandatoryContextTypes.add(contextTypes[0]);
+				}
+			}
+			mandatoryContextNames.put(type, mandatoryContextTypes);
+			return mandatoryContextTypes;
+		} else {
+			return cachedContextList;
+		}
+	}
+	
+	/**
+	 * Internally used method to get the external field names from the XML documents. If no corresponding document is found 
+	 * <code>null</code> is returned. The method uses <code>getFields</code> to get the values from the document.
+	 * @param type The type of the document.
 	 * @return A list of full qualified external field names.
 	 */
-	public List<String> getExternalFields(final String type) {	
+	private List<String> getExternalFields(final String type) {	
 		final Document document = getDocument(type);
 		if (document == null) {
 			return null;
@@ -644,38 +669,44 @@ public class XmlConfigUtil implements ServletContextAware {
 		final Element display = rootElement.getChild("display", nameSpace);
 		final Element facets = rootElement.getChild("facets", nameSpace);
 		final List<String> result = new ArrayList<String>();
-		result.addAll(getFields(display, type));
-		result.addAll(getFields(facets, type));
+		result.addAll(getFieldNames(display, type));
+		result.addAll(getFieldNames(facets, type));
 		return result;		
 	}
 	
 	/**
-	 * Recursive function adding all external fields of an <code>Element</code> and its children to the result list.
+	 * Recursive function adding all external field names of an <code>Element</code> and its children to the result list.
 	 * @param element The XML node to check for external fields.
 	 * @param parentType The type of the <code>ArachneDataset</code>.
 	 * @return A list of full qualified external field names.
 	 */
-	private List<String> getFields(final Element element, final String parentType) {
+	private List<String> getFieldNames(final Element element, final String parentType) {
 		final List<String> result = new ArrayList<String>();
 		
 		final List<Element> children = element.getChildren();
 		
 		if ("context".equals(element.getName()) && !children.isEmpty()) {
-			getFieldsFromContext(element, parentType, result, children);
+			getFieldNamesFromContext(element, parentType, result, children);
 		} else {
-			getFieldsFromField(element, parentType, result, children);
+			getFieldNamesFromField(element, parentType, result, children);
 		}
 		
 		return result;
 	}
 
-	
-	private void getFieldsFromField(final Element element, final String parentType, final List<String> result,
+	/**
+	 * Internal function adding field names from fields to the <code>result</code>. 
+	 * @param element The element to process.
+	 * @param parentType The category of the dataset.
+	 * @param result The result list containing the full qualified field names.
+	 * @param children The children of <code>element</code>.
+	 */
+	private void getFieldNamesFromField(final Element element, final String parentType, final List<String> result,
 			final List<Element> children) {
 		
 		if (!children.isEmpty()) {
 			for (Element e:children) {
-				result.addAll(getFields(e, parentType));
+				result.addAll(getFieldNames(e, parentType));
 			}
 		}
 
@@ -692,7 +723,14 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 	}
 
-	private void getFieldsFromContext(final Element element, final String parentType, final List<String> result,
+	/**
+	 * Internal function adding field names from contexts to the <code>result</code>.
+	 * @param element The element to process.
+	 * @param parentType The category of the dataset.
+	 * @param result The result list containing the full qualified field names.
+	 * @param children The children of <code>element</code>.
+	 */
+	private void getFieldNamesFromContext(final Element element, final String parentType, final List<String> result,
 			final List<Element> children) {
 		
 		final String context = element.getAttributeValue("type");
@@ -708,10 +746,11 @@ public class XmlConfigUtil implements ServletContextAware {
 	}
 	
 	/**
-	 * Convenience method to clear the current XML config document and include element cache.
+	 * Convenience method to clear the current XML config document, include element cache and mandatory context list cache.
 	 */
 	public void clearCache() {
 		xmlConfigDocuments.clear();
 		xmlIncludeElements.clear();
+		mandatoryContextNames.clear();
 	}
 }

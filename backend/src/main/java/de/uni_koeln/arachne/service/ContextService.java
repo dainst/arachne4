@@ -1,6 +1,5 @@
 package de.uni_koeln.arachne.service;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -53,17 +52,7 @@ public class ContextService {
 	 * @param parent The dataset to add the contexts to.
 	 */
 	public void addMandatoryContexts(final Dataset parent) {
-		final List<String> externalFields = xmlConfigUtil.getExternalFields(parent.getArachneId().getTableName());
-				
-		final List<String> mandatoryContextTypes = new ArrayList<String>();
-
-		for (String currentField: externalFields) {
-			final String[] contextTypes = currentField.split("\\.");
-			if (mandatoryContextTypes.isEmpty() || !mandatoryContextTypes.contains(contextTypes[0])) {
-				mandatoryContextTypes.add(contextTypes[0]);
-			}
-		}
-				
+		final List<String> mandatoryContextTypes = xmlConfigUtil.getMandatoryContextNames(parent.getArachneId().getTableName());
 		LOGGER.debug("Mandatory Contexts: " + mandatoryContextTypes);
 		final Iterator<String> contextType = mandatoryContextTypes.iterator();
 		while (contextType.hasNext()) {
