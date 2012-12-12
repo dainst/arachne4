@@ -70,6 +70,7 @@ public class GenericSQLDao extends SQLDao {
 	
 	public List<Long> getPathConnectedEntityIds(final Long entityId, final ContextPath contextPath) {
 		final ConnectedPathEntitiesSQLQueryBuilder sqlBuilder = new ConnectedPathEntitiesSQLQueryBuilder(contextPath, entityId);
+		sqlBuilder.retriveFullDataset(false);
 		final String sql= sqlBuilder.getSQL();
 		LOGGER.debug(sql);
 		
@@ -84,6 +85,7 @@ public class GenericSQLDao extends SQLDao {
 	
 	public List<Map<String, String>> getPathConnectedEntities(final Long entityId, final ContextPath contextPath) {
 		final ConnectedPathEntitiesSQLQueryBuilder sqlBuilder = new ConnectedPathEntitiesSQLQueryBuilder(contextPath, entityId);
+		sqlBuilder.retriveFullDataset(true);
 		final String sql= sqlBuilder.getSQL();
 		LOGGER.debug(sql);
 		@SuppressWarnings("unchecked")

@@ -14,7 +14,7 @@ public class ContextPath {
 	
 	/**
 	 * 
-	 * @return Get List of Strings that contain the Step restiction
+	 * @return Get List of Strings that contain the Step restriction
 	 */
 	public List<String> getTypeStepRestrictions() {
 		return typeStepRestrictions;
@@ -23,13 +23,14 @@ public class ContextPath {
 	public List<String> getSemanticConnectionRestrictions() {
 		return semanticConnectionRestrictions;
 	}
+	
 	public String getTargetType() {
-		return semanticConnectionRestrictions.get(semanticConnectionRestrictions.size()-1);
+		return typeStepRestrictions.get(typeStepRestrictions.size()-1);
 	}
 	
 	/**
 	 * 
-	 * @param typeStepRestrictions Add a List of Types that restrict the Path Where ALL is means that a Seap has no restriction
+	 * @param typeStepRestrictions Add a List of Types that restrict the Path Where ALL is means that a Step has no restriction
 	 */
 	public void setTypeStepRestrictions(final List<String> typeStepRestrictions) {
 		this.typeStepRestrictions = typeStepRestrictions;
@@ -45,6 +46,7 @@ public class ContextPath {
 		}
 		this.typeStepRestrictions.add(typeStepRestriction);
 	}
+	
 	/**
 	 * 
 	 * @param semanticConnectionRestrictions List of Conection Type Restictions if a Field is Empty it wont be restricted 

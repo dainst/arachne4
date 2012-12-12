@@ -2,30 +2,37 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import de.uni_koeln.arachne.context.ContextPath;
 
 public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectedEntitiesSQLQueryBuilder.class);
 	
-	protected transient SQLRightsConditionBuilder rightsConditionBuilder;
+	transient protected SQLRightsConditionBuilder rightsConditionBuilder;
 	
-	protected transient ContextPath contextPath;
+	transient protected ContextPath contextPath;
 	//Entity ID that is the Startingpoint of the PATH
-	protected transient Long entityStart; 
+	transient protected Long entityStart; 
 	
 	//TODO Implement Version with Key Table Solution
-	protected String table;
+	transient protected String table;
 	
-	protected Long foreignKey;
+	transient protected boolean getFullDataset= false;
 	
-	public ConnectedPathEntitiesSQLQueryBuilder(final ContextPath contextPath, final Long entityStart) {
+	transient protected Long foreignKey;
+	
+	public  ConnectedPathEntitiesSQLQueryBuilder(final ContextPath contextPath, final Long entityStart) {
 		this.contextPath = contextPath;
 		this.entityStart = entityStart;
-		
+		rightsConditionBuilder= new SQLRightsConditionBuilder(this.contextPath.getTargetType());
+	}
+	/**
+	 * This is the Button to retrive the full connected Dataset (Yes) or just the Entity ID (NO)
+	 * @param getFullDataset Yes or No. Default: NO!
+	 */
+	public void retriveFullDataset(final boolean getFullDataset) {
+		this.getFullDataset = getFullDataset;
 	}
 	
 	@Override
@@ -35,18 +42,27 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		
 		final List<String> typeStepRestrictions = this.contextPath.getTypeStepRestrictions();
 		
-		sql.append( "SELECT e"+ (typeStepRestrictions.size()-1) +".Target FROM SemanticConnection e0, ");
 		
+		if(this.getFullDataset){
+			sql.append( "SELECT e"+ (typeStepRestrictions.size()-1) +".Target as EntityID, e"+ (typeStepRestrictions.size()-1) +".ForeignKeyTarget as ForeignKeyTarget, `"+contextPath.getTargetType()  +"`.* FROM SemanticConnection e0, ");
+		}else{
+			sql.append( "SELECT e"+ (typeStepRestrictions.size()-1) +".Target FROM SemanticConnection e0, ");
+		}
 		
 		//Declare the Variables
-		for (int i = 0;  i < typeStepRestrictions.size() - 2; i++) { 
+		for(int i =0;  i< typeStepRestrictions.size()-2;i++ ){ 
 			sql.append( " SemanticConnection e"+(i+1)+" ,");
 		}
-		if (typeStepRestrictions.size() > 1) {
+		if(typeStepRestrictions.size() >1){
 			sql.append( " SemanticConnection e"+(typeStepRestrictions.size()-1)+" ");
 		}
-		//BSPQuery.append( " SemanticConnection e"+typeStepRestriction.size()+" WHERE");
-		
+		if(this.getFullDataset){
+			sql.append(" LEFT JOIN `");
+			sql.append(contextPath.getTargetType());
+			sql.append("` ON ");
+			sql.append(SQLToolbox.getQualifiedFieldname(contextPath.getTargetType(), SQLToolbox.generatePrimaryKeyName(contextPath.getTargetType())));
+			sql.append(" = `e"+(typeStepRestrictions.size()-1)+"`.`ForeignKeyTarget`");
+		}
 		sql.append( " WHERE 1 AND ");
 		
 		//Chain Logic e1.Target = e2.Source ... e2.Target = e3.source ETC
@@ -59,18 +75,24 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		//This Sets the Source ID
 		sql.append( " e0.Source ="+entityStart+ " AND");
 		
-		for (int i =0;  i < typeStepRestrictions.size(); i++) {
+		for(int i =0;  i< typeStepRestrictions.size();i++ ){
 			final String temp = typeStepRestrictions.get(i);
-			if (!"ALL".equals(temp)) {
-				sql.append(" e"+i+".TypeTarget = \""+typeStepRestrictions.get(i)+"\" AND ");
+			if(!"ALL".equals(temp)){
+				sql.append(" e"+i+".TypeTarget = \""+typeStepRestrictions.get(i)+"\" ");
+				if(i< typeStepRestrictions.size()-1){
+					sql.append(" AND ");
+				}
 			}
 		
 		}
+		
 		//BSPQuery.append(" e"+(typeStepRestriction.size()-1)+".TypeTarget = \""+typeStepRestriction.get(typeStepRestriction.size()-1)+"\"");
-								
-		sql.append("1 GROUP BY e"+(typeStepRestrictions.size()-1)+".Target");
+		if(this.getFullDataset){
+			sql.append(rightsConditionBuilder.getUserRightsSQLSnipplett());
+		}
+		sql.append(" GROUP BY e"+(typeStepRestrictions.size()-1)+".Target");
 
-		LOGGER.debug(sql.toString());
+		
 		return sql.toString();
 	}
 	
