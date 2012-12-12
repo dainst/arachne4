@@ -45,44 +45,11 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 	}
 	
 	/**
-	 * Nested class to store ImageData
-	 */
-	private static class SarcophagusImage {
-		private transient String entityId;
-		private transient String filename;
-		private transient String project;
-		private transient String scene = "-1";
-		
-		private void setImageFields(final String entityId, final String filename, final String project) {
-			this.entityId = entityId;
-			this.filename = filename;
-			this.project = project;
-		}
-		
-		private void setScene(final String scene) {
-			this.scene = scene;
-		}
-		
-		public String toString() {
-			final StringBuffer result = new StringBuffer(32);
-			result.append("{id: ");
-			result.append(entityId);
-			result.append(", filename: ");
-			result.append(filename);
-			result.append(", project: ");
-			result.append(project);
-			if (!"-1".equals(scene)) {
-				result.append(", scene: ");
-				result.append(scene);
-			}
-			result.append('}');
-			return result.toString();
-		}
-	}
-	
-	/**
-	 * Retrieve image data and store it in <code>Dataset</code> parent by iterating over connected entities and 
-	 * @return	always null, because instead of actual contexts we only want to add a custom field to <code>Dataset</code> parent 
+	 * Retrieve image data and store it in <code>Dataset</code> parent by iterating over connected entities.
+	 * @return	always null, because instead of building actual contexts we only want to add a custom field to <code>Dataset</code> parent.
+	 * @param parent	the dataset of the sarcophagus, that the images will be added to.
+	 * @param offset 	offset of the context to retrieve.
+	 * @param limit		Maximum number of contexts to retireve.
 	 */
 	public List<AbstractLink> retrieve(final Dataset parent, final Integer offset, final Integer limit) {
 		
@@ -104,9 +71,9 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 				}
 			}
 		}
-
+		
 		if (!images.isEmpty()) {
-			parent.setFields(CONTEXT_TYPE + "." + "images", images.toString());
+			parent.setAdditionalContent(images);
 		}
 		
 		LOGGER.debug(parent.toString());
@@ -132,7 +99,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 			if (("relief".equals(contextType)) && (sceneNumber != null)) {
 				image.setScene(sceneNumber);
 			}
-			if (image.entityId != null) {
+			if (image.getEntityId() != null) {
 				images.add(image);
 			}
 		}
@@ -151,16 +118,19 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 		
 		if (targetType.equals("marbilder") && sourceType!=null) {
 			project =  sourceType;
-			entityId = queryResults.get("semanticconnection.Source"); 
+			entityId = queryResults.get("semanticconnection.Target"); 
 		} else if (sourceType.equals("marbilder") && targetType!=null) {
 			project = targetType;
-			entityId = queryResults.get("semanticconnection.Target"); 
+			entityId = queryResults.get("semanticconnection.Source"); 
 		} else {
 			return;
 		}
 		
 		filename = queryResults.get("marbilder.DateinameMarbilder");
-		image.setImageFields(entityId, filename, project);
+
+		if (entityId!=null && filename!=null && project!=null) {
+			image.setImageFields(entityId, filename, project);
+		}
 	}
 	
 	public String getContextType() {
