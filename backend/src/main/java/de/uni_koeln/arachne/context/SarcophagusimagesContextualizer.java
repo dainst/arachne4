@@ -14,6 +14,10 @@ import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.SarcophagusImage;
 import de.uni_koeln.arachne.util.EntityId;
 
+/**
+ * Contextualizer class to retrieve image data not directly connected to sarcophagi but to objects who in turn
+ * are connected to the sarcophagus that triggered contextualization.
+ */
 public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SarcophagusimagesContextualizer.class);
@@ -62,9 +66,9 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 				for (Map<String, String> entityData : entitiesContextContents) {
 					final String internalId = entityData.get(contextType + ".PS_" + contextType.substring(0,1).toUpperCase() + contextType.substring(1).toLowerCase() + "ID"); // e.g. 'relief.PS_ReliefID'
 					final EntityId entityId = entityIdentificationService.getId(contextType, Long.parseLong(internalId));
-					String sceneNumber = null;
+					Integer sceneNumber = null;
 					if ("relief".equals(contextType)) {
-						sceneNumber = entityData.get("relief.Szenennummer");
+						sceneNumber = Integer.parseInt(entityData.get("relief.Szenennummer"));
 					}
 					final List<Map<String, String>> imagesContextContents = genericSQLService.getConnectedEntities(TARGET_CONTEXT_TYPE, entityId.getArachneEntityID());
 					if (imagesContextContents != null) {
@@ -97,7 +101,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 	 * @param offset of the context to retrieve.
 	 * @param limit Maximum number of contexts to retireve.
 	 */
-	private void addImages(final String contextType, final List<Map<String, String>> imagesContextContents, final String sceneNumber, final Integer offset, final Integer limit) {
+	private void addImages(final String contextType, final List<Map<String, String>> imagesContextContents, final Integer sceneNumber, final Integer offset, final Integer limit) {
 		final ListIterator<Map<String, String>> imagesContextMap = imagesContextContents.listIterator(offset);
 		while (imagesContextMap.hasNext() && (imageCount < limit || limit == -1)) {
 			image = new SarcophagusImage();
@@ -105,9 +109,9 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 			imageCount++;
 			
 			if (("relief".equals(contextType)) && (sceneNumber != null)) {
-				image.setScene(sceneNumber);
+				image.setSceneNumber(sceneNumber);
 			}
-			if (image.getEntityId() != null) {
+			if (image.getImageId() != null) {
 				images.add(image);
 			}
 		}
@@ -121,23 +125,23 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 		final String sourceType = queryResults.get("semanticconnection.TypeSource");
 		final String targetType = queryResults.get("semanticconnection.TypeTarget");
 		final String project;
-		final String entityId;
+		final Long imageId;
 		final String filename;
 		
 		if (targetType.equals("marbilder") && sourceType!=null) {
 			project =  sourceType;
-			entityId = queryResults.get("semanticconnection.Target"); 
+			imageId = Long.parseLong(queryResults.get("semanticconnection.Target")); 
 		} else if (sourceType.equals("marbilder") && targetType!=null) {
 			project = targetType;
-			entityId = queryResults.get("semanticconnection.Source"); 
+			imageId = Long.parseLong(queryResults.get("semanticconnection.Source")); 
 		} else {
 			return;
 		}
 		
 		filename = queryResults.get("marbilder.DateinameMarbilder");
 
-		if (entityId!=null && filename!=null && project!=null) {
-			image.setImageFields(entityId, filename, project);
+		if (imageId!=null && filename!=null && project!=null) {
+			image.setImageFields(imageId, filename, project);
 		}
 	}
 	

@@ -7,49 +7,40 @@ import javax.xml.bind.annotation.XmlRootElement;
  * belonging to sarcophagus entities.
  */
 @XmlRootElement
-public class SarcophagusImage {
-
-	private String entityId;
-	private String filename;
-	private String project;
-	private String scene = "-1";
+public class SarcophagusImage extends Image {
 	
-	public String getEntityId() {
-		return entityId;
-	}
+	/**
+	 * the category of the object the image belongs to. Possible Categories are specified in
+	 * <code>SarcophagusimagesContextualizer.PRIMARY_CONTEXT_TYPES</code>
+	 */
+	private String project = null;
 	
-	public String getFilename() {
-		return filename;
-	}
+	/**
+	 * If the image is one connected to an entity of category "relief" this stores the scene number
+	 * of that entity.
+	 */
+	private Integer sceneNumber = null;
 	
 	public String getProject() {
 		return project;
 	}
 	
-	public String getScene() {
-		return scene;
+	public Integer getSceneNumber() {
+		return sceneNumber;
 	}
 	
-	public void setImageFields(final String entityId, final String filename, final String project) {
-		this.entityId = entityId;
-		this.filename = filename;
+	public void setImageFields(final Long imageId, final String subtitle, final String project) {
+		this.imageId = imageId;
+		this.subtitle = subtitle;
 		this.project = project;
-	}
-	
-	public void setEntityId(final String entityId) {
-		this.entityId = entityId;
-	}
-
-	public void setFilename(final String filename) {
-		this.filename = filename;
 	}
 
 	public void setProject(final String project) {
 		this.project = project;
 	}
 	
-	public void setScene(final String scene) {
-		this.scene = scene;
+	public void setSceneNumber(final Integer scene) {
+		this.sceneNumber = scene;
 	}
 
 }

@@ -10,12 +10,12 @@ public class Image extends SQLResponseObject {
 	/**
 	 * The primary key of the image.
 	 */
-	private Long imageId = null;
+	protected Long imageId = null;
 	
 	/**
 	 * The subtitle of the image.
 	 */
-	private String subtitle = null;
+	protected String subtitle = null;
 
 	public Long getImageId() {
 		return imageId;
