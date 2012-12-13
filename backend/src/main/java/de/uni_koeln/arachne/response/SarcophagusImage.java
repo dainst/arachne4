@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.context;
+package de.uni_koeln.arachne.response;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
