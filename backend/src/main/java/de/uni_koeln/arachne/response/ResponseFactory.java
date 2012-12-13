@@ -111,7 +111,9 @@ public class ResponseFactory {
 		final Element facets = document.getRootElement().getChild("facets", namespace);
 		response.setFacets(getFacets(dataset, namespace, facets).getList());
 		
+		//Set additional Content
 		response.setAdditionalContent(dataset.getAdditionalContent());
+		
 		// Set contexts
 		/*
 		Section contextContent = new Section();

@@ -9,6 +9,7 @@ import java.util.HashSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uni_koeln.arachne.response.AdditionalContent;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.SarcophagusImage;
 import de.uni_koeln.arachne.util.EntityId;
@@ -35,7 +36,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 	private transient SarcophagusImage image;
 	
 	/**
-	 * All Images belonging to the sarcophagus that triggered contextualization
+	 * All Images belonging to the sarcophagus. This is a <code>Set</code> to exclude duplicate entries.
 	 */
 	private transient final Set<SarcophagusImage> images;
 	
@@ -74,7 +75,13 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 		}
 		
 		if (!images.isEmpty()) {
-			parent.setAdditionalContent(images);
+			if (parent.getAdditionalContent() == null) {
+				final AdditionalContent additionalContent = new AdditionalContent();
+				additionalContent.setSarcophagusImages(images);
+				parent.setAdditionalContent(additionalContent);
+			} else {
+				parent.getAdditionalContent().setSarcophagusImages(images);
+			}
 		}
 		
 		LOGGER.debug(parent.toString());

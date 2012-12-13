@@ -2,6 +2,10 @@ package de.uni_koeln.arachne.response;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Class used by the <code>SarcophagusimagesContextualizer</code> to store image data 
+ * belonging to sarcophagus entities.
+ */
 @XmlRootElement
 public class SarcophagusImage {
 

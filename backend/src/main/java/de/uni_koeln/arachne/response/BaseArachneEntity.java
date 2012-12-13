@@ -27,7 +27,7 @@ public class BaseArachneEntity {
 	/**
 	 * Field for additional content of any type.
 	 */
-	protected Object additionalContent = null;
+	protected AdditionalContent additionalContent = null;
 	
 	public Long getEntityId() {
 		return entityId;
@@ -61,11 +61,11 @@ public class BaseArachneEntity {
 		this.datasetGroup = datasetGroup;
 	}
 	
-	public Object getAdditionalContent() {
+	public AdditionalContent getAdditionalContent() {
 		return additionalContent;
 	}
 	
-	public void setAdditionalContent(final Object additionalContent) {
+	public void setAdditionalContent(final AdditionalContent additionalContent) {
 		this.additionalContent = additionalContent;
 	}
 }

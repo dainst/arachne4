@@ -57,7 +57,7 @@ public class Dataset {
 	/**
 	 * Genric field for additional content
 	 */
-	protected Object additionalContent; 
+	protected AdditionalContent additionalContent; 
 	
 	/**
 	 * Parameterless constructor.
@@ -139,7 +139,7 @@ public class Dataset {
 		return fields;
 	}
 	
-	public Object getAdditionalContent() {
+	public AdditionalContent getAdditionalContent() {
 		return additionalContent;
 	}
 	
@@ -288,7 +288,7 @@ public class Dataset {
 		this.thumbnailId = thumbnailId;
 	}
 		
-	public void setAdditionalContent(final Object additionalContent) {
+	public void setAdditionalContent(final AdditionalContent additionalContent) {
 		this.additionalContent = additionalContent;
 	}
 	
