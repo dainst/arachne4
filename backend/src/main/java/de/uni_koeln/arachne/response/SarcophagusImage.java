@@ -4,14 +4,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class SarcophagusImage {
+
 	private String entityId;
 	private String filename;
 	private String project;
 	private String scene = "-1";
-	
-	public SarcophagusImage() {
-		
-	}
 	
 	public String getEntityId() {
 		return entityId;
@@ -32,6 +29,18 @@ public class SarcophagusImage {
 	public void setImageFields(final String entityId, final String filename, final String project) {
 		this.entityId = entityId;
 		this.filename = filename;
+		this.project = project;
+	}
+	
+	public void setEntityId(final String entityId) {
+		this.entityId = entityId;
+	}
+
+	public void setFilename(final String filename) {
+		this.filename = filename;
+	}
+
+	public void setProject(final String project) {
 		this.project = project;
 	}
 	
