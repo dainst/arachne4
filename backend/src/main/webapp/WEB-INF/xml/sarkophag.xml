@@ -23,7 +23,7 @@
 		</subtitle>
 		<datasections>
 			<context type="Sarcophagusimages">
-				<field datasource=".thisisjustadummyfield" />
+				<field datasource=".thisIsJustADummyFieldToTriggerTheContextualizer" />
 			</context>
 			<section labelKey="SarcophagusImages">
 				<field datasource="Sarcophagusimages.images" />
@@ -69,21 +69,6 @@
 					<field datasource="sarkophag.Material" />
 				</section>
         		<include type="literatur" />
-				<section labelKey="Zugehörige Datensätze in Arachne">
-		            <context type="gruppen" labelKey="Mehrteilige Denkmäler" separator=" ">
-		            	<field datasource=".KurzbeschreibungGruppen" />
-		            </context>
-		            <context type="objekt" labelKey="Einzelobjekte">
-		            	<field datasource=".KurzbeschreibungObjekt" />
-		            </context>
-		            <context type="relief" labelKey="Szenen" separator=" ">
-		            	<field datasource=".Szenennummer" prefix="Szene " postfix=":" />
-		            	<field datasource=".KurzbeschreibungRelief" />
-		            </context>
-		            <context type="realien" labelKey="Einzelmotive">
-		            	<field datasource=".KurzbeschreibungRealien" />
-		            </context>
-				</section>
 			</section>
 		</datasections>
 	</display>
