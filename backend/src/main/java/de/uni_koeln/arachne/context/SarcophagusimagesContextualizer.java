@@ -67,13 +67,16 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 					final String internalId = entityData.get(contextType + ".PS_" + contextType.substring(0,1).toUpperCase() + contextType.substring(1).toLowerCase() + "ID"); // e.g. 'relief.PS_ReliefID'
 					final EntityId entityId = entityIdentificationService.getId(contextType, Long.parseLong(internalId));
 					Integer sceneNumber = null;
+					String reliefDescription = null;
 					if ("relief".equals(contextType)) {
 						sceneNumber = Integer.parseInt(entityData.get("relief.Szenennummer"));
+						reliefDescription = entityData.get("relief.KurzbeschreibungRelief");
+						//LOGGER.debug(entityData.get("relief.KurzbeschreibungRelief"));
 					}
 
 					final List<Map<String, String>> imagesContextContents = genericSQLService.getConnectedEntities(TARGET_CONTEXT_TYPE, entityId.getArachneEntityID());
 					if (imagesContextContents != null) {
-						addImages(contextType, imagesContextContents, sceneNumber, offset, limit);	
+						addImages(contextType, imagesContextContents, sceneNumber, reliefDescription, offset, limit);	
 					}
 				}
 			}
@@ -103,7 +106,8 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 	 * @param offset of the context to retrieve.
 	 * @param limit Maximum number of contexts to retireve.
 	 */
-	private void addImages(final String contextType, final List<Map<String, String>> imagesContextContents, final Integer sceneNumber, final Integer offset, final Integer limit) {
+	private void addImages(final String contextType, final List<Map<String, String>> imagesContextContents, 
+						   final Integer sceneNumber, final String reliefDescription, final Integer offset, final Integer limit) {
 		final ListIterator<Map<String, String>> imagesContextMap = imagesContextContents.listIterator(offset);
 		while (imagesContextMap.hasNext() && (imageCount < limit || limit == -1)) {
 			image = new SarcophagusImage();
@@ -112,6 +116,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 			
 			if (("relief".equals(contextType)) && (sceneNumber != null)) {
 				image.setSceneNumber(sceneNumber);
+				image.setReliefDescription(reliefDescription);
 			}
 			if (image.getImageId() != null) {
 				images.add(image);

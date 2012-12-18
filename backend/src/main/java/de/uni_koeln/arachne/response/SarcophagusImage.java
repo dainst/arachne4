@@ -17,9 +17,15 @@ public class SarcophagusImage extends Image {
 	
 	/**
 	 * If the image is one connected to an entity of category "relief" this stores the scene number
-	 * of that entity.
+	 * of that relief.
 	 */
 	private Integer sceneNumber = null;
+	
+	/**
+	 * If the image is one connected to an entity of category "relief" this stores the description of
+	 * of that relief.
+	 */
+	private String reliefDescription;
 	
 	public String getProject() {
 		return project;
@@ -29,10 +35,8 @@ public class SarcophagusImage extends Image {
 		return sceneNumber;
 	}
 	
-	public void setImageFields(final Long imageId, final String subtitle, final String project) {
-		this.imageId = imageId;
-		this.subtitle = subtitle;
-		this.project = project;
+	public String getReliefDescription() {
+		return reliefDescription;
 	}
 
 	public void setProject(final String project) {
@@ -42,5 +46,14 @@ public class SarcophagusImage extends Image {
 	public void setSceneNumber(final Integer scene) {
 		this.sceneNumber = scene;
 	}
+	
+	public void setReliefDescription(String reliefDescription) {
+		this.reliefDescription = reliefDescription;
+	}
 
+	public void setImageFields(final Long imageId, final String subtitle, final String project) {
+		this.imageId = imageId;
+		this.subtitle = subtitle;
+		this.project = project;
+	}
 }
