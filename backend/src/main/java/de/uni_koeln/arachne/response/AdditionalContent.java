@@ -1,6 +1,6 @@
 package de.uni_koeln.arachne.response;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -11,13 +11,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class AdditionalContent {
 	
-	private Set<SarcophagusImage> sarcophagusImages;
+	private List<SarcophagusImage> sarcophagusImages;
 
-	public Set<SarcophagusImage> getSarcophagusImages() {
+	public List<SarcophagusImage> getSarcophagusImages() {
 		return sarcophagusImages;
 	}
 
-	public void setSarcophagusImages(final Set<SarcophagusImage> sarcophagusImages) {
+	public void setSarcophagusImages(final List<SarcophagusImage> sarcophagusImages) {
 		this.sarcophagusImages = sarcophagusImages;
 	}
 

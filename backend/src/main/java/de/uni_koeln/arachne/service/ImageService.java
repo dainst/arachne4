@@ -12,6 +12,7 @@ import de.uni_koeln.arachne.mapping.ImageRowMapper;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.ImageUtils;
 
 /**
  * This service class provides the means to retrieve images from the database.
@@ -40,6 +41,7 @@ public class ImageService {
 		final EntityId arachneId = dataset.getArachneId();
 		// TODO find a better way to exclude categories, maybe a list of some kind
 		if (excludeList.contains(arachneId.getTableName())) {
+			LOGGER.debug("excluding " + arachneId.getTableName());
 			return;
 		} else {
 			final ArrayList<String> fieldList = new ArrayList<String>(2);
@@ -50,50 +52,10 @@ public class ImageService {
 			dataset.setImages(imageList);
 			// get thumbnail from imageList
 			if (imageList != null && !imageList.isEmpty()) {
-				dataset.setThumbnailId(findThumbnailId(imageList));
+				dataset.setThumbnailId(ImageUtils.findThumbnailId(imageList));
 			}
 		}
 	}
 
-	/**
-	 * This method finds the thumbnailId by finding the image whose filename does not contain a comma or the filename with the
-	 *  lowest number after the comma.
-	 * @param imageList
-	 * @param thumbnail
-	 * @return The image id of the thumbnail.
-	 */
-	private Long findThumbnailId(final List<Image> imageList) {
-		Image thumbnail = imageList.get(0);
-		if (imageList.size()>1 && thumbnail.getSubtitle().contains(",")) {
-			Integer lowestNumber = extractNumberFromImageFilename(thumbnail.getSubtitle());
-			for (Image potentialThumbnail: imageList) {
-				if (potentialThumbnail.getSubtitle().contains(",")) {
-					final Integer currentNumber = extractNumberFromImageFilename(potentialThumbnail.getSubtitle());
-					if (currentNumber<lowestNumber) {
-						thumbnail = potentialThumbnail;
-						lowestNumber = currentNumber;
-					}
-				} else {
-					thumbnail = potentialThumbnail;
-					break;
-				}
-			}
-		}
-		return thumbnail.getImageId();
-	}
-	
-	/**
-	 * This method finds the number after the comma of a given image filename.
-	 * @returns The extracted number as <code>Integer</code> or <code>Integer.MAX_VALUE</code> in case of a parsing error.
-	 */
-	private Integer extractNumberFromImageFilename(final String imageFilename) {
-		Integer result = Integer.MAX_VALUE;
-		try {
-			result = Integer.parseInt(imageFilename.split(",")[1].split("\\.")[0]); 
-		} catch (NumberFormatException e) {
-			// ignore images where the part after the comma is not a number
-			LOGGER.debug(e.getMessage());
-		}
-		return result;
-	}
+
 }

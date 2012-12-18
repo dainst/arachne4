@@ -1,10 +1,9 @@
 package de.uni_koeln.arachne.context;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Set;
-import java.util.HashSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +12,7 @@ import de.uni_koeln.arachne.response.AdditionalContent;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.SarcophagusImage;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.ImageUtils;
 
 /**
  * Contextualizer class to retrieve image data not directly connected to sarcophagi but to objects who in turn
@@ -25,12 +25,12 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 	private transient final static String CONTEXT_TYPE = "Sarcophagusimages";
 	
 	/**
-	 * The context category we are searching for
+	 * The context category we are searching for.
 	 */
 	private transient final static String TARGET_CONTEXT_TYPE = "marbilder";
 	
 	/**
-	 * All object categories whose assigned images are relevant for sarcophagi
+	 * All object categories whose assigned images are relevant for sarcophagi.
 	 */
 	private transient final static String[] PRIMARY_CONTEXT_TYPES = { "objekt", "gruppen", "relief", "realien" };
 	
@@ -40,14 +40,14 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 	private transient SarcophagusImage image;
 	
 	/**
-	 * All Images belonging to the sarcophagus. This is a <code>Set</code> to exclude duplicate entries.
+	 * All Images belonging to the sarcophagus.
 	 */
-	private transient final Set<SarcophagusImage> images;
+	private transient final List<SarcophagusImage> images;
 	
 	private transient long imageCount = 0L;
 	
 	public SarcophagusimagesContextualizer() {
-		images = new HashSet<SarcophagusImage>();
+		images = new ArrayList<SarcophagusImage>();
 	}
 	
 	/**
@@ -70,6 +70,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 					if ("relief".equals(contextType)) {
 						sceneNumber = Integer.parseInt(entityData.get("relief.Szenennummer"));
 					}
+
 					final List<Map<String, String>> imagesContextContents = genericSQLService.getConnectedEntities(TARGET_CONTEXT_TYPE, entityId.getArachneEntityID());
 					if (imagesContextContents != null) {
 						addImages(contextType, imagesContextContents, sceneNumber, offset, limit);	
@@ -78,7 +79,8 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 			}
 		}
 		
-		if (!images.isEmpty()) {
+		if (images != null && !images.isEmpty()) {
+			parent.setThumbnailId(ImageUtils.findThumbnailId(images));
 			if (parent.getAdditionalContent() == null) {
 				final AdditionalContent additionalContent = new AdditionalContent();
 				additionalContent.setSarcophagusImages(images);
