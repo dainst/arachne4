@@ -66,17 +66,19 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 				for (Map<String, String> entityData : entitiesContextContents) {
 					final String internalId = entityData.get(contextType + ".PS_" + contextType.substring(0,1).toUpperCase() + contextType.substring(1).toLowerCase() + "ID"); // e.g. 'relief.PS_ReliefID'
 					final EntityId entityId = entityIdentificationService.getId(contextType, Long.parseLong(internalId));
+					//get information that might be relevant for the image
 					Integer sceneNumber = null;
-					String reliefDescription = null;
+					String description = null;
 					if ("relief".equals(contextType)) {
 						sceneNumber = Integer.parseInt(entityData.get("relief.Szenennummer"));
-						reliefDescription = entityData.get("relief.KurzbeschreibungRelief");
-						//LOGGER.debug(entityData.get("relief.KurzbeschreibungRelief"));
+						description = entityData.get("relief.KurzbeschreibungRelief");
+					} else if ("realien".equals(contextType)) {
+						description = entityData.get("realien.KurzbeschreibungRealien");
 					}
 
 					final List<Map<String, String>> imagesContextContents = genericSQLService.getConnectedEntities(TARGET_CONTEXT_TYPE, entityId.getArachneEntityID());
 					if (imagesContextContents != null) {
-						addImages(contextType, imagesContextContents, sceneNumber, reliefDescription, offset, limit);	
+						addImages(contextType, imagesContextContents, sceneNumber, description, offset, limit);	
 					}
 				}
 			}
@@ -107,7 +109,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 	 * @param limit Maximum number of contexts to retireve.
 	 */
 	private void addImages(final String contextType, final List<Map<String, String>> imagesContextContents, 
-						   final Integer sceneNumber, final String reliefDescription, final Integer offset, final Integer limit) {
+						   final Integer sceneNumber, final String description, final Integer offset, final Integer limit) {
 		final ListIterator<Map<String, String>> imagesContextMap = imagesContextContents.listIterator(offset);
 		while (imagesContextMap.hasNext() && (imageCount < limit || limit == -1)) {
 			image = new SarcophagusImage();
@@ -116,7 +118,9 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 			
 			if (("relief".equals(contextType)) && (sceneNumber != null)) {
 				image.setSceneNumber(sceneNumber);
-				image.setReliefDescription(reliefDescription);
+				image.setDescription(description);
+			} else if ("realien".equals(contextType)) {
+				image.setDescription(description);
 			}
 			if (image.getImageId() != null) {
 				images.add(image);
