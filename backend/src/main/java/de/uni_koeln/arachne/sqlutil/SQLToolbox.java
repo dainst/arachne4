@@ -36,7 +36,12 @@ public class SQLToolbox {
 		return "FS_" + ucfirst(tablename)+"ID";
 		
 	}
-	
+	/**
+	 * Returns The name of the Field that Contains the Userrights Group. 
+	 * If You are Looking for a Place to Put AnException from the Norm. This is the Right Place to Put it.
+	 * @param tableName The Table you want to Know the Userrights Group Field from. 
+	 * @return The Field name the User Rights Group is stored in
+	 */
 	public static String generateDatasetGroupName(String tableName) {
 		if ("marbilder".equals(tableName)) {
 			return "DatensatzGruppeMARBilder";
