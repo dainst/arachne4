@@ -5,7 +5,10 @@ import java.util.List;
 
 
 import de.uni_koeln.arachne.context.ContextPath;
-
+/**
+ * This Class is Builds Context Paths. This Means a Link over one or More Contexts. 
+ * There for it uses the SemanticConnection Table which Contains All Connections.
+ */
 public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	
