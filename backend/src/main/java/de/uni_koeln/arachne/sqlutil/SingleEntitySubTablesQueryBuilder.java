@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import de.uni_koeln.arachne.response.Dataset;
 /**
- * This Class gets The Sub Projects Informations. This differs form the ArachneSingleEntityQueryBuilder that it doesnt check the User Rights.
+ * This Class gets The Sub Projects Informations. This differs form the ArachneSingleEntityQueryBuilder that it doesn´t check the User Rights.
  *  these do normally not Exist in Subprojects
- *	The Main Reason this is Implementet is for Objekt, Objekt has a lot of Subprojects which which are Optional. 
+ *	The Main reason this is Implementet is for Objekt, Objekt has a lot of Subprojects  which are Optional.
  */
 public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 
