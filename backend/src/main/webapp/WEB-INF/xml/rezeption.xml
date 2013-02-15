@@ -93,6 +93,7 @@
         			<field datasource="rezeption.KatalogtextRezeption" prefix="Katalogtext: "/>
         		</section>
         		<include type="literatur" />
+        		<include type="uri" />
         	</section>
         </datasections>
     </display>

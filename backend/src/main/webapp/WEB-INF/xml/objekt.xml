@@ -105,6 +105,7 @@
 					<field datasource="objekt.InschriftPublikation"/>
 				</section>
 				<include type="literatur" />
+				<include type="uri" />
 				<section labelKey="Für Bearbeiter" minGroupId="600">
 				<section labelKey="Berlin">
 					<field datasource="objekt.BerlinInstitution" prefix="Institution: "/>

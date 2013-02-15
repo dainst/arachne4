@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- just very basic to have at least some definitions -->
+<category name="gruppierung"
+	xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+    <display>
+        <title>
+        	<section separator=" ">
+        		<field datasource="gruppierung.KurzbeschreibungGruppierung" />
+        	</section>	
+        </title>
+        <subtitle>
+        	<section separator=" ">
+        		<field datasource="gruppierung.InhaltlicheKategorie" />            		
+            </section>
+        </subtitle>
+        <datasections>
+        	<section labelKey="Informationen zur Gruppierung">
+        		<section labelKey="Allgemeine Informationen">
+        			<section labelKey="Beschreibung">
+        				<field datasource="gruppierung.BeschreibungGruppierung" />
+        			</section>
+        			<section labelKey="Autorität">
+        				<field datasource="gruppierung.Autoritaet" />
+        			</section>
+        			<section labelKey="Antike Textquelle">
+        				<field datasource="gruppierung.AntikeTextquelle" />
+        			</section>
+        		</section>
+        		
+ 	       		<include type="ort" />
+        		<include type="datierung" />
+        		<include type="literatur" />
+        		<include type="uri" />
+        		
+	        </section>
+        </datasections>
+    </display>
+    <facets>
+    	<facet name="kategorie" labelKey="Kategorie">
+    		<field datasource="Dataset.TableName" />
+    	</facet>
+    	<facet name="inhaltlichekategorie" labelKey="Inhaltliche Kategorie">
+    		<field datasource="gruppierung.InhaltlicheKategorie" />
+    	</facet>
+    	<facet name="ort" labelKey="Lokalisierung">
+			<context type="ort" separator=", ">
+				<field datasource=".Stadt"/>
+				<field datasource=".Land"/>
+			</context>
+		</facet>
+		<facet name="datierung-epoche" labelKey="Epoche">
+			<context type="datierung">
+				<field datasource=".AnfEpoche"/>
+			</context>
+		</facet>
+		<facet name="datierung-epoche" labelKey="Epoche">
+			<context type="datierung">
+				<field datasource=".EndEpoche"/>
+			</context>
+		</facet>
+    </facets>
+</category>

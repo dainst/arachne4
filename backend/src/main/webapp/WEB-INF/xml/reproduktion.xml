@@ -159,6 +159,7 @@
         		   	</section>
         		</section>
         		<include type="literatur" />
+        		<include type="uri" />
 	        </section>
         </datasections>
     </display>

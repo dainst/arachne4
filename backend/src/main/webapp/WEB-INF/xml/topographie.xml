@@ -51,7 +51,8 @@
 	        	<section labelKey="Ausgrabungen">
 	        		<field datasource="topographie.Ausgrabungen"  />
 	        	</section>
-	        	<include type="literatur" />
+	        	 <include type="literatur" />
+	        	<include type="uri" />
 	    	</section>
         </datasections>
     </display>

@@ -4,9 +4,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
 
-	<context type="literatur" labelKey="Literatur" separator=", ">
+	<context type="literatur" labelKey="Literatur" separator=", ">		
 		<field datasource=".tempLiteratur" />
 		<field datasource=".DAIRichtlinien" />
+		<field datasource=".Corpuszitat"/>
 		<field datasource=".Seite" />
 		<field datasource=".Anmerkung" prefix="Anm. " /> <!-- AdditionalInfosJSON -->
 		<field datasource=".Abbildung" prefix="Abb. " /> <!-- AdditionalInfosJSON -->
@@ -17,7 +18,8 @@
 		<field datasource=".subVoce" prefix="s.v. " /> <!-- AdditionalInfosJSON -->
 		<field datasource=".KommentarLitZitat" prefix="(" postfix=")" /> <!-- AdditionalInfosJSON -->
 		<field datasource=".Supplement" prefix="Supplement: " /> <!-- AdditionalInfosJSON -->
-		<linkField labelKey="ZenonID" datasource=".ZenonID"
-			prefix="http://testopac.dainst.org/#zenon/book/" />
+		<linkField labelKey="Zenon" datasource=".ZenonID"
+			prefix="http://testopac.dainst.org/#book/" />
+		<linkField labelKey="Onlinequelle" datasource=".Onlinequelle" />
 	</context>
 </includeSection>

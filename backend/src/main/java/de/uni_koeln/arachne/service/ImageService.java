@@ -30,6 +30,9 @@ public class ImageService {
 	public ImageService() {
 		excludeList = new ArrayList<String>();
 		excludeList.add("sarkophag");
+		excludeList.add("person");
+		excludeList.add("inschrift");
+		excludeList.add("gruppierung");
 	}
 	
 	/**

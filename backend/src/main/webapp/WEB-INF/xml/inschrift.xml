@@ -7,38 +7,37 @@
     <display>
         <title>
             <section>
-                <field datasource="inschrift.Inschrift" />
+                <field datasource="inschrift.Inschrift">
+                    	<ifEmpty>
+                    		<field datasource="inschrift.Sprache" />
+                    	</ifEmpty> 
+                    </field>
             </section>
         </title>
         <subtitle>
             <section>                
-                    <field datasource="inschrift.Sprache">                        
-                    </field>                          
+                    <field datasource="inschrift.Sprache"/>  
             </section>
         </subtitle>
         <datasections>
             <section labelKey="Informationen zur Inschrift">                
-                <section labelKey="Allgemeine Informationen">                   
-                        <field datasource="inschrift.Inschrift" prefix="Text der Inschrift" />                    
-                        <field datasource="inschrift.Uebersetzung" prefix="Übersetzung: " />                  
-                        <field datasource="inschrift.Sprache" prefix="Sprache / Schrift: "/> 
-                        <field datasource="inschrift.Kommentar" prefix="Kommentar: "/>                                
+                <section labelKey="Allgemeine Informationen">    
+               		 <section labelKey="Text der Inschrift">               
+                      	  <field datasource="inschrift.Inschrift" />  
+                       </section>    
+                       <section labelKey="Übersetzung">                  
+                        	<field datasource="inschrift.Uebersetzung" />  
+                        </section>
+                        <section labelKey="Sprache/Schrift">                    
+                       		 <field datasource="inschrift.Sprache" /> 
+                        </section>
+                        <section labelKey="Kommentar">    
+                       		 <field datasource="inschrift.Kommentar" />
+                        </section>                                
                 </section> 
                	<include type="datierung" />
-                <context type="literatur" labelKey="Literatur" separator=" ">
-                    <field datasource=".Abkuerzungen">
-                        <ifEmpty>
-                            <field datasource=".DAIRichtlinien" />
-                        </ifEmpty>
-                    </field>
-                    <field datasource=".Corpuszitat">
-                        <ifEmpty>
-                            <field datasource=".Seite"/>
-                        </ifEmpty>
-                    </field>
-                    <field datasource=".Onlinequelle" prefix="(" postfix=")" />
-                    <linkField labelKey="ZenonID" datasource=".ZenonID" prefix="http://testopac.dainst.org/#zenon/book/" />
-                </context>
+               	<include type="literatur" />
+               <include type="uri" />
             </section>
         </datasections>
     </display>

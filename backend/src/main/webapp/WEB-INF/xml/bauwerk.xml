@@ -93,6 +93,7 @@
 	            	<field datasource="bauwerk.Katalognummer" prefix="Katalognummer: "/>
 	            </section>
 	            <include type="literatur" />
+	            <include type="uri" />
 	    	</section>
         </datasections>
     </display>

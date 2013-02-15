@@ -110,6 +110,7 @@ Hier werden keine Direkten Bilder verwendet sondern die Bilder des Hauptvertrete
 	            </section>
 	            <include type="datierung" />
 	            <include type="literatur" />
+	            <include type="uri" />
 	    	</section>
         </datasections>
     </display>

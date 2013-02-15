@@ -40,6 +40,7 @@ public class SQLRightsConditionBuilder {
 		exludedTables.add("ortsbezug_leftjoin_ort");
 		exludedTables.add("rezeptionsobjekte");
 		exludedTables.add("sammler");
+		exludedTables.add("uri");
 	}
 	
 	/**

@@ -93,6 +93,7 @@
 				
 				<include type="literatur" />
 				
+				<include type="uri" />
 				<!-- 
 					<section labelKey="Fotoabzug">
 						<section sectionKey="Fotoabzug" />

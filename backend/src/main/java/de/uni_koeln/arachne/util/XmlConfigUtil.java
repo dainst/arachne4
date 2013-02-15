@@ -482,7 +482,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			, final Dataset dataset, final String contextType,	final String separator) {
 		
 		for (Element e: children) {
-			if (e.getName().equals("field") || e.getName().equals("linkField")) {
+			if (e.getName().equals("field") || e.getName().equals("linkField")) {				
 				addFieldToFieldList(e, fieldList, index, dataset, contextType, separator);
 			}
 		}
@@ -521,10 +521,16 @@ public class XmlConfigUtil implements ServletContextAware {
 			}
 			
 			// handle linkFields
-			final String labelKey = element.getAttributeValue("labelKey");
-			if (!StrUtils.isEmptyOrNull(labelKey)) {
-				value.insert(0, "<a href=\"");
-				value.append("\">" + labelKey + "</a>");
+			if (element.getName().contentEquals("linkField")){
+					final String labelKey = element.getAttributeValue("labelKey");
+				
+					if (!StrUtils.isEmptyOrNull(labelKey)) {
+						value.insert(0, "<a href=\"");
+						value.append("\">" + labelKey + "</a>");
+					}
+					else {
+						value = new StringBuffer("<a href=\""+value.toString()+"\">" + value.toString() + "</a>");
+					}
 			}
 			
 			String currentListValue = null;

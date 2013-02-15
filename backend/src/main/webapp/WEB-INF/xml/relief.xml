@@ -160,7 +160,7 @@
         			<field datasource="relief.InschriftKommentarRelief" />
         			<field datasource="relief.InschriftPublikationRelief" prefix="Publikation: " />        			
         		</section>
-
+				<include type="uri" />
         	</section>
         </datasections>
     </display>

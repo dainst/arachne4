@@ -237,6 +237,7 @@
 	            	<field datasource=".Seite" />
 	            </context>
 	            -->
+	            <include type="uri" />
 			</section>
 		</datasections>
 	</display>
