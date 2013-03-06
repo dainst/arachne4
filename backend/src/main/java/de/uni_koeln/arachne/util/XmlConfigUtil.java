@@ -20,7 +20,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.context.support.ServletContextResource;
 
+import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.response.AbstractContent;
+import de.uni_koeln.arachne.response.ContextEntity;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Field;
 import de.uni_koeln.arachne.response.FieldList;
@@ -276,6 +278,13 @@ public class XmlConfigUtil implements ServletContextAware {
 	 */
 	public AbstractContent getContentFromSections(final Element section, final Namespace namespace, final Dataset dataset) {
 		
+		/*
+		List<Context> contexts = dataset.getContext();
+		for(Context localContext : contexts) {
+			LOGGER.debug("Context: " + localContext.getContextType() + ": " + localContext.getContextSize());
+		}
+		*/
+		
 		if (!hasMinGroupId(section.getAttributeValue("minGroupId"))) {
 			return null;
 		}
@@ -301,7 +310,7 @@ public class XmlConfigUtil implements ServletContextAware {
 					addLinkFieldToResult(e, result, dataset, separator);
 				} else {
 					if (e.getName().equals("context")) {
-						final Section nextSection = (Section)getContentFromContext(e, dataset);
+						final Section nextSection = (Section)getContentFromContext(e, dataset, namespace);
 						if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
 							result.add(nextSection);
 						}
@@ -313,6 +322,45 @@ public class XmlConfigUtil implements ServletContextAware {
 					}
 				}
 			}
+		}
+		return result;
+	}
+	
+	
+	/**
+	 * This function handles sections in the xml config files. It extracts the content from the dataset following the 
+	 * definitions in the xml files and returns it as <code>Content</code>.
+	 * <br>
+	 * The validity of the xml file is not checked!!!
+	 * @param section The xml section <code>Element</code> to parse.
+	 * @param dataset The dataset that contains the SQL query results.
+	 * @return A <code>Content</code> object containing the sections content.
+	 */
+	public AbstractContent getContentFromContextSections(final Element section, final Namespace namespace, final Dataset dataset) {
+		
+		if (!hasMinGroupId(section.getAttributeValue("minGroupId"))) {
+			return null;
+		}
+		
+		final Section result = new Section();
+		//TODO Get translated label string for value of labelKey-attribute in the section element  
+		result.setLabel(section.getAttributeValue("labelKey"));
+		
+		final List<Element> children = section.getChildren();
+		
+		final String defaultSeparator = "<br/>";
+		String separator = section.getAttributeValue("separator"); 
+		if (section.getAttributeValue("separator") == null) {
+			separator = defaultSeparator;
+		}
+		result.setSeparator(separator);
+								
+		LOGGER.debug("Dataset: " + dataset);
+		
+		for (Element e:children) {
+			if (e.getName().equals("field")) {
+				addFieldToResult(e, namespace, result, dataset, separator);
+			} 
 		}
 		return result;
 	}
@@ -417,9 +465,10 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * The validity of the xml file is not checked!!!
 	 * @param context The xml context <code>Element</code> to parse.
 	 * @param dataset The dataset that contains the SQL query results.
+	 * @param namespace The namespace of the document
 	 * @return A <code>Section</code> object containing the context sections content or <code>null</code> if access is denied.
 	 */
-	public Section getContentFromContext(final Element context, final Dataset dataset) {
+	public Section getContentFromContext(final Element context, final Dataset dataset, final Namespace namespace) {
 		
 		if (!hasMinGroupId(context.getAttributeValue("minGroupId"))) {
 			return null;
@@ -427,6 +476,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		
 		final Section result = new Section();
 		final String contextType = context.getAttributeValue("type");
+		
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
 		result.setLabel(context.getAttributeValue("labelKey"));
 		
@@ -438,33 +488,63 @@ public class XmlConfigUtil implements ServletContextAware {
 			parentSeparator = "<br/>";
 		}
 		
-		final List<Element> children = context.getChildren();
-		final String defaultSeparator = "<br/>";
-		String separator = context.getAttributeValue("separator"); 
-		if (context.getAttributeValue("separator") == null) {
-			separator = defaultSeparator;
-		}
-		result.setSeparator(separator);
+		// Are there any contextSection-Tags within the current context? 
+		final List<Element> contextSections = context.getChildren("contextSection", namespace);		
+		if(contextSections != null && !contextSections.isEmpty()) {
+			
+			// Iterate over all contexts of the current type 			
+			for (int i = 0; i < dataset.getContextSize(contextType); i++) {
 				
-		final FieldList fieldList = new FieldList();
-		for (int i = 0; i < dataset.getContextSize(contextType); i++) {
-			addFieldsToFieldList(children, fieldList, i, dataset, contextType, separator);
-		}
-		
-		if (fieldList.size() > 1) {
-			result.add(fieldList);
+				final ContextEntity curSectionContent = new ContextEntity();
+				
+				// Iterate over all contextSections within the current processed context
+				for(Element curSection : contextSections) {
+					final FieldList fieldList = new FieldList();
+					Section localContext = new Section();
+					
+					// store the section lable of the current context
+					final List<Element> childFields = curSection.getChildren();
+					localContext.setLabel(curSection.getAttributeValue("labelKey"));
+					
+					// add all child-fields of the current contextSection and retrieve their values
+					for(Element childField : childFields) {
+						addFieldToFieldList(childField, fieldList, i, dataset, contextType, parentSeparator);
+						
+					}
+					localContext.add(fieldList);
+					curSectionContent.add(localContext);
+				}
+				result.add(curSectionContent);
+			}
+
 		} else {
-			if (fieldList.size() == 1 ) {
-				final Field field = new Field();
-				field.setValue(fieldList.get(0));
-				result.add(field);
+			final List<Element> children = context.getChildren();
+			final String defaultSeparator = "<br/>";
+			String separator = context.getAttributeValue("separator"); 
+			if (context.getAttributeValue("separator") == null) {
+				separator = defaultSeparator;
+			}
+			result.setSeparator(separator);
+					
+			final FieldList fieldList = new FieldList();
+			for (int i = 0; i < dataset.getContextSize(contextType); i++) {
+				addFieldsToFieldList(children, fieldList, i, dataset, contextType, separator);
+			}
+			
+			if (fieldList.size() > 1) {
+				result.add(fieldList);
+			} else {
+				if (fieldList.size() == 1 ) {
+					final Field field = new Field();
+					field.setValue(fieldList.get(0));
+					result.add(field);
+				}
+			}
+			
+			if (result.getContent().isEmpty()) {
+				return null;
 			}
 		}
-		
-		if (result.getContent().isEmpty()) {
-			return null;
-		}
-		
 		return result;
 	}
 	
@@ -506,6 +586,9 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 		
 		final String initialValue = dataset.getFieldFromContext(contextType + element.getAttributeValue("datasource"), index);
+		
+		LOGGER.debug("Initial Value: " + initialValue);
+		
 		StringBuffer value = null;
 		if (initialValue != null) {
 			value = new StringBuffer(initialValue);
@@ -644,7 +727,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		if (cachedContextList == null) {
 			final List<String> externalFields = getExternalFields(type);
 			final List<String> mandatoryContextTypes = new ArrayList<String>();
-
+			
 			for (String currentField: externalFields) {
 				final String[] contextTypes = currentField.split("\\.");
 				if (mandatoryContextTypes.isEmpty() || !mandatoryContextTypes.contains(contextTypes[0])) {
@@ -690,13 +773,11 @@ public class XmlConfigUtil implements ServletContextAware {
 		final List<String> result = new ArrayList<String>();
 		
 		final List<Element> children = element.getChildren();
-		
 		if ("context".equals(element.getName()) && !children.isEmpty()) {
 			getFieldNamesFromContext(element, parentType, result, children);
 		} else {
 			getFieldNamesFromField(element, parentType, result, children);
 		}
-		
 		return result;
 	}
 
@@ -736,20 +817,47 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param result The result list containing the full qualified field names.
 	 * @param children The children of <code>element</code>.
 	 */
-	private void getFieldNamesFromContext(final Element element, final String parentType, final List<String> result,
+	private void getFieldNamesFromContext(final Element element,
+			final String parentType, final List<String> result,
 			final List<Element> children) {
-		
+
 		final String context = element.getAttributeValue("type");
-		for (Element e:children) {
-			String datasourceValue = e.getAttributeValue("datasource");  
-			if (!StrUtils.isEmptyOrNull(datasourceValue)) {
-				datasourceValue = context + datasourceValue; // NOPMD
-				if (!datasourceValue.startsWith(parentType) && !datasourceValue.startsWith("Dataset")) {
-					result.add(datasourceValue);
+
+		for (Element e : children) {
+			if (e.getName().equals("contextSection")) {
+				final List<Element> contextSectionChildren = e.getChildren();
+				for (Element sectionChild : contextSectionChildren) {
+					addContextFieldToList(sectionChild, parentType, result,
+							context);
 				}
+			} else {
+				addContextFieldToList(e, parentType, result, context);
 			}
 		}
 	}
+
+	/**
+	 * Internal function adds the passed field to the passed result
+	 * @param field Field, whose datasource is added
+	 * @param parentType The category of the dataset
+	 * @param result The result list containing the full qualified field names.
+	 * @param context Context which is used to qualify the field names
+	 */
+	private void addContextFieldToList(final Element field,
+			final String parentType, final List<String> result,
+			final String context) {
+		String datasourceValue = field.getAttributeValue("datasource");
+		if (!StrUtils.isEmptyOrNull(datasourceValue)) {
+			datasourceValue = context + datasourceValue; // NOPMD
+			// Exception for objekt-Subgroups e.g. objektkeramik, these are handled specially
+			// Add Exception for Fabric / Fabricdescription as they shouldnt be handled as Object-/Sub-Object
+			if ((!datasourceValue.startsWith(parentType)
+					&& !datasourceValue.startsWith("Dataset")) || parentType.equals("fabric")) {
+				result.add(datasourceValue);
+			}
+		}
+	}
+	
 	
 	/**
 	 * Convenience method to clear the current XML config document, include element cache and mandatory context list cache.

@@ -5,42 +5,34 @@
     <display>
         <title>
             <section separator=" / ">
-                <context type="mainabstract.morphology" separator=" ">
-                    <field datasource=".Level6">
-                        <ifEmpty>
-                            <field datasource=".Level5">
-                                <ifEmpty>
-                                    <field datasource=".Level4">
-                                        <ifEmpty>
-                                            <field datasource=".Level3">
-                                                <ifEmpty>
-                                                  <field datasource=".Level2">
-                                                  <ifEmpty>
-                                                  <field datasource=".Level1"/>
-                                                  </ifEmpty>
-                                                  </field>
-                                                </ifEmpty>
-                                            </field>
-                                        </ifEmpty>
-                                    </field>
-                                </ifEmpty>
-                            </field>
-                        </ifEmpty>
-                    </field>
-                </context>
-                <context type="mainabstract.fabric" separator=" ">
-                    <field datasource=".Origin"/>
-                    <field datasource=".CommonName"/>
-                    <field datasource=".Name" />
-                </context>
+                <field datasource="morphology.Level6">
+                    <ifEmpty>
+                        <field datasource="morphology.Level5">
+                            <ifEmpty>
+                                <field datasource="morphology.Level4">
+                                    <ifEmpty>
+                                        <field datasource="morphology.Level3">
+                                            <ifEmpty>
+                                                <field datasource="morphology.Level2">
+                                                    <ifEmpty>
+                                                        <field datasource="morphology.Level1"/>
+                                                    </ifEmpty>
+                                                </field>
+                                            </ifEmpty>
+                                        </field>
+                                    </ifEmpty>
+                                </field>
+                            </ifEmpty>
+                        </field>
+                    </ifEmpty>
+                </field>
+                <field datasource="befund.Grabungsort"/>
+                <field datasource="fabric.CommonName"/>
             </section>
         </title>
         <subtitle>
-            <section separator=" / ">
-                <context type="mainabstract.befund" separator=" ">
-                    <field datasource=".Grabungsort"/>
-                    <field datasource=".Befund"/>
-                </context>
+            <section labelKey="Quantity">
+                <field datasource="Dataset.Id" />
             </section>
         </subtitle>
 

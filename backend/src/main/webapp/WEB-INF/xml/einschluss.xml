@@ -9,30 +9,43 @@
             </section>
         </title>
         <subtitle>
-            <section separator=" / ">
-                <field datasource="einschluss.Einschlussart"/>
+            <section labelKey="Inclusion">
+                <field datasource="Dataset.Id"/>
             </section>
         </subtitle>
-        
+
         <datasections>
             <section labelKey="Informationen zum Einschluss">
-                <field datasource="einschluss.Einschlussart"/>
-                <field datasource="einschluss.Haeufigkeit"/>
-                <field datasource="einschluss.DurchschnittlicheGroesse"/>
-                <field datasource="einschluss.Verteilung"/>
-                <field datasource="einschluss.Form"/>
-                <field datasource="einschluss.Opacity"/>
-                <field datasource="einschluss.ColourQualifierVon"/>
-                <field datasource="einschluss.ColourFreeVon"/>
-                <field datasource="einschluss.ColourQualifierBis"/>
-                <field datasource="einschluss.ColourFreeBis"/>
-                <field datasource="einschluss.Opacity"/>
+                <section labelKey="Einschlussart">
+                    <field datasource="einschluss.Einschlussart"/>
+                </section>
+                <section labelKey="Häufigkeit">
+                    <field datasource="einschluss.Haeufigkeit"/>
+                </section>
+                <section labelKey="Durchschnittliche Größe">
+                    <field datasource="einschluss.DurchschnittlicheGroesse"/>
+                </section>
+                <section labelKey="Verteilung">
+                    <field datasource="einschluss.Verteilung"/>
+                </section>
+                <section labelKey="Form">
+                    <field datasource="einschluss.Form"/>
+                </section>
+                <section labelKey="Opazität">
+                    <field datasource="einschluss.Opacity"/>
+                </section>
+                <section labelKey="Freie Farbbeschreibung" separator=" ">
+                    <field datasource="einschluss.ColourQualifierVon"/>
+                    <field datasource="einschluss.ColourFreeVon" postfix=" - "/>
+                    <field datasource="einschluss.ColourQualifierBis"/>
+                    <field datasource="einschluss.ColourFreeBis"/>
+                </section>
             </section>
         </datasections>
     </display>
     <facets>
         <facet name="kategorie" labelKey="Kategorie">
-            <field datasource="Dataset.TableName" />
+            <field datasource="Dataset.TableName"/>
         </facet>
     </facets>
 </category>

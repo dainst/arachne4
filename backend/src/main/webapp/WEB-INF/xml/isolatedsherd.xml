@@ -10,34 +10,69 @@
             </section>
         </title>
         <subtitle>
-            <section separator=" / ">
-                <field datasource="isolatedsherd.SherdType"/>
+            <section labelKey="Sherd">
+                <field datasource="Dataset.Id"/>
             </section>
         </subtitle>
-        
         <datasections>
             <section labelKey="Informationen zum Keramikfragment">
-                <field datasource="isolatedsherd.SherdType"/>
-                <field datasource="isolatedsherd.Diameter" postfix="cm"/>
-                <field datasource="isolatedsherd.Height" postfix="cm"/>
-                <field datasource="isolatedsherd.Width" postfix="cm"/>
-                <field datasource="isolatedsherd.Length" postfix="cm"/>
-                <field datasource="isolatedsherd.Thickness" postfix="cm"/>
-                <field datasource="isolatedsherd.Weight" postfix="g"/>
-                <field datasource="isolatedsherd.RimPercentage" postfix="%"/>
+                <section labelKey="Fragmenttyp">
+                    <field datasource="isolatedsherd.SherdType"/>
+                </section>
+                <section labelKey="Durchmesser">
+                    <field datasource="isolatedsherd.Diameter" postfix="cm"/>
+                </section>
+                <section labelKey="Höhe">
+                    <field datasource="isolatedsherd.Height" postfix="cm"/>
+                </section>
+                <section labelKey="Breite">
+                    <field datasource="isolatedsherd.Width" postfix="cm"/>
+                </section>
+                <section labelKey="Länge">
+                    <field datasource="isolatedsherd.Length" postfix="cm"/>
+                </section>
+                <section labelKey="Dicke">
+                    <field datasource="isolatedsherd.Thickness" postfix="cm"/>
+                </section>
+                <section labelKey="Gewicht">
+                    <field datasource="isolatedsherd.Weight" postfix="g"/>
+                </section>
+                <section labelKey="Prozentualer Randanteil">
+                    <field datasource="isolatedsherd.RimPercentage" postfix="%"/>
+                </section>
             </section>
             <section labelKey="Informationen zur Oberflaechenbehandlung">
                 <context type="surfacetreatment" labelKey="Oberflächenbehandlung" separator=" ">
                     <field datasource=".Bezeichner"/>
-                    <field datasource=".ConnectedActions"></field>
-              </context>
+                    <field datasource=".ConnectedActions"/>
+                </context>
             </section>
-            <include type="ort" />
+            <include type="ort"/>
         </datasections>
     </display>
     <facets>
         <facet name="kategorie" labelKey="Kategorie">
-            <field datasource="Dataset.TableName" />
+            <field datasource="Dataset.TableName"/>
+        </facet>
+        <facet name="sherdtype" labelKey="Typ des Keramikfragments">
+            <field datasource="isolatedsherd.SherdType"/>
+        </facet>
+        <facet name="inventorynumber" labelKey="Inventernummer">
+            <field datasource="isolatedsherd.InventoryNumber"/>
+        </facet>
+        <facet name="nitonanalysisnumber" labelKey="Niton-Analyse-Nummer">
+            <field datasource="isolatedsherd.NitonAnalysisID"/>
+        </facet>
+        <facet name="surfacetreatment-bezeichner" labelKey="Oberflächenbehandlung">
+            <context type="surfcatreatment">
+                <field datasource="surfacetreatment.Bezeichner"/>
+            </context>
+        </facet>
+        <facet name="ort" labelKey="Lokalisierung">
+            <context type="ort" separator=", ">
+                <field datasource=".Stadt"/>
+                <field datasource=".Land"/>
+            </context>
         </facet>
     </facets>
 </category>

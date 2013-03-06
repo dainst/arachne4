@@ -63,6 +63,7 @@
     	<xs:choice maxOccurs="unbounded">
             <xs:element name="field" type="FieldContent" />
             <xs:element name="linkField" type="LinkFieldContent" />
+    	    <xs:element name="contextSection" type="ContextSection" />
         </xs:choice>
         <xs:attribute name="type" type="xs:string" use="required" />
         <xs:attribute name="labelKey" type="xs:string" />
@@ -72,6 +73,14 @@
     
     <xs:complexType name="IncludeContent">
     	<xs:attribute name="type" type="xs:string" use="required" />
+    </xs:complexType>
+    
+    <xs:complexType name="ContextSection">
+        <xs:sequence maxOccurs="unbounded">
+            <xs:element name="field" type="FieldContent" />
+        </xs:sequence>
+        <xs:attribute name="labelKey" type="xs:string" />
+        <xs:attribute name="separator" type="xs:string" />
     </xs:complexType>
     
     <xs:complexType name="FieldContent">

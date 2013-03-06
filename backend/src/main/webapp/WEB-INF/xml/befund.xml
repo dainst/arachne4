@@ -11,49 +11,112 @@
             </section>
         </title>
         <subtitle>
-            <section separator=" / ">
-                <field datasource="befund.Grabungsort"/>
+            <section labelKey="Context" >
+                <field datasource="Dataset.Id" />
             </section>
         </subtitle>
-
         <datasections>
             <section labelKey="Informationen zum Befund">
-                <field datasource="befund.Grabungsort"/>
-                <field datasource="befund.Befund"/>
-                <field datasource="befund.Areal"/>
-                <field datasource="befund.Kommentar"/>
+                <section labelKey="Befund">
+                    <section labelKey="Grabungsort">
+                        <field datasource="befund.Grabungsort"/>
+                    </section>
+                    <section labelKey="Befund">
+                        <field datasource="befund.Befund"/>
+                    </section>
+                    <section labelKey="Areal">
+                        <field datasource="befund.Areal"/>
+                    </section>
+                    <section labelKey="Kommentar">
+                        <field datasource="befund.Kommentar"/>
+                    </section>
+                </section>
+
+                <include type="ort"/>
+
+                <section labelKey="VerbundeneDatensaetze">
+                    <context type="Befundmainabstractmorphology" separator=" / "
+                        labelKey="Morphologies">
+                        <field datasource=".Level1"/>
+                        <field datasource=".Level2"/>
+                        <field datasource=".Level3"/>
+                        <field datasource=".Level4"/>
+                        <field datasource=".Level5"/>
+                        <field datasource=".Level6"/>
+                    </context>
+                    <context type="mainabstract" labelKey="Intene Typnummer" separator=", ">
+                        <field datasource=".GrabungsinterneTypennummer"/>
+                        <field datasource=".GrabungsinterneTypennummerSub"/>
+                    </context>
+                    <context type="Befundmainabstractfabric" labelKey="Fabrics" separator=" / ">
+                    	<!-- 
+                        <field datasource=".Origin"/>
+                        <field datasource=".CommonName"/>
+                        <field datasource=".Name"/>
+                        -->
+                                                
+                        <contextSection labelKey="AllgemeinerName">
+                            <field datasource=".CommonName"/>
+                        </contextSection>
+                        <contextSection labelKey="Herkunft">
+                            <field datasource=".Origin"/>
+                        </contextSection>
+                        <contextSection labelKey="Name">
+                            <field datasource=".Name"/>
+                        </contextSection>
+                        
+                    </context>
+                    <context type="Befundmainabstractisolatedsherd" 
+                        separator=" / " labelKey="Scherben">
+                        <field datasource=".SherdType"/>
+                        <field datasource=".InventoryNumber"/>
+                        <field datasource=".NitonAnalysisNumber"/>
+                    </context>
+                </section>
             </section>
-            <include type="datierung" />
-            <include type="ort" />
-            <section labelKey="Verbundene Hauptobjekte">
-                <context type="mainabstract.morphology" separator=", " labelKey="Morphologie">
-                    <field datasource=".Level1"/>
-                    <field datasource=".Level2"/>
-                    <field datasource=".Level3"/>
-                    <field datasource=".Level4"/>
-                    <field datasource=".Level5"/>
-                    <field datasource=".Level6"/>
-                </context>
-                <context type="mainabstract" labelKey="Intene Typnummer" separator=", ">
-                    <field datasource=".GrabungsinterneTypennummer"/>
-                    <field datasource=".GrabungsinterneTypennummerSub"/>
-                </context>
-                <context type="mainabstract.fabric" separator=", " labelKey="Fabric">
-                    <field datasource=".Name"/>
-                    <field datasource=".CommonName"/>
-                </context>
-            </section>
-            <context type="mainabstract.isolatedsherd" separator=", "
-                labelKey="Verbundene Keramikfragmente">
-                <field datasource=".SherdType" />
-                <field datasource=".InventoryNumber" />
-                <field datasource=".NitonAnalysisNumber" />
-            </context>
+            <include type="datierung"/>
         </datasections>
     </display>
     <facets>
         <facet name="kategorie" labelKey="Kategorie">
             <field datasource="Dataset.TableName"/>
+        </facet>
+        <facet name="ort" labelKey="Lokalisierung">
+            <context type="ort" separator=", ">
+                <field datasource=".Stadt"/>
+                <field datasource=".Land"/>
+            </context>
+        </facet>
+        <facet name="grabungsort" labelKey="Grabungsort">
+            <field datasource="befund.Grabungsort"/>
+        </facet>
+        <facet name="befund" labelKey="Befund">
+            <field datasource="befund.Befund"/>
+        </facet>
+        <facet name="Befundmainabstractmorphology" labelKey="Hauptobjekt-Morphologie">
+            <context type="Befundmainabstractmorphology" separator=" / ">
+                <field datasource=".Level6">
+                    <ifEmpty>
+                        <field datasource=".Level5">
+                            <ifEmpty>
+                                <field datasource=".Level4">
+                                    <ifEmpty>
+                                        <field datasource=".Level3">
+                                            <ifEmpty>
+                                                <field datasource=".Level2">
+                                                  <ifEmpty>
+                                                  <field datasource=".Level1"/>
+                                                  </ifEmpty>
+                                                </field>
+                                            </ifEmpty>
+                                        </field>
+                                    </ifEmpty>
+                                </field>
+                            </ifEmpty>
+                        </field>
+                    </ifEmpty>
+                </field>
+            </context>
         </facet>
     </facets>
 </category>

@@ -6,23 +6,23 @@
         <title>
             <section separator=" / ">
                 <field datasource="fabric.Origin"/>
+                <field datasource="fabric.Name"/>
                 <field datasource="fabric.CommonName"/>
             </section>
         </title>
         <subtitle>
-            <section separator=" / ">
-                <field datasource="fabric.Name"/>        
+            <section labelKey="Fabric">
+                <field datasource="Dataset.ID"/>
             </section>
         </subtitle>
-        
         <datasections>
-            <section labelKey="Fabricdescription">
-                <context type="fabricdescription" labelKey="Fabricdescription" separator=" ">
+            <section labelKey="VerbundeneFabricBeschreibungen">
+                <context type="fabricdescription" labelKey="Description" separator=", ">
                     <field datasource=".ColourOfBreakQualifierVon"/>
                     <field datasource=".ColourOfBreakVon"/>
                     <field datasource=".ColourOfBreakQualifierBis"/>
                     <field datasource=".ColourOfBreakBis"/>
-                    <field datasource=".Zoning" />
+                    <field datasource=".Zoning"/>
                     <field datasource=".ColourOfCoreQualifierVon"/>
                     <field datasource=".ColourOfCoreVon"/>
                     <field datasource=".ColourOfCoreQualifierBis"/>
@@ -31,9 +31,9 @@
                     <field datasource=".ColourOfOutsideVon"/>
                     <field datasource=".ColourOfOutsideQualifierBis"/>
                     <field datasource=".ColourOfOutsideBis"/>
-                    <field datasource=".Manufacture" />
-                    <field datasource=".Hardness" />
-                    <field datasource=".Porosity" />
+                    <field datasource=".Manufacture"/>
+                    <field datasource=".Hardness"/>
+                    <field datasource=".Porosity"/>
                     <field datasource=".SurfaceFeel"/>
                     <field datasource=".ColourQualifierFreeVon"/>
                     <field datasource=".ColourFreeVon"/>
@@ -44,8 +44,31 @@
         </datasections>
     </display>
     <facets>
+        <facet name="Fabricmainabstractcontext" labelKey="Fabric-Context">
+            <context type="Fabricmainabstractcontext" separator=" / ">
+                <field datasource=".Grabungsort" />
+                <field datasource=".Befund" />
+                <field datasource=".Areal" />
+            </context>
+        </facet>
+        <facet name="Fabricmainabstractmorphology" labelKey="Fabric-Morphology">
+            <context type="Fabricmainabstractmorphology" separator=" / ">
+                <field datasource=".Level1" />
+                <field datasource=".Level2" />
+                <field datasource=".Level3" />
+                <field datasource=".Level4" />
+                <field datasource=".Level5" />
+                <field datasource=".Level6" />
+            </context>
+        </facet>
         <facet name="kategorie" labelKey="Kategorie">
-            <field datasource="Dataset.TableName" />
+            <field datasource="Dataset.TableName"/>
+        </facet>
+        <facet name="fabric-common-name" labelKey="Common Name">
+            <field datasource="fabric.CommonName"/>
+        </facet>
+        <facet name="fabric-name" labelKey="Name">
+            <field datasource="fabric.Name"/>
         </facet>
     </facets>
 </category>

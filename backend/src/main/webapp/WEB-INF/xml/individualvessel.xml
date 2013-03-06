@@ -9,35 +9,68 @@
             </section>
         </title>
         <subtitle>
-            <section separator=" / ">
-                <field datasource="individualvessel.RimCount"/>
+            <section labelKey="Individual Vessel">
+                <field datasource="Dataset.Id"/>
             </section>
         </subtitle>
         <datasections>
             <section labelKey="Quantifizierung des Gefäßes">
-                <field datasource="individualvessel.RimCount"/>
-                <field datasource="individualvessel.HanldeCount"/>
-                <field datasource="individualvessel.BaseCount"/>
-                <field datasource="individualvessel.BodySherdCount"/>
-                <field datasource="individualvessel.OthersCount"/>
-                <field datasource="individualvessel.Joins"/>
-                <field datasource="individualvessel.RimPercentage"/>
+                <section labelKey="Anzahl Randfragmente">
+                    <field datasource="individualvessel.RimCount"/>
+                </section>
+                <section labelKey="Anzahl Henkel">
+                    <field datasource="individualvessel.HanldeCount"/>
+                </section>
+                <section labelKey="Anzahl Bodenfragmente">
+                    <field datasource="individualvessel.BaseCount"/>
+                </section>
+                <section labelKey="Anzahl Wandfragmente">
+                    <field datasource="individualvessel.BodySherdCount"/>
+                </section>
+                <section labelKey="Anzahl weiterer Fragmente">
+                    <field datasource="individualvessel.OthersCount"/>
+                </section>
+                <section labelKey="Anzahl Joins">
+                    <field datasource="individualvessel.Joins"/>
+                </section>
+                <section labelKey="Prozentualer Randanteil">
+                    <field datasource="individualvessel.RimPercentage" postfix="%"/>
+                </section>
             </section>
             <section labelKey="Maße des Gefäßes">
-                <field datasource="individualvessel.Height" postfix="cm"/>
-                <field datasource="individualvessel.Width" postfix="cm"/>
-                <field datasource="individualvessel.Length" postfix="cm"/>
-                <field datasource="individualvessel.Thickness" postfix="cm"/>
-                <field datasource="individualvessel.BaseDiameter" postfix="cm"/>
-                <field datasource="individualvessel.RimDiameter" postfix="cm"/>
-                <field datasource="individualvessel.WidestDiameter" postfix="cm"/>
-                <field datasource="individualvessel.Volume" postfix="cm³"/>
+                <section labelKey="Höhe">
+                    <field datasource="individualvessel.Height" postfix="cm"/>
+                </section>
+                <section labelKey="Breite">
+                    <field datasource="individualvessel.Width" postfix="cm"/>
+                </section>
+                <section labelKey="Länge">
+                    <field datasource="individualvessel.Length" postfix="cm"/>
+                </section>
+                <section labelKey="Dicke">
+                    <field datasource="individualvessel.Thickness" postfix="cm"/>
+                </section>
+                <section labelKey="Bodendurchmesser">
+                    <field datasource="individualvessel.BaseDiameter" postfix="cm"/>
+                </section>
+                <section labelKey="Randdurchmesser">
+                    <field datasource="individualvessel.RimDiameter" postfix="cm"/>
+                </section>
+                <section labelKey="Durchmesser der breitesten Stelle">
+                    <field datasource="individualvessel.WidestDiameter" postfix="cm"/>
+                </section>
+                <section labelKey="Volumen">
+                    <field datasource="individualvessel.Volume" postfix="cm³"/>
+                </section>
             </section>
         </datasections>
     </display>
     <facets>
         <facet name="kategorie" labelKey="Kategorie">
             <field datasource="Dataset.TableName" />
+        </facet>
+        <facet name="vessel-inventorynumber" labelKey="Inventarnummer">
+            <field datasource="individualvessel.InventoryNumber" />
         </facet>
     </facets>
 </category>

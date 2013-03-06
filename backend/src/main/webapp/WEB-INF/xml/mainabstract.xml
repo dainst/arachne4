@@ -5,98 +5,195 @@
     <display>
         <title>
             <section separator=" / ">
-                <field datasource="befund.Grabungsort" />
-                <field datasource="befund.Befund"></field>
+                <section separator=" - ">
+                    <field datasource="morphology.Level1" />
+                    <field datasource="morphology.Level2" />
+                    <field datasource="morphology.Level3" />
+                    <field datasource="morphology.Level4" />
+                    <field datasource="morphology.Level5" />
+                    <field datasource="morphology.Level6" />
+                </section>
+                <section separator=" / ">
+                    <field datasource="befund.Grabungsort"/>
+                    <field datasource="fabric.CommonName"/>
+                </section>
             </section>
         </title>
         <subtitle>
-            <section separator=" / ">
-                <section separator=" / ">
-                    <field datasource="mainabstract.GrabungsinterneTypennummer" />
-                    <field datasource="mainabstract.GrabungsinterneTypennummerSub" />
-                    <field datasource="morphology.Level6">
-                        <ifEmpty>
-                            <field datasource="morphology.Level5" >
-                                <ifEmpty>
-                                    <field datasource="morphology.Level4" >
-                                        <ifEmpty>
-                                            <field datasource="morphology.Level3" >
-                                                <ifEmpty>
-                                                    <field datasource="morphology.Level2" >
-                                                        <ifEmpty>
-                                                            <field datasource="morphology.Level1" />
-                                                        </ifEmpty>
-                                                    </field>
-                                                </ifEmpty>
-                                            </field>
-                                        </ifEmpty>
-                                    </field>    
-                                 </ifEmpty>
-                             </field>
-                         </ifEmpty> 
-                    </field>
-                </section>
+            <section labelKey="Main Abstract" >
+                <field datasource="Dataset.Id" />
             </section>
         </subtitle>
         <datasections>
             <section labelKey="Informationen zum Abstract">
                 <section labelKey="Befund">
-                    <context type="befund" labelKey="Befund" separator=", ">
-                        <field datasource=".Grabungsort"  />
-                        <field datasource=".Befund" />
-                        <field datasource=".Areal" />
-                    </context>
+                    <section labelKey="Grabungsort">
+                        <field datasource="befund.Grabungsort"/>
+                    </section>
+                    <section labelKey="Befund">
+                        <field datasource="befund.Befund"/>
+                    </section>
+                    <section labelKey="Areal">
+                        <field datasource="befund.Areal"/>
+                    </section>
                 </section>
-                <section labelKey="Morphology">
-                    <context type="morphology" labelKey="Morphology / Typologie" separator=", ">
-                        <field datasource=".Level1"  />
-                        <field datasource=".Level2"  />
-                        <field datasource=".Level3"  />
-                        <field datasource=".Level4"  />
-                        <field datasource=".Level5"  />
-                        <field datasource=".Level6"  />
-                    </context>
-                    <section labelKey="Interne Typnummer">
-                        <field datasource="mainabstract.GrabungsinterneTypennummer" />
-                        <field datasource="mainabstract.GrabungsinterneTypennummerSub" />
+                <section labelKey="Morphologie">
+                    <section labelKey="Level 1">
+                        <field datasource="morphology.Level1"/>
+                    </section>
+                    <section labelKey="Level 2">
+                        <field datasource="morphology.Level2"/>
+                    </section>
+                    <section labelKey="Level 3">
+                        <field datasource="morphology.Level3"/>
+                    </section>
+                    <section labelKey="Level 4">
+                        <field datasource="morphology.Level4"/>
+                    </section>
+                    <section labelKey="Level 5">
+                        <field datasource="morphology.Level5"/>
+                    </section>
+                    <section labelKey="Level 6">
+                        <field datasource="morphology.Level6"/>
+                    </section>
+                    <section labelKey="Interne Typnummer" separator=", ">
+                        <field datasource="mainabstract.GrabungsinterneTypennummer"/>
+                        <field datasource="mainabstract.GrabungsinterneTypennummerSub"/>
+                    </section>
+                </section>
+                <section labelKey="Fabric">
+                    <section labelKey="Herkunft">
+                        <field datasource="fabric.origin"/>
+                    </section>
+                    <section labelKey="AllgemeinerName">
+                        <field datasource="fabric.CommonName"/>
+                    </section>
+                    <section labelKey="Name">
+                        <field datasource="fabric.Name"/>
                     </section>
                 </section>
                 
-                <include type="datierung" />
+               <include type="datierung"/>
                 
-                <section labelKey="Keramikfragmente">
-                    <context type="isolatedsherd" labelKey="Keramikfragmente" separator=" ">
-                        <field datasource=".SherdType" />
-                        <field datasource=".InventoryNumber" />
-                        <field datasource=".NitonAnalysisNumber" />
+                <section labelKey="Verbundene Keramikfragmente">
+                    <context type="isolatedsherd" labelKey="Fragment">
+                        <field datasource=".SherdType" prefix="Scherbentyp: "/>
+                        <field datasource=".InventoryNumber" prefix="Inventarnummer: "/>
+                        <field datasource=".NitonAnalysisNumber" prefix="Niton-Analyse-Nummer: "/>
                     </context>
                 </section>
-                
-                <section labelKey="Quantifizierung">
-                    <context type="quantities" labelKey="Quantifizierung" separator=" ">
-                        <field datasource=".RimCount" />
-                        <field datasource=".RimWeight" postfix="g"/>
-                        <field datasource=".RimPercentage" postfix="%"/>
-                        <field datasource=".HandleCount" />
-                        <field datasource=".HandleWeight" postfix="g"/>
-                        <field datasource=".BaseCount" />
-                        <field datasource=".BaseWeight" postfix="g"/>
-                        <field datasource=".BodySherdCount" />
-                        <field datasource=".BodySherdWeight" postfix="g"/>
-                        <field datasource=".OthersCount" />
-                        <field datasource=".OthersWeight" postfix="g"/>
-                        <field datasource=".Joins" />
-                        <field datasource=".MNI" />
-                        <field datasource=".MNIWeighted" />
-                        <field datasource=".MXI" />
-                    </context>
-                </section>                      
+                <section labelKey="Informationen zur Quantifizierung">
+                    <section labelKey="Anzahl Ränder">
+                        <field datasource="quantities.RimCount"/>
+                    </section>
+                    <section labelKey="Gewicht Ränder">
+                        <field datasource="quantities.RimWeight" postfix="g"/>
+                    </section>
+                    <section labelKey="Prozentualer Randanteil">
+                        <field datasource="quantities.RimPercentage" postfix="%"/>
+                    </section>
+                    <section labelKey="Anzahl Henkel">
+                        <field datasource="quantities.HandleCount"/>
+                    </section>
+                    <section labelKey="Gewicht Henkel">
+                        <field datasource="quantities.HandleWeight" postfix="g"/>
+                    </section>
+                    <section labelKey="Anzahl Bodenfragmente">
+                        <field datasource="quantities.BaseCount"/>
+                    </section>
+                    <section labelKey="Gewicht Bodenfragmente">
+                        <field datasource="quantities.BaseWeight" postfix="g"/>
+                    </section>
+                    <section labelKey="Anzahl Wandscherben">
+                        <field datasource="quantities.BodySherdCount"/>
+                    </section>
+                    <section labelKey="Gewicht Wandscherben">
+                        <field datasource="quantities.BodySherdWeight" postfix="g"/>
+                    </section>
+                    <section labelKey="Anzahl andere Fragmente">
+                        <field datasource="quantities.OthersCount"/>
+                    </section>
+                    <section labelKey="Gewicht andere Fragmente">
+                        <field datasource="quantities.OthersWeight" postfix="g"/>
+                    </section>
+                    <section labelKey="Anzahl Joins">
+                        <field datasource="quantities.Joins"/>
+                    </section>
+                    <section labelKey="MNI">
+                        <field datasource="quantities.MNI"/>
+                    </section>
+                    <section labelKey="Gewichtetes MNI">
+                        <field datasource="quantities.MNIWeighted"/>
+                    </section>
+                    <section labelKey="MXI">
+                        <field datasource="quantities.MXI"/>
+                    </section>
+                </section>
             </section>
         </datasections>
     </display>
     <facets>
         <facet name="kategorie" labelKey="Kategorie">
-            <field datasource="Dataset.TableName" />
+            <field datasource="Dataset.TableName"/>
+        </facet>
+        <facet name="befund" labelKey="Befund">
+            <context type="befund" separator=", ">
+                <field datasource=".Grabungsort"/>
+                <field datasource=".Befund"/>
+            </context>
+        </facet>
+        <facet name="morphology" labelKey="Morphologie">
+            <context type="morphology">
+                <field datasource=".Level6">
+                    <ifEmpty>
+                        <field datasource=".Level5">
+                            <ifEmpty>
+                                <field datasource=".Level4">
+                                    <ifEmpty>
+                                        <field datasource=".Level3">
+                                            <ifEmpty>
+                                                <field datasource=".Level2">
+                                                  <ifEmpty>
+                                                  <field datasource=".Level1"/>
+                                                  </ifEmpty>
+                                                </field>
+                                            </ifEmpty>
+                                        </field>
+                                    </ifEmpty>
+                                </field>
+                            </ifEmpty>
+                        </field>
+                    </ifEmpty>
+                </field>
+            </context>
+        </facet>
+        <facet name="grabungsinterne-typnummer" labelKey="Grabunsinterne Typnummer">
+            <field datasource="mainabstract.GrabunsinterneTypnummer"/>
+        </facet>
+        <facet name="fabric-origin" labelKey="Fabric Ursprung">
+            <context type="fabric">
+                <field datasource=".Origin"/>
+            </context>
+        </facet>
+        <facet name="fabric-common-name" labelKey="Fabric Common Name">
+            <context type="fabric">
+                <field datasource=".CommonName"/>
+            </context>
+        </facet>
+        <facet name="fabric-name" labelKey="Fabric Name">
+            <context type="fabric">
+                <field datasource=".Name"/>
+            </context>
+        </facet>
+        <facet name="datierung-epoche" labelKey="Epoche">
+            <context type="datierung">
+                <field datasource=".AnfEpoche"/>
+            </context>
+        </facet>
+        <facet name="datierung-epoche" labelKey="Epoche">
+            <context type="datierung">
+                <field datasource=".EndEpoche"/>
+            </context>
         </facet>
     </facets>
 </category>

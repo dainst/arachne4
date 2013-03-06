@@ -4,13 +4,13 @@
     xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
     <display>
         <title>
-            <section separator=" / ">
+            <section>
                 <field datasource="surfacetreatment.Bezeichner"/>
             </section>
         </title>
         <subtitle>
-            <section separator=" / ">
-                <field datasource="surfacetreatment.Bezeichner"/>
+            <section labelKey="Surfacetreatment">
+                <field datasource="Dataset.Id"/>
             </section>
         </subtitle>
 
@@ -36,6 +36,29 @@
     <facets>
         <facet name="kategorie" labelKey="Kategorie">
             <field datasource="Dataset.TableName"/>
+        </facet>
+        <facet name="surfacetreatment-bezeichner" labelKey="Bezeichner">
+            <field datasource="surfacetreatment.Bezeichner"/>
+        </facet>
+        <facet name="surfacetreatmentaction-action" labelKey="Art der Oberflächenbehandlung">
+            <context type="surfacetreatmentaction">
+                <field datasource=".TreatmentAction"/>
+            </context>
+        </facet>
+        <facet name="surfacetreatmentaction-position" labelKey="Position der Oberflächenbehandlung">
+            <context type="surfacetreatmentaction">
+                <field datasource=".TreatmentPosition"/>
+            </context>
+        </facet>
+        <facet name="surfacetreatmentaction-moment" labelKey="Zeitpunkt der Oberflächenbehandlung">
+            <context type="surfacetreatmentaction">
+                <field datasource=".MomentOfSurfaceTreatmentAction"/>
+            </context>
+        </facet>
+        <facet name="surfacetreatmentaction-partofsurfacetreatet" labelKey="Behandelter Teil der Oberfläche">
+            <context type="surfacetreatmentaction">
+                <field datasource=".PartOfSurfaceTreated"/>
+            </context>
         </facet>
     </facets>
 </category>

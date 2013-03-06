@@ -9,24 +9,24 @@
                     <section separator=" / ">
                         <field datasource="morphology.Level6">
                             <ifEmpty>
-                                <field datasource="morphology.Level5" >
+                                <field datasource="morphology.Level5">
                                     <ifEmpty>
-                                        <field datasource="morphology.Level4" >
+                                        <field datasource="morphology.Level4">
                                             <ifEmpty>
-                                                <field datasource="morphology.Level3" >
-                                                    <ifEmpty>
-                                                        <field datasource="morphology.Level2" >
-                                                            <ifEmpty>
-                                                                <field datasource="morphology.Level1" />
-                                                            </ifEmpty>
-                                                        </field>
-                                                    </ifEmpty>
+                                                <field datasource="morphology.Level3">
+                                                  <ifEmpty>
+                                                  <field datasource="morphology.Level2">
+                                                  <ifEmpty>
+                                                  <field datasource="morphology.Level1"/>
+                                                  </ifEmpty>
+                                                  </field>
+                                                  </ifEmpty>
                                                 </field>
                                             </ifEmpty>
-                                        </field>    
+                                        </field>
                                     </ifEmpty>
                                 </field>
-                            </ifEmpty> 
+                            </ifEmpty>
                         </field>
                     </section>
                 </section>
@@ -34,27 +34,66 @@
         </title>
 
         <subtitle>
-            <section separator=" / ">
-                <field datasource="morphology.Level1"/>
+            <section labelKey="Morphology">
+                <field datasource="Dataset.Id"/>
             </section>
         </subtitle>
 
         <datasections>
             <section labelKey="Informationen zur Morphology">
-                <field datasource="morphology.Level1"/>
-                <field datasource="morphology.Level2"/>
-                <field datasource="morphology.Level3"/>
-                <field datasource="morphology.Level4"/>
-                <field datasource="morphology.Level5"/>
-                <field datasource="morphology.Level6"/>
+                <section labelKey="Informationen zur Morphologie">
+                    <section labelKey="Level 1">
+                        <field datasource="morphology.Level1"/>
+                    </section>
+                    <section labelKey="Level 2">
+                        <field datasource="morphology.Level2"/>
+                    </section>
+                    <section labelKey="Level 3">
+                        <field datasource="morphology.Level3"/>
+                    </section>
+                    <section labelKey="Level 4">
+                        <field datasource="morphology.Level4"/>
+                    </section>
+                    <section labelKey="Level 5">
+                        <field datasource="morphology.Level5"/>
+                    </section>
+                    <section labelKey="Level 6">
+                        <field datasource="morphology.Level6"/>
+                    </section>
+                </section>
+
+                <include type="datierung"/>
+                <include type="literatur"/>
             </section>
-            <include type="datierung" />
-            <include type="literatur" />
         </datasections>
     </display>
     <facets>
+        <facet name="Morphologymainabstractfabric" labelKey="Fabric">
+            <context type="Morphologymainabstractfabric" separator=" / ">
+                <field datasource=".Origin" />
+                <field datasource=".CommonName" />
+                <field datasource=".Name" />
+            </context>
+        </facet>
+        <facet name="Morphologymainabstractbefund" labelKey="Befund">
+            <context type="Morphologymainabstractbefund" separator=" / ">
+                <field datasource=".Grabungsort" />
+                <field datasource=".Befund" />
+                <field datasource=".Areal" />
+            </context>
+        </facet>
         <facet name="kategorie" labelKey="Kategorie">
-            <field datasource="Dataset.TableName" />
+            <field datasource="Dataset.TableName"/>
+        </facet>
+        <facet name="datierung-epoche" labelKey="Epoche">
+            <context type="datierung">
+                <field datasource=".AnfEpoche"/>
+            </context>
+        </facet>
+        <facet name="datierung-epoche" labelKey="Epoche">
+            <context type="datierung">
+                <field datasource=".EndEpoche"/>
+            </context>
         </facet>
     </facets>
 </category>

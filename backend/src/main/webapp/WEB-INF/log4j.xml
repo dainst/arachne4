@@ -10,6 +10,16 @@
 		</layout>
 	</appender>
 	
+	<appender name="rolling-file" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="/var/log/arachne/ceramalex-webservice/ceram_web.log" />
+		<param name="MaxFileSize" value="10240KB" />
+		<!-- Keep one backup file -->
+		<param name="MaxBackupIndex" value="4" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d [%t] %-5p %l - %m%n" />
+		</layout>
+	</appender>
+	
 	<!-- Application Loggers -->
 	<logger name="de.uni_koeln.arachne">
 		<level value="info" />
@@ -35,7 +45,8 @@
 	<!-- Root Logger -->
 	<root>
 		<priority value="warn" />
-		<appender-ref ref="console" />
+		<appender-ref ref="rolling-file" />
+		<!-- <appender-ref ref="console" />-->
 	</root>
 	
 </log4j:configuration>

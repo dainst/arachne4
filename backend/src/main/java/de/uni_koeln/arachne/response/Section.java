@@ -18,14 +18,14 @@ public class Section extends AbstractContent {
 	/**
 	 * The label used by the frontend.
 	 */
-	private String label;
+	protected String label;
 	
-	private String separator;
+	protected String separator;
 
 	/**
 	 * A list of content (either <code>Field</code> or <code>Section</code>).
 	 */
-	private transient final List<AbstractContent> content = new ArrayList<AbstractContent>();
+	protected transient final List<AbstractContent> content = new ArrayList<AbstractContent>();
 	
 	/**
 	 * Convenient function that adds a content object to the list of <code>Content</code>.
