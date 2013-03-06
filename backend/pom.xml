@@ -282,7 +282,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<warName>arachnedataservice_ceramalex</warName>
+					<warName>arachnedataservice_test</warName>
 				</configuration>
 				<executions>
 					<execution>
