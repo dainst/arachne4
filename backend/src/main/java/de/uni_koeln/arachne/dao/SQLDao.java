@@ -34,7 +34,7 @@ public class SQLDao {
 	 */
 	@Autowired
 	public void setDataSource(final DataSource dataSource) {
-		this.dataSource = dataSource;
+		this.dataSource = dataSource;		
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
@@ -49,7 +49,7 @@ public class SQLDao {
 			try {
 				return jdbcTemplate.query(sQLQuery,rowMapper);
 			} catch (DataAccessException e) {
-				LOGGER.error("DataAccessException: " + e.getRootCause());
+				// LOGGER.error("DataAccessException: " + e.getRootCause());
 				return null;
 			}
 		} else {

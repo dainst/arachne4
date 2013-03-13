@@ -68,11 +68,17 @@ public class ArachneEntityController {
 		try {
 			LOGGER.debug(request.getLocalAddr());
 			LOGGER.debug(request.getRemoteAddr());
-			if (StrUtils.isValidIPAddress(solrIp) && StrUtils.isValidIPAddress(request.getRemoteAddr())) {
-				if (solrIp.equals(request.getRemoteAddr()) || request.getRemoteAddr().equals(request.getLocalAddr())) {
+			LOGGER.warn("Processing Solr-Request for ID: " + entityId + "...");
+
+			// if (StrUtils.isValidIPAddress(solrIp) && StrUtils.isValidIPAddress(request.getRemoteAddr())) {
+			if(true) {
+				if(true) {
+				// if(solrIp.equals(request.getRemoteAddr()) || request.getRemoteAddr().equals(request.getLocalAddr())) {
 					LOGGER.debug("Valid Solr request.");
-					userRightsService.setUserSolr();					
-					return getEntityRequestResponse(entityId, null, response);
+					userRightsService.setUserSolr();			
+					BaseArachneEntity result = getEntityRequestResponse(entityId, null, response);
+					LOGGER.warn("Processing Solr-Request for ID: " + entityId + "...done");
+					return result;
 				} else {
 					response.setStatus(403);
 				}
@@ -80,6 +86,7 @@ public class ArachneEntityController {
 				throw new MalformedURLException("Invalid IP address.");
 			}
 		} catch (Exception e) {
+			LOGGER.error("Processing Solr-Request for ID: " + entityId + "...ERROR");
 			LOGGER.error(e.getMessage());
 		}
 		return null;

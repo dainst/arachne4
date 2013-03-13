@@ -387,8 +387,12 @@ public class XmlConfigUtil implements ServletContextAware {
 		} else {
 			value = new StringBuilder(initialValue);
 		}
+		
+		value = processSearchReplace(element, value);
+		
 		final String postfix = element.getAttributeValue("postfix");
 		final String prefix = element.getAttributeValue("prefix");
+		
 		if (value != null) {
 			if (prefix != null) {
 				value.insert(0, prefix);
@@ -411,6 +415,32 @@ public class XmlConfigUtil implements ServletContextAware {
 	}
 	
 	/**
+	 * Procedure realizes the search-replace-functionality of the XML-field-elements
+	 * @param element Element containing the value
+	 * @param value Stringbuilder which contains the current element-content
+	 * @return Value with "search" replaced by "replace"
+	 */
+	
+	private StringBuilder processSearchReplace(final Element element, final StringBuilder value) {
+		
+		if(value == null) {
+			return value;
+		}
+		
+		final String search = element.getAttributeValue("search");
+		final String replace = element.getAttributeValue("replace");
+		
+		if(value != null && search != null && replace != null) {
+			String tempValue = value.toString();
+			tempValue = tempValue.replaceAll(search, replace);
+			return new StringBuilder(tempValue); 
+		} else {
+			return value;
+		}
+	}
+	
+	
+	/**
 	 * Procedure to add a <code>LinkField</code> from the dataset to the result <code>Section</code>.
 	 * @param dataset The current dataset.
 	 * @param result The <code>Section</code> the field belongs to.
@@ -427,11 +457,14 @@ public class XmlConfigUtil implements ServletContextAware {
 		final String labelKey = element.getAttributeValue("labelKey");
 		if (!StrUtils.isEmptyOrNull(labelKey)) {
 			final LinkField linkField = new LinkField(labelKey);
-			StringBuffer value = null;
+			StringBuilder value = null;
 			final String initialValue = dataset.getField(element.getAttributeValue("datasource"));
 			if (initialValue != null) {
-				value = new StringBuffer(initialValue);
+				value = new StringBuilder(initialValue);
 			}
+			
+			value = processSearchReplace(element, value);	
+			
 			final String postfix = element.getAttributeValue("postfix");
 			final String prefix = element.getAttributeValue("prefix");
 			if (value != null) {
@@ -589,10 +622,13 @@ public class XmlConfigUtil implements ServletContextAware {
 		
 		LOGGER.debug("Initial Value: " + initialValue);
 		
-		StringBuffer value = null;
+		StringBuilder value = null;
 		if (initialValue != null) {
-			value = new StringBuffer(initialValue);
+			value = new StringBuilder(initialValue);
 		}
+		
+		value = processSearchReplace(element, value);	
+	
 		final String postfix = element.getAttributeValue("postfix");
 		final String prefix = element.getAttributeValue("prefix");
 		if (value != null) {
@@ -612,7 +648,7 @@ public class XmlConfigUtil implements ServletContextAware {
 						value.append("\">" + labelKey + "</a>");
 					}
 					else {
-						value = new StringBuffer("<a href=\""+value.toString()+"\">" + value.toString() + "</a>");
+						value = new StringBuilder("<a href=\""+value.toString()+"\">" + value.toString() + "</a>");
 					}
 			}
 			
