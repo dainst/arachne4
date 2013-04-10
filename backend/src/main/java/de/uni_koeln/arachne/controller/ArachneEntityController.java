@@ -70,10 +70,8 @@ public class ArachneEntityController {
 			LOGGER.debug(request.getRemoteAddr());
 			LOGGER.warn("Processing Solr-Request for ID: " + entityId + "...");
 
-			// if (StrUtils.isValidIPAddress(solrIp) && StrUtils.isValidIPAddress(request.getRemoteAddr())) {
-			if(true) {
-				if(true) {
-				// if(solrIp.equals(request.getRemoteAddr()) || request.getRemoteAddr().equals(request.getLocalAddr())) {
+			if (StrUtils.isValidIPAddress(solrIp) && StrUtils.isValidIPAddress(request.getRemoteAddr())) {
+				if(solrIp.equals(request.getRemoteAddr()) || request.getRemoteAddr().equals(request.getLocalAddr())) {
 					LOGGER.debug("Valid Solr request.");
 					userRightsService.setUserSolr();			
 					BaseArachneEntity result = getEntityRequestResponse(entityId, null, response);

@@ -282,7 +282,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<warName>arachnedataservice_test</warName>
+					<warName>arachnedataservice</warName>
 				</configuration>
 				<executions>
 					<execution>

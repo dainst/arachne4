@@ -22,12 +22,12 @@
 	
 	<!-- Application Loggers -->
 	<logger name="de.uni_koeln.arachne">
-		<level value="info" />
+		<level value="warn" />
 	</logger>
 	
 	<!-- Application Loggers -->
 	<logger name="de.uni_koeln.arachne.controller">
-		<level value="info" />
+		<level value="warn" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->

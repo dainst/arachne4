@@ -120,6 +120,28 @@
         <xs:attribute name="minGroupId" type="xs:string" />
     </xs:complexType>
     
+    <xs:complexType name="contextImage">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+           <!-- <xs:element name="category" /> -->
+            <xs:element name="dummyElemtn" type="dummy" />
+        </xs:sequence>
+        <!-- <xs:attribute name="showImage" type="showImage" use="required" /> -->
+    </xs:complexType>
+    
+    <xs:complexType name="dummy">
+        <xs:sequence>
+            <xs:element name="categoryImage" />
+        </xs:sequence>
+        <xs:attribute name="showImage" type="showImage" use="required" />
+    </xs:complexType>
+    
+    <xs:simpleType name="showImage">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="always" />
+            <xs:enumeration value="ifEmpty" />
+        </xs:restriction>
+    </xs:simpleType>
+    
     <xs:simpleType name="datasourceString">
         <xs:restriction base="xs:string">
             <xs:pattern value="[A-Za-z\-_]*\.[A-Za-z0-9\-_]+" />
