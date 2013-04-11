@@ -17,7 +17,7 @@
 		<!-- External lib versions -->
 		<org.hibernate-version>3.6.10.Final</org.hibernate-version>
 		<mysql-connector-java-version>5.1.24</mysql-connector-java-version>
-		<org.jdom-version>2.0.3</org.jdom-version>
+		<org.jdom-version>2.0.4</org.jdom-version>
 		<xerces-version>2.10.0</xerces-version>
 		<jackson-version>1.9.11</jackson-version>
 		<org.javassist-version>3.16.1-GA</org.javassist-version>
