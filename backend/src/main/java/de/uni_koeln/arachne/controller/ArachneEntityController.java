@@ -68,14 +68,14 @@ public class ArachneEntityController {
 		try {
 			LOGGER.debug(request.getLocalAddr());
 			LOGGER.debug(request.getRemoteAddr());
-			LOGGER.warn("Processing Solr-Request for ID: " + entityId + "...");
+			LOGGER.debug("Processing Solr-Request for ID: " + entityId + "...");
 
 			if (StrUtils.isValidIPAddress(solrIp) && StrUtils.isValidIPAddress(request.getRemoteAddr())) {
 				if(solrIp.equals(request.getRemoteAddr()) || request.getRemoteAddr().equals(request.getLocalAddr())) {
 					LOGGER.debug("Valid Solr request.");
 					userRightsService.setUserSolr();			
 					BaseArachneEntity result = getEntityRequestResponse(entityId, null, response);
-					LOGGER.warn("Processing Solr-Request for ID: " + entityId + "...done");
+					LOGGER.debug("Processing Solr-Request for ID: " + entityId + "...done");
 					return result;
 				} else {
 					response.setStatus(403);
