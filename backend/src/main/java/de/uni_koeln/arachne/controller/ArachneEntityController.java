@@ -160,12 +160,11 @@ public class ArachneEntityController {
     	
     	LOGGER.debug("Is Solr indexer: " + userRightsService.isUserSolr());
     	
-    	/*
     	if ((!userRightsService.isUserSolr()) && (!userRightsService.userHasDatasetGroup(datasetGroup))) {
     		response.setStatus(403);
     		return null;
     	}
-    	*/
+    	
     	final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(arachneId);
     	
     	LOGGER.debug(arachneDataset.toString());
