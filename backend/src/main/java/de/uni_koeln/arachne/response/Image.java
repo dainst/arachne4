@@ -16,6 +16,18 @@ public class Image extends SQLResponseObject {
 	 * The subtitle of the image.
 	 */
 	protected String subtitle = null;
+	
+	
+	/**
+	 * The entity-ID of the record, the image is assigned to
+	 */
+	protected Long sourceRecordId;
+	
+	/**
+	 * The category of the record, the image is assigned to
+	 */
+	protected String sourceContext;
+	
 
 	public Long getImageId() {
 		return imageId;
@@ -32,9 +44,31 @@ public class Image extends SQLResponseObject {
 	public void setSubtitle(final String subtitle) {
 		this.subtitle = subtitle;
 	}
-	
+
+	public Long getSourceRecordId() {
+		return sourceRecordId;
+	}
+
+	public void setSourceRecordId(Long sourceRecordId) {
+		this.sourceRecordId = sourceRecordId;
+	}
+
+	public String getSourceContext() {
+		return sourceContext;
+	}
+
+	public void setSourceContext(String sourceContext) {
+		this.sourceContext = sourceContext;
+	}
+
 	@Override
 	public String toString() {
-		return "[" + imageId + ", " + subtitle + "]";
+		return "Image [imageId=" + imageId + ", subtitle=" + subtitle
+				+  ", sourceRecordId="
+				+ sourceRecordId + ", sourceContext="
+				+ sourceContext + "]";
 	}
+
+	
+	
 }

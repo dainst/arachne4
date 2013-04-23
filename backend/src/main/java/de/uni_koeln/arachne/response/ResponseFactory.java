@@ -55,7 +55,6 @@ public class ResponseFactory {
 	 * @return A <code>FormattedArachneEntity</code> instance which can be jsonized.
 	 */
 	public FormattedArachneEntity createFormattedArachneEntity(final Dataset dataset) {
-		LOGGER.debug("dataset: " + dataset);
 		
 		final FormattedArachneEntity response = new FormattedArachneEntity();
 		

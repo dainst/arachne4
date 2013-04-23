@@ -40,4 +40,13 @@ public abstract class AbstractLink {
 	public void setFields(final Map<String, String> fields) {
 		this.fields = fields;
 	}
+
+	@Override
+	public String toString() {
+		return "AbstractLink [linkType=" + linkType + ", fields=" + fields
+				+ " URI1: " + getUri1() + " URI2: " + getUri2() + "]";
+	}
+	
+	
+	
 }

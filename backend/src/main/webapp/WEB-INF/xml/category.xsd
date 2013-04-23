@@ -2,19 +2,23 @@
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns="http://arachne.uni-koeln.de/schemas/category"
-    targetNamespace="http://arachne.uni-koeln.de/schemas/category"
-    elementFormDefault="qualified" attributeFormDefault="unqualified">
-    
-    <xs:element name="category">        
+    targetNamespace="http://arachne.uni-koeln.de/schemas/category" elementFormDefault="qualified"
+    attributeFormDefault="unqualified">
+
+    <xs:element name="category">
         <xs:complexType>
             <xs:all>
                 <xs:element name="display" minOccurs="1" maxOccurs="1">
                     <xs:complexType>
                         <xs:sequence>
-                        	<!-- shouldn't title and subtitle may be only of a single field? -->
-                            <xs:element name="title" type="SectionContent" minOccurs="1" maxOccurs="1" />
-                            <xs:element name="subtitle" type="SectionContent" minOccurs="1" maxOccurs="1" />
-                            <xs:element name="datasections" type="SectionContent" minOccurs="1" maxOccurs="1" />
+                            <!-- shouldn't title and subtitle may be only of a single field? -->
+                            <xs:element name="title" type="SectionContent" minOccurs="1"
+                                maxOccurs="1"/>
+                            <xs:element name="subtitle" type="SectionContent" minOccurs="1"
+                                maxOccurs="1"/>
+                            <xs:element name="datasections" type="SectionContent" minOccurs="1"
+                                maxOccurs="1"/>
+                            <xs:element name="contextImages" type="contextImage" minOccurs="0" maxOccurs="1" />
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
@@ -24,65 +28,65 @@
                             <xs:element name="facet" maxOccurs="unbounded">
                                 <xs:complexType>
                                     <xs:choice>
-                                        <xs:element name="context" type="ContextContent" />
-                                        <xs:element name="field" type="FieldContent" />
+                                        <xs:element name="context" type="ContextContent"/>
+                                        <xs:element name="field" type="FieldContent"/>
                                     </xs:choice>
-                                    <xs:attribute name="name" type="xs:string" use="required" />
-                                    <xs:attribute name="labelKey" type="xs:string" use="required" />
+                                    <xs:attribute name="name" type="xs:string" use="required"/>
+                                    <xs:attribute name="labelKey" type="xs:string" use="required"/>
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
             </xs:all>
-            <xs:attribute name="name" type="xs:string" use="required" />
-            <xs:attribute name="hasImage" type="xs:boolean" />
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="hasImage" type="xs:boolean"/>
         </xs:complexType>
     </xs:element>
-    
+
     <xs:complexType name="SectionContent">
         <xs:choice minOccurs="1" maxOccurs="1">
-        	<xs:choice maxOccurs="unbounded">
-            	<xs:element name="section" type="SectionContent" />
-            	<xs:element name="context" type="ContextContent" />
-            	<xs:element name="include" type="IncludeContent" />
-        	</xs:choice>
-        	<xs:choice maxOccurs="unbounded">
-            	<xs:element name="field" type="FieldContent" />
-            	<xs:element name="linkField" type="LinkFieldContent" />
-        	</xs:choice>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="section" type="SectionContent"/>
+                <xs:element name="context" type="ContextContent"/>
+                <xs:element name="include" type="IncludeContent"/>
+            </xs:choice>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="field" type="FieldContent"/>
+                <xs:element name="linkField" type="LinkFieldContent"/>
+            </xs:choice>
         </xs:choice>
-        <xs:attribute name="labelKey" type="xs:string" />
-        <xs:attribute name="separator" type="xs:string" />
-        <xs:attribute name="prefix" type="xs:string" />
-        <xs:attribute name="postfix" type="xs:string" />
-        <xs:attribute name="minGroupId" type="xs:string" />
+        <xs:attribute name="labelKey" type="xs:string"/>
+        <xs:attribute name="separator" type="xs:string"/>
+        <xs:attribute name="prefix" type="xs:string"/>
+        <xs:attribute name="postfix" type="xs:string"/>
+        <xs:attribute name="minGroupId" type="xs:string"/>
     </xs:complexType>
-    
+
     <xs:complexType name="ContextContent">
-    	<xs:choice maxOccurs="unbounded">
-            <xs:element name="field" type="FieldContent" />
-            <xs:element name="linkField" type="LinkFieldContent" />
-    	    <xs:element name="contextSection" type="ContextSection" />
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="field" type="FieldContent"/>
+            <xs:element name="linkField" type="LinkFieldContent"/>
+            <xs:element name="contextSection" type="ContextSection"/>
         </xs:choice>
-        <xs:attribute name="type" type="xs:string" use="required" />
-        <xs:attribute name="labelKey" type="xs:string" />
-        <xs:attribute name="separator" type="xs:string" />
-        <xs:attribute name="minGroupId" type="xs:string" />
+        <xs:attribute name="type" type="xs:string" use="required"/>
+        <xs:attribute name="labelKey" type="xs:string"/>
+        <xs:attribute name="separator" type="xs:string"/>
+        <xs:attribute name="minGroupId" type="xs:string"/>
     </xs:complexType>
-    
+
     <xs:complexType name="IncludeContent">
-    	<xs:attribute name="type" type="xs:string" use="required" />
+        <xs:attribute name="type" type="xs:string" use="required"/>
     </xs:complexType>
-    
+
     <xs:complexType name="ContextSection">
         <xs:sequence maxOccurs="unbounded">
-            <xs:element name="field" type="FieldContent" />
+            <xs:element name="field" type="FieldContent"/>
         </xs:sequence>
-        <xs:attribute name="labelKey" type="xs:string" />
-        <xs:attribute name="separator" type="xs:string" />
+        <xs:attribute name="labelKey" type="xs:string"/>
+        <xs:attribute name="separator" type="xs:string"/>
     </xs:complexType>
-    
+
     <xs:complexType name="FieldContent">
         <xs:all minOccurs="0">
             <xs:element name="ifEmpty">
@@ -94,14 +98,14 @@
             </xs:element>
         </xs:all>
         <xs:attribute name="datasource" type="datasourceString" use="required"/>
-        <xs:attribute name="prefix" type="xs:string" />
-        <xs:attribute name="postfix" type="xs:string" />
-        <xs:attribute name="search" type="xs:string" />
-        <xs:attribute name="replace" type="xs:string" />
-        <xs:attribute name="separator" type="xs:string" />
-        <xs:attribute name="minGroupId" type="xs:string" />
+        <xs:attribute name="prefix" type="xs:string"/>
+        <xs:attribute name="postfix" type="xs:string"/>
+        <xs:attribute name="search" type="xs:string"/>
+        <xs:attribute name="replace" type="xs:string"/>
+        <xs:attribute name="separator" type="xs:string"/>
+        <xs:attribute name="minGroupId" type="xs:string"/>
     </xs:complexType>
-    
+
     <xs:complexType name="LinkFieldContent">
         <xs:all minOccurs="0">
             <xs:element name="ifEmpty">
@@ -114,38 +118,55 @@
         </xs:all>
         <xs:attribute name="datasource" type="datasourceString" use="required"/>
         <xs:attribute name="labelKey" type="xs:string" use="required"/>
-        <xs:attribute name="prefix" type="xs:string" />
-        <xs:attribute name="postfix" type="xs:string" />
-        <xs:attribute name="separator" type="xs:string" />
-        <xs:attribute name="minGroupId" type="xs:string" />
+        <xs:attribute name="prefix" type="xs:string"/>
+        <xs:attribute name="postfix" type="xs:string"/>
+        <xs:attribute name="separator" type="xs:string"/>
+        <xs:attribute name="minGroupId" type="xs:string"/>
     </xs:complexType>
-    
+
     <xs:complexType name="contextImage">
+        <xs:annotation>
+            <xs:documentation xml:lang="en"> contextImage-Type is used to retrieve images from other
+                connected records. These can either be displayed additionally to the images of the
+                processed record or they can only be displayed, when the current record doesn´t
+                contain any images at all. This behaviour depends on the value of the
+                showImage-attribute.</xs:documentation>
+        </xs:annotation>
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
-           <!-- <xs:element name="category" /> -->
-            <xs:element name="dummyElemtn" type="dummy" />
+            <xs:element name="image" type="contextImageType"/>
         </xs:sequence>
-        <!-- <xs:attribute name="showImage" type="showImage" use="required" /> -->
     </xs:complexType>
-    
-    <xs:complexType name="dummy">
+
+    <xs:complexType name="contextImageType">
         <xs:sequence>
-            <xs:element name="categoryImage" />
+            <xs:element name="context" type="xs:token">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en"> This element describes the category from where
+                        additional images can be fetched. </xs:documentation>
+                </xs:annotation>
+            </xs:element>
         </xs:sequence>
-        <xs:attribute name="showImage" type="showImage" use="required" />
+        <xs:attribute name="show" type="showImage" use="required">
+            <xs:annotation>
+                <xs:documentation xml:lang="en"> This attribute defines wether found images are
+                    displayed additionally to directly connected record-images or if they´re only
+                    added if the processed record doesn´t contain any images by itself.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
     </xs:complexType>
-    
+
     <xs:simpleType name="showImage">
         <xs:restriction base="xs:NMTOKEN">
-            <xs:enumeration value="always" />
-            <xs:enumeration value="ifEmpty" />
+            <xs:enumeration value="always"/>
+            <xs:enumeration value="ifEmpty"/>
         </xs:restriction>
     </xs:simpleType>
-    
+
     <xs:simpleType name="datasourceString">
         <xs:restriction base="xs:string">
-            <xs:pattern value="[A-Za-z\-_]*\.[A-Za-z0-9\-_]+" />
+            <xs:pattern value="[A-Za-z\-_]*\.[A-Za-z0-9\-_]+"/>
         </xs:restriction>
     </xs:simpleType>
-    
+
 </xs:schema>

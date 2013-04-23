@@ -322,6 +322,14 @@ public class Dataset {
 		this.arachneId = arachneId;
 	}
 	
+	public void addImages(final List<Image> additionalImages) {
+		if(this.images == null) {
+			this.images = additionalImages;
+		} else {
+			this.images.addAll(additionalImages);
+		}
+	}
+	
 	@Override
 	public String toString() {
 		return fields + ", " + context;

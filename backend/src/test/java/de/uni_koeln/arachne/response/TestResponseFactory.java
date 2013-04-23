@@ -56,6 +56,7 @@ public class TestResponseFactory { // NOPMD
 		dataset.setFields("test.DataNoLink2", "End");
 		
 		dataset.setFields("test.facetTest", "TestFacet");
+		
 	}
 	
 	@After

@@ -21,6 +21,7 @@ import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.context.support.ServletContextResource;
 
 import de.uni_koeln.arachne.context.Context;
+import de.uni_koeln.arachne.context.ContextImageDescriptor;
 import de.uni_koeln.arachne.response.AbstractContent;
 import de.uni_koeln.arachne.response.ContextEntity;
 import de.uni_koeln.arachne.response.Dataset;
@@ -55,6 +56,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	private transient final Map<String, Element> xmlIncludeElements = new HashMap<String, Element>();
 	
 	private transient final Map<String, List<String>> mandatoryContextNames = new HashMap<String, List<String>>();
+	
+	private transient final Map<String, List<ContextImageDescriptor>> contextImageDescriptors = new HashMap<String, List<ContextImageDescriptor>>();
 	
 	public void setServletContext(final ServletContext servletContext) {
 		this.servletContext = servletContext;
@@ -619,9 +622,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 		
 		final String initialValue = dataset.getFieldFromContext(contextType + element.getAttributeValue("datasource"), index);
-		
-		LOGGER.debug("Initial Value: " + initialValue);
-		
+				
 		StringBuilder value = null;
 		if (initialValue != null) {
 			value = new StringBuilder(initialValue);
@@ -777,6 +778,9 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 	}
 	
+	
+	
+	
 	/**
 	 * Internally used method to get the external field names from the XML documents. If no corresponding document is found 
 	 * <code>null</code> is returned. The method uses <code>getFields</code> to get the values from the document.
@@ -894,6 +898,54 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 	}
 	
+	/**
+	 * Methode retrieves ContextImageDescriptor-instances. If these instances have beeen requested before, the method 
+	 * returns cached instances, else it parses the instances from the XML-document
+	 * @param type
+	 * @return
+	 */
+	public List<ContextImageDescriptor> getContextImagesNames(final String type) {
+		final List<ContextImageDescriptor> cachedImageContextDescriptors = contextImageDescriptors.get(type);
+		if(cachedImageContextDescriptors == null) {
+			final List<ContextImageDescriptor> descriptors = getImageContextNames(type);
+			contextImageDescriptors.put(type, descriptors);
+			return descriptors;
+		} else {
+			return cachedImageContextDescriptors;
+		}
+	}
+	
+	/**
+	 * Methode retrieves context-image-descriptor instances from xml-descriptions
+	 * @param type Name of the category / XML-Document from which the descriptor-instance are created
+	 * @return List containing an ContextImageDescriptor-instance for every contextImage-Element within the XML-document
+	 */
+	private List<ContextImageDescriptor> getImageContextNames(final String type) {
+		final Document document = getDocument(type);
+		if(document == null) {
+			return null;
+		}
+		
+		final Element rootElement = document.getRootElement();
+		final Namespace namespace = rootElement.getNamespace();
+		final Element display = rootElement.getChild("display", namespace);
+		
+		final List<Element> imageContexts = display.getChildren("contextImages", namespace);
+		if(imageContexts == null || imageContexts.size() == 0) {
+			return null;
+		}
+		
+		final List<ContextImageDescriptor> result = new ArrayList<ContextImageDescriptor>(imageContexts.size());
+		for(Element curContext : imageContexts) {
+			Element curImage = curContext.getChild("image", namespace);
+			String usage = curImage.getAttributeValue("show");
+			Element contextNameElement = curImage.getChild("context", namespace);
+			String contextName = contextNameElement.getValue();
+			result.add(new ContextImageDescriptor(contextName, usage));
+		}
+ 		return result;
+	}
+	
 	
 	/**
 	 * Convenience method to clear the current XML config document, include element cache and mandatory context list cache.
@@ -902,5 +954,6 @@ public class XmlConfigUtil implements ServletContextAware {
 		xmlConfigDocuments.clear();
 		xmlIncludeElements.clear();
 		mandatoryContextNames.clear();
+		contextImageDescriptors.clear();
 	}
 }

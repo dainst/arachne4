@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.controller;
 
 
 import java.net.MalformedURLException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.Dataset;
@@ -157,12 +159,16 @@ public class ArachneEntityController {
     	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
     	
     	LOGGER.debug("Is Solr indexer: " + userRightsService.isUserSolr());
+    	
+    	/*
     	if ((!userRightsService.isUserSolr()) && (!userRightsService.userHasDatasetGroup(datasetGroup))) {
     		response.setStatus(403);
     		return null;
     	}
-    	
+    	*/
     	final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(arachneId);
+    	
+    	LOGGER.debug(arachneDataset.toString());
     	
     	final long fetchTime = System.currentTimeMillis() - startTime;
     	long nextTime = System.currentTimeMillis();
@@ -173,6 +179,7 @@ public class ArachneEntityController {
     	nextTime = System.currentTimeMillis();
     	
     	contextService.addMandatoryContexts(arachneDataset);
+    	contextService.addContextImages(arachneDataset, imageService);
     	
     	final long contextTime = System.currentTimeMillis() - nextTime;
     	nextTime = System.currentTimeMillis();

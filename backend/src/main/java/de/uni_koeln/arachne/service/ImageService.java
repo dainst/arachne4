@@ -13,6 +13,7 @@ import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.ImageUtils;
+import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 /**
  * This service class provides the means to retrieve images from the database.
@@ -24,6 +25,9 @@ public class ImageService {
 	
 	@Autowired
 	private transient GenericSQLService genericSQLService; 
+	
+	@Autowired
+	private transient XmlConfigUtil xmlConfigUtil;
 	
 	private transient final List<String> excludeList;
 	
@@ -59,6 +63,5 @@ public class ImageService {
 			}
 		}
 	}
-
 
 }

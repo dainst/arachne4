@@ -11,10 +11,11 @@
             </section>
         </title>
         <subtitle>
-            <section labelKey="Context" >
-                <field datasource="Dataset.Id" />
+            <section labelKey="Context">
+                <field datasource="Dataset.Id"/>
             </section>
         </subtitle>
+        
         <datasections>
             <section labelKey="Informationen zum Befund">
                 <section labelKey="Befund">
@@ -49,12 +50,12 @@
                         <field datasource=".GrabungsinterneTypennummerSub"/>
                     </context>
                     <context type="Befundmainabstractfabric" labelKey="Fabrics" separator=" / ">
-                    	<!-- 
+                        <!-- 
                         <field datasource=".Origin"/>
                         <field datasource=".CommonName"/>
                         <field datasource=".Name"/>
                         -->
-                                                
+
                         <contextSection labelKey="AllgemeinerName">
                             <field datasource=".CommonName"/>
                         </contextSection>
@@ -64,10 +65,10 @@
                         <contextSection labelKey="Name">
                             <field datasource=".Name"/>
                         </contextSection>
-                        
+
                     </context>
-                    <context type="Befundmainabstractisolatedsherd" 
-                        separator=" / " labelKey="Scherben">
+                    <context type="Befundmainabstractisolatedsherd" separator=" / "
+                        labelKey="Scherben">
                         <field datasource=".SherdType"/>
                         <field datasource=".InventoryNumber"/>
                         <field datasource=".NitonAnalysisNumber"/>
@@ -76,6 +77,11 @@
             </section>
             <include type="datierung"/>
         </datasections>
+        <contextImages>
+            <image show="always">
+                <context>befundmainabstractisolatedsherd</context>
+            </image>
+        </contextImages>
     </display>
     <facets>
         <facet name="kategorie" labelKey="Kategorie">

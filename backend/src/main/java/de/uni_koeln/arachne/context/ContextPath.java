@@ -4,11 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContextPath {
-	//The Simple Types All Things on the way to the target must have 
+	/**
+	 * The simple types all things on the way to the target must have 
+	 */
 	protected List<String> typeStepRestrictions=null;
-	//The Restriction of the Connection types the Path must have. an Empty String means that there are no Restrictions
+	
+	/**
+	 * The restriction of the connection types the path must have. An empty string means that there are no restrictions
+	 */
 	protected List<String> semanticConnectionRestrictions= null;
-	//TODO Implement an Mechanism that can Restict Values of Fields i the Additional JSON Fields
+	
+	/**
+	 * TODO Implement an mechanism that can restict values of fields in the additional JSON fields
+	 */
 	protected List<String> fieldValueRestrictions = null;
 	
 	

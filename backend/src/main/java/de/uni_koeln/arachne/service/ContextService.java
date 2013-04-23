@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.context.*;
 import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 /**
@@ -61,6 +63,84 @@ public class ContextService {
 			parent.addContext(context);
 		}
 	}
+	
+	
+	/**
+	 * This methods adds all contexts to the dataset that are found in the XML description.
+	 * @param parent The dataset to add the contexts to.
+	 * @param imageService Instance of ImageService used for image-retrieval
+	 */
+	public void addContextImages(final Dataset parent, final ImageService imageService) {
+		
+		// get Context-Images from Context-XML
+		final List<ContextImageDescriptor> contextImages = xmlConfigUtil.getContextImagesNames(parent.getArachneId().getTableName());
+			
+		if(contextImages == null) {
+			LOGGER.debug("No Context-Image-Declarations found.");
+			return;
+		}
+		
+		final List<Image> resultContextImages = new ArrayList<Image>();
+		
+		// check if the source-record contains any images
+		boolean containsImages = false;
+		if(parent.getImages() != null && !parent.getImages().isEmpty()) {
+			containsImages = true;
+		}
+		
+		for(ContextImageDescriptor cur : contextImages) {
+			
+			// check contextImage-Preconditions from config
+			if(cur.getContextImageUsage().equals("ifempty") && containsImages) {
+				continue;
+			}
+			
+			// create image-context
+			final Context context = new ContextImage(cur.getContextName(), cur.getContextImageUsage(), parent);
+			
+			// retrieve full context-data
+			final List<AbstractLink> connectedEntities = context.getallContexts();
+			
+			// Retrieve images from context-entities using ImageService
+			for(AbstractLink link : connectedEntities) {
+				if(link instanceof ArachneLink) {
+					final ArachneLink arachneLink = (ArachneLink) link;
+					
+					// Fetch conntected entity
+					final Dataset contextImageDataset = arachneLink.getEntity2();
+					
+					// Fetch images for connected Entity
+					imageService.addImages(contextImageDataset);
+					
+					final List<Image> contextImagesList = contextImageDataset.getImages();
+					if(contextImagesList == null || contextImagesList.isEmpty()) {
+						continue;
+					}
+					
+					// Iterate over all loaded context-images and add images to parent-dataset
+					final Iterator<Image> contextImageIterator = contextImagesList.iterator();
+					
+					while(contextImageIterator.hasNext()) {
+						
+						final Image curImage = contextImageIterator.next();
+						
+						// Entity-ID of connected Record
+						curImage.setSourceRecordId(contextImageDataset.getArachneId().getArachneEntityID());
+						
+						// Context-Type of connected Record
+						curImage.setSourceContext(cur.getContextName());
+						
+						// add image to result-list and remove from context to save ressources
+						resultContextImages.add(curImage);
+						contextImageIterator.remove();
+					}
+				}
+			}	
+		}
+		LOGGER.debug("Adding " + resultContextImages.size() + " additional images from dataset-contexts...");
+		parent.addImages(resultContextImages);
+	}
+	
 	
 	/**
 	 * Method to append all context objects to the given dataset.
