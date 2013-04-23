@@ -24,6 +24,7 @@
 		<org.javassist-version>3.16.1-GA</org.javassist-version>
 		<c3p0-version>0.9.2-pre5</c3p0-version>
 		<solrj-version>3.6.1</solrj-version>
+		<elasticsearch-version>0.20.6</elasticsearch-version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -206,6 +207,13 @@
 			<groupId>com.mchange</groupId>
 			<artifactId>c3p0</artifactId>
 			<version>${c3p0-version}</version>
+		</dependency>
+		
+		<!-- elasticsearch -->
+		<dependency>
+    		<groupId>org.elasticsearch</groupId>
+    		<artifactId>elasticsearch</artifactId>
+    		<version>${elasticsearch-version}</version>
 		</dependency>
 
 		<!-- SolrJ -->
