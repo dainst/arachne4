@@ -105,11 +105,13 @@ public class ArachneEntityController {
 			, final @Value("#{config.esName}") String esName, final @Value("#{config.esBulkSize}") int esBulkSize) {
 		
 		try {
+			LOGGER.warn("Starting dataimport.");
 			final ObjectMapper mapper = new ObjectMapper();
 			final Node node = NodeBuilder.nodeBuilder().clusterName(esName).node();
 			final Client client = node.client();
 			final BulkRequestBuilder bulkRequest = client.prepareBulk();
-			for (int entityId=1; entityId<1000; entityId++) { 
+			long now = System.currentTimeMillis();
+			for (int entityId=1; entityId<100000; entityId++) { 
 				final BaseArachneEntity entity=getEntityRequestResponse((long)entityId, null, response);
 				
 				LOGGER.debug("Importing EntityId: " + entityId);				
@@ -119,10 +121,13 @@ public class ArachneEntityController {
 				
 				if (entityId % esBulkSize == 0) {
 					bulkRequest.execute().actionGet();
+					LOGGER.warn("Time: " + (System.currentTimeMillis() - now));
+					now = System.currentTimeMillis();
 				}
 			}
 			// send last bulk
 			bulkRequest.execute().actionGet();
+			LOGGER.warn("Dataimport finished.");
 			response.setStatus(200);
 		}
 		catch (Exception e) {
