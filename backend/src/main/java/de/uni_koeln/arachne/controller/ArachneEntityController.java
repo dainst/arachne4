@@ -7,6 +7,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.node.Node;
+import org.elasticsearch.node.NodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +95,40 @@ public class ArachneEntityController {
 			LOGGER.error(e.getMessage());
 		}
 		return null;
+	}
+	
+	/**
+	 * Test for elastic search data import.
+	 */
+	@RequestMapping(value="/entity/esdataimport", method=RequestMethod.GET)
+	public void handleDataImport(final HttpServletRequest request, final HttpServletResponse response
+			, final @Value("#{config.esName}") String esName, final @Value("#{config.esBulkSize}") int esBulkSize) {
+		
+		try {
+			final ObjectMapper mapper = new ObjectMapper();
+			final Node node = NodeBuilder.nodeBuilder().clusterName(esName).node();
+			final Client client = node.client();
+			final BulkRequestBuilder bulkRequest = client.prepareBulk();
+			for (int entityId=1; entityId<1000; entityId++) { 
+				final BaseArachneEntity entity=getEntityRequestResponse((long)entityId, null, response);
+				
+				LOGGER.debug("Importing EntityId: " + entityId);				
+				if (entity!=null) {
+					bulkRequest.add(client.prepareIndex(esName,entity.getType(),String.valueOf(entityId)).setSource(mapper.writeValueAsBytes(entity)));
+				}
+				
+				if (entityId % esBulkSize == 0) {
+					bulkRequest.execute().actionGet();
+				}
+			}
+			// send last bulk
+			bulkRequest.execute().actionGet();
+			response.setStatus(200);
+		}
+		catch (Exception e) {
+			LOGGER.error("Message: " + e.getMessage());
+			response.setStatus(500);
+		}
 	}
 	
 	/**
