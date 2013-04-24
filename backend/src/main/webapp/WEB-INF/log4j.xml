@@ -28,7 +28,7 @@
 	
 	<!-- Application Loggers -->
 	<logger name="de.uni_koeln.arachne.controller">
-		<level value="warn" />
+		<level value="info" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
@@ -51,8 +51,8 @@
 	<!-- Root Logger -->
 	<root>
 		<priority value="warn" />
-		<appender-ref ref="rolling-file" />
-		<!-- <appender-ref ref="console" /> -->
+		<!-- <appender-ref ref="rolling-file" /> -->
+		<appender-ref ref="console" />
 	</root>
 	
 </log4j:configuration>

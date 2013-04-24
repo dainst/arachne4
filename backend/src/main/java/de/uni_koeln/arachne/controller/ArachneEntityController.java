@@ -2,10 +2,13 @@ package de.uni_koeln.arachne.controller;
 
 
 import java.net.MalformedURLException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -16,6 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,6 +67,21 @@ public class ArachneEntityController {
 	@Autowired
 	private transient IUserRightsService userRightsService; 
 	
+	// begin testing
+	protected transient JdbcTemplate jdbcTemplate;
+	
+	protected transient DataSource dataSource;
+	/**
+	 * Through this Function the Datasource is Automaticly injected
+	 * @param dataSource An SQl Datasource
+	 */
+	@Autowired
+	public void setDataSource(final DataSource dataSource) {
+		this.dataSource = dataSource;		
+		jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+	// end testing
+	
 	/**
 	 * Handles http requests for /solr/{entityId}
 	 * This mapping should only be used by Solr for indexing. It wraps the standard entity request but disables authorization.
@@ -104,30 +124,36 @@ public class ArachneEntityController {
 	public void handleDataImport(final HttpServletRequest request, final HttpServletResponse response
 			, final @Value("#{config.esName}") String esName, final @Value("#{config.esBulkSize}") int esBulkSize) {
 		
+		final List<Long> entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification`", new RowMapper<Long>() {
+			public Long mapRow(final ResultSet resultSet, final int index) throws SQLException {
+				return resultSet.getLong(1);
+			}
+		});
+				
 		try {
-			LOGGER.warn("Starting dataimport.");
+			LOGGER.info("Starting dataimport.");
 			final ObjectMapper mapper = new ObjectMapper();
-			final Node node = NodeBuilder.nodeBuilder().clusterName(esName).node();
+			final Node node = NodeBuilder.nodeBuilder().clusterName(esName).loadConfigSettings(true).node();
 			final Client client = node.client();
 			final BulkRequestBuilder bulkRequest = client.prepareBulk();
 			long now = System.currentTimeMillis();
-			for (int entityId=1; entityId<100000; entityId++) { 
+			final long start = now;
+			for (long entityId: entityIds) { 
 				final BaseArachneEntity entity=getEntityRequestResponse((long)entityId, null, response);
 				
-				LOGGER.debug("Importing EntityId: " + entityId);				
 				if (entity!=null) {
 					bulkRequest.add(client.prepareIndex(esName,entity.getType(),String.valueOf(entityId)).setSource(mapper.writeValueAsBytes(entity)));
 				}
 				
 				if (entityId % esBulkSize == 0) {
 					bulkRequest.execute().actionGet();
-					LOGGER.warn("Time: " + (System.currentTimeMillis() - now));
+					LOGGER.info("Time(" + entityId + "): " + ((System.currentTimeMillis() - now)/1000f/60f) + " minutes");
 					now = System.currentTimeMillis();
 				}
 			}
 			// send last bulk
 			bulkRequest.execute().actionGet();
-			LOGGER.warn("Dataimport finished.");
+			LOGGER.info("Dataimport finished in " + ((start - System.currentTimeMillis())/1000f/60f/60f) + " hours.");
 			response.setStatus(200);
 		}
 		catch (Exception e) {
