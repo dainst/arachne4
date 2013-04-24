@@ -11,7 +11,7 @@
 	</appender>
 	
 	<appender name="rolling-file" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="/var/log/arachne/ceramalex-webservice/ceram_web.log" />
+		<param name="file" value="/var/log/arachne/arachnedataservice/dataservice.log" />
 		<!-- <param name="file" value="ArachneDataService/ceram_web.log" /> -->
 		<param name="MaxFileSize" value="10240KB" />
 		<!-- Keep one backup file -->
