@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.context.support.ServletContextResource;
 
-import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.context.ContextImageDescriptor;
 import de.uni_koeln.arachne.response.AbstractContent;
 import de.uni_koeln.arachne.response.ContextEntity;
@@ -423,22 +422,21 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param value Stringbuilder which contains the current element-content
 	 * @return Value with "search" replaced by "replace"
 	 */
-	
 	private StringBuilder processSearchReplace(final Element element, final StringBuilder value) {
 		
-		if(value == null) {
+		if (value == null) {
 			return value;
 		}
 		
 		final String search = element.getAttributeValue("search");
 		final String replace = element.getAttributeValue("replace");
 		
-		if(value != null && search != null && replace != null) {
+		if (search == null || replace == null) {
+			return value;
+		} else {
 			String tempValue = value.toString();
 			tempValue = tempValue.replaceAll(search, replace);
 			return new StringBuilder(tempValue); 
-		} else {
-			return value;
 		}
 	}
 	
@@ -536,7 +534,7 @@ public class XmlConfigUtil implements ServletContextAware {
 				// Iterate over all contextSections within the current processed context
 				for(Element curSection : contextSections) {
 					final FieldList fieldList = new FieldList();
-					Section localContext = new Section();
+					final Section localContext = new Section();
 					
 					// store the section lable of the current context
 					final List<Element> childFields = curSection.getChildren();
@@ -644,12 +642,11 @@ public class XmlConfigUtil implements ServletContextAware {
 			if (element.getName().contentEquals("linkField")){
 					final String labelKey = element.getAttributeValue("labelKey");
 				
-					if (!StrUtils.isEmptyOrNull(labelKey)) {
+					if (StrUtils.isEmptyOrNull(labelKey)) {
+						value = new StringBuilder("<a href=\""+value.toString()+"\">" + value.toString() + "</a>");
+					} else {
 						value.insert(0, "<a href=\"");
 						value.append("\">" + labelKey + "</a>");
-					}
-					else {
-						value = new StringBuilder("<a href=\""+value.toString()+"\">" + value.toString() + "</a>");
 					}
 			}
 			
@@ -892,7 +889,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			// Exception for objekt-Subgroups e.g. objektkeramik, these are handled specially
 			// Add Exception for Fabric / Fabricdescription as they shouldnt be handled as Object-/Sub-Object
 			if ((!datasourceValue.startsWith(parentType)
-					&& !datasourceValue.startsWith("Dataset")) || parentType.equals("fabric")) {
+					&& !datasourceValue.startsWith("Dataset")) || "fabric".equals(parentType)) {
 				result.add(datasourceValue);
 			}
 		}
@@ -931,16 +928,16 @@ public class XmlConfigUtil implements ServletContextAware {
 		final Element display = rootElement.getChild("display", namespace);
 		
 		final List<Element> imageContexts = display.getChildren("contextImages", namespace);
-		if(imageContexts == null || imageContexts.size() == 0) {
+		if (imageContexts == null || imageContexts.isEmpty()) {
 			return null;
 		}
 		
 		final List<ContextImageDescriptor> result = new ArrayList<ContextImageDescriptor>(imageContexts.size());
 		for(Element curContext : imageContexts) {
-			Element curImage = curContext.getChild("image", namespace);
-			String usage = curImage.getAttributeValue("show");
-			Element contextNameElement = curImage.getChild("context", namespace);
-			String contextName = contextNameElement.getValue();
+			final Element curImage = curContext.getChild("image", namespace);
+			final String usage = curImage.getAttributeValue("show");
+			final Element contextNameElement = curImage.getChild("context", namespace);
+			final String contextName = contextNameElement.getValue();
 			result.add(new ContextImageDescriptor(contextName, usage));
 		}
  		return result;
