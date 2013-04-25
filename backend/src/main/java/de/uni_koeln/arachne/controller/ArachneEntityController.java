@@ -133,7 +133,7 @@ public class ArachneEntityController {
 		try {
 			LOGGER.info("Starting dataimport.");
 			final ObjectMapper mapper = new ObjectMapper();
-			final Node node = NodeBuilder.nodeBuilder().clusterName(esName).loadConfigSettings(true).node();
+			final Node node = NodeBuilder.nodeBuilder().client(true).clusterName(esName).node();
 			final Client client = node.client();
 			final BulkRequestBuilder bulkRequest = client.prepareBulk();
 			long now = System.currentTimeMillis();
@@ -153,6 +153,7 @@ public class ArachneEntityController {
 			}
 			// send last bulk
 			bulkRequest.execute().actionGet();
+			node.close();
 			LOGGER.info("Dataimport finished in " + ((start - System.currentTimeMillis())/1000f/60f/60f) + " hours.");
 			response.setStatus(200);
 		}
