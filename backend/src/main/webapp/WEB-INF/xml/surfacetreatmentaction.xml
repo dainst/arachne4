@@ -89,6 +89,10 @@
                 </section>
             </section>
         </datasections>
+        <contextImages>
+            <!-- Show images of all connected isolatedsherd-records -->
+            <contextImage show="always">Surfacetreatmentactionsurfacetreatmentisolatedsherd</contextImage>
+        </contextImages>
     </display>
     <facets>
         <facet name="kategorie" labelKey="Kategorie">
