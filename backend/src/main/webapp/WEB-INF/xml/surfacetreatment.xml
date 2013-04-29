@@ -32,6 +32,10 @@
                 </context>
             </section>
         </datasections>
+        <contextImages>
+            <!-- Show images of the isolatedsherd-records -->
+            <contextImage show="always">Isolatedsherd</contextImage>
+        </contextImages>
     </display>
     <facets>
         <facet name="kategorie" labelKey="Kategorie">
