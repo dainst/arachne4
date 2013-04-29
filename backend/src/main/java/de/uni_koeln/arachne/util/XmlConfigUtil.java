@@ -927,18 +927,21 @@ public class XmlConfigUtil implements ServletContextAware {
 		final Namespace namespace = rootElement.getNamespace();
 		final Element display = rootElement.getChild("display", namespace);
 		
-		final List<Element> imageContexts = display.getChildren("contextImages", namespace);
-		if (imageContexts == null || imageContexts.isEmpty()) {
+		final Element contextImages = display.getChild("contextImages", namespace);
+		if (contextImages == null) {
 			return null;
 		}
 		
-		final List<ContextImageDescriptor> result = new ArrayList<ContextImageDescriptor>(imageContexts.size());
-		for(Element curContext : imageContexts) {
-			final Element curImage = curContext.getChild("image", namespace);
-			final String usage = curImage.getAttributeValue("show");
-			final Element contextNameElement = curImage.getChild("context", namespace);
-			final String contextName = contextNameElement.getValue();
-			result.add(new ContextImageDescriptor(contextName, usage));
+		final List<Element> contextImagesList = contextImages.getChildren("contextImage", namespace);
+		if(contextImagesList == null || contextImagesList.isEmpty()) {
+			return null;
+		}
+		
+		final List<ContextImageDescriptor> result = new ArrayList<ContextImageDescriptor>(contextImagesList.size());
+		for(Element curContext : contextImagesList) {
+			final String context = curContext.getValue();
+			final String usage = curContext.getAttributeValue("show");
+			result.add(new ContextImageDescriptor(context, usage));
 		}
  		return result;
 	}
