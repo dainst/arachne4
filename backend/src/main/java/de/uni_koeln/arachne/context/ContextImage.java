@@ -18,4 +18,10 @@ public class ContextImage extends Context {
 		super(contextType, parent);
 		this.usage = usage;
 	}
+
+	public String getUsage() {
+		return usage;
+	}
+	
+	
 }
