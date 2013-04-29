@@ -78,9 +78,7 @@
             <include type="datierung"/>
         </datasections>
         <contextImages>
-            <image show="always">
-                <context>befundmainabstractisolatedsherd</context>
-            </image>
+            <contextImage show="always">befundmainabstractisolatedsherd</contextImage>
         </contextImages>
     </display>
     <facets>
