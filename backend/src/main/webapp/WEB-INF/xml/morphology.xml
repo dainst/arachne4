@@ -66,6 +66,10 @@
                 <include type="literatur"/>
             </section>
         </datasections>
+        <contextImages>
+            <!-- Show images all isolated sherds which are conntected with the current morphology -->
+            <contextImage show="always">Morphologymainabstractisolatedsherd</contextImage>
+        </contextImages>
     </display>
     <facets>
         <facet name="Morphologymainabstractfabric" labelKey="Fabric">
