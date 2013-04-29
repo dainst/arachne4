@@ -46,9 +46,14 @@
                     <field datasource=".Bezeichner"/>
                     <field datasource=".ConnectedActions"/>
                 </context>
-            </section>
+            </section>            
             <include type="ort"/>
         </datasections>
+        <contextImages>
+            <!-- Show images of connected types -->
+            <contextImage show="always">Isolatedsherdmainabstractmorphology</contextImage>
+        </contextImages>
+        
     </display>
     <facets>
         <facet name="kategorie" labelKey="Kategorie">
