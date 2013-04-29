@@ -42,6 +42,10 @@
                 </section>
             </section>
         </datasections>
+        <contextImages>
+            <!-- Show images of connected fabricdescriptions -->
+            <contextImage show="always">Fabricdescription</contextImage>
+        </contextImages>
     </display>
     <facets>
         <facet name="kategorie" labelKey="Kategorie">
