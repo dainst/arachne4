@@ -18,7 +18,7 @@
                                 maxOccurs="1"/>
                             <xs:element name="datasections" type="SectionContent" minOccurs="1"
                                 maxOccurs="1"/>
-                            <xs:element name="contextImages" type="contextImage" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="contextImages" type="contextImages" minOccurs="0" maxOccurs="1" />
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
@@ -124,7 +124,7 @@
         <xs:attribute name="minGroupId" type="xs:string"/>
     </xs:complexType>
 
-    <xs:complexType name="contextImage">
+    <xs:complexType name="contextImages">
         <xs:annotation>
             <xs:documentation xml:lang="en"> contextImage-Type is used to retrieve images from other
                 connected records. These can either be displayed additionally to the images of the
@@ -133,9 +133,19 @@
                 showImage-attribute.</xs:documentation>
         </xs:annotation>
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="image" type="contextImageType"/>
+            <xs:element name="contextImage" type="contextImage" />
         </xs:sequence>
     </xs:complexType>
+    
+    <xs:complexType name="contextImage">
+        <xs:simpleContent>
+            <xs:extension base="xs:token">
+                <xs:attribute name="show" type="showImage" use="required" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    
+    <!--
 
     <xs:complexType name="contextImageType">
         <xs:sequence>
@@ -155,7 +165,7 @@
             </xs:annotation>
         </xs:attribute>
     </xs:complexType>
-
+    -->
     <xs:simpleType name="showImage">
         <xs:restriction base="xs:NMTOKEN">
             <xs:enumeration value="always"/>
