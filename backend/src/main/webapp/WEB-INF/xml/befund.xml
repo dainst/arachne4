@@ -78,7 +78,14 @@
             <include type="datierung"/>
         </datasections>
         <contextImages>
-            <contextImage show="always">befundmainabstractisolatedsherd</contextImage>
+            <!-- Show images of connected sherds -->
+            <contextImage show="always">Befundmainabstractisolatedsherd</contextImage>
+            
+            <!-- Show images of types found within this context -->
+            <contextImage show="always">Befundmainabstractmorphology</contextImage>
+            
+            <!-- Show images of fabricdescriptions found in this context -->
+            <contextImage show="always">Befundmainabstractfabricfabricdescription</contextImage>
         </contextImages>
     </display>
     <facets>
