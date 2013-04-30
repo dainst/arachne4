@@ -139,7 +139,9 @@ public class ArachneEntityController {
 			long now = System.currentTimeMillis();
 			final long start = now;
 			for (long entityId: entityIds) { 
+				long entityTime = System.currentTimeMillis();
 				final BaseArachneEntity entity=getEntityRequestResponse((long)entityId, null, response);
+				LOGGER.info("GetEntity " + entityId + ": " + (System.currentTimeMillis() - entityTime) + "ms");
 				
 				if (entity!=null) {
 					bulkRequest.add(client.prepareIndex(esName,entity.getType(),String.valueOf(entityId)).setSource(mapper.writeValueAsBytes(entity)));
