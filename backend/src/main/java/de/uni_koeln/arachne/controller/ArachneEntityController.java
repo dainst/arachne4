@@ -135,22 +135,25 @@ public class ArachneEntityController {
 			final ObjectMapper mapper = new ObjectMapper();
 			final Node node = NodeBuilder.nodeBuilder().client(true).clusterName(esName).node();
 			final Client client = node.client();
-			final BulkRequestBuilder bulkRequest = client.prepareBulk();
+			BulkRequestBuilder bulkRequest = client.prepareBulk();
 			long now = System.currentTimeMillis();
 			final long start = now;
 			for (long entityId: entityIds) { 
-				long entityTime = System.currentTimeMillis();
+				//long entityTime = System.currentTimeMillis();
 				final BaseArachneEntity entity=getEntityRequestResponse((long)entityId, null, response);
-				LOGGER.info("GetEntity " + entityId + ": " + (System.currentTimeMillis() - entityTime) + "ms");
+				//LOGGER.info("GetEntity " + entityId + ": " + (System.currentTimeMillis() - entityTime) + " ms");
 				
 				if (entity!=null) {
 					bulkRequest.add(client.prepareIndex(esName,entity.getType(),String.valueOf(entityId)).setSource(mapper.writeValueAsBytes(entity)));
 				}
 				
 				if (entityId % esBulkSize == 0) {
-					bulkRequest.execute().actionGet();
-					LOGGER.info("Time(" + entityId + "): " + ((System.currentTimeMillis() - now)/1000f/60f) + " minutes");
+					LOGGER.info("SQL query time(" + entityId + "): " + ((System.currentTimeMillis() - now)/1000f) + " s");
 					now = System.currentTimeMillis();
+					bulkRequest.execute().actionGet();
+					LOGGER.info("ES bulk execute time(" + entityId + "): " + ((System.currentTimeMillis() - now)/1000f) + " s");
+					now = System.currentTimeMillis();
+					bulkRequest = client.prepareBulk();
 				}
 			}
 			// send last bulk
