@@ -124,6 +124,8 @@ public class ArachneEntityController {
 	public void handleDataImport(final HttpServletRequest request, final HttpServletResponse response
 			, final @Value("#{config.esName}") String esName, final @Value("#{config.esBulkSize}") int esBulkSize) {
 		
+		LOGGER.info("Starting dataimport.");
+		userRightsService.setUserSolr();
 		final List<Long> entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification`", new RowMapper<Long>() {
 			public Long mapRow(final ResultSet resultSet, final int index) throws SQLException {
 				return resultSet.getLong(1);
@@ -131,13 +133,14 @@ public class ArachneEntityController {
 		});
 				
 		try {
-			LOGGER.info("Starting dataimport.");
 			final ObjectMapper mapper = new ObjectMapper();
 			final Node node = NodeBuilder.nodeBuilder().client(true).clusterName(esName).node();
 			final Client client = node.client();
+
 			BulkRequestBuilder bulkRequest = client.prepareBulk();
 			long now = System.currentTimeMillis();
 			final long start = now;
+			LOGGER.info("Starting real dataimport.");
 			for (long entityId: entityIds) { 
 				//long entityTime = System.currentTimeMillis();
 				final BaseArachneEntity entity=getEntityRequestResponse((long)entityId, null, response);
@@ -145,6 +148,8 @@ public class ArachneEntityController {
 				
 				if (entity!=null) {
 					bulkRequest.add(client.prepareIndex(esName,entity.getType(),String.valueOf(entityId)).setSource(mapper.writeValueAsBytes(entity)));
+				} else {
+					LOGGER.warn("Entity " + entityId + " is null!");
 				}
 				
 				if (entityId % esBulkSize == 0) {
