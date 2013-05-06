@@ -29,7 +29,7 @@
                     <field datasource="isolatedsherd.Width" postfix="cm"/>
                 </section>
                 <section labelKey="Länge">
-                    <field datasource="isolatedsherd.Length" postfix="cm"/>
+                    <field datasource="isolatedsherd.LengthSize" postfix="cm"/>
                 </section>
                 <section labelKey="Dicke">
                     <field datasource="isolatedsherd.Thickness" postfix="cm"/>
