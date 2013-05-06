@@ -100,6 +100,9 @@ public class ContextService {
 			
 			// retrieve full context-data
 			final List<AbstractLink> connectedEntities = context.getallContexts();
+			if(connectedEntities == null) {
+				continue;
+			}
 			
 			// Retrieve images from context-entities using ImageService
 			for(AbstractLink link : connectedEntities) {
