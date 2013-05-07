@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.response.StatusResponse;
+import de.uni_koeln.arachne.service.DataImportService;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.EntityService;
 import de.uni_koeln.arachne.service.IUserRightsService;
@@ -61,7 +63,13 @@ public class AdminController {
 	private transient JdbcTemplate jdbcTemplate;
 	
 	protected transient DataSource dataSource;
+	
+	@Autowired
+	private transient DataImportService dataImportService;
 
+	@Autowired
+	private transient TaskExecutor defaultTaskExecutor;
+	
 	/**
 	 * Through this function the datasource is injected
 	 * @param dataSource An SQL Datasource
@@ -99,72 +107,29 @@ public class AdminController {
 
 	/**
 	 * Elastic search data import.
+	 * @param command
+	 * @param request
+	 * @param response
+	 * @return
 	 */
 	@RequestMapping(value="/admin/dataimport", method=RequestMethod.GET)
-	public void handleDataImport(final HttpServletRequest request, final HttpServletResponse response
-			, final @Value("#{config.esName}") String esName, final @Value("#{config.esBulkSize}") int esBulkSize) {
+	public @ResponseBody StatusResponse handleDataImport(@RequestParam(value = "command", required = false) final String command
+			, final HttpServletRequest request, final HttpServletResponse response) {
 		
-		LOGGER.info("Starting dataimport.");
-		userRightsService.setUserSolr();
-		final List<Long> entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification`", new RowMapper<Long>() {
-			public Long mapRow(final ResultSet resultSet, final int index) throws SQLException {
-				return resultSet.getLong(1);
+		if (StrUtils.isEmptyOrNull(command)) {
+			if (dataImportService.isRunning()) {
+				return new StatusResponse("Dataimport status: running - Elapsed Time: " + dataImportService.getElapsedTime() + " ms. - " 
+						+ "Processed Documents: " + dataImportService.getProcessedDocuments());
+			} else {
+				return new StatusResponse("Dataimport status: idle");
 			}
-		});
-				
-		try {
-			final ObjectMapper mapper = new ObjectMapper();
-			final Node node = NodeBuilder.nodeBuilder().client(true).clusterName(esName).node();
-			final Client client = node.client();
-
-			long documentCount = 0;
-			long bulkDocumentCount = 0;
-			BulkRequestBuilder bulkRequest = client.prepareBulk();
-			long now = System.currentTimeMillis();
-			final long start = now;
-			LOGGER.info("Starting real dataimport.");
-			for (long currentEntityId: entityIds) {
-				//long entityTime = System.currentTimeMillis();
-				final EntityId entityId = entityIdentificationService.getId(currentEntityId);
-				BaseArachneEntity entity;
-				if (entityId.isDeleted()) {
-		    		entity = responseFactory.createResponseForDeletedEntity(entityId);
-		    	} else {
-		    		entity = entityService.getFormattedEntityById(entityId);
-		    	}
-				//LOGGER.info("GetEntity " + entityId + ": " + (System.currentTimeMillis() - entityTime) + " ms");
-				
-				if (entity != null) {
-					bulkRequest.add(client.prepareIndex(esName,entity.getType(),String.valueOf(entityId)).setSource(mapper.writeValueAsBytes(entity)));
-					bulkDocumentCount++;
-				} else {
-					LOGGER.warn("Entity " + entityId + " is null!");
-				}
-				
-				if (bulkDocumentCount >= esBulkSize) {
-					documentCount = documentCount + bulkDocumentCount;
-					LOGGER.info("SQL query time(" + documentCount + "): " + ((System.currentTimeMillis() - now)/1000f) + " s");
-					now = System.currentTimeMillis();
-					bulkRequest.execute().actionGet();
-					LOGGER.info("ES bulk execute time(" + documentCount + "): " + ((System.currentTimeMillis() - now)/1000f) + " s");
-					now = System.currentTimeMillis();
-					bulkRequest = client.prepareBulk();
-					bulkDocumentCount = 0;
-				}
+			
+		} else {
+			if ("start".equals(command)) {
+				defaultTaskExecutor.execute(dataImportService);				
+				return new StatusResponse("Dataimport status: started");
 			}
-			// send last bulk
-			LOGGER.info("Sending last bulk of " + bulkDocumentCount + " documents.");
-			if (bulkDocumentCount > 0) {
-				bulkRequest.execute().actionGet();
-				documentCount = documentCount + bulkDocumentCount;
-			}
-			node.close();
-			LOGGER.info("Import of " + documentCount + " documents finished in " + ((System.currentTimeMillis() - start)/1000f/60f/60f) + " hours.");
-			response.setStatus(200);
-		}
-		catch (Exception e) {
-			LOGGER.error("Message: " + e.getMessage());
-			response.setStatus(500);
+			return new StatusResponse("Unsupported command.");
 		}
 	}
 	
