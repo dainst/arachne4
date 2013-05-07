@@ -1,45 +1,29 @@
 package de.uni_koeln.arachne.controller;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
-
-import org.codehaus.jackson.map.ObjectMapper;
-import org.elasticsearch.action.bulk.BulkRequestBuilder;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.node.Node;
-import org.elasticsearch.node.NodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import de.uni_koeln.arachne.response.BaseArachneEntity;
-import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.response.StatusResponse;
 import de.uni_koeln.arachne.service.DataImportService;
-import de.uni_koeln.arachne.service.EntityIdentificationService;
-import de.uni_koeln.arachne.service.EntityService;
 import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.service.UserRightsService;
-import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 /**
  * Handles http requests (currently only get) for <code>/admin<code>.
+ * This includes requests for statuses (cache or dataimport) as well admin tasks (clearing the cache or starting a dataimport).
  */
 @Controller
 public class AdminController {
@@ -49,36 +33,13 @@ public class AdminController {
 	private transient IUserRightsService userRightsService;
 	
 	@Autowired
-	private transient EntityIdentificationService entityIdentificationService;
-	
-	@Autowired
-	private transient EntityService entityService;
-	
-	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
-	
-	@Autowired
-	private transient ResponseFactory responseFactory;
-	
-	private transient JdbcTemplate jdbcTemplate;
-	
-	protected transient DataSource dataSource;
 	
 	@Autowired
 	private transient DataImportService dataImportService;
 
 	@Autowired
 	private transient TaskExecutor defaultTaskExecutor;
-	
-	/**
-	 * Through this function the datasource is injected
-	 * @param dataSource An SQL Datasource
-	 */
-	@Autowired
-	public void setDataSource(final DataSource dataSource) {
-		this.dataSource = dataSource;		
-		jdbcTemplate = new JdbcTemplate(dataSource);
-	}
 	
 	/**
 	 * Handles http requests for /admin
