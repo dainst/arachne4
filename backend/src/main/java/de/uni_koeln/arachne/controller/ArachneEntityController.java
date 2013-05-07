@@ -137,34 +137,43 @@ public class ArachneEntityController {
 			final Node node = NodeBuilder.nodeBuilder().client(true).clusterName(esName).node();
 			final Client client = node.client();
 
+			long documentCount = 0;
+			long bulkDocumentCount = 0;
 			BulkRequestBuilder bulkRequest = client.prepareBulk();
 			long now = System.currentTimeMillis();
 			final long start = now;
 			LOGGER.info("Starting real dataimport.");
-			for (long entityId: entityIds) { 
+			for (long entityId: entityIds) {
 				//long entityTime = System.currentTimeMillis();
 				final BaseArachneEntity entity=getEntityRequestResponse((long)entityId, null, response);
 				//LOGGER.info("GetEntity " + entityId + ": " + (System.currentTimeMillis() - entityTime) + " ms");
 				
-				if (entity!=null) {
+				if (entity != null) {
 					bulkRequest.add(client.prepareIndex(esName,entity.getType(),String.valueOf(entityId)).setSource(mapper.writeValueAsBytes(entity)));
+					bulkDocumentCount++;
 				} else {
 					LOGGER.warn("Entity " + entityId + " is null!");
 				}
 				
-				if (entityId % esBulkSize == 0) {
-					LOGGER.info("SQL query time(" + entityId + "): " + ((System.currentTimeMillis() - now)/1000f) + " s");
+				if (bulkDocumentCount >= esBulkSize) {
+					documentCount = documentCount + bulkDocumentCount;
+					LOGGER.info("SQL query time(" + documentCount + "): " + ((System.currentTimeMillis() - now)/1000f) + " s");
 					now = System.currentTimeMillis();
 					bulkRequest.execute().actionGet();
-					LOGGER.info("ES bulk execute time(" + entityId + "): " + ((System.currentTimeMillis() - now)/1000f) + " s");
+					LOGGER.info("ES bulk execute time(" + documentCount + "): " + ((System.currentTimeMillis() - now)/1000f) + " s");
 					now = System.currentTimeMillis();
 					bulkRequest = client.prepareBulk();
+					bulkDocumentCount = 0;
 				}
 			}
 			// send last bulk
-			bulkRequest.execute().actionGet();
+			LOGGER.info("Sending last bulk of " + bulkDocumentCount + " documents.");
+			if (bulkDocumentCount > 0) {
+				bulkRequest.execute().actionGet();
+				documentCount = documentCount + bulkDocumentCount;
+			}
 			node.close();
-			LOGGER.info("Dataimport finished in " + ((start - System.currentTimeMillis())/1000f/60f/60f) + " hours.");
+			LOGGER.info("Import of " + documentCount + " documents finished in " + ((System.currentTimeMillis() - start)/1000f/60f/60f) + " hours.");
 			response.setStatus(200);
 		}
 		catch (Exception e) {
