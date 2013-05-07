@@ -2,39 +2,27 @@ package de.uni_koeln.arachne.controller;
 
 
 import java.net.MalformedURLException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.elasticsearch.action.bulk.BulkRequestBuilder;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.node.Node;
-import org.elasticsearch.node.NodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.FormattedArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
-import de.uni_koeln.arachne.service.ContextService;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
+import de.uni_koeln.arachne.service.EntityService;
 import de.uni_koeln.arachne.service.ImageService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.service.IUserRightsService;
@@ -51,12 +39,12 @@ public class ArachneEntityController {
 	
 	@Autowired
 	private transient EntityIdentificationService entityIdentificationService;
+	
+	@Autowired
+	private transient EntityService entityService;
 
 	@Autowired
 	private transient SingleEntityDataService singleEntityDataService;
-	
-	@Autowired
-	private transient ContextService contextService;
 	
 	@Autowired
 	private transient ResponseFactory responseFactory;
@@ -66,21 +54,6 @@ public class ArachneEntityController {
 		
 	@Autowired
 	private transient IUserRightsService userRightsService; 
-	
-	// begin testing
-	protected transient JdbcTemplate jdbcTemplate;
-	
-	protected transient DataSource dataSource;
-	/**
-	 * Through this Function the Datasource is Automaticly injected
-	 * @param dataSource An SQl Datasource
-	 */
-	@Autowired
-	public void setDataSource(final DataSource dataSource) {
-		this.dataSource = dataSource;		
-		jdbcTemplate = new JdbcTemplate(dataSource);
-	}
-	// end testing
 	
 	/**
 	 * Handles http requests for /solr/{entityId}
@@ -101,7 +74,7 @@ public class ArachneEntityController {
 				if(solrIp.equals(request.getRemoteAddr()) || request.getRemoteAddr().equals(request.getLocalAddr())) {
 					LOGGER.debug("Valid Solr request.");
 					userRightsService.setUserSolr();			
-					BaseArachneEntity result = getEntityRequestResponse(entityId, null, response);
+					final BaseArachneEntity result = getEntityRequestResponse(entityId, null, response);
 					LOGGER.debug("Processing Solr-Request for ID: " + entityId + "...done");
 					return result;
 				} else {
@@ -115,71 +88,6 @@ public class ArachneEntityController {
 			LOGGER.error(e.getMessage());
 		}
 		return null;
-	}
-	
-	/**
-	 * Test for elastic search data import.
-	 */
-	@RequestMapping(value="/entity/esdataimport", method=RequestMethod.GET)
-	public void handleDataImport(final HttpServletRequest request, final HttpServletResponse response
-			, final @Value("#{config.esName}") String esName, final @Value("#{config.esBulkSize}") int esBulkSize) {
-		
-		LOGGER.info("Starting dataimport.");
-		userRightsService.setUserSolr();
-		final List<Long> entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification`", new RowMapper<Long>() {
-			public Long mapRow(final ResultSet resultSet, final int index) throws SQLException {
-				return resultSet.getLong(1);
-			}
-		});
-				
-		try {
-			final ObjectMapper mapper = new ObjectMapper();
-			final Node node = NodeBuilder.nodeBuilder().client(true).clusterName(esName).node();
-			final Client client = node.client();
-
-			long documentCount = 0;
-			long bulkDocumentCount = 0;
-			BulkRequestBuilder bulkRequest = client.prepareBulk();
-			long now = System.currentTimeMillis();
-			final long start = now;
-			LOGGER.info("Starting real dataimport.");
-			for (long entityId: entityIds) {
-				//long entityTime = System.currentTimeMillis();
-				final BaseArachneEntity entity=getEntityRequestResponse((long)entityId, null, response);
-				//LOGGER.info("GetEntity " + entityId + ": " + (System.currentTimeMillis() - entityTime) + " ms");
-				
-				if (entity != null) {
-					bulkRequest.add(client.prepareIndex(esName,entity.getType(),String.valueOf(entityId)).setSource(mapper.writeValueAsBytes(entity)));
-					bulkDocumentCount++;
-				} else {
-					LOGGER.warn("Entity " + entityId + " is null!");
-				}
-				
-				if (bulkDocumentCount >= esBulkSize) {
-					documentCount = documentCount + bulkDocumentCount;
-					LOGGER.info("SQL query time(" + documentCount + "): " + ((System.currentTimeMillis() - now)/1000f) + " s");
-					now = System.currentTimeMillis();
-					bulkRequest.execute().actionGet();
-					LOGGER.info("ES bulk execute time(" + documentCount + "): " + ((System.currentTimeMillis() - now)/1000f) + " s");
-					now = System.currentTimeMillis();
-					bulkRequest = client.prepareBulk();
-					bulkDocumentCount = 0;
-				}
-			}
-			// send last bulk
-			LOGGER.info("Sending last bulk of " + bulkDocumentCount + " documents.");
-			if (bulkDocumentCount > 0) {
-				bulkRequest.execute().actionGet();
-				documentCount = documentCount + bulkDocumentCount;
-			}
-			node.close();
-			LOGGER.info("Import of " + documentCount + " documents finished in " + ((System.currentTimeMillis() - start)/1000f/60f/60f) + " hours.");
-			response.setStatus(200);
-		}
-		catch (Exception e) {
-			LOGGER.error("Message: " + e.getMessage());
-			response.setStatus(500);
-		}
 	}
 	
 	/**
@@ -224,61 +132,30 @@ public class ArachneEntityController {
      */
     private BaseArachneEntity getEntityRequestResponse(final Long id, final String category //NOPMD
     		, final HttpServletResponse response) { 
+    	
     	final Long startTime = System.currentTimeMillis();
         
-    	EntityId arachneId;
+    	EntityId entityId;
     	
     	if (category == null) {
-    		arachneId = entityIdentificationService.getId(id);
+    		entityId = entityIdentificationService.getId(id);
     	} else {
-    		arachneId = entityIdentificationService.getId(category, id);
+    		entityId = entityIdentificationService.getId(category, id);
     	}
     	
-    	if (arachneId == null) {
+    	if (entityId == null) {
     		response.setStatus(404);
     		return null;
     	}
     	
-    	LOGGER.debug("Request for entity: " + arachneId.getArachneEntityID() + " - type: " + arachneId.getTableName());
+    	LOGGER.debug("Request for entity: " + entityId.getArachneEntityID() + " - type: " + entityId.getTableName());
     	
-    	if (arachneId.isDeleted()) {
-    		return responseFactory.createResponseForDeletedEntity(arachneId);
+    	if (entityId.isDeleted()) {
+    		return responseFactory.createResponseForDeletedEntity(entityId);
     	}
     	
-    	final String datasetGroupName = singleEntityDataService.getDatasetGroup(arachneId);
-    	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
+    	final FormattedArachneEntity result = entityService.getFormattedEntityById(entityId);
     	
-    	LOGGER.debug("Is Solr indexer: " + userRightsService.isUserSolr());
-    	
-    	if ((!userRightsService.isUserSolr()) && (!userRightsService.userHasDatasetGroup(datasetGroup))) {
-    		response.setStatus(403);
-    		return null;
-    	}
-    	
-    	final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(arachneId);
-    	
-    	LOGGER.debug(arachneDataset.toString());
-    	
-    	final long fetchTime = System.currentTimeMillis() - startTime;
-    	long nextTime = System.currentTimeMillis();
-    	
-    	imageService.addImages(arachneDataset);
-    	
-    	final long imageTime = System.currentTimeMillis() - nextTime;
-    	nextTime = System.currentTimeMillis();
-    	
-    	contextService.addMandatoryContexts(arachneDataset);
-    	contextService.addContextImages(arachneDataset, imageService);
-    	
-    	final long contextTime = System.currentTimeMillis() - nextTime;
-    	nextTime = System.currentTimeMillis();
-    	
-    	final FormattedArachneEntity result = responseFactory.createFormattedArachneEntity(arachneDataset);
-    	
-    	LOGGER.debug("-- Fetching entity took " + fetchTime + " ms");
-    	LOGGER.debug("-- Adding images took " + imageTime + " ms");
-    	LOGGER.debug("-- Adding contexts took " + contextTime + " ms");
-    	LOGGER.debug("-- Creating response took " + (System.currentTimeMillis() - nextTime) + " ms");
     	LOGGER.debug("-----------------------------------");
     	LOGGER.debug("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
     	return result;
