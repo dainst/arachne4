@@ -79,16 +79,30 @@ public class AdminController {
 		
 		if (StrUtils.isEmptyOrNull(command)) {
 			if (dataImportService.isRunning()) {
-				return new StatusResponse("Dataimport status: running - Elapsed Time: " + dataImportService.getElapsedTime() + " ms. - " 
-						+ "Processed Documents: " + dataImportService.getProcessedDocuments());
+				return new StatusResponse("Dataimport status: running - Elapsed Time: " + String.format("%.2f"
+						, dataImportService.getElapsedTime()/1000f/60f) + " minutes - " 
+						+ "Indexed Documents: " + dataImportService.getIndexedDocuments());
 			} else {
 				return new StatusResponse("Dataimport status: idle");
 			}
 			
 		} else {
 			if ("start".equals(command)) {
-				defaultTaskExecutor.execute(dataImportService);				
-				return new StatusResponse("Dataimport status: started");
+				if (dataImportService.isRunning()) {
+					return new StatusResponse("Dataimport status: already running");
+				} else {
+					defaultTaskExecutor.execute(dataImportService);				
+					return new StatusResponse("Dataimport status: started");
+				}
+			} else {
+				if ("stop".equals(command)) {
+					if (dataImportService.isRunning()) {
+						dataImportService.stop();
+						return new StatusResponse("Dataimport status: stopped");
+					} else {
+						return new StatusResponse("Dataimport status: not running");
+					}
+				}
 			}
 			return new StatusResponse("Unsupported command.");
 		}

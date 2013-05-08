@@ -60,7 +60,7 @@ public class DataImportService implements Runnable {
 	
 	private AtomicLong elapsedTime;
 	private AtomicBoolean running;
-	private AtomicLong processedDocuments;
+	private AtomicLong indexedDocuments;
 	
 	private transient final String esName;
 	private transient final int esBulkSize;
@@ -69,16 +69,16 @@ public class DataImportService implements Runnable {
 	public DataImportService(final @Value("#{config.esName}") String esName, final @Value("#{config.esBulkSize}") int esBulkSize) {
 		elapsedTime = new AtomicLong(0);
 		running = new AtomicBoolean(false);
-		processedDocuments = new AtomicLong(0);
+		indexedDocuments = new AtomicLong(0);
 		this.esName = esName;
 		this.esBulkSize = esBulkSize;
 	}
 
 	public void run() {
-		// enable request scope hack
+		// enable request scope hack- needed so the UserRightsService can be used
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(new MockHttpServletRequest()));
 		running.set(true);
-		processedDocuments.set(0);		
+		indexedDocuments.set(0);		
 		elapsedTime.set(0);
 		final long startTime = System.currentTimeMillis();
 		
@@ -89,7 +89,8 @@ public class DataImportService implements Runnable {
 				return resultSet.getLong(1);
 			}
 		});
-
+		elapsedTime.set(System.currentTimeMillis() - startTime);		
+		
 		try {
 			final ObjectMapper mapper = new ObjectMapper();
 			final Node node = NodeBuilder.nodeBuilder().client(true).clusterName(esName).node();
@@ -99,9 +100,14 @@ public class DataImportService implements Runnable {
 			long bulkDocumentCount = 0;
 			BulkRequestBuilder bulkRequest = client.prepareBulk();
 			long now = System.currentTimeMillis();
-			final long start = now;
 			LOGGER.info("Starting dataimport.");
 			for (long currentEntityId: entityIds) {
+				if (!running.get()) {
+					LOGGER.info("Thread stopped.");
+					bulkDocumentCount = 0;
+					break;
+				}
+				
 				final EntityId entityId = entityIdentificationService.getId(currentEntityId);
 				BaseArachneEntity entity;
 				if (entityId.isDeleted()) {
@@ -117,7 +123,9 @@ public class DataImportService implements Runnable {
 							.setSource(mapper.writeValueAsBytes(entity)));
 					bulkDocumentCount++;
 				}
-
+				
+				elapsedTime.set(System.currentTimeMillis() - startTime);
+				
 				if (bulkDocumentCount >= esBulkSize) {
 					documentCount = documentCount + bulkDocumentCount;
 					LOGGER.info("SQL query time(" + documentCount + "): " + ((System.currentTimeMillis() - now)/1000f) + " s");
@@ -127,18 +135,21 @@ public class DataImportService implements Runnable {
 					now = System.currentTimeMillis();
 					bulkRequest = client.prepareBulk();
 					bulkDocumentCount = 0;
-					elapsedTime.set(System.currentTimeMillis() - startTime);
-					processedDocuments.set(documentCount);
+					indexedDocuments.set(documentCount);
 				}
 			}
-			LOGGER.info("Sending last bulk of " + bulkDocumentCount + " documents.");
 			if (bulkDocumentCount > 0) {
+				LOGGER.info("Sending last bulk of " + bulkDocumentCount + " documents.");
 				bulkRequest.execute().actionGet();
 				documentCount = documentCount + bulkDocumentCount;
-				processedDocuments.set(documentCount);
+				indexedDocuments.set(documentCount);
 			}
 			node.close();
-			LOGGER.info("Import of " + documentCount + " documents finished in " + ((System.currentTimeMillis() - start)/1000f/60f/60f) + " hours.");
+			if (running.get()) {
+				LOGGER.info("Import of " + documentCount + " documents finished in " + ((System.currentTimeMillis() - startTime)/1000f/60f/60f) + " hours.");
+			} else {
+				LOGGER.info("Dataimport aborted.");
+			}
 		}
 		catch (Exception e) {
 			LOGGER.error("Dataimport failed with: " + e.toString());
@@ -146,6 +157,10 @@ public class DataImportService implements Runnable {
 		// disable request scope hack
 		((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).requestCompleted();
 		RequestContextHolder.resetRequestAttributes();
+		running.set(false);
+	}
+	
+	public void stop() {
 		running.set(false);
 	}
 	
@@ -157,7 +172,7 @@ public class DataImportService implements Runnable {
 		return running.get();
 	}
 	
-	public long getProcessedDocuments() {
-		return processedDocuments.get();
+	public long getIndexedDocuments() {
+		return indexedDocuments.get();
 	}
 }
