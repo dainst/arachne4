@@ -24,7 +24,7 @@ public class ContextEntity extends AbstractContent {
 	}
 	
 	@XmlElementWrapper
-	public List<AbstractContent> getContent() {
+	public List<AbstractContent> getContextEntity() {
 		return this.contextEntity;
 	}
 }
