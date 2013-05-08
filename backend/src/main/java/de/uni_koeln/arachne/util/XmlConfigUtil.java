@@ -330,44 +330,6 @@ public class XmlConfigUtil implements ServletContextAware {
 	
 	
 	/**
-	 * This function handles sections in the xml config files. It extracts the content from the dataset following the 
-	 * definitions in the xml files and returns it as <code>Content</code>.
-	 * <br>
-	 * The validity of the xml file is not checked!!!
-	 * @param section The xml section <code>Element</code> to parse.
-	 * @param dataset The dataset that contains the SQL query results.
-	 * @return A <code>Content</code> object containing the sections content.
-	 */
-	public AbstractContent getContentFromContextSections(final Element section, final Namespace namespace, final Dataset dataset) {
-		
-		if (!hasMinGroupId(section.getAttributeValue("minGroupId"))) {
-			return null;
-		}
-		
-		final Section result = new Section();
-		//TODO Get translated label string for value of labelKey-attribute in the section element  
-		result.setLabel(section.getAttributeValue("labelKey"));
-		
-		final List<Element> children = section.getChildren();
-		
-		final String defaultSeparator = "<br/>";
-		String separator = section.getAttributeValue("separator"); 
-		if (section.getAttributeValue("separator") == null) {
-			separator = defaultSeparator;
-		}
-		result.setSeparator(separator);
-								
-		LOGGER.debug("Dataset: " + dataset);
-		
-		for (Element e:children) {
-			if (e.getName().equals("field")) {
-				addFieldToResult(e, namespace, result, dataset, separator);
-			} 
-		}
-		return result;
-	}
-
-	/**
 	 * Procedure to add a <code>Field</code> from the dataset to the result <code>Section</code>.
 	 * @param dataset The current dataset.
 	 * @param result The <code>Section</code> the field belongs to.
