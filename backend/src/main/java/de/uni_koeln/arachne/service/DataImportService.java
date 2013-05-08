@@ -77,12 +77,11 @@ public class DataImportService implements Runnable {
 	public void run() {
 		// enable request scope hack
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(new MockHttpServletRequest()));
-		LOGGER.info("--- *** ---");
 		running.set(true);
 		processedDocuments.set(0);		
 		elapsedTime.set(0);
 		final long startTime = System.currentTimeMillis();
-				
+		
 		userRightsService.setUserSolr();
 		LOGGER.info("Getting list of ArachneEntityIds.");
 		final List<Long> entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification`", new RowMapper<Long>() {
@@ -103,7 +102,6 @@ public class DataImportService implements Runnable {
 			final long start = now;
 			LOGGER.info("Starting dataimport.");
 			for (long currentEntityId: entityIds) {
-				long entityTime = System.currentTimeMillis();
 				final EntityId entityId = entityIdentificationService.getId(currentEntityId);
 				BaseArachneEntity entity;
 				if (entityId.isDeleted()) {
@@ -111,13 +109,13 @@ public class DataImportService implements Runnable {
 				} else {
 					entity = entityService.getFormattedEntityById(entityId);
 				}
-				LOGGER.debug("GetEntity " + entityId.getArachneEntityID() + ": " + (System.currentTimeMillis() - entityTime) + " ms");
-
-				if (entity != null) {
-					bulkRequest.add(client.prepareIndex(esName,entity.getType(),String.valueOf(entityId)).setSource(mapper.writeValueAsBytes(entity)));
-					bulkDocumentCount++;
+				
+				if (entity == null) {
+					LOGGER.error("Entity " + entityId + " is null! This should never happen. Check the database immediately.");
 				} else {
-					LOGGER.warn("Entity " + entityId + " is null!");
+					bulkRequest.add(client.prepareIndex(esName,entity.getType(),String.valueOf(entityId.getArachneEntityID()))
+							.setSource(mapper.writeValueAsBytes(entity)));
+					bulkDocumentCount++;
 				}
 
 				if (bulkDocumentCount >= esBulkSize) {
