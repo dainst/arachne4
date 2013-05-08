@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -28,8 +29,13 @@ import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.util.EntityId;
 
+/**
+ * This class implements the dataimport into elastic search. It is realized as a <code>@Service</code> so it can make use of autowiring and
+ * be autowired itself (for communication). At the same time it implements <code>Runnable</code> so that the dataimport can run asynchronously
+ * via a <code>TaskExecutor</code>.  
+ */
 @Service("DataImportService")
-public class DataImportService implements Runnable {
+public class DataImportService implements Runnable { // NOPMD - Threading is used via Springs TaskExecutor so it is save 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataImportService.class);
 	
 	@Autowired
@@ -58,12 +64,18 @@ public class DataImportService implements Runnable {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
-	private AtomicLong elapsedTime;
-	private AtomicBoolean running;
-	private AtomicLong indexedDocuments;
+	private transient final AtomicLong elapsedTime;
+	private transient final AtomicBoolean running;
+	private transient final AtomicLong indexedDocuments;
 	
 	private transient final String esName;
 	private transient final int esBulkSize;
+	
+	private transient final ObjectMapper mapper;
+	private transient final Node node;
+	private transient final Client client;
+	
+	private transient boolean terminate = false;
 	
 	@Autowired
 	public DataImportService(final @Value("#{config.esName}") String esName, final @Value("#{config.esBulkSize}") int esBulkSize) {
@@ -72,9 +84,17 @@ public class DataImportService implements Runnable {
 		indexedDocuments = new AtomicLong(0);
 		this.esName = esName;
 		this.esBulkSize = esBulkSize;
+		LOGGER.info("Setting up elastic search client...");
+		mapper = new ObjectMapper();
+		node = NodeBuilder.nodeBuilder(). client(true).clusterName(esName).node();
+		client = node.client();
 	}
 
-	public void run() {
+	/**
+	 * The dataimport implementation. This method retrieves a list of EntityIds from the DB and iterates over this list constructing the
+	 * associated documents and indexing them via elastic search.
+	 */
+	public void run() { // NOPMD - Threading is used via Springs TaskExecutor so it is save 
 		// enable request scope hack- needed so the UserRightsService can be used
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(new MockHttpServletRequest()));
 		running.set(true);
@@ -90,21 +110,16 @@ public class DataImportService implements Runnable {
 			}
 		});
 		elapsedTime.set(System.currentTimeMillis() - startTime);		
-		
 		try {
-			final ObjectMapper mapper = new ObjectMapper();
-			final Node node = NodeBuilder.nodeBuilder().client(true).clusterName(esName).node();
-			final Client client = node.client();
-
+			LOGGER.info("Dataimport started.");
+			long deltaT = 0;
 			long documentCount = 0;
 			long bulkDocumentCount = 0;
 			BulkRequestBuilder bulkRequest = client.prepareBulk();
-			long now = System.currentTimeMillis();
-			LOGGER.info("Starting dataimport.");
 			for (long currentEntityId: entityIds) {
-				if (!running.get()) {
-					LOGGER.info("Thread stopped.");
+				if (terminate) {
 					bulkDocumentCount = 0;
+					running.set(false);
 					break;
 				}
 				
@@ -124,27 +139,26 @@ public class DataImportService implements Runnable {
 					bulkDocumentCount++;
 				}
 				
-				elapsedTime.set(System.currentTimeMillis() - startTime);
-				
+				// uodate elapsed time every second
+				final long now = System.currentTimeMillis();
+				if (now - deltaT > 1000) {
+					deltaT = now;
+					elapsedTime.set(now - startTime);
+				}
+								
 				if (bulkDocumentCount >= esBulkSize) {
 					documentCount = documentCount + bulkDocumentCount;
-					LOGGER.info("SQL query time(" + documentCount + "): " + ((System.currentTimeMillis() - now)/1000f) + " s");
-					now = System.currentTimeMillis();
 					bulkRequest.execute().actionGet();
-					LOGGER.info("ES bulk execute time(" + documentCount + "): " + ((System.currentTimeMillis() - now)/1000f) + " s");
-					now = System.currentTimeMillis();
 					bulkRequest = client.prepareBulk();
 					bulkDocumentCount = 0;
 					indexedDocuments.set(documentCount);
 				}
 			}
 			if (bulkDocumentCount > 0) {
-				LOGGER.info("Sending last bulk of " + bulkDocumentCount + " documents.");
 				bulkRequest.execute().actionGet();
 				documentCount = documentCount + bulkDocumentCount;
 				indexedDocuments.set(documentCount);
 			}
-			node.close();
 			if (running.get()) {
 				LOGGER.info("Import of " + documentCount + " documents finished in " + ((System.currentTimeMillis() - startTime)/1000f/60f/60f) + " hours.");
 			} else {
@@ -160,8 +174,19 @@ public class DataImportService implements Runnable {
 		running.set(false);
 	}
 	
+	/**
+	 * Closes the elastic search node.
+	 */
+	@PreDestroy
+	public void destroy() { 
+		node.close();
+	}
+	
+	/**
+	 * Method to signal that the task shall stop.
+	 */
 	public void stop() {
-		running.set(false);
+		terminate = false;
 	}
 	
 	public long getElapsedTime() {

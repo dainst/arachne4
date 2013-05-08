@@ -2,7 +2,6 @@ package de.uni_koeln.arachne.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,14 +67,14 @@ public class AdminController {
 
 	/**
 	 * Elastic search data import.
-	 * @param command
-	 * @param request
-	 * @param response
-	 * @return
+	 * Http get requests without paramter 
+	 * @param command Supported commands are <code>start</code> and <code>stop</code>. 
+	 * @param response The outgoing HTTP response.
+	 * @return A <code>StatusResponse</code> object.
 	 */
 	@RequestMapping(value="/admin/dataimport", method=RequestMethod.GET)
 	public @ResponseBody StatusResponse handleDataImport(@RequestParam(value = "command", required = false) final String command
-			, final HttpServletRequest request, final HttpServletResponse response) {
+			, final HttpServletResponse response) {
 		
 		if (StrUtils.isEmptyOrNull(command)) {
 			if (dataImportService.isRunning()) {
