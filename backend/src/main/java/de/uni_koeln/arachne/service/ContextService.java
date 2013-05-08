@@ -120,6 +120,9 @@ public class ContextService {
 						continue;
 					}
 					
+					// Use table-name for context-description
+					final String contextTableName = contextImageDataset.getArachneId().getTableName().substring(0,1).toUpperCase() + contextImageDataset.getArachneId().getTableName().substring(1);
+					
 					// Iterate over all loaded context-images and add images to parent-dataset
 					final Iterator<Image> contextImageIterator = contextImagesList.iterator();
 					
@@ -131,7 +134,7 @@ public class ContextService {
 						curImage.setSourceRecordId(contextImageDataset.getArachneId().getArachneEntityID());
 						
 						// Context-Type of connected Record
-						curImage.setSourceContext(cur.getContextName());
+						curImage.setSourceContext(contextTableName);
 						
 						// add image to result-list and remove from context to save ressources
 						resultContextImages.add(curImage);

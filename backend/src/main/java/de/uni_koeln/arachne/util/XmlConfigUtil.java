@@ -505,8 +505,8 @@ public class XmlConfigUtil implements ServletContextAware {
 					// add all child-fields of the current contextSection and retrieve their values
 					for(Element childField : childFields) {
 						addFieldToFieldList(childField, fieldList, i, dataset, contextType, parentSeparator);
-						
 					}
+					
 					localContext.add(fieldList);
 					curSectionContent.add(localContext);
 				}
