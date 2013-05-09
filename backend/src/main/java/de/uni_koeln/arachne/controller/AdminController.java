@@ -80,7 +80,7 @@ public class AdminController {
 		if (StrUtils.isEmptyOrNull(command)) {
 			if (dataImportService.isRunning()) {
 				final long elapsedTime = dataImportService.getElapsedTime();
-				return new StatusResponse("Dataimport status: running - Elapsed Time: " + String.format("%d min, %d sec", 
+				return new StatusResponse("Dataimport status: running - Elapsed Time: " + String.format("%d:%d", 
 					    TimeUnit.MILLISECONDS.toMinutes(elapsedTime),
 					    TimeUnit.MILLISECONDS.toSeconds(elapsedTime) - 
 					    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime))) + " minutes - " 
