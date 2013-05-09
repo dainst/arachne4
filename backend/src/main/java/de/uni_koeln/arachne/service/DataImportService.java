@@ -97,6 +97,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 	public void run() { // NOPMD - Threading is used via Springs TaskExecutor so it is save 
 		// enable request scope hack- needed so the UserRightsService can be used
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(new MockHttpServletRequest()));
+		terminate = false;
 		running.set(true);
 		indexedDocuments.set(0);		
 		elapsedTime.set(0);
@@ -186,7 +187,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 	 * Method to signal that the task shall stop.
 	 */
 	public void stop() {
-		terminate = false;
+		terminate = true;
 	}
 	
 	public long getElapsedTime() {

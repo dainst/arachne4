@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.controller;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit; 
 
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -78,8 +79,11 @@ public class AdminController {
 		
 		if (StrUtils.isEmptyOrNull(command)) {
 			if (dataImportService.isRunning()) {
-				return new StatusResponse("Dataimport status: running - Elapsed Time: " + String.format("%.2f"
-						, dataImportService.getElapsedTime()/1000f/60f) + " minutes - " 
+				final long elapsedTime = dataImportService.getElapsedTime();
+				return new StatusResponse("Dataimport status: running - Elapsed Time: " + String.format("%d min, %d sec", 
+					    TimeUnit.MILLISECONDS.toMinutes(elapsedTime),
+					    TimeUnit.MILLISECONDS.toSeconds(elapsedTime) - 
+					    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime))) + " minutes - " 
 						+ "Indexed Documents: " + dataImportService.getIndexedDocuments());
 			} else {
 				return new StatusResponse("Dataimport status: idle");
