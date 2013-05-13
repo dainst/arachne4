@@ -33,7 +33,12 @@ public class Section extends AbstractContent {
 	 * @return a <code>boolean</code> indicating success.
 	 */
 	public boolean add(final AbstractContent content) {
-		return this.content.add(content);
+		if(!this.content.contains(content)) {
+			return this.content.add(content);
+		}
+		else {
+			return false;
+		}
 	}
 	
 	@XmlElementWrapper
@@ -77,4 +82,43 @@ public class Section extends AbstractContent {
 		}
 		return label + ": " + stringBuilder.toString();
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((content == null) ? 0 : content.hashCode());
+		result = prime * result + ((label == null) ? 0 : label.hashCode());
+		result = prime * result
+				+ ((separator == null) ? 0 : separator.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Section other = (Section) obj;
+		if (content == null) {
+			if (other.content != null)
+				return false;
+		} else if (!content.equals(other.content))
+			return false;
+		if (label == null) {
+			if (other.label != null)
+				return false;
+		} else if (!label.equals(other.label))
+			return false;
+		if (separator == null) {
+			if (other.separator != null)
+				return false;
+		} else if (!separator.equals(other.separator))
+			return false;
+		return true;
+	}
+	
 }
