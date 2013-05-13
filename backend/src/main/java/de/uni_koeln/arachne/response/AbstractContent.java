@@ -9,4 +9,18 @@ package de.uni_koeln.arachne.response;
 @SuppressWarnings("PMD")
 public abstract class AbstractContent { 
 	
+	@Override
+	public int hashCode() {
+		return 1;
+	}
+	
+	@Override
+	/** 
+	 * Return true so that decisions on lower-level classes are relevant for equality  
+	 */
+	
+	public boolean equals(Object obj) {
+		return true;
+	}
+	
 }
