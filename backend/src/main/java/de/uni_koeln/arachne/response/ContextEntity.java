@@ -24,7 +24,34 @@ public class ContextEntity extends AbstractContent {
 	}
 	
 	@XmlElementWrapper
-	public List<AbstractContent> getContextEntity() {
+	public List<AbstractContent> getContent() {
 		return this.contextEntity;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((contextEntity == null) ? 0 : contextEntity.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ContextEntity other = (ContextEntity) obj;
+		if (contextEntity == null) {
+			if (other.contextEntity != null)
+				return false;
+		} else if (!contextEntity.equals(other.contextEntity))
+			return false;
+		return true;
+	}
+
 }
