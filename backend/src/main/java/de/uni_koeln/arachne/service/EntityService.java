@@ -37,8 +37,8 @@ public class EntityService {
 	 * @return The requested formatted entity object or an empty <code>FromattedArachneEntity</code> object where the type 
 	 * is set to "forbidden" to indicate that the user is not allowed to see this entity.
 	 */
-	public FormattedArachneEntity getFormattedEntityById(EntityId entityId) {
-		long startTime = System.currentTimeMillis();
+	public FormattedArachneEntity getFormattedEntityById(final EntityId entityId) {
+		final long startTime = System.currentTimeMillis();
 		final String datasetGroupName = singleEntityDataService.getDatasetGroup(entityId);
     	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
     	
