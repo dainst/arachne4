@@ -43,19 +43,26 @@ public class LinkField extends Field {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		LinkField other = (LinkField) obj;
+		}
+		final LinkField other = (LinkField) obj;
 		if (labelKey == null) {
-			if (other.labelKey != null)
+			if (other.labelKey != null) {
 				return false;
-		} else if (!labelKey.equals(other.labelKey))
-			return false;
+			}
+		} else {
+			if (!labelKey.equals(other.labelKey)) {
+				return false;
+			}
+		}
 		return true;
 	}
 
