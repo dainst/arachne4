@@ -49,7 +49,7 @@ public class Image extends SQLResponseObject {
 		return sourceRecordId;
 	}
 
-	public void setSourceRecordId(Long sourceRecordId) {
+	public void setSourceRecordId(final Long sourceRecordId) {
 		this.sourceRecordId = sourceRecordId;
 	}
 
@@ -57,7 +57,7 @@ public class Image extends SQLResponseObject {
 		return sourceContext;
 	}
 
-	public void setSourceContext(String sourceContext) {
+	public void setSourceContext(final String sourceContext) {
 		this.sourceContext = sourceContext;
 	}
 
