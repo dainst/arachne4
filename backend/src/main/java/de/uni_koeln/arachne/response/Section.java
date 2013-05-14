@@ -33,11 +33,10 @@ public class Section extends AbstractContent {
 	 * @return a <code>boolean</code> indicating success.
 	 */
 	public boolean add(final AbstractContent content) {
-		if(!this.content.contains(content)) {
-			return this.content.add(content);
-		}
-		else {
+		if (this.content.contains(content)) {
 			return false;
+		} else {
+			return this.content.add(content);
 		}
 	}
 	
@@ -95,29 +94,47 @@ public class Section extends AbstractContent {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		Section other = (Section) obj;
+		}
+		final Section other = (Section) obj;
 		if (content == null) {
-			if (other.content != null)
+			if (other.content != null) {
 				return false;
-		} else if (!content.equals(other.content))
-			return false;
+			}
+		} else {
+			if (!content.equals(other.content)) {
+				return false;
+			}
+		}
+			
 		if (label == null) {
-			if (other.label != null)
+			if (other.label != null) {
 				return false;
-		} else if (!label.equals(other.label))
-			return false;
+			}
+		} else {
+			if (!label.equals(other.label)) {
+				return false;
+			}
+		}
+			
 		if (separator == null) {
-			if (other.separator != null)
+			if (other.separator != null) {
 				return false;
-		} else if (!separator.equals(other.separator))
-			return false;
+			}
+		} else {
+			if (!separator.equals(other.separator)) {
+				return false;
+			}
+		}
+		
 		return true;
 	}
 	
