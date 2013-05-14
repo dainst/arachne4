@@ -1,5 +1,7 @@
 package de.uni_koeln.arachne.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,16 @@ public class EntityIdentificationService {
 	public EntityId getId(final Long arachneEntityId) {
 		return getByEntityId(arachneEntityId);
 	}
-	
+		
+	/**
+	 * Gets a range of <code>ArachneEntityIds</code>.
+	 * @param start First id in the range.
+	 * @param end Last id in the range. 
+	 * @return an <code>ArachneId</code> object that contains all the identification information.
+	 */
+	public EntityId getId(final String tableName, final Long internalKey) {
+		return getByTablenameAndInternalKey(tableName, internalKey);
+	}
 	
 	/**
 	 * Gets all identifiers of a dataset by table name and internal key. This is the external reference ID for the dataset in Arachne.
@@ -30,8 +41,8 @@ public class EntityIdentificationService {
 	 * @param internalKey The internalkey of the entity. 
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
-	public EntityId getId(final String tableName, final Long internalKey) {
-		return getByTablenameAndInternalKey(tableName, internalKey);
+	public List<ArachneEntity> getByEntityIdRange(final long start, final long end) {
+		return arachneEntityDao.getByEntityIdRange(start, end);
 	}
 	
 	/**
@@ -60,7 +71,7 @@ public class EntityIdentificationService {
 	 * @param arachneEntity The <code>ArachneEntity</code> for which the instance should be created.
 	 * @return The new instance or <code>null</code>.
 	 */
-	private EntityId constructArachneID(final ArachneEntity arachneEntity){
+	public EntityId constructArachneID(final ArachneEntity arachneEntity){
 		if (arachneEntity == null) {
 			return null;	
 		} else {

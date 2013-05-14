@@ -8,7 +8,7 @@ import de.uni_koeln.arachne.mapping.ArachneEntity;
 public class ArachneEntityDao extends AbstractHibernateTemplateDao {
 
 	/**
-	 * Retrives alternative Identifierys by Arachne Entity ID
+	 * Retrieves alternative Identifiers by Arachne Entity ID
 	 * @param ArachneEntityID The Arachne Entity ID
 	 * @return Returns a Instance of the Arachne Entity Table Mapping
 	 */
@@ -17,7 +17,7 @@ public class ArachneEntityDao extends AbstractHibernateTemplateDao {
 	}
 	
 	/**
-	 * Retrives alternative Identifierys by table and Table key
+	 * Retrieves alternative Identifiers by table and Table key
 	 * @param table Arachne Table name
 	 * @param internalId Primary Key of the Table
 	 * @return Returns a Instance of the Arachne Entity Table Mapping
@@ -33,5 +33,29 @@ public class ArachneEntityDao extends AbstractHibernateTemplateDao {
 		}
 	}
 	
-	
+	/**
+	 * Retrieves alternative Identifiers by range of primary keys.
+	 * @param start First id in the range.
+	 * @param end Last id in the range.
+	 * @return Returns a List of Arachne Entity Table Mappings.
+	 */
+	public List<ArachneEntity> getByEntityIdRange(final long start, final long end) {
+		long startId;
+		long endId;
+		if (start>end) {
+			startId = end;
+			endId = start;
+		} else {
+			startId = start;
+			endId = end;
+		}
+		@SuppressWarnings("unchecked")
+		final List<ArachneEntity> list = (List<ArachneEntity>) hibernateTemplate.find(
+				"from ArachneEntity where ArachneEntityID <= "+endId+" and ArachneEntityID >= '"+startId+"'" );
+		if (list.isEmpty()) {
+			return null;
+		} else {
+			return list;
+		}
+	}
 }
