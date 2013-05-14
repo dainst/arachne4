@@ -486,34 +486,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		
 		// Are there any contextSection-Tags within the current context? 
 		final List<Element> contextSections = context.getChildren("contextSection", namespace);		
-		if(contextSections != null && !contextSections.isEmpty()) {
-			
-			// Iterate over all contexts of the current type 			
-			for (int i = 0; i < dataset.getContextSize(contextType); i++) {
-				
-				final ContextEntity curSectionContent = new ContextEntity();
-				
-				// Iterate over all contextSections within the current processed context
-				for(Element curSection : contextSections) {
-					final FieldList fieldList = new FieldList();
-					final Section localContext = new Section();
-					
-					// store the section lable of the current context
-					final List<Element> childFields = curSection.getChildren();
-					localContext.setLabel(curSection.getAttributeValue("labelKey"));
-					
-					// add all child-fields of the current contextSection and retrieve their values
-					for(Element childField : childFields) {
-						addFieldToFieldList(childField, fieldList, i, dataset, contextType, parentSeparator);
-					}
-					
-					localContext.add(fieldList);
-					curSectionContent.add(localContext);
-				}
-				result.add(curSectionContent);
-			}
-
-		} else {
+		if (contextSections == null || contextSections.isEmpty()) {
 			final List<Element> children = context.getChildren();
 			final String defaultSeparator = "<br/>";
 			String separator = context.getAttributeValue("separator"); 
@@ -539,6 +512,31 @@ public class XmlConfigUtil implements ServletContextAware {
 			
 			if (result.getContent().isEmpty()) {
 				return null;
+			}
+		} else {
+			// Iterate over all contexts of the current type 			
+			for (int i = 0; i < dataset.getContextSize(contextType); i++) {
+
+				final ContextEntity curSectionContent = new ContextEntity();
+
+				// Iterate over all contextSections within the current processed context
+				for(Element curSection : contextSections) {
+					final FieldList fieldList = new FieldList();
+					final Section localContext = new Section();
+
+					// store the section lable of the current context
+					final List<Element> childFields = curSection.getChildren();
+					localContext.setLabel(curSection.getAttributeValue("labelKey"));
+
+					// add all child-fields of the current contextSection and retrieve their values
+					for(Element childField : childFields) {
+						addFieldToFieldList(childField, fieldList, i, dataset, contextType, parentSeparator);
+					}
+
+					localContext.add(fieldList);
+					curSectionContent.add(localContext);
+				}
+				result.add(curSectionContent);
 			}
 		}
 		return result;
