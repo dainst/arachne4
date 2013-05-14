@@ -10,10 +10,10 @@ package de.uni_koeln.arachne.context;
 public class ContextImageDescriptor {
 
 	/** Name of the context */
-	private String contextName = null;
+	private transient final String contextName;
 	
 	/** Usage of the additionally retrieved images */
-	private String contextImageUsage = null;
+	private transient final String contextImageUsage;
 
 	public ContextImageDescriptor(final String contextName, final String contextImageUsage) {
 		super();

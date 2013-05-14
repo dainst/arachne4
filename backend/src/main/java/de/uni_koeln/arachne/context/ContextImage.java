@@ -12,7 +12,7 @@ import de.uni_koeln.arachne.response.Dataset;
 public class ContextImage extends Context {
 
 	/** Describes the usage of images found in the context of the current record */
-	private String usage = null;
+	private transient final String usage;
 	
 	public ContextImage(final String contextType, final String usage, final Dataset parent) {
 		super(contextType, parent);
