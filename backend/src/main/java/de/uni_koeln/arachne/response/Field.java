@@ -34,19 +34,26 @@ public class Field extends AbstractContent {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		Field other = (Field) obj;
+		}
+		final Field other = (Field) obj;
 		if (value == null) {
-			if (other.value != null)
+			if (other.value != null) {
 				return false;
-		} else if (!value.equals(other.value))
-			return false;
+			}
+		} else {
+			if (!value.equals(other.value)) {
+				return false;
+			}
+		}
 		return true;
 	}	
 	
