@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import de.uni_koeln.arachne.mapping.ArachneEntity;
 import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.util.EntityId;
@@ -104,33 +105,81 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 		final long startTime = System.currentTimeMillis();
 		
 		userRightsService.setUserSolr();
+		
 		LOGGER.info("Getting list of ArachneEntityIds.");
 		final List<Long> entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification`", new RowMapper<Long>() {
 			public Long mapRow(final ResultSet resultSet, final int index) throws SQLException {
 				return resultSet.getLong(1);
 			}
 		});
+		
 		elapsedTime.set(System.currentTimeMillis() - startTime);		
 		try {
 			LOGGER.info("Dataimport started.");
+			boolean finished = false;
 			long deltaT = 0;
-			long documentCount = 0;
-			long bulkDocumentCount = 0;
 			BulkRequestBuilder bulkRequest = client.prepareBulk();
-			for (long currentEntityId: entityIds) {
+			int index = 0;
+			while (!finished) {
 				if (terminate) {
-					bulkDocumentCount = 0;
 					running.set(false);
 					break;
 				}
+				final long start = entityIds.get(index);
+				long end = index + esBulkSize - 1;
+				if (end >= entityIds.size()) {
+					end = entityIds.size() - 1;
+					finished = true;
+				}
+				end = entityIds.get((int)end);
+				final List<ArachneEntity> entityList = entityIdentificationService.getByEntityIdRange(start, end);
+				for (ArachneEntity currentEntityId: entityList) {
+					final EntityId entityId = new EntityId(currentEntityId.getTableName(), currentEntityId.getForeignKey()
+							, currentEntityId.getId(), currentEntityId.isDeleted());
+					
+					BaseArachneEntity entity;
+					if (entityId.isDeleted()) {
+						entity = responseFactory.createResponseForDeletedEntity(entityId);
+					} else {
+						entity = entityService.getFormattedEntityById(entityId);
+					}
+										
+					if (entity == null) {
+						LOGGER.error("Entity " + entityId + " is null! This should never happen. Check the database immediately.");
+					} else {
+						bulkRequest.add(client.prepareIndex(esName,entity.getType(),String.valueOf(entityId.getArachneEntityID()))
+								.setSource(mapper.writeValueAsBytes(entity)));
+					}
+					// uodate elapsed time every second
+					final long now = System.currentTimeMillis();
+					if (now - deltaT > 1000) {
+						deltaT = now;
+						elapsedTime.set(now - startTime);
+					}
+				}
+				bulkRequest.execute().actionGet();
+				bulkRequest = client.prepareBulk();
+				index += esBulkSize;
+				indexedDocuments.set(index);
+			}
+			/*
+			for (long currentEntityId: entityIds) {
 				
-				final EntityId entityId = entityIdentificationService.getId(currentEntityId);
+				
+				LOGGER.info("Id: "+currentEntityId);
+				long prof = System.currentTimeMillis();
+				//final EntityId entityId = entityIdentificationService.getId(currentEntityId);
+				final List<ArachneEntity> entityList = entityIdentificationService.getByEntityIdRange(1, 1000);
+				LOGGER.info("get ID: "+(System.currentTimeMillis()-prof)+" ms");
+				final EntityId entityId = entityIdentificationService.constructArachneID(entityList.get(0));
+				prof = System.currentTimeMillis();
 				BaseArachneEntity entity;
 				if (entityId.isDeleted()) {
 					entity = responseFactory.createResponseForDeletedEntity(entityId);
 				} else {
 					entity = entityService.getFormattedEntityById(entityId);
 				}
+				LOGGER.info("get Entity: "+(System.currentTimeMillis()-prof)+" ms");
 				
 				if (entity == null) {
 					LOGGER.error("Entity " + entityId + " is null! This should never happen. Check the database immediately.");
@@ -159,9 +208,9 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 				bulkRequest.execute().actionGet();
 				documentCount = documentCount + bulkDocumentCount;
 				indexedDocuments.set(documentCount);
-			}
+			}*/
 			if (running.get()) {
-				LOGGER.info("Import of " + documentCount + " documents finished in " + ((System.currentTimeMillis() - startTime)/1000f/60f/60f) + " hours.");
+				LOGGER.info("Import of " + index + " documents finished in " + ((System.currentTimeMillis() - startTime)/1000f/60f/60f) + " hours.");
 			} else {
 				LOGGER.info("Dataimport aborted.");
 			}
