@@ -162,53 +162,6 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 				index += esBulkSize;
 				indexedDocuments.set(index);
 			}
-			/*
-			for (long currentEntityId: entityIds) {
-				
-				
-				LOGGER.info("Id: "+currentEntityId);
-				long prof = System.currentTimeMillis();
-				//final EntityId entityId = entityIdentificationService.getId(currentEntityId);
-				final List<ArachneEntity> entityList = entityIdentificationService.getByEntityIdRange(1, 1000);
-				LOGGER.info("get ID: "+(System.currentTimeMillis()-prof)+" ms");
-				final EntityId entityId = entityIdentificationService.constructArachneID(entityList.get(0));
-				prof = System.currentTimeMillis();
-				BaseArachneEntity entity;
-				if (entityId.isDeleted()) {
-					entity = responseFactory.createResponseForDeletedEntity(entityId);
-				} else {
-					entity = entityService.getFormattedEntityById(entityId);
-				}
-				LOGGER.info("get Entity: "+(System.currentTimeMillis()-prof)+" ms");
-				
-				if (entity == null) {
-					LOGGER.error("Entity " + entityId + " is null! This should never happen. Check the database immediately.");
-				} else {
-					bulkRequest.add(client.prepareIndex(esName,entity.getType(),String.valueOf(entityId.getArachneEntityID()))
-							.setSource(mapper.writeValueAsBytes(entity)));
-					bulkDocumentCount++;
-				}
-				
-				// uodate elapsed time every second
-				final long now = System.currentTimeMillis();
-				if (now - deltaT > 1000) {
-					deltaT = now;
-					elapsedTime.set(now - startTime);
-				}
-								
-				if (bulkDocumentCount >= esBulkSize) {
-					documentCount = documentCount + bulkDocumentCount;
-					bulkRequest.execute().actionGet();
-					bulkRequest = client.prepareBulk();
-					bulkDocumentCount = 0;
-					indexedDocuments.set(documentCount);
-				}
-			}
-			if (bulkDocumentCount > 0) {
-				bulkRequest.execute().actionGet();
-				documentCount = documentCount + bulkDocumentCount;
-				indexedDocuments.set(documentCount);
-			}*/
 			if (running.get()) {
 				LOGGER.info("Import of " + index + " documents finished in " + ((System.currentTimeMillis() - startTime)/1000f/60f/60f) + " hours.");
 			} else {
