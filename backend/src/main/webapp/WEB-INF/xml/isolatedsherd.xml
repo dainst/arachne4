@@ -41,10 +41,14 @@
                     <field datasource="isolatedsherd.RimPercentage" postfix="%"/>
                 </section>
             </section>
-            <section labelKey="Informationen zur Oberflaechenbehandlung">
+            <section labelKey="Informationen zur Oberflächenbehandlung">
                 <context type="surfacetreatment" labelKey="Oberflächenbehandlung" separator=" ">
-                    <field datasource=".Bezeichner"/>
-                    <field datasource=".ConnectedActions"/>
+                    <contextSection labelKey="Identifier">
+                        <field datasource=".Bezeichner"/>
+                    </contextSection>
+                    <contextSection labelKey="Verbundene Oberflächenbehandlungen">
+                        <field datasource=".ConnectedActions"/>
+                    </contextSection>
                 </context>
             </section>            
             <include type="ort"/>

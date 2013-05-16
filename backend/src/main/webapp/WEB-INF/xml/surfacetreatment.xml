@@ -18,17 +18,36 @@
             <section labelKey="Surfacetreatment Actions">
                 <context type="surfacetreatmentaction" labelKey="Oberflächenbehandlungen"
                     separator=" ">
-                    <field datasource=".MomentOfSurfaceTreatmentAction"/>
-                    <field datasource=".TreatmentPosition"/>
-                    <field datasource=".PartOfSurfaceTreated"/>
-                    <field datasource=".Condition"/>
-                    <field datasource=".NumberOfSherds"/>
-
-                    <field datasource=".TreatmentAction"/>
-                    <field datasource=".TreatmentActionSubCoating"/>
-                    <field datasource=".IncisionDescription"/>
-                    <field datasource=".StampedStamp"/>
-                    <field datasource=".AddedMaterialType"/>
+                    <contextSection labelKey="Zeitpunkt der Oberflächenbehandlung">
+                        <field datasource=".MomentOfSurfaceTreatmentAction"/>
+                    </contextSection>
+                    <contextSection labelKey="Position">
+                        <field datasource=".TreatmentPosition"/>
+                    </contextSection>
+                    <contextSection labelKey="Behandelter Teil der Oberfläche">
+                        <field datasource=".PartOfSurfaceTreated"/>
+                    </contextSection>
+                    <contextSection labelKey="Zustand">
+                        <field datasource=".Condition"/>
+                    </contextSection>
+                    <contextSection labelKey="Anzahl behandelter Fragmente">
+                        <field datasource=".NumberOfSherds"/>
+                    </contextSection>
+                    <contextSection labelKey="Art der Oberflächenbehandlung">
+                        <field datasource=".TreatmentAction"/>
+                    </contextSection>
+                    <contextSection labelKey="Art des Überzugs">
+                        <field datasource=".TreatmentActionSubCoating"/>
+                    </contextSection>
+                    <contextSection labelKey="Beschreibung der Einkerbung">
+                        <field datasource=".IncisionDescription"/>
+                    </contextSection>
+                    <contextSection labelKey="Typ des Stempels">
+                        <field datasource=".StampedStamp"/>
+                    </contextSection>
+                    <contextSection labelKey="Typ des hinzugefügten Materials">
+                        <field datasource=".AddedMaterialType"/>
+                    </contextSection>
                 </context>
             </section>
         </datasections>

@@ -90,10 +90,18 @@
                 </section>
                 <section labelKey="Einschlüsse">
                     <context type="einschluss" labelKey="Einschlüsse" separator=" ">
-                        <field datasource=".Einschlussart"/>
-                        <field datasource=".Haeufigkeit"/>
-                        <field datasource=".DurchschnittlicheGroesse"/>
-                        <field datasource=".Verteilung"/>
+                        <contextSection labelKey="Einschlussart">
+                            <field datasource=".Einschlussart"/>
+                        </contextSection>
+                        <contextSection labelKey="Häufigkeit">
+                            <field datasource=".Haeufigkeit"/>
+                        </contextSection>
+                        <contextSection labelKey="Durchschnittliche Größe">
+                            <field datasource=".DurchschnittlicheGroesse"/>
+                        </contextSection>
+                        <contextSection labelKey="Verteilung">
+                            <field datasource=".Verteilung"/>
+                        </contextSection>
                     </context>
                 </section>
                 <include type="datierung" />

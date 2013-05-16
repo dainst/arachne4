@@ -18,34 +18,52 @@
         <datasections>
             <section labelKey="VerbundeneFabricBeschreibungen">
                 <context type="fabricdescription" labelKey="Description" separator=", ">
-                    <field datasource=".ColourOfBreakQualifierVon"/>
-                    <field datasource=".ColourOfBreakVon"/>
-                    <field datasource=".ColourOfBreakQualifierBis"/>
-                    <field datasource=".ColourOfBreakBis"/>
-                    <field datasource=".Zoning"/>
-                    <field datasource=".ColourOfCoreQualifierVon"/>
-                    <field datasource=".ColourOfCoreVon"/>
-                    <field datasource=".ColourOfCoreQualifierBis"/>
-                    <field datasource=".ColourOfCoreBis"/>
-                    <field datasource=".ColourOfOutsideQualifierVon"/>
-                    <field datasource=".ColourOfOutsideVon"/>
-                    <field datasource=".ColourOfOutsideQualifierBis"/>
-                    <field datasource=".ColourOfOutsideBis"/>
-                    <field datasource=".Manufacture"/>
-                    <field datasource=".Hardness"/>
-                    <field datasource=".Porosity"/>
-                    <field datasource=".SurfaceFeel"/>
-                    <field datasource=".ColourQualifierFreeVon"/>
-                    <field datasource=".ColourFreeVon"/>
-                    <field datasource=".ColourQualifierFreeBis"/>
-                    <field datasource=".ColourFreeBis"/>
+                    <contextSection labelKey="Freie Farbbeschreibung">
+                        <field datasource=".ColourQualifierFreeVon"/>
+                        <field datasource=".ColourFreeVon"/>
+                        <field datasource=".ColourQualifierFreeBis" postfix=" - "/>
+                        <field datasource=".ColourFreeBis"/>
+                    </contextSection>
+                    <contextSection labelKey="Farbe der Bruchstelle">
+                        <field datasource=".ColourOfBreakQualifierVon"/>
+                        <field datasource=".ColourOfBreakVon" postfix=" - "/>
+                        <field datasource=".ColourOfBreakQualifierBis"/>
+                        <field datasource=".ColourOfBreakBis"/>
+                    </contextSection>
+                    <contextSection labelKey="Zoning">
+                        <field datasource=".Zoning"/>
+                    </contextSection>
+                    <contextSection labelKey="Farbe des Kerns">
+                        <field datasource=".ColourOfCoreQualifierVon"/>
+                        <field datasource=".ColourOfCoreVon" postfix=" - "/>
+                        <field datasource=".ColourOfCoreQualifierBis"/>
+                        <field datasource=".ColourOfCoreBis"/>
+                    </contextSection>
+                    <contextSection labelKey="Farbe der Oberfläche">
+                        <field datasource=".ColourOfOutsideQualifierVon"/>
+                        <field datasource=".ColourOfOutsideVon" postfix=" - "/>
+                        <field datasource=".ColourOfOutsideQualifierBis"/>
+                        <field datasource=".ColourOfOutsideBis"/>
+                    </contextSection>
+                    <contextSection labelKey="Machart">
+                        <field datasource=".Manufacture"/>
+                    </contextSection>
+                    <contextSection labelKey="Härte">
+                        <field datasource=".Hardness"/>
+                    </contextSection>
+                    <contextSection labelKey="Härte">
+                        <field datasource=".Porosity"/>
+                    </contextSection>
+                    <contextSection labelKey="Oberflächengefühl">
+                        <field datasource=".SurfaceFeel"/>
+                    </contextSection>
                 </context>
             </section>
         </datasections>
         <contextImages>
             <!-- Show images of connected sherds -->
             <contextImage show="always">Fabricdescription</contextImage>
-            
+
             <!-- Show images of types which consist of current fabric -->
             <contextImage show="always">Fabricmainabstractmorphology</contextImage>
         </contextImages>
@@ -53,19 +71,19 @@
     <facets>
         <facet name="Fabricmainabstractcontext" labelKey="Fabric-Context">
             <context type="Fabricmainabstractcontext" separator=" / ">
-                <field datasource=".Grabungsort" />
-                <field datasource=".Befund" />
-                <field datasource=".Areal" />
+                <field datasource=".Grabungsort"/>
+                <field datasource=".Befund"/>
+                <field datasource=".Areal"/>
             </context>
         </facet>
         <facet name="Fabricmainabstractmorphology" labelKey="Fabric-Morphology">
             <context type="Fabricmainabstractmorphology" separator=" / ">
-                <field datasource=".Level1" />
-                <field datasource=".Level2" />
-                <field datasource=".Level3" />
-                <field datasource=".Level4" />
-                <field datasource=".Level5" />
-                <field datasource=".Level6" />
+                <field datasource=".Level1"/>
+                <field datasource=".Level2"/>
+                <field datasource=".Level3"/>
+                <field datasource=".Level4"/>
+                <field datasource=".Level5"/>
+                <field datasource=".Level6"/>
             </context>
         </facet>
         <facet name="kategorie" labelKey="Kategorie">

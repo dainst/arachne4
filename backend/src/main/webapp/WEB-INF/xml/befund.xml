@@ -49,14 +49,8 @@
                         <field datasource=".GrabungsinterneTypennummer"/>
                         <field datasource=".GrabungsinterneTypennummerSub"/>
                     </context>
-                    <context type="Befundmainabstractfabric" labelKey="Fabrics" separator=" / ">
-                        <!-- 
-                        <field datasource=".Origin"/>
-                        <field datasource=".CommonName"/>
-                        <field datasource=".Name"/>
-                        -->
-
-                        <contextSection labelKey="AllgemeinerName">
+                    <context type="Befundmainabstractfabric" labelKey="Fabrics" separator=" / "> 
+                       <contextSection labelKey="AllgemeinerName">
                             <field datasource=".CommonName"/>
                         </contextSection>
                         <contextSection labelKey="Herkunft">
@@ -65,13 +59,19 @@
                         <contextSection labelKey="Name">
                             <field datasource=".Name"/>
                         </contextSection>
-
                     </context>
                     <context type="Befundmainabstractisolatedsherd" separator=" / "
                         labelKey="Scherben">
-                        <field datasource=".SherdType"/>
-                        <field datasource=".InventoryNumber"/>
-                        <field datasource=".NitonAnalysisNumber"/>
+                        <contextSection labelKey="Typ">
+                            <field datasource=".SherdType"></field>
+                        </contextSection>
+                        <contextSection labelKey="Inventarnummer">
+                            <field datasource=".InventoryNumber"></field>
+                        </contextSection>
+                        <contextSection labelKey="Niton-Analysenummer">
+                            <field datasource=".NitonAnalysisNumber"></field>
+                        </contextSection>
+               
                     </context>
                 </section>
             </section>

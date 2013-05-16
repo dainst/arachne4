@@ -38,21 +38,51 @@
 
         <datasections>
             <section labelKey="Informationen zur Quantity">
-                <field datasource="quantities.RimCount"/>
-                <field datasource="quantities.RimWeight" postfix="g"/>
-                <field datasource="quantities.RimPercentage" postfix="%"/>
-                <field datasource="quantities.HandleCount"/>
-                <field datasource="quantities.HandleWeight" postfix="g"/>
-                <field datasource="quantities.BaseCount"/>
-                <field datasource="quantities.BaseWeight" postfix="g"/>
-                <field datasource="quantities.BodySherdCount"/>
-                <field datasource="quantities.BodySherdWeight" postfix="g"/>
-                <field datasource="quantities.OthersCount"/>
-                <field datasource="quantities.OthersWeight" postfix="g"/>
-                <field datasource="quantities.Joins"/>
-                <field datasource="quantities.MNI"/>
-                <field datasource="quantities.MNIWeighted"/>
-                <field datasource="quantities.MXI"/>
+                <section labelKey="Anzahl Randfragmente">
+                    <field datasource="quantities.RimCount"/>
+                </section>
+                <section labelKey="Gewicht der Randfragmente">
+                    <field datasource="quantities.RimWeight" postfix="g"/>
+                </section>
+                <section labelKey="Prozentualer Randanteil">
+                    <field datasource="quantities.RimPercentage" postfix="%"/>
+                </section>
+                <section labelKey="Anzahl Henkel">
+                    <field datasource="quantities.HandleCount"/>
+                </section>
+                <section labelKey="Gewicht Henkel">
+                    <field datasource="quantities.HandleWeight" postfix="g"/>
+                </section>
+                <section labelKey="Anzahl Bodenfragmente">
+                    <field datasource="quantities.BaseCount"/>
+                </section>
+                <section labelKey="Gewicht Bodenfragmente">
+                    <field datasource="quantities.BaseWeight" postfix="g"/>
+                </section>
+                <section labelKey="Anzahl Wandfragmente">
+                    <field datasource="quantities.BodySherdCount"/>
+                </section>
+                <section labelKey="Gewicht Wandfragmente">
+                    <field datasource="quantities.BodySherdWeight" postfix="g"/>
+                </section>
+                <section labelKey="Anzahl weiterer Fragmente">
+                    <field datasource="quantities.OthersCount"/>
+                </section>
+                <section labelKey="Gewicht weiterer Fragmente">
+                    <field datasource="quantities.OthersWeight" postfix="g"/>
+                </section>
+                <section labelKey="Anzahl Joins">
+                    <field datasource="quantities.Joins"/>
+                </section>
+                <section labelKey="MNI">
+                    <field datasource="quantities.MNI"/>
+                </section>
+                <section labelKey="Gewichtetes MNI">
+                    <field datasource="quantities.MNIWeighted"/>
+                </section>
+                <section labelKey="MXI">
+                    <field datasource="quantities.MXI"/>
+                </section>
             </section>
         </datasections>
     </display>
