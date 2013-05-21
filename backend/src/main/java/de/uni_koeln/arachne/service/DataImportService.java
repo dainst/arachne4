@@ -9,9 +9,14 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 
+import org.apache.http.annotation.Immutable;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
 import org.slf4j.Logger;
@@ -71,6 +76,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 	
 	private transient final String esName;
 	private transient final int esBulkSize;
+	private transient final boolean esRemoteClient;
 	
 	private transient final ObjectMapper mapper;
 	private transient final Node node;
@@ -79,16 +85,26 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 	private transient boolean terminate = false;
 	
 	@Autowired
-	public DataImportService(final @Value("#{config.esName}") String esName, final @Value("#{config.esBulkSize}") int esBulkSize) {
+	public DataImportService(final @Value("#{config.esAddress}") String esAddress, final @Value("#{config.esPort}") int esPort
+			, final @Value("#{config.esName}") String esName, final @Value("#{config.esBulkSize}") int esBulkSize
+			, final @Value("#{config.esClientTypeRemote}") boolean esRemoteClient) {
 		elapsedTime = new AtomicLong(0);
 		running = new AtomicBoolean(false);
 		indexedDocuments = new AtomicLong(0);
 		this.esName = esName;
 		this.esBulkSize = esBulkSize;
-		LOGGER.info("Setting up elastic search client...");
+		this.esRemoteClient = esRemoteClient;
 		mapper = new ObjectMapper();
-		node = NodeBuilder.nodeBuilder(). client(true).clusterName(esName).node();
-		client = node.client();
+		if (esRemoteClient) {
+			LOGGER.info("Setting up elastic search transport client...");
+			node = null;
+			final Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", esName).build();
+			client = new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress(esAddress, esPort));
+		} else {
+			LOGGER.info("Setting up elastic search node client...");
+			node = NodeBuilder.nodeBuilder(). client(true).clusterName(esName).node();
+			client = node.client();
+		}
 	}
 
 	/**
@@ -134,6 +150,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 				end = entityIds.get((int)end);
 				final List<ArachneEntity> entityList = entityIdentificationService.getByEntityIdRange(start, end);
 				for (ArachneEntity currentEntityId: entityList) {
+					final long fetch = System.currentTimeMillis();
 					final EntityId entityId = new EntityId(currentEntityId.getTableName(), currentEntityId.getForeignKey()
 							, currentEntityId.getId(), currentEntityId.isDeleted());
 					
@@ -149,6 +166,10 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 					} else {
 						bulkRequest.add(client.prepareIndex(esName,entity.getType(),String.valueOf(entityId.getArachneEntityID()))
 								.setSource(mapper.writeValueAsBytes(entity)));
+					}
+					final long fetchtime = System.currentTimeMillis() - fetch;
+					if (fetchtime > 100) {
+						LOGGER.info("Indexing: fetching " + entityId.getArachneEntityID() + " took " + fetchtime + "ms");
 					}
 					// uodate elapsed time every second
 					final long now = System.currentTimeMillis();
@@ -181,8 +202,12 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 	 * Closes the elastic search node.
 	 */
 	@PreDestroy
-	public void destroy() { 
-		node.close();
+	public void destroy() {
+		if (esRemoteClient) {
+			client.close();
+		} else {
+			node.close();
+		}
 	}
 	
 	/**
