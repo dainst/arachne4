@@ -114,11 +114,8 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 			long deltaT = 0;
 			BulkRequestBuilder bulkRequest = client.prepareBulk();
 			int index = 0;
+			indexing:
 			while (!finished) {
-				if (terminate) {
-					running.set(false);
-					break;
-				}
 				final long start = entityIds.get(index);
 				long end = index + esBulkSize - 1;
 				if (end >= entityIds.size()) {
@@ -128,6 +125,10 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 				end = entityIds.get((int)end);
 				final List<ArachneEntity> entityList = entityIdentificationService.getByEntityIdRange(start, end);
 				for (ArachneEntity currentEntityId: entityList) {
+					if (terminate) {
+						running.set(false);
+						break indexing;
+					}
 					final long fetch = System.currentTimeMillis();
 					final EntityId entityId = new EntityId(currentEntityId.getTableName(), currentEntityId.getForeignKey()
 							, currentEntityId.getId(), currentEntityId.isDeleted());
@@ -147,7 +148,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 					}
 					final long fetchtime = System.currentTimeMillis() - fetch;
 					if (fetchtime > 100) {
-						LOGGER.info("Indexing: fetching " + entityId.getArachneEntityID() + " took " + fetchtime + "ms");
+						LOGGER.debug("Indexing: fetching " + entityId.getArachneEntityID() + " took " + fetchtime + "ms");
 					}
 					// uodate elapsed time every second
 					final long now = System.currentTimeMillis();
