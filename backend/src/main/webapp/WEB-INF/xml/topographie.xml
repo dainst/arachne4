@@ -39,6 +39,7 @@
         			</section>
         		</section>
         		<section labelKey="Beschreibung">
+        			<field datasource="topographie.TopographieArt" />
 	        		<field datasource="topographie.TopographieTypus" prefix="Kategorie: " />
 	        		<field datasource="topographie.TopographieTypusZusatz" prefix="Zusatz: "/>
 	        		<field datasource="topographie.antikeQuellen" prefix="antike Quellen: "/>
@@ -75,6 +76,9 @@
 	    	<context type="datierung">
 		    	<field datasource=".EndEpoche"/>
 	    	</context>
+    	</facet>
+    	<facet name="topographieart" labelKey="Natürlich oder Anthropogen">
+    		<field datasource="topographie.TopographieArt"/>
     	</facet>
     	<facet name="topographietypus" labelKey="Art der Topographie">
 	    	<field datasource="topographie.TopographieTypus"/>
