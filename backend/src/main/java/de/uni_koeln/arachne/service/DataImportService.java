@@ -6,23 +6,14 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 
-import org.apache.http.annotation.Immutable;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.ImmutableSettings;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.node.Node;
-import org.elasticsearch.node.NodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -33,6 +24,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import de.uni_koeln.arachne.mapping.ArachneEntity;
 import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
+import de.uni_koeln.arachne.util.ESClientUtil;
 import de.uni_koeln.arachne.util.EntityId;
 
 /**
@@ -43,6 +35,9 @@ import de.uni_koeln.arachne.util.EntityId;
 @Service("DataImportService")
 public class DataImportService implements Runnable { // NOPMD - Threading is used via Springs TaskExecutor so it is save 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataImportService.class);
+	
+	@Autowired
+	private transient ESClientUtil esClientUtil;
 	
 	@Autowired
 	private transient IUserRightsService userRightsService;
@@ -74,37 +69,15 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 	private transient final AtomicBoolean running;
 	private transient final AtomicLong indexedDocuments;
 	
-	private transient final String esName;
-	private transient final int esBulkSize;
-	private transient final boolean esRemoteClient;
-	
 	private transient final ObjectMapper mapper;
-	private transient final Node node;
-	private transient final Client client;
-	
+		
 	private transient boolean terminate = false;
 	
-	@Autowired
-	public DataImportService(final @Value("#{config.esAddress}") String esAddress, final @Value("#{config.esPort}") int esPort
-			, final @Value("#{config.esName}") String esName, final @Value("#{config.esBulkSize}") int esBulkSize
-			, final @Value("#{config.esClientTypeRemote}") boolean esRemoteClient) {
+	public DataImportService() {
 		elapsedTime = new AtomicLong(0);
 		running = new AtomicBoolean(false);
 		indexedDocuments = new AtomicLong(0);
-		this.esName = esName;
-		this.esBulkSize = esBulkSize;
-		this.esRemoteClient = esRemoteClient;
 		mapper = new ObjectMapper();
-		if (esRemoteClient) {
-			LOGGER.info("Setting up elastic search transport client...");
-			node = null;
-			final Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", esName).build();
-			client = new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress(esAddress, esPort));
-		} else {
-			LOGGER.info("Setting up elastic search node client...");
-			node = NodeBuilder.nodeBuilder(). client(true).clusterName(esName).node();
-			client = node.client();
-		}
 	}
 
 	/**
@@ -132,6 +105,11 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 		elapsedTime.set(System.currentTimeMillis() - startTime);		
 		try {
 			LOGGER.info("Dataimport started.");
+			
+			final Client client = esClientUtil.getClient();
+			final int esBulkSize = esClientUtil.getBulkSize();
+			final String esName = esClientUtil.getName();
+			
 			boolean finished = false;
 			long deltaT = 0;
 			BulkRequestBuilder bulkRequest = client.prepareBulk();
@@ -196,18 +174,6 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 		((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).requestCompleted();
 		RequestContextHolder.resetRequestAttributes();
 		running.set(false);
-	}
-	
-	/**
-	 * Closes the elastic search node.
-	 */
-	@PreDestroy
-	public void destroy() {
-		if (esRemoteClient) {
-			client.close();
-		} else {
-			node.close();
-		}
 	}
 	
 	/**
