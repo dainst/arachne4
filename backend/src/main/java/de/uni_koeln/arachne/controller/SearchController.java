@@ -13,6 +13,14 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryFilterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -29,6 +37,7 @@ import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.response.SearchResult;
 import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.util.ESClientUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
@@ -39,6 +48,9 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 public class SearchController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
+	
+	@Autowired
+	private transient ESClientUtil esClientUtil;
 	
 	@Autowired
 	private transient GenericSQLService genericSQLService; 
@@ -107,6 +119,35 @@ public class SearchController {
 		}
 			    
 	    return result;
+	}
+	
+	/**
+	 * Handles the http request by querying the Elasticsearch index and returning the search result.
+	 * The "title" field is boosted by 2 so that documents containing the search keyword in the title are higher ranked than
+	 *  documents containing the keyword in other fields.
+	 * <br>
+	 * Currently the search result can only be serialized to JSON as JAXB cannot handle Maps.
+	 * @param searchParam The value of the search parameter. (mandatory)
+	 * @param limit The maximum number of returned entities. Default is 50. (optional)
+	 * @param offset The offset into the list of entities (used for paging). (optional)
+	 * @param filterValues The values of the solr filter query. (optional)
+	 * @param facetLimit The maximum number of facet results. (optional)
+	 * @return A response object containing the data (this is serialized to XML or JSON depending on content negotiation).
+	 */
+	@RequestMapping(value="/essearch", method=RequestMethod.GET)
+	public @ResponseBody String handleESSearchRequest(@RequestParam("q") final String searchParam,
+													  @RequestParam(value = "limit", required = false) final Integer limit) {
+		
+		final int resultSize = limit == null ? 50 : limit;
+				
+		final Client client = esClientUtil.getClient();
+		final SearchResponse response = client.prepareSearch()
+				.setQuery(QueryBuilders.multiMatchQuery(searchParam, "title^2", "_all"))
+				.setFilter(getAccessControlFilter())
+				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+				.setSize(resultSize)
+				.execute().actionGet();
+		return response.toString();
 	}
 
 	/**
@@ -236,6 +277,24 @@ public class SearchController {
 			queryStr.append(datasetGroup.getName());
 		}			
 		queryStr.append("))");
+	}
+	
+	/**
+	 * This method constructs a access control query filter for elastic search using the <code>UserRightsService</code>.
+	 * @return The constructed query filter.
+	 */
+	private QueryFilterBuilder getAccessControlFilter() {
+		final StringBuffer datasetGroups = new StringBuffer(16);
+		boolean first = true;
+		for (DatasetGroup datasetGroup: userRightsService.getCurrentUser().getDatasetGroups()) {
+			if (first) {
+				first = false;
+			} else {
+				datasetGroups.append(" OR ");
+			}
+			datasetGroups.append(datasetGroup.getName());
+		}
+		return FilterBuilders.queryFilter(QueryBuilders.fieldQuery("datasetGroup", datasetGroups.toString()));
 	}
 	
 	/**
