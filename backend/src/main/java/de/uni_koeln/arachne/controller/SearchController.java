@@ -142,7 +142,7 @@ public class SearchController {
 				
 		final Client client = esClientUtil.getClient();
 		final SearchResponse response = client.prepareSearch()
-				.setQuery(QueryBuilders.multiMatchQuery(searchParam, "title^2", "_all"))
+				.setQuery(QueryBuilders.multiMatchQuery(searchParam, "title^2", "subtitle^1.2", "_all"))
 				.setFilter(getAccessControlFilter())
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setSize(resultSize)
