@@ -78,7 +78,8 @@ public class AdminController {
 	}
 		
 	/**
-	 * Handles HTTP DELETE requests to /admin/cache.   
+	 * Handles HTTP DELETE requests to /admin/cache.
+	 * Deletes the cache.  
 	 * @param response The outgoing HTTP response.
 	 * @return A <code>StatusResponse</code> containing the status of the XML configuration document cache or <code>null<code> on error.
 	 */
@@ -95,10 +96,8 @@ public class AdminController {
 	}
 
 	/**
-	 * Elastic search data import.
-	 * Http get requests without paramter 
-	 * @param command Supported commands are <code>start</code> and <code>stop</code>. 
-	 * @param response The outgoing HTTP response.
+	 * Handles HTTP GET requests to /admin/dataimport.
+	 * Returns the current status of the Elasticsearch data import.
 	 * @return A <code>StatusResponse</code> object.
 	 */
 	@RequestMapping(value="/admin/dataimport", method=RequestMethod.GET)
@@ -117,7 +116,7 @@ public class AdminController {
 	}
 	
 	/**
-	 * Handles http post requests to start or stop the Elasticsearch dataimport.
+	 * Handles HTTP POST requests to start or stop the Elasticsearch dataimport.
 	 * For this it utilizes the <code>dataimportService</code> where the real work is done. 
 	 * @param command The supported commands are "start" and "stop".
 	 * @param response The outgoing HTTP response.
