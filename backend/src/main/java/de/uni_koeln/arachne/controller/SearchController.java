@@ -134,15 +134,17 @@ public class SearchController {
 	 */
 	@RequestMapping(value="/essearch", method=RequestMethod.GET)
 	public @ResponseBody String handleESSearchRequest(@RequestParam("q") final String searchParam,
-													  @RequestParam(value = "limit", required = false) final Integer limit) {
+													  @RequestParam(value = "limit", required = false) final int limit,
+													  @RequestParam(value = "offset", required = false) final int offset) {
 		
-		final int resultSize = limit == null ? 50 : limit;
+		final int resultSize = limit <= 0 ? 50 : limit;
 				
 		final Client client = esClientUtil.getClient();
 		final SearchResponse response = client.prepareSearch()
 				.setQuery(QueryBuilders.multiMatchQuery(searchParam, "title^2", "subtitle^1.2", "_all"))
 				.setFilter(getAccessControlFilter())
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+				.setFrom(offset)
 				.setSize(resultSize)
 				.execute().actionGet();
 		return response.toString();
