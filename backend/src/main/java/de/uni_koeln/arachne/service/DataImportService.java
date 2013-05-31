@@ -85,7 +85,15 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 	 * associated documents and indexing them via elastic search.
 	 */
 	public void run() { // NOPMD - Threading is used via Springs TaskExecutor so it is save 
-		// enable request scope hack- needed so the UserRightsService can be used
+		class LongMapper implements RowMapper<Long> {
+			public Long mapRow(final ResultSet resultSet, final int index) throws SQLException {
+				return resultSet.getLong(1);
+			}
+		}
+		
+		final LongMapper longMapper = new LongMapper();
+		
+		// request scope hack (enabling session scope) - needed so the UserRightsService can be used
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(new MockHttpServletRequest()));
 		terminate = false;
 		running.set(true);
@@ -94,13 +102,6 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 		final long startTime = System.currentTimeMillis();
 		
 		userRightsService.setUserSolr();
-		
-		LOGGER.info("Getting list of ArachneEntityIds.");
-		final List<Long> entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification`", new RowMapper<Long>() {
-			public Long mapRow(final ResultSet resultSet, final int index) throws SQLException {
-				return resultSet.getLong(1);
-			}
-		});
 		
 		elapsedTime.set(System.currentTimeMillis() - startTime);		
 		try {
@@ -114,16 +115,23 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 			long deltaT = 0;
 			BulkRequestBuilder bulkRequest = client.prepareBulk();
 			int index = 0;
+			long startId = 0;
 			indexing:
 			while (!finished) {
-				final long start = entityIds.get(index);
-				long end = index + esBulkSize - 1;
+				final List<Long> entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification` WHERE `ArachneEntityID` > "
+						+ startId + " ORDER BY `ArachneEntityID` LIMIT " + esBulkSize, longMapper);
+								
+				long end = esBulkSize - 1;
 				if (end >= entityIds.size()) {
 					end = entityIds.size() - 1;
 					finished = true;
 				}
-				end = entityIds.get((int)end);
-				final List<ArachneEntity> entityList = entityIdentificationService.getByEntityIdRange(start, end);
+				
+				startId = entityIds.get(0);
+				final long endId = entityIds.get((int)end);
+								
+				final List<ArachneEntity> entityList = entityIdentificationService.getByEntityIdRange(startId, endId);
+				startId = endId;
 				for (ArachneEntity currentEntityId: entityList) {
 					if (terminate) {
 						running.set(false);
@@ -150,7 +158,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 					if (fetchtime > 100) {
 						LOGGER.debug("Indexing: fetching " + entityId.getArachneEntityID() + " took " + fetchtime + "ms");
 					}
-					// uodate elapsed time every second
+					// update elapsed time every second
 					final long now = System.currentTimeMillis();
 					if (now - deltaT > 1000) {
 						deltaT = now;
@@ -159,7 +167,11 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 				}
 				bulkRequest.execute().actionGet();
 				bulkRequest = client.prepareBulk();
-				index += esBulkSize;
+				if (finished) {
+					index += end;
+				} else {
+					index += esBulkSize;
+				}
 				indexedDocuments.set(index);
 			}
 			if (running.get()) {
