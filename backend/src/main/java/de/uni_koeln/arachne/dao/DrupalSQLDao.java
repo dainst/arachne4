@@ -8,7 +8,7 @@ import de.uni_koeln.arachne.mapping.DatasetMapper;
 public class DrupalSQLDao extends SQLDao {
 
 	public Map<String,String> getNode(int nid) {
-		List<Map<String, String>> result = jdbcTemplate.query("SELECT nid, vid, language FROM node WHERE nid = ? LIMIT 1",
+		List<Map<String, String>> result = jdbcTemplate.query("SELECT nid, vid, language, type FROM node WHERE nid = ? LIMIT 1",
 				new Object[]{nid}, new DatasetMapper());
 		if (result != null && !result.isEmpty())
 			return result.get(0);

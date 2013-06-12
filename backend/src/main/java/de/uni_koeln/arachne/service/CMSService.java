@@ -39,32 +39,37 @@ public class CMSService {
 		page.setTitle(rev.get("node_revisions.title"));
 		page.setBody(rev.get("node_revisions.body"));
 		
-		String teaser = dao.getTeaser(vid);
-		if (teaser != null && !teaser.isEmpty()) 
-			page.setTeaser(teaser);
+		// only project nodes contain teasers, links and images
+		if ("project".equals(node.get("node.type"))) {
+			
+			String teaser = dao.getTeaser(vid);
+			if (teaser != null && !teaser.isEmpty()) 
+				page.setTeaser(teaser);
 		
-		List<Map<String, String>> links = dao.getLinks(vid);
-		if (links != null && !links.isEmpty()) {
-			ArrayList<Link> linkList = new ArrayList<Link>();
-			for (Map<String, String> link : links) {
-				Link newLink = new Link();
-				logger.info("link: {}", link);
-				for (String key : link.keySet()) 
-					logger.info("key: {}, value: {}", key, link.get(key));
-				newLink.setHref(link.get("content_field_links.field_links_url"));
-				newLink.setTitle(link.get("content_field_links.field_links_title"));
-				linkList.add(newLink);
+			List<Map<String, String>> links = dao.getLinks(vid);
+			if (links != null && !links.isEmpty()) {
+				ArrayList<Link> linkList = new ArrayList<Link>();
+				for (Map<String, String> link : links) {
+					Link newLink = new Link();
+					logger.info("link: {}", link);
+					for (String key : link.keySet()) 
+						logger.info("key: {}, value: {}", key, link.get(key));
+					newLink.setHref(link.get("content_field_links.field_links_url"));
+					newLink.setTitle(link.get("content_field_links.field_links_title"));
+					linkList.add(newLink);
+				}
+				page.setLinks(linkList);
 			}
-			page.setLinks(linkList);
-		}
-		
-		List<Map<String, String>> images = dao.getImages(vid);
-		if (images != null && !images.isEmpty()) {
-			ArrayList<String> imageList = new ArrayList<String>();
-			for (Map<String, String> image : images) {
-				imageList.add(image.get("files.filepath"));
+			
+			List<Map<String, String>> images = dao.getImages(vid);
+			if (images != null && !images.isEmpty()) {
+				ArrayList<String> imageList = new ArrayList<String>();
+				for (Map<String, String> image : images) {
+					imageList.add(image.get("files.filepath"));
+				}
+				page.setImages(imageList);
 			}
-			page.setImages(imageList);
+			
 		}
 		
 		return page;
