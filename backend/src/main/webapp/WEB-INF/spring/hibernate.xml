@@ -14,6 +14,21 @@
         <property name="maxPoolSize" value="20" />
         <property name="maxIdleTime" value="1800" />
     </bean>
+    
+    <bean id="drupalDataSource"
+        class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="#{config.drupaljdbcDriverClassName}" />
+        <property name="jdbcUrl" value="#{config.drupaljdbcUrl}" />
+        <property name="user" value="#{config.drupaljdbcUsername}" />
+        <property name="password" value="#{config.drupaljdbcPassword}" />
+        <property name="minPoolSize" value="1" />
+        <property name="maxPoolSize" value="20" />
+        <property name="maxIdleTime" value="1800" />
+    </bean>
+    
+    <bean id="drupalSqlDao" class="de.uni_koeln.arachne.dao.DrupalSQLDao">
+    	<property name="dataSource" ref="drupalDataSource" />
+    </bean>
 
     <bean id="sessionFactory"
         class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
