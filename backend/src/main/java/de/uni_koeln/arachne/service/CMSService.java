@@ -45,9 +45,8 @@ public class CMSService {
 		
 		// process body html for better output
 		String body = page.getBody();
-		if ("1".equals(page.getFormat())) { // content is "filtered html"
-			body = body.replaceAll("\r\n", "<br/>");
-		} else if("2".equals(page.getFormat())) { // content is "full html"
+		body = body.replaceAll("([^>])(\r\n)", "$1<br/>");
+		if("2".equals(page.getFormat())) { // content is "full html"
 			String replacement = getAbsoluteImageUrl("sites/default/files/$2");
 			body = body.replaceAll("(sites/default/files/)([^\"])", replacement);
 		}
