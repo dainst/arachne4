@@ -18,7 +18,7 @@ public class DrupalSQLDao extends SQLDao {
 	
 	public Map<String,String> getRevision(int vid) {
 		List<Map<String, String>> result = jdbcTemplate
-				.query("SELECT body, title FROM node_revisions WHERE vid = ? LIMIT 1",
+				.query("SELECT body, title, format FROM node_revisions WHERE vid = ? LIMIT 1",
 						new Object[]{vid}, new DatasetMapper());
 		if (result != null && !result.isEmpty())
 			return result.get(0);

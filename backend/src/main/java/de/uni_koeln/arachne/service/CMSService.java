@@ -36,15 +36,22 @@ public class CMSService {
 		
 		page.setId(Integer.parseInt(node.get("node.nid")));
 		page.setLanguage(node.get("node.language"));
-		
 		int vid = Integer.parseInt(node.get("node.vid"));
 		
 		Map<String, String> rev = dao.getRevision(vid);
 		page.setTitle(rev.get("node_revisions.title"));
 		page.setBody(rev.get("node_revisions.body"));
+		page.setFormat(rev.get("node_revisions.format"));
 		
 		// process body html for better output
-		page.setBody(page.getBody().replaceAll("\r\n", "<br/>"));
+		String body = page.getBody();
+		if ("1".equals(page.getFormat())) { // content is "filtered html"
+			body = body.replaceAll("\r\n", "<br/>");
+		} else if("2".equals(page.getFormat())) { // content is "full html"
+			String replacement = getAbsoluteImageUrl("sites/default/files/$2");
+			body = body.replaceAll("(sites/default/files/)([^\"])", replacement);
+		}
+		page.setBody(body);
 		
 		// only project nodes contain teasers, links and images
 		if ("project".equals(node.get("node.type"))) {

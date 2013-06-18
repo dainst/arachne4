@@ -11,6 +11,7 @@ public class Node {
 	private List<String> images;
 	private List<Link> links;
 	private String language;
+	private String format;
 	
 	public String getTitle() {
 		return title;
@@ -55,6 +56,13 @@ public class Node {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+	public void setFormat(String format) {
+		this.format = format;
 	}
 
 	public static class Link {
