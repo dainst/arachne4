@@ -8,6 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.DrupalSQLDao;
@@ -19,6 +20,9 @@ import de.uni_koeln.arachne.response.Node.Link;
 public class CMSService {
 	
 	private static Logger logger = LoggerFactory.getLogger(CMSService.class);
+	
+	@Value("#{config.drupalUrl}")
+	private String drupalUrl;
 	
 	@Autowired
 	private transient DrupalSQLDao dao;
@@ -38,6 +42,9 @@ public class CMSService {
 		Map<String, String> rev = dao.getRevision(vid);
 		page.setTitle(rev.get("node_revisions.title"));
 		page.setBody(rev.get("node_revisions.body"));
+		
+		// process body html for better output
+		page.setBody(page.getBody().replaceAll("\r\n", "<br/>"));
 		
 		// only project nodes contain teasers, links and images
 		if ("project".equals(node.get("node.type"))) {
@@ -65,7 +72,7 @@ public class CMSService {
 			if (images != null && !images.isEmpty()) {
 				ArrayList<String> imageList = new ArrayList<String>();
 				for (Map<String, String> image : images) {
-					imageList.add(image.get("files.filepath"));
+					imageList.add(getAbsoluteImageUrl(image.get("files.filepath")));
 				}
 				page.setImages(imageList);
 			}
@@ -109,6 +116,12 @@ public class CMSService {
 			result.add(getNodeById(Integer.parseInt(teaser.get("node.nid"))));
 		}
 		return result;
+	}
+	
+	private String getAbsoluteImageUrl(String relImageUrl) {
+		String cacheUrl = relImageUrl
+				.replaceFirst("sites/default/files/", "sites/default/files/imagecache/project_node/");
+		return drupalUrl + "/" + cacheUrl;
 	}
 
 }
