@@ -21,20 +21,22 @@ public class CMSController {
 	private transient CMSService cmsService;
 	
 	@RequestMapping(value="/node/{id}", method=RequestMethod.GET)
-	public @ResponseBody Node page(@PathVariable("id") final Integer id) {		
+	public @ResponseBody Node page(@PathVariable("id") final Integer id) { // NOPMD		
 		return cmsService.getNodeById(id);		
 	}
 	
 	@RequestMapping(value="/menu/{language}", method=RequestMethod.GET)
 	public @ResponseBody Map<String, MenuEntry> menu(@PathVariable("language") final String language) {	
 		String name = "menu-menu-" + language;
-		if ("de".equals(language)) name = "primary-links";
+		if ("de".equals(language)) {
+			name = "primary-links";
+		}
 		return cmsService.getMenuByName(name);
 	}
 	
 	@RequestMapping(value="/teasers/{language}", method=RequestMethod.GET)
 	public @ResponseBody List<Node> teasers(@PathVariable("language") final String language) {	
-		List<Node> teasers = cmsService.getTeasers(language);
+		final List<Node> teasers = cmsService.getTeasers(language);
 		for (Node node : teasers) {
 			node.setBody(null);
 		}
