@@ -4,7 +4,7 @@ import java.util.List;
 
 public class MenuEntry {
 	
-	private String id;
+	private String id;  // NOPMD
 	private String parent;
 	private String title;
 	private String path;
@@ -13,31 +13,31 @@ public class MenuEntry {
 	public String getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(final String id) { // NOPMD
 		this.id = id;
 	}
 	public String getParent() {
 		return parent;
 	}
-	public void setParent(String parent) {
+	public void setParent(final String parent) {
 		this.parent = parent;
 	}
 	public String getTitle() {
 		return title;
 	}
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 	public String getPath() {
 		return path;
 	}
-	public void setPath(String path) {
+	public void setPath(final String path) {
 		this.path = path;
 	}
 	public List<String> getChildren() {
 		return children;
 	}
-	public void setChildren(List<String> children) {
+	public void setChildren(final List<String> children) {
 		this.children = children;
 	}
 
