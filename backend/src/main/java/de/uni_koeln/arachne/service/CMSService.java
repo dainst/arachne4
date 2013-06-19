@@ -19,26 +19,28 @@ import de.uni_koeln.arachne.response.Node.Link;
 @Service
 public class CMSService {
 	
-	private static Logger logger = LoggerFactory.getLogger(CMSService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CMSService.class);
 	
 	@Value("#{config.drupalUrl}")
-	private String drupalUrl;
+	private transient String drupalUrl;
 	
 	@Autowired
 	private transient DrupalSQLDao dao;
 
-	public Node getNodeById(Integer id) {
+	public Node getNodeById(Integer id) { // NOPMD
 		
-		Node page = new Node();
+		final Node page = new Node();
 		
-		Map<String, String> node = dao.getNode(id);
-		if (node == null) return null;
+		final Map<String, String> node = dao.getNode(id);
+		if (node == null) {
+			return null;
+		}
 		
 		page.setId(Integer.parseInt(node.get("node.nid")));
 		page.setLanguage(node.get("node.language"));
-		int vid = Integer.parseInt(node.get("node.vid"));
+		final int vid = Integer.parseInt(node.get("node.vid"));
 		
-		Map<String, String> rev = dao.getRevision(vid);
+		final Map<String, String> rev = dao.getRevision(vid);
 		page.setTitle(rev.get("node_revisions.title"));
 		page.setBody(rev.get("node_revisions.body"));
 		page.setFormat(rev.get("node_revisions.format"));
@@ -47,7 +49,7 @@ public class CMSService {
 		String body = page.getBody();
 		body = body.replaceAll("([^>])(\r\n)", "$1<br/>");
 		if("2".equals(page.getFormat())) { // content is "full html"
-			String replacement = getAbsoluteImageUrl("sites/default/files/$2");
+			final String replacement = getAbsoluteImageUrl("sites/default/files/$2");
 			body = body.replaceAll("(sites/default/files/)([^\"])", replacement);
 		}
 		page.setBody(body);
@@ -55,18 +57,20 @@ public class CMSService {
 		// only project nodes contain teasers, links and images
 		if ("project".equals(node.get("node.type"))) {
 			
-			String teaser = dao.getTeaser(vid);
-			if (teaser != null && !teaser.isEmpty()) 
+			final String teaser = dao.getTeaser(vid);
+			if (teaser != null && !teaser.isEmpty()) {
 				page.setTeaser(teaser);
+			}
 		
-			List<Map<String, String>> links = dao.getLinks(vid);
+			final List<Map<String, String>> links = dao.getLinks(vid);
 			if (links != null && !links.isEmpty()) {
-				ArrayList<Link> linkList = new ArrayList<Link>();
+				final ArrayList<Link> linkList = new ArrayList<Link>();
 				for (Map<String, String> link : links) {
-					Link newLink = new Link();
-					logger.info("link: {}", link);
-					for (String key : link.keySet()) 
-						logger.info("key: {}, value: {}", key, link.get(key));
+					final Link newLink = new Link();
+					LOGGER.debug("link: {}", link);
+					for (String key : link.keySet()) {
+						LOGGER.debug("key: {}, value: {}", key, link.get(key));
+					}
 					newLink.setHref(link.get("content_field_links.field_links_url"));
 					newLink.setTitle(link.get("content_field_links.field_links_title"));
 					linkList.add(newLink);
@@ -74,9 +78,9 @@ public class CMSService {
 				page.setLinks(linkList);
 			}
 			
-			List<Map<String, String>> images = dao.getImages(vid);
+			final List<Map<String, String>> images = dao.getImages(vid);
 			if (images != null && !images.isEmpty()) {
-				ArrayList<String> imageList = new ArrayList<String>();
+				final ArrayList<String> imageList = new ArrayList<String>();
 				for (Map<String, String> image : images) {
 					imageList.add(getAbsoluteImageUrl(image.get("files.filepath")));
 				}
@@ -89,11 +93,11 @@ public class CMSService {
 		
 	}
 
-	public Map<String, MenuEntry> getMenuByName(String name) {
-		List<Map<String, String>> menuEntries = dao.getMenuEntries(name);
-		Map<String,MenuEntry> map = new HashMap<String, MenuEntry>();
+	public Map<String, MenuEntry> getMenuByName(final String name) {
+		final List<Map<String, String>> menuEntries = dao.getMenuEntries(name);
+		final Map<String,MenuEntry> map = new HashMap<String, MenuEntry>();
 		for (Map<String, String> menuEntry : menuEntries) {
-			MenuEntry newMenuEntry = new MenuEntry();
+			final MenuEntry newMenuEntry = new MenuEntry();
 			newMenuEntry.setId(menuEntry.get("menu_links.mlid"));
 			newMenuEntry.setParent(menuEntry.get("menu_links.plid"));
 			newMenuEntry.setPath(menuEntry.get("menu_links.link_path"));
@@ -102,9 +106,13 @@ public class CMSService {
 		}
 		// create children array
 		for (String id : map.keySet()) {
-			if (map.get(id).getParent() == null) continue;
-			MenuEntry parent = map.get(map.get(id).getParent());
-			if (parent == null) continue;
+			if (map.get(id).getParent() == null) {
+				continue;
+			}
+			final MenuEntry parent = map.get(map.get(id).getParent());
+			if (parent == null) {
+				continue;
+			}
 			List<String> children = parent.getChildren();
 			if (children == null) {
 				children = new ArrayList<String>();
@@ -115,17 +123,17 @@ public class CMSService {
 		return map;
 	}
 
-	public List<Node> getTeasers(String language) {
-		List<Map<String,String>> teasers = dao.getTeasers(language);
-		ArrayList<Node> result = new ArrayList<Node>();
+	public List<Node> getTeasers(final String language) {
+		final List<Map<String,String>> teasers = dao.getTeasers(language);
+		final ArrayList<Node> result = new ArrayList<Node>();
 		for (Map<String,String> teaser : teasers) {
 			result.add(getNodeById(Integer.parseInt(teaser.get("node.nid"))));
 		}
 		return result;
 	}
 	
-	private String getAbsoluteImageUrl(String relImageUrl) {
-		String cacheUrl = relImageUrl
+	private String getAbsoluteImageUrl(final String relImageUrl) {
+		final String cacheUrl = relImageUrl
 				.replaceFirst("sites/default/files/", "sites/default/files/imagecache/project_node/");
 		return drupalUrl + "/" + cacheUrl;
 	}
