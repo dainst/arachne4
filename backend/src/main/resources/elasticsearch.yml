@@ -1,3 +1,0 @@
-path:
-  logs: /var/log/arachne/arachnedataservice/
-  data: /tmp/elasticsearch
