@@ -9,8 +9,6 @@ import java.util.Locale;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
@@ -32,7 +30,7 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 @Configurable(preConstruction=true)
 public class ResponseFactory {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
+	//private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
