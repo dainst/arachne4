@@ -8,9 +8,9 @@ public class SearchHit {
 	private transient final String type;
 	private transient final String title;
 	private transient final String subtitle;
-	private transient final long thumbnailId;
+	private transient final Long thumbnailId;
 	
-	public SearchHit(final long entityId, final String type, final String title, final String subtitle, final long thumbnailId) {
+	public SearchHit(final long entityId, final String type, final String title, final String subtitle, final Long thumbnailId) {
 		this.entityId = entityId;
 		this.type = type;
 		this.title = title;
@@ -34,7 +34,7 @@ public class SearchHit {
 		return this.subtitle;
 	}
 	
-	public long getThumbnailId() {
+	public Long getThumbnailId() {
 		return this.thumbnailId;
 	}
 }

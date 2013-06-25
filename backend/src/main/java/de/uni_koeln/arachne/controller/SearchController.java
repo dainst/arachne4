@@ -179,7 +179,7 @@ public class SearchController {
 		
 		for (SearchHit currenthit: hits) {
 			final Integer intThumbnailId = (Integer)currenthit.getSource().get("thumbnailId");
-			long thumbnailId = 0;
+			Long thumbnailId = null;
 			if (intThumbnailId != null) {
 				thumbnailId = Long.valueOf(intThumbnailId);
 			}
