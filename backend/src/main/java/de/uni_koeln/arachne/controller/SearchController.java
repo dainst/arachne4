@@ -19,6 +19,9 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryFilterBuilder;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.facet.FacetBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -32,7 +35,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uni_koeln.arachne.mapping.DatasetGroup;
+import de.uni_koeln.arachne.response.ESSearchResult;
 import de.uni_koeln.arachne.response.SearchResult;
+import de.uni_koeln.arachne.response.StatusResponse;
 import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.util.ESClientUtil;
@@ -124,30 +129,66 @@ public class SearchController {
 	 * The "title" field is boosted by 2 so that documents containing the search keyword in the title are higher ranked than
 	 *  documents containing the keyword in other fields.
 	 * <br>
+	 * The return type of this method is <code>Object</code> so that it can return either a <code>SearchResult</code> or a <code>
+	 * StatusMessage</code>.
+	 * <br>
 	 * Currently the search result can only be serialized to JSON as JAXB cannot handle Maps.
 	 * @param searchParam The value of the search parameter. (mandatory)
 	 * @param limit The maximum number of returned entities. Default is 50. (optional)
 	 * @param offset The offset into the list of entities (used for paging). (optional)
 	 * @param filterValues The values of the solr filter query. (optional)
 	 * @param facetLimit The maximum number of facet results. (optional)
-	 * @return A response object containing the data (this is serialized to XML or JSON depending on content negotiation).
+	 * @return A response object containing the data or a status response (this is serialized to XML or JSON depending on content negotiation).
 	 */
 	@RequestMapping(value="/essearch", method=RequestMethod.GET)
-	public @ResponseBody String handleESSearchRequest(@RequestParam("q") final String searchParam,
-													  @RequestParam(value = "limit", required = false) final int limit,
-													  @RequestParam(value = "offset", required = false) final int offset) {
+	public @ResponseBody Object handleESSearchRequest(@RequestParam("q") final String searchParam,
+													  @RequestParam(value = "limit", required = false) final Integer limit,
+													  @RequestParam(value = "offset", required = false) final Integer offset) {
 		
-		final int resultSize = limit <= 0 ? 50 : limit;
+		final int resultSize = limit == null ? 50 : limit;
+		final int resultOffset = offset == null ? 0 : offset;
 				
 		final Client client = esClientUtil.getClient();
-		final SearchResponse response = client.prepareSearch()
+		SearchResponse searchResponse = null;
+		
+		// TODO: filter search results on user rights
+		
+		try {
+			searchResponse = client.prepareSearch()
 				.setQuery(QueryBuilders.multiMatchQuery(searchParam, "title^2", "subtitle^1.2", "_all"))
 				.setFilter(getAccessControlFilter())
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-				.setFrom(offset)
+				.setFrom(resultOffset)
 				.setSize(resultSize)
+				.addFacet(FacetBuilders.termsFacet("facet_kategorie").field("type"))
+				//.addFacet(FacetBuilders.termsFacet("facet_ort").field("facets.name"))
+				//.addFacet(FacetBuilders.termsStatsFacet("facet_ort").keyField("facets.name").valueField("facets.values"))
+	    		//.addFacet(FacetBuilders.termsFacet("facet_datierung-epoche"))
 				.execute().actionGet();
-		return response.toString();
+		} catch (Exception e) {
+			LOGGER.error("Problem executing search. Exception: "+e.getMessage());
+			return new StatusResponse("There was a problem executing the search. Please try again. If the problem persists please contact us.");
+		}
+		
+		final SearchHits hits = searchResponse.getHits();
+		
+		final ESSearchResult searchResult = new ESSearchResult();
+		searchResult.setLimit(resultSize);
+		searchResult.setOffset(resultOffset);
+		searchResult.setSize(hits.getTotalHits());
+		
+		for (SearchHit currenthit: hits) {
+			final Integer intThumbnailId = (Integer)currenthit.getSource().get("thumbnailId");
+			long thumbnailId = 0;
+			if (intThumbnailId != null) {
+				thumbnailId = Long.valueOf(intThumbnailId);
+			}
+			searchResult.addSearchHit(new de.uni_koeln.arachne.response.SearchHit(Long.valueOf(currenthit.getId())
+					, (String)(currenthit.getType()), (String)(currenthit.getSource().get("title"))
+					, (String)(currenthit.getSource().get("subtitle")), thumbnailId));
+		}
+		
+		return searchResult;
 	}
 
 	/**
