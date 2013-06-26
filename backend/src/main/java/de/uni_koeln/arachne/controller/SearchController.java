@@ -21,7 +21,11 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryFilterBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.facet.Facet;
 import org.elasticsearch.search.facet.FacetBuilders;
+import org.elasticsearch.search.facet.Facets;
+import org.elasticsearch.search.facet.terms.TermsFacet;
+import org.elasticsearch.search.facet.terms.TermsFacet.Entry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -161,21 +165,19 @@ public class SearchController {
 				.setFrom(resultOffset)
 				.setSize(resultSize)
 				.addFacet(FacetBuilders.termsFacet("facet_kategorie").field("type"))
-				//.addFacet(FacetBuilders.termsFacet("facet_ort").field("facets.name"))
 				//.addFacet(FacetBuilders.termsStatsFacet("facet_ort").keyField("facets.name").valueField("facets.values"))
-	    		//.addFacet(FacetBuilders.termsFacet("facet_datierung-epoche"))
-				.execute().actionGet();
+	    		.execute().actionGet();
 		} catch (Exception e) {
 			LOGGER.error("Problem executing search. Exception: "+e.getMessage());
 			return new StatusResponse("There was a problem executing the search. Please try again. If the problem persists please contact us.");
 		}
 		
-		final SearchHits hits = searchResponse.getHits();
+		final SearchHits hits = searchResponse.hits();
 		
 		final ESSearchResult searchResult = new ESSearchResult();
 		searchResult.setLimit(resultSize);
 		searchResult.setOffset(resultOffset);
-		searchResult.setSize(hits.getTotalHits());
+		searchResult.setSize(hits.totalHits());
 		
 		for (SearchHit currenthit: hits) {
 			final Integer intThumbnailId = (Integer)currenthit.getSource().get("thumbnailId");
@@ -188,6 +190,16 @@ public class SearchController {
 					, (String)(currenthit.getSource().get("subtitle")), thumbnailId));
 		}
 		
+		final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
+		final TermsFacet facet_kategorie = (TermsFacet) searchResponse.facets().facet("facet_kategorie");
+		final Map<String, Long> facetMap_kategorie = new LinkedHashMap<String, Long>();
+		for (Entry entry: facet_kategorie.entries()) {
+			facetMap_kategorie.put(entry.term(), Long.valueOf(entry.count()));
+		}
+		facets.put("facet_kategorie", facetMap_kategorie);
+		
+		searchResult.setFacets(facets);
+				
 		return searchResult;
 	}
 
