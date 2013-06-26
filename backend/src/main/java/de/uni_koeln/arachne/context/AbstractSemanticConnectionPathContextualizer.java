@@ -72,7 +72,16 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 				while (contextMap.hasNext() && (linkCount < limit || limit == -1)) {
 					final ArachneLink link = new ArachneLink();
 					link.setEntity1(parent);
-					link.setEntity2(createDatasetFromQueryResults(contextMap.next()));
+					
+					// write entity-id of context into its dataset
+					final Dataset contextDataset = createDatasetFromQueryResults(contextMap.next());
+					String contextualizerClassName = this.getClass().getSimpleName();
+					contextualizerClassName = contextualizerClassName.replace("Contextualizer", "");
+					final Map<String, String> contextIdMap = new HashMap<String, String>(1);
+					contextIdMap.put(contextualizerClassName + "." + "EntityID", String.valueOf(contextDataset.getArachneId().getArachneEntityID()));
+					contextDataset.appendFields(contextIdMap);
+				
+					link.setEntity2(contextDataset);
 					result.add(link);
 					linkCount++;
 				}
