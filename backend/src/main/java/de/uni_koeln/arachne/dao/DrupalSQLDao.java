@@ -22,9 +22,9 @@ public class DrupalSQLDao extends SQLDao {
 				.query("SELECT body, title, format FROM node_revisions WHERE vid = ? LIMIT 1",
 						new Object[]{vid}, new DatasetMapper());
 		if (result == null || result.isEmpty()) {
-			return result.get(0);
-		} else {
 			return null;
+		} else {
+			return result.get(0);
 		}
 	}
 	
