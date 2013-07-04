@@ -81,8 +81,8 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 	}
 
 	/**
-	 * The dataimport implementation. This method retrieves a list of EntityIds from the DB and iterates over this list constructing the
-	 * associated documents and indexing them via elastic search.
+	 * The dataimport implementation. This method retrieves a list of EntityIds from the DB and iterates over this list 
+	 * constructing the associated documents and indexing them via elastic search.
 	 */
 	public void run() { // NOPMD - Threading is used via Springs TaskExecutor so it is save 
 		class LongMapper implements RowMapper<Long> {
@@ -151,7 +151,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 					if (entity == null) {
 						LOGGER.error("Entity " + entityId + " is null! This should never happen. Check the database immediately.");
 					} else {
-						bulkRequest.add(client.prepareIndex(esName,entity.getType(),String.valueOf(entityId.getArachneEntityID()))
+						bulkRequest.add(client.prepareIndex(esName,"entity",String.valueOf(entityId.getArachneEntityID()))
 								.setSource(mapper.writeValueAsBytes(entity)));
 					}
 					final long fetchtime = System.currentTimeMillis() - fetch;

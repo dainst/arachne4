@@ -26,6 +26,7 @@ import org.elasticsearch.search.facet.FacetBuilders;
 import org.elasticsearch.search.facet.Facets;
 import org.elasticsearch.search.facet.terms.TermsFacet;
 import org.elasticsearch.search.facet.terms.TermsFacet.Entry;
+import org.elasticsearch.search.facet.termsstats.TermsStatsFacet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -164,8 +164,8 @@ public class SearchController {
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setFrom(resultOffset)
 				.setSize(resultSize)
-				.addFacet(FacetBuilders.termsFacet("facet_kategorie").field("type"))
-				//.addFacet(FacetBuilders.termsStatsFacet("facet_ort").keyField("facets.name").valueField("facets.values"))
+				.addFacet(FacetBuilders.termsFacet("facet_kategorie").field("facet_kategorie"))
+				.addFacet(FacetBuilders.termsFacet("facet_ort").field("facet_ort"))
 	    		.execute().actionGet();
 		} catch (Exception e) {
 			LOGGER.error("Problem executing search. Exception: "+e.getMessage());
@@ -186,23 +186,28 @@ public class SearchController {
 				thumbnailId = Long.valueOf(intThumbnailId);
 			}
 			searchResult.addSearchHit(new de.uni_koeln.arachne.response.SearchHit(Long.valueOf(currenthit.getId())
-					, (String)(currenthit.getType()), (String)(currenthit.getSource().get("title"))
+					, (String)(currenthit.getSource().get("type")), (String)(currenthit.getSource().get("title"))
 					, (String)(currenthit.getSource().get("subtitle")), thumbnailId));
 		}
 		
 		final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
-		final TermsFacet facet_kategorie = (TermsFacet) searchResponse.facets().facet("facet_kategorie");
-		final Map<String, Long> facetMap_kategorie = new LinkedHashMap<String, Long>();
-		for (Entry entry: facet_kategorie.entries()) {
-			facetMap_kategorie.put(entry.term(), Long.valueOf(entry.count()));
-		}
-		facets.put("facet_kategorie", facetMap_kategorie);
+		facets.put("facet_kategorie", getFacetMap("facet_kategorie", searchResponse));
+		facets.put("facet_ort",  getFacetMap("facet_ort", searchResponse));
 		
 		searchResult.setFacets(facets);
 				
 		return searchResult;
 	}
 
+	Map<String, Long> getFacetMap(final String name, final SearchResponse searchResponse) {
+		final TermsFacet facet = (TermsFacet) searchResponse.facets().facet(name);
+		final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
+		for (Entry entry: facet.entries()) {
+			facetMap.put(entry.term(), Long.valueOf(entry.count()));
+		}
+		return facetMap;
+	}
+	
 	/**
 	 * Handles the http request by querying the Solr index for contexts of a given entity and returning the result.
 	 * <br>

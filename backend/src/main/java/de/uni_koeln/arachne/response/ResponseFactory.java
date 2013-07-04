@@ -104,9 +104,22 @@ public class ResponseFactory {
 		// Set images
 		response.setImages(dataset.getImages());
 		
-		// Set facets
+		// Set facets via reflection - not the best way but the least invasive
+		// TODO: rewrite faceting so that no reflection is needed
 		final Element facets = document.getRootElement().getChild("facets", namespace);
-		response.setFacets(getFacets(dataset, namespace, facets).getList());
+		final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
+		for (final Facet facet: facetList ) {
+			try {
+				final Class<?> formatedArachneEntityClass = response.getClass();
+				final java.lang.reflect.Field facetField = formatedArachneEntityClass.getDeclaredField("facet_"+facet.getName());
+				facetField.set(response, facet.getValues());
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+				
+		//response.setFacets(getFacets(dataset, namespace, facets).getList());
 		
 		//Set additional Content
 		response.setAdditionalContent(dataset.getAdditionalContent());

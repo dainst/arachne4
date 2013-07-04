@@ -21,7 +21,7 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class) 
 @ContextConfiguration(locations={"classpath:test-context.xml"}) 
-@TestExecutionListeners( { WebContextTestExecutionListener.class,
+@TestExecutionListeners({WebContextTestExecutionListener.class,
 	DependencyInjectionTestExecutionListener.class,
 	DirtiesContextTestExecutionListener.class,
 	TransactionalTestExecutionListener.class })
@@ -136,6 +136,7 @@ public class TestResponseFactory { // NOPMD
 				"http://testserver.com/link2.html\">TestLink2</a><br/>End", concatenatedField.getValue());
 	}
 	
+	/*
 	@Test
 	public void testFacets() {
 		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(dataset);
@@ -144,7 +145,7 @@ public class TestResponseFactory { // NOPMD
 		
 		assertEquals("ifEmptyFacet", response.getFacets().get(1).getName());
 		assertEquals("TestFacet", response.getFacets().get(1).getValues().get(0));
-	}
+	}*/
 	
 	// TODO add test for context tag - the current context implementation makes it nearly impossible to test
 }
