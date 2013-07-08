@@ -119,22 +119,22 @@
                 <field datasource=".Land"/>
             </context>
         </facet>
-        <facet name="datierung-epoche" labelKey="Epoche">
+        <facet name="datierungepoche" labelKey="Epoche">
             <context type="datierung">
                 <field datasource=".AnfEpoche"/>
             </context>
         </facet>
-        <facet name="datierung-epoche" labelKey="Epoche">
+        <facet name="datierungepoche" labelKey="Epoche">
             <context type="datierung">
                 <field datasource=".EndEpoche"/>
             </context>
         </facet>
-        <facet name="einschluss-typ" labelKey="Art des Einschlusses">
+        <facet name="einschlusstyp" labelKey="Art des Einschlusses">
             <context type="einschluss">
                 <field datasource=".Einschlussart"/>
             </context>
         </facet>
-        <facet name="einschluss-form" labelKey="Form des Einschlusses">
+        <facet name="einschlussform" labelKey="Form des Einschlusses">
             <context type="einschluss">
                 <field datasource=".Form"/>
             </context>

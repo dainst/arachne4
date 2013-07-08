@@ -45,12 +45,12 @@
         <facet name="kategorie" labelKey="Kategorie">
             <field datasource="Dataset.TableName" />
         </facet>
-        <facet name="datierung-epoche" labelKey="Epoche">
+        <facet name="datierungepoche" labelKey="Epoche">
             <context type="datierung">
                 <field datasource=".AnfEpoche"/>
             </context>
         </facet>
-        <facet name="datierung-epoche" labelKey="Epoche">
+        <facet name="datierungepoche" labelKey="Epoche">
             <context type="datierung">
                 <field datasource=".EndEpoche"/>
             </context>

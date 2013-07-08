@@ -85,17 +85,17 @@
 		    	<field datasource=".Land" />
 	    	</context>
     	</facet>
-    	<facet name="datierung-epoche" labelKey="Epoche">
+    	<facet name="datierungepoche" labelKey="Epoche">
 	    	<context type="datierung">
 		    	<field datasource=".AnfEpoche"/>
 	    	</context>
     	</facet>
-    	<facet name="datierung-epoche" labelKey="Epoche">
+    	<facet name="datierungepoche" labelKey="Epoche">
 	    	<context type="datierung">
 		    	<field datasource=".EndEpoche"/>
 	    	</context>
     	</facet>
-    	<facet name="Sammlungskategorie" labelKey="Sammlungskategorie">
+    	<facet name="sammlungskategorie" labelKey="Sammlungskategorie">
 	    	<field datasource="sammlungen.Sammlungskategorie"/>
     	</facet>
     	<facet name="herkunftsland" labelKey="Herkunftsländer">

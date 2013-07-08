@@ -89,10 +89,10 @@
         <facet name="kategorie" labelKey="Kategorie">
             <field datasource="Dataset.TableName"/>
         </facet>
-        <facet name="fabric-common-name" labelKey="Common Name">
+        <facet name="fabriccommonname" labelKey="Common Name">
             <field datasource="fabric.CommonName"/>
         </facet>
-        <facet name="fabric-name" labelKey="Name">
+        <facet name="fabricname" labelKey="Name">
             <field datasource="fabric.Name"/>
         </facet>
     </facets>

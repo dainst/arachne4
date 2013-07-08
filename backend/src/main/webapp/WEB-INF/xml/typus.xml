@@ -126,12 +126,12 @@ Hier werden keine Direkten Bilder verwendet sondern die Bilder des Hauptvertrete
 	    	</context>
     	</facet>
     	 -->
-    	<facet name="datierung-epoche" labelKey="Epoche">
+    	<facet name="datierungepoche" labelKey="Epoche">
 	    	<context type="datierung">
 		    	<field datasource=".AnfEpoche"/>
 	    	</context>
     	</facet>
-    	<facet name="datierung-epoche" labelKey="Epoche">
+    	<facet name="datierungepoche" labelKey="Epoche">
 	    	<context type="datierung">
 		    	<field datasource=".EndEpoche"/>
 	    	</context>

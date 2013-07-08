@@ -773,12 +773,12 @@
 				<field datasource=".Land"/>
 			</context>
 		</facet>
-		<facet name="datierung-epoche" labelKey="Epoche">
+		<facet name="datierungepoche" labelKey="Epoche">
 			<context type="datierung">
 				<field datasource=".AnfEpoche"/>
 			</context>
 		</facet>
-		<facet name="datierung-epoche" labelKey="Epoche">
+		<facet name="datierungepoche" labelKey="Epoche">
 			<context type="datierung">
 				<field datasource=".EndEpoche"/>
 			</context>

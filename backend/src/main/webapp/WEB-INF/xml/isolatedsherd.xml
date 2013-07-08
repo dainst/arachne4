@@ -72,7 +72,7 @@
         <facet name="nitonanalysisnumber" labelKey="Niton-Analyse-Nummer">
             <field datasource="isolatedsherd.NitonAnalysisID"/>
         </facet>
-        <facet name="surfacetreatment-bezeichner" labelKey="Oberflächenbehandlung">
+        <facet name="surfacetreatmentbezeichner" labelKey="Oberflächenbehandlung">
             <context type="surfcatreatment">
                 <field datasource="surfacetreatment.Bezeichner"/>
             </context>

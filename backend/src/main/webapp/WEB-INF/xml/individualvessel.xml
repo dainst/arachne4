@@ -69,7 +69,7 @@
         <facet name="kategorie" labelKey="Kategorie">
             <field datasource="Dataset.TableName" />
         </facet>
-        <facet name="vessel-inventorynumber" labelKey="Inventarnummer">
+        <facet name="vesselinventorynumber" labelKey="Inventarnummer">
             <field datasource="individualvessel.InventoryNumber" />
         </facet>
     </facets>

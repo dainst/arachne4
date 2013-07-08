@@ -177,30 +177,30 @@
                 </field>
             </context>
         </facet>
-        <facet name="grabungsinterne-typnummer" labelKey="Grabunsinterne Typnummer">
+        <facet name="grabungsinternetypnummer" labelKey="Grabunsinterne Typnummer">
             <field datasource="mainabstract.GrabunsinterneTypnummer"/>
         </facet>
-        <facet name="fabric-origin" labelKey="Fabric Ursprung">
+        <facet name="fabricorigin" labelKey="Fabric Ursprung">
             <context type="fabric">
                 <field datasource=".Origin"/>
             </context>
         </facet>
-        <facet name="fabric-common-name" labelKey="Fabric Common Name">
+        <facet name="fabriccommonname" labelKey="Fabric Common Name">
             <context type="fabric">
                 <field datasource=".CommonName"/>
             </context>
         </facet>
-        <facet name="fabric-name" labelKey="Fabric Name">
+        <facet name="fabricname" labelKey="Fabric Name">
             <context type="fabric">
                 <field datasource=".Name"/>
             </context>
         </facet>
-        <facet name="datierung-epoche" labelKey="Epoche">
+        <facet name="datierungepoche" labelKey="Epoche">
             <context type="datierung">
                 <field datasource=".AnfEpoche"/>
             </context>
         </facet>
-        <facet name="datierung-epoche" labelKey="Epoche">
+        <facet name="datierungepoche" labelKey="Epoche">
             <context type="datierung">
                 <field datasource=".EndEpoche"/>
             </context>

@@ -112,12 +112,13 @@ public class ResponseFactory {
 		final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
 		for (final Facet facet: facetList ) {
 			try {
-				final Class<?> formatedArachneEntityClass = response.getClass();
-				final java.lang.reflect.Field facetField = formatedArachneEntityClass.getDeclaredField("facet_"+facet.getName());
+				final Class<?> facettedArachneEntityClass = response.getClass().getSuperclass();
+				final java.lang.reflect.Field facetField = facettedArachneEntityClass.getDeclaredField("facet_"+facet.getName());
 				facetField.set(response, facet.getValues());
 			} catch (NoSuchFieldException e) {
-				LOGGER.error("Invalid facet definition 'facet_" + facet.getName() + "'. The facet field is not defined in " +
+				LOGGER.error("Invalid facet definition 'facet_" + facet.getName() + "' in '" + tableName + ".xml'. The facet field is not defined in " +
 						"FormattedArachneEntity.java. This facet will be ignored.");
+				System.exit(1);
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();

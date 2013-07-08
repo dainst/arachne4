@@ -98,17 +98,17 @@
         <facet name="kategorie" labelKey="Kategorie">
             <field datasource="Dataset.TableName"/>
         </facet>
-        <facet name="surfacetreatmentaction-action" labelKey="Art der Oberflächenbehandlung">
+        <facet name="surfacetreatmentactionaction" labelKey="Art der Oberflächenbehandlung">
             <field datasource="surfacetreatmentaction.TreatmentAction"/>
 
         </facet>
-        <facet name="surfacetreatmentaction-position" labelKey="Position der Oberflächenbehandlung">
+        <facet name="surfacetreatmentactionposition" labelKey="Position der Oberflächenbehandlung">
             <field datasource="surfacetreatmentaction.TreatmentPosition"/>
         </facet>
-        <facet name="surfacetreatmentaction-moment" labelKey="Zeitpunkt der Oberflächenbehandlung">
+        <facet name="surfacetreatmentactionmoment" labelKey="Zeitpunkt der Oberflächenbehandlung">
             <field datasource="surfacetreatmentaction.MomentOfSurfaceTreatmentAction"/>
         </facet>
-        <facet name="surfacetreatmentaction-partofsurfacetreatet"
+        <facet name="surfacetreatmentactionpartofsurfacetreated"
             labelKey="Behandelter Teil der Oberfläche">
             <field datasource="surfacetreatmentaction.PartOfSurfaceTreated"/>
         </facet>

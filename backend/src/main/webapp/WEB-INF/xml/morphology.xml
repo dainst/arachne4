@@ -72,14 +72,14 @@
         </contextImages>
     </display>
     <facets>
-        <facet name="Morphologymainabstractfabric" labelKey="Fabric">
+        <facet name="morphologymainabstractfabric" labelKey="Fabric">
             <context type="Morphologymainabstractfabric" separator=" / ">
                 <field datasource=".Origin" />
                 <field datasource=".CommonName" />
                 <field datasource=".Name" />
             </context>
         </facet>
-        <facet name="Morphologymainabstractbefund" labelKey="Befund">
+        <facet name="morphologymainabstractbefund" labelKey="Befund">
             <context type="Morphologymainabstractbefund" separator=" / ">
                 <field datasource=".Grabungsort" />
                 <field datasource=".Befund" />
@@ -89,12 +89,12 @@
         <facet name="kategorie" labelKey="Kategorie">
             <field datasource="Dataset.TableName"/>
         </facet>
-        <facet name="datierung-epoche" labelKey="Epoche">
+        <facet name="datierungepoche" labelKey="Epoche">
             <context type="datierung">
                 <field datasource=".AnfEpoche"/>
             </context>
         </facet>
-        <facet name="datierung-epoche" labelKey="Epoche">
+        <facet name="datierungepoche" labelKey="Epoche">
             <context type="datierung">
                 <field datasource=".EndEpoche"/>
             </context>
