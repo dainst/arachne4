@@ -157,7 +157,8 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	protected List<String> facet_bekleidung;
 	protected List<String> facet_bildschema;
 	protected List<String> facet_haltung;
-	protected List<String> facet_roemgrich;
+	protected List<String> facet_roemgriech;
+	
 	public List<String> getFacet_kategorie() {
 		return facet_kategorie;
 	}
@@ -743,10 +744,10 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	public void setFacet_haltung(List<String> facet_haltung) {
 		this.facet_haltung = facet_haltung;
 	}
-	public List<String> getFacet_roemgrich() {
-		return facet_roemgrich;
+	public List<String> getFacet_roemgriech() {
+		return facet_roemgriech;
 	}
 	public void setFacet_roemgrich(List<String> facet_roemgrich) {
-		this.facet_roemgrich = facet_roemgrich;
+		this.facet_roemgriech = facet_roemgrich;
 	}
 }
