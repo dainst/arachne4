@@ -136,16 +136,12 @@ public class TestResponseFactory { // NOPMD
 				"http://testserver.com/link2.html\">TestLink2</a><br/>End", concatenatedField.getValue());
 	}
 	
-	/*
 	@Test
 	public void testFacets() {
 		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(dataset);
-		assertEquals("kategorie", response.getFacets().get(0).getName());
-		assertEquals("test", response.getFacets().get(0).getValues().get(0));
-		
-		assertEquals("ifEmptyFacet", response.getFacets().get(1).getName());
-		assertEquals("TestFacet", response.getFacets().get(1).getValues().get(0));
-	}*/
+		assertEquals("test", response.getFacet_kategorie().get(0));
+		assertEquals("TestFacet", response.getFacet_ort().get(0));
+	}
 	
 	// TODO add test for context tag - the current context implementation makes it nearly impossible to test
 }
