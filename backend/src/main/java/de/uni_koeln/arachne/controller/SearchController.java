@@ -155,8 +155,6 @@ public class SearchController {
 		final Client client = esClientUtil.getClient();
 		SearchResponse searchResponse = null;
 		
-		// TODO: filter search results on user rights
-		
 		try {
 			searchResponse = client.prepareSearch()
 				.setQuery(QueryBuilders.multiMatchQuery(searchParam, "title^2", "subtitle^1.2", "_all"))
@@ -166,6 +164,7 @@ public class SearchController {
 				.setSize(resultSize)
 				.addFacet(FacetBuilders.termsFacet("facet_kategorie").field("facet_kategorie"))
 				.addFacet(FacetBuilders.termsFacet("facet_ort").field("facet_ort"))
+				.addFacet(FacetBuilders.termsFacet("facet_datierungepoche").field("facet_datierungepoche"))
 	    		.execute().actionGet();
 		} catch (Exception e) {
 			LOGGER.error("Problem executing search. Exception: "+e.getMessage());
@@ -193,6 +192,7 @@ public class SearchController {
 		final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
 		facets.put("facet_kategorie", getFacetMap("facet_kategorie", searchResponse));
 		facets.put("facet_ort",  getFacetMap("facet_ort", searchResponse));
+		facets.put("facet_datierungepoche",  getFacetMap("facet_datierungepoche", searchResponse));
 		
 		searchResult.setFacets(facets);
 				
