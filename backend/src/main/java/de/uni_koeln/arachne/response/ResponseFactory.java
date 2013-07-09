@@ -310,11 +310,7 @@ public class ResponseFactory {
 						}
 						
 						if (value != null) {
-							if (userRightsService.isUserSolr()) {
-								values.add(name + "$" + value);
-							} else {
-								values.add(value);
-							}
+							values.add(value);
 						}
 					} else {
 						if ("context".equals(childName)) {
