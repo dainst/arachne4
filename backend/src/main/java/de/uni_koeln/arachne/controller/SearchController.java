@@ -147,17 +147,33 @@ public class SearchController {
 	@RequestMapping(value="/essearch", method=RequestMethod.GET)
 	public @ResponseBody Object handleESSearchRequest(@RequestParam("q") final String searchParam,
 													  @RequestParam(value = "limit", required = false) final Integer limit,
-													  @RequestParam(value = "offset", required = false) final Integer offset) {
+													  @RequestParam(value = "offset", required = false) final Integer offset,
+													  @RequestParam(value = "fq", required = false) final String filterValues) {
 		
 		final int resultSize = limit == null ? 50 : limit;
 		final int resultOffset = offset == null ? 0 : offset;
+		
+		String facetfilterName = null;
+		String facetfilterValue = null;
+		
+		if (filterValues != null) {
+			if (filterValues.contains(",")) {
+				final String[] facetFilterValues = filterValues.split(",");
+				// TODO implement multi facet filters
+			} else {
+				int splitIndex = filterValues.indexOf(':');
+				facetfilterName = filterValues.substring(0, splitIndex);
+				facetfilterValue = filterValues.substring(splitIndex+1);
+			}
+		}
 				
 		final Client client = esClientUtil.getClient();
 		SearchResponse searchResponse = null;
 		
 		try {
 			searchResponse = client.prepareSearch()
-				.setQuery(QueryBuilders.multiMatchQuery(searchParam, "title^2", "subtitle^1.2", "_all"))
+				.setQuery(QueryBuilders.filteredQuery(QueryBuilders.multiMatchQuery(searchParam, "title^2", "subtitle^1.2", "_all"),
+						FilterBuilders.termFilter(facetfilterName, "kategorie$"+facetfilterValue)))
 				.setFilter(getAccessControlFilter())
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setFrom(resultOffset)
