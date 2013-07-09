@@ -117,8 +117,7 @@ public class ResponseFactory {
 				facetField.set(response, facet.getValues());
 			} catch (NoSuchFieldException e) {
 				LOGGER.error("Invalid facet definition 'facet_" + facet.getName() + "' in '" + tableName + ".xml'. The facet field is not defined in " +
-						"FormattedArachneEntity.java. This facet will be ignored.");
-				System.exit(1);
+						"FacettedArachneEntity.java. This facet will be ignored.");
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();
