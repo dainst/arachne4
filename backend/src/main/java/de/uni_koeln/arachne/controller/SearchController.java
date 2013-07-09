@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.controller;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,9 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryFilterBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -153,27 +156,12 @@ public class SearchController {
 		final int resultSize = limit == null ? 50 : limit;
 		final int resultOffset = offset == null ? 0 : offset;
 		
-		String facetfilterName = null;
-		String facetfilterValue = null;
-		
-		if (filterValues != null) {
-			if (filterValues.contains(",")) {
-				final String[] facetFilterValues = filterValues.split(",");
-				// TODO implement multi facet filters
-			} else {
-				int splitIndex = filterValues.indexOf(':');
-				facetfilterName = filterValues.substring(0, splitIndex);
-				facetfilterValue = filterValues.substring(splitIndex+1);
-			}
-		}
-				
 		final Client client = esClientUtil.getClient();
 		SearchResponse searchResponse = null;
 		
 		try {
 			searchResponse = client.prepareSearch()
-				.setQuery(QueryBuilders.filteredQuery(QueryBuilders.multiMatchQuery(searchParam, "title^2", "subtitle^1.2", "_all"),
-						FilterBuilders.termFilter(facetfilterName, "kategorie$"+facetfilterValue)))
+				.setQuery(buildQuery(searchParam, limit, offset, filterValues))
 				.setFilter(getAccessControlFilter())
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setFrom(resultOffset)
@@ -215,6 +203,13 @@ public class SearchController {
 		return searchResult;
 	}
 
+	// TODO document me
+	/**
+	 * 
+	 * @param name
+	 * @param searchResponse
+	 * @return
+	 */
 	Map<String, Long> getFacetMap(final String name, final SearchResponse searchResponse) {
 		final TermsFacet facet = (TermsFacet) searchResponse.facets().facet(name);
 		final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
@@ -222,6 +217,36 @@ public class SearchController {
 			facetMap.put(entry.term(), Long.valueOf(entry.count()));
 		}
 		return facetMap;
+	}
+	
+	// TODO document me
+	/**
+	 * 
+	 * @param searchParam
+	 * @param limit
+	 * @param offset
+	 * @param filterValues
+	 * @return
+	 */
+	QueryBuilder buildQuery(String searchParam, Integer limit, Integer offset, String filterValues) {
+		FilterBuilder facetFilter = null;
+		Map<String, String> facetfilters = new HashMap<String, String>();
+		
+		if (filterValues != null) {
+			if (filterValues.contains(",")) {
+				final String[] facetFilterValues = filterValues.split(",");
+				for (String facetFilterValue: facetFilterValues) {
+					int splitIndex = filterValues.indexOf(':');
+					facetfilters.put(facetFilterValue.substring(0, splitIndex), facetFilterValue.substring(splitIndex+1));
+				}
+			} else {
+				int splitIndex = filterValues.indexOf(':');
+				facetFilter = FilterBuilders.termFilter(filterValues.substring(0, splitIndex)
+						, "kategorie$"+filterValues.substring(splitIndex+1));
+			}
+		}
+		
+		return QueryBuilders.filteredQuery(QueryBuilders.multiMatchQuery(searchParam, "title^2", "subtitle^1.2", "_all"), facetFilter);
 	}
 	
 	/**
