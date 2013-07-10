@@ -72,7 +72,7 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	// isolatedsherd
 	protected List<String> facet_sherdtype;
 	protected List<String> facet_inventorynumber;
-	protected List<String> facet_nitonanalysisnummer;
+	protected List<String> facet_nitonanalysisnumber;
 	
 	// mainabstract
 	protected List<String> facet_grabungsinternetypnumber;
@@ -388,10 +388,10 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 		this.facet_inventorynumber = facet_inventorynumber;
 	}
 	public List<String> getFacet_nitonanalysisnummer() {
-		return facet_nitonanalysisnummer;
+		return facet_nitonanalysisnumber;
 	}
-	public void setFacet_nitonanalysisnummer(List<String> facet_nitonanalysisnummer) {
-		this.facet_nitonanalysisnummer = facet_nitonanalysisnummer;
+	public void setFacet_nitonanalysisnummer(List<String> facet_nitonanalysisnumber) {
+		this.facet_nitonanalysisnumber = facet_nitonanalysisnumber;
 	}
 	public List<String> getFacet_grabungsinternetypnumber() {
 		return facet_grabungsinternetypnumber;
@@ -747,7 +747,7 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	public List<String> getFacet_roemgriech() {
 		return facet_roemgriech;
 	}
-	public void setFacet_roemgrich(List<String> facet_roemgrich) {
-		this.facet_roemgriech = facet_roemgrich;
+	public void setFacet_roemgriech(List<String> facet_roemgriech) {
+		this.facet_roemgriech = facet_roemgriech;
 	}
 }
