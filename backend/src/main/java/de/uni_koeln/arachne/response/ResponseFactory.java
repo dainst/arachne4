@@ -42,9 +42,6 @@ public class ResponseFactory {
 		this.xmlConfigUtil = xmlConfigUtil;
 	}
 	
-	@Autowired
-	private transient IUserRightsService userRightsService;
-	
 	/**
 	 * Creates a formatted response object as used by the front-end. The structure of this object is defined in the xml config files.
 	 * First the type of the object will be determined from the dataset (e.g. bauwerk). Based on the type the corresponding xml file <code>$(TYPE).xml</code> is read.
@@ -343,21 +340,13 @@ public class ResponseFactory {
 				if (c instanceof FieldList) {
 					for (String value: ((FieldList)c).getValue()) {
 						if (value != null) {
-							if (userRightsService.isUserSolr()) {
-								values.add(name + "$" + value);
-							} else {
-								values.add(value);
-							}
+							values.add(value);
 						}
 					}
 				} else {
 					final String value = c.toString();
 					if (value != null) {
-						if (userRightsService.isUserSolr()) {
-							values.add(name + "$" + value);
-						} else {
-							values.add(value);
-						}
+						values.add(value);
 					}
 				}
 			} 	 								
