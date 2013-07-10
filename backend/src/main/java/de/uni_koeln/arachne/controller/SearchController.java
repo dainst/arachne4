@@ -242,7 +242,7 @@ public class SearchController {
 			} else {
 				int splitIndex = filterValues.indexOf(':');
 				facetFilter = FilterBuilders.termFilter(filterValues.substring(0, splitIndex)
-						, "kategorie$"+filterValues.substring(splitIndex+1));
+						, filterValues.substring(splitIndex+1));
 			}
 		}
 		
