@@ -10,12 +10,11 @@
                 <field datasource="befund.Areal"/>
             </section>
         </title>
-        <subtitle>
+        <subtitle labelKey="">
             <section labelKey="Context">
                 <field datasource="Dataset.Id"/>
             </section>
         </subtitle>
-        
         <datasections>
             <section labelKey="Informationen zum Befund">
                 <section labelKey="Befund">
@@ -35,7 +34,7 @@
 
                 <include type="ort"/>
 
-                <section labelKey="VerbundeneDatensaetze">
+                <section labelKey="Verbundene Datensätze">
                     <context type="Befundmainabstractmorphology" separator=" / "
                         labelKey="Morphologies">
                         <field datasource=".Level1"/>
@@ -50,7 +49,8 @@
                         <field datasource=".GrabungsinterneTypennummerSub"/>
                     </context>
                     <context type="Befundmainabstractfabric" labelKey="Fabrics" separator=" / "> 
-                       <contextSection labelKey="AllgemeinerName">
+                        <field datasource=".EntityID" />
+                        <contextSection labelKey="AllgemeinerName">
                             <field datasource=".CommonName"/>
                         </contextSection>
                         <contextSection labelKey="Herkunft">

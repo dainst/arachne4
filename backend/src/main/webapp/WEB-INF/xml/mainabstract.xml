@@ -4,24 +4,32 @@
     xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
     <display>
         <title>
-            <section separator=" / ">
-                <section separator=" - ">
-                    <field datasource="morphology.Level1" />
-                    <field datasource="morphology.Level2" />
-                    <field datasource="morphology.Level3" />
-                    <field datasource="morphology.Level4" />
-                    <field datasource="morphology.Level5" />
-                    <field datasource="morphology.Level6" />
+            <section separator=" / " labelKey="Context">
+                <section>
+                    <field datasource="befund.Grabungsort" prefix="Place: "/>
+                    <field datasource="befund.Befund" prefix="Stratum:"/>
                 </section>
-                <section separator=" / ">
-                    <field datasource="befund.Grabungsort"/>
-                    <field datasource="fabric.CommonName"/>
+                <section separator=" - " labelKey="Morphology">
+                    <field datasource="morphology.Level1" prefix="FG:"/>
+                    <field datasource="morphology.Level2" prefix="2nd: "/>
+                    <field datasource="morphology.Level3" prefix="3rd: "/>
+                    <field datasource="morphology.Level4" prefix="4th: "/>
+                    <field datasource="morphology.Level5" prefix="5th: "/>
+                    <field datasource="morphology.Level6" prefix="6th: "/>
+                </section>
+                <section separator=" - " labelKey="Fabric">
+                    <field datasource="fabric.Origin"/>
+                    <field datasource="fabric.CommonName" prefix="Common Name: "/>
+                    <field datasource="fabric.Name" prefix="Name: "/>
+                </section>
+                <section labelKey="Quantitification">
+                    <field datasource="quantities.TotalSherds" prefix="#Sherds: "/>
                 </section>
             </section>
         </title>
         <subtitle>
-            <section labelKey="Main Abstract" >
-                <field datasource="Dataset.Id" />
+            <section labelKey="Main Abstract">
+                <field datasource="Dataset.internalId"/>
             </section>
         </subtitle>
         <datasections>
@@ -72,9 +80,9 @@
                         <field datasource="fabric.Name"/>
                     </section>
                 </section>
-                
-               <include type="datierung"/>
-                
+
+                <include type="datierung"/>
+
                 <section labelKey="Verbundene Keramikfragmente">
                     <context type="isolatedsherd" labelKey="Fragment">
                         <field datasource=".SherdType" prefix="Scherbentyp: "/>
@@ -83,50 +91,59 @@
                     </context>
                 </section>
                 <section labelKey="Informationen zur Quantifizierung">
-                    <section labelKey="Anzahl Ränder">
-                        <field datasource="quantities.RimCount"/>
+                    <section labelKey="Anzahl">
+                        <section labelKey="Ränder">
+                            <field datasource="quantities.RimCount"/>
+                        </section>
+                        <section labelKey="Henkel">
+                            <field datasource="quantities.HandleCount"/>
+                        </section>
+                        <section labelKey="Bodenfragmente">
+                            <field datasource="quantities.BaseCount"/>
+                        </section>
+                        <section labelKey="Wandscherben">
+                            <field datasource="quantities.BodySherdCount"/>
+                        </section>
+                        <section labelKey="Weitere Fragmente">
+                            <field datasource="quantities.OthersCount"/>
+                        </section>
+                        <section labelKey="Gesamt">
+                            <field datasource="quantities.TotalSherds"/>
+                        </section>
                     </section>
-                    <section labelKey="Gewicht Ränder">
-                        <field datasource="quantities.RimWeight" postfix="g"/>
+                    <section labelKey="Gewicht">
+                        <section labelKey="Ränder">
+                            <field datasource="quantities.RimWeight" postfix="g"/>
+                        </section>
+                        <section labelKey="Henkel">
+                            <field datasource="quantities.HandleWeight" postfix="g"/>
+                        </section>
+                        <section labelKey="Bodenfragmente">
+                            <field datasource="quantities.BaseWeight" postfix="g"/>
+                        </section>
+                        <section labelKey="Wandscherben">
+                            <field datasource="quantities.BodySherdWeight" postfix="g"/>
+                        </section>
+                        <section labelKey="Weitere Fragmente">
+                            <field datasource="quantities.OthersWeight" postfix="g"/>
+                        </section>
                     </section>
-                    <section labelKey="Prozentualer Randanteil">
-                        <field datasource="quantities.RimPercentage" postfix="%"/>
-                    </section>
-                    <section labelKey="Anzahl Henkel">
-                        <field datasource="quantities.HandleCount"/>
-                    </section>
-                    <section labelKey="Gewicht Henkel">
-                        <field datasource="quantities.HandleWeight" postfix="g"/>
-                    </section>
-                    <section labelKey="Anzahl Bodenfragmente">
-                        <field datasource="quantities.BaseCount"/>
-                    </section>
-                    <section labelKey="Gewicht Bodenfragmente">
-                        <field datasource="quantities.BaseWeight" postfix="g"/>
-                    </section>
-                    <section labelKey="Anzahl Wandscherben">
-                        <field datasource="quantities.BodySherdCount"/>
-                    </section>
-                    <section labelKey="Gewicht Wandscherben">
-                        <field datasource="quantities.BodySherdWeight" postfix="g"/>
-                    </section>
-                    <section labelKey="Anzahl andere Fragmente">
-                        <field datasource="quantities.OthersCount"/>
-                    </section>
-                    <section labelKey="Gewicht andere Fragmente">
-                        <field datasource="quantities.OthersWeight" postfix="g"/>
-                    </section>
-                    <section labelKey="Anzahl Joins">
-                        <field datasource="quantities.Joins"/>
-                    </section>
-                    <section labelKey="MNI">
-                        <field datasource="quantities.MNI"/>
-                    </section>
-                    <section labelKey="Gewichtetes MNI">
-                        <field datasource="quantities.MNIWeighted"/>
-                    </section>
-                    <section labelKey="MXI">
-                        <field datasource="quantities.MXI"/>
+                    <section labelKey="Weitere Quantifierzungsinformationen">
+                        <section labelKey="Prozentualer Randanteil">
+                            <field datasource="quantities.RimPercentage" postfix="%"/>
+                        </section>
+                        <section labelKey="Anzahl Joins">
+                            <field datasource="quantities.Joins"/>
+                        </section>
+                        <section labelKey="MNI">
+                            <field datasource="quantities.MNI"/>
+                        </section>
+                        <section labelKey="Gewichtetes MNI">
+                            <field datasource="quantities.MNIWeighted"/>
+                        </section>
+                        <section labelKey="MXI">
+                            <field datasource="quantities.MXI"/>
+                        </section>
                     </section>
                 </section>
             </section>
@@ -134,10 +151,10 @@
         <contextImages>
             <!-- Show images of the connected types -->
             <contextImage show="always">Morphology</contextImage>
-            
+
             <!-- Show images of all sherds connected to the current record -->
             <contextImage show="always">IsolatedSherd</contextImage>
-            
+
             <!-- Show images of fabricdescriptions connected with the current abstract -->
             <contextImage show="always">Mainabstractfabricfabricdescription</contextImage>
         </contextImages>
