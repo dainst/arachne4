@@ -8,6 +8,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  * This class contains only the facets for preformatted output to the frontend.
  * Every used facet must be defined here. Do not forget to add getters and setters.
  */
+@SuppressWarnings("PMD")
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class FacettedArachneEntity extends BaseArachneEntity {
 	/*
