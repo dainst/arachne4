@@ -17,6 +17,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -159,7 +160,6 @@ public class SearchController {
 		try {
 			searchResponse = client.prepareSearch()
 				.setQuery(buildQuery(searchParam, limit, offset, filterValues))
-				.setFilter(getAccessControlFilter())
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setFrom(resultOffset)
 				.setSize(resultSize)
@@ -191,9 +191,9 @@ public class SearchController {
 		}
 		
 		final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
-		facets.put("facet_kategorie", getFacetMap("facet_kategorie", searchResponse));
-		facets.put("facet_ort",  getFacetMap("facet_ort", searchResponse));
-		facets.put("facet_datierungepoche",  getFacetMap("facet_datierungepoche", searchResponse));
+		facets.put("facet_kategorie", getFacetMap("facet_kategorie", searchResponse, filterValues));
+		facets.put("facet_ort",  getFacetMap("facet_ort", searchResponse, filterValues));
+		facets.put("facet_datierungepoche",  getFacetMap("facet_datierungepoche", searchResponse, filterValues));
 		
 		searchResult.setFacets(facets);
 				
@@ -207,13 +207,22 @@ public class SearchController {
 	 * @param searchResponse
 	 * @return
 	 */
-	Map<String, Long> getFacetMap(final String name, final SearchResponse searchResponse) {
+	Map<String, Long> getFacetMap(final String name, final SearchResponse searchResponse, final String filterValues) {
 		final TermsFacet facet = (TermsFacet) searchResponse.facets().facet(name);
 		final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
-		for (Entry entry: facet.entries()) {
-			facetMap.put(entry.term(), Long.valueOf(entry.count()));
+		// workaround for elasticsearch reporting too many facets entries as there should only be one
+		if (facet.entries().isEmpty()) {
+			return null;
+		} else {
+			if (filterValues != null && filterValues.contains(name)) {
+				facetMap.put(facet.entries().get(0).term(), Long.valueOf(facet.entries().get(0).count()));
+			} else {
+				for (Entry entry: facet.entries()) {
+					facetMap.put(entry.term(), Long.valueOf(entry.count()));
+				}
+			}
+			return facetMap;
 		}
-		return facetMap;
 	}
 	
 	// TODO document me
@@ -225,25 +234,27 @@ public class SearchController {
 	 * @param filterValues
 	 * @return
 	 */
-	QueryBuilder buildQuery(String searchParam, Integer limit, Integer offset, String filterValues) {
-		FilterBuilder facetFilter = null;
-		Map<String, String> facetfilters = new HashMap<String, String>();
-		
-		if (filterValues != null) {
-			if (filterValues.contains(",")) {
-				final String[] facetFilterValues = filterValues.split(",");
-				for (String facetFilterValue: facetFilterValues) {
-					int splitIndex = filterValues.indexOf(':');
-					facetfilters.put(facetFilterValue.substring(0, splitIndex), facetFilterValue.substring(splitIndex+1));
+	QueryBuilder buildQuery(final String searchParam, final Integer limit, final Integer offset, final String filterValues) {
+		FilterBuilder facetFilter = FilterBuilders.boolFilter().must(getAccessControlFilter());
+				
+		if (!StrUtils.isEmptyOrNull(filterValues)) {
+			final List<String> filterValueList = filterQueryStringToStringList(filterValues); 
+			if (!StrUtils.isEmptyOrNull(filterValueList)) {
+				// TODO add category specific facets
+				//addCategorySpecificFacets(filterValueList, query);
+				for (final String filterValue: filterValueList) {
+					final int splitIndex = filterValue.indexOf(':');
+					final String name = filterValue.substring(0, splitIndex);
+					final String value = filterValue.substring(splitIndex+1).replace("\"", ""); 
+					facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(FilterBuilders.termFilter(name, value));
 				}
-			} else {
-				int splitIndex = filterValues.indexOf(':');
-				facetFilter = FilterBuilders.termFilter(filterValues.substring(0, splitIndex)
-						, filterValues.substring(splitIndex+1));
 			}
 		}
 		
-		return QueryBuilders.filteredQuery(QueryBuilders.multiMatchQuery(searchParam, "title^2", "subtitle^1.2", "_all"), facetFilter);
+		QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString(searchParam), facetFilter);
+				
+		LOGGER.debug(query.toString());
+		return query;
 	}
 	
 	/**
@@ -376,7 +387,7 @@ public class SearchController {
 	}
 	
 	/**
-	 * This method constructs a access control query filter for elastic search using the <code>UserRightsService</code>.
+	 * This method constructs a access control query filter for Elasticsearch using the <code>UserRightsService</code>.
 	 * @return The constructed query filter.
 	 */
 	private QueryFilterBuilder getAccessControlFilter() {
