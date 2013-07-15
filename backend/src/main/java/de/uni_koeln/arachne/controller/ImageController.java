@@ -179,9 +179,18 @@ public class ImageController {
 					}
 
 					responseHeaders.setContentType(MediaType.TEXT_PLAIN);
+					// TODO remove - only used for testing
+					responseHeaders.setLastModified(0);
+					responseHeaders.setCacheControl("max-age=3600");
+					//
 					return new ResponseEntity<String>(stringBuilder.toString(), responseHeaders, HttpStatus.OK);
 				} else {
 					response.setContentType("image/jpeg");
+					// TODO remove - only used for testing
+					response.setHeader("Last-Modified", "Thu, 01 Jan 1970 00:00:00 GMT");
+			        // 1 hour
+					response.setHeader("Cache-Control", "max-age=3600");
+					//
 					final OutputStream outputStream = response.getOutputStream();
 					ImageIO.write(ImageIO.read(connection.getInputStream()), "jpg", outputStream);
 					// no return object needed as the result is directly written to the HTTPResponse
