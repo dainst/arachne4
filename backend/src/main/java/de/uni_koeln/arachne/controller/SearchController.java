@@ -14,6 +14,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
@@ -28,6 +29,7 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.facet.FacetBuilders;
 import org.elasticsearch.search.facet.terms.TermsFacet;
 import org.elasticsearch.search.facet.terms.TermsFacet.Entry;
+import org.elasticsearch.search.facet.terms.TermsFacetBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -71,6 +73,8 @@ public class SearchController {
 	
 	private transient final SolrServer server;
 	
+	private transient final List<String> defaultFacetList = new ArrayList<String>(3); 
+	
 	@Autowired
 	public SearchController(final @Value("#{config.solrProtocol}") String solrPotocol, final @Value("#{config.solrIp}") String solrIp,
 			final @Value("#{config.solrPort}") int solrPort, final @Value("#{config.solrName}") String solrName) {
@@ -88,6 +92,10 @@ public class SearchController {
 			LOGGER.error("Setting up SolrServer: " + e.getMessage());
 		}
 		this.server = server;
+		
+		defaultFacetList.add("facet_kategorie");
+		defaultFacetList.add("facet_ort");
+		defaultFacetList.add("facet_datierungepoche");
 	}
 	
 	/**
@@ -141,8 +149,6 @@ public class SearchController {
 	 * @param searchParam The value of the search parameter. (mandatory)
 	 * @param limit The maximum number of returned entities. Default is 50. (optional)
 	 * @param offset The offset into the list of entities (used for paging). (optional)
-	 * @param filterValues The values of the solr filter query. (optional)
-	 * @param facetLimit The maximum number of facet results. (optional)
 	 * @return A response object containing the data or a status response (this is serialized to XML or JSON depending on content negotiation).
 	 */
 	@RequestMapping(value="/essearch", method=RequestMethod.GET)
@@ -156,17 +162,26 @@ public class SearchController {
 		
 		final Client client = esClientUtil.getClient();
 		SearchResponse searchResponse = null;
-		
-		try {
-			searchResponse = client.prepareSearch()
+		SearchRequestBuilder searchRequestBuilder = client.prepareSearch()
 				.setQuery(buildQuery(searchParam, limit, offset, filterValues))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setFrom(resultOffset)
-				.setSize(resultSize)
-				.addFacet(FacetBuilders.termsFacet("facet_kategorie").field("facet_kategorie"))
-				.addFacet(FacetBuilders.termsFacet("facet_ort").field("facet_ort"))
-				.addFacet(FacetBuilders.termsFacet("facet_datierungepoche").field("facet_datierungepoche"))
-	    		.execute().actionGet();
+				.setSize(resultSize); 
+		
+		// TODO find a way to handle datierungepoche and similar facets
+		// create facet list - either from category or use the default one
+		List<String> facetList = new ArrayList<String>(3);
+		if (StrUtils.isEmptyOrNull(filterValues)) {
+			facetList = defaultFacetList;
+		} else {
+			facetList = getCategorySpecificFacetList(filterQueryStringToStringList(filterValues));
+		}
+		
+		// add facets
+		addFacets(facetList, searchRequestBuilder);
+				
+		try {
+			searchResponse = searchRequestBuilder.execute().actionGet();
 		} catch (Exception e) {
 			LOGGER.error("Problem executing search. Exception: "+e.getMessage());
 			return new StatusResponse("There was a problem executing the search. Please try again. If the problem persists please contact us.");
@@ -190,16 +205,101 @@ public class SearchController {
 					, (String)(currenthit.getSource().get("subtitle")), thumbnailId));
 		}
 		
+		// add facet search results
 		final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
-		facets.put("facet_kategorie", getFacetMap("facet_kategorie", searchResponse, filterValues));
-		facets.put("facet_ort",  getFacetMap("facet_ort", searchResponse, filterValues));
-		facets.put("facet_datierungepoche",  getFacetMap("facet_datierungepoche", searchResponse, filterValues));
+		for (final String facetName: facetList) {
+			Map<String, Long> facetMap = getFacetMap(facetName, searchResponse, filterValues);
+			if (facetMap != null) {
+				facets.put(facetName, getFacetMap(facetName, searchResponse, filterValues));
+			}
+		}
 		
 		searchResult.setFacets(facets);
 				
 		return searchResult;
 	}
 
+	private List<String> getCategorySpecificFacetList(final	List<String> filterValueList) {
+		List<String> result = new ArrayList<String>();
+		for (String filterValue: filterValueList) {
+			if (filterValue.startsWith("facet_kategorie")) {
+				filterValue = filterValue.substring(16);
+				// the only multicategory query that makes sense is "OR" combined 
+				filterValue = filterValue.replace("OR", "");
+				filterValue = filterValue.replace("(", "");
+				filterValue = filterValue.replace(")", "");
+				filterValue = filterValue.trim();
+				filterValue = filterValue.replaceAll("\"", "");
+				filterValue = filterValue.replaceAll("\\s+", " ");
+				
+				final String[] categories = filterValue.split("\\s");
+				if (categories.length > 0) {
+					for (int i = 0; i < categories.length; i++) {
+						final List<String> facets = xmlConfigUtil.getFacetsFromXMLFile(categories[i]);
+						if (!StrUtils.isEmptyOrNull(facets)) {
+							for (String facet: facets) {
+								String facetName = "facet_" + facet;
+								if (!result.contains(facetName)) {
+									result.add("facet_" + facet);
+								}
+							}
+						}
+					}
+				}
+				// no need to process more than one parameter
+				return result;
+		    }
+		}
+		return null;
+	}
+
+	/**
+	 * Adds the facet fields specified in <code>facetList</code> to the search request.
+	 * @param facetList A string list containing the facet names to add. 
+	 * @param searchRequestBuilder The outgoing search request that gets the facets added.
+	 */
+	private void addFacets(final List<String> facetList, final SearchRequestBuilder searchRequestBuilder) {
+		for (final String facetName: facetList) {
+			searchRequestBuilder.addFacet(FacetBuilders.termsFacet(facetName).field(facetName));
+		}
+	}
+	
+	/**
+	 * This method adds the facets to the search query that are defined in the XML file of a category. It looks for the key 
+	 * <code>"facet_kategorie"</code> and parses its value to try to open the corresponding XML file(s). 
+	 * @param filterValueList The filter query parameter string as list.
+	 * @param searchRequestBuilder The outgoing elasticsearch request.
+	 */
+	private void addCategorySpecificFacetsES(final List<String> filterValueList, final SearchRequestBuilder searchRequestBuilder) {
+		for (String filterValue: filterValueList) {
+			if (filterValue.startsWith("facet_kategorie")) {
+				filterValue = filterValue.substring(16);
+				// the only multicategory query that makes sense is "OR" combined 
+				filterValue = filterValue.replace("OR", "");
+				filterValue = filterValue.replace("(", "");
+				filterValue = filterValue.replace(")", "");
+				filterValue = filterValue.trim();
+				filterValue = filterValue.replaceAll("\"", "");
+				filterValue = filterValue.replaceAll("\\s+", " ");
+				
+				final String[] categories = filterValue.split("\\s");
+				if (categories.length > 0) {
+					for (int i = 0; i < categories.length; i++) {
+						final List<String> facets = xmlConfigUtil.getFacetsFromXMLFile(categories[i]);
+						if (!StrUtils.isEmptyOrNull(facets)) {
+							for (String facet: facets) {
+								System.out.println("Adding: " + facet);
+								searchRequestBuilder.addFacet(FacetBuilders.termsFacet("facet_" + facet).field("facet_" + facet));
+							}
+						}
+					}
+				}
+				// no need to process more than one parameter
+				return;
+		    }
+		}
+	}
+	
 	// TODO document me
 	/**
 	 * 
@@ -240,8 +340,6 @@ public class SearchController {
 		if (!StrUtils.isEmptyOrNull(filterValues)) {
 			final List<String> filterValueList = filterQueryStringToStringList(filterValues); 
 			if (!StrUtils.isEmptyOrNull(filterValueList)) {
-				// TODO add category specific facets
-				//addCategorySpecificFacets(filterValueList, query);
 				for (final String filterValue: filterValueList) {
 					final int splitIndex = filterValue.indexOf(':');
 					final String name = filterValue.substring(0, splitIndex);
@@ -252,7 +350,7 @@ public class SearchController {
 		}
 		
 		QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString(searchParam), facetFilter);
-				
+						
 		LOGGER.debug(query.toString());
 		return query;
 	}
