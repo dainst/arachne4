@@ -168,8 +168,11 @@ public class SearchController {
 		List<String> facetList = defaultFacetList;
 		if (!StrUtils.isEmptyOrNull(filterValues)) {
 			filterValueList = filterQueryStringToStringList(filterValues);
-			if (filterValueList.contains("facet_kategorie")) {
-				facetList = getCategorySpecificFacetList(filterValueList);
+			for (final String filterValue: filterValueList) {
+				if (filterValue.contains("facet_kategorie")) {
+					facetList = getCategorySpecificFacetList(filterValueList);
+					break;
+				}
 			}
 		}
 		
