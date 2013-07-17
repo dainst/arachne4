@@ -269,7 +269,8 @@ public class SearchController {
 	 */
 	private void addFacets(final List<String> facetList, final SearchRequestBuilder searchRequestBuilder) {
 		for (final String facetName: facetList) {
-			searchRequestBuilder.addFacet(FacetBuilders.termsFacet(facetName).field(facetName));
+			// return the top 100 facets
+			searchRequestBuilder.addFacet(FacetBuilders.termsFacet(facetName).field(facetName).size(100));
 		}
 	}
 			
