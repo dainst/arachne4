@@ -2,10 +2,11 @@ package de.uni_koeln.arachne.controller;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest.METHOD;
@@ -18,7 +19,6 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -29,7 +29,6 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.facet.FacetBuilders;
 import org.elasticsearch.search.facet.terms.TermsFacet;
 import org.elasticsearch.search.facet.terms.TermsFacet.Entry;
-import org.elasticsearch.search.facet.terms.TermsFacetBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -155,29 +154,31 @@ public class SearchController {
 	public @ResponseBody Object handleESSearchRequest(@RequestParam("q") final String searchParam,
 													  @RequestParam(value = "limit", required = false) final Integer limit,
 													  @RequestParam(value = "offset", required = false) final Integer offset,
-													  @RequestParam(value = "fq", required = false) final String filterValues) {
+													  @RequestParam(value = "fq", required = false) final String filterValues,
+													  final HttpServletResponse response) {
 		
 		final int resultSize = limit == null ? 50 : limit;
 		final int resultOffset = offset == null ? 0 : offset;
+		List<String> filterValueList = null;
 		
 		final Client client = esClientUtil.getClient();
 		SearchResponse searchResponse = null;
-		SearchRequestBuilder searchRequestBuilder = client.prepareSearch()
-				.setQuery(buildQuery(searchParam, limit, offset, filterValues))
+		
+		// TODO find a way to handle datierungepoche and similar facets
+		List<String> facetList = defaultFacetList;
+		if (!StrUtils.isEmptyOrNull(filterValues)) {
+			filterValueList = filterQueryStringToStringList(filterValues);
+			if (filterValueList.contains("facet_kategorie")) {
+				facetList = getCategorySpecificFacetList(filterValueList);
+			}
+		}
+		
+		final SearchRequestBuilder searchRequestBuilder = client.prepareSearch()
+				.setQuery(buildQuery(searchParam, limit, offset, filterValueList))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setFrom(resultOffset)
 				.setSize(resultSize); 
-		
-		// TODO find a way to handle datierungepoche and similar facets
-		// create facet list - either from category or use the default one
-		List<String> facetList = new ArrayList<String>(3);
-		if (StrUtils.isEmptyOrNull(filterValues)) {
-			facetList = defaultFacetList;
-		} else {
-			facetList = getCategorySpecificFacetList(filterQueryStringToStringList(filterValues));
-		}
-		
-		// add facets
+			
 		addFacets(facetList, searchRequestBuilder);
 				
 		try {
@@ -194,7 +195,7 @@ public class SearchController {
 		searchResult.setOffset(resultOffset);
 		searchResult.setSize(hits.totalHits());
 		
-		for (SearchHit currenthit: hits) {
+		for (final SearchHit currenthit: hits) {
 			final Integer intThumbnailId = (Integer)currenthit.getSource().get("thumbnailId");
 			Long thumbnailId = null;
 			if (intThumbnailId != null) {
@@ -208,7 +209,7 @@ public class SearchController {
 		// add facet search results
 		final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
 		for (final String facetName: facetList) {
-			Map<String, Long> facetMap = getFacetMap(facetName, searchResponse, filterValues);
+			final Map<String, Long> facetMap = getFacetMap(facetName, searchResponse, filterValues);
 			if (facetMap != null) {
 				facets.put(facetName, getFacetMap(facetName, searchResponse, filterValues));
 			}
@@ -219,6 +220,11 @@ public class SearchController {
 		return searchResult;
 	}
 
+	/**
+	 * Extracts the category specific facets from the corresponding xml file.
+	 * @param filterValueList
+	 * @return
+	 */
 	private List<String> getCategorySpecificFacetList(final	List<String> filterValueList) {
 		List<String> result = new ArrayList<String>();
 		for (String filterValue: filterValueList) {
@@ -263,43 +269,7 @@ public class SearchController {
 			searchRequestBuilder.addFacet(FacetBuilders.termsFacet(facetName).field(facetName));
 		}
 	}
-	
-	/**
-	 * This method adds the facets to the search query that are defined in the XML file of a category. It looks for the key 
-	 * <code>"facet_kategorie"</code> and parses its value to try to open the corresponding XML file(s). 
-	 * @param filterValueList The filter query parameter string as list.
-	 * @param searchRequestBuilder The outgoing elasticsearch request.
-	 */
-	private void addCategorySpecificFacetsES(final List<String> filterValueList, final SearchRequestBuilder searchRequestBuilder) {
-		for (String filterValue: filterValueList) {
-			if (filterValue.startsWith("facet_kategorie")) {
-				filterValue = filterValue.substring(16);
-				// the only multicategory query that makes sense is "OR" combined 
-				filterValue = filterValue.replace("OR", "");
-				filterValue = filterValue.replace("(", "");
-				filterValue = filterValue.replace(")", "");
-				filterValue = filterValue.trim();
-				filterValue = filterValue.replaceAll("\"", "");
-				filterValue = filterValue.replaceAll("\\s+", " ");
-				
-				final String[] categories = filterValue.split("\\s");
-				if (categories.length > 0) {
-					for (int i = 0; i < categories.length; i++) {
-						final List<String> facets = xmlConfigUtil.getFacetsFromXMLFile(categories[i]);
-						if (!StrUtils.isEmptyOrNull(facets)) {
-							for (String facet: facets) {
-								System.out.println("Adding: " + facet);
-								searchRequestBuilder.addFacet(FacetBuilders.termsFacet("facet_" + facet).field("facet_" + facet));
-							}
-						}
-					}
-				}
-				// no need to process more than one parameter
-				return;
-		    }
-		}
-	}
-	
+			
 	// TODO document me
 	/**
 	 * 
@@ -317,7 +287,7 @@ public class SearchController {
 			if (filterValues != null && filterValues.contains(name)) {
 				facetMap.put(facet.entries().get(0).term(), Long.valueOf(facet.entries().get(0).count()));
 			} else {
-				for (Entry entry: facet.entries()) {
+				for (final Entry entry: facet.entries()) {
 					facetMap.put(entry.term(), Long.valueOf(entry.count()));
 				}
 			}
@@ -334,22 +304,19 @@ public class SearchController {
 	 * @param filterValues
 	 * @return
 	 */
-	QueryBuilder buildQuery(final String searchParam, final Integer limit, final Integer offset, final String filterValues) {
+	QueryBuilder buildQuery(final String searchParam, final Integer limit, final Integer offset, final List<String> filterValues) {
 		FilterBuilder facetFilter = FilterBuilders.boolFilter().must(getAccessControlFilter());
 				
 		if (!StrUtils.isEmptyOrNull(filterValues)) {
-			final List<String> filterValueList = filterQueryStringToStringList(filterValues); 
-			if (!StrUtils.isEmptyOrNull(filterValueList)) {
-				for (final String filterValue: filterValueList) {
-					final int splitIndex = filterValue.indexOf(':');
-					final String name = filterValue.substring(0, splitIndex);
-					final String value = filterValue.substring(splitIndex+1).replace("\"", ""); 
-					facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(FilterBuilders.termFilter(name, value));
-				}
+			for (final String filterValue: filterValues) {
+				final int splitIndex = filterValue.indexOf(':');
+				final String name = filterValue.substring(0, splitIndex);
+				final String value = filterValue.substring(splitIndex+1).replace("\"", ""); 
+				facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(FilterBuilders.termFilter(name, value));
 			}
 		}
 		
-		QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString(searchParam), facetFilter);
+		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString(searchParam), facetFilter);
 						
 		LOGGER.debug(query.toString());
 		return query;
@@ -446,11 +413,11 @@ public class SearchController {
 		final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
 		
 		final List<FacetField> facetFields = response.getFacetFields();
-		for (FacetField facetField: facetFields) {
+		for (final FacetField facetField: facetFields) {
 			final List<FacetField.Count> facetItems = facetField.getValues();
 			final Map<String, Long> facetValueMap = new LinkedHashMap<String, Long>();
 			if (facetItems != null) {
-				for (FacetField.Count fcount: facetItems) {
+				for (final FacetField.Count fcount: facetItems) {
 					facetValueMap.put(fcount.getName(), fcount.getCount());
 				}
 				if (!facetValueMap.isEmpty()) {
@@ -472,7 +439,7 @@ public class SearchController {
 	private void appendAccessControl(final StringBuffer queryStr) {
 		queryStr.append(" AND (");
 		boolean first = true;
-		for (DatasetGroup datasetGroup: userRightsService.getCurrentUser().getDatasetGroups()) {
+		for (final DatasetGroup datasetGroup: userRightsService.getCurrentUser().getDatasetGroups()) {
 			if (first) {
 				queryStr.append("datasetGroup:");
 				first = false;
@@ -491,7 +458,7 @@ public class SearchController {
 	private QueryFilterBuilder getAccessControlFilter() {
 		final StringBuffer datasetGroups = new StringBuffer(16);
 		boolean first = true;
-		for (DatasetGroup datasetGroup: userRightsService.getCurrentUser().getDatasetGroups()) {
+		for (final DatasetGroup datasetGroup: userRightsService.getCurrentUser().getDatasetGroups()) {
 			if (first) {
 				first = false;
 			} else {
@@ -535,7 +502,7 @@ public class SearchController {
 			final List<String> filterValueList = filterQueryStringToStringList(filterValues); 
 			if (!StrUtils.isEmptyOrNull(filterValueList)) {
 				addCategorySpecificFacets(filterValueList, query);
-				for (String filterValue: filterValueList) {
+				for (final String filterValue: filterValueList) {
 					query.addFilterQuery(filterValue);
 				}
 			}
@@ -565,7 +532,7 @@ public class SearchController {
 					for (int i = 0; i < categories.length; i++) {
 						final List<String> facets = xmlConfigUtil.getFacetsFromXMLFile(categories[i]);
 						if (!StrUtils.isEmptyOrNull(facets)) {
-							for (String facet: facets) {
+							for (final String facet: facets) {
 								query.addFacetField("facet_" + facet);
 							}
 						}
