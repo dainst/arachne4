@@ -191,7 +191,7 @@ public class SearchController {
 			return new StatusResponse("There was a problem executing the search. Please try again. If the problem persists please contact us.");
 		}
 		
-		final SearchHits hits = searchResponse.hits();
+		final SearchHits hits = searchResponse.getHits();
 		
 		final ESSearchResult searchResult = new ESSearchResult();
 		searchResult.setLimit(resultSize);
@@ -282,17 +282,17 @@ public class SearchController {
 	 * @return
 	 */
 	Map<String, Long> getFacetMap(final String name, final SearchResponse searchResponse, final String filterValues) {
-		final TermsFacet facet = (TermsFacet) searchResponse.facets().facet(name);
+		final TermsFacet facet = (TermsFacet) searchResponse.getFacets().facet(name);
 		final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
 		// workaround for elasticsearch reporting too many facets entries as there should only be one
-		if (facet.entries().isEmpty()) {
+		if (facet.getEntries().isEmpty()) {
 			return null;
 		} else {
 			if (filterValues != null && filterValues.contains(name)) {
-				facetMap.put(facet.entries().get(0).term(), Long.valueOf(facet.entries().get(0).count()));
+				facetMap.put(facet.getEntries().get(0).getTerm().toString(), Long.valueOf(facet.getEntries().get(0).getCount()));
 			} else {
-				for (final Entry entry: facet.entries()) {
-					facetMap.put(entry.term(), Long.valueOf(entry.count()));
+				for (final Entry entry: facet.getEntries()) {
+					facetMap.put(entry.getTerm().toString(), Long.valueOf(entry.getCount()));
 				}
 			}
 			return facetMap;
@@ -322,7 +322,7 @@ public class SearchController {
 		
 		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString(searchParam), facetFilter);
 						
-		LOGGER.debug(query.toString());
+		LOGGER.debug("Elastic search query: " + query.toString());
 		return query;
 	}
 	
