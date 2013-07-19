@@ -25,6 +25,7 @@
 		<c3p0-version>0.9.2-pre5</c3p0-version>
 		<solrj-version>3.6.1</solrj-version>
 		<elasticsearch-version>0.20.6</elasticsearch-version>
+		<snappy-version>1.0.5</snappy-version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -227,6 +228,13 @@
     		<artifactId>elasticsearch</artifactId>
     		<version>${elasticsearch-version}</version>
 		</dependency>
+
+		<!-- snappy -->
+		<dependency>
+        	<groupId>org.xerial.snappy</groupId>
+        	<artifactId>snappy-java</artifactId>
+        	<version>${snappy-version}</version>
+    	</dependency>
 
 		<!-- SolrJ -->
 		<dependency>
