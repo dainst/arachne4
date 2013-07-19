@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="dataSource"
-        class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="#{config.jdbcDriverClassName}" />
         <property name="jdbcUrl" value="#{config.jdbcUrl}" />
         <property name="user" value="#{config.jdbcUsername}" />
@@ -16,7 +16,7 @@
     </bean>
     
     <bean id="drupalDataSource"
-        class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="#{config.drupaljdbcDriverClassName}" />
         <property name="jdbcUrl" value="#{config.drupaljdbcUrl}" />
         <property name="user" value="#{config.drupaljdbcUsername}" />
