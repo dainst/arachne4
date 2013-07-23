@@ -72,6 +72,7 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 		result.append(rightsConditionBuilder.getUserRightsSQLSnipplett());  
 		result.append(';');
 		sql = result.toString();
+		LOGGER.debug(sql);
 		return sql;
 	}
 }
