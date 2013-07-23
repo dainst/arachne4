@@ -43,15 +43,17 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	@Override
 	protected String buildSQL() {
-		sql.append("SELECT * FROM `SemanticConnection` LEFT JOIN `");
-		sql.append(table);
-		sql.append("` ON ");
-		sql.append(SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generatePrimaryKeyName(table)));
-		sql.append(" = `SemanticConnection`.`ForeignKeyTarget` WHERE 1");
-		sql.append(this.buildAndConditions());
-		sql.append(rightsConditionBuilder.getUserRightsSQLSnipplett());  
-		sql.append(";");
-		LOGGER.debug(sql.toString());
-		return sql.toString();
+		final StringBuilder result = new StringBuilder(sql);
+		result.append("SELECT * FROM `SemanticConnection` LEFT JOIN `");
+		result.append(table);
+		result.append("` ON ");
+		result.append(SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generatePrimaryKeyName(table)));
+		result.append(" = `SemanticConnection`.`ForeignKeyTarget` WHERE 1");
+		result.append(this.buildAndConditions());
+		result.append(rightsConditionBuilder.getUserRightsSQLSnipplett());  
+		result.append(';');
+		sql = result.toString();
+		LOGGER.debug(sql);
+		return sql;
 	}
 }

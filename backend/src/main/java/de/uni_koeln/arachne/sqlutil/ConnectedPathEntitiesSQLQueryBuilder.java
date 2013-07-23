@@ -1,17 +1,14 @@
 package de.uni_koeln.arachne.sqlutil;
 
 import java.util.List;
-
-
-
 import de.uni_koeln.arachne.context.ContextPath;
+
 /**
  * This Class is Builds Context Paths. This Means a Link over one or More Contexts. 
  * There for it uses the SemanticConnection Table which Contains All Connections.
  */
 public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
-	
-	
+		
 	transient protected SQLRightsConditionBuilder rightsConditionBuilder;
 	
 	transient protected ContextPath contextPath;
@@ -44,46 +41,46 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		//First Things
 		
 		final List<String> typeStepRestrictions = this.contextPath.getTypeStepRestrictions();
-		
+		final StringBuilder result = new StringBuilder(sql);
 		
 		if(this.getFullDataset){
-			sql.append( "SELECT e"+ (typeStepRestrictions.size()-1) +".Target as EntityID, e"+ (typeStepRestrictions.size()-1) +".ForeignKeyTarget as ForeignKeyTarget, `"+contextPath.getTargetType()  +"`.* FROM SemanticConnection e0, ");
+			result.append( "SELECT e"+ (typeStepRestrictions.size()-1) +".Target as EntityID, e"+ (typeStepRestrictions.size()-1) +".ForeignKeyTarget as ForeignKeyTarget, `"+contextPath.getTargetType()  +"`.* FROM SemanticConnection e0, ");
 		}else{
-			sql.append( "SELECT e"+ (typeStepRestrictions.size()-1) +".Target FROM SemanticConnection e0, ");
+			result.append( "SELECT e"+ (typeStepRestrictions.size()-1) +".Target FROM SemanticConnection e0, ");
 		}
 		
 		//Declare the Variables
 		for(int i =0;  i< typeStepRestrictions.size()-2;i++ ){ 
-			sql.append( " SemanticConnection e"+(i+1)+" ,");
+			result.append( " SemanticConnection e"+(i+1)+" ,");
 		}
 		if(typeStepRestrictions.size() >1){
-			sql.append( " SemanticConnection e"+(typeStepRestrictions.size()-1)+" ");
+			result.append( " SemanticConnection e"+(typeStepRestrictions.size()-1)+" ");
 		}
 		if(this.getFullDataset){
-			sql.append(" LEFT JOIN `");
-			sql.append(contextPath.getTargetType());
-			sql.append("` ON ");
-			sql.append(SQLToolbox.getQualifiedFieldname(contextPath.getTargetType(), SQLToolbox.generatePrimaryKeyName(contextPath.getTargetType())));
-			sql.append(" = `e"+(typeStepRestrictions.size()-1)+"`.`ForeignKeyTarget`");
+			result.append(" LEFT JOIN `");
+			result.append(contextPath.getTargetType());
+			result.append("` ON ");
+			result.append(SQLToolbox.getQualifiedFieldname(contextPath.getTargetType(), SQLToolbox.generatePrimaryKeyName(contextPath.getTargetType())));
+			result.append(" = `e"+(typeStepRestrictions.size()-1)+"`.`ForeignKeyTarget`");
 		}
-		sql.append( " WHERE 1 AND ");
+		result.append( " WHERE 1 AND ");
 		
 		//Chain Logic e1.Target = e2.Source ... e2.Target = e3.source ETC
 		
 		
-		sql.append(buildLenghtChain());
+		result.append(buildLenghtChain());
 		
 		
 		
 		//This Sets the Source ID
-		sql.append( " e0.Source ="+entityStart+ " AND");
+		result.append(" e0.Source =" + entityStart + " AND");
 		
-		for(int i =0;  i< typeStepRestrictions.size();i++ ){
+		for(int i = 0; i < typeStepRestrictions.size(); i++) {
 			final String temp = typeStepRestrictions.get(i);
 			if(!"ALL".equals(temp)){
-				sql.append(" e"+i+".TypeTarget = \""+typeStepRestrictions.get(i)+"\" ");
+				result.append(" e"+i+".TypeTarget = \""+typeStepRestrictions.get(i)+"\" ");
 				if(i< typeStepRestrictions.size()-1){
-					sql.append(" AND ");
+					result.append(" AND ");
 				}
 			}
 		
@@ -91,12 +88,12 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		
 		//BSPQuery.append(" e"+(typeStepRestriction.size()-1)+".TypeTarget = \""+typeStepRestriction.get(typeStepRestriction.size()-1)+"\"");
 		if(this.getFullDataset){
-			sql.append(rightsConditionBuilder.getUserRightsSQLSnipplett());
+			result.append(rightsConditionBuilder.getUserRightsSQLSnipplett());
 		}
-		sql.append(" GROUP BY e"+(typeStepRestrictions.size()-1)+".Target");
+		result.append(" GROUP BY e"+(typeStepRestrictions.size()-1)+".Target");
 
 		
-		return sql.toString();
+		return result.toString();
 	}
 	
 	

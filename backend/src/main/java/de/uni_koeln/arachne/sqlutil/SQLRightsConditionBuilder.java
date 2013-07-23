@@ -69,7 +69,7 @@ public class SQLRightsConditionBuilder {
 	 * @return A String that represents the user permission SQl statements its empty if the User is allowed to see everything
 	 */
 	public String getUserRightsSQLSnipplett() {
-		final StringBuffer result = new StringBuffer("");
+		final StringBuffer result = new StringBuffer(16);
 		//in This case The User is Authorized to see Everything
 		if (user.isAll_groups() || exludedTables.contains(tableName)) {
 			return result.toString();

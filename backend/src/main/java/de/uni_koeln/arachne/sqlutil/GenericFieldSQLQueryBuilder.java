@@ -55,15 +55,17 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	@Override
 	protected String buildSQL() {
-		sql.append("SELECT ");
-		sql.append(field2);
-		sql.append(" FROM `");
-		sql.append(table);
-		sql.append("` WHERE 1");
-		sql.append(this.buildAndConditions());
-		sql.append(rightsCondition);
-		sql.append(";");
-		LOGGER.debug(sql.toString());
-		return sql.toString();
+		final StringBuilder result = new StringBuilder(sql);
+		result.append("SELECT ");
+		result.append(field2);
+		result.append(" FROM `");
+		result.append(table);
+		result.append("` WHERE 1");
+		result.append(this.buildAndConditions());
+		result.append(rightsCondition);
+		result.append(';');
+		LOGGER.debug(result.toString());
+		sql = result.toString();
+		return sql;
 	}
 }

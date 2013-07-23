@@ -60,17 +60,18 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 	
 	@Override
 	protected String buildSQL() {
-		sql.append("SELECT ");
-		sql.append(field2);
-		sql.append(" FROM `");
-		sql.append(table);
-		sql.append("` ");
-		sql.append(entityIdLeftJoin);
-		sql.append(" WHERE 1");
-		sql.append(this.buildAndConditions());
-		sql.append(rightsConditionBuilder.getUserRightsSQLSnipplett());  
-		sql.append(";");
-		LOGGER.debug(sql.toString());
-		return sql.toString();
+		final StringBuilder result = new StringBuilder(sql); 
+		result.append("SELECT ");
+		result.append(field2);
+		result.append(" FROM `");
+		result.append(table);
+		result.append("` ");
+		result.append(entityIdLeftJoin);
+		result.append(" WHERE 1");
+		result.append(this.buildAndConditions());
+		result.append(rightsConditionBuilder.getUserRightsSQLSnipplett());  
+		result.append(';');
+		sql = result.toString();
+		return sql;
 	}
 }

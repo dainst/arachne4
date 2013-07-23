@@ -38,11 +38,13 @@ public class SingleEntityQueryBuilder extends AbstractSQLBuilder {
 	
 	@Override
 	protected String buildSQL() {
-		sql.append("SELECT * FROM `" + table + "` WHERE 1");
-		sql.append(this.buildAndConditions());
-		sql.append(rightsConditionBuilder.getUserRightsSQLSnipplett());  
-		sql.append(this.appendLimitOne());
-		sql.append(";");
-		return sql.toString();	
+		final StringBuilder result = new StringBuilder(sql);
+		result.append("SELECT * FROM `" + table + "` WHERE 1");
+		result.append(this.buildAndConditions());
+		result.append(rightsConditionBuilder.getUserRightsSQLSnipplett());  
+		result.append(this.appendLimitOne());
+		result.append(';');
+		sql = result.toString();
+		return sql;	
 	}
 }

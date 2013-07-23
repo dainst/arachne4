@@ -11,7 +11,7 @@ public abstract class AbstractSQLBuilder {
 	/**
 	 * Holds the sql statement.
 	 */
-	protected transient StringBuilder sql = new StringBuilder(32);
+	protected transient String sql = "";
 	
 	protected transient String table = "";
 	
@@ -28,7 +28,7 @@ public abstract class AbstractSQLBuilder {
 	 */
 	public String getSQL(){		
 		buildSQL();
-		return sql.toString();
+		return sql;
 	}
 	
 	protected abstract String buildSQL();
@@ -38,8 +38,8 @@ public abstract class AbstractSQLBuilder {
 	 * @return An SQL Snipplett with all the Condition as SQl Snipplett
 	 */
 	protected String buildAndConditions(){
-		final StringBuffer result = new StringBuffer("");
-
+		final StringBuilder result = new StringBuilder(sql);
+		
 		for (final Condition cnd : conditions) {
 			result.append(" AND");
 			result.append(cnd.toString());
