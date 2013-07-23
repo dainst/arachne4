@@ -175,7 +175,8 @@ public class ImageController {
 					String line = null;
 
 					while ((line = bufferedReader.readLine()) != null) {
-						stringBuilder.append(line  + '\n');
+						stringBuilder.append(line);
+						stringBuilder.append('\n');
 					}
 
 					responseHeaders.setContentType(MediaType.TEXT_PLAIN);

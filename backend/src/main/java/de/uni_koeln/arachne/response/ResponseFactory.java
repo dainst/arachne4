@@ -115,40 +115,14 @@ public class ResponseFactory {
 				LOGGER.error("Invalid facet definition 'facet_" + facet.getName() + "' in '" + tableName + ".xml'. The facet field is not defined in " +
 						"FacettedArachneEntity.java. This facet will be ignored.");
 			} catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
+				LOGGER.error("Failed to set facets with '" + e.getMessage() + "'");
+				LOGGER.debug("Stack: " + e.getStackTrace());
 			}
 		}
 				
-		//response.setFacets(getFacets(dataset, namespace, facets).getList());
-		
 		//Set additional Content
 		response.setAdditionalContent(dataset.getAdditionalContent());
 		
-		// Set contexts
-		/*
-		Section contextContent = new Section();
-		contextContent.setLabel("Contexts");
-		
-	    for (Context aC: dataset.getContext()) { 
-	    	
-	    	Section specificContext = new Section();
-	    	specificContext.setLabel(aC.getContextType());
-	    	
-	    	for(AbstractLink link: aC.getallContexts()) {	    		
-	    		if(link.getClass().getSimpleName().equals("ArachneLink")) {
-	    			ArachneLink aL = (ArachneLink) link;
-	    			Section specificContextContent = new Section();
-	    			specificContextContent.setLabel(aL.getEntity2().getArachneId().getInternalKey().toString());
-	    			specificContext.add(specificContextContent);
-	    		}
-	    	}
-	    	contextContent.add(specificContext);
-	    }
-		
-	    response.setContext(contextContent);
-    	*/
-	    	
 		return response;
 	}
 	
@@ -218,8 +192,8 @@ public class ResponseFactory {
 			} else {
 				final Section sectionContent = new Section();
 				sectionContent.setLabel("ContainerSection");
-				for (AbstractContent c:contentList) {
-					sectionContent.add(c);
+				for (final AbstractContent content: contentList) {
+					sectionContent.add(content);
 				}
 				response.setSections(sectionContent);
 			}
@@ -238,14 +212,14 @@ public class ResponseFactory {
 		final List<AbstractContent> contentList = new ArrayList<AbstractContent>();
 		
 		final List<Element> children = element.getChildren();
-		for (Element e:children) {
-			if (e.getName().equals("section")) {
-				final Section section = (Section)xmlConfigUtil.getContentFromSections(e, namespace, dataset);
+		for (final Element currentElement:children) {
+			if (currentElement.getName().equals("section")) {
+				final Section section = (Section)xmlConfigUtil.getContentFromSections(currentElement, namespace, dataset);
 				if (section != null && !section.getContent().isEmpty()) {
 					contentList.add(section);
 				}
 			} else {
-				final Section section = (Section)xmlConfigUtil.getContentFromContext(e, dataset, namespace);
+				final Section section = (Section)xmlConfigUtil.getContentFromContext(currentElement, dataset, namespace);
 				if (section != null && !section.getContent().isEmpty()) {
 					contentList.add(section);
 				}
@@ -286,12 +260,12 @@ public class ResponseFactory {
 		final FacetList result = new FacetList();
 		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		final List<Element> children = facets.getChildren();
-		for (Element e:children) {
-			if ("facet".equals(e.getName())) {
-				final String name = e.getAttributeValue("name");
-				final String labelKey = e.getAttributeValue("labelKey");
+		for (final Element element:children) {
+			if ("facet".equals(element.getName())) {
+				final String name = element.getAttributeValue("name");
+				final String labelKey = element.getAttributeValue("labelKey");
 				final Facet facet = new Facet(name, labelKey);
-				final Element child = (Element)e.getChildren().get(0); 
+				final Element child = (Element)element.getChildren().get(0); 
 				if (child != null) {
 					final List<String> values = new ArrayList<String>();
 					final String childName = child.getName();
@@ -309,7 +283,7 @@ public class ResponseFactory {
 						}
 					} else {
 						if ("context".equals(childName)) {
-							getFacetContext(dataset, child, values, name);
+							getFacetContext(dataset, child, values);
 						}
 					}
 					if (!values.isEmpty()) {
@@ -331,19 +305,19 @@ public class ResponseFactory {
 	 * @param values A list of facets to add the new facets to.
 	 * @param name The name of the current facet.
 	 */
-	private void getFacetContext(final Dataset dataset, final Element child, final List<String> values, final String name) {
+	private void getFacetContext(final Dataset dataset, final Element child, final List<String> values) {
 		
 		final Section section = xmlConfigUtil.getContentFromContext(child, dataset, null);
 		if (section != null) {
-			for (AbstractContent c:section.getContent()) {
-				if (c instanceof FieldList) {
-					for (String value: ((FieldList)c).getValue()) {
+			for (final AbstractContent content:section.getContent()) {
+				if (content instanceof FieldList) {
+					for (final String value: ((FieldList)content).getValue()) {
 						if (value != null) {
 							values.add(value);
 						}
 					}
 				} else {
-					final String value = c.toString();
+					final String value = content.toString();
 					if (value != null) {
 						values.add(value);
 					}
