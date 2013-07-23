@@ -64,11 +64,11 @@ public class AdminController implements ServletContextAware {
 	@Autowired
 	public AdminController(final @Value("#{config.esProtocol}") String esProtocol,
 						   final @Value("#{config.esAddress}") String esAddress,
-						   final @Value("#{config.esRESTPort}") String esPort,
+						   final @Value("#{config.esRESTPort}") String esRESTPort,
 						   final @Value("#{config.esName}") String esName) {
 		this.esProtocol = esProtocol;
 		this.esAddress = esAddress;
-		this.esRESTPort = esPort;
+		this.esRESTPort = esRESTPort;
 		this.esName = esName;
 	}
 	

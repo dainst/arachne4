@@ -31,7 +31,7 @@ public class ESClientUtil {
 	private transient final Client client;
 	
 	@Autowired
-	public ESClientUtil(final @Value("#{config.esAddress}") String esAddress, final @Value("#{config.esPort}") int esPort
+	public ESClientUtil(final @Value("#{config.esAddress}") String esAddress, final @Value("#{config.esRESTPort}") int esRESTPort
 			, final @Value("#{config.esName}") String esName, final @Value("#{config.esBulkSize}") int esBulkSize
 			, final @Value("#{config.esClientTypeRemote}") boolean esRemoteClient) {
 		
@@ -43,7 +43,7 @@ public class ESClientUtil {
 			LOGGER.info("Setting up elastic search transport client...");
 			node = null;
 			final Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", esName).build();
-			client = new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress(esAddress, esPort));
+			client = new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress(esAddress, esRESTPort));
 		} else {
 			LOGGER.info("Setting up elastic search node client...");
 			node = NodeBuilder.nodeBuilder(). client(true).clusterName(esName).node();
