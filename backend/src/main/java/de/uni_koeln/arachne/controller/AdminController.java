@@ -193,7 +193,7 @@ public class AdminController implements ServletContextAware {
 	@RequestMapping(value="/admin/mapping", method=RequestMethod.PUT)
 	public @ResponseBody StatusResponse setElasticSearchMapping() {
 		HttpURLConnection connection = null;
-		String message = null;
+		String message = "An error occured while trying to set the elastic search mapping.";
 		
 		String mapping = getMappingFromFile();
 		
@@ -218,8 +218,7 @@ public class AdminController implements ServletContextAware {
 				message = "Elasticsearch mapping set.";
 				LOGGER.info("Elasticsearch mapping set.");
 			} else {
-				message = "An error occurred. Could not set mapping.";
-				LOGGER.error("Failed to set elasticsearch mapping.");
+				LOGGER.error("Failed to set mapping. Elasticsearch HTTP request returned status code: " + connection.getResponseCode());
 			}
 		} catch (MalformedURLException e) {
 			LOGGER.error(e.getMessage());
