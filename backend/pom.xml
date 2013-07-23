@@ -76,7 +76,7 @@
 			<artifactId>spring-aspects</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		
+
 		<!-- AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -89,13 +89,13 @@
 			<artifactId>aspectjtools</artifactId>
 			<version>${org.aspectj-version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<version>${org.aspectj-version}</version>
 		</dependency>
-		
+
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -193,14 +193,14 @@
 			<artifactId>jdom2</artifactId>
 			<version>${org.jdom-version}</version>
 		</dependency>
-		
+
 		<!-- Xerces XML Parser -->
 		<dependency>
 			<groupId>xerces</groupId>
 			<artifactId>xercesImpl</artifactId>
 			<version>${xerces-version}</version>
 		</dependency>
-		
+
 		<!-- Jackson JSON Mapper -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
@@ -221,20 +221,20 @@
 			<artifactId>c3p0</artifactId>
 			<version>${c3p0-version}</version>
 		</dependency>
-		
+
 		<!-- elasticsearch -->
 		<dependency>
-    		<groupId>org.elasticsearch</groupId>
-    		<artifactId>elasticsearch</artifactId>
-    		<version>${elasticsearch-version}</version>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch</artifactId>
+			<version>${elasticsearch-version}</version>
 		</dependency>
 
 		<!-- snappy -->
 		<dependency>
-        	<groupId>org.xerial.snappy</groupId>
-        	<artifactId>snappy-java</artifactId>
-        	<version>${snappy-version}</version>
-    	</dependency>
+			<groupId>org.xerial.snappy</groupId>
+			<artifactId>snappy-java</artifactId>
+			<version>${snappy-version}</version>
+		</dependency>
 
 		<!-- SolrJ -->
 		<dependency>
@@ -243,59 +243,47 @@
 			<version>${solrj-version}</version>
 			<type>jar</type>
 		</dependency>
-		
+
 		<!-- Apache HttpComponents - needed for SolrJ -->
 		<dependency>
-      		<groupId>org.apache.httpcomponents</groupId>
-      		<artifactId>httpcore</artifactId>
-      		<version>4.2.2</version>
-    	</dependency>
-    	<dependency>
-        	<groupId>org.apache.httpcomponents</groupId>
-        	<artifactId>httpmime</artifactId>
-        	<version>4.1-beta1</version>
-      	</dependency>
-      	<dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        	<artifactId>httpclient</artifactId>
-        	<version>4.1-beta1</version>
-      	</dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.1-beta1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.1-beta1</version>
+		</dependency>
 
 	</dependencies>
 	<repositories>
-		<!--  spring main repo -->
+		<!-- spring main repo -->
 		<repository>
-    		<id>springsource-repo</id>
-    		<name>SpringSource Repository</name>
-    		<url>http://repo.springsource.org/release</url>
+			<id>springsource-repo</id>
+			<name>SpringSource Repository</name>
+			<url>http://repo.springsource.org/release</url>
 		</repository>
-		<!--  spring roo repo -->
+		<!-- spring roo repo -->
 		<repository>
-    		<id>springsource.roo-repo</id>
-    		<name>SpringSource Roo Repository</name>
-    		<url>http://spring-roo-repository.springsource.org/release</url>
+			<id>springsource.roo-repo</id>
+			<name>SpringSource Roo Repository</name>
+			<url>http://spring-roo-repository.springsource.org/release</url>
 		</repository>
 		<!-- For testing against latest Spring snapshots -->
-		<!-- <repository>
-			<id>org.springframework.maven.snapshot</id>
-			<name>Spring Maven Snapshot Repository</name>
-			<url>http://maven.springframework.org/snapshot</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository> -->
+		<!-- <repository> <id>org.springframework.maven.snapshot</id> <name>Spring 
+			Maven Snapshot Repository</name> <url>http://maven.springframework.org/snapshot</url> 
+			<releases> <enabled>false</enabled> </releases> <snapshots> <enabled>true</enabled> 
+			</snapshots> </repository> -->
 		<!-- For developing against latest Spring milestones -->
-		<!-- <repository>
-			<id>org.springframework.maven.milestone</id>
-			<name>Spring Maven Milestone Repository</name>
-			<url>http://maven.springframework.org/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository> -->
+		<!-- <repository> <id>org.springframework.maven.milestone</id> <name>Spring 
+			Maven Milestone Repository</name> <url>http://maven.springframework.org/milestone</url> 
+			<snapshots> <enabled>false</enabled> </snapshots> </repository> -->
 		<!-- Hibernate -->
 		<repository>
 			<id>org.hibernate</id>
@@ -356,19 +344,19 @@
 				<artifactId>aspectj-maven-plugin</artifactId>
 				<version>1.4</version>
 				<configuration>
-    				<source>${java-version}</source>
-    				<target>${java-version}</target>
-    				<complianceLevel>${java-version}</complianceLevel>
-  					<verbose>false</verbose>
-    				<Xlint>ignore</Xlint>
-    				<showWeaveInfo>false</showWeaveInfo>
-    				<aspectLibraries>
-      					<aspectLibrary>
-        					<groupId>org.springframework</groupId>
-        					<artifactId>spring-aspects</artifactId>
-      					</aspectLibrary>
-    				</aspectLibraries>
-  				</configuration>
+					<source>${java-version}</source>
+					<target>${java-version}</target>
+					<complianceLevel>${java-version}</complianceLevel>
+					<verbose>false</verbose>
+					<Xlint>ignore</Xlint>
+					<showWeaveInfo>false</showWeaveInfo>
+					<aspectLibraries>
+						<aspectLibrary>
+							<groupId>org.springframework</groupId>
+							<artifactId>spring-aspects</artifactId>
+						</aspectLibrary>
+					</aspectLibraries>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
@@ -377,6 +365,20 @@
 						</goals>
 					</execution>
 				</executions>
+				<dependencies>
+					<!-- AspectJ -->
+					<dependency>
+						<groupId>org.aspectj</groupId>
+						<artifactId>aspectjrt</artifactId>
+						<version>${org.aspectj-version}</version>
+					</dependency>
+
+					<dependency>
+						<groupId>org.aspectj</groupId>
+						<artifactId>aspectjtools</artifactId>
+						<version>${org.aspectj-version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -390,15 +392,15 @@
 				</configuration>
 			</plugin>
 			<plugin>
-          	<groupId>org.apache.tomcat.maven</groupId>
-          		<artifactId>tomcat6-maven-plugin</artifactId>
-          		<version>2.0</version>
-        	</plugin>
-        	<plugin>
-          		<groupId>org.apache.tomcat.maven</groupId>
-          		<artifactId>tomcat7-maven-plugin</artifactId>
-          		<version>2.0</version>
-        	</plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat6-maven-plugin</artifactId>
+				<version>2.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.0</version>
+			</plugin>
 		</plugins>
 	</build>
 </project>
