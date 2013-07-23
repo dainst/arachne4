@@ -58,17 +58,17 @@ public class AdminController implements ServletContextAware {
 	
 	private final transient String esProtocol;
 	private final transient String esAddress;
-	private final transient String esPort;
+	private final transient String esRESTPort;
 	private final transient String esName;
 	
 	@Autowired
 	public AdminController(final @Value("#{config.esProtocol}") String esProtocol,
 						   final @Value("#{config.esAddress}") String esAddress,
-						   final @Value("#{config.esPort}") String esPort,
+						   final @Value("#{config.esRESTPort}") String esPort,
 						   final @Value("#{config.esName}") String esName) {
 		this.esProtocol = esProtocol;
 		this.esAddress = esAddress;
-		this.esPort = esPort;
+		this.esRESTPort = esPort;
 		this.esName = esName;
 	}
 	
@@ -202,8 +202,8 @@ public class AdminController implements ServletContextAware {
 		}
         
 		try {
-			LOGGER.debug("Elasticsearch: " + esProtocol + "://" + esAddress + ':' + esPort + '/' + esName + "/entity/_mapping");
-			final URL serverAdress = new URL(esProtocol + "://" + esAddress + ':' + esPort + '/' + esName + "/entity/_mapping");
+			LOGGER.debug("Elasticsearch: " + esProtocol + "://" + esAddress + ':' + esRESTPort + '/' + esName + "/entity/_mapping");
+			final URL serverAdress = new URL(esProtocol + "://" + esAddress + ':' + esRESTPort + '/' + esName + "/entity/_mapping");
 			connection = (HttpURLConnection)serverAdress.openConnection();			
 			connection.setRequestMethod("PUT");
 			connection.setDoOutput(true);
