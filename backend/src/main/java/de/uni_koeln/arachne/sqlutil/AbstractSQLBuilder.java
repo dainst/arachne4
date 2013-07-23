@@ -40,7 +40,7 @@ public abstract class AbstractSQLBuilder {
 	protected String buildAndConditions(){
 		final StringBuffer result = new StringBuffer("");
 
-		for (Condition cnd : conditions) {
+		for (final Condition cnd : conditions) {
 			result.append(" AND");
 			result.append(cnd.toString());
 		}

@@ -75,7 +75,7 @@ public class ContextService {
 		// get Context-Images from Context-XML
 		final List<ContextImageDescriptor> contextImages = xmlConfigUtil.getContextImagesNames(parent.getArachneId().getTableName());
 			
-		if(contextImages == null) {
+		if (contextImages == null) {
 			LOGGER.debug("No Context-Image-Declarations found.");
 			return;
 		}
@@ -88,10 +88,10 @@ public class ContextService {
 			containsImages = true;
 		}
 		
-		for(ContextImageDescriptor cur : contextImages) {
+		for (final ContextImageDescriptor cur : contextImages) {
 			
 			// check contextImage-Preconditions from config
-			if(cur.getContextImageUsage().equals("ifempty") && containsImages) {
+			if (cur.getContextImageUsage().equals("ifempty") && containsImages) {
 				continue;
 			}
 			
@@ -100,13 +100,13 @@ public class ContextService {
 			
 			// retrieve full context-data
 			final List<AbstractLink> connectedEntities = context.getallContexts();
-			if(connectedEntities == null) {
+			if (connectedEntities == null) {
 				continue;
 			}
 			
 			// Retrieve images from context-entities using ImageService
-			for(AbstractLink link : connectedEntities) {
-				if(link instanceof ArachneLink) {
+			for (final AbstractLink link : connectedEntities) {
+				if (link instanceof ArachneLink) {
 					final ArachneLink arachneLink = (ArachneLink) link;
 					
 					// Fetch conntected entity

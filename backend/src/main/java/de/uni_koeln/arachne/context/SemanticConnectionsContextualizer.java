@@ -74,7 +74,7 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 		Long eId = 0L;
 
 		final Map<String, String> resultMap = new HashMap<String, String>();
-		for (Map.Entry<String, String> entry: map.entrySet()) {
+		for (final Map.Entry<String, String> entry: map.entrySet()) {
 			final String key = entry.getKey();
 			if (!(key.contains("PS_") && key.contains("ID")) && !(key.contains("Source")) && !(key.contains("Type"))) {
 				// get ArachneEntityID from context query result  

@@ -126,7 +126,7 @@ public class UserRightsService implements IUserRightsService {
 	public boolean userHasDatasetGroup(final DatasetGroup datasetGroup) {
 		final Set<DatasetGroup> datasetGroups = this.getCurrentUser().getDatasetGroups();
 		final String datasetGroupName = datasetGroup.getName();
-		for (DatasetGroup currentDatasetGroup: datasetGroups) {
+		for (final DatasetGroup currentDatasetGroup: datasetGroups) {
 			if (currentDatasetGroup.getName().equals(datasetGroupName)) {
 				return true;
 			}

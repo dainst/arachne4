@@ -91,7 +91,7 @@ public class AdminController implements ServletContextAware {
 			if (cachedDocuments.isEmpty()) {
 				result.append(" none");
 			} else {
-				for (String document: cachedDocuments) {
+				for (final String document: cachedDocuments) {
 					result.append(" " + document + ".xml");
 				}
 			}
@@ -101,7 +101,7 @@ public class AdminController implements ServletContextAware {
 			if (cachedElements.isEmpty()) {
 				result.append(" none");
 			} else {
-				for (String element: cachedElements) {
+				for (final String element: cachedElements) {
 					result.append(" " + element + "_inc.xml");
 				}
 			}
@@ -195,7 +195,7 @@ public class AdminController implements ServletContextAware {
 		HttpURLConnection connection = null;
 		String message = "An error occured while trying to set the elastic search mapping.";
 		
-		String mapping = getMappingFromFile();
+		final String mapping = getMappingFromFile();
 		
 		if ("undefined".equals(mapping)) {
 			return new StatusResponse("Failed to set mapping.");
@@ -209,7 +209,7 @@ public class AdminController implements ServletContextAware {
 			connection.setDoOutput(true);
 			connection.setRequestProperty("Content-Type", "application/json");
 	        connection.setRequestProperty("Accept", "application/json");
-			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+			final OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
 			writer.write(mapping);
 			writer.flush();
 			writer.close();
@@ -242,12 +242,12 @@ public class AdminController implements ServletContextAware {
 	 * @return The JSON mapping as <code>String</code>.
 	 */
 	private String getMappingFromFile() {
-		String filename = "/WEB-INF/search/mapping.json";
+		final String filename = "/WEB-INF/search/mapping.json";
 		StringBuilder mapping = new StringBuilder(64);
 		InputStream inputStream = null;
 		try {
 			inputStream = servletContext.getResourceAsStream(filename);
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+			final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 			String inputLine;
 			while ((inputLine = bufferedReader.readLine()) != null) {
 				mapping.append(inputLine);

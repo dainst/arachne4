@@ -229,7 +229,7 @@ public class SearchController {
 	 * @return
 	 */
 	private List<String> getCategorySpecificFacetList(final	List<String> filterValueList) {
-		List<String> result = new ArrayList<String>();
+		final List<String> result = new ArrayList<String>();
 		for (String filterValue: filterValueList) {
 			if (filterValue.startsWith("facet_kategorie")) {
 				filterValue = filterValue.substring(16);
@@ -246,8 +246,8 @@ public class SearchController {
 					for (int i = 0; i < categories.length; i++) {
 						final List<String> facets = xmlConfigUtil.getFacetsFromXMLFile(categories[i]);
 						if (!StrUtils.isEmptyOrNull(facets)) {
-							for (String facet: facets) {
-								String facetName = "facet_" + facet;
+							for (final String facet: facets) {
+								final String facetName = "facet_" + facet;
 								if (!result.contains(facetName)) {
 									result.add("facet_" + facet);
 								}

@@ -37,7 +37,7 @@ public class CMSController {
 	@RequestMapping(value="/teasers/{language}", method=RequestMethod.GET)
 	public @ResponseBody List<Node> teasers(@PathVariable("language") final String language) {	
 		final List<Node> teasers = cmsService.getTeasers(language);
-		for (Node node : teasers) {
+		for (final Node node : teasers) {
 			node.setBody(null);
 		}
 		return teasers;

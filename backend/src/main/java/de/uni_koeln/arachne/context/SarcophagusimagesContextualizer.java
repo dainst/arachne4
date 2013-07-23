@@ -59,11 +59,11 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 	 */
 	public List<AbstractLink> retrieve(final Dataset parent, final Integer offset, final Integer limit) {
 		
-		for (String contextType : PRIMARY_CONTEXT_TYPES) {
+		for (final String contextType : PRIMARY_CONTEXT_TYPES) {
 			
 			final List<Map<String, String>> entitiesContextContents = genericSQLService.getConnectedEntities(contextType, parent.getArachneId().getArachneEntityID());
 			if (entitiesContextContents != null) {
-				for (Map<String, String> entityData : entitiesContextContents) {
+				for (final Map<String, String> entityData : entitiesContextContents) {
 					final String internalId = entityData.get(contextType + ".PS_" + contextType.substring(0,1).toUpperCase() + contextType.substring(1).toLowerCase() + "ID"); // e.g. 'relief.PS_ReliefID'
 					final EntityId entityId = entityIdentificationService.getId(contextType, Long.parseLong(internalId));
 					//get information that might be relevant for the image

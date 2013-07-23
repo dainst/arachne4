@@ -689,7 +689,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	public List<String> getXMLConfigDocumentList() {
 		final List<String> result = new ArrayList<String>(); 
 		if (!xmlConfigDocuments.keySet().isEmpty()) {
-			for (Map.Entry<String, Document> entry: xmlConfigDocuments.entrySet()) {
+			for (final Map.Entry<String, Document> entry: xmlConfigDocuments.entrySet()) {
 				result.add(entry.getKey());
 			}
 		}
@@ -703,7 +703,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	public List<String> getXMLIncludeElementList() {
 		final List<String> result = new ArrayList<String>(); 
 		if (!xmlIncludeElements.keySet().isEmpty()) {
-			for (Map.Entry<String, Element> entry: xmlIncludeElements.entrySet()) {
+			for (final Map.Entry<String, Element> entry: xmlIncludeElements.entrySet()) {
 				result.add(entry.getKey());
 			}
 		}

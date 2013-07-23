@@ -48,7 +48,7 @@ public class HomeController {
 		
 		final Set<DatasetGroup> groups = userRightsService.getCurrentUser().getDatasetGroups();
 		final List<String> logGroups = new ArrayList<String>();
-		for (DatasetGroup group : groups) {
+		for (final DatasetGroup group : groups) {
 			logGroups.add(group.getName());
 		}
 		LOGGER.debug("Groups: " + logGroups.toString());

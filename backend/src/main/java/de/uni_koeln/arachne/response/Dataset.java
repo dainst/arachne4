@@ -75,8 +75,8 @@ public class Dataset {
 		final Set<String> oldkeys = fields.keySet();
 		final Map<String,String> newfields = new Hashtable<String,String>(fields.size());
 		
-		for (String oldkey : oldkeys) {	
-			final String newkey = newPrefix+oldkey.substring( oldkey.lastIndexOf("."),oldkey.length());
+		for (final String oldkey : oldkeys) {	
+			final String newkey = newPrefix + oldkey.substring(oldkey.lastIndexOf('.'),oldkey.length());
 			newfields.put(newkey, fields.get(oldkey));
 		}
 		
@@ -93,11 +93,11 @@ public class Dataset {
 		final Set<String> oldkeys = fields.keySet();
 		final Map<String,String> newfields = new Hashtable<String,String>(fields.size());
 		
-		for (String oldkey: oldkeys) {
+		for (final String oldkey: oldkeys) {
 			if (!oldkey.startsWith(oldPrefix)) {
 				continue;
 			}
-			final String newkey = newPrefix+oldkey.substring(oldkey.lastIndexOf("."), oldkey.length());
+			final String newkey = newPrefix+oldkey.substring(oldkey.lastIndexOf('.'), oldkey.length());
 			newfields.put(newkey, fields.get(oldkey));
 		}
 		
@@ -151,7 +151,7 @@ public class Dataset {
 	 * @return The number of context entities in this context
 	 */
 	public int getContextSize(final String contextType) {
-		for (Context context: this.context) {
+		for (final Context context: this.context) {
 			if (context.getContextType().equals(contextType)) {
 				return context.getContextSize();				
 			}
@@ -210,7 +210,7 @@ public class Dataset {
 	 */
 	public String getFieldFromContext(final String fieldName) {
 		String result = null;
-		for (Context context: this.context) {
+		for (final Context context: this.context) {
 			final ArachneLink link = (ArachneLink)context.getFirstContext();
 			if (link != null) {
 				// we know that Entity1 is 'this'
@@ -230,7 +230,7 @@ public class Dataset {
 	 */
 	public String getFieldFromContext(final String fieldName, final int index) {
 		String result = null;
-		for (Context context: this.context) {
+		for (final Context context: this.context) {
 			final ArachneLink link = (ArachneLink)context.getContext(index);
 			if (link != null) {
 				// we know that Entity1 is 'this'
@@ -251,10 +251,10 @@ public class Dataset {
 	 */
 	public List<String> getFieldsFromContexts(final String fieldName) {
 		final List<String> result = new ArrayList<String>();
-		for (Context context: this.context) {
+		for (final Context context: this.context) {
 			final List<AbstractLink> links = context.getallContexts();
 			if (!links.isEmpty()) {
-				for (AbstractLink link: links) {
+				for (final AbstractLink link: links) {
 					String tmpResult = null;
 					// TODO add support for external links
 					// we know that Entity1 is 'this'

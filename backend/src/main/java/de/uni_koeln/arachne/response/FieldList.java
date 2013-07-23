@@ -41,7 +41,7 @@ public class FieldList extends AbstractContent {
 	@Override
 	public String toString() {
 		final StringBuilder result = new StringBuilder();
-		for (String currentValue: value) {
+		for (final String currentValue: value) {
 			result.append(currentValue);
 			result.append(' ');
 		}

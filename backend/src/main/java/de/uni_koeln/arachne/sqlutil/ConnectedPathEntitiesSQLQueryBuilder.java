@@ -102,7 +102,7 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	private StringBuilder buildLenghtChain(){
 		final List<String> typeStepRestrictions = this.contextPath.getTypeStepRestrictions();
-		final StringBuilder out = new StringBuilder(); 
+		final StringBuilder out = new StringBuilder(32); 
 		for(int i =0;  i< typeStepRestrictions.size()-1;i++ ){ 
 			out.append( " e"+i+".Target = e"+(i+1)+".Source AND ");
 		}

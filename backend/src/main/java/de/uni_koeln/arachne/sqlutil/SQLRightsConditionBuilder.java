@@ -51,7 +51,7 @@ public class SQLRightsConditionBuilder {
 		
 		final List<Condition> conditions = new ArrayList<Condition>();
 		
-		for (DatasetGroup group : permissiongroups) {
+		for (final DatasetGroup group : permissiongroups) {
 			final Condition condition = new Condition();
 			
 			condition.setPart1( SQLToolbox.getQualifiedFieldname(tableName, "DatensatzGruppe"+SQLToolbox.ucfirst(tableName)));
@@ -84,7 +84,7 @@ public class SQLRightsConditionBuilder {
 				//Sum up and Build the String
 				result.append(" AND (");
 				boolean first = true;
-				for (Condition cnd : conditions) {
+				for (final Condition cnd : conditions) {
 					if (first) {
 						first = false;
 					} else {

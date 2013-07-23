@@ -65,10 +65,10 @@ public class CMSService {
 			final List<Map<String, String>> links = dao.getLinks(vid);
 			if (links != null && !links.isEmpty()) {
 				final ArrayList<Link> linkList = new ArrayList<Link>();
-				for (Map<String, String> link : links) {
+				for (final Map<String, String> link : links) {
 					final Link newLink = new Link();
 					LOGGER.debug("link: {}", link);
-					for (String key : link.keySet()) {
+					for (final String key : link.keySet()) {
 						LOGGER.debug("key: {}, value: {}", key, link.get(key));
 					}
 					newLink.setHref(link.get("content_field_links.field_links_url"));
@@ -81,7 +81,7 @@ public class CMSService {
 			final List<Map<String, String>> images = dao.getImages(vid);
 			if (images != null && !images.isEmpty()) {
 				final ArrayList<String> imageList = new ArrayList<String>();
-				for (Map<String, String> image : images) {
+				for (final Map<String, String> image : images) {
 					imageList.add(getAbsoluteImageUrl(image.get("files.filepath")));
 				}
 				page.setImages(imageList);
@@ -96,7 +96,7 @@ public class CMSService {
 	public Map<String, MenuEntry> getMenuByName(final String name) {
 		final List<Map<String, String>> menuEntries = dao.getMenuEntries(name);
 		final Map<String,MenuEntry> map = new HashMap<String, MenuEntry>();
-		for (Map<String, String> menuEntry : menuEntries) {
+		for (final Map<String, String> menuEntry : menuEntries) {
 			final MenuEntry newMenuEntry = new MenuEntry();
 			newMenuEntry.setId(menuEntry.get("menu_links.mlid"));
 			newMenuEntry.setParent(menuEntry.get("menu_links.plid"));
@@ -105,7 +105,7 @@ public class CMSService {
 			map.put(newMenuEntry.getId(), newMenuEntry);
 		}
 		// create children array
-		for (String id : map.keySet()) {
+		for (String id : map.keySet()) { // NOPMD
 			if (map.get(id).getParent() == null) {
 				continue;
 			}
@@ -126,7 +126,7 @@ public class CMSService {
 	public List<Node> getTeasers(final String language) {
 		final List<Map<String,String>> teasers = dao.getTeasers(language);
 		final ArrayList<Node> result = new ArrayList<Node>();
-		for (Map<String,String> teaser : teasers) {
+		for (final Map<String,String> teaser : teasers) {
 			result.add(getNodeById(Integer.parseInt(teaser.get("node.nid"))));
 		}
 		return result;
