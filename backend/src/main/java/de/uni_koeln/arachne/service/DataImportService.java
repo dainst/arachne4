@@ -129,7 +129,8 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 				
 				startId = entityIds.get(0);
 				final long endId = entityIds.get((int)end);
-								
+				LOGGER.info("Indexing: " + startId + " - " + endId);
+				
 				final List<ArachneEntity> entityList = entityIdentificationService.getByEntityIdRange(startId, endId);
 				startId = endId;
 				for (ArachneEntity currentEntityId: entityList) {
