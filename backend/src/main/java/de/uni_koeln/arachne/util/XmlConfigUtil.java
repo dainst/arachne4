@@ -158,13 +158,13 @@ public class XmlConfigUtil implements ServletContextAware {
 		
 		if (!children.isEmpty()) {
 			final List<Element> staticChildren = new ArrayList<Element>(children);
-			for (Element e: staticChildren) {
-				if ("include".equals(e.getName())) {
-					element.addContent(getInclude(e));
-					element.removeContent(e);
+			for (final Element currentElement: staticChildren) {
+				if ("include".equals(currentElement.getName())) {
+					element.addContent(getInclude(currentElement));
+					element.removeContent(currentElement);
 				} else {
-					if (!"field".equals(e.getName())) {
-						replaceInclude(e);
+					if (!"field".equals(currentElement.getName())) {
+						replaceInclude(currentElement);
 					}
 				}
 			}
@@ -304,20 +304,20 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 		result.setSeparator(separator);
 								
-		for (Element e:children) {
-			if (e.getName().equals("field")) {
-				addFieldToResult(e, namespace, result, dataset, separator);
+		for (final Element element:children) {
+			if (element.getName().equals("field")) {
+				addFieldToResult(element, namespace, result, dataset, separator);
 			} else { 
-				if (e.getName().equals("linkField")) {
-					addLinkFieldToResult(e, result, dataset, separator);
+				if (element.getName().equals("linkField")) {
+					addLinkFieldToResult(element, result, dataset, separator);
 				} else {
-					if (e.getName().equals("context")) {
-						final Section nextSection = (Section)getContentFromContext(e, dataset, namespace);
+					if (element.getName().equals("context")) {
+						final Section nextSection = (Section)getContentFromContext(element, dataset, namespace);
 						if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
 							result.add(nextSection);
 						}
 					} else {
-						final Section nextSection = (Section)getContentFromSections(e, namespace, dataset);
+						final Section nextSection = (Section)getContentFromSections(element, namespace, dataset);
 						if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
 							result.add(nextSection);
 						}
@@ -520,7 +520,7 @@ public class XmlConfigUtil implements ServletContextAware {
 				final ContextEntity curSectionContent = new ContextEntity();
 
 				// Iterate over all contextSections within the current processed context
-				for(Element curSection : contextSections) {
+				for (final Element curSection: contextSections) {
 					final FieldList fieldList = new FieldList();
 					final Section localContext = new Section();
 
@@ -529,7 +529,7 @@ public class XmlConfigUtil implements ServletContextAware {
 					localContext.setLabel(curSection.getAttributeValue("labelKey"));
 
 					// add all child-fields of the current contextSection and retrieve their values
-					for(Element childField : childFields) {
+					for(final Element childField: childFields) {
 						addFieldToFieldList(childField, fieldList, i, dataset, contextType, parentSeparator);
 					}
 
@@ -555,9 +555,9 @@ public class XmlConfigUtil implements ServletContextAware {
 	private void addFieldsToFieldList(final List<Element> children, final FieldList fieldList, final int index
 			, final Dataset dataset, final String contextType,	final String separator) {
 		
-		for (Element e: children) {
-			if (e.getName().equals("field") || e.getName().equals("linkField")) {				
-				addFieldToFieldList(e, fieldList, index, dataset, contextType, separator);
+		for (final Element element: children) {
+			if (element.getName().equals("field") || element.getName().equals("linkField")) {				
+				addFieldToFieldList(element, fieldList, index, dataset, contextType, separator);
 			}
 		}
 	}
@@ -662,8 +662,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	    	
 			// Get facets
  			final Element facets = document.getRootElement().getChild("facets", namespace);
- 			for (Element e: facets.getChildren()) {
- 				facetList.add(e.getAttributeValue("name")); 				
+ 			for (final Element element: facets.getChildren()) {
+ 				facetList.add(element.getAttributeValue("name")); 				
  			}
  			return facetList;
 		} catch (JDOMException e) {
@@ -722,7 +722,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			final List<String> externalFields = getExternalFields(type);
 			final List<String> mandatoryContextTypes = new ArrayList<String>();
 			
-			for (String currentField: externalFields) {
+			for (final String currentField: externalFields) {
 				final String[] contextTypes = currentField.split("\\.");
 				if (mandatoryContextTypes.isEmpty() || !mandatoryContextTypes.contains(contextTypes[0])) {
 					mandatoryContextTypes.add(contextTypes[0]);
@@ -789,8 +789,8 @@ public class XmlConfigUtil implements ServletContextAware {
 			final List<Element> children) {
 		
 		if (!children.isEmpty()) {
-			for (Element e:children) {
-				result.addAll(getFieldNames(e, parentType));
+			for (final Element childElement: children) {
+				result.addAll(getFieldNames(childElement, parentType));
 			}
 		}
 
@@ -820,15 +820,15 @@ public class XmlConfigUtil implements ServletContextAware {
 
 		final String context = element.getAttributeValue("type");
 
-		for (Element e : children) {
-			if (e.getName().equals("contextSection")) {
-				final List<Element> contextSectionChildren = e.getChildren();
-				for (Element sectionChild : contextSectionChildren) {
+		for (final Element childElement : children) {
+			if (childElement.getName().equals("contextSection")) {
+				final List<Element> contextSectionChildren = childElement.getChildren();
+				for (final Element sectionChild : contextSectionChildren) {
 					addContextFieldToList(sectionChild, parentType, result,
 							context);
 				}
 			} else {
-				addContextFieldToList(e, parentType, result, context);
+				addContextFieldToList(childElement, parentType, result, context);
 			}
 		}
 	}
@@ -893,14 +893,14 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 		
 		final List<Element> contextImagesList = contextImages.getChildren("contextImage", namespace);
-		if(contextImagesList == null || contextImagesList.isEmpty()) {
+		if (contextImagesList == null || contextImagesList.isEmpty()) {
 			return null;
 		}
 		
 		final List<ContextImageDescriptor> result = new ArrayList<ContextImageDescriptor>(contextImagesList.size());
-		for(Element curContext : contextImagesList) {
-			final String context = curContext.getValue();
-			final String usage = curContext.getAttributeValue("show");
+		for (final Element currentContext: contextImagesList) {
+			final String context = currentContext.getValue();
+			final String usage = currentContext.getAttributeValue("show");
 			result.add(new ContextImageDescriptor(context, usage));
 		}
  		return result;
