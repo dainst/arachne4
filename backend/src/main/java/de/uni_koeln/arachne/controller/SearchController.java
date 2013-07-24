@@ -224,6 +224,62 @@ public class SearchController {
 	}
 
 	/**
+	 * Handles the http request by querying the Solr index for contexts of a given entity and returning the result.
+	 * <br>
+	 * Since the queries can get quite large the HTTP POST method is used instead of GET to submit the query to Solr.
+	 * Nonetheless the query may fail with <code>Bad request</code>. This indicates that the maximum number of boolean
+	 * clauses is reached (although Solr should throw a <code>maxBoolean</code> exception it does not). The only way to 
+	 * solve this problem is to increase the number of allowed boolean clauses in <code>solrconfig.xml</code>.
+	 * <br> 
+	 * Currently the search result can only be serialized to JSON as JAXB cannot handle Maps.
+	 * @param entityId The id of the entity of interest. 
+	 * @param limit The maximum number of returned entities. (optional)
+	 * @param offset The offset into the list of entities (used for paging). (optional)
+	 * @param filterValues The values of the solr filter query. (optional)
+	 * @param facetLimit The maximum number of facet results. (optional)
+	 * @return A response object containing the data (this is serialized to XML or JSON depending on content negotiation).
+	 */
+	@RequestMapping(value="/escontext/{entityId}", method=RequestMethod.GET)
+	public @ResponseBody Object handleESContextRequest(@PathVariable("entityId") final Long entityId,
+			@RequestParam(value = "limit", required = false) final Integer limit,
+			@RequestParam(value = "offset", required = false) final Integer offset,
+			@RequestParam(value = "fq", required = false) final String filterValues,
+			final HttpServletResponse response) {
+		
+		final SearchResult result = new SearchResult();
+		final List<Long> contextIds = genericSQLService.getConnectedEntityIds(entityId);
+		
+		if (contextIds == null) { 
+			return new SearchResult();
+		}
+		
+		try {
+			final StringBuffer queryStr = new StringBuffer(64);
+			queryStr.append("(entityId:(");
+			for (int i = 0; i < contextIds.size() ; i++) {
+				queryStr.append(contextIds.get(i));
+				if (i < contextIds.size() - 1) {
+					queryStr.append(" OR ");
+				} else {
+					queryStr.append(')');
+				}
+			}
+			appendAccessControl(queryStr);
+			System.out.println("Context query: " + queryStr.toString());
+			return handleESSearchRequest(queryStr.toString(), limit, offset, filterValues, response);
+			//final SolrQuery query = getQueryWithDefaults(queryStr.toString());
+						
+			//setSearchParameters(limit, offset, filterValues, facetLimit, result, query);
+
+			//executeAndProcessQuery(result, query, METHOD.POST);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+		}
+		
+		return result;
+	}
+	
+	/**
 	 * Extracts the category specific facets from the corresponding xml file.
 	 * @param filterValueList
 	 * @return
