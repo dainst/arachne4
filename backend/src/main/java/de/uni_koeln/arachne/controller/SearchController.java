@@ -58,6 +58,8 @@ public class SearchController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 	
+	private static final int MAX_CONTEXT_QUERY_SIZE = 500;
+	
 	@Autowired
 	private transient ESClientUtil esClientUtil;
 	
@@ -246,36 +248,39 @@ public class SearchController {
 			@RequestParam(value = "fq", required = false) final String filterValues,
 			final HttpServletResponse response) {
 		
+		final int resultSize = limit == null ? 50 : limit;
+		final int resultOffset = offset == null ? 0 : offset;
 		final SearchResult result = new SearchResult();
 		final List<Long> contextIds = genericSQLService.getConnectedEntityIds(entityId);
 		
-		if (contextIds == null) { 
-			return new SearchResult();
-		}
-		
-		try {
-			final StringBuffer queryStr = new StringBuffer(64);
-			queryStr.append("(entityId:(");
-			for (int i = 0; i < contextIds.size() ; i++) {
-				queryStr.append(contextIds.get(i));
-				if (i < contextIds.size() - 1) {
-					queryStr.append(" OR ");
-				} else {
-					queryStr.append(')');
-				}
-			}
-			appendAccessControl(queryStr);
-			System.out.println("Context query: " + queryStr.toString());
-			return handleESSearchRequest(queryStr.toString(), limit, offset, filterValues, response);
-			//final SolrQuery query = getQueryWithDefaults(queryStr.toString());
-						
-			//setSearchParameters(limit, offset, filterValues, facetLimit, result, query);
+		if (contextIds != null) { 
+			try {
+				if (resultSize < MAX_CONTEXT_QUERY_SIZE) {
+					final int lastContext = resultSize + resultOffset;
+					final StringBuffer queryStr = new StringBuffer(16);
+					queryStr.append("(entityId:(");
+					for (int i = resultOffset; i < lastContext; i++) {
+						queryStr.append(contextIds.get(i));
+						if (i < lastContext - 1) {
+							queryStr.append(" OR ");
+						} else {
+							queryStr.append(')');
+						}
+					}
 
-			//executeAndProcessQuery(result, query, METHOD.POST);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
+					appendAccessControl(queryStr);
+					System.out.println("Context query: " + queryStr.toString());
+					return handleESSearchRequest(queryStr.toString(), limit, offset, filterValues, response);
+				}
+				//final SolrQuery query = getQueryWithDefaults(queryStr.toString());
+
+				//setSearchParameters(limit, offset, filterValues, facetLimit, result, query);
+
+				//executeAndProcessQuery(result, query, METHOD.POST);
+			} catch (Exception e) {
+				LOGGER.error(e.getMessage());
+			}
 		}
-		
 		return result;
 	}
 	
