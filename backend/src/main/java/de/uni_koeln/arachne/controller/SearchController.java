@@ -18,7 +18,6 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -163,9 +162,6 @@ public class SearchController {
 		final int resultOffset = offset == null ? 0 : offset;
 		List<String> filterValueList = null;
 		
-		final Client client = esClientUtil.getClient();
-		SearchResponse searchResponse = null;
-		
 		// TODO find a way to handle datierungepoche and similar facets
 		List<String> facetList = defaultFacetList;
 		if (!StrUtils.isEmptyOrNull(filterValues)) {
@@ -178,19 +174,37 @@ public class SearchController {
 			}
 		}
 		
-		final SearchRequestBuilder searchRequestBuilder = client.prepareSearch()
-				.setQuery(buildQuery(searchParam, limit, offset, filterValueList))
-				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-				.setFrom(resultOffset)
-				.setSize(resultSize); 
-			
+		final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(searchParam, resultSize, resultOffset, filterValueList); 
 		addFacets(facetList, searchRequestBuilder);
-				
+		
+		final ESSearchResult searchResult = executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, facetList);
+		
+		if (searchResult == null) {
+			return new StatusResponse("There was a problem executing the search. Please try again. If the problem persists please contact us.");
+		} else {
+			return searchResult;
+		}
+	}
+	
+	// TODO document me
+	/**
+	 * 
+	 * @param searchRequestBuilder
+	 * @param resultSize
+	 * @param resultOffset
+	 * @param filterValues
+	 * @param facetList
+	 * @return
+	 */
+	private ESSearchResult executeSearchRequest(final SearchRequestBuilder searchRequestBuilder, final int resultSize, final int resultOffset,
+			final String filterValues, final List<String> facetList) {
+		
+		SearchResponse searchResponse = null;
 		try {
 			searchResponse = searchRequestBuilder.execute().actionGet();
 		} catch (Exception e) {
-			LOGGER.error("Problem executing search. Exception: "+e.getMessage());
-			return new StatusResponse("There was a problem executing the search. Please try again. If the problem persists please contact us.");
+			LOGGER.error("Problem executing search. Exception: " + e.getMessage());
+			return null;
 		}
 		
 		final SearchHits hits = searchResponse.getHits();
@@ -212,17 +226,38 @@ public class SearchController {
 		}
 		
 		// add facet search results
-		final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
-		for (final String facetName: facetList) {
-			final Map<String, Long> facetMap = getFacetMap(facetName, searchResponse, filterValues);
-			if (facetMap != null) {
-				facets.put(facetName, getFacetMap(facetName, searchResponse, filterValues));
+		if (facetList != null) {
+			final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
+			for (final String facetName: facetList) {
+				final Map<String, Long> facetMap = getFacetMap(facetName, searchResponse, filterValues);
+				if (facetMap != null) {
+					facets.put(facetName, getFacetMap(facetName, searchResponse, filterValues));
+				}
 			}
+			searchResult.setFacets(facets);
 		}
 		
-		searchResult.setFacets(facets);
-				
 		return searchResult;
+	}
+
+	// TODO document me
+	/**
+	 * 
+	 * @param searchParam
+	 * @param resultSize
+	 * @param resultOffset
+	 * @param filterValueList
+	 * @param client
+	 * @return
+	 */
+	private SearchRequestBuilder buildSearchRequest(final String searchParam, final int resultSize, final int resultOffset,
+			final List<String> filterValueList) {
+		
+		return esClientUtil.getClient().prepareSearch()
+				.setQuery(buildQuery(searchParam, filterValueList))
+				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+				.setFrom(resultOffset)
+				.setSize(resultSize);
 	}
 
 	/**
@@ -270,6 +305,9 @@ public class SearchController {
 
 					appendAccessControl(queryStr);
 					System.out.println("Context query: " + queryStr.toString());
+					
+					buildSearchRequest(queryStr.toString(), resultSize, resultOffset, null);
+					
 					return handleESSearchRequest(queryStr.toString(), limit, offset, filterValues, response);
 				}
 				//final SolrQuery query = getQueryWithDefaults(queryStr.toString());
@@ -369,7 +407,7 @@ public class SearchController {
 	 * @param filterValues
 	 * @return
 	 */
-	QueryBuilder buildQuery(final String searchParam, final Integer limit, final Integer offset, final List<String> filterValues) {
+	QueryBuilder buildQuery(final String searchParam, final List<String> filterValues) {
 		FilterBuilder facetFilter = FilterBuilders.boolFilter().must(getAccessControlFilter());
 				
 		if (!StrUtils.isEmptyOrNull(filterValues)) {
