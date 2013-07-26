@@ -6,10 +6,13 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 /**
  * Class representing a search result. This class is the return type of a search request.
  */
 @XmlRootElement
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class ESSearchResult {
 
 	private long size = 0;
@@ -59,5 +62,22 @@ public class ESSearchResult {
 	}
 	public void setEntities(final List<SearchHit> entities) {
 		this.entities = entities;
+	}
+
+	/**
+	 * This merges another <code>SearchResult</code> with this instance. Entities are added. Facets are ignored.
+	 * The size is summed, </code>limit</code> and <code>offset</code> are set by the imported <code>SearchResult</code>.
+	 * @param esSearchResult
+	 */
+	public void merge(final ESSearchResult esSearchResult) {
+		if (this.entities == null) {
+			this.entities = new ArrayList<SearchHit>();
+		}
+		this.entities.addAll(esSearchResult.entities);
+		
+		this.size = this.size + esSearchResult.size;
+		
+		this.limit = esSearchResult.limit;
+		this.offset = esSearchResult.offset;
 	} 
 }

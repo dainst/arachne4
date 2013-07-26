@@ -15,6 +15,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.aspectj.org.eclipse.jdt.internal.compiler.flow.FinallyFlowContext;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -57,7 +58,12 @@ public class SearchController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 	
-	private static final int MAX_CONTEXT_QUERY_SIZE = 500;
+	/**
+	 * Maximum number of contexts fetched in one request from elasticsearch.
+	 * Needed since URL parameters cannot be arbitrarily long and the context queries can easily get larger than
+	 * 10000 characters.
+	 */
+	private static final int MAX_CONTEXT_QUERY_SIZE = 50;
 	
 	@Autowired
 	private transient ESClientUtil esClientUtil;
@@ -261,19 +267,16 @@ public class SearchController {
 	}
 
 	/**
-	 * Handles the http request by querying the Solr index for contexts of a given entity and returning the result.
+	 * Handles the HTTP request by querying the elasticsearch index for contexts of a given entity and returning the result.
 	 * <br>
-	 * Since the queries can get quite large the HTTP POST method is used instead of GET to submit the query to Solr.
-	 * Nonetheless the query may fail with <code>Bad request</code>. This indicates that the maximum number of boolean
-	 * clauses is reached (although Solr should throw a <code>maxBoolean</code> exception it does not). The only way to 
-	 * solve this problem is to increase the number of allowed boolean clauses in <code>solrconfig.xml</code>.
+	 * Since the queries can get quite large communication with elasticsearch may be split into multiple requests and
+	 * the search result will be the sum of the responses. 
 	 * <br> 
 	 * Currently the search result can only be serialized to JSON as JAXB cannot handle Maps.
 	 * @param entityId The id of the entity of interest. 
 	 * @param limit The maximum number of returned entities. (optional)
 	 * @param offset The offset into the list of entities (used for paging). (optional)
 	 * @param filterValues The values of the solr filter query. (optional)
-	 * @param facetLimit The maximum number of facet results. (optional)
 	 * @return A response object containing the data (this is serialized to XML or JSON depending on content negotiation).
 	 */
 	@RequestMapping(value="/escontext/{entityId}", method=RequestMethod.GET)
@@ -285,41 +288,65 @@ public class SearchController {
 		
 		final int resultSize = limit == null ? 50 : limit;
 		final int resultOffset = offset == null ? 0 : offset;
-		final SearchResult result = new SearchResult();
+		ESSearchResult result = new ESSearchResult();
 		final List<Long> contextIds = genericSQLService.getConnectedEntityIds(entityId);
+		final int totalHits = contextIds.size();
 		
 		if (contextIds != null) { 
-			try {
-				if (resultSize < MAX_CONTEXT_QUERY_SIZE) {
-					final int lastContext = resultSize + resultOffset;
-					final StringBuffer queryStr = new StringBuffer(16);
-					queryStr.append("(entityId:(");
-					for (int i = resultOffset; i < lastContext; i++) {
-						queryStr.append(contextIds.get(i));
-						if (i < lastContext - 1) {
-							queryStr.append(" OR ");
-						} else {
-							queryStr.append(')');
-						}
+			int lastContext = resultSize + resultOffset - 1;
+			lastContext = lastContext < totalHits ? lastContext : totalHits - 1;
+			final int returnedHits = lastContext - resultOffset + 1;
+			if (returnedHits <= MAX_CONTEXT_QUERY_SIZE) {
+				final String queryStr = getContextQueryString(resultOffset, lastContext, contextIds);
+				LOGGER.debug("Context query: " + queryStr);
+								
+				final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(queryStr, returnedHits, 0, null);
+				result = executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, null);
+				result.setSize(totalHits);
+			} else {
+				final int requests = (returnedHits - 1) / MAX_CONTEXT_QUERY_SIZE;
+							
+				int start = resultOffset;
+				int end = MAX_CONTEXT_QUERY_SIZE + resultOffset - 1;
+				for (int i = 0; i <= requests; i++) {
+					final String queryStr = getContextQueryString(start, end, contextIds);
+					LOGGER.debug("Context multi query: " + queryStr);
+										
+					final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(queryStr, returnedHits, 0, null);
+					result.merge(executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, null));
+					
+					start = end + 1;
+					end = end + MAX_CONTEXT_QUERY_SIZE;
+					if (i == requests - 1) {
+						end = lastContext;
 					}
-
-					appendAccessControl(queryStr);
-					System.out.println("Context query: " + queryStr.toString());
-					
-					buildSearchRequest(queryStr.toString(), resultSize, resultOffset, null);
-					
-					return handleESSearchRequest(queryStr.toString(), limit, offset, filterValues, response);
 				}
-				//final SolrQuery query = getQueryWithDefaults(queryStr.toString());
-
-				//setSearchParameters(limit, offset, filterValues, facetLimit, result, query);
-
-				//executeAndProcessQuery(result, query, METHOD.POST);
-			} catch (Exception e) {
-				LOGGER.error(e.getMessage());
+				result.setSize(totalHits);
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Builds the elasticsearch context query string by specifying the connected Ids.
+	 * @param start
+	 * @param end
+	 * @param contextIds
+	 * @return
+	 */
+	private String getContextQueryString(final int start, final int end, final List<Long> contextIds) {
+		
+		final StringBuffer queryStr = new StringBuffer(16);
+		queryStr.append("entityId:(");
+		for (int i = start; i <= end; i++) {
+			queryStr.append(contextIds.get(i));
+			if (i < end) {
+				queryStr.append(" OR ");
+			} else {
+				queryStr.append(')');
+			}
+		}
+		return queryStr.toString();
 	}
 	
 	/**
