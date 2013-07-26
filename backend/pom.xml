@@ -23,7 +23,6 @@
 		<jackson-version>1.9.13</jackson-version>
 		<org.javassist-version>3.18.0-GA</org.javassist-version>
 		<c3p0-version>0.9.2.1</c3p0-version>
-		<solrj-version>3.6.1</solrj-version>
 		<elasticsearch-version>0.90.2</elasticsearch-version>
 		<snappy-version>1.0.5</snappy-version>
 	</properties>
@@ -229,36 +228,11 @@
 			<version>${elasticsearch-version}</version>
 		</dependency>
 
-		<!-- snappy -->
+		<!-- snappy for elastic search -->
 		<dependency>
 			<groupId>org.xerial.snappy</groupId>
 			<artifactId>snappy-java</artifactId>
 			<version>${snappy-version}</version>
-		</dependency>
-
-		<!-- SolrJ -->
-		<dependency>
-			<groupId>org.apache.solr</groupId>
-			<artifactId>solr-solrj</artifactId>
-			<version>${solrj-version}</version>
-			<type>jar</type>
-		</dependency>
-
-		<!-- Apache HttpComponents - needed for SolrJ -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpcore</artifactId>
-			<version>4.2.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpmime</artifactId>
-			<version>4.1-beta1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.1-beta1</version>
 		</dependency>
 
 	</dependencies>
