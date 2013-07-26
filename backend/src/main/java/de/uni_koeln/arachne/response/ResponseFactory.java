@@ -72,7 +72,12 @@ public class ResponseFactory {
 		} else {
 			datasetGroupFieldName = tableName+".DatensatzGruppe"+tableName.substring(0,1).toUpperCase()+tableName.substring(1);
 		}
-		response.setDatasetGroup(dataset.getFieldFromFields(datasetGroupFieldName));		
+		response.setDatasetGroup(dataset.getFieldFromFields(datasetGroupFieldName));
+		// set datasetGroup to "Arachne" (visible for all) for entities that do not have a datasetGroup like 'literatur' to
+		// make the access control in the search easier
+		if (response.getDatasetGroup() == null) {
+			response.setDatasetGroup("Arachne");
+		}
 		
 		// set lastModified
 		Date lastModified;
