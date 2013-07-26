@@ -21,6 +21,7 @@ import org.elasticsearch.search.facet.FacetBuilders;
 import org.elasticsearch.search.facet.terms.TermsFacet;
 import org.elasticsearch.search.facet.terms.TermsFacet.Entry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,7 +69,17 @@ public class SearchController {
 	
 	private transient final List<String> defaultFacetList = new ArrayList<String>(3); 
 	
-	public SearchController() {
+	private transient final int defaultFacetLimit;
+	
+	private transient final int defaultLimit;
+	
+	@Autowired
+	public SearchController(final @Value("#{config.esDefaultLimit}") int defaultLimit,
+			final @Value("#{config.esDefaultFacetLimit}") int defaultFacetLimit) {
+		
+		this.defaultLimit = defaultLimit;
+		this.defaultFacetLimit = defaultFacetLimit;
+				
 		defaultFacetList.add("facet_kategorie");
 		defaultFacetList.add("facet_ort");
 		defaultFacetList.add("facet_datierungepoche");
@@ -84,7 +95,7 @@ public class SearchController {
 	 * <br>
 	 * Currently the search result can only be serialized to JSON as JAXB cannot handle Maps.
 	 * @param searchParam The value of the search parameter. (mandatory)
-	 * @param limit The maximum number of returned entities. Default is 50. (optional)
+	 * @param limit The maximum number of returned entities. (optional)
 	 * @param offset The offset into the list of entities (used for paging). (optional)
 	 * @return A response object containing the data or a status response (this is serialized to XML or JSON depending on content negotiation).
 	 */
@@ -93,10 +104,12 @@ public class SearchController {
 													  @RequestParam(value = "limit", required = false) final Integer limit,
 													  @RequestParam(value = "offset", required = false) final Integer offset,
 													  @RequestParam(value = "fq", required = false) final String filterValues,
+													  @RequestParam(value = "fl", required = false) final Integer facetLimit,
 													  final HttpServletResponse response) {
 		
-		final int resultSize = limit == null ? 50 : limit;
+		final int resultSize = limit == null ? defaultLimit : limit;
 		final int resultOffset = offset == null ? 0 : offset;
+		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 		List<String> filterValueList = null;
 		
 		// TODO find a way to handle datierungepoche and similar facets
@@ -112,7 +125,7 @@ public class SearchController {
 		}
 		
 		final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(searchParam, resultSize, resultOffset, filterValueList); 
-		addFacets(facetList, searchRequestBuilder);
+		addFacets(facetList, resultFacetLimit, searchRequestBuilder);
 		
 		final SearchResult searchResult = executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, facetList);
 		
@@ -323,10 +336,10 @@ public class SearchController {
 	 * @param facetList A string list containing the facet names to add. 
 	 * @param searchRequestBuilder The outgoing search request that gets the facets added.
 	 */
-	private void addFacets(final List<String> facetList, final SearchRequestBuilder searchRequestBuilder) {
+	private void addFacets(final List<String> facetList, final int facetSize, final SearchRequestBuilder searchRequestBuilder) {
 		for (final String facetName: facetList) {
 			// return the top 100 facets
-			searchRequestBuilder.addFacet(FacetBuilders.termsFacet(facetName).field(facetName).size(100));
+			searchRequestBuilder.addFacet(FacetBuilders.termsFacet(facetName).field(facetName).size(facetSize));
 		}
 	}
 			
