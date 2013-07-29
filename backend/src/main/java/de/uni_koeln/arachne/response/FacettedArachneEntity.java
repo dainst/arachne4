@@ -96,7 +96,7 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	// person
 	protected List<String> facet_titel;
 	protected List<String> facet_geschlecht;
-	protected List<String> facet_ethnienationalität;
+	protected List<String> facet_ethnienationalitaet;
 	
 	// realien
 	protected List<String> facet_realienart;
@@ -484,11 +484,11 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	public void setFacet_geschlecht(List<String> facet_geschlecht) {
 		this.facet_geschlecht = facet_geschlecht;
 	}
-	public List<String> getFacet_ethnienationalität() {
-		return facet_ethnienationalität;
+	public List<String> getFacet_ethnienationalitaet() {
+		return facet_ethnienationalitaet;
 	}
-	public void setFacet_ethnienationalität(List<String> facet_ethnienationalität) {
-		this.facet_ethnienationalität = facet_ethnienationalität;
+	public void setFacet_ethnienationalitaet(List<String> facet_ethnienationalitaet) {
+		this.facet_ethnienationalitaet = facet_ethnienationalitaet;
 	}
 	public List<String> getFacet_realienart() {
 		return facet_realienart;

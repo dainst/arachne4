@@ -26,12 +26,12 @@
 		<level value="info" />
 	</logger>
 	
-	<!-- Application Loggers -->
+	<!-- Controller -->
 	<logger name="de.uni_koeln.arachne.controller">
 		<level value="info" />
 	</logger>
 	
-	<!-- Application Loggers -->
+	<!-- Services -->
 	<logger name="de.uni_koeln.arachne.service">
 		<level value="info" />
 	</logger>
