@@ -82,7 +82,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 
 	/**
 	 * The dataimport implementation. This method retrieves a list of EntityIds from the DB and iterates over this list 
-	 * constructing the associated documents and indexing them via elastic search.
+	 * constructing the associated documents and indexing them via elasticsearch.
 	 */
 	public void run() { // NOPMD - Threading is used via Springs TaskExecutor so it is save 
 		class LongMapper implements RowMapper<Long> {
@@ -118,6 +118,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 			long startId = 0;
 			indexing:
 			while (!finished) {
+				LOGGER.debug("Fetching EntityIds...");
 				final List<Long> entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification` WHERE `ArachneEntityID` > "
 						+ startId + " ORDER BY `ArachneEntityID` LIMIT " + esBulkSize, longMapper);
 								
@@ -129,16 +130,20 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 				
 				startId = entityIds.get(0);
 				final long endId = entityIds.get((int)end);
-				LOGGER.info("Indexing: " + startId + " - " + endId);
-				
+								
+				LOGGER.debug("Fetching entities " + startId + " to " + endId + "...");
+				final long fetch = System.currentTimeMillis();
 				final List<ArachneEntity> entityList = entityIdentificationService.getByEntityIdRange(startId, endId);
+				final long fetchtime = System.currentTimeMillis() - fetch;
+				LOGGER.debug("... took " + fetchtime + "ms");
+				LOGGER.debug("Indexing: " + startId + " - " + endId);
 				startId = endId;
 				for (final ArachneEntity currentEntityId: entityList) {
 					if (terminate) {
 						running.set(false);
 						break indexing;
 					}
-					final long fetch = System.currentTimeMillis();
+					
 					final EntityId entityId = new EntityId(currentEntityId.getTableName(), currentEntityId.getForeignKey()
 							, currentEntityId.getId(), currentEntityId.isDeleted());
 					
@@ -155,10 +160,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 						bulkRequest.add(client.prepareIndex(esName,"entity",String.valueOf(entityId.getArachneEntityID()))
 								.setSource(mapper.writeValueAsBytes(entity)));
 					}
-					final long fetchtime = System.currentTimeMillis() - fetch;
-					if (fetchtime > 100) {
-						LOGGER.debug("Indexing: fetching " + entityId.getArachneEntityID() + " took " + fetchtime + "ms");
-					}
+					
 					// update elapsed time every second
 					final long now = System.currentTimeMillis();
 					if (now - deltaT > 1000) {
