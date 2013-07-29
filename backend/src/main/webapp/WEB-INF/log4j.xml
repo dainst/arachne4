@@ -23,7 +23,7 @@
 	
 	<!-- Application Loggers -->
 	<logger name="de.uni_koeln.arachne">
-		<level value="warn" />
+		<level value="info" />
 	</logger>
 	
 	<!-- Application Loggers -->
@@ -55,7 +55,7 @@
 
 	<!-- Root Logger -->
 	<root>
-		<priority value="warn" />
+		<priority value="info" />
 		<appender-ref ref="rolling-file" />
 		<!-- <appender-ref ref="console" /> -->
 	</root>

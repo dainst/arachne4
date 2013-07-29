@@ -40,12 +40,12 @@ public class ESClientUtil {
 		this.esRemoteClient = esRemoteClient;
 		
 		if (esRemoteClient) {
-			LOGGER.info("Setting up elastic search transport client...");
+			LOGGER.info("Setting up elasticsearch transport client...");
 			node = null;
 			final Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", esName).build();
 			client = new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress(esAddress, esRemotePortPort));
 		} else {
-			LOGGER.info("Setting up elastic search node client...");
+			LOGGER.info("Setting up elasticsearch node client...");
 			node = NodeBuilder.nodeBuilder(). client(true).clusterName(esName).node();
 			client = node.client();
 		}
@@ -73,8 +73,10 @@ public class ESClientUtil {
 	@PreDestroy
 	public void destroy() {
 		if (esRemoteClient) {
+			LOGGER.info("Setting up elasticsearch transport client...");
 			client.close();
 		} else {
+			LOGGER.info("Setting up elasticsearch node client...");
 			node.close();
 		}
 	}
