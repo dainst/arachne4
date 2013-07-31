@@ -143,7 +143,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 				final long fetch = System.currentTimeMillis();
 				final List<ArachneEntity> entityList = entityIdentificationService.getByEntityIdRange(startId, endId);
 				LOGGER.debug("Fetching entities took " + (System.currentTimeMillis() - fetch) + "ms");
-				LOGGER.debug("Indexing: " + startId + " - " + endId);
+				LOGGER.info("Indexing: " + startId + " - " + endId);
 				startId = endId;
 				for (final ArachneEntity currentEntityId: entityList) {
 					if (terminate) {
@@ -189,10 +189,10 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 			}
 			if (running.get()) {
 				LOGGER.info("Import of " + index + " documents finished in " + ((System.currentTimeMillis() - startTime)/1000f/60f/60f) + " hours.");
-				//LOGGER.info("Setting alias and deleting old index.");
-				//esClientUtil.updateSearchIndex();
+				esClientUtil.updateSearchIndex();
 			} else {
 				LOGGER.info("Dataimport aborted.");
+				esClientUtil.deleteIndex(indexName);
 			}
 		}
 		catch (Exception e) {
