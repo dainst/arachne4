@@ -127,6 +127,74 @@ public class SearchController {
 	}
 	
 	/**
+	 * Handles the HTTP request by querying the elasticsearch index for contexts of a given entity and returning the result.
+	 * <br>
+	 * Since the queries can get quite large communication with elasticsearch may be split into multiple requests and
+	 * the search result will be the sum of the responses. 
+	 * <br> 
+	 * Currently the search result can only be serialized to JSON as JAXB cannot handle Maps.
+	 * @param entityId The id of the entity of interest. 
+	 * @param limit The maximum number of returned entities. (optional)
+	 * @param offset The offset into the list of entities (used for paging). (optional)
+	 * @param filterValues The values of the solr filter query. (optional)
+	 * @return A response object containing the data (this is serialized to XML or JSON depending on content negotiation).
+	 */
+	@RequestMapping(value="/context/{entityId}", method=RequestMethod.GET)
+	public @ResponseBody SearchResult handleContextRequest(@PathVariable("entityId") final Long entityId,
+			@RequestParam(value = "limit", required = false) final Integer limit,
+			@RequestParam(value = "offset", required = false) final Integer offset,
+			@RequestParam(value = "fq", required = false) final String filterValues,
+			@RequestParam(value = "fl", required = false) final Integer facetLimit,
+			final HttpServletResponse response) {
+		
+		final int resultSize = limit == null ? 50 : limit;
+		final int resultOffset = offset == null ? 0 : offset;
+		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
+		
+		SearchResult result = new SearchResult();
+		final List<Long> contextIds = genericSQLService.getConnectedEntityIds(entityId);
+		final int totalHits = contextIds.size();
+		
+		List<String> facetList = defaultFacetList;
+		List<String> filterValueList = getFilterValueList(filterValues, facetList);
+		
+		if (contextIds != null) { 
+			int lastContext = resultSize + resultOffset - 1;
+			lastContext = lastContext < totalHits ? lastContext : totalHits - 1;
+			final int returnedHits = lastContext - resultOffset + 1;
+			if (returnedHits <= MAX_CONTEXT_QUERY_SIZE) {
+				final String queryStr = getContextQueryString(resultOffset, lastContext, contextIds);
+				LOGGER.debug("Context query: " + queryStr);
+								
+				final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(queryStr, returnedHits, 0, filterValueList);
+				addFacets(facetList, resultFacetLimit, searchRequestBuilder);
+				result = executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, facetList);
+				result.setSize(totalHits);
+			} else {
+				final int requests = (returnedHits - 1) / MAX_CONTEXT_QUERY_SIZE;
+							
+				int start = resultOffset;
+				int end = MAX_CONTEXT_QUERY_SIZE + resultOffset - 1;
+				for (int i = 0; i <= requests; i++) {
+					final String queryStr = getContextQueryString(start, end, contextIds);
+					LOGGER.debug("Context multi query: " + queryStr);
+										
+					final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(queryStr, returnedHits, 0, null);
+					result.merge(executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, null));
+					
+					start = end + 1;
+					end = end + MAX_CONTEXT_QUERY_SIZE;
+					if (i == requests - 1) {
+						end = lastContext;
+					}
+				}
+				result.setSize(totalHits);
+			}
+		}
+		return result;
+	}
+	
+	/**
 	 * Creates a list of filter values from the filterValues <code>String</code> and sets <code>facetList</code> to category specific facets if the corresponding facet is found 
 	 * in the filterValue <code>String</code>.
 	 * @param filterValues String of filter values
@@ -219,68 +287,7 @@ public class SearchController {
 				.setFrom(resultOffset)
 				.setSize(resultSize);
 	}
-
-	/**
-	 * Handles the HTTP request by querying the elasticsearch index for contexts of a given entity and returning the result.
-	 * <br>
-	 * Since the queries can get quite large communication with elasticsearch may be split into multiple requests and
-	 * the search result will be the sum of the responses. 
-	 * <br> 
-	 * Currently the search result can only be serialized to JSON as JAXB cannot handle Maps.
-	 * @param entityId The id of the entity of interest. 
-	 * @param limit The maximum number of returned entities. (optional)
-	 * @param offset The offset into the list of entities (used for paging). (optional)
-	 * @param filterValues The values of the solr filter query. (optional)
-	 * @return A response object containing the data (this is serialized to XML or JSON depending on content negotiation).
-	 */
-	@RequestMapping(value="/context/{entityId}", method=RequestMethod.GET)
-	public @ResponseBody SearchResult handleContextRequest(@PathVariable("entityId") final Long entityId,
-			@RequestParam(value = "limit", required = false) final Integer limit,
-			@RequestParam(value = "offset", required = false) final Integer offset,
-			@RequestParam(value = "fq", required = false) final String filterValues,
-			final HttpServletResponse response) {
-		
-		final int resultSize = limit == null ? 50 : limit;
-		final int resultOffset = offset == null ? 0 : offset;
-		SearchResult result = new SearchResult();
-		final List<Long> contextIds = genericSQLService.getConnectedEntityIds(entityId);
-		final int totalHits = contextIds.size();
-		
-		if (contextIds != null) { 
-			int lastContext = resultSize + resultOffset - 1;
-			lastContext = lastContext < totalHits ? lastContext : totalHits - 1;
-			final int returnedHits = lastContext - resultOffset + 1;
-			if (returnedHits <= MAX_CONTEXT_QUERY_SIZE) {
-				final String queryStr = getContextQueryString(resultOffset, lastContext, contextIds);
-				LOGGER.debug("Context query: " + queryStr);
-								
-				final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(queryStr, returnedHits, 0, null);
-				result = executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, null);
-				result.setSize(totalHits);
-			} else {
-				final int requests = (returnedHits - 1) / MAX_CONTEXT_QUERY_SIZE;
-							
-				int start = resultOffset;
-				int end = MAX_CONTEXT_QUERY_SIZE + resultOffset - 1;
-				for (int i = 0; i <= requests; i++) {
-					final String queryStr = getContextQueryString(start, end, contextIds);
-					LOGGER.debug("Context multi query: " + queryStr);
-										
-					final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(queryStr, returnedHits, 0, null);
-					result.merge(executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, null));
-					
-					start = end + 1;
-					end = end + MAX_CONTEXT_QUERY_SIZE;
-					if (i == requests - 1) {
-						end = lastContext;
-					}
-				}
-				result.setSize(totalHits);
-			}
-		}
-		return result;
-	}
-
+	
 	/**
 	 * Builds the elasticsearch context query string by specifying the connected Ids.
 	 * @param start
