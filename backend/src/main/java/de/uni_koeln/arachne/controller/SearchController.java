@@ -110,19 +110,9 @@ public class SearchController {
 		final int resultSize = limit == null ? defaultLimit : limit;
 		final int resultOffset = offset == null ? 0 : offset;
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
-		List<String> filterValueList = null;
 		
-		// TODO find a way to handle datierungepoche and similar facets
 		List<String> facetList = defaultFacetList;
-		if (!StrUtils.isEmptyOrNull(filterValues)) {
-			filterValueList = filterQueryStringToStringList(filterValues);
-			for (final String filterValue: filterValueList) {
-				if (filterValue.contains("facet_kategorie")) {
-					facetList = getCategorySpecificFacetList(filterValueList);
-					break;
-				}
-			}
-		}
+		List<String> filterValueList = getFilterValueList(filterValues, facetList);
 		
 		final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(searchParam, resultSize, resultOffset, filterValueList); 
 		addFacets(facetList, resultFacetLimit, searchRequestBuilder);
@@ -134,6 +124,27 @@ public class SearchController {
 		} else {
 			return searchResult;
 		}
+	}
+	
+	/**
+	 * Creates a list of filter values from the filterValues <code>String</code> and sets <code>facetList</code> to category specific facets if the corresponding facet is found 
+	 * in the filterValue <code>String</code>.
+	 * @param filterValues String of filter values
+	 * @param facetList List of facet fields.
+	 * @return filter values as list.
+	 */
+	public List<String> getFilterValueList(final String filterValues, List<String> facetList) {
+		List<String> result = null; 
+		if (!StrUtils.isEmptyOrNull(filterValues)) {
+			result = filterQueryStringToStringList(filterValues);
+			for (final String filterValue: result) {
+				if (filterValue.contains("facet_kategorie")) {
+					facetList = getCategorySpecificFacetList(result);
+					break;
+				}
+			}
+		}
+		return result;
 	}
 	
 	/**
