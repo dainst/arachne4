@@ -73,7 +73,7 @@ public class ESClientUtil implements ServletContextAware {
 		this.esBulkSize = esBulkSize;
 		this.esRemoteClient = esRemoteClient;
 		this.esRESTPort = esRESTPort;
-		esFullAddress  = esProtocol + esAddress + ':' + esRESTPort + '/';
+		esFullAddress  = esProtocol + "://" + esAddress + ':' + esRESTPort + '/';
 		
 		if (esRemoteClient) {
 			LOGGER.info("Setting up elasticsearch transport client...");
