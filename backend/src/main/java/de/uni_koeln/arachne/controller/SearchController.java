@@ -111,8 +111,8 @@ public class SearchController {
 		final int resultOffset = offset == null ? 0 : offset;
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 		
-		List<String> facetList = defaultFacetList;
-		List<String> filterValueList = getFilterValueList(filterValues, facetList);
+		final List<String> facetList = defaultFacetList;
+		final List<String> filterValueList = getFilterValueList(filterValues, facetList);
 		
 		final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(searchParam, resultSize, resultOffset, filterValueList); 
 		addFacets(facetList, resultFacetLimit, searchRequestBuilder);
@@ -195,7 +195,8 @@ public class SearchController {
 	}
 	
 	/**
-	 * Creates a list of filter values from the filterValues <code>String</code> and sets <code>facetList</code> to category specific facets if the corresponding facet is found 
+	 * Creates a list of filter values from the filterValues <code>String</code> and sets the category specific facets in the 
+	 * <code>facetList</code> if the corresponding facet is found. 
 	 * in the filterValue <code>String</code>.
 	 * @param filterValues String of filter values
 	 * @param facetList List of facet fields.
@@ -207,7 +208,8 @@ public class SearchController {
 			result = filterQueryStringToStringList(filterValues);
 			for (final String filterValue: result) {
 				if (filterValue.contains("facet_kategorie")) {
-					facetList = getCategorySpecificFacetList(result);
+					facetList.clear();
+					facetList.addAll(getCategorySpecificFacetList(result));
 					break;
 				}
 			}
