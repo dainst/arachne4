@@ -105,17 +105,25 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 		
 		elapsedTime.set(System.currentTimeMillis() - startTime);		
 		try {
-			LOGGER.info("Dataimport started.");
+			boolean finished = false;
+			long deltaT = 0;
+			int index = 0;
+			long startId = 0;
 			
 			final Client client = esClientUtil.getClient();
 			final int esBulkSize = esClientUtil.getBulkSize();
-			final String esName = esClientUtil.getName();
+			final String indexName = esClientUtil.getDataImportIndex();
 			
-			boolean finished = false;
-			long deltaT = 0;
+			if ("NoIndex".equals(indexName)) {
+				LOGGER.error("Dataimport failed. No index found.");
+				running.set(false);
+				return;
+			}
+			
+			LOGGER.info("Dataimport started on index '" + indexName + "'");
+			
 			BulkRequestBuilder bulkRequest = client.prepareBulk();
-			int index = 0;
-			long startId = 0;
+			
 			indexing:
 			while (!finished) {
 				LOGGER.debug("Fetching EntityIds...");
@@ -134,8 +142,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 				LOGGER.debug("Fetching entities " + startId + " to " + endId + "...");
 				final long fetch = System.currentTimeMillis();
 				final List<ArachneEntity> entityList = entityIdentificationService.getByEntityIdRange(startId, endId);
-				final long fetchtime = System.currentTimeMillis() - fetch;
-				LOGGER.debug("... took " + fetchtime + "ms");
+				LOGGER.debug("Fetching entities took " + (System.currentTimeMillis() - fetch) + "ms");
 				LOGGER.debug("Indexing: " + startId + " - " + endId);
 				startId = endId;
 				for (final ArachneEntity currentEntityId: entityList) {
@@ -157,7 +164,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 					if (entity == null) {
 						LOGGER.error("Entity " + entityId + " is null! This should never happen. Check the database immediately.");
 					} else {
-						bulkRequest.add(client.prepareIndex(esName,"entity",String.valueOf(entityId.getArachneEntityID()))
+						bulkRequest.add(client.prepareIndex(indexName, "entity",String.valueOf(entityId.getArachneEntityID()))
 								.setSource(mapper.writeValueAsBytes(entity)));
 					}
 					
@@ -168,6 +175,8 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 						elapsedTime.set(now - startTime);
 					}
 				}
+				LOGGER.debug("Executing elasticsearch bulk request...");
+				final long execute = System.currentTimeMillis();
 				bulkRequest.execute().actionGet();
 				bulkRequest = client.prepareBulk();
 				if (finished) {
@@ -176,9 +185,12 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 					index += esBulkSize;
 				}
 				indexedDocuments.set(index);
+				LOGGER.debug("Executing elasticsearch bulk request took " + (System.currentTimeMillis() - execute) + "ms");
 			}
 			if (running.get()) {
 				LOGGER.info("Import of " + index + " documents finished in " + ((System.currentTimeMillis() - startTime)/1000f/60f/60f) + " hours.");
+				//LOGGER.info("Setting alias and deleting old index.");
+				//esClientUtil.updateSearchIndex();
 			} else {
 				LOGGER.info("Dataimport aborted.");
 			}
