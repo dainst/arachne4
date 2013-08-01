@@ -103,7 +103,9 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 		
 		userRightsService.setUserSolr();
 		
-		elapsedTime.set(System.currentTimeMillis() - startTime);		
+		elapsedTime.set(System.currentTimeMillis() - startTime);
+		
+		final String indexName = esClientUtil.getDataImportIndex();
 		try {
 			boolean finished = false;
 			long deltaT = 0;
@@ -112,8 +114,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 			
 			final Client client = esClientUtil.getClient();
 			final int esBulkSize = esClientUtil.getBulkSize();
-			final String indexName = esClientUtil.getDataImportIndex();
-			
+						
 			if ("NoIndex".equals(indexName)) {
 				LOGGER.error("Dataimport failed. No index found.");
 				running.set(false);
@@ -121,7 +122,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 			}
 			
 			LOGGER.info("Dataimport started on index '" + indexName + "'");
-			
+			/*
 			BulkRequestBuilder bulkRequest = client.prepareBulk();
 			
 			indexing:
@@ -186,7 +187,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 				}
 				indexedDocuments.set(index);
 				LOGGER.debug("Executing elasticsearch bulk request took " + (System.currentTimeMillis() - execute) + "ms");
-			}
+			}*/
 			if (running.get()) {
 				LOGGER.info("Import of " + index + " documents finished in " + ((System.currentTimeMillis() - startTime)/1000f/60f/60f) + " hours.");
 				esClientUtil.updateSearchIndex();
@@ -197,6 +198,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 		}
 		catch (Exception e) {
 			LOGGER.error("Dataimport failed with: " + e.toString());
+			esClientUtil.deleteIndex(indexName);
 		}
 		// disable request scope hack
 		((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).requestCompleted();

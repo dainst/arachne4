@@ -22,6 +22,8 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.indices.AliasMissingException;
+import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
 import org.slf4j.Logger;
@@ -97,27 +99,39 @@ public class ESClientUtil implements ServletContextAware {
 		final String indexName = getDataImportIndexName();
 		final String url = esFullAddress + indexName;
 		// TODO: implement better failure handling
-		if (sendRequest(url, "PUT").contains("ok") && ES_MAPPING_SUCCESS.equals(setMapping(indexName))) {
-			result = indexName; 
+		if (sendRequest(url, "PUT").contains("ok")) {
+			LOGGER.info("Created index " + indexName);
+			if (ES_MAPPING_SUCCESS.equals(setMapping(indexName))) {
+				result = indexName;
+			}
 		}
 		return result;
 	}
 
 	/**
-	 * Updates the elasticsearch indicies by changing the index alias and deleting the unused index.
+	 * Updates the elasticsearch indices by changing the index alias and deleting the unused index.
 	 */
-	public void updateSearchIndex() {
+	public void updateSearchIndex() throws IllegalStateException,IndexMissingException,AliasMissingException {
 		final String indexName = getDataImportIndexName();
 		final String oldName = "arachne4_2".equals(indexName) ? "arachne4_1" : "arachne4_2";
-		final IndicesAliasesResponse response = client.admin().indices().prepareAliases().addAlias(indexName, esName)
-				.removeAlias(oldName, esName).execute().actionGet();
-		if (response.isAcknowledged()) {
-			LOGGER.info("Set alias for " + indexName);
-			LOGGER.info("Removed alias for " + oldName);
-			deleteIndex(oldName);
-		} else {
-			LOGGER.error("Setting aliases failed.");
-		}
+		try {
+			final IndicesAliasesResponse response = client.admin().indices().prepareAliases().addAlias(indexName, esName)
+					.removeAlias(oldName, esName).execute().actionGet();
+			if (response.isAcknowledged()) {
+				LOGGER.info("Set alias for " + indexName);
+				LOGGER.info("Removed alias for " + oldName);
+				deleteIndex(oldName);
+			} else {
+				LOGGER.error("Failed to set alias.");
+				throw new IllegalStateException("Failed to set aliases.");
+			}
+		} catch (IndexMissingException e) {
+			LOGGER.error("Failed to set alias. Index missing.");
+			throw e;
+		} catch (AliasMissingException e) {
+			LOGGER.error("Failed to set alias. Alias missing.");
+			throw e;
+		}		
 	}
 	
 	/**
@@ -283,7 +297,7 @@ public class ESClientUtil implements ServletContextAware {
 					result.append(inputLine);
 				}
 			} else {
-				LOGGER.error(method + " request failed with " + connection.getResponseCode() + ' ' + connection.getResponseMessage());
+				LOGGER.error(method + " (" + url + ") request failed with " + connection.getResponseCode() + ' ' + connection.getResponseMessage());
 			}
 		} catch (MalformedURLException e) {
 			LOGGER.error(e.getMessage());
