@@ -122,7 +122,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 			}
 			
 			LOGGER.info("Dataimport started on index '" + indexName + "'");
-			/*
+			
 			BulkRequestBuilder bulkRequest = client.prepareBulk();
 			
 			indexing:
@@ -187,7 +187,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 				}
 				indexedDocuments.set(index);
 				LOGGER.debug("Executing elasticsearch bulk request took " + (System.currentTimeMillis() - execute) + "ms");
-			}*/
+			}
 			if (running.get()) {
 				LOGGER.info("Import of " + index + " documents finished in " + ((System.currentTimeMillis() - startTime)/1000f/60f/60f) + " hours.");
 				esClientUtil.updateSearchIndex();
