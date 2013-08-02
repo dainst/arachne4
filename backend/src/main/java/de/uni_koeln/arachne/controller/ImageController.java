@@ -279,8 +279,8 @@ public class ImageController {
 			LOGGER.debug("Watermark: " + imageServerInstance);
 			
 			try {
-				final URL serverAdress = new URL(new URI(imageServerPath + imageServerInstance + imageServerExtension + "?FIF=" + imagePath + imageName 
-						+ "&SDS=0,90&CNT=1.0&WID=" + resolution + "&HEI=" + resolution + "&QLT=99&CVT=jpeg").normalize().toASCIIString());
+				final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + "?FIF=" + imagePath + 
+						URLEncoder.encode(imageName, "UTF8") + "&SDS=0,90&CNT=1.0&WID=" + resolution + "&HEI=" + resolution + "&QLT=99&CVT=jpeg");
 				LOGGER.debug("Full server adress: " + serverAdress);
 				connection = (HttpURLConnection)serverAdress.openConnection();			
 				connection.setRequestMethod("GET");
@@ -293,8 +293,6 @@ public class ImageController {
 					ImageIO.write(ImageIO.read(connection.getInputStream()), "jpg", outputStream);
 					response.setStatus(200);
 				}
-			} catch (URISyntaxException e) {
-				LOGGER.error(e.getMessage());
 			} catch (MalformedURLException e) {
 				LOGGER.error(e.getMessage());
 			} catch (ProtocolException e) {
