@@ -19,7 +19,9 @@
 	
 	<util:properties id="config" location="classpath:config/application.properties"/>
 	
-	<task:annotation-driven executor="defaultTaskExecutor"/>
+	<task:annotation-driven scheduler="taskScheduler" executor="defaultTaskExecutor"/>
+	<task:scheduler id="taskScheduler" pool-size="5"/>
+	
 	<task:executor id="defaultTaskExecutor" pool-size="5"/>
 	
 	<import resource="hibernate.xml"/>
