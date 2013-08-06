@@ -139,7 +139,7 @@ public class SearchController {
 	 * @param filterValues The values of the solr filter query. (optional)
 	 * @return A response object containing the data (this is serialized to XML or JSON depending on content negotiation).
 	 */
-	@RequestMapping(value="/context/{entityId}", method=RequestMethod.GET)
+	@RequestMapping(value="/contexts/{entityId}", method=RequestMethod.GET)
 	public @ResponseBody SearchResult handleContextRequest(@PathVariable("entityId") final Long entityId,
 			@RequestParam(value = "limit", required = false) final Integer limit,
 			@RequestParam(value = "offset", required = false) final Integer offset,
