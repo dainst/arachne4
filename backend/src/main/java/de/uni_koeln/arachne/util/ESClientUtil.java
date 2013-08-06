@@ -173,10 +173,10 @@ public class ESClientUtil implements ServletContextAware {
 	@PreDestroy
 	public void destroy() {
 		if (esRemoteClient) {
-			LOGGER.info("Closing up elasticsearch transport client...");
+			LOGGER.info("Closing elasticsearch transport client...");
 			client.close();
 		} else {
-			LOGGER.info("Closing up elasticsearch node client...");
+			LOGGER.info("Closing elasticsearch node client...");
 			node.close();
 		}
 	}
