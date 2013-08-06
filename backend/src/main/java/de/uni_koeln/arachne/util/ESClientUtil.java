@@ -59,6 +59,8 @@ public class ESClientUtil implements ServletContextAware {
 	
 	private static final String INDEX_1 = "arachne4_1";
 	private static final String INDEX_2 = "arachne4_2";
+
+	private transient final String searchIndexAlias;
 	
 	@Autowired
 	public ESClientUtil(final @Value("#{config.esProtocol}") String esProtocol
@@ -72,6 +74,7 @@ public class ESClientUtil implements ServletContextAware {
 		this.esAddress = esAddress;
 		this.esRemotePort = esRemotePort;
 		this.esName = esName;
+		this.searchIndexAlias = esName;
 		this.esBulkSize = esBulkSize;
 		this.esRemoteClient = esRemoteClient;
 		this.esRESTPort = esRESTPort;
@@ -115,8 +118,8 @@ public class ESClientUtil implements ServletContextAware {
 		final String indexName = getDataImportIndexName();
 		final String oldName = "arachne4_2".equals(indexName) ? "arachne4_1" : "arachne4_2";
 		try {
-			final IndicesAliasesResponse response = client.admin().indices().prepareAliases().addAlias(indexName, esName)
-					.removeAlias(oldName, esName).execute().actionGet();
+			final IndicesAliasesResponse response = client.admin().indices().prepareAliases().addAlias(indexName, searchIndexAlias)
+					.removeAlias(oldName, searchIndexAlias).execute().actionGet();
 			if (response.isAcknowledged()) {
 				LOGGER.info("Set alias for " + indexName);
 				LOGGER.info("Removed alias for " + oldName);
@@ -156,6 +159,10 @@ public class ESClientUtil implements ServletContextAware {
 	
 	public String getName() {
 		return esName;
+	}
+	
+	public String getSearchIndexAlias() {
+		return this.searchIndexAlias;
 	}
 	
 	public int getBulkSize() {

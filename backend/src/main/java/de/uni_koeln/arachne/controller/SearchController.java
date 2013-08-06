@@ -283,7 +283,7 @@ public class SearchController {
 	private SearchRequestBuilder buildSearchRequest(final String searchParam, final int resultSize, final int resultOffset,
 			final List<String> filterValueList) {
 		
-		return esClientUtil.getClient().prepareSearch()
+		return esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
 				.setQuery(buildQuery(searchParam, filterValueList))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setFrom(resultOffset)
