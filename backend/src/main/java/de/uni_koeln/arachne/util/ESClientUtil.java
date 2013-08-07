@@ -22,7 +22,6 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.indices.AliasMissingException;
 import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
@@ -114,7 +113,7 @@ public class ESClientUtil implements ServletContextAware {
 	/**
 	 * Updates the elasticsearch indices by changing the index alias and deleting the unused index.
 	 */
-	public void updateSearchIndex() throws IllegalStateException,IndexMissingException,AliasMissingException {
+	public void updateSearchIndex() throws IllegalStateException,IndexMissingException {
 		final String indexName = getDataImportIndexName();
 		final String oldName = "arachne4_2".equals(indexName) ? "arachne4_1" : "arachne4_2";
 		try {
@@ -129,10 +128,7 @@ public class ESClientUtil implements ServletContextAware {
 				throw new IllegalStateException("Failed to set aliases.");
 			}
 		} catch (IndexMissingException e) {
-			LOGGER.error("Failed to set alias. Index missing.");
-			throw e;
-		} catch (AliasMissingException e) {
-			LOGGER.error("Failed to set alias. Alias missing.");
+			LOGGER.error("Failed to set alias.");
 			throw e;
 		}		
 	}
