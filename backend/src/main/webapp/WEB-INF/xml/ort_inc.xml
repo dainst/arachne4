@@ -16,6 +16,7 @@
 			<field datasource=".BerlinIdentNr" prefix="Berlin Ident.Nr. " /> 
 			<field datasource=".AltInvNr" prefix="Alte Inv.-Nr. " /> 
 			<field datasource=".ArtOrtsangabe" search="Aufbewahrung Automatisch erstellt" replace="Aufbewahrungsort" prefix="- Ortsangabe ist " postfix=" -" />
+			<linkField labelKey="Gazetteer" datasource=".Gazetteerid" prefix="http://gazetter.dainst.org/place/" />
 		</context>
 	</section>
 </includeSection>
