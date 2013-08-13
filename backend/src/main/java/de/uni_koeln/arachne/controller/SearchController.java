@@ -114,7 +114,8 @@ public class SearchController {
 		final List<String> facetList = defaultFacetList;
 		final List<String> filterValueList = getFilterValueList(filterValues, facetList);
 		
-		final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(searchParam, resultSize, resultOffset, filterValueList); 
+		final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(searchParam, resultSize, resultOffset, filterValueList);
+		LOGGER.info("Adding facets: " + facetList);
 		addFacets(facetList, resultFacetLimit, searchRequestBuilder);
 		
 		final SearchResult searchResult = executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, facetList);
