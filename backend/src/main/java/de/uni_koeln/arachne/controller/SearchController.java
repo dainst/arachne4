@@ -157,6 +157,7 @@ public class SearchController {
 		final int totalHits = contextIds.size();
 		
 		List<String> facetList = defaultFacetList;
+		LOGGER.info("FilterValues: " + filterValues);
 		List<String> filterValueList = getFilterValueList(filterValues, facetList);
 		
 		if (contextIds != null) { 
@@ -319,6 +320,7 @@ public class SearchController {
 	 * @return
 	 */
 	private List<String> getCategorySpecificFacetList(final	List<String> filterValueList) {
+		LOGGER.info("Changing facets: " + filterValueList);
 		final List<String> result = new ArrayList<String>();
 		for (String filterValue: filterValueList) {
 			if (filterValue.startsWith("facet_kategorie")) {
