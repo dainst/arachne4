@@ -106,6 +106,20 @@ public class ESClientUtil implements ServletContextAware {
 			if (ES_MAPPING_SUCCESS.equals(setMapping(indexName))) {
 				result = indexName;
 			}
+		} else {
+			// if the index cannot be created it most likely exists already
+			LOGGER.info("Failed to create index " + indexName);
+			LOGGER.info("Trying to delete it...");
+			if (deleteIndex(indexName)) {
+				if (sendRequest(url, "PUT").contains("ok")) {
+					LOGGER.info("Created index " + indexName);
+					if (ES_MAPPING_SUCCESS.equals(setMapping(indexName))) {
+						result = indexName;
+					}
+				} else {
+					LOGGER.info("Permanently failed to create index " + indexName);
+				}
+			}
 		}
 		return result;
 	}
@@ -137,12 +151,15 @@ public class ESClientUtil implements ServletContextAware {
 	 * Deletes the elasticsearch index with the given name.
 	 * @param indexName
 	 */
-	public void deleteIndex(final String indexName) {
+	public boolean deleteIndex(final String indexName) {
+		boolean result = true;
 		LOGGER.info("Deleting index " + indexName);
 		final DeleteIndexResponse delete = client.admin().indices().delete(new DeleteIndexRequest(indexName)).actionGet();
 		if (!delete.isAcknowledged()) {
-			LOGGER.error("Index wasn't deleted");
+			LOGGER.error("Index " + indexName + " was not deleted.");
+			result = false;
 		}
+		return result;
 	}
 
 	public Client getClient() {
