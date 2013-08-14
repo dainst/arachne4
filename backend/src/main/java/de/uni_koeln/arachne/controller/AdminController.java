@@ -46,6 +46,7 @@ public class AdminController {
 	
 	private transient boolean doIndex;
 	
+	@Autowired
 	public AdminController(final @Value("#{config.esIndexOnDeploy}") boolean esIndexOnDeploy) {
 		doIndex = esIndexOnDeploy;
 	}
