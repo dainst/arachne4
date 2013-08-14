@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -42,6 +43,12 @@ public class AdminController {
 
 	@Autowired
 	private transient TaskExecutor defaultTaskExecutor;
+	
+	private transient boolean doIndex;
+	
+	public AdminController(final @Value("#{config.esIndexOnDeploy}") boolean esIndexOnDeploy) {
+		doIndex = esIndexOnDeploy;
+	}
 	
 	/**
 	 * Handles HTTP GET requests to /admin/cache.   
@@ -156,7 +163,11 @@ public class AdminController {
 	// TODO find a better place for this function - maybe using java spring configuration
 	@Scheduled(fixedDelay=43200000)
 	private void scheduledDataimport() {
-		LOGGER.info("Starting scheduled dataimport...");
-		defaultTaskExecutor.execute(dataImportService);
+		if (doIndex) {
+			LOGGER.info("Starting scheduled dataimport...");
+			defaultTaskExecutor.execute(dataImportService);
+		} else {
+			doIndex = true;
+		}
 	}
 }
