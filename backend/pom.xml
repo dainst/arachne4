@@ -199,7 +199,14 @@
 			<artifactId>xercesImpl</artifactId>
 			<version>${xerces-version}</version>
 		</dependency>
-
+		
+		<!-- JSON (org.json) -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20090211</version>
+		</dependency>
+		
 		<!-- Jackson JSON Mapper -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>

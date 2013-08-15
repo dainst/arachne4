@@ -1,19 +1,23 @@
 package de.uni_koeln.arachne.controller;
 
 
-import java.net.MalformedURLException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.aspectj.weaver.ast.And;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.json.JSONObject;
+import org.json.XML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.mapping.DatasetGroup;
@@ -26,8 +30,8 @@ import de.uni_koeln.arachne.service.EntityService;
 import de.uni_koeln.arachne.service.ImageService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.util.ESClientUtil;
 import de.uni_koeln.arachne.util.EntityId;
-import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * Handles http requests (currently only get) for <code>/entity<code> and <code>/data</code>.
@@ -47,6 +51,9 @@ public class ArachneEntityController {
 	private transient SingleEntityDataService singleEntityDataService;
 	
 	@Autowired
+	private transient ESClientUtil esClientUtil;
+	
+	@Autowired
 	private transient ResponseFactory responseFactory;
 	
 	@Autowired
@@ -56,41 +63,6 @@ public class ArachneEntityController {
 	private transient IUserRightsService userRightsService; 
 	
 	/**
-	 * Handles http requests for /solr/{entityId}
-	 * This mapping should only be used by Solr for indexing. It wraps the standard entity request but disables authorization.
-	 * Requests are only allowed from the same IP-address as the Solr server configured in <code>src/main/resources/config/application.properties</code> 
-	 * or from localhost (to make sure it works even if Solr is running on the same server as the backend). 
-	 */
-	@RequestMapping(value="/entity/solr/{entityId}", method=RequestMethod.GET)
-	public @ResponseBody BaseArachneEntity handleSolrIndexingRequest(final HttpServletRequest request
-			, @PathVariable("entityId") final Long entityId, final HttpServletResponse response, final @Value("#{config.solrIp}") String solrIp) {
-		
-		try {
-			LOGGER.debug(request.getLocalAddr());
-			LOGGER.debug(request.getRemoteAddr());
-			LOGGER.debug("Processing Solr-Request for ID: " + entityId + "...");
-
-			if (StrUtils.isValidIPAddress(solrIp) && StrUtils.isValidIPAddress(request.getRemoteAddr())) {
-				if(solrIp.equals(request.getRemoteAddr()) || request.getRemoteAddr().equals(request.getLocalAddr())) {
-					LOGGER.debug("Valid Solr request.");
-					userRightsService.setUserSolr();			
-					final BaseArachneEntity result = getEntityRequestResponse(entityId, null, response);
-					LOGGER.debug("Processing Solr-Request for ID: " + entityId + "...done");
-					return result;
-				} else {
-					response.setStatus(403);
-				}
-			} else {
-				throw new MalformedURLException("Invalid IP address.");
-			}
-		} catch (Exception e) {
-			LOGGER.error("Processing Solr-Request for ID: " + entityId + "...ERROR");
-			LOGGER.error(e.getMessage());
-		}
-		return null;
-	}
-	
-	/**
 	 * Handles http request for /{entityId}.
 	 * Requests for /entity/* return formatted data. This will be sent out either as JSON or as XML. The response format is set 
 	 * by Springs content negotiation mechanism.
@@ -98,9 +70,18 @@ public class ArachneEntityController {
      * @return A response object containing the data (this is serialized to JSON or XML depending on content negotiation).
      */
 	@RequestMapping(value="/entity/{entityId}", method=RequestMethod.GET)
-	public @ResponseBody BaseArachneEntity handleGetEntityIdRequest(final HttpServletRequest request
-			, @PathVariable("entityId") final Long entityId, final HttpServletResponse response) {
-		return getEntityRequestResponse(entityId, null, response);
+	public @ResponseBody Object handleGetEntityIdRequest(
+			@PathVariable("entityId") final Long entityId,
+			@RequestParam(value = "live", required = false) final Boolean isLive,
+			final HttpServletRequest request,
+			final HttpServletResponse response) {
+		
+		if (isLive != null && isLive) {
+			return getEntityFromDB(entityId, null, response);
+		} else {
+			return getEntityFromIndex(entityId, null, request, response);
+		}
+		
 	}
     
     /**
@@ -112,10 +93,19 @@ public class ArachneEntityController {
      * @return A response object containing the data (this is serialized to JSON or XML depending on content negotiation).
      */
     @RequestMapping(value="/entity/{category}/{categoryId}", method=RequestMethod.GET)
-    public @ResponseBody BaseArachneEntity handleGetCategoryIdRequest(@PathVariable("category") final String category
-    		, @PathVariable("categoryId") final Long categoryId, final HttpServletResponse response) {
+    public @ResponseBody Object handleGetCategoryIdRequest(
+    		@PathVariable("category") final String category,
+    		@PathVariable("categoryId") final Long categoryId,
+    		@RequestParam(value = "live", required = false) final Boolean isLive,
+    		final HttpServletRequest request,
+    		final HttpServletResponse response) {
+    	
     	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
-    	return getEntityRequestResponse(categoryId, category, response);
+    	if (isLive != null && isLive) {
+			return getEntityFromDB(categoryId, category, response);
+		} else {
+			return getEntityFromIndex(categoryId, category, request, response);
+		}
     }
 
     /**
@@ -130,13 +120,12 @@ public class ArachneEntityController {
      * @param response The <code>HttpServeletRsponse</code> object.
      * @return A response object derived from <code>BaseArachneEntity</code>.
      */
-    private BaseArachneEntity getEntityRequestResponse(final Long id, final String category //NOPMD
+    private BaseArachneEntity getEntityFromDB(final Long id, final String category //NOPMD
     		, final HttpServletResponse response) { 
     	
     	final Long startTime = System.currentTimeMillis();
-        
+    	    	
     	EntityId entityId;
-    	
     	if (category == null) {
     		entityId = entityIdentificationService.getId(id);
     	} else {
@@ -157,7 +146,53 @@ public class ArachneEntityController {
     	final FormattedArachneEntity result = entityService.getFormattedEntityById(entityId);
     	
     	LOGGER.debug("-----------------------------------");
-    	LOGGER.debug("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
+    	LOGGER.info("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
+    	return result;
+    }
+    
+    // TODO: docu, auth, failure handling
+    /**
+     * Internal function handling all http GET requests for <code>/entity/*</code>.
+     * It fetches the data for a given entity and returns it as a response object.
+     * <br>
+     * If the entity is not found a HTTP 404 error message is returned.
+     * <br>
+     * If the user does not have permission to see an entity a HTTP 403 status message is returned.
+     * @param id The unique entity ID if no category is given else the internal ID.
+     * @param category The category to query or <code>null</code>.
+     * @param response The <code>HttpServeletRsponse</code> object.
+     * @return A response object derived from <code>BaseArachneEntity</code>.
+     */
+    private String getEntityFromIndex(final Long id, final String category //NOPMD
+    		,final HttpServletRequest request, final HttpServletResponse response) { 
+    	
+    	final Long startTime = System.currentTimeMillis();
+    	    	
+    	String result = null;
+    	SearchResponse searchResponse = null;
+    	if (category == null) {
+    		searchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
+    				.setQuery(QueryBuilders.queryString("entityId:" + id)).setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+    				.setFrom(0).setSize(1).execute().actionGet();
+    	} else {
+    		searchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
+    				.setQuery(QueryBuilders.queryString("type:" + category + " AND " + "internalId:" + id))
+    				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+    				.setFrom(0).setSize(1).execute().actionGet();
+    	}
+    	result = searchResponse.getHits().getAt(0).getSourceAsString();
+		
+		if (!request.getHeader("Accept").contains("application/JSON")) {
+			try {
+				final JSONObject jsonObject = new JSONObject(result);
+				result = XML.toString(jsonObject);
+			} catch (Exception e) {
+				LOGGER.error("JSON to XML conversion for entity '" + category + ": " + id +"' failed. Cause: ", e.getMessage());
+			}
+		}
+    	
+    	LOGGER.debug("-----------------------------------");
+    	LOGGER.info("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
     	return result;
     }
     
