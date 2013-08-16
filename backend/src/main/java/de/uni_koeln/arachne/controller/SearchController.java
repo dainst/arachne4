@@ -111,11 +111,10 @@ public class SearchController {
 		final int resultOffset = offset == null ? 0 : offset;
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 		
-		final List<String> facetList = defaultFacetList;
+		final List<String> facetList = new ArrayList<String>(defaultFacetList);
 		final List<String> filterValueList = getFilterValueList(filterValues, facetList);
 		
 		final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(searchParam, resultSize, resultOffset, filterValueList);
-		LOGGER.info("Adding facets: " + facetList);
 		addFacets(facetList, resultFacetLimit, searchRequestBuilder);
 		
 		final SearchResult searchResult = executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, facetList);
@@ -156,8 +155,7 @@ public class SearchController {
 		final List<Long> contextIds = genericSQLService.getConnectedEntityIds(entityId);
 		final int totalHits = contextIds.size();
 		
-		List<String> facetList = defaultFacetList;
-		LOGGER.info("FilterValues: " + filterValues);
+		List<String> facetList = new ArrayList<String>(defaultFacetList);
 		List<String> filterValueList = getFilterValueList(filterValues, facetList);
 		
 		if (contextIds != null) { 
@@ -320,7 +318,6 @@ public class SearchController {
 	 * @return
 	 */
 	private List<String> getCategorySpecificFacetList(final	List<String> filterValueList) {
-		LOGGER.info("Changing facets: " + filterValueList);
 		final List<String> result = new ArrayList<String>();
 		for (String filterValue: filterValueList) {
 			if (filterValue.startsWith("facet_kategorie")) {
