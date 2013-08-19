@@ -76,6 +76,7 @@ public class SingleEntityDataService {
 			final String tableName =  entityId.getTableName(); 
 			//If There are Arachne Categories that require the Retrival of other Tables than the table of the Category
 			if ("objekt".equals(tableName) || "buch".equals(tableName)) {
+				LOGGER.debug("Trying to retrieve sub data...");
 				for (final TableConnectionDescription tCD : subProjects) {
 					if(tCD.linksTable(entityId.getTableName())){
 						final Map<String, String> temp = arachneDataMapDao.getBySubDataset(result, tCD);
