@@ -64,25 +64,30 @@ public class SingleEntityDataService {
 	 */
 	public Dataset getSingleEntityByArachneId(final EntityId entityId) {
 		LOGGER.debug("Getting id: " + entityId.getArachneEntityID());
-		Dataset result;
-		final Map<String, String> tempDataMap = arachneDataMapDao.getById(entityId);
-		result = new Dataset();
-		result.setArachneId(entityId);
-		if (tempDataMap != null) {
-			result.appendFields(tempDataMap);
-		}
-		
-		final String tableName =  entityId.getTableName(); 
-		//If There are Arachne Categories that require the Retrival of other Tables than the table of the Category
-		if ("objekt".equals(tableName) || "buch".equals(tableName)) {
-			for (final TableConnectionDescription tCD : subProjects) {
-				if(tCD.linksTable(entityId.getTableName())){
-					final Map<String, String> temp = arachneDataMapDao.getBySubDataset(result, tCD);
-					result.appendFields(temp);
-				}
+		Dataset result = null;
+		try {
+			final Map<String, String> tempDataMap = arachneDataMapDao.getById(entityId);
+			result = new Dataset();
+			result.setArachneId(entityId);
+			if (tempDataMap != null) {
+				result.appendFields(tempDataMap);
 			}
+			
+			final String tableName =  entityId.getTableName(); 
+			//If There are Arachne Categories that require the Retrival of other Tables than the table of the Category
+			if ("objekt".equals(tableName) || "buch".equals(tableName)) {
+				for (final TableConnectionDescription tCD : subProjects) {
+					if(tCD.linksTable(entityId.getTableName())){
+						final Map<String, String> temp = arachneDataMapDao.getBySubDataset(result, tCD);
+						result.appendFields(temp);
+					}
+				}
+			}	
+		} catch (Exception e) {
+			LOGGER.debug("Getting entity " + entityId.getArachneEntityID() + " failed with: " + e.getMessage());
+			result = null;
 		}
-		
+				
 		return result;
 	}
 
