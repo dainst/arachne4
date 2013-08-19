@@ -42,9 +42,10 @@ public class EntityService {
 		final String datasetGroupName = singleEntityDataService.getDatasetGroup(entityId);
     	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
     	
-    	LOGGER.debug("Is Solr indexer: " + userRightsService.isUserSolr());
+    	LOGGER.debug("Indexer(" + entityId.getArachneEntityID() + "): " + userRightsService.isUserSolr());
     	
     	if ((!userRightsService.isUserSolr()) && (!userRightsService.userHasDatasetGroup(datasetGroup))) {
+    		LOGGER.debug("Forbidden!");
     		final FormattedArachneEntity result = new FormattedArachneEntity();
     		result.setType("forbidden");
     		return result;

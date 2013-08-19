@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,8 @@ import de.uni_koeln.arachne.util.StrUtils;
  */
 @Service("arachneSingleEntityDataService")
 public class SingleEntityDataService {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(SingleEntityDataService.class);
 	
 	@Autowired
 	private transient DataMapDao arachneDataMapDao; 
@@ -59,6 +63,7 @@ public class SingleEntityDataService {
 	 * @return Instance of <code>Dataset</code> that represents the dataset.
 	 */
 	public Dataset getSingleEntityByArachneId(final EntityId entityId) {
+		LOGGER.debug("Getting id: ",entityId.getArachneEntityID());
 		Dataset result;
 		final Map<String, String> tempDataMap = arachneDataMapDao.getById(entityId);
 		result = new Dataset();
