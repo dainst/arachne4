@@ -63,7 +63,7 @@ public class SingleEntityDataService {
 	 * @return Instance of <code>Dataset</code> that represents the dataset.
 	 */
 	public Dataset getSingleEntityByArachneId(final EntityId entityId) {
-		LOGGER.debug("Getting id: ",entityId.getArachneEntityID());
+		LOGGER.debug("Getting id: " + entityId.getArachneEntityID());
 		Dataset result;
 		final Map<String, String> tempDataMap = arachneDataMapDao.getById(entityId);
 		result = new Dataset();
