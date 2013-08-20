@@ -85,7 +85,7 @@ public class SingleEntityDataService {
 				}
 			}	
 		} catch (Exception e) {
-			LOGGER.debug("Getting entity " + entityId.getArachneEntityID() + " failed with: " + e.getMessage());
+			LOGGER.debug("Getting entity " + entityId.getArachneEntityID() + " failed with: " + e);
 			result = null;
 		}
 				
