@@ -85,7 +85,8 @@ public class SingleEntityDataService {
 				}
 			}	
 		} catch (Exception e) {
-			LOGGER.debug("Getting entity " + entityId.getArachneEntityID() + " failed with: " + e);
+			LOGGER.error("Getting entity " + entityId.getArachneEntityID() + " failed with: " + e);
+			LOGGER.error("Stack: " + e.getStackTrace());
 			result = null;
 		}
 				
