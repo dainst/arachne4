@@ -65,30 +65,26 @@ public class SingleEntityDataService {
 	public Dataset getSingleEntityByArachneId(final EntityId entityId) {
 		LOGGER.debug("Getting id: " + entityId.getArachneEntityID());
 		Dataset result = null;
-		try {
-			final Map<String, String> tempDataMap = arachneDataMapDao.getById(entityId);
-			result = new Dataset();
-			result.setArachneId(entityId);
-			if (tempDataMap != null) {
-				result.appendFields(tempDataMap);
-			}
-			
-			final String tableName =  entityId.getTableName(); 
-			//If There are Arachne Categories that require the Retrival of other Tables than the table of the Category
-			if ("objekt".equals(tableName) || "buch".equals(tableName)) {
-				LOGGER.debug("Trying to retrieve sub data...");
-				for (final TableConnectionDescription tCD : subProjects) {
-					if(tCD.linksTable(entityId.getTableName())){
-						final Map<String, String> temp = arachneDataMapDao.getBySubDataset(result, tCD);
-						result.appendFields(temp);
-					}
-				}
-			}	
-		} catch (Exception e) {
-			LOGGER.error("Getting entity " + entityId.getArachneEntityID() + " failed with: " + e, e);
-			result = null;
+		
+		final Map<String, String> tempDataMap = arachneDataMapDao.getById(entityId);
+		result = new Dataset();
+		result.setArachneId(entityId);
+		if (tempDataMap != null) {
+			result.appendFields(tempDataMap);
 		}
-				
+			
+		final String tableName =  entityId.getTableName(); 
+		//If There are Arachne Categories that require the Retrival of other Tables than the table of the Category
+		if ("objekt".equals(tableName) || "buch".equals(tableName)) {
+			LOGGER.debug("Trying to retrieve sub data...");
+			for (final TableConnectionDescription tCD : subProjects) {
+				if(tCD.linksTable(entityId.getTableName())){
+					final Map<String, String> temp = arachneDataMapDao.getBySubDataset(result, tCD);
+					result.appendFields(temp);
+				}
+			}
+		}	
+						
 		return result;
 	}
 
