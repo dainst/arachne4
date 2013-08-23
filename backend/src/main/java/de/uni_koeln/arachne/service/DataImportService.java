@@ -144,7 +144,8 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 				final long fetch = System.currentTimeMillis();
 				final List<ArachneEntity> entityList = entityIdentificationService.getByEntityIdRange(startId, endId);
 				LOGGER.debug("Fetching entities took " + (System.currentTimeMillis() - fetch) + "ms");
-				LOGGER.info("Indexing: " + startId + " - " + endId);
+				LOGGER.debug("Assembling documents " + startId + " to " + endId +"...");
+				final long assemble = System.currentTimeMillis();
 				startId = endId;
 				for (final ArachneEntity currentEntityId: entityList) {
 					if (terminate) {
@@ -176,6 +177,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 						elapsedTime.set(now - startTime);
 					}
 				}
+				LOGGER.debug("Assembling entities took " + (System.currentTimeMillis() - assemble) + "ms");
 				LOGGER.debug("Executing elasticsearch bulk request...");
 				final long execute = System.currentTimeMillis();
 				bulkRequest.execute().actionGet();
