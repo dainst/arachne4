@@ -199,7 +199,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 			}
 		}
 		catch (Exception e) {
-			LOGGER.error("Dataimport failed with: " + e.toString());
+			LOGGER.error("Dataimport failed with: " + e, e);
 			esClientUtil.deleteIndex(indexName);
 		}
 		// disable request scope hack
