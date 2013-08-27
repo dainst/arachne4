@@ -186,7 +186,7 @@ public class ArachneEntityController {
 				final JSONObject jsonObject = new JSONObject(result);
 				result = XML.toString(jsonObject);
 			} catch (Exception e) {
-				LOGGER.error("JSON to XML conversion for entity '" + category + ": " + id +"' failed. Cause: ", e.getMessage());
+				LOGGER.error("JSON to XML conversion for entity '" + category + ": " + id +"' failed. Cause: ", e);
 			}
 		}
     	

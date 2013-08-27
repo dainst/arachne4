@@ -10,11 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.QueryFilterBuilder;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.facet.FacetBuilders;
@@ -23,11 +19,7 @@ import org.elasticsearch.search.facet.terms.TermsFacet.Entry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -155,8 +147,8 @@ public class SearchController {
 		final List<Long> contextIds = genericSQLService.getConnectedEntityIds(entityId);
 		final int totalHits = contextIds.size();
 		
-		List<String> facetList = new ArrayList<String>(defaultFacetList);
-		List<String> filterValueList = getFilterValueList(filterValues, facetList);
+		final List<String> facetList = new ArrayList<String>(defaultFacetList);
+		final List<String> filterValueList = getFilterValueList(filterValues, facetList);
 		
 		if (contextIds != null) { 
 			int lastContext = resultSize + resultOffset - 1;
@@ -202,7 +194,7 @@ public class SearchController {
 	 * @param facetList List of facet fields.
 	 * @return filter values as list.
 	 */
-	public List<String> getFilterValueList(final String filterValues, List<String> facetList) {
+	public List<String> getFilterValueList(final String filterValues, final List<String> facetList) {
 		List<String> result = null; 
 		if (!StrUtils.isEmptyOrNull(filterValues)) {
 			result = filterQueryStringToStringList(filterValues);
