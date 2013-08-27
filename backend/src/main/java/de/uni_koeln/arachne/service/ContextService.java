@@ -56,11 +56,13 @@ public class ContextService {
 	public void addMandatoryContexts(final Dataset parent) {
 		final List<String> mandatoryContextTypes = xmlConfigUtil.getMandatoryContextNames(parent.getArachneId().getTableName());
 		LOGGER.debug("Mandatory Contexts: " + mandatoryContextTypes);
-		final Iterator<String> contextType = mandatoryContextTypes.iterator();
-		while (contextType.hasNext()) {
-			final Context context = new Context(contextType.next(), parent);
-			context.getallContexts();
-			parent.addContext(context);
+		if (mandatoryContextTypes != null) {
+			final Iterator<String> contextType = mandatoryContextTypes.iterator();
+			while (contextType.hasNext()) {
+				final Context context = new Context(contextType.next(), parent);
+				context.getallContexts();
+				parent.addContext(context);
+			}
 		}
 	}
 	

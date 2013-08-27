@@ -714,7 +714,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * This method returns the list of context names that are needed to retrieve all data for a given category. The list is only 
 	 * created if it is not cached.
 	 * @param type The category of the parent dataset.
-	 * @return A list containing the names of the mandatory contexts.
+	 * @return A list containing the names of the mandatory contexts or <code>null</code> if the type does not need external contexts. 
 	 */
 	public List<String> getMandatoryContextNames(final String type) {
 		final List<String> cachedContextList = mandatoryContextNames.get(type);
@@ -722,14 +722,17 @@ public class XmlConfigUtil implements ServletContextAware {
 			final List<String> externalFields = getExternalFields(type);
 			final List<String> mandatoryContextTypes = new ArrayList<String>();
 			
-			for (final String currentField: externalFields) {
-				final String[] contextTypes = currentField.split("\\.");
-				if (mandatoryContextTypes.isEmpty() || !mandatoryContextTypes.contains(contextTypes[0])) {
-					mandatoryContextTypes.add(contextTypes[0]);
+			if (externalFields != null) { 
+				for (final String currentField: externalFields) {
+					final String[] contextTypes = currentField.split("\\.");
+					if (mandatoryContextTypes.isEmpty() || !mandatoryContextTypes.contains(contextTypes[0])) {
+						mandatoryContextTypes.add(contextTypes[0]);
+					}
 				}
+				mandatoryContextNames.put(type, mandatoryContextTypes);
+				return mandatoryContextTypes;
 			}
-			mandatoryContextNames.put(type, mandatoryContextTypes);
-			return mandatoryContextTypes;
+			return null;
 		} else {
 			return cachedContextList;
 		}
