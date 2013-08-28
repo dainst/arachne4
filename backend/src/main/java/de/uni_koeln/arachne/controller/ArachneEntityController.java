@@ -144,9 +144,13 @@ public class ArachneEntityController {
     	
     	final FormattedArachneEntity result = entityService.getFormattedEntityById(entityId);
     	
-    	LOGGER.debug("-----------------------------------");
-    	LOGGER.info("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
-    	return result;
+    	if (result != null) {
+    		LOGGER.debug("-----------------------------------");
+    		LOGGER.info("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
+    		return result;
+    	}
+    	response.setStatus(404);
+    	return null;
     }
     
     // TODO: docu, auth, failure handling

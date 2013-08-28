@@ -90,7 +90,9 @@ public class ResponseFactory {
 		response.setLastModified(lastModified);
 		
 	   	final Document document = xmlConfigUtil.getDocument(tableName);
-    	final Namespace namespace = document.getRootElement().getNamespace();
+	   	if (document != null) {
+	   		
+	   	final Namespace namespace = document.getRootElement().getNamespace();
     	final Element display = document.getRootElement().getChild("display", namespace);
     		    	
     	// set title
@@ -129,6 +131,10 @@ public class ResponseFactory {
 		response.setAdditionalContent(dataset.getAdditionalContent());
 		
 		return response;
+	   	} else {
+	   		LOGGER.error("No xml document for '" + tableName + "' found.");
+	   		return null;
+	   	}
 	}
 	
 	/**

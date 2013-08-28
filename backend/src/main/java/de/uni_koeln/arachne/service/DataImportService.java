@@ -165,6 +165,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 										
 					if (entity == null) {
 						LOGGER.error("Entity " + entityId + " is null! This should never happen. Check the database immediately.");
+						throw new Exception();
 					} else {
 						bulkRequest.add(client.prepareIndex(indexName, "entity",String.valueOf(entityId.getArachneEntityID()))
 								.setSource(mapper.writeValueAsBytes(entity)));
@@ -199,7 +200,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 			}
 		}
 		catch (Exception e) {
-			LOGGER.error("Dataimport failed with: " + e, e);
+			LOGGER.error("Dataimport failed with: ", e);
 			esClientUtil.deleteIndex(indexName);
 		}
 		// disable request scope hack
