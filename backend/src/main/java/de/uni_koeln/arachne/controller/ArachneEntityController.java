@@ -185,7 +185,7 @@ public class ArachneEntityController {
     	}
     	result = searchResponse.getHits().getAt(0).getSourceAsString();
 		
-		if (!request.getHeader("Accept").contains("application/JSON")) {
+		if (!request.getHeader("Accept").contains("application/json")) {
 			try {
 				final JSONObject jsonObject = new JSONObject(result);
 				result = XML.toString(jsonObject);
