@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- just very basic to have at least some definitions -->
+<category name="niton"
+	xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+    <display>
+        <title>
+        	<section>
+            	<field datasource="niton.Sample" />
+            </section>
+        </title>
+        <subtitle>
+             <section>
+                <field datasource="niton.Location" />
+            </section>
+        </subtitle>
+        <datasections>
+        	<section labelKey="Informationen">
+        		<section labelKey="Zeit">
+        			<field datasource="niton.Time"/>
+        		</section>
+        	</section>
+        </datasections>
+    </display>
+    <facets>
+    	<facet name="kategorie" labelKey="Kategorie">
+    		<field datasource="Dataset.TableName" />
+    	</facet>
+    </facets>
+</category>
