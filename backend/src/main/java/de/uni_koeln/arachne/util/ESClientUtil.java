@@ -15,6 +15,8 @@ import javax.annotation.PreDestroy;
 import javax.servlet.ServletContext;
 
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesResponse;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.client.Client;
@@ -86,41 +88,33 @@ public class ESClientUtil implements ServletContextAware {
 			client = new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress(esAddress, esRemotePort));
 		} else {
 			LOGGER.info("Setting up elasticsearch node client...");
-			node = NodeBuilder.nodeBuilder(). client(true).clusterName(esName).node();
+			node = NodeBuilder.nodeBuilder().client(true).clusterName(esName).node();
 			client = node.client();
 		}
 	}
 	
 	/**
-	 * This method creates the new elasticsearch index that will be used for the dataimport and sets its mapping. It fails if the
-	 *  index already exists or the mapping cannot be set.
+	 * This method creates the new elasticsearch index that will be used for the dataimport and sets its mapping. It deletes any
+	 * existing index of the same name and it fails if the the mapping cannot be set.
 	 * @return The index name of the new index or "NoIndex" in case of failure.
 	 */
 	public String getDataImportIndex() {
 		String result = "NoIndex";
 		final String indexName = getDataImportIndexName();
-		final String url = esFullAddress + indexName;
-		// TODO: implement better failure handling
-		if (sendRequest(url, "PUT").contains("ok")) {
-			LOGGER.info("Created index " + indexName);
-			if (ES_MAPPING_SUCCESS.equals(setMapping(indexName))) {
-				result = indexName;
-			}
-		} else {
-			// if the index cannot be created it most likely exists already
-			LOGGER.info("Failed to create index " + indexName);
-			LOGGER.info("Trying to delete it...");
-			if (deleteIndex(indexName)) {
-				if (sendRequest(url, "PUT").contains("ok")) {
-					LOGGER.info("Created index " + indexName);
-					if (ES_MAPPING_SUCCESS.equals(setMapping(indexName))) {
-						result = indexName;
-					}
-				} else {
-					LOGGER.info("Permanently failed to create index " + indexName);
-				}
-			}
+				
+		deleteIndex(indexName);
+		
+		final CreateIndexResponse createResponse = client.admin().indices().create(new CreateIndexRequest(indexName)).actionGet();
+		if (!createResponse.isAcknowledged()) {
+			LOGGER.error("Failed to create index '" + indexName + "'");
+			return result;
 		}
+		LOGGER.info("Created index " + indexName);
+				
+		if (ES_MAPPING_SUCCESS.equals(setMapping(indexName))) {
+			result = indexName;
+		}
+		
 		return result;
 	}
 
@@ -154,10 +148,15 @@ public class ESClientUtil implements ServletContextAware {
 	public boolean deleteIndex(final String indexName) {
 		boolean result = true;
 		LOGGER.info("Deleting index " + indexName);
-		final DeleteIndexResponse delete = client.admin().indices().delete(new DeleteIndexRequest(indexName)).actionGet();
-		if (!delete.isAcknowledged()) {
-			LOGGER.error("Index " + indexName + " was not deleted.");
-			result = false;
+		DeleteIndexResponse delete = null;
+		try {
+			delete = client.admin().indices().delete(new DeleteIndexRequest(indexName)).actionGet();
+			if (!delete.isAcknowledged()) {
+				LOGGER.error("Index " + indexName + " was not deleted.");
+				result = false;
+			}
+		} catch (IndexMissingException e) { // NOPMD
+			// No problem if no index exists as it should be deleted anyways
 		}
 		return result;
 	}
@@ -202,7 +201,7 @@ public class ESClientUtil implements ServletContextAware {
 	}
 
 	/**
-	 * Sends a HTTP requests to the elasticsearch alias endpoint to determine the index name to use for the dataimport.
+	 * Sends a HTTP request to the elasticsearch alias endpoint to determine the index name to use for the dataimport.
 	 * @return The index name of the index currently not in use. Either <code>arachne4_1</code> or <code>arachne4_2</code>.
 	 */
 	private String getDataImportIndexName() {
@@ -230,7 +229,7 @@ public class ESClientUtil implements ServletContextAware {
 		}
 
 		try {
-			LOGGER.debug("Elasticsearch set mapping: " + esFullAddress + indexName + "/entity/_mapping");
+			LOGGER.info("Elasticsearch set mapping: " + esFullAddress + indexName + "/entity/_mapping");
 			final URL serverAdress = new URL(esFullAddress + indexName + "/entity/_mapping");
 			connection = (HttpURLConnection)serverAdress.openConnection();			
 			connection.setRequestMethod("PUT");
