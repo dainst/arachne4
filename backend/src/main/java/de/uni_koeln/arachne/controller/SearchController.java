@@ -145,12 +145,12 @@ public class SearchController {
 		
 		SearchResult result = new SearchResult();
 		final List<Long> contextIds = genericSQLService.getConnectedEntityIds(entityId);
-		final int totalHits = contextIds.size();
-		
+				
 		final List<String> facetList = new ArrayList<String>(defaultFacetList);
 		final List<String> filterValueList = getFilterValueList(filterValues, facetList);
 		
 		if (contextIds != null) { 
+			final int totalHits = contextIds.size();
 			int lastContext = resultSize + resultOffset - 1;
 			lastContext = lastContext < totalHits ? lastContext : totalHits - 1;
 			final int returnedHits = lastContext - resultOffset + 1;
