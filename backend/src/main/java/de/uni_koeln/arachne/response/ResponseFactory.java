@@ -122,8 +122,7 @@ public class ResponseFactory {
 				LOGGER.error("Invalid facet definition 'facet_" + facet.getName() + "' in '" + tableName + ".xml'. The facet field is not defined in " +
 						"FacettedArachneEntity.java. This facet will be ignored.");
 			} catch (Exception e) {
-				LOGGER.error("Failed to set facets with '" + e.getMessage() + "'");
-				LOGGER.debug("Stack: " + e.getStackTrace());
+				LOGGER.error("Failed to set facets with:", e);
 			}
 		}
 				
