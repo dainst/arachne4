@@ -60,10 +60,10 @@ public class ResponseFactory {
 		response.setEntityId(arachneId.getArachneEntityID());
 		response.setType(tableName);
 		response.setInternalId(arachneId.getInternalKey());
-		
+
 		// set thumbnailId
 		response.setThumbnailId(dataset.getThumbnailId());
-		
+
 		// set dataset group
 		// workaround for table marbilder as it does not adhere to the naming conventions
 		String datasetGroupFieldName = null;
@@ -78,7 +78,7 @@ public class ResponseFactory {
 		if (response.getDatasetGroup() == null) {
 			response.setDatasetGroup("Arachne");
 		}
-		
+
 		// set lastModified
 		Date lastModified;
 		try {
@@ -88,52 +88,52 @@ public class ResponseFactory {
 			lastModified = null;
 		}
 		response.setLastModified(lastModified);
-		
-	   	final Document document = xmlConfigUtil.getDocument(tableName);
-	   	if (document != null) {
-	   		
-	   	final Namespace namespace = document.getRootElement().getNamespace();
-    	final Element display = document.getRootElement().getChild("display", namespace);
-    		    	
-    	// set title
-    	final String titleStr = getTitleString(dataset, namespace, display);
-    	response.setTitle(titleStr);
-    	
-    	// set subtitle
-    	final String subtitleStr = getSubTitle(dataset, namespace, display);
-    	response.setSubtitle(subtitleStr);
-    	
-    	// set datasection
-    	setSections(dataset, namespace, display, response);
-		
-		// Set images
-		response.setImages(dataset.getImages());
-		
-		// Set facets via reflection - not the best way but the least invasive
-		// TODO: rewrite faceting so that no reflection is needed
-		final Element facets = document.getRootElement().getChild("facets", namespace);
-		final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
-		for (final Facet facet: facetList ) {
-			try {
-				final Class<?> facettedArachneEntityClass = response.getClass().getSuperclass();
-				final java.lang.reflect.Field facetField = facettedArachneEntityClass.getDeclaredField("facet_"+facet.getName());
-				facetField.set(response, facet.getValues());
-			} catch (NoSuchFieldException e) {
-				LOGGER.error("Invalid facet definition 'facet_" + facet.getName() + "' in '" + tableName + ".xml'. The facet field is not defined in " +
-						"FacettedArachneEntity.java. This facet will be ignored.");
-			} catch (Exception e) {
-				LOGGER.error("Failed to set facets with:", e);
+
+		final Document document = xmlConfigUtil.getDocument(tableName);
+		if (document != null) {
+
+			final Namespace namespace = document.getRootElement().getNamespace();
+			final Element display = document.getRootElement().getChild("display", namespace);
+
+			// set title
+			final String titleStr = getTitleString(dataset, namespace, display);
+			response.setTitle(titleStr);
+
+			// set subtitle
+			final String subtitleStr = getSubTitle(dataset, namespace, display);
+			response.setSubtitle(subtitleStr);
+
+			// set datasection
+			setSections(dataset, namespace, display, response);
+
+			// Set images
+			response.setImages(dataset.getImages());
+
+			// Set facets via reflection - not the best way but the least invasive
+			// TODO: rewrite faceting so that no reflection is needed
+			final Element facets = document.getRootElement().getChild("facets", namespace);
+			final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
+			for (final Facet facet: facetList ) {
+				try {
+					final Class<?> facettedArachneEntityClass = response.getClass().getSuperclass();
+					final java.lang.reflect.Field facetField = facettedArachneEntityClass.getDeclaredField("facet_"+facet.getName());
+					facetField.set(response, facet.getValues());
+				} catch (NoSuchFieldException e) {
+					LOGGER.error("Invalid facet definition 'facet_" + facet.getName() + "' in '" + tableName + ".xml'. The facet field is not defined in " +
+							"FacettedArachneEntity.java. This facet will be ignored.");
+				} catch (Exception e) {
+					LOGGER.error("Failed to set facets with:", e);
+				}
 			}
+
+			//Set additional Content
+			response.setAdditionalContent(dataset.getAdditionalContent());
+
+			return response;
 		}
-				
-		//Set additional Content
-		response.setAdditionalContent(dataset.getAdditionalContent());
-		
-		return response;
-	   	} else {
-	   		LOGGER.error("No xml document for '" + tableName + "' found.");
-	   		return null;
-	   	}
+
+		LOGGER.error("No xml document for '" + tableName + "' found.");
+		return null;
 	}
 	
 	/**

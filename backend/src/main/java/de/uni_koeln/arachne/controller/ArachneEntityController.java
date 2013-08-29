@@ -156,7 +156,7 @@ public class ArachneEntityController {
     // TODO: docu, auth, failure handling
     /**
      * Internal function handling all http GET requests for <code>/entity/*</code>.
-     * It fetches the data for a given entity and returns it as a response object.
+     * It fetches the data for a given entity from the elasticsearch index and returns it as a JSON or XML string.
      * <br>
      * If the entity is not found a HTTP 404 error message is returned.
      * <br>
@@ -195,7 +195,7 @@ public class ArachneEntityController {
 		}
     	
     	LOGGER.debug("-----------------------------------");
-    	LOGGER.info("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
+    	LOGGER.debug("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
     	return result;
     }
     
