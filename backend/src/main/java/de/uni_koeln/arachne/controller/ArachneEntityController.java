@@ -75,11 +75,11 @@ public class ArachneEntityController {
 			final HttpServletRequest request,
 			final HttpServletResponse response) {
 		
-		if (isLive != null && isLive) {
+		//if (isLive != null && isLive) {
 			return getEntityFromDB(entityId, null, response);
-		} else {
-			return getEntityFromIndex(entityId, null, request, response);
-		}
+		//} else {
+		//	return getEntityFromIndex(entityId, null, request, response);
+		//}
 		
 	}
     
@@ -100,11 +100,11 @@ public class ArachneEntityController {
     		final HttpServletResponse response) {
     	
     	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
-    	if (isLive != null && isLive) {
+    	//if (isLive != null && isLive) {
 			return getEntityFromDB(categoryId, category, response);
-		} else {
-			return getEntityFromIndex(categoryId, category, request, response);
-		}
+		//} else {
+		//	return getEntityFromIndex(categoryId, category, request, response);
+		//}
     }
 
     /**
