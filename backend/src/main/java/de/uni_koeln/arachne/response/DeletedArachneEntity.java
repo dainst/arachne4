@@ -19,7 +19,7 @@ public class DeletedArachneEntity extends BaseArachneEntity {
 	@JsonIgnore
 	@Override
 	public String getDatasetGroup() {
-		return datasetGroup;
+		return "none";
 	}
 	
 	public String getMessage() {
