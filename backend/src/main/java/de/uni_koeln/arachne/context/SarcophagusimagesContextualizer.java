@@ -139,10 +139,10 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 		final Long imageId;
 		final String filename;
 		
-		if (targetType.equals("marbilder") && sourceType!=null) {
+		if ("marbilder".equals(targetType) && sourceType!=null) {
 			project =  sourceType;
 			imageId = Long.parseLong(queryResults.get("semanticconnection.Target")); 
-		} else if (sourceType.equals("marbilder") && targetType!=null) {
+		} else if ("marbilder".equals(sourceType) && targetType!=null) {
 			project = targetType;
 			imageId = Long.parseLong(queryResults.get("semanticconnection.Source")); 
 		} else {
