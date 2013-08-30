@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -19,6 +18,7 @@ import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -121,9 +121,9 @@ public class ESClientUtil implements ServletContextAware {
 	/**
 	 * Updates the elasticsearch indices by changing the index alias and deleting the unused index.
 	 */
-	public void updateSearchIndex() throws IllegalStateException,IndexMissingException {
+	public void updateSearchIndex() throws IllegalStateException {
 		final String indexName = getDataImportIndexName();
-		final String oldName = "arachne4_2".equals(indexName) ? "arachne4_1" : "arachne4_2";
+		final String oldName = INDEX_2.equals(indexName) ? INDEX_1 : INDEX_2;
 		try {
 			final IndicesAliasesResponse response = client.admin().indices().prepareAliases().addAlias(indexName, searchIndexAlias)
 					.removeAlias(oldName, searchIndexAlias).execute().actionGet();
@@ -143,7 +143,8 @@ public class ESClientUtil implements ServletContextAware {
 	
 	/**
 	 * Deletes the elasticsearch index with the given name.
-	 * @param indexName
+	 * @param indexName The name of the index to delete.
+	 * @return A boolean value indicating success.
 	 */
 	public boolean deleteIndex(final String indexName) {
 		boolean result = true;
@@ -219,7 +220,6 @@ public class ESClientUtil implements ServletContextAware {
 	 * @return A status message.
 	 */
 	private String setMapping(final String indexName) {
-		HttpURLConnection connection = null;
 		String message = ES_MAPPING_FAILURE;
 
 		final String mapping = getMappingFromFile();
@@ -228,39 +228,19 @@ public class ESClientUtil implements ServletContextAware {
 			return message;
 		}
 
-		try {
-			LOGGER.info("Elasticsearch set mapping: " + esFullAddress + indexName + "/entity/_mapping");
-			final URL serverAdress = new URL(esFullAddress + indexName + "/entity/_mapping");
-			connection = (HttpURLConnection)serverAdress.openConnection();			
-			connection.setRequestMethod("PUT");
-			connection.setDoOutput(true);
-			connection.setRequestProperty("Content-Type", "application/json");
-			connection.setRequestProperty("Accept", "application/json");
-			final OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-			writer.write(mapping);
-			writer.flush();
-			writer.close();
-
-			if (connection.getResponseCode() == 200) {
-				message = ES_MAPPING_SUCCESS;
-				LOGGER.info(ES_MAPPING_SUCCESS);
-			} else {
-				LOGGER.error(ES_MAPPING_FAILURE + ". Elasticsearch HTTP request returned status code: " + connection.getResponseCode());
-			}
-		} catch (MalformedURLException e) {
-			LOGGER.error(e.getMessage());
-		} catch (ProtocolException e) {
-			LOGGER.error(e.getMessage());
-		} catch (SocketTimeoutException e) {
-			LOGGER.error(e.getMessage());
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage());
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-		} finally {
-			connection.disconnect();
-			connection = null;
+		final PutMappingResponse putResponse = client.admin().indices()
+				.preparePutMapping(indexName)
+				.setType("entity")
+				.setSource(mapping)
+				.execute().actionGet();
+		
+		if (putResponse.isAcknowledged()) {
+			message = ES_MAPPING_SUCCESS;
+			LOGGER.info(ES_MAPPING_SUCCESS);
+		} else {
+			LOGGER.error(ES_MAPPING_FAILURE);
 		}
+		
 		return message;
 	}
 	
