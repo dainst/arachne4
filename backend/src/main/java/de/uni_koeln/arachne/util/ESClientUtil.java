@@ -121,22 +121,36 @@ public class ESClientUtil implements ServletContextAware {
 	/**
 	 * Updates the elasticsearch indices by changing the index alias and deleting the unused index.
 	 */
-	public void updateSearchIndex() throws IllegalStateException {
+	public void updateSearchIndex() throws IllegalStateException, IndexMissingException {
 		final String indexName = getDataImportIndexName();
 		final String oldName = INDEX_2.equals(indexName) ? INDEX_1 : INDEX_2;
 		try {
-			final IndicesAliasesResponse response = client.admin().indices().prepareAliases().addAlias(indexName, searchIndexAlias)
+			IndicesAliasesResponse indexResponse = client.admin().indices().prepareAliases().addAlias(indexName, searchIndexAlias)
 					.removeAlias(oldName, searchIndexAlias).execute().actionGet();
-			if (response.isAcknowledged()) {
-				LOGGER.info("Set alias for " + indexName);
-				LOGGER.info("Removed alias for " + oldName);
+			if (indexResponse.isAcknowledged()) {
+				LOGGER.info("Set alias for '" + indexName + "'");
+				LOGGER.info("Removed alias for '" + oldName  + "'");
 				deleteIndex(oldName);
 			} else {
-				LOGGER.error("Failed to set alias.");
-				throw new IllegalStateException("Failed to set aliases.");
+				// perhaps we are running for the first time so try just to add the new alias
+				try {
+					indexResponse = client.admin().indices().prepareAliases().addAlias(indexName, searchIndexAlias)
+							.execute().actionGet();
+				} catch (IndexMissingException e) {
+					LOGGER.error("Failed to set alias. Index Missing.");
+					throw e;
+				}
+				if (indexResponse.isAcknowledged()) {
+					LOGGER.info("Set alias for '" + indexName + "'");
+					LOGGER.info("No alias removed.");
+					deleteIndex(oldName);
+				} else {
+					LOGGER.error("Failed to set alias.");
+					throw new IllegalStateException("Failed to set aliases.");
+				}
 			}
 		} catch (IndexMissingException e) {
-			LOGGER.error("Failed to set alias.");
+			LOGGER.error("Failed to set alias. Index Missing");
 			throw e;
 		}		
 	}
