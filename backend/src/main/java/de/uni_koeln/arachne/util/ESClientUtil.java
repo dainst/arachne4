@@ -104,13 +104,25 @@ public class ESClientUtil implements ServletContextAware {
 				
 		deleteIndex(indexName);
 		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
+		
 		final CreateIndexResponse createResponse = client.admin().indices().create(new CreateIndexRequest(indexName)).actionGet();
 		if (!createResponse.isAcknowledged()) {
 			LOGGER.error("Failed to create index '" + indexName + "'");
 			return result;
 		}
 		LOGGER.info("Created index " + indexName);
-				
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
+		
 		if (ES_MAPPING_SUCCESS.equals(setMapping(indexName))) {
 			result = indexName;
 		}
