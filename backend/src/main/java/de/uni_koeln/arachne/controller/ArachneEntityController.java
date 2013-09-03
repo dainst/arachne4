@@ -1,6 +1,10 @@
 package de.uni_koeln.arachne.controller;
 
 
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -191,6 +195,10 @@ public class ArachneEntityController {
     				final JSONObject jsonObject = new JSONObject(result);
     				result = XML.toString(jsonObject, "entity");
     				response.setContentType("application/xml");
+    				final PrintWriter writer = response.getWriter();
+    				writer.write(result);
+    				writer.flush();
+    				writer.close();
     			} catch (Exception e) {
     				LOGGER.error("JSON to XML conversion for entity '" + category + ": " + id +"' failed. Cause: ", e);
     			}
