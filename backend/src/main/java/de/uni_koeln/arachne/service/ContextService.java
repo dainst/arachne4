@@ -215,8 +215,7 @@ public class ContextService {
 			return new SemanticConnectionsContextualizer(contextType, genericSQLService);
 		}
 		catch (Exception e) {
-			// TODO: handle exception
-			LOGGER.error(e.getMessage());
+			LOGGER.error("An exception occured while trying to load a contextualizer for '" + contextType + "'", e);
 		}
 		return null;
 	}

@@ -23,7 +23,7 @@ import de.uni_koeln.arachne.sqlutil.GenericFieldsEntityIdJoinedSQLQueryBuilder;
  */
 @Repository("GenericSQLDao")
 public class GenericSQLDao extends SQLDao {
-	//TODO Exclude
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericSQLDao.class);
 	
 	public List<String> getStringField(final String tableName, final String field1, final Long field1Id

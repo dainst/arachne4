@@ -50,7 +50,7 @@ public class DataMapDao extends SQLDao {
 	 * @return <code>Map<String,String></code> that contains the Description of the Subdataset, caution! The Subdataset is NOT automatically appended to the Dataset.
 	 */
 	public Map<String, String> getBySubDataset(final Dataset dataset, final TableConnectionDescription tableConnectionDescription ) {
-		// TODO add authorization
+		
 		final SingleEntitySubTablesQueryBuilder queryBuilder = new SingleEntitySubTablesQueryBuilder(dataset
 				,tableConnectionDescription);
 
