@@ -44,12 +44,9 @@ public class ESClientUtil implements ServletContextAware {
 	
 	private transient ServletContext servletContext;
 	
-	private transient final String esAddress;
-	private transient final int esRemotePort;
 	private transient final String esName;
 	private transient final int esBulkSize;
 	private transient final boolean esRemoteClient;
-	private transient final String esRESTPort;
 	private transient final String esFullAddress ;
 	
 	private transient final Node node;
@@ -72,13 +69,10 @@ public class ESClientUtil implements ServletContextAware {
 			, final @Value("#{config.esClientTypeRemote}") boolean esRemoteClient
 			, final @Value("#{config.esRESTPort}") String esRESTPort) {
 		
-		this.esAddress = esAddress;
-		this.esRemotePort = esRemotePort;
 		this.esName = esName;
 		this.searchIndexAlias = esName;
 		this.esBulkSize = esBulkSize;
 		this.esRemoteClient = esRemoteClient;
-		this.esRESTPort = esRESTPort;
 		esFullAddress  = esProtocol + "://" + esAddress + ':' + esRESTPort + '/';
 		
 		if (esRemoteClient) {
