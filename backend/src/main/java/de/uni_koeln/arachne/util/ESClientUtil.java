@@ -131,39 +131,43 @@ public class ESClientUtil implements ServletContextAware {
 	}
 
 	/**
-	 * Updates the elasticsearch indices by changing the index alias and deleting the unused index.
+	 * Updates the elasticsearch indices by changing the index alias and deleting the unused index. If this fails it tries to only
+	 * set the new alias (this should only occur on the first dataimport as no alias to delete exists at that point). If this also fails 
+	 * the method throws the corresponding exception.
 	 */
 	public void updateSearchIndex() throws IllegalStateException, IndexMissingException {
 		final String indexName = getDataImportIndexName();
 		final String oldName = INDEX_2.equals(indexName) ? INDEX_1 : INDEX_2;
 		try {
-			IndicesAliasesResponse indexResponse = client.admin().indices().prepareAliases().addAlias(indexName, searchIndexAlias)
+			final IndicesAliasesResponse indexResponse = client.admin().indices().prepareAliases().addAlias(indexName, searchIndexAlias)
 					.removeAlias(oldName, searchIndexAlias).execute().actionGet();
+			LOGGER.debug("Trying to set alias for '" + indexName + "' and delete alias for '" + oldName + "'");
 			if (indexResponse.isAcknowledged()) {
 				LOGGER.info("Set alias for '" + indexName + "'");
 				LOGGER.info("Removed alias for '" + oldName  + "'");
 				deleteIndex(oldName);
 			} else {
-				// perhaps we are running for the first time so try just to add the new alias
-				try {
-					indexResponse = client.admin().indices().prepareAliases().addAlias(indexName, searchIndexAlias)
-							.execute().actionGet();
-				} catch (IndexMissingException e) {
-					LOGGER.error("Failed to set alias. Index Missing.");
-					throw e;
-				}
+				LOGGER.error("Failed to set alias.");
+				throw new IllegalStateException("Failed to set aliases.");
+			}
+		} catch (IndexMissingException e) {
+			LOGGER.warn("Failed to set alias. Index Missing. Trying to just set the new one.");
+			// perhaps we are running for the first time so try just to add the new alias
+			try {
+				final IndicesAliasesResponse indexResponse = client.admin().indices().prepareAliases().addAlias(indexName, searchIndexAlias)
+						.execute().actionGet();
 				if (indexResponse.isAcknowledged()) {
 					LOGGER.info("Set alias for '" + indexName + "'");
 					LOGGER.info("No alias removed.");
 					deleteIndex(oldName);
 				} else {
 					LOGGER.error("Failed to set alias.");
-					throw new IllegalStateException("Failed to set aliases.");
+					throw new IllegalStateException("Failed to set aliases."); // NOPMD
 				}
+			} catch (IndexMissingException ime) {
+				LOGGER.error("Failed to set alias. Index Missing.");
+				throw ime;
 			}
-		} catch (IndexMissingException e) {
-			LOGGER.error("Failed to set alias. Index Missing");
-			throw e;
 		}		
 	}
 	
