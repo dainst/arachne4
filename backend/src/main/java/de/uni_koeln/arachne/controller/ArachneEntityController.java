@@ -185,10 +185,10 @@ public class ArachneEntityController {
     	if (searchResponse.getHits().getTotalHits() == 1) { 
     	result = searchResponse.getHits().getAt(0).getSourceAsString();
 		
-		if (!request.getHeader("Accept").contains("application/json")) {
+		if (!request.getHeader("Accept").toLowerCase().contains("application/json")) {
 			try {
 				final JSONObject jsonObject = new JSONObject(result);
-				result = XML.toString(jsonObject);
+				result = XML.toString(jsonObject, "entity");
 			} catch (Exception e) {
 				LOGGER.error("JSON to XML conversion for entity '" + category + ": " + id +"' failed. Cause: ", e);
 			}
