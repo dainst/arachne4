@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONObject;
 import org.json.XML;
@@ -13,11 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.response.BaseArachneEntity;
@@ -75,11 +74,11 @@ public class ArachneEntityController {
 			final HttpServletRequest request,
 			final HttpServletResponse response) {
 		
-		//if (isLive != null && isLive) {
+		if (isLive != null && isLive) {
 			return getEntityFromDB(entityId, null, response);
-		//} else {
-		//	return getEntityFromIndex(entityId, null, request, response);
-		//}
+		} else {
+			return getEntityFromIndex(entityId, null, request, response);
+		}
 		
 	}
     
@@ -100,11 +99,11 @@ public class ArachneEntityController {
     		final HttpServletResponse response) {
     	
     	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
-    	//if (isLive != null && isLive) {
+    	if (isLive != null && isLive) {
 			return getEntityFromDB(categoryId, category, response);
-		//} else {
-		//	return getEntityFromIndex(categoryId, category, request, response);
-		//}
+		} else {
+			return getEntityFromIndex(categoryId, category, request, response);
+		}
     }
 
     /**
@@ -153,37 +152,37 @@ public class ArachneEntityController {
     	return null;
     }
     
-    // TODO: docu, auth, failure handling
     /**
      * Internal function handling all http GET requests for <code>/entity/*</code>.
      * It fetches the data for a given entity from the elasticsearch index and returns it as a JSON or XML string.
      * <br>
-     * If the entity is not found a HTTP 404 error message is returned.
-     * <br>
-     * If the user does not have permission to see an entity a HTTP 403 status message is returned.
+     * If the entity is not found or the user does not have the necessary permission a HTTP 404 error message is returned.
      * @param id The unique entity ID if no category is given else the internal ID.
      * @param category The category to query or <code>null</code>.
      * @param response The <code>HttpServeletRsponse</code> object.
      * @return A response object derived from <code>BaseArachneEntity</code>.
      */
-    @SuppressWarnings("unused")
-    private String getEntityFromIndex(final Long id, final String category //NOPMD
+     private String getEntityFromIndex(final Long id, final String category //NOPMD
     		,final HttpServletRequest request, final HttpServletResponse response) { 
     	
     	final Long startTime = System.currentTimeMillis();
     	    	
     	String result = null;
     	SearchResponse searchResponse = null;
+    	final FilterBuilder accessFilter = FilterBuilders.boolFilter().must(esClientUtil.getAccessControlFilter());
     	if (category == null) {
+    		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString("entityId:" + id), accessFilter);
     		searchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
-    				.setQuery(QueryBuilders.queryString("entityId:" + id)).setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+    				.setQuery(query).setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
     				.setFrom(0).setSize(1).execute().actionGet();
     	} else {
+    		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString("type:" + category + " AND " + "internalId:" + id), accessFilter);
     		searchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
-    				.setQuery(QueryBuilders.queryString("type:" + category + " AND " + "internalId:" + id))
+    				.setQuery(query)
     				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
     				.setFrom(0).setSize(1).execute().actionGet();
     	}
+    	if (searchResponse.getHits().getTotalHits() == 1) { 
     	result = searchResponse.getHits().getAt(0).getSourceAsString();
 		
 		if (!request.getHeader("Accept").contains("application/json")) {
@@ -194,6 +193,10 @@ public class ArachneEntityController {
 				LOGGER.error("JSON to XML conversion for entity '" + category + ": " + id +"' failed. Cause: ", e);
 			}
 		}
+    	} else {
+    		response.setStatus(404);
+    		return null;
+    	}
     	
     	LOGGER.debug("-----------------------------------");
     	LOGGER.debug("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");

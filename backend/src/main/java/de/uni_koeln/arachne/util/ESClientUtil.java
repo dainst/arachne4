@@ -1,14 +1,7 @@
 package de.uni_koeln.arachne.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
+import java.io.*;
+import java.net.*;
 
 import javax.annotation.PreDestroy;
 import javax.servlet.ServletContext;
@@ -24,6 +17,9 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryFilterBuilder;
 import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
@@ -34,6 +30,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.context.ServletContextAware;
 
+import de.uni_koeln.arachne.mapping.DatasetGroup;
+import de.uni_koeln.arachne.service.IUserRightsService;
+
 /**
  * Utility class to provide a reusable elastic search client and access to the configuration values.
  */
@@ -43,6 +42,9 @@ public class ESClientUtil implements ServletContextAware {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ESClientUtil.class);
 	
 	private transient ServletContext servletContext;
+	
+	@Autowired
+	private transient IUserRightsService userRightsService;
 	
 	private transient final String esName;
 	private transient final int esBulkSize;
@@ -184,6 +186,24 @@ public class ESClientUtil implements ServletContextAware {
 			// No problem if no index exists as it should be deleted anyways
 		}
 		return result;
+	}
+	
+	/**
+	 * This method constructs a access control query filter for Elasticsearch using the <code>UserRightsService</code>.
+	 * @return The constructed query filter.
+	 */
+	public QueryFilterBuilder getAccessControlFilter() {
+		final StringBuffer datasetGroups = new StringBuffer(16);
+		boolean first = true;
+		for (final DatasetGroup datasetGroup: userRightsService.getCurrentUser().getDatasetGroups()) {
+			if (first) {
+				first = false;
+			} else {
+				datasetGroups.append(" OR ");
+			}
+			datasetGroups.append(datasetGroup.getName());
+		}
+		return FilterBuilders.queryFilter(QueryBuilders.fieldQuery("datasetGroup", datasetGroups.toString()));
 	}
 
 	public Client getClient() {

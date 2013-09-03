@@ -23,11 +23,9 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.response.SearchResult;
 import de.uni_koeln.arachne.response.StatusResponse;
 import de.uni_koeln.arachne.service.GenericSQLService;
-import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.util.ESClientUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
@@ -52,9 +50,6 @@ public class SearchController {
 	
 	@Autowired
 	private transient GenericSQLService genericSQLService; 
-	
-	@Autowired
-	private transient IUserRightsService userRightsService; 
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
@@ -389,7 +384,7 @@ public class SearchController {
 	 * @return
 	 */
 	QueryBuilder buildQuery(final String searchParam, final List<String> filterValues) {
-		FilterBuilder facetFilter = FilterBuilders.boolFilter().must(getAccessControlFilter());
+		FilterBuilder facetFilter = FilterBuilders.boolFilter().must(esClientUtil.getAccessControlFilter());
 				
 		if (!StrUtils.isEmptyOrNull(filterValues)) {
 			for (final String filterValue: filterValues) {
@@ -404,24 +399,6 @@ public class SearchController {
 						
 		LOGGER.debug("Elastic search query: " + query.toString());
 		return query;
-	}
-	
-	/**
-	 * This method constructs a access control query filter for Elasticsearch using the <code>UserRightsService</code>.
-	 * @return The constructed query filter.
-	 */
-	private QueryFilterBuilder getAccessControlFilter() {
-		final StringBuffer datasetGroups = new StringBuffer(16);
-		boolean first = true;
-		for (final DatasetGroup datasetGroup: userRightsService.getCurrentUser().getDatasetGroups()) {
-			if (first) {
-				first = false;
-			} else {
-				datasetGroups.append(" OR ");
-			}
-			datasetGroups.append(datasetGroup.getName());
-		}
-		return FilterBuilders.queryFilter(QueryBuilders.fieldQuery("datasetGroup", datasetGroups.toString()));
 	}
 	
 	/**
