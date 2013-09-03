@@ -166,6 +166,7 @@ public class ArachneEntityController {
      * @param response The <code>HttpServeletRsponse</code> object.
      * @return A response object derived from <code>BaseArachneEntity</code>.
      */
+    @SuppressWarnings("unused")
     private String getEntityFromIndex(final Long id, final String category //NOPMD
     		,final HttpServletRequest request, final HttpServletResponse response) { 
     	
