@@ -183,19 +183,21 @@ public class ArachneEntityController {
     				.setFrom(0).setSize(1).execute().actionGet();
     	}
     	if (searchResponse.getHits().getTotalHits() == 1) { 
-    	result = searchResponse.getHits().getAt(0).getSourceAsString();
-		
-		if (!request.getHeader("Accept").toLowerCase().contains("application/json")) {
-			try {
-				final JSONObject jsonObject = new JSONObject(result);
-				result = XML.toString(jsonObject, "entity");
-			} catch (Exception e) {
-				LOGGER.error("JSON to XML conversion for entity '" + category + ": " + id +"' failed. Cause: ", e);
-			}
-		}
+    		result = searchResponse.getHits().getAt(0).getSourceAsString();
+    		if (request.getHeader("Accept").toLowerCase().contains("application/json")) {
+    			response.setContentType("application/json");
+    		} else {
+    			try {
+    				final JSONObject jsonObject = new JSONObject(result);
+    				result = XML.toString(jsonObject, "entity");
+    				response.setContentType("application/xml");
+    			} catch (Exception e) {
+    				LOGGER.error("JSON to XML conversion for entity '" + category + ": " + id +"' failed. Cause: ", e);
+    			}
+    		} 
     	} else {
     		response.setStatus(404);
-    		return null;
+    		result = null;
     	}
     	
     	LOGGER.debug("-----------------------------------");
