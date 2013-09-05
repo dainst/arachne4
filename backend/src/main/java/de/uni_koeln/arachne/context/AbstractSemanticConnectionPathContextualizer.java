@@ -47,7 +47,6 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 	@Override
 	public String getContextType(){
 		return this.contextPath.getTargetType();
-		
 	}
 	/**
 	 * This method has to be declared in the Initialised Contextualizer. It setups the path that has to be followed to geht the Desired Context 

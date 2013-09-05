@@ -8,6 +8,10 @@ package de.uni_koeln.arachne.context;
 
 public class IsolatedsherdmainabstractmorphologyContextualizer extends AbstractSemanticConnectionPathContextualizer{
 
+	public IsolatedsherdmainabstractmorphologyContextualizer() {
+		super();
+	}
+	
 	@Override
 	protected void setupContextPath() {
 		this.contextPath.addTypeStepRestriction("mainabstract");
