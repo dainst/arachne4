@@ -4,11 +4,13 @@
     xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
     <display>
         <title>
-            <section separator=" / " labelKey="Context">
-                <section>
+            <section separator=" / ">
+
+                <section labelKey="Context" separator=" - ">
                     <field datasource="befund.Grabungsort" prefix="Place: "/>
-                    <field datasource="befund.Befund" prefix="Stratum:"/>
+                    <field datasource="befund.Befund" prefix="Stratum: "/>
                 </section>
+
                 <section separator=" - " labelKey="Morphology">
                     <field datasource="morphology.Level1" prefix="FG:"/>
                     <field datasource="morphology.Level2" prefix="2nd: "/>
@@ -17,11 +19,13 @@
                     <field datasource="morphology.Level5" prefix="5th: "/>
                     <field datasource="morphology.Level6" prefix="6th: "/>
                 </section>
+
                 <section separator=" - " labelKey="Fabric">
                     <field datasource="fabric.Origin"/>
                     <field datasource="fabric.CommonName" prefix="Common Name: "/>
                     <field datasource="fabric.Name" prefix="Name: "/>
                 </section>
+
                 <section labelKey="Quantitification">
                     <field datasource="quantities.TotalSherds" prefix="#Sherds: "/>
                 </section>
@@ -45,8 +49,9 @@
                         <field datasource="befund.Areal"/>
                     </section>
                 </section>
+                
                 <section labelKey="Morphologie">
-                    <section labelKey="Level 1">
+                    <section labelKey="Functional Group">
                         <field datasource="morphology.Level1"/>
                     </section>
                     <section labelKey="Level 2">
@@ -69,9 +74,10 @@
                         <field datasource="mainabstract.GrabungsinterneTypennummerSub"/>
                     </section>
                 </section>
+                
                 <section labelKey="Fabric">
                     <section labelKey="Herkunft">
-                        <field datasource="fabric.origin"/>
+                        <field datasource="fabric.Origin"/>
                     </section>
                     <section labelKey="AllgemeinerName">
                         <field datasource="fabric.CommonName"/>
@@ -79,17 +85,51 @@
                     <section labelKey="Name">
                         <field datasource="fabric.Name"/>
                     </section>
-                </section>
-
-                <include type="datierung"/>
-
-                <section labelKey="Verbundene Keramikfragmente">
-                    <context type="isolatedsherd" labelKey="Fragment">
-                        <field datasource=".SherdType" prefix="Scherbentyp: "/>
-                        <field datasource=".InventoryNumber" prefix="Inventarnummer: "/>
-                        <field datasource=".NitonAnalysisNumber" prefix="Niton-Analyse-Nummer: "/>
+                    <context type="Mainabstractfabricfabricdescription" labelKey="Description" separator=", ">
+                        <contextSection labelKey="Freie Farbbeschreibung">
+                            <field datasource=".ColourQualifierFreeVon"/>
+                            <field datasource=".ColourFreeVon"/>
+                            <field datasource=".ColourQualifierFreeBis" postfix=" - "/>
+                            <field datasource=".ColourFreeBis"/>
+                        </contextSection>
+                        <contextSection labelKey="Farbe der Bruchstelle">
+                            <field datasource=".ColourOfBreakQualifierVon"/>
+                            <field datasource=".ColourOfBreakVon" postfix=" - "/>
+                            <field datasource=".ColourOfBreakQualifierBis"/>
+                            <field datasource=".ColourOfBreakBis"/>
+                        </contextSection>
+                        <contextSection labelKey="Zoning">
+                            <field datasource=".Zoning"/>
+                        </contextSection>
+                        <contextSection labelKey="Farbe des Kerns">
+                            <field datasource=".ColourOfCoreQualifierVon"/>
+                            <field datasource=".ColourOfCoreVon" postfix=" - "/>
+                            <field datasource=".ColourOfCoreQualifierBis"/>
+                            <field datasource=".ColourOfCoreBis"/>
+                        </contextSection>
+                        <contextSection labelKey="Farbe der Oberfläche">
+                            <field datasource=".ColourOfOutsideQualifierVon"/>
+                            <field datasource=".ColourOfOutsideVon" postfix=" - "/>
+                            <field datasource=".ColourOfOutsideQualifierBis"/>
+                            <field datasource=".ColourOfOutsideBis"/>
+                        </contextSection>
+                        <contextSection labelKey="Machart">
+                            <field datasource=".Manufacture"/>
+                        </contextSection>
+                        <contextSection labelKey="Härte">
+                            <field datasource=".Hardness"/>
+                        </contextSection>
+                        <contextSection labelKey="Härte">
+                            <field datasource=".Porosity"/>
+                        </contextSection>
+                        <contextSection labelKey="Oberflächengefühl">
+                            <field datasource=".SurfaceFeel"/>
+                        </contextSection>
                     </context>
                 </section>
+                
+                <include type="datierung"/>
+
                 <section labelKey="Informationen zur Quantifizierung">
                     <section labelKey="Anzahl">
                         <section labelKey="Ränder">
@@ -111,6 +151,7 @@
                             <field datasource="quantities.TotalSherds"/>
                         </section>
                     </section>
+                    
                     <section labelKey="Gewicht">
                         <section labelKey="Ränder">
                             <field datasource="quantities.RimWeight" postfix="g"/>
@@ -128,6 +169,7 @@
                             <field datasource="quantities.OthersWeight" postfix="g"/>
                         </section>
                     </section>
+                    
                     <section labelKey="Weitere Quantifierzungsinformationen">
                         <section labelKey="Prozentualer Randanteil">
                             <field datasource="quantities.RimPercentage" postfix="%"/>
@@ -146,8 +188,23 @@
                         </section>
                     </section>
                 </section>
+
+                <section labelKey="Verbundene Keramikfragmente">
+                    <context type="isolatedsherd" labelKey="Fragment">
+                        <contextSection labelKey="Typ">
+                            <field datasource=".SherdType"/>
+                        </contextSection>
+                        <contextSection labelKey="Inventarnummer">
+                            <field datasource=".InventoryNumber"/>
+                        </contextSection>
+                        <contextSection labelKey="Niton-Analyse-Nummer">
+                            <field datasource=".NitonAnalysisNumber"/>
+                        </contextSection>
+                    </context>
+                </section>
             </section>
         </datasections>
+        
         <contextImages>
             <!-- Show images of the connected types -->
             <contextImage show="always">Morphology</contextImage>
@@ -158,6 +215,7 @@
             <!-- Show images of fabricdescriptions connected with the current abstract -->
             <contextImage show="always">Mainabstractfabricfabricdescription</contextImage>
         </contextImages>
+        
     </display>
     <facets>
         <facet name="kategorie" labelKey="Kategorie">

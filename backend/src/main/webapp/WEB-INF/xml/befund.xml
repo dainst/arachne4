@@ -5,14 +5,14 @@
     <display>
         <title>
             <section separator=" / ">
-                <field datasource="befund.Grabungsort"/>
-                <field datasource="befund.Befund"/>
-                <field datasource="befund.Areal"/>
+                <field datasource="befund.Grabungsort" prefix="Place: "/>
+                <field datasource="befund.Befund" prefix="Stratum: "/>
+                <field datasource="befund.Areal" prefix="Areal: "/>
             </section>
         </title>
         <subtitle labelKey="">
-            <section labelKey="Context">
-                <field datasource="Dataset.Id"/>
+            <section labelKey="Befund">
+                <field datasource="Dataset.internalId"/>
             </section>
         </subtitle>
         <datasections>
@@ -34,7 +34,7 @@
 
                 <include type="ort"/>
 
-                <section labelKey="Verbundene Datensätze">
+                <section labelKey="Verbundene Morphologien">
                     <context type="Befundmainabstractmorphology" separator=" / "
                         labelKey="Morphologies">
                         <field datasource=".Level1"/>
@@ -44,12 +44,15 @@
                         <field datasource=".Level5"/>
                         <field datasource=".Level6"/>
                     </context>
-                    <context type="mainabstract" labelKey="Intene Typnummer" separator=", ">
+                    <!-- evtl. raus, falls die Anzeige so nicht klappt -->
+                    <context type="mainabstract" labelKey="GrabungsinterneTypennummer"
+                        separator=", ">
                         <field datasource=".GrabungsinterneTypennummer"/>
                         <field datasource=".GrabungsinterneTypennummerSub"/>
                     </context>
-                    <context type="Befundmainabstractfabric" labelKey="Fabrics" separator=" / "> 
-                        <field datasource=".EntityID" />
+                </section>
+                <section labelKey="Verbundene Fabrics">
+                    <context type="Befundmainabstractfabric" labelKey="Fabrics" separator=" / ">
                         <contextSection labelKey="AllgemeinerName">
                             <field datasource=".CommonName"/>
                         </contextSection>
@@ -60,18 +63,19 @@
                             <field datasource=".Name"/>
                         </contextSection>
                     </context>
+                </section>
+                <section labelKey="Verbundene Keramikfragmente">
                     <context type="Befundmainabstractisolatedsherd" separator=" / "
                         labelKey="Scherben">
                         <contextSection labelKey="Typ">
-                            <field datasource=".SherdType"></field>
+                            <field datasource=".SherdType"/>
                         </contextSection>
                         <contextSection labelKey="Inventarnummer">
-                            <field datasource=".InventoryNumber"></field>
+                            <field datasource=".InventoryNumber"/>
                         </contextSection>
                         <contextSection labelKey="Niton-Analysenummer">
-                            <field datasource=".NitonAnalysisNumber"></field>
+                            <field datasource=".NitonAnalysisNumber"/>
                         </contextSection>
-               
                     </context>
                 </section>
             </section>
@@ -80,12 +84,12 @@
         <contextImages>
             <!-- Show images of connected sherds -->
             <contextImage show="always">Befundmainabstractisolatedsherd</contextImage>
-            
-            <!-- Show images of types found within this context -->
-            <contextImage show="always">Befundmainabstractmorphology</contextImage>
-            
+
             <!-- Show images of fabricdescriptions found in this context -->
             <contextImage show="always">Befundmainabstractfabricfabricdescription</contextImage>
+
+            <!-- Show images of types found within this context -->
+            <contextImage show="always">Befundmainabstractmorphology</contextImage>
         </contextImages>
     </display>
     <facets>
@@ -104,7 +108,7 @@
         <facet name="befund" labelKey="Befund">
             <field datasource="befund.Befund"/>
         </facet>
-        <facet name="befundmainabstractmorphology" labelKey="Hauptobjekt-Morphologie">
+        <facet name="befundmainabstractmorphology" labelKey="Morphologie">
             <context type="Befundmainabstractmorphology" separator=" / ">
                 <field datasource=".Level6">
                     <ifEmpty>

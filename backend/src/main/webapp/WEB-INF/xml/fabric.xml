@@ -10,13 +10,15 @@
                 <field datasource="fabric.CommonName"/>
             </section>
         </title>
+        
         <subtitle>
             <section labelKey="Fabric">
                 <field datasource="Dataset.ID"/>
             </section>
         </subtitle>
+        
         <datasections>
-            <section labelKey="VerbundeneFabricBeschreibungen">
+            <section labelKey="Fabricbeschreibungen">
                 <context type="fabricdescription" labelKey="Description" separator=", ">
                     <contextSection labelKey="Freie Farbbeschreibung">
                         <field datasource=".ColourQualifierFreeVon"/>
@@ -59,7 +61,41 @@
                     </contextSection>
                 </context>
             </section>
+            
+            <context type="fabricmainabstractbefund" labelKey="Befund">
+                <contextSection labelKey="Grabungsort">
+                    <field datasource=".Grabungsort"/>
+                </contextSection>
+                <contextSection labelKey="Befund">
+                    <field datasource=".Befund"/>
+                </contextSection>
+                <contextSection labelKey="Areal">
+                    <field datasource=".Areal"/>
+                </contextSection>
+            </context>
+            
+            <context type="fabricmainabstractmorphology" labelKey="Morphologie">
+                <contextSection labelKey="Functional Group">
+                    <field datasource=".Level1"/>
+                </contextSection>
+                <contextSection labelKey="Level 2">
+                    <field datasource=".Level2"/>
+                </contextSection>
+                <contextSection labelKey="Level 3">
+                    <field datasource=".Level3"/>
+                </contextSection>
+                <contextSection labelKey="Level 4">
+                    <field datasource=".Level4"/>
+                </contextSection>
+                <contextSection labelKey="Level 5">
+                    <field datasource=".Level5"/>
+                </contextSection>
+                <contextSection labelKey="Level 6">
+                    <field datasource=".Level6"/>
+                </contextSection>
+            </context>
         </datasections>
+        
         <contextImages>
             <!-- Show images of connected sherds -->
             <contextImage show="always">Fabricdescription</contextImage>
@@ -68,6 +104,7 @@
             <contextImage show="always">Fabricmainabstractmorphology</contextImage>
         </contextImages>
     </display>
+    
     <facets>
         <facet name="Fabricmainabstractcontext" labelKey="Fabric-Context">
             <context type="Fabricmainabstractcontext" separator=" / ">
