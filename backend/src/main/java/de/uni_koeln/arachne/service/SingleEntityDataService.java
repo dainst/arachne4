@@ -32,30 +32,33 @@ public class SingleEntityDataService {
 	@Autowired
 	private transient GenericSQLDao genericSqlDao; 
 	
-	private final transient List<TableConnectionDescription> subProjects;
+	private final transient List<TableConnectionDescription> subCategories;
 	
 	public SingleEntityDataService() {
 		
 		// TODO Make This more Flexible
-		// This manages The TableConnectionDescriptions which provides Information about the sub projects
+		// This manages The TableConnectionDescriptions which provides Information about the sub categories
 		// The subCategories contain additional Information to an entity of a category 
-		subProjects = new ArrayList<TableConnectionDescription>(9);
-		// objekt sub projects
+		subCategories = new ArrayList<TableConnectionDescription>(10);
+		// objekt sub categories
 		
 		final String PrimaryKey = "PrimaryKey";
 		
-		subProjects.add( new TableConnectionDescription("objekt",PrimaryKey,"objektbauornamentik",PrimaryKey));
-		subProjects.add( new TableConnectionDescription("objekt",PrimaryKey,"objektgemaelde",PrimaryKey));
-		subProjects.add( new TableConnectionDescription("objekt",PrimaryKey,"objektlebewesen",PrimaryKey));
-		subProjects.add( new TableConnectionDescription("objekt",PrimaryKey,"objektmosaik",PrimaryKey));
-		subProjects.add( new TableConnectionDescription("objekt",PrimaryKey,"objektplastik",PrimaryKey));
-		subProjects.add( new TableConnectionDescription("objekt",PrimaryKey,"objektplomben",PrimaryKey));
-		subProjects.add( new TableConnectionDescription("objekt",PrimaryKey,"objektsiegel",PrimaryKey));
-		subProjects.add( new TableConnectionDescription("objekt",PrimaryKey,"objektterrakotten",PrimaryKey));
+		subCategories.add( new TableConnectionDescription("objekt",PrimaryKey,"objektbauornamentik",PrimaryKey));
+		subCategories.add( new TableConnectionDescription("objekt",PrimaryKey,"objektgemaelde",PrimaryKey));
+		subCategories.add( new TableConnectionDescription("objekt",PrimaryKey,"objektlebewesen",PrimaryKey));
+		subCategories.add( new TableConnectionDescription("objekt",PrimaryKey,"objektmosaik",PrimaryKey));
+		subCategories.add( new TableConnectionDescription("objekt",PrimaryKey,"objektplastik",PrimaryKey));
+		subCategories.add( new TableConnectionDescription("objekt",PrimaryKey,"objektplomben",PrimaryKey));
+		subCategories.add( new TableConnectionDescription("objekt",PrimaryKey,"objektsiegel",PrimaryKey));
+		subCategories.add( new TableConnectionDescription("objekt",PrimaryKey,"objektterrakotten",PrimaryKey));
 		// The display of book always requires the Zenon data
-		subProjects.add( new TableConnectionDescription("buch","bibid","zenon","001"));
+		subCategories.add( new TableConnectionDescription("buch","bibid","zenon","001"));
 		// Some images my be unstructured so look for additional data in 'marbilderbestand'
-		subProjects.add( new TableConnectionDescription("marbilder", "DateinameMarbilder", "marbilderbestand", "DateinameMarbilderbestand"));
+		subCategories.add( new TableConnectionDescription("marbilder", "DateinameMarbilder", "marbilderbestand", "DateinameMarbilderbestand"));
+		
+		// create list of tables that may be linked to subcategories
+		
 	}
 	
 	/**
@@ -78,7 +81,7 @@ public class SingleEntityDataService {
 		//If There are Arachne Categories that require the Retrival of other Tables than the table of the Category
 		if ("objekt".equals(tableName) || "buch".equals(tableName) || "marbilder".equals(tableName)) {
 			LOGGER.debug("Trying to retrieve sub data...");
-			for (final TableConnectionDescription tCD : subProjects) {
+			for (final TableConnectionDescription tCD : subCategories) {
 				if(tCD.linksTable(entityId.getTableName())){
 					final Map<String, String> temp = arachneDataMapDao.getBySubDataset(result, tCD);
 					result.appendFields(temp);
