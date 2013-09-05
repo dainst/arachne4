@@ -38,7 +38,7 @@ public class SingleEntityDataService {
 		
 		// TODO Make This more Flexible
 		// This manages The TableConnectionDescriptions which provides Information about the sub projects
-		// The subCategories contain additional Information to an Entitie of a Category 
+		// The subCategories contain additional Information to an entity of a category 
 		subProjects = new ArrayList<TableConnectionDescription>(9);
 		// objekt sub projects
 		
@@ -54,7 +54,8 @@ public class SingleEntityDataService {
 		subProjects.add( new TableConnectionDescription("objekt",PrimaryKey,"objektterrakotten",PrimaryKey));
 		// The display of book always requires the Zenon data
 		subProjects.add( new TableConnectionDescription("buch","bibid","zenon","001"));
-		
+		// Some images my be unstructured so look for additional data in 'marbilderbestand'
+		subProjects.add( new TableConnectionDescription("marbilder", "DateinameMarbilder", "marbilderbestand", "DateinameMarbilderbestand"));
 	}
 	
 	/**
@@ -75,15 +76,15 @@ public class SingleEntityDataService {
 			
 		final String tableName =  entityId.getTableName(); 
 		//If There are Arachne Categories that require the Retrival of other Tables than the table of the Category
-		if ("objekt".equals(tableName) || "buch".equals(tableName)) {
+		if ("objekt".equals(tableName) || "buch".equals(tableName) || "marbilder".equals(tableName)) {
 			LOGGER.debug("Trying to retrieve sub data...");
 			for (final TableConnectionDescription tCD : subProjects) {
 				if(tCD.linksTable(entityId.getTableName())){
 					final Map<String, String> temp = arachneDataMapDao.getBySubDataset(result, tCD);
 					result.appendFields(temp);
 				}
-			}
-		}	
+			} 
+		}
 						
 		return result;
 	}
