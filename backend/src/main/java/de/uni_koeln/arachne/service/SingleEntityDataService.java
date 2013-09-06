@@ -34,6 +34,8 @@ public class SingleEntityDataService {
 	
 	private final transient List<TableConnectionDescription> subCategories;
 	
+	private final transient List<String> parentCategoryList;
+	
 	public SingleEntityDataService() {
 		
 		// TODO Make This more Flexible
@@ -58,7 +60,14 @@ public class SingleEntityDataService {
 		subCategories.add( new TableConnectionDescription("marbilder", "DateinameMarbilder", "marbilderbestand", "DateinameMarbilderbestand"));
 		
 		// create list of tables that may be linked to subcategories
+		parentCategoryList = new ArrayList<String>();
+		for (final TableConnectionDescription tcd: subCategories) {
+			if (!parentCategoryList.contains(tcd.getTable1())) {
+				parentCategoryList.add(tcd.getTable1());
+			}
+		}
 		
+		LOGGER.debug("Subcategory parent tables: " + parentCategoryList.toString());
 	}
 	
 	/**
@@ -79,10 +88,10 @@ public class SingleEntityDataService {
 			
 		final String tableName =  entityId.getTableName(); 
 		//If There are Arachne Categories that require the Retrival of other Tables than the table of the Category
-		if ("objekt".equals(tableName) || "buch".equals(tableName) || "marbilder".equals(tableName)) {
+		if (parentCategoryList.contains(tableName)) {
 			LOGGER.debug("Trying to retrieve sub data...");
 			for (final TableConnectionDescription tCD : subCategories) {
-				if(tCD.linksTable(entityId.getTableName())){
+				if (tCD.linksTable(entityId.getTableName())) {
 					final Map<String, String> temp = arachneDataMapDao.getBySubDataset(result, tCD);
 					result.appendFields(temp);
 				}
