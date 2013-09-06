@@ -54,5 +54,8 @@
     	<facet name="kategorie" labelKey="Kategorie">
     		<field datasource="Dataset.TableName" />
     	</facet>
+    	<facet name="subkategorie" labelKey="Unterkategorie">
+    		<field datasource="KategorieMarbilder.Typ" />
+    	</facet>
     </facets>
 </category>

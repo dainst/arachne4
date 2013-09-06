@@ -164,10 +164,10 @@ public class Dataset {
 	 * </code>fields<code> list is the preferred search location and only if a field is not found there the contexts are 
 	 * searched.
 	 * <br>
-	 * "dataset" is a special contextualizer name that is used to reference data which is in every dataset (basically the <code>ArachneEntityId</code> object).
+	 * "Dataset" is a special contextualizer name that is used to reference data which is in every dataset (basically the <code>ArachneEntityId</code> object).
 	 * This function returns these values, too, as it is faster than doing the look up again via the contextualizer mechanism.
 	 * @param fieldName The full qualified fieldName to look up.
-	 * @return The value of the field or <code>null<code/> if the field is not found.
+	 * @return The value of the field or <code>null</code> if the field is not found.
 	 */
 	public String getField(final String fieldName) {
 		String result = null;

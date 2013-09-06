@@ -79,6 +79,9 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	protected List<String> facet_grabungsinternetypnumber;
 	protected List<String> facet_fabricorigin;
 	
+	// marbilder & objekt (subs)
+	protected List<String> facet_subkategorie;
+	
 	// morphology
 	protected List<String> facet_morphologymainabstractfabric;
 	protected List<String> facet_morphologymainabstractbefund;
@@ -750,5 +753,11 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	}
 	public void setFacet_roemgriech(List<String> facet_roemgriech) {
 		this.facet_roemgriech = facet_roemgriech;
+	}
+	public List<String> getFacet_subkategorie() {
+		return facet_subkategorie;
+	}
+	public void setFacet_subkategorie(List<String> facet_subkategorie) {
+		this.facet_subkategorie = facet_subkategorie;
 	}
 }

@@ -782,7 +782,9 @@ public class XmlConfigUtil implements ServletContextAware {
 	}
 
 	/**
-	 * Internal function adding field names from fields to the <code>result</code>. 
+	 * Internal function adding field names from fields to the <code>result</code>. Only names that don't start with the parent type 
+	 * name are considered. For example 'objektkeramik' is not listed in the results for parentType 'objekt'. The reason is that 
+	 * such fields are intrinsic to the dataset so no contextualizer shall be used on them.
 	 * @param element The element to process.
 	 * @param parentType The category of the dataset.
 	 * @param result The result list containing the full qualified field names.
