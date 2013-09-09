@@ -18,7 +18,9 @@ public class KategoriemarbilderContextualizer extends AbstractContextualizer {
 	}
 
 	/**
-	 * This method does not retrieve anything. It just changes the dataset directly.
+	 * This method does not retrieve anything. It just changes the dataset directly. If the field 
+	 * "marbilderbestand.DateinameMarbilderbestand" is not present in the dataset the field 'KategorieMarbilder.Typ' 
+	 * is added and set to "strukturiert" else it is set to "unstrukturiert".
 	 */
 	@Override
 	public List<AbstractLink> retrieve(final Dataset parent, final Integer offset, final Integer limit) {
