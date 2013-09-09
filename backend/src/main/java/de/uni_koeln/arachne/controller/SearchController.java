@@ -1,21 +1,11 @@
 package de.uni_koeln.arachne.controller;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.index.query.*;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.facet.FacetBuilders;
-import org.elasticsearch.search.facet.terms.TermsFacet;
-import org.elasticsearch.search.facet.terms.TermsFacet.Entry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -26,9 +16,8 @@ import org.slf4j.LoggerFactory;
 import de.uni_koeln.arachne.response.SearchResult;
 import de.uni_koeln.arachne.response.StatusResponse;
 import de.uni_koeln.arachne.service.GenericSQLService;
-import de.uni_koeln.arachne.util.ESClientUtil;
-import de.uni_koeln.arachne.util.StrUtils;
-import de.uni_koeln.arachne.util.XmlConfigUtil;
+import de.uni_koeln.arachne.service.SearchService;
+
 
 /**
  * Handles http requests (currently only get) for <code>/search<code>.
@@ -46,13 +35,10 @@ public class SearchController {
 	private static final int MAX_CONTEXT_QUERY_SIZE = 50;
 	
 	@Autowired
-	private transient ESClientUtil esClientUtil;
-	
-	@Autowired
 	private transient GenericSQLService genericSQLService; 
 	
 	@Autowired
-	private transient XmlConfigUtil xmlConfigUtil;
+	private transient SearchService searchService;
 	
 	private transient final List<String> defaultFacetList = new ArrayList<String>(3); 
 	
@@ -99,12 +85,12 @@ public class SearchController {
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 		
 		final List<String> facetList = new ArrayList<String>(defaultFacetList);
-		final List<String> filterValueList = getFilterValueList(filterValues, facetList);
+		final List<String> filterValueList = searchService.getFilterValueList(filterValues, facetList);
 		
-		final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(searchParam, resultSize, resultOffset, filterValueList);
-		addFacets(facetList, resultFacetLimit, searchRequestBuilder);
+		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam, resultSize, resultOffset, filterValueList);
+		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
 		
-		final SearchResult searchResult = executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, facetList);
+		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, facetList);
 		
 		if (searchResult == null) {
 			return new StatusResponse("There was a problem executing the search. Please try again. If the problem persists please contact us.");
@@ -142,7 +128,7 @@ public class SearchController {
 		final List<Long> contextIds = genericSQLService.getConnectedEntityIds(entityId);
 				
 		final List<String> facetList = new ArrayList<String>(defaultFacetList);
-		final List<String> filterValueList = getFilterValueList(filterValues, facetList);
+		final List<String> filterValueList = searchService.getFilterValueList(filterValues, facetList);
 		
 		if (contextIds != null) { 
 			final int totalHits = contextIds.size();
@@ -153,9 +139,9 @@ public class SearchController {
 				final String queryStr = getContextQueryString(resultOffset, lastContext, contextIds);
 				LOGGER.debug("Context query: " + queryStr);
 								
-				final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(queryStr, returnedHits, 0, filterValueList);
-				addFacets(facetList, resultFacetLimit, searchRequestBuilder);
-				result = executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, facetList);
+				final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(queryStr, returnedHits, 0, filterValueList);
+				searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
+				result = searchService.executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, facetList);
 				result.setSize(totalHits);
 			} else {
 				final int requests = (returnedHits - 1) / MAX_CONTEXT_QUERY_SIZE;
@@ -166,8 +152,8 @@ public class SearchController {
 					final String queryStr = getContextQueryString(start, end, contextIds);
 					LOGGER.debug("Context multi query: " + queryStr);
 										
-					final SearchRequestBuilder searchRequestBuilder = buildSearchRequest(queryStr, returnedHits, 0, null);
-					result.merge(executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, null));
+					final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(queryStr, returnedHits, 0, null);
+					result.merge(searchService.executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, null));
 					
 					start = end + 1;
 					end = end + MAX_CONTEXT_QUERY_SIZE;
@@ -179,102 +165,6 @@ public class SearchController {
 			}
 		}
 		return result;
-	}
-	
-	/**
-	 * Creates a list of filter values from the filterValues <code>String</code> and sets the category specific facets in the 
-	 * <code>facetList</code> if the corresponding facet is found. 
-	 * in the filterValue <code>String</code>.
-	 * @param filterValues String of filter values
-	 * @param facetList List of facet fields.
-	 * @return filter values as list.
-	 */
-	public List<String> getFilterValueList(final String filterValues, final List<String> facetList) {
-		List<String> result = null; 
-		if (!StrUtils.isEmptyOrNull(filterValues)) {
-			result = filterQueryStringToStringList(filterValues);
-			for (final String filterValue: result) {
-				if (filterValue.contains("facet_kategorie")) {
-					facetList.clear();
-					facetList.addAll(getCategorySpecificFacetList(result));
-					break;
-				}
-			}
-		}
-		return result;
-	}
-	
-	/**
-	 * Executes a search request on the elasticsearch index. The response is processed and returned as a <code>SearchResult</code> 
-	 * instance. 
-	 * @param searchRequestBuilder
-	 * @param resultSize
-	 * @param resultOffset
-	 * @param filterValues
-	 * @param facetList
-	 * @return
-	 */
-	private SearchResult executeSearchRequest(final SearchRequestBuilder searchRequestBuilder, final int resultSize, final int resultOffset,
-			final String filterValues, final List<String> facetList) {
-		
-		SearchResponse searchResponse = null;
-		try {
-			searchResponse = searchRequestBuilder.execute().actionGet();
-		} catch (Exception e) {
-			LOGGER.error("Problem executing search. Exception: " + e.getMessage());
-			return null;
-		}
-		
-		final SearchHits hits = searchResponse.getHits();
-		
-		final SearchResult searchResult = new SearchResult();
-		searchResult.setLimit(resultSize);
-		searchResult.setOffset(resultOffset);
-		searchResult.setSize(hits.totalHits());
-		
-		for (final SearchHit currenthit: hits) {
-			final Integer intThumbnailId = (Integer)currenthit.getSource().get("thumbnailId");
-			Long thumbnailId = null;
-			if (intThumbnailId != null) {
-				thumbnailId = Long.valueOf(intThumbnailId);
-			}
-			searchResult.addSearchHit(new de.uni_koeln.arachne.response.SearchHit(Long.valueOf(currenthit.getId())
-					, (String)(currenthit.getSource().get("type")), (String)(currenthit.getSource().get("title"))
-					, (String)(currenthit.getSource().get("subtitle")), thumbnailId));
-		}
-		
-		// add facet search results
-		if (facetList != null) {
-			final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
-			for (final String facetName: facetList) {
-				final Map<String, Long> facetMap = getFacetMap(facetName, searchResponse, filterValues);
-				if (facetMap != null) {
-					facets.put(facetName, getFacetMap(facetName, searchResponse, filterValues));
-				}
-			}
-			searchResult.setFacets(facets);
-		}
-		
-		return searchResult;
-	}
-
-	/**
-	 * This method builds and returns an elasticsearch search request. The query is built by the <code>buildQuery</code> method.
-	 * @param searchParam
-	 * @param resultSize
-	 * @param resultOffset
-	 * @param filterValueList
-	 * @param client
-	 * @return
-	 */
-	private SearchRequestBuilder buildSearchRequest(final String searchParam, final int resultSize, final int resultOffset,
-			final List<String> filterValueList) {
-		
-		return esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
-				.setQuery(buildQuery(searchParam, filterValueList))
-				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-				.setFrom(resultOffset)
-				.setSize(resultSize);
 	}
 	
 	/**
@@ -297,131 +187,5 @@ public class SearchController {
 			}
 		}
 		return queryStr.toString();
-	}
-	
-	/**
-	 * Extracts the category specific facets from the corresponding xml file.
-	 * @param filterValueList
-	 * @return
-	 */
-	private List<String> getCategorySpecificFacetList(final	List<String> filterValueList) {
-		final List<String> result = new ArrayList<String>();
-		for (String filterValue: filterValueList) {
-			if (filterValue.startsWith("facet_kategorie")) {
-				filterValue = filterValue.substring(16);
-				// the only multicategory query that makes sense is "OR" combined 
-				filterValue = filterValue.replace("OR", "");
-				filterValue = filterValue.replace("(", "");
-				filterValue = filterValue.replace(")", "");
-				filterValue = filterValue.trim();
-				filterValue = filterValue.replaceAll("\"", "");
-				filterValue = filterValue.replaceAll("\\s+", " ");
-				
-				final String[] categories = filterValue.split("\\s");
-				if (categories.length > 0) {
-					for (int i = 0; i < categories.length; i++) {
-						final List<String> facets = xmlConfigUtil.getFacetsFromXMLFile(categories[i]);
-						if (!StrUtils.isEmptyOrNull(facets)) {
-							for (final String facet: facets) {
-								final String facetName = "facet_" + facet;
-								if (!result.contains(facetName)) {
-									result.add("facet_" + facet);
-								}
-							}
-						}
-					}
-				}
-				// no need to process more than one parameter
-				return result;
-		    }
-		}
-		return null;
-	}
-
-	/**
-	 * Adds the facet fields specified in <code>facetList</code> to the search request.
-	 * @param facetList A string list containing the facet names to add. 
-	 * @param searchRequestBuilder The outgoing search request that gets the facets added.
-	 */
-	private void addFacets(final List<String> facetList, final int facetSize, final SearchRequestBuilder searchRequestBuilder) {
-		for (final String facetName: facetList) {
-			// return the top 100 facets
-			searchRequestBuilder.addFacet(FacetBuilders.termsFacet(facetName).field(facetName).size(facetSize));
-		}
-	}
-			
-	/**
-	 * This method extracts the facet search results from the response and works around a problem of elasticsearch returning 
-	 * too many facets for terms that are queried.
-	 * @param name
-	 * @param searchResponse
-	 * @return
-	 */
-	Map<String, Long> getFacetMap(final String name, final SearchResponse searchResponse, final String filterValues) {
-		final TermsFacet facet = (TermsFacet) searchResponse.getFacets().facet(name);
-		final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
-		// workaround for elasticsearch reporting too many facets entries as there should only be one
-		if (facet.getEntries().isEmpty()) {
-			return null;
-		} else {
-			if (filterValues != null && filterValues.contains(name)) {
-				facetMap.put(facet.getEntries().get(0).getTerm().toString(), Long.valueOf(facet.getEntries().get(0).getCount()));
-			} else {
-				for (final Entry entry: facet.getEntries()) {
-					facetMap.put(entry.getTerm().toString(), Long.valueOf(entry.getCount()));
-				}
-			}
-			return facetMap;
-		}
-	}
-	
-	/**
-	 * Builds the elasticsearch query based on the input parameters. It also adds an access control filter to the query.
-	 * @param searchParam
-	 * @param limit
-	 * @param offset
-	 * @param filterValues
-	 * @return
-	 */
-	QueryBuilder buildQuery(final String searchParam, final List<String> filterValues) {
-		FilterBuilder facetFilter = FilterBuilders.boolFilter().must(esClientUtil.getAccessControlFilter());
-				
-		if (!StrUtils.isEmptyOrNull(filterValues)) {
-			for (final String filterValue: filterValues) {
-				final int splitIndex = filterValue.indexOf(':');
-				final String name = filterValue.substring(0, splitIndex);
-				final String value = filterValue.substring(splitIndex+1).replace("\"", ""); 
-				facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(FilterBuilders.termFilter(name, value));
-			}
-		}
-		
-		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString(searchParam), facetFilter);
-						
-		LOGGER.debug("Elastic search query: " + query.toString());
-		return query;
-	}
-	
-	/**
-	 * Converts the input string of query filter parameters to a string list of parameters.
-	 * The string is split at every occurrence of ",facet_".
-	 * @param filterString The filter query string to convert.
-	 * @return a string list containing the separated parameters or <code>null</code> if the conversion fails.
-	 */
-	private List<String> filterQueryStringToStringList(final String filterString) {
-		String string = filterString;
-		if (string.startsWith("facet_")) {
-			final List<String> result = new ArrayList<String>();
-			int index = string.indexOf(",facet_");
-			while (index != -1) {
-				final String subString = string.substring(0, index);
-				string = string.substring(index + 1);
-				index = string.indexOf(",facet_");
-				result.add(subString);
-			}
-			result.add(string);
-			return result;
-		} else {
-			return null;
-		}
 	}
 }
