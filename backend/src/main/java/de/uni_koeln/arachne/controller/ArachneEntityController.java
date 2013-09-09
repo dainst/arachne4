@@ -1,9 +1,7 @@
 package de.uni_koeln.arachne.controller;
 
 
-import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.io.Writer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -22,7 +22,6 @@ public class KategoriemarbilderContextualizer extends AbstractContextualizer {
 	 */
 	@Override
 	public List<AbstractLink> retrieve(final Dataset parent, final Integer offset, final Integer limit) {
-		System.out.println(parent.getField("marbilderbestand.DateinameMarbilderbestand"));
 		final Map<String, String> subcategory = new HashMap<String, String>();
 		if (StrUtils.isEmptyOrNull(parent.getField("marbilderbestand.DateinameMarbilderbestand"))) {
 			subcategory.put("KategorieMarbilder.Typ", "strukturiert");
