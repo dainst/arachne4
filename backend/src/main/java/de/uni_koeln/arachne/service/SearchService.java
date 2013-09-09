@@ -44,12 +44,11 @@ public class SearchService {
 	
 	/**
 	 * This method builds and returns an elasticsearch search request. The query is built by the <code>buildQuery</code> method.
-	 * @param searchParam
-	 * @param resultSize
-	 * @param resultOffset
-	 * @param filterValueList
-	 * @param client
-	 * @return
+	 * @param searchParam The query string.
+	 * @param resultSize Max number of results.
+	 * @param resultOffset An offset into the result set.
+	 * @param filterValueList A list of values to use for building an elasticsearch fuilter query.
+	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 */
 	public SearchRequestBuilder buildSearchRequest(final String searchParam, final int resultSize, final int resultOffset,
 			final List<String> filterValueList) {
@@ -76,12 +75,12 @@ public class SearchService {
 	/**
 	 * Executes a search request on the elasticsearch index. The response is processed and returned as a <code>SearchResult</code> 
 	 * instance. 
-	 * @param searchRequestBuilder
-	 * @param resultSize
-	 * @param resultOffset
-	 * @param filterValues
-	 * @param facetList
-	 * @return
+	 * @param searchRequestBuilder The search request in elasticsearchs internal format.
+	 * @param resultSize Max number of results.
+	 * @param resultOffset An offset into the resultset.
+	 * @param filterValues A <code>String</code> containing the filter values used in the query.
+	 * @param facetList The values for facetting.
+	 * @return The search result.
 	 */
 	public SearchResult executeSearchRequest(final SearchRequestBuilder searchRequestBuilder, final int resultSize, final int resultOffset,
 			final String filterValues, final List<String> facetList) {
@@ -128,9 +127,33 @@ public class SearchService {
 	}
 	
 	/**
+	 * Creates a list of filter values from the filterValues <code>String</code> and sets the category specific facets in the 
+	 * <code>facetList</code> if the corresponding facet is found. 
+	 * in the filterValue <code>String</code>.
+	 * @param filterValues String of filter values
+	 * @param facetList List of facet fields.
+	 * @return filter values as list.
+	 */
+	public List<String> getFilterValueList(final String filterValues, final List<String> facetList) {
+		List<String> result = null; 
+		if (!StrUtils.isEmptyOrNull(filterValues)) {
+			result = filterQueryStringToStringList(filterValues);
+			for (final String filterValue: result) {
+				if (filterValue.contains("facet_kategorie")) {
+					facetList.clear();
+					facetList.addAll(getCategorySpecificFacetList(result));
+					break;
+				}
+			}
+		}
+		return result;
+	}
+	
+	/**
 	 * Extracts the category specific facets from the corresponding xml file.
-	 * @param filterValueList
-	 * @return
+	 * @param filterValueList The list of facets including their values. The facet "facet_kategorie" must be present to get 
+	 * any results.
+	 * @return The list of category specific facets or <code>null</code>.
 	 */
 	public List<String> getCategorySpecificFacetList(final	List<String> filterValueList) {
 		final List<String> result = new ArrayList<String>();
@@ -163,8 +186,8 @@ public class SearchService {
 	 * Adds the unique facet names found in facets to result.
 	 * </br>
 	 * Side effect: The input variable result is changed directly. 
-	 * @param result
-	 * @param facets
+	 * @param result List of facet names.
+	 * @param facets Unique list of facet names.
 	 */
 	private void addFacetsToResult(final List<String> result, final List<String> facets) {
 		if (!StrUtils.isEmptyOrNull(facets)) {
@@ -178,34 +201,11 @@ public class SearchService {
 	}
 	
 	/**
-	 * Creates a list of filter values from the filterValues <code>String</code> and sets the category specific facets in the 
-	 * <code>facetList</code> if the corresponding facet is found. 
-	 * in the filterValue <code>String</code>.
-	 * @param filterValues String of filter values
-	 * @param facetList List of facet fields.
-	 * @return filter values as list.
-	 */
-	public List<String> getFilterValueList(final String filterValues, final List<String> facetList) {
-		List<String> result = null; 
-		if (!StrUtils.isEmptyOrNull(filterValues)) {
-			result = filterQueryStringToStringList(filterValues);
-			for (final String filterValue: result) {
-				if (filterValue.contains("facet_kategorie")) {
-					facetList.clear();
-					facetList.addAll(getCategorySpecificFacetList(result));
-					break;
-				}
-			}
-		}
-		return result;
-	}
-	
-	/**
 	 * This method extracts the facet search results from the response and works around a problem of elasticsearch returning 
 	 * too many facets for terms that are queried.
-	 * @param name
-	 * @param searchResponse
-	 * @return
+	 * @param name A facet name.
+	 * @param searchResponse The search response to work on.
+	 * @return A map containing the facet value as key and the facet count as value.
 	 */
 	private Map<String, Long> getFacetMap(final String name, final SearchResponse searchResponse, final String filterValues) {
 		final TermsFacet facet = (TermsFacet) searchResponse.getFacets().facet(name);
@@ -227,11 +227,11 @@ public class SearchService {
 	
 	/**
 	 * Builds the elasticsearch query based on the input parameters. It also adds an access control filter to the query.
-	 * @param searchParam
-	 * @param limit
-	 * @param offset
-	 * @param filterValues
-	 * @return
+	 * @param searchParam The query string.
+	 * @param limit Max number of results.
+	 * @param offset An offset into the result set.
+	 * @param filterValues A list of values to create a filter query from.
+	 * @return An elasticsearch <code>QueryBuilder</code> which in essence is a complete elasticsearch query.
 	 */
 	private QueryBuilder buildQuery(final String searchParam, final List<String> filterValues) {
 		FilterBuilder facetFilter = FilterBuilders.boolFilter().must(esClientUtil.getAccessControlFilter());
