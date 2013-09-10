@@ -6,13 +6,14 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * Class representing a search result. This class is the return type of a search request.
  */
 @XmlRootElement
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 public class SearchResult {
 
 	private long size = 0;

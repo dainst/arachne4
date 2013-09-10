@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import javax.sql.DataSource;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
@@ -20,6 +19,8 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.uni_koeln.arachne.mapping.ArachneEntity;
 import de.uni_koeln.arachne.response.BaseArachneEntity;

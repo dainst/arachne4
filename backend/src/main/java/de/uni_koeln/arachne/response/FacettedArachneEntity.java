@@ -2,14 +2,15 @@ package de.uni_koeln.arachne.response;
 
 import java.util.List;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * This class contains only the facets for preformatted output to the frontend.
  * Every used facet must be defined here. Do not forget to add getters and setters.
  */
 @SuppressWarnings("PMD")
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 public class FacettedArachneEntity extends BaseArachneEntity {
 	/*
 	 * The facets as defined in the xml file for the dataset.

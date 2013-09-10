@@ -7,12 +7,13 @@ import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.Map;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.uni_koeln.arachne.sqlutil.ConnectedEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.util.StrUtils;

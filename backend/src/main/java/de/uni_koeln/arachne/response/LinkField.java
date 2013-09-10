@@ -1,6 +1,6 @@
 package de.uni_koeln.arachne.response;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  *  Class that holds and ouputs a HTML formatted limk.

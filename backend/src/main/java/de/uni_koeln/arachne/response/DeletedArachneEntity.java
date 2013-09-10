@@ -2,7 +2,7 @@ package de.uni_koeln.arachne.response;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import de.uni_koeln.arachne.util.EntityId;
 
