@@ -31,14 +31,26 @@ public abstract class AbstractLink {
 	public String getLinkType() {
 		return linkType;
 	}
+	
 	public void setLinkType(final String linkType) {
 		this.linkType = linkType;
 	}
+	
 	public Map<String, String> getFields() {
 		return fields;
 	}
+	
 	public void setFields(final Map<String, String> fields) {
 		this.fields = fields;
+	}
+	
+	/**
+	 * Looks up a field in the <code>fields</code> list and returns its value.
+	 * @param fieldName The full qualified fieldName to look up.
+	 * @return The value of the field or <code>null</code> if the field is not found.
+	 */
+	public String getFieldFromFields(final String fieldName) {
+		return fields.get(fieldName);
 	}
 
 	@Override

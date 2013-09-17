@@ -9,9 +9,12 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import de.uni_koeln.arachne.context.Context;
-import de.uni_koeln.arachne.context.ArachneLink;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.uni_koeln.arachne.context.AbstractLink;
+import de.uni_koeln.arachne.context.Context;
+import de.uni_koeln.arachne.context.SemanticConnectionsContextualizer;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.StrUtils;
 /**
@@ -22,6 +25,9 @@ import de.uni_koeln.arachne.util.StrUtils;
  */
 @XmlRootElement
 public class Dataset {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(Dataset.class);
+	
 	// TODO change implementation to something more portable
 	/**
 	 * workaround for implementing getUri;
@@ -195,9 +201,9 @@ public class Dataset {
 	}
 	
 	/**
-	 * Looks up a field in the </code>fields<code> list and returns its value.
+	 * Looks up a field in the <code>fields</code> list and returns its value.
 	 * @param fieldName The full qualified fieldName to look up.
-	 * @return The value of the field or <code>null<code/> if the field is not found.
+	 * @return The value of the field or <code>null</code> if the field is not found.
 	 */
 	public String getFieldFromFields(final String fieldName) {
 		return fields.get(fieldName);
@@ -211,15 +217,17 @@ public class Dataset {
 	public String getFieldFromContext(final String fieldName) {
 		String result = null;
 		for (final Context context: this.context) {
-			final ArachneLink link = (ArachneLink)context.getFirstContext();
+			final AbstractLink link = context.getFirstContext();
 			if (link != null) {
 				// we know that Entity1 is 'this'
-				result = link.getEntity2().getFieldFromFields(fieldName);
+				result = link.getFieldFromFields(fieldName);
 				if (!StrUtils.isEmptyOrNull(result)) {
+					LOGGER.debug("context result for {}: {}", fieldName, result);
 					return result;
 				}
 			}
 		}
+		LOGGER.debug("context null for {}.", fieldName);
 		return null;
 	}
 	
@@ -231,11 +239,12 @@ public class Dataset {
 	public String getFieldFromContext(final String fieldName, final int index) {
 		String result = null;
 		for (final Context context: this.context) {
-			final ArachneLink link = (ArachneLink)context.getContext(index);
+			final AbstractLink link = context.getContext(index);
 			if (link != null) {
 				// we know that Entity1 is 'this'
-				result = link.getEntity2().getFieldFromFields(fieldName);
+				result = link.getFieldFromFields(fieldName);
 				if (!StrUtils.isEmptyOrNull(result)) {
+					LOGGER.debug("context result: {}", result);
 					return result;
 				}
 			}
@@ -247,7 +256,7 @@ public class Dataset {
 	 * Looks up a field in all contexts and returns their values as list.
 	 * Currently only internal links are supported.
 	 * @param fieldName The full qualified fieldName to look up.
-	 * @return The value of the fields or <code>null<code/> if the field is not found.
+	 * @return The value of the fields or <code>null</code> if the field is not found.
 	 */
 	public List<String> getFieldsFromContexts(final String fieldName) {
 		final List<String> result = new ArrayList<String>();
@@ -256,12 +265,8 @@ public class Dataset {
 			if (!links.isEmpty()) {
 				for (final AbstractLink link: links) {
 					String tmpResult = null;
-					// TODO add support for external links
 					// we know that Entity1 is 'this'
-					if (link instanceof ArachneLink) {
-						final ArachneLink internalLink = (ArachneLink)link;
-						tmpResult = internalLink.getEntity2().getFieldFromFields(fieldName);
-					}
+					tmpResult = link.getFieldFromFields(fieldName);
 					if (!StrUtils.isEmptyOrNull(tmpResult)) {
 						result.add(tmpResult);
 					}
@@ -271,6 +276,7 @@ public class Dataset {
 		if (result.isEmpty()) {
 			return null;
 		} else {
+			LOGGER.debug("context result: {}", result);
 			return result;
 		}
 	}
