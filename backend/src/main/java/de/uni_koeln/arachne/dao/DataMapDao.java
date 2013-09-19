@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.DatasetMapper;
 import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.sqlutil.SimpleTableEntityQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.SingleEntityQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.SingleEntitySubTablesQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
@@ -42,6 +43,28 @@ public class DataMapDao extends SQLDao {
 		}
 		return null;
 	}
+	
+	/**
+	 * Gets a map of values by PrimaryKey and TableName
+	 * @param primaryKey Primary key within given table
+	 * @param tableName Tablename
+	 * @return a Simple representation of a Map<String,String> or <code>null</code>.
+	 */
+	public Map<String, String> getByPrimaryKeyAndTable(final Integer primaryKey, final String tableName) {			
+
+		final SimpleTableEntityQueryBuilder queryBuilder = new SimpleTableEntityQueryBuilder(tableName, primaryKey);
+		final String sql = queryBuilder.getSQL();
+		
+		LOGGER.debug(sql);
+
+		@SuppressWarnings("unchecked")
+		final List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new DatasetMapper());
+		if (temp != null && !temp.isEmpty()) {
+			return temp.get(0);
+		}
+		return null;
+	}
+	
 
 	/**
 	 * Gets a subdataset for a main dataset (Objekt -> Objektplastik) by using <code>ArachneSingleEntitySubTablesQueryBuilder</code> for query Building

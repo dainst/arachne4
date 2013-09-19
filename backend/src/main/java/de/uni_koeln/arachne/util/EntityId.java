@@ -3,6 +3,8 @@ package de.uni_koeln.arachne.util;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import de.uni_koeln.arachne.mapping.ArachneEntity;
+
 @XmlRootElement
 public class EntityId {
 
@@ -38,6 +40,18 @@ public class EntityId {
 		this.tableName = tableName;
 		this.internalKey = internalKey;
 		this.deleted = deleted;
+	}
+	
+	/**
+	 * This Constructor gets an ArachneEntity retrieved from hibernate and uses its information to construct
+	 * an EntityId
+	 * @param entity ArachneEntity Retrieved Hibernate-record from arachneentityidentification
+	 */
+	public EntityId(final ArachneEntity entity) {
+		this.arachneEntityID = entity.getId();
+		this.tableName = entity.getTableName();
+		this.internalKey = entity.getForeignKey();
+		this.deleted = entity.isDeleted();
 	}
 	
 	/**
