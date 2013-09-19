@@ -222,12 +222,10 @@ public class Dataset {
 				// we know that Entity1 is 'this'
 				result = link.getFieldFromFields(fieldName);
 				if (!StrUtils.isEmptyOrNull(result)) {
-					LOGGER.debug("context result for {}: {}", fieldName, result);
 					return result;
 				}
 			}
 		}
-		LOGGER.debug("context null for {}.", fieldName);
 		return null;
 	}
 	
@@ -244,7 +242,6 @@ public class Dataset {
 				// we know that Entity1 is 'this'
 				result = link.getFieldFromFields(fieldName);
 				if (!StrUtils.isEmptyOrNull(result)) {
-					LOGGER.debug("context result: {}", result);
 					return result;
 				}
 			}
@@ -276,7 +273,6 @@ public class Dataset {
 		if (result.isEmpty()) {
 			return null;
 		} else {
-			LOGGER.debug("context result: {}", result);
 			return result;
 		}
 	}

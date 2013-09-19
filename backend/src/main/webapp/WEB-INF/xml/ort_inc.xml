@@ -10,13 +10,19 @@
 			<field datasource=".Ort_antik" prefix="(" postfix=")" />
 			<field datasource=".Land" />
 			<field datasource=".Countrycode" prefix="(" postfix=")" />
-			<field datasource=".Aufbewahrungsort" />
-			<field datasource=".Zusatz" />
+			<field datasource="gazetteer.prefName" prefix=" ">
+				<ifEmpty>
+					<field datasource=".Aufbewahrungsort" />
+				</ifEmpty>
+			</field>
+			<field datasource=".Zusatz" />	
+			<field datasource="gazetteer.lon" prefix="Länge: " />
+			<field datasource="gazetteer.lat" prefix="Breite: " />
 			<!-- AdditionalInfosJSON -> Field from Semantic-Connection-Table -->
 			<field datasource=".BerlinIdentNr" prefix="Berlin Ident.Nr. " /> 
 			<field datasource=".AltInvNr" prefix="Alte Inv.-Nr. " /> 
 			<field datasource=".ArtOrtsangabe" search="Aufbewahrung Automatisch erstellt" replace="Aufbewahrungsort" prefix="- Ortsangabe ist " postfix=" -" />
-			<linkField labelKey="Gazetteer" datasource=".Gazetteerid" prefix="http://gazetteer.dainst.org/place/" />
+			<linkField labelKey="Gazetteer" datasource=".Gazetteerid" prefix="http://gazetteer.dainst.org/place/" />		
 		</context>
 	</section>
 </includeSection>
