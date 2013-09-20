@@ -99,8 +99,10 @@ public class CeramalexController  {
 		
 		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam, maxResultSize, resultOffset, filterValueList);
 		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
-		
+			
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, maxResultSize, resultOffset, filterValues, facetList);
+		LOGGER.debug("#Found records: " + searchResult.getSize());
+
 		if (searchResult == null || searchResult.getEntities() == null) {
 			final String message = "There was a problem executing the search. Please try again. If the problem persists please contact us.";
 			modelMap.put("message", message);
@@ -120,9 +122,8 @@ public class CeramalexController  {
 			
 			// get complete entity information
 			final ArachneEntity arachneEntity = arachneEntityDao.getByEntityID(id);
-			
 			// only process mainabstract-records, skip any other
-			if(arachneEntity == null || "mainabstract".equals(arachneEntity.getTableName())) {
+			if(arachneEntity == null || !"mainabstract".equals(arachneEntity.getTableName())) {
 				entityIter.remove();
 				continue;
 			}
@@ -131,8 +132,12 @@ public class CeramalexController  {
 			final EntityId entityId = new EntityId(arachneEntity);
 			final Map<String, String> entityData = dataMapDao.getById(entityId);
 			
+			LOGGER.debug(entityData.toString());
+			
 			// does the mainabstract have a quantification-record connected?
 			final String foreignKeyQuantification = entityData.get(foreignKeyLabel);
+			LOGGER.debug("Requesting Data for Mainabstract " + entityId.getArachneEntityID() + ", Quantity-Record: " + foreignKeyQuantification);
+			
 			if(foreignKeyQuantification == null) {
 				entityIter.remove();
 				continue;
@@ -141,24 +146,25 @@ public class CeramalexController  {
 			// get complete quantification record
 			final Map<String, String> quantificationData = dataMapDao.getByPrimaryKeyAndTable(Integer.valueOf(foreignKeyQuantification), "quantities");
 			final QuantificationContent quantityRecord = new QuantificationContent(quantificationData);
-			LOGGER.error(quantityRecord.toString());
 			quantities.add(new QuantificationContent(quantificationData));
 		}
 		
 		// no result
 		if(quantities.isEmpty()) {
 			message = "The search result contains no conntected quantification records.";
-			modelMap.put("containsContent", false);
+			modelMap.put("containsContent", true);
 		}
 		
 		// compute result-map and pass it back
 		else {
 			final QuantificationContent result = computeAggregation(quantities);
 			message = "Aggregated quantification of " + quantities.size() + " connected quantity-records.";
+			modelMap.putAll(result.getAsMap());
 			modelMap.put("containsContent", true);
 		}
 		
 		modelMap.put("message", message);
+		LOGGER.debug("Finished Quantity-Processing");
 		return new ModelAndView("ceramalexQuantification", modelMap);
 	}
 

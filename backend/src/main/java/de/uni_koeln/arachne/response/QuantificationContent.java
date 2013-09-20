@@ -32,6 +32,8 @@ public class QuantificationContent {
 	private Float baseWeight = 0.0f;
 
 	private Float othersWeight = 0.0f;
+	
+	private Float totalWeight = 0.0f;
 
 	private Integer mni = 0;
 
@@ -172,23 +174,28 @@ public class QuantificationContent {
 		this.baseCount += other.getBaseCount();
 		this.totalSherds += this.baseCount;
 		this.baseWeight += other.getBaseWeight();
+		this.totalWeight += this.baseWeight;
 		
 		this.bodySherdCount += other.getBodySherdCount();
 		this.totalSherds += this.bodySherdCount;
 		this.bodySherdWeight += other.getBodySherdWeight();
+		this.totalWeight += this.bodySherdWeight;
 		
 		this.handleCount += other.getHandleCount();
 		this.totalSherds += this.handleCount;
 		this.handleWeight += other.getHandleWeight();
+		this.totalWeight += this.handleWeight;
 		
 		this.othersCount += other.getOthersCount();
 		this.totalSherds += this.othersCount;
 		this.othersWeight += other.getOthersWeight();
+		this.totalWeight += this.othersWeight;
 		
 		this.rimPercentage += other.getRimPercentage();
 		this.rimCount += other.getRimCount();
 		this.totalSherds += this.rimCount;
 		this.rimWeight += other.getRimWeight();
+		this.totalWeight += this.rimWeight;
 		
 		this.mni += other.getMni();
 		this.mniWeighted += other.getMniWeighted();
@@ -213,6 +220,7 @@ public class QuantificationContent {
 		result.put("mniWeighted", String.valueOf(mniWeighted));
 		result.put("mxi", String.valueOf(mxi));
 		result.put("totalSherds", String.valueOf(totalSherds));
+		result.put("totalWeight", String.valueOf(totalWeight));
 		return result;
 	}
 	
