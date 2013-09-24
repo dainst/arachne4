@@ -65,4 +65,9 @@ public class StrUtils {
 	    
 	    return true;
 	}
+	
+	public static String urlEncodeQuotationMarks(final String in) {
+		final String out = in.replaceAll("\"", "%22");
+		return out;
+	}
 }
