@@ -13,39 +13,42 @@ import java.util.Map;
 
 public class QuantificationContent {
 
-	private Integer rimCount = 0;
-
-	private Integer handleCount = 0;
-
-	private Integer baseCount = 0;
-
-	private Integer bodySherdCount = 0;
-
-	private Integer othersCount = 0;
-
-	private Float rimWeight = 0.0f;
-
-	private Float handleWeight = 0.0f;
-
-	private Float bodySherdWeight = 0.0f;
-
-	private Float baseWeight = 0.0f;
-
-	private Float othersWeight = 0.0f;
+	private static String qualifier = "quantities.";
 	
-	private Float totalWeight = 0.0f;
+	private int rimCount = 0;
 
-	private Integer mni = 0;
+	private int handleCount = 0;
 
-	private Integer mxi = 0;
+	private int baseCount = 0;
 
-	private Float rimPercentage = 0.0f;
+	private int bodySherdCount = 0;
 
-	private Float mniWeighted = 0.0f;
+	private int othersCount = 0;
 
-	private Integer totalSherds = 0;
+	private float rimWeight = 0.0f;
+
+	private float handleWeight = 0.0f;
+
+	private float bodySherdWeight = 0.0f;
+
+	private float baseWeight = 0.0f;
+
+	private float othersWeight = 0.0f;
+	
+	private float totalWeight = 0.0f;
+
+	private int mni = 0;
+
+	private int mxi = 0;
+
+	private float rimPercentage = 0.0f;
+
+	private float mniWeighted = 0.0f;
+
+	private int totalSherds = 0;
 	
 	private Boolean containsContent = false;
+	
 	
 	/**
 	 * Empty default-constructor
@@ -69,17 +72,17 @@ public class QuantificationContent {
 			String fieldName = classMembers[i].getName();
 			fieldName = fieldName.substring(0, 1).toUpperCase()
 					+ fieldName.substring(1);
-			final String content = quantification.get(fieldName);
+			final String content = quantification.get(qualifier + fieldName);
 
 			if (content != null && !content.isEmpty()) {
+				classMembers[i].setAccessible(true);
 				final Class fieldType = classMembers[i].getType();
 				try {
-					final String fieldTypeString = fieldType.getCanonicalName();
-					
-					if ("Integer".equals(fieldTypeString)) {
+					final String fieldTypeString = fieldType.getName();
+					if ("int".equals(fieldTypeString)) {
 						classMembers[i].setInt(this, Integer.valueOf(content));
-					} else if("Float".equals(fieldTypeString)) {
-						classMembers[i].setFloat(this, Integer.valueOf(content));
+					} else if("float".equals(fieldTypeString)) {
+						classMembers[i].setFloat(this, Float.valueOf(content));
 					}
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
@@ -206,22 +209,90 @@ public class QuantificationContent {
 		final Map<String, String> result = new HashMap<String, String>();
 		result.put("containsContent", String.valueOf(containsContent));
 		result.put("baseCount", String.valueOf(baseCount));
-		result.put("baseWeight", String.valueOf(baseWeight));
+		result.put("baseWeight", String.valueOf(baseWeight / 1000.0f));
 		result.put("bodySherdCount", String.valueOf(bodySherdCount));
-		result.put("bodySherdWeight", String.valueOf(bodySherdWeight));
+		result.put("bodySherdWeight", String.valueOf(bodySherdWeight / 1000.0f) );
 		result.put("handleCount", String.valueOf(handleCount));
-		result.put("handleWeight", String.valueOf(handleWeight));
+		result.put("handleWeight", String.valueOf(handleWeight / 1000.0f));
 		result.put("othersCount", String.valueOf(othersCount));
-		result.put("othersWeight", String.valueOf(othersWeight));
+		result.put("othersWeight", String.valueOf(othersWeight / 1000.0f));
 		result.put("rimPercentage", String.valueOf(rimPercentage));
 		result.put("rimCount", String.valueOf(rimCount));
-		result.put("rimWeight", String.valueOf(rimWeight));
+		result.put("rimWeight", String.valueOf(rimWeight / 1000.0f));
 		result.put("mni", String.valueOf(mni));
 		result.put("mniWeighted", String.valueOf(mniWeighted));
 		result.put("mxi", String.valueOf(mxi));
 		result.put("totalSherds", String.valueOf(totalSherds));
-		result.put("totalWeight", String.valueOf(totalWeight));
+		result.put("totalWeight", String.valueOf(totalWeight / 1000.0f));
 		return result;
+	}
+
+	public void setRimCount(Integer rimCount) {
+		this.rimCount = rimCount;
+	}
+
+	public void setHandleCount(Integer handleCount) {
+		this.handleCount = handleCount;
+	}
+
+	public void setBaseCount(Integer baseCount) {
+		this.baseCount = baseCount;
+	}
+
+	public void setBodySherdCount(Integer bodySherdCount) {
+		this.bodySherdCount = bodySherdCount;
+	}
+
+	public void setOthersCount(Integer othersCount) {
+		this.othersCount = othersCount;
+	}
+
+	public void setRimWeight(Float rimWeight) {
+		this.rimWeight = rimWeight;
+	}
+
+	public void setHandleWeight(Float handleWeight) {
+		this.handleWeight = handleWeight;
+	}
+
+	public void setBodySherdWeight(Float bodySherdWeight) {
+		this.bodySherdWeight = bodySherdWeight;
+	}
+
+	public void setBaseWeight(Float baseWeight) {
+		this.baseWeight = baseWeight;
+	}
+
+	public void setOthersWeight(Float othersWeight) {
+		this.othersWeight = othersWeight;
+	}
+
+	public void setTotalWeight(Float totalWeight) {
+		this.totalWeight = totalWeight;
+	}
+
+	public void setMni(Integer mni) {
+		this.mni = mni;
+	}
+
+	public void setMxi(Integer mxi) {
+		this.mxi = mxi;
+	}
+
+	public void setRimPercentage(Float rimPercentage) {
+		this.rimPercentage = rimPercentage;
+	}
+
+	public void setMniWeighted(Float mniWeighted) {
+		this.mniWeighted = mniWeighted;
+	}
+
+	public void setTotalSherds(Integer totalSherds) {
+		this.totalSherds = totalSherds;
+	}
+
+	public void setContainsContent(Boolean containsContent) {
+		this.containsContent = containsContent;
 	}
 	
 }

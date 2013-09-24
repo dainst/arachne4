@@ -1,7 +1,6 @@
 package de.uni_koeln.arachne.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -18,17 +17,16 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.uni_koeln.arachne.dao.ArachneEntityDao;
-import de.uni_koeln.arachne.dao.DataMapDao;
 import de.uni_koeln.arachne.mapping.ArachneEntity;
+import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.QuantificationContent;
 import de.uni_koeln.arachne.response.SearchHit;
 import de.uni_koeln.arachne.response.SearchResult;
-import de.uni_koeln.arachne.response.StatusResponse;
 import de.uni_koeln.arachne.service.SearchService;
+import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.util.EntityId;
 
 /**
@@ -47,37 +45,28 @@ public class CeramalexController  {
 	private transient ArachneEntityDao arachneEntityDao; 
 	
 	@Autowired
-	private transient DataMapDao dataMapDao;
+	private transient SingleEntityDataService singleEntityDataService;
 	
 	@Autowired
 	private transient SearchService searchService;
-	
-	private transient Integer defaultLimit;
-	
+		
 	private transient Integer defaultFacetLimit;
 	
-	private transient String foreignKeyLabel = "FS_QuantitiesID";
+	private transient String foreignKeyLabel = "mainabstract.FS_QuantitiesID";
 		
 	@Autowired
-	public CeramalexController(final @Value("#{config.esDefaultLimit}") int defaultLimit,
-			final @Value("#{config.esDefaultFacetLimit}") int defaultFacetLimit) {
-		this.defaultLimit = defaultLimit;
+	public CeramalexController(final @Value("#{config.esDefaultFacetLimit}") int defaultFacetLimit) {
 		this.defaultFacetLimit = defaultFacetLimit;
 		}
 
 	
 	/**
-	 * Handles the http request by querying the Elasticsearch index and returning the search result.
-	 * The "title" field is boosted by 2 so that documents containing the search keyword in the title are higher ranked than
-	 *  documents containing the keyword in other fields.
-	 * <br>
-	 * The return type of this method is <code>Object</code> so that it can return either a <code>SearchResult</code> or a <code>
-	 * StatusMessage</code>.
-	 * <br>
-	 * Currently the search result can only be serialized to JSON as JAXB cannot handle Maps.
+	 * Method handles a Ceramalex-quantify-request. It uses the regular elasticsearch query- and facet-parameters to first receive a list of mainabstract-records
+	 * and afterwards retrieves a list of all avaiable quantities-records connected with them. These are summed and passed back as JSP which can then be rendered 
+	 * by the frontend.
 	 * @param searchParam The value of the search parameter. (mandatory)
-	 * @param limit The maximum number of returned entities. (optional)
-	 * @param offset The offset into the list of entities (used for paging). (optional)
+	 * @param filterValues The values of the elasticsearch filter query. (optional)
+	 * @param facetLimit The maximum number of facets. (optional)
 	 * @return A response object containing the data or a status response (this is serialized to XML or JSON depending on content negotiation).
 	 */
 	@RequestMapping(value="/project/ceramalex/quantify", method=RequestMethod.GET)
@@ -122,6 +111,7 @@ public class CeramalexController  {
 			
 			// get complete entity information
 			final ArachneEntity arachneEntity = arachneEntityDao.getByEntityID(id);
+				
 			// only process mainabstract-records, skip any other
 			if(arachneEntity == null || !"mainabstract".equals(arachneEntity.getTableName())) {
 				entityIter.remove();
@@ -130,35 +120,30 @@ public class CeramalexController  {
 			
 			// construct EntityId to use dataMapDao
 			final EntityId entityId = new EntityId(arachneEntity);
-			final Map<String, String> entityData = dataMapDao.getById(entityId);
-			
-			LOGGER.debug(entityData.toString());
-			
+			final Dataset localDataset = singleEntityDataService.getSingleEntityByArachneId(entityId);
+			final Map<String, String> datasetFields = localDataset.getFields();
+	
 			// does the mainabstract have a quantification-record connected?
-			final String foreignKeyQuantification = entityData.get(foreignKeyLabel);
+			final String foreignKeyQuantification = datasetFields.get(foreignKeyLabel);
 			LOGGER.debug("Requesting Data for Mainabstract " + entityId.getArachneEntityID() + ", Quantity-Record: " + foreignKeyQuantification);
 			
 			if(foreignKeyQuantification == null) {
 				entityIter.remove();
 				continue;
 			}
-			
-			// get complete quantification record
-			final Map<String, String> quantificationData = dataMapDao.getByPrimaryKeyAndTable(Integer.valueOf(foreignKeyQuantification), "quantities");
-			final QuantificationContent quantityRecord = new QuantificationContent(quantificationData);
-			quantities.add(new QuantificationContent(quantificationData));
+			quantities.add(new QuantificationContent(datasetFields));		
 		}
 		
 		// no result
 		if(quantities.isEmpty()) {
 			message = "The search result contains no conntected quantification records.";
-			modelMap.put("containsContent", true);
+			modelMap.put("containsContent", false);
 		}
 		
 		// compute result-map and pass it back
 		else {
 			final QuantificationContent result = computeAggregation(quantities);
-			message = "Aggregated quantification of " + quantities.size() + " connected quantity-records.";
+			message = "Aggregated quantification of " + quantities.size() + " quantity-records connected with the records matching your search request.";
 			modelMap.putAll(result.getAsMap());
 			modelMap.put("containsContent", true);
 		}
