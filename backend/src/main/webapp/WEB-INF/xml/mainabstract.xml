@@ -5,7 +5,6 @@
     <display>
         <title>
             <section separator=" / ">
-
                 <section labelKey="Context" separator=" - ">
                     <field datasource="befund.Grabungsort" prefix="Place: "/>
                     <field datasource="befund.Befund" prefix="Stratum: "/>
