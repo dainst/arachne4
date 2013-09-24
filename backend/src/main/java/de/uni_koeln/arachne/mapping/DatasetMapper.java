@@ -32,11 +32,12 @@ public class DatasetMapper implements RowMapper<Map<String,String>> {
 		for (int i = 1; i <= count; i++) {
 			final String columnName = meta.getColumnLabel(i);
 
+			/*
 			//Keys dont Interest the Dataset
 			if ((columnName.contains("PS_") || columnName.contains("FS_")) && columnName.contains("ID")) {
 				continue;
 			}
-			
+			*/
 			//The rest of the Dataset
 			final String columnValue = resultSet.getString(columnName);
 			if (columnName.contains("ArachneEntityIdentitficaton")) {
