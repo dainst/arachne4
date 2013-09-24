@@ -88,24 +88,22 @@
                         <field datasource="fabricdescription.ColourMunsellBis"/>
                     </section>
                 </section>
-                <section labelKey="Einschlüsse">
-                    <context type="einschluss" labelKey="Einschlüsse" separator=" ">
-                        <contextSection labelKey="Einschlussart">
-                            <field datasource=".Einschlussart"/>
-                        </contextSection>
-                        <contextSection labelKey="Häufigkeit">
-                            <field datasource=".Haeufigkeit"/>
-                        </contextSection>
-                        <contextSection labelKey="Durchschnittliche Größe">
-                            <field datasource=".DurchschnittlicheGroesse"/>
-                        </contextSection>
-                        <contextSection labelKey="Verteilung">
-                            <field datasource=".Verteilung"/>
-                        </contextSection>
-                    </context>
-                </section>
-                <include type="datierung" />
-                <include type="ort" />
+                <context type="einschluss" labelKey="Einschlüsse" separator=" ">
+                    <contextSection labelKey="Einschlussart">
+                        <field datasource=".Einschlussart"/>
+                    </contextSection>
+                    <contextSection labelKey="Häufigkeit">
+                        <field datasource=".Haeufigkeit"/>
+                    </contextSection>
+                    <contextSection labelKey="Durchschnittliche Größe">
+                        <field datasource=".DurchschnittlicheGroesse"/>
+                    </contextSection>
+                    <contextSection labelKey="Verteilung">
+                        <field datasource=".Verteilung"/>
+                    </contextSection>
+                </context>
+                <include type="datierung"/>
+                <include type="ort"/>
             </section>
         </datasections>
     </display>
