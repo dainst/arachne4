@@ -58,6 +58,8 @@ public class SingleEntityDataService {
 		subCategories.add( new TableConnectionDescription("buch","bibid","zenon","001"));
 		// Some images my be unstructured so look for additional data in 'marbilderbestand'
 		subCategories.add( new TableConnectionDescription("marbilder", "DateinameMarbilder", "marbilderbestand", "DateinameMarbilderbestand"));
+		// connect mainabstract-records with additional information from quantification
+		subCategories.add( new TableConnectionDescription("mainabstract", "FS_QuantitiesID", "quantities", "PS_QuantitiesID"));
 		
 		// create list of tables that may be linked to subcategories
 		parentCategoryList = new ArrayList<String>();
