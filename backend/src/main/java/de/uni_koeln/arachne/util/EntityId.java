@@ -83,4 +83,13 @@ public class EntityId {
 	public boolean isDeleted() {
 		return deleted;
 	}
+
+	@Override
+	public String toString() {
+		return "EntityId [arachneEntityID=" + arachneEntityID + ", tableName="
+				+ tableName + ", internalKey=" + internalKey + ", deleted="
+				+ deleted + "]";
+	}
+
+	
 }
