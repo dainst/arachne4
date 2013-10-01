@@ -25,12 +25,11 @@ public class CeramalexQuantifySpecialNavigationElement extends SpecialNavigation
 
 	@Override
 	public boolean matches(final String searchParam, final String filterValues) {
-		
-		// Quantify-button only gets displayed if only mainabstract-records have been retrieved within the result-set
-		if(filterValues.contains("facet_kategorie:\"mainabstract\"")) {
-			return true;
-		} else {
+		if(filterValues == null || filterValues.isEmpty() || !filterValues.contains("facet_kategorie:\"mainabstract\"")) {
 			return false;
+		}
+		else {
+			return true;
 		}
 	}
 
