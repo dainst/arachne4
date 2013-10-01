@@ -1,13 +1,20 @@
 package de.uni_koeln.arachne.util;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
 
 import javax.annotation.PreDestroy;
 import javax.servlet.ServletContext;
 
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesResponse;
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
@@ -53,6 +60,9 @@ public class ESClientUtil implements ServletContextAware {
 	
 	private transient final Node node;
 	private transient final Client client;
+	
+	private static final String MAPPING_FILE = "/WEB-INF/search/mapping.json";
+	private static final String SETTINGS_FILE = "/WEB-INF/search/settings.json";
 		
 	private static final String ES_MAPPING_SUCCESS = "Elasticsearch mapping set.";
 	private static final String ES_MAPPING_FAILURE = "Failed to set elasticsearch mapping.";
@@ -106,7 +116,16 @@ public class ESClientUtil implements ServletContextAware {
 			Thread.currentThread().interrupt();
 		}
 		
-		final CreateIndexResponse createResponse = client.admin().indices().create(new CreateIndexRequest(indexName)).actionGet();
+		final String settings = getJsonFromFile(SETTINGS_FILE);
+		
+		CreateIndexRequestBuilder prepareCreate = client.admin().indices().prepareCreate(indexName);
+		
+		if (!"undefined".equals(settings)) {
+			prepareCreate = prepareCreate.setSettings(ImmutableSettings.settingsBuilder().loadFromSource(settings));
+		}
+		
+		final CreateIndexResponse createResponse = prepareCreate.execute().actionGet();
+		
 		if (!createResponse.isAcknowledged()) {
 			LOGGER.error("Failed to create index '" + indexName + "'");
 			return result;
@@ -266,7 +285,7 @@ public class ESClientUtil implements ServletContextAware {
 	private String setMapping(final String indexName) {
 		String message = ES_MAPPING_FAILURE;
 
-		final String mapping = getMappingFromFile();
+		final String mapping = getJsonFromFile(MAPPING_FILE);
 
 		if ("undefined".equals(mapping)) {
 			return message;
@@ -289,11 +308,11 @@ public class ESClientUtil implements ServletContextAware {
 	}
 	
 	/**
-	 * Reads the elastic search mapping from "/WEB-INF/search/mapping.json".   
+	 * Reads the elastic search json configs from the given file   
+	 * @param filename The path to the json file.
 	 * @return The JSON mapping as <code>String</code>.
 	 */
-	private String getMappingFromFile() {
-		final String filename = "/WEB-INF/search/mapping.json";
+	private String getJsonFromFile(String filename) {
 		StringBuilder mapping = new StringBuilder(64);
 		InputStream inputStream = null;
 		try {
