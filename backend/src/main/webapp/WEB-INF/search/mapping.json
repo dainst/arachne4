@@ -10,6 +10,9 @@
             }
          }
       ],
+      "_all":{
+         "omit_norms": true
+      },
       "properties":{
          "datasetGroup":{
             "type":"string"
