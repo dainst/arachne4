@@ -111,22 +111,24 @@
         <facet name="kategorie" labelKey="Kategorie">
             <field datasource="Dataset.TableName"/>
         </facet>
+        
+        <!-- Facet-Place -->
         <facet name="ort" labelKey="Lokalisierung">
             <context type="ort" separator=", ">
                 <field datasource=".Stadt"/>
                 <field datasource=".Land"/>
             </context>
         </facet>
+        
+        <!-- Facet-Dating -->
         <facet name="datierungepoche" labelKey="Epoche">
             <context type="datierung">
                 <field datasource=".AnfEpoche"/>
-            </context>
-        </facet>
-        <facet name="datierungepoche" labelKey="Epoche">
-            <context type="datierung">
                 <field datasource=".EndEpoche"/>
             </context>
         </facet>
+        
+        <!-- Facet-Inclusion -->
         <facet name="einschlusstyp" labelKey="Art des Einschlusses">
             <context type="einschluss">
                 <field datasource=".Einschlussart"/>
@@ -137,5 +139,6 @@
                 <field datasource=".Form"/>
             </context>
         </facet>
+        
     </facets>
 </category>

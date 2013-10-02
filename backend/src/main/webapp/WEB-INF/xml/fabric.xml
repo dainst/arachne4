@@ -106,23 +106,51 @@
     </display>
     
     <facets>
-        <facet name="Fabricmainabstractcontext" labelKey="Fabric-Context">
+        <!-- Facet-Context -->
+        <facet name="befund" labelKey="Fabric-Context">
             <context type="Fabricmainabstractcontext" separator=" / ">
                 <field datasource=".Grabungsort"/>
+            </context>
+        </facet>
+        <facet name="stratum" labelKey="Fabric-Stratum">
+            <context type="Fabricmainabstractcontext" separator=" / ">
                 <field datasource=".Befund"/>
+            </context>
+        </facet>
+        <facet name="areal" labelKey="Fabric-Areal">
+            <context type="Fabricmainabstractcontext" separator=" / ">
                 <field datasource=".Areal"/>
             </context>
         </facet>
-        <facet name="Fabricmainabstractmorphology" labelKey="Fabric-Morphology">
-            <context type="Fabricmainabstractmorphology" separator=" / ">
+        
+        <!-- Facet-Morphology --> 
+        <facet name="morphology_functionalgroup" labelKey="Functional Group">
+            <context type="Fabricmainabstractcontext">
                 <field datasource=".Level1"/>
-                <field datasource=".Level2"/>
-                <field datasource=".Level3"/>
-                <field datasource=".Level4"/>
-                <field datasource=".Level5"/>
-                <field datasource=".Level6"/>
             </context>
         </facet>
+        <facet name="morphology_2ndLevel" labelKey="2nd Level">
+            <context type="Fabricmainabstractcontext">
+                <field datasource=".Level2"/>
+            </context>
+        </facet>    
+        <facet name="morphology_3rdLevel" labelKey="3rd Level">
+            <context type="Fabricmainabstractcontext">
+                <field datasource=".Level3"/>
+            </context>
+        </facet>    
+        <facet name="morphology_4thLevel" labelKey="4th Level">
+            <context type="Fabricmainabstractcontext">
+                <field datasource=".Level4"/>
+            </context>
+        </facet>    
+        <facet name="morphology_5thLevel" labelKey="5th Level">
+            <context type="Fabricmainabstractcontext">
+                <field datasource=".Level5"/>
+            </context>
+        </facet>    
+        
+        <!-- Facet-Fabric -->
         <facet name="kategorie" labelKey="Kategorie">
             <field datasource="Dataset.TableName"/>
         </facet>

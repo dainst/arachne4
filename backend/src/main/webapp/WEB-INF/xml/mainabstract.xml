@@ -6,7 +6,7 @@
         <title>
             <section separator=" / ">
                 <section labelKey="Context" separator=" - ">
-                    <field datasource="befund.Grabungsort" prefix="Place: "/>
+                    <field datasource="befund.Grabungsort"/>
                     <field datasource="befund.Befund" prefix="Stratum: "/>
                 </section>
 
@@ -48,7 +48,7 @@
                         <field datasource="befund.Areal"/>
                     </section>
                 </section>
-                
+
                 <section labelKey="Morphologie">
                     <section labelKey="Functional Group">
                         <field datasource="morphology.Level1"/>
@@ -73,7 +73,7 @@
                         <field datasource="mainabstract.GrabungsinterneTypennummerSub"/>
                     </section>
                 </section>
-                
+
                 <section labelKey="Fabric">
                     <section labelKey="Herkunft">
                         <field datasource="fabric.Origin"/>
@@ -84,7 +84,8 @@
                     <section labelKey="Name">
                         <field datasource="fabric.Name"/>
                     </section>
-                    <context type="Mainabstractfabricfabricdescription" labelKey="Description" separator=", ">
+                    <context type="Mainabstractfabricfabricdescription" labelKey="Description"
+                        separator=", ">
                         <contextSection labelKey="Freie Farbbeschreibung">
                             <field datasource=".ColourQualifierFreeVon"/>
                             <field datasource=".ColourFreeVon"/>
@@ -126,7 +127,7 @@
                         </contextSection>
                     </context>
                 </section>
-                
+
                 <include type="datierung"/>
 
                 <section labelKey="Informationen zur Quantifizierung">
@@ -150,7 +151,7 @@
                             <field datasource="quantities.TotalSherds"/>
                         </section>
                     </section>
-                    
+
                     <section labelKey="Gewicht">
                         <section labelKey="Ränder">
                             <field datasource="quantities.RimWeight" postfix="g"/>
@@ -168,9 +169,9 @@
                             <field datasource="quantities.OthersWeight" postfix="g"/>
                         </section>
                     </section>
-                    
+
                     <section labelKey="Weitere Quantifierzungsinformationen">
-                        <section labelKey="Prozentualer Randanteil">
+                        <section labelKey="Randanteil">
                             <field datasource="quantities.RimPercentage" postfix="%"/>
                         </section>
                         <section labelKey="Anzahl Joins">
@@ -203,7 +204,7 @@
                 </section>
             </section>
         </datasections>
-        
+
         <contextImages>
             <!-- Show images of the connected types -->
             <contextImage show="always">Morphology</contextImage>
@@ -214,46 +215,56 @@
             <!-- Show images of fabricdescriptions connected with the current abstract -->
             <contextImage show="always">Mainabstractfabricfabricdescription</contextImage>
         </contextImages>
-        
+
     </display>
     <facets>
         <facet name="kategorie" labelKey="Kategorie">
             <field datasource="Dataset.TableName"/>
         </facet>
-        <facet name="befund" labelKey="Befund">
+        
+        <!-- Context-Facets -->
+        <facet name="grabungsort" labelKey="Grabungsort">
             <context type="befund" separator=", ">
                 <field datasource=".Grabungsort"/>
+            </context>
+        </facet>
+        <facet name="befund" labelKey="Befund">
+            <context type="befund">
                 <field datasource=".Befund"/>
             </context>
         </facet>
-        <facet name="morphology" labelKey="Morphologie">
+        
+        <!-- Morphology-Facets -->
+        <facet name="morphology_functionalgroup" labelKey="Functional Group">
             <context type="morphology">
-                <field datasource=".Level6">
-                    <ifEmpty>
-                        <field datasource=".Level5">
-                            <ifEmpty>
-                                <field datasource=".Level4">
-                                    <ifEmpty>
-                                        <field datasource=".Level3">
-                                            <ifEmpty>
-                                                <field datasource=".Level2">
-                                                  <ifEmpty>
-                                                  <field datasource=".Level1"/>
-                                                  </ifEmpty>
-                                                </field>
-                                            </ifEmpty>
-                                        </field>
-                                    </ifEmpty>
-                                </field>
-                            </ifEmpty>
-                        </field>
-                    </ifEmpty>
-                </field>
+                <field datasource=".Level1"/>
             </context>
         </facet>
+        <facet name="morphology_2ndLevel" labelKey="2nd Level">
+            <context type="morphology">
+                <field datasource=".Level2"/>
+            </context>
+        </facet>    
+        <facet name="morphology_3rdLevel" labelKey="3rd Level">
+            <context type="morphology">
+                <field datasource=".Level3"/>
+            </context>
+        </facet>    
+        <facet name="morphology_4thLevel" labelKey="4th Level">
+            <context type="morphology">
+                <field datasource=".Level4"/>
+            </context>
+        </facet>    
+        <facet name="morphology_5thLevel" labelKey="5th Level">
+            <context type="morphology">
+                <field datasource=".Level5"/>
+            </context>
+        </facet>    
         <facet name="grabungsinternetypnummer" labelKey="Grabunsinterne Typnummer">
             <field datasource="mainabstract.GrabunsinterneTypnummer"/>
         </facet>
+        
+        <!-- Fabric-Facets -->
         <facet name="fabricorigin" labelKey="Fabric Ursprung">
             <context type="fabric">
                 <field datasource=".Origin"/>
@@ -269,13 +280,11 @@
                 <field datasource=".Name"/>
             </context>
         </facet>
+        
+        <!-- Dating-Facets -->
         <facet name="datierungepoche" labelKey="Epoche">
-            <context type="datierung">
+            <context type="datierung" separator=" - ">
                 <field datasource=".AnfEpoche"/>
-            </context>
-        </facet>
-        <facet name="datierungepoche" labelKey="Epoche">
-            <context type="datierung">
                 <field datasource=".EndEpoche"/>
             </context>
         </facet>

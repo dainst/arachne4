@@ -225,6 +225,8 @@
         <facet name="kategorie" labelKey="Kategorie">
             <field datasource="Dataset.TableName"/>
         </facet>
+        
+        <!-- Sherd-Facets -->
         <facet name="sherdtype" labelKey="Typ des Keramikfragments">
             <field datasource="isolatedsherd.SherdType"/>
         </facet>
@@ -234,11 +236,70 @@
         <facet name="nitonanalysisnumber" labelKey="Niton-Analyse-Nummer">
             <field datasource="isolatedsherd.NitonAnalysisID"/>
         </facet>
+        
+        <!-- Surfacetreatment -->
         <facet name="surfacetreatmentbezeichner" labelKey="Oberflächenbehandlung">
             <context type="surfcatreatment">
                 <field datasource="surfacetreatment.Bezeichner"/>
             </context>
         </facet>
+        
+        <!-- Morphology-Facets -->
+        <facet name="morphology_functionalgroup" labelKey="Functional Group">
+            <context type="isolatedsherdmainabstractmorphology">
+                <field datasource=".Level1"/>
+            </context>
+        </facet>
+        <facet name="morphology_2ndLevel" labelKey="2nd Level">
+            <context type="isolatedsherdmainabstractmorphology">
+                <field datasource=".Level2"/>
+            </context>
+        </facet>    
+        <facet name="morphology_3rdLevel" labelKey="3rd Level">
+            <context type="isolatedsherdmainabstractmorphology">
+                <field datasource=".Level3"/>
+            </context>
+        </facet>    
+        <facet name="morphology_4thLevel" labelKey="4th Level">
+            <context type="isolatedsherdmainabstractmorphology">
+                <field datasource=".Level4"/>
+            </context>
+        </facet>    
+        <facet name="morphology_5thLevel" labelKey="5th Level">
+            <context type="isolatedsherdmainabstractmorphology">
+                <field datasource=".Level5"/>
+            </context>
+        </facet>  
+        
+        <!-- Fabric-Facets -->
+        <facet name="fabricorigin" labelKey="Fabric Ursprung">
+            <context type="isolatedsherdmainabstractfabric">
+                <field datasource=".Origin"/>
+            </context>
+        </facet>
+        <facet name="fabriccommonname" labelKey="Fabric Common Name">
+            <context type="isolatedsherdmainabstractfabric">
+                <field datasource=".CommonName"/>
+            </context>
+        </facet>
+        <facet name="fabricname" labelKey="Fabric Name">
+            <context type="isolatedsherdmainabstractfabric">
+                <field datasource=".Name"/>
+            </context>
+        </facet>
+        
+        <!-- Context-Facets -->
+        <facet name="grabungsort" labelKey="Grabungsort">
+            <context type="isolatedsherdmainabstractbefund" separator=", ">
+                <field datasource=".Grabungsort"/>
+            </context>
+        </facet>
+        <facet name="befund" labelKey="Befund">
+            <context type="isolatedsherdmainabstractbefund">
+                <field datasource=".Befund"/>
+            </context>
+        </facet>
+        
         <facet name="ort" labelKey="Lokalisierung">
             <context type="ort" separator=", ">
                 <field datasource=".Stadt"/>
