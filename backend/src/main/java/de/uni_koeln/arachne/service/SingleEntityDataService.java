@@ -41,13 +41,14 @@ public class SingleEntityDataService {
 		// TODO Make This more Flexible
 		// This manages The TableConnectionDescriptions which provides Information about the sub categories
 		// The subCategories contain additional Information to an entity of a category 
-		subCategories = new ArrayList<TableConnectionDescription>(10);
+		subCategories = new ArrayList<TableConnectionDescription>(11);
 		// objekt sub categories
 		
 		final String PrimaryKey = "PrimaryKey";
 		
 		subCategories.add( new TableConnectionDescription("objekt",PrimaryKey,"objektbauornamentik",PrimaryKey));
 		subCategories.add( new TableConnectionDescription("objekt",PrimaryKey,"objektgemaelde",PrimaryKey));
+		subCategories.add( new TableConnectionDescription("objekt",PrimaryKey,"objektkermik",PrimaryKey));
 		subCategories.add( new TableConnectionDescription("objekt",PrimaryKey,"objektlebewesen",PrimaryKey));
 		subCategories.add( new TableConnectionDescription("objekt",PrimaryKey,"objektmosaik",PrimaryKey));
 		subCategories.add( new TableConnectionDescription("objekt",PrimaryKey,"objektplastik",PrimaryKey));

@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.response;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -117,7 +118,14 @@ public class ResponseFactory {
 				try {
 					final Class<?> facettedArachneEntityClass = response.getClass().getSuperclass();
 					final java.lang.reflect.Field facetField = facettedArachneEntityClass.getDeclaredField("facet_"+facet.getName());
-					facetField.set(response, facet.getValues());
+					List<String> facetValues = facet.getValues();
+					// TODO find better way to use multiple values ('objekt subcategories')
+					
+					if ("subkategorie".equals(facet.getName()) && facetValues.get(0).contains("#")) {
+						 facetValues = new ArrayList<String>(Arrays.asList(facetValues.get(0).split("#")));
+					}
+					//
+					facetField.set(response, facetValues);
 				} catch (NoSuchFieldException e) {
 					LOGGER.error("Invalid facet definition 'facet_" + facet.getName() + "' in '" + tableName + ".xml'. The facet field is not defined in " +
 							"FacettedArachneEntity.java. This facet will be ignored.");

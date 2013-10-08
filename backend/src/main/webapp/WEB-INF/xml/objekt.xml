@@ -198,7 +198,7 @@
 				</section>
 				<section labelKey="Ware">
 					<field datasource="objektkeramik.WareKeramik"/>
-					<field datasource="objektkeramim.SpezifizierungWareKermaik"/>
+					<field datasource="objektkeramik.SpezifizierungWareKeramik"/>
 				</section>
 				<section labelKey="Informationen zum Maler">
 					<section labelKey="Maler">
@@ -767,6 +767,9 @@
 		<facet name="kategorie" labelKey="Kategorie">
 			<field datasource="Dataset.TableName"/>
 		</facet>
+		<facet name="subkategorie" labelKey="Unterkategorie">
+    		<field datasource="KategorieObjekt.Typ" />
+    	</facet>
 		<facet name="ort" labelKey="Lokalisierung">
 			<context type="ort" separator=", ">
 				<field datasource=".Stadt"/>
