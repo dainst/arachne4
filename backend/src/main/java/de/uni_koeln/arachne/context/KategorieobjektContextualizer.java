@@ -46,7 +46,7 @@ public class KategorieobjektContextualizer extends AbstractContextualizer {
 			if (keySet.contains(objektSubcategory + '.' + SQLToolbox.generatePrimaryKeyName(objektSubcategory))) {
 				// TODO find better way to use multiple values ('objekt subcategories')
 				// write multiple values as space separated list
-				subcategoryValue += SQLToolbox.ucfirst(objektSubcategory.substring(6)) + '#'; // magic 6 means remove 'objekt'
+				subcategoryValue += SQLToolbox.ucfirst(objektSubcategory.substring(6)) + '#'; // NOPMD - magic 6 means remove 'objekt'
 			}
 		}
 		subcategoryValue = subcategoryValue.substring(0, subcategoryValue.length() - 1);

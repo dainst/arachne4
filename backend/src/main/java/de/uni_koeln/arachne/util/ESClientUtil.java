@@ -362,13 +362,13 @@ public class ESClientUtil implements ServletContextAware {
 				LOGGER.error(method + " (" + url + ") request failed with " + connection.getResponseCode() + ' ' + connection.getResponseMessage());
 			}
 		} catch (MalformedURLException e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.error(e.getMessage(), e);
 		} catch (ProtocolException e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.error(e.getMessage(), e);
 		} catch (SocketTimeoutException e) {
-			LOGGER.error("Elasticsearch REST connection timed out: " + e.getMessage());
+			LOGGER.error("Elasticsearch REST connection timed out: ", e);
 		} catch (IOException e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.error(e.getMessage(), e);
 		} finally {
 			connection.disconnect();
 			connection = null;

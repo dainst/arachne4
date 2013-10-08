@@ -40,7 +40,7 @@ public class QuantificationContent {
 
 	private float othersWeight = 0.0f;
 	
-	private float totalWeight = 0.0f;
+	private transient float totalWeight = 0.0f;
 
 	private int mni = 0;
 

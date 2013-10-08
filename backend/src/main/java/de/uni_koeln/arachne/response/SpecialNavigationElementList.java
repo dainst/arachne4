@@ -12,7 +12,7 @@ import java.util.List;
 
 public class SpecialNavigationElementList {
 
-	private final List<AbstractSpecialNavigationElement> specialNavigationElements = new ArrayList<AbstractSpecialNavigationElement>();
+	private transient final List<AbstractSpecialNavigationElement> specialNavigationElements = new ArrayList<AbstractSpecialNavigationElement>();
 		
 	public List<AbstractSpecialNavigationElement> getSpecialNavigationElements() {
 		return specialNavigationElements;

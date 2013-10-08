@@ -33,7 +33,7 @@ public class SpecialNavigationsController {
 	 * List of all currently avaiable special navigation classes, needs to be
 	 * extended, if additional special navigations have to be provided
 	 */
-	private final List<AbstractSpecialNavigationElement> specialNavigationsClasses = new ArrayList<AbstractSpecialNavigationElement>();
+	private transient final List<AbstractSpecialNavigationElement> specialNavigationsClasses = new ArrayList<AbstractSpecialNavigationElement>();
 
 	public SpecialNavigationsController() {
 		specialNavigationsClasses.add(new CeramalexQuantifySpecialNavigationElement());
