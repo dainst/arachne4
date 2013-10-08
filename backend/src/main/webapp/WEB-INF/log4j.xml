@@ -60,8 +60,8 @@
 
 	<!-- Root Logger -->
 	<root>
-		<!-- <priority value="info" /> -->
-		<appender-ref ref="rolling-file" />
+		<priority value="info" />
+		<!-- <appender-ref ref="rolling-file" /> -->
 		<appender-ref ref="console" />
 	</root>
 	
