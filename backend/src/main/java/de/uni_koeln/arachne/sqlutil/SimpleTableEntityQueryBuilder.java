@@ -9,9 +9,9 @@ package de.uni_koeln.arachne.sqlutil;
 
 public class SimpleTableEntityQueryBuilder extends AbstractSQLBuilder {
 	
-	private transient Integer primaryKey;
+	private transient final Integer primaryKey;
 	
-	private transient String primaryKeyLabel;
+	private transient final String primaryKeyLabel;
 	
 	public SimpleTableEntityQueryBuilder(final String tableName, final Integer primaryKey) {
 		this.table = tableName; 

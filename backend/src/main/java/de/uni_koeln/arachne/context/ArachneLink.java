@@ -52,11 +52,12 @@ public class ArachneLink extends AbstractLink {
 	 */
 	@Override
 	public String getFieldFromFields(final String fieldName) {
-		if (fields != null && fields.containsKey(fieldName))
+		if (fields != null && fields.containsKey(fieldName)) {
 			return fields.get(fieldName);
-		else if (getEntity2() != null)
+		} else if (getEntity2() != null) { // NOPMD
 			return getEntity2().getField(fieldName);
-		else
+		} else {
 			return null;
+		}
 	}
 }

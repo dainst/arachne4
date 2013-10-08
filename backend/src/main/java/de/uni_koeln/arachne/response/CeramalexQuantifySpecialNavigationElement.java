@@ -16,18 +16,13 @@ public class CeramalexQuantifySpecialNavigationElement extends AbstractSpecialNa
 		super();
 	}
 	
-	protected CeramalexQuantifySpecialNavigationElement(String link) {
+	protected CeramalexQuantifySpecialNavigationElement(final String link) {
 		super(link);
 	}
 
 	@Override
 	public boolean matches(final String searchParam, final String filterValues) {
-		if(filterValues == null || filterValues.isEmpty() || !filterValues.contains("facet_kategorie:\"mainabstract\"")) {
-			return false;
-		}
-		else {
-			return true;
-		}
+		return !(filterValues == null || filterValues.isEmpty() || !filterValues.contains("facet_kategorie:\"mainabstract\""));
 	}
 
 	@Override

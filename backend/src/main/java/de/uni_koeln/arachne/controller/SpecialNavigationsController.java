@@ -33,11 +33,10 @@ public class SpecialNavigationsController {
 	 * List of all currently avaiable special navigation classes, needs to be
 	 * extended, if additional special navigations have to be provided
 	 */
-	private List<AbstractSpecialNavigationElement> specialNavigationsClasses = new ArrayList<AbstractSpecialNavigationElement>();
+	private final List<AbstractSpecialNavigationElement> specialNavigationsClasses = new ArrayList<AbstractSpecialNavigationElement>();
 
 	public SpecialNavigationsController() {
-		specialNavigationsClasses
-				.add(new CeramalexQuantifySpecialNavigationElement());
+		specialNavigationsClasses.add(new CeramalexQuantifySpecialNavigationElement());
 	}
 
 	/**
@@ -67,9 +66,9 @@ public class SpecialNavigationsController {
 
 		final SpecialNavigationElementList result = new SpecialNavigationElementList();
 		
-		for (AbstractSpecialNavigationElement cur : specialNavigationsClasses) {
-			if (cur.matches(searchParam, filterValues)) {
-				result.addElement(cur.getResult(searchParam, filterValues));
+		for (final AbstractSpecialNavigationElement currentNavigationElement : specialNavigationsClasses) {
+			if (currentNavigationElement.matches(searchParam, filterValues)) {
+				result.addElement(currentNavigationElement.getResult(searchParam, filterValues));
 			}
 		}
 		LOGGER.debug("#Results: " + result.size());

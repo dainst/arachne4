@@ -312,7 +312,7 @@ public class ESClientUtil implements ServletContextAware {
 	 * @param filename The path to the json file.
 	 * @return The JSON mapping as <code>String</code>.
 	 */
-	private String getJsonFromFile(String filename) {
+	private String getJsonFromFile(final String filename) {
 		StringBuilder mapping = new StringBuilder(64);
 		InputStream inputStream = null;
 		try {

@@ -50,15 +50,14 @@ public class CeramalexController  {
 	@Autowired
 	private transient SearchService searchService;
 		
-	private transient Integer defaultFacetLimit;
+	private transient final Integer defaultFacetLimit;
 	
-	private transient String foreignKeyLabel = "mainabstract.FS_QuantitiesID";
+	private static final String FOREIGN_KEY_LABEL = "mainabstract.FS_QuantitiesID";
 		
 	@Autowired
 	public CeramalexController(final @Value("#{config.esDefaultFacetLimit}") int defaultFacetLimit) {
 		this.defaultFacetLimit = defaultFacetLimit;
-		}
-
+	}
 	
 	/**
 	 * Method handles a Ceramalex-quantify-request. It uses the regular elasticsearch query- and facet-parameters to first receive a list of mainabstract-records
@@ -107,10 +106,9 @@ public class CeramalexController  {
 		
 		while(entityIter.hasNext()) {
 			final SearchHit entity = entityIter.next();
-			final Long id = entity.getEntityId();
-			
+						
 			// get complete entity information
-			final ArachneEntity arachneEntity = arachneEntityDao.getByEntityID(id);
+			final ArachneEntity arachneEntity = arachneEntityDao.getByEntityID(entity.getEntityId());
 				
 			// only process mainabstract-records, skip any other
 			if(arachneEntity == null || !"mainabstract".equals(arachneEntity.getTableName())) {
@@ -124,7 +122,7 @@ public class CeramalexController  {
 			final Map<String, String> datasetFields = localDataset.getFields();
 	
 			// does the mainabstract have a quantification-record connected?
-			final String foreignKeyQuantification = datasetFields.get(foreignKeyLabel);
+			final String foreignKeyQuantification = datasetFields.get(FOREIGN_KEY_LABEL);
 			LOGGER.debug("Requesting Data for Mainabstract " + entityId.getArachneEntityID() + ", Quantity-Record: " + foreignKeyQuantification);
 			
 			if(foreignKeyQuantification == null) {
@@ -158,17 +156,16 @@ public class CeramalexController  {
 	 * @param quantities List of QuantificationContent-instances which are used for the aggregation-computations
 	 * @return QuantificationContent Result-instance holding the results of the aggregation 
 	 */
-	private QuantificationContent computeAggregation(
-			final List<QuantificationContent> quantities) {
+	private QuantificationContent computeAggregation(final List<QuantificationContent> quantities) {
 		
 		// only one record? no computations necessary...
-		if(quantities.size() == 1) {
+		if (quantities.size() == 1) {
 			return quantities.get(0);
 		}
 		// else add all records to the result-instance
 		else {
 			final QuantificationContent result = new QuantificationContent();
-			for(QuantificationContent cur : quantities) {
+			for (final QuantificationContent cur : quantities) {
 				result.add(cur);
 			}
 			return result;

@@ -14,7 +14,7 @@ import de.uni_koeln.arachne.sqlutil.SQLToolbox;
  */
 public class KategorieobjektContextualizer extends AbstractContextualizer {
 
-	final List<String> subcategories = new ArrayList<String>(9);
+	private final transient List<String> subcategories = new ArrayList<String>(9);
 	
 	public KategorieobjektContextualizer() {
 		// TODO - this should be more flexible, same as SingleEntityDataService

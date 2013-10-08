@@ -3,6 +3,9 @@ package de.uni_koeln.arachne.response;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Class is used to hold single quantity-records as well as the result-object of
  * the aggregation computations
@@ -13,6 +16,8 @@ import java.util.Map;
 
 public class QuantificationContent {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(QuantificationContent.class);		
+	
 	private static String qualifier = "quantities.";
 	
 	private int rimCount = 0;
@@ -85,11 +90,11 @@ public class QuantificationContent {
 						classMembers[i].setFloat(this, Float.valueOf(content));
 					}
 				} catch (NumberFormatException e) {
-					e.printStackTrace();
+					LOGGER.error("Error creating QuantificationContent. Caused by ", e);
 				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
+					LOGGER.error("Error creating QuantificationContent. Caused by ", e);
 				} catch (IllegalAccessException e) {
-					e.printStackTrace();
+					LOGGER.error("Error creating QuantificationContent. Caused by ", e);
 				}
 			}
 		}
@@ -227,71 +232,71 @@ public class QuantificationContent {
 		return result;
 	}
 
-	public void setRimCount(Integer rimCount) {
+	public void setRimCount(final Integer rimCount) {
 		this.rimCount = rimCount;
 	}
 
-	public void setHandleCount(Integer handleCount) {
+	public void setHandleCount(final Integer handleCount) {
 		this.handleCount = handleCount;
 	}
 
-	public void setBaseCount(Integer baseCount) {
+	public void setBaseCount(final Integer baseCount) {
 		this.baseCount = baseCount;
 	}
 
-	public void setBodySherdCount(Integer bodySherdCount) {
+	public void setBodySherdCount(final Integer bodySherdCount) {
 		this.bodySherdCount = bodySherdCount;
 	}
 
-	public void setOthersCount(Integer othersCount) {
+	public void setOthersCount(final Integer othersCount) {
 		this.othersCount = othersCount;
 	}
 
-	public void setRimWeight(Float rimWeight) {
+	public void setRimWeight(final Float rimWeight) {
 		this.rimWeight = rimWeight;
 	}
 
-	public void setHandleWeight(Float handleWeight) {
+	public void setHandleWeight(final Float handleWeight) {
 		this.handleWeight = handleWeight;
 	}
 
-	public void setBodySherdWeight(Float bodySherdWeight) {
+	public void setBodySherdWeight(final Float bodySherdWeight) {
 		this.bodySherdWeight = bodySherdWeight;
 	}
 
-	public void setBaseWeight(Float baseWeight) {
+	public void setBaseWeight(final Float baseWeight) {
 		this.baseWeight = baseWeight;
 	}
 
-	public void setOthersWeight(Float othersWeight) {
+	public void setOthersWeight(final Float othersWeight) {
 		this.othersWeight = othersWeight;
 	}
 
-	public void setTotalWeight(Float totalWeight) {
+	public void setTotalWeight(final Float totalWeight) {
 		this.totalWeight = totalWeight;
 	}
 
-	public void setMni(Integer mni) {
+	public void setMni(final Integer mni) {
 		this.mni = mni;
 	}
 
-	public void setMxi(Integer mxi) {
+	public void setMxi(final Integer mxi) {
 		this.mxi = mxi;
 	}
 
-	public void setRimPercentage(Float rimPercentage) {
+	public void setRimPercentage(final Float rimPercentage) {
 		this.rimPercentage = rimPercentage;
 	}
 
-	public void setMniWeighted(Float mniWeighted) {
+	public void setMniWeighted(final Float mniWeighted) {
 		this.mniWeighted = mniWeighted;
 	}
 
-	public void setTotalSherds(Integer totalSherds) {
+	public void setTotalSherds(final Integer totalSherds) {
 		this.totalSherds = totalSherds;
 	}
 
-	public void setContainsContent(Boolean containsContent) {
+	public void setContainsContent(final Boolean containsContent) {
 		this.containsContent = containsContent;
 	}
 	
