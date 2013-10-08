@@ -8,8 +8,6 @@ import java.util.Set;
 
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.sqlutil.SQLToolbox;
-import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
-import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * This contextualizer is used to determine if an image belongs to the unstructured ones or not.

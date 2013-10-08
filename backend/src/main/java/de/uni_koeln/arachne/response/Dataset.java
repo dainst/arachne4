@@ -9,12 +9,8 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.uni_koeln.arachne.context.AbstractLink;
 import de.uni_koeln.arachne.context.Context;
-import de.uni_koeln.arachne.context.SemanticConnectionsContextualizer;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.StrUtils;
 /**
@@ -26,8 +22,6 @@ import de.uni_koeln.arachne.util.StrUtils;
 @XmlRootElement
 public class Dataset {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(Dataset.class);
-	
 	// TODO change implementation to something more portable
 	/**
 	 * workaround for implementing getUri;

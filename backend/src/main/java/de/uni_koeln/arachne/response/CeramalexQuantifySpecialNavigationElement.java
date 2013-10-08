@@ -1,8 +1,5 @@
 package de.uni_koeln.arachne.response;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 import de.uni_koeln.arachne.util.StrUtils;
 
 /**
