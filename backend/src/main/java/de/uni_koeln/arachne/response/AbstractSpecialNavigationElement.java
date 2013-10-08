@@ -9,7 +9,7 @@ package de.uni_koeln.arachne.response;
  *
  */
 
-public abstract class SpecialNavigationElement {
+public abstract class AbstractSpecialNavigationElement {
 	
 	/** Link which gets dynamically computed based on provided parameters, all other values are identical over all instances */
 	public String link;
@@ -33,12 +33,12 @@ public abstract class SpecialNavigationElement {
 	public abstract boolean matches(final String searchParam, final String filterValues);
 	
 	/** Constructs a result element matching the concrete request params e.g. filterValues and searchParams */
-	public abstract SpecialNavigationElement getResult(final String searchParam, final String filterValues);
+	public abstract AbstractSpecialNavigationElement getResult(final String searchParam, final String filterValues);
 	
 	/**
 	 * Empty default-constructor
 	 */
-	public SpecialNavigationElement() {
+	public AbstractSpecialNavigationElement() {
 		super();
 	}
 	
@@ -46,7 +46,7 @@ public abstract class SpecialNavigationElement {
 	 * Constructs a result-element with the provided link
 	 * @param link Link containing all necessary parameters for further processing
 	 */
-	protected SpecialNavigationElement(final String link) {
+	protected AbstractSpecialNavigationElement(final String link) {
 		super();
 		this.link = link;
 	}

@@ -12,13 +12,13 @@ import java.util.List;
 
 public class SpecialNavigationElementList {
 
-	private List<SpecialNavigationElement> specialNavigationElements = new ArrayList<SpecialNavigationElement>();
+	private List<AbstractSpecialNavigationElement> specialNavigationElements = new ArrayList<AbstractSpecialNavigationElement>();
 		
-	public List<SpecialNavigationElement> getSpecialNavigationElements() {
+	public List<AbstractSpecialNavigationElement> getSpecialNavigationElements() {
 		return specialNavigationElements;
 	}
 
-	public void addElement(final SpecialNavigationElement element) {
+	public void addElement(final AbstractSpecialNavigationElement element) {
 		if(!specialNavigationElements.contains(element)) {
 			specialNavigationElements.add(element);
 		}

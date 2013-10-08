@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.response.CeramalexQuantifySpecialNavigationElement;
-import de.uni_koeln.arachne.response.SpecialNavigationElement;
+import de.uni_koeln.arachne.response.AbstractSpecialNavigationElement;
 import de.uni_koeln.arachne.response.SpecialNavigationElementList;
 
 /**
@@ -33,7 +33,7 @@ public class SpecialNavigationsController {
 	 * List of all currently avaiable special navigation classes, needs to be
 	 * extended, if additional special navigations have to be provided
 	 */
-	private List<SpecialNavigationElement> specialNavigationsClasses = new ArrayList<SpecialNavigationElement>();
+	private List<AbstractSpecialNavigationElement> specialNavigationsClasses = new ArrayList<AbstractSpecialNavigationElement>();
 
 	public SpecialNavigationsController() {
 		specialNavigationsClasses
@@ -67,7 +67,7 @@ public class SpecialNavigationsController {
 
 		final SpecialNavigationElementList result = new SpecialNavigationElementList();
 		
-		for (SpecialNavigationElement cur : specialNavigationsClasses) {
+		for (AbstractSpecialNavigationElement cur : specialNavigationsClasses) {
 			if (cur.matches(searchParam, filterValues)) {
 				result.addElement(cur.getResult(searchParam, filterValues));
 			}

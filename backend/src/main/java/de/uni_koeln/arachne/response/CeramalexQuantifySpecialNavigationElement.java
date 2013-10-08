@@ -10,7 +10,7 @@ import de.uni_koeln.arachne.util.StrUtils;
  *
  */
 
-public class CeramalexQuantifySpecialNavigationElement extends SpecialNavigationElement {
+public class CeramalexQuantifySpecialNavigationElement extends AbstractSpecialNavigationElement {
 	
 	public CeramalexQuantifySpecialNavigationElement() {
 		super();
@@ -31,7 +31,7 @@ public class CeramalexQuantifySpecialNavigationElement extends SpecialNavigation
 	}
 
 	@Override
-	public SpecialNavigationElement getResult(final String searchParam,
+	public AbstractSpecialNavigationElement getResult(final String searchParam,
 			final String filterValues) {
 		final StringBuffer linkBuffer = new StringBuffer(getRequestMapping());
 		linkBuffer.append("?q=");
