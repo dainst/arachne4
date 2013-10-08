@@ -64,7 +64,7 @@ public class QuantificationContent {
 	 *            Map-struct as it is retrieved from database
 	 */
 	public QuantificationContent(final Map<String, String> quantification) {
-		final Class quantificationContent = this.getClass();
+		final Class<?> quantificationContent = this.getClass();
 		final java.lang.reflect.Field[] classMembers = quantificationContent
 				.getDeclaredFields();
 
@@ -76,7 +76,7 @@ public class QuantificationContent {
 
 			if (content != null && !content.isEmpty()) {
 				classMembers[i].setAccessible(true);
-				final Class fieldType = classMembers[i].getType();
+				final Class<?> fieldType = classMembers[i].getType();
 				try {
 					final String fieldTypeString = fieldType.getName();
 					if ("int".equals(fieldTypeString)) {
