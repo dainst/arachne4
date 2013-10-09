@@ -23,7 +23,8 @@
     },
     "similarity" : {
 		"bm25" : {
-			"type": "BM25"
+			"type": "BM25",
+			"b": 0
 		}
 	}
 }
