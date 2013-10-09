@@ -52,7 +52,7 @@ public class QuantificationContent {
 
 	private int totalSherds = 0;
 	
-	private Boolean containsContent = false;
+	private boolean containsContent = false;
 	
 	
 	/**
@@ -80,7 +80,6 @@ public class QuantificationContent {
 			final String content = quantification.get(qualifier + fieldName);
 
 			if (content != null && !content.isEmpty()) {
-				classMembers[i].setAccessible(true);
 				final Class<?> fieldType = classMembers[i].getType();
 				try {
 					final String fieldTypeString = fieldType.getName();
@@ -113,67 +112,67 @@ public class QuantificationContent {
 				+ mniWeighted + ", totalSherds=" + totalSherds + "]";
 	}
 
-	public Integer getRimCount() {
+	public int getRimCount() {
 		return rimCount;
 	}
 
-	public Integer getHandleCount() {
+	public int getHandleCount() {
 		return handleCount;
 	}
 
-	public Integer getBaseCount() {
+	public int getBaseCount() {
 		return baseCount;
 	}
 
-	public Integer getBodySherdCount() {
+	public int getBodySherdCount() {
 		return bodySherdCount;
 	}
 
-	public Integer getOthersCount() {
+	public int getOthersCount() {
 		return othersCount;
 	}
 
-	public Float getRimWeight() {
+	public float getRimWeight() {
 		return rimWeight;
 	}
 
-	public Float getHandleWeight() {
+	public float getHandleWeight() {
 		return handleWeight;
 	}
 
-	public Float getBodySherdWeight() {
+	public float getBodySherdWeight() {
 		return bodySherdWeight;
 	}
 
-	public Float getBaseWeight() {
+	public float getBaseWeight() {
 		return baseWeight;
 	}
 
-	public Float getOthersWeight() {
+	public float getOthersWeight() {
 		return othersWeight;
 	}
 
-	public Integer getMni() {
+	public int getMni() {
 		return mni;
 	}
 
-	public Integer getMxi() {
+	public int getMxi() {
 		return mxi;
 	}
 
-	public Float getRimPercentage() {
+	public float getRimPercentage() {
 		return rimPercentage;
 	}
 
-	public Float getMniWeighted() {
+	public float getMniWeighted() {
 		return mniWeighted;
 	}
 
-	public Integer getTotalSherds() {
+	public int getTotalSherds() {
 		return totalSherds;
 	}
 	
-	public Boolean getContainsContent() {
+	public boolean getContainsContent() {
 		return containsContent;
 	}
 
@@ -232,71 +231,71 @@ public class QuantificationContent {
 		return result;
 	}
 
-	public void setRimCount(final Integer rimCount) {
+	public void setRimCount(final int rimCount) {
 		this.rimCount = rimCount;
 	}
 
-	public void setHandleCount(final Integer handleCount) {
+	public void setHandleCount(final int handleCount) {
 		this.handleCount = handleCount;
 	}
 
-	public void setBaseCount(final Integer baseCount) {
+	public void setBaseCount(final int baseCount) {
 		this.baseCount = baseCount;
 	}
 
-	public void setBodySherdCount(final Integer bodySherdCount) {
+	public void setBodySherdCount(final int bodySherdCount) {
 		this.bodySherdCount = bodySherdCount;
 	}
 
-	public void setOthersCount(final Integer othersCount) {
+	public void setOthersCount(final int othersCount) {
 		this.othersCount = othersCount;
 	}
 
-	public void setRimWeight(final Float rimWeight) {
+	public void setRimWeight(final float rimWeight) {
 		this.rimWeight = rimWeight;
 	}
 
-	public void setHandleWeight(final Float handleWeight) {
+	public void setHandleWeight(final float handleWeight) {
 		this.handleWeight = handleWeight;
 	}
 
-	public void setBodySherdWeight(final Float bodySherdWeight) {
+	public void setBodySherdWeight(final float bodySherdWeight) {
 		this.bodySherdWeight = bodySherdWeight;
 	}
 
-	public void setBaseWeight(final Float baseWeight) {
+	public void setBaseWeight(final float baseWeight) {
 		this.baseWeight = baseWeight;
 	}
 
-	public void setOthersWeight(final Float othersWeight) {
+	public void setOthersWeight(final float othersWeight) {
 		this.othersWeight = othersWeight;
 	}
 
-	public void setTotalWeight(final Float totalWeight) {
+	public void setTotalWeight(final float totalWeight) {
 		this.totalWeight = totalWeight;
 	}
 
-	public void setMni(final Integer mni) {
+	public void setMni(final int mni) {
 		this.mni = mni;
 	}
 
-	public void setMxi(final Integer mxi) {
+	public void setMxi(final int mxi) {
 		this.mxi = mxi;
 	}
 
-	public void setRimPercentage(final Float rimPercentage) {
+	public void setRimPercentage(final float rimPercentage) {
 		this.rimPercentage = rimPercentage;
 	}
 
-	public void setMniWeighted(final Float mniWeighted) {
+	public void setMniWeighted(final float mniWeighted) {
 		this.mniWeighted = mniWeighted;
 	}
 
-	public void setTotalSherds(final Integer totalSherds) {
+	public void setTotalSherds(final int totalSherds) {
 		this.totalSherds = totalSherds;
 	}
 
-	public void setContainsContent(final Boolean containsContent) {
+	public void setContainsContent(final boolean containsContent) {
 		this.containsContent = containsContent;
 	}
 	
