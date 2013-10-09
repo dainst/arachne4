@@ -23,7 +23,7 @@
 		<jackson-version>2.2.3</jackson-version>
 		<org.javassist-version>3.18.0-GA</org.javassist-version>
 		<boneCP-version>0.7.1.RELEASE</boneCP-version>
-		<elasticsearch-version>0.90.3</elasticsearch-version>
+		<elasticsearch-version>0.90.5</elasticsearch-version>
 		<snappy-version>1.0.5</snappy-version>
 	</properties>
 	<dependencies>
