@@ -771,7 +771,6 @@ public class XmlConfigUtil implements ServletContextAware {
 	 */
 	private List<String> getFieldNames(final Element element, final String parentType) {
 		final List<String> result = new ArrayList<String>();
-		
 		final List<Element> children = element.getChildren();
 		if ("context".equals(element.getName()) && !children.isEmpty()) {
 			getFieldNamesFromContext(element, parentType, result, children);
@@ -852,9 +851,11 @@ public class XmlConfigUtil implements ServletContextAware {
 		if (!StrUtils.isEmptyOrNull(datasourceValue)) {
 			datasourceValue = context + datasourceValue; // NOPMD
 			// Exception for objekt-Subgroups e.g. objektkeramik, these are handled specially
-			// Add Exception for Fabric / Fabricdescription as they shouldnt be handled as Object-/Sub-Object
+			// Add Exception for Fabric / Fabricdescription, Surfacetreatment / SurfacetreatmentAction
+			// as they shouldnt be handled as Object-/Sub-Object => the problem is, that the child-type
+			// starts with the name of the parent
 			if ((!datasourceValue.startsWith(parentType)
-					&& !datasourceValue.startsWith("Dataset")) || "fabric".equals(parentType)) {
+					&& !datasourceValue.startsWith("Dataset")) || "surfacetreatment".equals(parentType) || "fabric".equals(parentType)) {
 				result.add(datasourceValue);
 			}
 		}
