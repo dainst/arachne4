@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
     <display>
         <title>
-            <section>
+            <section separator=" - ">
                 <field datasource="surfacetreatment.Bezeichner"/>
                 <field datasource="surfacetreatmentaction.TreatmentPosition"/>
                 <field datasource="surfacetreatmentaction.TreatmentAction"/>
