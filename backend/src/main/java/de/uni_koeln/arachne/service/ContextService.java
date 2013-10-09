@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import de.uni_koeln.arachne.context.*;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
+import de.uni_koeln.arachne.util.ImageUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 /**
@@ -147,6 +148,11 @@ public class ContextService {
 		}
 		LOGGER.debug("Adding " + resultContextImages.size() + " additional images from dataset-contexts...");
 		parent.addImages(resultContextImages);
+		
+		// if no thumbnail has been set yet, use one from context
+		if(!resultContextImages.isEmpty() && parent.getThumbnailId() == null) {
+			parent.setThumbnailId(ImageUtils.findThumbnailId(resultContextImages));
+		}
 	}
 	
 	
