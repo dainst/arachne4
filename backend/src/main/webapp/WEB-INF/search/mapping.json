@@ -7,13 +7,15 @@
                   "analyzer":"keyword"
                },
                "match":"facet*"
-            },
+            }
+         },
+         {
             "all_template":{
-              "match": "*",
               "mapping": {
       	        "similarity": "bm25",
                 "omit_norms": true
-              }
+              },
+              "match": "*"
             }
          }
       ],
