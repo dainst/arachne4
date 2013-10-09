@@ -532,11 +532,17 @@ public class XmlConfigUtil implements ServletContextAware {
 					for(final Element childField: childFields) {
 						addFieldToFieldList(childField, fieldList, i, dataset, contextType, parentSeparator);
 					}
-
-					localContext.add(fieldList);
-					curSectionContent.add(localContext);
+					
+					// only add to list if fields contain content
+					if(fieldList.size() != 0) {
+						localContext.add(fieldList);
+						curSectionContent.add(localContext);
+					}
 				}
 				result.add(curSectionContent);
+			}
+			if(result.getContent().isEmpty()) {
+				return null;
 			}
 		}
 		return result;
