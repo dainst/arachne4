@@ -58,8 +58,8 @@ public class SpecialNavigationsController {
 	@RequestMapping(value = "/specialNavigationsService", method = RequestMethod.GET)
 	public @ResponseBody
 	SpecialNavigationElementList handleSearchRequest(
-			@RequestParam("q") final String searchParam,
-			@RequestParam(value = "fq", required = false) final String filterValues,
+			@RequestParam(value = "q", required = false, defaultValue = "") final String searchParam,
+			@RequestParam(value = "fq", required = false, defaultValue = "") final String filterValues,
 			@RequestParam(value = "offset", required = false) final Integer offset,
 			@RequestParam(value = "limit", required = false) final Integer limit,
 			final HttpServletResponse response) {
