@@ -112,12 +112,20 @@ public class SearchService {
 		}
 		
 		// add facet search results
+		final List<String> filterValueList = filterQueryStringToStringList(filterValues);
+		for (int i=0; i<filterValueList.size(); i++) {
+			int colon = filterValueList.get(i).indexOf(':');
+			filterValueList.set(i, filterValueList.get(i).substring(0, colon));
+		}
+		
 		if (facetList != null) {
 			final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
 			for (final String facetName: facetList) {
 				final Map<String, Long> facetMap = getFacetMap(facetName, searchResponse, filterValues);
 				if (facetMap != null) {
-					facets.put(facetName, getFacetMap(facetName, searchResponse, filterValues));
+					if (!filterValueList.contains(facetName)) {
+						facets.put(facetName, getFacetMap(facetName, searchResponse, filterValues));
+					}
 				}
 			}
 			searchResult.setFacets(facets);
