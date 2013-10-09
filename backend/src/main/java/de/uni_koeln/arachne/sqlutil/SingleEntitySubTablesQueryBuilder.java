@@ -10,7 +10,6 @@ import de.uni_koeln.arachne.response.Dataset;
  */
 public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 
-	
 	public SingleEntitySubTablesQueryBuilder(final Dataset dataset, final TableConnectionDescription tableConnectionDescription) {
 		conditions = new ArrayList<Condition>(1);
 
@@ -55,7 +54,7 @@ public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 	
 	
 	@Override
-	protected String buildSQL() {
+	protected void buildSQL() {
 		final StringBuilder result = new StringBuilder(sql);
 		result.append("SELECT * FROM `");
 		result.append(table);
@@ -66,7 +65,5 @@ public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 		}
 		result.append(';');
 		sql = result.toString();
-		return sql;	
 	}
-
 }

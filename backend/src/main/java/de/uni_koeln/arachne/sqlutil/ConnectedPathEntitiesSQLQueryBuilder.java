@@ -36,7 +36,7 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	}
 	
 	@Override
-	protected String buildSQL() {
+	protected void buildSQL() {
 		//First Things doesnt belong here
 		//First Things
 		
@@ -91,9 +91,7 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 			result.append(rightsConditionBuilder.getUserRightsSQLSnipplett());
 		}
 		result.append(" GROUP BY e"+(typeStepRestrictions.size()-1)+".Target");
-
-		
-		return result.toString();
+		sql = result.toString();
 	}
 	
 	

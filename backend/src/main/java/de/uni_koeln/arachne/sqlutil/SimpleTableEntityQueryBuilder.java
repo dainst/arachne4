@@ -20,9 +20,9 @@ public class SimpleTableEntityQueryBuilder extends AbstractSQLBuilder {
 	}
 	
 	@Override
-	protected String buildSQL() {
+	protected void buildSQL() {
 		final StringBuffer buffer = new StringBuffer("SELECT * FROM `" + this.table + "` WHERE `" + primaryKeyLabel + "` = '" + primaryKey + "'");
-		return buffer.toString();
+		sql = buffer.toString();
 	}
  
 }

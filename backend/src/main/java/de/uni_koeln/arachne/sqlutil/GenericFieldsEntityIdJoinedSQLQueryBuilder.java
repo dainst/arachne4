@@ -59,7 +59,7 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 	}
 	
 	@Override
-	protected String buildSQL() {
+	protected void buildSQL() {
 		final StringBuilder result = new StringBuilder(sql); 
 		result.append("SELECT ");
 		result.append(field2);
@@ -73,6 +73,5 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 		result.append(';');
 		sql = result.toString();
 		LOGGER.debug(sql);
-		return sql;
 	}
 }

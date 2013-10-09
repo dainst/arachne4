@@ -29,7 +29,7 @@ public class ConnectedEntityIdsSQLQueryBuilder extends AbstractSQLBuilder {
 	}
 	
 	@Override
-	protected String buildSQL() {
+	protected void buildSQL() {
 		final StringBuilder result = new StringBuilder(sql);
 		result.append("SELECT `Target` FROM `SemanticConnection` WHERE 1");
 		result.append(this.buildAndConditions());
@@ -37,6 +37,5 @@ public class ConnectedEntityIdsSQLQueryBuilder extends AbstractSQLBuilder {
 		result.append(';');
 		sql = result.toString();
 		LOGGER.debug(sql);
-		return sql;
 	}
 }

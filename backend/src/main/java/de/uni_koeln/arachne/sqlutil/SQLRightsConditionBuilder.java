@@ -76,7 +76,6 @@ public class SQLRightsConditionBuilder {
 		} else {
 			//Get the Permission Groups
 			permissiongroups = user.getDatasetGroups();
-
 			if (!permissiongroups.isEmpty()) {
 				//Convert the Permission Groups to real conditions
 				final List<Condition> conditions = buildConditions();

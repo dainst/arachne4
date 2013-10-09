@@ -42,7 +42,7 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	}
 	
 	@Override
-	protected String buildSQL() {
+	protected void buildSQL() {
 		final StringBuilder result = new StringBuilder(sql);
 		result.append("SELECT * FROM `SemanticConnection` LEFT JOIN `");
 		result.append(table);
@@ -52,8 +52,7 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		result.append(this.buildAndConditions());
 		result.append(rightsConditionBuilder.getUserRightsSQLSnipplett());  
 		result.append(';');
-		sql = result.toString();
+		sql = result.toString();		
 		LOGGER.debug(sql);
-		return sql;
 	}
 }

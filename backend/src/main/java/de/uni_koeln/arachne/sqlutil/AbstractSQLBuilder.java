@@ -31,7 +31,7 @@ public abstract class AbstractSQLBuilder {
 		return sql;
 	}
 	
-	protected abstract String buildSQL();
+	protected abstract void buildSQL();
 	
 	/**
 	 * This Function concats all the Conditions to an SQL Snipplett for the Where Statement

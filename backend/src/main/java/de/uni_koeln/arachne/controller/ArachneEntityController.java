@@ -81,7 +81,6 @@ public class ArachneEntityController {
 		} else {
 			return getEntityFromIndex(entityId, null, request, response);
 		}
-		
 	}
     
     /**
