@@ -12,7 +12,7 @@ package de.uni_koeln.arachne.response;
 public abstract class AbstractSpecialNavigationElement {
 	
 	/** Link which gets dynamically computed based on provided parameters, all other values are identical over all instances */
-	public String link;
+	private String link;
 	
 	/** How is the special navigation integrated into the frontend? */
 	public abstract SpecialNavigationElementTypeEnum getType();
