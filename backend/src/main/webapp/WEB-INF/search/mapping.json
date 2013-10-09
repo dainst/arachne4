@@ -11,6 +11,7 @@
          }
       ],
       "_all":{
+      	 "similarity": "bm25",
          "omit_norms": true
       },
       "properties":{
@@ -30,14 +31,14 @@
          },
          "subtitle":{
             "type":"string",
-            "boost":1.2
+            "boost":2.4
          },
          "thumbnailId":{
             "type":"long"
          },
          "title":{
             "type":"string",
-            "boost":2.0
+            "boost":4.0
          },
          "type":{
             "type":"string"

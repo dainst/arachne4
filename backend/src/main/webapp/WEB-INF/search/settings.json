@@ -20,5 +20,10 @@
                 "language" : "de"
             }
         }
-    }
+    },
+    "similarity" : {
+		"bm25" : {
+			"type": "BM25"
+		}
+	}
 }
