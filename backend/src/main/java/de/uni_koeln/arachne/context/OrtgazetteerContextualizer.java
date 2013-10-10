@@ -14,6 +14,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.util.StrUtils;
 
 public class OrtgazetteerContextualizer extends AbstractContextualizer implements IContextualizer {
 
@@ -35,6 +36,9 @@ public class OrtgazetteerContextualizer extends AbstractContextualizer implement
 		final RestTemplate restTemplate = new RestTemplate();
 		final String gazId = parent.getFieldFromContext("ort.Gazetteerid");
 		LOGGER.debug("gazId: {}", gazId);
+		if (StrUtils.isEmptyOrNull(gazId)) {
+			return null;
+		}
 		try {
 			final long queryTime = System.currentTimeMillis();
 			final String doc = restTemplate.getForObject("http://gazetteer.dainst.org/doc/{gazId}.json", String.class, gazId);
