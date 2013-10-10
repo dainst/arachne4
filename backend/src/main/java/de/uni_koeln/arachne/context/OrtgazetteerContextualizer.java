@@ -46,12 +46,19 @@ public class OrtgazetteerContextualizer extends AbstractContextualizer implement
 			final JSONObject jsonObject = new JSONObject(doc);
 			
 			final Map<String,String> fields = new HashMap<String,String>();
-			fields.put("ortgazetteer.prefName", jsonObject.getJSONObject("prefName").getString("title"));
-			final JSONArray coords = jsonObject.getJSONObject("prefLocation").getJSONArray("coordinates");
-			fields.put("ortgazetteer.lon", coords.getString(0));
-			fields.put("ortgazetteer.lat", coords.getString(1));
-			link.setFields(fields);
+			final String prefName = jsonObject.optJSONObject("prefName").getString("title"); 
+			if (!StrUtils.isEmptyOrNull(prefName)) {
+				fields.put("ortgazetteer.prefName", prefName);
+			}
+						
+			final JSONObject prefLocation = jsonObject.optJSONObject("prefLocation"); 
+			if (prefLocation != null) {
+			final JSONArray coords = prefLocation.getJSONArray("coordinates");
+				fields.put("ortgazetteer.lon", coords.getString(0));
+				fields.put("ortgazetteer.lat", coords.getString(1));
+			}
 			
+			link.setFields(fields);
 			result.add(link);
 		} catch (JSONException e) {
 			LOGGER.error("Error while parsing JSON!", e);
