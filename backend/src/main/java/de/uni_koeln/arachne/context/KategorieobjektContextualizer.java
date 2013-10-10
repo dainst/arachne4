@@ -8,6 +8,7 @@ import java.util.Set;
 
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.sqlutil.SQLToolbox;
+import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * This contextualizer is used to determine if an image belongs to the unstructured ones or not.
@@ -45,11 +46,13 @@ public class KategorieobjektContextualizer extends AbstractContextualizer {
 		for (final String objektSubcategory: subcategories) {
 			if (keySet.contains(objektSubcategory + '.' + SQLToolbox.generatePrimaryKeyName(objektSubcategory))) {
 				// TODO find better way to use multiple values ('objekt subcategories')
-				// write multiple values as space separated list
+				// write multiple values as '#' separated list
 				subcategoryValue += SQLToolbox.ucfirst(objektSubcategory.substring(6)) + '#'; // NOPMD - magic 6 means remove 'objekt'
 			}
 		}
-		subcategoryValue = subcategoryValue.substring(0, subcategoryValue.length() - 1);
+		if (!StrUtils.isEmptyOrNull(subcategoryValue)) {
+			subcategoryValue = subcategoryValue.substring(0, subcategoryValue.length() - 1);
+		}
 		final Map<String, String> subcategory = new HashMap<String, String>();
 		subcategory.put("KategorieObjekt.Typ", subcategoryValue);
 		parent.appendFields(subcategory);
