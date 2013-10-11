@@ -145,6 +145,9 @@
 				<include type="uri" />
 			</section>
 		</datasections>
+		<contextImages>
+			<contextImage show="always">buchseite</contextImage>
+		</contextImages>
 	</display>
 	<facets>
 		<facet name="kategorie" labelKey="Kategorie">
