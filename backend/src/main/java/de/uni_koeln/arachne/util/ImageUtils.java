@@ -22,7 +22,7 @@ public class ImageUtils {
 	 */
 	public static Long findThumbnailId(final List<? extends Image> imageList) {
 		Image thumbnail = imageList.get(0);
-		if (imageList.size()>1 && thumbnail.getSubtitle().contains(",")) {
+		if (imageList.size()>1 && thumbnail != null && thumbnail.getSubtitle().contains(",")) {
 			Integer lowestNumber = extractNumberFromImageFilename(thumbnail.getSubtitle());
 			for (Image potentialThumbnail: imageList) {
 				if (potentialThumbnail.getSubtitle().contains(",")) {
