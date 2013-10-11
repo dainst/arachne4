@@ -113,7 +113,7 @@ public class SearchService {
 		
 		// add facet search results
 		final List<String> filterValueList = filterQueryStringToStringList(filterValues);
-		for (int i=0; i<filterValueList.size(); i++) {
+		if (filterValueList != null) for (int i=0; i<filterValueList.size(); i++) {
 			int colon = filterValueList.get(i).indexOf(':');
 			filterValueList.set(i, filterValueList.get(i).substring(0, colon));
 		}
@@ -123,7 +123,7 @@ public class SearchService {
 			for (final String facetName: facetList) {
 				final Map<String, Long> facetMap = getFacetMap(facetName, searchResponse, filterValues);
 				if (facetMap != null) {
-					if (!filterValueList.contains(facetName)) {
+					if (filterValueList != null && !filterValueList.contains(facetName)) {
 						facets.put(facetName, getFacetMap(facetName, searchResponse, filterValues));
 					}
 				}
@@ -267,7 +267,7 @@ public class SearchService {
 	 */
 	private List<String> filterQueryStringToStringList(final String filterString) {
 		String string = filterString;
-		if (string.startsWith("facet_")) {
+		if (string != null && string.startsWith("facet_")) {
 			final List<String> result = new ArrayList<String>();
 			int index = string.indexOf(",facet_");
 			while (index != -1) {
