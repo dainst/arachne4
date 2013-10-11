@@ -123,8 +123,8 @@ public class SearchService {
 			for (final String facetName: facetList) {
 				final Map<String, Long> facetMap = getFacetMap(facetName, searchResponse, filterValues);
 				if (facetMap != null) {
-					if (filterValueList != null && !filterValueList.contains(facetName)) {
-						facets.put(facetName, getFacetMap(facetName, searchResponse, filterValues));
+					if (filterValueList == null || !filterValueList.contains(facetName)) {
+						facets.put(facetName, facetMap);
 					}
 				}
 			}
