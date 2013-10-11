@@ -172,7 +172,7 @@ public class QuantificationContent {
 		return totalSherds;
 	}
 	
-	public boolean getContainsContent() {
+	public boolean isContainsContent() {
 		return containsContent;
 	}
 

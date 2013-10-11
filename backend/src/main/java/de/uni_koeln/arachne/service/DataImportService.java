@@ -73,7 +73,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 	private transient final ObjectMapper mapper;
 	
 	private transient long startId = 0;
-	private transient long endId = 0;
+	private transient long endId = 0; // NOPMD
 	
 	private transient boolean terminate = false;
 	

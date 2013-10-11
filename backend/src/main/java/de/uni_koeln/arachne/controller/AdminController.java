@@ -163,8 +163,7 @@ public class AdminController {
 	
 	// TODO find a better place for this function - maybe using java spring configuration
 	@Scheduled(fixedDelay=43200000)
-	@SuppressWarnings("unused")
-	private void scheduledDataimport() {
+	private void scheduledDataimport() { // NOPMD
 		if (doIndex) {
 			LOGGER.info("Starting scheduled dataimport...");
 			defaultTaskExecutor.execute(dataImportService);
