@@ -6,6 +6,9 @@
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
+	<!-- Imports user-defined @Controller beans that process client requests -->
+	<import resource="controllers.xml" />
+
 	<!-- DispatcherServlet Context: defines this servlet's request-processing 
 		infrastructure -->
 
@@ -26,9 +29,4 @@
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
-
-	<!-- Imports user-defined @Controller beans that process client requests -->
-	<import resource="controllers.xml" />
-
-
 </beans>
