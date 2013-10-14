@@ -43,7 +43,7 @@ public class CeramalexQuantifySpecialNavigationElement extends AbstractSpecialNa
 
 	@Override
 	public SpecialNavigationElementTargetEnum getTarget() {
-		return SpecialNavigationElementTargetEnum.INTERN;
+		return SpecialNavigationElementTargetEnum.EXTERN;
 	}
 
 	@Override

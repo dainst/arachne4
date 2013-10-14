@@ -12,7 +12,7 @@ package de.uni_koeln.arachne.response;
 public abstract class AbstractSpecialNavigationElement {
 	
 	/** Link which gets dynamically computed based on provided parameters, all other values are identical over all instances */
-	private transient String link;
+	protected transient String link;
 	
 	/** How is the special navigation integrated into the frontend? */
 	public abstract SpecialNavigationElementTypeEnum getType();
@@ -35,9 +35,12 @@ public abstract class AbstractSpecialNavigationElement {
 	/** Constructs a result element matching the concrete request params e.g. filterValues and searchParams */
 	public abstract AbstractSpecialNavigationElement getResult(final String searchParam, final String filterValues);
 	
-	/**
-	 * Empty default-constructor
-	 */
+	/** Link-field-Getter */
+	public String getLink() {
+		return this.link;
+	}
+	
+	/** Empty default-constructor */
 	public AbstractSpecialNavigationElement() {
 		super();
 	}
