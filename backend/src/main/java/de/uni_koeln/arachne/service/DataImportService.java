@@ -134,7 +134,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 						+ startId + " ORDER BY `ArachneEntityID` LIMIT " + esBulkSize, longMapper);
 								
 				long end = esBulkSize - 1;
-				LOGGER.info("Size - End: " + entityIds.size() + " - " + end);
+				
 				if (end >= entityIds.size()) {
 					end = entityIds.size() - 1;
 					finished = true;
