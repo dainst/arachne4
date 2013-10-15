@@ -72,9 +72,6 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 	
 	private transient final ObjectMapper mapper;
 	
-	private transient long startId = 0;
-	private transient long endId = 0; // NOPMD
-	
 	private transient boolean terminate = false;
 	
 	public DataImportService() {
@@ -104,6 +101,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 		indexedDocuments.set(0);		
 		elapsedTime.set(0);
 		final long startTime = System.currentTimeMillis();
+		long dbgEntityId = 0;
 		
 		userRightsService.setUserSolr();
 		
@@ -114,7 +112,8 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 			boolean finished = false;
 			long deltaT = 0;
 			int index = 0;
-						
+			long startId = 0;
+			
 			final Client client = esClientUtil.getClient();
 			final int esBulkSize = esClientUtil.getBulkSize();
 						
@@ -135,13 +134,14 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 						+ startId + " ORDER BY `ArachneEntityID` LIMIT " + esBulkSize, longMapper);
 								
 				long end = esBulkSize - 1;
+				LOGGER.info("Size - End: " + entityIds.size() + " - " + end);
 				if (end >= entityIds.size()) {
 					end = entityIds.size() - 1;
 					finished = true;
 				}
 				
 				startId = entityIds.get(0);
-				endId = entityIds.get((int)end);
+				final long endId = entityIds.get((int)end);
 								
 				LOGGER.debug("Fetching entities " + startId + " to " + endId + "...");
 				final long fetch = System.currentTimeMillis();
@@ -158,6 +158,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 					
 					final EntityId entityId = new EntityId(currentEntityId.getTableName(), currentEntityId.getForeignKey()
 							, currentEntityId.getId(), currentEntityId.isDeleted());
+					dbgEntityId = currentEntityId.getId();
 					
 					BaseArachneEntity entity;
 					if (entityId.isDeleted()) {
@@ -203,7 +204,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 			}
 		}
 		catch (Exception e) {
-			LOGGER.error("Dataimport failed at [" + startId + "-" + endId + "] with: ", e);
+			LOGGER.error("Dataimport failed at [" + dbgEntityId + "] with: ", e);
 			esClientUtil.deleteIndex(indexName);
 		}
 		// disable request scope hack
