@@ -61,12 +61,15 @@ public class OrtgazetteerContextualizer extends AbstractContextualizer implement
 			link.setFields(fields);
 			result.add(link);
 		} catch (JSONException e) {
-			LOGGER.error("Error while parsing JSON!", e);
+			LOGGER.warn("Error while parsing JSON response for request: http://gazetteer.dainst.org/doc/{}.json", gazId);
+			LOGGER.debug("Stacktrace:", e);
 		} catch (HttpClientErrorException e) {
 			LOGGER.warn("Unable to get gazetteer data for id: {}", gazId);
+			LOGGER.debug("Stacktrace:", e);
 		}
 		
 		return result;
+		
 	}
 
 }
