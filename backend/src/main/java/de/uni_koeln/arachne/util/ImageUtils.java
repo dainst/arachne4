@@ -6,24 +6,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uni_koeln.arachne.response.Image;
-import de.uni_koeln.arachne.service.ImageService;
 
 /**
  * This class implements utility functions for working with images
  */
 @SuppressWarnings("PMD")
 public class ImageUtils {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImageUtils.class);
+	
 	/**
 	 * This method finds the thumbnailId by finding the image whose filename does not contain a comma or the filename with the
 	 *  lowest number after the comma.
 	 * @param imageList
 	 * @param thumbnail
-	 * @return The image id of the thumbnail.
+	 * @return The image id of the thumbnail or <code>null</code> on error.
 	 */
 	public static Long findThumbnailId(final List<? extends Image> imageList) {
 		Image thumbnail = imageList.get(0);
-		if (imageList.size()>1 && thumbnail != null && thumbnail.getSubtitle().contains(",")) {
-			Integer lowestNumber = extractNumberFromImageFilename(thumbnail.getSubtitle());
+		final String subtitle = thumbnail.getSubtitle();
+		if (subtitle == null) {
+			LOGGER.warn("Data integrity warning. Missing subtitle on image '" + thumbnail.getImageId() + "'.");
+			return null;
+		}
+		if (imageList.size()>1 && thumbnail != null && subtitle.contains(",")) {
+			Integer lowestNumber = extractNumberFromImageFilename(subtitle);
 			for (Image potentialThumbnail: imageList) {
 				if (potentialThumbnail.getSubtitle().contains(",")) {
 					final Integer currentNumber = extractNumberFromImageFilename(potentialThumbnail.getSubtitle());
@@ -50,8 +57,6 @@ public class ImageUtils {
 			result = Integer.parseInt(imageFilename.split(",")[1].split("\\.")[0]); 
 		} catch (NumberFormatException e) {
 			// ignore images where the part after the comma is not a number
-			final Logger logger = LoggerFactory.getLogger(ImageService.class);
-			logger.debug(e.getMessage());
 		}
 		return result;
 	}
