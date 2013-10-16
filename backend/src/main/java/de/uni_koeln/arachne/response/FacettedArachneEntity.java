@@ -79,6 +79,13 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	// mainabstract
 	protected List<String> facet_grabungsinternetypnumber;
 	protected List<String> facet_fabricorigin;
+	protected List<String> facet_morphology_functionalgroup;
+	protected List<String> facet_morphology_2ndLevel;
+	protected List<String> facet_morphology_3rdLevel;
+	protected List<String> facet_morphology_4thLevel;
+	protected List<String> facet_morphology_5thLevel;
+	protected List<String> facet_morphology_6thLevel;
+
 	
 	// marbilder & objekt (subs)
 	protected List<String> facet_subkategorie;
