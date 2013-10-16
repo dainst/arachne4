@@ -25,6 +25,9 @@
 <title>Ceramalex Quantification</title>
 </head>
 <body>
+<div class="row-fluid">
+	<div class="span12"></div>
+	<div class="span10 offset1">
 	<h3>Ceramalex Quantification</h3>
 	<hr class="bs-docs-separator">
 	<p class="lead">Your Search:</p>
@@ -106,5 +109,7 @@
 			</table>
 		</c:when>
 	</c:choose>
+</div>
+</div>
 </body>
 </html>
