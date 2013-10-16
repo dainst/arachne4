@@ -11,7 +11,7 @@
             </section>
         </title>
         <subtitle>
-            <section separator=" / " labelKey="Surfacetreatmentaction">
+            <section labelKey="Unique Identifier">
               <field datasource="Dataset.Id" />
             </section>
         </subtitle>

@@ -5,13 +5,13 @@
     <display>
         <title>
             <section separator=" / ">
-                <field datasource="befund.Grabungsort" prefix="Place: "/>
+                <field datasource="befund.Grabungsort"/>
                 <field datasource="befund.Befund" prefix="Stratum: "/>
                 <field datasource="befund.Areal" prefix="Areal: "/>
             </section>
         </title>
         <subtitle labelKey="">
-            <section labelKey="Befund">
+            <section labelKey="Unique Identifier">
                 <field datasource="Dataset.internalId"/>
             </section>
         </subtitle>

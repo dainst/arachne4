@@ -12,7 +12,7 @@
         </title>
 
         <subtitle>
-            <section labelKey="Sherd">
+            <section labelKey="ID">
                 <field datasource="Dataset.Id"/>
             </section>
         </subtitle>

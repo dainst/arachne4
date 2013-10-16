@@ -31,7 +31,7 @@
             </section>
         </title>
         <subtitle>
-            <section labelKey="Quantity">
+            <section labelKey="Unique Identifier">
                 <field datasource="Dataset.Id" />
             </section>
         </subtitle>

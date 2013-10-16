@@ -31,7 +31,7 @@
             </section>
         </title>
         <subtitle>
-            <section labelKey="Main Abstract">
+            <section labelKey="Unique Identifier">
                 <field datasource="Dataset.internalId"/>
             </section>
         </subtitle>

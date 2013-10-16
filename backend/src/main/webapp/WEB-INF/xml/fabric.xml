@@ -12,7 +12,7 @@
         </title>
         
         <subtitle>
-            <section labelKey="Fabric">
+            <section labelKey="Unique Identifier">
                 <field datasource="Dataset.ID"/>
             </section>
         </subtitle>
