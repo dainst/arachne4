@@ -53,7 +53,7 @@ public class OrtgazetteerContextualizer extends AbstractContextualizer implement
 						
 			final JSONObject prefLocation = jsonObject.optJSONObject("prefLocation"); 
 			if (prefLocation != null) {
-			final JSONArray coords = prefLocation.getJSONArray("coordinates");
+				final JSONArray coords = prefLocation.getJSONArray("coordinates");
 				fields.put("ortgazetteer.lon", coords.getString(0));
 				fields.put("ortgazetteer.lat", coords.getString(1));
 			}
@@ -61,11 +61,9 @@ public class OrtgazetteerContextualizer extends AbstractContextualizer implement
 			link.setFields(fields);
 			result.add(link);
 		} catch (JSONException e) {
-			LOGGER.warn("Error while parsing JSON response for request: http://gazetteer.dainst.org/doc/{}.json", gazId);
-			LOGGER.debug("Stacktrace:", e);
+			LOGGER.error("Error while parsing JSON response for request: http://gazetteer.dainst.org/doc/" + gazId + ".json", e);
 		} catch (HttpClientErrorException e) {
-			LOGGER.warn("Unable to get gazetteer data for id: {}", gazId);
-			LOGGER.debug("Stacktrace:", e);
+			LOGGER.error("Unable to get gazetteer data for id: " + gazId, e);
 		}
 		
 		return result;
