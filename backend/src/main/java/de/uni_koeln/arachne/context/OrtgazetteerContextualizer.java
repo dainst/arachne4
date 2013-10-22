@@ -46,9 +46,17 @@ public class OrtgazetteerContextualizer extends AbstractContextualizer implement
 			final JSONObject jsonObject = new JSONObject(doc);
 			
 			final Map<String,String> fields = new HashMap<String,String>();
-			final String prefName = jsonObject.optJSONObject("prefName").getString("title"); 
-			if (!StrUtils.isEmptyOrNull(prefName)) {
-				fields.put("ortgazetteer.prefName", prefName);
+			final JSONObject prefName = jsonObject.optJSONObject("prefName");
+			
+			String title = null;
+			if (prefName == null) {
+				LOGGER.warn("Problem reading Gazetteer ID: " + gazId);
+			} else {
+				title = prefName.optString("title");
+			}
+			
+			if (!StrUtils.isEmptyOrNull(title)) {
+				fields.put("ortgazetteer.prefName", title);
 			}
 						
 			final JSONObject prefLocation = jsonObject.optJSONObject("prefLocation"); 
