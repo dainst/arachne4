@@ -3,8 +3,6 @@ package de.uni_koeln.arachne.mapping;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.SecondaryTable;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 /**
@@ -13,7 +11,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="arachneentityidentification")
-@SecondaryTable(name="arachneentitydegrees", pkJoinColumns = @PrimaryKeyJoinColumn(name="ArachneEntityID", referencedColumnName="ArachneEntityID"))
 public class ArachneEntity {
 	
 	/**
@@ -45,13 +42,6 @@ public class ArachneEntity {
 	boolean isDeleted; // NOPMD
 	
 	/**
-	 * The degree of the entity, i.e. the number of connections this entity has to other enttities.
-	 * Can be used as a indicator for importance, for example for ranking in search results.
-	 */
-	@Column(name="Degree",table="arachneentitydegrees")
-	private Integer degree = 0;
-	
-	/**
 	 * The returns the Unique Arachne Identifier.
 	 * @return The Arachne Entity ID
 	 */
@@ -81,13 +71,5 @@ public class ArachneEntity {
 	 */
 	public boolean isDeleted() {
 		return isDeleted;
-	}
-
-	/**
-	 * Returns the number of connection this entity has to other entities
-	 * @return the degree of this entity
-	 */
-	public Integer getDegree() {
-		return degree;
 	}
 }
