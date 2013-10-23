@@ -1,5 +1,9 @@
 {
    "entity":{
+      "_boost": {
+         "name": "boost",
+         "null_value": 1.0
+      },
       "dynamic_templates":[
          {
             "facet_template":{

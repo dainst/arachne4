@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.context.ContextPath;
 import de.uni_koeln.arachne.mapping.EntityIdMapper;
+import de.uni_koeln.arachne.mapping.GenericFieldMapperInteger;
 import de.uni_koeln.arachne.mapping.GenericFieldMapperString;
 import de.uni_koeln.arachne.service.SQLResponseObject;
 import de.uni_koeln.arachne.sqlutil.ConnectedEntityIdsSQLQueryBuilder;
@@ -42,6 +43,24 @@ public class GenericSQLDao extends SQLDao {
 	public List<String> getStringField(final String tableName, final String field1, final Long field1Id
 			, final String field2) {
 		return getStringField(tableName, field1, field1Id, field2, false);		
+	}
+	
+	public List<Integer> getIntegerField(final String tableName, final String field1, final Long field1Id
+			, final String field2, final boolean disableAuthorization) {
+		final GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1
+				, field1Id, field2, disableAuthorization);
+		@SuppressWarnings("unchecked")
+		final List<Integer> queryResult = (List<Integer>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperInteger());
+
+		if (queryResult != null && !queryResult.isEmpty()) {
+			return queryResult;
+		}
+		return null;
+	}
+	
+	public List<Integer> getIntegerField(final String tableName, final String field1, final Long field1Id
+			, final String field2) {
+		return getIntegerField(tableName, field1, field1Id, field2, false);		
 	}
 	
 	public List<Map<String, String>> getConnectedEntities(final String contextType, final Long entityId) {

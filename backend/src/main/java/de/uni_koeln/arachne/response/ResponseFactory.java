@@ -64,6 +64,9 @@ public class ResponseFactory {
 
 		// set thumbnailId
 		response.setThumbnailId(dataset.getThumbnailId());
+		
+		// set degree
+		response.setBoost(dataset.getBoost());
 
 		// set dataset group
 		// workaround for table marbilder as it does not adhere to the naming conventions

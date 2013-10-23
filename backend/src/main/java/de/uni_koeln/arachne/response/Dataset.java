@@ -55,9 +55,14 @@ public class Dataset {
 	protected List<Image> images;
 	
 	/**
-	 * Genric field for additional content
+	 * Generic field for additional content
 	 */
 	protected AdditionalContent additionalContent; 
+	
+	/**
+	 * The boost factor adding to the relevance of the entitiy
+	 */
+	protected double boost = 1;
 	
 	/**
 	 * Parameterless constructor.
@@ -141,6 +146,10 @@ public class Dataset {
 	
 	public AdditionalContent getAdditionalContent() {
 		return additionalContent;
+	}
+	
+	public double getBoost() {
+		return boost;
 	}
 	
 	/**
@@ -286,6 +295,10 @@ public class Dataset {
 		
 	public void setAdditionalContent(final AdditionalContent additionalContent) {
 		this.additionalContent = additionalContent;
+	}
+
+	public void setBoost(double boost) {
+		this.boost = boost;
 	}
 	
 	public void addContext(final Context context) {

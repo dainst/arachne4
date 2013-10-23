@@ -46,7 +46,12 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 	/**
 	 * The image id of the thumbnail of the dataset
 	 */
-	protected Long thumbnailId; 
+	protected Long thumbnailId;
+
+	/**
+	 * The boost factor adding to the relevance of the dataset
+	 */
+	protected double boost; 
 			
 	/**
 	 * Parameterless constructor initializing title and subtitle.
@@ -84,6 +89,10 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 		return lastModified;
 	}
 
+	public double getBoost() {
+		return boost;
+	}
+	
 	public void setLastModified(final Date lastModified) {
 		this.lastModified = lastModified;
 	}
@@ -110,5 +119,9 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 	
 	public void setThumbnailId(final Long thumbnailId) {
 		this.thumbnailId = thumbnailId;
+	}
+
+	public void setBoost(double boost) {
+		this.boost = boost;		
 	}
 }
