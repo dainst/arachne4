@@ -1,9 +1,5 @@
 {
    "entity":{
-      "_boost": {
-         "name": "boost",
-         "null_value": 1.0
-      },
       "dynamic_templates":[
          {
             "facet_template":{
@@ -16,10 +12,12 @@
          {
             "all_template":{
               "mapping": {
-      	        "similarity": "bm25",
-                "omit_norms": true
+                "type": "string",
+                "omit_norms": true,
+                "index_options" : "docs"
               },
-              "match": "*"
+              "match": "*",
+              "match_mapping_type" : "string"
             }
          }
       ],

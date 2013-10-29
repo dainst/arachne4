@@ -60,9 +60,9 @@ public class Dataset {
 	protected AdditionalContent additionalContent; 
 	
 	/**
-	 * The boost factor adding to the relevance of the entitiy
+	 * The number of connections the entity represented by the dataset has
 	 */
-	protected double boost = 1;
+	protected double degree = 1;
 	
 	/**
 	 * Parameterless constructor.
@@ -148,8 +148,8 @@ public class Dataset {
 		return additionalContent;
 	}
 	
-	public double getBoost() {
-		return boost;
+	public double getDegree() {
+		return degree;
 	}
 	
 	/**
@@ -297,8 +297,8 @@ public class Dataset {
 		this.additionalContent = additionalContent;
 	}
 
-	public void setBoost(double boost) {
-		this.boost = boost;
+	public void setDegree(double degree) {
+		this.degree = degree;
 	}
 	
 	public void addContext(final Context context) {

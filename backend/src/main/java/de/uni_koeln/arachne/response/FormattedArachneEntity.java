@@ -49,9 +49,14 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 	protected Long thumbnailId;
 
 	/**
-	 * The boost factor adding to the relevance of the dataset
+	 * The number of connections this entity has
 	 */
-	protected double boost; 
+	protected double degree;
+
+	/**
+	 * The number of fields this entitiy has
+	 */
+	protected int fields; 
 			
 	/**
 	 * Parameterless constructor initializing title and subtitle.
@@ -89,8 +94,8 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 		return lastModified;
 	}
 
-	public double getBoost() {
-		return boost;
+	public double getDegree() {
+		return degree;
 	}
 	
 	public void setLastModified(final Date lastModified) {
@@ -112,6 +117,10 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 	public Long getThumbnailId() {
 		return thumbnailId;
 	}
+	
+	public int getFields() {
+		return fields;
+	}
 
 	public void setImages(final List<Image> images) {
 		this.images = images;
@@ -121,7 +130,11 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 		this.thumbnailId = thumbnailId;
 	}
 
-	public void setBoost(double boost) {
-		this.boost = boost;		
+	public void setDegree(double degree) {
+		this.degree = degree;		
+	}
+
+	public void setFields(int fields) {
+		this.fields = fields;
 	}
 }

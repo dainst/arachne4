@@ -139,6 +139,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 					end = entityIds.size() - 1;
 					finished = true;
 				}
+				finished = true;
 				
 				startId = entityIds.get(0);
 				final long endId = entityIds.get((int)end);
