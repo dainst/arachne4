@@ -53,4 +53,8 @@ public class DrupalSQLDao extends SQLDao {
 				new Object[]{language}, new DatasetMapper());	
 	}
 
+	public List<Map<String, String>> getNews() {
+		return jdbcTemplate.query("SELECT nid FROM node WHERE type LIKE 'news' ORDER BY created DESC LIMIT 10", new DatasetMapper());	
+	}
+
 }

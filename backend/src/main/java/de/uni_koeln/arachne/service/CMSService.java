@@ -132,6 +132,15 @@ public class CMSService {
 		return result;
 	}
 	
+	public List<Node> getNews() {
+		final List<Map<String,String>> news = dao.getNews();
+		final ArrayList<Node> result = new ArrayList<Node>();
+		for (final Map<String,String> newsItem : news) {
+			result.add(getNodeById(Integer.parseInt(newsItem.get("node.nid"))));
+		}
+		return result;
+	}
+	
 	private String getAbsoluteImageUrl(final String relImageUrl) {
 		final String cacheUrl = relImageUrl
 				.replaceFirst("sites/default/files/", "sites/default/files/imagecache/project_node/");
