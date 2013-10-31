@@ -42,26 +42,46 @@ public class Model3DController implements ServletContextAware{
 		LOGGER.debug("Request for model: " + modelId + "(" + isMeta + ")");
 				
 		if (isMeta != null && isMeta) {
-			return getMetaData();
+			return getMetaData(modelId);
 		} else {
-			return getModelData();
+			return getModelData(modelId);
 		}
 	}
 
-	private String getMetaData() {
+	private String getMetaData(final long modelId) {
 		final JSONObject result = new JSONObject();
-		try {
-			result.put("textured", false);
-			return result.toString();
-		} catch (JSONException e) {
-			// TODO: handle exception
-			LOGGER.error("Failed to generate model meta data. Cause: ", e);
+		if (modelId == 666) {
+			try {
+				result.put("title", "Griechische Vase (TestModel)");
+				result.put("textured", false);
+				result.put("license", "Public Domain");
+				return result.toString();
+			} catch (JSONException e) {
+				// TODO: handle exception
+				LOGGER.error("Failed to generate model meta data. Cause: ", e);
+			}
+		} else {
+			try {
+				result.put("title", "Baukomplex der Basilika Aemilia");
+				result.put("textured", false);
+				result.put("license", "CC-BY-SA 3.0");
+				result.put("connectedEntity", 5640);
+				return result.toString();
+			} catch (JSONException e) {
+				// TODO: handle exception
+				LOGGER.error("Failed to generate model meta data. Cause: ", e);
+			}
 		}
 		return null;
 	}
 
-	private String getModelData() {
-		final ServletContextResource modelData = new ServletContextResource(servletContext, "/WEB-INF/basilika.obj");
+	private String getModelData(final long modelId) {
+		ServletContextResource modelData = null;
+		if (modelId == 666) {
+			modelData = new ServletContextResource(servletContext, "/WEB-INF/vase.obj");
+		} else {
+			modelData = new ServletContextResource(servletContext, "/WEB-INF/basilika.obj");
+		}
 		if (modelData.exists()) {
 			try {
 				final File file = modelData.getFile();
