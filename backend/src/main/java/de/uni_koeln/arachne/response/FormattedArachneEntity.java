@@ -49,6 +49,16 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 	protected Long thumbnailId;
 
 	/**
+	 * The place this entity is connected to
+	 */
+	protected String place;
+	
+	/**
+	 * The geo coordinates of the place.
+	 */
+	protected String location;
+	
+	/**
 	 * The number of connections this entity has
 	 */
 	protected double degree;
@@ -94,10 +104,6 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 		return lastModified;
 	}
 
-	public double getDegree() {
-		return degree;
-	}
-	
 	public void setLastModified(final Date lastModified) {
 		this.lastModified = lastModified;
 	}
@@ -118,10 +124,6 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 		return thumbnailId;
 	}
 	
-	public int getFields() {
-		return fields;
-	}
-
 	public void setImages(final List<Image> images) {
 		this.images = images;
 	}
@@ -130,11 +132,35 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 		this.thumbnailId = thumbnailId;
 	}
 
-	public void setDegree(double degree) {
+	public String getPlace() {
+		return this.place;
+	}
+	
+	public void setPlace(final String place) {
+		this.place = place;		
+	}
+
+	public String getLocation() {
+		return this.location;
+	}
+	
+	public void setLocation(final String location) {
+		this.location = location;
+	}
+	
+	public double getDegree() {
+		return degree;
+	}
+	
+	public void setDegree(final double degree) {
 		this.degree = degree;		
 	}
 
-	public void setFields(int fields) {
+	public int getFields() {
+		return fields;
+	}
+	
+	public void setFields(final int fields) {
 		this.fields = fields;
 	}
 }

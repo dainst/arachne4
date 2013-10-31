@@ -65,6 +65,7 @@ public class ResponseFactory {
 		// set thumbnailId
 		response.setThumbnailId(dataset.getThumbnailId());
 		
+		// set fields
 		response.setFields(dataset.getFields().size() + dataset.getContext().size());
 		
 		// set degree
@@ -141,7 +142,16 @@ public class ResponseFactory {
 
 			//Set additional Content
 			response.setAdditionalContent(dataset.getAdditionalContent());
-
+			
+			// set geo information
+			response.setPlace(dataset.getField("ort.Stadt") + ", " + dataset.getField("ort.Land"));
+			final String lat = dataset.getField("ortgazetteer.lat");
+			final String lon = dataset.getField("ortgazetteer.lon");
+			if (lat != null && lon != null) {
+				response.setLocation(lat + "," + lon);
+			}
+			System.out.println(response);
+						
 			return response;
 		}
 

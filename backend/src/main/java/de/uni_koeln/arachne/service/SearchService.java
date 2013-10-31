@@ -108,7 +108,8 @@ public class SearchService {
 			}
 			searchResult.addSearchHit(new de.uni_koeln.arachne.response.SearchHit(Long.valueOf(currenthit.getId())
 					, (String)(currenthit.getSource().get("type")), (String)(currenthit.getSource().get("title"))
-					, (String)(currenthit.getSource().get("subtitle")), thumbnailId));
+					, (String)(currenthit.getSource().get("subtitle")), thumbnailId, (String)(currenthit.getSource().get("place"))
+					, (String)(currenthit.getSource().get("location"))));
 		}
 		
 		// add facet search results
