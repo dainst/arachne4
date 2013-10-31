@@ -49,10 +49,10 @@
          },
          "type":{
             "type":"string"
-         }
+         },
          "place":{
          	"type":"string"
-         }
+         },
          "location":{
          	"type":"geo_point"
          }
