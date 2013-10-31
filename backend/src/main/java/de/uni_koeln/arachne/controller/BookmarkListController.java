@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,7 +27,7 @@ import de.uni_koeln.arachne.service.IUserRightsService;
 @Controller
 public class BookmarkListController {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(BookmarkListController.class);
 	
 	@Autowired
 	private transient IUserRightsService rightsService;
@@ -60,9 +60,12 @@ public class BookmarkListController {
 			result = bookmarkDao.getByBookmarkId(bookmarkId);
 			if (result == null) {
 				response.setStatus(404);
-			} else if (result.getBookmarkList().getUid() != user.getId()) {
-				result = null;
-				response.setStatus(403);
+			} else {
+				final BookmarkList bookmarkList = bookmarkListDao.getByBookmarkListId(result.getBookmarkListId());
+				if (bookmarkList.getUid() != user.getId()) {
+					result = null;
+					response.setStatus(403);
+				}
 			}
 		}
 		return result;
@@ -99,7 +102,8 @@ public class BookmarkListController {
 	 * on the requested format.
 	 * If the given id does not refer to a bookmarkList, a 404 error code is returned.
 	 * if the bookmarkList is not owned by the current user or no user is signed in, 
-	 * a 403 error code is returned. 
+	 * a 403 error code is returned.
+	 * 
 	 */
 	@RequestMapping(value="/bookmarklist/{bookmarkListId}", method=RequestMethod.GET)
 	public @ResponseBody BookmarkList handleGetBookmarkListRequest(
@@ -123,4 +127,42 @@ public class BookmarkListController {
 		return result;
 	}
 
+	/**
+	 * Handles http POST request for <code>/bookmarklist/{bookmarkListId}/update</code>.
+	 * Returns the bookmarkList created and 200 if the action is permitted.
+	 * Returns null and 403 if no user is signed in or the signed in user 
+	 * does not own the bookmarkList to be edited. 
+	 * This methods accepts updates on nested <code>Bookmark</code> items fields and
+	 * creates nested <code>Bookmark</code> items if they do not already exist, but
+	 * does not automatically delete items, that are missing from the list of nested 
+	 * <code>Bookmark</code> items.
+	 */
+	@RequestMapping(value="/bookmarklist/{requestedId}/update", method=RequestMethod.POST, consumes="application/json")
+	public @ResponseBody BookmarkList handlePostBookmarkListRequest(
+			@RequestBody final BookmarkList bookmarkList,
+			@PathVariable("requestedId") final Long requestedId,
+			final HttpServletResponse response) {
+		LOGGER.debug("Request to update bookmarkList: " + bookmarkList.getId());
+		
+		final UserAdministration user = rightsService.getCurrentUser();
+		final BookmarkList result;
+		final BookmarkList oldBookmarkList;
+		
+		if ("Anonymous".equals(user.getUsername())) {
+			result = null;
+			response.setStatus(403);
+		} else {
+			oldBookmarkList = bookmarkListDao.getByBookmarkListId(requestedId);
+			if (oldBookmarkList != null 
+					&& (oldBookmarkList.getId() == bookmarkList.getId())
+					&& (user.getId() == bookmarkList.getUid()) 
+					&& (user.getId() == oldBookmarkList.getUid())) {
+				result = bookmarkListDao.saveOrUpdateBookmarkList(bookmarkList);
+			} else {
+				result = null;
+				response.setStatus(403);
+			}
+		}
+		return result;
+	}
 }

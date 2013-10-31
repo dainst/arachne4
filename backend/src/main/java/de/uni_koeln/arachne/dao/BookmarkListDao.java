@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
+
+import de.uni_koeln.arachne.mapping.Bookmark;
 import de.uni_koeln.arachne.mapping.BookmarkList;
 
 @Repository("BookmarkListDao")
@@ -27,6 +30,11 @@ public class BookmarkListDao extends AbstractHibernateTemplateDao {
 		final String hql = "from BookmarkList where id = ? and uid = ?";
 		BookmarkList result = (BookmarkList) hibernateTemplate.find(hql, bookmarkListId, uid).get(0);
 		return result;
+	}
+	
+	public BookmarkList saveOrUpdateBookmarkList(final BookmarkList bookmarkList) {
+		hibernateTemplate.saveOrUpdate(bookmarkList);
+		return bookmarkList;
 	}
 	
 	

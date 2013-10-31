@@ -28,7 +28,7 @@ public class BookmarkList {
 	private String name;
 
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name="bookmark_list_id")
+	@JoinColumn(name="bookmark_list_id", insertable=true, updatable=false)
 	private Set<Bookmark> bookmarks;
 	
 	@Column(name="commentary")
