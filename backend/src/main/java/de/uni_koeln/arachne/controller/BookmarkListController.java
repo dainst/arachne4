@@ -53,7 +53,7 @@ public class BookmarkListController {
 		Bookmark result = null;
 		final UserAdministration user = rightsService.getCurrentUser();
 		
-		LOGGER.debug("Request for bookmark: " + bookmarkId + " of user: " + user.getUsername());
+		LOGGER.debug("Request for bookmark: " + bookmarkId + " of user: " + user.getId());
 		
 		if (!rightsService.isSignedInUser()) {
 			response.setStatus(403);
@@ -82,7 +82,7 @@ public class BookmarkListController {
 		List<BookmarkList> result = null;
 		final UserAdministration user = rightsService.getCurrentUser();
 		
-		LOGGER.debug("Request for all bookmark lists of user: " + user.getUsername());
+		LOGGER.debug("Request for all bookmark lists of user: " + user.getId());
 		
 		if (!rightsService.isSignedInUser()) {
 			response.setStatus(403);
@@ -111,7 +111,7 @@ public class BookmarkListController {
 		BookmarkList result = null;
 		final UserAdministration user = rightsService.getCurrentUser();
 		
-		LOGGER.debug("Request for bookmarkList " + bookmarkListId + " of user: " + user.getUsername());
+		LOGGER.debug("Request for bookmarkList " + bookmarkListId + " of user: " + user.getId());
 		
 		if (!rightsService.isSignedInUser()) {
 			response.setStatus(403);
@@ -146,7 +146,7 @@ public class BookmarkListController {
 		final BookmarkList result;
 		final BookmarkList oldBookmarkList;
 		
-		LOGGER.debug("Request to update bookmarkList: " + bookmarkList.getId() + " of user: " + user.getUsername());
+		LOGGER.debug("Request to update bookmarkList: " + bookmarkList.getId() + " of user: " + user.getId());
 		
 		if (!rightsService.isSignedInUser()) {
 			result = null;
@@ -184,7 +184,7 @@ public class BookmarkListController {
 		final UserAdministration user = rightsService.getCurrentUser();
 		final BookmarkList result;
 		
-		LOGGER.debug("Request to create bookmarkList for user: " + user.getUsername());
+		LOGGER.debug("Request to create bookmarkList for user: " + user.getId());
 		
 		if (!rightsService.isSignedInUser()) {
 			result = null;
@@ -198,6 +198,34 @@ public class BookmarkListController {
 			result = bookmarkListDao.saveBookmarkList(bookmarkList);
 		}
 		return result;
+	}
+	
+	/**
+	 * Handles http DELETE request for <code>/bookmarklist/{id}</code>.
+	 * Deletes the specified <code>BookmarkList</code> and all associated
+	 * <code>Bookmark</code> items.
+	 * Returns 204 on success. 
+	 * Returns 403 if the specified list is not owned by the current user.
+	 * Returns 404 if the specified list can not be retrieved.
+	 */
+	@RequestMapping(value="/bookmarklist/{id}", method=RequestMethod.DELETE)
+	public void handleBookmarkListDestroyRequest(
+			final HttpServletResponse response,
+			@PathVariable("id") final Long id) {
+		final UserAdministration user = rightsService.getCurrentUser();
+		final BookmarkList bookmarkList = bookmarkListDao.getByBookmarkListId(id);
+		
+		LOGGER.debug("Request to destroy bookmarkList: " + id + " from user: " + user.getId());
+		
+		if (bookmarkList == null) {
+			response.setStatus(404);
+		} else if (bookmarkList.getUser().getId() == user.getId()) {
+			bookmarkListDao.destroyBookmarkList(bookmarkList);
+			response.setStatus(204);
+		} else {
+			response.setStatus(403);
+		}
+		
 	}
 
 }

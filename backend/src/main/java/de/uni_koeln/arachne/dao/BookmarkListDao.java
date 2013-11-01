@@ -38,6 +38,10 @@ public class BookmarkListDao extends AbstractHibernateTemplateDao {
 		return bookmarkList;
 	}
 	
+	public void destroyBookmarkList(final BookmarkList bookmarkList) {
+		hibernateTemplate.delete(bookmarkList);
+	}
+	
 	
 
 }
