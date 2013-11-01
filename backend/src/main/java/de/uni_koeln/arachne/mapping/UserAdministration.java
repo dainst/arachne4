@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.mapping;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -98,6 +99,12 @@ public class UserAdministration {
 		 */
 	   	@Column(name="LastLogin")
 		Date lastLogin;
+	   	
+	   	/**
+	   	 * The lists of saved bookmarks owned by the user
+	   	 */
+		@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+		private Set<BookmarkList> bookmarkLists;
 
 		/**
 		 * @return the id
@@ -366,6 +373,20 @@ public class UserAdministration {
 			}
 			
 			return false;
+		}
+
+		/**
+		 * @return the bookmarkLists
+		 */
+		public Set<BookmarkList> getBookmarkLists() {
+			return bookmarkLists;
+		}
+
+		/**
+		 * @param bookmarkLists the bookmarkLists to set
+		 */
+		public void setBookmarkLists(final Set<BookmarkList> bookmarkLists) {
+			this.bookmarkLists = bookmarkLists;
 		}
 	   	
 	   	

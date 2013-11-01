@@ -8,9 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @XmlRootElement
 @Entity
@@ -21,8 +26,9 @@ public class BookmarkList {
 	@GeneratedValue
 	private Long id;
 	
-	@Column(name="uid")
-	private Long uid;
+	@ManyToOne
+	@JoinColumn(name="uid", nullable=false, insertable=true, updatable=false)
+	private UserAdministration user;
 	
 	@Column(name="name")
 	private String name;
@@ -46,20 +52,6 @@ public class BookmarkList {
 	public void setBookmarkListId(final Long id) {
 		this.id = id;
 	}
-
-	/**
-	 * @return the uid
-	 */
-	public Long getUid() {
-		return uid;
-	}
-
-	/**
-	 * @param uid the uid to set
-	 */
-	public void setUid(final Long uid) {
-		this.uid = uid;
-	}
 	
 	/**
 	 * @return the name
@@ -73,6 +65,23 @@ public class BookmarkList {
 	 */
 	public void setName(final String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the user
+	 * Not serialized, issues with recursion
+	 */
+	@JsonIgnore
+	@XmlTransient
+	public UserAdministration getUser() {
+		return user;
+	}
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(final UserAdministration user) {
+		this.user = user;
 	}
 
 	/**

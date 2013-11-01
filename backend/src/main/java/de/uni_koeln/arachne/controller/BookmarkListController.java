@@ -22,7 +22,7 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.service.IUserRightsService;
 
 /**
- * Handles http requests (currently only get) for <code>/bookmark</code> and <code>/bookmarklist</code>.
+ * Handles http requests for <code>/bookmark</code> and <code>/bookmarklist</code>.
  */
 @Controller
 public class BookmarkListController {
@@ -61,7 +61,7 @@ public class BookmarkListController {
 			result = bookmarkDao.getByBookmarkId(bookmarkId);
 			if (result == null) {
 				response.setStatus(404);
-			} else if (result.getBookmarkList().getUid() != user.getId()) {
+			} else if (result.getBookmarkList().getUser().getId() != user.getId()) {
 				result = null;
 				response.setStatus(403);
 			}
@@ -119,7 +119,7 @@ public class BookmarkListController {
 			result = bookmarkListDao.getByBookmarkListId(bookmarkListId);
 			if (result == null) {
 				response.setStatus(404);
-			} else if (result.getUid() != user.getId()) {
+			} else if (result.getUser().getId() != user.getId()) {
 				result = null;
 				response.setStatus(403);
 			}
@@ -155,8 +155,8 @@ public class BookmarkListController {
 			oldBookmarkList = bookmarkListDao.getByBookmarkListId(requestedId);
 			if (oldBookmarkList != null 
 					&& (oldBookmarkList.getId() == bookmarkList.getId())
-					&& (user.getId() == bookmarkList.getUid()) 
-					&& (user.getId() == oldBookmarkList.getUid())) {
+					&& (user.getId() == oldBookmarkList.getUser().getId())) {
+				bookmarkList.setUser(user);
 				for (Bookmark bookmark : bookmarkList.getBookmarks()) {
 					bookmark.setBookmarkList(bookmarkList);
 				}
@@ -172,8 +172,7 @@ public class BookmarkListController {
 	/**
 	 * Handles http POST request for <code>/bookmarklist/create</code>.
 	 * Returns the bookmarkList created and 200 if the action is permitted.
-	 * Returns null and 403 if no user is signed in or the signed in user 
-	 * does not own the bookmarkList submitted. 
+	 * Returns null and 403 if no user is signed in.
 	 * This method creates all nested <code>Bookmark</code> items. 
 	 * Existing primary id values in nested <code>Bookmark</code> items are
 	 * ignored.
@@ -191,16 +190,12 @@ public class BookmarkListController {
 			result = null;
 			response.setStatus(403);
 		} else {
-			if (user.getId() == bookmarkList.getUid()) {
-				for (Bookmark bookmark : bookmarkList.getBookmarks()) {
-					bookmark.setId(null);
-					bookmark.setBookmarkList(bookmarkList);
-				}
-				result = bookmarkListDao.saveBookmarkList(bookmarkList);
-			} else {
-				result = null;
-				response.setStatus(403);
+			bookmarkList.setUser(user);
+			for (Bookmark bookmark : bookmarkList.getBookmarks()) {
+				bookmark.setId(null);
+				bookmark.setBookmarkList(bookmarkList);
 			}
+			result = bookmarkListDao.saveBookmarkList(bookmarkList);
 		}
 		return result;
 	}
