@@ -50,10 +50,11 @@ public class BookmarkListController {
 	public @ResponseBody Bookmark handleGetBookmarkRequest(
 			@PathVariable("bookmarkId") final Long bookmarkId,
 			final HttpServletResponse response) {
-		
 		Bookmark result = null;
 		final UserAdministration user = rightsService.getCurrentUser();
-		LOGGER.debug("Request for bookmark: " + bookmarkId);
+		
+		LOGGER.debug("Request for bookmark: " + bookmarkId + " of user: " + user.getUsername());
+		
 		if (!rightsService.isSignedInUser()) {
 			response.setStatus(403);
 		} else {
@@ -78,10 +79,11 @@ public class BookmarkListController {
 	@RequestMapping(value="/bookmarklist", method=RequestMethod.GET)
 	public @ResponseBody List<BookmarkList> handleGetBookmarksRequest(
 			final HttpServletResponse response) {
-		
 		List<BookmarkList> result = null;
 		final UserAdministration user = rightsService.getCurrentUser();
-		LOGGER.debug("Request for bookmarks of user: " + user.getUsername());
+		
+		LOGGER.debug("Request for all bookmark lists of user: " + user.getUsername());
+		
 		if (!rightsService.isSignedInUser()) {
 			response.setStatus(403);
 		} else {
@@ -106,10 +108,11 @@ public class BookmarkListController {
 	public @ResponseBody BookmarkList handleGetBookmarkListRequest(
 			@PathVariable("bookmarkListId") final Long bookmarkListId,
 			final HttpServletResponse response) {
-		
 		BookmarkList result = null;
 		final UserAdministration user = rightsService.getCurrentUser();
+		
 		LOGGER.debug("Request for bookmarkList " + bookmarkListId + " of user: " + user.getUsername());
+		
 		if (!rightsService.isSignedInUser()) {
 			response.setStatus(403);
 		} else {
@@ -129,8 +132,8 @@ public class BookmarkListController {
 	 * Returns the bookmarkList created and 200 if the action is permitted.
 	 * Returns null and 403 if no user is signed in or the signed in user 
 	 * does not own the bookmarkList to be edited. 
-	 * This methods accepts updates on nested <code>Bookmark</code> items' fields.
-	 * It does not create nested <code>Bookmark</code> items if they do not already exist.
+	 * This method accepts updates on nested <code>Bookmark</code> items' fields.
+	 * and creates nested <code>Bookmark</code> items if they do not already exist.
 	 * It does not automatically delete items, that are missing from the list of nested 
 	 * <code>Bookmark</code> items.
 	 */
@@ -139,11 +142,11 @@ public class BookmarkListController {
 			@RequestBody final BookmarkList bookmarkList,
 			@PathVariable("requestedId") final Long requestedId,
 			final HttpServletResponse response) {
-		LOGGER.debug("Request to update bookmarkList: " + bookmarkList.getId());
-		
 		final UserAdministration user = rightsService.getCurrentUser();
 		final BookmarkList result;
 		final BookmarkList oldBookmarkList;
+		
+		LOGGER.debug("Request to update bookmarkList: " + bookmarkList.getId() + " of user: " + user.getUsername());
 		
 		if (!rightsService.isSignedInUser()) {
 			result = null;
@@ -154,7 +157,46 @@ public class BookmarkListController {
 					&& (oldBookmarkList.getId() == bookmarkList.getId())
 					&& (user.getId() == bookmarkList.getUid()) 
 					&& (user.getId() == oldBookmarkList.getUid())) {
+				for (Bookmark bookmark : bookmarkList.getBookmarks()) {
+					bookmark.setBookmarkList(bookmarkList);
+				}
 				result = bookmarkListDao.saveOrUpdateBookmarkList(bookmarkList);
+			} else {
+				result = null;
+				response.setStatus(403);
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * Handles http POST request for <code>/bookmarklist/create</code>.
+	 * Returns the bookmarkList created and 200 if the action is permitted.
+	 * Returns null and 403 if no user is signed in or the signed in user 
+	 * does not own the bookmarkList submitted. 
+	 * This method creates all nested <code>Bookmark</code> items. 
+	 * Existing primary id values in nested <code>Bookmark</code> items are
+	 * ignored.
+	 */
+	@RequestMapping(value="/bookmarklist/create", method=RequestMethod.POST, consumes="application/json")
+	public @ResponseBody BookmarkList handleBookmarkListCreateRequest(
+			@RequestBody final BookmarkList bookmarkList,
+			final HttpServletResponse response) {
+		final UserAdministration user = rightsService.getCurrentUser();
+		final BookmarkList result;
+		
+		LOGGER.debug("Request to create bookmarkList for user: " + user.getUsername());
+		
+		if (!rightsService.isSignedInUser()) {
+			result = null;
+			response.setStatus(403);
+		} else {
+			if (user.getId() == bookmarkList.getUid()) {
+				for (Bookmark bookmark : bookmarkList.getBookmarks()) {
+					bookmark.setId(null);
+					bookmark.setBookmarkList(bookmarkList);
+				}
+				result = bookmarkListDao.saveBookmarkList(bookmarkList);
 			} else {
 				result = null;
 				response.setStatus(403);

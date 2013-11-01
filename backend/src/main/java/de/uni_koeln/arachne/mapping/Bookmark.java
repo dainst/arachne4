@@ -22,7 +22,7 @@ public class Bookmark {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name="bookmark_list_id", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="bookmark_list_id", nullable=false, insertable=true, updatable=true)
 	private BookmarkList bookmarkList;
 
 	@Column(name="arachne_entity_id")

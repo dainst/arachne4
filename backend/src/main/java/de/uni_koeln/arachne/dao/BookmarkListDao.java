@@ -2,12 +2,8 @@ package de.uni_koeln.arachne.dao;
 
 import java.util.List;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
-import de.uni_koeln.arachne.mapping.Bookmark;
 import de.uni_koeln.arachne.mapping.BookmarkList;
 
 @Repository("BookmarkListDao")
@@ -34,6 +30,11 @@ public class BookmarkListDao extends AbstractHibernateTemplateDao {
 	
 	public BookmarkList saveOrUpdateBookmarkList(final BookmarkList bookmarkList) {
 		hibernateTemplate.saveOrUpdate(bookmarkList);
+		return bookmarkList;
+	}
+	
+	public BookmarkList saveBookmarkList(final BookmarkList bookmarkList) {
+		hibernateTemplate.save(bookmarkList);
 		return bookmarkList;
 	}
 	
