@@ -54,7 +54,7 @@ public class BookmarkListController {
 		Bookmark result = null;
 		final UserAdministration user = rightsService.getCurrentUser();
 		LOGGER.debug("Request for bookmark: " + bookmarkId);
-		if ("Anonymous".equals(user.getUsername())) {
+		if (!rightsService.isSignedInUser()) {
 			response.setStatus(403);
 		} else {
 			result = bookmarkDao.getByBookmarkId(bookmarkId);
@@ -82,7 +82,7 @@ public class BookmarkListController {
 		List<BookmarkList> result = null;
 		final UserAdministration user = rightsService.getCurrentUser();
 		LOGGER.debug("Request for bookmarks of user: " + user.getUsername());
-		if ("Anonymous".equals(user.getUsername())) {
+		if (!rightsService.isSignedInUser()) {
 			response.setStatus(403);
 		} else {
 			result = bookmarkListDao.getByUid(user.getId());
@@ -110,7 +110,7 @@ public class BookmarkListController {
 		BookmarkList result = null;
 		final UserAdministration user = rightsService.getCurrentUser();
 		LOGGER.debug("Request for bookmarkList " + bookmarkListId + " of user: " + user.getUsername());
-		if ("Anonymous".equals(user.getUsername())) {
+		if (!rightsService.isSignedInUser()) {
 			response.setStatus(403);
 		} else {
 			result = bookmarkListDao.getByBookmarkListId(bookmarkListId);
@@ -145,7 +145,7 @@ public class BookmarkListController {
 		final BookmarkList result;
 		final BookmarkList oldBookmarkList;
 		
-		if ("Anonymous".equals(user.getUsername())) {
+		if (!rightsService.isSignedInUser()) {
 			result = null;
 			response.setStatus(403);
 		} else {
