@@ -73,7 +73,7 @@ public class UserRightsService implements IUserRightsService {
 			}
 			
 			if (session == null) {
-				arachneUser = userVerwaltungDao.findByName("anonymous");
+				arachneUser = userVerwaltungDao.findByName(ANONYMOUS_USER_NAME);
 			} else {
 				arachneUser = session.getUserAdministration();
 			}
@@ -99,6 +99,14 @@ public class UserRightsService implements IUserRightsService {
 	@Override
 	public boolean isUserSolr() {
 		return isSet && SOLR_INDEXING.equals(arachneUser.getUsername());
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.uni_koeln.arachne.service.UserRightsService#isSignedInUser()
+	 */
+	@Override
+	public boolean isSignedInUser() {
+		return isSet && !(ANONYMOUS_USER_NAME.equals(arachneUser.getUsername()));
 	}
 
 	/* (non-Javadoc)

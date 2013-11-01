@@ -6,6 +6,7 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 public interface IUserRightsService {
 
 	public static final String SOLR_INDEXING = "SolrIndexing";
+	public static final String ANONYMOUS_USER_NAME = "Anonymous";
 	public static final int MIN_ADMIN_ID = 800;
 	
 	/**
@@ -24,6 +25,12 @@ public interface IUserRightsService {
 	 * @return <code>true</code> if the current user is Solr.
 	 */
 	public abstract boolean isUserSolr();
+	
+	/**
+	 * Is the current user signed in.
+	 * @return <code>true</code> if the current user is signed in.
+	 */
+	public abstract boolean isSignedInUser();
 	
 	/**
 	 * Is the given <code>Datasetgroup</code> in the users <code>Set</code> of <code>DatasetGroups</code>.
