@@ -2,9 +2,15 @@ package de.uni_koeln.arachne.mapping;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @XmlRootElement
 @Entity
@@ -12,11 +18,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Bookmark {
 
 	@Id
-	@Column(name="id")
+	@GeneratedValue
 	private Long id;
-	
-	@Column(name="bookmark_list_id", insertable=true, updatable=false)
-	private Long bookmarkListId;
+
+	@ManyToOne
+	@JoinColumn(name="bookmark_list_id", nullable=false, insertable=false, updatable=false)
+	private BookmarkList bookmarkList;
 
 	@Column(name="arachne_entity_id")
 	private Long arachneEntityId;
@@ -39,19 +46,22 @@ public class Bookmark {
 	}
 	
 	/**
-	 * @return the bookmarkListId
+	 * @return the bookmarkList
+	 * Not serialized, issues with recursion
 	 */
-	public Long getBookmarkListId() {
-		return bookmarkListId;
+	@JsonIgnore
+	@XmlTransient
+	public BookmarkList getBookmarkList() {
+		return bookmarkList;
 	}
 
 	/**
-	 * @param bookmarkListId the bookmarkListId to set
+	 * @param bookmarkList the bookmarkList to set
 	 */
-	public void setBookmarkListId(final Long bookmarkListId) {
-		this.bookmarkListId = bookmarkListId;
+	public void setBookmarkList(final BookmarkList bookmarkList) {
+		this.bookmarkList = bookmarkList;
 	}
-	
+
 	/**
 	 * @return the arachneEntityId
 	 */

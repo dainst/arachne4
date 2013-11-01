@@ -22,7 +22,7 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.service.IUserRightsService;
 
 /**
- * Handles http requests (currently only get) for <code>/bookmark<code> and <code>/bookmarklist</code>.
+ * Handles http requests (currently only get) for <code>/bookmark</code> and <code>/bookmarklist</code>.
  */
 @Controller
 public class BookmarkListController {
@@ -60,12 +60,9 @@ public class BookmarkListController {
 			result = bookmarkDao.getByBookmarkId(bookmarkId);
 			if (result == null) {
 				response.setStatus(404);
-			} else {
-				final BookmarkList bookmarkList = bookmarkListDao.getByBookmarkListId(result.getBookmarkListId());
-				if (bookmarkList.getUid() != user.getId()) {
-					result = null;
-					response.setStatus(403);
-				}
+			} else if (result.getBookmarkList().getUid() != user.getId()) {
+				result = null;
+				response.setStatus(403);
 			}
 		}
 		return result;
@@ -132,13 +129,13 @@ public class BookmarkListController {
 	 * Returns the bookmarkList created and 200 if the action is permitted.
 	 * Returns null and 403 if no user is signed in or the signed in user 
 	 * does not own the bookmarkList to be edited. 
-	 * This methods accepts updates on nested <code>Bookmark</code> items fields and
-	 * creates nested <code>Bookmark</code> items if they do not already exist, but
-	 * does not automatically delete items, that are missing from the list of nested 
+	 * This methods accepts updates on nested <code>Bookmark</code> items' fields.
+	 * It does not create nested <code>Bookmark</code> items if they do not already exist.
+	 * It does not automatically delete items, that are missing from the list of nested 
 	 * <code>Bookmark</code> items.
 	 */
 	@RequestMapping(value="/bookmarklist/{requestedId}/update", method=RequestMethod.POST, consumes="application/json")
-	public @ResponseBody BookmarkList handlePostBookmarkListRequest(
+	public @ResponseBody BookmarkList handleBookmarkListUpdateRequest(
 			@RequestBody final BookmarkList bookmarkList,
 			@PathVariable("requestedId") final Long requestedId,
 			final HttpServletResponse response) {
@@ -165,4 +162,5 @@ public class BookmarkListController {
 		}
 		return result;
 	}
+
 }

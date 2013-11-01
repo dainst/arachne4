@@ -6,8 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class BookmarkList {
 
 	@Id
-	@Column(name="id")
+	@GeneratedValue
 	private Long id;
 	
 	@Column(name="uid")
@@ -27,8 +27,7 @@ public class BookmarkList {
 	@Column(name="name")
 	private String name;
 
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name="bookmark_list_id", insertable=true, updatable=false)
+	@OneToMany(mappedBy="bookmarkList", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private Set<Bookmark> bookmarks;
 	
 	@Column(name="commentary")
