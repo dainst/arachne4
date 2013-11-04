@@ -144,7 +144,11 @@ public class ResponseFactory {
 			response.setAdditionalContent(dataset.getAdditionalContent());
 			
 			// set geo information
-			response.setPlace(dataset.getField("ort.Stadt") + ", " + dataset.getField("ort.Land"));
+			final String city = dataset.getField("ort.Stadt");
+			final String country = dataset.getField("ort.Land");
+			if (!StrUtils.isEmptyOrNull(city) && !StrUtils.isEmptyOrNull(city)) {
+				response.setPlace(city + ", " + country);
+			}
 			final String lat = dataset.getField("ortgazetteer.lat");
 			final String lon = dataset.getField("ortgazetteer.lon");
 			if (lat != null && lon != null) {

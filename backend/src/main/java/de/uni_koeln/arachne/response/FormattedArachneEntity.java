@@ -51,12 +51,12 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 	/**
 	 * The place this entity is connected to
 	 */
-	protected String place;
+	protected String place = null;
 	
 	/**
 	 * The geo coordinates of the place.
 	 */
-	protected String location;
+	protected String location = null;
 	
 	/**
 	 * The number of connections this entity has
