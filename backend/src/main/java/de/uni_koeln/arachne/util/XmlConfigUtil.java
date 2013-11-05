@@ -524,7 +524,7 @@ public class XmlConfigUtil implements ServletContextAware {
 					final FieldList fieldList = new FieldList();
 					final Section localContext = new Section();
 
-					// store the section lable of the current context
+					// store the section label of the current context
 					final List<Element> childFields = curSection.getChildren();
 					localContext.setLabel(curSection.getAttributeValue("labelKey"));
 

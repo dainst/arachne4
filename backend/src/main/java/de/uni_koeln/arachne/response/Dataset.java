@@ -297,7 +297,7 @@ public class Dataset {
 		this.additionalContent = additionalContent;
 	}
 
-	public void setDegree(final double degree) {
+	public void setDegree(double degree) {
 		this.degree = degree;
 	}
 	
