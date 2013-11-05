@@ -15,6 +15,7 @@ public class BookmarkListDao extends AbstractHibernateTemplateDao {
 	
 	public List<BookmarkList> getByUid(final Long uid) {
 		final String hql = "from BookmarkList where uid = ?";
+		@SuppressWarnings("unchecked")
 		List<BookmarkList> result = (List<BookmarkList>) hibernateTemplate.find(hql, uid);
 		if (result.size() < 1) {
 			result = null;
@@ -24,8 +25,7 @@ public class BookmarkListDao extends AbstractHibernateTemplateDao {
 	
 	public BookmarkList getByUidAndBookmarkListId(final Long uid, final long bookmarkListId) {
 		final String hql = "from BookmarkList where id = ? and uid = ?";
-		BookmarkList result = (BookmarkList) hibernateTemplate.find(hql, bookmarkListId, uid).get(0);
-		return result;
+		return (BookmarkList) hibernateTemplate.find(hql, bookmarkListId, uid).get(0);
 	}
 	
 	public BookmarkList saveOrUpdateBookmarkList(final BookmarkList bookmarkList) {

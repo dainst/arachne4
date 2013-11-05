@@ -55,9 +55,7 @@ public class BookmarkListController {
 		
 		LOGGER.debug("Request for bookmark: " + bookmarkId + " of user: " + user.getId());
 		
-		if (!rightsService.isSignedInUser()) {
-			response.setStatus(403);
-		} else {
+		if (rightsService.isSignedInUser()) {
 			result = bookmarkDao.getByBookmarkId(bookmarkId);
 			if (result == null) {
 				response.setStatus(404);
@@ -65,6 +63,8 @@ public class BookmarkListController {
 				result = null;
 				response.setStatus(403);
 			}
+		} else {
+			response.setStatus(403);
 		}
 		return result;
 	}
@@ -84,13 +84,13 @@ public class BookmarkListController {
 		
 		LOGGER.debug("Request for all bookmark lists of user: " + user.getId());
 		
-		if (!rightsService.isSignedInUser()) {
-			response.setStatus(403);
-		} else {
+		if (rightsService.isSignedInUser()) {
 			result = bookmarkListDao.getByUid(user.getId());
 			if (result == null || result.isEmpty()) {
 				response.setStatus(404);
 			}
+		} else {
+			response.setStatus(403);
 		}
 		return result;
 	}
@@ -113,9 +113,7 @@ public class BookmarkListController {
 		
 		LOGGER.debug("Request for bookmarkList " + bookmarkListId + " of user: " + user.getId());
 		
-		if (!rightsService.isSignedInUser()) {
-			response.setStatus(403);
-		} else {
+		if (rightsService.isSignedInUser()) {
 			result = bookmarkListDao.getByBookmarkListId(bookmarkListId);
 			if (result == null) {
 				response.setStatus(404);
@@ -123,6 +121,8 @@ public class BookmarkListController {
 				result = null;
 				response.setStatus(403);
 			}
+		} else {
+			response.setStatus(403);
 		}
 		return result;
 	}
@@ -148,16 +148,13 @@ public class BookmarkListController {
 		
 		LOGGER.debug("Request to update bookmarkList: " + bookmarkList.getId() + " of user: " + user.getId());
 		
-		if (!rightsService.isSignedInUser()) {
-			result = null;
-			response.setStatus(403);
-		} else {
+		if (rightsService.isSignedInUser()) {
 			oldBookmarkList = bookmarkListDao.getByBookmarkListId(requestedId);
 			if (oldBookmarkList != null 
 					&& (oldBookmarkList.getId() == bookmarkList.getId())
 					&& (user.getId() == oldBookmarkList.getUser().getId())) {
 				bookmarkList.setUser(user);
-				for (Bookmark bookmark : bookmarkList.getBookmarks()) {
+				for (final Bookmark bookmark : bookmarkList.getBookmarks()) {
 					bookmark.setBookmarkList(bookmarkList);
 				}
 				result = bookmarkListDao.saveOrUpdateBookmarkList(bookmarkList);
@@ -165,6 +162,9 @@ public class BookmarkListController {
 				result = null;
 				response.setStatus(403);
 			}
+		} else {
+			result = null;
+			response.setStatus(403);
 		}
 		return result;
 	}
@@ -186,16 +186,16 @@ public class BookmarkListController {
 		
 		LOGGER.debug("Request to create bookmarkList for user: " + user.getId());
 		
-		if (!rightsService.isSignedInUser()) {
-			result = null;
-			response.setStatus(403);
-		} else {
+		if (rightsService.isSignedInUser()) {
 			bookmarkList.setUser(user);
-			for (Bookmark bookmark : bookmarkList.getBookmarks()) {
+			for (final Bookmark bookmark : bookmarkList.getBookmarks()) {
 				bookmark.setId(null);
 				bookmark.setBookmarkList(bookmarkList);
 			}
 			result = bookmarkListDao.saveBookmarkList(bookmarkList);
+		} else {
+			result = null;
+			response.setStatus(403);
 		}
 		return result;
 	}
@@ -208,14 +208,14 @@ public class BookmarkListController {
 	 * Returns 403 if the specified list is not owned by the current user.
 	 * Returns 404 if the specified list can not be retrieved.
 	 */
-	@RequestMapping(value="/bookmarklist/{id}", method=RequestMethod.DELETE)
+	@RequestMapping(value="/bookmarklist/{bookmarkListId}", method=RequestMethod.DELETE)
 	public void handleBookmarkListDestroyRequest(
 			final HttpServletResponse response,
-			@PathVariable("id") final Long id) {
+			@PathVariable("bookmarkListId") final Long bookmarkListId) {
 		final UserAdministration user = rightsService.getCurrentUser();
-		final BookmarkList bookmarkList = bookmarkListDao.getByBookmarkListId(id);
+		final BookmarkList bookmarkList = bookmarkListDao.getByBookmarkListId(bookmarkListId);
 		
-		LOGGER.debug("Request to destroy bookmarkList: " + id + " from user: " + user.getId());
+		LOGGER.debug("Request to destroy bookmarkList: " + bookmarkListId + " from user: " + user.getId());
 		
 		if (bookmarkList == null) {
 			response.setStatus(404);
