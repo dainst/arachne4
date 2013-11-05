@@ -17,6 +17,7 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	 */
 	protected List<String> facet_kategorie;
 	protected List<String> facet_ort;
+	protected List<String> facet_geo;
 	protected List<String> facet_datierungepoche;
 	
 	// bauwerk
@@ -182,6 +183,12 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	}
 	public void setFacet_ort(List<String> facet_ort) {
 		this.facet_ort = facet_ort;
+	}
+	public List<String> getFacet_geo() {
+		return facet_geo;
+	}
+	public void setFacet_geo(List<String> facet_geo) {
+		this.facet_geo = facet_geo;
 	}
 	public List<String> getFacet_datierungepoche() {
 		return facet_datierungepoche;
