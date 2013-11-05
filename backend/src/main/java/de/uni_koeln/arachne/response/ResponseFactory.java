@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.aspectj.weaver.ast.And;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
@@ -96,7 +97,7 @@ public class ResponseFactory {
 		}
 		response.setLastModified(lastModified);
 		
-		// set geo information
+		// set geo information and add the geo facet
 		final String city = dataset.getField("ort.Stadt");
 		final String country = dataset.getField("ort.Land");
 		if (!StrUtils.isEmptyOrNull(city) && !StrUtils.isEmptyOrNull(city)) {
@@ -107,7 +108,14 @@ public class ResponseFactory {
 		if (lat != null && lon != null) {
 			response.setLocation(lat + "," + lon);
 		}
-
+		final String place = response.getPlace();
+		final String location = response.getLocation();
+		if (place != null && location != null) {
+			final List<String> geoFacetValue = new ArrayList<String>(1);
+			geoFacetValue.add(place + " [" + location + ']');
+			response.setFacet_geo(geoFacetValue);
+		}
+		
 		final Document document = xmlConfigUtil.getDocument(tableName);
 		if (document != null) {
 			setDynamicContent(dataset, document, response);
