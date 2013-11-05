@@ -45,8 +45,7 @@ public class CMSController {
 	
 	@RequestMapping(value="/news/{language}", method=RequestMethod.GET)
 	public @ResponseBody List<Node> news(@PathVariable("language") final String language) {	
-		final List<Node> news = cmsService.getNews();
-		return news;
+		return cmsService.getNews();
 	}
 
 }

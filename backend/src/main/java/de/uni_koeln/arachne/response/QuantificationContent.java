@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
  * @author Patrick Gunia
  * 
  */
-
+@SuppressWarnings("PMD")
 public class QuantificationContent {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(QuantificationContent.class);		

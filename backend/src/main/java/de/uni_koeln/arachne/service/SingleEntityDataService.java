@@ -90,7 +90,8 @@ public class SingleEntityDataService {
 		}
 		
 		// set degree value from database
-		List<Integer> degree = genericSqlDao.getIntegerField("arachneentitydegrees", "ArachneEntityID", entityId.getArachneEntityID(), "Degree", true);
+		final List<Integer> degree = genericSqlDao.getIntegerField("arachneentitydegrees", "ArachneEntityID"
+				, entityId.getArachneEntityID(), "Degree", true);
 		if (degree != null && !degree.isEmpty()) {
 			result.setDegree(degree.get(0));
 		}
