@@ -116,6 +116,18 @@ public class ResponseFactory {
 			// Set images
 			response.setImages(dataset.getImages());
 
+			// set geo information
+			final String city = dataset.getField("ort.Stadt");
+			final String country = dataset.getField("ort.Land");
+			if (!StrUtils.isEmptyOrNull(city) && !StrUtils.isEmptyOrNull(city)) {
+				response.setPlace(city + ", " + country);
+			}
+			final String lat = dataset.getField("ortgazetteer.lat");
+			final String lon = dataset.getField("ortgazetteer.lon");
+			if (lat != null && lon != null) {
+				response.setLocation(lat + "," + lon);
+			}
+			
 			// Set facets via reflection - not the best way but the least invasive
 			// TODO: rewrite faceting so that no reflection is needed
 			final Element facets = document.getRootElement().getChild("facets", namespace);
@@ -142,20 +154,7 @@ public class ResponseFactory {
 
 			//Set additional Content
 			response.setAdditionalContent(dataset.getAdditionalContent());
-			
-			// set geo information
-			final String city = dataset.getField("ort.Stadt");
-			final String country = dataset.getField("ort.Land");
-			if (!StrUtils.isEmptyOrNull(city) && !StrUtils.isEmptyOrNull(city)) {
-				response.setPlace(city + ", " + country);
-			}
-			final String lat = dataset.getField("ortgazetteer.lat");
-			final String lon = dataset.getField("ortgazetteer.lon");
-			if (lat != null && lon != null) {
-				response.setLocation(lat + "," + lon);
-			}
-			System.out.println(response);
-						
+									
 			return response;
 		}
 
