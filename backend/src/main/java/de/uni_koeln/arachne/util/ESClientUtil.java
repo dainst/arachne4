@@ -339,7 +339,7 @@ public class ESClientUtil implements ServletContextAware {
 		return mapping.toString();
 	}
 	
-	// TODO: move to own class (?)
+	// TODO: move to own class or replace with restTemplate (?)
 	private String sendRequest(final String url, final String method) {
 		
 		final StringBuilder result = new StringBuilder(); 

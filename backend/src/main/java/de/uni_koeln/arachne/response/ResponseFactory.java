@@ -95,63 +95,23 @@ public class ResponseFactory {
 			lastModified = null;
 		}
 		response.setLastModified(lastModified);
+		
+		// set geo information
+		final String city = dataset.getField("ort.Stadt");
+		final String country = dataset.getField("ort.Land");
+		if (!StrUtils.isEmptyOrNull(city) && !StrUtils.isEmptyOrNull(city)) {
+			response.setPlace(city + ", " + country);
+		}
+		final String lat = dataset.getField("ortgazetteer.lat");
+		final String lon = dataset.getField("ortgazetteer.lon");
+		if (lat != null && lon != null) {
+			response.setLocation(lat + "," + lon);
+		}
 
 		final Document document = xmlConfigUtil.getDocument(tableName);
 		if (document != null) {
-
-			final Namespace namespace = document.getRootElement().getNamespace();
-			final Element display = document.getRootElement().getChild("display", namespace);
-
-			// set title
-			final String titleStr = getTitleString(dataset, namespace, display);
-			response.setTitle(titleStr);
-
-			// set subtitle
-			final String subtitleStr = getSubTitle(dataset, namespace, display);
-			response.setSubtitle(subtitleStr);
-
-			// set datasection
-			setSections(dataset, namespace, display, response);
-
-			// Set images
-			response.setImages(dataset.getImages());
-
-			// set geo information
-			final String city = dataset.getField("ort.Stadt");
-			final String country = dataset.getField("ort.Land");
-			if (!StrUtils.isEmptyOrNull(city) && !StrUtils.isEmptyOrNull(city)) {
-				response.setPlace(city + ", " + country);
-			}
-			final String lat = dataset.getField("ortgazetteer.lat");
-			final String lon = dataset.getField("ortgazetteer.lon");
-			if (lat != null && lon != null) {
-				response.setLocation(lat + "," + lon);
-			}
+			setDynamicContent(dataset, document, response);
 			
-			// Set facets via reflection - not the best way but the least invasive
-			// TODO: rewrite faceting so that no reflection is needed
-			final Element facets = document.getRootElement().getChild("facets", namespace);
-			final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
-			for (final Facet facet: facetList ) {
-				try {
-					final Class<?> facettedArachneEntityClass = response.getClass().getSuperclass();
-					final java.lang.reflect.Field facetField = facettedArachneEntityClass.getDeclaredField("facet_"+facet.getName());
-					List<String> facetValues = facet.getValues();
-					// TODO find better way to use multiple values ('objekt subcategories')
-					
-					if ("subkategorie".equals(facet.getName()) && facetValues.get(0).contains("#")) {
-						 facetValues = new ArrayList<String>(Arrays.asList(facetValues.get(0).split("#")));
-					}
-					//
-					facetField.set(response, facetValues);
-				} catch (NoSuchFieldException e) {
-					LOGGER.error("Invalid facet definition 'facet_" + facet.getName() + "' in '" + tableName + ".xml'. The facet field is not defined in " +
-							"FacettedArachneEntity.java. This facet will be ignored.");
-				} catch (Exception e) {
-					LOGGER.error("Failed to set facets with:", e);
-				}
-			}
-
 			//Set additional Content
 			response.setAdditionalContent(dataset.getAdditionalContent());
 									
@@ -179,7 +139,6 @@ public class ResponseFactory {
 	 * @return A <code>String</code> containing the concatenated values of the <code>title</code> tag.
 	 */
 	private String getTitleString(final Dataset dataset, final Namespace namespace, final Element display) {
-		
 		String result = "";
 		final Element title = display.getChild("title", namespace);
     	if (title.getChild("field", namespace) == null) {
@@ -232,6 +191,55 @@ public class ResponseFactory {
 					sectionContent.add(content);
 				}
 				response.setSections(sectionContent);
+			}
+		}
+	}
+	
+	/**
+	 * Sets the part of the response that is defined in the corresponding XML config file.
+	 * @param dataset The current dataset.
+	 * @param document The xml document describing the output format.
+	 * @param response The response object to add the content to.
+	 */
+	private void setDynamicContent(final Dataset dataset, final Document document, final FormattedArachneEntity response) {
+		final Namespace namespace = document.getRootElement().getNamespace();
+		final Element display = document.getRootElement().getChild("display", namespace);
+
+		// set title
+		final String titleStr = getTitleString(dataset, namespace, display);
+		response.setTitle(titleStr);
+
+		// set subtitle
+		final String subtitleStr = getSubTitle(dataset, namespace, display);
+		response.setSubtitle(subtitleStr);
+
+		// set datasection
+		setSections(dataset, namespace, display, response);
+
+		// Set images
+		response.setImages(dataset.getImages());
+
+		// Set facets via reflection - not the best way but the least invasive
+		final Element facets = document.getRootElement().getChild("facets", namespace);
+		final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
+		for (final Facet facet: facetList ) {
+			try {
+				final Class<?> facettedArachneEntityClass = response.getClass().getSuperclass();
+				final java.lang.reflect.Field facetField = facettedArachneEntityClass.getDeclaredField("facet_"+facet.getName());
+				List<String> facetValues = facet.getValues();
+				// TODO find better way to use multiple values ('objekt subcategories')
+				
+				if ("subkategorie".equals(facet.getName()) && facetValues.get(0).contains("#")) {
+					 facetValues = new ArrayList<String>(Arrays.asList(facetValues.get(0).split("#")));
+				}
+				//
+				facetField.set(response, facetValues);
+			} catch (NoSuchFieldException e) {
+				LOGGER.error("Invalid facet definition 'facet_" + facet.getName() + "' in '" + response.getType() 
+						+ ".xml'. The facet field is not defined in " +
+						"FacettedArachneEntity.java. This facet will be ignored.");
+			} catch (Exception e) {
+				LOGGER.error("Failed to set facets with:", e);
 			}
 		}
 	}
