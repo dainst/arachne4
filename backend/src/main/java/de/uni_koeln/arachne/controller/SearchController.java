@@ -56,6 +56,7 @@ public class SearchController {
 		defaultFacetList.add("facet_kategorie");
 		defaultFacetList.add("facet_ort");
 		defaultFacetList.add("facet_datierungepoche");
+		defaultFacetList.add("facet_geo");
 	}
 	
 	/**

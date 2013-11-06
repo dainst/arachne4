@@ -166,6 +166,8 @@ public class SearchService {
 	 */
 	public List<String> getCategorySpecificFacetList(final	List<String> filterValueList) {
 		final List<String> result = new ArrayList<String>();
+		// add geo facet
+		result.add("facet_geo");
 		for (String filterValue: filterValueList) {
 			if (filterValue.startsWith("facet_kategorie")) {
 				filterValue = filterValue.substring(16);
