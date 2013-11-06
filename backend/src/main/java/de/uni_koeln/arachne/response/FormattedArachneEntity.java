@@ -69,6 +69,11 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 	protected int fields; 
 			
 	/**
+	 * The document boost
+	 */
+	protected double boost;
+	
+	/**
 	 * Parameterless constructor initializing title and subtitle.
 	 */
 	public FormattedArachneEntity() {
@@ -162,5 +167,13 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 	
 	public void setFields(final int fields) {
 		this.fields = fields;
+	}
+	
+	public double getBoost() {
+		return boost;
+	}
+	
+	public void setBoost(final double boost) {
+		this.boost = boost;		
 	}
 }

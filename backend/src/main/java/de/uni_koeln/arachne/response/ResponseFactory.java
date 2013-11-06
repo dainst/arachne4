@@ -71,7 +71,10 @@ public class ResponseFactory {
 		
 		// set degree
 		response.setDegree(dataset.getDegree());
-
+		
+		// set boost
+		response.setBoost(((Math.log(response.fields+1)+1)*(Math.log(response.fields+1)+1)*(Math.log(response.degree)+1))/100+1);
+		
 		// set dataset group
 		// workaround for table marbilder as it does not adhere to the naming conventions
 		String datasetGroupFieldName = null;
