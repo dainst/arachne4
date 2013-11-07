@@ -37,8 +37,7 @@ public class Model3DController implements ServletContextAware{
 	@RequestMapping(value = "/model/{modelId}", method = RequestMethod.GET)
 	public @ResponseBody String handleModelRequest(@PathVariable("modelId") final Long modelId
 			, @RequestParam(value = "meta", required = false) final Boolean isMeta
-			, final HttpServletRequest request
-			, final HttpServletResponse response) {
+			, final HttpServletRequest request, final HttpServletResponse response) {
 		LOGGER.debug("Request for model: " + modelId + "(" + isMeta + ")");
 				
 		if (isMeta != null && isMeta) {
@@ -47,13 +46,30 @@ public class Model3DController implements ServletContextAware{
 			return getModelData(modelId);
 		}
 	}
+	
+	@RequestMapping(value = "/material/{modelId}", method = RequestMethod.GET)
+	public @ResponseBody String handleModelRequest(@PathVariable("modelId") final Long modelId
+			, final HttpServletRequest request, final HttpServletResponse response) {
+		LOGGER.debug("Request for material: " + modelId);
+			
+		return getMaterialData(modelId);
+	}
+	
+	// use regexp workaround for spring truncating at dots in parameters
+	@RequestMapping(value = "/model/texture/{textureName:.+}", method = RequestMethod.GET)
+	public @ResponseBody Object handleModelRequest(@PathVariable("textureName") final String textureName
+			, final HttpServletRequest request, final HttpServletResponse response) {
+		LOGGER.debug("Request for Texture: " + textureName);
+		final ServletContextResource texture = new ServletContextResource(servletContext, "/WEB-INF/vt2.bmp");	
+		return texture;
+	}
 
 	private String getMetaData(final long modelId) {
 		final JSONObject result = new JSONObject();
 		if (modelId == 666) {
 			try {
 				result.put("title", "Griechische Vase (TestModel)");
-				result.put("textured", false);
+				result.put("textured", true);
 				result.put("license", "Public Domain");
 				return result.toString();
 			} catch (JSONException e) {
@@ -86,7 +102,23 @@ public class Model3DController implements ServletContextAware{
 			try {
 				final File file = modelData.getFile();
 				final String content = Files.toString(file, Charsets.UTF_8);
-				LOGGER.debug(content);
+				return content;
+			} catch (IOException e) {
+				LOGGER.error("Problem reading model file. Caused by: ", e);
+			}
+		}
+		return null;
+	}
+	
+	private String getMaterialData(final long modelId) {
+		ServletContextResource materialData = null;
+		if (modelId == 666) {
+			materialData = new ServletContextResource(servletContext, "/WEB-INF/vase.mtl");
+		} 
+		if (materialData.exists()) {
+			try {
+				final File file = materialData.getFile();
+				final String content = Files.toString(file, Charsets.UTF_8);
 				return content;
 			} catch (IOException e) {
 				LOGGER.error("Problem reading model file. Caused by: ", e);
