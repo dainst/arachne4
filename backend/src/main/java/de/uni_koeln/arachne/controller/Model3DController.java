@@ -47,7 +47,7 @@ public class Model3DController implements ServletContextAware{
 		}
 	}
 	
-	@RequestMapping(value = "/material/{modelId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/model/material/{modelId}", method = RequestMethod.GET)
 	public @ResponseBody String handleModelRequest(@PathVariable("modelId") final Long modelId
 			, final HttpServletRequest request, final HttpServletResponse response) {
 		LOGGER.debug("Request for material: " + modelId);
