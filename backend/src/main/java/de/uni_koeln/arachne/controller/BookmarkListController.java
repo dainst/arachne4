@@ -70,6 +70,110 @@ public class BookmarkListController {
 	}
 	
 	/**
+	 * Handles http POST request for <code>/bookmark/{bookmarkId}/update</code>.
+	 * Returns the bookmark created and 200 if the action is permitted.
+	 * Returns null and 403 if no user is signed in or the signed in user 
+	 * does not own the bookmark to be edited.
+	 */
+	@RequestMapping(value="/bookmark/{bookmarkId}/update", method=RequestMethod.POST)
+	public @ResponseBody Bookmark handleUpdateBookmarkRequest(
+			@PathVariable("bookmarkId") final Long bookmarkId,
+			@RequestBody final Bookmark bookmark,
+			final HttpServletResponse response) {
+		final UserAdministration user = rightsService.getCurrentUser();
+		final Bookmark result;
+		final Bookmark oldBookmark;
+		
+		LOGGER.debug("Request to update bookmark: " + bookmarkId + " from user: " + user.getId());
+		
+		if (rightsService.isSignedInUser()) {
+			oldBookmark = bookmarkDao.getByBookmarkId(bookmarkId);
+			if (oldBookmark != null
+					&& (oldBookmark.getId() == bookmark.getId())
+					&& (oldBookmark.getBookmarkList().getUser().getId() == user.getId())) {
+				bookmark.setBookmarkList(oldBookmark.getBookmarkList());
+				result = bookmarkDao.updateBookmark(bookmark);
+			} else {
+				result = null;
+				response.setStatus(403);
+			}
+		} else {
+			result = null;
+			response.setStatus(403);
+		}
+		return result;
+	}
+	
+	/**
+	 * Handles http DELETE request for <code>/bookmark/{id}</code>.
+	 * Deletes the specified <code>Bookmark</code>.
+	 * Returns 204 on success. 
+	 * Returns 403 if the specified bookmark is not owned by the current user.
+	 * Returns 404 if the specified bookmark can not be retrieved.
+	 */
+	@RequestMapping(value="/bookmark/{bookmarkId}", method=RequestMethod.DELETE)
+	public void handleBookmarkDestroyRequest(
+			final HttpServletResponse response,
+			@PathVariable("bookmarkId") final Long bookmarkId) {
+		final UserAdministration user = rightsService.getCurrentUser();
+		final Bookmark bookmark = bookmarkDao.getByBookmarkId(bookmarkId);
+		
+		LOGGER.debug("Request to destroy bookmark: " + bookmarkId + " from user: " + user.getId());
+		
+		if (bookmark == null) {
+			response.setStatus(404);
+		} else if (bookmark.getBookmarkList().getUser().getId() == user.getId()) {
+			bookmarkDao.destroyBookmark(bookmark);
+			response.setStatus(204);
+		} else {
+			response.setStatus(403);
+		}
+	}
+	
+	/**
+	 * Handles http POST request for <code>/bookmarklist/{id}/add</code>.
+	 * Creates the submitted <code>Bookmark</code> item and adds it to the 
+	 * specified <code>BookmarkList</code>.
+	 * Returns the <code>Bookmark</code> created and 200.
+	 * Returns null and 403 if no user is signed in or the signed in user does
+	 * not own the specified <code>BookmarkList</code>.
+	 * If the submitted <code>Bookmark</code> contains an id value, that value 
+	 * is ignored.
+	 */
+	@RequestMapping(value="/bookmarkList/{bookmarkListId}/add", method=RequestMethod.POST)
+	public @ResponseBody Bookmark handleBookmarkCreateRequest(
+			@PathVariable("bookmarkListId") final Long bookmarkListId,
+			@RequestBody final Bookmark bookmark,
+			final HttpServletResponse response) {
+		final UserAdministration user = rightsService.getCurrentUser();
+		final BookmarkList bookmarkList;
+		final Bookmark result;
+		
+		LOGGER.debug("Request to create bookmark in bookmark list: " + bookmarkListId + "from user: " + user.getId());
+		
+		if (rightsService.isSignedInUser()) {
+			bookmarkList = bookmarkListDao.getByBookmarkListId(bookmarkListId);
+			if (bookmarkList != null) {
+				if (bookmarkList.getUser().getId() == user.getId()) {
+					bookmark.setId(null);
+					bookmark.setBookmarkList(bookmarkList);
+					result = bookmarkDao.saveBookmark(bookmark);
+				} else {
+					result = null;
+					response.setStatus(403);
+				}
+			} else {
+				result = null;
+				response.setStatus(404);
+			}
+		} else {
+			result = null;
+			response.setStatus(403);
+		}
+		return result;
+	}
+	
+	/**
 	 * Handles http GET request for <code>/bookmarklist</code>.
 	 * Returns all bookmarkLists belonging to the user, that is signed in, serialized 
 	 * into JSON or XML depending on the requested format.
