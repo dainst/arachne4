@@ -33,7 +33,6 @@ public class GenericSQLDao extends SQLDao {
 				, field1Id, field2, disableAuthorization);
 		@SuppressWarnings("unchecked")
 		final List<String> queryResult = (List<String>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperString());
-
 		if (queryResult != null && !queryResult.isEmpty()) {
 			return queryResult;
 		}
