@@ -87,7 +87,6 @@ public class TeiViewerSpecialNavigationElement extends
 	public AbstractSpecialNavigationElement getResult(final String searchParam,
 			final String filterValues) {
 		final StringBuffer linkBuffer = new StringBuffer(getRequestMapping());
-		//linkBuffer.append(searchParam.replace(':', '='));
 		linkBuffer.append("?manifest=");
 		linkBuffer.append(fieldList.get(0));
 		return new TeiViewerSpecialNavigationElement(linkBuffer.toString());

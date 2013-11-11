@@ -5,20 +5,16 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.elasticsearch.action.get.GetAction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import de.uni_koeln.arachne.response.CeramalexQuantifySpecialNavigationElement;
 import de.uni_koeln.arachne.response.AbstractSpecialNavigationElement;
+import de.uni_koeln.arachne.response.CeramalexQuantifySpecialNavigationElement;
 import de.uni_koeln.arachne.response.SpecialNavigationElementList;
 import de.uni_koeln.arachne.response.TeiViewerSpecialNavigationElement;
 
@@ -27,32 +23,41 @@ import de.uni_koeln.arachne.response.TeiViewerSpecialNavigationElement;
  * Controller handles project-specific navigation requests and returns a
  * 
  * @author Patrick Gunia
+ * @author Sven Ole Clemens
  * 
  */
 @Controller
 public class SpecialNavigationsController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SpecialNavigationsController.class);
+	//private static final Logger LOGGER = LoggerFactory.getLogger(SpecialNavigationsController.class);
+	
 	@Autowired
 	@Qualifier("teiViewerSpecialNavigationElement")
-	private transient TeiViewerSpecialNavigationElement teiViewerSpecialNavigationElement;
+	private transient TeiViewerSpecialNavigationElement teiViewerSE;
 	/**
 	 * List of all currently avaiable special navigation classes, needs to be
-	 * extended, if additional special navigations have to be provided
+	 * extended, if additional special navigations have to be provided.
+	 * To fill the list, look at the init-method. You can create new objects in
+	 * that method or use autowired ones.
 	 */
-	private transient final List<AbstractSpecialNavigationElement> specialNavigationsClasses = new ArrayList<AbstractSpecialNavigationElement>();
+	private transient final List<AbstractSpecialNavigationElement> specNavClasses = new ArrayList<AbstractSpecialNavigationElement>();
 
+	/**
+	 * Method that fills the specNavClasses List in runtime.
+	 * This is needed, becouse the autowirded objects have to be
+	 * loaded first.
+	 */
 	private void init() {
-		specialNavigationsClasses.clear();
-		specialNavigationsClasses.add(new CeramalexQuantifySpecialNavigationElement());
-		specialNavigationsClasses.add(teiViewerSpecialNavigationElement);
+		specNavClasses.clear();
+		specNavClasses.add(new CeramalexQuantifySpecialNavigationElement());
+		specNavClasses.add(teiViewerSE);
 	}
 
 	/**
-	 * Method handles a Ceramalex-quantify-request. It uses the regular
-	 * elasticsearch query- and facet-parameters to first receive a list of
-	 * mainabstract-records and afterwards retrieves a list of all avaiable
-	 * quantities-records connected with them. These are summed and passed back
+	 * Method handles different specialNavigation-request. It uses the regular
+	 * elasticsearch query- and facet-parameters or entityID to first receive a list of
+	 * dedicated-records and afterwards retrieves a list of all avaiable
+	 * navigationelements connected with them. These are summed and passed back
 	 * as JSP which can then be rendered by the frontend.
 	 * 
 	 * @param searchParam
@@ -73,16 +78,17 @@ public class SpecialNavigationsController {
 			@RequestParam(value = "limit", required = false) final Integer limit,
 			final HttpServletResponse response) {
 
+		// create the list of classes for the matching process
 		init();
 		
 		final SpecialNavigationElementList result = new SpecialNavigationElementList();
 		
-		for (final AbstractSpecialNavigationElement currentNavigationElement : specialNavigationsClasses) {
+		for (final AbstractSpecialNavigationElement currentNavigationElement : specNavClasses) {
 			if (currentNavigationElement.matches(searchParam, filterValues)) {
 				result.addElement(currentNavigationElement.getResult(searchParam, filterValues));
 			}
 		}
-		LOGGER.debug("#Results: " + result.size());
+		
 		return result;
 	}
 }
