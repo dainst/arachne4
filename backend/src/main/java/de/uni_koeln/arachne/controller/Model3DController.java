@@ -68,9 +68,9 @@ public class Model3DController implements ServletContextAware{
 		final JSONObject result = new JSONObject();
 		if (modelId == 666) {
 			try {
-				result.put("title", "Griechische Vase (TestModel)");
-				result.put("textured", true);
-				result.put("license", "Public Domain");
+				result.put("Titel", "Griechische Vase (TestModel)");
+				result.put("Dateiformat", "objmtl");
+				result.put("Lizenz", "Public Domain");
 				return result.toString();
 			} catch (JSONException e) {
 				// TODO: handle exception
@@ -78,9 +78,9 @@ public class Model3DController implements ServletContextAware{
 			}
 		} else {
 			try {
-				result.put("title", "Baukomplex der Basilika Aemilia");
-				result.put("textured", false);
-				result.put("license", "CC-BY-SA 3.0");
+				result.put("Titel", "Baukomplex der Basilika Aemilia");
+				result.put("Dateiformat", "obj");
+				result.put("Lizenz", "CC-BY-SA 3.0");
 				result.put("connectedEntity", 5640);
 				return result.toString();
 			} catch (JSONException e) {
