@@ -74,7 +74,7 @@ public class TeiViewerSpecialNavigationElement extends
 			entityId = entityIdentServ.getId(Long.valueOf(searchParam));		
 		}
 		
-		if("buch".equals(entityId.getTableName())) {
+		if(entityId != null && "buch".equals(entityId.getTableName())) {
 			fieldList = genericSQLDao.getStringField(entityId.getTableName(), "buch", entityId.getInternalKey(), "Verzeichnis");
 			if(fieldList != null && !fieldList.isEmpty()) {
 				returnValue = true;
