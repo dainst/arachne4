@@ -76,19 +76,29 @@ public class SpecialNavigationsController {
 			@RequestParam(value = "fq", required = false, defaultValue = "") final String filterValues,
 			@RequestParam(value = "offset", required = false) final Integer offset,
 			@RequestParam(value = "limit", required = false) final Integer limit,
+			@RequestParam(value = "id", required = false, defaultValue = "") final String entityId,
+			@RequestParam(value = "type", required = false, defaultValue = "") final String type,
 			final HttpServletResponse response) {
 
 		// create the list of classes for the matching process
 		init();
 		
-		final SpecialNavigationElementList result = new SpecialNavigationElementList();
-		
-		for (final AbstractSpecialNavigationElement currentNavigationElement : specNavClasses) {
-			if (currentNavigationElement.matches(searchParam, filterValues)) {
-				result.addElement(currentNavigationElement.getResult(searchParam, filterValues));
-			}
+		if("entity".equals(type) && !entityId.isEmpty()) {
+			return matching(entityId, null);
+		} else if (!searchParam.isEmpty()) {
+			return matching(searchParam, null);
 		}
 		
+		return new SpecialNavigationElementList();
+	}
+	
+	private SpecialNavigationElementList matching (final String params, final String filterValues) {
+		final SpecialNavigationElementList result = new SpecialNavigationElementList();
+		for (final AbstractSpecialNavigationElement currentNavigationElement : specNavClasses) {
+			if (currentNavigationElement.matches(params, filterValues)) {
+				result.addElement(currentNavigationElement.getResult(params, filterValues));
+			}
+		}
 		return result;
 	}
 }

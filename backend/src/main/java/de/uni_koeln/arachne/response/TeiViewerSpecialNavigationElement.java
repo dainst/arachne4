@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import de.uni_koeln.arachne.dao.GenericSQLDao;
@@ -26,6 +27,9 @@ public class TeiViewerSpecialNavigationElement extends
 	private transient GenericSQLDao genericSQLDao;
 
 	private transient List<String> fieldList;
+	
+	@Value("#{config.teiViewerLink}")
+	private transient String teiViewerLink;
 	
 	public TeiViewerSpecialNavigationElement() {
 		super();
@@ -52,7 +56,8 @@ public class TeiViewerSpecialNavigationElement extends
 
 	@Override
 	public String getRequestMapping() {
-		return "http://arachne.uni-koeln.de/Tei-Viewer/cgi-bin/teiviewer.php";
+		//return "http://arachne.uni-koeln.de/Tei-Viewer/cgi-bin/teiviewer.php";
+		return teiViewerLink;
 	}
 
 	@Override
