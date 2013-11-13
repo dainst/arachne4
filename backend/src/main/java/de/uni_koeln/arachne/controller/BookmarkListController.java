@@ -75,7 +75,7 @@ public class BookmarkListController {
 	 * Returns null and 403 if no user is signed in or the signed in user 
 	 * does not own the bookmark to be edited.
 	 */
-	@RequestMapping(value="/bookmark/{bookmarkId}/update", method=RequestMethod.POST)
+	@RequestMapping(value="/bookmark/{bookmarkId}", method=RequestMethod.POST)
 	public @ResponseBody Bookmark handleUpdateBookmarkRequest(
 			@PathVariable("bookmarkId") final Long bookmarkId,
 			@RequestBody final Bookmark bookmark,
@@ -241,7 +241,7 @@ public class BookmarkListController {
 	 * It does not automatically delete items, that are missing from the list of nested 
 	 * <code>Bookmark</code> items.
 	 */
-	@RequestMapping(value="/bookmarklist/{requestedId}/update", method=RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value="/bookmarklist/{requestedId}", method=RequestMethod.POST, consumes="application/json")
 	public @ResponseBody BookmarkList handleBookmarkListUpdateRequest(
 			@RequestBody final BookmarkList bookmarkList,
 			@PathVariable("requestedId") final Long requestedId,
@@ -281,7 +281,7 @@ public class BookmarkListController {
 	 * Existing primary id values in nested <code>Bookmark</code> items are
 	 * ignored.
 	 */
-	@RequestMapping(value="/bookmarklist/create", method=RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value="/bookmarklist", method=RequestMethod.POST, consumes="application/json")
 	public @ResponseBody BookmarkList handleBookmarkListCreateRequest(
 			@RequestBody final BookmarkList bookmarkList,
 			final HttpServletResponse response) {
@@ -329,7 +329,6 @@ public class BookmarkListController {
 		} else {
 			response.setStatus(403);
 		}
-		
 	}
 
 }
