@@ -20,4 +20,8 @@
         <input type="submit" value="submit" />
         </form>
       </body>
+       <script type="text/javascript">
+ 	console.log(RecaptchaState);
+ 	console.log(RecaptchaState.challenge);
+ </script>
     </html>
