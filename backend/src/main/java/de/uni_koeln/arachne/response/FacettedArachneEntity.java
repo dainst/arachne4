@@ -775,4 +775,48 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	public void setFacet_subkategorie(List<String> facet_subkategorie) {
 		this.facet_subkategorie = facet_subkategorie;
 	}
+	public List<String> getFacet_nitonanalysisnumber() {
+		return facet_nitonanalysisnumber;
+	}
+	public void setFacet_nitonanalysisnumber(List<String> facet_nitonanalysisnumber) {
+		this.facet_nitonanalysisnumber = facet_nitonanalysisnumber;
+	}
+	public List<String> getFacet_morphology_functionalgroup() {
+		return facet_morphology_functionalgroup;
+	}
+	public void setFacet_morphology_functionalgroup(
+			List<String> facet_morphology_functionalgroup) {
+		this.facet_morphology_functionalgroup = facet_morphology_functionalgroup;
+	}
+	public List<String> getFacet_morphology_2ndLevel() {
+		return facet_morphology_2ndLevel;
+	}
+	public void setFacet_morphology_2ndLevel(List<String> facet_morphology_2ndLevel) {
+		this.facet_morphology_2ndLevel = facet_morphology_2ndLevel;
+	}
+	public List<String> getFacet_morphology_3rdLevel() {
+		return facet_morphology_3rdLevel;
+	}
+	public void setFacet_morphology_3rdLevel(List<String> facet_morphology_3rdLevel) {
+		this.facet_morphology_3rdLevel = facet_morphology_3rdLevel;
+	}
+	public List<String> getFacet_morphology_4thLevel() {
+		return facet_morphology_4thLevel;
+	}
+	public void setFacet_morphology_4thLevel(List<String> facet_morphology_4thLevel) {
+		this.facet_morphology_4thLevel = facet_morphology_4thLevel;
+	}
+	public List<String> getFacet_morphology_5thLevel() {
+		return facet_morphology_5thLevel;
+	}
+	public void setFacet_morphology_5thLevel(List<String> facet_morphology_5thLevel) {
+		this.facet_morphology_5thLevel = facet_morphology_5thLevel;
+	}
+	public List<String> getFacet_morphology_6thLevel() {
+		return facet_morphology_6thLevel;
+	}
+	public void setFacet_morphology_6thLevel(List<String> facet_morphology_6thLevel) {
+		this.facet_morphology_6thLevel = facet_morphology_6thLevel;
+	}
+	
 }
