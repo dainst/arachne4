@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * Every used facet must be defined here. Do not forget to add getters and setters.
  */
 @JsonInclude(Include.NON_NULL)
+@SuppressWarnings("PMD")
 public class FacettedArachneEntity extends BaseArachneEntity {
 	/*
 	 * The facets as defined in the xml file for the dataset.
