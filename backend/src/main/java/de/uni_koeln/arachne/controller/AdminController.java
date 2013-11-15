@@ -155,7 +155,7 @@ public class AdminController {
 	
 	// TODO find a better place for this function - maybe using java spring configuration
 	@Scheduled(cron="0 0 0 * * *")
-	private void scheduledDataimport() { // NOPMD
+	private void scheduledDataimport() { 
 		LOGGER.info("Starting scheduled dataimport...");
 		defaultTaskExecutor.execute(dataImportService);
 	}

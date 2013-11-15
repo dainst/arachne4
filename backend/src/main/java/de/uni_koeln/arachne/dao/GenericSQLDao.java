@@ -31,7 +31,7 @@ public class GenericSQLDao extends SQLDao {
 			, final String field2, final boolean disableAuthorization) {
 		final GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1
 				, field1Id, field2, disableAuthorization);
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") // NOPMD
 		final List<String> queryResult = (List<String>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperString());
 		if (queryResult != null && !queryResult.isEmpty()) {
 			return queryResult;

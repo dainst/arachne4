@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import de.uni_koeln.arachne.util.ContactFormValidationUtil;
+import de.uni_koeln.arachne.util.RegisterFormValidationUtil;
 
 /**
  * @author Sven Ole Clemens
@@ -32,7 +32,6 @@ import de.uni_koeln.arachne.util.ContactFormValidationUtil;
 public class UserManagementController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserManagementController.class);
-	
 	
 	/**
 	 * Method to show the register form
@@ -52,11 +51,7 @@ public class UserManagementController {
 	public @ResponseBody Object register(
 			@RequestParam(value="recaptcha_challenge_field", required = true) final String challenge,
 			@RequestParam(value="recaptcha_response_field", required = true) final String userResponse,
-			/**@RequestParam(value = "userName", required = true) final String userName,
-			@RequestParam(value = "userEmail", required = true) final String userEmail,
-			@RequestParam(value = "category", required = true) @Validated() final String category,
-			@RequestParam(value = "message", required = true) final String message,*/
-			@Valid final ContactFormValidationUtil contactForm,
+			@Valid final RegisterFormValidationUtil registerForm,
 			final BindingResult bResult,
 			final HttpServletRequest request) {
 		
@@ -76,7 +71,7 @@ public class UserManagementController {
 	        	
 	        	final SimpleMailMessage mailMessage = new SimpleMailMessage();
 	        	mailMessage.setFrom("arachne@uni-koeln.de");
-	        	mailMessage.setTo(contactForm.getUserEmail());
+	        	mailMessage.setTo(registerForm.getEmail());
 	        	mailMessage.setSubject("Ihre Anfrage an Arachne");
 	        	mailMessage.setText("Vielen Dank für Ihre Email an das Arachne-Team! Wir werden diese so schnell wie möglich beantworten.");
 	        	

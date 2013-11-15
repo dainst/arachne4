@@ -47,10 +47,10 @@ public class TestStrUtils {
 	
 	@Test
 	public void testIsValidIPAddress() {
-		String testIP = "127.0.0.1"; // NOPMD
+		String testIP = "127.0.0.1"; 
 		assertTrue(StrUtils.isValidIPAddress(testIP));
 		
-		testIP = "255.255.255.255";	// NOPMD
+		testIP = "255.255.255.255";	
 		assertTrue(StrUtils.isValidIPAddress(testIP));
 		
 		testIP = "127.0.0.256";

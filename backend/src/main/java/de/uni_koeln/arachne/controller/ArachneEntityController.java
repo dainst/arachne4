@@ -275,7 +275,7 @@ public class ArachneEntityController {
      * @param response The <code>HttpServeletRsponse</code> object.
      * @return The <code>Dataset</code> of the requested entity.
      */
-    private Dataset getDataRequestResponse(final Long id, final String category, final HttpServletResponse response) { // NOPMD
+    private Dataset getDataRequestResponse(final Long id, final String category, final HttpServletResponse response) { 
     	final Long startTime = System.currentTimeMillis();
         
     	EntityId arachneId;

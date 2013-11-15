@@ -177,7 +177,7 @@ public class ESClientUtil implements ServletContextAware {
 					deleteIndex(oldName);
 				} else {
 					LOGGER.error("Failed to set alias.");
-					throw new IllegalStateException("Failed to set aliases."); // NOPMD
+					throw new IllegalStateException("Failed to set aliases."); 
 				}
 			} catch (IndexMissingException ime) {
 				LOGGER.error("Failed to set alias. Index Missing.");
@@ -201,7 +201,7 @@ public class ESClientUtil implements ServletContextAware {
 				LOGGER.error("Index " + indexName + " was not deleted.");
 				result = false;
 			}
-		} catch (IndexMissingException e) { // NOPMD
+		} catch (IndexMissingException e) { 
 			// No problem if no index exists as it should be deleted anyways
 		}
 		return result;

@@ -21,7 +21,7 @@ public class CMSController {
 	private transient CMSService cmsService;
 	
 	@RequestMapping(value="/node/{id}", method=RequestMethod.GET)
-	public @ResponseBody Node page(@PathVariable("id") final Integer id) { // NOPMD		
+	public @ResponseBody Node page(@PathVariable("id") final Integer id) { // NOPMD
 		return cmsService.getNodeById(id);		
 	}
 	

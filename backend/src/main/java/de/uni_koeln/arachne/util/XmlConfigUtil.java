@@ -855,7 +855,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			final String context) {
 		String datasourceValue = field.getAttributeValue("datasource");
 		if (!StrUtils.isEmptyOrNull(datasourceValue)) {
-			datasourceValue = context + datasourceValue; // NOPMD
+			datasourceValue = context + datasourceValue; 
 			// Exception for objekt-Subgroups e.g. objektkeramik, these are handled specially
 			// Add Exception for Fabric / Fabricdescription, Surfacetreatment / SurfacetreatmentAction
 			// as they shouldnt be handled as Object-/Sub-Object => the problem is, that the child-type

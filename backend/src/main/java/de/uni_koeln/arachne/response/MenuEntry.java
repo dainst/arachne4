@@ -4,7 +4,7 @@ import java.util.List;
 
 public class MenuEntry {
 	
-	private String id;  // NOPMD
+	private String id;  
 	private String parent;
 	private String title;
 	private String path;
@@ -13,7 +13,7 @@ public class MenuEntry {
 	public String getId() {
 		return id;
 	}
-	public void setId(final String id) { // NOPMD
+	public void setId(final String id) { 
 		this.id = id;
 	}
 	public String getParent() {

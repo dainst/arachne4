@@ -388,8 +388,4 @@ public class UserAdministration {
 		public void setBookmarkLists(final Set<BookmarkList> bookmarkLists) {
 			this.bookmarkLists = bookmarkLists;
 		}
-	   	
-	   	
-
-
 }

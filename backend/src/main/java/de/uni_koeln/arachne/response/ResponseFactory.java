@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import org.aspectj.weaver.ast.And;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;

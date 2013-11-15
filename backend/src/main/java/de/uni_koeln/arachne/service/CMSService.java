@@ -27,7 +27,7 @@ public class CMSService {
 	@Autowired
 	private transient DrupalSQLDao dao;
 
-	public Node getNodeById(Integer id) { // NOPMD
+	public Node getNodeById(Integer id) { 
 		
 		final Node page = new Node();
 		
@@ -105,7 +105,7 @@ public class CMSService {
 			map.put(newMenuEntry.getId(), newMenuEntry);
 		}
 		// create children array
-		for (String id : map.keySet()) { // NOPMD
+		for (String id : map.keySet()) { 
 			if (map.get(id).getParent() == null) {
 				continue;
 			}

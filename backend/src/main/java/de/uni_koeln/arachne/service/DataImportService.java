@@ -34,7 +34,7 @@ import de.uni_koeln.arachne.util.EntityId;
  * via a <code>TaskExecutor</code>.  
  */
 @Service("DataImportService")
-public class DataImportService implements Runnable { // NOPMD - Threading is used via Springs TaskExecutor so it is save 
+public class DataImportService implements Runnable { 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataImportService.class);
 	
 	@Autowired
@@ -85,7 +85,7 @@ public class DataImportService implements Runnable { // NOPMD - Threading is use
 	 * The dataimport implementation. This method retrieves a list of EntityIds from the DB and iterates over this list 
 	 * constructing the associated documents and indexing them via elasticsearch.
 	 */
-	public void run() { // NOPMD - Threading is used via Springs TaskExecutor so it is save 
+	public void run() { 
 		class LongMapper implements RowMapper<Long> {
 			public Long mapRow(final ResultSet resultSet, final int index) throws SQLException {
 				return resultSet.getLong(1);

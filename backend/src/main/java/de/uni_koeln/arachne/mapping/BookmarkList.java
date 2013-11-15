@@ -20,12 +20,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @XmlRootElement
 @Entity
 @Table(name="bookmark_list")
-@SuppressWarnings("PMD")
 public class BookmarkList {
 
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Long id; // NOPMD
 	
 	@ManyToOne
 	@JoinColumn(name="uid", nullable=false, insertable=true, updatable=false)

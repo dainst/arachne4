@@ -5,7 +5,6 @@ import java.util.List;
 /**
  * Class implementing string utility functions.
  */
-@SuppressWarnings("PMD")
 public class StrUtils {	
 	/**
 	 * This method returns if a <code>String</code> is empty or <code>null</code> or has the value "0".

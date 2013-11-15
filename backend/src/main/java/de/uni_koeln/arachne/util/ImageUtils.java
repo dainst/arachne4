@@ -10,7 +10,6 @@ import de.uni_koeln.arachne.response.Image;
 /**
  * This class implements utility functions for working with images
  */
-@SuppressWarnings("PMD")
 public class ImageUtils {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageUtils.class);

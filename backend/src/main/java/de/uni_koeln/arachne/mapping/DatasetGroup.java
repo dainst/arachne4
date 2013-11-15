@@ -23,7 +23,7 @@ public class DatasetGroup {
 	
 	@Id
 	@Column(name="dgid")
-	private int dgid; // NOPMD
+	private int dgid; 
 	
 	@Column(name="dgname")
 	private String name;

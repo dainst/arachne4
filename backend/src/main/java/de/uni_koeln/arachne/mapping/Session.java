@@ -16,7 +16,7 @@ public class Session {
 	private String sid;
 	@OneToOne
 	@JoinColumn(name="uid")
-	private UserAdministration user; // NOPMD
+	private UserAdministration user; 
 	private Date timestamp;
 	private String ipaddress;
 	private String useragent;

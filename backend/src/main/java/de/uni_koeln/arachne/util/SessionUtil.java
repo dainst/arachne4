@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Utility class to retrieve the current SessionFactory or create a new one if none exists.
  */
-@SuppressWarnings("PMD")
 public class SessionUtil {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SessionUtil.class);
