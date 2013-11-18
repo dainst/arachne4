@@ -15,8 +15,8 @@ public class SQLToolbox {
 	 * @param tablename An Arachne internal Tablename example: bauwerk.
 	 * @return The name of the Primary key of that Table example PS_BauwerkID
 	 */
-	public static String generatePrimaryKeyName(String tablename){
-		if (tablename.equals("marbilder")) {
+	public static String generatePrimaryKeyName(final String tablename){
+		if ("marbilder".equals(tablename)) {
 			return "PS_MARBilderID";		
 		}
 		return "PS_" + ucfirst(tablename)+"ID";
@@ -27,9 +27,9 @@ public class SQLToolbox {
 	 * @param tablename An Arachne internal Tablename example: objekt
 	 * @return The name of the Foreign key of that Table  example: PS_ObjektID
 	 */
-	public static String generateForeignKeyName(String tablename){
+	public static String generateForeignKeyName(final String tablename){
 		
-		if (tablename.equals("marbilder")) {
+		if ("marbilder".equals(tablename)) {
 			return "FS_MARBilderID";
 		}		
 		return "FS_" + ucfirst(tablename)+"ID";

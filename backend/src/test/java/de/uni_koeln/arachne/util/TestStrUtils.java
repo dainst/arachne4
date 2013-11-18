@@ -12,13 +12,13 @@ public class TestStrUtils {
 	@Test
 	public void testIfEmptyOrNullString() {
 		String testString = null;
-		assertTrue(StrUtils.isEmptyOrNull(testString));
+		assertTrue(StrUtils.isEmptyOrNullOrZero(testString));
 		
 		testString = "";
-		assertTrue(StrUtils.isEmptyOrNull(testString));
+		assertTrue(StrUtils.isEmptyOrNullOrZero(testString));
 		
 		testString = "test";
-		assertFalse(StrUtils.isEmptyOrNull(testString));
+		assertFalse(StrUtils.isEmptyOrNullOrZero(testString));
 	}
 	
 	@Test

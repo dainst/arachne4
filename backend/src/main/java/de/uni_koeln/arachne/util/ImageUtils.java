@@ -30,7 +30,7 @@ public class ImageUtils {
 		}
 		if (imageList.size()>1 && thumbnail != null && subtitle.contains(",")) {
 			Integer lowestNumber = extractNumberFromImageFilename(subtitle);
-			for (Image potentialThumbnail: imageList) {
+			for (final Image potentialThumbnail: imageList) {
 				if (potentialThumbnail.getSubtitle().contains(",")) {
 					final Integer currentNumber = extractNumberFromImageFilename(potentialThumbnail.getSubtitle());
 					if (currentNumber<lowestNumber) {

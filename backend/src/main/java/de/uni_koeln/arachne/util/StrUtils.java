@@ -11,13 +11,22 @@ public class StrUtils {
 	 * @param string to test.
 	 * @return <code>true</code> or <code>false</code>
 	 */
-	public static boolean isEmptyOrNull(String string) {
-		boolean result = string == null || string.isEmpty();
+	public static boolean isEmptyOrNullOrZero(final String string) {
+		final boolean result = string == null || string.isEmpty();
 		if (result) {
 			return result;
 		} else {
 			return "0".equals(string);
 		}
+	}
+	
+	/**
+	 * This method returns if a <code>String</code> is empty or <code>null</code>.
+	 * @param string to test.
+	 * @return <code>true</code> or <code>false</code>
+	 */
+	public static boolean isEmptyOrNull(final String string) {
+		return string == null || string.isEmpty();
 	}
 	
 	/**

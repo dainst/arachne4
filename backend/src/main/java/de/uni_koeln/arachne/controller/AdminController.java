@@ -128,7 +128,7 @@ public class AdminController {
 	public @ResponseBody StatusResponse handleDataImport(@RequestParam(value = "command", required = true) final String command
 			, final HttpServletResponse response) {
 		
-		if (StrUtils.isEmptyOrNull(command)) {
+		if (StrUtils.isEmptyOrNullOrZero(command)) {
 			response.setStatus(400);
 			return null;
 		} else {

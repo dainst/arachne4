@@ -177,7 +177,7 @@ public class ESClientUtil implements ServletContextAware {
 					deleteIndex(oldName);
 				} else {
 					LOGGER.error("Failed to set alias.");
-					throw new IllegalStateException("Failed to set aliases."); 
+					throw new IllegalStateException("Failed to set aliases."); // NOPMD
 				}
 			} catch (IndexMissingException ime) {
 				LOGGER.error("Failed to set alias. Index Missing.");

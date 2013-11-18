@@ -418,7 +418,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 
 		final String labelKey = element.getAttributeValue("labelKey");
-		if (!StrUtils.isEmptyOrNull(labelKey)) {
+		if (!StrUtils.isEmptyOrNullOrZero(labelKey)) {
 			final LinkField linkField = new LinkField(labelKey);
 			StringBuilder value = null;
 			final String initialValue = dataset.getField(element.getAttributeValue("datasource"));
@@ -608,7 +608,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			if (element.getName().contentEquals("linkField")){
 					final String labelKey = element.getAttributeValue("labelKey");
 				
-					if (StrUtils.isEmptyOrNull(labelKey)) {
+					if (StrUtils.isEmptyOrNullOrZero(labelKey)) {
 						value = new StringBuilder("<a href=\""+value.toString()+"\">" + value.toString() + "</a>");
 					} else {
 						value.insert(0, "<a href=\"");
@@ -636,7 +636,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @return A boolean value indicating if the current user is allowed to see the content.
 	 */
 	private boolean hasMinGroupId(final String minGroupIdStr) {
-		if (!StrUtils.isEmptyOrNull(minGroupIdStr)) {
+		if (!StrUtils.isEmptyOrNullOrZero(minGroupIdStr)) {
 			final int groupId = userRightsService.getCurrentUser().getGroupID();
 			final int minGroupId = Integer.parseInt(minGroupIdStr);
 			LOGGER.debug("minGroupId: " + minGroupId + " - user groupId: " + groupId);
@@ -805,13 +805,13 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 
 		final String datasourceValue = element.getAttributeValue("datasource");
-		if (!StrUtils.isEmptyOrNull(datasourceValue) && !datasourceValue.startsWith(parentType) 
+		if (!StrUtils.isEmptyOrNullOrZero(datasourceValue) && !datasourceValue.startsWith(parentType) 
 				&& !datasourceValue.startsWith("Dataset")) {
 			result.add(datasourceValue);
 		}
 
 		final String ifEmptyValue = element.getAttributeValue("ifEmpty");
-		if (!StrUtils.isEmptyOrNull(ifEmptyValue) && !ifEmptyValue.startsWith(parentType) 
+		if (!StrUtils.isEmptyOrNullOrZero(ifEmptyValue) && !ifEmptyValue.startsWith(parentType) 
 				&& !datasourceValue.startsWith("Dataset")) {
 			result.add(ifEmptyValue);
 		}
@@ -854,8 +854,8 @@ public class XmlConfigUtil implements ServletContextAware {
 			final String parentType, final List<String> result,
 			final String context) {
 		String datasourceValue = field.getAttributeValue("datasource");
-		if (!StrUtils.isEmptyOrNull(datasourceValue)) {
-			datasourceValue = context + datasourceValue; 
+		if (!StrUtils.isEmptyOrNullOrZero(datasourceValue)) {
+			datasourceValue = context + datasourceValue; // NOPMD
 			// Exception for objekt-Subgroups e.g. objektkeramik, these are handled specially
 			// Add Exception for Fabric / Fabricdescription, Surfacetreatment / SurfacetreatmentAction
 			// as they shouldnt be handled as Object-/Sub-Object => the problem is, that the child-type

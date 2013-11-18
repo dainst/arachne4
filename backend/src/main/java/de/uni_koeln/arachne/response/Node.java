@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Node {
 	
-	private int id; 
+	private int id; // NOPMD
 	private String title;
 	private String teaser;
 	private String body;
@@ -54,7 +54,7 @@ public class Node {
 	public int getId() {
 		return id;
 	}
-	public void setId(final int id) { 
+	public void setId(final int id) { // NOPMD
 		this.id = id;
 	}
 

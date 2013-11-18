@@ -124,7 +124,7 @@ public class ImageController {
 		final String imageName = imageProperties.name;
 		String imageServerInstance = imageProperties.watermark;
 
-		if (StrUtils.isEmptyOrNull(imageServerInstance)) {
+		if (StrUtils.isEmptyOrNullOrZero(imageServerInstance)) {
 			imageServerInstance = imageServerName;
 		}
 
@@ -272,7 +272,7 @@ public class ImageController {
 			String imageServerInstance = imageProperties.watermark;
 			final int resolution = imageProperties.resolution;
 			
-			if (StrUtils.isEmptyOrNull(imageServerInstance)) {
+			if (StrUtils.isEmptyOrNullOrZero(imageServerInstance)) {
 				imageServerInstance = imageServerName;
 			}
 			
@@ -335,7 +335,7 @@ public class ImageController {
 			imageName = imageEntity.getField("marbilder.PfadNeu");
 			LOGGER.debug("Image: " + entityId + ": " + imageName);
 			// imageName == null means the user is not allowed to access the image dataset in 'marbilder'
-			if (StrUtils.isEmptyOrNull(imageName)) {
+			if (StrUtils.isEmptyOrNullOrZero(imageName)) {
 				return new ImageProperties(imageName, resolution, watermark, 403);
 			}
 			

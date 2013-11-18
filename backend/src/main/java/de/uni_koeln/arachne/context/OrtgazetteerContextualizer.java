@@ -36,7 +36,7 @@ public class OrtgazetteerContextualizer extends AbstractContextualizer implement
 		final RestTemplate restTemplate = new RestTemplate();
 		final String gazId = parent.getFieldFromContext("ort.Gazetteerid");
 		LOGGER.debug("gazId: {}", gazId);
-		if (StrUtils.isEmptyOrNull(gazId)) {
+		if (StrUtils.isEmptyOrNullOrZero(gazId)) {
 			return null;
 		}
 		try {
@@ -55,7 +55,7 @@ public class OrtgazetteerContextualizer extends AbstractContextualizer implement
 				title = prefName.optString("title");
 			}
 			
-			if (!StrUtils.isEmptyOrNull(title)) {
+			if (!StrUtils.isEmptyOrNullOrZero(title)) {
 				fields.put("ortgazetteer.prefName", title);
 			}
 						

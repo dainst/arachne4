@@ -145,7 +145,7 @@ public class SearchService {
 	 */
 	public List<String> getFilterValueList(final String filterValues, final List<String> facetList) {
 		List<String> result = null; 
-		if (!StrUtils.isEmptyOrNull(filterValues)) {
+		if (!StrUtils.isEmptyOrNullOrZero(filterValues)) {
 			result = filterQueryStringToStringList(filterValues);
 			for (final String filterValue: result) {
 				if (filterValue.contains("facet_kategorie")) {

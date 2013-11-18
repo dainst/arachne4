@@ -45,7 +45,7 @@ public class DatasetMapper implements RowMapper<Map<String,String>> {
 				continue;
 			}			
 						
-			if (!StrUtils.isEmptyOrNull(columnValue)) {
+			if (!StrUtils.isEmptyOrNullOrZero(columnValue)) {
 				dataset.put(meta.getTableName(i) + "." + columnName, resultSet.getString(columnName));
 			}
 		}

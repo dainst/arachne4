@@ -196,7 +196,7 @@ public class Dataset {
 			}
 		} else {
 			result = getFieldFromFields(fieldName);
-			if (StrUtils.isEmptyOrNull(result)) {
+			if (StrUtils.isEmptyOrNullOrZero(result)) {
 				result = getFieldFromContext(fieldName);
 			}
 		}
@@ -224,7 +224,7 @@ public class Dataset {
 			if (link != null) {
 				// we know that Entity1 is 'this'
 				result = link.getFieldFromFields(fieldName);
-				if (!StrUtils.isEmptyOrNull(result)) {
+				if (!StrUtils.isEmptyOrNullOrZero(result)) {
 					return result;
 				}
 			}
@@ -244,7 +244,7 @@ public class Dataset {
 			if (link != null) {
 				// we know that Entity1 is 'this'
 				result = link.getFieldFromFields(fieldName);
-				if (!StrUtils.isEmptyOrNull(result)) {
+				if (!StrUtils.isEmptyOrNullOrZero(result)) {
 					return result;
 				}
 			}
@@ -267,7 +267,7 @@ public class Dataset {
 					String tmpResult = null;
 					// we know that Entity1 is 'this'
 					tmpResult = link.getFieldFromFields(fieldName);
-					if (!StrUtils.isEmptyOrNull(tmpResult)) {
+					if (!StrUtils.isEmptyOrNullOrZero(tmpResult)) {
 						result.add(tmpResult);
 					}
 				}
@@ -297,7 +297,7 @@ public class Dataset {
 		this.additionalContent = additionalContent;
 	}
 
-	public void setDegree(double degree) {
+	public void setDegree(final double degree) {
 		this.degree = degree;
 	}
 	

@@ -42,7 +42,7 @@ public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 			
 			//The rest of the Dataset
 			final String columnValue = resultSet.getString(columnName);
-			if (!StrUtils.isEmptyOrNull(columnValue)) {
+			if (!StrUtils.isEmptyOrNullOrZero(columnValue)) {
 				if (columnName.equals(jsonField)) {
 					try {
 						@SuppressWarnings("unchecked")

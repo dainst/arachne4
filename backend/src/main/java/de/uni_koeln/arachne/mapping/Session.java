@@ -10,6 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="verwaltung_sessions_arachne4")
+@SuppressWarnings("PMD")
 public class Session {
 
 	@Id

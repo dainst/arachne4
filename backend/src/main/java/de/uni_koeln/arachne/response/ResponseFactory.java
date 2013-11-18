@@ -102,7 +102,7 @@ public class ResponseFactory {
 		// set geo information and add the geo facet
 		final String city = dataset.getField("ort.Stadt");
 		final String country = dataset.getField("ort.Land");
-		if (!StrUtils.isEmptyOrNull(city) && !StrUtils.isEmptyOrNull(city)) {
+		if (!StrUtils.isEmptyOrNullOrZero(city) && !StrUtils.isEmptyOrNullOrZero(city)) {
 			response.setPlace(city + ", " + country);
 		}
 		final String lat = dataset.getField("ortgazetteer.lat");

@@ -47,10 +47,10 @@ public class KategorieobjektContextualizer extends AbstractContextualizer {
 			if (keySet.contains(objektSubcategory + '.' + SQLToolbox.generatePrimaryKeyName(objektSubcategory))) {
 				// TODO find better way to use multiple values ('objekt subcategories')
 				// write multiple values as '#' separated list
-				subcategoryValue += SQLToolbox.ucfirst(objektSubcategory.substring(6)) + '#'; 
+				subcategoryValue += SQLToolbox.ucfirst(objektSubcategory.substring(6)) + '#'; // NOPMD
 			}
 		}
-		if (!StrUtils.isEmptyOrNull(subcategoryValue)) {
+		if (!StrUtils.isEmptyOrNullOrZero(subcategoryValue)) {
 			subcategoryValue = subcategoryValue.substring(0, subcategoryValue.length() - 1);
 		}
 		final Map<String, String> subcategory = new HashMap<String, String>();
