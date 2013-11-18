@@ -10,7 +10,7 @@ import de.uni_koeln.arachne.response.Image;
 /**
  * This class implements utility functions for working with images
  */
-public class ImageUtils {
+public class ImageUtils { // NOPMD
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageUtils.class);
 	

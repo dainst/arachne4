@@ -34,7 +34,7 @@ import de.uni_koeln.arachne.util.EntityId;
  * via a <code>TaskExecutor</code>.  
  */
 @Service("DataImportService")
-public class DataImportService implements Runnable { 
+public class DataImportService implements Runnable { // NOPMD
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataImportService.class);
 	
 	@Autowired

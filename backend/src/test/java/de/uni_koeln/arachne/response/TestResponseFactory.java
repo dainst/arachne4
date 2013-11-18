@@ -25,7 +25,7 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 	DependencyInjectionTestExecutionListener.class,
 	DirtiesContextTestExecutionListener.class,
 	TransactionalTestExecutionListener.class })
-public class TestResponseFactory { 
+public class TestResponseFactory { // NOPMD
 	private transient ResponseFactory responseFactory = null;
 	private transient Dataset dataset = null;	
 	

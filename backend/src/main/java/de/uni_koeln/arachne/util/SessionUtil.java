@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Utility class to retrieve the current SessionFactory or create a new one if none exists.
  */
-public class SessionUtil {
+public class SessionUtil { // NOPMD
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SessionUtil.class);
 	

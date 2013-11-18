@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Class implementing string utility functions.
  */
-public class StrUtils {	
+public class StrUtils { // NOPMD
 	/**
 	 * This method returns if a <code>String</code> is empty or <code>null</code> or has the value "0".
 	 * @param string to test.

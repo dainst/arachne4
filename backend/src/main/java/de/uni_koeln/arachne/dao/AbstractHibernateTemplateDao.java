@@ -14,7 +14,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
  */
 // In general abstract classes without abstract methods make no sense. But since this class should never be instantiated and just
 // be used as a base class, making it abstract is an acceptable workaround.
-public abstract class AbstractHibernateTemplateDao { 
+public abstract class AbstractHibernateTemplateDao { // NOPMD
 	
 	protected transient HibernateTemplate hibernateTemplate;
 	/**
