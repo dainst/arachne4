@@ -25,7 +25,7 @@ public class StrUtils {
 	 * @param stringList to test.
 	 * @return <code>true</code> or <code>false</code>
 	 */
-	public static boolean isEmptyOrNull(List<String> stringList) {
+	public static boolean isEmptyOrNull(final List<String> stringList) {
 		return stringList == null || stringList.isEmpty();
 	}
 
@@ -34,7 +34,7 @@ public class StrUtils {
 	 * @param stringBuilder
 	 * @return <code>true</code> or <code>false</code>
 	 */
-	public static boolean isEmptyOrNull(StringBuilder stringBuilder) {
+	public static boolean isEmptyOrNull(final StringBuilder stringBuilder) {
 		return stringBuilder == null || stringBuilder.length() < 1;
 	}
 	
@@ -43,18 +43,18 @@ public class StrUtils {
 	 * @param ipAddress The string to check for validity
 	 * @return A boolean value indicating if the given string is a valid IP address.
 	 */
-	public static boolean isValidIPAddress(String ipAddress)
+	public static boolean isValidIPAddress(final String ipAddress)
 	{
-	    String[] parts = ipAddress.split( "\\." );
+	    final String[] parts = ipAddress.split( "\\." );
 
 	    if (parts.length != 4) {
 	        return false;
 	    }
 	    
 	    try {
-	    	for (String string : parts) {
-	    		int i = Integer.parseInt(string);
-	    		if ((i < 0) || (i > 255)) {
+	    	for (final String string : parts) {
+	    		final int index = Integer.parseInt(string);
+	    		if ((index < 0) || (index > 255)) {
 	    			return false;
 	    		}
 	    	}
@@ -65,8 +65,7 @@ public class StrUtils {
 	    return true;
 	}
 	
-	public static String urlEncodeQuotationMarks(final String in) {
-		final String out = in.replaceAll("\"", "%22");
-		return out;
+	public static String urlEncodeQuotationMarks(final String inputString) {
+		return inputString.replaceAll("\"", "%22");
 	}
 }

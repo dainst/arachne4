@@ -201,7 +201,7 @@ public class ESClientUtil implements ServletContextAware {
 				LOGGER.error("Index " + indexName + " was not deleted.");
 				result = false;
 			}
-		} catch (IndexMissingException e) { 
+		} catch (IndexMissingException e) { // NOPMD
 			// No problem if no index exists as it should be deleted anyways
 		}
 		return result;

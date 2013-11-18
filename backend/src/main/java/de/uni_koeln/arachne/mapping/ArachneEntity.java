@@ -11,6 +11,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="arachneentityidentification")
+@SuppressWarnings("PMD")
 public class ArachneEntity {
 	
 	/**

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @XmlRootElement
 @Entity
 @Table(name="bookmark_list")
+@SuppressWarnings("PMD")
 public class BookmarkList {
 
 	@Id

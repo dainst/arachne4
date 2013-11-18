@@ -54,10 +54,10 @@ public class ArachneLink extends AbstractLink {
 	public String getFieldFromFields(final String fieldName) {
 		if (fields != null && fields.containsKey(fieldName)) {
 			return fields.get(fieldName);
-		} else if (getEntity2() != null) { 
-			return getEntity2().getField(fieldName);
-		} else {
+		} else if (getEntity2() == null) { 
 			return null;
+		} else {
+			return getEntity2().getField(fieldName);
 		}
 	}
 }

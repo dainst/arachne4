@@ -16,11 +16,12 @@ public class SQLToolbox {
 	 * @return The name of the Primary key of that Table example PS_BauwerkID
 	 */
 	public static String generatePrimaryKeyName(String tablename){
-		if(tablename.equals("marbilder"))
+		if (tablename.equals("marbilder")) {
 			return "PS_MARBilderID";		
+		}
 		return "PS_" + ucfirst(tablename)+"ID";
-		
 	}
+	
 	/**
 	 * Asserts the Name of the foreign key by the Tabename it comes from
 	 * @param tablename An Arachne internal Tablename example: objekt
@@ -28,20 +29,19 @@ public class SQLToolbox {
 	 */
 	public static String generateForeignKeyName(String tablename){
 		
-		if(tablename.equals("marbilder"))
+		if (tablename.equals("marbilder")) {
 			return "FS_MARBilderID";
-		
-		
+		}		
 		return "FS_" + ucfirst(tablename)+"ID";
-		
 	}
+	
 	/**
 	 * Returns The name of the Field that Contains the Userrights Group. 
 	 * If You are Looking for a Place to Put AnException from the Norm. This is the Right Place to Put it.
 	 * @param tableName The Table you want to Know the Userrights Group Field from. 
 	 * @return The Field name the User Rights Group is stored in
 	 */
-	public static String generateDatasetGroupName(String tableName) {
+	public static String generateDatasetGroupName(final String tableName) {
 		if ("marbilder".equals(tableName)) {
 			return "DatensatzGruppeMARBilder";
 		} else {
@@ -51,32 +51,29 @@ public class SQLToolbox {
 	
 	/**
 	 * Just encloses a Sting in Backticks
-	 * @param in a String example: Stuff
+	 * @param inputString a String example: Stuff
 	 * @return a String with backticks example: `Stuff`
 	 */
-	public static String addBackticks(String in){
-		
-		return "`"+in+"`";
-		
+	public static String addBackticks(final String inputString) {
+		return "`"+inputString+"`";
 	} 
+	
 	/**
 	 * Consrutcts a Exact Identifier of a Table and a Fieldname
 	 * @param table example bauwerk
 	 * @param field example Architect
 	 * @return `bauwerk`.`Architect`
 	 */
-	public static String getQualifiedFieldname(String table,String field){
-		
+	public static String getQualifiedFieldname(final String table, final String field){
 		return addBackticks(table) + "." + addBackticks(field);
-		
 	}
+
 	/**
 	 * Capitalises the First Charakter of a String
-	 * @param in a String example: bauwerk
+	 * @param inputString a String example: bauwerk
 	 * @return example : Bauwerk
 	 */
-	public static String ucfirst(String in) {
-
-		return Character.toUpperCase(in.charAt(0))+in.substring(1);
+	public static String ucfirst(final String inputString) {
+		return Character.toUpperCase(inputString.charAt(0))+inputString.substring(1);
 	}
 }

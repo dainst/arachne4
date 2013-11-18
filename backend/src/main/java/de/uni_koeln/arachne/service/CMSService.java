@@ -27,11 +27,11 @@ public class CMSService {
 	@Autowired
 	private transient DrupalSQLDao dao;
 
-	public Node getNodeById(Integer id) { 
+	public Node getNodeById(Integer nodeId) { 
 		
 		final Node page = new Node();
 		
-		final Map<String, String> node = dao.getNode(id);
+		final Map<String, String> node = dao.getNode(nodeId);
 		if (node == null) {
 			return null;
 		}
@@ -105,11 +105,11 @@ public class CMSService {
 			map.put(newMenuEntry.getId(), newMenuEntry);
 		}
 		// create children array
-		for (String id : map.keySet()) { 
-			if (map.get(id).getParent() == null) {
+		for (String entryId : map.keySet()) { 
+			if (map.get(entryId).getParent() == null) {
 				continue;
 			}
-			final MenuEntry parent = map.get(map.get(id).getParent());
+			final MenuEntry parent = map.get(map.get(entryId).getParent());
 			if (parent == null) {
 				continue;
 			}
@@ -118,7 +118,7 @@ public class CMSService {
 				children = new ArrayList<String>();
 				parent.setChildren(children);
 			}
-			children.add(id);
+			children.add(entryId);
 		}
 		return map;
 	}

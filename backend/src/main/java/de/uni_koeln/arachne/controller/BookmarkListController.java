@@ -153,7 +153,10 @@ public class BookmarkListController {
 		
 		if (rightsService.isSignedInUser()) {
 			bookmarkList = bookmarkListDao.getByBookmarkListId(bookmarkListId);
-			if (bookmarkList != null) {
+			if (bookmarkList == null) {
+				result = null;
+				response.setStatus(404);
+			} else {
 				if (bookmarkList.getUser().getId() == user.getId()) {
 					bookmark.setId(null);
 					bookmark.setBookmarkList(bookmarkList);
@@ -162,9 +165,6 @@ public class BookmarkListController {
 					result = null;
 					response.setStatus(403);
 				}
-			} else {
-				result = null;
-				response.setStatus(404);
 			}
 		} else {
 			result = null;

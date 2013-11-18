@@ -54,7 +54,7 @@ public class ImageUtils {
 		Integer result = Integer.MAX_VALUE;
 		try {
 			result = Integer.parseInt(imageFilename.split(",")[1].split("\\.")[0]); 
-		} catch (NumberFormatException e) {
+		} catch (NumberFormatException e) { // NOPMD
 			// ignore images where the part after the comma is not a number
 		}
 		return result;
