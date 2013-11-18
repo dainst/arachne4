@@ -26,7 +26,7 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
      */
     private final static String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
 
-    /*
+    /**
      * (non-Javadoc)
      * 
      * @see
@@ -35,10 +35,10 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
      */
 	@Override
 	public void initialize(final Password password) {
-		// to nothing...
+		// do nothing...
 	}
 
-	/*
+	/**
      * (non-Javadoc)
      * 
      * @see javax.validation.ConstraintValidator#isValid(java.lang.Object,

@@ -7,19 +7,24 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * Helperclass for contactformdata validation
+ * 
  * @author Sven Ole Clemens
  *
  */
 public class ContactFormValidationUtil {
-
+	
 	@NotEmpty @Size(min = 3, max = 30)
 	private String userName;
+	
 	@NotEmpty @Email
 	private String userEmail;
+	
 	@NotEmpty
 	private String category;
+	
 	@NotEmpty @Size(min = 10, max = 250)
 	private String message;
+	
 	public String getUserName() {
 		return userName;
 	}

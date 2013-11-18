@@ -48,6 +48,7 @@
 				<value>de.uni_koeln.arachne.mapping.ImageRightsGroup</value>
 				<value>de.uni_koeln.arachne.mapping.Bookmark</value>
 				<value>de.uni_koeln.arachne.mapping.BookmarkList</value>
+				<value>de.uni_koeln.arachne.util.RegisterFormValidationUtil</value>
             </list>
         </property>
         <property name="hibernateProperties">

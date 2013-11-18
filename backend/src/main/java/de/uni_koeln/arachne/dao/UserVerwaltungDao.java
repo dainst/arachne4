@@ -1,8 +1,11 @@
 package de.uni_koeln.arachne.dao;
 
+import java.io.Serializable;
+
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.UserAdministration;
+import de.uni_koeln.arachne.util.RegisterFormValidationUtil;
 
 
 @Repository("UserVerwaltungDao")
@@ -19,5 +22,20 @@ public class UserVerwaltungDao extends AbstractHibernateTemplateDao{
 			result = (UserAdministration)hibernateTemplate.find(hql,user).get(0);
 		}
 		return result;
+	}
+	
+	/**
+	 * Method to create a new User-Account in the database
+	 * @param user
+	 * @return
+	 */
+	public boolean newUser(RegisterFormValidationUtil user) {
+		Serializable serializable = hibernateTemplate.save(user);
+		
+		if(serializable != null) {
+			return true;
+		}
+		
+		return false;
 	}
 }
