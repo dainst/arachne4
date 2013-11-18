@@ -85,7 +85,7 @@ public class DataImportService implements Runnable { // NOPMD
 	 * The dataimport implementation. This method retrieves a list of EntityIds from the DB and iterates over this list 
 	 * constructing the associated documents and indexing them via elasticsearch.
 	 */
-	public void run() { 
+	public void run() { // NOPMD
 		class LongMapper implements RowMapper<Long> {
 			public Long mapRow(final ResultSet resultSet, final int index) throws SQLException {
 				return resultSet.getLong(1);
