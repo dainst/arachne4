@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -22,6 +24,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name="verwaltung_benutzer")
 @SuppressWarnings("PMD")
 public class UserAdministration {
+	
+		public enum BOOLEAN {
+			TRUE, FALSE
+		}
 
 		/**
 		 * This is the mapping of the possible connection between tables. 
@@ -38,7 +44,7 @@ public class UserAdministration {
 		 */
 		
 		@Column(name="gid")
-		private int groupID;
+		private String groupID;
 		
 		/**
 		 * The Groups of dataset possesion the User has the Right to view
@@ -81,18 +87,22 @@ public class UserAdministration {
 	   	private String country;
 	   	@Column(name="telefon")
 	   	private String telephone;
+	   	@Column(name="emailAuth")
+	   	private String emailAuth;
 	   	
 		/**
 		 * Is the User allowed to see all groups
 		 */
 	   	@Column(name="all_groups")
-		boolean all_groups;  
+	   	@Enumerated(EnumType.STRING)
+		BOOLEAN all_groups;  
 	   	
 		/**
 		 * Is the user allowed to Login
 		 */
 	   	@Column(name="login_permission")
-		boolean login_permission;  
+	   	@Enumerated(EnumType.STRING)
+		BOOLEAN login_permission;  
 	   	
 		/**
 		 * Time of the last Login
@@ -124,14 +134,14 @@ public class UserAdministration {
 		 * @return the groupID
 		 */
 		public int getGroupID() {
-			return groupID;
+			return Integer.valueOf(groupID);
 		}
 
 		/**
 		 * @param groupID the groupID to set
 		 */
 		public void setGroupID(final int groupID) {
-			this.groupID = groupID;
+			this.groupID = String.valueOf(groupID);
 		}
 
 		/**
@@ -308,28 +318,38 @@ public class UserAdministration {
 		 * @return the all_groups
 		 */
 		public boolean isAll_groups() { 
-			return all_groups;
+			//return all_groups;
+			//if all_groups == BOOLEAN.TRUE ? return true : return false;
+			return (all_groups == BOOLEAN.TRUE) ? true : false;
 		}
 
 		/**
 		 * @param all_groups the all_groups to set
 		 */
 		public void setAll_groups(final boolean all_groups) { 
-			this.all_groups = all_groups;
+			//this.all_groups = all_groups;
+			this.all_groups = (all_groups) ? BOOLEAN.TRUE : BOOLEAN.FALSE;
+		}
+		
+		public boolean getAll_groups() {
+			//return all_groups;
+			return (all_groups == BOOLEAN.TRUE) ? true : false;
 		}
 
 		/**
 		 * @return the login_permission
 		 */
 		public boolean isLogin_permission() { 
-			return login_permission;
+			//return login_permission;
+			return (login_permission == BOOLEAN.TRUE) ? true : false;
 		}
 
 		/**
 		 * @param login_permission the login_permission to set
 		 */
 		public void setLogin_permission(final boolean login_permission) { 
-			this.login_permission = login_permission;
+			//this.login_permission = login_permission;
+			this.login_permission = (login_permission) ? BOOLEAN.TRUE : BOOLEAN.FALSE;
 		}
 
 		/**
@@ -362,7 +382,7 @@ public class UserAdministration {
 
 		public boolean hasGroup(final String group) {
 			
-			if(all_groups) {
+			if(all_groups == BOOLEAN.TRUE) {
 				return true;
 			}
 			
@@ -387,5 +407,19 @@ public class UserAdministration {
 		 */
 		public void setBookmarkLists(final Set<BookmarkList> bookmarkLists) {
 			this.bookmarkLists = bookmarkLists;
+		}
+
+		/**
+		 * @return the emailAuth
+		 */
+		public String getEmailAuth() {
+			return emailAuth;
+		}
+
+		/**
+		 * @param emailAuth the emailAuth to set
+		 */
+		public void setEmailAuth(String emailAuth) {
+			this.emailAuth = emailAuth;
 		}
 }

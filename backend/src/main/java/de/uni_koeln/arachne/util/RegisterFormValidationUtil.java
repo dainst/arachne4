@@ -91,6 +91,8 @@ public class RegisterFormValidationUtil {
 	@Column(name = "password_confirm")
 	private String confirmPasswordMD;
 	
+	@Column(name = "emailAuth")
+	private String emailAuth;
 	
 	public int getUserId() {
 		return userId;
@@ -221,6 +223,14 @@ public class RegisterFormValidationUtil {
 		messageDigest.update(confirmPassword.getBytes(), 0, confirmPassword.length());
 		String passmd = new BigInteger(1, messageDigest.digest()).toString(16);
 		this.confirmPasswordMD = passmd;
+	}
+
+	public String getEmailAuth() {
+		return emailAuth;
+	}
+
+	public void setEmailAuth(String emailAuth) {
+		this.emailAuth = emailAuth;
 	}
 
 	/**

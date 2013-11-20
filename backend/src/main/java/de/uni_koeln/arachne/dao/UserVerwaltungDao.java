@@ -25,6 +25,27 @@ public class UserVerwaltungDao extends AbstractHibernateTemplateDao{
 	}
 	
 	/**
+	 * Method to find an user by the email-authentification token
+	 * @param token
+	 * @return
+	 */
+	public UserAdministration findByAuthToken(final String token) {
+		final String hql = "from UserAdministration as user WHERE user.emailAuth LIKE ?";
+		UserAdministration result = null;
+		if(hibernateTemplate.find(hql, token).size() > 0) {
+			result = (UserAdministration)hibernateTemplate.find(hql, token).get(0);
+		}
+		return result;
+	}
+	
+	public UserAdministration updateUser(final UserAdministration user) {
+		if(user != null) {
+			hibernateTemplate.update(user);
+		}
+		return user;
+	}
+	
+	/**
 	 * Method to create a new User-Account in the database
 	 * @param user
 	 * @return

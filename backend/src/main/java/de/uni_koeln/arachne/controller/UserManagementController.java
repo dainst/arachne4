@@ -14,11 +14,16 @@ import javax.validation.Valid;
 import net.tanesha.recaptcha.ReCaptchaImpl;
 import net.tanesha.recaptcha.ReCaptchaResponse;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +31,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.uni_koeln.arachne.dao.UserVerwaltungDao;
+import de.uni_koeln.arachne.mapping.UserAdministration;
+import de.uni_koeln.arachne.response.StatusResponse;
 import de.uni_koeln.arachne.util.RegisterFormValidationUtil;
 
 /**
@@ -50,6 +57,23 @@ public class UserManagementController {
 		return new ModelAndView("registerForm");
 	}
 	
+	@RequestMapping(value = "/user/confirm/{token}", method = RequestMethod.GET)
+	public @ResponseBody Object finishRegistration(
+			@PathVariable("token") final String token,
+			final HttpServletRequest request,
+			final HttpServletResponse response) {
+		
+		final UserAdministration user = userVerwaltungDao.findByAuthToken(token);
+		if(user != null) {
+			user.setLogin_permission(true);
+			user.setEmailAuth(null);
+			userVerwaltungDao.updateUser(user);
+		}
+		StatusResponse statusResponse = new StatusResponse();
+		statusResponse.setMessage("MEGAGEIL!!! Du darfst jetzt die hammer Datenbank Arachne nicht nur nutzen, sondern dich dazu noch anmelden!!");
+		return statusResponse;
+	}
+	
 	/**
 	 * Method request for user registration
 	 * @return
@@ -67,8 +91,6 @@ public class UserManagementController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		if(bResult.hasErrors()) {
-			LOGGER.info(bResult.getAllErrors().toString());
-			//return "not valid form-data: " + bResult.getFieldError().getField() + " => " + bResult.getFieldError().getDefaultMessage();
 			resultMap.put("status", bResult.getAllErrors());
 		} else {
 			final String remoteAddr = request.getRemoteAddr();
@@ -78,24 +100,38 @@ public class UserManagementController {
 	        final ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, userResponse);
 	        
 	        if(reCaptchaResponse.isValid()) {
-	        	/*final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-	        	mailSender.setHost("smtp.uni-koeln.de");
-	        	
-	        	final SimpleMailMessage mailMessage = new SimpleMailMessage();
-	        	mailMessage.setFrom("arachne@uni-koeln.de");
-	        	mailMessage.setTo(registerForm.getEmail());
-	        	mailMessage.setSubject("Ihre Anfrage an Arachne");
-	        	mailMessage.setText("Vielen Dank für Ihre Email an das Arachne-Team! Wir werden diese so schnell wie möglich beantworten.");
-	        	
-	        	try {
-	        		mailSender.send(mailMessage);
-	        	} catch(MailException e) {
-	        		LOGGER.error(e.getMessage());
-	        	}*/
+	        	registerForm.setEmailAuth(RandomStringUtils.randomAlphanumeric(24));
 	        	
 	        	if(userVerwaltungDao.newUser(registerForm)) {
 	        		response.setStatus(200);
 	        		resultMap.put("status", "OK");
+	        		final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+		        	mailSender.setHost("smtp.uni-koeln.de");
+		        	
+		        	//TODO in eigenen Service auslagern
+		        	StringBuffer sb = new StringBuffer();
+		        	sb.append("http://");
+		        	sb.append(request.getServerName());
+		        	if(request.getServerPort() != 80) {
+		        		sb.append(":");
+		        		sb.append(request.getServerPort());
+		        	}
+		        	sb.append("/");
+		        	sb.append("arachnedataservice");
+		        	sb.append("/user/confirm/");
+		        	sb.append(registerForm.getEmailAuth());
+		        	
+		        	final SimpleMailMessage mailMessage = new SimpleMailMessage();
+		        	mailMessage.setFrom("arachne@uni-koeln.de");
+		        	mailMessage.setTo(registerForm.getEmail());
+		        	mailMessage.setSubject("Ihre Registrierung bei Arachne");
+		        	mailMessage.setText("Vielen Dank für Ihre Registrierung bei Arachne. Um den Prozess abzuschließen, klicken sie bitte folgenden Link: "+sb.toString());
+		        	
+		        	try {
+		        		mailSender.send(mailMessage);
+		        	} catch(MailException e) {
+		        		LOGGER.error("Sending email after registration failed: ", e);
+		        	}
 	        	} else {
 	        		resultMap.put("status", "serialization error");
 	        		response.setStatus(400);
