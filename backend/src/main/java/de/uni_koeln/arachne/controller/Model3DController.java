@@ -34,6 +34,7 @@ import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.StrUtils;
 
 @Controller
 public class Model3DController implements ServletContextAware{
@@ -93,9 +94,10 @@ public class Model3DController implements ServletContextAware{
 		if (dataset == null) {
 			return null;
 		}
+		final String materialData = getMaterialData(dataset);
 		final HttpHeaders responseHeaders = new HttpHeaders();
 	    responseHeaders.add("Content-Type", "text/plain; charset=utf-8");
-	    return new ResponseEntity<String>(getMaterialData(dataset), responseHeaders, HttpStatus.OK);
+	    return new ResponseEntity<String>(materialData, responseHeaders, HttpStatus.OK);
 	}
 	
 	// use regexp workaround for spring truncating at dots in parameters
@@ -143,8 +145,8 @@ public class Model3DController implements ServletContextAware{
 		if (!modelPath.endsWith("/")) {
 			modelPath += "/"; // NOPMD
 		}
-		final String fileName = dataset.getFieldFromFields("modell3d.Dateiname");
-		final String pathname = basePath + modelPath + fileName; 
+		final String filename = dataset.getFieldFromFields("modell3d.Dateiname");
+		final String pathname = basePath + modelPath + filename; 
 		final File modelFile = new File(pathname);  
 		
 		if (modelFile.isFile() && modelFile.canRead()) {
@@ -153,22 +155,33 @@ public class Model3DController implements ServletContextAware{
 			} catch (IOException e) {
 				LOGGER.error("Problem reading model file. Cause: ", e);
 			}
+		} else {
+			LOGGER.error("Could not read 3D model file: " + pathname);
 		}
 		return null;
 	}
 	
 	private String getMaterialData(final Dataset dataset) {
-		// TODO read material data from disk ('modell3d.Pfad')
-		final ServletContextResource materialData = new ServletContextResource(servletContext, "/WEB-INF/" 
-				+ dataset.getFieldFromFields("modell3d.DateinameMTL"));
-		 
-		if (materialData.exists()) {
+		String modelPath = dataset.getFieldFromFields("modell3d.Pfad");
+		if (!modelPath.endsWith("/")) {
+			modelPath += "/"; // NOPMD
+		}
+		String filename = dataset.getFieldFromFields("modell3d.Dateiname");
+		final int dotIndex=filename.lastIndexOf('.');
+		if (dotIndex >= 0) { // to prevent exception if there is no dot
+		  filename = filename.substring(0, dotIndex) + ".mtl";
+		}
+		final String pathname = basePath + modelPath + filename; 
+		final File materialFile = new File(pathname);
+		
+		if (materialFile.isFile() && materialFile.canRead()) {
 			try {
-				final File file = materialData.getFile();
-				return Files.toString(file, Charsets.UTF_8);
+				return Files.toString(materialFile, Charsets.UTF_8);
 			} catch (IOException e) {
-				LOGGER.error("Problem reading model file. Caused by: ", e);
+				LOGGER.error("Problem reading material file. Caused by: ", e);
 			}
+		} else {
+			LOGGER.error("Could not read material file: " + pathname);
 		}
 		return null;
 	}
