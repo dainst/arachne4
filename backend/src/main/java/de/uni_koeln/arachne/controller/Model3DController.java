@@ -12,6 +12,10 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +48,8 @@ public class Model3DController implements ServletContextAware{
 	@Autowired
 	private transient SingleEntityDataService singleEntityDataService;
 	
+	private transient final String basePath;
+	
 	private transient ServletContext servletContext;
 	
 	@Override
@@ -51,10 +57,15 @@ public class Model3DController implements ServletContextAware{
 		this.servletContext = servletContext;		
 	}
 	
+	@Autowired
+	public Model3DController(final @Value("#{config.model3dBasePath}") String basePath) {
+		this.basePath = basePath;
+	}
+	
 	@RequestMapping(value = "/model/{entityId}", method = RequestMethod.GET)
-	public @ResponseBody String handleModelRequest(@PathVariable("entityId") final Long entityId
+	public @ResponseBody ResponseEntity<String> handleModelRequest(@PathVariable("entityId") final Long entityId
 			, @RequestParam(value = "meta", required = false) final Boolean isMeta
-			, final HttpServletRequest request, final HttpServletResponse response) {
+			, final HttpServletResponse response) {
 		
 		final Dataset dataset = getDataset(entityId, response);
     	
@@ -63,23 +74,28 @@ public class Model3DController implements ServletContextAware{
 		}
 		
     	if (isMeta != null && isMeta) {
-			return getMetaData(dataset);
+    		final HttpHeaders responseHeaders = new HttpHeaders();
+    	    responseHeaders.add("Content-Type", "application/json; charset=utf-8");
+			return new ResponseEntity<String>(getMetaData(dataset), responseHeaders, HttpStatus.OK);
 		} else {
-			return getModelData(dataset);
+			final HttpHeaders responseHeaders = new HttpHeaders();
+    	    responseHeaders.add("Content-Type", "text/plain; charset=utf-8");
+			return new ResponseEntity<String>(getModelData(dataset), responseHeaders, HttpStatus.OK);
 		}
 	}
 	
 	@RequestMapping(value = "/model/material/{entityId}", method = RequestMethod.GET)
-	public @ResponseBody String handleModelRequest(@PathVariable("entityId") final Long entityId
-			, final HttpServletRequest request, final HttpServletResponse response) {
+	public @ResponseBody ResponseEntity<String> handleMaterialRequest(@PathVariable("entityId") final Long entityId
+			, final HttpServletResponse response) {
 		
 		final Dataset dataset = getDataset(entityId, response);
     	
 		if (dataset == null) {
 			return null;
 		}
-		
-		return getMaterialData(dataset);
+		final HttpHeaders responseHeaders = new HttpHeaders();
+	    responseHeaders.add("Content-Type", "text/plain; charset=utf-8");
+	    return new ResponseEntity<String>(getMaterialData(dataset), responseHeaders, HttpStatus.OK);
 	}
 	
 	// use regexp workaround for spring truncating at dots in parameters
@@ -123,14 +139,17 @@ public class Model3DController implements ServletContextAware{
 	}
 
 	private String getModelData(final Dataset dataset) {
-		// TODO read model data from disk ('modell3d.Pfad')
-		final ServletContextResource modelData = new ServletContextResource(servletContext, "/WEB-INF/" 
-					+ dataset.getFieldFromFields("modell3d.Dateiname"));
+		String modelPath = dataset.getFieldFromFields("modell3d.Pfad");
+		if (!modelPath.endsWith("/")) {
+			modelPath += "/"; // NOPMD
+		}
+		final String fileName = dataset.getFieldFromFields("modell3d.Dateiname");
+		final String pathname = basePath + modelPath + fileName; 
+		final File modelFile = new File(pathname);  
 		
-		if (modelData.exists()) {
+		if (modelFile.isFile() && modelFile.canRead()) {
 			try {
-				final File file = modelData.getFile();
-				return Files.toString(file, Charsets.UTF_8);
+				return Files.toString(modelFile, Charsets.UTF_8);
 			} catch (IOException e) {
 				LOGGER.error("Problem reading model file. Cause: ", e);
 			}
