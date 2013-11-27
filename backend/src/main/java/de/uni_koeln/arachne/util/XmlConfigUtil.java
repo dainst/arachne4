@@ -82,7 +82,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * This method returns a XML parser to build the DOM. The parser is only set up once and can be reused.
 	 * @return A SAXBuilder object.
 	 */
-	private SAXBuilder getXMLParser() {
+	public SAXBuilder getXMLParser() {
 		if (xmlParser == null) {
 			xmlParser =	new SAXBuilder(new XMLReaderSAX2Factory(false, "org.apache.xerces.parsers.SAXParser"));
 			// explicitly disable validation

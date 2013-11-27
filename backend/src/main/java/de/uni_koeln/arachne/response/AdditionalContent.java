@@ -12,7 +12,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class AdditionalContent {
 	
 	private List<SarcophagusImage> sarcophagusImages;
-
+	
+	private String ocrText;
+	
 	public List<SarcophagusImage> getSarcophagusImages() {
 		return sarcophagusImages;
 	}
@@ -20,5 +22,14 @@ public class AdditionalContent {
 	public void setSarcophagusImages(final List<SarcophagusImage> sarcophagusImages) {
 		this.sarcophagusImages = sarcophagusImages;
 	}
+	
+	public String getOcrText() {
+		return ocrText;
+	}
+
+	public void setOcrText(final String ocrText) {
+		this.ocrText = ocrText;
+	}
+
 
 }

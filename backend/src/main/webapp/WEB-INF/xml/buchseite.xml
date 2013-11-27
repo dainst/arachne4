@@ -35,6 +35,9 @@
 	            	
 	            </section>
         	</section>
+        	<context type="Buchseiteocrtext">
+        		<field datasource=".dummyField" />
+        	</context>
         </datasections>
     </display>
     <facets>

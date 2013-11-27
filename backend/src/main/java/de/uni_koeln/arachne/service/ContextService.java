@@ -48,7 +48,13 @@ public class ContextService {
 	 * Utility class to work with the XML config files.
 	 */
 	@Autowired
-	private transient XmlConfigUtil xmlConfigUtil; 
+	private transient XmlConfigUtil xmlConfigUtil;
+	
+	/**
+	 * Service to access the current user.
+	 */
+	@Autowired
+	private transient IUserRightsService rightsService;
 	
 	/**
 	 * This methods adds all contexts to the dataset that are found in the XML description.
@@ -215,6 +221,8 @@ public class ContextService {
 			contextualizer.setEntityIdentificationService(entityIdentificationService);
 			contextualizer.setGenericSQLService(genericSQLService);
 			contextualizer.setSingleEntityDataService(singleEntityDataService);
+			contextualizer.setRightsService(rightsService);
+			contextualizer.setXmlConfigUtil(xmlConfigUtil);
 			return contextualizer;
 		} catch (ClassNotFoundException e) {
 			LOGGER.debug("FAILURE - using SemanticConnectionsContextualizer instead");
