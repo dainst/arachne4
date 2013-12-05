@@ -2,8 +2,6 @@ package de.uni_koeln.arachne.context;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.GenericSQLService;

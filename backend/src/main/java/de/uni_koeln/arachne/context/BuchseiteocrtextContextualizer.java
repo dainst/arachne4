@@ -17,7 +17,6 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.JDOMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 import de.uni_koeln.arachne.response.AdditionalContent;
 import de.uni_koeln.arachne.response.Dataset;

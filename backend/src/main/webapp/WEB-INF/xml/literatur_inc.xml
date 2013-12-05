@@ -7,7 +7,9 @@
 	<context type="literatur" labelKey="Literatur" separator=", ">		
 		<field datasource=".tempLiteratur" />
 		<field datasource=".Abkuerzungen">
-			<ifEmpty><field datasource=".DAIRichtlinien" /></ifEmpty>
+			<ifEmpty>
+				<field datasource=".DAIRichtlinien" />
+			</ifEmpty>
 		</field>		
 		<field datasource=".Corpuszitat"/>
 		<field datasource=".AntikeTextquelle"/>

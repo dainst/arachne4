@@ -251,7 +251,6 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.
 	 */
 	public StringBuilder getIfEmpty(final Element element, final Namespace namespace, final Dataset dataset) {
-		
 		String key;
 		StringBuilder result = null;
 		final Element ifEmptyElement = element.getChild("ifEmpty", namespace);
@@ -260,7 +259,38 @@ public class XmlConfigUtil implements ServletContextAware {
 			if (key != null && !key.isEmpty()) {
 				final String ifEmptyValue = dataset.getField(key);
 				if (ifEmptyValue == null) {
-					result = getIfEmpty(ifEmptyElement.getChild("field", namespace), namespace ,dataset); 
+					result = getIfEmpty(ifEmptyElement.getChild("field", namespace), namespace , dataset); 
+				} else {
+					result = new StringBuilder(ifEmptyValue);
+				}
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * Returns the content of a field of the dataset as defined inside an <code>ifEmtpy</code> tag in a <code>Context</code> tag in the XML config file.
+	 * It is safe to use even if the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.
+	 * @param element The XML element describing the parent of the <code>ifEmpty</code> element.
+	 * @param dataset The current dataset.
+	 * @param nameSpace The current namespace.
+	 * @return A <code>StringBuilder</code> containing the formatted value or <code>null</code> if no value could be retrieved or
+	 * the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.
+	 */
+	public StringBuilder getIfEmptyContext(final Element element, final Namespace namespace, final Dataset dataset, final String contextType, final int index) {
+		String key;
+		StringBuilder result = null;
+		final Element ifEmptyElement = element.getChild("ifEmpty", namespace);
+
+		if (ifEmptyElement != null) {
+			key = ifEmptyElement.getChild("field", namespace).getAttributeValue("datasource");
+			if (key != null && !key.isEmpty()) {
+				if (key.charAt(0) == '.') {
+					key = contextType + key; // NOPMD
+				}
+				final String ifEmptyValue = dataset.getFieldFromContext(key, index);
+				if (ifEmptyValue == null) {
+					result = getIfEmptyContext(ifEmptyElement.getChild("field", namespace), namespace , dataset, contextType, index); 
 				} else {
 					result = new StringBuilder(ifEmptyValue);
 				}
@@ -497,7 +527,7 @@ public class XmlConfigUtil implements ServletContextAware {
 					
 			final FieldList fieldList = new FieldList();
 			for (int i = 0; i < dataset.getContextSize(contextType); i++) {
-				addFieldsToFieldList(children, fieldList, i, dataset, contextType, separator);
+				addFieldsToFieldList(children, context.getNamespace(), fieldList, i, dataset, contextType, separator);
 			}
 			
 			if (fieldList.size() > 1) {
@@ -529,19 +559,19 @@ public class XmlConfigUtil implements ServletContextAware {
 					localContext.setLabel(curSection.getAttributeValue("labelKey"));
 
 					// add all child-fields of the current contextSection and retrieve their values
-					for(final Element childField: childFields) {
-						addFieldToFieldList(childField, fieldList, i, dataset, contextType, parentSeparator);
+					for (final Element childField: childFields) {
+						addContextFieldToFieldList(childField, context.getNamespace(), fieldList, i, dataset, contextType, parentSeparator);
 					}
 					
 					// only add to list if fields contain content
-					if(fieldList.size() != 0) {
+					if (fieldList.size() != 0) {
 						localContext.add(fieldList);
 						curSectionContent.add(localContext);
 					}
 				}
 				result.add(curSectionContent);
 			}
-			if(result.getContent().isEmpty()) {
+			if (result.getContent().isEmpty()) {
 				return null;
 			}
 		}
@@ -558,12 +588,12 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param contextType The type of the context.
 	 * @param separator the currently active separator.
 	 */
-	private void addFieldsToFieldList(final List<Element> children, final FieldList fieldList, final int index
+	private void addFieldsToFieldList(final List<Element> children, final Namespace namespace,final FieldList fieldList, final int index
 			, final Dataset dataset, final String contextType,	final String separator) {
 		
 		for (final Element element: children) {
 			if (element.getName().equals("field") || element.getName().equals("linkField")) {				
-				addFieldToFieldList(element, fieldList, index, dataset, contextType, separator);
+				addContextFieldToFieldList(element, namespace,fieldList, index, dataset, contextType, separator);
 			}
 		}
 	}
@@ -578,7 +608,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param contextType The type of the context.
 	 * @param separator the currently active separator.
 	 */
-	private void addFieldToFieldList(final Element element, final FieldList fieldList, final int index
+	private void addContextFieldToFieldList(final Element element, final Namespace namespace, final FieldList fieldList, final int index
 			,final Dataset dataset, final String contextType, final String separator) {
 		
 		if (!hasMinGroupId(element.getAttributeValue("minGroupId"))) {
@@ -586,9 +616,11 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 		
 		final String initialValue = dataset.getFieldFromContext(contextType + element.getAttributeValue("datasource"), index);
-				
+		
 		StringBuilder value = null;
-		if (initialValue != null) {
+		if (initialValue == null) {
+			value = getIfEmptyContext(element, namespace, dataset, contextType, index);
+		} else {
 			value = new StringBuilder(initialValue);
 		}
 		
@@ -744,9 +776,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 	}
 	
-	
-	
-	
+		
 	/**
 	 * Internally used method to get the external field names from the XML documents. If no corresponding document is found 
 	 * <code>null</code> is returned. The method uses <code>getFields</code> to get the values from the document.
@@ -920,7 +950,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	
 	
 	/**
-	 * Convenience method to clear the current XML config document, include element cache and mandatory context list cache.
+	 * Convenience method to clear the current XML config document, element, mandatory contexts and context image descriptors cache.
 	 */
 	public void clearCache() {
 		xmlConfigDocuments.clear();
