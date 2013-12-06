@@ -17,6 +17,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.aspectj.org.eclipse.jdt.internal.compiler.env.IGenericField;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @XmlRootElement
@@ -134,7 +136,11 @@ public class UserAdministration {
 		 * @return the groupID
 		 */
 		public int getGroupID() {
-			return Integer.valueOf(groupID);
+			if (groupID != null) {
+				return Integer.valueOf(groupID);
+			} else {
+				return 0;
+			}
 		}
 
 		/**
