@@ -118,6 +118,17 @@ public class ResponseFactory {
 			response.setFacet_geo(geoFacetValue);
 		}
 		
+		// set image facet
+		if (dataset.getThumbnailId() == null) {
+			final List<String> no = new ArrayList<String>(1);
+			no.add("nein");
+			response.setFacet_hasImage(no);
+		} else {
+			final List<String> yes = new ArrayList<String>(1);
+			yes.add("ja");
+			response.setFacet_hasImage(yes);
+		}
+		
 		final Document document = xmlConfigUtil.getDocument(tableName);
 		if (document != null) {
 			setDynamicContent(dataset, document, response);
