@@ -17,8 +17,6 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.aspectj.org.eclipse.jdt.internal.compiler.env.IGenericField;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @XmlRootElement
