@@ -120,7 +120,7 @@ public class ResponseFactory {
 		
 		// set image facet
 		if (dataset.getThumbnailId() == null) {
-			final List<String> no = new ArrayList<String>(1);
+			final List<String> no = new ArrayList<String>(1); // NOPMD
 			no.add("nein");
 			response.setFacet_hasImage(no);
 		} else {
@@ -250,16 +250,16 @@ public class ResponseFactory {
 				List<String> facetValues = facet.getValues();
 				// TODO find better way to use multiple values ('objekt subcategories')
 				
-				if ("subkategorie".equals(facet.getName()) && facetValues.get(0).contains("#")) {
-					 facetValues = new ArrayList<String>(Arrays.asList(facetValues.get(0).split("#")));
+				if ("subkategorie".equals(facet.getName()) && facetValues.get(0).contains("#")) { // NOPMD
+					 facetValues = new ArrayList<String>(Arrays.asList(facetValues.get(0).split("#"))); // NOPMD
 				}
 				//
 				facetField.set(response, facetValues);
 			} catch (NoSuchFieldException e) {
-				LOGGER.error("Invalid facet definition 'facet_" + facet.getName() + "' in '" + response.getType() 
+				LOGGER.warn("Invalid facet definition 'facet_" + facet.getName() + "' in '" + response.getType() 
 						+ ".xml'. The facet field is not defined in " +
 						"FacettedArachneEntity.java. This facet will be ignored.");
-			} catch (Exception e) {
+			} catch (IllegalAccessException e) {
 				LOGGER.error("Failed to set facets with:", e);
 			}
 		}
