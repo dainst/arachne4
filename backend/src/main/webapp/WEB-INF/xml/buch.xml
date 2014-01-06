@@ -22,6 +22,8 @@
 		</subtitle>
 		<datasections>
 			<section labelKey="Informationen zum Buch">
+			    <include type="ort" />
+			    <include type="datierung" />
 				<section labelKey="Erscheinungsdatum">
 					<field datasource="buch.PubYearStart" prefix="frühestes geschätztes Publikationsjahr: " />
 					<field datasource="buch.PubYearEnd" prefix="spätestes geschätztes Publikationsjahr: " />
@@ -48,7 +50,6 @@
 					<field datasource="buch.BreiteGesamt" prefix="Breite: " />
 					<field datasource="buch.TiefeGesamt" prefix="Tiefe: " />
 				</section>
-				<include type="ort" />
 				<section labelKey="BibId">
 					<field datasource="buch.bibid" />
 				</section>
@@ -154,11 +155,21 @@
 			<field datasource="Dataset.TableName" />
 		</facet>
 		<facet name="ort" labelKey="Lokalisierung">
-	    	<context type="ort" separator=", ">
-		    	<field datasource=".Stadt" />
-		    	<field datasource=".Land" />
-	    	</context>
-    	</facet>
+            <context type="ort" separator=", ">
+                <field datasource=".Stadt" />
+                <field datasource=".Land" />
+            </context>
+        </facet>
+        <facet name="datierungepoche" labelKey="Epoche">
+            <context type="datierung">
+                <field datasource=".AnfEpoche"/>
+            </context>
+        </facet>
+        <facet name="datierungepoche" labelKey="Epoche">
+            <context type="datierung">
+                <field datasource=".EndEpoche"/>
+            </context>
+        </facet>
 		<facet name="autor" labelKey="Autor">
 			<field datasource="buch.BuchAuthor" />
 		</facet>

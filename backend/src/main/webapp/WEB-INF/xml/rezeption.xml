@@ -41,6 +41,7 @@
         			<field datasource="rezeption.AntikerAufstellungsortRezeption" prefix="Antiker Aufstellungsort: " /> 			
         			</section>
         		</section>
+        		<include type="datierung" />
         		<section labelKey="Maße">
         			<field datasource="rezeption.HoeheGesamtRezeption" prefix="Höhe: " postfix=" cm" />
         			<field datasource="rezeption.BreiteGesamtRezeption" prefix="Breite: " postfix=" cm" />
@@ -101,6 +102,16 @@
     	<facet name="kategorie" labelKey="Kategorie">
     		<field datasource="Dataset.TableName" />
     	</facet>
+    	<facet name="datierungepoche" labelKey="Epoche">
+            <context type="datierung">
+                <field datasource=".AnfEpoche"/>
+            </context>
+        </facet>
+        <facet name="datierungepoche" labelKey="Epoche">
+            <context type="datierung">
+                <field datasource=".EndEpoche"/>
+            </context>
+        </facet>
     	<facet name="gattungallgemein" labelKey="Gattung allgemein">
     		<field datasource="rezeption.GattungAllgemeinRezeption" />
     	</facet>

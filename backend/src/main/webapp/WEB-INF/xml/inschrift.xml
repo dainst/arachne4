@@ -21,6 +21,7 @@
         </subtitle>
         <datasections>
             <section labelKey="Informationen zur Inschrift">                
+                <include type="datierung" />
                 <section labelKey="Allgemeine Informationen">    
                		 <section labelKey="Text der Inschrift">               
                       	  <field datasource="inschrift.Inschrift" />  
@@ -35,7 +36,6 @@
                        		 <field datasource="inschrift.Kommentar" />
                         </section>                                
                 </section> 
-               	<include type="datierung" />
                	<include type="literatur" />
                <include type="uri" />
             </section>

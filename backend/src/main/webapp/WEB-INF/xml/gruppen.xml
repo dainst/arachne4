@@ -23,6 +23,19 @@
         </subtitle>
         <datasections>
         	<section labelKey="Informationen zum mehrteiligen Denkmal (Gruppe)">
+        	   <include type="ort" />
+        	   <include type="datierung" />
+        		<!-- <section labelKey="Datierung">
+                    <context type="datierung" labelKey="Gruppenerstaufstellung" separator=" ">
+                        <field datasource=".AnfEpoche" postfix="," />
+                        <field datasource=".AnfDatZeitraum" />
+                        <field datasource=".AnfDatJh" postfix=". Jh."/>
+                        <field datasource=".AnfDatvn" />
+                    </context>
+                    <context type="datierung">
+                        <field datasource=".DatVorschlagAutor" prefix="- nach: " postfix=" -"/>
+                    </context>
+                </section> -->
         		<section labelKey="Allgemein">
         			<!-- Not a nice solution. The first and the last section should not be needed -->
         			<section>
@@ -42,7 +55,7 @@
         			<field datasource="gruppen.ArchaeologZeugnisse" />
         			<field datasource="gruppen.AntikeSchriftquellen" />
         		</section>
-        		<include type="ort" />
+        		
         		<section labelKey="Aufstellung" separator=", ">
         			<field datasource="gruppen.Aufstellungskontext" />
         			<field datasource="gruppen.FunktionGruppen" />
@@ -63,17 +76,7 @@
         			<field datasource="gruppen.ZugehoerigeFiguren" prefix="Figuren" />
         			<field datasource="gruppen.ThemaInWorten" />
         		</section>
-        		<section labelKey="Datierung">
-	            	<context type="datierung" labelKey="Gruppenerstaufstellung" separator=" ">
-	            		<field datasource=".AnfEpoche" postfix="," />
-	            		<field datasource=".AnfDatZeitraum" />
-	            		<field datasource=".AnfDatJh" postfix=". Jh."/>
-	            		<field datasource=".AnfDatvn" />
-	            	</context>
-	            	<context type="datierung">
-	            		<field datasource=".DatVorschlagAutor" prefix="- nach: " postfix=" -"/>
-	            	</context>
-	            </section>
+        		
 	            <include type="literatur" />
 	            <include type="uri" />
 	    	</section>

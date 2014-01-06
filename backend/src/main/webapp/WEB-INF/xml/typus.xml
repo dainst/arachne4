@@ -26,7 +26,8 @@ Hier werden keine Direkten Bilder verwendet sondern die Bilder des Hauptvertrete
         </subtitle>
         <datasections>
         	<section labelKey="Informationen zum Typus">
-        	            <section labelKey="Allgemein">
+        	    <include type="datierung" />
+        	    <section labelKey="Allgemein">
 	            	<section labelKey="Typus-Hauptbezeichnung" separator=", ">
 	                    <field datasource="typus.KurzbeschreibungTypus" />
 	                </section>  
@@ -108,7 +109,6 @@ Hier werden keine Direkten Bilder verwendet sondern die Bilder des Hauptvertrete
 	                	<field datasource="typus.KommentarKopien" />
 	                </section>
 	            </section>
-	            <include type="datierung" />
 	            <include type="literatur" />
 	            <include type="uri" />
 	    	</section>

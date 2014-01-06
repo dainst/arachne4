@@ -38,6 +38,7 @@
         				<field datasource="topographie.Ausdehnung" prefix="Ausdehnung: "/> 
         			</section>
         		</section>
+        		<include type="datierung" />
         		<section labelKey="Beschreibung">
         			<field datasource="topographie.TopographieArt" />
 	        		<field datasource="topographie.TopographieTypus" prefix="Kategorie: " />

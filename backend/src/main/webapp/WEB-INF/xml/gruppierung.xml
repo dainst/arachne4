@@ -18,6 +18,9 @@
         </subtitle>
         <datasections>
         	<section labelKey="Informationen zur Gruppierung">
+        		<include type="ort" />
+                <include type="datierung" />
+                
         		<section labelKey="Allgemeine Informationen">
         			<section labelKey="Beschreibung">
         				<field datasource="gruppierung.BeschreibungGruppierung" />
@@ -30,9 +33,7 @@
         			</section>
         		</section>
         		
- 	       		<include type="ort" />
-        		<include type="datierung" />
-        		<include type="literatur" />
+ 	       		<include type="literatur" />
         		<include type="uri" />
         		
 	        </section>

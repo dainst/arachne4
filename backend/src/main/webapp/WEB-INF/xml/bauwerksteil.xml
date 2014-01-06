@@ -19,9 +19,8 @@
 		</subtitle>
 		<datasections>
 			<section labelKey="Informationen zum Bauwerksteil">
-				
 				<include type="ort" />
-				
+				<include type="datierung" />
 				<section labelKey="Charakterisierung">					
 					<section labelKey="Bauordnung" >
 						<field datasource="bauwerksteil.Bauordnung"/>
@@ -89,8 +88,6 @@
 					</section> 
 				</section>
 				
-				<include type="datierung" />
-				
 				<include type="literatur" />
 				
 				<include type="uri" />
@@ -107,11 +104,21 @@
 			<field datasource="Dataset.TableName" />
 		</facet>
 		<facet name="ort" labelKey="Lokalisierung">
-			<context type="ort" separator=", ">
-				<field datasource=".Stadt" />
-				<field datasource=".Land" />
-			</context>
-		</facet>
+            <context type="ort" separator=", ">
+                <field datasource=".Stadt" />
+                <field datasource=".Land" />
+            </context>
+        </facet>
+        <facet name="datierungepoche" labelKey="Epoche">
+            <context type="datierung">
+                <field datasource=".AnfEpoche"/>
+            </context>
+        </facet>
+        <facet name="datierungepoche" labelKey="Epoche">
+            <context type="datierung">
+                <field datasource=".EndEpoche"/>
+            </context>
+        </facet>
 		<facet name="dekorationsart" labelKey="Dekorationsart">
 			<field datasource="bauwerksteil.DekorationsartBauwerksteil" />
 		</facet>

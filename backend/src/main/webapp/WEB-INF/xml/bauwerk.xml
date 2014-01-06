@@ -49,6 +49,7 @@
 	        			<field datasource="bauwerk.BauwerkKulturkreis" />
 	        		</section>
 	        	</section>
+	            <include type="datierung" />
 	            <section labelKey="Charakterisierung">
 	            	<section labelKey="Gebäudetyp" separator=", ">
 	            		<section>  
@@ -87,7 +88,6 @@
 	            		<field datasource="bauwerk.Restaurierung" />
 	            	</section>
 	            </section>
-	            <include type="datierung" />
 	            <section labelKey="Katalog">
 	            	<field datasource="bauwerk.Katalogtext" prefix="Katalogtext: " />
 	            	<field datasource="bauwerk.Katalognummer" prefix="Katalognummer: "/>
