@@ -6,15 +6,19 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
 	<display>
-		<title>
-			<section>
-				<field datasource="buch.BuchTitel">
-					<ifEmpty>
-						<field datasource="buch.KurzbeschreibungBuch" />
-					</ifEmpty> 
-				</field>
-			</section>
-		</title>
+        <title>
+            <section>
+                <field datasource="buch.BuchTitel">
+                    <ifEmpty>
+                        <field datasource="zenon.245_a">
+                            <ifEmpty>
+                                <field datasource="buch.KurzbeschreibungBuch" />
+                            </ifEmpty>
+                        </field>
+                    </ifEmpty>
+                </field>
+            </section>
+        </title>
 		<subtitle>
 			<section>
 				<field datasource="buch.alias" />
