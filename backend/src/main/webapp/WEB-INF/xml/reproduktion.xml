@@ -158,6 +158,7 @@
         				<field datasource="reproduktion.ReproRestauroAnalyseErgebnis" prefix="Ergebnis: "/>
         		   	</section>
         		</section>
+        		<include type="datierung" />
         		<include type="literatur" />
         		<include type="uri" />
 	        </section>
