@@ -1,5 +1,7 @@
 package de.uni_koeln.arachne.response;
 
+import org.springframework.stereotype.Component;
+
 import de.uni_koeln.arachne.util.StrUtils;
 
 /**
@@ -9,7 +11,7 @@ import de.uni_koeln.arachne.util.StrUtils;
  * @author Patrick Gunia
  *
  */
-
+@Component("ceramalexQuantifySpecialNavigationElement")
 public class CeramalexQuantifySpecialNavigationElement extends AbstractSpecialNavigationElement {
 	
 	public CeramalexQuantifySpecialNavigationElement() {

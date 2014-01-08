@@ -34,6 +34,12 @@ public class SpecialNavigationsController {
 	@Autowired
 	@Qualifier("teiViewerSpecialNavigationElement")
 	private transient TeiViewerSpecialNavigationElement teiViewerSE;
+	
+	@Autowired
+	@Qualifier("ceramalexQuantifySpecialNavigationElement")
+	private transient CeramalexQuantifySpecialNavigationElement ceramalexQuantifySE;
+	
+	
 	/**
 	 * List of all currently avaiable special navigation classes, needs to be
 	 * extended, if additional special navigations have to be provided.
@@ -49,7 +55,7 @@ public class SpecialNavigationsController {
 	 */
 	private void init() {
 		specNavClasses.clear();
-		specNavClasses.add(new CeramalexQuantifySpecialNavigationElement());
+		specNavClasses.add(ceramalexQuantifySE);
 		specNavClasses.add(teiViewerSE);
 	}
 
@@ -86,7 +92,7 @@ public class SpecialNavigationsController {
 		if("entity".equals(type) && !entityId.isEmpty()) {
 			return matching(entityId, null);
 		} else if (!searchParam.isEmpty()) {
-			return matching(searchParam, null);
+			return matching(searchParam, filterValues);
 		}
 		
 		return new SpecialNavigationElementList();
