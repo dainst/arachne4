@@ -335,11 +335,6 @@ public class UserAdministration {
 			this.all_groups = (all_groups) ? BOOLEAN.TRUE : BOOLEAN.FALSE;
 		}
 		
-		public boolean getAll_groups() {
-			//return all_groups;
-			return (all_groups == BOOLEAN.TRUE) ? true : false;
-		}
-
 		/**
 		 * @return the login_permission
 		 */
