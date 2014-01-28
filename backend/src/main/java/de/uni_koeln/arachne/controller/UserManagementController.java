@@ -105,8 +105,9 @@ public class UserManagementController {
 	        	if(userVerwaltungDao.newUser(registerForm)) {
 	        		response.setStatus(200);
 	        		resultMap.put("status", "OK");
+	        		// TODO use MailService
 	        		final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		        	mailSender.setHost("smtp.uni-koeln.de");
+	        		mailSender.setHost("smtp.uni-koeln.de");
 		        	
 		        	//TODO in eigenen Service auslagern
 		        	StringBuffer sb = new StringBuffer();

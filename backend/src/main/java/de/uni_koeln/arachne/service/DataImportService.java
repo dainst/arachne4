@@ -50,6 +50,9 @@ public class DataImportService implements Runnable { // NOPMD
 	private transient EntityService entityService;
 	
 	@Autowired
+	private transient MailService mailService;
+	
+	@Autowired
 	private transient ResponseFactory responseFactory;
 	
 	private transient JdbcTemplate jdbcTemplate;
@@ -196,7 +199,10 @@ public class DataImportService implements Runnable { // NOPMD
 				LOGGER.debug("Executing elasticsearch bulk request took " + (System.currentTimeMillis() - execute) + "ms");
 			}
 			if (running.get()) {
-				LOGGER.info("Import of " + index + " documents finished in " + ((System.currentTimeMillis() - startTime)/1000f/60f/60f) + " hours.");
+				final String success = "Import of " + index + " documents finished in " + ((System.currentTimeMillis()
+						- startTime)/1000f/60f/60f) + " hours."; 
+				LOGGER.info(success);
+				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport - success", success);
 				esClientUtil.updateSearchIndex();
 			} else {
 				LOGGER.info("Dataimport aborted.");
@@ -204,7 +210,9 @@ public class DataImportService implements Runnable { // NOPMD
 			}
 		}
 		catch (Exception e) {
-			LOGGER.error("Dataimport failed at [" + dbgEntityId + "] with: ", e);
+			final String failure = "Dataimport failed at [" + dbgEntityId + "] with: ";
+			LOGGER.error(failure, e);
+			mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport - success", failure + e.toString());
 			esClientUtil.deleteIndex(indexName);
 		}
 		// disable request scope hack
