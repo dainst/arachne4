@@ -206,13 +206,14 @@ public class DataImportService implements Runnable { // NOPMD
 				esClientUtil.updateSearchIndex();
 			} else {
 				LOGGER.info("Dataimport aborted.");
+				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport - abort", "Dataimport was manually aborted.");
 				esClientUtil.deleteIndex(indexName);
 			}
 		}
 		catch (Exception e) {
 			final String failure = "Dataimport failed at [" + dbgEntityId + "] with: ";
 			LOGGER.error(failure, e);
-			mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport - success", failure + e.toString());
+			mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport - failure", failure + e.toString());
 			esClientUtil.deleteIndex(indexName);
 		}
 		// disable request scope hack
