@@ -151,7 +151,7 @@ public class ImageController {
 		
 		HttpURLConnection connection = null;
 		try {
-			final URL serverAdress;
+			final URL serverAdress; // NOPMD
 			// if the overview image is requested get it without watermark
 			if (request.getQueryString().contains("jtl=")) {
 				serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + fullQueryString);
@@ -220,7 +220,7 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/{entityId}", method = RequestMethod.GET)
 	public void getImage(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, resolution_HIGH, response);
+		getImageFromServer(entityId, resolution_HIGH, resolution_HIGH, response);
 	}
 	
 	/**
@@ -230,7 +230,7 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/preview/{entityId}", method = RequestMethod.GET)
 	public void getPreview(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, resolution_PREVIEW, response);
+		getImageFromServer(entityId, resolution_PREVIEW, resolution_PREVIEW, response);
 	}
 	
 	/**
@@ -240,7 +240,7 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
 	public void getThumbnail(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, resolution_THUMBNAIL, response);
+		getImageFromServer(entityId, resolution_THUMBNAIL, resolution_THUMBNAIL, response);
 	}
 	
 	/**
@@ -250,7 +250,29 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "/image/icon/{entityId}", method = RequestMethod.GET)
 	public void getIcon(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, resolution_ICON, response);
+		getImageFromServer(entityId, resolution_ICON, resolution_ICON, response);
+	}
+	
+	/**
+	 * Handles the request for /image/width/{entityId}.
+	 * @param entityId The unique ID of the image.
+	 * @param response The outgoing HTTP response.
+	 */
+	@RequestMapping(value = "/image/width/{entityId}", method = RequestMethod.GET)
+	public void getWidth(@RequestParam(value = "width", required = true) final int requestedWidth, 
+			@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		getImageFromServer(entityId, requestedWidth, -1, response);
+	}
+	
+	/**
+	 * Handles the request for /image/height/{entityId}.
+	 * @param entityId The unique ID of the image.
+	 * @param response The outgoing HTTP response.
+	 */
+	@RequestMapping(value = "/image/height/{entityId}", method = RequestMethod.GET)
+	public void getHeight(@RequestParam(value = "height", required = true) final int requestedHeight, 
+			@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		getImageFromServer(entityId, -1, requestedHeight, response);
 	}
 	
 	/**
@@ -261,16 +283,36 @@ public class ImageController {
 	 * are currently in use but any integer value is allowed.
 	 * @param response The outgoing HTTP response.
 	 */
-	private void getImageFromServer(final long entityId, final int requestedResolution, final HttpServletResponse response) {
+	private void getImageFromServer(final long entityId, final int requestedWidth, final int requestedHeight,
+			final HttpServletResponse response) {
 		
 		HttpURLConnection connection = null;
 		
+		final int requestedResolution = Math.max(requestedWidth, requestedHeight); 
 		final ImageProperties imageProperties = getImageProperties(entityId, requestedResolution);
 		
 		if (imageProperties.httpResponseCode == 200) {
 			final String imageName = imageProperties.name;
 			String imageServerInstance = imageProperties.watermark;
-			final int resolution = imageProperties.resolution;
+						
+			int width = -1;
+			int height = -1;
+			
+			// width request
+			if (requestedHeight == -1) {
+				width = imageProperties.resolution;
+				height = imageProperties.maxResolution;
+			} else {
+				// height request
+				if (requestedWidth == -1) {
+					width = imageProperties.maxResolution;
+					height = imageProperties.resolution;
+				} else {
+					width = imageProperties.resolution;
+					height = width;
+				}
+			}
+			System.out.println(width + " - " + height);			
 			
 			if (StrUtils.isEmptyOrNullOrZero(imageServerInstance)) {
 				imageServerInstance = imageServerName;
@@ -280,7 +322,7 @@ public class ImageController {
 			
 			try {
 				final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + "?FIF=" + imagePath + 
-						URLEncoder.encode(imageName, "UTF8") + "&SDS=0,90&CNT=1.0&WID=" + resolution + "&HEI=" + resolution + "&QLT=99&CVT=jpeg");
+						URLEncoder.encode(imageName, "UTF8") + "&SDS=0,90&CNT=1.0&WID=" + width + "&HEI=" + height + "&QLT=99&CVT=jpeg");
 				LOGGER.debug("Full server adress: " + serverAdress);
 				connection = (HttpURLConnection)serverAdress.openConnection();			
 				connection.setRequestMethod("GET");
@@ -311,23 +353,24 @@ public class ImageController {
 	}
 
 	/**
-	 * Method to retrieve the name of the image, the allowed maximum resolution and the watermark to use. Maximum resolution and watermark
-	 * depend on the rights of the currently logged in user.
+	 * Method to retrieve the name of the image, the allowed maximum resolution and the watermark to use. Maximum 
+	 * resolution and watermark depend on the rights of the currently logged in user.
 	 * @param entityId The unique image ID.
-	 * @return An instance of <code>ImagePorperties</code> containing the name, maximum resolution and watermark of the requested image
-	 * as well as an HTTP response code indicating success or failure.
+	 * @return An instance of <code>ImagePorperties</code> containing the name, granted resolution, maximum resolution 
+	 * and watermark of the requested image as well as an HTTP response code indicating success or failure.
 	 */
 	private ImageProperties getImageProperties(final long entityId, final int requestedResolution) {
 		String imageName = null;
 		String watermark = null;
 		int resolution = requestedResolution;
+		int maxResolution;		
 		
 		if (entityId>0) {
 			final EntityId arachneId = arachneEntityIdentificationService.getId(entityId);
 			
 			if (!arachneId.getTableName().equals("marbilder")) {
 				LOGGER.error("EntityId {} does not refer to an image.", entityId);
-				return new ImageProperties(imageName, resolution, watermark, 404);
+				return new ImageProperties(imageName, -1, -1, watermark, 404);
 			}
 			
 			final Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
@@ -336,22 +379,32 @@ public class ImageController {
 			LOGGER.debug("Image: " + entityId + ": " + imageName);
 			// imageName == null means the user is not allowed to access the image dataset in 'marbilder'
 			if (StrUtils.isEmptyOrNullOrZero(imageName)) {
-				return new ImageProperties(imageName, resolution, watermark, 403);
+				return new ImageProperties(imageName, -1, -1, watermark, 403);
 			}
 			
 			// Check image rights
 			final ImageRightsGroup imageRightsGroup = imageRightsDao.findByName(imageEntity.getField("marbilder.BildrechteGruppe"));
 			watermark = imageRightsGroupService.getWatermarkFilename(imageEntity, imageRightsGroup);
 			if(!imageRightsGroupService.checkResolutionRight(imageEntity, resolution, imageRightsGroup)) {
-				resolution = imageRightsGroupService.getMaxResolution(imageEntity, imageRightsGroup);
+				maxResolution = imageRightsGroupService.getMaxResolution(imageEntity, imageRightsGroup); 
+				System.out.println("Resolution not allowed: " + maxResolution);
+				// if 'high' (0) is not allowed it can never be granted here
+				if (resolution == 0 || (maxResolution != 0 && maxResolution < resolution)) {
+					resolution = maxResolution;
+				}
 				
 				// Forbidden
 				if (resolution == -1) {
-					return new ImageProperties(imageName, resolution, watermark, 403);
+					return new ImageProperties(imageName, -1, -1, watermark, 403);
 				}
+			} else {
+				maxResolution = imageRightsGroupService.getMaxResolution(imageEntity, imageRightsGroup);
 			}
+			System.out.println(requestedResolution + " - " + resolution + " - " + maxResolution);
+			return new ImageProperties(imageName, resolution, maxResolution, watermark, 200);
 		}
-		return new ImageProperties(imageName, resolution, watermark, 200);
+		LOGGER.error("Negative EntityId {} does not refer to an image.", entityId);
+		return new ImageProperties(imageName, -1, -1, watermark, 404);
 	}	
 	
 	/**
@@ -362,13 +415,17 @@ public class ImageController {
 		
 		public final transient int resolution;
 		
+		public final transient int maxResolution;
+		
 		public final transient String watermark;
 		
 		public final transient int httpResponseCode;
 		
-		public ImageProperties(final String imageName, final int resolution, final String watermark, final int httpResponseCode) {
+		public ImageProperties(final String imageName, final int resolution, final int maxResolution, 
+				final String watermark, final int httpResponseCode) {
 			this.name = imageName;
 			this.resolution = resolution;
+			this.maxResolution = maxResolution;
 			this.watermark = watermark;
 			this.httpResponseCode = httpResponseCode;
 		}
