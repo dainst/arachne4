@@ -312,8 +312,7 @@ public class ImageController {
 					height = width;
 				}
 			}
-			System.out.println(width + " - " + height);			
-			
+						
 			if (StrUtils.isEmptyOrNullOrZero(imageServerInstance)) {
 				imageServerInstance = imageServerName;
 			}
@@ -387,7 +386,7 @@ public class ImageController {
 			watermark = imageRightsGroupService.getWatermarkFilename(imageEntity, imageRightsGroup);
 			if(!imageRightsGroupService.checkResolutionRight(imageEntity, resolution, imageRightsGroup)) {
 				maxResolution = imageRightsGroupService.getMaxResolution(imageEntity, imageRightsGroup); 
-				System.out.println("Resolution not allowed: " + maxResolution);
+				
 				// if 'high' (0) is not allowed it can never be granted here
 				if (resolution == 0 || (maxResolution != 0 && maxResolution < resolution)) {
 					resolution = maxResolution;
@@ -400,7 +399,7 @@ public class ImageController {
 			} else {
 				maxResolution = imageRightsGroupService.getMaxResolution(imageEntity, imageRightsGroup);
 			}
-			System.out.println(requestedResolution + " - " + resolution + " - " + maxResolution);
+			
 			return new ImageProperties(imageName, resolution, maxResolution, watermark, 200);
 		}
 		LOGGER.error("Negative EntityId {} does not refer to an image.", entityId);
