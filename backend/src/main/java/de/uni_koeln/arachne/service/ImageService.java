@@ -32,7 +32,6 @@ public class ImageService {
 		excludeList.add("sarkophag");
 		excludeList.add("person");
 		excludeList.add("inschrift");
-		excludeList.add("gruppierung");
 	}
 	
 	/**
