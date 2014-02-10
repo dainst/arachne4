@@ -1,5 +1,7 @@
 package de.uni_koeln.arachne.service;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -29,9 +31,9 @@ import de.uni_koeln.arachne.util.ESClientUtil;
 import de.uni_koeln.arachne.util.EntityId;
 
 /**
- * This class implements the dataimport into elastic search. It is realized as a <code>@Service</code> so it can make use of autowiring and
- * be autowired itself (for communication). At the same time it implements <code>Runnable</code> so that the dataimport can run asynchronously
- * via a <code>TaskExecutor</code>.  
+ * This class implements the dataimport into elastic search. It is realized as a <code>@Service</code> so it can make 
+ * use of autowiring and be autowired itself (for communication). At the same time it implements <code>Runnable</code> 
+ * so that the dataimport can run asynchronously via a <code>TaskExecutor</code>.  
  */
 @Service("DataImportService")
 public class DataImportService implements Runnable { // NOPMD
@@ -60,8 +62,8 @@ public class DataImportService implements Runnable { // NOPMD
 	protected transient DataSource dataSource;
 	
 	/**
-	 * Through this function the datasource is injected
-	 * @param dataSource An SQL Datasource
+	 * Through this function the datasource is injected.
+	 * @param dataSource An SQL Datasource.
 	 */
 	@Autowired
 	public void setDataSource(final DataSource dataSource) {
@@ -202,24 +204,40 @@ public class DataImportService implements Runnable { // NOPMD
 				final String success = "Import of " + index + " documents finished in " + ((System.currentTimeMillis()
 						- startTime)/1000f/60f/60f) + " hours."; 
 				LOGGER.info(success);
-				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport - success", success);
+				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + getHostName() + ") - success", success);
 				esClientUtil.updateSearchIndex();
 			} else {
 				LOGGER.info("Dataimport aborted.");
-				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport - abort", "Dataimport was manually aborted.");
+				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + getHostName() + ") - abort", "Dataimport was manually aborted.");
 				esClientUtil.deleteIndex(indexName);
 			}
 		}
+		// TODO: find out if it is possible to catch less generic exceptions here
 		catch (Exception e) {
 			final String failure = "Dataimport failed at [" + dbgEntityId + "] with: ";
 			LOGGER.error(failure, e);
-			mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport - failure", failure + e.toString());
+			mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + getHostName() + ") - failure", failure + e.toString());
 			esClientUtil.deleteIndex(indexName);
 		}
 		// disable request scope hack
 		((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).requestCompleted();
 		RequestContextHolder.resetRequestAttributes();
 		running.set(false);
+	}
+	
+	/**
+	 * Determines the host name as <code>String</code>.
+	 * @return The host name of the system or "UnknownHost" in case of failure.
+	 */
+	private String getHostName() {
+		String result = "UnknownHost";
+		try {
+			final InetAddress localHost = InetAddress.getLocalHost();
+			result = localHost.getHostName();
+		} catch (UnknownHostException e) {
+			LOGGER.warn("Could not determine local host name.");
+		}
+		return result;
 	}
 	
 	/**
