@@ -93,6 +93,6 @@ public class MailService {
 	  
 	  private boolean stringHasContent(final String string) {
 		  // Although 'isEmptyOrNull' checks for null pointers the first check is needed as we use trim on the String
-		  return string != null && StrUtils.isEmptyOrNull(string.trim());
+		  return string != null && !StrUtils.isEmptyOrNull(string.trim());
 	  }
 }
