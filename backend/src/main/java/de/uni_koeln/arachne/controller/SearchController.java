@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -69,14 +70,15 @@ public class SearchController {
 	 * @param searchParam The value of the search parameter. (mandatory)
 	 * @param limit The maximum number of returned entities. (optional)
 	 * @param offset The offset into the list of entities (used for paging). (optional)
-	 * @return A response object containing the data or a status response (this is serialized to XML or JSON depending on content negotiation).
+	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
-	@RequestMapping(value="/search", method=RequestMethod.GET)
+	@RequestMapping(value="/search", method=RequestMethod.GET, produces="application/json")
 	public @ResponseBody Object handleSearchRequest(@RequestParam("q") final String searchParam,
 													  @RequestParam(value = "limit", required = false) final Integer limit,
 													  @RequestParam(value = "offset", required = false) final Integer offset,
 													  @RequestParam(value = "fq", required = false) final String filterValues,
 													  @RequestParam(value = "fl", required = false) final Integer facetLimit,
+													  final HttpServletRequest request,
 													  final HttpServletResponse response) {
 		
 		final int resultSize = limit == null ? defaultLimit : limit;
@@ -109,9 +111,9 @@ public class SearchController {
 	 * @param limit The maximum number of returned entities. (optional)
 	 * @param offset The offset into the list of entities (used for paging). (optional)
 	 * @param filterValues The values of the solr filter query. (optional)
-	 * @return A response object containing the data (this is serialized to XML or JSON depending on content negotiation).
+	 * @return A response object containing the data (this is serialized to JSON; XML is not supported).
 	 */
-	@RequestMapping(value="/contexts/{entityId}", method=RequestMethod.GET)
+	@RequestMapping(value="/contexts/{entityId}", method=RequestMethod.GET, produces="application/json")
 	public @ResponseBody SearchResult handleContextRequest(@PathVariable("entityId") final Long entityId,
 			@RequestParam(value = "limit", required = false) final Integer limit,
 			@RequestParam(value = "offset", required = false) final Integer offset,
