@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -40,7 +41,7 @@ public class SearchController {
 	@Autowired
 	private transient SearchService searchService;
 	
-	private transient final List<String> defaultFacetList = new ArrayList<String>(3); 
+	private transient final List<String> defaultFacetList; 
 	
 	private transient final int defaultFacetLimit;
 	
@@ -48,16 +49,12 @@ public class SearchController {
 	
 	@Autowired
 	public SearchController(final @Value("#{config.esDefaultLimit}") int defaultLimit,
-			final @Value("#{config.esDefaultFacetLimit}") int defaultFacetLimit) {
+			final @Value("#{config.esDefaultFacetLimit}") int defaultFacetLimit,
+			final @Value("#{config.esDefaultFacetList}") String defaultFacetListCS) {
 		
 		this.defaultLimit = defaultLimit;
 		this.defaultFacetLimit = defaultFacetLimit;
-				
-		defaultFacetList.add("facet_kategorie");
-		defaultFacetList.add("facet_ort");
-		defaultFacetList.add("facet_datierungepoche");
-		defaultFacetList.add("facet_geo");
-		defaultFacetList.add("facet_hasImage");
+		defaultFacetList = new ArrayList<String>(Arrays.asList(defaultFacetListCS.split(",")));
 	}
 	
 	/**
