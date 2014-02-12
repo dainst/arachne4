@@ -5,7 +5,7 @@ import de.uni_koeln.arachne.mapping.UserAdministration;
 
 public interface IUserRightsService {
 
-	public static final String SOLR_INDEXING = "SolrIndexing";
+	public static final String INDEXING = "Indexing";
 	public static final String ANONYMOUS_USER_NAME = "Anonymous";
 	public static final int MIN_ADMIN_ID = 800;
 	
@@ -16,15 +16,15 @@ public interface IUserRightsService {
 	public abstract UserAdministration getCurrentUser();
 
 	/**
-	 * Set the Solr user.
+	 * Set the 'dataimport user'.
 	 */
-	public abstract void setUserSolr();
+	public abstract void setDataimporter();
 	
 	/**
-	 * Is the current user the Solr user.
+	 * Is the current user the 'dataimport user'.
 	 * @return <code>true</code> if the current user is Solr.
 	 */
-	public abstract boolean isUserSolr();
+	public abstract boolean isDataimporter();
 	
 	/**
 	 * Is the current user signed in.

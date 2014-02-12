@@ -108,7 +108,7 @@ public class DataImportService implements Runnable { // NOPMD
 		final long startTime = System.currentTimeMillis();
 		long dbgEntityId = 0;
 		
-		userRightsService.setUserSolr();
+		userRightsService.setDataimporter();
 		
 		elapsedTime.set(System.currentTimeMillis() - startTime);
 		

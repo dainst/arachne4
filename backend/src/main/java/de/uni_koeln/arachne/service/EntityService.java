@@ -42,9 +42,9 @@ public class EntityService {
 		final String datasetGroupName = singleEntityDataService.getDatasetGroup(entityId);
     	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
     	
-    	LOGGER.debug("Indexer(" + entityId.getArachneEntityID() + "): " + userRightsService.isUserSolr());
+    	LOGGER.debug("Indexer(" + entityId.getArachneEntityID() + "): " + userRightsService.isDataimporter());
     	
-    	if ((!userRightsService.isUserSolr()) && (!userRightsService.userHasDatasetGroup(datasetGroup))) {
+    	if ((!userRightsService.isDataimporter()) && (!userRightsService.userHasDatasetGroup(datasetGroup))) {
     		LOGGER.debug("Forbidden!");
     		final FormattedArachneEntity result = new FormattedArachneEntity();
     		result.setType("forbidden");

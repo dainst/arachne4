@@ -86,9 +86,9 @@ public class UserRightsService implements IUserRightsService {
 	 * @see de.uni_koeln.arachne.service.UserRightsService#setUserSolr()
 	 */
 	@Override
-	public void setUserSolr() {
+	public void setDataimporter() {
 		arachneUser = new UserAdministration();
-		arachneUser.setUsername(SOLR_INDEXING);
+		arachneUser.setUsername(INDEXING);
 		arachneUser.setAll_groups(true);
 		this.isSet = true;
 	}
@@ -97,8 +97,8 @@ public class UserRightsService implements IUserRightsService {
 	 * @see de.uni_koeln.arachne.service.UserRightsService#isUserSolr()
 	 */
 	@Override
-	public boolean isUserSolr() {
-		return isSet && SOLR_INDEXING.equals(arachneUser.getUsername());
+	public boolean isDataimporter() {
+		return isSet && INDEXING.equals(arachneUser.getUsername());
 	}
 	
 	/* (non-Javadoc)
