@@ -1,11 +1,13 @@
 package de.uni_koeln.arachne.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.mapping.ImageRowMapper;
@@ -27,11 +29,9 @@ public class ImageService {
 	
 	private transient final List<String> excludeList;
 	
-	public ImageService() {
-		excludeList = new ArrayList<String>();
-		excludeList.add("sarkophag");
-		excludeList.add("person");
-		excludeList.add("inschrift");
+	@Autowired
+	public ImageService(final @Value("#{config.imageExcludeList}") String imageExcludeListCS) {
+		excludeList = new ArrayList<String>(Arrays.asList(imageExcludeListCS.split(",")));
 	}
 	
 	/**
@@ -41,7 +41,6 @@ public class ImageService {
 	 */
 	public void addImages(final Dataset dataset) {
 		final EntityId arachneId = dataset.getArachneId();
-		// TODO find a better way to exclude categories, maybe a list of some kind
 		if (excludeList.contains(arachneId.getTableName())) {
 			LOGGER.debug("excluding " + arachneId.getTableName());
 			return;
