@@ -2,6 +2,8 @@ package de.uni_koeln.arachne.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import de.uni_koeln.arachne.mapping.ImageRowMapper;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.ImageComparator;
 import de.uni_koeln.arachne.util.ImageUtils;
 
 /**
@@ -50,6 +53,9 @@ public class ImageService {
 			@SuppressWarnings("unchecked")
 			final List<Image> imageList = (List<Image>) genericSQLService.getStringFieldsEntityIdJoinedWithCustomRowmapper("marbilder"
 					, arachneId.getTableName(), arachneId.getInternalKey(), fieldList, new ImageRowMapper());
+			// sort image List
+			Collections.sort(imageList, new ImageComparator());			
+						
 			dataset.setImages(imageList);
 			// get thumbnail from imageList
 			if (imageList != null && !imageList.isEmpty()) {

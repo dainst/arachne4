@@ -51,7 +51,8 @@ public class ImageUtils { // NOPMD
 	 * @returns The extracted number as <code>Integer</code> or <code>Integer.MAX_VALUE</code> in case of a parsing error.
 	 */
 	public static Integer extractNumberFromImageFilename(final String imageFilename) {
-		Integer result = Integer.MAX_VALUE;
+		// Use Interger.MIN_VALUE / 4 to not generate an overflow in comparisons
+		Integer result = Integer.MAX_VALUE / 4;
 		try {
 			result = Integer.parseInt(imageFilename.split(",")[1].split("\\.")[0]); 
 		} catch (NumberFormatException e) { // NOPMD
