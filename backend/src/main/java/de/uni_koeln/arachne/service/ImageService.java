@@ -53,7 +53,9 @@ public class ImageService {
 			final List<Image> imageList = (List<Image>) genericSQLService.getStringFieldsEntityIdJoinedWithCustomRowmapper("marbilder"
 					, arachneId.getTableName(), arachneId.getInternalKey(), fieldList, new ImageRowMapper());
 			// sort image List
-			Collections.sort(imageList, new ImageComparator());			
+			if (imageList != null && imageList.size()>1) {
+				Collections.sort(imageList, new ImageComparator());
+			}
 						
 			dataset.setImages(imageList);
 			// get thumbnail from imageList
