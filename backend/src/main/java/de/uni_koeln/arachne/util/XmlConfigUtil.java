@@ -160,8 +160,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			final List<Element> staticChildren = new ArrayList<Element>(children);
 			for (final Element currentElement: staticChildren) {
 				if ("include".equals(currentElement.getName())) {
-					element.addContent(getInclude(currentElement));
-					element.removeContent(currentElement);
+					element.setContent(element.indexOf(currentElement), getInclude(currentElement));
 				} else {
 					if (!"field".equals(currentElement.getName())) {
 						replaceInclude(currentElement);
