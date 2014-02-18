@@ -27,6 +27,6 @@
 		<field datasource=".Supplement" prefix="Supplement: " /> <!-- AdditionalInfosJSON -->
 		<linkField labelKey="Zenon" datasource=".ZenonID"
 			prefix="http://testopac.dainst.org/#book/" />
-		<linkField labelKey="Onlinequelle" datasource=".Onlinequelle" />
+		<linkField labelKey="Online verfügbar" datasource=".Onlinequelle" />
 	</context>
 </includeSection>
