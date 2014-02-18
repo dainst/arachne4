@@ -96,7 +96,7 @@ public class ImageController {
 	}
 	
 	/**
-	 * This method handles requests from the <code>mooviewer</code> to the image server. If meta data is requested plain text is
+	 * This method handles requests using the IIP protocol. If meta data is requested plain text is
 	 * returned wrapped in a <code>ResponseEntity&ltString&gt</code> else a JPEG image is returned via the <code>HttpServletResponse</code>.
 	 * @param entityId the unique image ID. (mandatory)
 	 * @param request The incoming HTTP request.
@@ -136,6 +136,115 @@ public class ImageController {
 		return getIIPViewerDataFromImageServer(request, response, imageServerInstance, fullQueryString);
 	}
 
+	/**
+	 * This method handles requests using the IIP protocol. If meta data is requested plain text is
+	 * returned wrapped in a <code>ResponseEntity&ltString&gt</code> else a JPEG image is returned via the <code>HttpServletResponse</code>.
+	 * @param entityId the unique image ID. (mandatory)
+	 * @param request The incoming HTTP request.
+	 * @param response The outgoing HTTP response.
+	 * @return Either the meta data or the image returned by the image server.
+	 */
+	@RequestMapping(value = "/image/zoomify", method = RequestMethod.GET)
+	public ResponseEntity<String> getDataForZoomifyViewer(@RequestParam(value = "Zoomify", required = true) 
+			final String zoomifyParams, final HttpServletRequest request, final HttpServletResponse response) {
+		
+		LOGGER.debug("Received Request: " + request.getQueryString());
+		LOGGER.info("Zoomify params: " + zoomifyParams);	
+		
+		if (zoomifyParams.endsWith("ImageProperties.xml")) {
+			final String[] tokens = zoomifyParams.split("/");
+			
+		}
+		//final ImageProperties imageProperties = getImageProperties(entityId, resolution_HIGH);
+				
+		//if (imageProperties.httpResponseCode != 200) {
+		//	response.setStatus(imageProperties.httpResponseCode);
+		//	return null;
+		//}
+		
+		//if (imageProperties.resolution != resolution_HIGH) {
+		//	response.setStatus(403);
+		//	return null;
+		//}
+
+		//final String imageName = imageProperties.name;
+		//String imageServerInstance = imageProperties.watermark;
+
+		//if (StrUtils.isEmptyOrNullOrZero(imageServerInstance)) {
+		//	imageServerInstance = imageServerName;
+		//}
+
+		//final String remainingQueryString = request.getQueryString().split("&", 2)[1];
+		//final String fullQueryString = "?FIF=" + imagePath + imageName + "&" + remainingQueryString;
+
+		//LOGGER.debug("Sent Request: " + fullQueryString);
+		
+		//return getIIPViewerDataFromImageServer(request, response, imageServerInstance, fullQueryString);
+		return null;
+	}
+	
+	/**
+	 * Handles the request for /image/{entityId}. 
+	 * @param entityId The unique ID of the image.
+	 * @param response The outgoing HTTP response.
+	 */
+	@RequestMapping(value = "/image/{entityId}", method = RequestMethod.GET)
+	public void getImage(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		getImageFromServer(entityId, resolution_HIGH, resolution_HIGH, response);
+	}
+	
+	/**
+	 * Handles the request for /image/preview/{entityId}.
+	 * @param entityId The unique ID of the image.
+	 * @param response The outgoing HTTP response.
+	 */
+	@RequestMapping(value = "/image/preview/{entityId}", method = RequestMethod.GET)
+	public void getPreview(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		getImageFromServer(entityId, resolution_PREVIEW, resolution_PREVIEW, response);
+	}
+	
+	/**
+	 * Handles the request for /image/thumbnail/{entityId}.
+	 * @param entityId The unique ID of the image.
+	 * @param response The outgoing HTTP response.
+	 */
+	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
+	public void getThumbnail(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		getImageFromServer(entityId, resolution_THUMBNAIL, resolution_THUMBNAIL, response);
+	}
+	
+	/**
+	 * Handles the request for /image/icon/{entityId}.
+	 * @param entityId The unique ID of the image.
+	 * @param response The outgoing HTTP response.
+	 */
+	@RequestMapping(value = "/image/icon/{entityId}", method = RequestMethod.GET)
+	public void getIcon(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		getImageFromServer(entityId, resolution_ICON, resolution_ICON, response);
+	}
+	
+	/**
+	 * Handles the request for /image/width/{entityId}.
+	 * @param entityId The unique ID of the image.
+	 * @param response The outgoing HTTP response.
+	 */
+	@RequestMapping(value = "/image/width/{entityId}", method = RequestMethod.GET)
+	public void getWidth(@RequestParam(value = "width", required = true) final int requestedWidth, 
+			@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		getImageFromServer(entityId, requestedWidth, -1, response);
+	}
+	
+	/**
+	 * Handles the request for /image/height/{entityId}.
+	 * @param entityId The unique ID of the image.
+	 * @param response The outgoing HTTP response.
+	 */
+	@RequestMapping(value = "/image/height/{entityId}", method = RequestMethod.GET)
+	public void getHeight(@RequestParam(value = "height", required = true) final int requestedHeight, 
+			@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+		getImageFromServer(entityId, -1, requestedHeight, response);
+	}
+	
 	/**
 	 * Here the real work for the <code>getDataForIIPViewer</code> is done. This method sends a HTTP-request to the image server and
 	 * either gets the meta data or a tile of the requested image. If meta data is fetched it is returned. If an image tile is fetched 
@@ -211,68 +320,6 @@ public class ImageController {
 			connection = null;
 		}
 		return null;
-	}
-	
-	/**
-	 * Handles the request for /image/{entityId}. 
-	 * @param entityId The unique ID of the image.
-	 * @param response The outgoing HTTP response.
-	 */
-	@RequestMapping(value = "/image/{entityId}", method = RequestMethod.GET)
-	public void getImage(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, resolution_HIGH, resolution_HIGH, response);
-	}
-	
-	/**
-	 * Handles the request for /image/preview/{entityId}.
-	 * @param entityId The unique ID of the image.
-	 * @param response The outgoing HTTP response.
-	 */
-	@RequestMapping(value = "/image/preview/{entityId}", method = RequestMethod.GET)
-	public void getPreview(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, resolution_PREVIEW, resolution_PREVIEW, response);
-	}
-	
-	/**
-	 * Handles the request for /image/thumbnail/{entityId}.
-	 * @param entityId The unique ID of the image.
-	 * @param response The outgoing HTTP response.
-	 */
-	@RequestMapping(value = "/image/thumbnail/{entityId}", method = RequestMethod.GET)
-	public void getThumbnail(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, resolution_THUMBNAIL, resolution_THUMBNAIL, response);
-	}
-	
-	/**
-	 * Handles the request for /image/icon/{entityId}.
-	 * @param entityId The unique ID of the image.
-	 * @param response The outgoing HTTP response.
-	 */
-	@RequestMapping(value = "/image/icon/{entityId}", method = RequestMethod.GET)
-	public void getIcon(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, resolution_ICON, resolution_ICON, response);
-	}
-	
-	/**
-	 * Handles the request for /image/width/{entityId}.
-	 * @param entityId The unique ID of the image.
-	 * @param response The outgoing HTTP response.
-	 */
-	@RequestMapping(value = "/image/width/{entityId}", method = RequestMethod.GET)
-	public void getWidth(@RequestParam(value = "width", required = true) final int requestedWidth, 
-			@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, requestedWidth, -1, response);
-	}
-	
-	/**
-	 * Handles the request for /image/height/{entityId}.
-	 * @param entityId The unique ID of the image.
-	 * @param response The outgoing HTTP response.
-	 */
-	@RequestMapping(value = "/image/height/{entityId}", method = RequestMethod.GET)
-	public void getHeight(@RequestParam(value = "height", required = true) final int requestedHeight, 
-			@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
-		getImageFromServer(entityId, -1, requestedHeight, response);
 	}
 	
 	/**
