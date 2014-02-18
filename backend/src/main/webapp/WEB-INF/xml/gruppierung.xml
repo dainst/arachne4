@@ -22,6 +22,12 @@
                 <include type="datierung" />
                 
         		<section labelKey="Allgemeine Informationen">
+                    <section labelKey="Klassifizierung">
+                        <field datasource="gruppierung.Klassifizierung" />
+                    </section>
+                    <section labelKey="Ausgrabung">
+                        <field datasource="gruppierung.Ausgrabung" />
+                    </section>
         			<section labelKey="Beschreibung">
         				<field datasource="gruppierung.BeschreibungGruppierung" />
         			</section>
