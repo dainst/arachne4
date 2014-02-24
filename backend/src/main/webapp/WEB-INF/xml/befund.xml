@@ -23,9 +23,28 @@
                     </section>
                     <section labelKey="Befund">
                         <field datasource="befund.Befund"/>
+                        <field datasource="befund.KategorieBefund"/>
+                        <field datasource="befund.KlassifizierungBefund"/>
                     </section>
                     <section labelKey="Areal">
                         <field datasource="befund.Areal"/>
+                    </section>
+                    <section labelKey="Bearbeiter">
+                        <field datasource="befund.BearbeiterBefund"/>
+                    </section>
+                    <section labelKey="Maße und Lokalisierung">
+                        <section labelKey="Freilegung">
+                            <field datasource="befund.FreilegungBefund"/>
+                        </section>
+                        <section labelKey="Niveau OK">
+                            <field datasource="befund.NiveauOKBefund"/>
+                        </section>
+                        <section labelKey="Niveau UK">
+                            <field datasource="befund.NiveauUKBefund"/>
+                        </section>
+                        <section labelKey="Qualität">
+                         <field datasource="befund.QualitaetBefund"/>
+                        </section>
                     </section>
                     <section labelKey="Kommentar">
                         <field datasource="befund.Kommentar"/>
