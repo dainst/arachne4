@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ import de.uni_koeln.arachne.response.TeiViewerSpecialNavigationElement;
  * 
  */
 @Controller
+@Configurable(preConstruction=true) 
 public class SpecialNavigationsController {
 
 	//private static final Logger LOGGER = LoggerFactory.getLogger(SpecialNavigationsController.class);
@@ -52,18 +54,12 @@ public class SpecialNavigationsController {
 	 */
 	private transient final List<AbstractSpecialNavigationElement> specNavClasses = new ArrayList<AbstractSpecialNavigationElement>();
 
-	/**
-	 * Method that fills the specNavClasses List in runtime.
-	 * This is needed, becouse the autowirded objects have to be
-	 * loaded first.
-	 */
-	private void init() {
-		specNavClasses.clear();
+	public SpecialNavigationsController() {
 		specNavClasses.add(ceramalexQuantifySE);
 		specNavClasses.add(teiViewerSE);
 		specNavClasses.add(modelViewerSE);
 	}
-
+	
 	/**
 	 * Method handles different specialNavigation-request. It uses the regular
 	 * elasticsearch query- and facet-parameters or entityID to first receive a list of
@@ -91,10 +87,7 @@ public class SpecialNavigationsController {
 			@RequestParam(value = "type", required = false, defaultValue = "") final String type,
 			final HttpServletResponse response) {
 
-		// create the list of classes for the matching process
-		init();
-		
-		if("entity".equals(type) && !entityId.isEmpty()) {
+		if ("entity".equals(type) && !entityId.isEmpty()) {
 			return matching(entityId, null);
 		} else if (!searchParam.isEmpty()) {
 			return matching(searchParam, filterValues);

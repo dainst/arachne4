@@ -77,7 +77,7 @@ public class ModelViewerSpecialNavigationElement extends AbstractSpecialNavigati
 	public AbstractSpecialNavigationElement getResult(final String searchParam,
 			final String filterValues) {
 		final StringBuffer linkBuffer = new StringBuffer(getRequestMapping());
-		linkBuffer.append("/");
+		linkBuffer.append('/');
 		linkBuffer.append(entityId);
 		return new ModelViewerSpecialNavigationElement(linkBuffer.toString());
 	}
