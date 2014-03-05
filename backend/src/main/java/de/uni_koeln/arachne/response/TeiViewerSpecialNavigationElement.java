@@ -3,7 +3,6 @@ package de.uni_koeln.arachne.response;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -19,11 +18,12 @@ import de.uni_koeln.arachne.util.EntityId;
  *
  */
 @Component("teiViewerSpecialNavigationElement")
-public class TeiViewerSpecialNavigationElement extends
-		AbstractSpecialNavigationElement {
+public class TeiViewerSpecialNavigationElement extends AbstractSpecialNavigationElement {
 
+	@Autowired
 	private transient EntityIdentificationService entityIdentServ;
 	
+	@Autowired
 	private transient GenericSQLDao genericSQLDao;
 
 	private transient List<String> fieldList;
@@ -56,7 +56,6 @@ public class TeiViewerSpecialNavigationElement extends
 
 	@Override
 	public String getRequestMapping() {
-		//return "http://arachne.uni-koeln.de/Tei-Viewer/cgi-bin/teiviewer.php";
 		return teiViewerLink;
 	}
 
@@ -96,17 +95,4 @@ public class TeiViewerSpecialNavigationElement extends
 		linkBuffer.append(fieldList.get(0));
 		return new TeiViewerSpecialNavigationElement(linkBuffer.toString());
 	}
-	
-	@Autowired
-	@Qualifier("arachneEntityIdentificationService")
-	public void setEntityIdentificationService(final EntityIdentificationService entityIdentServ) {
-		this.entityIdentServ = entityIdentServ;
-	}
-	
-	@Autowired
-	@Qualifier("GenericSQLDao")
-	public void setGenericSQLDao (final GenericSQLDao genericSQLDao) {
-		this.genericSQLDao = genericSQLDao;
-	}
-
 }
