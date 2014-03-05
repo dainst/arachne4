@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.response.AbstractSpecialNavigationElement;
 import de.uni_koeln.arachne.response.CeramalexQuantifySpecialNavigationElement;
+import de.uni_koeln.arachne.response.ModelViewerSpecialNavigationElement;
 import de.uni_koeln.arachne.response.SpecialNavigationElementList;
 import de.uni_koeln.arachne.response.TeiViewerSpecialNavigationElement;
 
@@ -30,6 +31,9 @@ import de.uni_koeln.arachne.response.TeiViewerSpecialNavigationElement;
 public class SpecialNavigationsController {
 
 	//private static final Logger LOGGER = LoggerFactory.getLogger(SpecialNavigationsController.class);
+	
+	@Autowired
+	private transient ModelViewerSpecialNavigationElement modelViewerSE;
 	
 	@Autowired
 	@Qualifier("teiViewerSpecialNavigationElement")
@@ -57,6 +61,7 @@ public class SpecialNavigationsController {
 		specNavClasses.clear();
 		specNavClasses.add(ceramalexQuantifySE);
 		specNavClasses.add(teiViewerSE);
+		specNavClasses.add(modelViewerSE);
 	}
 
 	/**
