@@ -49,6 +49,9 @@
                     <section labelKey="Kommentar">
                         <field datasource="befund.Kommentar"/>
                     </section>
+                    <section labelKey="Beschaffenheit">
+                        <field datasource="befund.BeschaffenheitBefund"/>
+                    </section>
                 </section>
 
                 <include type="ort"/>
