@@ -68,7 +68,9 @@ public class ContextService {
 			while (contextType.hasNext()) {
 				final Context context = new Context(contextType.next(), parent);
 				context.getallContexts();
-				parent.addContext(context);
+				if (context.getContextSize() > 0) {
+					parent.addContext(context);
+				}
 			}
 		}
 	}
