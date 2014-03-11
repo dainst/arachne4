@@ -1,6 +1,8 @@
 package de.uni_koeln.arachne.util;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Class implementing string utility functions.
@@ -76,5 +78,21 @@ public class StrUtils { // NOPMD
 	
 	public static String urlEncodeQuotationMarks(final String inputString) {
 		return inputString.replaceAll("\"", "%22");
+	}
+	
+	/**
+	 * Converts a comma seperated <code>String</code> to a <code>List<String></code>.
+	 * @param string The input <code>String</code>.
+	 * @return A list containing the comma seperated values from the input <code>String</code>.
+	 */
+	public static List<String> getCommaSeperatedStringAsList(final String string) {
+		final List<String> result = new ArrayList<String>();
+		if (!isEmptyOrNull(string)) {
+			final StringTokenizer tokenizer = new StringTokenizer(string, ",");
+			while (tokenizer.hasMoreTokens()) {
+				result.add(tokenizer.nextToken().trim());
+			}
+		}
+		return result;
 	}
 }
