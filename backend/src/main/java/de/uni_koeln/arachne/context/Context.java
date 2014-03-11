@@ -11,7 +11,11 @@ import de.uni_koeln.arachne.service.ContextService;
 
 /**
  * This Class is a wrapper that holds and manages contexts of <code>ArachneDatasets</code>. The links are fetched on demand.
- * The combination of context type and parent describes the two ends of a <code>Link</code>. 
+ * The combination of context type and parent describes the two ends of a <code>Link</code>.
+ * 
+ * This class is in dire need of a rewrite as the design does not really fit the backend use case. Contexts are always 
+ * retrieved completely anyways. And the fact that a context needs a reference to the <code>ContextService</code> shows 
+ * that the service can do the retrieval and fill the contexts. 
  */
 @Configurable(preConstruction=true)
 public class Context {
@@ -206,5 +210,10 @@ public class Context {
 	
 	public String toString() {
 		return contextEntities.toString();
+	}
+	
+	// ugly workaround, we must get rid of completion states and just retrieve all contexts
+	public void setCompletionStateFull() {
+		completionState = CompletionStateEnum.FULL;
 	}
 }

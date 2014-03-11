@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.naming.spi.DirStateFactory.Result;
 import javax.servlet.ServletContext;
 
 import org.jdom2.Document;
@@ -55,6 +57,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	private transient final Map<String, Element> xmlIncludeElements = new HashMap<String, Element>();
 	
 	private transient final Map<String, List<String>> mandatoryContextNames = new HashMap<String, List<String>>();
+	
+	private transient final Map<String, List<String>> explicitContextualizers = new HashMap<String, List<String>>();
 	
 	private transient final Map<String, List<ContextImageDescriptor>> contextImageDescriptors = new HashMap<String, List<ContextImageDescriptor>>();
 	
@@ -356,8 +360,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 		return result;
 	}
-	
-	
+		
 	/**
 	 * Procedure to add a <code>Field</code> from the dataset to the result <code>Section</code>.
 	 * @param dataset The current dataset.
@@ -430,8 +433,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			return new StringBuilder(tempValue); 
 		}
 	}
-	
-	
+		
 	/**
 	 * Procedure to add a <code>LinkField</code> from the dataset to the result <code>Section</code>.
 	 * @param dataset The current dataset.
@@ -775,6 +777,37 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 	}
 	
+	/**
+	 * Returns a list of contextualizers found in the <code>explicitContextualizers</code> tag of the xml file. If there 
+	 * is a cached version this is returned else the list is created, cached and then returned.
+	 * @param tableName The category of the parent dataset.
+	 * @return A list containing the names of the explicit contextualizers (may be empty).
+	 */
+	public List<String> getExplicitContextualizers(String type) {
+		final List<String> cachedContextualizers = explicitContextualizers.get(type);
+		if (cachedContextualizers == null) {
+			final Document document = getDocument(type);
+			if (document == null) {
+				return new ArrayList<String>();
+			}
+			
+			final Element rootElement = document.getRootElement();
+			final Namespace nameSpace = rootElement.getNamespace();
+			final Element contextualizers = rootElement.getChild("explicitContextualizers", nameSpace);
+			if (contextualizers != null) {
+				final List<String> explicitContextualizerTypeList = 
+						StrUtils.getCommaSeperatedStringAsList(contextualizers.getTextNormalize());
+
+				if (!StrUtils.isEmptyOrNull(explicitContextualizerTypeList)) {
+					explicitContextualizers.put(type, explicitContextualizerTypeList);
+					return explicitContextualizerTypeList;
+				}
+			}
+			return new ArrayList<String>();
+		} else {
+			return cachedContextualizers;
+		}
+	}
 		
 	/**
 	 * Internally used method to get the external field names from the XML documents. If no corresponding document is found 

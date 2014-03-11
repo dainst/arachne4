@@ -13,6 +13,7 @@ import de.uni_koeln.arachne.context.*;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.util.ImageUtils;
+import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 /**
@@ -57,10 +58,26 @@ public class ContextService {
 	private transient IUserRightsService rightsService;
 	
 	/**
-	 * This methods adds all contexts to the dataset that are found in the XML description.
+	 * This methods adds all contexts to the dataset that are found in the XML description. It also runs all contextualizers 
+	 * that are marked as explicit in the corresponding xml config file. 
 	 * @param parent The dataset to add the contexts to.
 	 */
 	public void addMandatoryContexts(final Dataset parent) {
+		// explicit contextualizers
+		final List<String> explicitContextualizersList = xmlConfigUtil.getExplicitContextualizers(parent.getArachneId().getTableName());
+		for (String contextualizerName: explicitContextualizersList) {
+			final IContextualizer contextualizer = getContextualizerByContextType(contextualizerName);
+			final Context context = new Context(contextualizer.getContextType(), parent);
+			final List<AbstractLink> contextEntities = contextualizer.retrieve(parent, 0, -1);
+			if (contextEntities != null && !contextEntities.isEmpty()) {
+				context.contextEntities.addAll(contextEntities);
+				context.setCompletionStateFull();
+				if (context.getContextSize() > 0) {
+					parent.addContext(context);
+				}
+			}
+		}
+		// implicit contextualizers
 		final List<String> mandatoryContextTypes = xmlConfigUtil.getMandatoryContextNames(parent.getArachneId().getTableName());
 		LOGGER.debug("Mandatory Contexts: " + mandatoryContextTypes);
 		if (mandatoryContextTypes != null) {
@@ -206,7 +223,8 @@ public class ContextService {
 	 * Method creating an appropriate contextualizer. The class name is constructed from the <code>contextType</code>.
 	 * Then reflection is used to create the corresponding class instance.
 	 * <br>
-	 * If no specialized <code>Contextualizer</code> class is found an instance of <code>GenericSQLContextualizer</code> is returned.
+	 * If no specialized <code>Contextualizer</code> class is found an instance of <code>SemanticConnectionsContextualizer</code> 
+	 * is returned.
 	 * @param contextType Type of a context of interest  
 	 * @return an appropriate contextualizer serving the specific context indicated by the given <code>contextType</code>
 	 */
@@ -235,4 +253,5 @@ public class ContextService {
 		}
 		return null;
 	}
+	
 }

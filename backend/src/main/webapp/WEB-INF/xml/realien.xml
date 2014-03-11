@@ -4,6 +4,7 @@
 <category name="realien" xmlns="http://arachne.uni-koeln.de/schemas/category"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<explicitContextualizers>pathrealienort, pathrealiendatierung, pathrealienliteratur</explicitContextualizers>
 	<display>
 		<title>
 			<section>
@@ -26,11 +27,16 @@
 		</subtitle>
 		<datasections>
 			<section labelKey="Informationen">
+			    <include type="ort" />
+			    <include type="datierung" />
+			    <section labelKey="Kurzbeschreibung Reliefszene: ">
+			        <field datasource="relief.KurzbeschreibungRelief" /> 
+			    </section>
 				<section labelKey="Anzahl">
 					<field datasource="realien.AnzahlGegenstaendeRealien" />
 				</section>
 				<section labelKey="Bildkontext und Größe">
-				<field datasource="realien.Realienart" prefix="Motivart: "/>
+				    <field datasource="realien.Realienart" prefix="Motivart: "/>
 					<field datasource="realien.Lokalisierung" prefix="Lokalisierung: "/>
 					<field datasource="realien.RealienHoehe" prefix="Höhe: "/>
 					<field datasource="realien.RealienBreite" prefix="Breite: "/>
@@ -237,6 +243,7 @@
 	            	<field datasource=".Seite" />
 	            </context>
 	            -->
+	            <include type="literatur" />
 	            <include type="uri" />
 			</section>
 		</datasections>
