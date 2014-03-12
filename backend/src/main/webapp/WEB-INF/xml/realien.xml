@@ -29,13 +29,11 @@
 			<section labelKey="Informationen">
 			    <include type="ort" />
 			    <include type="datierung" />
-			    <section labelKey="Kurzbeschreibung Reliefszene: ">
-			        <field datasource="relief.KurzbeschreibungRelief" /> 
-			    </section>
-				<section labelKey="Anzahl">
+			    <section labelKey="Anzahl">
 					<field datasource="realien.AnzahlGegenstaendeRealien" />
 				</section>
 				<section labelKey="Bildkontext und Größe">
+				    <field datasource="relief.KurzbeschreibungRelief" prefix="Kurzbeschreibung Reliefszene: "/>
 				    <field datasource="realien.Realienart" prefix="Motivart: "/>
 					<field datasource="realien.Lokalisierung" prefix="Lokalisierung: "/>
 					<field datasource="realien.RealienHoehe" prefix="Höhe: "/>
