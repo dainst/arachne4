@@ -2,6 +2,8 @@ package de.uni_koeln.arachne.response;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * 
@@ -20,13 +23,15 @@ import de.uni_koeln.arachne.util.EntityId;
 @Component("teiViewerSpecialNavigationElement")
 public class TeiViewerSpecialNavigationElement extends AbstractSpecialNavigationElement {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(TeiViewerSpecialNavigationElement.class);
+	
 	@Autowired
 	private transient EntityIdentificationService entityIdentServ;
 	
 	@Autowired
 	private transient GenericSQLDao genericSQLDao;
 
-	private transient List<String> fieldList;
+	private transient String link = null;
 	
 	@Value("#{config.teiViewerLink}")
 	private transient String teiViewerLink;
@@ -68,19 +73,34 @@ public class TeiViewerSpecialNavigationElement extends AbstractSpecialNavigation
 	public boolean matches(final String searchParam, final String filterValues) {
 		boolean returnValue = false;
 		
-		if(fieldList != null) {
-			fieldList.clear();
-		}
-		
 		EntityId entityId = null;
 		
 		if(searchParam.matches("[0-9]*")) {
 			entityId = entityIdentServ.getId(Long.valueOf(searchParam));		
 		}
 		
-		if(entityId != null && "buch".equals(entityId.getTableName())) {
-			fieldList = genericSQLDao.getStringField(entityId.getTableName(), "buch", entityId.getInternalKey(), "Verzeichnis");
-			if(fieldList != null && !fieldList.isEmpty()) {
+		if (entityId != null) {
+			List<String> fieldList = null;
+			if ("buch".equals(entityId.getTableName())) {
+				fieldList = genericSQLDao.getStringField(entityId.getTableName(), "buch", entityId.getInternalKey(), "Verzeichnis");
+				final StringBuffer linkBuffer = new StringBuffer(getRequestMapping());
+				linkBuffer.append("?manifest=");
+				linkBuffer.append(fieldList.get(0));
+				link = linkBuffer.toString();
+			} else { 
+				if ("buchseite".equals(entityId.getTableName())) {
+					List<String> scanName = genericSQLDao.getStringField("marbilder", "Buchseite", entityId.getInternalKey(), "DateinameMarbilder");
+					if (!StrUtils.isEmptyOrNull(scanName)) {
+						final StringBuffer linkBuffer = new StringBuffer(getRequestMapping());
+						linkBuffer.append("?scan=");
+						linkBuffer.append(scanName.get(0).substring(0, scanName.get(0).indexOf('.')));
+						link = linkBuffer.toString();	
+					}
+				} else {
+					return false;
+				}
+			}
+			if (!StrUtils.isEmptyOrNull(link)) {
 				returnValue = true;
 			}
 		}
@@ -90,9 +110,7 @@ public class TeiViewerSpecialNavigationElement extends AbstractSpecialNavigation
 	@Override
 	public AbstractSpecialNavigationElement getResult(final String searchParam,
 			final String filterValues) {
-		final StringBuffer linkBuffer = new StringBuffer(getRequestMapping());
-		linkBuffer.append("?manifest=");
-		linkBuffer.append(fieldList.get(0));
-		return new TeiViewerSpecialNavigationElement(linkBuffer.toString());
+		
+		return new TeiViewerSpecialNavigationElement(link);
 	}
 }
