@@ -54,8 +54,9 @@
 					<field datasource="buch.BreiteGesamt" prefix="Breite: " />
 					<field datasource="buch.TiefeGesamt" prefix="Tiefe: " />
 				</section>
-				<section labelKey="BibId">
+				<section labelKey="BibId" separator=", ">
 					<field datasource="buch.bibid" />
+					<linkField labelKey="Zenon" datasource="buch.bibid" prefix="http://testopac.dainst.org/#book/" />
 				</section>
 				
 				<section labelKey="Verzeichnis">
@@ -70,12 +71,6 @@
 				<section labelKey="Einzelband">
 					<field datasource="buch.Einzelband" />
 				</section>
-				<!--  
-					<section labelKey="Autor">
-					<field datasource="buch.BuchAuthorQulifier" />
-					<field datasource="buch.BuchAuthor" />
-					</section>
-				-->
 				<section labelKey="Buch Jahr">
 					<field datasource="buch.BuchJahr" />
 					<field datasource="buch.BuchEntstehungszeitraum" prefix="Entstehungszeitraum: " />
