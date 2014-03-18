@@ -144,7 +144,7 @@ public class ImageController {
 	 * @return The meta data as 'ImageProperties.xml'.
 	 */
 	@RequestMapping(value = "/image/zoomify/{entityId}/ImageProperties.xml", method = RequestMethod.GET)
-	public ResponseEntity<String> getDataForZoomifyViewer(@PathVariable("entityId") final long entityId,
+	public ResponseEntity<String> getImagePropertiesForZoomifyViewer(@PathVariable("entityId") final long entityId,
 			final HttpServletResponse response) {
 		
 		final ImageProperties imageProperties = getImageProperties(entityId, resolution_HIGH);
@@ -211,46 +211,77 @@ public class ImageController {
 	}
 	
 	/**
-	 * This method handles requests using the IIP protocol. If meta data is requested plain text is
-	 * returned wrapped in a <code>ResponseEntity&ltString&gt</code> else a JPEG image is returned via the <code>HttpServletResponse</code>.
+	 * This method handles image requests following the Zoomify protocol. The JPEG image or any status code in case of 
+	 * an error is directly written to the <code>HttpServletResponse</code>.
 	 * @param entityId the unique image ID. (mandatory)
+	 * @param z Zoomify resolution level. (mandatory)
+	 * @param x Zoomify coloumn. (mandatory)
+	 * @param y Zoomify row. (mandatory)
 	 * @param request The incoming HTTP request.
 	 * @param response The outgoing HTTP response.
-	 * @return Either the meta data or the image returned by the image server.
+	 * @return <code>null</code>.
 	 */
-	@RequestMapping(value = "/image/zoomify/{entityId}/{x}-{y}-{z}.jpg", method = RequestMethod.GET)
-	public ResponseEntity<String> getDataForZoomifyViewer(@PathVariable("entityId") final long entityId,
-			@PathVariable("x") final int x, @PathVariable("y") final int y, @PathVariable("z") final int z,
+	@RequestMapping(value = "/image/zoomify/{entityId}/{z}-{x}-{y}.jpg", method = RequestMethod.GET)
+	public ResponseEntity<String> getImageForZoomifyViewer(@PathVariable("entityId") final long entityId,
+			@PathVariable("z") final int z, @PathVariable("x") final int x, @PathVariable("y") final int y,
 			final HttpServletRequest request, final HttpServletResponse response) {
 		
-		LOGGER.debug("Received Request: " + request.getQueryString());
-		LOGGER.info("Zoomify - ID: " + entityId + " x: " + x + " y: " + y + " z: " + z);
+		LOGGER.debug("Zoomify - ID: " + entityId + "TileGroup - z: " + z + " x: " + x + " y: " + y);
 		
-		//final ImageProperties imageProperties = getImageProperties(entityId, resolution_HIGH);
-				
-		//if (imageProperties.httpResponseCode != 200) {
-		//	response.setStatus(imageProperties.httpResponseCode);
-		//	return null;
-		//}
+		final ImageProperties imageProperties = getImageProperties(entityId, resolution_HIGH);
 		
-		//if (imageProperties.resolution != resolution_HIGH) {
-		//	response.setStatus(403);
-		//	return null;
-		//}
-
-		//final String imageName = imageProperties.name;
-		//String imageServerInstance = imageProperties.watermark;
-
-		//if (StrUtils.isEmptyOrNullOrZero(imageServerInstance)) {
-		//	imageServerInstance = imageServerName;
-		//}
-
-		//final String remainingQueryString = request.getQueryString().split("&", 2)[1];
-		//final String fullQueryString = "?FIF=" + imagePath + imageName + "&" + remainingQueryString;
-
-		//LOGGER.debug("Sent Request: " + fullQueryString);
+		if (imageProperties.httpResponseCode != 200) {
+			response.setStatus(imageProperties.httpResponseCode);
+			return null;
+		}
 		
-		//return getIIPViewerDataFromImageServer(request, response, imageServerInstance, fullQueryString);
+		if (imageProperties.resolution != resolution_HIGH) {
+			response.setStatus(403);
+			return null;
+		}
+
+		final String imageName = imageProperties.name;
+		String imageServerInstance = imageProperties.watermark;
+
+		if (StrUtils.isEmptyOrNullOrZero(imageServerInstance)) {
+			imageServerInstance = imageServerName;
+		}
+
+		HttpURLConnection connection = null;
+		try {
+			final String queryString = "?Zoomify=" + imagePath + imageName + "/TileGroup/" + z + '-' + x + '-' + y;
+			URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + queryString);
+			LOGGER.debug("Zoomify request: " + serverAdress);
+						
+			connection = (HttpURLConnection)serverAdress.openConnection();			
+			connection.setRequestMethod("GET");
+			connection.setReadTimeout(imageServerReadTimeout);
+			connection.connect();
+
+			if (connection.getResponseCode() == 200) {
+				response.setContentType("image/jpeg");
+				// TODO remove - only used for testing
+				response.setHeader("Last-Modified", "Thu, 01 Jan 1970 00:00:00 GMT");
+		        // 1 hour
+				response.setHeader("Cache-Control", "max-age=3600");
+				//
+				final OutputStream outputStream = response.getOutputStream();
+				ImageIO.write(ImageIO.read(connection.getInputStream()), "jpg", outputStream);
+				// no return object needed as the result is directly written to the HTTPResponse
+				return null;
+			}
+		} catch (MalformedURLException e) {
+			LOGGER.error(e.getMessage());
+		} catch (ProtocolException e) {
+			LOGGER.error(e.getMessage());
+		} catch (SocketTimeoutException e) {
+			LOGGER.error(e.getMessage());
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage());
+		} finally {
+			connection.disconnect();
+			connection = null;
+		}
 		return null;
 	}
 	
