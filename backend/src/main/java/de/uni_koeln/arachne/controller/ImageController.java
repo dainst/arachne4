@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.elasticsearch.common.jackson.dataformat.yaml.snakeyaml.error.YAMLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,6 +138,79 @@ public class ImageController {
 	}
 
 	/**
+	 * This method handles meta data requests using the Zoomify protocol. The meta data is returned as XML.
+	 * @param entityId the unique image ID. (mandatory)
+	 * @param response The outgoing HTTP response.
+	 * @return The meta data as 'ImageProperties.xml'.
+	 */
+	@RequestMapping(value = "/image/zoomify/{entityId}/ImageProperties.xml", method = RequestMethod.GET)
+	public ResponseEntity<String> getDataForZoomifyViewer(@PathVariable("entityId") final long entityId,
+			final HttpServletResponse response) {
+		
+		final ImageProperties imageProperties = getImageProperties(entityId, resolution_HIGH);
+				
+		if (imageProperties.httpResponseCode != 200) {
+			response.setStatus(imageProperties.httpResponseCode);
+			return null;
+		}
+		
+		if (imageProperties.resolution != resolution_HIGH) {
+			response.setStatus(403);
+			return null;
+		}
+
+		final String imageName = imageProperties.name;
+		String imageServerInstance = imageProperties.watermark;
+
+		if (StrUtils.isEmptyOrNullOrZero(imageServerInstance)) {
+			imageServerInstance = imageServerName;
+		}
+
+		HttpURLConnection connection = null;
+		try {
+			final String queryString = "?Zoomify=" + imagePath + imageName + "/ImageProperties.xml";
+			URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + queryString);
+			LOGGER.debug("Zoomify request: " + serverAdress);
+						
+			connection = (HttpURLConnection)serverAdress.openConnection();			
+			connection.setRequestMethod("GET");
+			connection.setReadTimeout(imageServerReadTimeout);
+			connection.connect();
+
+			if (connection.getResponseCode() == 200) {
+				final HttpHeaders responseHeaders = new HttpHeaders();
+				final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+				final StringBuilder stringBuilder = new StringBuilder();
+				String line = null;
+
+				while ((line = bufferedReader.readLine()) != null) {
+					stringBuilder.append(line);
+					stringBuilder.append('\n');
+				}
+
+				responseHeaders.setContentType(MediaType.APPLICATION_XML);
+				// TODO remove - only used for testing
+				responseHeaders.setLastModified(0);
+				responseHeaders.setCacheControl("max-age=3600");
+				//
+				return new ResponseEntity<String>(stringBuilder.toString(), responseHeaders, HttpStatus.OK);
+			}
+		} catch (MalformedURLException e) {
+			LOGGER.error(e.getMessage());
+		} catch (ProtocolException e) {
+			LOGGER.error(e.getMessage());
+		} catch (SocketTimeoutException e) {
+			LOGGER.error(e.getMessage());
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage());
+		} finally {
+			connection.disconnect();
+			connection = null;
+		}
+		return null;
+	}
+	
+	/**
 	 * This method handles requests using the IIP protocol. If meta data is requested plain text is
 	 * returned wrapped in a <code>ResponseEntity&ltString&gt</code> else a JPEG image is returned via the <code>HttpServletResponse</code>.
 	 * @param entityId the unique image ID. (mandatory)
@@ -144,17 +218,14 @@ public class ImageController {
 	 * @param response The outgoing HTTP response.
 	 * @return Either the meta data or the image returned by the image server.
 	 */
-	@RequestMapping(value = "/image/zoomify", method = RequestMethod.GET)
-	public ResponseEntity<String> getDataForZoomifyViewer(@RequestParam(value = "Zoomify", required = true) 
-			final String zoomifyParams, final HttpServletRequest request, final HttpServletResponse response) {
+	@RequestMapping(value = "/image/zoomify/{entityId}/{x}-{y}-{z}.jpg", method = RequestMethod.GET)
+	public ResponseEntity<String> getDataForZoomifyViewer(@PathVariable("entityId") final long entityId,
+			@PathVariable("x") final int x, @PathVariable("y") final int y, @PathVariable("z") final int z,
+			final HttpServletRequest request, final HttpServletResponse response) {
 		
 		LOGGER.debug("Received Request: " + request.getQueryString());
-		LOGGER.info("Zoomify params: " + zoomifyParams);	
+		LOGGER.info("Zoomify - ID: " + entityId + " x: " + x + " y: " + y + " z: " + z);
 		
-		if (zoomifyParams.endsWith("ImageProperties.xml")) {
-			final String[] tokens = zoomifyParams.split("/");
-			
-		}
 		//final ImageProperties imageProperties = getImageProperties(entityId, resolution_HIGH);
 				
 		//if (imageProperties.httpResponseCode != 200) {
