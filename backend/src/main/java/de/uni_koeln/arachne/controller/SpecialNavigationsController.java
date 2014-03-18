@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.response.AbstractSpecialNavigationElement;
 import de.uni_koeln.arachne.response.CeramalexQuantifySpecialNavigationElement;
+import de.uni_koeln.arachne.response.DfgViewerButton;
 import de.uni_koeln.arachne.response.ModelViewerSpecialNavigationElement;
 import de.uni_koeln.arachne.response.SpecialNavigationElementList;
 import de.uni_koeln.arachne.response.TeiViewerSpecialNavigationElement;
@@ -42,6 +43,10 @@ public class SpecialNavigationsController {
 	private transient TeiViewerSpecialNavigationElement teiViewerSE;
 	
 	@Autowired
+	@Qualifier("DfgViewerButton")
+	private transient DfgViewerButton dfgViewerButton;
+	
+	@Autowired
 	@Qualifier("ceramalexQuantifySpecialNavigationElement")
 	private transient CeramalexQuantifySpecialNavigationElement ceramalexQuantifySE;
 	
@@ -57,6 +62,7 @@ public class SpecialNavigationsController {
 	public SpecialNavigationsController() {
 		specNavClasses.add(ceramalexQuantifySE);
 		specNavClasses.add(teiViewerSE);
+		specNavClasses.add(dfgViewerButton);
 		specNavClasses.add(modelViewerSE);
 	}
 	
