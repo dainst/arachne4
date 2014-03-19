@@ -127,42 +127,43 @@ public class SearchController {
 		
 		SearchResult result = new SearchResult();
 		final List<Long> contextIds = genericSQLService.getConnectedEntityIds(entityId);
+		if (resultOffset >= contextIds.size()) {
+			response.setStatus(400);
+			return null;
+		}
+		// TODO filter entityId = 0
+		System.out.println("Contexts: " + contextIds);
 				
 		final List<String> facetList = new ArrayList<String>(defaultFacetList);
 		final List<String> filterValueList = searchService.getFilterValueList(filterValues, facetList);
 		
 		if (contextIds != null) { 
-			final int totalHits = contextIds.size();
-			int lastContext = resultSize + resultOffset - 1;
-			lastContext = lastContext < totalHits ? lastContext : totalHits - 1;
-			final int returnedHits = lastContext - resultOffset + 1;
-			if (returnedHits <= MAX_CONTEXT_QUERY_SIZE) {
-				final String queryStr = getContextQueryString(resultOffset, lastContext, contextIds);
+			if (contextIds.size() <= MAX_CONTEXT_QUERY_SIZE) {
+				final String queryStr = getContextQueryString(0, contextIds.size() - 1, contextIds);
 				LOGGER.debug("Context query: " + queryStr);
 								
-				final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(queryStr, returnedHits, 0, filterValueList);
+				final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(queryStr, resultSize, resultOffset, filterValueList);
 				searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
 				result = searchService.executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, facetList);
-				result.setSize(totalHits);
 			} else {
-				final int requests = (returnedHits - 1) / MAX_CONTEXT_QUERY_SIZE;
+				final int requests = (contextIds.size() - 1) / MAX_CONTEXT_QUERY_SIZE;
 							
 				int start = resultOffset;
 				int end = MAX_CONTEXT_QUERY_SIZE + resultOffset - 1;
 				for (int i = 0; i <= requests; i++) {
 					final String queryStr = getContextQueryString(start, end, contextIds);
-					LOGGER.debug("Context multi query: " + queryStr);
+					LOGGER.debug("Context multi query (" + i + " of " + requests + "): " + queryStr);
 										
-					final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(queryStr, returnedHits, 0, null);
-					result.merge(searchService.executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, null));
+					final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(queryStr, resultSize, 0, filterValueList);
+					searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
+					result.merge(searchService.executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, facetList));
 					
 					start = end + 1;
 					end = end + MAX_CONTEXT_QUERY_SIZE;
 					if (i == requests - 1) {
-						end = lastContext;
+						end = contextIds.size() - 1;
 					}
 				}
-				result.setSize(totalHits);
 			}
 		}
 		return result;
