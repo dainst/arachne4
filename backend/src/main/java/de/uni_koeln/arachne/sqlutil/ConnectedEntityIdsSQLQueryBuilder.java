@@ -36,6 +36,6 @@ public class ConnectedEntityIdsSQLQueryBuilder extends AbstractSQLBuilder {
 		//sql += rightsConditionBuilder.getUserRightsSQLSnipplett();
 		result.append(';');
 		sql = result.toString();
-		LOGGER.info(sql);
+		LOGGER.debug(sql);
 	}
 }
