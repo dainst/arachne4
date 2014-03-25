@@ -17,6 +17,7 @@ import org.json.XML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,6 +62,13 @@ public class ArachneEntityController {
 		
 	@Autowired
 	private transient IUserRightsService userRightsService; 
+	
+	private transient String[] internalFields;
+	
+	@Autowired
+	public ArachneEntityController(final @Value("#{config.internalFields}") String internalFieldsCS) {
+		internalFields = internalFieldsCS.split(",");
+	}
 	
 	/**
 	 * Handles http request for /{entityId}.
@@ -174,14 +182,21 @@ public class ArachneEntityController {
     	if (category == null) {
     		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString("entityId:" + id), accessFilter);
     		searchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
-    				.setQuery(query).setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-    				.setFrom(0).setSize(1).execute().actionGet();
+    				.setQuery(query)
+    				.setFetchSource(new String[] {"*"}, internalFields)
+    				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+    				.setFrom(0)
+    				.setSize(1)
+    				.execute().actionGet();
     	} else {
     		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString("type:" + category + " AND " + "internalId:" + id), accessFilter);
     		searchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
     				.setQuery(query)
+    				.setFetchSource(new String[] {"*"}, internalFields)
     				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-    				.setFrom(0).setSize(1).execute().actionGet();
+    				.setFrom(0)
+    				.setSize(1)
+    				.execute().actionGet();
     	}
     	if (searchResponse.getHits().getTotalHits() == 1) { 
     		result = searchResponse.getHits().getAt(0).getSourceAsString();
