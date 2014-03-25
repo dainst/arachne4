@@ -16,11 +16,11 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class SearchResult {
 
-	private long size = 0;
-	private int limit = 0;
-	private int offset = 0;
-	private Map<String, Map<String, Long>> facets = null;
-	private List<SearchHit> entities = null;
+	private long size;
+	private int limit;
+	private int offset;
+	private Map<String, Map<String, Long>> facets;
+	private List<SearchHit> entities;
 
 	public void addSearchHit(final SearchHit searchHit) {
 		if (searchHit == null) {
@@ -65,42 +65,4 @@ public class SearchResult {
 		this.entities = entities;
 	}
 
-	/**
-	 * This merges another <code>SearchResult</code> with this instance. Entities are added up to the <code>limit</code> parameter. Facets are added.
-	 * The size is summed, </code>limit</code> and <code>offset</code> are set by the appended <code>SearchResult</code>.
-	 * @param esSearchResult
-	 */
-	public void merge(final SearchResult esSearchResult) {
-		if (entities == null) {
-			entities = new ArrayList<SearchHit>();
-		}
-		
-		for (final SearchHit entity: esSearchResult.entities) {
-			if (entities.size() < limit) {
-				entities.add(entity);
-			}
-		}
-		
-		if (facets == null) {
-			facets = esSearchResult.facets;
-		} else {
-			for (final Map.Entry<String, Map<String, Long>> entry: esSearchResult.facets.entrySet()) {
-				if (facets.containsKey(entry.getKey())) {
-					for (final Map.Entry<String, Long> facetEntry: entry.getValue().entrySet()) {
-						if (facets.get(entry.getKey()).get(facetEntry.getKey()) == null) {
-							facets.get(entry.getKey()).put(facetEntry.getKey(), facetEntry.getValue());
-						} else {
-							final long newValue = facets.get(entry.getKey()).get(facetEntry.getKey()) + facetEntry.getValue();
-							facets.get(entry.getKey()).put(facetEntry.getKey(), newValue);
-						}
-					}
-				}
-			}
-		}
-		
-		size = size + esSearchResult.size;
-		
-		limit = esSearchResult.limit;
-		offset = esSearchResult.offset;
-	} 
 }
