@@ -74,6 +74,11 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 	protected double boost;
 	
 	/**
+	 * 
+	 */
+	protected List<Long> connectedEntities;
+	
+	/**
 	 * Parameterless constructor initializing title and subtitle.
 	 */
 	public FormattedArachneEntity() {
@@ -175,5 +180,13 @@ public class FormattedArachneEntity extends FacettedArachneEntity {
 	
 	public void setBoost(final double boost) {
 		this.boost = boost;		
+	}
+	
+	public List<Long> getConnectedEntities() {
+		return connectedEntities;
+	}
+	
+	public void setConnectedEntities(final List<Long> connectedEntities) {
+		this.connectedEntities = connectedEntities;
 	}
 }

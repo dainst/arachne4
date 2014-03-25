@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
 
+import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
@@ -36,6 +37,9 @@ public class ResponseFactory {
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
+	
+	@Autowired
+	private transient GenericSQLService genericSQLService;
 	
 	// needed for testing
 	public void setXmlConfigUtil(final XmlConfigUtil xmlConfigUtil) {
@@ -89,6 +93,9 @@ public class ResponseFactory {
 			response.setDatasetGroup("Arachne");
 		}
 
+		// set connectedEntities
+		response.setConnectedEntities(genericSQLService.getConnectedEntityIds(arachneId.getArachneEntityID()));
+			
 		// set lastModified
 		Date lastModified;
 		try {
