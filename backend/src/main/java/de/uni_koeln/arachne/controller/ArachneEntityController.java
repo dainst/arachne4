@@ -154,7 +154,7 @@ public class ArachneEntityController {
     	
     	if (result != null) {
     		LOGGER.debug("-----------------------------------");
-    		LOGGER.info("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
+    		LOGGER.debug("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
     		return result;
     	}
     	response.setStatus(404);
