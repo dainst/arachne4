@@ -196,7 +196,7 @@ public class ESClientUtil implements ServletContextAware {
 		LOGGER.info("Deleting index " + indexName);
 		DeleteIndexResponse delete = null;
 		try {
-			delete = client.admin().indices().delete(new DeleteIndexRequest(indexName)).actionGet();
+			delete = client.admin().indices().prepareDelete(indexName).execute().actionGet();
 			if (!delete.isAcknowledged()) {
 				LOGGER.error("Index " + indexName + " was not deleted.");
 				result = false;
@@ -222,7 +222,7 @@ public class ESClientUtil implements ServletContextAware {
 			}
 			datasetGroups.append(datasetGroup.getName());
 		}
-		return FilterBuilders.queryFilter(QueryBuilders.fieldQuery("datasetGroup", datasetGroups.toString()));
+		return FilterBuilders.queryFilter(QueryBuilders.queryString("datasetGroup:" + datasetGroups.toString()));
 	}
 
 	public Client getClient() {
