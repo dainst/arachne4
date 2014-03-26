@@ -13,7 +13,7 @@ import de.uni_koeln.arachne.util.StrUtils;
 @Component("DfgViewerButton")
 public class DfgViewerButton extends AbstractSpecialNavigationElement {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(TeiViewerSpecialNavigationElement.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DfgViewerButton.class);
 	
 	@Autowired
 	private transient EntityIdentificationService entityIdentServ;
