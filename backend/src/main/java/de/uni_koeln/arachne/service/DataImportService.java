@@ -134,9 +134,9 @@ public class DataImportService implements Runnable { // NOPMD
 			}
 			
 			LOGGER.info("Dataimport started on index '" + indexName + "'");
-			
+			esClientUtil.setRefreshInterval(indexName, false);
 			BulkRequestBuilder bulkRequest = client.prepareBulk();
-			
+						
 			indexing:
 			while (!finished) {
 				LOGGER.debug("Fetching EntityIds...");
@@ -218,6 +218,7 @@ public class DataImportService implements Runnable { // NOPMD
 				}
 			}
 			if (running.get()) {
+				esClientUtil.setRefreshInterval(indexName, false);
 				final String success = "Import of " + index + " documents finished in " + ((System.currentTimeMillis()
 						- startTime)/1000f/60f/60f) + " hours."; 
 				LOGGER.info(success);

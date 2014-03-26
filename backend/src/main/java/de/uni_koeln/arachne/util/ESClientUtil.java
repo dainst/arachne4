@@ -19,6 +19,7 @@ import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
+import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -374,5 +375,21 @@ public class ESClientUtil implements ServletContextAware {
 			connection = null;
 		}
 		return result.toString();
-	}		
+	}
+
+	public void setRefreshInterval(final String indexName, final boolean enabled) {
+		String refreshValue = "1s";
+		if (!enabled) {
+			refreshValue = "-1";
+		}
+		
+		final UpdateSettingsResponse response = client.admin().indices()
+				.prepareUpdateSettings(indexName)
+				.setSettings("refresh_interval:" + refreshValue)
+				.execute().actionGet();
+		
+		if (!response.isAcknowledged()) {
+			LOGGER.error("Failed to set 'refresh_interval' to " + refreshValue + " on index '" + indexName + "'.");
+		}
+	}
 }
