@@ -20,6 +20,10 @@ public class StatusResponse {
 	
 	private String elapsedTime;
 	
+	private String estimatedTimeRemaining;
+	
+	private Long count;
+	
 	private Long indexedDocuments;
 	
 	private Float documentsPerSecond;
@@ -88,6 +92,22 @@ public class StatusResponse {
 
 	public void setDocumentsPerSecond(Float documentsPerSecond) {
 		this.documentsPerSecond = documentsPerSecond;
+	}
+
+	public String getEstimatedTimeRemaining() {
+		return estimatedTimeRemaining;
+	}
+
+	public void setEstimatedTimeRemaining(String estimatedTimeRemaining) {
+		this.estimatedTimeRemaining = estimatedTimeRemaining;
+	}
+
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
 	}
 	
 }

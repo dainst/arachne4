@@ -107,13 +107,21 @@ public class AdminController {
 		
 		if (dataImportService.isRunning()) {
 			final long elapsedTime = dataImportService.getElapsedTime();
-			final StatusResponse response = new StatusResponse("Dataimport", "running");
+			final StatusResponse response = new StatusResponse("Dataimport ", "running");
 			response.setElapsedTime(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes(elapsedTime)
 					,TimeUnit.MILLISECONDS.toSeconds(elapsedTime) 
 					- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime))) + " minutes");
+			long count = dataImportService.getCount();
+			response.setCount(count);
 			long indexedDocuments = dataImportService.getIndexedDocuments();
 			response.setIndexedDocuments(indexedDocuments);
-			response.setDocumentsPerSecond(indexedDocuments/(float)(elapsedTime/1000));
+			if (elapsedTime > 0 && indexedDocuments > 0) {
+				final long etr = (long)((count - indexedDocuments) / (float)(indexedDocuments/(float)elapsedTime));
+				response.setEstimatedTimeRemaining(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes(etr)
+						,TimeUnit.MILLISECONDS.toSeconds(etr) 
+						- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(etr))) + " minutes");
+				response.setDocumentsPerSecond(indexedDocuments/((float)elapsedTime/1000));
+			}
 			return response;
 		} else {
 			return new StatusResponse("Dataimport", "idle");

@@ -77,6 +77,7 @@ public class DataImportService implements Runnable { // NOPMD
 	private transient final AtomicLong elapsedTime;
 	private transient final AtomicBoolean running;
 	private transient final AtomicLong indexedDocuments;
+	private transient final AtomicLong count;
 	
 	private transient final ObjectMapper mapper;
 	
@@ -87,6 +88,7 @@ public class DataImportService implements Runnable { // NOPMD
 		elapsedTime = new AtomicLong(0);
 		running = new AtomicBoolean(false);
 		indexedDocuments = new AtomicLong(0);
+		count = new AtomicLong(0);
 		mapper = new ObjectMapper();
 		this.PROFILING = profiling;
 	}
@@ -137,6 +139,9 @@ public class DataImportService implements Runnable { // NOPMD
 			esClientUtil.setRefreshInterval(indexName, false);
 			BulkRequestBuilder bulkRequest = client.prepareBulk();
 						
+			final long entityCount = jdbcTemplate.queryForLong("select count(1) `ArachneEntityID` from `arachneentityidentification`");
+			count.set(entityCount);
+			
 			indexing:
 			while (!finished) {
 				LOGGER.debug("Fetching EntityIds...");
@@ -275,5 +280,9 @@ public class DataImportService implements Runnable { // NOPMD
 	
 	public long getIndexedDocuments() {
 		return indexedDocuments.get();
+	}
+	
+	public long getCount() {
+		return count.get();
 	}
 }
