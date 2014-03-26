@@ -107,7 +107,7 @@ public class AdminController {
 		
 		if (dataImportService.isRunning()) {
 			final long elapsedTime = dataImportService.getElapsedTime();
-			final StatusResponse response = new StatusResponse("Dataimport ", "running");
+			final StatusResponse response = new StatusResponse("Dataimport", "running");
 			response.setElapsedTime(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes(elapsedTime)
 					,TimeUnit.MILLISECONDS.toSeconds(elapsedTime) 
 					- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime))) + " minutes");
