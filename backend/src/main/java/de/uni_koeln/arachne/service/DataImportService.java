@@ -15,6 +15,7 @@ import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -38,6 +39,8 @@ import de.uni_koeln.arachne.util.EntityId;
 @Service("DataImportService")
 public class DataImportService implements Runnable { // NOPMD
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataImportService.class);
+	
+	private final boolean PROFILING;
 	
 	@Autowired
 	private transient ESClientUtil esClientUtil;
@@ -79,11 +82,13 @@ public class DataImportService implements Runnable { // NOPMD
 	
 	private transient boolean terminate = false;
 	
-	public DataImportService() {
+	@Autowired
+	public DataImportService(final @Value("#{config.profiling}") boolean profiling) {
 		elapsedTime = new AtomicLong(0);
 		running = new AtomicBoolean(false);
 		indexedDocuments = new AtomicLong(0);
 		mapper = new ObjectMapper();
+		this.PROFILING = profiling;
 	}
 
 	/**
@@ -149,11 +154,16 @@ public class DataImportService implements Runnable { // NOPMD
 				final long endId = entityIds.get((int)end);
 								
 				LOGGER.debug("Fetching entities " + startId + " to " + endId + "...");
-				final long fetch = System.currentTimeMillis();
 				final List<ArachneEntity> entityList = entityIdentificationService.getByEntityIdRange(startId, endId);
-				LOGGER.debug("Fetching entities took " + (System.currentTimeMillis() - fetch) + "ms");
-				LOGGER.debug("Assembling documents " + startId + " to " + endId +"...");
-				final long assemble = System.currentTimeMillis();
+				
+				long assembleTime = 0;
+				if (PROFILING) {
+					final long fetchTime = System.currentTimeMillis();
+					LOGGER.info("Fetching entities took " + (System.currentTimeMillis() - fetchTime) + "ms");
+					LOGGER.info("Assembling documents " + startId + " to " + endId +"...");
+					assembleTime = System.currentTimeMillis();
+				}
+				
 				startId = endId;
 				for (final ArachneEntity currentEntityId: entityList) {
 					if (terminate) {
@@ -161,8 +171,7 @@ public class DataImportService implements Runnable { // NOPMD
 						break indexing;
 					}
 					
-					final EntityId entityId = new EntityId(currentEntityId.getTableName(), currentEntityId.getForeignKey()
-							, currentEntityId.getId(), currentEntityId.isDeleted());
+					final EntityId entityId = new EntityId(currentEntityId);
 					dbgEntityId = currentEntityId.getId();
 					
 					BaseArachneEntity entity;
@@ -187,9 +196,14 @@ public class DataImportService implements Runnable { // NOPMD
 						elapsedTime.set(now - startTime);
 					}
 				}
-				LOGGER.debug("Assembling entities took " + (System.currentTimeMillis() - assemble) + "ms");
-				LOGGER.debug("Executing elasticsearch bulk request...");
-				final long execute = System.currentTimeMillis();
+				
+				long executeTime = 0;
+				if (PROFILING) {
+					LOGGER.info("Assembling entities took " + (System.currentTimeMillis() - assembleTime) + "ms");
+					LOGGER.info("Executing elasticsearch bulk request...");
+					executeTime = System.currentTimeMillis();
+				}
+				
 				bulkRequest.execute().actionGet();
 				bulkRequest = client.prepareBulk();
 				if (finished) {
@@ -198,7 +212,10 @@ public class DataImportService implements Runnable { // NOPMD
 					index += esBulkSize;
 				}
 				indexedDocuments.set(index);
-				LOGGER.debug("Executing elasticsearch bulk request took " + (System.currentTimeMillis() - execute) + "ms");
+				
+				if (PROFILING) {
+					LOGGER.info("Executing elasticsearch bulk request took " + (System.currentTimeMillis() - executeTime) + "ms");
+				}
 			}
 			if (running.get()) {
 				final String success = "Import of " + index + " documents finished in " + ((System.currentTimeMillis()
