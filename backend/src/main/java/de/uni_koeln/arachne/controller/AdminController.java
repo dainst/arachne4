@@ -91,7 +91,7 @@ public class AdminController {
 		LOGGER.debug("User GroupID: " + userRightsService.getCurrentUser().getGroupID());
 		if (userRightsService.getCurrentUser().getGroupID() >= UserRightsService.MIN_ADMIN_ID) {
 			xmlConfigUtil.clearCache();
-			return new StatusResponse("Cache cleared.");
+			return new StatusResponse("Cache", "cleared");
 		}
 		response.setStatus(403);
 		return null;
@@ -107,13 +107,16 @@ public class AdminController {
 		
 		if (dataImportService.isRunning()) {
 			final long elapsedTime = dataImportService.getElapsedTime();
-			return new StatusResponse("Dataimport status: running - Elapsed Time: " + String.format("%d:%02d", 
-					TimeUnit.MILLISECONDS.toMinutes(elapsedTime),
-					TimeUnit.MILLISECONDS.toSeconds(elapsedTime) - 
-					TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime))) + " minutes - " 
-					+ "Indexed Documents: " + dataImportService.getIndexedDocuments());
+			final StatusResponse response = new StatusResponse("Dataimport", "running");
+			response.setElapsedTime(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes(elapsedTime)
+					,TimeUnit.MILLISECONDS.toSeconds(elapsedTime) 
+					- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime))) + " minutes");
+			long indexedDocuments = dataImportService.getIndexedDocuments();
+			response.setIndexedDocuments(indexedDocuments);
+			response.setDocumentsPerSecond(indexedDocuments/(float)(elapsedTime/1000));
+			return response;
 		} else {
-			return new StatusResponse("Dataimport status: idle");
+			return new StatusResponse("Dataimport", "idle");
 		}
 	}
 	
@@ -134,18 +137,18 @@ public class AdminController {
 		} else {
 			if ("start".equals(command)) {
 				if (dataImportService.isRunning()) {
-					return new StatusResponse("Dataimport status: already running");
+					return new StatusResponse("Dataimport", "already running");
 				} else {
 					defaultTaskExecutor.execute(dataImportService);				
-					return new StatusResponse("Dataimport status: started");
+					return new StatusResponse("Dataimport", "started");
 				}
 			} else {
 				if ("stop".equals(command)) {
 					if (dataImportService.isRunning()) {
 						dataImportService.stop();
-						return new StatusResponse("Dataimport status: aborting");
+						return new StatusResponse("Dataimport", "aborting");
 					} else {
-						return new StatusResponse("Dataimport status: not running");
+						return new StatusResponse("Dataimport", "not running");
 					}
 				}
 			}
