@@ -152,7 +152,7 @@ public class AdminController {
 					}
 				}
 			}
-			return new StatusResponse("Unsupported command.");
+			return new StatusResponse("Dataimport", "unsupported command");
 		}
 	}
 	
