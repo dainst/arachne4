@@ -52,13 +52,16 @@ public class SpecialNavigationsController {
 	
 	
 	/**
-	 * List of all currently avaiable special navigation classes, needs to be
+	 * List of all currently available special navigation classes, needs to be
 	 * extended, if additional special navigations have to be provided.
-	 * To fill the list, look at the init-method. You can create new objects in
+	 * To fill the list use the constructor. You can create new objects in
 	 * that method or use autowired ones.
 	 */
 	private transient final List<AbstractSpecialNavigationElement> specNavClasses = new ArrayList<AbstractSpecialNavigationElement>();
 
+	/**
+	 * Constructor to initialize list of SpecialNavigationElement classes.
+	 */
 	public SpecialNavigationsController() {
 		specNavClasses.add(ceramalexQuantifySE);
 		specNavClasses.add(teiViewerSE);
