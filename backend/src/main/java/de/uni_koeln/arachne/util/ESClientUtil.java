@@ -378,18 +378,27 @@ public class ESClientUtil implements ServletContextAware {
 	}
 
 	public void setRefreshInterval(final String indexName, final boolean enabled) {
+		// close index		
+		client.admin().indices().prepareClose(indexName).execute().actionGet();
+		
+		// update settings
 		String refreshValue = "1s";
 		if (!enabled) {
 			refreshValue = "-1";
 		}
 		
+		final Settings settings = ImmutableSettings.settingsBuilder().put("refresh_intervall", refreshValue).build();
+		
 		final UpdateSettingsResponse response = client.admin().indices()
 				.prepareUpdateSettings(indexName)
-				.setSettings("refresh_interval:" + refreshValue)
+				.setSettings(settings)
 				.execute().actionGet();
 		
 		if (!response.isAcknowledged()) {
 			LOGGER.error("Failed to set 'refresh_interval' to " + refreshValue + " on index '" + indexName + "'.");
 		}
+		
+		// open index
+		client.admin().indices().prepareOpen(indexName).execute().actionGet();
 	}
 }
