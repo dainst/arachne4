@@ -10,7 +10,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import javax.sql.DataSource;
 
-import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkProcessor;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +86,7 @@ public class DataImportService implements Runnable { // NOPMD
 	private transient boolean terminate = false;
 	
 	@Autowired
-	public DataImportService(final @Value("#{config.profiling}") boolean profiling) {
+	public DataImportService(final @Value("#{config.profilingDataimport}") boolean profiling) {
 		elapsedTime = new AtomicLong(0);
 		running = new AtomicBoolean(false);
 		indexedDocuments = new AtomicLong(0);
@@ -126,8 +128,28 @@ public class DataImportService implements Runnable { // NOPMD
 			int index = 0;
 			long startId = 0;
 			
+			// TODO make configurable
+			int maxConcurrentBulk = 4;
+			
 			final Client client = esClientUtil.getClient();
 			final int esBulkSize = esClientUtil.getBulkSize();
+			final BulkProcessor bulkProcessor = BulkProcessor.builder(client, new BulkProcessor.Listener() {
+				
+				@Override
+			    public void beforeBulk(long executionId, BulkRequest request) {
+			        LOGGER.debug("Going to execute new bulk composed of {} actions", request.numberOfActions());
+			    }
+
+			    @Override
+			    public void afterBulk(long executionId, BulkRequest request, BulkResponse response) {
+			        LOGGER.info("Executed bulk composed of {} actions", request.numberOfActions());
+			    }
+
+			    @Override
+			    public void afterBulk(long executionId, BulkRequest request, Throwable failure) {
+			        LOGGER.error("Error executing bulk", failure);
+			    }
+			}).setConcurrentRequests(maxConcurrentBulk).build();
 						
 			if ("NoIndex".equals(indexName)) {
 				LOGGER.error("Dataimport failed. No index found.");
@@ -137,10 +159,15 @@ public class DataImportService implements Runnable { // NOPMD
 			
 			LOGGER.info("Dataimport started on index '" + indexName + "'");
 			esClientUtil.setRefreshInterval(indexName, false);
-			BulkRequestBuilder bulkRequest = client.prepareBulk();
+			//BulkRequestBuilder bulkRequest = client.prepareBulk();
 						
-			final long entityCount = jdbcTemplate.queryForLong("select count(1) `ArachneEntityID` from `arachneentityidentification`");
-			count.set(entityCount);
+			final Long entityCount = jdbcTemplate.queryForObject("select count(1) `ArachneEntityID` from `arachneentityidentification`", Long.class);
+			if (entityCount != null) {
+				count.set(entityCount);
+			} else {
+				LOGGER.error("'select count(1) `ArachneEntityID` from `arachneentityidentification`' returned 0 - Dataimport aborted.");
+				finished = true;
+			}
 			
 			indexing:
 			while (!finished) {
@@ -190,8 +217,8 @@ public class DataImportService implements Runnable { // NOPMD
 						LOGGER.error("Entity " + entityId.getArachneEntityID() + " is null! This should never happen. Check the database immediately.");
 						throw new Exception();
 					} else {
-						bulkRequest.add(client.prepareIndex(indexName, "entity",String.valueOf(entityId.getArachneEntityID()))
-								.setSource(mapper.writeValueAsBytes(entity)));
+						bulkProcessor.add(client.prepareIndex(indexName, "entity", String.valueOf(entityId.getArachneEntityID()))
+								.setSource(mapper.writeValueAsBytes(entity)).request());
 					}
 					
 					// update elapsed time every second
@@ -202,15 +229,15 @@ public class DataImportService implements Runnable { // NOPMD
 					}
 				}
 				
-				long executeTime = 0;
+				//long executeTime = 0;
 				if (PROFILING) {
 					LOGGER.info("Assembling entities took " + (System.currentTimeMillis() - assembleTime) + "ms");
-					LOGGER.info("Executing elasticsearch bulk request...");
-					executeTime = System.currentTimeMillis();
+					//LOGGER.info("Executing elasticsearch bulk request...");
+					//executeTime = System.currentTimeMillis();
 				}
 				
-				bulkRequest.execute().actionGet();
-				bulkRequest = client.prepareBulk();
+				//bulkRequest.execute().actionGet();
+				//bulkRequest = client.prepareBulk();
 				if (finished) {
 					index += end;
 				} else {
@@ -218,12 +245,13 @@ public class DataImportService implements Runnable { // NOPMD
 				}
 				indexedDocuments.set(index);
 				
-				if (PROFILING) {
+				/*if (PROFILING) {
 					LOGGER.info("Executing elasticsearch bulk request took " + (System.currentTimeMillis() - executeTime) + "ms");
-				}
+				}*/
 			}
 			if (running.get()) {
-				esClientUtil.setRefreshInterval(indexName, false);
+				bulkProcessor.close();
+				esClientUtil.setRefreshInterval(indexName, true);
 				final String success = "Import of " + index + " documents finished in " + ((System.currentTimeMillis()
 						- startTime)/1000f/60f/60f) + " hours."; 
 				LOGGER.info(success);
