@@ -49,6 +49,6 @@ public abstract class AbstractContextualizer implements IContextualizer {
 	public abstract String getContextType();
 
 	@Override
-	public abstract List<AbstractLink> retrieve(Dataset parent, Integer offset,	Integer limit);
+	public abstract List<AbstractLink> retrieve(Dataset parent);
 
 }

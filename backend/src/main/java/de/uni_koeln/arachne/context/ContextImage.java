@@ -15,7 +15,7 @@ public class ContextImage extends Context {
 	private transient final String usage;
 	
 	public ContextImage(final String contextType, final String usage, final Dataset parent) {
-		super(contextType, parent);
+		super(contextType, parent, null);
 		this.usage = usage;
 	}
 

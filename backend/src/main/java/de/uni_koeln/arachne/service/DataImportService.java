@@ -60,6 +60,9 @@ public class DataImportService implements Runnable { // NOPMD
 	private transient MailService mailService;
 	
 	@Autowired
+	private transient ContextService contextService;
+	
+	@Autowired
 	private transient ResponseFactory responseFactory;
 	
 	private transient JdbcTemplate jdbcTemplate;
@@ -114,42 +117,36 @@ public class DataImportService implements Runnable { // NOPMD
 		running.set(true);
 		indexedDocuments.set(0);		
 		elapsedTime.set(0);
-		final long startTime = System.currentTimeMillis();
 		long dbgEntityId = 0;
 		
 		userRightsService.setDataimporter();
 		
-		elapsedTime.set(System.currentTimeMillis() - startTime);
-		
 		final String indexName = esClientUtil.getDataImportIndex();
 		try {
-			boolean finished = false;
 			long deltaT = 0;
 			int index = 0;
-			long startId = 0;
-			
-			// TODO make configurable
-			int maxConcurrentBulk = 4;
-			
+						
 			final Client client = esClientUtil.getClient();
-			final int esBulkSize = esClientUtil.getBulkSize();
+			
 			final BulkProcessor bulkProcessor = BulkProcessor.builder(client, new BulkProcessor.Listener() {
 				
 				@Override
 			    public void beforeBulk(long executionId, BulkRequest request) {
-			        LOGGER.debug("Going to execute new bulk composed of {} actions", request.numberOfActions());
+					LOGGER.debug("Going to execute new bulk composed of {} actions", request.numberOfActions());
 			    }
 
 			    @Override
 			    public void afterBulk(long executionId, BulkRequest request, BulkResponse response) {
-			        LOGGER.info("Executed bulk composed of {} actions", request.numberOfActions());
+			        LOGGER.debug("Executed bulk composed of {} actions", request.numberOfActions());
 			    }
 
 			    @Override
 			    public void afterBulk(long executionId, BulkRequest request, Throwable failure) {
 			        LOGGER.error("Error executing bulk", failure);
 			    }
-			}).setConcurrentRequests(maxConcurrentBulk).build();
+			})
+			.setBulkActions(esClientUtil.getBulkSize())
+			.build();
 						
 			if ("NoIndex".equals(indexName)) {
 				LOGGER.error("Dataimport failed. No index found.");
@@ -159,108 +156,67 @@ public class DataImportService implements Runnable { // NOPMD
 			
 			LOGGER.info("Dataimport started on index '" + indexName + "'");
 			esClientUtil.setRefreshInterval(indexName, false);
-			//BulkRequestBuilder bulkRequest = client.prepareBulk();
-						
+									
 			final Long entityCount = jdbcTemplate.queryForObject("select count(1) `ArachneEntityID` from `arachneentityidentification`", Long.class);
 			if (entityCount != null) {
 				count.set(entityCount);
 			} else {
 				LOGGER.error("'select count(1) `ArachneEntityID` from `arachneentityidentification`' returned 0 - Dataimport aborted.");
-				finished = true;
+				throw new Exception("'select count(1) `ArachneEntityID` from `arachneentityidentification`' returned 0");
 			}
 			
-			indexing:
-			while (!finished) {
-				LOGGER.debug("Fetching EntityIds...");
-				final List<Long> entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification` WHERE `ArachneEntityID` > "
-						+ startId + " ORDER BY `ArachneEntityID` LIMIT " + esBulkSize, longMapper);
-								
-				long end = esBulkSize - 1;
-				
-				if (end >= entityIds.size()) {
-					end = entityIds.size() - 1;
-					finished = true;
-				}
-								
-				startId = entityIds.get(0);
-				final long endId = entityIds.get((int)end);
-								
-				LOGGER.debug("Fetching entities " + startId + " to " + endId + "...");
-				final List<ArachneEntity> entityList = entityIdentificationService.getByEntityIdRange(startId, endId);
-				
-				long assembleTime = 0;
-				if (PROFILING) {
-					final long fetchTime = System.currentTimeMillis();
-					LOGGER.info("Fetching entities took " + (System.currentTimeMillis() - fetchTime) + "ms");
-					LOGGER.info("Assembling documents " + startId + " to " + endId +"...");
-					assembleTime = System.currentTimeMillis();
+			LOGGER.debug("Fetching EntityIds...");
+			final List<Long> entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification`"
+					+ " ORDER BY `ArachneEntityID`", longMapper);
+			
+			final long startTime = System.currentTimeMillis();
+			
+			for (final long currentEntityId: entityIds) {
+				if (terminate) {
+					running.set(false);
+					break;
 				}
 				
-				startId = endId;
-				for (final ArachneEntity currentEntityId: entityList) {
-					if (terminate) {
-						running.set(false);
-						break indexing;
-					}
-					
-					final EntityId entityId = new EntityId(currentEntityId);
-					dbgEntityId = currentEntityId.getId();
-					
-					BaseArachneEntity entity;
-					if (entityId.isDeleted()) {
-						entity = responseFactory.createResponseForDeletedEntity(entityId);
-					} else {
-						entity = entityService.getFormattedEntityById(entityId);
-					}
-										
-					if (entity == null) {
-						LOGGER.error("Entity " + entityId.getArachneEntityID() + " is null! This should never happen. Check the database immediately.");
-						throw new Exception();
-					} else {
-						bulkProcessor.add(client.prepareIndex(indexName, "entity", String.valueOf(entityId.getArachneEntityID()))
-								.setSource(mapper.writeValueAsBytes(entity)).request());
-					}
-					
-					// update elapsed time every second
-					final long now = System.currentTimeMillis();
-					if (now - deltaT > 1000) {
-						deltaT = now;
-						elapsedTime.set(now - startTime);
-					}
-				}
+				final EntityId entityId = entityIdentificationService.getId(currentEntityId);
+				dbgEntityId = entityId.getArachneEntityID();
 				
-				//long executeTime = 0;
-				if (PROFILING) {
-					LOGGER.info("Assembling entities took " + (System.currentTimeMillis() - assembleTime) + "ms");
-					//LOGGER.info("Executing elasticsearch bulk request...");
-					//executeTime = System.currentTimeMillis();
-				}
-				
-				//bulkRequest.execute().actionGet();
-				//bulkRequest = client.prepareBulk();
-				if (finished) {
-					index += end;
+				BaseArachneEntity entity;
+				if (entityId.isDeleted()) {
+					entity = responseFactory.createResponseForDeletedEntity(entityId);
 				} else {
-					index += esBulkSize;
+					entity = entityService.getFormattedEntityById(entityId);
 				}
-				indexedDocuments.set(index);
+									
+				if (entity == null) {
+					LOGGER.error("Entity " + entityId.getArachneEntityID() + " is null! This should never happen. Check the database immediately.");
+					throw new Exception();
+				} else {
+					bulkProcessor.add(client.prepareIndex(indexName, "entity", String.valueOf(entityId.getArachneEntityID()))
+							.setSource(mapper.writeValueAsBytes(entity)).request());
+					index++;
+					indexedDocuments.set(index);
+				}
 				
-				/*if (PROFILING) {
-					LOGGER.info("Executing elasticsearch bulk request took " + (System.currentTimeMillis() - executeTime) + "ms");
-				}*/
+				// update elapsed time every second
+				final long now = System.currentTimeMillis();
+				if (now - deltaT > 1000) {
+					deltaT = now;
+					elapsedTime.set(now - startTime);
+				}
 			}
 			if (running.get()) {
 				bulkProcessor.close();
 				esClientUtil.setRefreshInterval(indexName, true);
+				esClientUtil.updateSearchIndex();
 				final String success = "Import of " + index + " documents finished in " + ((System.currentTimeMillis()
 						- startTime)/1000f/60f/60f) + " hours."; 
 				LOGGER.info(success);
 				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + getHostName() + ") - success", success);
-				esClientUtil.updateSearchIndex();
+				contextService.clearCache();
 			} else {
 				LOGGER.info("Dataimport aborted.");
-				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + getHostName() + ") - abort", "Dataimport was manually aborted.");
 				esClientUtil.deleteIndex(indexName);
+				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + getHostName() + ") - abort", "Dataimport was manually aborted.");
 			}
 		}
 		// TODO: find out if it is possible to catch less generic exceptions here

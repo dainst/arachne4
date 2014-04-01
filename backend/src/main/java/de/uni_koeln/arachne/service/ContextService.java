@@ -1,8 +1,11 @@
 package de.uni_koeln.arachne.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +16,6 @@ import de.uni_koeln.arachne.context.*;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.util.ImageUtils;
-import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 /**
@@ -57,6 +59,8 @@ public class ContextService {
 	@Autowired
 	private transient IUserRightsService rightsService;
 	
+	private transient Map<String, IContextualizer> contextualizers = new HashMap<String, IContextualizer>();
+	
 	/**
 	 * This methods adds all contexts to the dataset that are found in the XML description. It also runs all contextualizers 
 	 * that are marked as explicit in the corresponding xml config file. 
@@ -67,27 +71,18 @@ public class ContextService {
 		final List<String> explicitContextualizersList = xmlConfigUtil.getExplicitContextualizers(parent.getArachneId().getTableName());
 		for (String contextualizerName: explicitContextualizersList) {
 			final IContextualizer contextualizer = getContextualizerByContextType(contextualizerName);
-			final Context context = new Context(contextualizer.getContextType(), parent);
-			final List<AbstractLink> contextEntities = contextualizer.retrieve(parent, 0, -1);
-			if (contextEntities != null && !contextEntities.isEmpty()) {
-				context.contextEntities.addAll(contextEntities);
-				context.setCompletionStateFull();
-				if (context.getContextSize() > 0) {
-					parent.addContext(context);
-				}
+			final Context context = new Context(contextualizer.getContextType(), parent, contextualizer.retrieve(parent));
+			if (context.getSize() > 0) {
+				parent.addContext(context);
 			}
 		}
 		// implicit contextualizers
 		final List<String> mandatoryContextTypes = xmlConfigUtil.getMandatoryContextNames(parent.getArachneId().getTableName());
 		LOGGER.debug("Mandatory Contexts: " + mandatoryContextTypes);
-		if (mandatoryContextTypes != null) {
-			final Iterator<String> contextType = mandatoryContextTypes.iterator();
-			while (contextType.hasNext()) {
-				final Context context = new Context(contextType.next(), parent);
-				context.getallContexts();
-				if (context.getContextSize() > 0) {
-					parent.addContext(context);
-				}
+		for (final String contextType: mandatoryContextTypes) {
+			final Context context = new Context(contextType, parent, getLinks(parent, contextType));
+			if (context.getSize() > 0) {
+				parent.addContext(context);
 			}
 		}
 	}
@@ -127,7 +122,7 @@ public class ContextService {
 			final Context context = new ContextImage(cur.getContextName(), cur.getContextImageUsage(), parent);
 			
 			// retrieve full context-data
-			final List<AbstractLink> connectedEntities = context.getallContexts();
+			final List<AbstractLink> connectedEntities = context.getAllContexts();
 			if (connectedEntities == null) {
 				continue;
 			}
@@ -180,43 +175,16 @@ public class ContextService {
 		}
 	}
 	
-	
-	/**
-	 * Method to append all context objects to the given dataset.
-	 * Some context objects are universal like 'literatur' or 'ort'. They get included
-	 * for every dataset type. Other context objects are looked up based on the 'Verknuepfungen'
-	 * table.  
-	 * 
-	 * @param parent ArachneDataset that will gain the added context
-	 */
-	public void addContext(final Dataset parent) {
-		if (parent.getArachneId().getTableName().equals("bauwerk")) {
-			final List<String> connectionList = arachneConnectionService.getConnectionList(parent.getArachneId().getTableName());
-			final Iterator<String> iterator = connectionList.iterator();
-			while (iterator.hasNext()) {
-				final Context context = new Context(iterator.next(), parent);
-				context.getFirstContext();
-				parent.addContext(context);
-			}
-			
-			final Context litContext = new Context("Literatur", parent);
-			litContext.getFirstContext();
-			parent.addContext(litContext);
-		}
-	}
-	
 	/**
 	 * This function retrieves the contexts according to the given criteria.
 	 * It uses a context specific contextualizer to fetch the data.
 	 * @param parent Instance of an <code>ArachneDataset</code> that will receive the context
 	 * @param contextType String that describes the context-type
-	 * @param offset Starting position for context listing
-	 * @param limit Quantity of contexts 
 	 * @return Returns a list of <code>Links</code> 
 	 */ 
-	public List<AbstractLink> getLinks(final Dataset parent, final String contextType, final Integer offset, final Integer limit) {
+	public List<AbstractLink> getLinks(final Dataset parent, final String contextType) {
 		final IContextualizer contextualizer = getContextualizerByContextType(contextType);
-	    return contextualizer.retrieve(parent, offset, limit);
+	    return contextualizer.retrieve(parent);
 	}
 	
 	/**
@@ -230,28 +198,46 @@ public class ContextService {
 	 */
 	@SuppressWarnings("rawtypes")
 	private IContextualizer getContextualizerByContextType(final String contextType) {
-		try {
+		IContextualizer result = contextualizers.get(contextType); 
+		if (result == null) {
 			final String upperCaseContextType = contextType.substring(0, 1).toUpperCase() + contextType.substring(1).toLowerCase();
 			final String className = "de.uni_koeln.arachne.context." + upperCaseContextType + "Contextualizer";
-			LOGGER.debug("Initializing class: " + className + "...");
-			final Class<?> aClass = Class.forName(className);
-			final java.lang.reflect.Constructor classConstructor = aClass.getConstructor();
-			final AbstractContextualizer contextualizer = (AbstractContextualizer)classConstructor.newInstance();
-			// set services
-			contextualizer.setEntityIdentificationService(entityIdentificationService);
-			contextualizer.setGenericSQLService(genericSQLService);
-			contextualizer.setSingleEntityDataService(singleEntityDataService);
-			contextualizer.setRightsService(rightsService);
-			contextualizer.setXmlConfigUtil(xmlConfigUtil);
-			return contextualizer;
-		} catch (ClassNotFoundException e) {
-			LOGGER.debug("FAILURE - using SemanticConnectionsContextualizer instead");
-			return new SemanticConnectionsContextualizer(contextType, genericSQLService);
+			try {
+				LOGGER.debug("Initializing class: " + className + "...");
+				final Class<?> aClass = Class.forName(className);
+				final java.lang.reflect.Constructor classConstructor = aClass.getConstructor();
+				final AbstractContextualizer contextualizer = (AbstractContextualizer)classConstructor.newInstance();
+				// set services
+				contextualizer.setEntityIdentificationService(entityIdentificationService);
+				contextualizer.setGenericSQLService(genericSQLService);
+				contextualizer.setSingleEntityDataService(singleEntityDataService);
+				contextualizer.setRightsService(rightsService);
+				contextualizer.setXmlConfigUtil(xmlConfigUtil);
+				contextualizers.put(contextType, contextualizer);
+				result = contextualizer;
+			} catch (ClassNotFoundException e) {
+				LOGGER.debug("FAILURE - using SemanticConnectionsContextualizer instead");
+				result = new SemanticConnectionsContextualizer(contextType, genericSQLService);
+			} catch (SecurityException e) {
+				LOGGER.debug("Getting constructor failed for class " + className + ": ", e);
+			} catch (NoSuchMethodException e) {
+				LOGGER.debug("Getting constructor failed for class " + className + ": ", e);
+			} catch (IllegalArgumentException e) {
+				LOGGER.debug("Creating instance of class " + className + "failed. Cause: ", e);
+			} catch (InstantiationException e) {
+				LOGGER.debug("Creating instance of class " + className + "failed. Cause: ", e);
+			} catch (IllegalAccessException e) {
+				LOGGER.debug("Creating instance of class " + className + "failed. Cause: ", e);
+			} catch (InvocationTargetException e) {
+				LOGGER.debug("Creating instance of class " + className + "failed. Cause: ", e);
+			}
 		}
-		catch (Exception e) {
-			LOGGER.error("An exception occured while trying to load a contextualizer for '" + contextType + "'", e);
-		}
-		return null;
+		return result;		
 	}
+
+
+	public void clearCache() {
+		contextualizers = new HashMap<String, IContextualizer>();
+	} 
 	
 }

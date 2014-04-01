@@ -162,7 +162,7 @@ public class Dataset {
 	public int getContextSize(final String contextType) {
 		for (final Context context: this.context) {
 			if (context.getContextType().equals(contextType)) {
-				return context.getContextSize();				
+				return context.getSize();				
 			}
 		}
 		return 0;
@@ -261,7 +261,7 @@ public class Dataset {
 	public List<String> getFieldsFromContexts(final String fieldName) {
 		final List<String> result = new ArrayList<String>();
 		for (final Context context: this.context) {
-			final List<AbstractLink> links = context.getallContexts();
+			final List<AbstractLink> links = context.getAllContexts();
 			if (!links.isEmpty()) {
 				for (final AbstractLink link: links) {
 					String tmpResult = null;

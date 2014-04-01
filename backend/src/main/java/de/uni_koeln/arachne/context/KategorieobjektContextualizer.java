@@ -40,7 +40,7 @@ public class KategorieobjektContextualizer extends AbstractContextualizer {
 	 * is present the field "KategorieObjekt.Typ" is added and set to the corresponding value.
 	 */
 	@Override
-	public List<AbstractLink> retrieve(final Dataset parent, final Integer offset, final Integer limit) {
+	public List<AbstractLink> retrieve(final Dataset parent) {
 		final Set<String> keySet = parent.getFields().keySet();
 		String subcategoryValue = "";
 		for (final String objektSubcategory: subcategories) {

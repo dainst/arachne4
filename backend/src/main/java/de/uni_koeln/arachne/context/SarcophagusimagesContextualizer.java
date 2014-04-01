@@ -57,7 +57,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 	 * @param offset 	offset of the context to retrieve.
 	 * @param limit		Maximum number of contexts to retireve.
 	 */
-	public List<AbstractLink> retrieve(final Dataset parent, final Integer offset, final Integer limit) {
+	public List<AbstractLink> retrieve(final Dataset parent) {
 		
 		for (final String contextType : PRIMARY_CONTEXT_TYPES) {
 			
@@ -78,7 +78,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 
 					final List<Map<String, String>> imagesContextContents = genericSQLService.getConnectedEntities(TARGET_CONTEXT_TYPE, entityId.getArachneEntityID());
 					if (imagesContextContents != null) {
-						addImages(contextType, imagesContextContents, sceneNumber, description, offset, limit);	
+						addImages(contextType, imagesContextContents, sceneNumber, description);	
 					}
 				}
 			}
@@ -109,9 +109,9 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 	 * @param limit Maximum number of contexts to retireve.
 	 */
 	private void addImages(final String contextType, final List<Map<String, String>> imagesContextContents, 
-						   final Integer sceneNumber, final String description, final Integer offset, final Integer limit) {
-		final ListIterator<Map<String, String>> imagesContextMap = imagesContextContents.listIterator(offset);
-		while (imagesContextMap.hasNext() && (imageCount < limit || limit == -1)) {
+						   final Integer sceneNumber, final String description) {
+		final ListIterator<Map<String, String>> imagesContextMap = imagesContextContents.listIterator();
+		while (imagesContextMap.hasNext()) {
 			image = new SarcophagusImage();
 			extractImageDataFromQueryResults(imagesContextMap.next());
 			imageCount++;

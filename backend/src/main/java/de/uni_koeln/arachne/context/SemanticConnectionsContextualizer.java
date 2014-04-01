@@ -40,7 +40,7 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 	}
 	
 	@Override
-	public List<AbstractLink> retrieve(final Dataset parent, final Integer offset, final Integer limit) {
+	public List<AbstractLink> retrieve(final Dataset parent) {
 		final List<AbstractLink> result = new ArrayList<AbstractLink>();
 		
 		final long queryTime = System.currentTimeMillis();
@@ -49,8 +49,8 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 		LOGGER.debug("Query time: " + (System.currentTimeMillis() - queryTime) + " ms");		
 		
 		if (contextContents != null) {
-			final ListIterator<Map<String, String>> contextMap = contextContents.listIterator(offset);
-			while (contextMap.hasNext() && (linkCount < limit || limit == -1)) {
+			final ListIterator<Map<String, String>> contextMap = contextContents.listIterator();
+			while (contextMap.hasNext()) {
 				final ArachneLink link = new ArachneLink();
 				link.setEntity1(parent);
 				link.setEntity2(createDatasetFromQueryResults(contextMap.next()));

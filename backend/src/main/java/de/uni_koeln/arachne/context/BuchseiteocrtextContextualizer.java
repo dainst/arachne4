@@ -38,7 +38,7 @@ public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 	 * @param offset 	offset of the context to retrieve.
 	 * @param limit		Maximum number of contexts to retireve.
 	 */
-	public List<AbstractLink> retrieve(final Dataset parent, final Integer offset, final Integer limit) {
+	public List<AbstractLink> retrieve(final Dataset parent) {
 		if (rightsService.isDataimporter()) {
 			final Map<String, String> bookData = genericSQLService.getConnectedEntities("buch", parent.getArachneId().getArachneEntityID()).get(0);
 			if ((bookData != null) && ("1".equals(bookData.get("buch.hasOcrText")))) {

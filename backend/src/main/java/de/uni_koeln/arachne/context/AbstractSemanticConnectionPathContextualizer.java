@@ -54,12 +54,8 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 	protected abstract void setupContextPath();
 	
 	@Override
-	public List<AbstractLink> retrieve(final Dataset parent, final Integer offset,
-			final Integer limit) {
-		
-		
-		
-		//TODO Implement limit offset restriction
+	public List<AbstractLink> retrieve(final Dataset parent) {
+				
 		//TODO IF Preformence Problems Occure : Implement structure to optimize retrival technique by given paramters.
 		
 		final List<AbstractLink> result = new ArrayList<AbstractLink>();
@@ -67,8 +63,8 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 		final List<Map<String, String>> contextContents = this.genericSQLService.getPathConnectedEntities(parent.getArachneId().getArachneEntityID(),contextPath);
 		//Retrival Succsessfull Then Build result
 		 if (contextContents != null) {
-				final ListIterator<Map<String, String>> contextMap = contextContents.listIterator(offset);
-				while (contextMap.hasNext() && (linkCount < limit || limit == -1)) {
+				final ListIterator<Map<String, String>> contextMap = contextContents.listIterator();
+				while (contextMap.hasNext()) {
 					final ArachneLink link = new ArachneLink();
 					link.setEntity1(parent);
 					

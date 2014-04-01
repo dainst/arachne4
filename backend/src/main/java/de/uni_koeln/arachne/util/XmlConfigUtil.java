@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.spi.DirStateFactory.Result;
 import javax.servlet.ServletContext;
 
 import org.jdom2.Document;
