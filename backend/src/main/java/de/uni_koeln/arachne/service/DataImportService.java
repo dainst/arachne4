@@ -27,7 +27,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.uni_koeln.arachne.mapping.ArachneEntity;
 import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.util.ESClientUtil;
@@ -157,15 +156,15 @@ public class DataImportService implements Runnable { // NOPMD
 			LOGGER.info("Dataimport started on index '" + indexName + "'");
 			esClientUtil.setRefreshInterval(indexName, false);
 									
-			final Long entityCount = jdbcTemplate.queryForObject("select count(1) `ArachneEntityID` from `arachneentityidentification`", Long.class);
+			final Long entityCount = jdbcTemplate.queryForObject("select count(*) `ArachneEntityID` from `arachneentityidentification`", Long.class);
 			if (entityCount != null) {
 				count.set(entityCount);
 			} else {
-				LOGGER.error("'select count(1) `ArachneEntityID` from `arachneentityidentification`' returned 0 - Dataimport aborted.");
-				throw new Exception("'select count(1) `ArachneEntityID` from `arachneentityidentification`' returned 0");
+				LOGGER.error("'select count(*) `ArachneEntityID` from `arachneentityidentification`' returned 0 - Dataimport aborted.");
+				throw new Exception("'select count(*) `ArachneEntityID` from `arachneentityidentification`' returned 0");
 			}
 			
-			LOGGER.debug("Fetching EntityIds...");
+			LOGGER.info("Fetching EntityIds...");
 			final List<Long> entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification`"
 					+ " ORDER BY `ArachneEntityID`", longMapper);
 			
