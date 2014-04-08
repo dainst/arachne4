@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>
-	Welcome to Arachne4 alpha
+	Welcome to Arachne4 beta
 </h1>
 <c:forEach items="${infoList}" var="info">
 	<td>username : ${infoList.username}</td>
