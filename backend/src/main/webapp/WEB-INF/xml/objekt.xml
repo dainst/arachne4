@@ -3,6 +3,7 @@
 <category name="objekt" xmlns="http://arachne.uni-koeln.de/schemas/category"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<explicitContextualizers>custompathobjektzenontitle</explicitContextualizers>
 	<display>
 		<title>
 			<section>
@@ -105,6 +106,17 @@
 					<field datasource="objekt.InschriftPublikation"/>
 				</section>
 				<include type="literatur" />
+				<section labelKey="Literatur in Arachne">
+                    <field datasource="buch.BuchTitel">
+                        <ifEmpty>
+                            <field datasource="zenon.245_a">
+                                <ifEmpty>
+                                    <field datasource="buch.KurzbeschreibungBuch" />
+                                </ifEmpty>
+                            </field>
+                        </ifEmpty>
+                    </field>       
+                </section>
 				<include type="uri" />
 				<section labelKey="Für Bearbeiter" minGroupId="600">
 				<section labelKey="Berlin">

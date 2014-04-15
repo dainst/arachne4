@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.context;
 import java.util.List;
 
 import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * Adds the 'zenon' context of the 'buch' context to the 'object' dataset as nativ context, so that it is available
@@ -25,6 +26,12 @@ public class CustompathobjektzenontitleContextualizer extends
 
 	@Override
 	public List<AbstractLink> retrieve(Dataset parent) {
+		List<String> result = simpleSQLService.getJDBCTemplate().queryForList(
+				SQL1 + parent.getArachneId().getArachneEntityID() + SQL2, String.class);
+		if (!StrUtils.isEmptyOrNull(result)) {
+			System.out.println(result.get(0));
+		}
+		// TODO return a correct result
 		return null;
 	}
 		
