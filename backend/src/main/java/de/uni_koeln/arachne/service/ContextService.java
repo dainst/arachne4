@@ -47,6 +47,9 @@ public class ContextService {
 	@Autowired
 	private transient SingleEntityDataService singleEntityDataService;
 	
+	@Autowired
+	private transient SimpleSQLService simpleSQLService;
+	
 	/**
 	 * Utility class to work with the XML config files.
 	 */
@@ -213,6 +216,7 @@ public class ContextService {
 				contextualizer.setSingleEntityDataService(singleEntityDataService);
 				contextualizer.setRightsService(rightsService);
 				contextualizer.setXmlConfigUtil(xmlConfigUtil);
+				contextualizer.setSimpleSQLSerive(simpleSQLService);
 				contextualizers.put(contextType, contextualizer);
 				result = contextualizer;
 			} catch (ClassNotFoundException e) {

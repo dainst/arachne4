@@ -6,6 +6,7 @@ import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.service.SimpleSQLService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
@@ -24,6 +25,8 @@ public abstract class AbstractContextualizer implements IContextualizer {
 	protected transient IUserRightsService rightsService;
 	
 	protected transient XmlConfigUtil xmlConfigUtil;
+	
+	protected transient SimpleSQLService simpleSQLService;
 	
 	public void setEntityIdentificationService(final EntityIdentificationService entityIdentificationService) {
 		this.entityIdentificationService = entityIdentificationService;
@@ -45,6 +48,10 @@ public abstract class AbstractContextualizer implements IContextualizer {
 		this.xmlConfigUtil = xmlConfigUtil;
 	}
 
+	public void setSimpleSQLSerive(final SimpleSQLService simpleSQLService) {
+		this.simpleSQLService = simpleSQLService;
+	}
+	
 	@Override
 	public abstract String getContextType();
 
