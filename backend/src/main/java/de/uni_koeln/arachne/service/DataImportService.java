@@ -167,18 +167,20 @@ public class DataImportService implements Runnable { // NOPMD
 			LOGGER.info("Fetching EntityIds...");
 			final List<Long> entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification`"
 					+ " ORDER BY `ArachneEntityID`", longMapper);
+			LOGGER.debug("Fetching EntityIds done");
 			
 			final long startTime = System.currentTimeMillis();
 			
 			for (final long currentEntityId: entityIds) {
+				LOGGER.debug("Starting FOR loop...");
 				if (terminate) {
 					running.set(false);
 					break;
 				}
-				
+				LOGGER.debug("Get ID: " + currentEntityId);
 				final EntityId entityId = entityIdentificationService.getId(currentEntityId);
 				dbgEntityId = entityId.getArachneEntityID();
-				
+				LOGGER.debug("Creating response");
 				BaseArachneEntity entity;
 				if (entityId.isDeleted()) {
 					entity = responseFactory.createResponseForDeletedEntity(entityId);
@@ -195,7 +197,7 @@ public class DataImportService implements Runnable { // NOPMD
 					index++;
 					indexedDocuments.set(index);
 				}
-				
+				LOGGER.debug("Update elapsed time");
 				// update elapsed time every second
 				final long now = System.currentTimeMillis();
 				if (now - deltaT > 1000) {
