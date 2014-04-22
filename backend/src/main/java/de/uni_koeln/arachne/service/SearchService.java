@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -24,6 +25,8 @@ import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.controller.SearchController;
 import de.uni_koeln.arachne.response.SearchResult;
+import de.uni_koeln.arachne.response.SearchResultFacet;
+import de.uni_koeln.arachne.response.SearchResultFacetValue;
 import de.uni_koeln.arachne.util.ESClientUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
@@ -88,7 +91,7 @@ public class SearchService {
 		SearchResponse searchResponse = null;
 		try {
 			searchResponse = searchRequestBuilder.execute().actionGet();
-		} catch (Exception e) {
+		} catch (ElasticsearchException e) {
 			LOGGER.error("Problem executing search. Exception: " + e.getMessage());
 			return null;
 		}
@@ -122,11 +125,11 @@ public class SearchService {
 		}
 		
 		if (facetList != null) {
-			final Map<String, Map<String, Long>> facets = new LinkedHashMap<String, Map<String, Long>>();
+			final List<SearchResultFacet> facets = new ArrayList<SearchResultFacet>();
 			for (final String facetName: facetList) {
 				final Map<String, Long> facetMap = getFacetMap(facetName, searchResponse, filterValues);
 				if (facetMap != null && (filterValueList == null || !filterValueList.contains(facetName))) {
-					facets.put(facetName, facetMap);
+					facets.add(getSearchResultFacet(facetName, facetMap));
 				}
 			}
 			searchResult.setFacets(facets);
@@ -135,6 +138,15 @@ public class SearchService {
 		return searchResult;
 	}
 	
+	private SearchResultFacet getSearchResultFacet(final String facetName, final Map<String, Long> facetMap) {
+		final SearchResultFacet result = new SearchResultFacet(facetName);
+		for (final Map.Entry<String, Long> entry: facetMap.entrySet()) {
+			final SearchResultFacetValue facetValue = new SearchResultFacetValue(entry.getKey(), entry.getKey(), entry.getValue());
+			result.addValue(facetValue);
+		}
+		return result;
+	}
+
 	/**
 	 * Creates a list of filter values from the filterValues <code>String</code> and sets the category specific facets in the 
 	 * <code>facetList</code> if the corresponding facet is found. 

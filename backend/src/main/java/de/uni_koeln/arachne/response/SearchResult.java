@@ -2,8 +2,6 @@ package de.uni_koeln.arachne.response;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -19,7 +17,7 @@ public class SearchResult {
 	private long size;
 	private int limit;
 	private int offset;
-	private Map<String, Map<String, Long>> facets;
+	private List<SearchResultFacet> facets;
 	private List<SearchHit> entities;
 
 	public void addSearchHit(final SearchHit searchHit) {
@@ -52,10 +50,10 @@ public class SearchResult {
 	public void setOffset(final int offset) {
 		this.offset = offset;
 	}
-	public Map<String, Map<String, Long>> getFacets() {
+	public List<SearchResultFacet> getFacets() {
 		return facets;
 	}
-	public void setFacets(final Map<String, Map<String, Long>> facets) {
+	public void setFacets(final List<SearchResultFacet> facets) {
 		this.facets = facets;
 	}
 	public List<SearchHit> getEntities() {
