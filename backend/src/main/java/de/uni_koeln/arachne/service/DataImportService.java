@@ -170,6 +170,7 @@ public class DataImportService implements Runnable { // NOPMD
 			
 			long startID = 0; 
 			List<Long> entityIds;
+			dataimport:
 			do {
 				LOGGER.debug("Fetching " + ID_LIMIT + " EntityIds [" + startID + "] ...");
 				entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification`"
@@ -182,7 +183,7 @@ public class DataImportService implements Runnable { // NOPMD
 					
 					if (terminate) {
 						running.set(false);
-						break;
+						break dataimport;
 					}
 					LOGGER.debug("Get ID: " + currentEntityId);
 					final EntityId entityId = entityIdentificationService.getId(currentEntityId);
