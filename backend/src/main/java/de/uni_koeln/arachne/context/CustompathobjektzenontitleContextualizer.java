@@ -33,7 +33,9 @@ public class CustompathobjektzenontitleContextualizer extends
 		final List<AbstractLink> result = new ArrayList<AbstractLink>();
 		final List<String> queryResults = simpleSQLService.getJDBCTemplate().queryForList(
 				SQL1 + parent.getArachneId().getArachneEntityID() + SQL2, String.class);
-		if (!StrUtils.isEmptyOrNull(queryResults)) {
+		
+		// queryForList may return a list with only a null value - so we need to check for that
+		if (!StrUtils.isEmptyOrNull(queryResults) && queryResults.get(0) != null) {
 			for (final String queryResult: queryResults) {
 				final ArachneLink link = new ArachneLink();
 				link.setEntity1(parent);
