@@ -31,7 +31,7 @@ public class ConnectedEntityIdsSQLQueryBuilder extends AbstractSQLBuilder {
 	@Override
 	protected void buildSQL() {
 		final StringBuilder result = new StringBuilder(sql);
-		result.append("SELECT `Target` FROM `SemanticConnection` WHERE NOT `Target` = 0");
+		result.append("SELECT `Target` FROM `SemanticConnection` WHERE NOT `Target` = 0 AND NOT `TypeTarget` = \"marbilder\"");
 		result.append(this.buildAndConditions());
 		//sql += rightsConditionBuilder.getUserRightsSQLSnipplett();
 		result.append(';');
