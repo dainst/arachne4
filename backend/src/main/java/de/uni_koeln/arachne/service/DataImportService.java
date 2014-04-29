@@ -41,6 +41,8 @@ import de.uni_koeln.arachne.util.EntityId;
 public class DataImportService implements Runnable { // NOPMD
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataImportService.class);
 	
+	private static final long ID_LIMIT = 10000;
+	
 	private final boolean PROFILING;
 	
 	@Autowired
@@ -153,6 +155,8 @@ public class DataImportService implements Runnable { // NOPMD
 				return;
 			}
 			
+			final long startTime = System.currentTimeMillis();
+			
 			LOGGER.info("Dataimport started on index '" + indexName + "'");
 			esClientUtil.setRefreshInterval(indexName, false);
 									
@@ -164,47 +168,51 @@ public class DataImportService implements Runnable { // NOPMD
 				throw new Exception("'select count(*) `ArachneEntityID` from `arachneentityidentification`' returned 0");
 			}
 			
-			LOGGER.info("Fetching EntityIds...");
-			final List<Long> entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification`"
-					+ " ORDER BY `ArachneEntityID`", longMapper);
-			LOGGER.debug("Fetching EntityIds done");
-			
-			final long startTime = System.currentTimeMillis();
-			
-			for (final long currentEntityId: entityIds) {
-				LOGGER.debug("Starting FOR loop...");
-				if (terminate) {
-					running.set(false);
-					break;
+			long startID = 0; 
+			List<Long> entityIds;
+			do {
+				LOGGER.debug("Fetching " + ID_LIMIT + " EntityIds [" + startID + "] ...");
+				entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification`"
+						+ "WHERE `ArachneEntityID` > " + startID + " ORDER BY `ArachneEntityID` LIMIT " + ID_LIMIT, longMapper);
+
+				for (final long currentEntityId: entityIds) {
+					LOGGER.debug("Starting FOR loop...");
+					
+					startID = currentEntityId;
+					
+					if (terminate) {
+						running.set(false);
+						break;
+					}
+					LOGGER.debug("Get ID: " + currentEntityId);
+					final EntityId entityId = entityIdentificationService.getId(currentEntityId);
+					dbgEntityId = entityId.getArachneEntityID();
+					LOGGER.debug("Creating response");
+					BaseArachneEntity entity;
+					if (entityId.isDeleted()) {
+						entity = responseFactory.createResponseForDeletedEntity(entityId);
+					} else {
+						entity = entityService.getFormattedEntityById(entityId);
+					}
+
+					if (entity == null) {
+						LOGGER.error("Entity " + entityId.getArachneEntityID() + " is null! This should never happen. Check the database immediately.");
+						throw new Exception();
+					} else {
+						bulkProcessor.add(client.prepareIndex(indexName, "entity", String.valueOf(entityId.getArachneEntityID()))
+								.setSource(mapper.writeValueAsBytes(entity)).request());
+						index++;
+						indexedDocuments.set(index);
+					}
+					LOGGER.debug("Update elapsed time");
+					// update elapsed time every second
+					final long now = System.currentTimeMillis();
+					if (now - deltaT > 1000) {
+						deltaT = now;
+						elapsedTime.set(now - startTime);
+					}
 				}
-				LOGGER.debug("Get ID: " + currentEntityId);
-				final EntityId entityId = entityIdentificationService.getId(currentEntityId);
-				dbgEntityId = entityId.getArachneEntityID();
-				LOGGER.debug("Creating response");
-				BaseArachneEntity entity;
-				if (entityId.isDeleted()) {
-					entity = responseFactory.createResponseForDeletedEntity(entityId);
-				} else {
-					entity = entityService.getFormattedEntityById(entityId);
-				}
-									
-				if (entity == null) {
-					LOGGER.error("Entity " + entityId.getArachneEntityID() + " is null! This should never happen. Check the database immediately.");
-					throw new Exception();
-				} else {
-					bulkProcessor.add(client.prepareIndex(indexName, "entity", String.valueOf(entityId.getArachneEntityID()))
-							.setSource(mapper.writeValueAsBytes(entity)).request());
-					index++;
-					indexedDocuments.set(index);
-				}
-				LOGGER.debug("Update elapsed time");
-				// update elapsed time every second
-				final long now = System.currentTimeMillis();
-				if (now - deltaT > 1000) {
-					deltaT = now;
-					elapsedTime.set(now - startTime);
-				}
-			}
+			} while (!entityIds.isEmpty());
 			if (running.get()) {
 				bulkProcessor.close();
 				esClientUtil.setRefreshInterval(indexName, true);
