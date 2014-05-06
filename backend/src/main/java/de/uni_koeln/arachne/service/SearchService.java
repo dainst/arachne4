@@ -13,6 +13,7 @@ import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.facet.FacetBuilders;
@@ -268,7 +269,7 @@ public class SearchService {
 			}
 		}
 		
-		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString(searchParam), facetFilter);
+		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString(searchParam).defaultOperator(Operator.AND), facetFilter);
 						
 		LOGGER.debug("Elastic search query: " + query.toString());
 		return query;
