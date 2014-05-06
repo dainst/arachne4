@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
 
 import de.uni_koeln.arachne.service.GenericSQLService;
+import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
@@ -41,6 +42,9 @@ public class ResponseFactory {
 	@Autowired
 	private transient GenericSQLService genericSQLService;
 	
+	@Autowired
+	private transient Transl8Service ts;
+	
 	// needed for testing
 	public void setXmlConfigUtil(final XmlConfigUtil xmlConfigUtil) {
 		this.xmlConfigUtil = xmlConfigUtil;
@@ -63,7 +67,7 @@ public class ResponseFactory {
 		final EntityId arachneId = dataset.getArachneId(); 
 		final String tableName = arachneId.getTableName();
 		response.setEntityId(arachneId.getArachneEntityID());
-		response.setType(tableName);
+		response.setType(ts.transl8(tableName));
 		response.setInternalId(arachneId.getInternalKey());
 
 		// set thumbnailId
