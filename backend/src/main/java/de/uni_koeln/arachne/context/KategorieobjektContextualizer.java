@@ -46,8 +46,8 @@ public class KategorieobjektContextualizer extends AbstractContextualizer {
 		for (final String objektSubcategory: subcategories) {
 			if (keySet.contains(objektSubcategory + '.' + SQLToolbox.generatePrimaryKeyName(objektSubcategory))) {
 				// TODO find better way to use multiple values ('objekt subcategories')
-				// write multiple values as '#' separated list
-				subcategoryValue += SQLToolbox.ucfirst(objektSubcategory.substring(6)) + '#'; // NOPMD
+				// write multiple values as ';' separated list
+				subcategoryValue += SQLToolbox.ucfirst(objektSubcategory.substring(6)) + ';'; // NOPMD
 			}
 		}
 		if (!StrUtils.isEmptyOrNullOrZero(subcategoryValue)) {
@@ -56,15 +56,6 @@ public class KategorieobjektContextualizer extends AbstractContextualizer {
 		final Map<String, String> subcategory = new HashMap<String, String>();
 		subcategory.put("KategorieObjekt.Typ", subcategoryValue);
 		parent.appendFields(subcategory);
-		// TODO - finish objekt subcategories
-		//if (keyset)
-		/*final Map<String, String> subcategory = new HashMap<String, String>();
-		if (StrUtils.isEmptyOrNull(parent.getField("marbilderbestand.DateinameMarbilderbestand"))) {
-			subcategory.put("KategorieMarbilder.Typ", "strukturiert");
-		} else {
-			subcategory.put("KategorieMarbilder.Typ", "unstrukturiert");
-		}
-		*/
 		return null;
 	}
 

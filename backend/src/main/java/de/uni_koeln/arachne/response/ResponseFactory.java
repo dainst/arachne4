@@ -255,19 +255,20 @@ public class ResponseFactory {
 				final Class<?> facettedArachneEntityClass = response.getClass().getSuperclass();
 				final java.lang.reflect.Field facetField = facettedArachneEntityClass.getDeclaredField("facet_"+facet.getName());
 				List<String> facetValues = facet.getValues();
-				// TODO find better way to use multiple values ('objekt subcategories')
 				
-				if ("subkategorie".equals(facet.getName()) && facetValues.get(0).contains("#")) { // NOPMD
-					 facetValues = new ArrayList<String>(Arrays.asList(facetValues.get(0).split("#"))); // NOPMD
+				// split multi value facets at ';' - maybe the facets where this is done need to be restricted
+				for (String value: facetValues) {
+					if (value.contains(";")) {
+						facetValues = new ArrayList<String>(Arrays.asList(value.split(";")));
+					}
 				}
-				//
 				facetField.set(response, facetValues);
 			} catch (NoSuchFieldException e) {
 				LOGGER.warn("Invalid facet definition 'facet_" + facet.getName() + "' in '" + response.getType() 
 						+ ".xml'. The facet field is not defined in " +
 						"FacettedArachneEntity.java. This facet will be ignored.");
 			} catch (IllegalAccessException e) {
-				LOGGER.error("Failed to set facets with:", e);
+				LOGGER.error("Failed to set facets with: ", e);
 			}
 		}
 	}
