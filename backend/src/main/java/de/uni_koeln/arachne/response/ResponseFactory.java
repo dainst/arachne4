@@ -67,7 +67,7 @@ public class ResponseFactory {
 		final EntityId arachneId = dataset.getArachneId(); 
 		final String tableName = arachneId.getTableName();
 		response.setEntityId(arachneId.getArachneEntityID());
-		response.setType(ts.transl8(tableName));
+		response.setType(ts.transl8("type_" + tableName));
 		response.setInternalId(arachneId.getInternalKey());
 
 		// set thumbnailId

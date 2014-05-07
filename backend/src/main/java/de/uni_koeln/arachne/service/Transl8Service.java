@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Gets the translations from translate and offers the translate functionality;
+ * Gets the translations from transl8 and offers translation functionality;
  */
 @Service
 public class Transl8Service {
@@ -39,25 +39,19 @@ public class Transl8Service {
 		HttpEntity<String> entity = new HttpEntity<String>("", headers);
 		
 		// TODO read transl8 URL from application.properties
-		String url = "http://crazyhorse.archaeologie.uni-koeln.de/transl8/translation/jsonp?application=arachne4_backend";
+		String url = "http://crazyhorse.archaeologie.uni-koeln.de/transl8/translation/json?application=arachne4_backend";
 		final ResponseEntity<String> response = restTemplate.exchange(url , HttpMethod.GET, entity, String.class);
 				
 		String doc = response.getBody();
-		//doc = "{\"tm\":[{\"key\":\"msg_logIn\",\"value\":\"Anmelden\"},{\"key\":\"msg_results\",\"value\":\"Ergebnisse\"}]}";
-		doc = "{\"translationMap\":" + doc.substring(5, doc.length() - 1) + "}";
-		System.out.println(doc);
-		
+				
 		try {
 			translationMap = new ObjectMapper().readValue(doc, HashMap.class);
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Could not parse transl8 response.", e);
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Could not map transl8 response.", e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Could not create translation map.", e);
 		}
 	}
 	
