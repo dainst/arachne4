@@ -39,7 +39,7 @@ public class Transl8Service {
 		HttpEntity<String> entity = new HttpEntity<String>("", headers);
 		
 		// TODO read transl8 URL from application.properties
-		String url = "http://crazyhorse.archaeologie.uni-koeln.de/transl8/translation/jsonp?application=arachne4_frontend";
+		String url = "http://crazyhorse.archaeologie.uni-koeln.de/transl8/translation/jsonp?application=arachne4_backend";
 		final ResponseEntity<String> response = restTemplate.exchange(url , HttpMethod.GET, entity, String.class);
 				
 		String doc = response.getBody();
