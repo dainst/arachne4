@@ -98,7 +98,7 @@
         </datasections>
     </display>
     <facets>
-    	<facet name="kategorie" labelKey="Kategorie">
+    	<facet name="kategorie" labelKey="type">
     		<field datasource="Dataset.TableName" />
     	</facet>
     	<facet name="ort" labelKey="Lokalisierung">
