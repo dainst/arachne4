@@ -80,12 +80,16 @@ public class Model3DController {
 		} else {
 			final HttpHeaders responseHeaders = new HttpHeaders();
 			final byte[] modelData = getModelData(dataset);
-			if (isBinaryStl(modelData)) {
-				responseHeaders.add("Content-Type", "application/octet-stream");
-				return new ResponseEntity<byte[]>(modelData, responseHeaders, HttpStatus.OK);
+			if (modelData != null) {
+				if (isBinaryStl(modelData)) {
+					responseHeaders.add("Content-Type", "application/octet-stream");
+					return new ResponseEntity<byte[]>(modelData, responseHeaders, HttpStatus.OK);
+				} else {
+					responseHeaders.add("Content-Type", "text/plain; charset=utf-8");
+					return new ResponseEntity<String>(new String(modelData, Charsets.UTF_8), responseHeaders, HttpStatus.OK);
+				}
 			} else {
-				responseHeaders.add("Content-Type", "text/plain; charset=utf-8");
-				return new ResponseEntity<String>(new String(modelData, Charsets.UTF_8), responseHeaders, HttpStatus.OK);
+				return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 			}
 		}
 	}
