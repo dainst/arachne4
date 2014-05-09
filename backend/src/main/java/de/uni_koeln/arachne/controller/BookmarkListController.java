@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -177,7 +178,7 @@ public class BookmarkListController {
 	 * Handles http GET request for <code>/bookmarklist</code>.
 	 * Returns all bookmarkLists belonging to the user, that is signed in, serialized 
 	 * into JSON or XML depending on the requested format.
-	 * If the current user does not own any bookmarks a 404 error code is returned.
+	 * If the current user does not own any bookmarks an empty List is returned.
 	 * If no user is signed in, a 403 error code is returned.
 	 */
 	@RequestMapping(value="/bookmarklist", method=RequestMethod.GET)
@@ -191,7 +192,7 @@ public class BookmarkListController {
 		if (rightsService.isSignedInUser()) {
 			result = bookmarkListDao.getByUid(user.getId());
 			if (result == null || result.isEmpty()) {
-				response.setStatus(404);
+				result = new ArrayList<BookmarkList>();
 			}
 		} else {
 			response.setStatus(403);
