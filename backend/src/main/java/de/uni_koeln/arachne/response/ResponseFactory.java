@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 
 import org.jdom2.Document;
@@ -257,13 +258,24 @@ public class ResponseFactory {
 		for (final Facet facet: facetList ) {
 			try {
 				final Class<?> facettedArachneEntityClass = response.getClass().getSuperclass();
-				final java.lang.reflect.Field facetField = facettedArachneEntityClass.getDeclaredField("facet_"+facet.getName());
+				final String facetName = facet.getName();
+				final java.lang.reflect.Field facetField = facettedArachneEntityClass.getDeclaredField("facet_"+facetName);
 				List<String> facetValues = facet.getValues();
 				
-				// split multi value facets at ';' - maybe the facets where this is done need to be restricted
-				for (String value: facetValues) {
+				// split multi value facets at ';' and look for facet translations
+				ListIterator<String> valueIterator = facetValues.listIterator();
+				while (valueIterator.hasNext()) {
+					final String value = valueIterator.next().trim(); 
 					if (value.contains(";")) {
-						facetValues = new ArrayList<String>(Arrays.asList(value.split(";")));
+						valueIterator.remove();
+						final List<String> splitValues = new ArrayList<String>(Arrays.asList(value.split(";")));
+						ListIterator<String> splitIterator = splitValues.listIterator();
+						while (splitIterator.hasNext()) {
+							final String splitValue = splitIterator.next().trim();
+							valueIterator.add(ts.transl8Facet(facetName, splitValue));
+						}
+					} else {
+						valueIterator.set(ts.transl8Facet(facetName, value));						
 					}
 				}
 				facetField.set(response, facetValues);

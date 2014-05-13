@@ -43,7 +43,7 @@ public class Transl8Service {
 		final ResponseEntity<String> response = restTemplate.exchange(url , HttpMethod.GET, entity, String.class);
 				
 		String doc = response.getBody();
-				
+						
 		try {
 			translationMap = new ObjectMapper().readValue(doc, HashMap.class);
 		} catch (JsonParseException e) {
@@ -55,9 +55,31 @@ public class Transl8Service {
 		}
 	}
 	
+	/**
+	 * Looks up a key in the translations map and returns the corresponding value if found or the key else.
+	 * @param key Key to look up translation for.
+	 * @return Either a translation or the key.
+	 */
 	public String transl8(String key) {
 		if (!translationMap.isEmpty()) {
 			String value = translationMap.get(key);
+			if (value != null) {
+				return value;
+			}
+		}
+		return key;
+	}
+	
+	/**
+	 * Looks up a facet key in the translation map and returns the corresponding value if found or the key else.
+	 * For facet translations the key prefix is generated from the facet name.
+	 * @param name of the facet.
+	 * @param key Key to look up translation for.
+	 * @return Either a translation or the key.
+	 */
+	public String transl8Facet(String facetName, String key) {
+		if (!translationMap.isEmpty()) {
+			String value = translationMap.get("facet_" + facetName + '_' + key);
 			if (value != null) {
 				return value;
 			}
