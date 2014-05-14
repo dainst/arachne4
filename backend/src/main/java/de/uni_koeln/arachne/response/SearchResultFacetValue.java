@@ -11,11 +11,6 @@ public class SearchResultFacetValue {
 	private String value;
 	
 	/**
-	 * The translated value of the facet to be shown in the frontend.
-	 */
-	private String label;
-	
-	/**
 	 * The number of times this facet occurs in the search result.
 	 */
 	private long count;
@@ -28,7 +23,6 @@ public class SearchResultFacetValue {
 	 */
 	public SearchResultFacetValue(final String value, final String label, final long count) {
 		this.value = value;
-		this.label = label;
 		this.count = count;
 	}
 	
@@ -38,14 +32,6 @@ public class SearchResultFacetValue {
 
 	public void setValue(final String value) {
 		this.value = value;
-	}
-
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(final String label) {
-		this.label = label;
 	}
 
 	public long getCount() {

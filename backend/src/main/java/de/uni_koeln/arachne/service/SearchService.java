@@ -46,6 +46,9 @@ public class SearchService {
 	@Autowired
 	private transient ESClientUtil esClientUtil;
 	
+	@Autowired
+	private transient Transl8Service ts;
+	
 	/**
 	 * This method builds and returns an elasticsearch search request. The query is built by the <code>buildQuery</code> method.
 	 * @param searchParam The query string.
@@ -191,7 +194,8 @@ public class SearchService {
 				filterValue = filterValue.trim();
 				filterValue = filterValue.replaceAll("\"", "");
 				filterValue = filterValue.replaceAll("\\s+", " ");
-				
+				filterValue = ts.categoryLookUp(filterValue);
+								
 				final String[] categories = filterValue.split("\\s");
 				if (categories.length > 0) {
 					for (int i = 0; i < categories.length; i++) {

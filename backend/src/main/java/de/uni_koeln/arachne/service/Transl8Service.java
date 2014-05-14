@@ -31,6 +31,8 @@ public class Transl8Service {
 	
 	private transient Map<String, String> translationMap;
 
+	private transient Map<String, String> categoryMap;
+	
 	public Transl8Service() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
@@ -42,7 +44,7 @@ public class Transl8Service {
 		String url = "http://crazyhorse.archaeologie.uni-koeln.de/transl8/translation/json?application=arachne4_backend";
 		final ResponseEntity<String> response = restTemplate.exchange(url , HttpMethod.GET, entity, String.class);
 				
-		String doc = response.getBody();
+		final String doc = response.getBody();
 						
 		try {
 			translationMap = new ObjectMapper().readValue(doc, HashMap.class);
@@ -52,6 +54,18 @@ public class Transl8Service {
 			LOGGER.error("Could not map transl8 response.", e);
 		} catch (IOException e) {
 			LOGGER.error("Could not create translation map.", e);
+		}
+		
+		if (translationMap != null && !translationMap.isEmpty()) {
+			categoryMap = new HashMap<String, String>();
+			for (final Map.Entry<String, String> entry: translationMap.entrySet()) {
+				String key = entry.getKey();
+				if (key.startsWith("facet_kategorie_")) {
+					categoryMap.put(entry.getValue(), key.substring(16));
+				}
+			}
+		} else {
+			LOGGER.error("Translation map is empty.");
 		}
 	}
 	
@@ -80,6 +94,16 @@ public class Transl8Service {
 	public String transl8Facet(String facetName, String key) {
 		if (!translationMap.isEmpty()) {
 			String value = translationMap.get("facet_" + facetName + '_' + key);
+			if (value != null) {
+				return value;
+			}
+		}
+		return key;
+	}
+	
+	public String categoryLookUp(String key) {
+		if (!categoryMap.isEmpty()) {
+			String value = categoryMap.get(key);
 			if (value != null) {
 				return value;
 			}
