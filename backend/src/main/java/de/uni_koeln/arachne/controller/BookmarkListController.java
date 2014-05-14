@@ -90,7 +90,7 @@ public class BookmarkListController {
 		if (rightsService.isSignedInUser()) {
 			oldBookmark = bookmarkDao.getByBookmarkId(bookmarkId);
 			if (oldBookmark != null
-					&& (oldBookmark.getId() == bookmark.getId())
+					&& (oldBookmark.getId().equals(bookmark.getId()))
 					&& (oldBookmark.getBookmarkList().getUser().getId() == user.getId())) {
 				bookmark.setBookmarkList(oldBookmark.getBookmarkList());
 				result = bookmarkDao.updateBookmark(bookmark);
@@ -256,7 +256,7 @@ public class BookmarkListController {
 		if (rightsService.isSignedInUser()) {
 			oldBookmarkList = bookmarkListDao.getByBookmarkListId(requestedId);
 			if (oldBookmarkList != null 
-					&& (oldBookmarkList.getId() == bookmarkList.getId())
+					&& (oldBookmarkList.getId().equals(bookmarkList.getId()))
 					&& (user.getId() == oldBookmarkList.getUser().getId())) {
 				bookmarkList.setUser(user);
 				for (final Bookmark bookmark : bookmarkList.getBookmarks()) {
