@@ -1,13 +1,14 @@
 package de.uni_koeln.arachne.response;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class FieldList extends AbstractContent {
+public class FieldList extends AbstractContent implements Iterable<String> {
 	
 	private transient final List<String> value;
 	
@@ -80,6 +81,28 @@ public class FieldList extends AbstractContent {
 		}
 		return true;
 	}
-	
-	
+
+	@Override
+    public Iterator<String> iterator() {
+        Iterator<String> it = new Iterator<String>() {
+
+            private int currentIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < value.size() && value.get(currentIndex) != null;
+            }
+
+            @Override
+            public String next() {
+                return value.get(currentIndex++);
+            }
+
+            @Override
+            public void remove() {
+                value.remove(currentIndex);
+            }
+        };
+        return it;
+	}
 }

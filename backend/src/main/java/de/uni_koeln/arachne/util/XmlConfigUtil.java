@@ -448,7 +448,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 
 		final String labelKey = element.getAttributeValue("labelKey");
-		if (!StrUtils.isEmptyOrNullOrZero(labelKey)) {
+		if (!StrUtils.isEmptyOrNullOrZero(labelKey) || element.getChild("field") != null) {
 			final LinkField linkField = new LinkField(labelKey);
 			StringBuilder value = null;
 			final String initialValue = dataset.getField(element.getAttributeValue("datasource"));
@@ -518,18 +518,51 @@ public class XmlConfigUtil implements ServletContextAware {
 		final List<Element> contextSections = context.getChildren("contextSection", namespace);		
 		if (contextSections == null || contextSections.isEmpty()) {
 			final List<Element> children = context.getChildren();
+			
 			final String defaultSeparator = "<br/>";
 			String separator = context.getAttributeValue("separator"); 
 			if (context.getAttributeValue("separator") == null) {
 				separator = defaultSeparator;
 			}
 			result.setSeparator(separator);
-					
-			final FieldList fieldList = new FieldList();
+			
+			// Get link attribute and validate usage
+			String link = context.getAttributeValue("link");
+			if (!StrUtils.isEmptyOrNull(link)) {
+				Element firstField = context.getChild("field", namespace);
+				if (firstField != null && firstField.getAttributeValue("prefix") != "link:") {
+					LOGGER.error("Invalid use of context attribute 'link' in context type '" + contextType 
+							+ "'. The 'prefix' for the first field must be 'link:'.");
+					// Disable link creation
+					link = "";
+				}
+			}
+			
+			FieldList fieldList = new FieldList();
 			for (int i = 0; i < dataset.getContextSize(contextType); i++) {
 				addFieldsToFieldList(children, context.getNamespace(), fieldList, i, dataset, contextType, separator);
 			}
-			
+
+			if (!StrUtils.isEmptyOrNull(link)) {
+				final FieldList tempFieldList = new FieldList();
+				for (int index = 0; index < fieldList.size(); index++) {
+					final String field = fieldList.get(index);
+					if (field.startsWith("link:")) {
+						int seperatorIndex = field.indexOf(separator);
+						StringBuilder newValue = new StringBuilder("<a href=\"");
+						newValue.append(link);
+						newValue.append(field.substring(5, seperatorIndex));
+						newValue.append("\">");
+						newValue.append(field.substring(seperatorIndex + separator.length()));
+						newValue.append("</a>");
+						tempFieldList.add(newValue.toString());
+					} else {
+						tempFieldList.add(fieldList.get(index));						
+					}					
+				}
+				fieldList = tempFieldList;
+			}
+						
 			if (fieldList.size() > 1) {
 				result.add(fieldList);
 			} else {
@@ -588,12 +621,12 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param contextType The type of the context.
 	 * @param separator the currently active separator.
 	 */
-	private void addFieldsToFieldList(final List<Element> children, final Namespace namespace,final FieldList fieldList, final int index
+	private void addFieldsToFieldList(final List<Element> children, final Namespace namespace, final FieldList fieldList, final int index
 			, final Dataset dataset, final String contextType,	final String separator) {
 		
 		for (final Element element: children) {
 			if (element.getName().equals("field") || element.getName().equals("linkField")) {				
-				addContextFieldToFieldList(element, namespace,fieldList, index, dataset, contextType, separator);
+				addContextFieldToFieldList(element, namespace, fieldList, index, dataset, contextType, separator);
 			}
 		}
 	}

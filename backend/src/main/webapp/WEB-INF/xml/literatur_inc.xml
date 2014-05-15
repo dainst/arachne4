@@ -4,7 +4,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
 
-	<context type="literatur" labelKey="Literatur" separator=", ">		
+	<context type="literatur" labelKey="Literatur" separator=", " link="http://zenon.dainst.org/#book/">		
+		<field datasource=".ZenonID" prefix="link:"/>
 		<field datasource=".tempLiteratur" />
 		<field datasource=".Abkuerzungen">
 			<ifEmpty>
@@ -25,8 +26,6 @@
 		<field datasource=".TextauszugUebersetzung" prefix="(Übersetzter Textauszug: '" postfix="')" /> <!-- AdditionalInfosJSON -->
 		<field datasource=".KommentarLitZitat" prefix="(" postfix=")" />
 		<field datasource=".Supplement" prefix="Supplement: " /> <!-- AdditionalInfosJSON -->
-		<linkField labelKey="Zenon" datasource=".ZenonID"
-			prefix="http://testopac.dainst.org/#book/" />
 		<linkField labelKey="Online verfügbar" datasource=".Onlinequelle" />
 	</context>
 </includeSection>
