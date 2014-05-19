@@ -153,8 +153,7 @@ public class SearchService {
 
 	/**
 	 * Creates a list of filter values from the filterValues <code>String</code> and sets the category specific facets in the 
-	 * <code>facetList</code> if the corresponding facet is found. 
-	 * in the filterValue <code>String</code>.
+	 * <code>facetList</code> if the corresponding facet is found in the filterValue <code>String</code>.
 	 * @param filterValues String of filter values
 	 * @param facetList List of facet fields.
 	 * @return filter values as list.
@@ -165,8 +164,12 @@ public class SearchService {
 			result = filterQueryStringToStringList(filterValues);
 			for (final String filterValue: result) {
 				if (filterValue.contains("facet_kategorie")) {
-					facetList.clear();
-					facetList.addAll(getCategorySpecificFacetList(result));
+					List<String> categorySpecificFacetsList = getCategorySpecificFacetList(result);
+					for (String facet : categorySpecificFacetsList) {
+						if (!facetList.contains(facet)) {
+							facetList.add(facet);
+						}
+					}
 					break;
 				}
 			}
@@ -182,8 +185,6 @@ public class SearchService {
 	 */
 	public List<String> getCategorySpecificFacetList(final	List<String> filterValueList) {
 		final List<String> result = new ArrayList<String>();
-		// add geo facet
-		result.add("facet_geo");
 		for (String filterValue: filterValueList) {
 			if (filterValue.startsWith("facet_kategorie")) {
 				filterValue = filterValue.substring(16);
