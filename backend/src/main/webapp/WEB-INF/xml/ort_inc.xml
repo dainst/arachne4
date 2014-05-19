@@ -5,7 +5,8 @@
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
 
 	<section labelKey="Lokalisierung" separator=", ">
-		<context type="ort" separator=", ">
+		<context type="ort" separator=", " link="http://gazetteer.dainst.org/place/">
+            <field datasource=".Gazetteerid" prefix="link:" />
 			<field datasource=".Stadt" />
 			<field datasource=".Ort_antik" prefix="(" postfix=")" />
 			<field datasource=".Land" />
@@ -21,8 +22,7 @@
 			<!-- AdditionalInfosJSON -> Field from Semantic-Connection-Table -->
 			<field datasource=".BerlinIdentNr" prefix="Berlin Ident.Nr. " /> 
 			<field datasource=".AltInvNr" prefix="Alte Inv.-Nr. " /> 
-			<field datasource=".ArtOrtsangabe" search="Aufbewahrung Automatisch erstellt" replace="Aufbewahrungsort" prefix="- Ortsangabe ist " postfix=" -" />
-			<linkField labelKey="Gazetteer" datasource=".Gazetteerid" prefix="http://gazetteer.dainst.org/place/" />		
+			<field datasource=".ArtOrtsangabe" search="Aufbewahrung Automatisch erstellt" replace="Aufbewahrungsort" prefix="- Ortsangabe ist " postfix=" -" />		
 		</context>
 	</section>
 </includeSection>
