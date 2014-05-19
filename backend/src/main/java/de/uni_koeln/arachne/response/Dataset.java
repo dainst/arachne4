@@ -240,12 +240,19 @@ public class Dataset {
 	public String getFieldFromContext(final String fieldName, final int index) {
 		String result = null;
 		for (final Context context: this.context) {
-			final AbstractLink link = context.getContext(index);
-			if (link != null) {
-				// we know that Entity1 is 'this'
-				result = link.getFieldFromFields(fieldName);
-				if (!StrUtils.isEmptyOrNullOrZero(result)) {
-					return result;
+			if (fieldName.startsWith(context.getContextType() + '.')) {
+				if (index < context.getSize()) {
+					final AbstractLink link = context.getContext(index);
+					if (link != null) {
+						// we know that Entity1 is 'this'
+						if (fieldName.endsWith(".contextUri")) {
+							return link.getUri2();
+						}
+						result = link.getFieldFromFields(fieldName);
+						if (!StrUtils.isEmptyOrNullOrZero(result)) {
+							return result;
+						}
+					}
 				}
 			}
 		}

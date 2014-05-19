@@ -21,12 +21,12 @@ public abstract class AbstractLink {
 	/**
 	 * Function to retrieve the URI of the left side of the link.
 	 */
-	abstract String getUri1();	
+	public abstract String getUri1();	
 	
 	/**
 	 * Function to retrieve the URI of the right side of the link.
 	 */
-	abstract String getUri2();
+	public abstract String getUri2();
 	
 	public String getLinkType() {
 		return linkType;

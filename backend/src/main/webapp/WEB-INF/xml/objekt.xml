@@ -106,17 +106,18 @@
 					<field datasource="objekt.InschriftPublikation"/>
 				</section>
 				<include type="literatur" />
-				<section labelKey="Literatur in Arachne">
-                    <field datasource="buch.BuchTitel">
+				<context type="buch" labelKey="Literatur in Arachne" link="">
+				    <field datasource=".contextUri" prefix="link:" />
+                    <field datasource=".BuchTitel">
                         <ifEmpty>
                             <field datasource="zenon.245_a">
                                 <ifEmpty>
-                                    <field datasource="buch.KurzbeschreibungBuch" />
+                                    <field datasource=".KurzbeschreibungBuch" />
                                 </ifEmpty>
                             </field>
                         </ifEmpty>
                     </field>       
-                </section>
+                </context>
 				<include type="uri" />
 				<section labelKey="Für Bearbeiter" minGroupId="600">
 				<section labelKey="Berlin">

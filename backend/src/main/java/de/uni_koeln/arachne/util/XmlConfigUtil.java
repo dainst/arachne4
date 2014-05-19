@@ -530,7 +530,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			String link = context.getAttributeValue("link");
 			if (!StrUtils.isEmptyOrNull(link)) {
 				Element firstField = context.getChild("field", namespace);
-				if (firstField != null && firstField.getAttributeValue("prefix") != "link:") {
+				if (firstField != null && !"link:".equals(firstField.getAttributeValue("prefix"))) {
 					LOGGER.error("Invalid use of context attribute 'link' in context type '" + contextType 
 							+ "'. The 'prefix' for the first field must be 'link:'.");
 					// Disable link creation
@@ -542,8 +542,8 @@ public class XmlConfigUtil implements ServletContextAware {
 			for (int i = 0; i < dataset.getContextSize(contextType); i++) {
 				addFieldsToFieldList(children, context.getNamespace(), fieldList, i, dataset, contextType, separator);
 			}
-
-			if (!StrUtils.isEmptyOrNull(link)) {
+			
+			if (link != null) {
 				final FieldList tempFieldList = new FieldList();
 				for (int index = 0; index < fieldList.size(); index++) {
 					final String field = fieldList.get(index);
