@@ -233,7 +233,9 @@ public class DataImportService implements Runnable { // NOPMD
 		catch (Exception e) {
 			final String failure = "Dataimport failed at [" + dbgEntityId + "] with: ";
 			LOGGER.error(failure, e);
-			mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + getHostName() + ") - failure", failure + e.toString());
+			LOGGER.error("StackTrace: " + e.getStackTrace());
+			mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + getHostName() + ") - failure"
+					, failure + e.toString() + System.getProperty("line.separator") + "StackTrace: " + e.getStackTrace());
 			esClientUtil.deleteIndex(indexName);
 		}
 		// disable request scope hack
