@@ -987,10 +987,12 @@ public class XmlConfigUtil implements ServletContextAware {
 	private List<String> getContextImageContextNames(final String type) {
 		final List<ContextImageDescriptor> contextImageDescriptors = getContextImagesNames(type);
 		List<String> result = new ArrayList<String>();
-		for (final ContextImageDescriptor contextImageDescriptor : contextImageDescriptors) {
-			final String name = contextImageDescriptor.getContextName();
-			if (!result.contains(name)) {
-				result.add(name);
+		if (contextImageDescriptors != null) {
+			for (final ContextImageDescriptor contextImageDescriptor : contextImageDescriptors) {
+				final String name = contextImageDescriptor.getContextName();
+				if (!result.contains(name)) {
+					result.add(name);
+				}
 			}
 		}
 		
