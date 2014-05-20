@@ -121,17 +121,12 @@ public class ContextService {
 				continue;
 			}
 			
-			// create image-context
-			final Context context = new ContextImage(cur.getContextName(), cur.getContextImageUsage(), parent);
+			final Context contextBookpage = parent.getContext("buchseite");
 			
-			// retrieve full context-data
-			final List<AbstractLink> connectedEntities = context.getAllContexts();
-			if (connectedEntities == null) {
-				continue;
-			}
-			
-			// Retrieve images from context-entities using ImageService
-			for (final AbstractLink link : connectedEntities) {
+			for (int index = 0; index < parent.getContextSize("buchseite"); index++) {
+				final AbstractLink link = contextBookpage.getContext(index);
+						
+				// Retrieve images from context-entities using ImageService
 				if (link instanceof ArachneLink) {
 					final ArachneLink arachneLink = (ArachneLink) link;
 					

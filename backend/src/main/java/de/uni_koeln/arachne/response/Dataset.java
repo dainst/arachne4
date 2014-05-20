@@ -46,7 +46,7 @@ public class Dataset {
 	/**
 	 * The context map contains the contexts of the entity.
 	 */
-	protected List<Context> context;
+	protected List<Context> contexts;
 	
 	/**
 	 * The Images that are asociated with the dataset.
@@ -69,7 +69,7 @@ public class Dataset {
 	 */
 	public Dataset() {
 		fields = new Hashtable<String,String>();
-		context = new ArrayList<Context>();
+		contexts = new ArrayList<Context>();
 	}
 	
 	/**
@@ -127,8 +127,17 @@ public class Dataset {
 		return arachneId;
 	}
 	
-	public List<Context> getContext() {
-		return context;
+	public List<Context> getContexts() {
+		return contexts;
+	}
+	
+	public Context getContext(final String type) {
+		for (Context context : contexts) {
+			if (context.getContextType().equals(type)) {
+				return context;
+			}
+		}
+		return null;
 	}
 	
 	public List<Image> getImages() {
@@ -160,7 +169,7 @@ public class Dataset {
 	 * @return The number of context entities in this context
 	 */
 	public int getContextSize(final String contextType) {
-		for (final Context context: this.context) {
+		for (final Context context: this.contexts) {
 			if (context.getContextType().equals(contextType)) {
 				return context.getSize();				
 			}
@@ -219,7 +228,7 @@ public class Dataset {
 	 */
 	public String getFieldFromContext(final String fieldName) {
 		String result = null;
-		for (final Context context: this.context) {
+		for (final Context context: this.contexts) {
 			final AbstractLink link = context.getFirstContext();
 			if (link != null) {
 				// we know that Entity1 is 'this'
@@ -239,7 +248,7 @@ public class Dataset {
 	 */
 	public String getFieldFromContext(final String fieldName, final int index) {
 		String result = null;
-		for (final Context context: this.context) {
+		for (final Context context: this.contexts) {
 			if (fieldName.startsWith(context.getContextType() + '.')) {
 				if (index < context.getSize()) {
 					final AbstractLink link = context.getContext(index);
@@ -267,7 +276,7 @@ public class Dataset {
 	 */
 	public List<String> getFieldsFromContexts(final String fieldName) {
 		final List<String> result = new ArrayList<String>();
-		for (final Context context: this.context) {
+		for (final Context context: this.contexts) {
 			final List<AbstractLink> links = context.getAllContexts();
 			if (!links.isEmpty()) {
 				for (final AbstractLink link: links) {
@@ -288,8 +297,8 @@ public class Dataset {
 	}
 	
 	// set methods
-	public void setContext(final List<Context> context) {
-		this.context = context;
+	public void setContexts(final List<Context> contexts) {
+		this.contexts = contexts;
 	}
 	
 	public void setImages(final List<Image> images) {
@@ -309,7 +318,7 @@ public class Dataset {
 	}
 	
 	public void addContext(final Context context) {
-		this.context.add(context);
+		this.contexts.add(context);
 	}
 
 	
@@ -348,6 +357,6 @@ public class Dataset {
 	
 	@Override
 	public String toString() {
-		return fields + ", " + context;
+		return fields + ", " + contexts;
 	}
 }

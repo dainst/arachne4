@@ -75,7 +75,7 @@ public class ResponseFactory {
 		response.setThumbnailId(dataset.getThumbnailId());
 		
 		// set fields
-		response.setFields(dataset.getFields().size() + dataset.getContext().size());
+		response.setFields(dataset.getFields().size() + dataset.getContexts().size());
 		
 		// set degree
 		response.setDegree(dataset.getDegree());

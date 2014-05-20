@@ -860,6 +860,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		final List<String> result = new ArrayList<String>();
 		result.addAll(getFieldNames(display, type));
 		result.addAll(getFieldNames(facets, type));
+		result.addAll(getContextImageContextNames(type));
 		return result;		
 	}
 	
@@ -976,6 +977,24 @@ public class XmlConfigUtil implements ServletContextAware {
 		} else {
 			return cachedImageContextDescriptors;
 		}
+	}
+	
+	/**
+	 * Retrieves the context names of the contexts that are referenced in contextImage tags of the XML documents. 
+	 * @param type The parents type.
+	 * @return A list of unique context names.
+	 */
+	private List<String> getContextImageContextNames(final String type) {
+		final List<ContextImageDescriptor> contextImageDescriptors = getContextImagesNames(type);
+		List<String> result = new ArrayList<String>();
+		for (final ContextImageDescriptor contextImageDescriptor : contextImageDescriptors) {
+			final String name = contextImageDescriptor.getContextName();
+			if (!result.contains(name)) {
+				result.add(name);
+			}
+		}
+		
+		return result;
 	}
 	
 	/**
