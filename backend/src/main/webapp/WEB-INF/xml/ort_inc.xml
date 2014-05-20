@@ -16,8 +16,6 @@
 			</ifEmpty>
 		</field>
 		<field datasource=".Zusatz" />	
-		<field datasource="gazetteer.lon" prefix="Länge: " />
-		<field datasource="gazetteer.lat" prefix="Breite: " />
 		<!-- AdditionalInfosJSON -> Field from Semantic-Connection-Table -->
 		<field datasource=".BerlinIdentNr" prefix="Berlin Ident.Nr. " /> 
 		<field datasource=".AltInvNr" prefix="Alte Inv.-Nr. " /> 
