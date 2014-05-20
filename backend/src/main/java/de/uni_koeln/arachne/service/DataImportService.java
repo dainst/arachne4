@@ -26,6 +26,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Throwables;
 
 import de.uni_koeln.arachne.response.BaseArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
@@ -233,9 +234,9 @@ public class DataImportService implements Runnable { // NOPMD
 		catch (Exception e) {
 			final String failure = "Dataimport failed at [" + dbgEntityId + "] with: ";
 			LOGGER.error(failure, e);
-			LOGGER.error("StackTrace: " + e.getStackTrace());
+			final String stacktrace = Throwables.getStackTraceAsString(e);
 			mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + getHostName() + ") - failure"
-					, failure + e.toString() + System.getProperty("line.separator") + "StackTrace: " + e.getStackTrace());
+					, failure + e.toString() + System.getProperty("line.separator") + "StackTrace: " + stacktrace);
 			esClientUtil.deleteIndex(indexName);
 		}
 		// disable request scope hack
