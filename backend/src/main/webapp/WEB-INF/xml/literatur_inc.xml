@@ -4,16 +4,17 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
 
-	<context type="literatur" labelKey="Literatur" separator=", " link="http://zenon.dainst.org/#book/">		
-		<field datasource=".ZenonID" prefix="link:"/>
+	<context type="literatur" labelKey="Literatur" separator=", "
+		link="http://zenon.dainst.org/#book/">
+		<field datasource=".ZenonID" prefix="$link$" />
 		<field datasource=".tempLiteratur" />
 		<field datasource=".Abkuerzungen">
 			<ifEmpty>
 				<field datasource=".DAIRichtlinien" />
 			</ifEmpty>
-		</field>		
-		<field datasource=".Corpuszitat"/>
-		<field datasource=".AntikeTextquelle"/>
+		</field>
+		<field datasource=".Corpuszitat" />
+		<field datasource=".AntikeTextquelle" />
 		<field datasource=".Seite" />
 		<field datasource=".Anmerkung" prefix="Anm. " /> <!-- AdditionalInfosJSON -->
 		<field datasource=".Abbildung" prefix="Abb. " /> <!-- AdditionalInfosJSON -->
@@ -23,7 +24,8 @@
 		<field datasource=".Beilage" prefix="Beil. " /> <!-- AdditionalInfosJSON -->
 		<field datasource=".subVoce" prefix="s.v. " /> <!-- AdditionalInfosJSON -->
 		<field datasource=".Textauszug" prefix="(Textauszug: '" postfix="')" /> <!-- AdditionalInfosJSON -->
-		<field datasource=".TextauszugUebersetzung" prefix="(Übersetzter Textauszug: '" postfix="')" /> <!-- AdditionalInfosJSON -->
+		<field datasource=".TextauszugUebersetzung" prefix="(Übersetzter Textauszug: '"
+			postfix="')" /> <!-- AdditionalInfosJSON -->
 		<field datasource=".KommentarLitZitat" prefix="(" postfix=")" />
 		<field datasource=".Supplement" prefix="Supplement: " /> <!-- AdditionalInfosJSON -->
 		<linkField labelKey="Online verfügbar" datasource=".Onlinequelle" />

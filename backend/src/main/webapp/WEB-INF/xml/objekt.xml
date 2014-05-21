@@ -107,7 +107,7 @@
 				</section>
 				<include type="literatur" />
 				<context type="buch" labelKey="Literatur in Arachne" link="">
-				    <field datasource=".contextUri" prefix="link:" />
+				    <field datasource=".contextUri" prefix="$link$" />
                     <field datasource=".BuchTitel">
                         <ifEmpty>
                             <field datasource="zenon.245_a">

@@ -41,6 +41,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(XmlConfigUtil.class);
 	
+	private static final String LINK_PREFIX = "$link$";
+	
 	/**
 	 * The servlet context is needed to load the XML config files. 
 	 */
@@ -530,11 +532,11 @@ public class XmlConfigUtil implements ServletContextAware {
 			String link = context.getAttributeValue("link");
 			if (!StrUtils.isEmptyOrNull(link)) {
 				Element firstField = context.getChild("field", namespace);
-				if (firstField != null && !"link:".equals(firstField.getAttributeValue("prefix"))) {
+				if (firstField != null && !LINK_PREFIX.equals(firstField.getAttributeValue("prefix"))) {
 					LOGGER.error("Invalid use of context attribute 'link' in context type '" + contextType 
-							+ "'. The 'prefix' for the first field must be 'link:'.");
+							+ "'. The 'prefix' for the first field must be '$link$'.");
 					// Disable link creation
-					link = "";
+					link = null;
 				}
 			}
 			
@@ -547,13 +549,13 @@ public class XmlConfigUtil implements ServletContextAware {
 				final FieldList tempFieldList = new FieldList();
 				for (int index = 0; index < fieldList.size(); index++) {
 					final String field = fieldList.get(index);
-					if (field.startsWith("link:")) {
-						int seperatorIndex = field.indexOf(separator);
+					int separatorIndex = field.indexOf(separator);
+					if (field.startsWith(LINK_PREFIX) && separatorIndex > -1) {
 						StringBuilder newValue = new StringBuilder("<a href=\"");
 						newValue.append(link);
-						newValue.append(field.substring(5, seperatorIndex));
+						newValue.append(field.substring(LINK_PREFIX.length(), separatorIndex));
 						newValue.append("\">");
-						newValue.append(field.substring(seperatorIndex + separator.length()));
+						newValue.append(field.substring(separatorIndex + separator.length()));
 						newValue.append("</a>");
 						tempFieldList.add(newValue.toString());
 					} else {
