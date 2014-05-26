@@ -1,12 +1,16 @@
 package de.uni_koeln.arachne.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -35,20 +40,34 @@ public class Transl8Service {
 
 	private transient Map<String, String> categoryMap = new HashMap<String, String>();
 
-	public Transl8Service() {
+	private transient List<String> languages = new ArrayList<String>(1);
+	
+	private transient String transl8Url;
+	
+	@Autowired
+	public Transl8Service(final @Value("#{config.transl8Url}") String transl8Url) {
+		this.transl8Url = transl8Url;
+		languages.add("de");
+		
+		updateTranslations();
+	}
+
+	/**
+	 * Contacts transl8 via rest call and updates the internal translation map.
+	 */
+	@SuppressWarnings("unchecked")
+	public void updateTranslations() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		headers.set("Accept-Language", "de");
+		headers.set("Accept-Language", languages.get(0));
 
 		HttpEntity<String> entity = new HttpEntity<String>("", headers);
 
 		// TODO read transl8 URL from application.properties
 		try {
-			String url = "http://crazyhorse.archaeologie.uni-koeln.de/transl8/translation/json?application=arachne4_backend";
-			final ResponseEntity<String> response = restTemplate.exchange(url , HttpMethod.GET, entity, String.class);
+			final ResponseEntity<String> response = restTemplate.exchange(transl8Url , HttpMethod.GET, entity, String.class);
 			if (response.getStatusCode() == HttpStatus.OK) {
 				final String doc = response.getBody();
-
 				try {
 					translationMap = new ObjectMapper().readValue(doc, HashMap.class);
 				} catch (JsonParseException e) {
@@ -67,13 +86,16 @@ public class Transl8Service {
 							categoryMap.put(entry.getValue(), key.substring(16));
 						}
 					}
+					LOGGER.info("Translations are available for: " + languages);
 				} else {
-					LOGGER.error("Translation map is empty.");
+					LOGGER.error("Translation map is empty. Translations are not available.");
 				}
 			} else {
 				LOGGER.warn("There was a problem contacting transl8. Translations are not available. Http status code: " + response.getStatusCode());
 			}	
 		} catch (HttpServerErrorException e) {
+			LOGGER.warn("There was a problem contacting transl8. Translations are not available. Cause: ", e);
+		} catch (RestClientException e) {
 			LOGGER.warn("There was a problem contacting transl8. Translations are not available. Cause: ", e);
 		}
 	}
