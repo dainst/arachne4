@@ -266,6 +266,7 @@
 				<field datasource=".EndEpoche"/>
 			</context>
 		</facet>
+		<include type="facet_literatur" />
 		<facet name="realienart" labelKey="Motivart">
 			<field datasource="realien.Realienart"/>
 		</facet>

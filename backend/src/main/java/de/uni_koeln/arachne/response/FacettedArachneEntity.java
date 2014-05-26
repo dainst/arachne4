@@ -20,6 +20,7 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	protected List<String> facet_geo;
 	protected List<String> facet_datierungepoche;
 	protected List<String> facet_hasImage; 
+	protected List<String> facet_literatur;
 	
 	// bauwerk
 	protected List<String> facet_gebaeudetyp;
@@ -824,6 +825,12 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	}
 	public void setFacet_morphology_6thLevel(List<String> facet_morphology_6thLevel) {
 		this.facet_morphology_6thLevel = facet_morphology_6thLevel;
+	}
+	public List<String> getFacet_literatur() {
+		return facet_literatur;
+	}
+	public void setFacet_literatur(List<String> facet_literatur) {
+		this.facet_literatur = facet_literatur;
 	}
 	
 }

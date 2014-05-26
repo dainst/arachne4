@@ -168,6 +168,7 @@
     	<facet name="kategorie" labelKey="Kategorie">
     		<field datasource="Dataset.TableName" />
     	</facet>
+    	<include type="facet_literatur" />
     	<facet name="bearbeitungen" labelKey="Bearbeitungen">
     		<field datasource="reproduktion.BearbeitungenReproduktion" />
     	</facet>

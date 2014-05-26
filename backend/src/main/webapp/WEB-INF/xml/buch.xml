@@ -169,12 +169,15 @@
                 <field datasource=".EndEpoche"/>
             </context>
         </facet>
+        <facet name="literatur" labelKey="Literatur">
+            <field datasource="buch.BuchTitel" />
+        </facet>
 		<facet name="autor" labelKey="Autor">
 			<field datasource="buch.BuchAuthor" />
 		</facet>
-		<facet name="buchtitel" labelKey="Titel">
+		<!-- <facet name="buchtitel" labelKey="Titel">
 			<field datasource="buch.BuchTitel" />
-		</facet>
+		</facet> -->
 		<facet name="jahr" labelKey="Jahr">
 			<field datasource="buch.BuchJahr" />
 		</facet>

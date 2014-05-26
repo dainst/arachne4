@@ -119,6 +119,7 @@
                 <field datasource=".EndEpoche"/>
             </context>
         </facet>
+        <include type="facet_literatur" />
 		<facet name="dekorationsart" labelKey="Dekorationsart">
 			<field datasource="bauwerksteil.DekorationsartBauwerksteil" />
 		</facet>

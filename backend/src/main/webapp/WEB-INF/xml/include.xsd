@@ -10,6 +10,7 @@
             <xs:choice minOccurs="1" maxOccurs="1">
             	<xs:element name="section" type="SectionContent" />
             	<xs:element name="context" type="ContextContent" />
+            	<xs:element name="facet" type="FacetContent" />
         	</xs:choice>
         </xs:complexType>
     </xs:element>
@@ -42,6 +43,15 @@
         <xs:attribute name="separator" type="xs:string" />
         <xs:attribute name="link" type="xs:string" />
         <xs:attribute name="minGroupId" type="xs:string" />
+    </xs:complexType>
+    
+    <xs:complexType name="FacetContent">
+        <xs:choice>
+            <xs:element name="context" type="ContextContent"/>
+            <xs:element name="field" type="FieldContent"/>
+        </xs:choice>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="labelKey" type="xs:string" use="required"/>
     </xs:complexType>
         
     <xs:complexType name="FieldContent">

@@ -102,6 +102,7 @@
 		    	<field datasource=".EndEpoche"/>
 	    	</context>
     	</facet>
+    	<include type="facet_literatur" />
     	<facet name="artdergruppe" labelKey="Art der Gruppe">
     		<field datasource="gruppen.ArtDerGruppe" />
     	</facet>     	

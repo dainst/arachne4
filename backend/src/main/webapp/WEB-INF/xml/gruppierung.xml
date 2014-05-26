@@ -68,5 +68,6 @@
 				<field datasource=".EndEpoche"/>
 			</context>
 		</facet>
+		<include type="facet_literatur" />
     </facets>
 </category>

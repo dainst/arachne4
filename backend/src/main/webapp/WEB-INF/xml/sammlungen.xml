@@ -95,6 +95,7 @@
 		    	<field datasource=".EndEpoche"/>
 	    	</context>
     	</facet>
+    	<include type="facet_literatur" />
     	<facet name="sammlungskategorie" labelKey="Sammlungskategorie">
 	    	<field datasource="sammlungen.Sammlungskategorie"/>
     	</facet>

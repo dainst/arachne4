@@ -799,6 +799,7 @@
 				<field datasource=".EndEpoche"/>
 			</context>
 		</facet>
+		<include type="facet_literatur" />
 		<facet name="objektgattung" labelKey="Gattung">
 			<field datasource="objekt.GattungAllgemein"/>
 		</facet>

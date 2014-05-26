@@ -117,6 +117,7 @@
 		    	<field datasource=".EndEpoche"/>
 	    	</context>
     	</facet>
+    	<include type="facet_literatur"/>
     	<facet name="gebaeudetyp" labelKey="Gebäudetyp allgemein">
 	    	<field datasource="bauwerk.Gebaeudetyp"/>
     	</facet>

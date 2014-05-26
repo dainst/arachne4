@@ -53,7 +53,7 @@
 	        	<section labelKey="Ausgrabungen">
 	        		<field datasource="topographie.Ausgrabungen"  />
 	        	</section>
-	        	 <include type="literatur" />
+                <include type="literatur" />
 	        	<include type="uri" />
 	    	</section>
         </datasections>
@@ -78,6 +78,7 @@
 		    	<field datasource=".EndEpoche"/>
 	    	</context>
     	</facet>
+        <include type="facet_literatur" />
     	<facet name="topographieart" labelKey="Natürlich oder Anthropogen">
     		<field datasource="topographie.TopographieArt"/>
     	</facet>

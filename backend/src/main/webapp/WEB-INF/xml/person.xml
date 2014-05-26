@@ -68,6 +68,7 @@
     	<facet name="kategorie" labelKey="Kategorie">
     		<field datasource="Dataset.TableName" />
     	</facet>
+    	<include type="facet_literatur" />
     	<facet name="titel" labelKey="Titel">
     		<field datasource="person.Titel" />
     	</facet>

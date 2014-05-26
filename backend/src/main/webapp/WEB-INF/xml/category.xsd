@@ -25,7 +25,7 @@
                 </xs:element>
                 <xs:element name="facets" minOccurs="1" maxOccurs="1">
                     <xs:complexType>
-                        <xs:sequence>
+                        <xs:choice maxOccurs="unbounded">
                             <xs:element name="facet" maxOccurs="unbounded">
                                 <xs:complexType>
                                     <xs:choice>
@@ -36,7 +36,8 @@
                                     <xs:attribute name="labelKey" type="xs:string" use="required"/>
                                 </xs:complexType>
                             </xs:element>
-                        </xs:sequence>
+                            <xs:element name="include" type="IncludeContent" />
+                        </xs:choice>
                     </xs:complexType>
                 </xs:element>
             </xs:all>

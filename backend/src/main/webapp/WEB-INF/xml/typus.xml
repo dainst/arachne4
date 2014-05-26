@@ -136,6 +136,7 @@ Hier werden keine Direkten Bilder verwendet sondern die Bilder des Hauptvertrete
 		    	<field datasource=".EndEpoche"/>
 	    	</context>
     	</facet>
+    	<include type="facet_literatur" />
     	<facet name="klassifizierung" labelKey="Art des Typus">
 	    	<field datasource="typus.Klassifizierung"/>
     	</facet>

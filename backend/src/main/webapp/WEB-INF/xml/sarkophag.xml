@@ -83,6 +83,7 @@
 				<field datasource=".Aufbewahrungsort" />
 			</context>
     	</facet>
+    	<include type="facet_literatur" />
     	<facet name="thematik" labelKey="Thematik">
     		<field datasource="sarkophag.Thematik" />
     	</facet>

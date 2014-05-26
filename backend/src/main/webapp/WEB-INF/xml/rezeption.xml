@@ -112,6 +112,7 @@
                 <field datasource=".EndEpoche"/>
             </context>
         </facet>
+        <include type="facet_literatur" />
     	<facet name="gattungallgemein" labelKey="Gattung allgemein">
     		<field datasource="rezeption.GattungAllgemeinRezeption" />
     	</facet>
