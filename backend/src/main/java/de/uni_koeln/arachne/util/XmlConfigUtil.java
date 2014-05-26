@@ -149,9 +149,8 @@ public class XmlConfigUtil implements ServletContextAware {
 		final Namespace nameSpace = rootElement.getNamespace();
 		final Element display = rootElement.getChild("display", nameSpace);
 		replaceInclude(display);
-		//final Element facets = rootElement.getChild("facets", nameSpace);
-		// extract elements from include tags
-		// add elements to document
+		final Element facets = rootElement.getChild("facets", nameSpace);
+		replaceInclude(facets);
 	}
 	
 	/**
@@ -210,10 +209,13 @@ public class XmlConfigUtil implements ServletContextAware {
 			final Document document = saxBuilder.build(xmlDocument.getFile());
 			final Element rootElement = document.getRootElement();
 			final Namespace namespace = rootElement.getNamespace();
-			// the include element is either a single section or context
+			// the include element may be either a single section, context or facet
 			Element element = rootElement.getChild("section", namespace);
 			if (element == null) {
 				element = rootElement.getChild("context", namespace);
+				if (element == null) {
+					element = rootElement.getChild("facet", namespace);
+				}
 			}
 			if (element != null) {
 				element.detach();
