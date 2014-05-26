@@ -10,9 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -24,48 +26,55 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @Service
 public class Transl8Service {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(Transl8Service.class);
-	
-	private transient final RestTemplate restTemplate = new RestTemplate();
-	
-	private transient Map<String, String> translationMap;
 
-	private transient Map<String, String> categoryMap;
-	
+	private static final Logger LOGGER = LoggerFactory.getLogger(Transl8Service.class);
+
+	private transient final RestTemplate restTemplate = new RestTemplate();
+
+	private transient Map<String, String> translationMap = new HashMap<String, String>();
+
+	private transient Map<String, String> categoryMap = new HashMap<String, String>();
+
 	public Transl8Service() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		headers.set("Accept-Language", "de");
-		
+
 		HttpEntity<String> entity = new HttpEntity<String>("", headers);
-		
+
 		// TODO read transl8 URL from application.properties
-		String url = "http://crazyhorse.archaeologie.uni-koeln.de/transl8/translation/json?application=arachne4_backend";
-		final ResponseEntity<String> response = restTemplate.exchange(url , HttpMethod.GET, entity, String.class);
-				
-		final String doc = response.getBody();
-						
 		try {
-			translationMap = new ObjectMapper().readValue(doc, HashMap.class);
-		} catch (JsonParseException e) {
-			LOGGER.error("Could not parse transl8 response.", e);
-		} catch (JsonMappingException e) {
-			LOGGER.error("Could not map transl8 response.", e);
-		} catch (IOException e) {
-			LOGGER.error("Could not create translation map.", e);
-		}
-		
-		if (translationMap != null && !translationMap.isEmpty()) {
-			categoryMap = new HashMap<String, String>();
-			for (final Map.Entry<String, String> entry: translationMap.entrySet()) {
-				String key = entry.getKey();
-				if (key.startsWith("facet_kategorie_")) {
-					categoryMap.put(entry.getValue(), key.substring(16));
+			String url = "http://crazyhorse.archaeologie.uni-koeln.de/transl8/translation/json?application=arachne4_backend";
+			final ResponseEntity<String> response = restTemplate.exchange(url , HttpMethod.GET, entity, String.class);
+			if (response.getStatusCode() == HttpStatus.OK) {
+				final String doc = response.getBody();
+
+				try {
+					translationMap = new ObjectMapper().readValue(doc, HashMap.class);
+				} catch (JsonParseException e) {
+					LOGGER.error("Could not parse transl8 response.", e);
+				} catch (JsonMappingException e) {
+					LOGGER.error("Could not map transl8 response.", e);
+				} catch (IOException e) {
+					LOGGER.error("Could not create translation map.", e);
 				}
-			}
-		} else {
-			LOGGER.error("Translation map is empty.");
+
+				if (translationMap != null && !translationMap.isEmpty()) {
+					categoryMap = new HashMap<String, String>();
+					for (final Map.Entry<String, String> entry: translationMap.entrySet()) {
+						String key = entry.getKey();
+						if (key.startsWith("facet_kategorie_")) {
+							categoryMap.put(entry.getValue(), key.substring(16));
+						}
+					}
+				} else {
+					LOGGER.error("Translation map is empty.");
+				}
+			} else {
+				LOGGER.warn("There was a problem contacting transl8. Translations are not available. Http status code: " + response.getStatusCode());
+			}	
+		} catch (HttpServerErrorException e) {
+			LOGGER.warn("There was a problem contacting transl8. Translations are not available. Cause: ", e);
 		}
 	}
 	
@@ -101,6 +110,11 @@ public class Transl8Service {
 		return key;
 	}
 	
+	/**
+	 * Looks up a a category key in the reverse LUT.
+	 * @param key The translated category value.
+	 * @return The category key if found else the unchanged key parameter.
+	 */
 	public String categoryLookUp(String key) {
 		if (!categoryMap.isEmpty()) {
 			String value = categoryMap.get(key);
