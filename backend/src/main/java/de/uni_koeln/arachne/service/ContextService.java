@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import de.uni_koeln.arachne.context.*;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
+import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.ImageUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
@@ -121,10 +122,20 @@ public class ContextService {
 				continue;
 			}
 			
-			final Context contextBookpage = parent.getContext("buchseite");
+			final String contextName = cur.getContextName();
+			final Context context = parent.getContext(contextName);
 			
-			for (int index = 0; index < parent.getContextSize("buchseite"); index++) {
-				final AbstractLink link = contextBookpage.getContext(index);
+			// books get their thumbnail image from a connected page - so check for this
+			long cover = -1;
+			if ("buch".equals(parent.getArachneId().getTableName())) {
+				final String buchCover = parent.getField("buch.Cover");
+				if (buchCover != null) {
+					cover = Long.parseLong(buchCover);
+				}
+			}
+			
+			for (int index = 0; index < parent.getContextSize(contextName); index++) {
+				final AbstractLink link = context.getContext(index);
 						
 				// Retrieve images from context-entities using ImageService
 				if (link instanceof ArachneLink) {
@@ -136,23 +147,32 @@ public class ContextService {
 					// Fetch images for connected Entity
 					imageService.addImages(contextImageDataset);
 					
+					
+					final EntityId contextDatasetId = contextImageDataset.getArachneId();
+					
+					// if cover and the context datasets internal key match this context image is the books thumbnail
+					if (cover > 0 && contextDatasetId.getInternalKey() == cover) {
+						parent.setThumbnailId(contextImageDataset.getImages().get(0).getImageId());
+					}
+					
 					final List<Image> contextImagesList = contextImageDataset.getImages();
-					if(contextImagesList == null || contextImagesList.isEmpty()) {
+					if (contextImagesList == null || contextImagesList.isEmpty()) {
 						continue;
 					}
 					
 					// Use table-name for context-description
-					final String contextTableName = contextImageDataset.getArachneId().getTableName().substring(0,1).toUpperCase() + contextImageDataset.getArachneId().getTableName().substring(1);
+					final String contextTableName = contextDatasetId.getTableName().substring(0,1).toUpperCase() 
+							+ contextDatasetId.getTableName().substring(1);
 					
 					// Iterate over all loaded context-images and add images to parent-dataset
 					final Iterator<Image> contextImageIterator = contextImagesList.iterator();
 					
-					while(contextImageIterator.hasNext()) {
+					while (contextImageIterator.hasNext()) {
 						
 						final Image curImage = contextImageIterator.next();
 						
 						// Entity-ID of connected Record
-						curImage.setSourceRecordId(contextImageDataset.getArachneId().getArachneEntityID());
+						curImage.setSourceRecordId(contextDatasetId.getArachneEntityID());
 						
 						// Context-Type of connected Record
 						curImage.setSourceContext(contextTableName);
@@ -168,7 +188,7 @@ public class ContextService {
 		parent.addImages(resultContextImages);
 		
 		// if no thumbnail has been set yet, use one from context
-		if(!resultContextImages.isEmpty() && parent.getThumbnailId() == null) {
+		if (!resultContextImages.isEmpty() && parent.getThumbnailId() == null) {
 			parent.setThumbnailId(ImageUtils.findThumbnailId(resultContextImages));
 		}
 	}
@@ -233,7 +253,6 @@ public class ContextService {
 		}
 		return result;		
 	}
-
 
 	public void clearCache() {
 		contextualizers = new HashMap<String, IContextualizer>();
