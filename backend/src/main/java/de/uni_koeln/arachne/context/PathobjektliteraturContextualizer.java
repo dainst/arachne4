@@ -1,13 +1,13 @@
 package de.uni_koeln.arachne.context;
 
 /**
- * Adds the 'literatur' context of the 'objekt' context to the 'realien' dataset as nativ context, so that the 
- * standard 'literatur_inc.xml' can be used for 'realien' datasets.
+ * Adds the 'literatur' context of the 'objekt' context to the dataset as nativ context, so that the 
+ * standard 'literatur_inc.xml' can be used for the dataset.
  */
-public class PathrealienliteraturContextualizer extends
+public class PathobjektliteraturContextualizer extends
 		AbstractSemanticConnectionPathContextualizer {
 
-	public PathrealienliteraturContextualizer() {
+	public PathobjektliteraturContextualizer() {
 		super();
 		contextualizerName = "literatur";
 	}

@@ -4,7 +4,7 @@
 <category name="realien" xmlns="http://arachne.uni-koeln.de/schemas/category"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-	<explicitContextualizers>pathrealienort, pathrealiendatierung, pathrealienliteratur</explicitContextualizers>
+	<explicitContextualizers>pathobjektort, pathobjektdatierung, pathrealienliteratur</explicitContextualizers>
 	<display>
 		<title>
 			<section>

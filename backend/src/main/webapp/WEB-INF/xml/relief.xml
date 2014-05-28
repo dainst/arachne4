@@ -4,6 +4,7 @@
 	xmlns="http://arachne.uni-koeln.de/schemas/category"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<explicitContextualizers>pathobjektort, pathobjektdatierung</explicitContextualizers>
     <display>
         <title>
         	<section>
@@ -18,6 +19,8 @@
         </subtitle>
         <datasections>
         	<section labelKey="Informationen zum Relief">
+        	    <include type="ort" />
+                <include type="datierung" />
         		<section labelKey="Größe">
         			<field datasource="relief.SzeneBreite" prefix="Breite: " postfix=" cm" />
         			<field datasource="relief.SzeneHoehe" prefix="Höhe: " postfix=" cm" />
