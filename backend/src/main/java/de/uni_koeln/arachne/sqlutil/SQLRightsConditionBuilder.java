@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.parsing.Problem;
 
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.mapping.UserAdministration;
+import de.uni_koeln.arachne.service.ContextService;
 import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * This Object Builds up the User Rights Queston upon the User Rights Service.
@@ -20,27 +26,31 @@ import de.uni_koeln.arachne.service.IUserRightsService;
 @Configurable(preConstruction=true)
 public class SQLRightsConditionBuilder {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(SQLRightsConditionBuilder.class);
+	
 	@Autowired
 	private transient IUserRightsService userRightsService;
 	
 	private transient Set<DatasetGroup> permissiongroups;
 	private transient final String tableName;
 	private transient final UserAdministration user;
-	private transient final List<String> exludedTables = new ArrayList<String>();
+	private transient List<String> exludedTables;
+		
+	@Autowired
+	@Value("#{config.authFreeTables}")
+	public void setExcludeTables(final String authFreeTablesCSS) {
+		final List<String> authFreeTables = StrUtils.getCommaSeperatedStringAsList(authFreeTablesCSS);
+		exludedTables = new ArrayList<String>();
+		if (authFreeTables != null) {
+			exludedTables.addAll(authFreeTables);
+		} else {
+			LOGGER.error("Problem configuring authentication free tables. List is: " + authFreeTables);
+		}
+	}
 	
 	public SQLRightsConditionBuilder(final String tableName) {
 		this.tableName = tableName;
 		this.user = userRightsService.getCurrentUser();
-		// TODO find a better way to exclude specific tables
-		exludedTables.add("SemanticConnection");
-		exludedTables.add("datierung");
-		exludedTables.add("literatur");
-		exludedTables.add("literaturzitat_leftjoin_literatur");
-		exludedTables.add("ort");
-		exludedTables.add("ortsbezug_leftjoin_ort");
-		exludedTables.add("rezeptionsobjekte");
-		exludedTables.add("sammler");
-		exludedTables.add("uri");
 	}
 	
 	/**
