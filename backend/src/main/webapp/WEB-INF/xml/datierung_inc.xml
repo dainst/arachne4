@@ -1,63 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<includeSection
-	xmlns="http://arachne.uni-koeln.de/schemas/include"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
-
-	<!-- <section labelKey="Datierung">
-		<section>
-			<section separator=": ">
-				<context type="datierung" separator=", ">
-					<field datasource=".TypDatierung" />
-					<field datasource=".nachantik" />
-					<field datasource=".FestDat" prefix="(fest datiert: " postfix=") " />
-				</context>
-				<section separator=" - ">-->
-					<context type="datierung"  labelKey="Datierung" separator=" - ">
-						<field datasource=".TypDatierung" postfix=": "/>
-						<field datasource=".nachantik" />
-						<field datasource=".FestDat" prefix="(fest datiert: " postfix=") " />
-						<field datasource=".AnfEpoche" postfix=", "/>
-						<field datasource=".AnfKultur" />
-						<field datasource=".AnfDatZeitraum" />
-						<field datasource=".AnfDatJt" postfix=". Jt. " />
-						<field datasource=".AnfDatJh" postfix=". Jh. " />
-						<field datasource=".AnfDatvon" />
-						<field datasource=".AnfPraezise" prefix=" (" postfix=") " />
-						<field datasource=".AnfTerminus" prefix=", "/>
-							
-							
-						<field datasource=".EndEpoche" postfix=", "/>
-						<field datasource=".EndKultur" />
-						<field datasource=".EndDatZeitraum" />
-						<field datasource=".EndDatJt" postfix=". Jt. " />
-						<field datasource=".EndDatJh" postfix=". Jh. " />
-						<field datasource=".EndDatvon" />
-						<field datasource=".EndPraezise" prefix=" (" postfix=") " />
-						<field datasource=".EndTerminus" prefix=", "/>
-					
-					
-					</context>
-					<!-- 
-					<context type="datierung" separator=" ">
-						<field datasource=".EndEpoche" postfix=", "/>
-						<field datasource=".EndKultur" />
-						<field datasource=".EndDatZeitraum" />
-						<field datasource=".EndDatJt" postfix=". Jt. " />
-						<field datasource=".EndDatJh" postfix=". Jh. " />
-						<field datasource=".EndDatvon" />
-						<field datasource=".EndPraezise" prefix=" (" postfix=") " />
-						<field datasource=".EndTerminus" prefix=", "/>
-					</context>
-				</section>
-			</section>
-		</section>
-		<section prefix="- " postfix=" -" separator="">
-			<context type="datierung" separator=" / ">
-				<field datasource=".Argument" prefix="Argument: " />
-				<field datasource=".DatVorschlagAutor" prefix="nach: " />
-			</context>
-		</section>
-	</section>-->
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
+  <context type="datierung" labelKey="Datierung" separator=" - ">
+    <field datasource=".TypDatierung" postfix=": "/>
+    <field datasource=".nachantik"/>
+    <field datasource=".FestDat" prefix="(fest datiert: " postfix=") "/>
+    <field datasource=".AnfEpoche" postfix=", "/>
+    <field datasource=".AnfKultur"/>
+    <field datasource=".AnfDatZeitraum"/>
+    <field datasource=".AnfDatJt" postfix=". Jt. "/>
+    <field datasource=".AnfDatJh" postfix=". Jh. "/>
+    <field datasource=".AnfDatvon"/>
+    <field datasource=".AnfPraezise" prefix=" (" postfix=") "/>
+    <field datasource=".AnfTerminus" prefix=", "/>
+    <field datasource=".EndEpoche" postfix=", "/>
+    <field datasource=".EndKultur"/>
+    <field datasource=".EndDatZeitraum"/>
+    <field datasource=".EndDatJt" postfix=". Jt. "/>
+    <field datasource=".EndDatJh" postfix=". Jh. "/>
+    <field datasource=".EndDatvon"/>
+    <field datasource=".EndPraezise" prefix=" (" postfix=") "/>
+    <field datasource=".EndTerminus" prefix=", "/>
+  </context>
 </includeSection>

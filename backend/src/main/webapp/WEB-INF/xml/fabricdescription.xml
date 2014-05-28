@@ -1,144 +1,133 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<category name="fabricdescription" xmlns="http://arachne.uni-koeln.de/schemas/category"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-            <section separator=", ">
-                <field datasource="fabric.origin"/>
-                <field datasource="fabric.CommonName"/>
-                <field datasource="fabric.Name"/>
-            </section>
-        </title>
-        <subtitle>
-            <section labelKey="Fabricdescription">
-                <field datasource="Dataset.Id"/>
-            </section>
-        </subtitle>
-        <datasections>
-            <section labelKey="Informationen zur Fabricdescription">
-                <section labelKey="Informationen zur Bruchstelle">
-                    <section labelKey="Freie Farbbeschreibung" separator=" ">
-                        <field datasource="fabricdescription.ColourOfBreakQualifierVon"/>
-                        <field datasource="fabricdescription.ColourOfBreakVon" postfix=" - "/>
-                        <field datasource="fabricdescription.ColourOfBreakQualifierBis"/>
-                        <field datasource="fabricdescription.ColourOfBreakBis"/>
-                    </section>
-                    <section labelKey="Farbbeschreibung nach Munsell">
-                        <field datasource="fabricdescription.ColourOfBreakMunsellVon" postfix=" - "/>
-                        <field datasource="fabricdescription.ColourOfBreakMunsellBis"/>
-                    </section>
-                    <section labelKey="Zoning">
-                        <field datasource="fabricdescription.Zoning"/>
-                    </section>
-                </section>
-                <section labelKey="Informationen zum Kern">
-                    <section labelKey="Freie Farbbeschreibung" separator=" ">
-                        <field datasource="fabricdescription.ColourOfCoreQualifierVon"/>
-                        <field datasource="fabricdescription.ColourOfCoreVon" postfix=" - "/>
-                        <field datasource="fabricdescription.ColourOfCoreQualifierBis"/>
-                        <field datasource="fabricdescription.ColourOfCoreBis"/>
-                    </section>
-                    <section labelKey="Farbbeschreibung nach Munsell" separator=" - ">
-                        <field datasource="fabricdescription.ColourOfCoreMunsellVon"/>
-                        <field datasource="fabricdescription.ColourOfCoreMunsellBis"/>
-                    </section>
-                </section>
-                <section labelKey="Informationen zur Außenhülle">
-                    <section labelKey="Freie Farbbeschreibung" separator=" ">
-                        <field datasource="fabricdescription.ColourOfOutsideQualifierVon"/>
-                        <field datasource="fabricdescription.ColourOfOutsideVon" postfix=" - "/>
-                        <field datasource="fabricdescription.ColourOfOutsideQualifierBis"/>
-                        <field datasource="fabricdescription.ColourOfOutsideBis"/>
-                    </section>
-                    <section labelKey="Farbbeschreibung nach Munsell" separator=" - ">
-                        <field datasource="fabricdescription.ColourOfOutsideMunsellVon"/>
-                        <field datasource="fabricdescription.ColourOfOutsideMunsellBis"/>
-                    </section>
-                </section>
-                <section labelKey="Informationen zur Struktur">
-                    <section labelKey="Fabrikation">
-                        <field datasource="fabricdescription.Manufacture"/>
-                    </section>
-                    <section labelKey="Härte">
-                        <field datasource="fabricdescription.Hardness"/>
-                    </section>
-                    <section labelKey="Bruch">
-                        <field datasource="fabricdescription.Fracture"/>
-                    </section>
-                    <section labelKey="Porösität">
-                        <field datasource="fabricdescription.Porosity"/>
-                    </section>
-                    <section labelKey="Kommentar">
-                        <field datasource="fabricdescription.Comments"/>
-                    </section>
-                </section>
-                <section labelKey="Informationen zur Oberfläche">
-                    <section labelKey="Oberflächengefühl">
-                        <field datasource="fabricdescription.SurfaceFeel"/>
-                    </section>
-                    <section labelKey="Freie Farbbeschreibung" separator=" ">
-                        <field datasource="fabricdescription.ColourQualifierFreeVon"/>
-                        <field datasource="fabricdescription.ColourFreeVon" postfix=" - "/>
-                        <field datasource="fabricdescription.ColourQualifierFreeBis"/>
-                        <field datasource="fabricdescription.ColourFreeBis"/>
-                    </section>
-                    <section labelKey="Farbbeschreibung nach Munsell" separator=" - ">
-                        <field datasource="fabricdescription.ColourMunsellVon" postfix=" - "/>
-                        <field datasource="fabricdescription.ColourMunsellBis"/>
-                    </section>
-                </section>
-                <context type="einschluss" labelKey="Einschlüsse" separator=" ">
-                    <contextSection labelKey="Einschlussart">
-                        <field datasource=".Einschlussart"/>
-                    </contextSection>
-                    <contextSection labelKey="Häufigkeit">
-                        <field datasource=".Haeufigkeit"/>
-                    </contextSection>
-                    <contextSection labelKey="Durchschnittliche Größe">
-                        <field datasource=".DurchschnittlicheGroesse"/>
-                    </contextSection>
-                    <contextSection labelKey="Verteilung">
-                        <field datasource=".Verteilung"/>
-                    </contextSection>
-                </context>
-                <include type="datierung"/>
-                <include type="ort"/>
-            </section>
-        </datasections>
-    </display>
-    <facets>
-        <facet name="kategorie" labelKey="Kategorie">
-            <field datasource="Dataset.TableName"/>
-        </facet>
-        
-        <!-- Facet-Place -->
-        <facet name="ort" labelKey="Lokalisierung">
-            <context type="ort" separator=", ">
-                <field datasource=".Stadt"/>
-                <field datasource=".Land"/>
-            </context>
-        </facet>
-        
-        <!-- Facet-Dating -->
-        <facet name="datierungepoche" labelKey="Epoche">
-            <context type="datierung">
-                <field datasource=".AnfEpoche"/>
-                <field datasource=".EndEpoche"/>
-            </context>
-        </facet>
-        
-        <!-- Facet-Inclusion -->
-        <facet name="einschlusstyp" labelKey="Art des Einschlusses">
-            <context type="einschluss">
-                <field datasource=".Einschlussart"/>
-            </context>
-        </facet>
-        <facet name="einschlussform" labelKey="Form des Einschlusses">
-            <context type="einschluss">
-                <field datasource=".Form"/>
-            </context>
-        </facet>
-        
-    </facets>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="fabricdescription" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section separator=", ">
+        <field datasource="fabric.origin"/>
+        <field datasource="fabric.CommonName"/>
+        <field datasource="fabric.Name"/>
+      </section>
+    </title>
+    <subtitle>
+      <section labelKey="Fabricdescription">
+        <field datasource="Dataset.Id"/>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zur Fabricdescription">
+        <section labelKey="Informationen zur Bruchstelle">
+          <section labelKey="Freie Farbbeschreibung" separator=" ">
+            <field datasource="fabricdescription.ColourOfBreakQualifierVon"/>
+            <field datasource="fabricdescription.ColourOfBreakVon" postfix=" - "/>
+            <field datasource="fabricdescription.ColourOfBreakQualifierBis"/>
+            <field datasource="fabricdescription.ColourOfBreakBis"/>
+          </section>
+          <section labelKey="Farbbeschreibung nach Munsell">
+            <field datasource="fabricdescription.ColourOfBreakMunsellVon" postfix=" - "/>
+            <field datasource="fabricdescription.ColourOfBreakMunsellBis"/>
+          </section>
+          <section labelKey="Zoning">
+            <field datasource="fabricdescription.Zoning"/>
+          </section>
+        </section>
+        <section labelKey="Informationen zum Kern">
+          <section labelKey="Freie Farbbeschreibung" separator=" ">
+            <field datasource="fabricdescription.ColourOfCoreQualifierVon"/>
+            <field datasource="fabricdescription.ColourOfCoreVon" postfix=" - "/>
+            <field datasource="fabricdescription.ColourOfCoreQualifierBis"/>
+            <field datasource="fabricdescription.ColourOfCoreBis"/>
+          </section>
+          <section labelKey="Farbbeschreibung nach Munsell" separator=" - ">
+            <field datasource="fabricdescription.ColourOfCoreMunsellVon"/>
+            <field datasource="fabricdescription.ColourOfCoreMunsellBis"/>
+          </section>
+        </section>
+        <section labelKey="Informationen zur Außenhülle">
+          <section labelKey="Freie Farbbeschreibung" separator=" ">
+            <field datasource="fabricdescription.ColourOfOutsideQualifierVon"/>
+            <field datasource="fabricdescription.ColourOfOutsideVon" postfix=" - "/>
+            <field datasource="fabricdescription.ColourOfOutsideQualifierBis"/>
+            <field datasource="fabricdescription.ColourOfOutsideBis"/>
+          </section>
+          <section labelKey="Farbbeschreibung nach Munsell" separator=" - ">
+            <field datasource="fabricdescription.ColourOfOutsideMunsellVon"/>
+            <field datasource="fabricdescription.ColourOfOutsideMunsellBis"/>
+          </section>
+        </section>
+        <section labelKey="Informationen zur Struktur">
+          <section labelKey="Fabrikation">
+            <field datasource="fabricdescription.Manufacture"/>
+          </section>
+          <section labelKey="Härte">
+            <field datasource="fabricdescription.Hardness"/>
+          </section>
+          <section labelKey="Bruch">
+            <field datasource="fabricdescription.Fracture"/>
+          </section>
+          <section labelKey="Porösität">
+            <field datasource="fabricdescription.Porosity"/>
+          </section>
+          <section labelKey="Kommentar">
+            <field datasource="fabricdescription.Comments"/>
+          </section>
+        </section>
+        <section labelKey="Informationen zur Oberfläche">
+          <section labelKey="Oberflächengefühl">
+            <field datasource="fabricdescription.SurfaceFeel"/>
+          </section>
+          <section labelKey="Freie Farbbeschreibung" separator=" ">
+            <field datasource="fabricdescription.ColourQualifierFreeVon"/>
+            <field datasource="fabricdescription.ColourFreeVon" postfix=" - "/>
+            <field datasource="fabricdescription.ColourQualifierFreeBis"/>
+            <field datasource="fabricdescription.ColourFreeBis"/>
+          </section>
+          <section labelKey="Farbbeschreibung nach Munsell" separator=" - ">
+            <field datasource="fabricdescription.ColourMunsellVon" postfix=" - "/>
+            <field datasource="fabricdescription.ColourMunsellBis"/>
+          </section>
+        </section>
+        <context type="einschluss" labelKey="Einschlüsse" separator=" ">
+          <contextSection labelKey="Einschlussart">
+            <field datasource=".Einschlussart"/>
+          </contextSection>
+          <contextSection labelKey="Häufigkeit">
+            <field datasource=".Haeufigkeit"/>
+          </contextSection>
+          <contextSection labelKey="Durchschnittliche Größe">
+            <field datasource=".DurchschnittlicheGroesse"/>
+          </contextSection>
+          <contextSection labelKey="Verteilung">
+            <field datasource=".Verteilung"/>
+          </contextSection>
+        </context>
+        <include type="datierung"/>
+        <include type="ort"/>
+      </section>
+    </datasections>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <include type="facet_ort"/>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".AnfEpoche"/>
+      </context>
+    </facet>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".EndEpoche"/>
+      </context>
+    </facet>
+    <!-- Facet-Inclusion -->
+    <facet name="einschlusstyp" labelKey="Art des Einschlusses">
+      <context type="einschluss">
+        <field datasource=".Einschlussart"/>
+      </context>
+    </facet>
+    <facet name="einschlussform" labelKey="Form des Einschlusses">
+      <context type="einschluss">
+        <field datasource=".Form"/>
+      </context>
+    </facet>
+  </facets>
 </category>

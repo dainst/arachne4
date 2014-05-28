@@ -1,61 +1,54 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- just very basic to have at least some definitions -->
-<category name="bilder"
-	xmlns="http://arachne.uni-koeln.de/schemas/category"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-        	<section>
-            	<field datasource="marbilder.DateinameMarbilder" />
-            </section>
-        </title>
-        <subtitle>
-             <section>
-                <field datasource="marbilder.Scannummer" />
-            </section>
-        </subtitle>
-        <datasections>
-        	<section labelKey="Informationen zum Bild">
-        		<section labelKey="Allgemein">
-        			<field datasource="marbilder.DateinameMarbilder" prefix="Dateiname: " />
-        			<field datasource="marbilder.BestandsnameMarbilder" prefix="Bestandsname: " />
-        			<field datasource="marbilder.ProjekttitelMarbilder" prefix="Projekttitel: "/>
-        			<field datasource="marbilder.Dateiformat" prefix="Dateiformat: " />
-        			<field datasource="marbilder.Dateigroesse" prefix="Dateigröße: " postfix=" kb" />
-        			<field datasource="marbilder.AnzahlFigurenGruppen" prefix="Pfad: " />     
-        			<field datasource="marbilder.Scanquelle" prefix="Scanquelle: "/>
-        			<field datasource="marbilder.erstellt" prefix="Erstellt: " />
-        			<field datasource="marbilder.geaendert" prefix="Geändert: " />
-        			<field datasource="marbilder.Vorlagenart" prefix="Vorlagenart: "/>
-        			
-        		</section>
-        		<section labelKey="Angaben zum Bild/zur Photographie">
-        			<field datasource="marbilder.Bildbeschreibung" prefix="Bildbeschreibung: "/>
-        			<field datasource="marbilder.Bildausschnitt" prefix="Bildausschnitt: "/>
-        			<field datasource="marbilder.Kommentar" prefix="Kommentar: "/>        		
-        	 		<field datasource="marbilder.AnsichtObjekt" prefix="Ansicht des Objekts: "/>
-        			<field datasource="marbilder.Fotograf" prefix="Fotograf: "/>
-        			<field datasource="marbilder.BildtraegerMarbilder" prefix="Bildträger:" />
-        			<field datasource="marbilder.FilmNr" prefix="Filmnummer: "/>
-        			<field datasource="marbilder.NegativNr" prefix="Negativnummer: "/>
-        			<field datasource="marbilder.Scannummer" prefix="Scannummer: " />
-        			<field datasource="marbilder.Fotodatum" prefix="Fotodatum: "/>
-        			<field datasource="marbilder.Bemerkung" prefix="Bemerkung: "/>
-        		</section>
-        		<section labelKey="Pfad" minGroupId="600">
-        			<field datasource="marbilder.Pfad"/>
-        		</section>
-        	</section>
-        </datasections>
-    </display>
-    <facets>
-    	<facet name="kategorie" labelKey="Kategorie">
-    		<field datasource="Dataset.TableName" />
-    	</facet>
-    	<facet name="subkategorie" labelKey="Unterkategorie">
-    		<field datasource="KategorieMarbilder.Typ" />
-    	</facet>
-    </facets>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="bilder" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section>
+        <field datasource="marbilder.DateinameMarbilder"/>
+      </section>
+    </title>
+    <subtitle>
+      <section>
+        <field datasource="marbilder.Scannummer"/>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zum Bild">
+        <section labelKey="Allgemein">
+          <field datasource="marbilder.DateinameMarbilder" prefix="Dateiname: "/>
+          <field datasource="marbilder.BestandsnameMarbilder" prefix="Bestandsname: "/>
+          <field datasource="marbilder.ProjekttitelMarbilder" prefix="Projekttitel: "/>
+          <field datasource="marbilder.Dateiformat" prefix="Dateiformat: "/>
+          <field datasource="marbilder.Dateigroesse" prefix="Dateigröße: " postfix=" kb"/>
+          <field datasource="marbilder.AnzahlFigurenGruppen" prefix="Pfad: "/>
+          <field datasource="marbilder.Scanquelle" prefix="Scanquelle: "/>
+          <field datasource="marbilder.erstellt" prefix="Erstellt: "/>
+          <field datasource="marbilder.geaendert" prefix="Geändert: "/>
+          <field datasource="marbilder.Vorlagenart" prefix="Vorlagenart: "/>
+        </section>
+        <section labelKey="Angaben zum Bild/zur Photographie">
+          <field datasource="marbilder.Bildbeschreibung" prefix="Bildbeschreibung: "/>
+          <field datasource="marbilder.Bildausschnitt" prefix="Bildausschnitt: "/>
+          <field datasource="marbilder.Kommentar" prefix="Kommentar: "/>
+          <field datasource="marbilder.AnsichtObjekt" prefix="Ansicht des Objekts: "/>
+          <field datasource="marbilder.Fotograf" prefix="Fotograf: "/>
+          <field datasource="marbilder.BildtraegerMarbilder" prefix="Bildträger:"/>
+          <field datasource="marbilder.FilmNr" prefix="Filmnummer: "/>
+          <field datasource="marbilder.NegativNr" prefix="Negativnummer: "/>
+          <field datasource="marbilder.Scannummer" prefix="Scannummer: "/>
+          <field datasource="marbilder.Fotodatum" prefix="Fotodatum: "/>
+          <field datasource="marbilder.Bemerkung" prefix="Bemerkung: "/>
+        </section>
+        <section labelKey="Pfad" minGroupId="600">
+          <field datasource="marbilder.Pfad"/>
+        </section>
+      </section>
+    </datasections>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <facet name="subkategorie" labelKey="Unterkategorie">
+      <field datasource="KategorieMarbilder.Typ"/>
+    </facet>
+  </facets>
 </category>

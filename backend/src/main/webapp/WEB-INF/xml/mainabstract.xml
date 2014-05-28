@@ -1,292 +1,272 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<category name="mainabstract" xmlns="http://arachne.uni-koeln.de/schemas/category"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-            <section separator=" / ">
-                <section labelKey="Context" separator=" - ">
-                    <field datasource="befund.Grabungsort"/>
-                    <field datasource="befund.Befund" prefix="Stratum: "/>
-                </section>
-
-                <section separator=" - " labelKey="Morphology">
-                    <field datasource="morphology.Level1" prefix="FG:"/>
-                    <field datasource="morphology.Level2" prefix="2nd: "/>
-                    <field datasource="morphology.Level3" prefix="3rd: "/>
-                    <field datasource="morphology.Level4" prefix="4th: "/>
-                    <field datasource="morphology.Level5" prefix="5th: "/>
-                    <field datasource="morphology.Level6" prefix="6th: "/>
-                </section>
-
-                <section separator=" - " labelKey="Fabric">
-                    <field datasource="fabric.Origin"/>
-                    <field datasource="fabric.CommonName" prefix="Common Name: "/>
-                    <field datasource="fabric.Name" prefix="Name: "/>
-                </section>
-
-                <section labelKey="Quantitification">
-                    <field datasource="quantities.TotalSherds" prefix="#Sherds: "/>
-                </section>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="mainabstract" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section separator=" / ">
+        <section labelKey="Context" separator=" - ">
+          <field datasource="befund.Grabungsort"/>
+          <field datasource="befund.Befund" prefix="Stratum: "/>
+        </section>
+        <section separator=" - " labelKey="Morphology">
+          <field datasource="morphology.Level1" prefix="FG:"/>
+          <field datasource="morphology.Level2" prefix="2nd: "/>
+          <field datasource="morphology.Level3" prefix="3rd: "/>
+          <field datasource="morphology.Level4" prefix="4th: "/>
+          <field datasource="morphology.Level5" prefix="5th: "/>
+          <field datasource="morphology.Level6" prefix="6th: "/>
+        </section>
+        <section separator=" - " labelKey="Fabric">
+          <field datasource="fabric.Origin"/>
+          <field datasource="fabric.CommonName" prefix="Common Name: "/>
+          <field datasource="fabric.Name" prefix="Name: "/>
+        </section>
+        <section labelKey="Quantitification">
+          <field datasource="quantities.TotalSherds" prefix="#Sherds: "/>
+        </section>
+      </section>
+    </title>
+    <subtitle>
+      <section labelKey="Unique Identifier">
+        <field datasource="Dataset.internalId"/>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zum Abstract">
+        <section labelKey="Befund">
+          <section labelKey="Grabungsort">
+            <field datasource="befund.Grabungsort"/>
+          </section>
+          <section labelKey="Befund">
+            <field datasource="befund.Befund"/>
+          </section>
+          <section labelKey="Areal">
+            <field datasource="befund.Areal"/>
+          </section>
+        </section>
+        <section labelKey="Morphologie">
+          <section labelKey="Functional Group">
+            <field datasource="morphology.Level1"/>
+          </section>
+          <section labelKey="Level 2">
+            <field datasource="morphology.Level2"/>
+          </section>
+          <section labelKey="Level 3">
+            <field datasource="morphology.Level3"/>
+          </section>
+          <section labelKey="Level 4">
+            <field datasource="morphology.Level4"/>
+          </section>
+          <section labelKey="Level 5">
+            <field datasource="morphology.Level5"/>
+          </section>
+          <section labelKey="Level 6">
+            <field datasource="morphology.Level6"/>
+          </section>
+          <section labelKey="Interne Typnummer" separator=", ">
+            <field datasource="mainabstract.GrabungsinterneTypennummer"/>
+            <field datasource="mainabstract.GrabungsinterneTypennummerSub"/>
+          </section>
+        </section>
+        <section labelKey="Fabric">
+          <section labelKey="Herkunft">
+            <field datasource="fabric.Origin"/>
+          </section>
+          <section labelKey="AllgemeinerName">
+            <field datasource="fabric.CommonName"/>
+          </section>
+          <section labelKey="Name">
+            <field datasource="fabric.Name"/>
+          </section>
+          <context type="Mainabstractfabricfabricdescription" labelKey="Description" separator=", ">
+            <contextSection labelKey="Freie Farbbeschreibung">
+              <field datasource=".ColourQualifierFreeVon"/>
+              <field datasource=".ColourFreeVon"/>
+              <field datasource=".ColourQualifierFreeBis" postfix=" - "/>
+              <field datasource=".ColourFreeBis"/>
+            </contextSection>
+            <contextSection labelKey="Farbe der Bruchstelle">
+              <field datasource=".ColourOfBreakQualifierVon"/>
+              <field datasource=".ColourOfBreakVon" postfix=" - "/>
+              <field datasource=".ColourOfBreakQualifierBis"/>
+              <field datasource=".ColourOfBreakBis"/>
+            </contextSection>
+            <contextSection labelKey="Zoning">
+              <field datasource=".Zoning"/>
+            </contextSection>
+            <contextSection labelKey="Farbe des Kerns">
+              <field datasource=".ColourOfCoreQualifierVon"/>
+              <field datasource=".ColourOfCoreVon" postfix=" - "/>
+              <field datasource=".ColourOfCoreQualifierBis"/>
+              <field datasource=".ColourOfCoreBis"/>
+            </contextSection>
+            <contextSection labelKey="Farbe der Oberfläche">
+              <field datasource=".ColourOfOutsideQualifierVon"/>
+              <field datasource=".ColourOfOutsideVon" postfix=" - "/>
+              <field datasource=".ColourOfOutsideQualifierBis"/>
+              <field datasource=".ColourOfOutsideBis"/>
+            </contextSection>
+            <contextSection labelKey="Machart">
+              <field datasource=".Manufacture"/>
+            </contextSection>
+            <contextSection labelKey="Härte">
+              <field datasource=".Hardness"/>
+            </contextSection>
+            <contextSection labelKey="Härte">
+              <field datasource=".Porosity"/>
+            </contextSection>
+            <contextSection labelKey="Oberflächengefühl">
+              <field datasource=".SurfaceFeel"/>
+            </contextSection>
+          </context>
+        </section>
+        <include type="datierung"/>
+        <section labelKey="Informationen zur Quantifizierung">
+          <section labelKey="Anzahl">
+            <section labelKey="Ränder">
+              <field datasource="quantities.RimCount"/>
             </section>
-        </title>
-        <subtitle>
-            <section labelKey="Unique Identifier">
-                <field datasource="Dataset.internalId"/>
+            <section labelKey="Henkel">
+              <field datasource="quantities.HandleCount"/>
             </section>
-        </subtitle>
-        <datasections>
-            <section labelKey="Informationen zum Abstract">
-                <section labelKey="Befund">
-                    <section labelKey="Grabungsort">
-                        <field datasource="befund.Grabungsort"/>
-                    </section>
-                    <section labelKey="Befund">
-                        <field datasource="befund.Befund"/>
-                    </section>
-                    <section labelKey="Areal">
-                        <field datasource="befund.Areal"/>
-                    </section>
-                </section>
-
-                <section labelKey="Morphologie">
-                    <section labelKey="Functional Group">
-                        <field datasource="morphology.Level1"/>
-                    </section>
-                    <section labelKey="Level 2">
-                        <field datasource="morphology.Level2"/>
-                    </section>
-                    <section labelKey="Level 3">
-                        <field datasource="morphology.Level3"/>
-                    </section>
-                    <section labelKey="Level 4">
-                        <field datasource="morphology.Level4"/>
-                    </section>
-                    <section labelKey="Level 5">
-                        <field datasource="morphology.Level5"/>
-                    </section>
-                    <section labelKey="Level 6">
-                        <field datasource="morphology.Level6"/>
-                    </section>
-                    <section labelKey="Interne Typnummer" separator=", ">
-                        <field datasource="mainabstract.GrabungsinterneTypennummer"/>
-                        <field datasource="mainabstract.GrabungsinterneTypennummerSub"/>
-                    </section>
-                </section>
-
-                <section labelKey="Fabric">
-                    <section labelKey="Herkunft">
-                        <field datasource="fabric.Origin"/>
-                    </section>
-                    <section labelKey="AllgemeinerName">
-                        <field datasource="fabric.CommonName"/>
-                    </section>
-                    <section labelKey="Name">
-                        <field datasource="fabric.Name"/>
-                    </section>
-                    <context type="Mainabstractfabricfabricdescription" labelKey="Description"
-                        separator=", ">
-                        <contextSection labelKey="Freie Farbbeschreibung">
-                            <field datasource=".ColourQualifierFreeVon"/>
-                            <field datasource=".ColourFreeVon"/>
-                            <field datasource=".ColourQualifierFreeBis" postfix=" - "/>
-                            <field datasource=".ColourFreeBis"/>
-                        </contextSection>
-                        <contextSection labelKey="Farbe der Bruchstelle">
-                            <field datasource=".ColourOfBreakQualifierVon"/>
-                            <field datasource=".ColourOfBreakVon" postfix=" - "/>
-                            <field datasource=".ColourOfBreakQualifierBis"/>
-                            <field datasource=".ColourOfBreakBis"/>
-                        </contextSection>
-                        <contextSection labelKey="Zoning">
-                            <field datasource=".Zoning"/>
-                        </contextSection>
-                        <contextSection labelKey="Farbe des Kerns">
-                            <field datasource=".ColourOfCoreQualifierVon"/>
-                            <field datasource=".ColourOfCoreVon" postfix=" - "/>
-                            <field datasource=".ColourOfCoreQualifierBis"/>
-                            <field datasource=".ColourOfCoreBis"/>
-                        </contextSection>
-                        <contextSection labelKey="Farbe der Oberfläche">
-                            <field datasource=".ColourOfOutsideQualifierVon"/>
-                            <field datasource=".ColourOfOutsideVon" postfix=" - "/>
-                            <field datasource=".ColourOfOutsideQualifierBis"/>
-                            <field datasource=".ColourOfOutsideBis"/>
-                        </contextSection>
-                        <contextSection labelKey="Machart">
-                            <field datasource=".Manufacture"/>
-                        </contextSection>
-                        <contextSection labelKey="Härte">
-                            <field datasource=".Hardness"/>
-                        </contextSection>
-                        <contextSection labelKey="Härte">
-                            <field datasource=".Porosity"/>
-                        </contextSection>
-                        <contextSection labelKey="Oberflächengefühl">
-                            <field datasource=".SurfaceFeel"/>
-                        </contextSection>
-                    </context>
-                </section>
-
-                <include type="datierung"/>
-
-                <section labelKey="Informationen zur Quantifizierung">
-                    <section labelKey="Anzahl">
-                        <section labelKey="Ränder">
-                            <field datasource="quantities.RimCount"/>
-                        </section>
-                        <section labelKey="Henkel">
-                            <field datasource="quantities.HandleCount"/>
-                        </section>
-                        <section labelKey="Bodenfragmente">
-                            <field datasource="quantities.BaseCount"/>
-                        </section>
-                        <section labelKey="Wandscherben">
-                            <field datasource="quantities.BodySherdCount"/>
-                        </section>
-                        <section labelKey="Weitere Fragmente">
-                            <field datasource="quantities.OthersCount"/>
-                        </section>
-                        <section labelKey="Gesamt">
-                            <field datasource="quantities.TotalSherds"/>
-                        </section>
-                    </section>
-
-                    <section labelKey="Gewicht">
-                        <section labelKey="Ränder">
-                            <field datasource="quantities.RimWeight" postfix="g"/>
-                        </section>
-                        <section labelKey="Henkel">
-                            <field datasource="quantities.HandleWeight" postfix="g"/>
-                        </section>
-                        <section labelKey="Bodenfragmente">
-                            <field datasource="quantities.BaseWeight" postfix="g"/>
-                        </section>
-                        <section labelKey="Wandscherben">
-                            <field datasource="quantities.BodySherdWeight" postfix="g"/>
-                        </section>
-                        <section labelKey="Weitere Fragmente">
-                            <field datasource="quantities.OthersWeight" postfix="g"/>
-                        </section>
-                    </section>
-
-                    <section labelKey="Weitere Quantifierzungsinformationen">
-                        <section labelKey="Randanteil">
-                            <field datasource="quantities.RimPercentage" postfix="%"/>
-                        </section>
-                        <section labelKey="Anzahl Joins">
-                            <field datasource="quantities.Joins"/>
-                        </section>
-                        <section labelKey="MNI">
-                            <field datasource="quantities.MNI"/>
-                        </section>
-                        <section labelKey="Gewichtetes MNI">
-                            <field datasource="quantities.MNIWeighted"/>
-                        </section>
-                        <section labelKey="MXI">
-                            <field datasource="quantities.MXI"/>
-                        </section>
-                    </section>
-                </section>
-
-                <section labelKey="Verbundene Keramikfragmente">
-                    <context type="isolatedsherd" labelKey="Fragment">
-                        <contextSection labelKey="Typ">
-                            <field datasource=".SherdType"/>
-                        </contextSection>
-                        <contextSection labelKey="Inventarnummer">
-                            <field datasource=".InventoryNumber"/>
-                        </contextSection>
-                        <contextSection labelKey="Niton-Analyse-Nummer">
-                            <field datasource=".NitonAnalysisNumber"/>
-                        </contextSection>
-                    </context>
-                </section>
+            <section labelKey="Bodenfragmente">
+              <field datasource="quantities.BaseCount"/>
             </section>
-        </datasections>
-
-        <contextImages>
-            <!-- Show images of the connected types -->
-            <contextImage show="always">Morphology</contextImage>
-
-            <!-- Show images of all sherds connected to the current record -->
-            <contextImage show="always">IsolatedSherd</contextImage>
-
-            <!-- Show images of fabricdescriptions connected with the current abstract -->
-            <contextImage show="always">Mainabstractfabricfabricdescription</contextImage>
-        </contextImages>
-
-    </display>
-    <facets>
-        <facet name="kategorie" labelKey="Kategorie">
-            <field datasource="Dataset.TableName"/>
-        </facet>
-        
-        <!-- Context-Facets -->
-        <facet name="grabungsort" labelKey="Grabungsort">
-            <context type="befund" separator=", ">
-                <field datasource=".Grabungsort"/>
-            </context>
-        </facet>
-        <facet name="befund" labelKey="Befund">
-            <context type="befund">
-                <field datasource=".Befund"/>
-            </context>
-        </facet>
-        
-        <!-- Morphology-Facets -->
-        <facet name="morphology_functionalgroup" labelKey="Functional Group">
-            <context type="morphology">
-                <field datasource=".Level1"/>
-            </context>
-        </facet>
-        <facet name="morphology_2ndLevel" labelKey="2nd Level">
-            <context type="morphology">
-                <field datasource=".Level2"/>
-            </context>
-        </facet>    
-        <facet name="morphology_3rdLevel" labelKey="3rd Level">
-            <context type="morphology">
-                <field datasource=".Level3"/>
-            </context>
-        </facet>    
-        <facet name="morphology_4thLevel" labelKey="4th Level">
-            <context type="morphology">
-                <field datasource=".Level4"/>
-            </context>
-        </facet>    
-        <facet name="morphology_5thLevel" labelKey="5th Level">
-            <context type="morphology">
-                <field datasource=".Level5"/>
-            </context>
-        </facet>    
-        <facet name="grabungsinternetypnummer" labelKey="Grabunsinterne Typnummer">
-            <field datasource="mainabstract.GrabunsinterneTypnummer"/>
-        </facet>
-        
-        <!-- Fabric-Facets -->
-        <facet name="fabricorigin" labelKey="Fabric Ursprung">
-            <context type="fabric">
-                <field datasource=".Origin"/>
-            </context>
-        </facet>
-        <facet name="fabriccommonname" labelKey="Fabric Common Name">
-            <context type="fabric">
-                <field datasource=".CommonName"/>
-            </context>
-        </facet>
-        <facet name="fabricname" labelKey="Fabric Name">
-            <context type="fabric">
-                <field datasource=".Name"/>
-            </context>
-        </facet>
-        
-        <!-- Dating-Facets -->
-        <facet name="datierungepoche" labelKey="Epoche">
-            <context type="datierung" separator=" - ">
-                <field datasource=".AnfEpoche"/>
-                <field datasource=".EndEpoche"/>
-            </context>
-        </facet>
-    </facets>
+            <section labelKey="Wandscherben">
+              <field datasource="quantities.BodySherdCount"/>
+            </section>
+            <section labelKey="Weitere Fragmente">
+              <field datasource="quantities.OthersCount"/>
+            </section>
+            <section labelKey="Gesamt">
+              <field datasource="quantities.TotalSherds"/>
+            </section>
+          </section>
+          <section labelKey="Gewicht">
+            <section labelKey="Ränder">
+              <field datasource="quantities.RimWeight" postfix="g"/>
+            </section>
+            <section labelKey="Henkel">
+              <field datasource="quantities.HandleWeight" postfix="g"/>
+            </section>
+            <section labelKey="Bodenfragmente">
+              <field datasource="quantities.BaseWeight" postfix="g"/>
+            </section>
+            <section labelKey="Wandscherben">
+              <field datasource="quantities.BodySherdWeight" postfix="g"/>
+            </section>
+            <section labelKey="Weitere Fragmente">
+              <field datasource="quantities.OthersWeight" postfix="g"/>
+            </section>
+          </section>
+          <section labelKey="Weitere Quantifierzungsinformationen">
+            <section labelKey="Randanteil">
+              <field datasource="quantities.RimPercentage" postfix="%"/>
+            </section>
+            <section labelKey="Anzahl Joins">
+              <field datasource="quantities.Joins"/>
+            </section>
+            <section labelKey="MNI">
+              <field datasource="quantities.MNI"/>
+            </section>
+            <section labelKey="Gewichtetes MNI">
+              <field datasource="quantities.MNIWeighted"/>
+            </section>
+            <section labelKey="MXI">
+              <field datasource="quantities.MXI"/>
+            </section>
+          </section>
+        </section>
+        <section labelKey="Verbundene Keramikfragmente">
+          <context type="isolatedsherd" labelKey="Fragment">
+            <contextSection labelKey="Typ">
+              <field datasource=".SherdType"/>
+            </contextSection>
+            <contextSection labelKey="Inventarnummer">
+              <field datasource=".InventoryNumber"/>
+            </contextSection>
+            <contextSection labelKey="Niton-Analyse-Nummer">
+              <field datasource=".NitonAnalysisNumber"/>
+            </contextSection>
+          </context>
+        </section>
+      </section>
+    </datasections>
+    <contextImages>
+      <!-- Show images of the connected types -->
+      <contextImage show="always">Morphology</contextImage>
+      <!-- Show images of all sherds connected to the current record -->
+      <contextImage show="always">IsolatedSherd</contextImage>
+      <!-- Show images of fabricdescriptions connected with the current abstract -->
+      <contextImage show="always">Mainabstractfabricfabricdescription</contextImage>
+    </contextImages>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".AnfEpoche"/>
+      </context>
+    </facet>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".EndEpoche"/>
+      </context>
+    </facet>
+    <!-- Context-Facets -->
+    <facet name="grabungsort" labelKey="Grabungsort">
+      <context type="befund" separator=", ">
+        <field datasource=".Grabungsort"/>
+      </context>
+    </facet>
+    <facet name="befund" labelKey="Befund">
+      <context type="befund">
+        <field datasource=".Befund"/>
+      </context>
+    </facet>
+    <!-- Morphology-Facets -->
+    <facet name="morphology_functionalgroup" labelKey="Functional Group">
+      <context type="morphology">
+        <field datasource=".Level1"/>
+      </context>
+    </facet>
+    <facet name="morphology_2ndLevel" labelKey="2nd Level">
+      <context type="morphology">
+        <field datasource=".Level2"/>
+      </context>
+    </facet>
+    <facet name="morphology_3rdLevel" labelKey="3rd Level">
+      <context type="morphology">
+        <field datasource=".Level3"/>
+      </context>
+    </facet>
+    <facet name="morphology_4thLevel" labelKey="4th Level">
+      <context type="morphology">
+        <field datasource=".Level4"/>
+      </context>
+    </facet>
+    <facet name="morphology_5thLevel" labelKey="5th Level">
+      <context type="morphology">
+        <field datasource=".Level5"/>
+      </context>
+    </facet>
+    <facet name="grabungsinternetypnummer" labelKey="Grabunsinterne Typnummer">
+      <field datasource="mainabstract.GrabunsinterneTypnummer"/>
+    </facet>
+    <!-- Fabric-Facets -->
+    <facet name="fabricorigin" labelKey="Fabric Ursprung">
+      <context type="fabric">
+        <field datasource=".Origin"/>
+      </context>
+    </facet>
+    <facet name="fabriccommonname" labelKey="Fabric Common Name">
+      <context type="fabric">
+        <field datasource=".CommonName"/>
+      </context>
+    </facet>
+    <facet name="fabricname" labelKey="Fabric Name">
+      <context type="fabric">
+        <field datasource=".Name"/>
+      </context>
+    </facet>
+  </facets>
 </category>

@@ -1,138 +1,132 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<category name="morphology" xmlns="http://arachne.uni-koeln.de/schemas/category"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-            <section separator=" - " labelKey="Morphology">
-                <field datasource="morphology.Level1" prefix="FG:"/>
-                <field datasource="morphology.Level2" prefix="2nd: "/>
-                <field datasource="morphology.Level3" prefix="3rd: "/>
-                <field datasource="morphology.Level4" prefix="4th: "/>
-                <field datasource="morphology.Level5" prefix="5th: "/>
-                <field datasource="morphology.Level6" prefix="6th: "/>
-            </section>
-        </title>
-
-        <subtitle>
-            <section labelKey="Unique Identifier">
-                <field datasource="Dataset.Id"/>
-            </section>
-        </subtitle>
-
-        <datasections>
-            <section labelKey="Informationen zur Morphology">
-                <section labelKey="Informationen zur Morphologie">
-                    <section labelKey="Level 1">
-                        <field datasource="morphology.Level1"/>
-                    </section>
-                    <section labelKey="Level 2">
-                        <field datasource="morphology.Level2"/>
-                    </section>
-                    <section labelKey="Level 3">
-                        <field datasource="morphology.Level3"/>
-                    </section>
-                    <section labelKey="Level 4">
-                        <field datasource="morphology.Level4"/>
-                    </section>
-                    <section labelKey="Level 5">
-                        <field datasource="morphology.Level5"/>
-                    </section>
-                    <section labelKey="Level 6">
-                        <field datasource="morphology.Level6"/>
-                    </section>
-                </section>
-
-                <include type="datierung"/>
-                <include type="literatur"/>
-                
-                <context type="Morphologymainabstractfabric" labelKey="Fabric">
-                    <contextSection labelKey="Herkunft">
-                        <field datasource=".Origin"/>
-                    </contextSection>
-                    <contextSection labelKey="AllgemeinerName">
-                        <field datasource=".CommonName"/>
-                    </contextSection>
-                    <contextSection labelKey="Name">
-                        <field datasource=".Name"/>
-                    </contextSection>
-                </context>
-                
-                <context type="Morphologymainabstractbefund" labelKey="Context">
-                    <contextSection labelKey="Grabungsort">
-                        <field datasource=".Grabungsort"/>
-                    </contextSection>
-                    <contextSection labelKey="Befund">
-                        <field datasource=".Befund"/>
-                    </contextSection>
-                    <contextSection labelKey="Areal">
-                        <field datasource=".Areal"/>
-                    </contextSection>
-                </context>
-                
-                <context type="Morphologymainabstractisolatedsherd" labelKey="Fragment">
-                    <contextSection labelKey="Typ">
-                        <field datasource=".SherdType"/>
-                    </contextSection>
-                    <contextSection labelKey="Inventarnummer">
-                        <field datasource=".InventoryNumber"/>
-                    </contextSection>
-                    <contextSection labelKey="Niton-Analyse-Nummer">
-                        <field datasource=".NitonAnalysisNumber"/>
-                    </contextSection>
-                </context>
-            </section>
-        </datasections>
-        <contextImages>
-            <!-- Show images of all isolated sherds which are conntected with the current morphology -->
-            <contextImage show="always">Morphologymainabstractisolatedsherd</contextImage>
-        </contextImages>
-    </display>
-    <facets>
-        <facet name="grabungsinternetypnummer" labelKey="Grabungsinterne Typnummer">
-            <context type="mainabstract" separator="">
-                <field datasource=".GrabungsinterneTypennummer" />
-                <field datasource=".GrabungsinterneTypennummerSub" />
-            </context>
-        </facet>
-        <facet name="fabricorigin" labelKey="Fabric Ursprung">
-            <context type="Morphologymainabstractfabric">
-                <field datasource=".Origin"/>
-            </context>
-        </facet>
-        <facet name="fabriccommonname" labelKey="Fabric Common Name">
-            <context type="Morphologymainabstractfabric">
-                <field datasource=".CommonName"/>
-            </context>
-        </facet>
-        <facet name="fabricname" labelKey="Fabric Name">
-            <context type="Morphologymainabstractfabric">
-                <field datasource=".Name"/>
-            </context>
-        </facet>
-        <facet name="grabungsort" labelKey="Fabric-Excavation-Area">
-            <context type="Morphologymainabstractbefund" separator=" / ">
-                <field datasource=".Grabungsort"/>
-            </context>
-        </facet>
-        <facet name="befund" labelKey="Fabric-Befund">
-            <context type="Morphologymainabstractbefund" separator=" / ">
-                <field datasource=".Befund"/>
-            </context>
-        </facet>
-        <facet name="areal" labelKey="Fabric-Areal">
-            <context type="Morphologymainabstractbefund" separator=" / ">
-                <field datasource=".Areal"/>
-            </context>
-        </facet>
-        <facet name="kategorie" labelKey="Kategorie">
-            <field datasource="Dataset.TableName"/>
-        </facet>
-        <facet name="datierungepoche" labelKey="Epoche">
-            <context type="datierung" separator=" - ">
-                <field datasource=".AnfEpoche"/>
-                <field datasource=".EndEpoche"/>
-            </context>
-        </facet>
-    </facets>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="morphology" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section separator=" - " labelKey="Morphology">
+        <field datasource="morphology.Level1" prefix="FG:"/>
+        <field datasource="morphology.Level2" prefix="2nd: "/>
+        <field datasource="morphology.Level3" prefix="3rd: "/>
+        <field datasource="morphology.Level4" prefix="4th: "/>
+        <field datasource="morphology.Level5" prefix="5th: "/>
+        <field datasource="morphology.Level6" prefix="6th: "/>
+      </section>
+    </title>
+    <subtitle>
+      <section labelKey="Unique Identifier">
+        <field datasource="Dataset.Id"/>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zur Morphology">
+        <section labelKey="Informationen zur Morphologie">
+          <section labelKey="Level 1">
+            <field datasource="morphology.Level1"/>
+          </section>
+          <section labelKey="Level 2">
+            <field datasource="morphology.Level2"/>
+          </section>
+          <section labelKey="Level 3">
+            <field datasource="morphology.Level3"/>
+          </section>
+          <section labelKey="Level 4">
+            <field datasource="morphology.Level4"/>
+          </section>
+          <section labelKey="Level 5">
+            <field datasource="morphology.Level5"/>
+          </section>
+          <section labelKey="Level 6">
+            <field datasource="morphology.Level6"/>
+          </section>
+        </section>
+        <include type="datierung"/>
+        <include type="literatur"/>
+        <context type="Morphologymainabstractfabric" labelKey="Fabric">
+          <contextSection labelKey="Herkunft">
+            <field datasource=".Origin"/>
+          </contextSection>
+          <contextSection labelKey="AllgemeinerName">
+            <field datasource=".CommonName"/>
+          </contextSection>
+          <contextSection labelKey="Name">
+            <field datasource=".Name"/>
+          </contextSection>
+        </context>
+        <context type="Morphologymainabstractbefund" labelKey="Context">
+          <contextSection labelKey="Grabungsort">
+            <field datasource=".Grabungsort"/>
+          </contextSection>
+          <contextSection labelKey="Befund">
+            <field datasource=".Befund"/>
+          </contextSection>
+          <contextSection labelKey="Areal">
+            <field datasource=".Areal"/>
+          </contextSection>
+        </context>
+        <context type="Morphologymainabstractisolatedsherd" labelKey="Fragment">
+          <contextSection labelKey="Typ">
+            <field datasource=".SherdType"/>
+          </contextSection>
+          <contextSection labelKey="Inventarnummer">
+            <field datasource=".InventoryNumber"/>
+          </contextSection>
+          <contextSection labelKey="Niton-Analyse-Nummer">
+            <field datasource=".NitonAnalysisNumber"/>
+          </contextSection>
+        </context>
+      </section>
+    </datasections>
+    <contextImages>
+      <!-- Show images of all isolated sherds which are conntected with the current morphology -->
+      <contextImage show="always">Morphologymainabstractisolatedsherd</contextImage>
+    </contextImages>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".AnfEpoche"/>
+      </context>
+    </facet>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".EndEpoche"/>
+      </context>
+    </facet>
+    <facet name="grabungsinternetypnummer" labelKey="Grabungsinterne Typnummer">
+      <context type="mainabstract" separator="">
+        <field datasource=".GrabungsinterneTypennummer"/>
+        <field datasource=".GrabungsinterneTypennummerSub"/>
+      </context>
+    </facet>
+    <facet name="fabricorigin" labelKey="Fabric Ursprung">
+      <context type="Morphologymainabstractfabric">
+        <field datasource=".Origin"/>
+      </context>
+    </facet>
+    <facet name="fabriccommonname" labelKey="Fabric Common Name">
+      <context type="Morphologymainabstractfabric">
+        <field datasource=".CommonName"/>
+      </context>
+    </facet>
+    <facet name="fabricname" labelKey="Fabric Name">
+      <context type="Morphologymainabstractfabric">
+        <field datasource=".Name"/>
+      </context>
+    </facet>
+    <facet name="grabungsort" labelKey="Fabric-Excavation-Area">
+      <context type="Morphologymainabstractbefund" separator=" / ">
+        <field datasource=".Grabungsort"/>
+      </context>
+    </facet>
+    <facet name="befund" labelKey="Fabric-Befund">
+      <context type="Morphologymainabstractbefund" separator=" / ">
+        <field datasource=".Befund"/>
+      </context>
+    </facet>
+    <facet name="areal" labelKey="Fabric-Areal">
+      <context type="Morphologymainabstractbefund" separator=" / ">
+        <field datasource=".Areal"/>
+      </context>
+    </facet>
+  </facets>
 </category>

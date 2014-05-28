@@ -1,98 +1,87 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<category name="topographie"
-	xmlns="http://arachne.uni-koeln.de/schemas/category"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-        	<section>
-            	<field datasource="topographie.KurzbeschreibungTopographie" />
-            </section>
-        </title>
-        <subtitle>
-             <section>
-                <section separator=" / ">
-                    <field datasource="topographie.modernerOrt">
-                    	<ifEmpty>
-                    		<field datasource="ort.Stadt" />
-                    	</ifEmpty>
-                    </field>
-                    <field datasource="topographie.antikerOrt">
-                    	<ifEmpty>
-                    		<field datasource="ort.Ort_antik" />
-                    	</ifEmpty>
-                    </field>
-                </section>
-            </section>
-        </subtitle>
-        <datasections>
-        	<section labelKey="Informationen zur Topographie">
-        		<section labelKey="Lokalisierung">
-        			<include type="ort" />
-        			<section>
-        				<field datasource="topographie.antikeGriechLandschaftTopographie" prefix="Antike Landschaft: "/>
-        				<field datasource="topographie.antikeRoemProvinzTopographie" prefix="Römische Provinz: "/>
-        			</section>
-        			<section>
-        				<field datasource="topographie.Ausdehnung" prefix="Ausdehnung: "/> 
-        			</section>
-        		</section>
-        		<include type="datierung" />
-        		<section labelKey="Beschreibung">
-        			<field datasource="topographie.TopographieArt" />
-	        		<field datasource="topographie.TopographieTypus" prefix="Kategorie: " />
-	        		<field datasource="topographie.TopographieTypusZusatz" prefix="Zusatz: "/>
-	        		<field datasource="topographie.antikeQuellen" prefix="antike Quellen: "/>
-	        		<field datasource="topographie.freieBeschreibung" prefix="Freie Beschreibung: " />
-	        		<field datasource="topographie.KommentarTopographie" prefix="Kommentar: "/>
-	        	</section>
-	        	<section labelKey="Geschichte">
-	        		<field datasource="topographie.GeschichteTopographie"  />
-	        	</section>
-	        	<section labelKey="Ausgrabungen">
-	        		<field datasource="topographie.Ausgrabungen"  />
-	        	</section>
-                <include type="literatur" />
-	        	<include type="uri" />
-	    	</section>
-        </datasections>
-    </display>
-    <facets>
-    	<facet name="kategorie" labelKey="Kategorie">
-    		<field datasource="Dataset.TableName" />
-    	</facet>
-    	<facet name="ort" labelKey="Lokalisierung">
-	    	<context type="ort" separator=", ">
-		    	<field datasource=".Stadt" />
-		    	<field datasource=".Land" />
-	    	</context>
-    	</facet>
-    	<facet name="datierungepoche" labelKey="Epoche">
-	    	<context type="datierung">
-		    	<field datasource=".AnfEpoche"/>
-	    	</context>
-    	</facet>
-    	<facet name="datierungepoche" labelKey="Epoche">
-	    	<context type="datierung">
-		    	<field datasource=".EndEpoche"/>
-	    	</context>
-    	</facet>
-        <include type="facet_literatur" />
-    	<facet name="topographieart" labelKey="Natürlich oder Anthropogen">
-    		<field datasource="topographie.TopographieArt"/>
-    	</facet>
-    	<facet name="topographietypus" labelKey="Art der Topographie">
-	    	<field datasource="topographie.TopographieTypus"/>
-    	</facet>
-    	<facet name="antikegriechlandschaft" labelKey="Antike Landschaft">
-    		<field datasource="topographie.antikeGriechLandschaftTopographie"/>
-    	</facet>
-    	<facet name="regioromitalien" labelKey="Regio Rom/Italien">
-    		<field datasource="topographie.RegioRomItalienTopographie"/>
-    	</facet>
-    	<facet name="antikeroemprovinz" labelKey="Römische Provinz">
-    		<field datasource="topographie.antikeRoemProvinzTopographie"/>
-    	</facet>
-    </facets>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="topographie" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section>
+        <field datasource="topographie.KurzbeschreibungTopographie"/>
+      </section>
+    </title>
+    <subtitle>
+      <section>
+        <section separator=" / ">
+          <field datasource="topographie.modernerOrt">
+            <ifEmpty>
+              <field datasource="ort.Stadt"/>
+            </ifEmpty>
+          </field>
+          <field datasource="topographie.antikerOrt">
+            <ifEmpty>
+              <field datasource="ort.Ort_antik"/>
+            </ifEmpty>
+          </field>
+        </section>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zur Topographie">
+        <section labelKey="Lokalisierung">
+          <include type="ort"/>
+          <section>
+            <field datasource="topographie.antikeGriechLandschaftTopographie" prefix="Antike Landschaft: "/>
+            <field datasource="topographie.antikeRoemProvinzTopographie" prefix="Römische Provinz: "/>
+          </section>
+          <section>
+            <field datasource="topographie.Ausdehnung" prefix="Ausdehnung: "/>
+          </section>
+        </section>
+        <include type="datierung"/>
+        <section labelKey="Beschreibung">
+          <field datasource="topographie.TopographieArt"/>
+          <field datasource="topographie.TopographieTypus" prefix="Kategorie: "/>
+          <field datasource="topographie.TopographieTypusZusatz" prefix="Zusatz: "/>
+          <field datasource="topographie.antikeQuellen" prefix="antike Quellen: "/>
+          <field datasource="topographie.freieBeschreibung" prefix="Freie Beschreibung: "/>
+          <field datasource="topographie.KommentarTopographie" prefix="Kommentar: "/>
+        </section>
+        <section labelKey="Geschichte">
+          <field datasource="topographie.GeschichteTopographie"/>
+        </section>
+        <section labelKey="Ausgrabungen">
+          <field datasource="topographie.Ausgrabungen"/>
+        </section>
+        <include type="literatur"/>
+        <include type="uri"/>
+      </section>
+    </datasections>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <include type="facet_ort"/>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".AnfEpoche"/>
+      </context>
+    </facet>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".EndEpoche"/>
+      </context>
+    </facet>
+    <include type="facet_literatur"/>
+    <facet name="topographieart" labelKey="Natürlich oder Anthropogen">
+      <field datasource="topographie.TopographieArt"/>
+    </facet>
+    <facet name="topographietypus" labelKey="Art der Topographie">
+      <field datasource="topographie.TopographieTypus"/>
+    </facet>
+    <facet name="antikegriechlandschaft" labelKey="Antike Landschaft">
+      <field datasource="topographie.antikeGriechLandschaftTopographie"/>
+    </facet>
+    <facet name="regioromitalien" labelKey="Regio Rom/Italien">
+      <field datasource="topographie.RegioRomItalienTopographie"/>
+    </facet>
+    <facet name="antikeroemprovinz" labelKey="Römische Provinz">
+      <field datasource="topographie.antikeRoemProvinzTopographie"/>
+    </facet>
+  </facets>
 </category>

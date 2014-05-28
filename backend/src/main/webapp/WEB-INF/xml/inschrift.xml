@@ -1,63 +1,57 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<category name="inschrift"
-    xmlns="http://arachne.uni-koeln.de/schemas/category"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-            <section>
-                <field datasource="inschrift.Inschrift">
-                    	<ifEmpty>
-                    		<field datasource="inschrift.Sprache" />
-                    	</ifEmpty> 
-                    </field>
-            </section>
-        </title>
-        <subtitle>
-            <section>                
-                    <field datasource="inschrift.Sprache"/>  
-            </section>
-        </subtitle>
-        <datasections>
-            <section labelKey="Informationen zur Inschrift">                
-                <include type="datierung" />
-                <section labelKey="Allgemeine Informationen">    
-               		 <section labelKey="Text der Inschrift">               
-                      	  <field datasource="inschrift.Inschrift" />  
-                       </section>    
-                       <section labelKey="Übersetzung">                  
-                        	<field datasource="inschrift.Uebersetzung" />  
-                        </section>
-                        <section labelKey="Sprache/Schrift">                    
-                       		 <field datasource="inschrift.Sprache" /> 
-                        </section>
-                        <section labelKey="Kommentar">    
-                       		 <field datasource="inschrift.Kommentar" />
-                        </section>                                
-                </section> 
-               	<include type="literatur" />
-               <include type="uri" />
-            </section>
-        </datasections>
-    </display>
-    <facets>
-        <facet name="kategorie" labelKey="Kategorie">
-            <field datasource="Dataset.TableName" />
-        </facet>
-        <facet name="datierungepoche" labelKey="Epoche">
-            <context type="datierung">
-                <field datasource=".AnfEpoche"/>
-            </context>
-        </facet>
-        <facet name="datierungepoche" labelKey="Epoche">
-            <context type="datierung">
-                <field datasource=".EndEpoche"/>
-            </context>
-        </facet>
-        <include type="facet_literatur" />
-        <facet name="sprache" labelKey="Sprache bzw. Schrift">
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="inschrift" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section>
+        <field datasource="inschrift.Inschrift">
+          <ifEmpty>
             <field datasource="inschrift.Sprache"/>
-        </facet>        
-    </facets>
+          </ifEmpty>
+        </field>
+      </section>
+    </title>
+    <subtitle>
+      <section>
+        <field datasource="inschrift.Sprache"/>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zur Inschrift">
+        <include type="datierung"/>
+        <section labelKey="Allgemeine Informationen">
+          <section labelKey="Text der Inschrift">
+            <field datasource="inschrift.Inschrift"/>
+          </section>
+          <section labelKey="Übersetzung">
+            <field datasource="inschrift.Uebersetzung"/>
+          </section>
+          <section labelKey="Sprache/Schrift">
+            <field datasource="inschrift.Sprache"/>
+          </section>
+          <section labelKey="Kommentar">
+            <field datasource="inschrift.Kommentar"/>
+          </section>
+        </section>
+        <include type="literatur"/>
+        <include type="uri"/>
+      </section>
+    </datasections>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".AnfEpoche"/>
+      </context>
+    </facet>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".EndEpoche"/>
+      </context>
+    </facet>
+    <include type="facet_literatur"/>
+    <facet name="sprache" labelKey="Sprache bzw. Schrift">
+      <field datasource="inschrift.Sprache"/>
+    </facet>
+  </facets>
 </category>

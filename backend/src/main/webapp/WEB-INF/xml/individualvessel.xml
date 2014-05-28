@@ -1,76 +1,72 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<category name="individualvessel" xmlns="http://arachne.uni-koeln.de/schemas/category"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-            <section separator=" / ">
-                <field datasource="individualvessel.InventoryNumber"/>
-            </section>
-        </title>
-        <subtitle>
-            <section labelKey="Individual Vessel">
-                <field datasource="Dataset.Id"/>
-            </section>
-        </subtitle>
-        <datasections>
-            <section labelKey="Quantifizierung des Gefäßes">
-                <section labelKey="Anzahl Randfragmente">
-                    <field datasource="individualvessel.RimCount"/>
-                </section>
-                <section labelKey="Anzahl Henkel">
-                    <field datasource="individualvessel.HanldeCount"/>
-                </section>
-                <section labelKey="Anzahl Bodenfragmente">
-                    <field datasource="individualvessel.BaseCount"/>
-                </section>
-                <section labelKey="Anzahl Wandfragmente">
-                    <field datasource="individualvessel.BodySherdCount"/>
-                </section>
-                <section labelKey="Anzahl weiterer Fragmente">
-                    <field datasource="individualvessel.OthersCount"/>
-                </section>
-                <section labelKey="Anzahl Joins">
-                    <field datasource="individualvessel.Joins"/>
-                </section>
-                <section labelKey="Prozentualer Randanteil">
-                    <field datasource="individualvessel.RimPercentage" postfix="%"/>
-                </section>
-            </section>
-            <section labelKey="Maße des Gefäßes">
-                <section labelKey="Höhe">
-                    <field datasource="individualvessel.Height" postfix="cm"/>
-                </section>
-                <section labelKey="Breite">
-                    <field datasource="individualvessel.Width" postfix="cm"/>
-                </section>
-                <section labelKey="Länge">
-                    <field datasource="individualvessel.LengthSize" postfix="cm"/>
-                </section>
-                <section labelKey="Dicke">
-                    <field datasource="individualvessel.Thickness" postfix="cm"/>
-                </section>
-                <section labelKey="Bodendurchmesser">
-                    <field datasource="individualvessel.BaseDiameter" postfix="cm"/>
-                </section>
-                <section labelKey="Randdurchmesser">
-                    <field datasource="individualvessel.RimDiameter" postfix="cm"/>
-                </section>
-                <section labelKey="Durchmesser der breitesten Stelle">
-                    <field datasource="individualvessel.WidestDiameter" postfix="cm"/>
-                </section>
-                <section labelKey="Volumen">
-                    <field datasource="individualvessel.Volume" postfix="cm³"/>
-                </section>
-            </section>
-        </datasections>
-    </display>
-    <facets>
-        <facet name="kategorie" labelKey="Kategorie">
-            <field datasource="Dataset.TableName" />
-        </facet>
-        <facet name="vesselinventorynumber" labelKey="Inventarnummer">
-            <field datasource="individualvessel.InventoryNumber" />
-        </facet>
-    </facets>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="individualvessel" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section separator=" / ">
+        <field datasource="individualvessel.InventoryNumber"/>
+      </section>
+    </title>
+    <subtitle>
+      <section labelKey="Individual Vessel">
+        <field datasource="Dataset.Id"/>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Quantifizierung des Gefäßes">
+        <section labelKey="Anzahl Randfragmente">
+          <field datasource="individualvessel.RimCount"/>
+        </section>
+        <section labelKey="Anzahl Henkel">
+          <field datasource="individualvessel.HanldeCount"/>
+        </section>
+        <section labelKey="Anzahl Bodenfragmente">
+          <field datasource="individualvessel.BaseCount"/>
+        </section>
+        <section labelKey="Anzahl Wandfragmente">
+          <field datasource="individualvessel.BodySherdCount"/>
+        </section>
+        <section labelKey="Anzahl weiterer Fragmente">
+          <field datasource="individualvessel.OthersCount"/>
+        </section>
+        <section labelKey="Anzahl Joins">
+          <field datasource="individualvessel.Joins"/>
+        </section>
+        <section labelKey="Prozentualer Randanteil">
+          <field datasource="individualvessel.RimPercentage" postfix="%"/>
+        </section>
+      </section>
+      <section labelKey="Maße des Gefäßes">
+        <section labelKey="Höhe">
+          <field datasource="individualvessel.Height" postfix="cm"/>
+        </section>
+        <section labelKey="Breite">
+          <field datasource="individualvessel.Width" postfix="cm"/>
+        </section>
+        <section labelKey="Länge">
+          <field datasource="individualvessel.LengthSize" postfix="cm"/>
+        </section>
+        <section labelKey="Dicke">
+          <field datasource="individualvessel.Thickness" postfix="cm"/>
+        </section>
+        <section labelKey="Bodendurchmesser">
+          <field datasource="individualvessel.BaseDiameter" postfix="cm"/>
+        </section>
+        <section labelKey="Randdurchmesser">
+          <field datasource="individualvessel.RimDiameter" postfix="cm"/>
+        </section>
+        <section labelKey="Durchmesser der breitesten Stelle">
+          <field datasource="individualvessel.WidestDiameter" postfix="cm"/>
+        </section>
+        <section labelKey="Volumen">
+          <field datasource="individualvessel.Volume" postfix="cm³"/>
+        </section>
+      </section>
+    </datasections>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <facet name="vesselinventorynumber" labelKey="Inventarnummer">
+      <field datasource="individualvessel.InventoryNumber"/>
+    </facet>
+  </facets>
 </category>

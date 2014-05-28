@@ -1,310 +1,284 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<category name="isolatedsherd" xmlns="http://arachne.uni-koeln.de/schemas/category"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-            <section separator=" / ">
-                <field datasource="isolatedsherd.SherdType"/>
-                <field datasource="isolatedsherd.InventoryNumber"/>
-                <field datasource="isolatedsherd.NitonAnalysisID"/>
-            </section>
-        </title>
-
-        <subtitle>
-            <section labelKey="ID">
-                <field datasource="Dataset.Id"/>
-            </section>
-        </subtitle>
-
-        <datasections>
-            <!-- Direkte Informationen ueber die gespeicherte Scherbe -->
-            <section labelKey="Keramikfragment">
-                <section labelKey="Typ">
-                    <field datasource="isolatedsherd.SherdType"/>
-                </section>
-                <section labelKey="Durchmesser">
-                    <field datasource="isolatedsherd.Diameter" postfix="cm"/>
-                </section>
-                <section labelKey="Höhe">
-                    <field datasource="isolatedsherd.Height" postfix="cm"/>
-                </section>
-                <section labelKey="Breite">
-                    <field datasource="isolatedsherd.Width" postfix="cm"/>
-                </section>
-                <section labelKey="Länge">
-                    <field datasource="isolatedsherd.LengthSize" postfix="cm"/>
-                </section>
-                <section labelKey="Dicke">
-                    <field datasource="isolatedsherd.Thickness" postfix="cm"/>
-                </section>
-                <section labelKey="Gewicht">
-                    <field datasource="isolatedsherd.Weight" postfix="g"/>
-                </section>
-                <section labelKey="Prozentualer Randanteil">
-                    <field datasource="isolatedsherd.RimPercentage" postfix="%"/>
-                </section>
-            </section>
-            
-            <section labelKey="Morphologie">
-                <section labelKey="Functional Group">
-                    <field datasource="isolatedsherdmainabstractmorphology.Level1"/>
-                </section>
-                <section labelKey="Level 2">
-                    <field datasource="isolatedsherdmainabstractmorphology.Level2"/>
-                </section>
-                <section labelKey="Level 3">
-                    <field datasource="isolatedsherdmainabstractmorphology.Level3"/>
-                </section>
-                <section labelKey="Level 4">
-                    <field datasource="isolatedsherdmainabstractmorphology.Level4"/>
-                </section>
-                <section labelKey="Level 5">
-                    <field datasource="isolatedsherdmainabstractmorphology.Level5"/>
-                </section>
-                <section labelKey="Level 6">
-                    <field datasource="isolatedsherdmainabstractmorphology.Level6"/>
-                </section>
-                <section labelKey="Interne Typnummer" separator=", ">
-                    <field datasource="mainabstract.GrabungsinterneTypennummer"/>
-                    <field datasource="mainabstract.GrabungsinterneTypennummerSub"/>
-                </section>
-                
-            </section>
-       
-            <section labelKey="Befund">
-                <section labelKey="Grabungsort">
-                    <field datasource="isolatedsherdmainabstractbefund.Grabungsort"/>
-                </section>
-                <section labelKey="Befund">
-                    <field datasource="isolatedsherdmainabstractbefund.Befund"/>
-                </section>
-                <section labelKey="Areal">
-                    <field datasource="isolatedsherdmainabstractbefund.Areal"/>
-                </section>
-            </section>
-         
-            <include type="ort"/>
-
-            <!-- Liste alle Informationen zur Fabric der aktuell verarbeiteten Scherbe auf -->
-            <section labelKey="Fabric">
-                <section labelKey="Herkunft">
-                    <field datasource="isolatedsherdmainabstractfabric.Origin"/>
-                </section>
-                <section labelKey="AllgemeinerName">
-                    <field datasource="isolatedsherdmainabstractfabric.CommonName"/>
-                </section>
-                <section labelKey="Name">
-                    <field datasource="isolatedsherdmainabstractfabric.Name"/>
-                </section>
-                <context type="Isolatedsherdmainabstractfabricfabricdescription" separator=", ">
-                    <contextSection labelKey="Freie Farbbeschreibung">
-                        <field datasource=".ColourQualifierFreeVon"/>
-                        <field datasource=".ColourFreeVon"/>
-                        <field datasource=".ColourQualifierFreeBis" postfix=" - "/>
-                        <field datasource=".ColourFreeBis"/>
-                    </contextSection>
-                    <contextSection labelKey="Farbe der Bruchstelle">
-                        <field datasource=".ColourOfBreakQualifierVon"/>
-                        <field datasource=".ColourOfBreakVon" postfix=" - "/>
-                        <field datasource=".ColourOfBreakQualifierBis"/>
-                        <field datasource=".ColourOfBreakBis"/>
-                    </contextSection>
-                    <contextSection labelKey="Zoning">
-                        <field datasource=".Zoning"/>
-                    </contextSection>
-                    <contextSection labelKey="Farbe des Kerns">
-                        <field datasource=".ColourOfCoreQualifierVon"/>
-                        <field datasource=".ColourOfCoreVon" postfix=" - "/>
-                        <field datasource=".ColourOfCoreQualifierBis"/>
-                        <field datasource=".ColourOfCoreBis"/>
-                    </contextSection>
-                    <contextSection labelKey="Farbe der Oberfläche">
-                        <field datasource=".ColourOfOutsideQualifierVon"/>
-                        <field datasource=".ColourOfOutsideVon" postfix=" - "/>
-                        <field datasource=".ColourOfOutsideQualifierBis"/>
-                        <field datasource=".ColourOfOutsideBis"/>
-                    </contextSection>
-                    <contextSection labelKey="Machart">
-                        <field datasource=".Manufacture"/>
-                    </contextSection>
-                    <contextSection labelKey="Härte">
-                        <field datasource=".Hardness"/>
-                    </contextSection>
-                    <contextSection labelKey="Härte">
-                        <field datasource=".Porosity"/>
-                    </contextSection>
-                    <contextSection labelKey="Oberflächengefühl">
-                        <field datasource=".SurfaceFeel"/>
-                    </contextSection>
-                </context>
-            </section>
-
-            <!-- Zeige die mit der Scherbe verbundenen Oberflaechenbehandlungen an -->
-            <section labelKey="Oberflächenbehandlung">
-                <section labelKey="Bezeichner">
-                    <field datasource="surfacetreatment.Bezeichner"/>
-                </section>
-
-                <context type="IsolatedsherdsurfacetreatmentsurfacetreatmentactionContextualizer"
-                    labelKey="Angewandte Behandlungen" separator=" ">
-                    <contextSection labelKey="Zeitpunkt der Oberflächenbehandlung">
-                        <field datasource=".MomentOfSurfaceTreatmentAction"/>
-                    </contextSection>
-                    <contextSection labelKey="Position der Oberflächenbehandlung">
-                        <field datasource=".TreatmentPosition"/>
-                    </contextSection>
-                    <contextSection labelKey="Behandelter Teil der Oberfläche">
-                        <field datasource=".PartOfSurfaceTreated"/>
-                    </contextSection>
-                    <contextSection labelKey="Zustand">
-                        <field datasource=".Condition"/>
-                    </contextSection>
-                    <contextSection
-                        labelKey="Anzahl vorhandener Fragmente mit dieser Oberflächenbehandlung">
-                        <field datasource=".NumberOfSherds"/>
-                    </contextSection>
-                    <contextSection labelKey="Behandlungstechnik">
-                        <field datasource=".TreatmentAction"/>
-                    </contextSection>
-                    <contextSection labelKey="Spezielle Überzugstechnik">
-                        <field datasource=".TreatmentActionSubCoating"/>
-                    </contextSection>
-                    <contextSection labelKey="Beschreibung der Einkerbung">
-                        <field datasource=".IncisionDescription"/>
-                    </contextSection>
-                    <contextSection labelKey="Stempel">
-                        <field datasource=".StampedStamp"/>
-                    </contextSection>
-                    <contextSection labelKey="Art des hinzugefügten Materials">
-                        <field datasource=".AddedMaterialType"/>
-                    </contextSection>
-                    <contextSection labelKey="Dicke">
-                        <field datasource=".Thickness"/>
-                    </contextSection>
-                    <contextSection labelKey="Glanz">
-                        <field datasource=".Glossiness"/>
-                    </contextSection>
-                    <contextSection labelKey="Erhaltung">
-                        <field datasource=".Conservation"/>
-                    </contextSection>
-                    <contextSection labelKey="Qualität">
-                        <field datasource=".Quality"/>
-                    </contextSection>
-                    <contextSection labelKey="Homogenität">
-                        <field datasource=".Homogenity"/>
-                    </contextSection>
-                    <contextSection labelKey="Anhaftung">
-                        <field datasource=".Adherence"/>
-                    </contextSection>
-                    <contextSection labelKey="Ausrichtung">
-                        <field datasource=".Alignment"/>
-                    </contextSection>
-                    <contextSection labelKey="Freie Beschreibung">
-                        <field datasource=".FreeDescription"/>
-                    </contextSection>
-                    <contextSection labelKey="Freie Farbbeschreibung" separator=" ">
-                        <field datasource=".ColourFreeQualifierVon"/>
-                        <field datasource=".ColourFreeVon" postfix=" - "/>
-                        <field datasource=".ColourFreeQualifierBis"/>
-                        <field datasource=".ColourFreeBis"/>
-                    </contextSection>
-                    <contextSection labelKey="Farbbeschreibung nach Munsell" separator=" - ">
-                        <field datasource=".ColourMunsellVon"/>
-                        <field datasource=".ColourMunsellBis"/>
-                    </contextSection>
-                </context>
-            </section>
-        </datasections>
-        <contextImages>
-            <!-- Show images of connected types -->
-            <contextImage show="always">Isolatedsherdmainabstractmorphology</contextImage>
-        </contextImages>
-    </display>
-    <facets>
-        <facet name="kategorie" labelKey="Kategorie">
-            <field datasource="Dataset.TableName"/>
-        </facet>
-        
-        <!-- Sherd-Facets -->
-        <facet name="sherdtype" labelKey="Typ des Keramikfragments">
-            <field datasource="isolatedsherd.SherdType"/>
-        </facet>
-        <facet name="inventorynumber" labelKey="Inventernummer">
-            <field datasource="isolatedsherd.InventoryNumber"/>
-        </facet>
-        <facet name="nitonanalysisnumber" labelKey="Niton-Analyse-Nummer">
-            <field datasource="isolatedsherd.NitonAnalysisID"/>
-        </facet>
-        
-        <!-- Surfacetreatment -->
-        <facet name="surfacetreatmentbezeichner" labelKey="Oberflächenbehandlung">
-            <context type="surfcatreatment">
-                <field datasource="surfacetreatment.Bezeichner"/>
-            </context>
-        </facet>
-        
-        <!-- Morphology-Facets -->
-        <facet name="morphology_functionalgroup" labelKey="Functional Group">
-            <context type="isolatedsherdmainabstractmorphology">
-                <field datasource=".Level1"/>
-            </context>
-        </facet>
-        <facet name="morphology_2ndLevel" labelKey="2nd Level">
-            <context type="isolatedsherdmainabstractmorphology">
-                <field datasource=".Level2"/>
-            </context>
-        </facet>    
-        <facet name="morphology_3rdLevel" labelKey="3rd Level">
-            <context type="isolatedsherdmainabstractmorphology">
-                <field datasource=".Level3"/>
-            </context>
-        </facet>    
-        <facet name="morphology_4thLevel" labelKey="4th Level">
-            <context type="isolatedsherdmainabstractmorphology">
-                <field datasource=".Level4"/>
-            </context>
-        </facet>    
-        <facet name="morphology_5thLevel" labelKey="5th Level">
-            <context type="isolatedsherdmainabstractmorphology">
-                <field datasource=".Level5"/>
-            </context>
-        </facet>  
-        
-        <!-- Fabric-Facets -->
-        <facet name="fabricorigin" labelKey="Fabric Ursprung">
-            <context type="isolatedsherdmainabstractfabric">
-                <field datasource=".Origin"/>
-            </context>
-        </facet>
-        <facet name="fabriccommonname" labelKey="Fabric Common Name">
-            <context type="isolatedsherdmainabstractfabric">
-                <field datasource=".CommonName"/>
-            </context>
-        </facet>
-        <facet name="fabricname" labelKey="Fabric Name">
-            <context type="isolatedsherdmainabstractfabric">
-                <field datasource=".Name"/>
-            </context>
-        </facet>
-        
-        <!-- Context-Facets -->
-        <facet name="grabungsort" labelKey="Grabungsort">
-            <context type="isolatedsherdmainabstractbefund" separator=", ">
-                <field datasource=".Grabungsort"/>
-            </context>
-        </facet>
-        <facet name="befund" labelKey="Befund">
-            <context type="isolatedsherdmainabstractbefund">
-                <field datasource=".Befund"/>
-            </context>
-        </facet>
-        
-        <facet name="ort" labelKey="Lokalisierung">
-            <context type="ort" separator=", ">
-                <field datasource=".Stadt"/>
-                <field datasource=".Land"/>
-            </context>
-        </facet>
-    </facets>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="isolatedsherd" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section separator=" / ">
+        <field datasource="isolatedsherd.SherdType"/>
+        <field datasource="isolatedsherd.InventoryNumber"/>
+        <field datasource="isolatedsherd.NitonAnalysisID"/>
+      </section>
+    </title>
+    <subtitle>
+      <section labelKey="ID">
+        <field datasource="Dataset.Id"/>
+      </section>
+    </subtitle>
+    <datasections>
+      <!-- Direkte Informationen ueber die gespeicherte Scherbe -->
+      <section labelKey="Keramikfragment">
+        <section labelKey="Typ">
+          <field datasource="isolatedsherd.SherdType"/>
+        </section>
+        <section labelKey="Durchmesser">
+          <field datasource="isolatedsherd.Diameter" postfix="cm"/>
+        </section>
+        <section labelKey="Höhe">
+          <field datasource="isolatedsherd.Height" postfix="cm"/>
+        </section>
+        <section labelKey="Breite">
+          <field datasource="isolatedsherd.Width" postfix="cm"/>
+        </section>
+        <section labelKey="Länge">
+          <field datasource="isolatedsherd.LengthSize" postfix="cm"/>
+        </section>
+        <section labelKey="Dicke">
+          <field datasource="isolatedsherd.Thickness" postfix="cm"/>
+        </section>
+        <section labelKey="Gewicht">
+          <field datasource="isolatedsherd.Weight" postfix="g"/>
+        </section>
+        <section labelKey="Prozentualer Randanteil">
+          <field datasource="isolatedsherd.RimPercentage" postfix="%"/>
+        </section>
+      </section>
+      <section labelKey="Morphologie">
+        <section labelKey="Functional Group">
+          <field datasource="isolatedsherdmainabstractmorphology.Level1"/>
+        </section>
+        <section labelKey="Level 2">
+          <field datasource="isolatedsherdmainabstractmorphology.Level2"/>
+        </section>
+        <section labelKey="Level 3">
+          <field datasource="isolatedsherdmainabstractmorphology.Level3"/>
+        </section>
+        <section labelKey="Level 4">
+          <field datasource="isolatedsherdmainabstractmorphology.Level4"/>
+        </section>
+        <section labelKey="Level 5">
+          <field datasource="isolatedsherdmainabstractmorphology.Level5"/>
+        </section>
+        <section labelKey="Level 6">
+          <field datasource="isolatedsherdmainabstractmorphology.Level6"/>
+        </section>
+        <section labelKey="Interne Typnummer" separator=", ">
+          <field datasource="mainabstract.GrabungsinterneTypennummer"/>
+          <field datasource="mainabstract.GrabungsinterneTypennummerSub"/>
+        </section>
+      </section>
+      <section labelKey="Befund">
+        <section labelKey="Grabungsort">
+          <field datasource="isolatedsherdmainabstractbefund.Grabungsort"/>
+        </section>
+        <section labelKey="Befund">
+          <field datasource="isolatedsherdmainabstractbefund.Befund"/>
+        </section>
+        <section labelKey="Areal">
+          <field datasource="isolatedsherdmainabstractbefund.Areal"/>
+        </section>
+      </section>
+      <include type="ort"/>
+      <!-- Liste alle Informationen zur Fabric der aktuell verarbeiteten Scherbe auf -->
+      <section labelKey="Fabric">
+        <section labelKey="Herkunft">
+          <field datasource="isolatedsherdmainabstractfabric.Origin"/>
+        </section>
+        <section labelKey="AllgemeinerName">
+          <field datasource="isolatedsherdmainabstractfabric.CommonName"/>
+        </section>
+        <section labelKey="Name">
+          <field datasource="isolatedsherdmainabstractfabric.Name"/>
+        </section>
+        <context type="Isolatedsherdmainabstractfabricfabricdescription" separator=", ">
+          <contextSection labelKey="Freie Farbbeschreibung">
+            <field datasource=".ColourQualifierFreeVon"/>
+            <field datasource=".ColourFreeVon"/>
+            <field datasource=".ColourQualifierFreeBis" postfix=" - "/>
+            <field datasource=".ColourFreeBis"/>
+          </contextSection>
+          <contextSection labelKey="Farbe der Bruchstelle">
+            <field datasource=".ColourOfBreakQualifierVon"/>
+            <field datasource=".ColourOfBreakVon" postfix=" - "/>
+            <field datasource=".ColourOfBreakQualifierBis"/>
+            <field datasource=".ColourOfBreakBis"/>
+          </contextSection>
+          <contextSection labelKey="Zoning">
+            <field datasource=".Zoning"/>
+          </contextSection>
+          <contextSection labelKey="Farbe des Kerns">
+            <field datasource=".ColourOfCoreQualifierVon"/>
+            <field datasource=".ColourOfCoreVon" postfix=" - "/>
+            <field datasource=".ColourOfCoreQualifierBis"/>
+            <field datasource=".ColourOfCoreBis"/>
+          </contextSection>
+          <contextSection labelKey="Farbe der Oberfläche">
+            <field datasource=".ColourOfOutsideQualifierVon"/>
+            <field datasource=".ColourOfOutsideVon" postfix=" - "/>
+            <field datasource=".ColourOfOutsideQualifierBis"/>
+            <field datasource=".ColourOfOutsideBis"/>
+          </contextSection>
+          <contextSection labelKey="Machart">
+            <field datasource=".Manufacture"/>
+          </contextSection>
+          <contextSection labelKey="Härte">
+            <field datasource=".Hardness"/>
+          </contextSection>
+          <contextSection labelKey="Härte">
+            <field datasource=".Porosity"/>
+          </contextSection>
+          <contextSection labelKey="Oberflächengefühl">
+            <field datasource=".SurfaceFeel"/>
+          </contextSection>
+        </context>
+      </section>
+      <!-- Zeige die mit der Scherbe verbundenen Oberflaechenbehandlungen an -->
+      <section labelKey="Oberflächenbehandlung">
+        <section labelKey="Bezeichner">
+          <field datasource="surfacetreatment.Bezeichner"/>
+        </section>
+        <context type="IsolatedsherdsurfacetreatmentsurfacetreatmentactionContextualizer" labelKey="Angewandte Behandlungen" separator=" ">
+          <contextSection labelKey="Zeitpunkt der Oberflächenbehandlung">
+            <field datasource=".MomentOfSurfaceTreatmentAction"/>
+          </contextSection>
+          <contextSection labelKey="Position der Oberflächenbehandlung">
+            <field datasource=".TreatmentPosition"/>
+          </contextSection>
+          <contextSection labelKey="Behandelter Teil der Oberfläche">
+            <field datasource=".PartOfSurfaceTreated"/>
+          </contextSection>
+          <contextSection labelKey="Zustand">
+            <field datasource=".Condition"/>
+          </contextSection>
+          <contextSection labelKey="Anzahl vorhandener Fragmente mit dieser Oberflächenbehandlung">
+            <field datasource=".NumberOfSherds"/>
+          </contextSection>
+          <contextSection labelKey="Behandlungstechnik">
+            <field datasource=".TreatmentAction"/>
+          </contextSection>
+          <contextSection labelKey="Spezielle Überzugstechnik">
+            <field datasource=".TreatmentActionSubCoating"/>
+          </contextSection>
+          <contextSection labelKey="Beschreibung der Einkerbung">
+            <field datasource=".IncisionDescription"/>
+          </contextSection>
+          <contextSection labelKey="Stempel">
+            <field datasource=".StampedStamp"/>
+          </contextSection>
+          <contextSection labelKey="Art des hinzugefügten Materials">
+            <field datasource=".AddedMaterialType"/>
+          </contextSection>
+          <contextSection labelKey="Dicke">
+            <field datasource=".Thickness"/>
+          </contextSection>
+          <contextSection labelKey="Glanz">
+            <field datasource=".Glossiness"/>
+          </contextSection>
+          <contextSection labelKey="Erhaltung">
+            <field datasource=".Conservation"/>
+          </contextSection>
+          <contextSection labelKey="Qualität">
+            <field datasource=".Quality"/>
+          </contextSection>
+          <contextSection labelKey="Homogenität">
+            <field datasource=".Homogenity"/>
+          </contextSection>
+          <contextSection labelKey="Anhaftung">
+            <field datasource=".Adherence"/>
+          </contextSection>
+          <contextSection labelKey="Ausrichtung">
+            <field datasource=".Alignment"/>
+          </contextSection>
+          <contextSection labelKey="Freie Beschreibung">
+            <field datasource=".FreeDescription"/>
+          </contextSection>
+          <contextSection labelKey="Freie Farbbeschreibung" separator=" ">
+            <field datasource=".ColourFreeQualifierVon"/>
+            <field datasource=".ColourFreeVon" postfix=" - "/>
+            <field datasource=".ColourFreeQualifierBis"/>
+            <field datasource=".ColourFreeBis"/>
+          </contextSection>
+          <contextSection labelKey="Farbbeschreibung nach Munsell" separator=" - ">
+            <field datasource=".ColourMunsellVon"/>
+            <field datasource=".ColourMunsellBis"/>
+          </contextSection>
+        </context>
+      </section>
+    </datasections>
+    <contextImages>
+      <!-- Show images of connected types -->
+      <contextImage show="always">Isolatedsherdmainabstractmorphology</contextImage>
+    </contextImages>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <include type="facet_ort"/>
+    <!-- Sherd-Facets -->
+    <facet name="sherdtype" labelKey="Typ des Keramikfragments">
+      <field datasource="isolatedsherd.SherdType"/>
+    </facet>
+    <facet name="inventorynumber" labelKey="Inventernummer">
+      <field datasource="isolatedsherd.InventoryNumber"/>
+    </facet>
+    <facet name="nitonanalysisnumber" labelKey="Niton-Analyse-Nummer">
+      <field datasource="isolatedsherd.NitonAnalysisID"/>
+    </facet>
+    <!-- Surfacetreatment -->
+    <facet name="surfacetreatmentbezeichner" labelKey="Oberflächenbehandlung">
+      <context type="surfcatreatment">
+        <field datasource="surfacetreatment.Bezeichner"/>
+      </context>
+    </facet>
+    <!-- Morphology-Facets -->
+    <facet name="morphology_functionalgroup" labelKey="Functional Group">
+      <context type="isolatedsherdmainabstractmorphology">
+        <field datasource=".Level1"/>
+      </context>
+    </facet>
+    <facet name="morphology_2ndLevel" labelKey="2nd Level">
+      <context type="isolatedsherdmainabstractmorphology">
+        <field datasource=".Level2"/>
+      </context>
+    </facet>
+    <facet name="morphology_3rdLevel" labelKey="3rd Level">
+      <context type="isolatedsherdmainabstractmorphology">
+        <field datasource=".Level3"/>
+      </context>
+    </facet>
+    <facet name="morphology_4thLevel" labelKey="4th Level">
+      <context type="isolatedsherdmainabstractmorphology">
+        <field datasource=".Level4"/>
+      </context>
+    </facet>
+    <facet name="morphology_5thLevel" labelKey="5th Level">
+      <context type="isolatedsherdmainabstractmorphology">
+        <field datasource=".Level5"/>
+      </context>
+    </facet>
+    <!-- Fabric-Facets -->
+    <facet name="fabricorigin" labelKey="Fabric Ursprung">
+      <context type="isolatedsherdmainabstractfabric">
+        <field datasource=".Origin"/>
+      </context>
+    </facet>
+    <facet name="fabriccommonname" labelKey="Fabric Common Name">
+      <context type="isolatedsherdmainabstractfabric">
+        <field datasource=".CommonName"/>
+      </context>
+    </facet>
+    <facet name="fabricname" labelKey="Fabric Name">
+      <context type="isolatedsherdmainabstractfabric">
+        <field datasource=".Name"/>
+      </context>
+    </facet>
+    <!-- Context-Facets -->
+    <facet name="grabungsort" labelKey="Grabungsort">
+      <context type="isolatedsherdmainabstractbefund" separator=", ">
+        <field datasource=".Grabungsort"/>
+      </context>
+    </facet>
+    <facet name="befund" labelKey="Befund">
+      <context type="isolatedsherdmainabstractbefund">
+        <field datasource=".Befund"/>
+      </context>
+    </facet>
+  </facets>
 </category>

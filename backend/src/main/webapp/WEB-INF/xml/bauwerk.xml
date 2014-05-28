@@ -1,146 +1,135 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<category name="bauwerk"
-	xmlns="http://arachne.uni-koeln.de/schemas/category"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-        	<section separator=" / ">
-            	<field datasource="bauwerk.KurzbeschreibungBauwerk" />
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="bauwerk" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section separator=" / ">
+        <field datasource="bauwerk.KurzbeschreibungBauwerk"/>
+      </section>
+    </title>
+    <subtitle>
+      <section separator=" / ">
+        <section separator=" / ">
+          <field datasource="bauwerk.OrtsnameModern">
+            <ifEmpty>
+              <field datasource="ort.Stadt"/>
+            </ifEmpty>
+          </field>
+          <field datasource="bauwerk.OrtsnameAntik">
+            <ifEmpty>
+              <field datasource="ort.Ort_antik"/>
+            </ifEmpty>
+          </field>
+        </section>
+        <section>
+          <field datasource="ort.Aufbewahrungsort"/>
+        </section>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zum Bauwerk">
+        <include type="ort"/>
+        <section labelKey="Geographische Beschreibung">
+          <section labelKey="Situation">
+            <field datasource="bauwerk.Situation"/>
+          </section>
+          <section labelKey="Antike Landschaft">
+            <field datasource="bauwerk.antikeGriechLandschaftBauwerk"/>
+          </section>
+          <section labelKey="Römische Provinz">
+            <field datasource="bauwerk.antikeRoemProvinzBauwerk"/>
+          </section>
+          <section labelKey="Regio Rom/Italien">
+            <field datasource="bauwerk.RegioRomItalien"/>
+          </section>
+          <section labelKey="Kulturepoche">
+            <field datasource="bauwerk.BauwerkKulturkreis"/>
+          </section>
+        </section>
+        <include type="datierung"/>
+        <section labelKey="Charakterisierung">
+          <section labelKey="Gebäudetyp" separator=", ">
+            <section>
+              <field datasource="bauwerk.Gebaeudetyp"/>
+              <field datasource="bauwerk.GebaeudetypSpeziell"/>
             </section>
-        </title>
-        <subtitle>
-             <section separator=" / ">
-                <section separator=" / ">
-                	<field datasource="bauwerk.OrtsnameModern">
-                    	<ifEmpty>
-                    		<field datasource="ort.Stadt" />
-                    	</ifEmpty> 
-                    </field>
-                    <field datasource="bauwerk.OrtsnameAntik">
-                    	<ifEmpty>
-                    		<field datasource="ort.Ort_antik" />
-                    	</ifEmpty> 
-                    </field>
-                </section>
-                <section>
-                	<field datasource="ort.Aufbewahrungsort"/>
-            	</section>
-            </section>
-        </subtitle>
-        <datasections>
-        	<section labelKey="Informationen zum Bauwerk">
-        		<include type="ort" />
-        		<section labelKey="Geographische Beschreibung">
-	        		<section labelKey="Situation">
-	        			<field datasource="bauwerk.Situation" />
-	        		</section>
-	        		<section labelKey="Antike Landschaft">
-	        			<field datasource="bauwerk.antikeGriechLandschaftBauwerk"/>
-	        		</section>
-        			<section labelKey="Römische Provinz">
-        				<field datasource="bauwerk.antikeRoemProvinzBauwerk"/>
-        			</section>
-	        		<section labelKey="Regio Rom/Italien">
-	        			<field datasource="bauwerk.RegioRomItalien" />
-	        		</section>
-	        		<section labelKey="Kulturepoche">
-	        			<field datasource="bauwerk.BauwerkKulturkreis" />
-	        		</section>
-	        	</section>
-	            <include type="datierung" />
-	            <section labelKey="Charakterisierung">
-	            	<section labelKey="Gebäudetyp" separator=", ">
-	            		<section>  
-	                    	<field datasource="bauwerk.Gebaeudetyp" />
-	                    	<field datasource="bauwerk.GebaeudetypSpeziell" />
-	                    </section>  
-	                </section>  
-	                <section labelKey="Erhaltung">
-	                	<field datasource="bauwerk.ErhaltungBauwerk" />
-	                </section>
-	                <section labelKey="Beschreibung">
-	                	<field datasource="bauwerk.BeschreibungBauwerk" />
-	                </section>
-	                <section labelKey="Architekt">
-	                	<field datasource="bauwerk.Architekt" />
-	                </section>
-	                <section labelKey="Antiker Kontext">
-	                	<field datasource="bauwerk.Kontext" />
-	                </section>    
-	                <section labelKey="Bauordnung">
-	                    <field datasource="bauwerk.Bauordnung" />
-	                    <field datasource="bauwerk.BauordnungBemerkung" />
-	                </section>
-	            </section>
-	            <section labelKey="Geschichte">
-	            	<section labelKey="Baugeschichte">
-	            		<field datasource="bauwerk.Geschichte" />
-	            	</section>
-	            	<section labelKey="Ausgrabung">
-	            		<field datasource="bauwerk.Ausgrabung" />
-	            	</section>
-	            	<section labelKey="Bemerkungen">
-	            		<field datasource="bauwerk.BauwerkBemerkungen" />
-	            	</section>
-	            	<section labelKey="Restaurierung">
-	            		<field datasource="bauwerk.Restaurierung" />
-	            	</section>
-	            </section>
-	            <section labelKey="Katalog">
-	            	<field datasource="bauwerk.Katalogtext" prefix="Katalogtext: " />
-	            	<field datasource="bauwerk.Katalognummer" prefix="Katalognummer: "/>
-	            </section>
-	            <include type="literatur" />
-	            <include type="uri" />
-	    	</section>
-        </datasections>
-    </display>
-    <facets>
-    	<facet name="kategorie" labelKey="type">
-    		<field datasource="Dataset.TableName" />
-    	</facet>
-    	<facet name="ort" labelKey="Lokalisierung">
-	    	<context type="ort" separator=", ">
-		    	<field datasource=".Stadt" />
-		    	<field datasource=".Land" />
-	    	</context>
-    	</facet>
-    	<facet name="datierungepoche" labelKey="Epoche">
-	    	<context type="datierung">
-		    	<field datasource=".AnfEpoche"/>
-	    	</context>
-    	</facet>
-    	<facet name="datierungepoche" labelKey="Epoche">
-	    	<context type="datierung">
-		    	<field datasource=".EndEpoche"/>
-	    	</context>
-    	</facet>
-    	<include type="facet_literatur"/>
-    	<facet name="gebaeudetyp" labelKey="Gebäudetyp allgemein">
-	    	<field datasource="bauwerk.Gebaeudetyp"/>
-    	</facet>
-    	<facet name="gebaeudetypspeziell" labelKey="Gebäudetyp speziell">
-    		<field datasource="bauwerk.GebaeudetypSpeziell"/>
-    	</facet>  
-    	<facet name="kontext" labelKey="Antiker Kontext">
-    		<field datasource="bauwerk.Kontext"/>
-    	</facet>       	
-    	<facet name="bauordnung" labelKey="Bauordnung">
-	    	<field datasource="bauwerk.Bauordnung"/>
-    	</facet>
-    	<facet name="kulturkreis" labelKey="Kulturkreis">
-	    	<field datasource="bauwerk.BauwerkKulturkreis"/>
-    	</facet>  
-    	<facet name="antikegriechlandschaft" labelKey="Antike Landschaft">
-    		<field datasource="bauwerk.antikeGriechLandschaftBauwerk"/>
-    	</facet>      	
-    	<facet name="antikeroemprovinz" labelKey="Römische Provinz">
-    		<field datasource="bauwerk.antikeRoemProvinzBauwerk"/>
-    	</facet>  
-    	<facet name="regioromitalien" labelKey="Regio Rom/Italien">
-    		<field datasource="bauwerk.RegioRomItalien"/>
-    	</facet>  	
-    </facets>
+          </section>
+          <section labelKey="Erhaltung">
+            <field datasource="bauwerk.ErhaltungBauwerk"/>
+          </section>
+          <section labelKey="Beschreibung">
+            <field datasource="bauwerk.BeschreibungBauwerk"/>
+          </section>
+          <section labelKey="Architekt">
+            <field datasource="bauwerk.Architekt"/>
+          </section>
+          <section labelKey="Antiker Kontext">
+            <field datasource="bauwerk.Kontext"/>
+          </section>
+          <section labelKey="Bauordnung">
+            <field datasource="bauwerk.Bauordnung"/>
+            <field datasource="bauwerk.BauordnungBemerkung"/>
+          </section>
+        </section>
+        <section labelKey="Geschichte">
+          <section labelKey="Baugeschichte">
+            <field datasource="bauwerk.Geschichte"/>
+          </section>
+          <section labelKey="Ausgrabung">
+            <field datasource="bauwerk.Ausgrabung"/>
+          </section>
+          <section labelKey="Bemerkungen">
+            <field datasource="bauwerk.BauwerkBemerkungen"/>
+          </section>
+          <section labelKey="Restaurierung">
+            <field datasource="bauwerk.Restaurierung"/>
+          </section>
+        </section>
+        <section labelKey="Katalog">
+          <field datasource="bauwerk.Katalogtext" prefix="Katalogtext: "/>
+          <field datasource="bauwerk.Katalognummer" prefix="Katalognummer: "/>
+        </section>
+        <include type="literatur"/>
+        <include type="uri"/>
+      </section>
+    </datasections>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <include type="facet_ort"/>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".AnfEpoche"/>
+      </context>
+    </facet>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".EndEpoche"/>
+      </context>
+    </facet>
+    <include type="facet_literatur"/>
+    <facet name="gebaeudetyp" labelKey="Gebäudetyp allgemein">
+      <field datasource="bauwerk.Gebaeudetyp"/>
+    </facet>
+    <facet name="gebaeudetypspeziell" labelKey="Gebäudetyp speziell">
+      <field datasource="bauwerk.GebaeudetypSpeziell"/>
+    </facet>
+    <facet name="kontext" labelKey="Antiker Kontext">
+      <field datasource="bauwerk.Kontext"/>
+    </facet>
+    <facet name="bauordnung" labelKey="Bauordnung">
+      <field datasource="bauwerk.Bauordnung"/>
+    </facet>
+    <facet name="kulturkreis" labelKey="Kulturkreis">
+      <field datasource="bauwerk.BauwerkKulturkreis"/>
+    </facet>
+    <facet name="antikegriechlandschaft" labelKey="Antike Landschaft">
+      <field datasource="bauwerk.antikeGriechLandschaftBauwerk"/>
+    </facet>
+    <facet name="antikeroemprovinz" labelKey="Römische Provinz">
+      <field datasource="bauwerk.antikeRoemProvinzBauwerk"/>
+    </facet>
+    <facet name="regioromitalien" labelKey="Regio Rom/Italien">
+      <field datasource="bauwerk.RegioRomItalien"/>
+    </facet>
+  </facets>
 </category>

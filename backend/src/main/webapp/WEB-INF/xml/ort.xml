@@ -1,48 +1,40 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!-- just very basic to have at least some definitions -->
-<category name="ort"
-	xmlns="http://arachne.uni-koeln.de/schemas/category"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-        	<section separator=", ">
-        		<field datasource="ort.Stadt" />
-        		<field datasource="ort.Ort_antik" prefix="(" postfix=") " />
-        		<field datasource="ort.Land" />
-        		<field datasource="ort.Aufbewahrungsort" />
-            </section>
-        </title>
-        <subtitle>
-            <section separator=", ">
-            	<field datasource="ort.continent" />
-            </section>
-        </subtitle>
-        <datasections>
-        	<section labelKey="Informationen zum Ort">
-        		<section labelKey="Koordinaten">
-	            	<field datasource="ort.Longitude" prefix="Long: " />
-	            	<field datasource="ort.Latitude" prefix="Lat: " />
-	            	<field datasource="ort.Genauigkeit" />
-	            	<field datasource="ort.Aufbewahrungsort"/>
-	            </section>
-	            
-        		<section labelKey="Ländercode">
-	            	<field datasource="ort.Countrycode" />	            	
-	            </section>
-	            <section labelKey="Kontinentcode">
-	            	<field datasource="ort.continentCode" />
-	            </section>
-	            <section labelKey="GeonamesID">
-	            	<field datasource="ort.Geonamesid" />
-	            </section>
-        	</section>
-        </datasections>
-    </display>
-    <facets>
-    	<facet name="kategorie" labelKey="Kategorie">
-    		<field datasource="Dataset.TableName" />
-    	</facet>
-    </facets>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="ort" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section separator=", ">
+        <field datasource="ort.Stadt"/>
+        <field datasource="ort.Ort_antik" prefix="(" postfix=") "/>
+        <field datasource="ort.Land"/>
+        <field datasource="ort.Aufbewahrungsort"/>
+      </section>
+    </title>
+    <subtitle>
+      <section separator=", ">
+        <field datasource="ort.continent"/>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zum Ort">
+        <section labelKey="Koordinaten">
+          <field datasource="ort.Longitude" prefix="Long: "/>
+          <field datasource="ort.Latitude" prefix="Lat: "/>
+          <field datasource="ort.Genauigkeit"/>
+          <field datasource="ort.Aufbewahrungsort"/>
+        </section>
+        <section labelKey="Ländercode">
+          <field datasource="ort.Countrycode"/>
+        </section>
+        <section labelKey="Kontinentcode">
+          <field datasource="ort.continentCode"/>
+        </section>
+        <section labelKey="GeonamesID">
+          <field datasource="ort.Geonamesid"/>
+        </section>
+      </section>
+    </datasections>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+  </facets>
 </category>

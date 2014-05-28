@@ -1,159 +1,143 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<category name="befund" xmlns="http://arachne.uni-koeln.de/schemas/category"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-            <section separator=" / ">
-                <field datasource="befund.Grabungsort"/>
-                <field datasource="befund.Befund" prefix="Stratum: "/>
-                <field datasource="befund.Areal" prefix="Areal: "/>
-            </section>
-        </title>
-        <subtitle labelKey="">
-            <section labelKey="Unique Identifier">
-                <field datasource="Dataset.internalId"/>
-            </section>
-        </subtitle>
-        <datasections>
-            <section labelKey="Informationen zum Befund">
-                <section labelKey="Befund">
-                    <section labelKey="Grabungsort">
-                        <field datasource="befund.Grabungsort"/>
-                    </section>
-                    <section labelKey="Befund">
-                        <field datasource="befund.Befund"/>
-                        <field datasource="befund.KategorieBefund"/>
-                        <field datasource="befund.KlassifizierungBefund"/>
-                    </section>
-                    <section labelKey="Areal">
-                        <field datasource="befund.Areal"/>
-                    </section>
-                    <section labelKey="Bearbeiter">
-                        <field datasource="befund.BearbeiterBefund"/>
-                    </section>
-                    <section labelKey="Maße und Lokalisierung">
-                        <section labelKey="Freilegung">
-                            <field datasource="befund.FreilegungBefund"/>
-                        </section>
-                        <section labelKey="Niveau OK">
-                            <field datasource="befund.NiveauOKBefund"/>
-                        </section>
-                        <section labelKey="Niveau UK">
-                            <field datasource="befund.NiveauUKBefund"/>
-                        </section>
-                        <section labelKey="Qualität">
-                         <field datasource="befund.QualitaetBefund"/>
-                        </section>
-                    </section>
-                    <section labelKey="Kommentar">
-                        <field datasource="befund.Kommentar"/>
-                    </section>
-                    <section labelKey="Beschaffenheit">
-                        <field datasource="befund.BeschaffenheitBefund"/>
-                    </section>
-                </section>
-
-                <include type="ort"/>
-
-                <section labelKey="Verbundene Morphologien">
-                    <context type="Befundmainabstractmorphology" separator=" / "
-                        labelKey="Morphologies">
-                        <field datasource=".Level1"/>
-                        <field datasource=".Level2"/>
-                        <field datasource=".Level3"/>
-                        <field datasource=".Level4"/>
-                        <field datasource=".Level5"/>
-                        <field datasource=".Level6"/>
-                    </context>
-                    <!-- evtl. raus, falls die Anzeige so nicht klappt -->
-                    <context type="mainabstract" labelKey="GrabungsinterneTypennummer"
-                        separator=", ">
-                        <field datasource=".GrabungsinterneTypennummer"/>
-                        <field datasource=".GrabungsinterneTypennummerSub"/>
-                    </context>
-                </section>
-                <section labelKey="Verbundene Fabrics">
-                    <context type="Befundmainabstractfabric" labelKey="Fabrics" separator=" / ">
-                        <contextSection labelKey="AllgemeinerName">
-                            <field datasource=".CommonName"/>
-                        </contextSection>
-                        <contextSection labelKey="Herkunft">
-                            <field datasource=".Origin"/>
-                        </contextSection>
-                        <contextSection labelKey="Name">
-                            <field datasource=".Name"/>
-                        </contextSection>
-                    </context>
-                </section>
-                <section labelKey="Verbundene Keramikfragmente">
-                    <context type="Befundmainabstractisolatedsherd" separator=" / "
-                        labelKey="Scherben">
-                        <contextSection labelKey="Typ">
-                            <field datasource=".SherdType"/>
-                        </contextSection>
-                        <contextSection labelKey="Inventarnummer">
-                            <field datasource=".InventoryNumber"/>
-                        </contextSection>
-                        <contextSection labelKey="Niton-Analysenummer">
-                            <field datasource=".NitonAnalysisNumber"/>
-                        </contextSection>
-                    </context>
-                </section>
-            </section>
-            <include type="datierung"/>
-        </datasections>
-        <contextImages>
-            <!-- Show images of connected sherds -->
-            <contextImage show="always">Befundmainabstractisolatedsherd</contextImage>
-
-            <!-- Show images of fabricdescriptions found in this context -->
-            <contextImage show="always">Befundmainabstractfabricfabricdescription</contextImage>
-
-            <!-- Show images of types found within this context -->
-            <contextImage show="always">Befundmainabstractmorphology</contextImage>
-        </contextImages>
-    </display>
-    <facets>
-        <facet name="kategorie" labelKey="Kategorie">
-            <field datasource="Dataset.TableName"/>
-        </facet>
-        <facet name="ort" labelKey="Lokalisierung">
-            <context type="ort" separator=", ">
-                <field datasource=".Stadt"/>
-                <field datasource=".Land"/>
-            </context>
-        </facet>
-        <facet name="grabungsort" labelKey="Grabungsort">
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="befund" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section separator=" / ">
+        <field datasource="befund.Grabungsort"/>
+        <field datasource="befund.Befund" prefix="Stratum: "/>
+        <field datasource="befund.Areal" prefix="Areal: "/>
+      </section>
+    </title>
+    <subtitle labelKey="">
+      <section labelKey="Unique Identifier">
+        <field datasource="Dataset.internalId"/>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zum Befund">
+        <section labelKey="Befund">
+          <section labelKey="Grabungsort">
             <field datasource="befund.Grabungsort"/>
-        </facet>
-        <facet name="befund" labelKey="Befund">
+          </section>
+          <section labelKey="Befund">
             <field datasource="befund.Befund"/>
-        </facet>
-        <facet name="befundmainabstractmorphology" labelKey="Morphologie">
-            <context type="Befundmainabstractmorphology" separator=" / ">
-                <field datasource=".Level6">
-                    <ifEmpty>
-                        <field datasource=".Level5">
-                            <ifEmpty>
-                                <field datasource=".Level4">
-                                    <ifEmpty>
-                                        <field datasource=".Level3">
-                                            <ifEmpty>
-                                                <field datasource=".Level2">
-                                                  <ifEmpty>
-                                                  <field datasource=".Level1"/>
-                                                  </ifEmpty>
-                                                </field>
-                                            </ifEmpty>
-                                        </field>
-                                    </ifEmpty>
-                                </field>
-                            </ifEmpty>
+            <field datasource="befund.KategorieBefund"/>
+            <field datasource="befund.KlassifizierungBefund"/>
+          </section>
+          <section labelKey="Areal">
+            <field datasource="befund.Areal"/>
+          </section>
+          <section labelKey="Bearbeiter">
+            <field datasource="befund.BearbeiterBefund"/>
+          </section>
+          <section labelKey="Maße und Lokalisierung">
+            <section labelKey="Freilegung">
+              <field datasource="befund.FreilegungBefund"/>
+            </section>
+            <section labelKey="Niveau OK">
+              <field datasource="befund.NiveauOKBefund"/>
+            </section>
+            <section labelKey="Niveau UK">
+              <field datasource="befund.NiveauUKBefund"/>
+            </section>
+            <section labelKey="Qualität">
+              <field datasource="befund.QualitaetBefund"/>
+            </section>
+          </section>
+          <section labelKey="Kommentar">
+            <field datasource="befund.Kommentar"/>
+          </section>
+          <section labelKey="Beschaffenheit">
+            <field datasource="befund.BeschaffenheitBefund"/>
+          </section>
+        </section>
+        <include type="ort"/>
+        <section labelKey="Verbundene Morphologien">
+          <context type="Befundmainabstractmorphology" separator=" / " labelKey="Morphologies">
+            <field datasource=".Level1"/>
+            <field datasource=".Level2"/>
+            <field datasource=".Level3"/>
+            <field datasource=".Level4"/>
+            <field datasource=".Level5"/>
+            <field datasource=".Level6"/>
+          </context>
+          <!-- evtl. raus, falls die Anzeige so nicht klappt -->
+          <context type="mainabstract" labelKey="GrabungsinterneTypennummer" separator=", ">
+            <field datasource=".GrabungsinterneTypennummer"/>
+            <field datasource=".GrabungsinterneTypennummerSub"/>
+          </context>
+        </section>
+        <section labelKey="Verbundene Fabrics">
+          <context type="Befundmainabstractfabric" labelKey="Fabrics" separator=" / ">
+            <contextSection labelKey="AllgemeinerName">
+              <field datasource=".CommonName"/>
+            </contextSection>
+            <contextSection labelKey="Herkunft">
+              <field datasource=".Origin"/>
+            </contextSection>
+            <contextSection labelKey="Name">
+              <field datasource=".Name"/>
+            </contextSection>
+          </context>
+        </section>
+        <section labelKey="Verbundene Keramikfragmente">
+          <context type="Befundmainabstractisolatedsherd" separator=" / " labelKey="Scherben">
+            <contextSection labelKey="Typ">
+              <field datasource=".SherdType"/>
+            </contextSection>
+            <contextSection labelKey="Inventarnummer">
+              <field datasource=".InventoryNumber"/>
+            </contextSection>
+            <contextSection labelKey="Niton-Analysenummer">
+              <field datasource=".NitonAnalysisNumber"/>
+            </contextSection>
+          </context>
+        </section>
+      </section>
+      <include type="datierung"/>
+    </datasections>
+    <contextImages>
+      <!-- Show images of connected sherds -->
+      <contextImage show="always">Befundmainabstractisolatedsherd</contextImage>
+      <!-- Show images of fabricdescriptions found in this context -->
+      <contextImage show="always">Befundmainabstractfabricfabricdescription</contextImage>
+      <!-- Show images of types found within this context -->
+      <contextImage show="always">Befundmainabstractmorphology</contextImage>
+    </contextImages>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <include type="facet_ort"/>
+    <facet name="grabungsort" labelKey="Grabungsort">
+      <field datasource="befund.Grabungsort"/>
+    </facet>
+    <facet name="befund" labelKey="Befund">
+      <field datasource="befund.Befund"/>
+    </facet>
+    <facet name="befundmainabstractmorphology" labelKey="Morphologie">
+      <context type="Befundmainabstractmorphology" separator=" / ">
+        <field datasource=".Level6">
+          <ifEmpty>
+            <field datasource=".Level5">
+              <ifEmpty>
+                <field datasource=".Level4">
+                  <ifEmpty>
+                    <field datasource=".Level3">
+                      <ifEmpty>
+                        <field datasource=".Level2">
+                          <ifEmpty>
+                            <field datasource=".Level1"/>
+                          </ifEmpty>
                         </field>
-                    </ifEmpty>
+                      </ifEmpty>
+                    </field>
+                  </ifEmpty>
                 </field>
-            </context>
-        </facet>
-    </facets>
+              </ifEmpty>
+            </field>
+          </ifEmpty>
+        </field>
+      </context>
+    </facet>
+  </facets>
 </category>

@@ -1,128 +1,104 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<category name="gruppen"
-	xmlns="http://arachne.uni-koeln.de/schemas/category"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-        	<section>
-            	<field datasource="gruppen.KurzbeschreibungGruppen" />
-            </section>
-        </title>
-        <subtitle>
-             <section separator=", ">
-                <section separator=" / ">
-                    <field datasource="ort.Stadt" />
-                    <field datasource="ort.Ort_antik" />
-                </section>
-                <section>
-                	<field datasource="ort.Aufbewahrungsort" />
-                </section>
-            </section>
-        </subtitle>
-        <datasections>
-        	<section labelKey="Informationen zum mehrteiligen Denkmal (Gruppe)">
-        	   <include type="ort" />
-        	   <include type="datierung" />
-        		<!-- <section labelKey="Datierung">
-                    <context type="datierung" labelKey="Gruppenerstaufstellung" separator=" ">
-                        <field datasource=".AnfEpoche" postfix="," />
-                        <field datasource=".AnfDatZeitraum" />
-                        <field datasource=".AnfDatJh" postfix=". Jh."/>
-                        <field datasource=".AnfDatvn" />
-                    </context>
-                    <context type="datierung">
-                        <field datasource=".DatVorschlagAutor" prefix="- nach: " postfix=" -"/>
-                    </context>
-                </section> -->
-        		<section labelKey="Allgemein">
-        			<!-- Not a nice solution. The first and the last section should not be needed -->
-        			<section>
-        				<field datasource="gruppen.alternativeBezeichnung" prefix="Alternative Bezeichnung: " />
-        				<field datasource="gruppen.ArtDerGruppe" prefix="Art des Denkmals: " />
-        			</section>
-        			<section separator=", ">
-        				<field datasource="gruppen.AnzahlFigurenGruppen" prefix="Anzahl der Figuren/Objekte: " />
-        				<field datasource="gruppen.Aufbau" />
-        			</section>
-        			<section>
-        				<field datasource="gruppen.Zusammengehoerigkeit" prefix="Zusammengehörigkeit: " />
-        			</section>
-        		</section>
-        		<section labelKey="Überlieferungen">
-        			<field datasource="gruppen.Nachweise"  />
-        			<field datasource="gruppen.ArchaeologZeugnisse" />
-        			<field datasource="gruppen.AntikeSchriftquellen" />
-        		</section>
-        		
-        		<section labelKey="Aufstellung" separator=", ">
-        			<field datasource="gruppen.Aufstellungskontext" />
-        			<field datasource="gruppen.FunktionGruppen" />
-        			<field datasource="gruppen.AuftraggeberGruppen" />
-        			<field datasource="gruppen.AdressatGruppen" />
-        		</section>
-        		<section labelKey="Herkunft" separator=" ,">
-        			<field datasource="gruppen.FundstaatGruppen" />
-        			<field datasource="gruppen.FundortGruppen"/>
-        			<field datasource="gruppen.FundkontextGruppen" />
-        			<field datasource="gruppen.FunddatumGruppen" />
-        			<field datasource="gruppen.HerkunftGruppen" />
-        			<field datasource="gruppen.HerkFundKommentarGruppen"/>        			
-        		</section>
-        		<section labelKey="Thematik">
-        			<field datasource="gruppen.ThematikGruppen" />
-        			<field datasource="gruppen.ThematikMenschen" />
-        			<field datasource="gruppen.ZugehoerigeFiguren" prefix="Figuren" />
-        			<field datasource="gruppen.ThemaInWorten" />
-        		</section>
-        		
-	            <include type="literatur" />
-	            <include type="uri" />
-	    	</section>
-        </datasections>
-    </display>
-    <facets>
-    	<facet name="kategorie" labelKey="Kategorie">
-    		<field datasource="Dataset.TableName" />
-    	</facet>
-    	<facet name="ort" labelKey="Lokalisierung">
-	    	<context type="ort" separator=", ">
-		    	<field datasource=".Stadt" />
-		    	<field datasource=".Land" />
-	    	</context>
-    	</facet>
-    	<facet name="datierungepoche" labelKey="Epoche">
-	    	<context type="datierung">
-		    	<field datasource=".AnfEpoche"/>
-	    	</context>
-    	</facet>
-    	<facet name="datierungepoche" labelKey="Epoche">
-	    	<context type="datierung">
-		    	<field datasource=".EndEpoche"/>
-	    	</context>
-    	</facet>
-    	<include type="facet_literatur" />
-    	<facet name="artdergruppe" labelKey="Art der Gruppe">
-    		<field datasource="gruppen.ArtDerGruppe" />
-    	</facet>     	
-    	<facet name="aufbau" labelKey="Aufbau">
-    		<field datasource="gruppen.Aufbau" />
-    	</facet> 
-    	<facet name="aufstellungskontext" labelKey="Aufstellungskontext">
-    		<field datasource="gruppen.Aufstellungskontext" />
-    	</facet>   
-    	<facet name="funktion" labelKey="Funktion">
-    		<field datasource="gruppen.FunktionGruppen" />
-    	</facet> 
-    	<facet name="thematik" labelKey="Thematik">
-    		<field datasource="gruppen.ThematikGruppen" />
-    	</facet> 
-    	<facet name="thematikmenschen" labelKey="Thematik">
-    		<field datasource="gruppen.ThematikMenschen" />
-    	</facet>
-    	<facet name="archaeologzeugnisse" labelKey="Archäologische Zeugnisse">
-    		<field datasource="gruppen.ArchaeologZeugnisse" />
-    	</facet> 
-    </facets>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="gruppen" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section>
+        <field datasource="gruppen.KurzbeschreibungGruppen"/>
+      </section>
+    </title>
+    <subtitle>
+      <section separator=", ">
+        <section separator=" / ">
+          <field datasource="ort.Stadt"/>
+          <field datasource="ort.Ort_antik"/>
+        </section>
+        <section>
+          <field datasource="ort.Aufbewahrungsort"/>
+        </section>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zum mehrteiligen Denkmal (Gruppe)">
+        <include type="ort"/>
+        <include type="datierung"/>
+        <section labelKey="Allgemein">
+          <!-- Not a nice solution. The first and the last section should not be needed -->
+          <section>
+            <field datasource="gruppen.alternativeBezeichnung" prefix="Alternative Bezeichnung: "/>
+            <field datasource="gruppen.ArtDerGruppe" prefix="Art des Denkmals: "/>
+          </section>
+          <section separator=", ">
+            <field datasource="gruppen.AnzahlFigurenGruppen" prefix="Anzahl der Figuren/Objekte: "/>
+            <field datasource="gruppen.Aufbau"/>
+          </section>
+          <section>
+            <field datasource="gruppen.Zusammengehoerigkeit" prefix="Zusammengehörigkeit: "/>
+          </section>
+        </section>
+        <section labelKey="Überlieferungen">
+          <field datasource="gruppen.Nachweise"/>
+          <field datasource="gruppen.ArchaeologZeugnisse"/>
+          <field datasource="gruppen.AntikeSchriftquellen"/>
+        </section>
+        <section labelKey="Aufstellung" separator=", ">
+          <field datasource="gruppen.Aufstellungskontext"/>
+          <field datasource="gruppen.FunktionGruppen"/>
+          <field datasource="gruppen.AuftraggeberGruppen"/>
+          <field datasource="gruppen.AdressatGruppen"/>
+        </section>
+        <section labelKey="Herkunft" separator=" ,">
+          <field datasource="gruppen.FundstaatGruppen"/>
+          <field datasource="gruppen.FundortGruppen"/>
+          <field datasource="gruppen.FundkontextGruppen"/>
+          <field datasource="gruppen.FunddatumGruppen"/>
+          <field datasource="gruppen.HerkunftGruppen"/>
+          <field datasource="gruppen.HerkFundKommentarGruppen"/>
+        </section>
+        <section labelKey="Thematik">
+          <field datasource="gruppen.ThematikGruppen"/>
+          <field datasource="gruppen.ThematikMenschen"/>
+          <field datasource="gruppen.ZugehoerigeFiguren" prefix="Figuren"/>
+          <field datasource="gruppen.ThemaInWorten"/>
+        </section>
+        <include type="literatur"/>
+        <include type="uri"/>
+      </section>
+    </datasections>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <include type="facet_ort"/>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".AnfEpoche"/>
+      </context>
+    </facet>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".EndEpoche"/>
+      </context>
+    </facet>
+    <include type="facet_literatur"/>
+    <facet name="artdergruppe" labelKey="Art der Gruppe">
+      <field datasource="gruppen.ArtDerGruppe"/>
+    </facet>
+    <facet name="aufbau" labelKey="Aufbau">
+      <field datasource="gruppen.Aufbau"/>
+    </facet>
+    <facet name="aufstellungskontext" labelKey="Aufstellungskontext">
+      <field datasource="gruppen.Aufstellungskontext"/>
+    </facet>
+    <facet name="funktion" labelKey="Funktion">
+      <field datasource="gruppen.FunktionGruppen"/>
+    </facet>
+    <facet name="thematik" labelKey="Thematik">
+      <field datasource="gruppen.ThematikGruppen"/>
+    </facet>
+    <facet name="thematikmenschen" labelKey="Thematik">
+      <field datasource="gruppen.ThematikMenschen"/>
+    </facet>
+    <facet name="archaeologzeugnisse" labelKey="Archäologische Zeugnisse">
+      <field datasource="gruppen.ArchaeologZeugnisse"/>
+    </facet>
+  </facets>
 </category>

@@ -1,127 +1,104 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<category name="bauwerksteil"
-	xmlns="http://arachne.uni-koeln.de/schemas/category"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-	<display>
-		<title>
-			<section separator=", ">
-				<field datasource="bauwerksteil.BearbeiterBauwerksteil" prefix="BT" postfix=": " />
-				<field datasource="bauwerksteil.KurzbeschreibungBauwerksteil"/>
-			</section>
-		</title>
-		<subtitle>
-			<section separator=", ">
-				<field datasource="ort.Ort_antik" />
-				<field datasource="ort.Stadt" />	
-			</section>
-		</subtitle>
-		<datasections>
-			<section labelKey="Informationen zum Bauwerksteil">
-				<include type="ort" />
-				<include type="datierung" />
-				<section labelKey="Charakterisierung">					
-					<section labelKey="Bauordnung" >
-						<field datasource="bauwerksteil.Bauordnung"/>
-					</section>
-					<section labelKey="Bauordnung des Bauwerksteils" separator=", " >
-						<field datasource="bauwerksteil.ArchitektonischeBauordnung"/>
-						<field datasource="bauwerksteil.BauordnungBemerkung"/>
-					</section> 		
-					<section labelKey="Architekt">
-						<field datasource="bauwerksteil.Architekt"/>
-					</section>        		
-					<section labelKey="Bezugsrichtung zum übergeordneten Bauteil" separator=", " >
-						<field datasource="bauwerksteil.Bezugsrichtung"/>
-						<field datasource="bauwerksteil.Bezugskommentar"/>
-					</section>
-					<section labelKey="Erhaltung">
-						<field datasource="bauwerksteil.ErhaltungBauwerksteil"/>
-					</section> 
-					<section labelKey="Beschreibung">
-						<field datasource="bauwerksteil.BeschreibungBauwerksteil"/>
-					</section> 	
-				</section>
-				
-				<section labelKey="Geschichte">
-					
-					<section labelKey="Ausgrabungen">
-						<field datasource="bauwerksteil.Ausgrabungen"/>
-					</section>
-					
-					<section labelKey="Restaurierung">
-						<field datasource="bauwerksteil.RestaurierungenBauwerksteil"/>
-					</section> 
-					<section labelKey="Baugeschichte" separator=", ">
-						<field datasource="bauwerksteil.GeschichteBauwerksteil"/>
-						<field datasource="bauwerksteil.BemerkungenBauwerksteil" />
-					</section> 	
-				</section>
-				
-				<section labelKey="Maße/Kontext">	
-					<section>
-						<field datasource="bauwerksteil.KontextBauwerksteil" prefix="Kontext des Bauwerksteils: " />
-					</section>
-					<section>
-						<field datasource="bauwerksteil.BreiteBauwerksteil" prefix="B " postfix=" cm"/>
-					</section> 
-					<section>
-						<field datasource="bauwerksteil.HoeheBauwerksteil" prefix="H " postfix=" cm"/>
-					</section> 
-					<section>
-						<field datasource="bauwerksteil.TiefeBauwerksteil" prefix="T " postfix=" cm"/>
-					</section>			
-				</section>
-				
-				<section labelKey="Dekoration">
-					<section labelKey="Dekorationsart">
-						<field datasource="bauwerksteil.DekorationsartBauwerksteil"/> 
-					</section>
-				</section>
-				<section labelKey="Inschrift(en)">
-					<section>
-						<field datasource="bauwerksteil.InschriftBauwerksteil" />
-					</section>
-					<section>
-						<field datasource="bauwerksteil.LitInschriftBauwerksteil" />
-					</section> 
-				</section>
-				
-				<include type="literatur" />
-				
-				<include type="uri" />
-				<!-- 
-					<section labelKey="Fotoabzug">
-						<section sectionKey="Fotoabzug" />
-					</section>
-				-->				
-			</section>	
-		</datasections>
-	</display>
-	<facets>
-		<facet name="kategorie" labelKey="Kategorie">
-			<field datasource="Dataset.TableName" />
-		</facet>
-		<facet name="ort" labelKey="Lokalisierung">
-            <context type="ort" separator=", ">
-                <field datasource=".Stadt" />
-                <field datasource=".Land" />
-            </context>
-        </facet>
-        <facet name="datierungepoche" labelKey="Epoche">
-            <context type="datierung">
-                <field datasource=".AnfEpoche"/>
-            </context>
-        </facet>
-        <facet name="datierungepoche" labelKey="Epoche">
-            <context type="datierung">
-                <field datasource=".EndEpoche"/>
-            </context>
-        </facet>
-        <include type="facet_literatur" />
-		<facet name="dekorationsart" labelKey="Dekorationsart">
-			<field datasource="bauwerksteil.DekorationsartBauwerksteil" />
-		</facet>
-	</facets>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="bauwerksteil" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section separator=", ">
+        <field datasource="bauwerksteil.BearbeiterBauwerksteil" prefix="BT" postfix=": "/>
+        <field datasource="bauwerksteil.KurzbeschreibungBauwerksteil"/>
+      </section>
+    </title>
+    <subtitle>
+      <section separator=", ">
+        <field datasource="ort.Ort_antik"/>
+        <field datasource="ort.Stadt"/>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zum Bauwerksteil">
+        <include type="ort"/>
+        <include type="datierung"/>
+        <section labelKey="Charakterisierung">
+          <section labelKey="Bauordnung">
+            <field datasource="bauwerksteil.Bauordnung"/>
+          </section>
+          <section labelKey="Bauordnung des Bauwerksteils" separator=", ">
+            <field datasource="bauwerksteil.ArchitektonischeBauordnung"/>
+            <field datasource="bauwerksteil.BauordnungBemerkung"/>
+          </section>
+          <section labelKey="Architekt">
+            <field datasource="bauwerksteil.Architekt"/>
+          </section>
+          <section labelKey="Bezugsrichtung zum übergeordneten Bauteil" separator=", ">
+            <field datasource="bauwerksteil.Bezugsrichtung"/>
+            <field datasource="bauwerksteil.Bezugskommentar"/>
+          </section>
+          <section labelKey="Erhaltung">
+            <field datasource="bauwerksteil.ErhaltungBauwerksteil"/>
+          </section>
+          <section labelKey="Beschreibung">
+            <field datasource="bauwerksteil.BeschreibungBauwerksteil"/>
+          </section>
+        </section>
+        <section labelKey="Geschichte">
+          <section labelKey="Ausgrabungen">
+            <field datasource="bauwerksteil.Ausgrabungen"/>
+          </section>
+          <section labelKey="Restaurierung">
+            <field datasource="bauwerksteil.RestaurierungenBauwerksteil"/>
+          </section>
+          <section labelKey="Baugeschichte" separator=", ">
+            <field datasource="bauwerksteil.GeschichteBauwerksteil"/>
+            <field datasource="bauwerksteil.BemerkungenBauwerksteil"/>
+          </section>
+        </section>
+        <section labelKey="Maße/Kontext">
+          <section>
+            <field datasource="bauwerksteil.KontextBauwerksteil" prefix="Kontext des Bauwerksteils: "/>
+          </section>
+          <section>
+            <field datasource="bauwerksteil.BreiteBauwerksteil" prefix="B " postfix=" cm"/>
+          </section>
+          <section>
+            <field datasource="bauwerksteil.HoeheBauwerksteil" prefix="H " postfix=" cm"/>
+          </section>
+          <section>
+            <field datasource="bauwerksteil.TiefeBauwerksteil" prefix="T " postfix=" cm"/>
+          </section>
+        </section>
+        <section labelKey="Dekoration">
+          <section labelKey="Dekorationsart">
+            <field datasource="bauwerksteil.DekorationsartBauwerksteil"/>
+          </section>
+        </section>
+        <section labelKey="Inschrift(en)">
+          <section>
+            <field datasource="bauwerksteil.InschriftBauwerksteil"/>
+          </section>
+          <section>
+            <field datasource="bauwerksteil.LitInschriftBauwerksteil"/>
+          </section>
+        </section>
+        <include type="literatur"/>
+        <include type="uri"/>
+      </section>
+    </datasections>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <include type="facet_ort"/>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".AnfEpoche"/>
+      </context>
+    </facet>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".EndEpoche"/>
+      </context>
+    </facet>
+    <include type="facet_literatur"/>
+    <facet name="dekorationsart" labelKey="Dekorationsart">
+      <field datasource="bauwerksteil.DekorationsartBauwerksteil"/>
+    </facet>
+  </facets>
 </category>

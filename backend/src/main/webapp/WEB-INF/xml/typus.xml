@@ -1,156 +1,134 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 
 TODO
 Hier werden keine Direkten Bilder verwendet sondern die Bilder des Hauptvertreters. Dies muss entweder im an anderer Stelle im Code berücksichtigt werden ODER Hier das ist aber nochnicht möglich!
 
  -->
-<category name="typus"
-	xmlns="http://arachne.uni-koeln.de/schemas/category"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-        	<section>
-            	<field datasource="typus.KurzbeschreibungTypus" />
-            </section>
-        </title>
-        <subtitle>
-             <section>
-				<!-- 
-				Strange Has no Subtitle , 
-				this is Something is something taken from the Data 
-				-->
-                    <field datasource="typus.moderneLandschaft"/>
-            </section>
-        </subtitle>
-        <datasections>
-        	<section labelKey="Informationen zum Typus">
-        	    <include type="datierung" />
-        	    <section labelKey="Allgemein">
-	            	<section labelKey="Typus-Hauptbezeichnung" separator=", ">
-	                    <field datasource="typus.KurzbeschreibungTypus" />
-	                </section>  
-	                <section labelKey="Typus-Nebenbezeichnung(en)">
-	                	<field datasource="typus.TypusNebenbezeichnung" />
-	                </section>
-	                <section labelKey="">
-	                	<field datasource="typus.RoemGriech" />
-	                </section>
-	                <section labelKey="Klassifizierung">
-	                	<field datasource="typus.Klassifizierung" />
-	                </section>
-	                <section labelKey="moderne Landschaft">
-	                    <field datasource="typus.moderneLandschaft" />
-	                </section>
-	                <section labelKey="Ausdehnung">
-	                    <field datasource="typus.Ausdehnung" />
-	                </section>
-	                <section labelKey="Bildschema">
-	                    <field datasource="typus.Bildschema" />
-	                </section>
-	                <section labelKey="Namensgebende Replik / Hauptvertreter">
-	                    <field datasource="typus.NamengebendeReplik" />
-	                </section>
-	                <section labelKey="Künstler">
-	                    <field datasource="typus.KuenstlerTypus" />
-	                </section>
-	            </section>
-	            
-	            <section labelKey="Quellen">
-	                    <field datasource="typus.AntikeQuelle" />
-	            </section>
-	            <section labelKey="Beschreibung" separator="; ">
-	            	<section labelKey="Haltung">
-	                    <field datasource="typus.HaltungTypus" />
-	                </section>  
-	                <section labelKey="Attribute">
-	                	<field datasource="typus.AttributTypus" />
-	                </section>
-	                <section labelKey="Bekleidung">
-	                	<field datasource="typus.BekleidungTypus" />
-	                </section>
-	                <section labelKey="Haar">
-	                	<field datasource="typus.Haartracht" />
-	                </section>
-	                <section labelKey="Kopfwendung">
-	                    <field datasource="typus.KopfwendungTypus" />
-	                </section>
-	                <section labelKey="Bart">
-	                    <field datasource="typus.Barttracht" />
-	                </section>
-	                <section labelKey="Stirnhaar">
-	                    <field datasource="typus.StirnhaarTypus" />
-	                </section>
-	            </section>
-	            <section labelKey="Merkmale" separator="; ">
-	            	<section labelKey="">
-	                    <field datasource="typus.KunsthistorischeEinordnung" />
-	                </section>  
-	                <section labelKey="Kommentar">
-	                	<field datasource="typus.HistorischerKommentar" />
-	                </section>
-	                <section labelKey="">
-	                	<field datasource="typus.Bemerkung" />
-	                </section>
-	        
-	            </section>
-	            
-	            <section labelKey="Einordnung">      
-	            	<field datasource="typus.Einordnungsargumente" />
-	            </section>
-	            
-	            
-	            <section labelKey="Vorbild/Kopie" separator="; " >
-	            	<section labelKey="Kommentar Vorbild">
-	                    <field datasource="typus.KommentarVorbild" />
-	                </section>  
-	                <section labelKey="Kommentar Kopien/Varianten/Vergleiche">
-	                	<field datasource="typus.KommentarKopien" />
-	                </section>
-	            </section>
-	            <include type="literatur" />
-	            <include type="uri" />
-	    	</section>
-        </datasections>
-    </display>
-    <facets>
-    	<facet name="kategorie" labelKey="Kategorie">
-    		<field datasource="Dataset.TableName" />
-    	</facet>
-    	<!-- 
-    	<facet name="ort" labelKey="Lokalisierung">
-	    	<context type="ort" separator=", ">
-		    	<field datasource=".Stadt" />
-		    	<field datasource=".Land" />
-	    	</context>
-    	</facet>
-    	 -->
-    	<facet name="datierungepoche" labelKey="Epoche">
-	    	<context type="datierung">
-		    	<field datasource=".AnfEpoche"/>
-	    	</context>
-    	</facet>
-    	<facet name="datierungepoche" labelKey="Epoche">
-	    	<context type="datierung">
-		    	<field datasource=".EndEpoche"/>
-	    	</context>
-    	</facet>
-    	<include type="facet_literatur" />
-    	<facet name="klassifizierung" labelKey="Art des Typus">
-	    	<field datasource="typus.Klassifizierung"/>
-    	</facet>
-    	<facet name="bekleidung" labelKey="Bekleidung">
-    		<field datasource="typus.BekleidungTypus"/>
-    	</facet>
-    	<facet name="bildschema" labelKey="Bildschema">
-    		<field datasource="typus.Bildschema"/>
-    	</facet>
-    	<facet name="haltung" labelKey="Haltung">
-    		<field datasource="typus.HaltungTypus"/>
-    	</facet>
-    	<facet name="roemgriech" labelKey="Gattung">
-    		<field datasource="typus.RoemGriech"/>
-    	</facet>
-    </facets>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="typus" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section>
+        <field datasource="typus.KurzbeschreibungTypus"/>
+      </section>
+    </title>
+    <subtitle>
+      <section>
+        <field datasource="typus.moderneLandschaft"/>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zum Typus">
+        <include type="datierung"/>
+        <section labelKey="Allgemein">
+          <section labelKey="Typus-Hauptbezeichnung" separator=", ">
+            <field datasource="typus.KurzbeschreibungTypus"/>
+          </section>
+          <section labelKey="Typus-Nebenbezeichnung(en)">
+            <field datasource="typus.TypusNebenbezeichnung"/>
+          </section>
+          <section labelKey="">
+            <field datasource="typus.RoemGriech"/>
+          </section>
+          <section labelKey="Klassifizierung">
+            <field datasource="typus.Klassifizierung"/>
+          </section>
+          <section labelKey="moderne Landschaft">
+            <field datasource="typus.moderneLandschaft"/>
+          </section>
+          <section labelKey="Ausdehnung">
+            <field datasource="typus.Ausdehnung"/>
+          </section>
+          <section labelKey="Bildschema">
+            <field datasource="typus.Bildschema"/>
+          </section>
+          <section labelKey="Namensgebende Replik / Hauptvertreter">
+            <field datasource="typus.NamengebendeReplik"/>
+          </section>
+          <section labelKey="Künstler">
+            <field datasource="typus.KuenstlerTypus"/>
+          </section>
+        </section>
+        <section labelKey="Quellen">
+          <field datasource="typus.AntikeQuelle"/>
+        </section>
+        <section labelKey="Beschreibung" separator="; ">
+          <section labelKey="Haltung">
+            <field datasource="typus.HaltungTypus"/>
+          </section>
+          <section labelKey="Attribute">
+            <field datasource="typus.AttributTypus"/>
+          </section>
+          <section labelKey="Bekleidung">
+            <field datasource="typus.BekleidungTypus"/>
+          </section>
+          <section labelKey="Haar">
+            <field datasource="typus.Haartracht"/>
+          </section>
+          <section labelKey="Kopfwendung">
+            <field datasource="typus.KopfwendungTypus"/>
+          </section>
+          <section labelKey="Bart">
+            <field datasource="typus.Barttracht"/>
+          </section>
+          <section labelKey="Stirnhaar">
+            <field datasource="typus.StirnhaarTypus"/>
+          </section>
+        </section>
+        <section labelKey="Merkmale" separator="; ">
+          <section labelKey="">
+            <field datasource="typus.KunsthistorischeEinordnung"/>
+          </section>
+          <section labelKey="Kommentar">
+            <field datasource="typus.HistorischerKommentar"/>
+          </section>
+          <section labelKey="">
+            <field datasource="typus.Bemerkung"/>
+          </section>
+        </section>
+        <section labelKey="Einordnung">
+          <field datasource="typus.Einordnungsargumente"/>
+        </section>
+        <section labelKey="Vorbild/Kopie" separator="; ">
+          <section labelKey="Kommentar Vorbild">
+            <field datasource="typus.KommentarVorbild"/>
+          </section>
+          <section labelKey="Kommentar Kopien/Varianten/Vergleiche">
+            <field datasource="typus.KommentarKopien"/>
+          </section>
+        </section>
+        <include type="literatur"/>
+        <include type="uri"/>
+      </section>
+    </datasections>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".AnfEpoche"/>
+      </context>
+    </facet>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".EndEpoche"/>
+      </context>
+    </facet>
+    <include type="facet_literatur"/>
+    <facet name="klassifizierung" labelKey="Art des Typus">
+      <field datasource="typus.Klassifizierung"/>
+    </facet>
+    <facet name="bekleidung" labelKey="Bekleidung">
+      <field datasource="typus.BekleidungTypus"/>
+    </facet>
+    <facet name="bildschema" labelKey="Bildschema">
+      <field datasource="typus.Bildschema"/>
+    </facet>
+    <facet name="haltung" labelKey="Haltung">
+      <field datasource="typus.HaltungTypus"/>
+    </facet>
+    <facet name="roemgriech" labelKey="Gattung">
+      <field datasource="typus.RoemGriech"/>
+    </facet>
+  </facets>
 </category>

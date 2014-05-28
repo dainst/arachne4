@@ -1,115 +1,105 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<category name="sarkophag"
-    xmlns="http://arachne.uni-koeln.de/schemas/category"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-	<display>
-		<title>
-			<section>
-				<field datasource="sarkophag.KurzbeschreibungSarkophag" />
-			</section>
-		</title>
-		<subtitle>
-			<section separator=", ">
-				<context type="ort" separator=", ">
-					<field datasource=".Stadt" />
-					<field datasource=".Land" />
-					<field datasource=".Aufbewahrungsort" />
-					<field datasource=".Zusatz" /> <!-- AdditionalInfosJSON -->
-					<field datasource=".InvNr" /> <!-- AdditionalInfosJSON -->
-				</context>
-			</section>
-		</subtitle>
-		<datasections>
-			<context type="Sarcophagusimages">
-				<field datasource=".thisIsJustADummyFieldToTriggerTheContextualizer" />
-			</context>
-			<section labelKey="SarcophagusImages">
-				<field datasource="Sarcophagusimages.images" />
-			</section>
-			<section labelKey="Informationen zum Sarkophag">
-				<include type="ort" />
-				<section labelKey="Herkunft">
-					<section separator=", ">
-						<field datasource="sarkophag.Fundstaat" />
-						<field datasource="sarkophag.Fundort" />
-						<field datasource="sarkophag.Fundkontext" />
-					</section>
-					<context type="objekt" separator=", ">
-						<field datasource=".FunddatumObjekt" />
-						<field datasource=".Herkunft" />
-						<field datasource=".HerkFundKommentar" />
-					</context>
-					<context type="bauwerk">
-						<field datasource=".BauwerkKulturkreis" prefix="Kulturkreis: " />
-					</context>
-				</section>
-				<include type="datierung" />
-				<section labelKey="Thematik">
-					<section labelKey="Allgemein">
-						<field datasource="sarkophag.Thematik" />
-						<field datasource="sarkophag.ThematikFrei" />
-					</section>
-					<section labelKey="Deckel">
-						<field datasource="sarkophag.ThematikDeckel" prefix="Thematik: " />
-						<field datasource="sarkophag.ThematikDeckelVorderseite" prefix="Hauptthema: " />
-						<field datasource="sarkophag.ThematikDeckelNebenseiten" prefix="Nebenthema: " />
-					</section>
-					<section labelKey="Kasten">
-						<field datasource="sarkophag.ThematikKasten" prefix="Thematik: " />
-						<field datasource="sarkophag.ThematikKastenVorderseite" prefix="Hauptthema: " />
-						<field datasource="sarkophag.ThematikKastenNebenseiten" prefix="Nebenthema: " />
-					</section>
-				</section>
-				<section labelKey="Dekoration">
-					<field datasource="sarkophag.Dekoration" />
-				</section>
-				<section labelKey="Material">
-					<field datasource="sarkophag.Material" />
-				</section>
-        		<include type="literatur" />
-			</section>
-		</datasections>
-	</display>
-	<facets>
-    	<facet name="kategorie" labelKey="Kategorie">
-    		<field datasource="Dataset.TableName" />
-    	</facet>
-    	<facet name="ort" labelKey="Lokalisierung"> <!-- entspricht: gleicher Aufbewahrungsort -->
-			<context type="ort" separator=", ">
-				<field datasource=".Land"/>
-				<field datasource=".Stadt"/>
-				<field datasource=".Aufbewahrungsort" />
-			</context>
-    	</facet>
-    	<include type="facet_literatur" />
-    	<facet name="thematik" labelKey="Thematik">
-    		<field datasource="sarkophag.Thematik" />
-    	</facet>
-    	<facet name="thematikFrei" labelKey="Thematik">
-    		<field datasource="sarkophag.ThematikFrei" />
-    	</facet>
-    	<facet name="thematikDeckel" labelKey="Thematik">
-    		<field datasource="sarkophag.ThematikDeckel" />
-    	</facet>
-    	<facet name="thematikDeckelVorderseite" labelKey="Thematik">
-    		<field datasource="sarkophag.ThematikDeckelVorderseite" />
-    	</facet>
-    	<facet name="thematikDeckelNebenseiten" labelKey="Thematik">
-    		<field datasource="sarkophag.ThematikDeckelNebenseiten" />
-    	</facet>
-    	<facet name="thematikKasten" labelKey="Thematik">
-    		<field datasource="sarkophag.ThematikKasten" />
-    	</facet>
-    	<facet name="thematikKastenVorderseite" labelKey="Thematik">
-    		<field datasource="sarkophag.ThematikKastenVorderseite" />
-    	</facet>
-    	<facet name="thematikKastenNebenseiten" labelKey="Thematik">
-    		<field datasource="sarkophag.ThematikKastenNebenseiten" />
-    	</facet>
-    	<facet name="dekoration" labelKey="Dekoration">
-    		<field datasource="sarkophag.Dekoration" />
-    	</facet>
-	</facets>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="sarkophag" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section>
+        <field datasource="sarkophag.KurzbeschreibungSarkophag"/>
+      </section>
+    </title>
+    <subtitle>
+      <section separator=", ">
+        <context type="ort" separator=", ">
+          <field datasource=".Stadt"/>
+          <field datasource=".Land"/>
+          <field datasource=".Aufbewahrungsort"/>
+          <field datasource=".Zusatz"/>
+          <!-- AdditionalInfosJSON -->
+          <field datasource=".InvNr"/>
+          <!-- AdditionalInfosJSON -->
+        </context>
+      </section>
+    </subtitle>
+    <datasections>
+      <context type="Sarcophagusimages">
+        <field datasource=".thisIsJustADummyFieldToTriggerTheContextualizer"/>
+      </context>
+      <section labelKey="SarcophagusImages">
+        <field datasource="Sarcophagusimages.images"/>
+      </section>
+      <section labelKey="Informationen zum Sarkophag">
+        <include type="ort"/>
+        <section labelKey="Herkunft">
+          <section separator=", ">
+            <field datasource="sarkophag.Fundstaat"/>
+            <field datasource="sarkophag.Fundort"/>
+            <field datasource="sarkophag.Fundkontext"/>
+          </section>
+          <context type="objekt" separator=", ">
+            <field datasource=".FunddatumObjekt"/>
+            <field datasource=".Herkunft"/>
+            <field datasource=".HerkFundKommentar"/>
+          </context>
+          <context type="bauwerk">
+            <field datasource=".BauwerkKulturkreis" prefix="Kulturkreis: "/>
+          </context>
+        </section>
+        <include type="datierung"/>
+        <section labelKey="Thematik">
+          <section labelKey="Allgemein">
+            <field datasource="sarkophag.Thematik"/>
+            <field datasource="sarkophag.ThematikFrei"/>
+          </section>
+          <section labelKey="Deckel">
+            <field datasource="sarkophag.ThematikDeckel" prefix="Thematik: "/>
+            <field datasource="sarkophag.ThematikDeckelVorderseite" prefix="Hauptthema: "/>
+            <field datasource="sarkophag.ThematikDeckelNebenseiten" prefix="Nebenthema: "/>
+          </section>
+          <section labelKey="Kasten">
+            <field datasource="sarkophag.ThematikKasten" prefix="Thematik: "/>
+            <field datasource="sarkophag.ThematikKastenVorderseite" prefix="Hauptthema: "/>
+            <field datasource="sarkophag.ThematikKastenNebenseiten" prefix="Nebenthema: "/>
+          </section>
+        </section>
+        <section labelKey="Dekoration">
+          <field datasource="sarkophag.Dekoration"/>
+        </section>
+        <section labelKey="Material">
+          <field datasource="sarkophag.Material"/>
+        </section>
+        <include type="literatur"/>
+      </section>
+    </datasections>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <include type="facet_ort"/>
+    <include type="facet_literatur"/>
+    <facet name="thematik" labelKey="Thematik">
+      <field datasource="sarkophag.Thematik"/>
+    </facet>
+    <facet name="thematikFrei" labelKey="Thematik">
+      <field datasource="sarkophag.ThematikFrei"/>
+    </facet>
+    <facet name="thematikDeckel" labelKey="Thematik">
+      <field datasource="sarkophag.ThematikDeckel"/>
+    </facet>
+    <facet name="thematikDeckelVorderseite" labelKey="Thematik">
+      <field datasource="sarkophag.ThematikDeckelVorderseite"/>
+    </facet>
+    <facet name="thematikDeckelNebenseiten" labelKey="Thematik">
+      <field datasource="sarkophag.ThematikDeckelNebenseiten"/>
+    </facet>
+    <facet name="thematikKasten" labelKey="Thematik">
+      <field datasource="sarkophag.ThematikKasten"/>
+    </facet>
+    <facet name="thematikKastenVorderseite" labelKey="Thematik">
+      <field datasource="sarkophag.ThematikKastenVorderseite"/>
+    </facet>
+    <facet name="thematikKastenNebenseiten" labelKey="Thematik">
+      <field datasource="sarkophag.ThematikKastenNebenseiten"/>
+    </facet>
+    <facet name="dekoration" labelKey="Dekoration">
+      <field datasource="sarkophag.Dekoration"/>
+    </facet>
+  </facets>
 </category>

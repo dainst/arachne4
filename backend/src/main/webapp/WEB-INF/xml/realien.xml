@@ -1,292 +1,252 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- not sure how to really handle this, so it is far from complete -->
-<category name="realien" xmlns="http://arachne.uni-koeln.de/schemas/category"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-	<explicitContextualizers>pathobjektort, pathobjektdatierung, pathrealienliteratur</explicitContextualizers>
-	<display>
-		<title>
-			<section>
-				<field datasource="objekt.KurzbeschreibungObjekt"/>
-			</section>
-		</title>
-		<subtitle>
-			<section>
-				<field datasource="realien.KurzbeschreibungRealien"/>
-			</section>
-			<section separator=", ">
-				<section separator=" / ">
-					<field datasource="ort.Stadt"/>
-					<field datasource="ort.Ort_antik"/>
-				</section>
-				<section>
-					<field datasource="ort.Aufbewahrungsort"/>
-				</section>
-			</section>
-		</subtitle>
-		<datasections>
-			<section labelKey="Informationen">
-			    <include type="ort" />
-			    <include type="datierung" />
-			    <section labelKey="Anzahl">
-					<field datasource="realien.AnzahlGegenstaendeRealien" />
-				</section>
-				<section labelKey="Bildkontext und Größe">
-				    <field datasource="relief.KurzbeschreibungRelief" prefix="Kurzbeschreibung Reliefszene: "/>
-				    <field datasource="realien.Realienart" prefix="Motivart: "/>
-					<field datasource="realien.Lokalisierung" prefix="Lokalisierung: "/>
-					<field datasource="realien.RealienHoehe" prefix="Höhe: "/>
-					<field datasource="realien.RealienBreite" prefix="Breite: "/>
-					<field datasource="realien.RealienTiefe" prefix="Tiefe: "/>
-					<field datasource="realien.RealienDurchmesser" prefix="Durchmesser: "/>
-					<field datasource="realien.ursprGroeszeRealien" prefix="ursprüngliche Größe: "/>
-				</section>
-				<section labelKey="Erhaltung und Überarbeitung">
-					<section separator=", ">
-						<field datasource="realien.ErhaltungRealien" prefix="Erhaltungszustand: "/>
-						<field datasource="realien.ErhaltungszustandRealien"/>
-					</section>
-					<section>
-						<field datasource="realien.FarbresteRealien" prefix="farbreste: " />
-						<field datasource="realien.BearbeitungenRealien" prefix="Bearbeitungen: "/>
-					</section>
-					<section>
-						<field datasource="realien.BearbeitungenModernRealien" prefix="modern: "/>
-						<field datasource="realien.BearbeitungenAntikRealien" prefix="antik: " />
-					</section>
-				</section>
-				<section labelKey="Figur">
-					<section>
-						<field datasource="realien.Name" prefix="Name: " />
-						<field datasource="realien.WesenRealien" prefix="Wesen: "/>
-						<field datasource="realien.BemerkFigur" prefix="Bemerkung: " />
-					</section>
-					<section separator=", ">
-						<field datasource="realien.BenennungAllgRealien" prefix="Benennung: "/>
-						<field datasource="realien.BenennungSpez"/>
-					</section>
-						
-					<section>
-						<field datasource="realien.GeschlechtRealien"/>
-					</section>
-					<section>
-						<field datasource="realien.LebensalterRealien" prefix="Lebensalter: "/>
-					</section>
-				</section>
-				<section labelKey="Haltung">
-					<field datasource="realien.HaltungRealien" prefix="Haltung: "/>
-					<field datasource="realien.Richtung"/>
-					<field datasource="realien.KopfwendungRealien" prefix="Kopfwendung: "/>
-					<field datasource="realien.TaetigkeitAllg" prefix="Tätigkeit: "/>
-					<field datasource="realien.TaetigkeitSpez"/>
-				</section>
-				<section labelKey="Bekleidung">
-					<section>
-						<field datasource="realien.bekleidetRealien"/>
-					</section>
-					<section separator=", ">
-						<field datasource="realien.KleidungAllg" prefix="Kleidung: "/>
-						<field datasource="realien.KleidungSpez"/>
-					</section>
-					<section separator=", ">
-						<field datasource="realien.GuertungAllg" prefix="Gürtung: "/>
-						<field datasource="realien.GuertungSpez"/>
-					</section>
-					<section separator=", ">
-						<field datasource="realien.SchuhwerkAllg" prefix="Schuhwerk: "/>
-						<field datasource="realien.SchuhwerkSpez"/>
-					</section>
-				</section>
-
-				<section labelKey="Haartracht" separator=", ">
-					<section>
-						<field datasource="realien.HaartrachtAllg" prefix="Haartracht: "/>
-						<field datasource="realien.HaartrachtSpez"/>
-					</section>
-					<section separator=", ">
-						<field datasource="realien.KopfbedeckungAllg" prefix="Kopfbedeckung: "/>
-						<field datasource="realien.KopfbedeckungSpez"/>
-					</section>
-				</section>
-				<section labelKey="Attribute" separator=", ">
-					<field datasource="realien.AttributAllg"/>
-					<field datasource="realien.AttributSpez"/>
-				</section>
-				<section labelKey="Bewaffnung" separator=", ">
-					<field datasource="realien.BewaffnungAllg"/>
-					<field datasource="realien.BewaffnungSpez"/>
-				</section>
-				<section labelKey="Schmuck" separator=", ">
-					<field datasource="realien.SchmuckAllg"/>
-					<field datasource="realien.SchmuckSpez"/>
-				</section>
-				<section labelKey="Tiere">
-					<field datasource="realien.TiereVierbeiner" prefix="Vierbeiner: "/>
-					<field datasource="realien.TiereVoegel" prefix="Vögel: "/>
-					<field datasource="realien.TiereFische" prefix="Wasserlebewesen: "/>
-					<field datasource="realien.TiereMischwesen" prefix="Mischwesen: "/>
-					<field datasource="realien.TiereSonstige" prefix="Sonstige: "/>
-					<field datasource="realien.TiereFuntkion" prefix="Funktion: "/>
-					<field datasource="realien.TiereAttribut" prefix="Attriubte: "/>
-					<field datasource="realien.TiereFunktion" prefix="Funktion: "/>
-					<field datasource="realien.BemerkTiere" prefix="Bemerkung: "/>
-				</section>
-				<section labelKey="Pflanzen">
-					<field datasource="realien.Pflanzen"/>
-					<field datasource="realien.BemerkPflanzen" prefix="Bemerkung: "/>
-				</section>
-				<section labelKey="Militaria">
-					<section labelKey="Kriegskleidung">
-						<section>
-							<field datasource="realien.Kriegskleidung"/>
-							<field datasource="realien.Kriegsguertung" prefix="Gürtung: "/>
-							<field datasource="realien.Kriegsschuhwerk" prefix="Schuhwerk: "/>
-							<field datasource="realien.Panzerung" prefix="Panzer: "/>
-							<field datasource="realien.BemerkMilitaerkleidung" prefix="Bemerkung: "/>
-						</section>
-						<section labelKey="Rangzeichen" separator="; ">
-							<field datasource="realien.Rangzeichen"/>
-							<field datasource="realien.Auszeichnung"/>
-						</section>
-						<section>
-							<field datasource="realien.Feldzeichen" prefix="Feldzeichen: "/>
-							<field datasource="realien.BemerkMilitaerzeichen" prefix="Bemerkung: "/>
-							
-						</section>	
-					</section>
-					<section labelKey="Waffen">
-						<field datasource="realien.Nahkampfwaffen" prefix="Nahkampfwaffen: "/>
-						<field datasource="realien.NahkampfwaffenDetails" prefix="Details: "/>
-						<field datasource="realien.Fernwaffen" prefix="Fernwaffen: "/>
-						<field datasource="realien.Stangenwaffen" prefix="Stangenwaffen: "/>
-						<field datasource="realien.BemerkAngriffswaffen" prefix="Bemerkung: "/>
-					</section>
-					<section labelKey="Kriegsgerät">
-						<field datasource="realien.Artillerie" prefix="Artillerie: "/>
-						<field datasource="realien.Belagerungsgeraet" prefix="Belagerungsgerät: "/>
-						<field datasource="realien.BemerkKriegsgeraet" prefix="Bemerkung: "/>
-					</section>
-					<section labelKey="Schutzwaffen">
-						<field datasource="realien.Helm" prefix="Helm: "/>
-						<field datasource="realien.Schild" prefix="Schild: "/>
-						<field datasource="realien.BemerkSchutzwaffen" prefix="Bemerkung: "/>
-					</section>
-				</section>
-				<section labelKey="Gegenstände">
-					<field datasource="realien.GefaeszeEssTrink" prefix="Gefäße: "/>
-					<field datasource="realien.GefaeszeKult" prefix="Kultgefäße: "/>
-					<field datasource="realien.GefaeszeVorrat" prefix="Vorratsgefäße: "/>
-					<field datasource="realien.GefaeszeSalbe" prefix="Salbengefäße: "/>
-					<field datasource="realien.GefaeszeSalben" prefix="Salbengefäße: "/>
-					<field datasource="realien.GefaeszeGieszen" prefix="Gießgefäße: "/>
-					<field datasource="realien.GefaeszeSonstige" prefix="Sonstige: "/>
-					<field datasource="realien.BemerkGefaesse" prefix="Bemerkung: "/>
-					<field datasource="realien.GeraeteHaushalt" prefix="Haushaltsgeräte: "/>
-					<field datasource="realien.GeraeteKosmetik" prefix="Kosmetika: "/>
-					<field datasource="realien.GeraeteWerkzeuge" prefix="Werkzeuge:"/>
-					<field datasource="realien.GeraeteSonstige" prefix="Sonstige: "/>
-					<field datasource="realien.BemerkGeraet" prefix="Bemerkung: "/>
-					<field datasource="realien.Musikinstrumente" prefix="Musikinstrumente: "/>
-					<field datasource="realien.BemerkMusikinstrumente" prefix="Bemerkung: " />
-				</section>
-				<section labelKey="Mobiliar">
-					<field datasource="realien.MobiliarAufbewahrung" prefix="Mobiliar: "/>
-					<field datasource="realien.MobiliarSitze" prefix="Sitzmöbel: "/>
-					<field datasource="realien.MobiliarTisch" prefix="Tisch: "/>
-					<field datasource="realien.MobiliarTextiles" prefix="Textiles: "/>
-					<field datasource="realien.MobiliarSonstiges" prefix="Sonstiges: "/>
-					<field datasource="realien.BemerkMobiliar" prefix="Bemerkung: "/>
-				</section>
-				<section labelKey="Architektur">
-					<field datasource="realien.MonumentHaus" prefix="Haus: "/>
-					<field datasource="realien.MonumentTempel" prefix="Tempel: "/>
-					<field datasource="realien.MonumentKunstwerk" prefix="Kunstwerk: "/>
-					<field datasource="realien.MonumentSonstiges" prefix="Sonstiges: "/>
-					<field datasource="realien.BemerkMonumente" prefix="Bemerkung: "/>
-				</section>
-				<section labelKey="Dekoration">
-					<field datasource="realien.DekorationRealien"/>
-					<field datasource="realien.BemerkDekoration" prefix="Bemerkung: "/>
-				</section>
-				<section labelKey="Inschrift">
-					<field datasource="realien.InschriftSpracheRealien" prefix="Sprache"/>
-					<field datasource="realien.InschriftRealien"/>
-					<field datasource="realien.InschriftCorpusRealien"/>
-				</section>
-
-				<!-- unfortunately realien seem not to be connected to a context so this does not work
-        		<section labelKey="Aufbewahrung">
-        			<context type="ort" separator=", ">
-        				<field datasource=".Stadt"  />
-        				<field datasource=".Land" />
-        				<field datasource=".Countrycode" />
-        				<field datasource=".Aufbewahrungsort" />
-        			</context>
-        		</section>
-        		<section labelKey="Datierung">
-	            	<context type="datierung" separator=" ">
-	            		<field datasource=".AnfEpoche" postfix="," />
-	            		<field datasource=".AnfDatZeitraum" />
-	            		<field datasource=".AnfDatJh" postfix=". Jh."/>
-	            		<field datasource=".AnfDatvn" />
-	            	</context>
-	            	<context type="datierung">
-	            		<field datasource=".DatVorschlagAutor" prefix="- nach: " postfix=" -"/>
-	            	</context>
-	            </section>
-        		<context type="literatur" labelKey="Literatur" separator=" ">
-	            	<field datasource=".tempLiteratur" />
-	            	<field datasource=".DAIRichtlinien" />
-	            	<field datasource=".Seite" />
-	            </context>
-	            -->
-	            <include type="literatur" />
-	            <include type="uri" />
-			</section>
-		</datasections>
-	</display>
-	<facets>
-		<facet name="kategorie" labelKey="Kategorie">
-			<field datasource="Dataset.TableName"/>
-		</facet>
-		<facet name="ort" labelKey="Lokalisierung">
-			<context type="ort" separator=", ">
-				<field datasource=".Stadt"/>
-				<field datasource=".Land"/>
-			</context>
-		</facet>
-		<facet name="datierungepoche" labelKey="Epoche">
-			<context type="datierung">
-				<field datasource=".AnfEpoche"/>
-			</context>
-		</facet>
-		<facet name="datierungepoche" labelKey="Epoche">
-			<context type="datierung">
-				<field datasource=".EndEpoche"/>
-			</context>
-		</facet>
-		<include type="facet_literatur" />
-		<facet name="realienart" labelKey="Motivart">
-			<field datasource="realien.Realienart"/>
-		</facet>
-		<facet name="attributallg" labelKey="Attribute allgemein">
-			<field datasource="realien.AttributAllg"/>
-		</facet>
-		<facet name="bearbeitungen" labelKey="Bearbeitungen">
-			<field datasource="realien.BearbeitungenRealien"/>
-		</facet>
-		<facet name="bennenungallg" labelKey="Allgemeine Bennenung">
-			<field datasource="realien.BenennungAllgRealien"/>
-		</facet>
-		<facet name="bewaffnung" labelKey="Bewaffnung">
-			<field datasource="realien.BewaffnungAllg"/>
-		</facet>
-		<facet name="dekoration" labelKey="Dekoration Bildträger">
-			<field datasource="realien.DekorationRealien"/>
-		</facet>
-		<facet name="wesen" labelKey="Wesen">
-			<field datasource="realien.WesenRealien"/>
-		</facet>
-	</facets>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="realien" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <explicitContextualizers>pathobjektort, pathobjektdatierung, pathrealienliteratur</explicitContextualizers>
+  <display>
+    <title>
+      <section>
+        <field datasource="objekt.KurzbeschreibungObjekt"/>
+      </section>
+    </title>
+    <subtitle>
+      <section>
+        <field datasource="realien.KurzbeschreibungRealien"/>
+      </section>
+      <section separator=", ">
+        <section separator=" / ">
+          <field datasource="ort.Stadt"/>
+          <field datasource="ort.Ort_antik"/>
+        </section>
+        <section>
+          <field datasource="ort.Aufbewahrungsort"/>
+        </section>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen">
+        <include type="ort"/>
+        <include type="datierung"/>
+        <section labelKey="Anzahl">
+          <field datasource="realien.AnzahlGegenstaendeRealien"/>
+        </section>
+        <section labelKey="Bildkontext und Größe">
+          <field datasource="relief.KurzbeschreibungRelief" prefix="Kurzbeschreibung Reliefszene: "/>
+          <field datasource="realien.Realienart" prefix="Motivart: "/>
+          <field datasource="realien.Lokalisierung" prefix="Lokalisierung: "/>
+          <field datasource="realien.RealienHoehe" prefix="Höhe: "/>
+          <field datasource="realien.RealienBreite" prefix="Breite: "/>
+          <field datasource="realien.RealienTiefe" prefix="Tiefe: "/>
+          <field datasource="realien.RealienDurchmesser" prefix="Durchmesser: "/>
+          <field datasource="realien.ursprGroeszeRealien" prefix="ursprüngliche Größe: "/>
+        </section>
+        <section labelKey="Erhaltung und Überarbeitung">
+          <section separator=", ">
+            <field datasource="realien.ErhaltungRealien" prefix="Erhaltungszustand: "/>
+            <field datasource="realien.ErhaltungszustandRealien"/>
+          </section>
+          <section>
+            <field datasource="realien.FarbresteRealien" prefix="farbreste: "/>
+            <field datasource="realien.BearbeitungenRealien" prefix="Bearbeitungen: "/>
+          </section>
+          <section>
+            <field datasource="realien.BearbeitungenModernRealien" prefix="modern: "/>
+            <field datasource="realien.BearbeitungenAntikRealien" prefix="antik: "/>
+          </section>
+        </section>
+        <section labelKey="Figur">
+          <section>
+            <field datasource="realien.Name" prefix="Name: "/>
+            <field datasource="realien.WesenRealien" prefix="Wesen: "/>
+            <field datasource="realien.BemerkFigur" prefix="Bemerkung: "/>
+          </section>
+          <section separator=", ">
+            <field datasource="realien.BenennungAllgRealien" prefix="Benennung: "/>
+            <field datasource="realien.BenennungSpez"/>
+          </section>
+          <section>
+            <field datasource="realien.GeschlechtRealien"/>
+          </section>
+          <section>
+            <field datasource="realien.LebensalterRealien" prefix="Lebensalter: "/>
+          </section>
+        </section>
+        <section labelKey="Haltung">
+          <field datasource="realien.HaltungRealien" prefix="Haltung: "/>
+          <field datasource="realien.Richtung"/>
+          <field datasource="realien.KopfwendungRealien" prefix="Kopfwendung: "/>
+          <field datasource="realien.TaetigkeitAllg" prefix="Tätigkeit: "/>
+          <field datasource="realien.TaetigkeitSpez"/>
+        </section>
+        <section labelKey="Bekleidung">
+          <section>
+            <field datasource="realien.bekleidetRealien"/>
+          </section>
+          <section separator=", ">
+            <field datasource="realien.KleidungAllg" prefix="Kleidung: "/>
+            <field datasource="realien.KleidungSpez"/>
+          </section>
+          <section separator=", ">
+            <field datasource="realien.GuertungAllg" prefix="Gürtung: "/>
+            <field datasource="realien.GuertungSpez"/>
+          </section>
+          <section separator=", ">
+            <field datasource="realien.SchuhwerkAllg" prefix="Schuhwerk: "/>
+            <field datasource="realien.SchuhwerkSpez"/>
+          </section>
+        </section>
+        <section labelKey="Haartracht" separator=", ">
+          <section>
+            <field datasource="realien.HaartrachtAllg" prefix="Haartracht: "/>
+            <field datasource="realien.HaartrachtSpez"/>
+          </section>
+          <section separator=", ">
+            <field datasource="realien.KopfbedeckungAllg" prefix="Kopfbedeckung: "/>
+            <field datasource="realien.KopfbedeckungSpez"/>
+          </section>
+        </section>
+        <section labelKey="Attribute" separator=", ">
+          <field datasource="realien.AttributAllg"/>
+          <field datasource="realien.AttributSpez"/>
+        </section>
+        <section labelKey="Bewaffnung" separator=", ">
+          <field datasource="realien.BewaffnungAllg"/>
+          <field datasource="realien.BewaffnungSpez"/>
+        </section>
+        <section labelKey="Schmuck" separator=", ">
+          <field datasource="realien.SchmuckAllg"/>
+          <field datasource="realien.SchmuckSpez"/>
+        </section>
+        <section labelKey="Tiere">
+          <field datasource="realien.TiereVierbeiner" prefix="Vierbeiner: "/>
+          <field datasource="realien.TiereVoegel" prefix="Vögel: "/>
+          <field datasource="realien.TiereFische" prefix="Wasserlebewesen: "/>
+          <field datasource="realien.TiereMischwesen" prefix="Mischwesen: "/>
+          <field datasource="realien.TiereSonstige" prefix="Sonstige: "/>
+          <field datasource="realien.TiereFuntkion" prefix="Funktion: "/>
+          <field datasource="realien.TiereAttribut" prefix="Attriubte: "/>
+          <field datasource="realien.TiereFunktion" prefix="Funktion: "/>
+          <field datasource="realien.BemerkTiere" prefix="Bemerkung: "/>
+        </section>
+        <section labelKey="Pflanzen">
+          <field datasource="realien.Pflanzen"/>
+          <field datasource="realien.BemerkPflanzen" prefix="Bemerkung: "/>
+        </section>
+        <section labelKey="Militaria">
+          <section labelKey="Kriegskleidung">
+            <section>
+              <field datasource="realien.Kriegskleidung"/>
+              <field datasource="realien.Kriegsguertung" prefix="Gürtung: "/>
+              <field datasource="realien.Kriegsschuhwerk" prefix="Schuhwerk: "/>
+              <field datasource="realien.Panzerung" prefix="Panzer: "/>
+              <field datasource="realien.BemerkMilitaerkleidung" prefix="Bemerkung: "/>
+            </section>
+            <section labelKey="Rangzeichen" separator="; ">
+              <field datasource="realien.Rangzeichen"/>
+              <field datasource="realien.Auszeichnung"/>
+            </section>
+            <section>
+              <field datasource="realien.Feldzeichen" prefix="Feldzeichen: "/>
+              <field datasource="realien.BemerkMilitaerzeichen" prefix="Bemerkung: "/>
+            </section>
+          </section>
+          <section labelKey="Waffen">
+            <field datasource="realien.Nahkampfwaffen" prefix="Nahkampfwaffen: "/>
+            <field datasource="realien.NahkampfwaffenDetails" prefix="Details: "/>
+            <field datasource="realien.Fernwaffen" prefix="Fernwaffen: "/>
+            <field datasource="realien.Stangenwaffen" prefix="Stangenwaffen: "/>
+            <field datasource="realien.BemerkAngriffswaffen" prefix="Bemerkung: "/>
+          </section>
+          <section labelKey="Kriegsgerät">
+            <field datasource="realien.Artillerie" prefix="Artillerie: "/>
+            <field datasource="realien.Belagerungsgeraet" prefix="Belagerungsgerät: "/>
+            <field datasource="realien.BemerkKriegsgeraet" prefix="Bemerkung: "/>
+          </section>
+          <section labelKey="Schutzwaffen">
+            <field datasource="realien.Helm" prefix="Helm: "/>
+            <field datasource="realien.Schild" prefix="Schild: "/>
+            <field datasource="realien.BemerkSchutzwaffen" prefix="Bemerkung: "/>
+          </section>
+        </section>
+        <section labelKey="Gegenstände">
+          <field datasource="realien.GefaeszeEssTrink" prefix="Gefäße: "/>
+          <field datasource="realien.GefaeszeKult" prefix="Kultgefäße: "/>
+          <field datasource="realien.GefaeszeVorrat" prefix="Vorratsgefäße: "/>
+          <field datasource="realien.GefaeszeSalbe" prefix="Salbengefäße: "/>
+          <field datasource="realien.GefaeszeSalben" prefix="Salbengefäße: "/>
+          <field datasource="realien.GefaeszeGieszen" prefix="Gießgefäße: "/>
+          <field datasource="realien.GefaeszeSonstige" prefix="Sonstige: "/>
+          <field datasource="realien.BemerkGefaesse" prefix="Bemerkung: "/>
+          <field datasource="realien.GeraeteHaushalt" prefix="Haushaltsgeräte: "/>
+          <field datasource="realien.GeraeteKosmetik" prefix="Kosmetika: "/>
+          <field datasource="realien.GeraeteWerkzeuge" prefix="Werkzeuge:"/>
+          <field datasource="realien.GeraeteSonstige" prefix="Sonstige: "/>
+          <field datasource="realien.BemerkGeraet" prefix="Bemerkung: "/>
+          <field datasource="realien.Musikinstrumente" prefix="Musikinstrumente: "/>
+          <field datasource="realien.BemerkMusikinstrumente" prefix="Bemerkung: "/>
+        </section>
+        <section labelKey="Mobiliar">
+          <field datasource="realien.MobiliarAufbewahrung" prefix="Mobiliar: "/>
+          <field datasource="realien.MobiliarSitze" prefix="Sitzmöbel: "/>
+          <field datasource="realien.MobiliarTisch" prefix="Tisch: "/>
+          <field datasource="realien.MobiliarTextiles" prefix="Textiles: "/>
+          <field datasource="realien.MobiliarSonstiges" prefix="Sonstiges: "/>
+          <field datasource="realien.BemerkMobiliar" prefix="Bemerkung: "/>
+        </section>
+        <section labelKey="Architektur">
+          <field datasource="realien.MonumentHaus" prefix="Haus: "/>
+          <field datasource="realien.MonumentTempel" prefix="Tempel: "/>
+          <field datasource="realien.MonumentKunstwerk" prefix="Kunstwerk: "/>
+          <field datasource="realien.MonumentSonstiges" prefix="Sonstiges: "/>
+          <field datasource="realien.BemerkMonumente" prefix="Bemerkung: "/>
+        </section>
+        <section labelKey="Dekoration">
+          <field datasource="realien.DekorationRealien"/>
+          <field datasource="realien.BemerkDekoration" prefix="Bemerkung: "/>
+        </section>
+        <section labelKey="Inschrift">
+          <field datasource="realien.InschriftSpracheRealien" prefix="Sprache"/>
+          <field datasource="realien.InschriftRealien"/>
+          <field datasource="realien.InschriftCorpusRealien"/>
+        </section>
+        <include type="literatur"/>
+        <include type="uri"/>
+      </section>
+    </datasections>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <include type="facet_ort"/>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".AnfEpoche"/>
+      </context>
+    </facet>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".EndEpoche"/>
+      </context>
+    </facet>
+    <include type="facet_literatur"/>
+    <facet name="realienart" labelKey="Motivart">
+      <field datasource="realien.Realienart"/>
+    </facet>
+    <facet name="attributallg" labelKey="Attribute allgemein">
+      <field datasource="realien.AttributAllg"/>
+    </facet>
+    <facet name="bearbeitungen" labelKey="Bearbeitungen">
+      <field datasource="realien.BearbeitungenRealien"/>
+    </facet>
+    <facet name="bennenungallg" labelKey="Allgemeine Bennenung">
+      <field datasource="realien.BenennungAllgRealien"/>
+    </facet>
+    <facet name="bewaffnung" labelKey="Bewaffnung">
+      <field datasource="realien.BewaffnungAllg"/>
+    </facet>
+    <facet name="dekoration" labelKey="Dekoration Bildträger">
+      <field datasource="realien.DekorationRealien"/>
+    </facet>
+    <facet name="wesen" labelKey="Wesen">
+      <field datasource="realien.WesenRealien"/>
+    </facet>
+  </facets>
 </category>

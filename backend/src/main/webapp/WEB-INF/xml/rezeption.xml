@@ -1,138 +1,131 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!-- just very basic to have at least some definitions -->
-<category name="relief"
-	xmlns="http://arachne.uni-koeln.de/schemas/category"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-        	<section>
-        		<field datasource="rezeption.KurzbeschreibungRezeption" />
-            </section>
-        </title>
-        <subtitle>
-            <section separator=" ">
-            	<field datasource="objekt.KurzbeschreibungObjekt" prefix="Rezipiertes Objekt: " />
-            </section>
-        </subtitle>
-        <datasections>
-        	<section labelKey="Informationen zur Rezeption">
-        		<section labelKey="Rezeptionsquelle">
-        			<field datasource="rezeption.Rezeptionsquelle" />
-        		</section>
-        		<section labelKey="Lokalisierung" separator=", ">
-        			<field datasource="rezeption.StandortRezeption" />
-        			<field datasource="rezeption.StandstaatRezeption" />
-        			<field datasource="rezeption.AufbewahrungsortRezeption" />
-        			<field datasource="rezeption.InvNrRezeption" />
-        		</section>
-        		<section labelKey="Fundort/Herkunft" >
-        			<section separator="; ">
-        				<field datasource="rezeption.FundstaatRezeption" />
-        				<field datasource="rezeption.FundortRezeption" />
-        				<field datasource="rezeption.FundkontextRezeption"/>
-        				<field datasource="rezeption.FunddatumRezeption" />
-        				<field datasource="rezeption.verschollen" />
-        			</section>
-        			<section>
-        			<field datasource="rezeption.HerkunftSlgRezeption" />
-        			<field datasource="rezeption.HerkunftKommentar" />       
-        			<field datasource="rezeption.AntikerAufstellungsortRezeption" prefix="Antiker Aufstellungsort: " /> 			
-        			</section>
-        		</section>
-        		<include type="datierung" />
-        		<section labelKey="Maße">
-        			<field datasource="rezeption.HoeheGesamtRezeption" prefix="Höhe: " postfix=" cm" />
-        			<field datasource="rezeption.BreiteGesamtRezeption" prefix="Breite: " postfix=" cm" />
-        			<field datasource="rezeption.DurchmesserGesamtRezeption" prefix="Durchmesser: " postfix=" cm" />
-        			<field datasource="rezeption.TiefeGesamtRezeption" prefix="Tiefe: " postfix=" cm" />
-        			<field datasource="rezeption.spiegelverkehrt" prefix="Spiegelverkehrt: "/>
-        		</section>
-        		<section labelKey="Material" separator=", ">
-        			<field datasource="rezeption.MaterialRezeption" />
-        			<field datasource="rezeption.MaterialbeschreibungRezeption" />		
-        		</section>
-        		<section labelKey="Erhaltung" >
-        			<section separator="; ">
-        				<field datasource="rezeption.ErhaltungRezeption" />
-        				<field datasource="rezeption.ErhaltungszustandRezeption" />
-        				<field datasource="rezeption.FarbresteRezeption" />
-        			</section>
-        			<section separator="; ">
-        				<field datasource="rezeption.BearbeitungenRezeption"  prefix="Bearbeitungen: "/>
-        				<field datasource="rezeption.BearbeitungenModernRezeption" />        				
-        			</section>
-        		</section>
-        		<section labelKey="Gattung">
-        			<field datasource="rezeption.GattungAllgemeinRezeption" />
-        			<field datasource="rezeption.KulturkreisRezeption" prefix="Kulturepoche: " />        			
-        			<field datasource="rezeption.FunktionRezeption" prefix="Funktion: "/>
-        			<field datasource="rezeption.FunktionaleVerwendungRezeption" /> 
-        			<field datasource="rezeption.AuftraggeberRezeption" prefix="Auftraggeber: "/>
-        			<field datasource="rezeption.AdressatRezeption" prefix="Adressat: "/>
-        		</section>
-        		<section labelKey="Beschreibung Clarac">
-        			<field datasource="rezeption.KopfparameterClarac" prefix="Kopfnotation: "/>
-        			<field datasource="rezeption.TypuszuschreibungClarac" prefix="Typuszuschreibung: "/>
-        			<field datasource="rezeption.BeschreibungClarac" />
-        			<field datasource="rezeption.BemerkungenClarac" />	
-        		</section>
-        		<section labelKey="Stichwerk">
-        			<field datasource="rezeption.ergImStich" prefix="Ergänzungen im Stichwerk festgehalten: "/>
-        			<field datasource="rezeption.DarstellungErgaenzt" prefix="Stichwerk ist ergänzte Darstellung: " />
-        			<field datasource="rezeption.Stichbesonderheiten" prefix="Besonderheiten: "/>
-        		</section>
-        		<section labelKey="Inschriften">
-        			<field datasource="rezeption.InschriftCorpusRezeption" prefix="Corpus: "/>
-        			<field datasource="rezeption.InschriftSpracheRezeption" prefix="Sprache: "/>
-        			<field datasource="rezeption.InschriftRezeption" />
-        			<field datasource="rezeption.InschriftKommentarRezeption" />
-        		</section>
-        		<section labelKey="Kommentar">
-        			<field datasource="rezeption.wissKommentarRezeption" />
-        			<field datasource="rezeption.KatalogtextRezeption" prefix="Katalogtext: "/>
-        		</section>
-        		<include type="literatur" />
-        		<include type="uri" />
-        	</section>
-        </datasections>
-    </display>
-    <facets>
-    	<facet name="kategorie" labelKey="Kategorie">
-    		<field datasource="Dataset.TableName" />
-    	</facet>
-    	<facet name="datierungepoche" labelKey="Epoche">
-            <context type="datierung">
-                <field datasource=".AnfEpoche"/>
-            </context>
-        </facet>
-        <facet name="datierungepoche" labelKey="Epoche">
-            <context type="datierung">
-                <field datasource=".EndEpoche"/>
-            </context>
-        </facet>
-        <include type="facet_literatur" />
-    	<facet name="gattungallgemein" labelKey="Gattung allgemein">
-    		<field datasource="rezeption.GattungAllgemeinRezeption" />
-    	</facet>
-    	<facet name="erhaltung" labelKey="Erhaltung">
-    		<field datasource="rezeption.ErhaltungRezeption" />
-    	</facet>
-    	<facet name="kulturkreis" labelKey="Kulturepoche">
-    		<field datasource="rezeption.KulturkreisRezeption" />
-    	</facet>
-    	<facet name="material" labelKey="Material">
-    		<field datasource="rezeption.MaterialRezeption" />
-    	</facet>
-    	<facet name="bearbeitungen" labelKey="Bearbeitungen">
-    		<field datasource="rezeption.BearbeitungenRezeption" />
-    	</facet>
-    	<facet name="fundstaat" labelKey="Fundstaat">
-    		<field datasource="rezeption.FundstaatRezeption" />
-    	</facet>
-    	<facet name="funktion" labelKey="Anlass">
-    		<field datasource="rezeption.FunktionRezeption" />
-    	</facet>
-    </facets>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="relief" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section>
+        <field datasource="rezeption.KurzbeschreibungRezeption"/>
+      </section>
+    </title>
+    <subtitle>
+      <section separator=" ">
+        <field datasource="objekt.KurzbeschreibungObjekt" prefix="Rezipiertes Objekt: "/>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zur Rezeption">
+        <section labelKey="Rezeptionsquelle">
+          <field datasource="rezeption.Rezeptionsquelle"/>
+        </section>
+        <section labelKey="Lokalisierung" separator=", ">
+          <field datasource="rezeption.StandortRezeption"/>
+          <field datasource="rezeption.StandstaatRezeption"/>
+          <field datasource="rezeption.AufbewahrungsortRezeption"/>
+          <field datasource="rezeption.InvNrRezeption"/>
+        </section>
+        <section labelKey="Fundort/Herkunft">
+          <section separator="; ">
+            <field datasource="rezeption.FundstaatRezeption"/>
+            <field datasource="rezeption.FundortRezeption"/>
+            <field datasource="rezeption.FundkontextRezeption"/>
+            <field datasource="rezeption.FunddatumRezeption"/>
+            <field datasource="rezeption.verschollen"/>
+          </section>
+          <section>
+            <field datasource="rezeption.HerkunftSlgRezeption"/>
+            <field datasource="rezeption.HerkunftKommentar"/>
+            <field datasource="rezeption.AntikerAufstellungsortRezeption" prefix="Antiker Aufstellungsort: "/>
+          </section>
+        </section>
+        <include type="datierung"/>
+        <section labelKey="Maße">
+          <field datasource="rezeption.HoeheGesamtRezeption" prefix="Höhe: " postfix=" cm"/>
+          <field datasource="rezeption.BreiteGesamtRezeption" prefix="Breite: " postfix=" cm"/>
+          <field datasource="rezeption.DurchmesserGesamtRezeption" prefix="Durchmesser: " postfix=" cm"/>
+          <field datasource="rezeption.TiefeGesamtRezeption" prefix="Tiefe: " postfix=" cm"/>
+          <field datasource="rezeption.spiegelverkehrt" prefix="Spiegelverkehrt: "/>
+        </section>
+        <section labelKey="Material" separator=", ">
+          <field datasource="rezeption.MaterialRezeption"/>
+          <field datasource="rezeption.MaterialbeschreibungRezeption"/>
+        </section>
+        <section labelKey="Erhaltung">
+          <section separator="; ">
+            <field datasource="rezeption.ErhaltungRezeption"/>
+            <field datasource="rezeption.ErhaltungszustandRezeption"/>
+            <field datasource="rezeption.FarbresteRezeption"/>
+          </section>
+          <section separator="; ">
+            <field datasource="rezeption.BearbeitungenRezeption" prefix="Bearbeitungen: "/>
+            <field datasource="rezeption.BearbeitungenModernRezeption"/>
+          </section>
+        </section>
+        <section labelKey="Gattung">
+          <field datasource="rezeption.GattungAllgemeinRezeption"/>
+          <field datasource="rezeption.KulturkreisRezeption" prefix="Kulturepoche: "/>
+          <field datasource="rezeption.FunktionRezeption" prefix="Funktion: "/>
+          <field datasource="rezeption.FunktionaleVerwendungRezeption"/>
+          <field datasource="rezeption.AuftraggeberRezeption" prefix="Auftraggeber: "/>
+          <field datasource="rezeption.AdressatRezeption" prefix="Adressat: "/>
+        </section>
+        <section labelKey="Beschreibung Clarac">
+          <field datasource="rezeption.KopfparameterClarac" prefix="Kopfnotation: "/>
+          <field datasource="rezeption.TypuszuschreibungClarac" prefix="Typuszuschreibung: "/>
+          <field datasource="rezeption.BeschreibungClarac"/>
+          <field datasource="rezeption.BemerkungenClarac"/>
+        </section>
+        <section labelKey="Stichwerk">
+          <field datasource="rezeption.ergImStich" prefix="Ergänzungen im Stichwerk festgehalten: "/>
+          <field datasource="rezeption.DarstellungErgaenzt" prefix="Stichwerk ist ergänzte Darstellung: "/>
+          <field datasource="rezeption.Stichbesonderheiten" prefix="Besonderheiten: "/>
+        </section>
+        <section labelKey="Inschriften">
+          <field datasource="rezeption.InschriftCorpusRezeption" prefix="Corpus: "/>
+          <field datasource="rezeption.InschriftSpracheRezeption" prefix="Sprache: "/>
+          <field datasource="rezeption.InschriftRezeption"/>
+          <field datasource="rezeption.InschriftKommentarRezeption"/>
+        </section>
+        <section labelKey="Kommentar">
+          <field datasource="rezeption.wissKommentarRezeption"/>
+          <field datasource="rezeption.KatalogtextRezeption" prefix="Katalogtext: "/>
+        </section>
+        <include type="literatur"/>
+        <include type="uri"/>
+      </section>
+    </datasections>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".AnfEpoche"/>
+      </context>
+    </facet>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".EndEpoche"/>
+      </context>
+    </facet>
+    <include type="facet_literatur"/>
+    <facet name="gattungallgemein" labelKey="Gattung allgemein">
+      <field datasource="rezeption.GattungAllgemeinRezeption"/>
+    </facet>
+    <facet name="erhaltung" labelKey="Erhaltung">
+      <field datasource="rezeption.ErhaltungRezeption"/>
+    </facet>
+    <facet name="kulturkreis" labelKey="Kulturepoche">
+      <field datasource="rezeption.KulturkreisRezeption"/>
+    </facet>
+    <facet name="material" labelKey="Material">
+      <field datasource="rezeption.MaterialRezeption"/>
+    </facet>
+    <facet name="bearbeitungen" labelKey="Bearbeitungen">
+      <field datasource="rezeption.BearbeitungenRezeption"/>
+    </facet>
+    <facet name="fundstaat" labelKey="Fundstaat">
+      <field datasource="rezeption.FundstaatRezeption"/>
+    </facet>
+    <facet name="funktion" labelKey="Anlass">
+      <field datasource="rezeption.FunktionRezeption"/>
+    </facet>
+  </facets>
 </category>

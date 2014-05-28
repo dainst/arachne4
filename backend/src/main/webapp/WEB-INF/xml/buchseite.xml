@@ -1,60 +1,50 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- just very basic to have at least some definitions -->
-<category name="buchseite"
-	xmlns="http://arachne.uni-koeln.de/schemas/category"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-        	<section>
-        		<field datasource="buchseite.KurzbeschreibungBuchseite" />
-            </section>
-        </title>
-        <subtitle>
-            <section>
-            	<field datasource="buchseite.seite" prefix="Seite: " />
-            </section>
-	    </subtitle>
-		<datasections>
-			<section labelKey="Informationen zur Buchseite">
-				<include type="datierung" />
-				<section labelKey="">
-					<field datasource="buchseite.image" prefix="Dateiname: " />
-					<field datasource="buchseite.Inventarnummern" prefix="Negativnummern: " />
-					<field datasource="buchseite.InventarbucheiteInfos" prefix="Information zur Inventarbuchseite: " />
-					<field datasource="buchseite.BuchseiteInhalt" prefix="Inhaltsbeschreibung der Buchseite: " />
-					<field datasource="buchseite.Originalpaginierung" prefix="Originialpaginierung: " />
-					<field datasource="buchseite.BuchseiteDokumenttyp" prefix="Typ der Buchseite: " />
-					<field datasource="buchseite.BuchseiteAnmerkungenKossack"
-						prefix="Anmerkungen Kossack: " />
-					<field datasource="buchseite.BuchseitePermalinkExtern" prefix="Permalink: " />
-				</section>
-	
-				<section labelKey="">
-	
-					<field datasource="buchseite.Inventarnummern" prefix="Negativnummer: " />
-	
-				</section>
-			</section>
-			<context type="Buchseiteocrtext">
-				<field datasource=".dummyField" />
-			</context>
-		</datasections>
-    </display>
-    <facets>
-    	<facet name="kategorie" labelKey="Kategorie">
-    		<field datasource="Dataset.TableName" />
-    	</facet>
-    	<facet name="datierungepoche" labelKey="Epoche">
-            <context type="datierung">
-                <field datasource=".AnfEpoche"/>
-            </context>
-        </facet>
-        <facet name="datierungepoche" labelKey="Epoche">
-            <context type="datierung">
-                <field datasource=".EndEpoche"/>
-            </context>
-        </facet>
-    </facets>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="buchseite" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section>
+        <field datasource="buchseite.KurzbeschreibungBuchseite"/>
+      </section>
+    </title>
+    <subtitle>
+      <section>
+        <field datasource="buchseite.seite" prefix="Seite: "/>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zur Buchseite">
+        <include type="datierung"/>
+        <section labelKey="">
+          <field datasource="buchseite.image" prefix="Dateiname: "/>
+          <field datasource="buchseite.Inventarnummern" prefix="Negativnummern: "/>
+          <field datasource="buchseite.InventarbucheiteInfos" prefix="Information zur Inventarbuchseite: "/>
+          <field datasource="buchseite.BuchseiteInhalt" prefix="Inhaltsbeschreibung der Buchseite: "/>
+          <field datasource="buchseite.Originalpaginierung" prefix="Originialpaginierung: "/>
+          <field datasource="buchseite.BuchseiteDokumenttyp" prefix="Typ der Buchseite: "/>
+          <field datasource="buchseite.BuchseiteAnmerkungenKossack" prefix="Anmerkungen Kossack: "/>
+          <field datasource="buchseite.BuchseitePermalinkExtern" prefix="Permalink: "/>
+        </section>
+        <section labelKey="">
+          <field datasource="buchseite.Inventarnummern" prefix="Negativnummer: "/>
+        </section>
+      </section>
+      <context type="Buchseiteocrtext">
+        <field datasource=".dummyField"/>
+      </context>
+    </datasections>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".AnfEpoche"/>
+      </context>
+    </facet>
+    <facet name="datierungepoche" labelKey="Epoche">
+      <context type="datierung">
+        <field datasource=".EndEpoche"/>
+      </context>
+    </facet>
+  </facets>
 </category>

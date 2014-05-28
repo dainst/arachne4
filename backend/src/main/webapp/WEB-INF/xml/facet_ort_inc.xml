@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
-  <context type="uri" labelKey="URIs in anderen Datenbanken" separator=" ">
-    <field datasource=".Beziehung" postfix=":"/>
-    <linkField labelKey="" datasource=".URI"/>
-  </context>
+  <facet name="ort" labelKey="Lokalisierung">
+    <context type="ort" separator=", ">
+      <field datasource=".Stadt"/>
+      <field datasource=".Land"/>
+    </context>
+  </facet>
 </includeSection>

@@ -1,94 +1,89 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<category name="quantities" xmlns="http://arachne.uni-koeln.de/schemas/category"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-    <display>
-        <title>
-            <section separator=" / ">
-                <field datasource="morphology.Level6">
-                    <ifEmpty>
-                        <field datasource="morphology.Level5">
-                            <ifEmpty>
-                                <field datasource="morphology.Level4">
-                                    <ifEmpty>
-                                        <field datasource="morphology.Level3">
-                                            <ifEmpty>
-                                                <field datasource="morphology.Level2">
-                                                    <ifEmpty>
-                                                        <field datasource="morphology.Level1"/>
-                                                    </ifEmpty>
-                                                </field>
-                                            </ifEmpty>
-                                        </field>
-                                    </ifEmpty>
-                                </field>
-                            </ifEmpty>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="quantities" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section separator=" / ">
+        <field datasource="morphology.Level6">
+          <ifEmpty>
+            <field datasource="morphology.Level5">
+              <ifEmpty>
+                <field datasource="morphology.Level4">
+                  <ifEmpty>
+                    <field datasource="morphology.Level3">
+                      <ifEmpty>
+                        <field datasource="morphology.Level2">
+                          <ifEmpty>
+                            <field datasource="morphology.Level1"/>
+                          </ifEmpty>
                         </field>
-                    </ifEmpty>
+                      </ifEmpty>
+                    </field>
+                  </ifEmpty>
                 </field>
-                <field datasource="befund.Grabungsort"/>
-                <field datasource="fabric.CommonName"/>
-            </section>
-        </title>
-        <subtitle>
-            <section labelKey="Unique Identifier">
-                <field datasource="Dataset.Id" />
-            </section>
-        </subtitle>
-
-        <datasections>
-            <section labelKey="Informationen zur Quantity">
-                <section labelKey="Anzahl Randfragmente">
-                    <field datasource="quantities.RimCount"/>
-                </section>
-                <section labelKey="Gewicht der Randfragmente">
-                    <field datasource="quantities.RimWeight" postfix="g"/>
-                </section>
-                <section labelKey="Prozentualer Randanteil">
-                    <field datasource="quantities.RimPercentage" postfix="%"/>
-                </section>
-                <section labelKey="Anzahl Henkel">
-                    <field datasource="quantities.HandleCount"/>
-                </section>
-                <section labelKey="Gewicht Henkel">
-                    <field datasource="quantities.HandleWeight" postfix="g"/>
-                </section>
-                <section labelKey="Anzahl Bodenfragmente">
-                    <field datasource="quantities.BaseCount"/>
-                </section>
-                <section labelKey="Gewicht Bodenfragmente">
-                    <field datasource="quantities.BaseWeight" postfix="g"/>
-                </section>
-                <section labelKey="Anzahl Wandfragmente">
-                    <field datasource="quantities.BodySherdCount"/>
-                </section>
-                <section labelKey="Gewicht Wandfragmente">
-                    <field datasource="quantities.BodySherdWeight" postfix="g"/>
-                </section>
-                <section labelKey="Anzahl weiterer Fragmente">
-                    <field datasource="quantities.OthersCount"/>
-                </section>
-                <section labelKey="Gewicht weiterer Fragmente">
-                    <field datasource="quantities.OthersWeight" postfix="g"/>
-                </section>
-                <section labelKey="Anzahl Joins">
-                    <field datasource="quantities.Joins"/>
-                </section>
-                <section labelKey="MNI">
-                    <field datasource="quantities.MNI"/>
-                </section>
-                <section labelKey="Gewichtetes MNI">
-                    <field datasource="quantities.MNIWeighted"/>
-                </section>
-                <section labelKey="MXI">
-                    <field datasource="quantities.MXI"/>
-                </section>
-            </section>
-        </datasections>
-    </display>
-    <facets>
-        <facet name="kategorie" labelKey="Kategorie">
-            <field datasource="Dataset.TableName"/>
-        </facet>
-    </facets>
+              </ifEmpty>
+            </field>
+          </ifEmpty>
+        </field>
+        <field datasource="befund.Grabungsort"/>
+        <field datasource="fabric.CommonName"/>
+      </section>
+    </title>
+    <subtitle>
+      <section labelKey="Unique Identifier">
+        <field datasource="Dataset.Id"/>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zur Quantity">
+        <section labelKey="Anzahl Randfragmente">
+          <field datasource="quantities.RimCount"/>
+        </section>
+        <section labelKey="Gewicht der Randfragmente">
+          <field datasource="quantities.RimWeight" postfix="g"/>
+        </section>
+        <section labelKey="Prozentualer Randanteil">
+          <field datasource="quantities.RimPercentage" postfix="%"/>
+        </section>
+        <section labelKey="Anzahl Henkel">
+          <field datasource="quantities.HandleCount"/>
+        </section>
+        <section labelKey="Gewicht Henkel">
+          <field datasource="quantities.HandleWeight" postfix="g"/>
+        </section>
+        <section labelKey="Anzahl Bodenfragmente">
+          <field datasource="quantities.BaseCount"/>
+        </section>
+        <section labelKey="Gewicht Bodenfragmente">
+          <field datasource="quantities.BaseWeight" postfix="g"/>
+        </section>
+        <section labelKey="Anzahl Wandfragmente">
+          <field datasource="quantities.BodySherdCount"/>
+        </section>
+        <section labelKey="Gewicht Wandfragmente">
+          <field datasource="quantities.BodySherdWeight" postfix="g"/>
+        </section>
+        <section labelKey="Anzahl weiterer Fragmente">
+          <field datasource="quantities.OthersCount"/>
+        </section>
+        <section labelKey="Gewicht weiterer Fragmente">
+          <field datasource="quantities.OthersWeight" postfix="g"/>
+        </section>
+        <section labelKey="Anzahl Joins">
+          <field datasource="quantities.Joins"/>
+        </section>
+        <section labelKey="MNI">
+          <field datasource="quantities.MNI"/>
+        </section>
+        <section labelKey="Gewichtetes MNI">
+          <field datasource="quantities.MNIWeighted"/>
+        </section>
+        <section labelKey="MXI">
+          <field datasource="quantities.MXI"/>
+        </section>
+      </section>
+    </datasections>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+  </facets>
 </category>
