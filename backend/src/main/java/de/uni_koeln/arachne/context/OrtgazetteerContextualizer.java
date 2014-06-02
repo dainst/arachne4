@@ -49,7 +49,7 @@ public class OrtgazetteerContextualizer extends AbstractContextualizer implement
 			
 			try {
 				final long queryTime = System.currentTimeMillis();
-				final String doc = restTemplate.getForObject("http://gazetteer.dainst.org/doc/{gazId}.json", String.class, gazId);
+				final String doc = restTemplate.getForObject("https://gazetteer.dainst.org/doc/{gazId}.json", String.class, gazId);
 				LOGGER.debug("Query time: " + (System.currentTimeMillis() - queryTime) + " ms");
 				final JSONObject jsonObject = new JSONObject(doc);
 
