@@ -55,6 +55,7 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	protected List<String> facet_fabricmainabstractmorphology;
 	protected List<String> facet_fabriccommonname;
 	protected List<String> facet_fabricname;
+	protected List<String> facet_stratum;
 	
 	// gruppen
 	protected List<String> facet_artdergruppe;
@@ -94,6 +95,7 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	protected List<String> facet_subkategorie;
 	
 	// morphology
+	protected List<String> facet_areal;
 	protected List<String> facet_morphologymainabstractfabric;
 	protected List<String> facet_morphologymainabstractbefund;
 	
@@ -831,6 +833,18 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	}
 	public void setFacet_literatur(List<String> facet_literatur) {
 		this.facet_literatur = facet_literatur;
+	}
+	public List<String> getFacet_stratum() {
+		return facet_stratum;
+	}
+	public void setFacet_stratum(List<String> facet_stratum) {
+		this.facet_stratum = facet_stratum;
+	}
+	public List<String> getFacet_areal() {
+		return facet_areal;
+	}
+	public void setFacet_areal(List<String> facet_areal) {
+		this.facet_areal = facet_areal;
 	}
 	
 }
