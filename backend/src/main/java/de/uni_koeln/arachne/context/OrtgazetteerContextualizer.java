@@ -45,14 +45,14 @@ public class OrtgazetteerContextualizer extends AbstractContextualizer implement
 		if (link == null) {
 			link = new ExternalLink();
 			link.setEntity(parent);
-
+			final Map<String,String> fields = new HashMap<String,String>();
+			
 			try {
 				final long queryTime = System.currentTimeMillis();
 				final String doc = restTemplate.getForObject("http://gazetteer.dainst.org/doc/{gazId}.json", String.class, gazId);
 				LOGGER.debug("Query time: " + (System.currentTimeMillis() - queryTime) + " ms");
 				final JSONObject jsonObject = new JSONObject(doc);
 
-				final Map<String,String> fields = new HashMap<String,String>();
 				final JSONObject prefName = jsonObject.optJSONObject("prefName");
 
 				String title = null;
@@ -80,6 +80,15 @@ public class OrtgazetteerContextualizer extends AbstractContextualizer implement
 				LOGGER.error("Error while parsing JSON response for request: http://gazetteer.dainst.org/doc/" + gazId + ".json", e);
 			} catch (HttpClientErrorException e) {
 				LOGGER.error("Unable to get gazetteer data for id: " + gazId, e);
+				final StringBuilder failedId = new StringBuilder("Unknown GazetteerID (");
+				failedId.append(gazId);
+				failedId.append(") [");
+				failedId.append(e.getStatusText());
+				failedId.append("]");
+				fields.put("ortgazetteer.prefName", failedId.toString());
+				link.setFields(fields);
+				cachedContexts.put(gazId, link);
+				result.add(link);
 			}
 		} else {
 			result.add(link);
