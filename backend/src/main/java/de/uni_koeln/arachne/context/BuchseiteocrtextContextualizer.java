@@ -40,7 +40,11 @@ public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 	 */
 	public List<AbstractLink> retrieve(final Dataset parent) {
 		if (rightsService.isDataimporter()) {
-			final Map<String, String> bookData = genericSQLService.getConnectedEntities("buch", parent.getArachneId().getArachneEntityID()).get(0);
+			final List<Map<String, String>> bookDataList = genericSQLService.getConnectedEntities("buch", parent.getArachneId().getArachneEntityID());
+			Map<String, String> bookData = null;
+			if (bookDataList != null && !bookDataList.isEmpty()) {
+				bookData = bookDataList.get(0);
+			}
 			if ((bookData != null) && ("1".equals(bookData.get("buch.hasOcrText")))) {
 				final String directoryName = bookData.get("buch.Verzeichnis");
 				if (directoryName != null && !(directoryName.isEmpty())) {
