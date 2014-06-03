@@ -25,6 +25,7 @@
 		<boneCP-version>0.7.1.RELEASE</boneCP-version>
 		<elasticsearch-version>1.0.1</elasticsearch-version>
 		<snappy-version>1.0.5</snappy-version>
+		<httpcomponents-version>4.3.3</httpcomponents-version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -282,6 +283,13 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
 		</dependency>
+		
+		<!-- Apache HTTP Components (needed to support SSL with RestTemplate) -->
+		<dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpcomponents-version}</version>
+        </dependency>
 		
 		<!-- Servlet 3.0 specs (needed to make MockHttpService in Spring 4 run in 2.5 environments) -->
         <dependency>
