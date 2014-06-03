@@ -238,17 +238,17 @@ public class ContextService {
 				LOGGER.debug("FAILURE - using SemanticConnectionsContextualizer instead");
 				result = new SemanticConnectionsContextualizer(contextType, genericSQLService);
 			} catch (SecurityException e) {
-				LOGGER.debug("Getting constructor failed for class " + className + ": ", e);
+				LOGGER.error("Getting constructor failed for class " + className + ": ", e);
 			} catch (NoSuchMethodException e) {
-				LOGGER.debug("Getting constructor failed for class " + className + ": ", e);
+				LOGGER.error("Getting constructor failed for class " + className + ": ", e);
 			} catch (IllegalArgumentException e) {
-				LOGGER.debug("Creating instance of class " + className + "failed. Cause: ", e);
+				LOGGER.error("Creating instance of class " + className + "failed. Cause: ", e);
 			} catch (InstantiationException e) {
-				LOGGER.debug("Creating instance of class " + className + "failed. Cause: ", e);
+				LOGGER.error("Creating instance of class " + className + "failed. Cause: ", e);
 			} catch (IllegalAccessException e) {
-				LOGGER.debug("Creating instance of class " + className + "failed. Cause: ", e);
+				LOGGER.error("Creating instance of class " + className + "failed. Cause: ", e);
 			} catch (InvocationTargetException e) {
-				LOGGER.debug("Creating instance of class " + className + "failed. Cause: ", e);
+				LOGGER.error("Creating instance of class " + className + "failed. Cause: ", e.getCause());
 			}
 		}
 		return result;		
