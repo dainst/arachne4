@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,7 +24,7 @@ public class OrtgazetteerContextualizer extends AbstractContextualizer implement
 
 	private transient Map<String, ExternalLink> cachedContexts = new LinkedHashMap<String, ExternalLink>();
 	
-	private transient final RestTemplate restTemplate = new RestTemplate();
+	private transient final RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
 	
 	@Override
 	public String getContextType() {
