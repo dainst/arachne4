@@ -63,6 +63,9 @@ public class ContextService {
 	@Autowired
 	private transient IUserRightsService rightsService;
 	
+	@Autowired
+	private transient Transl8Service ts;
+	
 	private transient Map<String, IContextualizer> contextualizers = new HashMap<String, IContextualizer>();
 	
 	/**
@@ -91,13 +94,82 @@ public class ContextService {
 		}
 	}
 	
-	
 	/**
 	 * This methods adds all contexts to the dataset that are found in the XML description.
 	 * @param parent The dataset to add the contexts to.
 	 * @param imageService Instance of ImageService used for image-retrieval
 	 */
 	public void addContextImages(final Dataset parent, final ImageService imageService) {
+		// get Context-Images from Context-XML
+		final List<ContextImageDescriptor> contextImages = xmlConfigUtil.getContextImagesNames(parent.getArachneId().getTableName());
+
+		if (contextImages == null) {
+			LOGGER.debug("No Context-Image-Declarations found.");
+			return;
+		}
+
+		final List<Image> resultContextImages = new ArrayList<Image>();
+
+		// check if the source-record contains any images
+		boolean containsImages = false;
+		if (parent.getImages() != null && !parent.getImages().isEmpty()) {
+			containsImages = true;
+		}
+
+		for (final ContextImageDescriptor cur : contextImages) {
+
+			// check contextImage-Preconditions from config
+			if (cur.getContextImageUsage().equals("ifempty") && containsImages) {
+				continue;
+			}
+
+			final String contextName = cur.getContextName();
+			
+			ContextPath contextPath = new ContextPath();
+			contextPath.addTypeStepRestriction(contextName);
+			contextPath.addTypeStepRestriction("marbilder");
+			final List<Map<String, String>> contextContents = this.genericSQLService.getPathConnectedEntities(
+					parent.getArachneId().getArachneEntityID(),contextPath);
+			
+			// books get their thumbnail image from a connected page - so check for this
+			long cover = -1;
+			if ("buch".equals(parent.getArachneId().getTableName())) {
+				final String buchCover = parent.getField("buch.Cover");
+				if (buchCover != null) {
+					cover = Long.parseLong(buchCover);
+				}
+			}
+			
+			for (final Map<String, String> currentContext : contextContents) {
+				final Image image = new Image();
+				final long imageId = Long.parseLong(currentContext.get("semanticconnection.EntityID"));
+				image.setImageId(imageId);
+				image.setSubtitle(currentContext.get("marbilder.DateinameMarbilder"));
+				image.setSourceContext(ts.transl8(contextName));
+				final long sourceRecordId = Long.parseLong(currentContext.get("semanticconnection.ForeignKeyTarget"));
+				// if cover and the context datasets internal key match this context image is the books thumbnail
+				if (cover > 0 && sourceRecordId == cover) {
+					parent.setThumbnailId(imageId);
+				}
+				image.setSourceRecordId(sourceRecordId);
+				resultContextImages.add(image);
+			}
+		}
+		LOGGER.debug("Adding " + resultContextImages.size() + " additional images from dataset-contexts...");
+		parent.addImages(resultContextImages);
+
+		// if no thumbnail has been set yet, use one from context
+		if (!resultContextImages.isEmpty() && parent.getThumbnailId() == null) {
+			parent.setThumbnailId(ImageUtils.findThumbnailId(resultContextImages));
+		}
+	}
+	
+	/**
+	 * This methods adds all contexts to the dataset that are found in the XML description. (OLD VERSION KEPT FOR TESTING)
+	 * @param parent The dataset to add the contexts to.
+	 * @param imageService Instance of ImageService used for image-retrieval
+	 */
+	public void addContextImages_old(final Dataset parent, final ImageService imageService) {
 		
 		// get Context-Images from Context-XML
 		final List<ContextImageDescriptor> contextImages = xmlConfigUtil.getContextImagesNames(parent.getArachneId().getTableName());
@@ -111,7 +183,7 @@ public class ContextService {
 		
 		// check if the source-record contains any images
 		boolean containsImages = false;
-		if(parent.getImages() != null && !parent.getImages().isEmpty()) {
+		if (parent.getImages() != null && !parent.getImages().isEmpty()) {
 			containsImages = true;
 		}
 		
