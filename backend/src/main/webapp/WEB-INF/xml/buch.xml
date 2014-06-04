@@ -140,9 +140,6 @@
         <include type="uri"/>
       </section>
     </datasections>
-    <contextImages>
-      <contextImage show="always">buchseite</contextImage>
-    </contextImages>
   </display>
   <facets>
     <include type="facet_kategorie"/>

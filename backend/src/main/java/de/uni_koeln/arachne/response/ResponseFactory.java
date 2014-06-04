@@ -117,8 +117,8 @@ public class ResponseFactory {
 		if (!StrUtils.isEmptyOrNullOrZero(city) && !StrUtils.isEmptyOrNullOrZero(city)) {
 			response.setPlace(city + ", " + country);
 		}
-		final String lat = dataset.getField("ortgazetteer.lat");
-		final String lon = dataset.getField("ortgazetteer.lon");
+		final String lat = dataset.getField("ort.Latitude");
+		final String lon = dataset.getField("ort.Longitude");
 		if (lat != null && lon != null) {
 			response.setLocation(lat + "," + lon);
 		}

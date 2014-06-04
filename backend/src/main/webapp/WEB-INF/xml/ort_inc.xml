@@ -6,11 +6,7 @@
     <field datasource=".Ort_antik" prefix="(" postfix=")"/>
     <field datasource=".Land"/>
     <field datasource=".Countrycode" prefix="(" postfix=")"/>
-    <field datasource="gazetteer.prefName" prefix=" ">
-      <ifEmpty>
-        <field datasource=".Aufbewahrungsort"/>
-      </ifEmpty>
-    </field>
+    <field datasource=".Aufbewahrungsort"/>
     <field datasource=".Zusatz"/>
     <!-- AdditionalInfosJSON -> Field from Semantic-Connection-Table -->
     <field datasource=".BerlinIdentNr" prefix="Berlin Ident.Nr. "/>
