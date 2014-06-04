@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uni_koeln.arachne.response.AdditionalContent;
 import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.util.StrUtils;
 
 public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 	
@@ -50,7 +51,7 @@ public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 				if (directoryName != null && !(directoryName.isEmpty())) {
 					final String ocrTextAsXML = retrieveTextAsXML(directoryName, parent.getArachneId().getInternalKey());
 					final String ocrText = getTextContentFromXMLString(ocrTextAsXML);
-					if (ocrText != null && !ocrText.isEmpty()) {
+					if (!StrUtils.isEmptyOrNull(ocrText)) {
 						final AdditionalContent additionalContent = new AdditionalContent();
 						additionalContent.setOcrText(ocrText);
 						parent.setAdditionalContent(additionalContent);	
@@ -108,22 +109,25 @@ public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 	}
 	
 	private String getTextContentFromXMLString(final String inputString) {
-		StringBuilder stringBuilder = new StringBuilder();
-		SAXBuilder xmlParser = xmlConfigUtil.getXMLParser();
-		ByteArrayInputStream bis = new ByteArrayInputStream(inputString.getBytes());
-		try {
-			Document doc = (Document) xmlParser.build(bis);
-			Iterator<Element> elems = doc.getDescendants(new ElementFilter());
-			while (elems.hasNext()) {
-				Element elem = (Element) elems.next();
-				stringBuilder.append(elem.getTextNormalize());
+		if (!StrUtils.isEmptyOrNull(inputString)) {
+			StringBuilder stringBuilder = new StringBuilder();
+			SAXBuilder xmlParser = xmlConfigUtil.getXMLParser();
+			ByteArrayInputStream bis = new ByteArrayInputStream(inputString.getBytes());
+			try {
+				Document doc = (Document) xmlParser.build(bis);
+				Iterator<Element> elems = doc.getDescendants(new ElementFilter());
+				while (elems.hasNext()) {
+					Element elem = (Element) elems.next();
+					stringBuilder.append(elem.getTextNormalize());
+				}
+			} catch (JDOMException e) {
+				LOGGER.error(e.getMessage());
+			} catch (IOException e) {
+				LOGGER.error(e.getMessage());
 			}
-		} catch (JDOMException e) {
-			LOGGER.error(e.getMessage());
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage());
+			return stringBuilder.toString();
 		}
-		return stringBuilder.toString();
+		return null;
 	}
 	
 	/**
