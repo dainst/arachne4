@@ -90,6 +90,8 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	protected List<String> facet_morphology_5thLevel;
 	protected List<String> facet_morphology_6thLevel;
 
+	// marbilder
+	private List<String> facet_bestandsname;
 	
 	// marbilder & objekt (subs)
 	protected List<String> facet_subkategorie;
@@ -845,6 +847,12 @@ public class FacettedArachneEntity extends BaseArachneEntity {
 	}
 	public void setFacet_areal(List<String> facet_areal) {
 		this.facet_areal = facet_areal;
+	}
+	public List<String> getFacet_bestandsname() {
+		return facet_bestandsname;
+	}
+	public void setFacet_bestandsname(List<String> facet_bestandsname) {
+		this.facet_bestandsname = facet_bestandsname;
 	}
 	
 }

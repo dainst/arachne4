@@ -66,6 +66,8 @@
           <field datasource="marbilderinventar.11_Objekt2" prefix="Beschreibung: "/>
           <field datasource="marbilderinventar.12_Objekt3" prefix="Iventar- bzw. Fundnummer: "/>
           <field datasource="marbilderinventar.13_Dateityp" prefix="Dateityp: "/>
+        </section>
+        <section labelKey="Zusätzliche Angaben">
           <field datasource="marbilderinventar.Land" prefix="Land: "/>
           <field datasource="marbilderinventar.Schlagworte" prefix="Schlagworte: "/>
           <field datasource="marbilderinventar.Institution" prefix="Institution: "/>
