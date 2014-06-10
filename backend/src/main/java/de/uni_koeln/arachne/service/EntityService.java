@@ -1,7 +1,5 @@
 package de.uni_koeln.arachne.service;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.response.Dataset;
-import de.uni_koeln.arachne.response.FormattedArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.util.EntityId;
 

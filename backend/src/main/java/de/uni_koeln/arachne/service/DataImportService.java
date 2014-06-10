@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Throwables;
 
 import de.uni_koeln.arachne.response.ResponseFactory;
@@ -85,8 +84,6 @@ public class DataImportService implements Runnable { // NOPMD
 	private transient final AtomicLong indexedDocuments;
 	private transient final AtomicLong count;
 	
-	private transient final ObjectMapper mapper;
-	
 	private transient boolean terminate = false;
 	
 	@Autowired
@@ -95,7 +92,6 @@ public class DataImportService implements Runnable { // NOPMD
 		running = new AtomicBoolean(false);
 		indexedDocuments = new AtomicLong(0);
 		count = new AtomicLong(0);
-		mapper = new ObjectMapper();
 		this.PROFILING = profiling;
 	}
 
