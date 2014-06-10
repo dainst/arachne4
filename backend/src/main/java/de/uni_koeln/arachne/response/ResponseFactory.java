@@ -17,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.util.EntityId;
@@ -111,7 +114,8 @@ public class ResponseFactory {
 		}
 		response.setLastModified(lastModified);
 		
-		// set geo information and add the geo facet
+		// set geo information 
+		
 		final String city = dataset.getField("ort.Stadt");
 		final String country = dataset.getField("ort.Land");
 		if (!StrUtils.isEmptyOrNullOrZero(city) && !StrUtils.isEmptyOrNullOrZero(city)) {
@@ -122,25 +126,7 @@ public class ResponseFactory {
 		if (lat != null && lon != null) {
 			response.setLocation(lat + "," + lon);
 		}
-		final String place = response.getPlace();
-		final String location = response.getLocation();
-		if (place != null && location != null) {
-			final List<String> geoFacetValue = new ArrayList<String>(1);
-			geoFacetValue.add(place + " [" + location + ']');
-			response.setFacet_geo(geoFacetValue);
-		}
-		
-		// set image facet
-		if (dataset.getThumbnailId() == null) {
-			final List<String> no = new ArrayList<String>(1); // NOPMD
-			no.add("nein");
-			response.setFacet_hasImage(no);
-		} else {
-			final List<String> yes = new ArrayList<String>(1);
-			yes.add("ja");
-			response.setFacet_hasImage(yes);
-		}
-		
+				
 		final Document document = xmlConfigUtil.getDocument(tableName);
 		if (document != null) {
 			setDynamicContent(dataset, document, response);
@@ -251,9 +237,11 @@ public class ResponseFactory {
 
 		// Set images
 		response.setImages(dataset.getImages());
-
+		
+		getFacettedEntityAsJson(dataset, document, response, namespace);
+				
 		// Set facets via reflection - not the best way but the least invasive
-		final Element facets = document.getRootElement().getChild("facets", namespace);
+		/*final Element facets = document.getRootElement().getChild("facets", namespace);
 		final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
 		for (final Facet facet: facetList ) {
 			try {
@@ -286,6 +274,104 @@ public class ResponseFactory {
 			} catch (IllegalAccessException e) {
 				LOGGER.error("Failed to set facets with: ", e);
 			}
+		}*/
+	}
+
+	/**
+	 * @param dataset
+	 * @param document
+	 * @param response
+	 * @param namespace
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 */
+	private void getFacettedEntityAsJson(final Dataset dataset,
+			final Document document, final FormattedArachneEntity response,
+			final Namespace namespace) throws SecurityException,
+			IllegalArgumentException {
+		final ObjectMapper objectMapper = new ObjectMapper();
+		StringBuilder jsonResponse;
+		try {
+			jsonResponse = new StringBuilder(objectMapper.writeValueAsString(response));
+			jsonResponse.replace(jsonResponse.length() - 1, jsonResponse.length(), ",");
+			System.out.println(jsonResponse);
+			// add the geo facet
+			final String place = response.getPlace();
+			final String location = response.getLocation();
+			if (place != null && location != null) {
+				final List<String> geoFacetValue = new ArrayList<String>(1);
+				geoFacetValue.add(place + " [" + location + ']');
+				response.setFacet_geo(geoFacetValue);
+				System.out.print("\"facet_geo\": [\"" + place + " [" + location + ']' + "\"],");
+			}
+
+			// set image facet
+			if (dataset.getThumbnailId() == null) {
+				final List<String> no = new ArrayList<String>(1); // NOPMD
+				no.add("nein");
+				response.setFacet_hasImage(no);
+				System.out.print("\"facet_image\": [\"nein\"],");
+			} else {
+				final List<String> yes = new ArrayList<String>(1);
+				yes.add("ja");
+				response.setFacet_hasImage(yes);
+				System.out.print("\"facet_image\": [\"ja\"],");
+			}
+			
+			// add all other facets
+			final Element facets = document.getRootElement().getChild("facets", namespace);
+			final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
+			for (final Facet facet: facetList ) {
+				try {
+					final Class<?> facettedArachneEntityClass = response.getClass().getSuperclass();
+					final String facetName = facet.getName();
+					final java.lang.reflect.Field facetField = facettedArachneEntityClass.getDeclaredField("facet_"+facetName);
+					List<String> facetValues = facet.getValues();
+					System.out.print("\"facet_" + facetName + "\": [");
+					// split multi value facets at ';' and look for facet translations
+					ListIterator<String> valueIterator = facetValues.listIterator();
+					while (valueIterator.hasNext()) {
+						final String value = valueIterator.next().trim(); 
+						if (value.contains(";")) {
+							valueIterator.remove();
+							final List<String> splitValues = new ArrayList<String>(Arrays.asList(value.split(";")));
+							ListIterator<String> splitIterator = splitValues.listIterator();
+							while (splitIterator.hasNext()) {
+								final String splitValue = splitIterator.next().trim();
+								valueIterator.add(ts.transl8Facet(facetName, splitValue));
+								if (splitIterator.hasNext()) {
+									System.out.print("\"" + ts.transl8Facet(facetName, splitValue) + "\",");
+								} else {
+									System.out.print("\"" + ts.transl8Facet(facetName, splitValue) + "\"");
+								}
+							}
+						} else {
+							valueIterator.set(ts.transl8Facet(facetName, value));
+							if (valueIterator.hasNext()) {
+								System.out.print("\"" + ts.transl8Facet(facetName, value) + "\",");
+							} else {
+								System.out.print("\"" + ts.transl8Facet(facetName, value) + "\"");
+							}
+						}
+					}
+					facetField.set(response, facetValues);
+					if (!(facetList.indexOf(facet) == facetList.size() - 1)) {
+						System.out.print("],");
+					} else {
+						System.out.print("]}");
+					}
+				} catch (NoSuchFieldException e) {
+					LOGGER.warn("Invalid facet definition 'facet_" + facet.getName() + "' in '" + response.getType() 
+							+ ".xml'. The facet field is not defined in " +
+							"FacettedArachneEntity.java. This facet will be ignored.");
+				} catch (IllegalAccessException e) {
+					LOGGER.error("Failed to set facets with: ", e);
+				}
+			}
+		} catch (JsonProcessingException e) {
+			LOGGER.error("Error converting dataset [" + response.getEntityId() + "] to JSON.", e);
+		} catch (StringIndexOutOfBoundsException e) {
+			LOGGER.error("Error converting dataset [" + response.getEntityId() + "] to JSON.", e);
 		}
 	}
 
