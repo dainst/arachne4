@@ -257,7 +257,6 @@ public class ResponseFactory {
 	private String getFacettedEntityAsJson(final Dataset dataset, final Document document
 			, final FormattedArachneEntity response, final Namespace namespace) {
 		
-		final ObjectMapper objectMapper = new ObjectMapper();
 		StringBuilder jsonResponse = null;
 		try {
 			jsonResponse = new StringBuilder(objectMapper.writeValueAsString(response));
@@ -267,7 +266,12 @@ public class ResponseFactory {
 			final String place = response.getPlace();
 			final String location = response.getLocation();
 			if (place != null && location != null) {
-				jsonResponse.append("\"facet_geo\": [\"" + place + " [" + location + ']' + "\"],");
+				jsonResponse.append("\"facet_geo\": [\"");
+				jsonResponse.append(place);
+				jsonResponse.append(" [");
+				jsonResponse.append(location);
+				jsonResponse.append(']');
+				jsonResponse.append("\"],");
 			}
 
 			// set image facet
@@ -283,7 +287,9 @@ public class ResponseFactory {
 			for (final Facet facet: facetList ) {
 				final String facetName = facet.getName();
 				List<String> facetValues = facet.getValues();
-				jsonResponse.append("\"facet_" + facetName + "\": [");
+				jsonResponse.append("\"facet_");
+				jsonResponse.append(facetName);
+				jsonResponse.append("\": [");
 				
 				// split multi value facets at ';' and look for facet translations
 				ListIterator<String> valueIterator = facetValues.listIterator();
@@ -296,16 +302,24 @@ public class ResponseFactory {
 						while (splitIterator.hasNext()) {
 							final String splitValue = splitIterator.next().trim();
 							if (splitIterator.hasNext()) {
-								jsonResponse.append("\"" + ts.transl8Facet(facetName, splitValue) + "\",");
+								jsonResponse.append("\"");
+								jsonResponse.append(ts.transl8Facet(facetName, splitValue));
+								jsonResponse.append("\",");
 							} else {
-								jsonResponse.append("\"" + ts.transl8Facet(facetName, splitValue) + "\"");
+								jsonResponse.append("\"");
+								jsonResponse.append(ts.transl8Facet(facetName, splitValue));
+								jsonResponse.append("\"");
 							}
 						}
 					} else {
 						if (valueIterator.hasNext()) {
-							jsonResponse.append("\"" + ts.transl8Facet(facetName, value) + "\",");
+							jsonResponse.append("\"");
+							jsonResponse.append(ts.transl8Facet(facetName, value));
+							jsonResponse.append("\",");
 						} else {
-							jsonResponse.append("\"" + ts.transl8Facet(facetName, value) + "\"");
+							jsonResponse.append("\"");
+							jsonResponse.append(ts.transl8Facet(facetName, value));
+							jsonResponse.append("\"");
 						}
 					}
 				}
