@@ -75,9 +75,9 @@ public class ArachneEntityController {
 	 * Requests for /entity/* return formatted data. This will be sent out either as JSON or as XML. The response format is set 
 	 * by Springs content negotiation mechanism.
 	 * @param entityId The unique entity id of the item to fetch.
-     * @return A response object containing the data (this is serialized to JSON or XML depending on content negotiation).
+     * @return A response object containing the data (this is serialized to JSON).
      */
-	@RequestMapping(value="/entity/{entityId}", method=RequestMethod.GET)
+	@RequestMapping(value="/entity/{entityId}", method=RequestMethod.GET, produces="application/json")
 	public @ResponseBody Object handleGetEntityIdRequest(
 			@PathVariable("entityId") final Long entityId,
 			@RequestParam(value = "live", required = false) final Boolean isLive,
@@ -97,9 +97,9 @@ public class ArachneEntityController {
 	 * by Springs content negotiation mechanism.
      * @param category The database table to fetch the item from.
      * @param categoryId The internal id of the item to fetch
-     * @return A response object containing the data (this is serialized to JSON or XML depending on content negotiation).
+     * @return A response object containing the data (this is serialized to JSON).
      */
-    @RequestMapping(value="/entity/{category}/{categoryId}", method=RequestMethod.GET)
+    @RequestMapping(value="/entity/{category}/{categoryId}", method=RequestMethod.GET, produces="application/json")
     public @ResponseBody Object handleGetCategoryIdRequest(
     		@PathVariable("category") final String category,
     		@PathVariable("categoryId") final Long categoryId,
