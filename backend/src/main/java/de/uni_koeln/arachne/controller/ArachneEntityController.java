@@ -77,7 +77,7 @@ public class ArachneEntityController {
 	 * @param entityId The unique entity id of the item to fetch.
      * @return A response object containing the data (this is serialized to JSON).
      */
-	@RequestMapping(value="/entity/{entityId}", method=RequestMethod.GET, produces="application/json")
+	@RequestMapping(value="/entity/{entityId}", method=RequestMethod.GET, produces="application/json;charset=UTF-8")
 	public @ResponseBody Object handleGetEntityIdRequest(
 			@PathVariable("entityId") final Long entityId,
 			@RequestParam(value = "live", required = false) final Boolean isLive,
@@ -127,7 +127,7 @@ public class ArachneEntityController {
      * @param response The <code>HttpServeletRsponse</code> object.
      * @return A response object derived from <code>BaseArachneEntity</code>.
      */
-    private BaseArachneEntity getEntityFromDB(final Long id, final String category //NOPMD
+    private String getEntityFromDB(final Long id, final String category //NOPMD
     		, final HttpServletResponse response) { 
     	
     	final Long startTime = System.currentTimeMillis();
@@ -147,14 +147,15 @@ public class ArachneEntityController {
     	LOGGER.debug("Request for entity: " + entityId.getArachneEntityID() + " - type: " + entityId.getTableName());
     	
     	if (entityId.isDeleted()) {
-    		return responseFactory.createResponseForDeletedEntity(entityId);
+    		return responseFactory.createResponseForDeletedEntityAsJson(entityId);
     	}
     	
-    	final FormattedArachneEntity result = entityService.getFormattedEntityById(entityId);
+    	final String result = entityService.getFormattedEntityByIdAsJson(entityId);
     	
     	if (result != null) {
     		LOGGER.debug("-----------------------------------");
     		LOGGER.debug("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
+    		
     		return result;
     	}
     	response.setStatus(404);

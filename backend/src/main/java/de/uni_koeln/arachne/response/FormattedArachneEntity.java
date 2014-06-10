@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  */
 @XmlRootElement(name="entity")
 @XmlSeeAlso({Section.class,Field.class,FieldList.class})
-public class FormattedArachneEntity extends FacettedArachneEntity {
+public class FormattedArachneEntity extends BaseArachneEntity {
 	
 	/**
 	 * The Title of the Dataset

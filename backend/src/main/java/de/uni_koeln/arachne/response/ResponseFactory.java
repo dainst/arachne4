@@ -49,6 +49,8 @@ public class ResponseFactory {
 	@Autowired
 	private transient Transl8Service ts;
 	
+	private transient ObjectMapper objectMapper = new ObjectMapper();
+	
 	// needed for testing
 	public void setXmlConfigUtil(final XmlConfigUtil xmlConfigUtil) {
 		this.xmlConfigUtil = xmlConfigUtil;
@@ -63,7 +65,7 @@ public class ResponseFactory {
 	 * @param dataset The dataset which encapsulates the SQL query results.
 	 * @return A <code>FormattedArachneEntity</code> instance which can be jsonized.
 	 */
-	public FormattedArachneEntity createFormattedArachneEntity(final Dataset dataset) {
+	public String createFormattedArachneEntityAsJson(final Dataset dataset) {
 		
 		final FormattedArachneEntity response = new FormattedArachneEntity();
 		
@@ -129,12 +131,10 @@ public class ResponseFactory {
 				
 		final Document document = xmlConfigUtil.getDocument(tableName);
 		if (document != null) {
-			setDynamicContent(dataset, document, response);
-			
 			//Set additional Content
 			response.setAdditionalContent(dataset.getAdditionalContent());
-									
-			return response;
+			
+			return getEntityAsJson(dataset, document, response);
 		}
 
 		LOGGER.error("No xml document for '" + tableName + "' found.");
@@ -144,10 +144,15 @@ public class ResponseFactory {
 	/**
 	 * Method to construct a response object for a deleted entity.
 	 * @param entityId The ID of the entity.
-	 * @return A custom response object for the deleted entity. 
+	 * @return The JSON for the deleted entity as <code>String</code>. 
 	 */
-	public BaseArachneEntity createResponseForDeletedEntity(final EntityId entityId) {
-		return new DeletedArachneEntity(entityId);
+	public String createResponseForDeletedEntityAsJson(final EntityId entityId) {
+		try {
+			return objectMapper.writeValueAsString(new DeletedArachneEntity(entityId));
+		} catch (JsonProcessingException e) {
+			LOGGER.error("Error serializing response for deleted entity [" + entityId + "]. Cause: ", e);
+		}
+		return null;
 	}
 
 	/**
@@ -220,7 +225,7 @@ public class ResponseFactory {
 	 * @param document The xml document describing the output format.
 	 * @param response The response object to add the content to.
 	 */
-	private void setDynamicContent(final Dataset dataset, final Document document, final FormattedArachneEntity response) {
+	private String getEntityAsJson(final Dataset dataset, final Document document, final FormattedArachneEntity response) {
 		final Namespace namespace = document.getRootElement().getNamespace();
 		final Element display = document.getRootElement().getChild("display", namespace);
 
@@ -238,17 +243,47 @@ public class ResponseFactory {
 		// Set images
 		response.setImages(dataset.getImages());
 		
-		getFacettedEntityAsJson(dataset, document, response, namespace);
-				
-		// Set facets via reflection - not the best way but the least invasive
-		/*final Element facets = document.getRootElement().getChild("facets", namespace);
-		final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
-		for (final Facet facet: facetList ) {
-			try {
-				final Class<?> facettedArachneEntityClass = response.getClass().getSuperclass();
+		return getFacettedEntityAsJson(dataset, document, response, namespace);
+	}
+
+	/**
+	 * This method serializes the <code>FormattedArachneEntity</code> to JSON and adds the facets.  
+	 * @param dataset The current dataset.
+	 * @param document The xml document describing the output format.
+	 * @param response The response object to add the content to.
+	 * @param namespace The document namespace.
+	 * @return The entity as JSON or <code>null</code> on failure.
+	 */
+	private String getFacettedEntityAsJson(final Dataset dataset, final Document document
+			, final FormattedArachneEntity response, final Namespace namespace) {
+		
+		final ObjectMapper objectMapper = new ObjectMapper();
+		StringBuilder jsonResponse = null;
+		try {
+			jsonResponse = new StringBuilder(objectMapper.writeValueAsString(response));
+			jsonResponse.replace(jsonResponse.length() - 1, jsonResponse.length(), ",");
+
+			// add the geo facet
+			final String place = response.getPlace();
+			final String location = response.getLocation();
+			if (place != null && location != null) {
+				jsonResponse.append("\"facet_geo\": [\"" + place + " [" + location + ']' + "\"],");
+			}
+
+			// set image facet
+			if (dataset.getThumbnailId() == null) {
+				jsonResponse.append("\"facet_image\": [\"nein\"],");
+			} else {
+				jsonResponse.append("\"facet_image\": [\"ja\"],");
+			}
+
+			// add all other facets
+			final Element facets = document.getRootElement().getChild("facets", namespace);
+			final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
+			for (final Facet facet: facetList ) {
 				final String facetName = facet.getName();
-				final java.lang.reflect.Field facetField = facettedArachneEntityClass.getDeclaredField("facet_"+facetName);
 				List<String> facetValues = facet.getValues();
+				jsonResponse.append("\"facet_" + facetName + "\": [");
 				
 				// split multi value facets at ';' and look for facet translations
 				ListIterator<String> valueIterator = facetValues.listIterator();
@@ -260,119 +295,33 @@ public class ResponseFactory {
 						ListIterator<String> splitIterator = splitValues.listIterator();
 						while (splitIterator.hasNext()) {
 							final String splitValue = splitIterator.next().trim();
-							valueIterator.add(ts.transl8Facet(facetName, splitValue));
-						}
-					} else {
-						valueIterator.set(ts.transl8Facet(facetName, value));						
-					}
-				}
-				facetField.set(response, facetValues);
-			} catch (NoSuchFieldException e) {
-				LOGGER.warn("Invalid facet definition 'facet_" + facet.getName() + "' in '" + response.getType() 
-						+ ".xml'. The facet field is not defined in " +
-						"FacettedArachneEntity.java. This facet will be ignored.");
-			} catch (IllegalAccessException e) {
-				LOGGER.error("Failed to set facets with: ", e);
-			}
-		}*/
-	}
-
-	/**
-	 * @param dataset
-	 * @param document
-	 * @param response
-	 * @param namespace
-	 * @throws SecurityException
-	 * @throws IllegalArgumentException
-	 */
-	private void getFacettedEntityAsJson(final Dataset dataset,
-			final Document document, final FormattedArachneEntity response,
-			final Namespace namespace) throws SecurityException,
-			IllegalArgumentException {
-		final ObjectMapper objectMapper = new ObjectMapper();
-		StringBuilder jsonResponse;
-		try {
-			jsonResponse = new StringBuilder(objectMapper.writeValueAsString(response));
-			jsonResponse.replace(jsonResponse.length() - 1, jsonResponse.length(), ",");
-			System.out.println(jsonResponse);
-			// add the geo facet
-			final String place = response.getPlace();
-			final String location = response.getLocation();
-			if (place != null && location != null) {
-				final List<String> geoFacetValue = new ArrayList<String>(1);
-				geoFacetValue.add(place + " [" + location + ']');
-				response.setFacet_geo(geoFacetValue);
-				System.out.print("\"facet_geo\": [\"" + place + " [" + location + ']' + "\"],");
-			}
-
-			// set image facet
-			if (dataset.getThumbnailId() == null) {
-				final List<String> no = new ArrayList<String>(1); // NOPMD
-				no.add("nein");
-				response.setFacet_hasImage(no);
-				System.out.print("\"facet_image\": [\"nein\"],");
-			} else {
-				final List<String> yes = new ArrayList<String>(1);
-				yes.add("ja");
-				response.setFacet_hasImage(yes);
-				System.out.print("\"facet_image\": [\"ja\"],");
-			}
-			
-			// add all other facets
-			final Element facets = document.getRootElement().getChild("facets", namespace);
-			final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
-			for (final Facet facet: facetList ) {
-				try {
-					final Class<?> facettedArachneEntityClass = response.getClass().getSuperclass();
-					final String facetName = facet.getName();
-					final java.lang.reflect.Field facetField = facettedArachneEntityClass.getDeclaredField("facet_"+facetName);
-					List<String> facetValues = facet.getValues();
-					System.out.print("\"facet_" + facetName + "\": [");
-					// split multi value facets at ';' and look for facet translations
-					ListIterator<String> valueIterator = facetValues.listIterator();
-					while (valueIterator.hasNext()) {
-						final String value = valueIterator.next().trim(); 
-						if (value.contains(";")) {
-							valueIterator.remove();
-							final List<String> splitValues = new ArrayList<String>(Arrays.asList(value.split(";")));
-							ListIterator<String> splitIterator = splitValues.listIterator();
-							while (splitIterator.hasNext()) {
-								final String splitValue = splitIterator.next().trim();
-								valueIterator.add(ts.transl8Facet(facetName, splitValue));
-								if (splitIterator.hasNext()) {
-									System.out.print("\"" + ts.transl8Facet(facetName, splitValue) + "\",");
-								} else {
-									System.out.print("\"" + ts.transl8Facet(facetName, splitValue) + "\"");
-								}
-							}
-						} else {
-							valueIterator.set(ts.transl8Facet(facetName, value));
-							if (valueIterator.hasNext()) {
-								System.out.print("\"" + ts.transl8Facet(facetName, value) + "\",");
+							if (splitIterator.hasNext()) {
+								jsonResponse.append("\"" + ts.transl8Facet(facetName, splitValue) + "\",");
 							} else {
-								System.out.print("\"" + ts.transl8Facet(facetName, value) + "\"");
+								jsonResponse.append("\"" + ts.transl8Facet(facetName, splitValue) + "\"");
 							}
 						}
-					}
-					facetField.set(response, facetValues);
-					if (!(facetList.indexOf(facet) == facetList.size() - 1)) {
-						System.out.print("],");
 					} else {
-						System.out.print("]}");
+						if (valueIterator.hasNext()) {
+							jsonResponse.append("\"" + ts.transl8Facet(facetName, value) + "\",");
+						} else {
+							jsonResponse.append("\"" + ts.transl8Facet(facetName, value) + "\"");
+						}
 					}
-				} catch (NoSuchFieldException e) {
-					LOGGER.warn("Invalid facet definition 'facet_" + facet.getName() + "' in '" + response.getType() 
-							+ ".xml'. The facet field is not defined in " +
-							"FacettedArachneEntity.java. This facet will be ignored.");
-				} catch (IllegalAccessException e) {
-					LOGGER.error("Failed to set facets with: ", e);
 				}
+				
+				if (!(facetList.indexOf(facet) == facetList.size() - 1)) {
+					jsonResponse.append("],");
+				} else {
+					jsonResponse.append("]}");
+				}				
 			}
 		} catch (JsonProcessingException e) {
 			LOGGER.error("Error converting dataset [" + response.getEntityId() + "] to JSON.", e);
 		} catch (StringIndexOutOfBoundsException e) {
 			LOGGER.error("Error converting dataset [" + response.getEntityId() + "] to JSON.", e);
 		}
+		return jsonResponse.toString();
 	}
 
 	/**

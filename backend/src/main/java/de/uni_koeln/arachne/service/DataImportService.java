@@ -190,19 +190,19 @@ public class DataImportService implements Runnable { // NOPMD
 					final EntityId entityId = entityIdentificationService.getId(currentEntityId);
 					dbgEntityId = entityId.getArachneEntityID();
 					LOGGER.debug("Creating response");
-					BaseArachneEntity entity;
+					String jsonEntity;
 					if (entityId.isDeleted()) {
-						entity = responseFactory.createResponseForDeletedEntity(entityId);
+						jsonEntity = responseFactory.createResponseForDeletedEntityAsJson(entityId);
 					} else {
-						entity = entityService.getFormattedEntityById(entityId);
+						jsonEntity = entityService.getFormattedEntityByIdAsJson(entityId);
 					}
 
-					if (entity == null) {
+					if (jsonEntity == null) {
 						LOGGER.error("Entity " + entityId.getArachneEntityID() + " is null! This should never happen. Check the database immediately.");
 						throw new Exception();
 					} else {
 						bulkProcessor.add(client.prepareIndex(indexName, "entity", String.valueOf(entityId.getArachneEntityID()))
-								.setSource(mapper.writeValueAsBytes(entity)).request());
+								.setSource(jsonEntity).request());
 						index++;
 						indexedDocuments.set(index);
 					}
