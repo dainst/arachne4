@@ -168,6 +168,10 @@ public class AdminController {
 	@Scheduled(cron="0 0 0 * * *")
 	private void scheduledDataimport() { // NOPMD 
 		LOGGER.info("Starting scheduled dataimport...");
-		defaultTaskExecutor.execute(dataImportService);
+		if (!dataImportService.isRunning()) {
+			defaultTaskExecutor.execute(dataImportService);
+		} else {
+			LOGGER.info("Dataimport is already running.");
+		}
 	}
 }
