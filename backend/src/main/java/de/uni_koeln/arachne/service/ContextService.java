@@ -143,11 +143,11 @@ public class ContextService {
 
 				for (final Map<String, String> currentContext : contextContents) {
 					final Image image = new Image();
-					final long imageId = Long.parseLong(currentContext.get("semanticconnection.EntityID"));
+					final long imageId = Long.parseLong(currentContext.get("SemanticConnection.EntityID"));
 					image.setImageId(imageId);
 					image.setSubtitle(currentContext.get("marbilder.DateinameMarbilder"));
 					image.setSourceContext(ts.transl8(contextName));
-					final long sourceRecordId = Long.parseLong(currentContext.get("semanticconnection.ForeignKeyTarget"));
+					final long sourceRecordId = Long.parseLong(currentContext.get("SemanticConnection.ForeignKeyTarget"));
 					// if cover and the context datasets internal key match this context image is the books thumbnail
 					if (cover > 0 && sourceRecordId == cover) {
 						parent.setThumbnailId(imageId);
