@@ -267,7 +267,7 @@ public class XmlConfigUtil implements ServletContextAware {
 				if (ifEmptyValue == null) {
 					result = getIfEmpty(ifEmptyElement.getChild("field", namespace), namespace , dataset); 
 				} else {
-					result = new StringBuilder(ifEmptyValue);
+					result = new StringBuilder(16).append(ifEmptyValue);
 				}
 			}
 		}
@@ -298,7 +298,7 @@ public class XmlConfigUtil implements ServletContextAware {
 				if (ifEmptyValue == null) {
 					result = getIfEmptyContext(ifEmptyElement.getChild("field", namespace), namespace , dataset, contextType, index); 
 				} else {
-					result = new StringBuilder(ifEmptyValue);
+					result = new StringBuilder(16).append(ifEmptyValue);
 				}
 			}
 		}
@@ -384,7 +384,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		if (initialValue == null) {
 			value = getIfEmpty(element, namespace, dataset);
 		} else {
-			value = new StringBuilder(initialValue);
+			value = new StringBuilder(16).append(initialValue);
 		}
 		
 		value = processSearchReplace(element, value);
@@ -433,7 +433,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		} else {
 			String tempValue = value.toString();
 			tempValue = tempValue.replaceAll(search, replace);
-			return new StringBuilder(tempValue); 
+			return new StringBuilder(16).append(tempValue); 
 		}
 	}
 		
@@ -457,7 +457,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			StringBuilder value = null;
 			final String initialValue = dataset.getField(element.getAttributeValue("datasource"));
 			if (initialValue != null) {
-				value = new StringBuilder(initialValue);
+				value = new StringBuilder(16).append(initialValue);
 			}
 			
 			value = processSearchReplace(element, value);	
@@ -553,7 +553,7 @@ public class XmlConfigUtil implements ServletContextAware {
 					final String field = fieldList.get(index);
 					int separatorIndex = field.indexOf(separator);
 					if (field.startsWith(LINK_PREFIX) && separatorIndex > -1) {
-						StringBuilder newValue = new StringBuilder("<a href=\"");
+						StringBuilder newValue = new StringBuilder(32).append("<a href=\"");
 						newValue.append(link);
 						newValue.append(field.substring(LINK_PREFIX.length(), separatorIndex));
 						newValue.append("\">");
@@ -658,7 +658,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		if (initialValue == null) {
 			value = getIfEmptyContext(element, namespace, dataset, contextType, index);
 		} else {
-			value = new StringBuilder(initialValue);
+			value = new StringBuilder(16).append(initialValue);
 		}
 		
 		value = processSearchReplace(element, value);	
@@ -678,7 +678,11 @@ public class XmlConfigUtil implements ServletContextAware {
 					final String labelKey = element.getAttributeValue("labelKey");
 				
 					if (StrUtils.isEmptyOrNullOrZero(labelKey)) {
-						value = new StringBuilder("<a href=\""+value.toString()+"\">" + value.toString() + "</a>");
+						value = new StringBuilder(32).append("<a href=\"")
+								.append(value.toString())
+								.append("\">")
+								.append(value.toString())
+								.append("</a>");
 					} else {
 						value.insert(0, "<a href=\"");
 						value.append("\">" + labelKey + "</a>");

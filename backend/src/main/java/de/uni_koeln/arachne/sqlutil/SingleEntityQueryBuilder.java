@@ -38,7 +38,7 @@ public class SingleEntityQueryBuilder extends AbstractSQLBuilder {
 	
 	@Override
 	protected void buildSQL() {
-		final StringBuilder result = new StringBuilder(sql);
+		final StringBuilder result = new StringBuilder(64).append(sql);
 		result.append("SELECT * FROM `");
 		result.append(table);
 		result.append("` WHERE 1");

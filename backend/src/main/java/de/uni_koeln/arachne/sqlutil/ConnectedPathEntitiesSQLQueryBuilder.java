@@ -41,7 +41,7 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		//First Things
 		
 		final List<String> typeStepRestrictions = this.contextPath.getTypeStepRestrictions();
-		final StringBuilder result = new StringBuilder(sql);
+		final StringBuilder result = new StringBuilder(128).append(sql);
 		
 		if(this.getFullDataset){
 			result.append( "SELECT e"+ (typeStepRestrictions.size()-1) +".Target as EntityID, e"+ (typeStepRestrictions.size()-1) +".ForeignKeyTarget as ForeignKeyTarget, `"+contextPath.getTargetType()  +"`.* FROM SemanticConnection e0, ");

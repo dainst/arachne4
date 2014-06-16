@@ -43,7 +43,7 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	@Override
 	protected void buildSQL() {
-		final StringBuilder result = new StringBuilder(sql);
+		final StringBuilder result = new StringBuilder(128).append(sql);
 		result.append("SELECT * FROM `SemanticConnection` LEFT JOIN `");
 		result.append(table);
 		result.append("` ON ");

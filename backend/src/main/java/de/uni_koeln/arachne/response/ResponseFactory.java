@@ -11,6 +11,7 @@ import java.util.Locale;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
+import org.json.JSONString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -259,7 +260,8 @@ public class ResponseFactory {
 		
 		StringBuilder jsonResponse = null;
 		try {
-			jsonResponse = new StringBuilder(objectMapper.writeValueAsString(response));
+			String jsonString = objectMapper.writeValueAsString(response);
+			jsonResponse = new StringBuilder(getNextPowerOfTwo(jsonString.length())).append(jsonString);
 			jsonResponse.replace(jsonResponse.length() - 1, jsonResponse.length(), ",");
 
 			// add the geo facet
@@ -338,6 +340,21 @@ public class ResponseFactory {
 		return jsonResponse.toString();
 	}
 
+	/**
+	 * Returns the smallest power of two value that is greater than the given value.
+	 * @param n Value to find next greater power of two value for.
+	 * @return Next greater power of two value.
+	 */
+	private int getNextPowerOfTwo(int n) {
+		n--;
+		n = n >> 1;
+		n = n >> 2;
+		n = n >> 4;
+		n = n >> 8;
+		n = n >> 16;
+		return n++;
+	}
+	
 	/**
 	 * Internal function to retrieve the contents of a <code>section</code> or <code>context</code>.
 	 * @param dataset The current dataset.

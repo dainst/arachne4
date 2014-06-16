@@ -57,7 +57,7 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	@Override
 	protected void buildSQL() {
-		final StringBuilder result = new StringBuilder(sql);
+		final StringBuilder result = new StringBuilder(64).append(sql);
 		result.append("SELECT ");
 		result.append(field2);
 		result.append(" FROM `");

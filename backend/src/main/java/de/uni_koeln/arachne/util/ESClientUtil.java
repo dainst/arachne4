@@ -343,7 +343,7 @@ public class ESClientUtil implements ServletContextAware {
 	// TODO: move to own class or replace with restTemplate (?)
 	private String sendRequest(final String url, final String method) {
 		
-		final StringBuilder result = new StringBuilder(); 
+		final StringBuilder result = new StringBuilder(32); 
 		HttpURLConnection connection = null;
 		try {
 			LOGGER.debug("HTTP " + method + ": " + url);

@@ -30,7 +30,7 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 		table = tableName;
 		rightsConditionBuilder = new SQLRightsConditionBuilder(table);
 		// concatenate fields
-		final StringBuilder field2 = new StringBuilder(SQLToolbox.getQualifiedFieldname(table, fields.get(0)));
+		final StringBuilder field2 = new StringBuilder(128).append(SQLToolbox.getQualifiedFieldname(table, fields.get(0)));
 		int index = 1;
 		while (index<fields.size()) {
 			field2.append(", ");
@@ -60,7 +60,7 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 	
 	@Override
 	protected void buildSQL() {
-		final StringBuilder result = new StringBuilder(sql); 
+		final StringBuilder result = new StringBuilder(64).append(sql); 
 		result.append("SELECT ");
 		result.append(field2);
 		result.append(" FROM `");
