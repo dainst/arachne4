@@ -1,15 +1,22 @@
 package de.uni_koeln.arachne.sqlutil;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+
 import de.uni_koeln.arachne.context.ContextPath;
+import de.uni_koeln.arachne.service.IUserRightsService;
 
 /**
  * This Class is Builds Context Paths. This Means a Link over one or More Contexts. 
  * There for it uses the SemanticConnection Table which Contains All Connections.
  */
+@Configurable(preConstruction=true)
 public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		
-	transient protected SQLRightsConditionBuilder rightsConditionBuilder;
+	@Autowired
+	transient protected IUserRightsService userRightsService;
 	
 	transient protected ContextPath contextPath;
 	//Entity ID that is the Startingpoint of the PATH
@@ -25,7 +32,6 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	public  ConnectedPathEntitiesSQLQueryBuilder(final ContextPath contextPath, final Long entityStart) {
 		this.contextPath = contextPath;
 		this.entityStart = entityStart;
-		rightsConditionBuilder= new SQLRightsConditionBuilder(this.contextPath.getTargetType());
 	}
 	/**
 	 * This is the Button to retrive the full connected Dataset (Yes) or just the Entity ID (NO)
@@ -88,7 +94,7 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		
 		//BSPQuery.append(" e"+(typeStepRestriction.size()-1)+".TypeTarget = \""+typeStepRestriction.get(typeStepRestriction.size()-1)+"\"");
 		if(this.getFullDataset){
-			result.append(rightsConditionBuilder.getUserRightsSQLSnipplett());
+			result.append(userRightsService.getSQL(this.contextPath.getTargetType()));
 		}
 		result.append(" GROUP BY e"+(typeStepRestrictions.size()-1)+".Target");
 		sql = result.toString();

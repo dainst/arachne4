@@ -2,6 +2,10 @@ package de.uni_koeln.arachne.sqlutil;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+
+import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
 
 /**
@@ -9,12 +13,14 @@ import de.uni_koeln.arachne.util.EntityId;
  * @author Rasmus Krempel
  *
  */
+@Configurable(preConstruction=true)
 public class SingleEntityQueryBuilder extends AbstractSQLBuilder {
 	
 	protected transient EntityId entityId;
 	
-	protected transient SQLRightsConditionBuilder rightsConditionBuilder;
-	
+	@Autowired
+	private transient IUserRightsService userRightsService;
+		
 	/**
 	 * Constructs a condition to find the Dataset described in ArachneId. creates <code>UserRightsConditionBuilder</code> , Limits the Result count to 1. 
 	 * @param ident This is the <code>ArachneId</code> the SQL retrieve statement should be written for
@@ -27,7 +33,6 @@ public class SingleEntityQueryBuilder extends AbstractSQLBuilder {
 		table = entityId.getTableName();
 		//Limits the Resultcount to 1
 		limit1 = true;
-		rightsConditionBuilder = new SQLRightsConditionBuilder(table);
 		//The Primary key Identification condition
 		final Condition condition = new Condition();
 		condition.setOperator("=");
@@ -43,7 +48,7 @@ public class SingleEntityQueryBuilder extends AbstractSQLBuilder {
 		result.append(table);
 		result.append("` WHERE 1");
 		result.append(this.buildAndConditions());
-		result.append(rightsConditionBuilder.getUserRightsSQLSnipplett());  
+		result.append(userRightsService.getSQL(table));
 		result.append(this.appendLimitOne());
 		result.append(';');
 		sql = result.toString();

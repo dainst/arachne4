@@ -5,12 +5,18 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 
+import de.uni_koeln.arachne.service.IUserRightsService;
+
+@Configurable(preConstruction=true)
 public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericFieldsEntityIdJoinedSQLQueryBuilder.class);
 	
-	protected transient SQLRightsConditionBuilder rightsConditionBuilder;
+	@Autowired
+	protected transient IUserRightsService userRightsService;
 	
 	private transient final String field2; 
 	
@@ -28,7 +34,6 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 			, final List<String> fields	) {
 		conditions = new ArrayList<Condition>(1);
 		table = tableName;
-		rightsConditionBuilder = new SQLRightsConditionBuilder(table);
 		// concatenate fields
 		final StringBuilder field2 = new StringBuilder(128).append(SQLToolbox.getQualifiedFieldname(table, fields.get(0)));
 		int index = 1;
@@ -69,7 +74,7 @@ public class GenericFieldsEntityIdJoinedSQLQueryBuilder extends AbstractSQLBuild
 		result.append(entityIdLeftJoin);
 		result.append(" WHERE 1");
 		result.append(this.buildAndConditions());
-		result.append(rightsConditionBuilder.getUserRightsSQLSnipplett());  
+		result.append(userRightsService.getSQL(table));  
 		result.append(';');
 		sql = result.toString();
 		LOGGER.debug(sql);

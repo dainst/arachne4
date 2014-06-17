@@ -4,12 +4,18 @@ import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 
+import de.uni_koeln.arachne.service.IUserRightsService;
+
+@Configurable(preConstruction=true)
 public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericFieldSQLQueryBuilder.class);
-	
-	protected transient SQLRightsConditionBuilder rightsConditionBuilder;
+
+	@Autowired	
+	protected transient IUserRightsService userRightsService;
 	
 	private transient final String field2;
 	
@@ -32,7 +38,7 @@ public class GenericFieldSQLQueryBuilder extends AbstractSQLBuilder {
 		if (disableAuthorization) {
 			rightsCondition = "";
 		} else {
-			rightsCondition =  new SQLRightsConditionBuilder(table).getUserRightsSQLSnipplett();
+			rightsCondition =  userRightsService.getSQL(table);
 		}
 		
 		// The key identification condition

@@ -4,12 +4,18 @@ import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 
+import de.uni_koeln.arachne.service.IUserRightsService;
+
+@Configurable(preConstruction=true)
 public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectedEntitiesSQLQueryBuilder.class);
 	
-	transient protected SQLRightsConditionBuilder rightsConditionBuilder;
+	@Autowired
+	transient protected IUserRightsService userRightsService;
 	
 	/**
 	 * Constructs a condition to query a field.
@@ -21,7 +27,6 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		super();
 		conditions = new ArrayList<Condition>(1);
 		table = contextType;
-		rightsConditionBuilder = new SQLRightsConditionBuilder(table);
 		// The key identification condition
 		final Condition keyCondition = new Condition();
 		keyCondition.setOperator("=");
@@ -50,7 +55,7 @@ public class ConnectedEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		result.append(SQLToolbox.getQualifiedFieldname(table, SQLToolbox.generatePrimaryKeyName(table)));
 		result.append(" = `SemanticConnection`.`ForeignKeyTarget` WHERE 1");
 		result.append(this.buildAndConditions());
-		result.append(rightsConditionBuilder.getUserRightsSQLSnipplett());  
+		result.append(userRightsService.getSQL(table));  
 		result.append(';');
 		sql = result.toString();		
 		LOGGER.debug(sql);

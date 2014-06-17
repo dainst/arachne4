@@ -44,4 +44,9 @@ public interface IUserRightsService {
 	 */
 	public abstract void reset();
 
+	/**
+	 * Returns the users permissions as an SQL-Snipplet that is ready to be append to a SQL <code>WHERE</code> statement.
+	 * @return A SQL snipplet as String. 
+	 */
+	public abstract String getSQL(final String tableName);
 }
