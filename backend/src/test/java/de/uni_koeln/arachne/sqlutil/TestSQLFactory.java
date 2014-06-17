@@ -19,7 +19,7 @@ public class TestSQLFactory {
 	@InjectMocks private SQLFactory sqlFactory = new SQLFactory();
 	
 	@Test
-	public void testGetSingeEntityQuery() {
+	public void testGetSingleEntityQuery() {
 		final EntityId entityId = new EntityId("bauwerk", Long.valueOf(27000), Long.valueOf(100),false);
 		final UserAdministration user = new UserAdministration();
 		// set mock user name to 'INDEXING' to not trigger the SQL user rights snippet creation  
