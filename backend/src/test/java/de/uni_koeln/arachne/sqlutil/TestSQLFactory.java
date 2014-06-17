@@ -30,7 +30,7 @@ public class TestSQLFactory {
 		
 		// do not test for equality as "Oppenheim" and "Arachne" may be switched
 		final String sqlQuery = sqlFactory.getSingleEntityQuery(entityId);
-		System.out.println(sqlQuery);
+		
 		assertTrue(sqlQuery.startsWith("SELECT * FROM `bauwerk` WHERE `bauwerk`.`PS_BauwerkID` = 27000"));
 		assertTrue(sqlQuery.contains("insertPermissionSQLhere"));
 		assertTrue(sqlQuery.endsWith("LIMIT 1;"));
