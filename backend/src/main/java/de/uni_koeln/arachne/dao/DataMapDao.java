@@ -6,10 +6,12 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.DatasetMapper;
 import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.sqlutil.SQLFactory;
 import de.uni_koeln.arachne.sqlutil.SimpleTableEntityQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.SingleEntityQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.SingleEntitySubTablesQueryBuilder;
@@ -23,6 +25,9 @@ public class DataMapDao extends SQLDao {
 		
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataMapDao.class);
 	
+	@Autowired
+	private transient SQLFactory sqlFactory;
+	
 	/**
 	 * Gets a map of values by Id
 	 * @param arachneId instance of <code>ArachneId</code> 
@@ -30,14 +35,12 @@ public class DataMapDao extends SQLDao {
 	 */
 	public Map<String, String> getById(final EntityId arachneId) {			
 
-		final SingleEntityQueryBuilder queryBuilder = new SingleEntityQueryBuilder(arachneId);
-
-		final String sql = queryBuilder.getSQL();
+		final String sql = sqlFactory.getSingleEntityQuery(arachneId);
 		
 		LOGGER.debug(sql);
-
+		
 		@SuppressWarnings("unchecked")
-		final List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new DatasetMapper());
+		final List<Map<String,String>> temp = (List<Map<String, String>>) this.executeQuery(sql, new DatasetMapper());
 		if (temp != null && !temp.isEmpty()) {
 			return temp.get(0);
 		}
@@ -58,7 +61,7 @@ public class DataMapDao extends SQLDao {
 		LOGGER.debug(sql);
 
 		@SuppressWarnings("unchecked")
-		final List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new DatasetMapper());
+		final List<Map<String,String>> temp = (List<Map<String, String>>) this.executeQuery(sql, new DatasetMapper());
 		if (temp != null && !temp.isEmpty()) {
 			return temp.get(0);
 		}
@@ -80,7 +83,7 @@ public class DataMapDao extends SQLDao {
 		final String sql = queryBuilder.getSQL();
 		LOGGER.debug(sql);
 		@SuppressWarnings("unchecked")
-		final List<Map<String,String>> temp = (List<Map<String, String>>) this.executeSelectQuery(sql, new DatasetMapper());
+		final List<Map<String,String>> temp = (List<Map<String, String>>) this.executeQuery(sql, new DatasetMapper());
 		
 		Map<String,String> map;  
 		if (temp == null || temp.isEmpty()) {

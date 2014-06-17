@@ -32,7 +32,7 @@ public class GenericSQLDao extends SQLDao {
 		final GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1
 				, field1Id, field2, disableAuthorization);
 		@SuppressWarnings("unchecked") // NOPMD
-		final List<String> queryResult = (List<String>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperString());
+		final List<String> queryResult = (List<String>)this.executeQuery(queryBuilder.getSQL(), new GenericFieldMapperString());
 		if (queryResult != null && !queryResult.isEmpty()) {
 			return queryResult;
 		}
@@ -49,7 +49,7 @@ public class GenericSQLDao extends SQLDao {
 		final GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1
 				, field1Id, field2, disableAuthorization);
 		@SuppressWarnings("unchecked")
-		final List<Integer> queryResult = (List<Integer>)this.executeSelectQuery(queryBuilder.getSQL(), new GenericFieldMapperInteger());
+		final List<Integer> queryResult = (List<Integer>)this.executeQuery(queryBuilder.getSQL(), new GenericFieldMapperInteger());
 
 		if (queryResult != null && !queryResult.isEmpty()) {
 			return queryResult;
@@ -65,7 +65,7 @@ public class GenericSQLDao extends SQLDao {
 	public List<Map<String, String>> getConnectedEntities(final String contextType, final Long entityId) {
 		final ConnectedEntitiesSQLQueryBuilder queryBuilder = new ConnectedEntitiesSQLQueryBuilder(contextType, entityId);
 		@SuppressWarnings("unchecked")
-		final List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(queryBuilder.getSQL()
+		final List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeQuery(queryBuilder.getSQL()
 				, new GenericEntitiesMapper("AdditionalInfosJSON"));
 
 		if (queryResult != null && !queryResult.isEmpty()) {
@@ -77,7 +77,7 @@ public class GenericSQLDao extends SQLDao {
 	public List<Long> getConnectedEntityIds(final Long entityId) {
 		final ConnectedEntityIdsSQLQueryBuilder queryBuilder = new ConnectedEntityIdsSQLQueryBuilder(entityId);
 		@SuppressWarnings("unchecked")
-		final List<Long> queryResult = (List<Long>)this.executeSelectQuery(queryBuilder.getSQL()
+		final List<Long> queryResult = (List<Long>)this.executeQuery(queryBuilder.getSQL()
 				, new EntityIdMapper());
 		
 		if (queryResult != null && !queryResult.isEmpty()) {
@@ -93,7 +93,7 @@ public class GenericSQLDao extends SQLDao {
 		LOGGER.debug(sql);
 		
 		@SuppressWarnings("unchecked")
-		final List<Long> queryResult = (List<Long>)this.executeSelectQuery(sql, new EntityIdMapper());
+		final List<Long> queryResult = (List<Long>)this.executeQuery(sql, new EntityIdMapper());
 		
 		if (queryResult != null && !queryResult.isEmpty()) {
 			return queryResult;
@@ -107,7 +107,7 @@ public class GenericSQLDao extends SQLDao {
 		final String sql= sqlBuilder.getSQL();
 		LOGGER.debug(sql);
 		@SuppressWarnings("unchecked")
-		final List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeSelectQuery(sql
+		final List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeQuery(sql
 				, new GenericEntitiesMapper("AdditionalInfosJSON"));
 
 		if (queryResult != null && !queryResult.isEmpty()) {
@@ -122,7 +122,7 @@ public class GenericSQLDao extends SQLDao {
 		final GenericFieldsEntityIdJoinedSQLQueryBuilder queryBuilder = new GenericFieldsEntityIdJoinedSQLQueryBuilder(
 				tableName, field1, field1Id, fields);
 		@SuppressWarnings("unchecked")
-		final List<? extends SQLResponseObject> queryResult = (List<? extends SQLResponseObject>)this.executeSelectQuery(
+		final List<? extends SQLResponseObject> queryResult = (List<? extends SQLResponseObject>)this.executeQuery(
 				queryBuilder.getSQL(), rowMapper);
 		
 		if (queryResult != null && !queryResult.isEmpty()) {

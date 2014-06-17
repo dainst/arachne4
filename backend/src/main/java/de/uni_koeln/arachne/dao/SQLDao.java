@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,7 +23,7 @@ import org.springframework.stereotype.Repository;
 @Repository("sqlDao")
 public class SQLDao {
 
-	//private static final Logger LOGGER = LoggerFactory.getLogger(SQLDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SQLDao.class);
 	
 	protected transient JdbcTemplate jdbcTemplate;
 	
@@ -42,16 +44,12 @@ public class SQLDao {
 	 * @param rowMapper The RowMapper that Maps the Result of the Query to the an Generic Object Type
 	 * @return Returns a List of objects as identified in the <code>RowMapper</code> or <code>null</code>
 	 */
-	protected List<?> executeSelectQuery(final String sQLQuery, final RowMapper<?> rowMapper) {
-		if (sQLQuery.contains("SELECT")) {
-			try {
-				return jdbcTemplate.query(sQLQuery,rowMapper);
-			} catch (DataAccessException e) {
-				// LOGGER.error("DataAccessException: " + e.getRootCause());
-				return null;
-			}
-		} else {
-			return null;
+	protected List<?> executeQuery(final String sQLQuery, final RowMapper<?> rowMapper) {
+		try {
+			return jdbcTemplate.query(sQLQuery,rowMapper);
+		} catch (DataAccessException e) {
+			LOGGER.error("Failed to execute query '" + sQLQuery + "'. Cause: ", e);
 		}
+		return null;
 	}
 }
