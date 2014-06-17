@@ -44,7 +44,7 @@
         </datasections>
         <contextImages>
             <!-- Show images of connected fabricdescriptions -->
-            <contextImage show="always">Fabricdescription</contextImage>
+            <contextImage show="always">fabricdescription</contextImage>
         </contextImages>
     </display>
     <facets>
