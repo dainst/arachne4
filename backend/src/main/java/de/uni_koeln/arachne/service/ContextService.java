@@ -147,11 +147,11 @@ public class ContextService {
 
 				for (final Map<String, String> currentContext : contextContents) {
 					final Image image = new Image();
-					final long imageId = Long.parseLong(currentContext.get("SemanticConnection.EntityID"));
+					final long imageId = Long.parseLong(currentContext.get("semanticconnection.EntityID"));
 					image.setImageId(imageId);
 					image.setSubtitle(currentContext.get("marbilder.DateinameMarbilder"));
 					image.setSourceContext(ts.transl8(contextName));
-					final long sourceRecordId = Long.parseLong(currentContext.get("SemanticConnection.ForeignKeyTarget"));
+					final long sourceRecordId = Long.parseLong(currentContext.get("semanticconnection.ForeignKeyTarget"));
 					// if cover and the context datasets internal key match this context image is the books thumbnail
 					if (cover > 0 && sourceRecordId == cover) {
 						parent.setThumbnailId(imageId);
@@ -213,7 +213,10 @@ public class ContextService {
 				result = contextualizer;
 			} catch (ClassNotFoundException e) {
 				LOGGER.debug("FAILURE - using SemanticConnectionsContextualizer instead");
-				result = new SemanticConnectionsContextualizer(contextType, genericSQLService);
+				SemanticConnectionsContextualizer contextualizer = new SemanticConnectionsContextualizer(contextType
+						, genericSQLService);
+				contextualizers.put(contextType, contextualizer);
+				result = contextualizer;
 			} catch (SecurityException e) {
 				LOGGER.error("Getting constructor failed for class " + className + ": ", e);
 			} catch (NoSuchMethodException e) {
