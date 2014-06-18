@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import de.uni_koeln.arachne.response.SearchResult;
 import de.uni_koeln.arachne.response.StatusResponse;
-import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.service.SearchService;
 
 
@@ -25,9 +24,6 @@ import de.uni_koeln.arachne.service.SearchService;
 public class SearchController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
-	
-	@Autowired
-	private transient GenericSQLService genericSQLService; 
 	
 	@Autowired
 	private transient SearchService searchService;

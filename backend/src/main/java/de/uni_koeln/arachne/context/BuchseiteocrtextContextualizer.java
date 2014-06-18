@@ -41,7 +41,7 @@ public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 	 */
 	public List<AbstractLink> retrieve(final Dataset parent) {
 		if (rightsService.isDataimporter()) {
-			final List<Map<String, String>> bookDataList = genericSQLService.getConnectedEntities("buch", parent.getArachneId().getArachneEntityID());
+			final List<Map<String, String>> bookDataList = genericSQLDao.getConnectedEntities("buch", parent.getArachneId().getArachneEntityID());
 			Map<String, String> bookData = null;
 			if (bookDataList != null && !bookDataList.isEmpty()) {
 				bookData = bookDataList.get(0);

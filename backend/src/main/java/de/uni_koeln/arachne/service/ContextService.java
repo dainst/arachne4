@@ -18,6 +18,7 @@ import de.uni_koeln.arachne.context.ContextImageDescriptor;
 import de.uni_koeln.arachne.context.ContextPath;
 import de.uni_koeln.arachne.context.IContextualizer;
 import de.uni_koeln.arachne.context.SemanticConnectionsContextualizer;
+import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.util.ImageUtils;
@@ -47,7 +48,7 @@ public class ContextService {
 	 * Service to access ids in 'cross tables'.
 	 */
 	@Autowired
-	private transient GenericSQLService genericSQLService; 
+	private transient GenericSQLDao genericSQLDao; 
 	
 	@Autowired
 	private transient SingleEntityDataService singleEntityDataService;
@@ -132,7 +133,7 @@ public class ContextService {
 			ContextPath contextPath = new ContextPath();
 			contextPath.addTypeStepRestriction(contextName);
 			contextPath.addTypeStepRestriction("marbilder");
-			final List<Map<String, String>> contextContents = this.genericSQLService.getPathConnectedEntities(
+			final List<Map<String, String>> contextContents = this.genericSQLDao.getPathConnectedEntities(
 					parent.getArachneId().getArachneEntityID(),contextPath);
 			
 			if (contextContents != null) {
@@ -204,7 +205,7 @@ public class ContextService {
 				final AbstractContextualizer contextualizer = (AbstractContextualizer)classConstructor.newInstance();
 				// set services
 				contextualizer.setEntityIdentificationService(entityIdentificationService);
-				contextualizer.setGenericSQLService(genericSQLService);
+				contextualizer.setGenericSQLService(genericSQLDao);
 				contextualizer.setSingleEntityDataService(singleEntityDataService);
 				contextualizer.setRightsService(rightsService);
 				contextualizer.setXmlConfigUtil(xmlConfigUtil);
@@ -214,7 +215,7 @@ public class ContextService {
 			} catch (ClassNotFoundException e) {
 				LOGGER.debug("FAILURE - using SemanticConnectionsContextualizer instead");
 				SemanticConnectionsContextualizer contextualizer = new SemanticConnectionsContextualizer(contextType
-						, genericSQLService);
+						, genericSQLDao);
 				contextualizers.put(contextType, contextualizer);
 				result = contextualizer;
 			} catch (SecurityException e) {

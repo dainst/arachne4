@@ -9,8 +9,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.response.Dataset;
-import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.util.EntityId;
 
 /**
@@ -25,13 +25,13 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 	 */
 	private transient final String contextType;
 	
-	private transient final GenericSQLService genericSQLService;
+	private transient final GenericSQLDao genericSQLDao;
 	
 	private transient long linkCount = 0l;
 	
-	public SemanticConnectionsContextualizer(final String contextType, final GenericSQLService genericSQLService) {
+	public SemanticConnectionsContextualizer(final String contextType, final GenericSQLDao genericSQLDao) {
 		this.contextType = contextType;
-		this.genericSQLService = genericSQLService;
+		this.genericSQLDao = genericSQLDao;
 	}
 	
 	@Override
@@ -44,7 +44,7 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 		final List<AbstractLink> result = new ArrayList<AbstractLink>();
 		
 		final long queryTime = System.currentTimeMillis();
-		final List<Map<String, String>> contextContents = genericSQLService.getConnectedEntities(contextType
+		final List<Map<String, String>> contextContents = genericSQLDao.getConnectedEntities(contextType
 				, parent.getArachneId().getArachneEntityID());
 		LOGGER.debug("Query time: " + (System.currentTimeMillis() - queryTime) + " ms");		
 		

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.mapping.ImageRowMapper;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
@@ -27,7 +28,7 @@ public class ImageService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageService.class);
 	
 	@Autowired
-	private transient GenericSQLService genericSQLService; 
+	private transient GenericSQLDao genericSQLDao; 
 	
 	private transient final List<String> excludeList;
 	
@@ -50,7 +51,7 @@ public class ImageService {
 			final ArrayList<String> fieldList = new ArrayList<String>(2);
 			fieldList.add("DateinameMarbilder");
 			@SuppressWarnings("unchecked")
-			final List<Image> imageList = (List<Image>) genericSQLService.getStringFieldsEntityIdJoinedWithCustomRowmapper("marbilder"
+			final List<Image> imageList = (List<Image>) genericSQLDao.getStringFieldsEntityIdJoinedWithCustomRowMapper("marbilder"
 					, arachneId.getTableName(), arachneId.getInternalKey(), fieldList, new ImageRowMapper());
 			// sort image List
 			if (imageList != null && imageList.size()>1) {

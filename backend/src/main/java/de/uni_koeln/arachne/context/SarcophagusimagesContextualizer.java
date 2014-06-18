@@ -61,7 +61,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 		
 		for (final String contextType : PRIMARY_CONTEXT_TYPES) {
 			
-			final List<Map<String, String>> entitiesContextContents = genericSQLService.getConnectedEntities(contextType, parent.getArachneId().getArachneEntityID());
+			final List<Map<String, String>> entitiesContextContents = genericSQLDao.getConnectedEntities(contextType, parent.getArachneId().getArachneEntityID());
 			if (entitiesContextContents != null) {
 				for (final Map<String, String> entityData : entitiesContextContents) {
 					final String internalId = entityData.get(contextType + ".PS_" + contextType.substring(0,1).toUpperCase() + contextType.substring(1).toLowerCase() + "ID"); // e.g. 'relief.PS_ReliefID'
@@ -76,7 +76,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 						description = entityData.get("realien.KurzbeschreibungRealien");
 					}
 
-					final List<Map<String, String>> imagesContextContents = genericSQLService.getConnectedEntities(TARGET_CONTEXT_TYPE, entityId.getArachneEntityID());
+					final List<Map<String, String>> imagesContextContents = genericSQLDao.getConnectedEntities(TARGET_CONTEXT_TYPE, entityId.getArachneEntityID());
 					if (imagesContextContents != null) {
 						addImages(contextType, imagesContextContents, sceneNumber, description);	
 					}

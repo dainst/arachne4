@@ -2,9 +2,9 @@ package de.uni_koeln.arachne.context;
 
 import java.util.List;
 
+import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
-import de.uni_koeln.arachne.service.GenericSQLService;
 import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.service.SimpleSQLService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
@@ -18,7 +18,7 @@ public abstract class AbstractContextualizer implements IContextualizer {
 
 	protected transient EntityIdentificationService entityIdentificationService;
 	
-	protected transient GenericSQLService genericSQLService;
+	protected transient GenericSQLDao genericSQLDao;
 	
 	protected transient SingleEntityDataService singleEntityDataService;
 	
@@ -32,8 +32,8 @@ public abstract class AbstractContextualizer implements IContextualizer {
 		this.entityIdentificationService = entityIdentificationService;
 	}
 
-	public void setGenericSQLService(final GenericSQLService genericSQLService) {
-		this.genericSQLService = genericSQLService;
+	public void setGenericSQLService(final GenericSQLDao genericSQLDao) {
+		this.genericSQLDao = genericSQLDao;
 	}
 
 	public void setSingleEntityDataService(final SingleEntityDataService singleEntityDataService) {

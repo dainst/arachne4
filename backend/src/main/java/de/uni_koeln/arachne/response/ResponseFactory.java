@@ -11,7 +11,6 @@ import java.util.Locale;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
-import org.json.JSONString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.uni_koeln.arachne.service.GenericSQLService;
+import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.StrUtils;
@@ -45,7 +44,7 @@ public class ResponseFactory {
 	private transient XmlConfigUtil xmlConfigUtil;
 	
 	@Autowired
-	private transient GenericSQLService genericSQLService;
+	private transient GenericSQLDao genericSQLDao;
 	
 	@Autowired
 	private transient Transl8Service ts;
@@ -105,7 +104,7 @@ public class ResponseFactory {
 		}
 
 		// set connectedEntities
-		response.setConnectedEntities(genericSQLService.getConnectedEntityIds(arachneId.getArachneEntityID()));
+		response.setConnectedEntities(genericSQLDao.getConnectedEntityIds(arachneId.getArachneEntityID()));
 			
 		// set lastModified
 		Date lastModified;

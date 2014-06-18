@@ -60,7 +60,7 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 		
 		final List<AbstractLink> result = new ArrayList<AbstractLink>();
 		
-		final List<Map<String, String>> contextContents = this.genericSQLService.getPathConnectedEntities(parent.getArachneId().getArachneEntityID(),contextPath);
+		final List<Map<String, String>> contextContents = this.genericSQLDao.getPathConnectedEntities(parent.getArachneId().getArachneEntityID(),contextPath);
 		//Retrival Succsessfull Then Build result
 		 if (contextContents != null) {
 				final ListIterator<Map<String, String>> contextMap = contextContents.listIterator();
