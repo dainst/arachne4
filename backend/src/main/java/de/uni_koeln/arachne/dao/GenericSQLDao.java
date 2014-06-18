@@ -44,20 +44,18 @@ public class GenericSQLDao extends SQLDao {
 		return getStringField(tableName, field1, field1Id, field2, false);		
 	}
 	
-	public List<Integer> getIntegerField(final String tableName, final String field1, final Long field1Id
+	public int getIntegerField(final String tableName, final String field1, final long field1Id
 			, final String field2, final boolean disableAuthorization) {
+		
 		final GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1
 				, field1Id, field2, disableAuthorization);
-		@SuppressWarnings("unchecked")
-		final List<Integer> queryResult = (List<Integer>)this.executeQuery(queryBuilder.getSQL(), new GenericFieldMapperInteger());
-
-		if (queryResult != null && !queryResult.isEmpty()) {
-			return queryResult;
-		}
-		return null;
+		
+		final int queryResult = queryForInt(queryBuilder.getSQL());
+		
+		return queryResult;
 	}
 	
-	public List<Integer> getIntegerField(final String tableName, final String field1, final Long field1Id
+	public int getIntegerField(final String tableName, final String field1, final long field1Id
 			, final String field2) {
 		return getIntegerField(tableName, field1, field1Id, field2, false);		
 	}
