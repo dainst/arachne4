@@ -15,7 +15,7 @@ public class ConnectionDao extends AbstractHibernateTemplateDao {
 	 * @param primaryId Primary id of the entry.
 	 * @return an instance of the <code>ArachneConnection</code> table mapping.
 	 */
-	public Connection getByID(final Long primaryId) {
+	public Connection getByID(final long primaryId) {
 		return (Connection) hibernateTemplate.get(Connection.class, primaryId);
 	}
 	

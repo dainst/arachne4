@@ -71,7 +71,7 @@ public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 	 * @param internalKey	the internal key of the page in table 'buchseite'
 	 * @return				the pages ocr-Text as XML-String
 	 */
-	private String retrieveTextAsXML(final String directory, final Long internalKey) {
+	private String retrieveTextAsXML(final String directory, final long internalKey) {
 		HttpURLConnection connection = null;
 		final URL serverAdress;
 		final BufferedReader reader;
@@ -83,7 +83,7 @@ public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 					+ "/findnodes?doc%28arachne/" 
 					+ directory 
 					+ "/transcription.xml%29TEI/text/body/div[@xml:id=%27p"
-					+ internalKey.toString()
+					+ internalKey
 					+ "%27]");
 			connection = (HttpURLConnection) serverAdress.openConnection();			
 			connection.setRequestMethod("GET");

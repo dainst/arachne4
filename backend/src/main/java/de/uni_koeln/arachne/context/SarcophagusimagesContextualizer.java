@@ -136,7 +136,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 		final String sourceType = queryResults.get("semanticconnection.TypeSource");
 		final String targetType = queryResults.get("semanticconnection.TypeTarget");
 		final String project;
-		final Long imageId;
+		final long imageId;
 		final String filename;
 		
 		if ("marbilder".equals(targetType) && sourceType!=null) {
@@ -151,7 +151,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 		
 		filename = queryResults.get("marbilder.DateinameMarbilder");
 
-		if (imageId!=null && filename!=null && project!=null) {
+		if (filename!=null && project!=null) {
 			image.setImageFields(imageId, filename, project);
 		}
 	}

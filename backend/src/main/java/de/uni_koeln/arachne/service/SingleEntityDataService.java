@@ -93,7 +93,6 @@ public class SingleEntityDataService {
 		final int degree = genericSqlDao.getIntegerField("arachneentitydegrees", "ArachneEntityID"
 				, entityId.getArachneEntityID(), "Degree", true);
 		if (degree > 0) {
-			System.out.println(degree);
 			result.setDegree(degree);
 		}
 			

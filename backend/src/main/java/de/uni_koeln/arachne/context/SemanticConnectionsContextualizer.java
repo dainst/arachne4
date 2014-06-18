@@ -70,8 +70,8 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 
 		final Dataset result = new Dataset();
 		
-		Long foreignKey = 0L;
-		Long eId = 0L;
+		long foreignKey = 0L;
+		long eId = 0L;
 
 		final Map<String, String> resultMap = new HashMap<String, String>();
 		for (final Map.Entry<String, String> entry: map.entrySet()) {

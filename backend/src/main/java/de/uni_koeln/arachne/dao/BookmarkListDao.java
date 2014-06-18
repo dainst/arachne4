@@ -9,11 +9,11 @@ import de.uni_koeln.arachne.mapping.BookmarkList;
 @Repository("BookmarkListDao")
 public class BookmarkListDao extends AbstractHibernateTemplateDao {
 	
-	public BookmarkList getByBookmarkListId(final Long bookmarkListId) {
+	public BookmarkList getByBookmarkListId(final long bookmarkListId) {
 		return (BookmarkList) hibernateTemplate.get(BookmarkList.class, bookmarkListId);
 	}
 	
-	public List<BookmarkList> getByUid(final Long uid) {
+	public List<BookmarkList> getByUid(final long uid) {
 		final String hql = "from BookmarkList where uid = ?";
 		@SuppressWarnings("unchecked")
 		List<BookmarkList> result = (List<BookmarkList>) hibernateTemplate.find(hql, uid);
@@ -23,7 +23,7 @@ public class BookmarkListDao extends AbstractHibernateTemplateDao {
 		return result;
 	}
 	
-	public BookmarkList getByUidAndBookmarkListId(final Long uid, final long bookmarkListId) {
+	public BookmarkList getByUidAndBookmarkListId(final long uid, final long bookmarkListId) {
 		final String hql = "from BookmarkList where id = ? and uid = ?";
 		return (BookmarkList) hibernateTemplate.find(hql, bookmarkListId, uid).get(0);
 	}

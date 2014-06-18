@@ -27,7 +27,7 @@ public class GenericSQLDao extends SQLDao {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericSQLDao.class);
 	
-	public List<String> getStringField(final String tableName, final String field1, final Long field1Id
+	public List<String> getStringField(final String tableName, final String field1, final long field1Id
 			, final String field2, final boolean disableAuthorization) {
 		final GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1
 				, field1Id, field2, disableAuthorization);
@@ -39,7 +39,7 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
-	public List<String> getStringField(final String tableName, final String field1, final Long field1Id
+	public List<String> getStringField(final String tableName, final String field1, final long field1Id
 			, final String field2) {
 		return getStringField(tableName, field1, field1Id, field2, false);		
 	}
@@ -60,7 +60,7 @@ public class GenericSQLDao extends SQLDao {
 		return getIntegerField(tableName, field1, field1Id, field2, false);		
 	}
 	
-	public List<Map<String, String>> getConnectedEntities(final String contextType, final Long entityId) {
+	public List<Map<String, String>> getConnectedEntities(final String contextType, final long entityId) {
 		final ConnectedEntitiesSQLQueryBuilder queryBuilder = new ConnectedEntitiesSQLQueryBuilder(contextType, entityId);
 		@SuppressWarnings("unchecked")
 		final List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeQuery(queryBuilder.getSQL()
@@ -72,7 +72,7 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
-	public List<Long> getConnectedEntityIds(final Long entityId) {
+	public List<Long> getConnectedEntityIds(final long entityId) {
 		final ConnectedEntityIdsSQLQueryBuilder queryBuilder = new ConnectedEntityIdsSQLQueryBuilder(entityId);
 		@SuppressWarnings("unchecked")
 		final List<Long> queryResult = (List<Long>)this.executeQuery(queryBuilder.getSQL()
@@ -84,7 +84,7 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
-	public List<Long> getPathConnectedEntityIds(final Long entityId, final ContextPath contextPath) {
+	public List<Long> getPathConnectedEntityIds(final long entityId, final ContextPath contextPath) {
 		final ConnectedPathEntitiesSQLQueryBuilder sqlBuilder = new ConnectedPathEntitiesSQLQueryBuilder(contextPath, entityId);
 		sqlBuilder.retriveFullDataset(false);
 		final String sql= sqlBuilder.getSQL();
@@ -99,7 +99,7 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
-	public List<Map<String, String>> getPathConnectedEntities(final Long entityId, final ContextPath contextPath) {
+	public List<Map<String, String>> getPathConnectedEntities(final long entityId, final ContextPath contextPath) {
 		final ConnectedPathEntitiesSQLQueryBuilder sqlBuilder = new ConnectedPathEntitiesSQLQueryBuilder(contextPath, entityId);
 		sqlBuilder.retriveFullDataset(true);
 		final String sql= sqlBuilder.getSQL();
@@ -115,7 +115,7 @@ public class GenericSQLDao extends SQLDao {
 	}
 	
 	public List<? extends SQLResponseObject> getStringFieldsEntityIdJoinedWithCustomRowMapper(
-			final String tableName, final String field1, final Long field1Id, final List<String> fields
+			final String tableName, final String field1, final long field1Id, final List<String> fields
 			, final RowMapper<? extends SQLResponseObject> rowMapper) {
 		final GenericFieldsEntityIdJoinedSQLQueryBuilder queryBuilder = new GenericFieldsEntityIdJoinedSQLQueryBuilder(
 				tableName, field1, field1Id, fields);

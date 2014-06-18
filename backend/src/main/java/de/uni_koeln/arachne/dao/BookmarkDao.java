@@ -6,7 +6,7 @@ import de.uni_koeln.arachne.mapping.Bookmark;
 @Repository("BookmarkDao")
 public class BookmarkDao extends AbstractHibernateTemplateDao {
 	
-	public Bookmark getByBookmarkId(final Long bookmarkId) {
+	public Bookmark getByBookmarkId(final long bookmarkId) {
 		return (Bookmark) hibernateTemplate.get(Bookmark.class, bookmarkId);
 	}
 	
