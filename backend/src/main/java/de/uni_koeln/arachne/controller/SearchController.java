@@ -7,6 +7,8 @@ import java.util.List;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
@@ -81,7 +83,7 @@ public class SearchController {
 		
 		if (searchResult == null) {
 			LOGGER.error("Search result is null!");
-			return new StatusResponse("There was a problem executing the search. Please try again. If the problem persists please contact us.");
+			return new ResponseEntity<String>(HttpStatus.SERVICE_UNAVAILABLE);
 		} else {
 			return searchResult;
 		}
