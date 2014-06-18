@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uni_koeln.arachne.response.SearchResult;
-import de.uni_koeln.arachne.response.StatusResponse;
 import de.uni_koeln.arachne.service.SearchService;
 
 
