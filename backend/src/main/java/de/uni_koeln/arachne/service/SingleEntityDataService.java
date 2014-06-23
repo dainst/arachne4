@@ -123,12 +123,12 @@ public class SingleEntityDataService {
 		final String field2 = SQLToolbox.generateDatasetGroupName(tableName);
 		
 		// disable rights checking to allow retrieval of the dataset group
-		final List<String> result = genericSqlDao.getStringField(tableName, tableName, field1Id, field2, true);
+		final String result = genericSqlDao.getStringField(tableName, tableName, field1Id, field2, true);
 		
 		if (StrUtils.isEmptyOrNull(result)) {
 			return "Arachne";
 		} else {
-			return result.get(0);
+			return result;
 		}
 	}
 }

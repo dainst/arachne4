@@ -1,7 +1,5 @@
 package de.uni_koeln.arachne.response;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,20 +78,20 @@ public class TeiViewerSpecialNavigationElement extends AbstractSpecialNavigation
 		}
 		
 		if (entityId != null) {
-			List<String> fieldList = null;
+			String fieldList = null;
 			if ("buch".equals(entityId.getTableName())) {
 				fieldList = genericSQLDao.getStringField(entityId.getTableName(), "buch", entityId.getInternalKey(), "Verzeichnis");
 				final StringBuffer linkBuffer = new StringBuffer(getRequestMapping());
 				linkBuffer.append("?manifest=");
-				linkBuffer.append(fieldList.get(0));
+				linkBuffer.append(fieldList);
 				link = linkBuffer.toString();
 			} else { 
 				if ("buchseite".equals(entityId.getTableName())) {
-					List<String> scanName = genericSQLDao.getStringField("marbilder", "Buchseite", entityId.getInternalKey(), "DateinameMarbilder");
+					String scanName = genericSQLDao.getStringField("marbilder", "Buchseite", entityId.getInternalKey(), "DateinameMarbilder");
 					if (!StrUtils.isEmptyOrNull(scanName)) {
 						final StringBuffer linkBuffer = new StringBuffer(getRequestMapping());
 						linkBuffer.append("?scan=");
-						linkBuffer.append(scanName.get(0).substring(0, scanName.get(0).indexOf('.')));
+						linkBuffer.append(scanName.substring(0, scanName.indexOf('.')));
 						link = linkBuffer.toString();	
 					}
 				} else {

@@ -67,4 +67,33 @@ public class SQLDao {
 		}
 		return -1;
 	}
+	
+	/**
+	 * Executes a SQL SELECT query that retrieves a single string value.
+	 * @param sqlQuery The sql query string.
+	 * @return The string value retrieved from the field or <code>null</code> on failure.
+	 */
+	protected String queryForString(final String sqlQuery) {
+		try {
+			return jdbcTemplate.queryForObject(sqlQuery, String.class);
+		} catch (DataAccessException e) {
+			LOGGER.error("Failed to execute query '" + sqlQuery + "'. Cause: ", e);
+		}
+		return null;
+	}
+	
+	/**
+	 * Executes a SQL SELECT query that retrieves a list.
+	 * @param sqlQuery The sql query string.
+	 * @param elementType 
+	 * @return The retrieved list or <code>null</code> on failure.
+	 */
+	protected List<?> queryForList(final String sqlQuery, final Class<?> elementType) {
+		try {
+			return jdbcTemplate.queryForList(sqlQuery, elementType);
+		} catch (DataAccessException e) {
+			LOGGER.error("Failed to execute query '" + sqlQuery + "'. Cause: ", e);
+		}
+		return null;
+	}
 }

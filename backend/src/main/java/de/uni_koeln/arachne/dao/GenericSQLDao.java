@@ -10,14 +10,13 @@ import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.context.ContextPath;
 import de.uni_koeln.arachne.mapping.EntityIdMapper;
-import de.uni_koeln.arachne.mapping.GenericFieldMapperInteger;
-import de.uni_koeln.arachne.mapping.GenericFieldMapperString;
 import de.uni_koeln.arachne.service.SQLResponseObject;
 import de.uni_koeln.arachne.sqlutil.ConnectedEntityIdsSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.ConnectedEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.ConnectedPathEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldsEntityIdJoinedSQLQueryBuilder;
+import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * Class to retrieve data via SQL.
@@ -27,26 +26,24 @@ public class GenericSQLDao extends SQLDao {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericSQLDao.class);
 	
-	public List<String> getStringField(final String tableName, final String field1, final long field1Id
+	public String getStringField(final String tableName, final String field1, final long field1Id
 			, final String field2, final boolean disableAuthorization) {
 		final GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1
 				, field1Id, field2, disableAuthorization);
-		@SuppressWarnings("unchecked") // NOPMD
-		final List<String> queryResult = (List<String>)this.executeQuery(queryBuilder.getSQL(), new GenericFieldMapperString());
-		if (queryResult != null && !queryResult.isEmpty()) {
+		final String queryResult = queryForString(queryBuilder.getSQL());
+		if (!StrUtils.isEmptyOrNull(queryResult)) {
 			return queryResult;
 		}
 		return null;
 	}
 	
-	public List<String> getStringField(final String tableName, final String field1, final long field1Id
+	public String getStringField(final String tableName, final String field1, final long field1Id
 			, final String field2) {
 		return getStringField(tableName, field1, field1Id, field2, false);		
 	}
 	
 	public int getIntegerField(final String tableName, final String field1, final long field1Id
 			, final String field2, final boolean disableAuthorization) {
-		
 		final GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1
 				, field1Id, field2, disableAuthorization);
 		
