@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.context.ContextPath;
-import de.uni_koeln.arachne.mapping.EntityIdMapper;
 import de.uni_koeln.arachne.service.SQLResponseObject;
 import de.uni_koeln.arachne.sqlutil.ConnectedEntityIdsSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.ConnectedEntitiesSQLQueryBuilder;
@@ -60,7 +59,7 @@ public class GenericSQLDao extends SQLDao {
 	public List<Map<String, String>> getConnectedEntities(final String contextType, final long entityId) {
 		final ConnectedEntitiesSQLQueryBuilder queryBuilder = new ConnectedEntitiesSQLQueryBuilder(contextType, entityId);
 		@SuppressWarnings("unchecked")
-		final List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeQuery(queryBuilder.getSQL()
+		final List<Map<String, String>> queryResult = (List<Map<String, String>>)query(queryBuilder.getSQL()
 				, new GenericEntitiesMapper("AdditionalInfosJSON"));
 
 		if (queryResult != null && !queryResult.isEmpty()) {
@@ -72,8 +71,7 @@ public class GenericSQLDao extends SQLDao {
 	public List<Long> getConnectedEntityIds(final long entityId) {
 		final ConnectedEntityIdsSQLQueryBuilder queryBuilder = new ConnectedEntityIdsSQLQueryBuilder(entityId);
 		@SuppressWarnings("unchecked")
-		final List<Long> queryResult = (List<Long>)this.executeQuery(queryBuilder.getSQL()
-				, new EntityIdMapper());
+		final List<Long> queryResult = (List<Long>)queryForList(queryBuilder.getSQL(), Long.class);
 		
 		if (queryResult != null && !queryResult.isEmpty()) {
 			return queryResult;
@@ -88,7 +86,7 @@ public class GenericSQLDao extends SQLDao {
 		LOGGER.debug(sql);
 		
 		@SuppressWarnings("unchecked")
-		final List<Long> queryResult = (List<Long>)this.executeQuery(sql, new EntityIdMapper());
+		final List<Long> queryResult = (List<Long>)queryForList(sql, Long.class);
 		
 		if (queryResult != null && !queryResult.isEmpty()) {
 			return queryResult;
@@ -102,7 +100,7 @@ public class GenericSQLDao extends SQLDao {
 		final String sql= sqlBuilder.getSQL();
 		LOGGER.debug(sql);
 		@SuppressWarnings("unchecked")
-		final List<Map<String, String>> queryResult = (List<Map<String, String>>)this.executeQuery(sql
+		final List<Map<String, String>> queryResult = (List<Map<String, String>>)query(sql
 				, new GenericEntitiesMapper("AdditionalInfosJSON"));
 
 		if (queryResult != null && !queryResult.isEmpty()) {
@@ -117,7 +115,7 @@ public class GenericSQLDao extends SQLDao {
 		final GenericFieldsEntityIdJoinedSQLQueryBuilder queryBuilder = new GenericFieldsEntityIdJoinedSQLQueryBuilder(
 				tableName, field1, field1Id, fields);
 		@SuppressWarnings("unchecked")
-		final List<? extends SQLResponseObject> queryResult = (List<? extends SQLResponseObject>)this.executeQuery(
+		final List<? extends SQLResponseObject> queryResult = (List<? extends SQLResponseObject>)query(
 				queryBuilder.getSQL(), rowMapper);
 		
 		if (queryResult != null && !queryResult.isEmpty()) {

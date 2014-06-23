@@ -44,7 +44,7 @@ public class SQLDao {
 	 * @param rowMapper The RowMapper that Maps the Result of the Query to the an Generic Object Type
 	 * @return Returns a List of objects as identified in the <code>RowMapper</code> or <code>null</code>
 	 */
-	protected List<?> executeQuery(final String sQLQuery, final RowMapper<?> rowMapper) {
+	protected List<?> query(final String sQLQuery, final RowMapper<?> rowMapper) {
 		try {
 			return jdbcTemplate.query(sQLQuery,rowMapper);
 		} catch (DataAccessException e) {

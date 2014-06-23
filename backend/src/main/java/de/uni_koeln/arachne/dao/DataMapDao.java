@@ -39,7 +39,7 @@ public class DataMapDao extends SQLDao {
 		LOGGER.debug(sql);
 		
 		@SuppressWarnings("unchecked")
-		final List<Map<String,String>> temp = (List<Map<String, String>>) this.executeQuery(sql, new DatasetMapper());
+		final List<Map<String,String>> temp = (List<Map<String, String>>) this.query(sql, new DatasetMapper());
 		if (temp != null && !temp.isEmpty()) {
 			return temp.get(0);
 		}
@@ -60,7 +60,7 @@ public class DataMapDao extends SQLDao {
 		LOGGER.debug(sql);
 
 		@SuppressWarnings("unchecked")
-		final List<Map<String,String>> temp = (List<Map<String, String>>) this.executeQuery(sql, new DatasetMapper());
+		final List<Map<String,String>> temp = (List<Map<String, String>>) this.query(sql, new DatasetMapper());
 		if (temp != null && !temp.isEmpty()) {
 			return temp.get(0);
 		}
@@ -82,7 +82,7 @@ public class DataMapDao extends SQLDao {
 		final String sql = queryBuilder.getSQL();
 		LOGGER.debug(sql);
 		@SuppressWarnings("unchecked")
-		final List<Map<String,String>> temp = (List<Map<String, String>>) this.executeQuery(sql, new DatasetMapper());
+		final List<Map<String,String>> temp = (List<Map<String, String>>) this.query(sql, new DatasetMapper());
 		
 		Map<String,String> map;  
 		if (temp == null || temp.isEmpty()) {
