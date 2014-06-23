@@ -2,45 +2,45 @@ package de.uni_koeln.arachne.response;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.uni_koeln.arachne.testconfig.WebContextTestExecutionListener;
+import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
-@RunWith(SpringJUnit4ClassRunner.class) 
+@RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(locations={"classpath:test-context.xml"}) 
-@TestExecutionListeners({WebContextTestExecutionListener.class,
-	DependencyInjectionTestExecutionListener.class,
-	DirtiesContextTestExecutionListener.class,
-	TransactionalTestExecutionListener.class })
 public class TestResponseFactory { // NOPMD
-	private transient ResponseFactory responseFactory = null;
-	private transient Dataset dataset = null;	
+	@Mock private GenericSQLDao genericSQLDao;
+	@InjectMocks private ResponseFactory responseFactory = new ResponseFactory();
+	
+	private List<Long> mockIdList = null;
+	
+	private Dataset dataset = null;	
 	
 	@Before
 	public void setUp() {
 		final XmlConfigUtil xmlConfigUtil = new XmlConfigUtil();
 		xmlConfigUtil.setServletContext(new MockServletContext());
 		
-		responseFactory = new ResponseFactory();
 		responseFactory.setXmlConfigUtil(xmlConfigUtil);
 		
 		dataset = new Dataset();
@@ -61,8 +61,13 @@ public class TestResponseFactory { // NOPMD
 		dataset.setFields("test.DataNoLink1", "Start");
 		dataset.setFields("test.DataNoLink2", "End");
 		
-		dataset.setFields("test.facetTest", "TestFacet");
+		dataset.setFields("test.facetTest", "test facet value");
 		
+		mockIdList = new ArrayList<Long>();
+		for (long i = 1; i < 6; i++) {
+			mockIdList.add(i);
+		}
+		Mockito.when(genericSQLDao.getConnectedEntityIds(0)).thenReturn(mockIdList);
 	}
 	
 	@After
@@ -91,70 +96,63 @@ public class TestResponseFactory { // NOPMD
 	
 	@Test
 	public void testType() {
-		// TODO reenable when translations are fully working
-		/*
-		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(dataset);
-		assertEquals("test", response.getType());
-		*/
+		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		assertTrue(response.contains("\"type\":\"type_test\""));
 	}
 	
-	// TODO fix ResponceFactory tests - IMPORTANT
-	/*
 	@Test
 	public void testTitle() {
-		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntityAsJson(dataset);
-		assertEquals("Title of the Test", response.getTitle());
+		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		assertTrue(response.contains("\"title\":\"Title of the Test\""));
 	}
 	
 	@Test
 	public void testSubtitle() {
-		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntityAsJson(dataset);
-		assertEquals("Subtitle of the Test", response.getSubtitle());
+		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		assertTrue(response.contains("\"subtitle\":\"Subtitle of the Test\""));
 	}
 	
 	@Test
 	public void testDatasectionLabel() {
-		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntityAsJson(dataset);
-		assertEquals("Testdata", ((Section)response.getSections()).getLabel());
+		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		assertTrue(response.contains("\"label\":\"Testdata\""));
 	}
 	
 	@Test
 	public void testFieldPrefixPostfix() {
-		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntityAsJson(dataset);
-		final Section FirstInnerSection = (Section)(((Section)response.getSections()).getContent()).get(0);
-		assertEquals("Testdata prefix/postfix", FirstInnerSection.getLabel());
-		
-		final Field concatenatedField = ((Field)FirstInnerSection.getContent().get(0));
-		assertEquals("PrefixTest=success<br/>PostfixTest=success", concatenatedField.getValue());
+		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		assertTrue(response.contains("\"label\":\"Testdata prefix/postfix\""));
+		assertTrue(response.contains("\"content\":[{\"value\":\"PrefixTest=success<br/>PostfixTest=success\"}]"));
 	}
 	
 	@Test
 	public void testFieldSeparator() {
-		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntityAsJson(dataset);
-		final Section SecondInnerSection = (Section)(((Section)response.getSections()).getContent()).get(1);
-		assertEquals("Testdata separator", SecondInnerSection.getLabel());
-		
-		final Field concatenatedField = ((Field)SecondInnerSection.getContent().get(0));
-		assertEquals("first-second", concatenatedField.getValue());
+		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		assertTrue(response.contains("\"label\":\"Testdata separator\""));
+		assertTrue(response.contains("\"content\":[{\"value\":\"first-second\"}]"));
 	}
 	
 	@Test
 	public void testLinkField() {
-		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntityAsJson(dataset);
-		final Section ThirdInnerSection = (Section)(((Section)response.getSections()).getContent()).get(2);
-		assertEquals("Testdata linkField", ThirdInnerSection.getLabel());
-		
-		final Field concatenatedField = ((Field)ThirdInnerSection.getContent().get(0));
-		assertEquals("Start<br/><a href=\"http://testserver.com/link1.html\">TestLink1</a><br/><a href=\"" +
-				"http://testserver.com/link2.html\">TestLink2</a><br/>End", concatenatedField.getValue());
+		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		assertTrue(response.contains("\"label\":\"Testdata linkField\""));
+		assertTrue(response.contains("\"content\":[{\"value\":\"Start<br/>"
+				+ "<a href=\\\"http://testserver.com/link1.html\\\">TestLink1</a><br/>"
+				+ "<a href=\\\"http://testserver.com/link2.html\\\">TestLink2</a><br/>End\"}]"));
 	}
 	
 	@Test
-	public void testFacets() {
-		final FormattedArachneEntity response = responseFactory.createFormattedArachneEntity(dataset);
-		assertEquals("test", response.get getFacet_kategorie().get(0));
-		assertEquals("TestFacet", response.getFacet_ort().get(0));
-	}*/
+	public void testDynamicFacets() {
+		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		assertTrue(response.contains("\"facet_kategorie\": [\"test\"]"));
+		assertTrue(response.contains("\"facet_test\": [\"test facet value\"]"));
+	}
+	
+	@Test
+	public void testStaticFacets() {
+		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		assertTrue(response.contains("\"facet_image\": [\"nein\"]"));
+	}
 	
 	// TODO add test for context tag - the current context implementation makes it nearly impossible to test
 }

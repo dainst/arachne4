@@ -54,8 +54,7 @@
 		<facet name="kategorie" labelKey="Kategorie">
 			<field datasource="Dataset.TableName" />
 		</facet>
-		<!-- Since we only support already defined facets we use 'facet_ort' for testing -->
-		<facet name="ort" labelKey="Ort">
+		<facet name="test" labelKey="Testfacet">
 			<field datasource="test.MissingFacet">
 				<ifEmpty>
 					<field datasource="test.facetTest" />
