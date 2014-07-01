@@ -18,6 +18,10 @@ public class SQLToolbox { // NOPMD
 	public static String generatePrimaryKeyName(final String tablename){
 		if ("marbilder".equals(tablename)) {
 			return "PS_MARBilderID";		
+		} else {
+			if ("zenon".equals(tablename)) {
+				return "zenonid";
+			}
 		}
 		return "PS_" + ucfirst(tablename)+"ID";
 	}
