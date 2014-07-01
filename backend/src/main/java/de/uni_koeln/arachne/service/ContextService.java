@@ -104,7 +104,7 @@ public class ContextService {
 	 * @param parent The dataset to add the contexts to.
 	 * @param imageService Instance of ImageService used for image-retrieval
 	 */
-	public void addContextImages(final Dataset parent, final ImageService imageService) {
+	public void addContextImages(final Dataset parent, final ImageService imageService) throws NumberFormatException {
 		// get Context-Images from Context-XML
 		final List<ContextImageDescriptor> contextImages = xmlConfigUtil.getContextImagesNames(parent.getArachneId().getTableName());
 
@@ -148,17 +148,25 @@ public class ContextService {
 
 				for (final Map<String, String> currentContext : contextContents) {
 					final Image image = new Image();
-					final long imageId = Long.parseLong(currentContext.get("semanticconnection.EntityID"));
-					image.setImageId(imageId);
-					image.setSubtitle(currentContext.get("marbilder.DateinameMarbilder"));
-					image.setSourceContext(ts.transl8(contextName));
-					final long sourceRecordId = Long.parseLong(currentContext.get("semanticconnection.ForeignKeyTarget"));
-					// if cover and the context datasets internal key match this context image is the books thumbnail
-					if (cover > 0 && sourceRecordId == cover) {
-						parent.setThumbnailId(imageId);
+					try {
+						final long imageId = Long.parseLong(currentContext.get("semanticconnection.EntityID"));
+						image.setImageId(imageId);
+						image.setSubtitle(currentContext.get("marbilder.DateinameMarbilder"));
+						image.setSourceContext(ts.transl8(contextName));
+						final long sourceRecordId = Long.parseLong(currentContext.get("semanticconnection.ForeignKeyTarget"));
+						// if cover and the context datasets internal key match this context image is the books thumbnail
+						if (cover > 0 && sourceRecordId == cover) {
+							parent.setThumbnailId(imageId);
+						}
+						image.setSourceRecordId(sourceRecordId);
+						resultContextImages.add(image);
+					} catch (NumberFormatException nfe) {
+						LOGGER.error("Failed to get connected image information [" + parent.getArachneId()
+								.getArachneEntityID() + "]. Got 'semanticconnection.EntityID' = " + currentContext
+								.get("semanticconnection.EntityID")	+ " - 'semanticconnection.ForeignKeyTarget' = " 
+								+ currentContext.get("semanticconnection.ForeignKeyTarget"));
+						throw nfe;
 					}
-					image.setSourceRecordId(sourceRecordId);
-					resultContextImages.add(image);
 				}
 			}
 		}
