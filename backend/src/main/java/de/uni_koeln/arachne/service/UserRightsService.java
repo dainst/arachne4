@@ -194,7 +194,7 @@ public class UserRightsService implements IUserRightsService {
 			for (final DatasetGroup group : permissionGroups) {
 				final Condition condition = new Condition();
 
-				condition.setPart1( SQLToolbox.getQualifiedFieldname(tableName, "DatensatzGruppe"+SQLToolbox.ucfirst(tableName)));
+				condition.setPart1( SQLToolbox.getQualifiedFieldname(tableName, "DatensatzGruppe"+SQLToolbox.ucFirst(tableName)));
 				condition.setPart2("\""+ group.getName() +"\"");
 				condition.setOperator("=");
 				conditions.add( condition);

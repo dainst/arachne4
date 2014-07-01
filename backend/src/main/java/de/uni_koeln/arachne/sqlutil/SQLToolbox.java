@@ -23,7 +23,7 @@ public class SQLToolbox { // NOPMD
 				return "zenonid";
 			}
 		}
-		return "PS_" + ucfirst(tablename)+"ID";
+		return "PS_" + ucFirst(tablename)+"ID";
 	}
 	
 	/**
@@ -36,7 +36,7 @@ public class SQLToolbox { // NOPMD
 		if ("marbilder".equals(tablename)) {
 			return "FS_MARBilderID";
 		}		
-		return "FS_" + ucfirst(tablename)+"ID";
+		return "FS_" + ucFirst(tablename)+"ID";
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class SQLToolbox { // NOPMD
 	 * @param inputString a String example: bauwerk
 	 * @return example : Bauwerk
 	 */
-	public static String ucfirst(final String inputString) {
+	public static String ucFirst(final String inputString) {
 		return Character.toUpperCase(inputString.charAt(0))+inputString.substring(1);
 	}
 }

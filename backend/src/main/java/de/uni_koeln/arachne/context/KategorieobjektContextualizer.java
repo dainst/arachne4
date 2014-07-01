@@ -46,7 +46,7 @@ public class KategorieobjektContextualizer extends AbstractContextualizer {
 		for (final String objektSubcategory: subcategories) {
 			if (keySet.contains(objektSubcategory + '.' + SQLToolbox.generatePrimaryKeyName(objektSubcategory))) {
 				// write multiple values as ';' separated list
-				subcategoryValue += SQLToolbox.ucfirst(objektSubcategory.substring(6)) + ';'; // NOPMD
+				subcategoryValue += SQLToolbox.ucFirst(objektSubcategory.substring(6)) + ';'; // NOPMD
 			}
 		}
 		if (!StrUtils.isEmptyOrNullOrZero(subcategoryValue)) {
