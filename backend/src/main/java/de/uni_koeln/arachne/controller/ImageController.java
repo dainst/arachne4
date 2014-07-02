@@ -491,6 +491,7 @@ public class ImageController {
 			} catch (IOException e) {
 				LOGGER.error(e.getMessage());
 			} finally {
+				response.setStatus(404);
 				connection.disconnect();
 				connection = null;
 			}
