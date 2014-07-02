@@ -86,6 +86,7 @@ public class ResponseFactory {
 		response.setDegree(dataset.getDegree());
 		
 		// set boost
+		// TODO make faster
 		response.setBoost(((Math.log(response.fields+1)+1)*(Math.log(response.fields+1)+1)*(Math.log(response.degree)+1))/100+1);
 		
 		// set dataset group

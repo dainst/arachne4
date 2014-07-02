@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -23,6 +24,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.uni_koeln.arachne.dao.GenericSQLDao;
+import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
@@ -30,10 +32,11 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 @ContextConfiguration(locations={"classpath:test-context.xml"}) 
 public class TestResponseFactory { // NOPMD
 	@Mock private GenericSQLDao genericSQLDao;
+	@Mock private Transl8Service ts;
 	@InjectMocks private ResponseFactory responseFactory = new ResponseFactory();
 	
 	private List<Long> mockIdList = null;
-	
+		
 	private Dataset dataset = null;	
 	
 	@Before
@@ -68,6 +71,8 @@ public class TestResponseFactory { // NOPMD
 			mockIdList.add(i);
 		}
 		Mockito.when(genericSQLDao.getConnectedEntityIds(0)).thenReturn(mockIdList);
+		Mockito.when(ts.transl8(Mockito.anyString())).thenReturn("type_test");
+		Mockito.when(ts.transl8Facet(Mockito.anyString(), Mockito.anyString())).then(AdditionalAnswers.returnsSecondArg());
 	}
 	
 	@After
@@ -144,6 +149,7 @@ public class TestResponseFactory { // NOPMD
 	@Test
 	public void testDynamicFacets() {
 		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		System.out.println("*********** RESPONSE: " + response);
 		assertTrue(response.contains("\"facet_kategorie\": [\"test\"]"));
 		assertTrue(response.contains("\"facet_test\": [\"test facet value\"]"));
 	}
