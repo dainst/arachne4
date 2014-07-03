@@ -10,6 +10,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,22 +21,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.uni_koeln.arachne.util.ArachneRestTemplate;
+
 /**
- * Gets the translations from transl8 and offers translation functionality;
+ * Gets the translations lazily from transl8 and offers translation functionality.
  */
 @Service
 public class Transl8Service {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Transl8Service.class);
 
-	private transient final RestTemplate restTemplate = new RestTemplate();
+	@Autowired
+	private transient ArachneRestTemplate restTemplate;
 
+	private transient Map<String, Boolean> translationsAvailable = new HashMap<String, Boolean>();
+	
 	private transient Map<String, String> translationMap = new HashMap<String, String>();
 
 	private transient Map<String, String> categoryMap = new HashMap<String, String>();
@@ -48,8 +53,7 @@ public class Transl8Service {
 	public Transl8Service(final @Value("#{config.transl8Url}") String transl8Url) {
 		this.transl8Url = transl8Url;
 		languages.add("de");
-		
-		updateTranslations();
+		translationsAvailable.put(languages.get(0), false);
 	}
 
 	/**
@@ -63,7 +67,6 @@ public class Transl8Service {
 
 		HttpEntity<String> entity = new HttpEntity<String>("", headers);
 
-		// TODO read transl8 URL from application.properties
 		try {
 			final ResponseEntity<String> response = restTemplate.exchange(transl8Url , HttpMethod.GET, entity, String.class);
 			if (response.getStatusCode() == HttpStatus.OK) {
@@ -86,6 +89,7 @@ public class Transl8Service {
 							categoryMap.put(entry.getValue(), key.substring(16));
 						}
 					}
+					translationsAvailable.put(languages.get(0), true);
 					LOGGER.info("Translations are available for: " + languages);
 				} else {
 					LOGGER.error("Translation map is empty. Translations are not available.");
@@ -106,6 +110,9 @@ public class Transl8Service {
 	 * @return Either a translation or the key.
 	 */
 	public String transl8(String key) {
+		if (!translationsAvailable.get(languages.get(0))) {
+			updateTranslations();
+		}
 		if (!translationMap.isEmpty()) {
 			String value = translationMap.get(key);
 			if (value != null) {
@@ -123,6 +130,9 @@ public class Transl8Service {
 	 * @return Either a translation or the key.
 	 */
 	public String transl8Facet(String facetName, String key) {
+		if (!translationsAvailable.get(languages.get(0))) {
+			updateTranslations();
+		}
 		if (!translationMap.isEmpty()) {
 			String value = translationMap.get("facet_" + facetName + '_' + key);
 			if (value != null) {
@@ -138,6 +148,9 @@ public class Transl8Service {
 	 * @return The category key if found else the unchanged key parameter.
 	 */
 	public String categoryLookUp(String key) {
+		if (!translationsAvailable.get(languages.get(0))) {
+			updateTranslations();
+		}
 		if (!categoryMap.isEmpty()) {
 			String value = categoryMap.get(key);
 			if (value != null) {
