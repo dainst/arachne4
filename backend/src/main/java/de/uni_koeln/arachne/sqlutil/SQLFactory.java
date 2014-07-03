@@ -18,7 +18,6 @@ public class SQLFactory {
 	
 	public String getSingleEntityQuery(final EntityId entityId) {
 		final String tableName = entityId.getTableName();
-		//SELECT * FROM `topographie` WHERE 1 AND `topographie`.`PS_TopographieID` = 500000 AND
 		final StringBuilder result = new StringBuilder(64)
 			.append("SELECT * FROM `")
 			.append(tableName)
@@ -28,6 +27,28 @@ public class SQLFactory {
 			.append(entityId.getInternalKey())
 			.append(userRightsService.getSQL(tableName))
 			.append(" LIMIT 1;");
+		return result.toString();
+	}
+	
+	public String getIntFieldByIdQuery(final String tableName, final long id, String field) {
+		
+		final String key = SQLToolbox.getQualifiedFieldname(tableName, SQLToolbox.generatePrimaryKeyName(tableName));
+		field = SQLToolbox.getQualifiedFieldname(tableName, field);
+		
+		final StringBuilder result = new StringBuilder(128)
+			.append("SELECT ")
+			.append(field)
+			.append(" FROM `")
+			.append(tableName)
+			.append("` WHERE ")
+			.append(key)
+			.append(" = \"")
+			.append(id)
+			.append("\" AND ")
+			.append(field)
+			.append(" IS NOT NULL")
+			.append(userRightsService.getSQL(tableName))
+			.append(';');
 		return result.toString();
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +16,7 @@ import de.uni_koeln.arachne.sqlutil.ConnectedEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.ConnectedPathEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldsEntityIdJoinedSQLQueryBuilder;
+import de.uni_koeln.arachne.sqlutil.SQLFactory;
 import de.uni_koeln.arachne.util.StrUtils;
 
 /**
@@ -24,6 +26,9 @@ import de.uni_koeln.arachne.util.StrUtils;
 public class GenericSQLDao extends SQLDao {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericSQLDao.class);
+	
+	@Autowired
+	private transient SQLFactory sqlFactory;
 	
 	public String getStringField(final String tableName, final String field1, final long field1Id
 			, final String field2, final boolean disableAuthorization) {
@@ -41,19 +46,8 @@ public class GenericSQLDao extends SQLDao {
 		return getStringField(tableName, field1, field1Id, field2, false);		
 	}
 	
-	public int getIntegerField(final String tableName, final String field1, final long field1Id
-			, final String field2, final boolean disableAuthorization) {
-		final GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1
-				, field1Id, field2, disableAuthorization);
-		
-		final int queryResult = queryForInt(queryBuilder.getSQL());
-		
-		return queryResult;
-	}
-	
-	public int getIntegerField(final String tableName, final String field1, final long field1Id
-			, final String field2) {
-		return getIntegerField(tableName, field1, field1Id, field2, false);		
+	public int getIntFieldById(final String tableName, final long id, final String field) {
+		return queryForInt(sqlFactory.getIntFieldByIdQuery(tableName, id, field));
 	}
 	
 	public List<Map<String, String>> getConnectedEntities(final String contextType, final long entityId) {

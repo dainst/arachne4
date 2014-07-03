@@ -7,36 +7,37 @@ import org.junit.Test;
 public class TestSQLToolbox {
 	@Test
 	public void testGeneratePrimaryKeyName() {
-		assertEquals(SQLToolbox.generatePrimaryKeyName("test"), "PS_TestID");
-		assertEquals(SQLToolbox.generatePrimaryKeyName("marbilder"), "PS_MARBilderID");
-		assertEquals(SQLToolbox.generatePrimaryKeyName("zenon"), "zenonid");
+		assertEquals("PS_TestID", SQLToolbox.generatePrimaryKeyName("test"));
+		assertEquals("PS_MARBilderID", SQLToolbox.generatePrimaryKeyName("marbilder"));
+		assertEquals("zenonid", SQLToolbox.generatePrimaryKeyName("zenon"));
+		assertEquals("ArachneEntityID", SQLToolbox.generatePrimaryKeyName("arachneentitydegrees"));
 	}
 	
 	@Test
 	public void testGenerateForeignKeyName() {
-		assertEquals(SQLToolbox.generateForeignKeyName("test"), "FS_TestID");
-		assertEquals(SQLToolbox.generateForeignKeyName("marbilder"), "FS_MARBilderID");
+		assertEquals("FS_TestID", SQLToolbox.generateForeignKeyName("test"));
+		assertEquals("FS_MARBilderID", SQLToolbox.generateForeignKeyName("marbilder"));
 	}
 	
 	@Test
 	public void testGenerateDatasetGroupName() {
-		assertEquals(SQLToolbox.generateDatasetGroupName("test"), "DatensatzGruppeTest");
-		assertEquals(SQLToolbox.generateDatasetGroupName("marbilder"), "DatensatzGruppeMARBilder");
+		assertEquals("DatensatzGruppeTest", SQLToolbox.generateDatasetGroupName("test"));
+		assertEquals("DatensatzGruppeMARBilder", SQLToolbox.generateDatasetGroupName("marbilder"));
 	}
 		
 	@Test
 	public void testAddBackticks() {
-		assertEquals(SQLToolbox.addBackticks("test"), "`test`");
+		assertEquals("`test`", SQLToolbox.addBackticks("test"));
 	}
 		
 	@Test
 	public void testGetQualifiedFieldName() {
-		assertEquals(SQLToolbox.getQualifiedFieldname("test", "kurzbeschreibungTest")
-				, "`test`.`kurzbeschreibungTest`");
+		assertEquals("`test`.`kurzbeschreibungTest`"
+				,SQLToolbox.getQualifiedFieldname("test", "kurzbeschreibungTest"));
 	}
 	
 	@Test
 	public void testUCFirst() {
-		assertEquals(SQLToolbox.ucFirst("test"), "Test" );
+		assertEquals("Test", SQLToolbox.ucFirst("test"));
 	}
 }

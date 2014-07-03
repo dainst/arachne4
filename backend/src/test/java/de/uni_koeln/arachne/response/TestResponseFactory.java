@@ -149,7 +149,6 @@ public class TestResponseFactory { // NOPMD
 	@Test
 	public void testDynamicFacets() {
 		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
-		System.out.println("*********** RESPONSE: " + response);
 		assertTrue(response.contains("\"facet_kategorie\": [\"test\"]"));
 		assertTrue(response.contains("\"facet_test\": [\"test facet value\"]"));
 	}

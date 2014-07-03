@@ -16,11 +16,16 @@ public class SQLToolbox { // NOPMD
 	 * @return The name of the Primary key of that Table example PS_BauwerkID
 	 */
 	public static String generatePrimaryKeyName(final String tablename){
+		// TODO replace with map
 		if ("marbilder".equals(tablename)) {
 			return "PS_MARBilderID";		
 		} else {
 			if ("zenon".equals(tablename)) {
 				return "zenonid";
+			} else {
+				if ("arachneentitydegrees".equals(tablename)) {
+					return "ArachneEntityID";
+				}
 			}
 		}
 		return "PS_" + ucFirst(tablename)+"ID";
