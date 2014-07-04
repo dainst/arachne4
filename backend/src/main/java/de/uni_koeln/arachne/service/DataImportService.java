@@ -214,8 +214,9 @@ public class DataImportService implements Runnable { // NOPMD
 				bulkProcessor.close();
 				esClientUtil.setRefreshInterval(indexName, true);
 				esClientUtil.updateSearchIndex();
-				final String success = "Import of " + index + " documents finished in " + ((System.currentTimeMillis()
-						- startTime)/1000f/60f/60f) + " hours."; 
+				final long elapsedTime = (System.currentTimeMillis() - startTime);
+				final String success = "Import of " + index + " documents finished in " + elapsedTime/1000f/60f/60f + " hours ("
+						+ index/((float)elapsedTime/1000) + "documents per second)."; 
 				LOGGER.info(success);
 				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + getHostName() + ") - success", success);
 				contextService.clearCache();
