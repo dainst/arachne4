@@ -14,7 +14,6 @@ import de.uni_koeln.arachne.service.SQLResponseObject;
 import de.uni_koeln.arachne.sqlutil.ConnectedEntityIdsSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.ConnectedEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.ConnectedPathEntitiesSQLQueryBuilder;
-import de.uni_koeln.arachne.sqlutil.GenericFieldSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldsEntityIdJoinedSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.SQLFactory;
 import de.uni_koeln.arachne.util.StrUtils;
@@ -32,9 +31,7 @@ public class GenericSQLDao extends SQLDao {
 	
 	public String getStringField(final String tableName, final String field1, final long field1Id
 			, final String field2, final boolean disableAuthorization) {
-		final GenericFieldSQLQueryBuilder queryBuilder = new GenericFieldSQLQueryBuilder(tableName, field1
-				, field1Id, field2, disableAuthorization);
-		final String queryResult = queryForString(queryBuilder.getSQL());
+		final String queryResult = queryForString(sqlFactory.getFieldQuery(tableName, field1, field1Id, field2, disableAuthorization));
 		if (!StrUtils.isEmptyOrNull(queryResult)) {
 			return queryResult;
 		}
@@ -47,7 +44,7 @@ public class GenericSQLDao extends SQLDao {
 	}
 	
 	public int getIntFieldById(final String tableName, final long id, final String field) {
-		return queryForInt(sqlFactory.getIntFieldByIdQuery(tableName, id, field));
+		return queryForInt(sqlFactory.getFieldByIdQuery(tableName, id, field));
 	}
 	
 	public List<Map<String, String>> getConnectedEntities(final String contextType, final long entityId) {
