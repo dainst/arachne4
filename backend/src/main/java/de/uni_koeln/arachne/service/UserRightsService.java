@@ -207,7 +207,7 @@ public class UserRightsService implements IUserRightsService {
 				if (first) {
 					first = false;
 				} else {
-					sqlBuilder.append(" OR");
+					sqlBuilder.append(" OR ");
 				}
 				sqlBuilder.append(cnd.toString());
 			}

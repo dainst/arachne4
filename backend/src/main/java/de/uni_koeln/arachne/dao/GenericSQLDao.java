@@ -6,13 +6,12 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.context.ContextPath;
+import de.uni_koeln.arachne.mapping.ImageRowMapper;
 import de.uni_koeln.arachne.service.SQLResponseObject;
 import de.uni_koeln.arachne.sqlutil.ConnectedPathEntitiesSQLQueryBuilder;
-import de.uni_koeln.arachne.sqlutil.GenericFieldsEntityIdJoinedSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.SQLFactory;
 import de.uni_koeln.arachne.util.StrUtils;
 
@@ -96,15 +95,12 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
-	public List<? extends SQLResponseObject> getStringFieldsEntityIdJoinedWithCustomRowMapper(
-			final String tableName, final String field1, final long field1Id, final List<String> fields
-			, final RowMapper<? extends SQLResponseObject> rowMapper) {
-		final GenericFieldsEntityIdJoinedSQLQueryBuilder queryBuilder = new GenericFieldsEntityIdJoinedSQLQueryBuilder(
-				tableName, field1, field1Id, fields);
+	public List<? extends SQLResponseObject> getImageList(final String type
+			, final long internalId) {
 		@SuppressWarnings("unchecked")
-		final List<? extends SQLResponseObject> queryResult = (List<? extends SQLResponseObject>)query(
-				queryBuilder.getSQL(), rowMapper);
-		
+		final List<? extends SQLResponseObject> queryResult = (List<? extends SQLResponseObject>)query(sqlFactory
+				.getImageListQuery(type, internalId), new ImageRowMapper());
+				
 		if (queryResult != null && !queryResult.isEmpty()) {
 			return queryResult;
 		}

@@ -94,4 +94,15 @@ public class TestSQLFactory {
 		assertTrue(sqlQuery.equals("SELECT `Target` FROM `SemanticConnection` WHERE NOT `Target` = 0 AND NOT "
 				+ "`TypeTarget` = \"marbilder\" AND Source = 1;"));
 	}
+	
+	@Test
+	public void testGetImageListQuery() {
+		String  sqlQuery = sqlFactory.getImageListQuery("test", 1);
+		
+		assertTrue(sqlQuery.startsWith("SELECT `marbilder`.`DateinameMarbilder`, `arachneentityidentification`.`ArachneEntityID` FROM "
+					+ "`marbilder` LEFT JOIN `arachneentityidentification` ON (`arachneentityidentification`.`TableName` "
+					+ "= \"marbilder\" AND `arachneentityidentification`.`ForeignKey` = `marbilder`.`PS_MARBilderID`) "
+					+ "WHERE `marbilder`.`FS_TestID` = \"1\""));
+		assertTrue(sqlQuery.endsWith("insertPermissionSQLhere;"));
+	}
 }

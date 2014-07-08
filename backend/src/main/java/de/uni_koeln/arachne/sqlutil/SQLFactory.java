@@ -90,11 +90,26 @@ public class SQLFactory {
 		return result.toString();
 	}
 
-	public String getConnectedEntityIdsQuery(long entityId) {
+	public String getConnectedEntityIdsQuery(final long entityId) {
 		final StringBuilder result = new StringBuilder(128)
 			.append("SELECT `Target` FROM `SemanticConnection` WHERE NOT `Target` = 0 AND NOT `TypeTarget` = "
 					+ "\"marbilder\" AND Source = ")
 			.append(entityId)
+			.append(';');
+		return result.toString();
+	}
+
+	public String getImageListQuery(final String type, final long internalId) {
+		final StringBuilder result = new StringBuilder(256)
+			.append("SELECT `marbilder`.`DateinameMarbilder`, `arachneentityidentification`.`ArachneEntityID` FROM "
+					+ "`marbilder` LEFT JOIN `arachneentityidentification` ON (`arachneentityidentification`.`TableName` "
+					+ "= \"marbilder\" AND `arachneentityidentification`.`ForeignKey` = `marbilder`.`PS_MARBilderID`) "
+					+ "WHERE ")
+			.append(SQLToolbox.getQualifiedFieldname("marbilder", SQLToolbox.generateForeignKeyName(type)))
+			.append(" = \"")
+			.append(internalId)
+			.append('"')
+			.append(userRightsService.getSQL("marbilder"))
 			.append(';');
 		return result.toString();
 	}

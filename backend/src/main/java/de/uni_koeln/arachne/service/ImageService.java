@@ -51,10 +51,10 @@ public class ImageService {
 			final ArrayList<String> fieldList = new ArrayList<String>(2);
 			fieldList.add("DateinameMarbilder");
 			@SuppressWarnings("unchecked")
-			final List<Image> imageList = (List<Image>) genericSQLDao.getStringFieldsEntityIdJoinedWithCustomRowMapper("marbilder"
-					, arachneId.getTableName(), arachneId.getInternalKey(), fieldList, new ImageRowMapper());
+			final List<Image> imageList = (List<Image>) genericSQLDao.getImageList(arachneId.getTableName()
+					, arachneId.getInternalKey());
 			// sort image List
-			if (imageList != null && imageList.size()>1) {
+			if (imageList != null && imageList.size() > 1) {
 				Collections.sort(imageList, new ImageComparator());
 			}
 						

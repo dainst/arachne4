@@ -38,7 +38,7 @@ public class Condition {
 	 * returns the Conditions as String Value. the Condition is made to be Part of an Where Statement.
 	 */
 	public String toString(){
-		return " " + part1 + " " + operator + " " + part2;
+		return part1 + " " + operator + " " + part2;
 	}
 	
 	/**
