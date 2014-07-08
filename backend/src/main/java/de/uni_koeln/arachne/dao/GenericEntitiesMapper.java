@@ -15,11 +15,10 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.uni_koeln.arachne.sqlutil.ConnectedEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.util.StrUtils;
 
 public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectedEntitiesSQLQueryBuilder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntitiesMapper.class);
 	
 	private final transient String jsonField;
 

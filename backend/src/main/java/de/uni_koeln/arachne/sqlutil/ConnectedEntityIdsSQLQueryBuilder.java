@@ -12,7 +12,7 @@ import de.uni_koeln.arachne.service.IUserRightsService;
 @Configurable(preConstruction=true)
 public class ConnectedEntityIdsSQLQueryBuilder extends AbstractSQLBuilder {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectedEntitiesSQLQueryBuilder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectedEntityIdsSQLQueryBuilder.class);
 	
 	@Autowired
 	transient protected IUserRightsService userRightsService;

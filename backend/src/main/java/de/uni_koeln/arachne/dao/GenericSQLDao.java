@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import de.uni_koeln.arachne.context.ContextPath;
 import de.uni_koeln.arachne.service.SQLResponseObject;
 import de.uni_koeln.arachne.sqlutil.ConnectedEntityIdsSQLQueryBuilder;
-import de.uni_koeln.arachne.sqlutil.ConnectedEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.ConnectedPathEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldsEntityIdJoinedSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.SQLFactory;
@@ -48,10 +47,9 @@ public class GenericSQLDao extends SQLDao {
 	}
 	
 	public List<Map<String, String>> getConnectedEntities(final String contextType, final long entityId) {
-		final ConnectedEntitiesSQLQueryBuilder queryBuilder = new ConnectedEntitiesSQLQueryBuilder(contextType, entityId);
 		@SuppressWarnings("unchecked")
-		final List<Map<String, String>> queryResult = (List<Map<String, String>>)query(queryBuilder.getSQL()
-				, new GenericEntitiesMapper("AdditionalInfosJSON"));
+		final List<Map<String, String>> queryResult = (List<Map<String, String>>)query(sqlFactory
+				.getConnectedEntitiesQuery(contextType, entityId), new GenericEntitiesMapper("AdditionalInfosJSON"));
 
 		if (queryResult != null && !queryResult.isEmpty()) {
 			return queryResult;
