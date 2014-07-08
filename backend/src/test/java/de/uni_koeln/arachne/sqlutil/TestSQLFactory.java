@@ -79,11 +79,19 @@ public class TestSQLFactory {
 	}
 	
 	@Test
-	public void testgetConnectedEntitiesQuery() {
+	public void testGetConnectedEntitiesQuery() {
 		String  sqlQuery = sqlFactory.getConnectedEntitiesQuery("test", 1);
 		
 		assertTrue(sqlQuery.startsWith("SELECT * FROM `SemanticConnection` LEFT JOIN `test` ON `test`.`PS_TestID` = "
 				+ "`SemanticConnection`.`ForeignKeyTarget` WHERE Source = 1 AND TypeTarget = \"test\""));
 		assertTrue(sqlQuery.endsWith("insertPermissionSQLhere;"));
+	}
+	
+	@Test
+	public void testGetConnectedEntityIdsQuery() {
+		String  sqlQuery = sqlFactory.getConnectedEntityIdsQuery(1);
+		
+		assertTrue(sqlQuery.equals("SELECT `Target` FROM `SemanticConnection` WHERE NOT `Target` = 0 AND NOT "
+				+ "`TypeTarget` = \"marbilder\" AND Source = 1;"));
 	}
 }

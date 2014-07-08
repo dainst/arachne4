@@ -14,7 +14,7 @@ public class SQLFactory {
 	
 	public String getSingleEntityQuery(final EntityId entityId) {
 		final String tableName = entityId.getTableName();
-		final StringBuilder result = new StringBuilder(128)
+		final StringBuilder result = new StringBuilder(256)
 			.append("SELECT * FROM `")
 			.append(tableName)
 			.append("` WHERE ")
@@ -29,7 +29,7 @@ public class SQLFactory {
 	public String getFieldByIdQuery(final String tableName, final long id, String field) {
 		final String key = SQLToolbox.getQualifiedFieldname(tableName, SQLToolbox.generatePrimaryKeyName(tableName));
 		field = SQLToolbox.getQualifiedFieldname(tableName, field);
-		final StringBuilder result = new StringBuilder(128)
+		final StringBuilder result = new StringBuilder(256)
 			.append("SELECT ")
 			.append(field)
 			.append(" FROM `")
@@ -55,7 +55,7 @@ public class SQLFactory {
 		}
 		field = SQLToolbox.getQualifiedFieldname(tableName, field);
 		
-		final StringBuilder result = new StringBuilder(128)
+		final StringBuilder result = new StringBuilder(256)
 			.append("SELECT ")
 			.append(field)
 			.append(" FROM `")
@@ -75,7 +75,7 @@ public class SQLFactory {
 	}
 
 	public String getConnectedEntitiesQuery(final String contextType, final long entityId) {
-		final StringBuilder result = new StringBuilder(128)
+		final StringBuilder result = new StringBuilder(256)
 			.append("SELECT * FROM `SemanticConnection` LEFT JOIN `")
 			.append(contextType)
 			.append("` ON ")
@@ -86,6 +86,15 @@ public class SQLFactory {
 			.append(contextType)
 			.append("\"")
 			.append(userRightsService.getSQL(contextType))
+			.append(';');
+		return result.toString();
+	}
+
+	public String getConnectedEntityIdsQuery(long entityId) {
+		final StringBuilder result = new StringBuilder(128)
+			.append("SELECT `Target` FROM `SemanticConnection` WHERE NOT `Target` = 0 AND NOT `TypeTarget` = "
+					+ "\"marbilder\" AND Source = ")
+			.append(entityId)
 			.append(';');
 		return result.toString();
 	}

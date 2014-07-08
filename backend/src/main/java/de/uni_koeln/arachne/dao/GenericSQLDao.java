@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.context.ContextPath;
 import de.uni_koeln.arachne.service.SQLResponseObject;
-import de.uni_koeln.arachne.sqlutil.ConnectedEntityIdsSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.ConnectedPathEntitiesSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.GenericFieldsEntityIdJoinedSQLQueryBuilder;
 import de.uni_koeln.arachne.sqlutil.SQLFactory;
@@ -58,9 +57,8 @@ public class GenericSQLDao extends SQLDao {
 	}
 	
 	public List<Long> getConnectedEntityIds(final long entityId) {
-		final ConnectedEntityIdsSQLQueryBuilder queryBuilder = new ConnectedEntityIdsSQLQueryBuilder(entityId);
 		@SuppressWarnings("unchecked")
-		final List<Long> queryResult = (List<Long>)queryForList(queryBuilder.getSQL(), Long.class);
+		final List<Long> queryResult = (List<Long>)queryForList(sqlFactory.getConnectedEntityIdsQuery(entityId), Long.class);
 		
 		if (queryResult != null && !queryResult.isEmpty()) {
 			return queryResult;
