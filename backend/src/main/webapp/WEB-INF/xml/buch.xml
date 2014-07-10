@@ -57,9 +57,6 @@
         <section labelKey="Verzeichnis">
           <field datasource="buch.Verzeichnis"/>
         </section>
-        <section labelKey="Cover">
-          <field datasource="buch.Cover"/>
-        </section>
         <section labelKey="Band">
           <field datasource="buch.Band"/>
         </section>
@@ -130,12 +127,6 @@
         <section labelKey="Zusätzliche Maße">
           <field datasource="buch.ZusaetzlicheMasze"/>
           <field datasource="buch.BuchMaszeBemerk"/>
-        </section>
-        <section labelKey="OCR-Text?">
-          <field datasource="buch.hasOcrText"/>
-        </section>
-        <section labelKey="Marc-Data?">
-          <field datasource="buch.hasMarcData"/>
         </section>
         <include type="uri"/>
       </section>

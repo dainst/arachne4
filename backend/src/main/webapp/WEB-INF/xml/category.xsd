@@ -4,6 +4,7 @@
     <xs:complexType>
       <xs:all>
         <xs:element name="explicitContextualizers" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="subtables" type="SubTablesContent" minOccurs="0" maxOccurs="1"/>
         <xs:element name="display" minOccurs="1" maxOccurs="1">
           <xs:complexType>
             <xs:sequence>
@@ -131,27 +132,19 @@
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
-  <!--
-
-    <xs:complexType name="contextImageType">
-        <xs:sequence>
-            <xs:element name="context" type="xs:token">
-                <xs:annotation>
-                    <xs:documentation xml:lang="en"> This element describes the category from where
-                        additional images can be fetched. </xs:documentation>
-                </xs:annotation>
-            </xs:element>
-        </xs:sequence>
-        <xs:attribute name="show" type="showImage" use="required">
-            <xs:annotation>
-                <xs:documentation xml:lang="en"> This attribute defines wether found images are
-                    displayed additionally to directly connected record-images or if they´re only
-                    added if the processed record doesn´t contain any images by itself.
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-    </xs:complexType>
-    -->
+  <xs:complexType name="SubTablesContent">
+    <xs:choice>
+      <xs:element name="subtable" type="SubTableContent" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:choice>    
+  </xs:complexType>
+  <xs:complexType name="SubTableContent">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="connnectFieldParent" type="xs:string" use="required"/>
+        <xs:attribute name="connectFieldSubTable" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
   <xs:simpleType name="showImage">
     <xs:restriction base="xs:NMTOKEN">
       <xs:enumeration value="always"/>
