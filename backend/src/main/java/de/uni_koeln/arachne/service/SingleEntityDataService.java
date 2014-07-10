@@ -38,7 +38,7 @@ public class SingleEntityDataService {
 	
 	public SingleEntityDataService() {
 		
-		// TODO Make This more Flexible
+		// TODO Make This more Flexible - too much db knowledge hard coded
 		// This manages The TableConnectionDescriptions which provides Information about the sub categories
 		// The subCategories contain additional Information to an entity of a category 
 		subCategories = new ArrayList<TableConnectionDescription>(11);
@@ -57,6 +57,8 @@ public class SingleEntityDataService {
 		subCategories.add( new TableConnectionDescription("objekt",PrimaryKey,"objektterrakotten",PrimaryKey));
 		// The display of book always requires the Zenon data
 		subCategories.add( new TableConnectionDescription("buch","bibid","zenon","001"));
+		// The display of book pages have their own Zenon data
+		subCategories.add( new TableConnectionDescription("buchseite","bibidSeite","zenon","001"));
 		// Some images my be unstructured so look for additional data in 'marbilderbestand'
 		subCategories.add( new TableConnectionDescription("marbilder", "DateinameMarbilder", "marbilderbestand", "DateinameMarbilderbestand"));
 		// connect mainabstract-records with additional information from quantification

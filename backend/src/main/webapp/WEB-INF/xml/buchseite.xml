@@ -28,6 +28,9 @@
         <section labelKey="">
           <field datasource="buchseite.Inventarnummern" prefix="Negativnummer: "/>
         </section>
+        <section labelKey="Zenon Meta-Data">
+          <field datasource="zenon.001" prefix="001: "/>  
+        </section>
       </section>
       <context type="Buchseiteocrtext">
         <field datasource=".dummyField"/>
