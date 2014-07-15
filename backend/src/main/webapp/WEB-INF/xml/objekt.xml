@@ -1,6 +1,17 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="objekt" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
   <explicitContextualizers>custompathobjektzenontitle</explicitContextualizers>
+  <subtables>
+    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektbauornamentik</subtable>
+    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektgemaelde</subtable>
+    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektkeramik</subtable>
+    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektlebewesen</subtable>
+    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektmosaik</subtable>
+    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektplastik</subtable>
+    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektplomben</subtable>
+    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektsiegel</subtable>
+    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektterrakotten</subtable>
+  </subtables>
   <display>
     <title>
       <section>

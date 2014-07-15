@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="mainabstract" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <subtables>
+    <subtable connectFieldParent="FS_QuantitiesID" connectFieldSubTable="PS_QuantitiesID">quantities</subtable>
+  </subtables>
   <display>
     <title>
       <section separator=" / ">
