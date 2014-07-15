@@ -21,9 +21,9 @@ public class TableConnectionDescription {
 	//Fieldname of field2 or PrimaryKey or ForeignKey
 	protected String field2;
 	//Is it a Connection by Crosstable
-	protected transient boolean connectionByCrosstable;
+	protected boolean connectionByCrosstable;
 	//The name of the Crosstable
-	protected transient String crossTableName;
+	protected String crossTableName;
 	
 	/**
 	 * 
@@ -40,6 +40,7 @@ public class TableConnectionDescription {
 		this.field2 =field2;
 		
 	}
+	
 	/**
 	 * 
 	 * @param table1 table1
@@ -57,9 +58,7 @@ public class TableConnectionDescription {
 		this.crossTableName = crossTableName;
 		
 	}
-	
-	
-	
+		
 	/**
 	 * Checks for the tablename if one of the Things Lists this
 	 * @param tableName The name of The Table to check
@@ -131,5 +130,78 @@ public class TableConnectionDescription {
 	}
 	public String getTable2() {
 		return table2;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (connectionByCrosstable ? 1231 : 1237);
+		result = prime * result
+				+ ((crossTableName == null) ? 0 : crossTableName.hashCode());
+		result = prime * result + ((field1 == null) ? 0 : field1.hashCode());
+		result = prime * result + ((field2 == null) ? 0 : field2.hashCode());
+		result = prime * result + ((table1 == null) ? 0 : table1.hashCode());
+		result = prime * result + ((table2 == null) ? 0 : table2.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		TableConnectionDescription other = (TableConnectionDescription) obj;
+		if (connectionByCrosstable != other.connectionByCrosstable) {
+			return false;
+		}
+		if (crossTableName == null) {
+			if (other.crossTableName != null) {
+				return false;
+			}
+		} else if (!crossTableName.equals(other.crossTableName)) {
+			return false;
+		}
+		if (field1 == null) {
+			if (other.field1 != null) {
+				return false;
+			}
+		} else if (!field1.equals(other.field1)) {
+			return false;
+		}
+		if (field2 == null) {
+			if (other.field2 != null) {
+				return false;
+			}
+		} else if (!field2.equals(other.field2)) {
+			return false;
+		}
+		if (table1 == null) {
+			if (other.table1 != null) {
+				return false;
+			}
+		} else if (!table1.equals(other.table1)) {
+			return false;
+		}
+		if (table2 == null) {
+			if (other.table2 != null) {
+				return false;
+			}
+		} else if (!table2.equals(other.table2)) {
+			return false;
+		}
+		return true;
 	}
 }
