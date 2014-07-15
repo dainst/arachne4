@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- just very basic to have at least some definitions -->
-<category name="test"
-	xmlns="http://arachne.uni-koeln.de/schemas/category"
+<category name="test" xmlns="http://arachne.uni-koeln.de/schemas/category"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<subtables>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="testSubField">testSubTable1</subtable>
+		<subtable connectFieldParent="testParentField" connectFieldSubTable="PrimaryKey">testSubTable2</subtable>
+	</subtables>
 	<display>
 		<title>
 			<section>
@@ -19,7 +22,7 @@
 								</field>
 							</ifEmpty>
 						</field>
-					</ifEmpty> 
+					</ifEmpty>
 				</field>
 			</section>
 		</title>
@@ -38,11 +41,12 @@
 					<field datasource="test.DataSeparatorBefore" />
 					<field datasource="test.DataSeparatorAfter" />
 				</section>
-				<section labelKey="Testdata linkField" >
+				<section labelKey="Testdata linkField">
 					<field datasource="test.DataNoLink1" />
 					<linkField datasource="test.DataLink1" labelKey="TestLink1" />
-					<linkField datasource="test.DataLink2" labelKey="TestLink2" prefix="http://testserver.com/" postfix=".html"/>
-					<field datasource="test.DataNoLink2" />					
+					<linkField datasource="test.DataLink2" labelKey="TestLink2"
+						prefix="http://testserver.com/" postfix=".html" />
+					<field datasource="test.DataNoLink2" />
 				</section>
 				<context type="testContext">
 					<field datasource=".value1" />
