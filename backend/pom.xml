@@ -27,6 +27,8 @@
 		<elasticsearch-version>1.0.1</elasticsearch-version>
 		<snappy-version>1.0.5</snappy-version>
 		<httpcomponents-version>4.3.3</httpcomponents-version>
+		<!-- Plugin Versions -->
+		<aspectj-maven-version>1.5</aspectj-maven-version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -388,7 +390,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
-				<version>1.4</version>
+				<version>${aspectj-maven-version}</version>
 				<configuration>
 					<source>${java-version}</source>
 					<target>${java-version}</target>
