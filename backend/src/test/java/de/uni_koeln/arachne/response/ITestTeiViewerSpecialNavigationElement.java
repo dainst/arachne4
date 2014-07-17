@@ -19,7 +19,7 @@ import de.uni_koeln.arachne.testconfig.WebContextTestExecutionListener;
 	DependencyInjectionTestExecutionListener.class,
 	DirtiesContextTestExecutionListener.class,
 	TransactionalTestExecutionListener.class })
-public class TestTeiViewerSpecialNavigationElement {
+public class ITestTeiViewerSpecialNavigationElement {
 	
 	@Autowired
 	private transient TeiViewerSpecialNavigationElement testItem;

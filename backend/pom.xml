@@ -29,6 +29,7 @@
 		<httpcomponents-version>4.3.3</httpcomponents-version>
 		<!-- Plugin Versions -->
 		<aspectj-maven-version>1.5</aspectj-maven-version>
+		<maven-failsafe-version>2.17</maven-failsafe-version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -45,10 +46,10 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-            <version>${org.springframework-version}</version>
-        </dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
@@ -181,13 +182,13 @@
 			<scope>test</scope>
 		</dependency>
 
-        <!-- Mockito -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>  
-            <version>${org.mockito-version}</version> 
-            <scope>test</scope>
-        </dependency>    
+		<!-- Mockito -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${org.mockito-version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- Hibernate -->
 		<dependency>
@@ -216,14 +217,14 @@
 			<artifactId>xercesImpl</artifactId>
 			<version>${xerces-version}</version>
 		</dependency>
-		
+
 		<!-- JSON (org.json) -->
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20090211</version>
 		</dependency>
-		
+
 		<!-- Jackson JSON Mapper -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -235,7 +236,7 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson-version}</version>
 		</dependency>
-				
+
 		<!-- javassist -->
 		<dependency>
 			<groupId>org.javassist</groupId>
@@ -263,15 +264,15 @@
 			<artifactId>snappy-java</artifactId>
 			<version>${snappy-version}</version>
 		</dependency>
-		
+
 		<!-- reCaptcha -->
 		<dependency>
 			<groupId>net.tanesha.recaptcha4j</groupId>
 			<artifactId>recaptcha4j</artifactId>
 			<version>0.0.7</version>
 		</dependency>
-		
-		<!--  validation -->
+
+		<!-- validation -->
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
@@ -282,33 +283,34 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>5.0.1.Final</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
 		</dependency>
-		
+
 		<!-- Apache HTTP Components (needed to support SSL with RestTemplate) -->
 		<dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${httpcomponents-version}</version>
-        </dependency>
-		
-		<!-- Servlet 3.0 specs (needed to make MockHttpService in Spring 4 run in 2.5 environments) -->
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-servlet_3.0_spec</artifactId>
-            <version>1.0</version>
-            <scope>test</scope>
-        </dependency>            
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${httpcomponents-version}</version>
+		</dependency>
+
+		<!-- Servlet 3.0 specs (needed to make MockHttpService in Spring 4 run 
+			in 2.5 environments) -->
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-servlet_3.0_spec</artifactId>
+			<version>1.0</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<!-- spring main repo -->
@@ -431,13 +433,46 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.12.3</version>
+				<!-- same version as failsafe plugin -->
+				<version>${maven-failsafe-version}</version>
 				<configuration>
 					<junitArtifactName>junit:junit</junitArtifactName>
+					<includes>
+						<include>**/Test*.java</include>
+					</includes>
 					<excludes>
+						<exclude>**/ITest*.java</exclude>
 						<exclude>**/*_Roo_*</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven-failsafe-version}</version>
+				<configuration>
+                    <includes>
+                        <include>**/ITest*.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/Test*.java</exclude>
+                        <exclude>**/*_Roo_*</exclude>
+                    </excludes>
+                </configuration>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>verify</id>
+						<goals>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>

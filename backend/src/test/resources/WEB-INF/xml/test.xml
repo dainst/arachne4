@@ -53,6 +53,10 @@
 				</context>
 			</section>
 		</datasections>
+		<contextImages>
+            <contextImage show="always">testalways</contextImage>
+            <contextImage show="ifEmpty">testifempty</contextImage>
+        </contextImages>
 	</display>
 	<facets>
 		<facet name="kategorie" labelKey="Kategorie">
