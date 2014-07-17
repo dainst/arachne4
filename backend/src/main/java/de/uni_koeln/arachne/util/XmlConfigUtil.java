@@ -950,8 +950,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	 */
 	private List<ContextImageDescriptor> getImageContextNames(final String type) {
 		final Document document = getDocument(type);
-		if(document == null) {
-			return null;
+		if (document == null) {
+			return new ArrayList<ContextImageDescriptor>();
 		}
 		
 		final Element rootElement = document.getRootElement();
@@ -960,12 +960,12 @@ public class XmlConfigUtil implements ServletContextAware {
 		
 		final Element contextImages = display.getChild("contextImages", namespace);
 		if (contextImages == null) {
-			return null;
+			return new ArrayList<ContextImageDescriptor>();
 		}
 		
 		final List<Element> contextImagesList = contextImages.getChildren("contextImage", namespace);
 		if (contextImagesList == null || contextImagesList.isEmpty()) {
-			return null;
+			return new ArrayList<ContextImageDescriptor>();
 		}
 		
 		final List<ContextImageDescriptor> result = new ArrayList<ContextImageDescriptor>(contextImagesList.size());
