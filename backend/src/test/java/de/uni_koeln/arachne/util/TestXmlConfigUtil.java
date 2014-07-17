@@ -31,7 +31,7 @@ public class TestXmlConfigUtil {
 	private transient XmlConfigUtil xmlConfigUtil;
 	
 	@Before
-	public void initTestXMLConfig() {
+	public void initXMLConfig() {
 		xmlConfigUtil = new XmlConfigUtil();
 		xmlConfigUtil.setServletContext(new MockServletContext("file:src/test/resources"));
 	}
@@ -99,6 +99,42 @@ public class TestXmlConfigUtil {
 		List<String> contextualizers = xmlConfigUtil.getExplicitContextualizers("test");
 		
 		assertNotNull(contextualizers);
+		assertFalse(contextualizers.isEmpty());
+		assertEquals(3, contextualizers.size());
+		assertEquals("testcontextualizer1", contextualizers.get(0));
+		assertEquals("testcontextualizer2", contextualizers.get(1));
+		assertEquals("testcontextualizer3", contextualizers.get(2));
+		
+		// cached
+		contextualizers = xmlConfigUtil.getExplicitContextualizers("test");
+
+		assertNotNull(contextualizers);
+		assertFalse(contextualizers.isEmpty());
+		assertEquals(3, contextualizers.size());
+		assertEquals("testcontextualizer1", contextualizers.get(0));
+		assertEquals("testcontextualizer2", contextualizers.get(1));
+		assertEquals("testcontextualizer3", contextualizers.get(2));
+		
+		// uncached
+		contextualizers = xmlConfigUtil.getExplicitContextualizers("unkowntype");
+		assertNotNull(contextualizers);
+		assertTrue(contextualizers.isEmpty());
+		
+		// cached
+		contextualizers = xmlConfigUtil.getExplicitContextualizers("unkowntype");
+		assertNotNull(contextualizers);
+		assertTrue(contextualizers.isEmpty());
+	}
+
+	@Test
+	public void testGetFacetsFromXMLFile() {
+		List<String> facets = xmlConfigUtil.getFacetsFromXMLFile("test");
+		System.out.println(facets);
+		assertNotNull(facets);
+		assertFalse(facets.isEmpty());
+		assertEquals(2, facets.size());
+		assertEquals("kategorie", facets.get(0));
+		assertEquals("test", facets.get(1));
 	}
 	
 	@Test

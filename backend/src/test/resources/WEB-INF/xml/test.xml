@@ -8,6 +8,7 @@
 		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="testSubField">testSubTable1</subtable>
 		<subtable connectFieldParent="testParentField" connectFieldSubTable="PrimaryKey">testSubTable2</subtable>
 	</subtables>
+	<explicitContextualizers>testcontextualizer1,testcontextualizer2, testcontextualizer3</explicitContextualizers>
 	<display>
 		<title>
 			<section>
