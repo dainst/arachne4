@@ -217,6 +217,23 @@ public class TestXmlConfigUtil {
 	}
 	
 	@Test
+	public void testGetIfEmptyFromField() {
+		Document testDocument = xmlConfigUtil.getDocument("test");
+		final Namespace namespace = testDocument.getRootElement().getNamespace();
+		final Element section = testDocument.getRootElement().getChild("display", namespace)
+				.getChild("title", namespace).getChild("section", namespace);
+				
+		final Dataset dataset = getTestDataSet();
+		
+		StringBuilder ifEmptySB = xmlConfigUtil.getIfEmptyFromField(section, namespace, dataset);
+		assertNull(ifEmptySB);
+		
+		ifEmptySB = xmlConfigUtil.getIfEmptyFromField(section.getChild("field", namespace), namespace, dataset);
+		assertNotNull(ifEmptySB);
+		assertEquals("Title of the Test", ifEmptySB.toString());		
+	}
+	
+	@Test
 	public void testGetSubcategories() {
 		// uncached
 		List<TableConnectionDescription> subCategories = xmlConfigUtil.getSubCategories("test");
