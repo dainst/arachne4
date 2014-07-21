@@ -12,13 +12,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import de.uni_koeln.arachne.context.AbstractLink;
 import de.uni_koeln.arachne.context.ArachneLink;
@@ -27,15 +23,9 @@ import de.uni_koeln.arachne.context.ContextImageDescriptor;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Section;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
-import de.uni_koeln.arachne.testconfig.WebContextTestExecutionListener;
 
-
-@RunWith(SpringJUnit4ClassRunner.class) 
+@RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(locations={"classpath:test-context.xml"}) 
-@TestExecutionListeners( { WebContextTestExecutionListener.class,
-	DependencyInjectionTestExecutionListener.class,
-	DirtiesContextTestExecutionListener.class,
-	TransactionalTestExecutionListener.class })
 public class TestXmlConfigUtil {
 	private transient XmlConfigUtil xmlConfigUtil;
 	
@@ -179,7 +169,7 @@ public class TestXmlConfigUtil {
 	@Test
 	public void testGetFacetsFromXMLFile() {
 		List<String> facets = xmlConfigUtil.getFacetsFromXMLFile("test");
-		System.out.println(facets);
+		
 		assertNotNull(facets);
 		assertFalse(facets.isEmpty());
 		assertEquals(2, facets.size());
