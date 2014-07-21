@@ -83,11 +83,11 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * <br>
 	 * The validity of the xml file is not checked!!!
 	 * @param context The xml context <code>Element</code> to parse.
-	 * @param dataset The dataset that contains the SQL query results.
 	 * @param namespace The namespace of the document
+	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Section</code> object containing the context sections content or <code>null</code> if access is denied.
 	 */
-	public Section getContentFromContext(final Element context, final Dataset dataset, final Namespace namespace) {
+	public Section getContentFromContext(final Element context, final Namespace namespace, final Dataset dataset) {
 		
 		if (!hasMinGroupId(context.getAttributeValue("minGroupId"))) {
 			return null;
@@ -240,7 +240,7 @@ public class XmlConfigUtil implements ServletContextAware {
 					addLinkFieldToResult(element, result, dataset, separator);
 				} else {
 					if (element.getName().equals("context")) {
-						final Section nextSection = (Section)getContentFromContext(element, dataset, namespace);
+						final Section nextSection = (Section)getContentFromContext(element, namespace, dataset);
 						if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
 							result.add(nextSection);
 						}

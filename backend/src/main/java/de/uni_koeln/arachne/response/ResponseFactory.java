@@ -374,7 +374,7 @@ public class ResponseFactory {
 					contentList.add(section);
 				}
 			} else {
-				final Section section = (Section)xmlConfigUtil.getContentFromContext(currentElement, dataset, namespace);
+				final Section section = (Section)xmlConfigUtil.getContentFromContext(currentElement, namespace, dataset);
 				if (section != null && !section.getContent().isEmpty()) {
 					contentList.add(section);
 				}
@@ -462,7 +462,7 @@ public class ResponseFactory {
 	 */
 	private void getFacetContext(final Dataset dataset, final Element child, final List<String> values) {
 		
-		final Section section = xmlConfigUtil.getContentFromContext(child, dataset, null);
+		final Section section = xmlConfigUtil.getContentFromContext(child, null, dataset);
 		if (section != null) {
 			for (final AbstractContent content:section.getContent()) {
 				if (content instanceof FieldList) {
