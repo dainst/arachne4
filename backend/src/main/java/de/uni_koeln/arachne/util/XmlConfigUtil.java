@@ -215,13 +215,6 @@ public class XmlConfigUtil implements ServletContextAware {
 	 */
 	public AbstractContent getContentFromSections(final Element section, final Namespace namespace, final Dataset dataset) {
 		
-		/*
-		List<Context> contexts = dataset.getContext();
-		for(Context localContext : contexts) {
-			LOGGER.debug("Context: " + localContext.getContextType() + ": " + localContext.getContextSize());
-		}
-		*/
-		
 		if (!hasMinGroupId(section.getAttributeValue("minGroupId"))) {
 			return null;
 		}
