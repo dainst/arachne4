@@ -427,7 +427,7 @@ public class ResponseFactory {
 					if ("field".equals(childName)) {
 						String value = dataset.getField(child.getAttributeValue("datasource"));
 						if (value == null) {
-							final StringBuilder ifEmtpyValue = xmlConfigUtil.getIfEmpty(child, namespace, dataset);
+							final StringBuilder ifEmtpyValue = xmlConfigUtil.getIfEmptyFromField(child, namespace, dataset);
 							if (!StrUtils.isEmptyOrNull(ifEmtpyValue)) {
 								value = ifEmtpyValue.toString();
 							}

@@ -356,22 +356,22 @@ public class XmlConfigUtil implements ServletContextAware {
 	/**
 	 * Returns the content of a field of the dataset as defined inside an <code>ifEmtpy</code> tag in the XML config file.
 	 * It is safe to use even if the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.
-	 * @param element The XML element describing the parent of the <code>ifEmpty</code> element.
+	 * @param field The XML element describing the parent of the <code>ifEmpty</code> element.
 	 * @param dataset The current dataset.
 	 * @param nameSpace The current namespace.
 	 * @return A <code>StringBuilder</code> containing the formatted value or <code>null</code> if no value could be retrieved or
 	 * the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.
 	 */
-	public StringBuilder getIfEmpty(final Element element, final Namespace namespace, final Dataset dataset) {
+	public StringBuilder getIfEmptyFromField(final Element field, final Namespace namespace, final Dataset dataset) {
 		String key;
 		StringBuilder result = null;
-		final Element ifEmptyElement = element.getChild("ifEmpty", namespace);
+		final Element ifEmptyElement = field.getChild("ifEmpty", namespace);
 		if (ifEmptyElement != null) {
 			key = ifEmptyElement.getChild("field", namespace).getAttributeValue("datasource");
 			if (key != null && !key.isEmpty()) {
 				final String ifEmptyValue = dataset.getField(key);
 				if (ifEmptyValue == null) {
-					result = getIfEmpty(ifEmptyElement.getChild("field", namespace), namespace , dataset); 
+					result = getIfEmptyFromField(ifEmptyElement.getChild("field", namespace), namespace , dataset); 
 				} else {
 					result = new StringBuilder(16).append(ifEmptyValue);
 				}
@@ -653,7 +653,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		StringBuilder value = null;
 		final String initialValue = dataset.getField(element.getAttributeValue("datasource"));
 		if (initialValue == null) {
-			value = getIfEmpty(element, namespace, dataset);
+			value = getIfEmptyFromField(element, namespace, dataset);
 		} else {
 			value = new StringBuilder(16).append(initialValue);
 		}
