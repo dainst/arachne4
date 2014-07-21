@@ -2,8 +2,12 @@ package de.uni_koeln.arachne.util;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.Namespace;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +20,12 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
+import de.uni_koeln.arachne.context.AbstractLink;
+import de.uni_koeln.arachne.context.ArachneLink;
+import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.context.ContextImageDescriptor;
+import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.response.Section;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
 import de.uni_koeln.arachne.testconfig.WebContextTestExecutionListener;
 
@@ -39,6 +48,62 @@ public class TestXmlConfigUtil {
 	@After
 	public void releaseXMLConfig() {
 		xmlConfigUtil = null;
+	}
+	
+	private Dataset getTestDataSet() {
+		final Dataset dataset = new Dataset();
+		
+		dataset.setArachneId(new EntityId("test", 0L, 0L, false));
+				
+		dataset.setFields("test.Title", "Title of the Test");
+		
+		final Dataset linkDataset = new Dataset();
+		
+		linkDataset.setArachneId(new EntityId("testContext", 0L, 1L, false));
+				
+		linkDataset.setFields("testContext.value", "Test Context Value");
+		
+		final ArachneLink link = new ArachneLink();
+		link.setEntity1(dataset);
+		link.setEntity2(linkDataset);
+		
+		final List<AbstractLink> contexts = new ArrayList<AbstractLink>();
+		contexts.add(link);
+		
+		final Context context = new Context("testContext", dataset, contexts);
+		dataset.addContext(context);		
+		
+		return dataset;
+	}
+	
+	@Test
+	public void testGetDocument() {
+		// uncached
+		assertNotNull(xmlConfigUtil.getDocument("test"));
+		
+		// cached
+		assertNotNull(xmlConfigUtil.getDocument("test"));
+		
+		// uncached
+		assertNull(xmlConfigUtil.getDocument("unknowntype"));
+		
+		// cached
+		assertNull(xmlConfigUtil.getDocument("unknowntype"));
+	}
+	
+	@Test
+	public void testGetContentFromContext() {
+		Document testDocument = xmlConfigUtil.getDocument("test");
+		final Namespace namespace = testDocument.getRootElement().getNamespace();
+		final Element context = testDocument.getRootElement().getChild("display", namespace)
+				.getChild("datasections", namespace).getChild("section", namespace).getChild("context", namespace);
+		
+		final Section section = xmlConfigUtil.getContentFromContext(context, getTestDataSet(), namespace); 
+		
+		assertNotNull(section);
+		assertFalse(section.getContent().isEmpty());
+		assertEquals(1, section.getContent().size());
+		assertEquals("Test Context Value", section.getContent().get(0).toString());
 	}
 	
 	@Test
@@ -76,21 +141,6 @@ public class TestXmlConfigUtil {
 		contextImageDescriptors = xmlConfigUtil.getContextImagesNames("unknowntype");
 		assertNotNull(contextImageDescriptors);
 		assertTrue(contextImageDescriptors.isEmpty());
-	}
-	
-	@Test
-	public void testGetDocument() {
-		// uncached
-		assertNotNull(xmlConfigUtil.getDocument("test"));
-		
-		// cached
-		assertNotNull(xmlConfigUtil.getDocument("test"));
-		
-		// uncached
-		assertNull(xmlConfigUtil.getDocument("unknowntype"));
-		
-		// cached
-		assertNull(xmlConfigUtil.getDocument("unknowntype"));
 	}
 	
 	@Test

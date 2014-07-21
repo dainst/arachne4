@@ -50,7 +50,7 @@
 					<field datasource="test.DataNoLink2" />
 				</section>
 				<context type="testContext">
-					<field datasource=".value1" />
+					<field datasource=".value" />
 				</context>
 			</section>
 		</datasections>
