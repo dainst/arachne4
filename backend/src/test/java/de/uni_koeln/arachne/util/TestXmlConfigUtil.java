@@ -20,6 +20,7 @@ import de.uni_koeln.arachne.context.AbstractLink;
 import de.uni_koeln.arachne.context.ArachneLink;
 import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.context.ContextImageDescriptor;
+import de.uni_koeln.arachne.response.AbstractContent;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Section;
 import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
@@ -46,6 +47,21 @@ public class TestXmlConfigUtil {
 		dataset.setArachneId(new EntityId("test", 0L, 0L, false));
 				
 		dataset.setFields("test.Title", "Title of the Test");
+		
+		dataset.setFields("test.Subtitle", "Subtitle of the Test");
+		
+		dataset.setFields("test.DataPrefix", "success");
+		dataset.setFields("test.DataPostfix", "PostfixTest");
+		
+		dataset.setFields("test.DataSeparatorBefore", "first");
+		dataset.setFields("test.DataSeparatorAfter", "second");
+		
+		dataset.setFields("test.DataLink1", "http://testserver.com/link1.html");
+		dataset.setFields("test.DataLink2", "link2");
+		dataset.setFields("test.DataNoLink1", "Start");
+		dataset.setFields("test.DataNoLink2", "End");
+		
+		dataset.setFields("test.facetTest", "test facet value");
 		
 		final Dataset linkDataset = new Dataset();
 		
@@ -88,7 +104,7 @@ public class TestXmlConfigUtil {
 		final Element context = testDocument.getRootElement().getChild("display", namespace)
 				.getChild("datasections", namespace).getChild("section", namespace).getChild("context", namespace);
 		
-		final Section section = xmlConfigUtil.getContentFromContext(context, getTestDataSet(), namespace); 
+		final Section section = xmlConfigUtil.getContentFromContext(context, namespace, getTestDataSet()); 
 		
 		assertNotNull(section);
 		assertFalse(section.getContent().isEmpty());
@@ -96,6 +112,29 @@ public class TestXmlConfigUtil {
 		assertEquals("Test Context Value", section.getContent().get(0).toString());
 	}
 	
+	@Test
+	public void testGetContentFromSections() {
+		Document testDocument = xmlConfigUtil.getDocument("test");
+		final Namespace namespace = testDocument.getRootElement().getNamespace();
+		final List<Element> sections = testDocument.getRootElement().getChild("display", namespace)
+				.getChild("datasections", namespace).getChild("section", namespace).getChildren("section", namespace);
+		
+		final Dataset dataset = getTestDataSet();
+		
+		final List<String> expected = new ArrayList<String>(3);
+		expected.add("Testdata prefix/postfix: PrefixTest=success<br/>PostfixTest=success");
+		expected.add("Testdata separator: first-second");
+		expected.add("Testdata linkField: Start<br/><a href=\"http://testserver.com/link1.html\">TestLink1</a><br/>"
+				+ "<a href=\"http://testserver.com/link2.html\">TestLink2</a><br/>End");
+				
+		for (int i = 0; i < 2; i++) {
+			final AbstractContent content = xmlConfigUtil.getContentFromSections(sections.get(i), namespace, dataset);
+			assertNotNull(content);
+			assertFalse(content.toString().isEmpty());
+			assertEquals(expected.get(i), content.toString());
+		}
+	}
+		
 	@Test
 	public void testGetContextImagesNames() {
 		// uncached
