@@ -13,7 +13,6 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java-version>1.6</java-version>
 		<org.springframework-version>4.0.6.RELEASE</org.springframework-version>
-		<org.springframework.roo-version>1.2.5.RELEASE</org.springframework.roo-version>
 		<org.aspectj-version>1.7.4</org.aspectj-version>
 		<org.slf4j-version>1.7.7</org.slf4j-version>
 		<!-- External lib versions -->
@@ -67,13 +66,7 @@
 			<artifactId>spring-oxm-tiger</artifactId>
 			<version>1.5.10</version>
 		</dependency>
-		<!-- Roo dependencies -->
-		<dependency>
-			<groupId>org.springframework.roo</groupId>
-			<artifactId>org.springframework.roo.annotations</artifactId>
-			<version>${org.springframework.roo-version}</version>
-			<scope>provided</scope>
-		</dependency>
+		
 		<!-- spring orm dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -313,19 +306,21 @@
 			<version>1.0</version>
 			<scope>test</scope>
 		</dependency>
+	   
+	    <!-- hack to overcome http://jira.codehaus.org/browse/MSITE-228 -->	
+		<dependency>
+            <groupId>org.apache.maven.skins</groupId>
+            <artifactId>maven-default-skin</artifactId>
+            <version>1.1</version>
+            <optional>true</optional>
+        </dependency>
 	</dependencies>
 	<repositories>
 		<!-- spring main repo -->
 		<repository>
 			<id>springsource-repo</id>
 			<name>SpringSource Repository</name>
-			<url>http://repo.springsource.org/release</url>
-		</repository>
-		<!-- spring roo repo -->
-		<repository>
-			<id>springsource.roo-repo</id>
-			<name>SpringSource Roo Repository</name>
-			<url>http://spring-roo-repository.springsource.org/release</url>
+			<url>http://repo.spring.io/release</url>
 		</repository>
 		<!-- For testing against latest Spring snapshots -->
 		<!-- <repository> <id>org.springframework.maven.snapshot</id> <name>Spring 
@@ -493,6 +488,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
 			</plugin>
 		</plugins>
 	</reporting>
