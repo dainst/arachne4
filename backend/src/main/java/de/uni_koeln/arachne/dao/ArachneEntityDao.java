@@ -1,12 +1,18 @@
 package de.uni_koeln.arachne.dao;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import de.uni_koeln.arachne.mapping.ArachneEntity;
 
 @Repository("ArachneEntityDao")
-public class ArachneEntityDao extends AbstractHibernateTemplateDao {
+public class ArachneEntityDao {
 
+	@Autowired
+	private transient HibernateTemplate hibernateTemplate;
+	
 	/**
 	 * Retrieves alternative Identifiers by Arachne Entity ID
 	 * @param ArachneEntityID The Arachne Entity ID

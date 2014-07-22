@@ -2,6 +2,8 @@ package de.uni_koeln.arachne.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.Connection;
@@ -10,7 +12,11 @@ import de.uni_koeln.arachne.mapping.Connection;
  * Data access class to retrieve information from the 'Verknuepfungen' table via hibernate.
  */
 @Repository("ArachneConnectionDao")
-public class ConnectionDao extends AbstractHibernateTemplateDao {
+public class ConnectionDao {
+
+	@Autowired
+	private transient HibernateTemplate hibernateTemplate;	
+		
 	/**
 	 * @param primaryId Primary id of the entry.
 	 * @return an instance of the <code>ArachneConnection</code> table mapping.

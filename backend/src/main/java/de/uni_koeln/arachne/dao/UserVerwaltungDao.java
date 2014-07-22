@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.dao;
 
 import java.io.Serializable;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.UserAdministration;
@@ -9,8 +10,11 @@ import de.uni_koeln.arachne.util.RegisterFormValidationUtil;
 
 
 @Repository("UserVerwaltungDao")
-public class UserVerwaltungDao extends AbstractHibernateTemplateDao{
+public class UserVerwaltungDao {
 
+	@Autowired
+	private transient HibernateTemplate hibernateTemplate;
+	
 	public UserAdministration findById(final long uid) {
 		return (UserAdministration) hibernateTemplate.get(UserAdministration.class, uid);
 	}

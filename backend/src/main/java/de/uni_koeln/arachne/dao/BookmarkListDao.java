@@ -2,12 +2,16 @@ package de.uni_koeln.arachne.dao;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.BookmarkList;
 
 @Repository("BookmarkListDao")
-public class BookmarkListDao extends AbstractHibernateTemplateDao {
+public class BookmarkListDao {
+
+	@Autowired
+	private transient HibernateTemplate hibernateTemplate;	
 	
 	public BookmarkList getByBookmarkListId(final long bookmarkListId) {
 		return (BookmarkList) hibernateTemplate.get(BookmarkList.class, bookmarkListId);
@@ -25,7 +29,7 @@ public class BookmarkListDao extends AbstractHibernateTemplateDao {
 	
 	public BookmarkList getByUidAndBookmarkListId(final long uid, final long bookmarkListId) {
 		final String hql = "from BookmarkList where id = ? and uid = ?";
-		return (BookmarkList) hibernateTemplate.find(hql, bookmarkListId, uid).get(0);
+		return (BookmarkList) hibernateTemplate.find(hql, new long[] {bookmarkListId, uid}).get(0);
 	}
 	
 	public BookmarkList saveOrUpdateBookmarkList(final BookmarkList bookmarkList) {

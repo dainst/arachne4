@@ -1,10 +1,15 @@
 package de.uni_koeln.arachne.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import de.uni_koeln.arachne.mapping.Bookmark;
 
 @Repository("BookmarkDao")
-public class BookmarkDao extends AbstractHibernateTemplateDao {
+public class BookmarkDao {
+	
+	@Autowired
+	private transient HibernateTemplate hibernateTemplate;
 	
 	public Bookmark getByBookmarkId(final long bookmarkId) {
 		return (Bookmark) hibernateTemplate.get(Bookmark.class, bookmarkId);
