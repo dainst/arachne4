@@ -62,7 +62,7 @@ public class Context {
 	 */
 	public List<AbstractLink> getAllContexts() {
 		if (contextEntities.isEmpty()) {
-			return  null;
+			return null;
 		} else {
 			return contextEntities;
 		}

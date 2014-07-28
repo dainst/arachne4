@@ -49,14 +49,24 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	protected Long thumbnailId;
 
 	/**
-	 * The place this entity is connected to
+	 * The find spot this entity is connected to
 	 */
-	protected String place = null;
+	protected String findSpot = null;
 	
 	/**
-	 * The geo coordinates of the place.
+	 * The geo coordinates of the find spot.
 	 */
-	protected String location = null;
+	protected String findSpotLocation = null;
+	
+	/**
+	 * The depository this entity is connected to
+	 */
+	protected String depository = null;
+	
+	/**
+	 * The geo coordinates of the depository.
+	 */
+	protected String depositoryLocation = null;
 	
 	/**
 	 * The number of connections this entity has
@@ -142,20 +152,36 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		this.thumbnailId = thumbnailId;
 	}
 
-	public String getPlace() {
-		return this.place;
+	public String getFindSpot() {
+		return this.findSpot;
 	}
 	
-	public void setPlace(final String place) {
-		this.place = place;		
+	public void setFindSpot(final String findSpot) {
+		this.findSpot = findSpot;		
 	}
 
-	public String getLocation() {
-		return this.location;
+	public String getFindSpotLocation() {
+		return this.findSpotLocation;
 	}
 	
-	public void setLocation(final String location) {
-		this.location = location;
+	public void setFindSpotLocation(final String findSpotLocation) {
+		this.findSpotLocation = findSpotLocation;
+	}
+	
+	public String getDepository() {
+		return this.depository;
+	}
+	
+	public void setDepository(final String depository) {
+		this.depository = depository;		
+	}
+
+	public String getDepositoryLocation() {
+		return this.depositoryLocation;
+	}
+	
+	public void setDepositoryLocation(final String depositoryLocation) {
+		this.depositoryLocation = depositoryLocation;
 	}
 	
 	public double getDegree() {

@@ -114,9 +114,14 @@ public class SearchService {
 				thumbnailId = Long.valueOf(intThumbnailId);
 			}
 			searchResult.addSearchHit(new de.uni_koeln.arachne.response.SearchHit(Long.valueOf(currenthit.getId())
-					, (String)(currenthit.getSource().get("type")), (String)(currenthit.getSource().get("title"))
-					, (String)(currenthit.getSource().get("subtitle")), thumbnailId, (String)(currenthit.getSource().get("place"))
-					, (String)(currenthit.getSource().get("location"))));
+					, (String)(currenthit.getSource().get("type"))
+					, (String)(currenthit.getSource().get("title"))
+					, (String)(currenthit.getSource().get("subtitle"))
+					, thumbnailId
+					, (String)(currenthit.getSource().get("findSpot"))
+					, (String)(currenthit.getSource().get("findSpotlocation"))
+					, (String)(currenthit.getSource().get("depository"))
+					, (String)(currenthit.getSource().get("depositorylocation"))));
 		}
 		
 		// add facet search results

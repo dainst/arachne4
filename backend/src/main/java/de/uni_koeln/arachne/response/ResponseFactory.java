@@ -20,6 +20,8 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.uni_koeln.arachne.context.AbstractLink;
+import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.util.EntityId;
@@ -118,18 +120,44 @@ public class ResponseFactory {
 		response.setLastModified(lastModified);
 		
 		// set geo information 
+		// TODO make the place handling more consistent - needs changes to the db
+		Context placeContext = dataset.getContext("ort");
 		
-		final String city = dataset.getField("ort.Stadt");
-		final String country = dataset.getField("ort.Land");
-		if (!StrUtils.isEmptyOrNullOrZero(city) && !StrUtils.isEmptyOrNullOrZero(city)) {
-			response.setPlace(city + ", " + country);
+		if (placeContext != null) {
+			for (AbstractLink link: placeContext.getAllContexts()) {
+				final String city = link.getFieldFromFields("ort.Stadt");
+				final String country = link.getFieldFromFields("ort.Land");
+				final String additionalInfo = link.getFieldFromFields("ort.Aufbewahrungsort");
+				final String place = city + ", " + country + ", " + additionalInfo;
+				final String locationDescription = link.getFieldFromFields("ort.ArtOrtsangabe");
+				final String lat = link.getFieldFromFields("ort.Latitude");
+				final String lon = link.getFieldFromFields("ort.Longitude");
+				String location = null;
+				if (lat != null && lon != null) {
+					location = lat + "," + lon;
+				}
+				if (locationDescription != null) {
+					if ("Fundort".equals(locationDescription)) {
+						response.setFindSpot(place);
+						response.setFindSpotLocation(location);
+					} else {
+						if (locationDescription.contains("Aufbewahrung") && !locationDescription.contains("temporäre")
+								&& !locationDescription.contains("vorheriger")) {
+							response.setDepository(place);
+							response.setDepositoryLocation(location);
+						} else {
+							if ("in situ".equals(locationDescription)) {
+								response.setFindSpot(place);
+								response.setFindSpotLocation(location);
+								response.setDepository(place);
+								response.setDepositoryLocation(location);
+							}
+						}
+					}
+				}
+			}
 		}
-		final String lat = dataset.getField("ort.Latitude");
-		final String lon = dataset.getField("ort.Longitude");
-		if (lat != null && lon != null) {
-			response.setLocation(lat + "," + lon);
-		}
-				
+		
 		final Document document = xmlConfigUtil.getDocument(tableName);
 		if (document != null) {
 			//Set additional Content
@@ -264,11 +292,12 @@ public class ResponseFactory {
 			jsonResponse = new StringBuilder(getNextPowerOfTwo(jsonString.length())).append(jsonString);
 			jsonResponse.replace(jsonResponse.length() - 1, jsonResponse.length(), ",");
 
-			// add the geo facet
-			final String place = response.getPlace();
-			final String location = response.getLocation();
+			// add the geo facets
+						
+			String place = response.getFindSpot();
+			String location = response.getFindSpotLocation();
 			if (place != null && location != null) {
-				jsonResponse.append("\"facet_geo\": [\"");
+				jsonResponse.append("\"facet_fundort\": [\"");
 				jsonResponse.append(place);
 				jsonResponse.append(" [");
 				jsonResponse.append(location);
@@ -276,6 +305,17 @@ public class ResponseFactory {
 				jsonResponse.append("\"],");
 			}
 
+			place = response.getDepository();
+			location = response.getDepositoryLocation();
+			if (place != null && location != null) {
+				jsonResponse.append("\"facet_aufbewahrungsort\": [\"");
+				jsonResponse.append(place);
+				jsonResponse.append(" [");
+				jsonResponse.append(location);
+				jsonResponse.append(']');
+				jsonResponse.append("\"],");
+			}
+			
 			// set image facet
 			if (dataset.getThumbnailId() == null) {
 				jsonResponse.append("\"facet_image\": [\"nein\"],");
@@ -411,9 +451,7 @@ public class ResponseFactory {
 	 * @return A list of facets.
 	 */
 	private FacetList getFacets(final Dataset dataset, final Namespace namespace, final Element facets) {
-		
 		final FacetList result = new FacetList();
-		// JDOM doesn't handle generics correctly so it issues a type safety warning
 		final List<Element> children = facets.getChildren();
 		for (final Element element:children) {
 			if ("facet".equals(element.getName())) {
