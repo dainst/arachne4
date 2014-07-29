@@ -128,11 +128,14 @@ public class ResponseFactory {
 				final String city = link.getFieldFromFields("ort.Stadt");
 				final String country = link.getFieldFromFields("ort.Land");
 				final String additionalInfo = link.getFieldFromFields("ort.Aufbewahrungsort");
-				String place = city;
-				if (!StrUtils.isEmptyOrNull(country)) {
-					place += ", " + country;
-					if (!StrUtils.isEmptyOrNull(additionalInfo)) {
-						place += ", " + additionalInfo;
+				String place = null;
+				if (!StrUtils.isEmptyOrNull(city)) {
+					place = city;				
+					if (!StrUtils.isEmptyOrNull(country)) {
+						place += ", " + country;
+						if (!StrUtils.isEmptyOrNull(additionalInfo)) {
+							place += ", " + additionalInfo;
+						}
 					}
 				}
 				final String locationDescription = link.getFieldFromFields("ort.ArtOrtsangabe");
@@ -142,21 +145,27 @@ public class ResponseFactory {
 				if (lat != null && lon != null) {
 					location = lat + "," + lon;
 				}
-				if (locationDescription != null) {
+				if (!StrUtils.isEmptyOrNull(place) && !StrUtils.isEmptyOrNull(locationDescription)) {
 					if ("Fundort".equals(locationDescription)) {
 						response.setFindSpot(place);
-						response.setFindSpotLocation(location);
+						if (!StrUtils.isEmptyOrNull(location)) {
+							response.setFindSpotLocation(location);
+						}
 					} else {
 						if (locationDescription.contains("Aufbewahrung") && !locationDescription.contains("temporäre")
 								&& !locationDescription.contains("vorheriger")) {
 							response.setDepository(place);
-							response.setDepositoryLocation(location);
+							if (!StrUtils.isEmptyOrNull(location)) {
+								response.setDepositoryLocation(location);
+							}
 						} else {
 							if ("in situ".equals(locationDescription)) {
 								response.setFindSpot(place);
-								response.setFindSpotLocation(location);
 								response.setDepository(place);
-								response.setDepositoryLocation(location);
+								if (!StrUtils.isEmptyOrNull(location)) {
+									response.setFindSpotLocation(location);
+									response.setDepositoryLocation(location);
+								}
 							}
 						}
 					}
