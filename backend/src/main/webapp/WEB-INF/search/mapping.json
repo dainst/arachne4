@@ -50,11 +50,17 @@
          "type":{
             "type":"string"
          },
-         "place":{
+         "findSpot":{
          	"type":"string"
          },
-         "location":{
+         "findSpotLocation":{
          	"type":"geo_point"
+         },
+         "depository":{
+            "type":"string"
+         },
+         "depositoryLocation":{
+            "type":"geo_point"
          },
          "boost":{
          	"type":"double"
