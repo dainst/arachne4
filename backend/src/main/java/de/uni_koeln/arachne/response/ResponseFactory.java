@@ -128,7 +128,13 @@ public class ResponseFactory {
 				final String city = link.getFieldFromFields("ort.Stadt");
 				final String country = link.getFieldFromFields("ort.Land");
 				final String additionalInfo = link.getFieldFromFields("ort.Aufbewahrungsort");
-				final String place = city + ", " + country + ", " + additionalInfo;
+				String place = city;
+				if (!StrUtils.isEmptyOrNull(country)) {
+					place += ", " + country;
+					if (!StrUtils.isEmptyOrNull(additionalInfo)) {
+						place += ", " + additionalInfo;
+					}
+				}
 				final String locationDescription = link.getFieldFromFields("ort.ArtOrtsangabe");
 				final String lat = link.getFieldFromFields("ort.Latitude");
 				final String lon = link.getFieldFromFields("ort.Longitude");
@@ -292,8 +298,15 @@ public class ResponseFactory {
 			jsonResponse = new StringBuilder(getNextPowerOfTwo(jsonString.length())).append(jsonString);
 			jsonResponse.replace(jsonResponse.length() - 1, jsonResponse.length(), ",");
 
+			// set image facet
+			if (dataset.getThumbnailId() == null) {
+				jsonResponse.append("\"facet_image\": [\"nein\"],");
+			} else {
+				jsonResponse.append("\"facet_image\": [\"ja\"],");
+			}
+
 			// add the geo facets
-						
+			// TODO check if this can be moved to the xmls to get more control over positioning of the facets
 			String place = response.getFindSpot();
 			String location = response.getFindSpotLocation();
 			if (place != null && location != null) {
@@ -314,13 +327,6 @@ public class ResponseFactory {
 				jsonResponse.append(location);
 				jsonResponse.append(']');
 				jsonResponse.append("\"],");
-			}
-			
-			// set image facet
-			if (dataset.getThumbnailId() == null) {
-				jsonResponse.append("\"facet_image\": [\"nein\"],");
-			} else {
-				jsonResponse.append("\"facet_image\": [\"ja\"],");
 			}
 
 			// add all other facets
