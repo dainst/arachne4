@@ -29,6 +29,7 @@ import de.uni_koeln.arachne.service.EntityService;
 import de.uni_koeln.arachne.service.ImageService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.util.ESClientUtil;
 import de.uni_koeln.arachne.util.EntityId;
 
@@ -60,6 +61,9 @@ public class ArachneEntityController {
 		
 	@Autowired
 	private transient IUserRightsService userRightsService; 
+	
+	@Autowired
+	private transient Transl8Service ts;
 	
 	private transient String[] internalFields;
 	
@@ -188,7 +192,8 @@ public class ArachneEntityController {
     				.setSize(1)
     				.execute().actionGet();
     	} else {
-    		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString("type:" + category + " AND " + "internalId:" + id), accessFilter);
+    		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString("type:" 
+    				+ ts.transl8(category) + " AND " + "internalId:" + id), accessFilter);
     		searchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
     				.setQuery(query)
     				.setFetchSource(new String[] {"*"}, internalFields)
