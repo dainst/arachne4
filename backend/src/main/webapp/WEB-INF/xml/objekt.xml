@@ -830,7 +830,7 @@
       <field datasource="objekt.Technik"/>
     </facet>
     <facet name="antikegriechlandschaft" labelKey="Antike Landschaft">
-      <field datasource="objekt.Bearbeitungen"/>
+      <field datasource="objekt.antikeGriechLandschaft"/>
     </facet>
     <facet name="antikeroemprovinz" labelKey="Römische Provinz">
       <field datasource="objekt.antikeRoemProvinz"/>
