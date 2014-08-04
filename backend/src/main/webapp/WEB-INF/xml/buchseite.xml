@@ -32,7 +32,34 @@
           <field datasource="buchseite.Inventarnummern" prefix="Negativnummer: "/>
         </section>
         <section labelKey="Zenon Meta-Data">
-          <field datasource="zenon.001" prefix="001: "/>  
+          <section labelKey="BibID" separator=", ">
+            <field datasource="zenon.001" />
+            <linkField labelKey="Zenon" datasource="buchseite.bibidSeite" prefix="http://zenon.dainst.org/#book/"/>
+          </section>
+          <section labelKey="Autor" separator=", ">
+            <field datasource="zenon.100_a" />
+            <field datasource="zenon.100_b" />
+            <field datasource="zenon.100_c" />
+          </section>
+          <section labelKey="Titel" separator=", ">
+            <field datasource="zenon.245_a" />
+            <field datasource="zenon.245_b" />
+            <field datasource="zenon.245_c" />
+          </section>
+          <section labelKey="Publikationsort">
+            <field datasource="zenon.260_a" />
+          </section>  
+          <section labelKey="Verleger">  
+            <field datasource="zenon.260_b" />
+          </section>  
+          <section labelKey="Publikationsdatum">  
+            <field datasource="zenon.260_c" />
+          </section> 
+          <section labelKey="Physische Beschreibung" separator=", ">
+            <field datasource="zenon.300_a" />
+            <field datasource="zenon.300_b" />
+            <field datasource="zenon.300_c" />
+          </section>
         </section>
       </section>
       <context type="Buchseiteocrtext">
