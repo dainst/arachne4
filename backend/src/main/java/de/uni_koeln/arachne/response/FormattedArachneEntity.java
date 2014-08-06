@@ -2,8 +2,12 @@ package de.uni_koeln.arachne.response;
 
 import java.util.Date;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * Response object class that returns preformatted output to the frontend.
@@ -11,6 +15,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  */
 @XmlRootElement(name="entity")
 @XmlSeeAlso({Section.class,Field.class,FieldList.class})
+@JsonInclude(Include.NON_NULL)
 public class FormattedArachneEntity extends BaseArachneEntity {
 	
 	/**
