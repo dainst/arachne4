@@ -145,7 +145,7 @@ public class XmlConfigUtil implements ServletContextAware {
 						StringBuilder newValue = new StringBuilder(32).append("<a href=\"");
 						newValue.append(link);
 						newValue.append(field.substring(LINK_PREFIX.length(), separatorIndex));
-						newValue.append("\">");
+						newValue.append("\" target=\"_blank\">");
 						newValue.append(field.substring(separatorIndex + separator.length()));
 						newValue.append("</a>");
 						tempFieldList.add(newValue.toString());
@@ -570,12 +570,12 @@ public class XmlConfigUtil implements ServletContextAware {
 					if (StrUtils.isEmptyOrNullOrZero(labelKey)) {
 						value = new StringBuilder(32).append("<a href=\"")
 								.append(value.toString())
-								.append("\">")
+								.append("\"  target=\"_blank\">")
 								.append(value.toString())
 								.append("</a>");
 					} else {
 						value.insert(0, "<a href=\"");
-						value.append("\">" + labelKey + "</a>");
+						value.append("\" target=\"_blank\">" + labelKey + "</a>");
 					}
 			}
 			

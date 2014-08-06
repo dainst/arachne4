@@ -30,7 +30,7 @@ public class LinkField extends Field {
 	 * @return A HTML tag that is created from <code>value</code> and <code>labelKey</code>.
 	 */
 	public void convertValueToLink() {
-		this.value = "<a href=\"" + this.value + "\">" + this.labelKey + "</a>";
+		this.value = "<a href=\"" + this.value + "\" target=\"_blank\">" + this.labelKey + "</a>";
 	}
 
 	@Override
