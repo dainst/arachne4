@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
-  <context type="datierung" labelKey="Datierung" separator=" - ">
-    <field datasource=".TypDatierung" postfix=": "/>
+  <context type="datierung" labelKey="Datierung" separator="">
+  	<field datasource=".TypDatierung" postfix=": "/>
     <field datasource=".nachantik"/>
     <field datasource=".FestDat" prefix="(fest datiert: " postfix=") "/>
     <field datasource=".AnfEpoche" postfix=", "/>
@@ -20,5 +20,6 @@
     <field datasource=".EndDatvon"/>
     <field datasource=".EndPraezise" prefix=" (" postfix=") "/>
     <field datasource=".EndTerminus" prefix=", "/>
+    <field datasource=".DatVorschlagAutor" prefix="&lt;br/&gt; - nach: " postfix=" -"/>
   </context>
 </includeSection>

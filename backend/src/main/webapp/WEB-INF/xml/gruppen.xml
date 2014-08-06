@@ -22,18 +22,11 @@
         <include type="ort"/>
         <include type="datierung"/>
         <section labelKey="Allgemein">
-          <!-- Not a nice solution. The first and the last section should not be needed -->
-          <section>
-            <field datasource="gruppen.alternativeBezeichnung" prefix="Alternative Bezeichnung: "/>
-            <field datasource="gruppen.ArtDerGruppe" prefix="Art des Denkmals: "/>
-          </section>
-          <section separator=", ">
-            <field datasource="gruppen.AnzahlFigurenGruppen" prefix="Anzahl der Figuren/Objekte: "/>
-            <field datasource="gruppen.Aufbau"/>
-          </section>
-          <section>
-            <field datasource="gruppen.Zusammengehoerigkeit" prefix="Zusammengehörigkeit: "/>
-          </section>
+          <field datasource="gruppen.alternativeBezeichnung" prefix="Alternative Bezeichnung: " />
+          <field datasource="gruppen.ArtDerGruppe" prefix="Art des Denkmals: " />
+          <field datasource="gruppen.AnzahlFigurenGruppen" prefix="Anzahl der Figuren/Objekte: " />
+          <field datasource="gruppen.Aufbau" prefix="Aufbau: " />
+          <field datasource="gruppen.Zusammengehoerigkeit" prefix="Zusammengehörigkeit: " />
         </section>
         <section labelKey="Überlieferungen">
           <field datasource="gruppen.Nachweise"/>
@@ -57,7 +50,7 @@
         <section labelKey="Thematik">
           <field datasource="gruppen.ThematikGruppen"/>
           <field datasource="gruppen.ThematikMenschen"/>
-          <field datasource="gruppen.ZugehoerigeFiguren" prefix="Figuren"/>
+          <field datasource="gruppen.ZugehoerigeFiguren" prefix="Figuren: "/>
           <field datasource="gruppen.ThemaInWorten"/>
         </section>
         <include type="literatur"/>

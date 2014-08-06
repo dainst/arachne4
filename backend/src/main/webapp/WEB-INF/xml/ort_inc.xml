@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
-  <context type="ort" labelKey="Lokalisierung" separator=", " link="http://gazetteer.dainst.org/place/">
-    <field datasource=".Gazetteerid" prefix="$link$"/>
-    <field datasource=".Stadt"/>
-    <field datasource=".Ort_antik" prefix="(" postfix=")"/>
-    <field datasource=".Land"/>
-    <field datasource=".Countrycode" prefix="(" postfix=")"/>
-    <field datasource=".Aufbewahrungsort"/>
-    <field datasource=".Zusatz"/>
+  <context type="ort" labelKey="Lokalisierung" separator=" " link="http://gazetteer.dainst.org/place/">
+    <field datasource=".Gazetteerid" prefix="$link$" postfix="," />
+    <field datasource=".Stadt" postfix="," />
+    <field datasource=".Ort_antik" prefix="(" postfix="), " />
+    <field datasource=".Land" postfix="," />
+    <field datasource=".Aufbewahrungsort" postfix="." />
+    <field datasource=".Zusatz" postfix="." />
     <!-- AdditionalInfosJSON -> Field from Semantic-Connection-Table -->
-    <field datasource=".BerlinIdentNr" prefix="Berlin Ident.Nr. "/>
-    <field datasource=".AltInvNr" prefix="Alte Inv.-Nr. "/>
-    <field datasource=".ArtOrtsangabe" search="Aufbewahrung Automatisch erstellt" replace="Aufbewahrungsort" prefix="- Ortsangabe ist " postfix=" -"/>
+    <field datasource=".BerlinIdentNr" prefix="Berlin Ident.Nr. " />
+    <field datasource=".InvNr" prefix="Inv.-Nr. " />
+    <field datasource=".AltInvNr" prefix="Alte Inv.-Nr. " />
+    <field datasource=".ArtOrtsangabe" search="Aufbewahrung Automatisch erstellt" replace="Aufbewahrungsort" prefix="&lt;br/&gt;- Ortsangabe ist " postfix=" -" />
   </context>
 </includeSection>

@@ -18,7 +18,7 @@
     <datasections>
       <section labelKey="Informationen zur Buchseite">
         <include type="datierung"/>
-        <section labelKey="">
+        <section>
           <field datasource="buchseite.image" prefix="Dateiname: "/>
           <field datasource="buchseite.Inventarnummern" prefix="Negativnummern: "/>
           <field datasource="buchseite.InventarbucheiteInfos" prefix="Information zur Inventarbuchseite: "/>
@@ -28,7 +28,7 @@
           <field datasource="buchseite.BuchseiteAnmerkungenKossack" prefix="Anmerkungen Kossack: "/>
           <field datasource="buchseite.BuchseitePermalinkExtern" prefix="Permalink: "/>
         </section>
-        <section labelKey="">
+        <section>
           <field datasource="buchseite.Inventarnummern" prefix="Negativnummer: "/>
         </section>
         <section labelKey="Zenon Meta-Data">
