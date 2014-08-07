@@ -4,7 +4,7 @@
     <title>
       <section separator=" / ">
         <field datasource="befund.Grabungsort"/>
-        <field datasource="befund.Befund" prefix="Stratum: "/>
+        <field datasource="befund.Befund" prefix="Stratigraphische Einheit: "/>
         <field datasource="befund.Areal" prefix="Areal: "/>
       </section>
     </title>

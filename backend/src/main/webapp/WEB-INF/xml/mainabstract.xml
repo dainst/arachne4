@@ -8,7 +8,7 @@
       <section separator=" / ">
         <section labelKey="Context" separator=" - ">
           <field datasource="befund.Grabungsort"/>
-          <field datasource="befund.Befund" prefix="Stratum: "/>
+          <field datasource="befund.Befund" prefix="Stratigraphische Einheit: "/>
         </section>
         <section separator=" - " labelKey="Morphology">
           <field datasource="morphology.Level1" prefix="FG:"/>
