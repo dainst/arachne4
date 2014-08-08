@@ -2,8 +2,6 @@ package de.uni_koeln.arachne.service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -19,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -40,6 +37,7 @@ import de.uni_koeln.arachne.util.EntityId;
 public class DataImportService implements Runnable { // NOPMD
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataImportService.class);
 	
+	// TODO Move to config?
 	private static final long ID_LIMIT = 10000;
 	
 	private final boolean PROFILING;
@@ -100,14 +98,6 @@ public class DataImportService implements Runnable { // NOPMD
 	 * constructing the associated documents and indexing them via elasticsearch.
 	 */
 	public void run() { // NOPMD
-		class LongMapper implements RowMapper<Long> {
-			public Long mapRow(final ResultSet resultSet, final int index) throws SQLException {
-				return resultSet.getLong(1);
-			}
-		}
-		
-		final LongMapper longMapper = new LongMapper();
-		
 		// request scope hack (enabling session scope) - needed so the UserRightsService can be used
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(new MockHttpServletRequest()));
 		terminate = false;
@@ -126,20 +116,21 @@ public class DataImportService implements Runnable { // NOPMD
 			final Client client = esClientUtil.getClient();
 			
 			final BulkProcessor bulkProcessor = BulkProcessor.builder(client, new BulkProcessor.Listener() {
-				
 				@Override
 			    public void beforeBulk(long executionId, BulkRequest request) {
-					LOGGER.debug("Going to execute new bulk composed of {} actions", request.numberOfActions());
+					LOGGER.debug(String.format("Execution: %s, about to execute new bulk insert composed of {%s} actions"
+							, executionId, request.numberOfActions()));
 			    }
 
 			    @Override
 			    public void afterBulk(long executionId, BulkRequest request, BulkResponse response) {
-			        LOGGER.debug("Executed bulk composed of {} actions", request.numberOfActions());
+			        LOGGER.debug(String.format("Execution: %s, bulk insert composed of {%s} actions, took %s ms"
+			        		, executionId, request.numberOfActions(), response.getTookInMillis()));
 			    }
 
 			    @Override
 			    public void afterBulk(long executionId, BulkRequest request, Throwable failure) {
-			        LOGGER.error("Error executing bulk", failure);
+			        LOGGER.error(String.format("Error executing bulk %s", executionId), failure);
 			    }
 			})
 			.setBulkActions(esClientUtil.getBulkSize())
@@ -169,8 +160,8 @@ public class DataImportService implements Runnable { // NOPMD
 			dataimport:
 			do {
 				LOGGER.debug("Fetching " + ID_LIMIT + " EntityIds [" + startID + "] ...");
-				entityIds = jdbcTemplate.query("select `ArachneEntityID` from `arachneentityidentification`"
-						+ "WHERE `ArachneEntityID` > " + startID + " ORDER BY `ArachneEntityID` LIMIT " + ID_LIMIT, longMapper);
+				entityIds = jdbcTemplate.queryForList("select `ArachneEntityID` from `arachneentityidentification`"
+						+ "WHERE `ArachneEntityID` > " + startID + " ORDER BY `ArachneEntityID` LIMIT " + ID_LIMIT, Long.class);
 
 				for (final long currentEntityId: entityIds) {
 					LOGGER.debug("Starting FOR loop...");
@@ -181,6 +172,7 @@ public class DataImportService implements Runnable { // NOPMD
 						running.set(false);
 						break dataimport;
 					}
+					
 					LOGGER.debug("Get ID: " + currentEntityId);
 					final EntityId entityId = entityIdentificationService.getId(currentEntityId);
 					dbgEntityId = entityId.getArachneEntityID();
@@ -191,7 +183,7 @@ public class DataImportService implements Runnable { // NOPMD
 					} else {
 						jsonEntity = entityService.getFormattedEntityByIdAsJson(entityId);
 					}
-
+					
 					if (jsonEntity == null) {
 						LOGGER.error("Entity " + entityId.getArachneEntityID() + " is null! This should never happen. Check the database immediately.");
 						throw new Exception();
