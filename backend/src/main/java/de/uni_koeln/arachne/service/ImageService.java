@@ -16,8 +16,8 @@ import de.uni_koeln.arachne.mapping.ImageRowMapper;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.util.EntityId;
-import de.uni_koeln.arachne.util.ImageComparator;
-import de.uni_koeln.arachne.util.ImageUtils;
+import de.uni_koeln.arachne.util.image.ImageComparator;
+import de.uni_koeln.arachne.util.image.ImageUtils;
 
 /**
  * This service class provides the means to retrieve images from the database.

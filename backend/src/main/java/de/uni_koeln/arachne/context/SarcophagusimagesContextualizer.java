@@ -12,7 +12,7 @@ import de.uni_koeln.arachne.response.AdditionalContent;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.SarcophagusImage;
 import de.uni_koeln.arachne.util.EntityId;
-import de.uni_koeln.arachne.util.ImageUtils;
+import de.uni_koeln.arachne.util.image.ImageUtils;
 
 /**
  * Contextualizer class to retrieve image data not directly connected to sarcophagi but to objects who in turn

@@ -30,7 +30,7 @@ import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
-import de.uni_koeln.arachne.util.ImageMimeUtil;
+import de.uni_koeln.arachne.util.image.ImageMimeUtil;
 
 /**
  * This class serves 3D model data and texture data as well as the JSON meta data needed by the Javascript 3D viewer.

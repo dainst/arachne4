@@ -21,8 +21,8 @@ import de.uni_koeln.arachne.context.SemanticConnectionsContextualizer;
 import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
-import de.uni_koeln.arachne.util.ImageUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
+import de.uni_koeln.arachne.util.image.ImageUtils;
 
 /**
  * This class handles creation and retrieval of contexts and adds them to datasets.
