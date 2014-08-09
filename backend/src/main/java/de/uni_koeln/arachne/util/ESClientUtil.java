@@ -14,10 +14,12 @@ import javax.annotation.PreDestroy;
 import javax.servlet.ServletContext;
 
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesResponse;
+import org.elasticsearch.action.admin.indices.close.CloseIndexResponse;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
+import org.elasticsearch.action.admin.indices.open.OpenIndexResponse;
 import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
@@ -54,6 +56,7 @@ public class ESClientUtil implements ServletContextAware {
 	private transient IUserRightsService userRightsService;
 	
 	private transient final String esName;
+	private transient final int esBulkActions;
 	private transient final int esBulkSize;
 	private transient final boolean esRemoteClient;
 	private transient final String esFullAddress ;
@@ -77,12 +80,14 @@ public class ESClientUtil implements ServletContextAware {
 			, final @Value("#{config.esAddress}") String esAddress
 			, final @Value("#{config.esRemotePort}") int esRemotePort
 			, final @Value("#{config.esName}") String esName
+			, final @Value("#{config.esBulkActions}") int esBulkActions
 			, final @Value("#{config.esBulkSize}") int esBulkSize
 			, final @Value("#{config.esClientTypeRemote}") boolean esRemoteClient
 			, final @Value("#{config.esRESTPort}") String esRESTPort) {
 		
 		this.esName = esName;
 		this.searchIndexAlias = esName;
+		this.esBulkActions = esBulkActions;
 		this.esBulkSize = esBulkSize;
 		this.esRemoteClient = esRemoteClient;
 		esFullAddress  = esProtocol + "://" + esAddress + ':' + esRESTPort + '/';
@@ -242,6 +247,10 @@ public class ESClientUtil implements ServletContextAware {
 		return this.searchIndexAlias;
 	}
 	
+	public int getBulkActions() {
+		return esBulkActions;
+	}
+	
 	public int getBulkSize() {
 		return esBulkSize;
 	}
@@ -379,26 +388,34 @@ public class ESClientUtil implements ServletContextAware {
 
 	public void setRefreshInterval(final String indexName, final boolean enabled) {
 		// close index		
-		client.admin().indices().prepareClose(indexName).execute().actionGet();
+		final CloseIndexResponse closeResponse = client.admin().indices()
+				.prepareClose(indexName)
+				.execute().actionGet();
+		if (!closeResponse.isAcknowledged()) {
+			LOGGER.error("Failed to close index '" + indexName + "'.");
+		}
 		
 		// update settings
 		String refreshValue = "1s";
 		if (!enabled) {
 			refreshValue = "-1";
 		}
-		
 		final Settings settings = ImmutableSettings.settingsBuilder().put("refresh_intervall", refreshValue).build();
 		
 		final UpdateSettingsResponse response = client.admin().indices()
 				.prepareUpdateSettings(indexName)
 				.setSettings(settings)
 				.execute().actionGet();
-		
 		if (!response.isAcknowledged()) {
 			LOGGER.error("Failed to set 'refresh_interval' to " + refreshValue + " on index '" + indexName + "'.");
 		}
 		
 		// open index
-		client.admin().indices().prepareOpen(indexName).execute().actionGet();
+		final OpenIndexResponse openResponse = client.admin().indices()
+				.prepareOpen(indexName)
+				.execute().actionGet();
+		if (!openResponse.isAcknowledged()) {
+			LOGGER.error("Failed to open index '" + indexName + "'.");
+		}
 	}
 }
