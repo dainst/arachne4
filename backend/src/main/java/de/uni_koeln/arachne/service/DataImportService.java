@@ -12,6 +12,8 @@ import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.common.unit.ByteSizeUnit;
+import org.elasticsearch.common.unit.ByteSizeValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,25 +117,44 @@ public class DataImportService implements Runnable { // NOPMD
 						
 			final Client client = esClientUtil.getClient();
 			
-			final BulkProcessor bulkProcessor = BulkProcessor.builder(client, new BulkProcessor.Listener() {
+			class BulkProcessorListener implements BulkProcessor.Listener {
+				// used to check if last bulk request has finished
+				private int openRequests = 0;
+				private boolean error = false;
+				
+				public int getOpenRequests() {
+					return openRequests;
+				}
+				
+				public boolean hasFailed() {
+					return error;
+				}
+				
 				@Override
 			    public void beforeBulk(long executionId, BulkRequest request) {
-					LOGGER.debug(String.format("Execution: %s, about to execute new bulk insert composed of {%s} actions"
+					LOGGER.info(String.format("Execution: %s, about to execute new bulk insert composed of {%s} actions"
 							, executionId, request.numberOfActions()));
+					openRequests++;
 			    }
 
 			    @Override
 			    public void afterBulk(long executionId, BulkRequest request, BulkResponse response) {
-			        LOGGER.debug(String.format("Execution: %s, bulk insert composed of {%s} actions, took %s ms"
+			        LOGGER.info(String.format("Execution: %s, bulk insert composed of {%s} actions, took %s ms"
 			        		, executionId, request.numberOfActions(), response.getTookInMillis()));
+			        openRequests--;
 			    }
 
 			    @Override
 			    public void afterBulk(long executionId, BulkRequest request, Throwable failure) {
 			        LOGGER.error(String.format("Error executing bulk %s", executionId), failure);
-			    }
-			})
-			.setBulkActions(esClientUtil.getBulkSize())
+			        openRequests--;
+			        error = true;
+			    }				
+			}
+			final BulkProcessorListener listener = new BulkProcessorListener();
+			final BulkProcessor bulkProcessor = BulkProcessor.builder(client, listener)
+			.setBulkActions(esClientUtil.getBulkActions())
+			.setBulkSize(new ByteSizeValue(esClientUtil.getBulkSize(), ByteSizeUnit.MB))
 			.build();
 						
 			if ("NoIndex".equals(indexName)) {
@@ -163,9 +184,9 @@ public class DataImportService implements Runnable { // NOPMD
 				entityIds = jdbcTemplate.queryForList("select `ArachneEntityID` from `arachneentityidentification`"
 						+ "WHERE `ArachneEntityID` > " + startID + " ORDER BY `ArachneEntityID` LIMIT " + ID_LIMIT, Long.class);
 
+				LOGGER.debug("Starting FOR loop...");
 				for (final long currentEntityId: entityIds) {
-					LOGGER.debug("Starting FOR loop...");
-					
+										
 					startID = currentEntityId;
 					
 					if (terminate) {
@@ -186,8 +207,9 @@ public class DataImportService implements Runnable { // NOPMD
 					
 					if (jsonEntity == null) {
 						LOGGER.error("Entity " + entityId.getArachneEntityID() + " is null! This should never happen. Check the database immediately.");
-						throw new Exception();
+						throw new RuntimeException("Entity " + entityId.getArachneEntityID() + " is null!");
 					} else {
+						LOGGER.debug("Adding entity " + entityId.getArachneEntityID() + " to bulk.");
 						bulkProcessor.add(client.prepareIndex(indexName, "entity", String.valueOf(entityId.getArachneEntityID()))
 								.setSource(jsonEntity).request());
 						index++;
@@ -202,8 +224,17 @@ public class DataImportService implements Runnable { // NOPMD
 					}
 				}
 			} while (!entityIds.isEmpty());
+			bulkProcessor.close();
 			if (running.get()) {
-				bulkProcessor.close();
+				// wait a little bit to let the bulk request finish as bulkprocessoor.close() is non-blocking
+				int retries = 0;
+				while (listener.getOpenRequests() > 0 && !listener.hasFailed() && retries < 60) {
+					Thread.sleep(1000);
+					retries++;
+				}
+				if (retries > 59) {
+					throw new RuntimeException("Bulk request did not finish in 1 minute.");
+				}
 				esClientUtil.setRefreshInterval(indexName, true);
 				esClientUtil.updateSearchIndex();
 				final long elapsedTime = (System.currentTimeMillis() - startTime);
