@@ -71,19 +71,25 @@ public class ContextService {
 	@Autowired
 	private transient Transl8Service ts;
 	
+	@Autowired
+	private transient ImageService imageService;
+	
 	private transient Map<String, IContextualizer> contextualizers = new HashMap<String, IContextualizer>();
 	
 	/**
 	 * This methods adds all contexts to the dataset that are found in the XML description. It also runs all contextualizers 
-	 * that are marked as explicit in the corresponding xml config file. 
+	 * that are marked as explicit in the corresponding xml config file and adds contextImages if neccessary.
 	 * @param parent The dataset to add the contexts to.
 	 */
 	public void addMandatoryContexts(final Dataset parent) {
+		// keep a reference to retrieved contexts for later retrieval of context images
+		Map<String, Context> initializedContexts = new HashMap<String, Context>();
 		// explicit contextualizers
 		final List<String> explicitContextualizersList = xmlConfigUtil.getExplicitContextualizers(parent.getArachneId().getTableName());
 		for (String contextualizerName: explicitContextualizersList) {
 			final IContextualizer contextualizer = getContextualizerByContextType(contextualizerName);
 			final Context context = new Context(contextualizer.getContextType(), parent, contextualizer.retrieve(parent));
+			initializedContexts.put(contextualizer.getContextType(), context);
 			if (context.getSize() > 0) {
 				parent.addContext(context);
 			}
@@ -93,90 +99,83 @@ public class ContextService {
 		LOGGER.debug("Mandatory Contexts: " + mandatoryContextTypes);
 		for (final String contextType: mandatoryContextTypes) {
 			final Context context = new Context(contextType, parent, getLinks(parent, contextType));
+			initializedContexts.put(contextType, context);
 			if (context.getSize() > 0) {
 				parent.addContext(context);
 			}
 		}
+		// context images
+		// trigger fetching of context images here to reuse all (even empty) initialized contexts
+		addContextImages(parent, initializedContexts);
 	}
 	
 	/**
-	 * This methods adds all contexts to the dataset that are found in the XML description.
-	 * @param parent The dataset to add the contexts to.
-	 * @param imageService Instance of ImageService used for image-retrieval
+	 * Adds all context images to the dataset that are marked in the XML-Description if required. Retrieves
+	 * additional contexts only if needed, uses the contexts to retrieve images.
+	 * Does NOT add the additionally retrieved contexts to the parent dataset or to the retrievedContexts.
+	 * @param parent The dataset to add the images to.
+	 * @param initializedContexts Contains already initialized <code>Context</code> objects for reuse here. 
+	 * TODO Handle the thumbnail setting of book pages.
 	 */
-	public void addContextImages(final Dataset parent, final ImageService imageService) throws NumberFormatException {
-		// get Context-Images from Context-XML
+	private void addContextImages(final Dataset parent, final Map<String, Context> initializedContexts) {
 		final List<ContextImageDescriptor> contextImages = xmlConfigUtil.getContextImagesNames(parent.getArachneId().getTableName());
-
-		if (contextImages == null) {
+		if (contextImages != null) {
+			// check once if the source-record already contains any images
+			boolean parentHasImages = false;
+			if (parent.getImages() != null && !parent.getImages().isEmpty()) {
+				parentHasImages = true;
+			}
+			for (final ContextImageDescriptor descriptor : contextImages) {
+				// check contextImage-Preconditions from config
+				if (descriptor.getContextImageUsage().equals("ifempty") && parentHasImages) {
+					continue;
+				}
+				// trigger adding of images for specific context, construct the context if neccessary
+				final String contextType = descriptor.getContextName();
+				Context context = initializedContexts.get(contextType);
+				if (context == null) {
+					context = new Context(contextType, parent, getLinks(parent, contextType));
+				}
+				addImagesFromContext(parent, descriptor, context);
+			}
+			
+		} else {
 			LOGGER.debug("No Context-Image-Declarations found.");
+		}
+	}
+	
+	/**
+	 * This methods adds all images to the parent dataset that are directly connected to the provided context
+	 * @param parent The dataset to add the images to.
+	 * @param descriptor The instance of <code>ContextImageDescriptor</code> describing the context
+	 * @param context The <code>Context</code> object containing the connected Entities. Only those contexts 
+	 * can have context images, that contain links which have as the second part of their connection an Arachne Dataset.
+	 */
+	private void addImagesFromContext(final Dataset parent, final ContextImageDescriptor descriptor, 
+			final Context context) throws NumberFormatException {
+		
+		// check if there are any connected Entities in the context at all
+		if (context.getSize() <= 0) {
 			return;
 		}
-
-		final List<Image> resultContextImages = new ArrayList<Image>();
-
-		// check if the source-record contains any images
-		boolean containsImages = false;
-		if (parent.getImages() != null && !parent.getImages().isEmpty()) {
-			containsImages = true;
-		}
-
-		for (final ContextImageDescriptor cur : contextImages) {
-
-			// check contextImage-Preconditions from config
-			if (cur.getContextImageUsage().equals("ifempty") && containsImages) {
-				continue;
-			}
-
-			final String contextName = cur.getContextName();
-			
-			ContextPath contextPath = new ContextPath();
-			contextPath.addTypeStepRestriction(contextName);
-			contextPath.addTypeStepRestriction("marbilder");
-			final List<Map<String, String>> contextContents = this.genericSQLDao.getPathConnectedEntities(
-					parent.getArachneId().getArachneEntityID(),contextPath);
-			
-			if (contextContents != null) {
-				// books get their thumbnail image from a connected page - so check for this
-				long cover = -1;
-				if ("buch".equals(parent.getArachneId().getTableName())) {
-					final String buchCover = parent.getField("buch.Cover");
-					if (buchCover != null) {
-						cover = Long.parseLong(buchCover);
+		// Get images from the connected Entity, set some values to indicate their provenance
+		List<Image> resultContextImages = new ArrayList<Image>();
+		for (final AbstractLink link : context.getAllContexts()) {
+			final Dataset connectedEntity = link.getEntity2();
+			if (connectedEntity != null) {
+				imageService.addImages(connectedEntity);
+				final List<Image> images = connectedEntity.getImages();
+				if (images != null) {
+					for (Image image : images) {
+						image.setSourceContext(ts.transl8(context.getContextType()));
+						image.setSourceRecordId(connectedEntity.getArachneId().getArachneEntityID());
 					}
-				}
-
-				for (final Map<String, String> currentContext : contextContents) {
-					final Image image = new Image();
-					try {
-						final long imageId = Long.parseLong(currentContext.get("semanticconnection.EntityID"));
-						image.setImageId(imageId);
-						image.setSubtitle(currentContext.get("marbilder.DateinameMarbilder"));
-						image.setSourceContext(ts.transl8(contextName));
-						final long sourceRecordId = Long.parseLong(currentContext.get("semanticconnection.ForeignKeyTarget"));
-						// if cover and the context datasets internal key match this context image is the books thumbnail
-						if (cover > 0 && sourceRecordId == cover) {
-							parent.setThumbnailId(imageId);
-						}
-						image.setSourceRecordId(sourceRecordId);
-						resultContextImages.add(image);
-					} catch (NumberFormatException nfe) {
-						LOGGER.error("Failed to get connected image information [" + parent.getArachneId()
-								.getArachneEntityID() + "]. Got 'semanticconnection.EntityID' = " + currentContext
-								.get("semanticconnection.EntityID")	+ " - 'semanticconnection.ForeignKeyTarget' = " 
-								+ currentContext.get("semanticconnection.ForeignKeyTarget"));
-						throw nfe;
-					}
+					resultContextImages.addAll(images);
 				}
 			}
-		}
-		LOGGER.debug("Adding " + resultContextImages.size() + " additional images from dataset-contexts...");
+		}			
+		LOGGER.debug("Adding " + resultContextImages.size() + " additional images from dataset-context: " + context.getContextType());
 		parent.addImages(resultContextImages);
-
-		// if no thumbnail has been set yet, use one from context
-		if (!resultContextImages.isEmpty() && parent.getThumbnailId() == null) {
-			parent.setThumbnailId(ImageUtils.findThumbnailId(resultContextImages));
-		}
 	}
 	
 	/**

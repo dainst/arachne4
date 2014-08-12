@@ -84,7 +84,6 @@ public class EntityService {
     		nextTime = System.currentTimeMillis();
 
     		contextService.addMandatoryContexts(arachneDataset);
-    		contextService.addContextImages(arachneDataset, imageService);
 
     		final long contextTime = System.currentTimeMillis() - nextTime;
     		nextTime = System.currentTimeMillis();
@@ -99,7 +98,6 @@ public class EntityService {
     		imageService.addImages(arachneDataset);
 
     		contextService.addMandatoryContexts(arachneDataset);
-    		contextService.addContextImages(arachneDataset, imageService);
 
     		result = responseFactory.createFormattedArachneEntityAsJson(arachneDataset);
     	}
