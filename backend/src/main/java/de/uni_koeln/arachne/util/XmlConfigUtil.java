@@ -412,7 +412,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	}
 	
 	/**
-	 * This method returns the list of context names that are needed to retrieve all data for a given category. The list is only 
+	 * This method returns the list of unique context names that are needed to retrieve all data for a given category. The list is only 
 	 * created if it is not cached.
 	 * @param type The category of the parent dataset.
 	 * @return A list containing the names of the mandatory contexts or <code>null</code> if the type does not need external contexts. 
