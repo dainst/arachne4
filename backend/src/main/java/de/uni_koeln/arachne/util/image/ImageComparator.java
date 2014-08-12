@@ -39,7 +39,7 @@ public class ImageComparator implements Comparator<Image>, Serializable {
 				: Integer.MIN_VALUE / 4;
 
 		LOGGER.debug("Compare: " + subTitle1 + "[" + imageNumber1 + "]" + " - " + subTitle2 + "[" + imageNumber2 + "]");
-		LOGGER.debug("Comparion result : " + (imageNumber1 - imageNumber2));
+		LOGGER.debug("Comparison result : " + (imageNumber1 - imageNumber2));
 		
 		return imageNumber1 - imageNumber2;
 	}
