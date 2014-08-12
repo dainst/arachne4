@@ -2,6 +2,8 @@ package de.uni_koeln.arachne.context;
 
 import java.util.Map;
 
+import de.uni_koeln.arachne.response.Dataset;
+
 /**
  * Base class for holding links between URIs and additional information.
  *
@@ -27,6 +29,22 @@ public abstract class AbstractLink {
 	 * Function to retrieve the URI of the right side of the link.
 	 */
 	public abstract String getUri2();
+	
+	/**
+	 * If the first side of the connection is an Arachne Dataset this function returns the <code>Dataset</code> 
+	 * entity. Returns null unless overwritten in the implementing class.
+	 */
+	public Dataset getEntity1() {
+		return null;
+	}
+	
+	/**
+	 * If the second side of the connection is an Arachne Dataset this function returns the <code>Dataset</code> 
+	 * entity. Returns null unless overwritten in the implementing class.
+	 */
+	public Dataset getEntity2() {
+		return null;
+	}
 	
 	public String getLinkType() {
 		return linkType;
