@@ -1,26 +1,156 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- just very basic to have at least some definitions -->
-<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="niton" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-  <display>
-    <title>
-      <section>
-        <field datasource="niton.Sample"/>
-      </section>
-    </title>
-    <subtitle>
-      <section>
-        <field datasource="niton.Location"/>
-      </section>
-    </subtitle>
-    <datasections>
-      <section labelKey="Informationen">
-        <section labelKey="Zeit">
-          <field datasource="niton.Time"/>
-        </section>
-      </section>
-    </datasections>
-  </display>
-  <facets>
-    <include type="facet_kategorie"/>
-  </facets>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="niton"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<display>
+		<title>
+			<section>
+				<field datasource="niton.Sample" />
+			</section>
+		</title>
+		<subtitle>
+			<section>
+				<field datasource="niton.Location" />
+			</section>
+		</subtitle>
+		<datasections>
+			<section labelKey="Informationen zu den Niton-Daten">
+				<section labelKey="Zeitpunkt">
+					<field datasource="niton.Time" />
+				</section>
+				<section labelKey="Typ">
+					<field datasource="niton.Type" />
+				</section>
+				<section labelKey="Dauer">
+					<field datasource="niton.Duration" />
+				</section>
+				<section labelKey="Sigma Wert">
+					<field datasource="niton.SigmaValue" />
+				</section>
+				<section labelKey="Sequence">
+					<field datasource="niton.Sequence" />
+				</section>
+				<section labelKey="Sachbearbeiter">
+					<field datasource="niton.Inspector" />
+				</section>
+				<section labelKey="Anmerkungen">
+					<field datasource="niton.Misc" />
+				</section>
+				<section labelKey="Daten">
+					<section labelKey="Si">
+						<field datasource="niton.Si" />
+					</section>
+					<section labelKey="Ti">
+						<field datasource="niton.Ti" />
+					</section>
+					<section labelKey="Al">
+						<field datasource="niton.Al" />
+					</section>
+					<section labelKey="Fe">
+						<field datasource="niton.Fe" />
+					</section>
+					<section labelKey="Mn">
+						<field datasource="niton.Mn" />
+					</section>
+					<section labelKey="Mg">
+						<field datasource="niton.Mg" />
+					</section>
+					<section labelKey="Ca">
+						<field datasource="niton.Ca" />
+					</section>
+					<section labelKey="K">
+						<field datasource="niton.K" />
+					</section>
+					<section labelKey="P">
+						<field datasource="niton.P" />
+					</section>
+					<section labelKey="S">
+						<field datasource="niton.S" />
+					</section>
+					<section labelKey="V">
+						<field datasource="niton.V" />
+					</section>
+					<section labelKey="Cr">
+						<field datasource="niton.Cr" />
+					</section>
+					<section labelKey="Ni">
+						<field datasource="niton.Ni" />
+					</section>
+					<section labelKey="Cu">
+						<field datasource="niton.Cu" />
+					</section>
+					<section labelKey="Zn">
+						<field datasource="niton.Zn" />
+					</section>
+					<section labelKey="Rb">
+						<field datasource="niton.Rb" />
+					</section>
+					<section labelKey="Sr">
+						<field datasource="niton.Sr" />
+					</section>
+					<section labelKey="Y">
+						<field datasource="niton.Y" />
+					</section>
+					<section labelKey="Zr">
+						<field datasource="niton.Zr" />
+					</section>
+					<section labelKey="Nb">
+						<field datasource="niton.Nb"/>
+					</section>
+					<section labelKey="Pb">
+						<field datasource="niton.Pb" />
+					</section>
+					<section labelKey="Ba">
+						<field datasource="niton.Ba" />
+					</section>
+					<section labelKey="Sb">
+						<field datasource="niton.Sb" />
+					</section>
+					<section labelKey="Sn">
+						<field datasource="niton.Sn" />
+					</section>
+					<section labelKey="Cd">
+						<field datasource="niton.Cd" />
+					</section>
+					<section labelKey="Ag">
+						<field datasource="niton.Ag" />
+					</section>
+					<section labelKey="Bal">
+						<field datasource="niton.Bal" />
+					</section>
+					<section labelKey="Mo">
+						<field datasource="niton.Mo" />
+					</section>
+					<section labelKey="Bi">
+						<field datasource="niton.Bi" />
+					</section>
+					<section labelKey="Au">
+						<field datasource="niton.Au" />
+					</section>
+					<section labelKey="Se">
+						<field datasource="niton.Se" />
+					</section>
+					<section labelKey="As">
+						<field datasource="niton.As" />
+					</section>
+					<section labelKey="W">
+						<field datasource="niton.W" />
+					</section>
+					<section labelKey="Co">
+						<field datasource="niton.Co" />
+					</section>
+					<section labelKey="Cl">
+						<field datasource="niton.Cl" />
+					</section>
+					<section labelKey="Ce">
+						<field datasource="niton.Ce" />
+					</section>
+				</section>
+			</section>
+		</datasections>
+	</display>
+	<facets>
+		<include type="facet_kategorie" />
+	</facets>
 </category>
