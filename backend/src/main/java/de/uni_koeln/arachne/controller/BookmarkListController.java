@@ -259,8 +259,10 @@ public class BookmarkListController {
 					&& (oldBookmarkList.getId().equals(bookmarkList.getId()))
 					&& (user.getId() == oldBookmarkList.getUser().getId())) {
 				bookmarkList.setUser(user);
-				for (final Bookmark bookmark : bookmarkList.getBookmarks()) {
-					bookmark.setBookmarkList(bookmarkList);
+				if (bookmarkList.getBookmarks() != null) {
+					for (final Bookmark bookmark : bookmarkList.getBookmarks()) {
+						bookmark.setBookmarkList(bookmarkList);
+					}
 				}
 				result = bookmarkListDao.saveOrUpdateBookmarkList(bookmarkList);
 			} else {
