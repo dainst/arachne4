@@ -20,30 +20,30 @@
         <datasections>
             <section labelKey="Fabricbeschreibungen">
                 <context type="fabricdescription" labelKey="Description" separator=", ">
-                    <contextSection labelKey="Freie Farbbeschreibung">
+                    <contextSection labelKey="Freie Farbbeschreibung" separator=" ">
                         <field datasource=".ColourQualifierFreeVon"/>
-                        <field datasource=".ColourFreeVon"/>
-                        <field datasource=".ColourQualifierFreeBis" postfix=" - "/>
+                        <field datasource=".ColourFreeVon" postfix=" -"/>
+                        <field datasource=".ColourQualifierFreeBis"/>
                         <field datasource=".ColourFreeBis"/>
                     </contextSection>
-                    <contextSection labelKey="Farbe der Bruchstelle">
+                    <contextSection labelKey="Farbe der Bruchstelle" separator=" ">
                         <field datasource=".ColourOfBreakQualifierVon"/>
-                        <field datasource=".ColourOfBreakVon" postfix=" - "/>
+                        <field datasource=".ColourOfBreakVon" postfix=" -"/>
                         <field datasource=".ColourOfBreakQualifierBis"/>
                         <field datasource=".ColourOfBreakBis"/>
                     </contextSection>
                     <contextSection labelKey="Zoning">
                         <field datasource=".Zoning"/>
                     </contextSection>
-                    <contextSection labelKey="Farbe des Kerns">
+                    <contextSection labelKey="Farbe des Kerns" separator=" ">
                         <field datasource=".ColourOfCoreQualifierVon"/>
-                        <field datasource=".ColourOfCoreVon" postfix=" - "/>
+                        <field datasource=".ColourOfCoreVon" postfix=" -"/>
                         <field datasource=".ColourOfCoreQualifierBis"/>
                         <field datasource=".ColourOfCoreBis"/>
                     </contextSection>
-                    <contextSection labelKey="Farbe der Oberfläche">
+                    <contextSection labelKey="Farbe der Oberfläche" separator=" ">
                         <field datasource=".ColourOfOutsideQualifierVon"/>
-                        <field datasource=".ColourOfOutsideVon" postfix=" - "/>
+                        <field datasource=".ColourOfOutsideVon" postfix=" -"/>
                         <field datasource=".ColourOfOutsideQualifierBis"/>
                         <field datasource=".ColourOfOutsideBis"/>
                     </contextSection>
