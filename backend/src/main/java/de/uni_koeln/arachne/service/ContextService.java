@@ -138,7 +138,7 @@ public class ContextService {
 				addImagesFromContext(parent, descriptor, context);
 			}
 			// if no thumbnail has been set yet, use one from context
-            if (!parent.getImages().isEmpty() && parent.getThumbnailId() == null) {
+            if (parent.getImages() != null && !parent.getImages().isEmpty() && parent.getThumbnailId() == null) {
                 parent.setThumbnailId(ImageUtils.findThumbnailId(parent.getImages()));
             }
 		} else {
