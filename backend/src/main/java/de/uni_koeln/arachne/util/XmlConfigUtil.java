@@ -179,6 +179,13 @@ public class XmlConfigUtil implements ServletContextAware {
 				for (final Element curSection: contextSections) {
 					final FieldList fieldList = new FieldList();
 					final Section localContext = new Section();
+					
+					final String defaultSeparator = "<br/>";
+					String separator = curSection.getAttributeValue("separator"); 
+					if (curSection.getAttributeValue("separator") == null) {
+						separator = defaultSeparator;
+					}
+					localContext.setSeparator(separator);
 
 					// store the section label of the current context
 					final List<Element> childFields = curSection.getChildren();
@@ -186,7 +193,7 @@ public class XmlConfigUtil implements ServletContextAware {
 
 					// add all child-fields of the current contextSection and retrieve their values
 					for (final Element childField: childFields) {
-						addContextFieldToFieldList(childField, context.getNamespace(), fieldList, i, dataset, contextType, parentSeparator);
+						addContextFieldToFieldList(childField, context.getNamespace(), fieldList, i, dataset, contextType, separator);
 					}
 					
 					// only add to list if fields contain content
