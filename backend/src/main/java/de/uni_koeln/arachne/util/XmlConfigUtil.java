@@ -44,6 +44,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	
 	private static final String LINK_PREFIX = "$link$";
 	
+	private static final String DEFAULT_SECTION_SEPARATOR = "<hr>";
+	
 	/**
 	 * The servlet context is needed to load the XML config files. 
 	 */
@@ -104,7 +106,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			parentSeparator = context.getParentElement().getAttributeValue("separator");
 		}
 		if (parentSeparator == null) {
-			parentSeparator = "<br/>";
+			parentSeparator = DEFAULT_SECTION_SEPARATOR;
 		}
 		
 		// Are there any contextSection-Tags within the current context? 
@@ -112,7 +114,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		if (contextSections == null || contextSections.isEmpty()) {
 			final List<Element> children = context.getChildren();
 			
-			final String defaultSeparator = "<br/>";
+			final String defaultSeparator = DEFAULT_SECTION_SEPARATOR;
 			String separator = context.getAttributeValue("separator"); 
 			if (context.getAttributeValue("separator") == null) {
 				separator = defaultSeparator;
@@ -180,7 +182,7 @@ public class XmlConfigUtil implements ServletContextAware {
 					final FieldList fieldList = new FieldList();
 					final Section localContext = new Section();
 					
-					final String defaultSeparator = "<br/>";
+					final String defaultSeparator = DEFAULT_SECTION_SEPARATOR;
 					String separator = curSection.getAttributeValue("separator"); 
 					if (curSection.getAttributeValue("separator") == null) {
 						separator = defaultSeparator;
@@ -232,7 +234,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		
 		final List<Element> children = section.getChildren();
 		
-		final String defaultSeparator = "<br/>";
+		final String defaultSeparator = DEFAULT_SECTION_SEPARATOR;
 		String separator = section.getAttributeValue("separator"); 
 		if (section.getAttributeValue("separator") == null) {
 			separator = defaultSeparator;
