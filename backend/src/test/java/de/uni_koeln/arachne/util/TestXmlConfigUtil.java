@@ -122,10 +122,10 @@ public class TestXmlConfigUtil {
 		final Dataset dataset = getTestDataSet();
 		
 		final List<String> expected = new ArrayList<String>(3);
-		expected.add("Testdata prefix/postfix: PrefixTest=success<br/>PostfixTest=success");
+		expected.add("Testdata prefix/postfix: PrefixTest=success<hr>PostfixTest=success");
 		expected.add("Testdata separator: first-second");
-		expected.add("Testdata linkField: Start<br/><a href=\"http://testserver.com/link1.html\">TestLink1</a><br/>"
-				+ "<a href=\"http://testserver.com/link2.html\">TestLink2</a><br/>End");
+		expected.add("Testdata linkField: Start<hr><a href=\"http://testserver.com/link1.html\">TestLink1</a><hr>"
+				+ "<a href=\"http://testserver.com/link2.html\">TestLink2</a><hr>End");
 				
 		for (int i = 0; i < 2; i++) {
 			final AbstractContent content = xmlConfigUtil.getContentFromSections(sections.get(i), namespace, dataset);

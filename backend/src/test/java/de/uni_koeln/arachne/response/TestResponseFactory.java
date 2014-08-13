@@ -127,7 +127,7 @@ public class TestResponseFactory { // NOPMD
 	public void testFieldPrefixPostfix() {
 		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
 		assertTrue(response.contains("\"label\":\"Testdata prefix/postfix\""));
-		assertTrue(response.contains("\"content\":[{\"value\":\"PrefixTest=success<br/>PostfixTest=success\"}]"));
+		assertTrue(response.contains("\"content\":[{\"value\":\"PrefixTest=success<hr>PostfixTest=success\"}]"));
 	}
 	
 	@Test
@@ -141,9 +141,9 @@ public class TestResponseFactory { // NOPMD
 	public void testLinkField() {
 		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
 		assertTrue(response.contains("\"label\":\"Testdata linkField\""));
-		assertTrue(response.contains("\"content\":[{\"value\":\"Start<br/>"
-				+ "<a href=\\\"http://testserver.com/link1.html\\\" target=\\\"_blank\\\">TestLink1</a><br/>"
-				+ "<a href=\\\"http://testserver.com/link2.html\\\" target=\\\"_blank\\\">TestLink2</a><br/>End\"}]"));
+		assertTrue(response.contains("\"content\":[{\"value\":\"Start<hr>"
+				+ "<a href=\\\"http://testserver.com/link1.html\\\" target=\\\"_blank\\\">TestLink1</a><hr>"
+				+ "<a href=\\\"http://testserver.com/link2.html\\\" target=\\\"_blank\\\">TestLink2</a><hr>End\"}]"));
 	}
 	
 	@Test
