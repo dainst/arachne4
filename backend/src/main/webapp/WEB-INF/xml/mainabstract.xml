@@ -8,23 +8,23 @@
       <section separator=" / ">
         <section labelKey="Context" separator=" - ">
           <field datasource="befund.Grabungsort"/>
-          <field datasource="befund.Befund" prefix="Stratigraphische Einheit: "/>
+          <field datasource="befund.Befund" prefix="SE: "/>
         </section>
         <section separator=" - " labelKey="Morphology">
-          <field datasource="morphology.Level1" prefix="FG:"/>
-          <field datasource="morphology.Level2" prefix="2nd: "/>
-          <field datasource="morphology.Level3" prefix="3rd: "/>
-          <field datasource="morphology.Level4" prefix="4th: "/>
-          <field datasource="morphology.Level5" prefix="5th: "/>
-          <field datasource="morphology.Level6" prefix="6th: "/>
+          <field datasource="morphology.Level1"/>
+          <field datasource="morphology.Level2"/>
+          <field datasource="morphology.Level3"/>
+          <field datasource="morphology.Level4"/>
+          <field datasource="morphology.Level5"/>
+          <field datasource="morphology.Level6"/>
         </section>
         <section separator=" - " labelKey="Fabric">
           <field datasource="fabric.Origin"/>
-          <field datasource="fabric.CommonName" prefix="Common Name: "/>
-          <field datasource="fabric.Name" prefix="Name: "/>
+          <field datasource="fabric.CommonName"/>
+          <field datasource="fabric.Name"/>
         </section>
-        <section labelKey="Quantitification">
-          <field datasource="quantities.TotalSherds" prefix="#Sherds: "/>
+        <section>
+        	<field datasource="quantities.TotalSherds" postfix=" sherds"/>
         </section>
       </section>
     </title>
