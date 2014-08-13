@@ -69,11 +69,11 @@
         <section labelKey="Grabungsort">
           <field datasource="isolatedsherdmainabstractbefund.Grabungsort"/>
         </section>
-        <section labelKey="Befund">
-          <field datasource="isolatedsherdmainabstractbefund.Befund"/>
-        </section>
         <section labelKey="Areal">
           <field datasource="isolatedsherdmainabstractbefund.Areal"/>
+        </section>
+        <section labelKey="Befund">
+          <field datasource="isolatedsherdmainabstractbefund.Befund"/>
         </section>
       </section>
       <include type="ort"/>

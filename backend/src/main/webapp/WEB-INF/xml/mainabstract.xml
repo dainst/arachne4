@@ -39,11 +39,11 @@
           <section labelKey="Grabungsort">
             <field datasource="befund.Grabungsort"/>
           </section>
-          <section labelKey="Befund">
-            <field datasource="befund.Befund"/>
-          </section>
           <section labelKey="Areal">
             <field datasource="befund.Areal"/>
+          </section>
+          <section labelKey="Befund">
+            <field datasource="befund.Befund"/>
           </section>
         </section>
         <section labelKey="Morphologie">

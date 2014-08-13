@@ -4,8 +4,8 @@
     <title>
       <section separator=" / ">
         <field datasource="befund.Grabungsort"/>
-        <field datasource="befund.Befund" prefix="Stratigraphische Einheit: "/>
         <field datasource="befund.Areal" prefix="Areal: "/>
+        <field datasource="befund.Befund" prefix="Stratigraphische Einheit: "/>
       </section>
     </title>
     <subtitle labelKey="">
@@ -19,13 +19,13 @@
           <section labelKey="Grabungsort">
             <field datasource="befund.Grabungsort"/>
           </section>
+          <section labelKey="Areal">
+            <field datasource="befund.Areal"/>
+          </section>
           <section labelKey="Befund">
             <field datasource="befund.Befund"/>
             <field datasource="befund.KategorieBefund"/>
             <field datasource="befund.KlassifizierungBefund"/>
-          </section>
-          <section labelKey="Areal">
-            <field datasource="befund.Areal"/>
           </section>
           <section labelKey="Bearbeiter">
             <field datasource="befund.BearbeiterBefund"/>
