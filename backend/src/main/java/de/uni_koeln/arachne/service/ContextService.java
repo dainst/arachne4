@@ -15,7 +15,6 @@ import de.uni_koeln.arachne.context.AbstractContextualizer;
 import de.uni_koeln.arachne.context.AbstractLink;
 import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.context.ContextImageDescriptor;
-import de.uni_koeln.arachne.context.ContextPath;
 import de.uni_koeln.arachne.context.IContextualizer;
 import de.uni_koeln.arachne.context.SemanticConnectionsContextualizer;
 import de.uni_koeln.arachne.dao.GenericSQLDao;
@@ -138,7 +137,10 @@ public class ContextService {
 				}
 				addImagesFromContext(parent, descriptor, context);
 			}
-			
+			// if no thumbnail has been set yet, use one from context
+            if (!parent.getImages().isEmpty() && parent.getThumbnailId() == null) {
+                parent.setThumbnailId(ImageUtils.findThumbnailId(parent.getImages()));
+            }
 		} else {
 			LOGGER.debug("No Context-Image-Declarations found.");
 		}
