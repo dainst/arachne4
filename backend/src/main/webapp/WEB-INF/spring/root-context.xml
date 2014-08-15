@@ -24,10 +24,28 @@
 	
 	<util:properties id="config" location="classpath:config/application.properties"/>
 	
+	<!-- 
 	<task:annotation-driven scheduler="taskScheduler" executor="defaultTaskExecutor"/>
-	<task:scheduler id="taskScheduler" pool-size="5"/>
+	<task:scheduler id="taskScheduler" pool-size="5" waitForTasksToCompleteOnShutdown="true" />
 	
 	<task:executor id="defaultTaskExecutor" pool-size="5"/>
-	
+	-->
+
+	<bean id="taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="2" />
+		<property name="maxPoolSize" value="5" />
+		<property name="queueCapacity" value="5" />
+		<property name="waitForTasksToCompleteOnShutdown" value="true" />
+	</bean>
+
+	<bean id="taskScheduler"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">
+		<property name="poolSize" value="10" />
+		<property name="waitForTasksToCompleteOnShutdown" value="true" />
+	</bean>
+
+    <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler"/>
+	 
 	<import resource="hibernate.xml"/>
 </beans>

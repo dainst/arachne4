@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 
 import org.elasticsearch.action.bulk.BulkProcessor;
@@ -20,6 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -32,11 +36,13 @@ import de.uni_koeln.arachne.util.EntityId;
 
 /**
  * This class implements the dataimport into elastic search. It is realized as a <code>@Service</code> so it can make 
- * use of autowiring and be autowired itself (for communication). At the same time it implements <code>Runnable</code> 
- * so that the dataimport can run asynchronously via a <code>TaskExecutor</code>.  
+ * use of autowiring and be autowired itself (for communication). At the same time it implements the 
+ * <code>ApplicationListener</code>-Interface to receive the <code>ContextClosed</code> so that the <code>TaskExecutor</code> 
+ * and <code>TaskScheduler</code> which are use to run the <code>startImport()</code> method asynchronously can be shut 
+ *   
  */
 @Service("DataImportService")
-public class DataImportService implements Runnable { // NOPMD
+public class DataImportService { // NOPMD
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataImportService.class);
 	
 	// TODO Move to config?
@@ -65,9 +71,13 @@ public class DataImportService implements Runnable { // NOPMD
 	@Autowired
 	private transient ResponseFactory responseFactory;
 	
-	private transient JdbcTemplate jdbcTemplate;
+	@Autowired
+	private transient ThreadPoolTaskExecutor executor;
 	
-	protected transient DataSource dataSource;
+	@Autowired
+	private transient ThreadPoolTaskScheduler scheduler;
+	
+	private transient JdbcTemplate jdbcTemplate;
 	
 	/**
 	 * Through this function the datasource is injected.
@@ -75,7 +85,6 @@ public class DataImportService implements Runnable { // NOPMD
 	 */
 	@Autowired
 	public void setDataSource(final DataSource dataSource) {
-		this.dataSource = dataSource;		
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
@@ -99,7 +108,8 @@ public class DataImportService implements Runnable { // NOPMD
 	 * The dataimport implementation. This method retrieves a list of EntityIds from the DB and iterates over this list 
 	 * constructing the associated documents and indexing them via elasticsearch.
 	 */
-	public void run() { // NOPMD
+	@Async
+	public void start() { 
 		// request scope hack (enabling session scope) - needed so the UserRightsService can be used
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(new MockHttpServletRequest()));
 		terminate = false;
@@ -282,7 +292,9 @@ public class DataImportService implements Runnable { // NOPMD
 	/**
 	 * Method to signal that the task shall stop.
 	 */
+	@PreDestroy
 	public void stop() {
+		LOGGER.info("Stopping dataimport...");
 		terminate = true;
 	}
 	
