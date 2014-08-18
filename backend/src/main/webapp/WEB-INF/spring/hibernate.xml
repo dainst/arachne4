@@ -4,7 +4,14 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
+     <!-- Spring bean configuration. Tell Spring to bounce off BoneCP -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+		<property name="targetDataSource">
+			<ref local="mainDataSource" />
+		</property>
+	</bean>
+
+	<bean id="mainDataSource" class="com.jolbox.bonecp.BoneCPDataSource"
 		destroy-method="close">
         <property name="driverClass" value="#{config.jdbcDriverClassName}" />
         <property name="jdbcUrl" value="#{config.jdbcUrl}" />
@@ -20,7 +27,7 @@
     </bean>
     
     <bean id="drupalDataSource"
-        parent="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        parent="mainDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="#{config.drupaljdbcDriverClassName}" />
         <property name="jdbcUrl" value="#{config.drupaljdbcUrl}" />
         <property name="username" value="#{config.drupaljdbcUsername}" />
