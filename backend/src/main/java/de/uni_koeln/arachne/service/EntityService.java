@@ -1,7 +1,5 @@
 package de.uni_koeln.arachne.service;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +41,7 @@ public class EntityService {
 	/**
 	 * This functions retrieves a <code>FromattedArachneEntity</code>.
 	 * @param entityId The corresponding EntityId object.
-	 * @return The requested formatted entity object or an empty <code>FromattedArachneEntity</code> object where the type 
-	 * is set to "forbidden" to indicate that the user is not allowed to see this entity.
+	 * @return The requested formatted entity object or "forbidden" to indicate that the user is not allowed to see this entity.
 	 */
 	public String getFormattedEntityByIdAsJson(final EntityId entityId) {
 		long startTime = 0;
@@ -59,14 +56,7 @@ public class EntityService {
     	
     	if (!userRightsService.isDataimporter() && !userRightsService.userHasDatasetGroup(datasetGroup)) {
     		LOGGER.debug("Forbidden!");
-    		final JSONObject result = new JSONObject();
-    		try {
-				result.append("entityId", entityId);
-				result.append("type", "forbidden");
-			} catch (JSONException e) {
-				LOGGER.error("Failed to serialize response for deleted entity [" + entityId + "]. Cause: ", e);
-			}
-    		return result.toString();
+    		return "forbidden";
     	}
     	
     	final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(entityId);

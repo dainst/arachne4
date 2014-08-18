@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.ResponseFactory;
-import de.uni_koeln.arachne.response.StatusResponse;
 import de.uni_koeln.arachne.service.DataImportService;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.EntityService;
@@ -138,7 +137,7 @@ public class EntityController {
      * @param id The unique entity ID if no category is given else the internal ID.
      * @param category The category to query or <code>null</code>.
      * @param response The <code>HttpServeletRsponse</code> object.
-     * @return A response object derived from <code>BaseArachneEntity</code>.
+     * @return The response body as <code>String</code>.
      */
     private String getEntityFromDB(final Long id, final String category //NOPMD
     		, final HttpServletResponse response) { 
@@ -165,6 +164,11 @@ public class EntityController {
     	
     	final String result = entityService.getFormattedEntityByIdAsJson(entityId);
     	
+    	if ("forbidden".equals(result)) {
+    		response.setStatus(403);
+    		return null;
+    	}
+    	
     	if (result != null) {
     		LOGGER.debug("-----------------------------------");
     		LOGGER.debug("-- Complete response took " + (System.currentTimeMillis() - startTime) + " ms");
@@ -179,11 +183,13 @@ public class EntityController {
      * Internal function handling all http GET requests for <code>/entity/*</code>.
      * It fetches the data for a given entity from the elasticsearch index and returns it as a JSON or XML string.
      * <br>
-     * If the entity is not found or the user does not have the necessary permission a HTTP 404 error message is returned.
+     * Actually two queries are run on the elasticsearch index. One with and one without an access control filter.
+     * If the query without an access filter returns a result and the other one doesn't HTTP status code is set to 403.
+     * This should be faster than hitting the DB multiple times for access control.
      * @param id The unique entity ID if no category is given else the internal ID.
      * @param category The category to query or <code>null</code>.
      * @param response The <code>HttpServeletRsponse</code> object.
-     * @return A response object derived from <code>BaseArachneEntity</code>.
+     * @return The response body as <code>String</code>.
      */
      private String getEntityFromIndex(final Long id, final String category //NOPMD
     		,final HttpServletRequest request, final HttpServletResponse response) { 
@@ -191,12 +197,24 @@ public class EntityController {
     	final Long startTime = System.currentTimeMillis();
     	    	
     	String result = null;
+    	
     	SearchResponse searchResponse = null;
+    	SearchResponse acLessSearchResponse = null;
     	final FilterBuilder accessFilter = FilterBuilders.boolFilter().must(esClientUtil.getAccessControlFilter());
+    	
     	if (category == null) {
     		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString("entityId:" + id), accessFilter);
     		searchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
     				.setQuery(query)
+    				.setFetchSource(new String[] {"*"}, internalFields)
+    				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+    				.setFrom(0)
+    				.setSize(1)
+    				.execute().actionGet();
+    		
+    		final QueryBuilder acLessQuery = QueryBuilders.queryString("entityId:" + id);
+    		acLessSearchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
+    				.setQuery(acLessQuery)
     				.setFetchSource(new String[] {"*"}, internalFields)
     				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
     				.setFrom(0)
@@ -212,7 +230,18 @@ public class EntityController {
     				.setFrom(0)
     				.setSize(1)
     				.execute().actionGet();
+    		
+    		final QueryBuilder acLessQuery = QueryBuilders.queryString("type:" 
+    				+ ts.transl8(category) + " AND " + "internalId:" + id);
+    		acLessSearchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
+    				.setQuery(acLessQuery)
+    				.setFetchSource(new String[] {"*"}, internalFields)
+    				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+    				.setFrom(0)
+    				.setSize(1)
+    				.execute().actionGet();
     	}
+    	
     	if (searchResponse.getHits().getTotalHits() == 1) { 
     		result = searchResponse.getHits().getAt(0).getSourceAsString();
     		if (request.getHeader("Accept").toLowerCase().contains("application/json")) {
@@ -231,7 +260,11 @@ public class EntityController {
     			}
     		} 
     	} else {
-    		response.setStatus(404);
+    		if (acLessSearchResponse.getHits().getTotalHits() == 1) {
+    			response.setStatus(403);
+    		} else {
+    			response.setStatus(404);
+    		}
     		result = null;
     	}
     	
