@@ -80,7 +80,7 @@ public class EntityController {
 	
 	@RequestMapping(value="/entity/count", method=RequestMethod.GET, produces="application/json;charset=UTF-8")
 	public @ResponseBody String handleGetEntityCountRequest() {
-		return "{\"entityCount\":" + dataImportService.getCount() + "}";
+		return "{\"entityCount\":" + dataImportService.getIndexedDocuments() + "}";
 	}
 	
 	/**
