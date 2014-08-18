@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.GenericSQLDao;
-import de.uni_koeln.arachne.mapping.ImageRowMapper;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.util.EntityId;
@@ -48,20 +47,28 @@ public class ImageService {
 			LOGGER.debug("excluding " + arachneId.getTableName());
 			return;
 		} else {
-			final ArrayList<String> fieldList = new ArrayList<String>(2);
-			fieldList.add("DateinameMarbilder");
-			@SuppressWarnings("unchecked")
-			final List<Image> imageList = (List<Image>) genericSQLDao.getImageList(arachneId.getTableName()
-					, arachneId.getInternalKey());
-			// sort image List
-			if (imageList != null && imageList.size() > 1) {
-				Collections.sort(imageList, new ImageComparator());
-			}
-						
-			dataset.setImages(imageList);
-			// get thumbnail from imageList
-			if (imageList != null && !imageList.isEmpty()) {
-				dataset.setThumbnailId(ImageUtils.findThumbnailId(imageList));
+			if ("marbilder".equals(arachneId.getTableName())) {
+				final Image image = new Image();
+				image.setImageId(arachneId.getArachneEntityID());
+				image.setSubtitle(dataset.getField("marbilder.DateinameMarbilder"));
+				final List<Image> imageList = new ArrayList<Image>();
+				imageList.add(image);
+				dataset.setImages(imageList);
+				dataset.setThumbnailId(arachneId.getArachneEntityID());
+			} else {
+				@SuppressWarnings("unchecked")
+				final List<Image> imageList = (List<Image>) genericSQLDao.getImageList(arachneId.getTableName()
+						, arachneId.getInternalKey());
+				// sort image List
+				if (imageList != null && imageList.size() > 1) {
+					Collections.sort(imageList, new ImageComparator());
+				}
+
+				dataset.setImages(imageList);
+				// get thumbnail from imageList
+				if (imageList != null && !imageList.isEmpty()) {
+					dataset.setThumbnailId(ImageUtils.findThumbnailId(imageList));
+				}
 			}
 		}
 	}
