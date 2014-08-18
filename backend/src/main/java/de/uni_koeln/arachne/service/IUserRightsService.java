@@ -45,8 +45,11 @@ public interface IUserRightsService {
 	public abstract void reset();
 
 	/**
-	 * Returns the users permissions as an SQL-Snipplet that is ready to be append to a SQL <code>WHERE</code> statement.
-	 * @return A SQL snipplet as String. 
+	 * Gets the users permissions and converts them to a SQL statement ready to be appended to a SQL <code>WHERE</code> 
+	 * statement.
+	 * @param tableName The name of the table that shall be accessed.
+	 * @return A <code>String</code> that represents the user permission as SQL statement or an empty 
+	 * <code>String</code> if the user is allowed to see everything.
 	 */
 	public abstract String getSQL(final String tableName);
 }

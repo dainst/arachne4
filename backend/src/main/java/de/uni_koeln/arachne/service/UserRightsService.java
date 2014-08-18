@@ -103,7 +103,7 @@ public class UserRightsService implements IUserRightsService {
 	}
 	
 	/* (non-Javadoc)
-	 * @see de.uni_koeln.arachne.service.UserRightsService#setUserSolr()
+	 * @see de.uni_koeln.arachne.service.IUserRightsService#setDataimporter()
 	 */
 	@Override
 	public void setDataimporter() {
@@ -114,7 +114,7 @@ public class UserRightsService implements IUserRightsService {
 	}
 	
 	/* (non-Javadoc)
-	 * @see de.uni_koeln.arachne.service.UserRightsService#isUserSolr()
+	 * @see de.uni_koeln.arachne.service.IUserRightsService#isDataimporter()
 	 */
 	@Override
 	public boolean isDataimporter() {
@@ -130,7 +130,7 @@ public class UserRightsService implements IUserRightsService {
 	}
 
 	/* (non-Javadoc)
-	 * @see de.uni_koeln.arachne.service.UserRightsService#getCurrentUser()
+	 * @see de.uni_koeln.arachne.service.IUserRightsService#getCurrentUser()
 	 */
 	@Override
 	public UserAdministration getCurrentUser() {
@@ -139,7 +139,7 @@ public class UserRightsService implements IUserRightsService {
 	}
 	
 	/* (non-Javadoc)
-	 * @see de.uni_koeln.arachne.service.UserRightsService#reset()
+	 * @see de.uni_koeln.arachne.service.IUserRightsService#reset()
 	 */
 	@Override
 	public void reset() {
@@ -148,7 +148,7 @@ public class UserRightsService implements IUserRightsService {
 	}
 	
 	/* (non-Javadoc)
-	 * @see de.uni_koeln.arachne.service.UserRightsService#userHasDatasetGroup()
+	 * @see de.uni_koeln.arachne.service.IUserRightsService#userHasDatasetGroup()
 	 */
 	@Override
 	public boolean userHasDatasetGroup(final DatasetGroup datasetGroup) {
@@ -162,10 +162,8 @@ public class UserRightsService implements IUserRightsService {
 		return false;
 	}
 	
-	/**
-	 * Gets the users permissions and converts them in an SQL-Snipplet 
-	 * ready to append it to the SQL <code>WHERE</code> statement.
-	 * @return A String that represents the user permission SQl statements its empty if the User is allowed to see everything
+	/* (non-Javadoc)
+	 * @see de.uni_koeln.arachne.service.IUserRightsService#getSQL()
 	 */
 	@Override
 	public String getSQL(final String tableName) {
@@ -182,7 +180,11 @@ public class UserRightsService implements IUserRightsService {
 		}
 	}
 
-
+	/**
+	 * Method that builds the SQL statement returned by the getSQL() method.
+	 * @param tableName The name of the table that shall be accessed.
+	 * @return The SQL statement as <code>String</code>.
+	 */
 	private String buildSQL(final String tableName) {
 		final StringBuilder sqlBuilder = new StringBuilder(16);
 		//Get the Permission Groups
