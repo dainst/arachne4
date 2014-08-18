@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.ResponseFactory;
+import de.uni_koeln.arachne.response.StatusResponse;
+import de.uni_koeln.arachne.service.DataImportService;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.EntityService;
 import de.uni_koeln.arachne.service.ImageService;
@@ -65,11 +67,20 @@ public class ArachneEntityController {
 	@Autowired
 	private transient Transl8Service ts;
 	
+	@Autowired
+	private transient DataImportService dataImportService;
+	
+	
 	private transient String[] internalFields;
 	
 	@Autowired
 	public ArachneEntityController(final @Value("#{config.internalFields}") String internalFieldsCS) {
 		internalFields = internalFieldsCS.split(",");
+	}
+	
+	@RequestMapping(value="/entity/count", method=RequestMethod.GET, produces="application/json;charset=UTF-8")
+	public @ResponseBody String handleGetEntityCountRequest() {
+		return "{\"entityCount\":" + dataImportService.getCount() + "}";
 	}
 	
 	/**
