@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.DataMapDao;
@@ -34,24 +35,37 @@ public class SingleEntityDataService {
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil; 
 	
+	private transient final List<String> authFreeTables;
+	
+	@Autowired
+	public SingleEntityDataService(final @Value("#{config.authFreeTables}") String authFreeTablesAsCSS) {
+		authFreeTables = StrUtils.getCommaSeperatedStringAsList(authFreeTablesAsCSS);
+	}
+	
 	/**
 	 * Retrieves the dataset group of an entity.
 	 * If an entity does not have a dataset group () <code>"Arachne"</code> is returned.
 	 * @param arachneId The id of the entity of interest. 
-	 * @return The dataset group of the entity.
+	 * @return The dataset group of the entity or "Arachne" for tables without a dataset group.
 	 */
 	public String getDatasetGroup(final EntityId arachneId) {
 		final String tableName = arachneId.getTableName();
-		final Long field1Id = arachneId.getInternalKey();
-		final String field2 = SQLToolbox.generateDatasetGroupName(tableName);
 		
-		// disable rights checking to allow retrieval of the dataset group
-		final String result = genericSqlDao.getStringField(tableName, tableName, field1Id, field2, true);
-		
-		if (StrUtils.isEmptyOrNull(result)) {
+		if (authFreeTables.contains(tableName)) {
 			return "Arachne";
 		} else {
-			return result;
+		
+			final Long field1Id = arachneId.getInternalKey();
+			final String field2 = SQLToolbox.generateDatasetGroupName(tableName);
+		
+			// disable rights checking to allow retrieval of the dataset group
+			final String result = genericSqlDao.getStringField(tableName, tableName, field1Id, field2, true);
+		
+			if (StrUtils.isEmptyOrNull(result)) {
+				return "Arachne";
+			} else {
+				return result;
+			}
 		}
 	}
 
