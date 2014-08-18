@@ -39,9 +39,9 @@ import de.uni_koeln.arachne.util.EntityId;
  * Handles http requests (currently only get) for <code>/entity<code> and <code>/data</code>.
  */
 @Controller
-public class ArachneEntityController {
+public class EntityController {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ArachneEntityController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EntityController.class);
 	
 	@Autowired
 	private transient EntityIdentificationService entityIdentificationService;
@@ -74,7 +74,7 @@ public class ArachneEntityController {
 	private transient String[] internalFields;
 	
 	@Autowired
-	public ArachneEntityController(final @Value("#{config.internalFields}") String internalFieldsCS) {
+	public EntityController(final @Value("#{config.internalFields}") String internalFieldsCS) {
 		internalFields = internalFieldsCS.split(",");
 	}
 	
