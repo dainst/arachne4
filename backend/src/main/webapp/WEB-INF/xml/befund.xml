@@ -114,6 +114,9 @@
     <facet name="befund" labelKey="Befund">
       <field datasource="befund.Befund"/>
     </facet>
+    <facet name="areal" labelKey="Areal">
+      <field datasource="befund.Areal"/>
+    </facet>
     <facet name="befundmainabstractmorphology" labelKey="Morphologie">
       <context type="Befundmainabstractmorphology" separator=" / ">
         <field datasource=".Level6">
