@@ -50,6 +50,8 @@ public class DataImportService { // NOPMD
 	
 	private final boolean PROFILING;
 	
+	private final boolean checkIndexOnDataImport;
+	
 	@Autowired
 	private transient ESClientUtil esClientUtil;
 	
@@ -77,6 +79,9 @@ public class DataImportService { // NOPMD
 	@Autowired
 	private transient ThreadPoolTaskScheduler scheduler;
 	
+	@Autowired
+	private transient EntityCompareService entityCompareService;
+	
 	private transient JdbcTemplate jdbcTemplate;
 	
 	/**
@@ -95,15 +100,18 @@ public class DataImportService { // NOPMD
 	private transient final AtomicLong documentsInIndex;
 	
 	private transient boolean terminate = false;
-		
+	
 	@Autowired
-	public DataImportService(final @Value("#{config.profilingDataimport}") boolean profiling) {
+	public DataImportService(final @Value("#{config.profilingDataimport}") boolean profiling
+			, final @Value("#{config.checkIndexOnDataImport}") boolean checkIndexOnDataImport) {
+		
 		elapsedTime = new AtomicLong(0);
 		running = new AtomicBoolean(false);
 		indexedDocuments = new AtomicLong(0);
 		count = new AtomicLong(0);
 		documentsInIndex = new AtomicLong(0);
 		this.PROFILING = profiling;
+		this.checkIndexOnDataImport = checkIndexOnDataImport;
 	}
 
 	/**
@@ -209,6 +217,7 @@ public class DataImportService { // NOPMD
 					LOGGER.debug("Get ID: " + currentEntityId);
 					final EntityId entityId = entityIdentificationService.getId(currentEntityId);
 					dbgEntityId = entityId.getArachneEntityID();
+					
 					LOGGER.debug("Creating response");
 					String jsonEntity;
 					if (entityId.isDeleted()) {
@@ -218,11 +227,14 @@ public class DataImportService { // NOPMD
 					}
 					
 					if (jsonEntity == null) {
-						LOGGER.error("Entity " + entityId.getArachneEntityID() + " is null! This should never happen. Check the database immediately.");
-						throw new RuntimeException("Entity " + entityId.getArachneEntityID() + " is null!");
+						LOGGER.error("Entity " + dbgEntityId + " is null! This should never happen. Check the database immediately.");
+						throw new RuntimeException("Entity " + dbgEntityId + " is null!");
 					} else {
-						LOGGER.debug("Adding entity " + entityId.getArachneEntityID() + " to bulk.");
-						bulkProcessor.add(client.prepareIndex(indexName, "entity", String.valueOf(entityId.getArachneEntityID()))
+						if (checkIndexOnDataImport) {
+							entityCompareService.compareToIndex(dbgEntityId, jsonEntity);
+						}
+						LOGGER.debug("Adding entity " + dbgEntityId + " to bulk.");
+						bulkProcessor.add(client.prepareIndex(indexName, "entity", String.valueOf(dbgEntityId))
 								.setSource(jsonEntity).request());
 						index++;
 						indexedDocuments.set(index);
