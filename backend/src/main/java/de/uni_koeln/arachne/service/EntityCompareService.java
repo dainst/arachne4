@@ -9,6 +9,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.uni_koeln.arachne.util.ESClientUtil;
 
 @Service
+@Scope("prototype")
 public class EntityCompareService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityCompareService.class);
@@ -44,9 +46,9 @@ public class EntityCompareService {
     		 jsonFromIndex = searchResponse.getHits().getAt(0).getSourceAsString();
     	}
     	
-    	if (jsonFromIndex == null) {
+    	/*if (jsonFromIndex == null) {
     		LOGGER.warn("Entity " + entityId + " not found in index.");
-    	} else {
+    	} else*/ {
     		ObjectMapper mapper = new ObjectMapper();
 			JsonNode jsonDB = null;
 			JsonNode jsonES = null;
@@ -54,12 +56,10 @@ public class EntityCompareService {
 				jsonDB = mapper.readTree(json);
 				jsonES = mapper.readTree(jsonFromIndex);
 			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
 				//e.printStackTrace();
-				LOGGER.warn(e.getMessage());
+				LOGGER.warn("FailedId: " + entityId + ". Cause: " + e.getMessage());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				LOGGER.warn(e.getMessage());
+				LOGGER.warn("FailedId: " + entityId + ". Cause: " + e.getMessage());
 			}
 			
 			if (jsonDB != null && jsonDB.equals(jsonES)) {

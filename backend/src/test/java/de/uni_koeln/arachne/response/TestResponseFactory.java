@@ -65,6 +65,7 @@ public class TestResponseFactory { // NOPMD
 		dataset.setFields("test.DataNoLink2", "End");
 		
 		dataset.setFields("test.facetTest", "test facet value");
+		dataset.setFields("test.facetMultiValueTest", "value 1;value 2;value 3");
 		
 		mockIdList = new ArrayList<Long>();
 		for (long i = 1; i < 6; i++) {
@@ -149,14 +150,15 @@ public class TestResponseFactory { // NOPMD
 	@Test
 	public void testDynamicFacets() {
 		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
-		assertTrue(response.contains("\"facet_kategorie\": [\"test\"]"));
-		assertTrue(response.contains("\"facet_test\": [\"test facet value\"]"));
+		assertTrue(response.contains("\"facet_kategorie\":[\"test\"]"));
+		assertTrue(response.contains("\"facet_test\":[\"test facet value\"]"));
+		assertTrue(response.contains("\"facet_multivaluetest\":[\"value 1\",\"value 2\",\"value 3\"]"));
 	}
 	
 	@Test
 	public void testStaticFacets() {
 		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
-		assertTrue(response.contains("\"facet_image\": [\"nein\"]"));
+		assertTrue(response.contains("\"facet_image\":[\"nein\"]"));
 	}
 	
 	// TODO add test for context tag - the current context implementation makes it nearly impossible to test

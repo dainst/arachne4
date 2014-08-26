@@ -70,5 +70,8 @@
 				</ifEmpty>
 			</field>
 		</facet>
+		<facet name="multivaluetest" labelKey="Multivaluetestfacet">
+            <field datasource="test.facetMultiValueTest" />
+		</facet>
 	</facets>
 </category>

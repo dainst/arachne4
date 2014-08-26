@@ -62,6 +62,7 @@ public class TestXmlConfigUtil {
 		dataset.setFields("test.DataNoLink2", "End");
 		
 		dataset.setFields("test.facetTest", "test facet value");
+		dataset.setFields("test.facetMultiValueTest", "value 1;value 2;value 3");
 		
 		final Dataset linkDataset = new Dataset();
 		
@@ -211,9 +212,10 @@ public class TestXmlConfigUtil {
 		
 		assertNotNull(facets);
 		assertFalse(facets.isEmpty());
-		assertEquals(2, facets.size());
+		assertEquals(3, facets.size());
 		assertEquals("kategorie", facets.get(0));
 		assertEquals("test", facets.get(1));
+		assertEquals("multivaluetest", facets.get(2));
 	}
 	
 	@Test

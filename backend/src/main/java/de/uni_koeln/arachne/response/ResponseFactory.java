@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
 
 import org.jdom2.Document;
@@ -19,6 +18,8 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import de.uni_koeln.arachne.context.AbstractLink;
 import de.uni_koeln.arachne.context.Context;
@@ -301,115 +302,58 @@ public class ResponseFactory {
 	private String getFacettedEntityAsJson(final Dataset dataset, final Document document
 			, final FormattedArachneEntity response, final Namespace namespace) {
 		
-		StringBuilder jsonResponse = null;
-		try {
-			String jsonString = objectMapper.writeValueAsString(response);
-			jsonResponse = new StringBuilder(getNextPowerOfTwo(jsonString.length())).append(jsonString);
-			jsonResponse.replace(jsonResponse.length() - 1, jsonResponse.length(), ",");
-
-			// set image facet
-			if (dataset.getThumbnailId() == null) {
-				jsonResponse.append("\"facet_image\": [\"nein\"],");
-			} else {
-				jsonResponse.append("\"facet_image\": [\"ja\"],");
-			}
-
-			// add the geo facets
-			// TODO check if this can be moved to the xmls to get more control over positioning of the facets
-			String place = response.getFindSpot();
-			String location = response.getFindSpotLocation();
-			if (place != null && location != null) {
-				jsonResponse.append("\"facet_fundort\": [\"");
-				jsonResponse.append(place);
-				jsonResponse.append(" [");
-				jsonResponse.append(location);
-				jsonResponse.append(']');
-				jsonResponse.append("\"],");
-			}
-
-			place = response.getDepository();
-			location = response.getDepositoryLocation();
-			if (place != null && location != null) {
-				jsonResponse.append("\"facet_aufbewahrungsort\": [\"");
-				jsonResponse.append(place);
-				jsonResponse.append(" [");
-				jsonResponse.append(location);
-				jsonResponse.append(']');
-				jsonResponse.append("\"],");
-			}
-
-			// add all other facets
-			final Element facets = document.getRootElement().getChild("facets", namespace);
-			final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
-			for (final Facet facet: facetList ) {
-				final String facetName = facet.getName();
-				List<String> facetValues = facet.getValues();
-				jsonResponse.append("\"facet_");
-				jsonResponse.append(facetName);
-				jsonResponse.append("\": [");
-				
-				// split multi value facets at ';' and look for facet translations
-				ListIterator<String> valueIterator = facetValues.listIterator();
-				while (valueIterator.hasNext()) {
-					final String value = valueIterator.next().trim(); 
-					if (value.contains(";")) {
-						valueIterator.remove();
-						final List<String> splitValues = new ArrayList<String>(Arrays.asList(value.split(";")));
-						ListIterator<String> splitIterator = splitValues.listIterator();
-						while (splitIterator.hasNext()) {
-							final String splitValue = splitIterator.next().trim();
-							if (splitIterator.hasNext()) {
-								jsonResponse.append("\"");
-								jsonResponse.append(ts.transl8Facet(facetName, splitValue));
-								jsonResponse.append("\",");
-							} else {
-								jsonResponse.append("\"");
-								jsonResponse.append(ts.transl8Facet(facetName, splitValue));
-								jsonResponse.append("\"");
-							}
-						}
-					} else {
-						if (valueIterator.hasNext()) {
-							jsonResponse.append("\"");
-							jsonResponse.append(ts.transl8Facet(facetName, value));
-							jsonResponse.append("\",");
-						} else {
-							jsonResponse.append("\"");
-							jsonResponse.append(ts.transl8Facet(facetName, value));
-							jsonResponse.append("\"");
-						}
-					}
-				}
-				
-				if (!(facetList.indexOf(facet) == facetList.size() - 1)) {
-					jsonResponse.append("],");
-				} else {
-					jsonResponse.append("]}");
-				}				
-			}
-		} catch (JsonProcessingException e) {
-			LOGGER.error("Error converting dataset [" + response.getEntityId() + "] to JSON.", e);
-		} catch (StringIndexOutOfBoundsException e) {
-			LOGGER.error("Error converting dataset [" + response.getEntityId() + "] to JSON.", e);
+		ObjectNode json = objectMapper.valueToTree(response);
+		
+		// set image facet
+		if (dataset.getThumbnailId() == null) {
+			json.set("facet_image", json.arrayNode().add("nein"));
+		} else {
+			json.set("facet_image", json.arrayNode().add("ja"));
 		}
-		return jsonResponse.toString();
+		
+		// add the geo facets
+		// TODO check if this can be moved to the xmls to get more control over positioning of the facets
+		String place = response.getFindSpot();
+		String location = response.getFindSpotLocation();
+		if (place != null && location != null) {
+			json.set("facet_fundort", json.arrayNode().add(place + "[" + location + "]"));
+		}
+
+		place = response.getDepository();
+		location = response.getDepositoryLocation();
+		if (place != null && location != null) {
+			json.set("facet_aufbewahrungsort", json.arrayNode().add(place + "[" + location + "]"));
+		}
+		
+		// add all other facets
+		final Element facets = document.getRootElement().getChild("facets", namespace);
+		final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
+		
+		for (final Facet facet: facetList ) {
+			final String facetName = facet.getName();
+			final String facetOutputName = "facet_" + facetName;
+			List<String> facetValues = facet.getValues();
+			
+			// split multi value facets at ';' and look for facet translations
+			final List<String> finalFacetValues = new ArrayList<String>();
+			for (final String facetValue: facetValues) {
+				if (facetValue.contains(";")) {
+					final List<String> splitValues = new ArrayList<String>(Arrays.asList(facetValue.split(";")));
+					finalFacetValues.addAll(splitValues);
+				} else {
+					finalFacetValues.add(facetValue);
+				}
+			}
+						
+			ArrayNode arrayNode = json.arrayNode();
+			for (final String finalFacetValue: finalFacetValues) {
+				arrayNode.add(ts.transl8Facet(facetName, finalFacetValue));
+			}
+			json.set(facetOutputName, arrayNode);
+		}
+		return json.toString();
 	}
 
-	/**
-	 * Returns the smallest power of two value that is greater than the given value.
-	 * @param n Value to find next greater power of two value for.
-	 * @return Next greater power of two value.
-	 */
-	private int getNextPowerOfTwo(int n) {
-		n--;
-		n = n >> 1;
-		n = n >> 2;
-		n = n >> 4;
-		n = n >> 8;
-		n = n >> 16;
-		return n++;
-	}
-	
 	/**
 	 * Internal function to retrieve the contents of a <code>section</code> or <code>context</code>.
 	 * @param dataset The current dataset.
