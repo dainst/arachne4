@@ -66,15 +66,74 @@ public class ResponseFactory {
 	 * <br>
 	 * The validity of the xml file is not checked!!!
 	 * @param dataset The dataset which encapsulates the SQL query results.
-	 * @return A <code>FormattedArachneEntity</code> instance which can be jsonized.
+	 * @return A <code>FormattedArachneEntity</code> as JSON (<code>String</code>).
 	 */
-	public String createFormattedArachneEntityAsJson(final Dataset dataset) {
+	public String createFormattedArachneEntityAsJsonString(final Dataset dataset) {
 		
+		final EntityId arachneId = dataset.getArachneId(); 
+		final String tableName = arachneId.getTableName();
+		final Document document = xmlConfigUtil.getDocument(tableName);
+		
+		final FormattedArachneEntity response = createFormattedArachneEntity(dataset, arachneId, tableName);
+				
+		if (document != null) {
+			//Set additional Content
+			response.setAdditionalContent(dataset.getAdditionalContent());
+			
+			return getEntityAsJson(dataset, document, response).toString();
+		}
+
+		LOGGER.error("No xml document for '" + tableName + "' found.");
+		return null;
+	}
+
+	/**
+	 * Creates a formatted response object as used by the front-end. The structure of this object is defined in the xml config files.
+	 * First the type of the object will be determined from the dataset (e.g. bauwerk). Based on the type the corresponding xml file <code>$(TYPE).xml</code> is read.
+	 * The response is then created, according to the xml file, from the dataset.
+	 * <br>
+	 * The validity of the xml file is not checked!!!
+	 * @param dataset The dataset which encapsulates the SQL query results.
+	 * @return A <code>FormattedArachneEntity</code> as JSON (<code>raw bytes</code>).
+	 */
+	public byte[] createFormattedArachneEntityAsJsonBytes(final Dataset dataset) {
+		
+		final EntityId arachneId = dataset.getArachneId(); 
+		final String tableName = arachneId.getTableName();
+		final Document document = xmlConfigUtil.getDocument(tableName);
+		
+		final FormattedArachneEntity response = createFormattedArachneEntity(dataset, arachneId, tableName);
+				
+		if (document != null) {
+			//Set additional Content
+			response.setAdditionalContent(dataset.getAdditionalContent());
+			
+			byte[] json = null;
+			try {
+				json = objectMapper.writeValueAsBytes(getEntityAsJson(dataset, document, response));
+			} catch (JsonProcessingException e) {
+				LOGGER.error("Failed to serialize entity " + arachneId.getArachneEntityID() + ".Cause: ", e);
+				e.printStackTrace();
+			}
+			return json;
+		}
+
+		LOGGER.error("No xml document for '" + tableName + "' found.");
+		return null;
+	}
+	
+	/**
+	 * @param dataset
+	 * @param arachneId
+	 * @param tableName
+	 * @return
+	 */
+	private FormattedArachneEntity createFormattedArachneEntity(
+			final Dataset dataset, final EntityId arachneId,
+			final String tableName) {
 		final FormattedArachneEntity response = new FormattedArachneEntity();
 		
 		// set id content
-		final EntityId arachneId = dataset.getArachneId(); 
-		final String tableName = arachneId.getTableName();
 		response.setEntityId(arachneId.getArachneEntityID());
 		response.setType(ts.transl8("type_" + tableName));
 		response.setInternalId(arachneId.getInternalKey());
@@ -173,17 +232,7 @@ public class ResponseFactory {
 				}
 			}
 		}
-		
-		final Document document = xmlConfigUtil.getDocument(tableName);
-		if (document != null) {
-			//Set additional Content
-			response.setAdditionalContent(dataset.getAdditionalContent());
-			
-			return getEntityAsJson(dataset, document, response);
-		}
-
-		LOGGER.error("No xml document for '" + tableName + "' found.");
-		return null;
+		return response;
 	}
 	
 	/**
@@ -191,7 +240,7 @@ public class ResponseFactory {
 	 * @param entityId The ID of the entity.
 	 * @return The JSON for the deleted entity as <code>String</code>. 
 	 */
-	public String createResponseForDeletedEntityAsJson(final EntityId entityId) {
+	public String createResponseForDeletedEntityAsJsonString(final EntityId entityId) {
 		try {
 			return objectMapper.writeValueAsString(new DeletedArachneEntity(entityId));
 		} catch (JsonProcessingException e) {
@@ -270,7 +319,9 @@ public class ResponseFactory {
 	 * @param document The xml document describing the output format.
 	 * @param response The response object to add the content to.
 	 */
-	private String getEntityAsJson(final Dataset dataset, final Document document, final FormattedArachneEntity response) {
+	private ObjectNode getEntityAsJson(final Dataset dataset, final Document document
+			, final FormattedArachneEntity response) {
+		
 		final Namespace namespace = document.getRootElement().getNamespace();
 		final Element display = document.getRootElement().getChild("display", namespace);
 
@@ -297,20 +348,20 @@ public class ResponseFactory {
 	 * @param document The xml document describing the output format.
 	 * @param response The response object to add the content to.
 	 * @param namespace The document namespace.
-	 * @return The entity as JSON or <code>null</code> on failure.
+	 * @return A Jackson ObjectNode representing the JSON as tree.
 	 */
-	private String getFacettedEntityAsJson(final Dataset dataset, final Document document
+	private ObjectNode getFacettedEntityAsJson(final Dataset dataset, final Document document
 			, final FormattedArachneEntity response, final Namespace namespace) {
-		
+
 		ObjectNode json = objectMapper.valueToTree(response);
-		
+
 		// set image facet
 		if (dataset.getThumbnailId() == null) {
 			json.set("facet_image", json.arrayNode().add("nein"));
 		} else {
 			json.set("facet_image", json.arrayNode().add("ja"));
 		}
-		
+
 		// add the geo facets
 		// TODO check if this can be moved to the xmls to get more control over positioning of the facets
 		String place = response.getFindSpot();
@@ -324,16 +375,16 @@ public class ResponseFactory {
 		if (place != null && location != null) {
 			json.set("facet_aufbewahrungsort", json.arrayNode().add(place + "[" + location + "]"));
 		}
-		
+
 		// add all other facets
 		final Element facets = document.getRootElement().getChild("facets", namespace);
 		final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
-		
+
 		for (final Facet facet: facetList ) {
 			final String facetName = facet.getName();
 			final String facetOutputName = "facet_" + facetName;
 			List<String> facetValues = facet.getValues();
-			
+
 			// split multi value facets at ';' and look for facet translations
 			final List<String> finalFacetValues = new ArrayList<String>();
 			for (final String facetValue: facetValues) {
@@ -344,16 +395,16 @@ public class ResponseFactory {
 					finalFacetValues.add(facetValue);
 				}
 			}
-						
+
 			ArrayNode arrayNode = json.arrayNode();
 			for (final String finalFacetValue: finalFacetValues) {
 				arrayNode.add(ts.transl8Facet(facetName, finalFacetValue));
 			}
 			json.set(facetOutputName, arrayNode);
 		}
-		return json.toString();
+		return json;
 	}
-
+	
 	/**
 	 * Internal function to retrieve the contents of a <code>section</code> or <code>context</code>.
 	 * @param dataset The current dataset.

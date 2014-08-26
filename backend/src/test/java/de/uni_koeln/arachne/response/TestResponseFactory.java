@@ -83,14 +83,14 @@ public class TestResponseFactory { // NOPMD
 	
 	@Test
 	public void testCreateFormattedArachneEntity() {
-		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
 		assertNotNull(response);
 	}
 	
 	@Test
 	public void testCreateResponseForDeletedEntity() throws JsonParseException, JsonMappingException, IOException {
 		final EntityId deletedEntityId = new EntityId("test", 0L, 0L, true);
-		final String response = responseFactory.createResponseForDeletedEntityAsJson(deletedEntityId);
+		final String response = responseFactory.createResponseForDeletedEntityAsJsonString(deletedEntityId);
 		final ObjectMapper objectMapper = new ObjectMapper();
 		DeletedArachneEntity deletedEntity = objectMapper.readValue(response, DeletedArachneEntity.class);
 		assertNotNull(deletedEntity);
@@ -102,45 +102,45 @@ public class TestResponseFactory { // NOPMD
 	
 	@Test
 	public void testType() {
-		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
 		assertTrue(response.contains("\"type\":\"type_test\""));
 	}
 	
 	@Test
 	public void testTitle() {
-		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
 		assertTrue(response.contains("\"title\":\"Title of the Test\""));
 	}
 	
 	@Test
 	public void testSubtitle() {
-		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
 		assertTrue(response.contains("\"subtitle\":\"Subtitle of the Test\""));
 	}
 	
 	@Test
 	public void testDatasectionLabel() {
-		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
 		assertTrue(response.contains("\"label\":\"Testdata\""));
 	}
 	
 	@Test
 	public void testFieldPrefixPostfix() {
-		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
 		assertTrue(response.contains("\"label\":\"Testdata prefix/postfix\""));
 		assertTrue(response.contains("\"content\":[{\"value\":\"PrefixTest=success<hr>PostfixTest=success\"}]"));
 	}
 	
 	@Test
 	public void testFieldSeparator() {
-		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
 		assertTrue(response.contains("\"label\":\"Testdata separator\""));
 		assertTrue(response.contains("\"content\":[{\"value\":\"first-second\"}]"));
 	}
 	
 	@Test
 	public void testLinkField() {
-		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
 		assertTrue(response.contains("\"label\":\"Testdata linkField\""));
 		assertTrue(response.contains("\"content\":[{\"value\":\"Start<hr>"
 				+ "<a href=\\\"http://testserver.com/link1.html\\\" target=\\\"_blank\\\">TestLink1</a><hr>"
@@ -149,7 +149,7 @@ public class TestResponseFactory { // NOPMD
 	
 	@Test
 	public void testDynamicFacets() {
-		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
 		assertTrue(response.contains("\"facet_kategorie\":[\"test\"]"));
 		assertTrue(response.contains("\"facet_test\":[\"test facet value\"]"));
 		assertTrue(response.contains("\"facet_multivaluetest\":[\"value 1\",\"value 2\",\"value 3\"]"));
@@ -157,7 +157,7 @@ public class TestResponseFactory { // NOPMD
 	
 	@Test
 	public void testStaticFacets() {
-		final String response = responseFactory.createFormattedArachneEntityAsJson(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
 		assertTrue(response.contains("\"facet_image\":[\"nein\"]"));
 	}
 	

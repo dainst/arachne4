@@ -159,7 +159,7 @@ public class EntityController {
     	LOGGER.debug("Request for entity: " + entityId.getArachneEntityID() + " - type: " + entityId.getTableName());
     	
     	if (entityId.isDeleted()) {
-    		return responseFactory.createResponseForDeletedEntityAsJson(entityId);
+    		return responseFactory.createResponseForDeletedEntityAsJsonString(entityId);
     	}
     	
     	final String result = entityService.getFormattedEntityByIdAsJson(entityId);

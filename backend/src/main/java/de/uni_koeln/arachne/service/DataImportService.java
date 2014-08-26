@@ -221,7 +221,7 @@ public class DataImportService { // NOPMD
 					LOGGER.debug("Creating response");
 					String jsonEntity;
 					if (entityId.isDeleted()) {
-						jsonEntity = responseFactory.createResponseForDeletedEntityAsJson(entityId);
+						jsonEntity = responseFactory.createResponseForDeletedEntityAsJsonString(entityId);
 					} else {
 						jsonEntity = entityService.getFormattedEntityByIdAsJson(entityId);
 					}

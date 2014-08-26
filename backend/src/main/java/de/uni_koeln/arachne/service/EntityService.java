@@ -78,7 +78,7 @@ public class EntityService {
     		final long contextTime = System.currentTimeMillis() - nextTime;
     		nextTime = System.currentTimeMillis();
 
-    		result = responseFactory.createFormattedArachneEntityAsJson(arachneDataset);
+    		result = responseFactory.createFormattedArachneEntityAsJsonString(arachneDataset);
 
     		LOGGER.info("-- Fetching entity took " + fetchTime + " ms");
     		LOGGER.info("-- Adding images took " + imageTime + " ms");
@@ -89,7 +89,7 @@ public class EntityService {
 
     		contextService.addMandatoryContexts(arachneDataset);
 
-    		result = responseFactory.createFormattedArachneEntityAsJson(arachneDataset);
+    		result = responseFactory.createFormattedArachneEntityAsJsonString(arachneDataset);
     	}
     	return result;
 	}
