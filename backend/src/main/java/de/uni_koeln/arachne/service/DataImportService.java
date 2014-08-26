@@ -219,9 +219,9 @@ public class DataImportService { // NOPMD
 					dbgEntityId = entityId.getArachneEntityID();
 					
 					LOGGER.debug("Creating response");
-					String jsonEntity;
+					byte[] jsonEntity;
 					if (entityId.isDeleted()) {
-						jsonEntity = responseFactory.createResponseForDeletedEntityAsJsonString(entityId);
+						jsonEntity = responseFactory.createResponseForDeletedEntityAsJson(entityId);
 					} else {
 						jsonEntity = entityService.getFormattedEntityByIdAsJson(entityId);
 					}
@@ -231,7 +231,7 @@ public class DataImportService { // NOPMD
 						throw new RuntimeException("Entity " + dbgEntityId + " is null!");
 					} else {
 						if (checkIndexOnDataImport) {
-							entityCompareService.compareToIndex(dbgEntityId, jsonEntity);
+							entityCompareService.compareToIndex(dbgEntityId, jsonEntity.toString());
 						}
 						LOGGER.debug("Adding entity " + dbgEntityId + " to bulk.");
 						bulkProcessor.add(client.prepareIndex(indexName, "entity", String.valueOf(dbgEntityId))

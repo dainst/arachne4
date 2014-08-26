@@ -96,7 +96,7 @@ public class ResponseFactory {
 	 * @param dataset The dataset which encapsulates the SQL query results.
 	 * @return A <code>FormattedArachneEntity</code> as JSON (<code>raw bytes</code>).
 	 */
-	public byte[] createFormattedArachneEntityAsJsonBytes(final Dataset dataset) {
+	public byte[] createFormattedArachneEntityAsJson(final Dataset dataset) {
 		
 		final EntityId arachneId = dataset.getArachneId(); 
 		final String tableName = arachneId.getTableName();
@@ -249,6 +249,20 @@ public class ResponseFactory {
 		return null;
 	}
 
+	/**
+	 * Method to construct a response object for a deleted entity.
+	 * @param entityId The ID of the entity.
+	 * @return The JSON for the deleted entity as <code>String</code>. 
+	 */
+	public byte[] createResponseForDeletedEntityAsJson(final EntityId entityId) {
+		try {
+			return objectMapper.writeValueAsBytes(new DeletedArachneEntity(entityId));
+		} catch (JsonProcessingException e) {
+			LOGGER.error("Error serializing response for deleted entity [" + entityId + "]. Cause: ", e);
+		}
+		return null;
+	}
+	
 	/**
 	 * Retrieves the title for the response.
 	 * @param dataset The current dataset.

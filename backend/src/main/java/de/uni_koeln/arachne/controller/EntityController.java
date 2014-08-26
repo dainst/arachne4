@@ -162,7 +162,7 @@ public class EntityController {
     		return responseFactory.createResponseForDeletedEntityAsJsonString(entityId);
     	}
     	
-    	final String result = entityService.getFormattedEntityByIdAsJson(entityId);
+    	final String result = entityService.getFormattedEntityByIdAsJsonString(entityId);
     	
     	if ("forbidden".equals(result)) {
     		response.setStatus(403);

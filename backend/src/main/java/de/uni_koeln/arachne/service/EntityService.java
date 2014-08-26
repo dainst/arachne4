@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.ResponseFactory;
@@ -38,12 +40,13 @@ public class EntityService {
 		this.PROFILING = profiling;
 	}
 	
+	// TODO update documentation
 	/**
 	 * This functions retrieves a <code>FromattedArachneEntity</code>.
 	 * @param entityId The corresponding EntityId object.
 	 * @return The requested formatted entity object or "forbidden" to indicate that the user is not allowed to see this entity.
 	 */
-	public String getFormattedEntityByIdAsJson(final EntityId entityId) {
+	public String getFormattedEntityByIdAsJsonString(final EntityId entityId) {
 		long startTime = 0;
 		if (PROFILING) {
 			startTime = System.currentTimeMillis();
@@ -90,6 +93,63 @@ public class EntityService {
     		contextService.addMandatoryContexts(arachneDataset);
 
     		result = responseFactory.createFormattedArachneEntityAsJsonString(arachneDataset);
+    	}
+    	return result;
+	}
+	
+	// TODO update documentation
+	/**
+	 * This functions retrieves a <code>FromattedArachneEntity</code>.
+	 * @param entityId The corresponding EntityId object.
+	 * @return The requested formatted entity object or "forbidden" to indicate that the user is not allowed to see this entity.
+	 */
+	public byte[] getFormattedEntityByIdAsJson(final EntityId entityId) {
+		long startTime = 0;
+		if (PROFILING) {
+			startTime = System.currentTimeMillis();
+		}
+		
+		final String datasetGroupName = singleEntityDataService.getDatasetGroup(entityId);
+    	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
+    	
+    	LOGGER.debug("Indexer(" + entityId.getArachneEntityID() + "): " + userRightsService.isDataimporter());
+    	
+    	if (!userRightsService.isDataimporter() && !userRightsService.userHasDatasetGroup(datasetGroup)) {
+    		LOGGER.debug("Forbidden!");
+    		return null;
+    	}
+    	
+    	final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(entityId);
+    	
+    	LOGGER.debug(arachneDataset.toString());
+    	
+    	byte[] result = null;
+    	if (PROFILING) {
+    		final long fetchTime = System.currentTimeMillis() - startTime;
+    		long nextTime = System.currentTimeMillis();
+
+    		imageService.addImages(arachneDataset);
+
+    		final long imageTime = System.currentTimeMillis() - nextTime;
+    		nextTime = System.currentTimeMillis();
+
+    		contextService.addMandatoryContexts(arachneDataset);
+
+    		final long contextTime = System.currentTimeMillis() - nextTime;
+    		nextTime = System.currentTimeMillis();
+
+    		result = responseFactory.createFormattedArachneEntityAsJson(arachneDataset);
+
+    		LOGGER.info("-- Fetching entity took " + fetchTime + " ms");
+    		LOGGER.info("-- Adding images took " + imageTime + " ms");
+    		LOGGER.info("-- Adding contexts took " + contextTime + " ms");
+    		LOGGER.info("-- Creating response took " + (System.currentTimeMillis() - nextTime) + " ms");
+    	} else {
+    		imageService.addImages(arachneDataset);
+
+    		contextService.addMandatoryContexts(arachneDataset);
+
+    		result = responseFactory.createFormattedArachneEntityAsJson(arachneDataset);
     	}
     	return result;
 	}
