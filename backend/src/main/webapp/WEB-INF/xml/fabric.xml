@@ -99,9 +99,6 @@
         <contextImages>
             <!-- Show images of connected sherds -->
             <contextImage show="always">Fabricdescription</contextImage>
-
-            <!-- Show images of types which consist of current fabric -->
-            <contextImage show="always">Fabricmainabstractmorphology</contextImage>
         </contextImages>
     </display>
     
