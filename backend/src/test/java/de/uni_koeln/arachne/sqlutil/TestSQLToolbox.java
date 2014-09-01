@@ -7,10 +7,14 @@ import org.junit.Test;
 public class TestSQLToolbox {
 	@Test
 	public void testGeneratePrimaryKeyName() {
-		assertEquals("PS_TestID", SQLToolbox.generatePrimaryKeyName("test"));
+		// test build in exceptions
 		assertEquals("PS_MARBilderID", SQLToolbox.generatePrimaryKeyName("marbilder"));
 		assertEquals("zenonid", SQLToolbox.generatePrimaryKeyName("zenon"));
 		assertEquals("ArachneEntityID", SQLToolbox.generatePrimaryKeyName("arachneentitydegrees"));
+		// test standard
+		assertEquals("PS_TestID", SQLToolbox.generatePrimaryKeyName("test"));
+		// Test standard (from cache)
+		assertEquals("PS_TestID", SQLToolbox.generatePrimaryKeyName("test"));
 	}
 	
 	@Test

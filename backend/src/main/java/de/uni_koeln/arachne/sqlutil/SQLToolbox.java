@@ -3,6 +3,9 @@
  */
 package de.uni_koeln.arachne.sqlutil;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This Toolbox contains a few Static Methods that do Standard string conversions, Like enclosing in backticks etc.
  * This class is dedicated to catch all the Special cases in the Database, so if there are special cases this class should know about it.
@@ -10,25 +13,28 @@ package de.uni_koeln.arachne.sqlutil;
  *
  */
 public class SQLToolbox { // NOPMD
+	
+	private static final Map<String, String> primaryKeyNames = new HashMap<String, String>();
+	static {
+		primaryKeyNames.put("marbilder", "PS_MARBilderID");
+		primaryKeyNames.put("zenon", "zenonid");
+		primaryKeyNames.put("arachneentitydegrees", "ArachneEntityID");
+	}
+	
 	/**
 	 * Asserts the Name of the Primary key by the Tabename it comes from
 	 * @param tablename An Arachne internal Tablename example: bauwerk.
 	 * @return The name of the Primary key of that Table example PS_BauwerkID
 	 */
 	public static String generatePrimaryKeyName(final String tablename){
-		// TODO replace with map
-		if ("marbilder".equals(tablename)) {
-			return "PS_MARBilderID";		
+		final String primaryKeyName = primaryKeyNames.get(tablename);
+		if (primaryKeyName == null) {
+			final String newPrimaryKeyName = "PS_" + ucFirst(tablename) + "ID";
+			primaryKeyNames.put(tablename, newPrimaryKeyName);
+			return newPrimaryKeyName;
 		} else {
-			if ("zenon".equals(tablename)) {
-				return "zenonid";
-			} else {
-				if ("arachneentitydegrees".equals(tablename)) {
-					return "ArachneEntityID";
-				}
-			}
+			return primaryKeyName; 
 		}
-		return "PS_" + ucFirst(tablename)+"ID";
 	}
 	
 	/**
@@ -64,7 +70,7 @@ public class SQLToolbox { // NOPMD
 	 * @return a String with backticks example: `Stuff`
 	 */
 	public static String addBackticks(final String inputString) {
-		return "`"+inputString+"`";
+		return "`" + inputString + "`";
 	} 
 	
 	/**
@@ -83,6 +89,6 @@ public class SQLToolbox { // NOPMD
 	 * @return example : Bauwerk
 	 */
 	public static String ucFirst(final String inputString) {
-		return Character.toUpperCase(inputString.charAt(0))+inputString.substring(1);
+		return Character.toUpperCase(inputString.charAt(0)) + inputString.substring(1);
 	}
 }
