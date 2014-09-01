@@ -62,6 +62,7 @@ public class DfgViewerButton extends AbstractSpecialNavigationElement {
 		
 		EntityId entityId = null;
 		
+		LOGGER.debug("SearchParam: " + searchParam);
 		if(searchParam.matches("[0-9]*")) {
 			entityId = entityIdentServ.getId(Long.valueOf(searchParam));		
 		}

@@ -73,6 +73,7 @@ public class TeiViewerSpecialNavigationElement extends AbstractSpecialNavigation
 		
 		EntityId entityId = null;
 		
+		LOGGER.debug("SearchParam: " + searchParam);
 		if(searchParam.matches("[0-9]*")) {
 			entityId = entityIdentServ.getId(Long.valueOf(searchParam));		
 		}

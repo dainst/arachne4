@@ -12,7 +12,7 @@ import de.uni_koeln.arachne.util.EntityId;
 @Component("modelViewerSpecialNavigationElement")
 public class ModelViewerSpecialNavigationElement extends AbstractSpecialNavigationElement {
 
-	//private static final Logger LOGGER = LoggerFactory.getLogger(ModelViewerSpecialNavigationElement.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ModelViewerSpecialNavigationElement.class);
 	
 	@Autowired
 	private transient EntityIdentificationService entityIdentServ;
@@ -62,6 +62,7 @@ public class ModelViewerSpecialNavigationElement extends AbstractSpecialNavigati
 		EntityId entityId = null;
 		this.entityId = 0;
 		
+		LOGGER.debug("SearchParams: " + searchParam);
 		if (searchParam.matches("[0-9]*")) {
 			entityId = entityIdentServ.getId(Long.valueOf(searchParam));		
 		}
