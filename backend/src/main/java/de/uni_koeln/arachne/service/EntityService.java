@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.ResponseFactory;
@@ -40,11 +38,11 @@ public class EntityService {
 		this.PROFILING = profiling;
 	}
 	
-	// TODO update documentation
 	/**
-	 * This functions retrieves a <code>FromattedArachneEntity</code>.
+	 * This functions retrieves a <code>FromattedArachneEntity</code> as JSON <code>String</code>.
 	 * @param entityId The corresponding EntityId object.
-	 * @return The requested formatted entity object or "forbidden" to indicate that the user is not allowed to see this entity.
+	 * @return The requested formatted entity as JSON <code>String</code> or "forbidden" to indicate that the user is 
+	 * not allowed to see this entity.
 	 */
 	public String getFormattedEntityByIdAsJsonString(final EntityId entityId) {
 		long startTime = 0;
@@ -97,11 +95,13 @@ public class EntityService {
     	return result;
 	}
 	
-	// TODO update documentation
 	/**
-	 * This functions retrieves a <code>FromattedArachneEntity</code>.
+	 * This functions retrieves a <code>FromattedArachneEntity</code> as JSON raw <code>byte</code> array.
+	 * IMPORTANT: Do no use the raw byte representation for the live retrieval of entities. It is only meant to be used 
+	 * by the dataimport. Use the <code>String</code> version instead.
 	 * @param entityId The corresponding EntityId object.
-	 * @return The requested formatted entity object or "forbidden" to indicate that the user is not allowed to see this entity.
+	 * @return The requested formatted entity object as JSON raw <code>byte</code> array or <code>null</code> to 
+	 * indicate that the user is not allowed to see this entity or any error occurs.
 	 */
 	public byte[] getFormattedEntityByIdAsJson(final EntityId entityId) {
 		long startTime = 0;
