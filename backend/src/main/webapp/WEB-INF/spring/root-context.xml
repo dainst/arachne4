@@ -31,6 +31,8 @@
 	<task:executor id="defaultTaskExecutor" pool-size="5"/>
 	-->
 
+    <import resource="hibernate.xml"/>
+
 	<bean id="taskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="2" />
@@ -49,6 +51,4 @@
 	</bean>
 
     <task:annotation-driven executor="taskExecutor" scheduler="taskScheduler"/>
-	 
-	<import resource="hibernate.xml"/>
 </beans>

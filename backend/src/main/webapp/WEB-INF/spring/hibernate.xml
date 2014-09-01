@@ -6,9 +6,7 @@
 
      <!-- Spring bean configuration. Tell Spring to bounce off BoneCP -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
-		<property name="targetDataSource">
-			<ref local="mainDataSource" />
-		</property>
+		<property name="targetDataSource" ref="mainDataSource" />
 	</bean>
 
 	<bean id="mainDataSource" class="com.jolbox.bonecp.BoneCPDataSource"
