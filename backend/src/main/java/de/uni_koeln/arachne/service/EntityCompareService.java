@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.uni_koeln.arachne.util.ESClientUtil;
+import de.uni_koeln.arachne.util.JSONUtil;
 
 @Service
 @Scope("prototype")
@@ -27,6 +28,9 @@ public class EntityCompareService {
 	
 	@Autowired
 	private transient ESClientUtil esClientUtil;
+	
+	@Autowired
+	private transient JSONUtil jsonUtil;
 
 	@Async
 	public void compareToIndex(final Long entityId, final String json) {
@@ -49,7 +53,7 @@ public class EntityCompareService {
     	/*if (jsonFromIndex == null) {
     		LOGGER.warn("Entity " + entityId + " not found in index.");
     	} else*/ {
-    		ObjectMapper mapper = new ObjectMapper();
+    		ObjectMapper mapper = jsonUtil.getObjectMapper();
 			JsonNode jsonDB = null;
 			JsonNode jsonES = null;
 			try {

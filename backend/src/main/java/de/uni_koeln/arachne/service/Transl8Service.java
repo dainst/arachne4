@@ -10,7 +10,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,9 +23,9 @@ import org.springframework.web.client.RestClientException;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.uni_koeln.arachne.util.ArachneRestTemplate;
+import de.uni_koeln.arachne.util.JSONUtil;
 
 /**
  * Gets the translations lazily from transl8 and offers translation functionality.
@@ -38,6 +37,9 @@ public class Transl8Service {
 
 	@Autowired
 	private transient ArachneRestTemplate restTemplate;
+	
+	@Autowired
+	private transient JSONUtil jsonUtil;
 
 	private transient Map<String, Boolean> translationsAvailable = new HashMap<String, Boolean>();
 	
@@ -72,7 +74,7 @@ public class Transl8Service {
 			if (response.getStatusCode() == HttpStatus.OK) {
 				final String doc = response.getBody();
 				try {
-					translationMap = new ObjectMapper().readValue(doc, HashMap.class);
+					translationMap = jsonUtil.getObjectMapper().readValue(doc, HashMap.class);
 				} catch (JsonParseException e) {
 					LOGGER.error("Could not parse transl8 response.", e);
 				} catch (JsonMappingException e) {

@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -26,6 +25,7 @@ import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
@@ -52,7 +52,8 @@ public class ResponseFactory {
 	@Autowired
 	private transient Transl8Service ts;
 	
-	private transient ObjectMapper objectMapper = new ObjectMapper();
+	@Autowired
+	private transient JSONUtil jsonUtil;
 	
 	// needed for testing
 	public void setXmlConfigUtil(final XmlConfigUtil xmlConfigUtil) {
@@ -110,7 +111,7 @@ public class ResponseFactory {
 			
 			byte[] json = null;
 			try {
-				json = objectMapper.writeValueAsBytes(getEntityAsJson(dataset, document, response));
+				json = jsonUtil.getObjectMapper().writeValueAsBytes(getEntityAsJson(dataset, document, response));
 			} catch (JsonProcessingException e) {
 				LOGGER.error("Failed to serialize entity " + arachneId.getArachneEntityID() + ".Cause: ", e);
 				e.printStackTrace();
@@ -242,7 +243,7 @@ public class ResponseFactory {
 	 */
 	public String createResponseForDeletedEntityAsJsonString(final EntityId entityId) {
 		try {
-			return objectMapper.writeValueAsString(new DeletedArachneEntity(entityId));
+			return jsonUtil.getObjectMapper().writeValueAsString(new DeletedArachneEntity(entityId));
 		} catch (JsonProcessingException e) {
 			LOGGER.error("Error serializing response for deleted entity [" + entityId + "]. Cause: ", e);
 		}
@@ -256,7 +257,7 @@ public class ResponseFactory {
 	 */
 	public byte[] createResponseForDeletedEntityAsJson(final EntityId entityId) {
 		try {
-			return objectMapper.writeValueAsBytes(new DeletedArachneEntity(entityId));
+			return jsonUtil.getObjectMapper().writeValueAsBytes(new DeletedArachneEntity(entityId));
 		} catch (JsonProcessingException e) {
 			LOGGER.error("Error serializing response for deleted entity [" + entityId + "]. Cause: ", e);
 		}
@@ -367,7 +368,7 @@ public class ResponseFactory {
 	private ObjectNode getFacettedEntityAsJson(final Dataset dataset, final Document document
 			, final FormattedArachneEntity response, final Namespace namespace) {
 
-		ObjectNode json = objectMapper.valueToTree(response);
+		ObjectNode json = jsonUtil.getObjectMapper().valueToTree(response);
 
 		// set image facet
 		if (dataset.getThumbnailId() == null) {
