@@ -23,7 +23,7 @@
 		<org.jdom-version>2.0.5</org.jdom-version>
 		<xerces-version>2.11.0</xerces-version>
 		<jackson-version>2.4.0</jackson-version>
-		<org.javassist-version>3.18.0-GA</org.javassist-version>
+		<org.javassist-version>3.18.2-GA</org.javassist-version>
 		<boneCP-version>0.8.0.RELEASE</boneCP-version>
 		<elasticsearch-version>1.0.1</elasticsearch-version>
 		<snappy-version>1.0.5</snappy-version>
