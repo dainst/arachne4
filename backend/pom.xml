@@ -19,7 +19,7 @@
 		<org.mockito-version>1.9.5</org.mockito-version>
 		<log4j-version>1.2.17</log4j-version>
 		<org.hibernate-version>4.3.6.Final</org.hibernate-version>
-		<mysql-connector-java-version>5.1.30</mysql-connector-java-version>
+		<mysql-connector-java-version>5.1.32</mysql-connector-java-version>
 		<org.jdom-version>2.0.5</org.jdom-version>
 		<xerces-version>2.11.0</xerces-version>
 		<jackson-version>2.4.0</jackson-version>
