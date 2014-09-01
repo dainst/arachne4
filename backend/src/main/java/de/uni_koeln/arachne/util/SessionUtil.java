@@ -1,7 +1,9 @@
 package de.uni_koeln.arachne.util;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +18,13 @@ public class SessionUtil { // NOPMD
     
     static {
     	try {
-    		SESSIONFACTORY = new Configuration().configure().buildSessionFactory();
+    		Configuration cfg = new Configuration();
+    		cfg.configure();
+    		
+    		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties())
+    				.build();
+    		
+    		SESSIONFACTORY = cfg.buildSessionFactory(serviceRegistry);
     	} catch (Exception ex) {
     		LOGGER.error("Initial SessionFactory creation failed." + ex);
     		throw new ExceptionInInitializerError(ex);
