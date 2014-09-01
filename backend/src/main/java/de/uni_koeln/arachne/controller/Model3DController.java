@@ -5,8 +5,6 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
@@ -30,6 +29,7 @@ import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.image.ImageMimeUtil;
 
 /**
@@ -47,6 +47,9 @@ public class Model3DController {
 	
 	@Autowired
 	private transient SingleEntityDataService singleEntityDataService;
+	
+	@Autowired
+	private transient JSONUtil jsonUtil;
 	
 	private transient final String basePath;
 	
@@ -175,17 +178,12 @@ public class Model3DController {
 	 * @return The meta data as JSON. 
 	 */
 	private String getMetaData(final Dataset dataset) {
-		final JSONObject result = new JSONObject();
-		try {
-			result.put("title", dataset.getFieldFromFields("modell3d.Titel"));
-			result.put("format", dataset.getFieldFromFields("modell3d.Dateiformat"));
-			result.put("modeller", dataset.getFieldFromFields("modell3d.Modellierer"));
-			result.put("license", dataset.getFieldFromFields("modell3d.Lizenz"));
-			return result.toString();
-		} catch (JSONException e) {
-			LOGGER.error("Failed to generate model meta data. Cause: ", e);
-		}
-		return null;
+		final ObjectNode result = jsonUtil.getObjectNode();
+		result.put("title", dataset.getFieldFromFields("modell3d.Titel"));
+		result.put("format", dataset.getFieldFromFields("modell3d.Dateiformat"));
+		result.put("modeller", dataset.getFieldFromFields("modell3d.Modellierer"));
+		result.put("license", dataset.getFieldFromFields("modell3d.Lizenz"));
+		return result.toString();
 	}
 
 	/**

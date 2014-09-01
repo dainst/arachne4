@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -368,6 +369,7 @@ public class ResponseFactory {
 	private ObjectNode getFacettedEntityAsJson(final Dataset dataset, final Document document
 			, final FormattedArachneEntity response, final Namespace namespace) {
 
+		ObjectMapper oMapper = jsonUtil.getObjectMapper();
 		ObjectNode json = jsonUtil.getObjectMapper().valueToTree(response);
 
 		// set image facet

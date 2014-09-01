@@ -19,6 +19,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.ContextConfiguration;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -33,6 +35,7 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 public class TestResponseFactory { // NOPMD
 	@Mock private GenericSQLDao genericSQLDao;
 	@Mock private Transl8Service ts;
+	@Mock private JSONUtil jsonUtil;
 	@InjectMocks private ResponseFactory responseFactory = new ResponseFactory();
 	
 	private List<Long> mockIdList = null;
@@ -74,6 +77,7 @@ public class TestResponseFactory { // NOPMD
 		Mockito.when(genericSQLDao.getConnectedEntityIds(0)).thenReturn(mockIdList);
 		Mockito.when(ts.transl8(Mockito.anyString())).thenReturn("type_test");
 		Mockito.when(ts.transl8Facet(Mockito.anyString(), Mockito.anyString())).then(AdditionalAnswers.returnsSecondArg());
+		Mockito.when(jsonUtil.getObjectMapper()).thenReturn(new ObjectMapper());
 	}
 	
 	@After

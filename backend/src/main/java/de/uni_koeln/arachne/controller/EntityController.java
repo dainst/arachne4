@@ -1,8 +1,6 @@
 package de.uni_koeln.arachne.controller;
 
 
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,8 +10,6 @@ import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.json.JSONObject;
-import org.json.XML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -244,21 +240,7 @@ public class EntityController {
     	
     	if (searchResponse.getHits().getTotalHits() == 1) { 
     		result = searchResponse.getHits().getAt(0).getSourceAsString();
-    		if (request.getHeader("Accept").toLowerCase().contains("application/json")) {
-    			response.setContentType("application/json");
-    		} else {
-    			try {
-    				final JSONObject jsonObject = new JSONObject(result);
-    				result = XML.toString(jsonObject, "entity");
-    				response.setContentType("application/xml");
-    				final PrintWriter writer = response.getWriter();
-    				writer.write(result);
-    				writer.flush();
-    				writer.close();
-    			} catch (Exception e) {
-    				LOGGER.error("JSON to XML conversion for entity '" + category + ": " + id +"' failed. Cause: ", e);
-    			}
-    		} 
+    		response.setContentType("application/json");
     	} else {
     		if (acLessSearchResponse.getHits().getTotalHits() == 1) {
     			response.setStatus(403);
