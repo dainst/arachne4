@@ -27,7 +27,7 @@
 		<boneCP-version>0.8.0.RELEASE</boneCP-version>
 		<elasticsearch-version>1.0.1</elasticsearch-version>
 		<snappy-version>1.1.1.3</snappy-version>
-		<httpcomponents-version>4.3.3</httpcomponents-version>
+		<httpclient-version>4.3.5</httpclient-version>
 		<!-- Plugin Versions -->
 		<aspectj-maven-version>1.5</aspectj-maven-version>
 		<maven-failsafe-version>2.17</maven-failsafe-version>
@@ -295,7 +295,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>${httpcomponents-version}</version>
+			<version>${httpclient-version}</version>
 		</dependency>
 
 		<!-- Servlet 3.0 specs (needed to make MockHttpService in Spring 4 run 
