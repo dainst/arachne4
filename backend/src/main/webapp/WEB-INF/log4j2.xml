@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <!-- Appenders -->
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="%-5p: %c - %m%n" />
+        </Console>
+    
+        <RollingFile name="ROLLING" 
+                     fileName="/var/log/arachne/arachnedataservice/dataservice.log" 
+                     filePattern="/var/log/arachne/arachnedataservice/dataservice-%i.log">
+            <PatternLayout pattern="%-5p: %c - %m%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10240KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+    </Appenders>
+    
+    <!--     
+    <!- Application Loggers ->
+    <logger name="de.uni_koeln.arachne">
+        <level value="info" />
+    </logger>
+    
+    <!- Controller ->
+    <logger name="de.uni_koeln.arachne.controller">
+        <level value="info" />
+    </logger>
+    
+    <!- Daos ->
+    <logger name="de.uni_koeln.arachne.dao">
+        <level value="info" />
+    </logger>
+    
+    <!- Services ->
+    <logger name="de.uni_koeln.arachne.service">
+        <level value="info" />
+    </logger>
+    
+    <!- Utils ->
+    <logger name="de.uni_koeln.arachne.utils">
+        <level value="info" />
+    </logger>
+    
+    <!- 3rdparty Loggers ->
+    <logger name="org.springframework.core">
+        <level value="info" />
+    </logger>
+    
+    <logger name="org.springframework.beans">
+        <level value="info" />
+    </logger>
+    
+    <logger name="org.springframework.context">
+        <level value="info" />
+    </logger>
+
+    -->
+
+    <!-- Root Logger -->
+    <Loggers>
+        <logger name="org.springframework.web" level="warn"/>
+        <Root level="info">
+            <AppenderRef ref="ROLLING" />
+            <!-- <AppenderRef ref="CONSOLE" /> -->
+        </Root>
+    </Loggers>
+</Configuration>
