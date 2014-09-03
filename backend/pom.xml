@@ -16,6 +16,7 @@
 		<org.aspectj-version>1.8.2</org.aspectj-version>
 		<org.slf4j-version>1.7.7</org.slf4j-version>
 		<!-- External lib versions -->
+		<junit-version>4.11</junit-version>
 		<org.mockito-version>1.9.5</org.mockito-version>
 		<log4j-version>2.0.2</log4j-version>
 		<org.hibernate-version>4.3.6.Final</org.hibernate-version>
@@ -66,11 +67,11 @@
 			<artifactId>spring-test</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.ws</groupId>
 			<artifactId>spring-oxm-tiger</artifactId>
 			<version>1.5.10</version>
-		</dependency>
+		</dependency>-->
 
 		<!-- spring orm dependencies -->
 		<dependency>
@@ -189,7 +190,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>${junit-version}</version>
 			<scope>test</scope>
 		</dependency>
 
