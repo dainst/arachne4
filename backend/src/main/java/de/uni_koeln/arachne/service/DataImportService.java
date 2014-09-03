@@ -289,6 +289,8 @@ public class DataImportService { // NOPMD
 		running.set(false);
 	}
 	
+	// TODO move to utility class
+	
 	/**
 	 * Determines the host name as <code>String</code>.
 	 * @return The host name of the system or "UnknownHost" in case of failure.

@@ -1,5 +1,8 @@
 package de.uni_koeln.arachne.response;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,7 @@ public class ModelViewerSpecialNavigationElement extends AbstractSpecialNavigati
 	@Autowired
 	private transient EntityIdentificationService entityIdentServ;
 	
-	private transient long entityId;
+	private transient long modelId;
 	
 	@Value("#{config.modelViewerLink}")
 	private transient String modelViewerLink;
@@ -60,7 +63,7 @@ public class ModelViewerSpecialNavigationElement extends AbstractSpecialNavigati
 		boolean returnValue = false;
 		
 		EntityId entityId = null;
-		this.entityId = 0;
+		this.modelId = 0;
 		
 		LOGGER.debug("SearchParams: " + searchParam);
 		if (searchParam.matches("[0-9]*")) {
@@ -68,7 +71,7 @@ public class ModelViewerSpecialNavigationElement extends AbstractSpecialNavigati
 		}
 		
 		if (entityId != null && "modell3d".equals(entityId.getTableName())) {
-			this.entityId = entityId.getArachneEntityID();
+			this.modelId = entityId.getInternalKey();
 			returnValue = true;
 		}
 		return returnValue;
@@ -77,9 +80,28 @@ public class ModelViewerSpecialNavigationElement extends AbstractSpecialNavigati
 	@Override
 	public AbstractSpecialNavigationElement getResult(final String searchParam,
 			final String filterValues) {
-		final StringBuffer linkBuffer = new StringBuffer(getRequestMapping());
-		linkBuffer.append('/');
-		linkBuffer.append(entityId);
+		final StringBuffer linkBuffer = new StringBuffer(128)
+			.append("http://")
+			.append(getFullHostName())
+			.append(getRequestMapping())
+			.append(modelId);
 		return new ModelViewerSpecialNavigationElement(linkBuffer.toString());
+	}
+	
+	// TODO move to utility class
+	
+	/**
+	 * Determines the host name as <code>String</code>.
+	 * @return The host name of the system or "UnknownHost" in case of failure.
+	 */
+	private String getFullHostName() {
+		String result = "UnknownHost";
+		try {
+			final InetAddress localHost = InetAddress.getLocalHost();
+			result = localHost.getCanonicalHostName();
+		} catch (UnknownHostException e) {
+			LOGGER.warn("Could not determine local host address.");
+		}
+		return result;
 	}
 }
