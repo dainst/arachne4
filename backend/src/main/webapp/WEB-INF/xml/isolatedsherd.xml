@@ -135,7 +135,7 @@
         <section labelKey="Bezeichner">
           <field datasource="surfacetreatment.Bezeichner"/>
         </section>
-        <context type="IsolatedsherdsurfacetreatmentsurfacetreatmentactionContextualizer" labelKey="Angewandte Behandlungen" separator=" ">
+        <context type="Isolatedsherdsurfacetreatmentsurfacetreatmentaction" labelKey="Angewandte Behandlungen" separator=" ">
           <contextSection labelKey="Zeitpunkt der Oberflächenbehandlung">
             <field datasource=".MomentOfSurfaceTreatmentAction"/>
           </contextSection>
@@ -223,8 +223,8 @@
     </facet>
     <!-- Surfacetreatment -->
     <facet name="surfacetreatmentbezeichner" labelKey="Oberflächenbehandlung">
-      <context type="surfcatreatment">
-        <field datasource="surfacetreatment.Bezeichner"/>
+      <context type="surfacetreatment">
+        <field datasource=".Bezeichner"/>
       </context>
     </facet>
     <!-- Morphology-Facets -->
