@@ -62,7 +62,7 @@
                 </context>
             </section>
             
-            <context type="fabricmainabstractbefund" labelKey="Befund">
+            <context type="Fabricmainabstractbefund" labelKey="Befund">
                 <contextSection labelKey="Grabungsort">
                     <field datasource=".Grabungsort"/>
                 </contextSection>
@@ -74,7 +74,7 @@
                 </contextSection>
             </context>
             
-            <context type="fabricmainabstractmorphology" labelKey="Morphologie">
+            <context type="Fabricmainabstractmorphology" labelKey="Morphologie">
                 <contextSection labelKey="Functional Group">
                     <field datasource=".Level1"/>
                 </contextSection>
@@ -105,44 +105,44 @@
     <facets>
         <!-- Facet-Context -->
         <facet name="befund" labelKey="Fabric-Context">
-            <context type="Fabricmainabstractcontext" separator=" / ">
+            <context type="Fabricmainabstractbefund" separator=" / ">
                 <field datasource=".Grabungsort"/>
             </context>
         </facet>
         <facet name="stratum" labelKey="Fabric-Stratum">
-            <context type="Fabricmainabstractcontext" separator=" / ">
+            <context type="Fabricmainabstractbefund" separator=" / ">
                 <field datasource=".Befund"/>
             </context>
         </facet>
         <facet name="areal" labelKey="Fabric-Areal">
-            <context type="Fabricmainabstractcontext" separator=" / ">
+            <context type="Fabricmainabstractbefund" separator=" / ">
                 <field datasource=".Areal"/>
             </context>
         </facet>
         
         <!-- Facet-Morphology --> 
         <facet name="morphology_functionalgroup" labelKey="Functional Group">
-            <context type="Fabricmainabstractcontext">
+            <context type="Fabricmainabstractmorphology">
                 <field datasource=".Level1"/>
             </context>
         </facet>
         <facet name="morphology_2ndLevel" labelKey="2nd Level">
-            <context type="Fabricmainabstractcontext">
+            <context type="Fabricmainabstractmorphology">
                 <field datasource=".Level2"/>
             </context>
         </facet>    
         <facet name="morphology_3rdLevel" labelKey="3rd Level">
-            <context type="Fabricmainabstractcontext">
+            <context type="Fabricmainabstractmorphology">
                 <field datasource=".Level3"/>
             </context>
         </facet>    
         <facet name="morphology_4thLevel" labelKey="4th Level">
-            <context type="Fabricmainabstractcontext">
+            <context type="Fabricmainabstractmorphology">
                 <field datasource=".Level4"/>
             </context>
         </facet>    
         <facet name="morphology_5thLevel" labelKey="5th Level">
-            <context type="Fabricmainabstractcontext">
+            <context type="Fabricmainabstractmorphology">
                 <field datasource=".Level5"/>
             </context>
         </facet>    
