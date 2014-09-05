@@ -6,11 +6,11 @@
   <display>
     <title>
       <section separator=" / ">
-        <section labelKey="Context" separator=" - ">
+        <section separator=" - ">
           <field datasource="befund.Grabungsort"/>
           <field datasource="befund.Befund" prefix="SE: "/>
         </section>
-        <section separator=" - " labelKey="Morphology">
+        <section separator=" - ">
           <field datasource="morphology.Level1"/>
           <field datasource="morphology.Level2"/>
           <field datasource="morphology.Level3"/>
