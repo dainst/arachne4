@@ -53,7 +53,7 @@
         </section>
         <include type="ort"/>
         <section labelKey="Verbundene Morphologien">
-          <context type="Befundmainabstractmorphology" separator=" / " labelKey="Morphologies">
+          <context type="Entitymainabstractmorphology" separator=" / " labelKey="Morphologies">
             <field datasource=".Level1"/>
             <field datasource=".Level2"/>
             <field datasource=".Level3"/>
@@ -68,7 +68,7 @@
           </context>
         </section>
         <section labelKey="Verbundene Fabrics">
-          <context type="Befundmainabstractfabric" labelKey="Fabrics" separator=" / ">
+          <context type="Entitymainabstractfabric" labelKey="Fabrics" separator=" / ">
             <contextSection labelKey="AllgemeinerName">
               <field datasource=".CommonName"/>
             </contextSection>
@@ -81,7 +81,7 @@
           </context>
         </section>
         <section labelKey="Verbundene Keramikfragmente">
-          <context type="Befundmainabstractisolatedsherd" separator=" / " labelKey="Scherben">
+          <context type="Entitymainabstractisolatedsherd" separator=" / " labelKey="Scherben">
             <contextSection labelKey="Typ">
               <field datasource=".SherdType"/>
             </contextSection>
@@ -98,11 +98,11 @@
     </datasections>
     <contextImages>
       <!-- Show images of connected sherds -->
-      <contextImage show="always">Befundmainabstractisolatedsherd</contextImage>
+      <contextImage show="always">Entitymainabstractisolatedsherd</contextImage>
       <!-- Show images of fabricdescriptions found in this context -->
-      <contextImage show="always">Befundmainabstractfabricfabricdescription</contextImage>
+      <contextImage show="always">Entitymainabstractfabricfabricdescription</contextImage>
       <!-- Show images of types found within this context -->
-      <contextImage show="always">Befundmainabstractmorphology</contextImage>
+      <contextImage show="always">Entitymainabstractmorphology</contextImage>
     </contextImages>
   </display>
   <facets>
@@ -118,7 +118,7 @@
       <field datasource="befund.Areal"/>
     </facet>
     <facet name="befundmainabstractmorphology" labelKey="Morphologie">
-      <context type="Befundmainabstractmorphology" separator=" / ">
+      <context type="Entitymainabstractmorphology" separator=" / ">
         <field datasource=".Level6">
           <ifEmpty>
             <field datasource=".Level5">

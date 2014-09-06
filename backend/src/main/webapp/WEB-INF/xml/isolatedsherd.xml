@@ -8,11 +8,11 @@
 	        <field datasource="isolatedsherd.InventoryNumber"/>
 	        <field datasource="isolatedsherd.NitonAnalysisID" prefix="XRF: "/>
 	      </section>
-	      <context type="Isolatedsherdmainabstractbefund" separator=" - ">
+	      <context type="Entitymainabstractbefund" separator=" - ">
 	        <field datasource=".Grabungsort"/>
 	        <field datasource=".Befund" prefix="SE: "/>
 	      </context>
-	      <context type="Isolatedsherdmainabstractmorphology" separator=" - ">
+	      <context type="Entitymainabstractmorphology" separator=" - ">
 	        <field datasource=".Level1"/>
 	        <field datasource=".Level2"/>
 	        <field datasource=".Level3"/>
@@ -20,7 +20,7 @@
 	        <field datasource=".Level5"/>
 	        <field datasource=".Level6"/>
 	      </context>
-	      <context type="Isolatedsherdmainabstractfabric" separator=" - " labelKey="Fabric">
+	      <context type="Entitymainabstractfabric" separator=" - " labelKey="Fabric">
 	        <field datasource=".Origin"/>
 	        <field datasource=".CommonName"/>
 	        <field datasource=".Name"/>
@@ -62,22 +62,22 @@
       </section>
       <section labelKey="Morphologie">
         <section labelKey="Functional Group">
-          <field datasource="Isolatedsherdmainabstractmorphology.Level1"/>
+          <field datasource="Entitymainabstractmorphology.Level1"/>
         </section>
         <section labelKey="Level 2">
-          <field datasource="Isolatedsherdmainabstractmorphology.Level2"/>
+          <field datasource="Entitymainabstractmorphology.Level2"/>
         </section>
         <section labelKey="Level 3">
-          <field datasource="Isolatedsherdmainabstractmorphology.Level3"/>
+          <field datasource="Entitymainabstractmorphology.Level3"/>
         </section>
         <section labelKey="Level 4">
-          <field datasource="Isolatedsherdmainabstractmorphology.Level4"/>
+          <field datasource="Entitymainabstractmorphology.Level4"/>
         </section>
         <section labelKey="Level 5">
-          <field datasource="Isolatedsherdmainabstractmorphology.Level5"/>
+          <field datasource="Entitymainabstractmorphology.Level5"/>
         </section>
         <section labelKey="Level 6">
-          <field datasource="Isolatedsherdmainabstractmorphology.Level6"/>
+          <field datasource="Entitymainabstractmorphology.Level6"/>
         </section>
         <section labelKey="Interne Typnummer" separator=", ">
           <field datasource="mainabstract.GrabungsinterneTypennummer"/>
@@ -86,28 +86,28 @@
       </section>
       <section labelKey="Befund">
         <section labelKey="Grabungsort">
-          <field datasource="Isolatedsherdmainabstractbefund.Grabungsort"/>
+          <field datasource="Entitymainabstractbefund.Grabungsort"/>
         </section>
         <section labelKey="Areal">
-          <field datasource="Isolatedsherdmainabstractbefund.Areal"/>
+          <field datasource="Entitymainabstractbefund.Areal"/>
         </section>
         <section labelKey="Befund">
-          <field datasource="Isolatedsherdmainabstractbefund.Befund"/>
+          <field datasource="Entitymainabstractbefund.Befund"/>
         </section>
       </section>
       <include type="ort"/>
       <!-- Liste alle Informationen zur Fabric der aktuell verarbeiteten Scherbe auf -->
       <section labelKey="Fabric">
         <section labelKey="Herkunft">
-          <field datasource="Isolatedsherdmainabstractfabric.Origin"/>
+          <field datasource="Entitymainabstractfabric.Origin"/>
         </section>
         <section labelKey="AllgemeinerName">
-          <field datasource="Isolatedsherdmainabstractfabric.CommonName"/>
+          <field datasource="Entitymainabstractfabric.CommonName"/>
         </section>
         <section labelKey="Name">
-          <field datasource="Isolatedsherdmainabstractfabric.Name"/>
+          <field datasource="Entitymainabstractfabric.Name"/>
         </section>
-        <context type="Isolatedsherdmainabstractfabricfabricdescription" separator=", ">
+        <context type="Entitymainabstractfabricfabricdescription" separator=", ">
           <contextSection labelKey="Freie Farbbeschreibung"  separator=" ">
             <field datasource=".ColourQualifierFreeVon"/>
             <field datasource=".ColourFreeVon" postfix=" -"/>
@@ -224,7 +224,7 @@
     </datasections>
     <contextImages>
       <!-- Show images of connected types -->
-      <contextImage show="always">Isolatedsherdmainabstractmorphology</contextImage>
+      <contextImage show="always">Entitymainabstractmorphology</contextImage>
     </contextImages>
   </display>
   <facets>
@@ -248,54 +248,54 @@
     </facet>
     <!-- Morphology-Facets -->
     <facet name="morphology_functionalgroup" labelKey="Functional Group">
-      <context type="Isolatedsherdmainabstractmorphology">
+      <context type="Entitymainabstractmorphology">
         <field datasource=".Level1"/>
       </context>
     </facet>
     <facet name="morphology_2ndLevel" labelKey="2nd Level">
-      <context type="Isolatedsherdmainabstractmorphology">
+      <context type="Entitymainabstractmorphology">
         <field datasource=".Level2"/>
       </context>
     </facet>
     <facet name="morphology_3rdLevel" labelKey="3rd Level">
-      <context type="Isolatedsherdmainabstractmorphology">
+      <context type="Entitymainabstractmorphology">
         <field datasource=".Level3"/>
       </context>
     </facet>
     <facet name="morphology_4thLevel" labelKey="4th Level">
-      <context type="Isolatedsherdmainabstractmorphology">
+      <context type="Entitymainabstractmorphology">
         <field datasource=".Level4"/>
       </context>
     </facet>
     <facet name="morphology_5thLevel" labelKey="5th Level">
-      <context type="Isolatedsherdmainabstractmorphology">
+      <context type="Entitymainabstractmorphology">
         <field datasource=".Level5"/>
       </context>
     </facet>
     <!-- Fabric-Facets -->
     <facet name="fabricorigin" labelKey="Fabric Ursprung">
-      <context type="Isolatedsherdmainabstractfabric">
+      <context type="Entitymainabstractfabric">
         <field datasource=".Origin"/>
       </context>
     </facet>
     <facet name="fabriccommonname" labelKey="Fabric Common Name">
-      <context type="Isolatedsherdmainabstractfabric">
+      <context type="Entitymainabstractfabric">
         <field datasource=".CommonName"/>
       </context>
     </facet>
     <facet name="fabricname" labelKey="Fabric Name">
-      <context type="Isolatedsherdmainabstractfabric">
+      <context type="Entitymainabstractfabric">
         <field datasource=".Name"/>
       </context>
     </facet>
     <!-- Context-Facets -->
     <facet name="grabungsort" labelKey="Grabungsort">
-      <context type="Isolatedsherdmainabstractbefund" separator=", ">
+      <context type="Entitymainabstractbefund" separator=", ">
         <field datasource=".Grabungsort"/>
       </context>
     </facet>
     <facet name="befund" labelKey="Befund">
-      <context type="Isolatedsherdmainabstractbefund">
+      <context type="Entitymainabstractbefund">
         <field datasource=".Befund"/>
       </context>
     </facet>
