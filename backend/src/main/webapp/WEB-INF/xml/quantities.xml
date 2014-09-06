@@ -2,34 +2,44 @@
 <category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="quantities" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
   <display>
     <title>
-      <section separator=" / ">
-        <field datasource="morphology.Level6">
-          <ifEmpty>
-            <field datasource="morphology.Level5">
-              <ifEmpty>
-                <field datasource="morphology.Level4">
-                  <ifEmpty>
-                    <field datasource="morphology.Level3">
-                      <ifEmpty>
-                        <field datasource="morphology.Level2">
-                          <ifEmpty>
-                            <field datasource="morphology.Level1"/>
-                          </ifEmpty>
-                        </field>
-                      </ifEmpty>
-                    </field>
-                  </ifEmpty>
-                </field>
-              </ifEmpty>
-            </field>
-          </ifEmpty>
-        </field>
-        <field datasource="befund.Grabungsort"/>
-        <field datasource="fabric.CommonName"/>
-      </section>
+ 		<section separator=" / ">
+	      <context type="Entitymainabstractmorphology">
+	      	<field datasource=".Level6">
+	          <ifEmpty>
+	            <field datasource=".Level5">
+	              <ifEmpty>
+	                <field datasource=".Level4">
+	                  <ifEmpty>
+	                    <field datasource=".Level3">
+	                      <ifEmpty>
+	                        <field datasource=".Level2">
+	                          <ifEmpty>
+	                            <field datasource=".Level1"/>
+	                          </ifEmpty>
+	                        </field>
+	                      </ifEmpty>
+	                    </field>
+	                  </ifEmpty>
+	                </field>
+	              </ifEmpty>
+	            </field>
+	          </ifEmpty>
+	        </field>
+	      </context>
+		  <context type="Entitymainabstractbefund">
+			<field datasource=".Grabungsort"/>
+	      </context>
+	      <context type="Entitymainabstractfabric">
+	      	<field datasource=".CommonName">
+		      <ifEmpty>
+		      	<field datasource=".Name"/>
+		      </ifEmpty>
+	      	</field>
+	      </context>
+		</section>
     </title>
     <subtitle>
-      <section labelKey="Unique Identifier">
+      <section labelKey="ID: ">
         <field datasource="Dataset.Id"/>
       </section>
     </subtitle>
