@@ -82,6 +82,21 @@
   </display>
   <facets>
     <include type="facet_kategorie"/>
+	<facet name="morphology_functionalgroup" labelKey="Functional Group">
+    	<field datasource="morphology.Level1"/>
+    </facet>
+    <facet name="morphology_2ndLevel" labelKey="2nd Level">
+    	<field datasource="morphology.Level2"/>
+    </facet>    
+    <facet name="morphology_3rdLevel" labelKey="3rd Level">
+		<field datasource="morphology.Level3"/>
+    </facet>    
+    <facet name="morphology_4thLevel" labelKey="4th Level">
+		<field datasource="morphology.Level4"/>
+    </facet>    
+    <facet name="morphology_5thLevel" labelKey="5th Level">
+		<field datasource="morphology.Level5"/>
+    </facet>  
     <facet name="datierungepoche" labelKey="Epoche">
       <context type="datierung">
         <field datasource=".AnfEpoche"/>
