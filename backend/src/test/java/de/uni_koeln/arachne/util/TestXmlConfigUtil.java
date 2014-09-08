@@ -44,7 +44,7 @@ public class TestXmlConfigUtil {
 	private Dataset getTestDataSet() {
 		final Dataset dataset = new Dataset();
 		
-		dataset.setArachneId(new EntityId("test", 0L, 0L, false));
+		dataset.setArachneId(new EntityId("test", 0L, 0L, false, 0L));
 				
 		dataset.setFields("test.Title", "Title of the Test");
 		
@@ -66,7 +66,7 @@ public class TestXmlConfigUtil {
 		
 		final Dataset linkDataset = new Dataset();
 		
-		linkDataset.setArachneId(new EntityId("testContext", 0L, 1L, false));
+		linkDataset.setArachneId(new EntityId("testContext", 0L, 1L, false, 0L));
 				
 		linkDataset.setFields("testContext.value", "Test Context Value");
 		

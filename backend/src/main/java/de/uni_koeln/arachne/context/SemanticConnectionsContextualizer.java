@@ -84,13 +84,16 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 				} else if ("semanticconnection.ForeignKeyTarget".equals(key)) {
 					foreignKey = Long.parseLong(entry.getValue());
 					continue;
+				}  else if ("semanticconnection.ForeignKeyTarget".equals(key)) {
+					foreignKey = Long.parseLong(entry.getValue());
+					continue;
 				} 
 
 				resultMap.put(key, entry.getValue());
 			}
 		}
 
-		final EntityId entityId = new EntityId(contextType, foreignKey, eId, false);
+		final EntityId entityId = new EntityId(contextType, foreignKey, eId, false, 0L);
 		result.setArachneId(entityId);
 		result.appendFields(resultMap);
 		return result;

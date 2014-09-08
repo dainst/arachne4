@@ -49,7 +49,7 @@ public class CustompathobjektzenontitleContextualizer extends
 	private Dataset createDatasetFromQueryResults(final String queryResult) {
 		final Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("zenon.245_a", queryResult);
-		final EntityId entityId = new EntityId("zenon", -1L, -1L, false);
+		final EntityId entityId = new EntityId("zenon", -1L, -1L, false, -1L);
 		final Dataset result = new Dataset();
 		result.setArachneId(entityId);
 		result.appendFields(resultMap);

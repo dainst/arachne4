@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
 
+/**
+ * Contains methods to construct SQL query strings.
+ */
 @Repository
 public class SQLFactory {
 
@@ -17,6 +20,7 @@ public class SQLFactory {
 		final StringBuilder result = new StringBuilder(256)
 			.append("SELECT * FROM `")
 			.append(tableName)
+			
 			.append("` WHERE ")
 			.append(SQLToolbox.getQualifiedFieldname(tableName, SQLToolbox.generatePrimaryKeyName(tableName)))
 			.append(" = ")

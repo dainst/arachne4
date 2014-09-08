@@ -139,16 +139,18 @@ public class ResponseFactory {
 		response.setEntityId(arachneId.getArachneEntityID());
 		response.setType(ts.transl8("type_" + tableName));
 		response.setInternalId(arachneId.getInternalKey());
-
+		// set degree
+		final Long degree = arachneId.getDegree();
+		if (degree != null) {
+			response.setDegree(degree);
+		}
+		
 		// set thumbnailId
 		response.setThumbnailId(dataset.getThumbnailId());
 		
 		// set fields
 		response.setFields(dataset.getFields().size() + dataset.getContexts().size());
-		
-		// set degree
-		response.setDegree(dataset.getDegree());
-		
+				
 		// set boost
 		// TODO make faster
 		response.setBoost(((Math.log(response.fields+1)+1)*(Math.log(response.fields+1)+1)*(Math.log(response.degree)+1))/100+1);

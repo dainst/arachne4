@@ -3,6 +3,8 @@ package de.uni_koeln.arachne.mapping;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.SecondaryTable;
+import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 
 /**
@@ -11,6 +13,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="arachneentityidentification")
+@SecondaryTables({
+	@SecondaryTable(name="arachneentitydegrees")})
 @SuppressWarnings("PMD")
 public class ArachneEntity {
 	
@@ -38,9 +42,16 @@ public class ArachneEntity {
 	 * Field indicating if the referenced data record has been deleted (<code>isDeleted</code>).
 	 * This is used to keep URLs persistent even if the corresponding data record has been deleted.  
 	 */
-	
 	@Column(name="isDeleted")
 	boolean isDeleted; 
+	
+	
+	/**
+	 * This field is joined from the table "aracheentitydegrees". It is a measure for how many entities this entity is 
+	 * connected to.
+	 */
+	@Column(table="arachneentitydegrees", name="Degree")
+	Long degree = null;
 	
 	/**
 	 * The returns the Unique Arachne Identifier.
@@ -72,5 +83,13 @@ public class ArachneEntity {
 	 */
 	public boolean isDeleted() {
 		return isDeleted;
+	}
+	
+	/**
+	 * Check if the Dataset is Deleted.
+	 * @return true or False
+	 */
+	public Long getDegree() {
+		return degree;
 	}
 }

@@ -85,12 +85,6 @@ public class SingleEntityDataService {
 			result.appendFields(tempDataMap);
 		}
 		
-		// set degree value from database
-		final int degree = genericSqlDao.getIntFieldById("arachneentitydegrees", entityId.getArachneEntityID(), "Degree");
-		if (degree > 0) {
-			result.setDegree(degree);
-		}
-			
 		final String tableName =  entityId.getTableName();
 		//If there are Arachne categories that require the retrieval of other tables than the table of the category
 		final List<TableConnectionDescription> categorySubs = xmlConfigUtil.getSubCategories(tableName);

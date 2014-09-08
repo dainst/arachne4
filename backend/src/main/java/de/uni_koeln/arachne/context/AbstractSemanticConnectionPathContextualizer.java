@@ -94,7 +94,8 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 		
 		long foreignKey = 0L;
 		long eId = 0L;
-
+		long degree = 0L;
+		
 		final Map<String, String> resultMap = new HashMap<String, String>();
 		for (final Map.Entry<String, String> entry: map.entrySet()) {
 			final String key = entry.getKey();
@@ -106,13 +107,16 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 				} else if (key.endsWith("ForeignKeyTarget")) {
 					foreignKey = Long.parseLong(entry.getValue());
 					continue;
-				} 
+				} else if (key.startsWith("Degree")) {
+					degree = Long.parseLong(entry.getValue());
+					continue;
+				}
 				final String newkey = contextualizerName+key.substring( key.lastIndexOf('.'),key.length());
 				resultMap.put(newkey, entry.getValue());
 			}
 		}
 
-		final EntityId entityId = new EntityId(contextPath.getTargetType(), foreignKey, eId, false);
+		final EntityId entityId = new EntityId(contextPath.getTargetType(), foreignKey, eId, false, degree);
 		result.setArachneId(entityId);
 		result.appendFields(resultMap);
 		return result;

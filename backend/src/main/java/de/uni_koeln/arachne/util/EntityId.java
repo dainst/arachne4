@@ -29,17 +29,24 @@ public class EntityId {
 	protected transient boolean deleted;
 
 	/**
+	 * A measure for the number of entities this entity is connected to.
+	 */
+	protected transient Long degree;
+	
+	/**
 	 * This Constructor gets Tablename and Internal key as Identification
 	 * @param tableName String Tablename
 	 * @param internalKey Long This is the 
 	 * @param arachneEntityID Long Arachne Identification Number
 	 * @param deleted is Deleted?
 	 */
-	public EntityId(final String tableName, final Long internalKey, final Long arachneEntityID, final boolean deleted) {
+	public EntityId(final String tableName, final Long internalKey, final Long arachneEntityID, final boolean deleted,
+			final Long degree) {
 		this.arachneEntityID = arachneEntityID;
 		this.tableName = tableName;
 		this.internalKey = internalKey;
 		this.deleted = deleted;
+		this.degree = degree;
 	}
 	
 	/**
@@ -52,6 +59,7 @@ public class EntityId {
 		this.tableName = entity.getTableName();
 		this.internalKey = entity.getForeignKey();
 		this.deleted = entity.isDeleted();
+		this.degree = entity.getDegree();
 	}
 	
 	/**
@@ -81,11 +89,16 @@ public class EntityId {
 		return deleted;
 	}
 
+	@XmlElement
+	public Long getDegree() {
+		return degree;
+	}
+	
 	@Override
 	public String toString() {
 		return "EntityId [arachneEntityID=" + arachneEntityID + ", tableName="
 				+ tableName + ", internalKey=" + internalKey + ", deleted="
-				+ deleted + "]";
+				+ deleted + "degree=" + degree + "]";
 	}
 
 	

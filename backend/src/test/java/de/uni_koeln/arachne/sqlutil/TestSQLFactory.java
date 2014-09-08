@@ -32,7 +32,7 @@ public class TestSQLFactory {
 	
 	@Test
 	public void testGetSingleEntityQuery() {
-		final EntityId entityId = new EntityId("test", Long.valueOf(27000), Long.valueOf(100),false);
+		final EntityId entityId = new EntityId("test", Long.valueOf(27000), Long.valueOf(100), false, Long.valueOf(256));
 			
 		final String sqlQuery = sqlFactory.getSingleEntityQuery(entityId);
 		

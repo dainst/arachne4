@@ -54,21 +54,6 @@ public class SQLDao {
 	}
 	
 	/**
-	 * Executes a SQL SELECT query that retrieves a single positive integer value. For negative values the behaviour is 
-	 * undefined.
-	 * @param sqlQuery The sql query string.
-	 * @return The integer value retrieved from the field or -1 on failure.
-	 */
-	protected int queryForInt(final String sqlQuery) {
-		try {
-			return jdbcTemplate.queryForObject(sqlQuery, Integer.class);
-		} catch (DataAccessException e) {
-			LOGGER.error("Failed to execute query '" + sqlQuery + "'. Cause: ", e);
-		}
-		return -1;
-	}
-	
-	/**
 	 * Executes a SQL SELECT query that retrieves a single string value.
 	 * @param sqlQuery The sql query string.
 	 * @return The string value retrieved from the field or <code>null</code> on failure.

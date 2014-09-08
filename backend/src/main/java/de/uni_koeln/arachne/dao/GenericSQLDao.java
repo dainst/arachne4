@@ -40,10 +40,6 @@ public class GenericSQLDao extends SQLDao {
 		return getStringField(tableName, field1, field1Id, field2, false);		
 	}
 	
-	public int getIntFieldById(final String tableName, final long id, final String field) {
-		return queryForInt(sqlFactory.getFieldByIdQuery(tableName, id, field));
-	}
-	
 	public List<Map<String, String>> getConnectedEntities(final String contextType, final long entityId) {
 		@SuppressWarnings("unchecked")
 		final List<Map<String, String>> queryResult = (List<Map<String, String>>)query(sqlFactory

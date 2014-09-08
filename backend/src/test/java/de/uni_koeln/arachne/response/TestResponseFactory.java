@@ -51,7 +51,7 @@ public class TestResponseFactory { // NOPMD
 		
 		dataset = new Dataset();
 		
-		dataset.setArachneId(new EntityId("test", 0L, 0L, false));
+		dataset.setArachneId(new EntityId("test", 0L, 0L, false, 0L));
 				
 		dataset.setFields("test.Title", "Title of the Test");
 		dataset.setFields("test.Subtitle", "Subtitle of the Test");
@@ -93,7 +93,7 @@ public class TestResponseFactory { // NOPMD
 	
 	@Test
 	public void testCreateResponseForDeletedEntity() throws JsonParseException, JsonMappingException, IOException {
-		final EntityId deletedEntityId = new EntityId("test", 0L, 0L, true);
+		final EntityId deletedEntityId = new EntityId("test", 0L, 0L, true, 0L);
 		final String response = responseFactory.createResponseForDeletedEntityAsJsonString(deletedEntityId);
 		final ObjectMapper objectMapper = new ObjectMapper();
 		DeletedArachneEntity deletedEntity = objectMapper.readValue(response, DeletedArachneEntity.class);
