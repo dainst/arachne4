@@ -41,8 +41,8 @@ public class EntityIdentificationService {
 	 * @param internalKey The internalkey of the entity. 
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
-	public List<ArachneEntity> getByEntityIdRange(final long start, final long end) {
-		return arachneEntityDao.getByEntityIdRange(start, end);
+	public List<ArachneEntity> getByLimitedEntityIdRange(final long startId, final int limit) {
+		return arachneEntityDao.getByLimitedEntityIdRange(startId, limit);
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class EntityIdentificationService {
 	
 	/**
 	 * Gets all identifiers of a Dataset by tablename and primary key.
-	 * For convenience the public method <code>getArachneId</code> is overloaded.
+	 * For convenience the public method <code>getId</code> is overloaded.
 	 * @param tableName The internal table name in the Arachne database.
 	 * @param internalKey internal table key of the dataset
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
