@@ -152,14 +152,14 @@ public class DataImportService { // NOPMD
 				
 				@Override
 			    public void beforeBulk(long executionId, BulkRequest request) {
-					LOGGER.info(String.format("Execution: %s, about to execute new bulk insert composed of {%s} actions"
+					LOGGER.debug(String.format("ExecutionID %s: about to execute new bulk insert composed of %s actions."
 							, executionId, request.numberOfActions()));
 					openRequests++;
 			    }
 
 			    @Override
 			    public void afterBulk(long executionId, BulkRequest request, BulkResponse response) {
-			        LOGGER.info(String.format("Execution: %s, bulk insert composed of {%s} actions, took %s ms"
+			        LOGGER.info(String.format("ExecutionID %s: bulk insert composed of %s actions completed in %s ms"
 			        		, executionId, request.numberOfActions(), response.getTookInMillis()));
 			        openRequests--;
 			    }
