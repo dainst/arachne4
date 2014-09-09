@@ -124,7 +124,7 @@ public class BookmarkListController {
 		if (bookmark == null) {
 			response.setStatus(404);
 		} else if (bookmark.getBookmarkList().getUser().getId() == user.getId()) {
-			bookmarkDao.destroyBookmark(bookmark);
+			bookmarkDao.deleteBookmark(bookmark);
 			response.setStatus(204);
 		} else {
 			response.setStatus(403);

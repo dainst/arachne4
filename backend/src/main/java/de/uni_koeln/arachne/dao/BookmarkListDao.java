@@ -2,8 +2,12 @@ package de.uni_koeln.arachne.dao;
 
 import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.uni_koeln.arachne.mapping.BookmarkList;
 
@@ -11,41 +15,51 @@ import de.uni_koeln.arachne.mapping.BookmarkList;
 public class BookmarkListDao {
 
 	@Autowired
-	private transient HibernateTemplate hibernateTemplate;	
+    private transient SessionFactory sessionFactory;
 	
+	@Transactional(readOnly=true)
 	public BookmarkList getByBookmarkListId(final long bookmarkListId) {
-		return (BookmarkList) hibernateTemplate.get(BookmarkList.class, bookmarkListId);
+		Session session = sessionFactory.getCurrentSession();
+		return (BookmarkList) session.get(BookmarkList.class, bookmarkListId);
 	}
 	
+	@Transactional(readOnly=true)
 	public List<BookmarkList> getByUid(final long uid) {
-		final String hql = "from BookmarkList where uid = ?";
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from BookmarkList where uid = :uid")
+				.setLong("uid", uid);
+		
 		@SuppressWarnings("unchecked")
-		List<BookmarkList> result = (List<BookmarkList>) hibernateTemplate.find(hql, uid);
+		List<BookmarkList> result = (List<BookmarkList>) query.list();
 		if (result.size() < 1) {
 			result = null;
 		}
 		return result;
 	}
 	
+	@Transactional(readOnly=true)
 	public BookmarkList getByUidAndBookmarkListId(final long uid, final long bookmarkListId) {
-		final String hql = "from BookmarkList where id = ? and uid = ?";
-		return (BookmarkList) hibernateTemplate.find(hql, new long[] {bookmarkListId, uid}).get(0);
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from BookmarkList where id = :bookmarkListId and uid = :uid")
+				.setLong("bookmarkListId", bookmarkListId)
+				.setLong("uid", uid);
+		return (BookmarkList) query.list().get(0);
 	}
 	
 	public BookmarkList saveOrUpdateBookmarkList(final BookmarkList bookmarkList) {
-		hibernateTemplate.saveOrUpdate(bookmarkList);
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(bookmarkList);
 		return bookmarkList;
 	}
 	
 	public BookmarkList saveBookmarkList(final BookmarkList bookmarkList) {
-		hibernateTemplate.save(bookmarkList);
+		Session session = sessionFactory.getCurrentSession();
+		session.save(bookmarkList);
 		return bookmarkList;
 	}
 	
 	public void destroyBookmarkList(final BookmarkList bookmarkList) {
-		hibernateTemplate.delete(bookmarkList);
+		Session session = sessionFactory.getCurrentSession();
+		session.delete(bookmarkList);
 	}
-	
-	
-
 }

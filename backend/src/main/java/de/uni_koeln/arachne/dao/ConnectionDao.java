@@ -3,8 +3,12 @@ package de.uni_koeln.arachne.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.uni_koeln.arachne.mapping.Connection;
 
@@ -15,24 +19,30 @@ import de.uni_koeln.arachne.mapping.Connection;
 public class ConnectionDao {
 
 	@Autowired
-	private transient HibernateTemplate hibernateTemplate;	
+    private transient SessionFactory sessionFactory;
 		
 	/**
 	 * @param primaryId Primary id of the entry.
 	 * @return an instance of the <code>ArachneConnection</code> table mapping.
 	 */
+	@Transactional(readOnly=true)
 	public Connection getByID(final long primaryId) {
-		return (Connection) hibernateTemplate.get(Connection.class, primaryId);
+		Session session = sessionFactory.getCurrentSession();
+		return (Connection) session.get(Connection.class, primaryId);
 	}
 	
 	/**
 	 * Retrieves a list of 'contexts' that are connected to <code>type</code>.
 	 * @param type The table name to seek connected tables for. 
 	 */
+	@Transactional(readOnly=true)
 	public List<String> getConnectionList(final String type) {
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from ArachneConnection where Teil1 = :type")
+				.setString("type", type);
+		
 		@SuppressWarnings("unchecked")
-		final List<Connection> queryResult = (List<Connection>) hibernateTemplate
-				.find("from ArachneConnection where Teil1 = '" + type + "'");
+		final List<Connection> queryResult = (List<Connection>) query.list();
 		final List<String> result = new ArrayList<String>();
 		for (int i=0; i<queryResult.size(); i++) {
 			 result.add(queryResult.get(i).getPart2());
@@ -47,10 +57,16 @@ public class ConnectionDao {
 	 * @param table2 Second table name.
 	 * @return The table name of the 'cross table'.
 	 */
+	@Transactional(readOnly=true)
 	public String getTableName(final String table1, final String table2) {
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Connection where Teil1 = :table1 and Teil2 = :table2")
+				.setString("table1", table1)
+				.setString("table2", table2);
+		
 		@SuppressWarnings("unchecked")
-		final List<Connection> queryResult = (List<Connection>) hibernateTemplate
-				.find("from Connection where Teil1 = '" + table1 + "' and Teil2 = '" + table2 + "'");
+		final List<Connection> queryResult = (List<Connection>) query.list();
+				
 		if (queryResult.size() > 0) {
 			return queryResult.get(0).getTable();
 		} else {

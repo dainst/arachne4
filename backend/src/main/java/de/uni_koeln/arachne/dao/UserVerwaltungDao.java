@@ -1,9 +1,14 @@
 package de.uni_koeln.arachne.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.util.RegisterFormValidationUtil;
@@ -13,17 +18,24 @@ import de.uni_koeln.arachne.util.RegisterFormValidationUtil;
 public class UserVerwaltungDao {
 
 	@Autowired
-	private transient HibernateTemplate hibernateTemplate;
+    private transient SessionFactory sessionFactory;
 	
+	@Transactional(readOnly=true)
 	public UserAdministration findById(final long uid) {
-		return (UserAdministration) hibernateTemplate.get(UserAdministration.class, uid);
+		Session session = sessionFactory.getCurrentSession();
+		return (UserAdministration) session.get(UserAdministration.class, uid);
 	}
 
+	@Transactional(readOnly=true)
 	public UserAdministration findByName(final String user) {
-		final String hql = "from UserAdministration as user WHERE user.username LIKE ?";
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from UserAdministration as user WHERE user.username LIKE :user")
+				.setString("user", user);
+		
 		UserAdministration result = null;
-		if (hibernateTemplate.find(hql,user).size() > 0) {
-			result = (UserAdministration)hibernateTemplate.find(hql,user).get(0);
+		List<?> queryResult = query.list();
+		if (queryResult.size() > 0) {
+			result = (UserAdministration)queryResult.get(0);
 		}
 		return result;
 	}
@@ -33,18 +45,24 @@ public class UserVerwaltungDao {
 	 * @param token
 	 * @return
 	 */
+	@Transactional(readOnly=true)
 	public UserAdministration findByAuthToken(final String token) {
-		final String hql = "from UserAdministration as user WHERE user.emailAuth LIKE ?";
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from UserAdministration as user WHERE user.emailAuth LIKE :token")
+				.setString("token", token);
 		UserAdministration result = null;
-		if(hibernateTemplate.find(hql, token).size() > 0) {
-			result = (UserAdministration)hibernateTemplate.find(hql, token).get(0);
+		List<?> queryResult = query.list();
+		if (queryResult.size() > 0) {
+			result = (UserAdministration)queryResult.get(0);
 		}
 		return result;
 	}
 	
+	@Transactional
 	public UserAdministration updateUser(final UserAdministration user) {
 		if(user != null) {
-			hibernateTemplate.update(user);
+			Session session = sessionFactory.getCurrentSession();
+			session.update(user);
 		}
 		return user;
 	}
@@ -54,8 +72,10 @@ public class UserVerwaltungDao {
 	 * @param user
 	 * @return
 	 */
+	@Transactional
 	public boolean newUser(RegisterFormValidationUtil user) {
-		Serializable serializable = hibernateTemplate.save(user);
+		Session session = sessionFactory.getCurrentSession();
+		Serializable serializable = session.save(user);
 		
 		if(serializable != null) {
 			return true;
