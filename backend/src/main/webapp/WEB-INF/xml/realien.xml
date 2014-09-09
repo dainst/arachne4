@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- not sure how to really handle this, so it is far from complete -->
 <category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="realien" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-  <explicitContextualizers>pathobjektort, pathobjektdatierung, pathrealienliteratur</explicitContextualizers>
+  <explicitContextualizers>pathobjektort, pathobjektdatierung, pathobjektliteratur</explicitContextualizers>
   <display>
     <title>
       <section>
