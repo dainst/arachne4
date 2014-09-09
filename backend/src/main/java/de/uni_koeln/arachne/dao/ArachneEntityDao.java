@@ -1,6 +1,5 @@
 package de.uni_koeln.arachne.dao;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -65,7 +64,7 @@ public class ArachneEntityDao {
 		Query query = session.createQuery("from ArachneEntity")
 				.setFirstResult((int)startId)
 				.setMaxResults(limit);
-				
+		
 		@SuppressWarnings("unchecked")
 		final List<ArachneEntity> list = (List<ArachneEntity>) query.list();
 				
