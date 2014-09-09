@@ -55,7 +55,7 @@ public class EntityId {
 	 * @param entity ArachneEntity Retrieved Hibernate-record from arachneentityidentification
 	 */
 	public EntityId(final ArachneEntity entity) {
-		this.arachneEntityID = entity.getId();
+		this.arachneEntityID = entity.getEntityId();
 		this.tableName = entity.getTableName();
 		this.internalKey = entity.getForeignKey();
 		this.deleted = entity.isDeleted();

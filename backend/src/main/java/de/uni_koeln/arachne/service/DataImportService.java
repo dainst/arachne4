@@ -30,6 +30,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.google.common.base.Throwables;
 
+import de.uni_koeln.arachne.mapping.ArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.util.ESClientUtil;
 import de.uni_koeln.arachne.util.EntityId;
@@ -45,8 +46,7 @@ import de.uni_koeln.arachne.util.EntityId;
 public class DataImportService { // NOPMD
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataImportService.class);
 	
-	// TODO Move to config?
-	private static final long ID_LIMIT = 10000;
+	private final int ID_LIMIT;
 	
 	private final boolean PROFILING;
 	
@@ -103,7 +103,8 @@ public class DataImportService { // NOPMD
 	
 	@Autowired
 	public DataImportService(final @Value("#{config.profilingDataimport}") boolean profiling
-			, final @Value("#{config.checkIndexOnDataImport}") boolean checkIndexOnDataImport) {
+			, final @Value("#{config.checkIndexOnDataImport}") boolean checkIndexOnDataImport
+			, final @Value("#{config.esBulkActions}") int esBulkActions) {
 		
 		elapsedTime = new AtomicLong(0);
 		running = new AtomicBoolean(false);
@@ -112,6 +113,7 @@ public class DataImportService { // NOPMD
 		documentsInIndex = new AtomicLong(0);
 		this.PROFILING = profiling;
 		this.checkIndexOnDataImport = checkIndexOnDataImport;
+		this.ID_LIMIT = esBulkActions;
 	}
 
 	/**
@@ -196,26 +198,29 @@ public class DataImportService { // NOPMD
 				throw new Exception("'select count(*) `ArachneEntityID` from `arachneentityidentification`' returned 0");
 			}
 			
-			long startID = 0; 
-			List<Long> entityIds;
+			long startId = 0; 
+			//List<Long> entityIds;
+			List<ArachneEntity> entityIds;
 			dataimport:
 			do {
-				LOGGER.debug("Fetching " + ID_LIMIT + " EntityIds [" + startID + "] ...");
-				entityIds = jdbcTemplate.queryForList("select `ArachneEntityID` from `arachneentityidentification`"
-						+ "WHERE `ArachneEntityID` > " + startID + " ORDER BY `ArachneEntityID` LIMIT " + ID_LIMIT, Long.class);
-
+				LOGGER.debug("Fetching " + ID_LIMIT + " EntityIds [" + startId + "] ...");
+				/*entityIds = jdbcTemplate.queryForList("select `ArachneEntityID` from `arachneentityidentification`"
+						+ "WHERE `ArachneEntityID` > " + startID + " ORDER BY `ArachneEntityID` LIMIT " + ID_LIMIT, Long.class);*/
+				entityIds = entityIdentificationService.getByLimitedEntityIdRange(startId, ID_LIMIT);
+				
 				LOGGER.debug("Starting FOR loop...");
-				for (final long currentEntityId: entityIds) {
+				for (final ArachneEntity currentEntityId: entityIds) {
 										
-					startID = currentEntityId;
+					startId = currentEntityId.getEntityId();
 					
 					if (terminate) {
 						running.set(false);
 						break dataimport;
 					}
 					
-					LOGGER.debug("Get ID: " + currentEntityId);
-					final EntityId entityId = entityIdentificationService.getId(currentEntityId);
+					LOGGER.debug("Get ID: " + currentEntityId.getEntityId());
+					//final EntityId entityId = entityIdentificationService.getId(currentEntityId);
+					final EntityId entityId = new EntityId(currentEntityId);
 					dbgEntityId = entityId.getArachneEntityID();
 					
 					LOGGER.debug("Creating response");

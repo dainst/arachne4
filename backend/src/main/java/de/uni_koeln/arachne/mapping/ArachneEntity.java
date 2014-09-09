@@ -57,7 +57,7 @@ public class ArachneEntity {
 	 * The returns the Unique Arachne Identifier.
 	 * @return The Arachne Entity ID
 	 */
-	public Long getId() {
+	public Long getEntityId() {
 		return entityId;
 	}
 	

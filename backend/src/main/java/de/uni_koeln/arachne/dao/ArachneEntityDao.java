@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -55,21 +56,21 @@ public class ArachneEntityDao {
 	 * Retrieves alternative Identifiers by range of primary keys.
 	 * @param start First id in the range.
 	 * @param limit Maximum number of ids.
-	 * @return Returns a List of Arachne Entity Table Mappings.
+	 * @return Returns a list of <code>ArachneEntity</code> mappings which may be empty.
 	 */
 	@Transactional(readOnly=true)
 	public List<ArachneEntity> getByLimitedEntityIdRange(final long startId, final int limit) {
 		
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from ArachneEntity")
-				.setFirstResult((int)startId)
+		Query query = session.createQuery("from ArachneEntity where entityId > :startId order by entityId asc")
+				.setLong("startId", startId)
 				.setMaxResults(limit);
 		
 		@SuppressWarnings("unchecked")
 		final List<ArachneEntity> list = (List<ArachneEntity>) query.list();
 				
 		if (list.isEmpty()) {
-			return null;
+			return new ArrayList<ArachneEntity>();
 		} else {
 			return list;
 		}

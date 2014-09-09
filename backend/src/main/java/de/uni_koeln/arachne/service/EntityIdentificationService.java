@@ -75,7 +75,7 @@ public class EntityIdentificationService {
 		if (arachneEntity == null) {
 			return null;	
 		} else {
-			return new EntityId(arachneEntity.getTableName(), arachneEntity.getForeignKey(), arachneEntity.getId()
+			return new EntityId(arachneEntity.getTableName(), arachneEntity.getForeignKey(), arachneEntity.getEntityId()
 					, arachneEntity.isDeleted(), arachneEntity.getDegree());
 		}
 		
