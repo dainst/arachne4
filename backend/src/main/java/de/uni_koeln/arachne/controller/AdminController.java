@@ -38,6 +38,11 @@ public class AdminController {
 	@Autowired
 	private transient DataImportService dataImportService;
 
+	// choose some value near the real DPS for initialization
+	private transient double averageDPS = 50d;
+	
+	private transient double smoothingFactor = 0.0025d;
+	
 	/**
 	 * Handles HTTP GET requests to /admin/cache.   
 	 * @param response The outgoing HTTP response.
@@ -108,14 +113,17 @@ public class AdminController {
 					- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime))) + " minutes");
 			long count = dataImportService.getCount();
 			response.setCount(count);
+			double lastDPS = dataImportService.getLastDPS();
+			response.setCount(count);
 			long indexedDocuments = dataImportService.getIndexedDocuments();
 			response.setIndexedDocuments(indexedDocuments);
 			if (elapsedTime > 0 && indexedDocuments > 0) {
-				final long etr = (long)((count - indexedDocuments) / (float)(indexedDocuments/(float)elapsedTime));
-				response.setEstimatedTimeRemaining(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes(etr)
-						,TimeUnit.MILLISECONDS.toSeconds(etr) 
-						- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(etr))) + " minutes");
-				response.setDocumentsPerSecond(indexedDocuments/((float)elapsedTime/1000));
+				averageDPS = smoothingFactor * lastDPS + (1 - smoothingFactor) * averageDPS;
+				long etr = (long)((double)(count - indexedDocuments) / averageDPS);
+				response.setEstimatedTimeRemaining(String.format("%d:%02d", TimeUnit.SECONDS.toMinutes(etr)
+						,TimeUnit.SECONDS.toSeconds(etr) 
+						- TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(etr))) + " minutes");
+				response.setDocumentsPerSecond((float)averageDPS);
 			}
 			return response;
 		} else {

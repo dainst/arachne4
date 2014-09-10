@@ -100,6 +100,7 @@ public class DataImportService { // NOPMD
 	private transient final AtomicLong documentsInIndex;
 	
 	private transient boolean terminate = false;
+	private transient double lastDPS;
 	
 	@Autowired
 	public DataImportService(final @Value("#{config.profilingDataimport}") boolean profiling
@@ -199,13 +200,11 @@ public class DataImportService { // NOPMD
 			}
 			
 			long startId = 0; 
-			//List<Long> entityIds;
+			long lastDocuments = 0;
 			List<ArachneEntity> entityIds;
 			dataimport:
 			do {
 				LOGGER.debug("Fetching " + ID_LIMIT + " EntityIds [" + startId + "] ...");
-				/*entityIds = jdbcTemplate.queryForList("select `ArachneEntityID` from `arachneentityidentification`"
-						+ "WHERE `ArachneEntityID` > " + startID + " ORDER BY `ArachneEntityID` LIMIT " + ID_LIMIT, Long.class);*/
 				entityIds = entityIdentificationService.getByLimitedEntityIdRange(startId, ID_LIMIT);
 				
 				LOGGER.debug("Starting FOR loop...");
@@ -247,9 +246,13 @@ public class DataImportService { // NOPMD
 					LOGGER.debug("Update elapsed time");
 					// update elapsed time every second
 					final long now = System.currentTimeMillis();
-					if (now - deltaT > 1000) {
+					final long lastStep = now - deltaT;
+					if (lastStep > 1000) {
 						deltaT = now;
 						elapsedTime.set(now - startTime);
+						
+						lastDPS = (double)(index - lastDocuments) / lastStep * 1000d;
+						lastDocuments = index;
 					}
 				}
 			} while (!entityIds.isEmpty());
@@ -338,5 +341,9 @@ public class DataImportService { // NOPMD
 	
 	public long getDocumentsInIndex() {
 		return documentsInIndex.get();
+	}
+	
+	public double getLastDPS() {
+		return lastDPS;
 	}
 }
