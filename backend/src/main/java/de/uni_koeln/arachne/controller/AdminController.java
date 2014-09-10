@@ -41,7 +41,7 @@ public class AdminController {
 	// choose some value near the real DPS for initialization
 	private transient double averageDPS = 50d;
 	
-	private transient double smoothingFactor = 0.0025d;
+	private transient double smoothingFactor = 0.001d;
 	
 	/**
 	 * Handles HTTP GET requests to /admin/cache.   
