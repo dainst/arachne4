@@ -46,18 +46,21 @@ public class BookmarkListDao {
 		return (BookmarkList) query.list().get(0);
 	}
 	
+	@Transactional
 	public BookmarkList saveOrUpdateBookmarkList(final BookmarkList bookmarkList) {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(bookmarkList);
 		return bookmarkList;
 	}
 	
+	@Transactional
 	public BookmarkList saveBookmarkList(final BookmarkList bookmarkList) {
 		Session session = sessionFactory.getCurrentSession();
 		session.save(bookmarkList);
 		return bookmarkList;
 	}
 	
+	@Transactional
 	public void destroyBookmarkList(final BookmarkList bookmarkList) {
 		Session session = sessionFactory.getCurrentSession();
 		session.delete(bookmarkList);
