@@ -59,6 +59,7 @@ public class DfgViewerButton extends AbstractSpecialNavigationElement {
 	@Override
 	public boolean matches(final String searchParam, final String filterValues) {
 		boolean returnValue = false;
+		link = null;
 		
 		EntityId entityId = null;
 		
