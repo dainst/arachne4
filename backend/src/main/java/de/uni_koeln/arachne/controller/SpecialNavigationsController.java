@@ -36,6 +36,7 @@ public class SpecialNavigationsController {
 	//private static final Logger LOGGER = LoggerFactory.getLogger(SpecialNavigationsController.class);
 	
 	@Autowired
+	@Qualifier("modelViewerSpecialNavigationElement")
 	private transient ModelViewerSpecialNavigationElement modelViewerSE;
 	
 	@Autowired
