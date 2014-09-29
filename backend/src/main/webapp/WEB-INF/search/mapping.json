@@ -65,10 +65,6 @@
          "boost":{
          	"type":"double"
          }
-      },
-      "_boost":{
-      	"name":"boost",
-      	"null_value":1.0
       }
    }
 }
