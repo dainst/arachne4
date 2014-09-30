@@ -139,21 +139,23 @@ public class ResponseFactory {
 		response.setEntityId(arachneId.getArachneEntityID());
 		response.setType(ts.transl8("type_" + tableName));
 		response.setInternalId(arachneId.getInternalKey());
-		// set degree
-		final Long degree = arachneId.getDegree();
-		if (degree != null) {
-			response.setDegree(degree);
-		}
 		
 		// set thumbnailId
 		response.setThumbnailId(dataset.getThumbnailId());
+		
+		// set degree
+		final Long degree = arachneId.getDegree();
+		if (degree != null && degree > 0) {
+			response.setDegree(degree);
+		}
 		
 		// set fields
 		response.setFields(dataset.getFields().size() + dataset.getContexts().size());
 				
 		// set boost
-		// TODO make faster
-		response.setBoost(((Math.log(response.fields+1)+1)*(Math.log(response.fields+1)+1)*(Math.log(response.degree)+1))/100+1);
+		final double logFields = Math.log(response.fields+1)+1; 
+		final double boost = (logFields*logFields*(Math.log(response.degree)+1))/100+1;
+		response.setBoost(boost);
 		
 		// set dataset group
 		// workaround for table marbilder as it does not adhere to the naming conventions

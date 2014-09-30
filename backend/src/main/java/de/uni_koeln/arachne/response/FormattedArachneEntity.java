@@ -76,7 +76,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * The number of connections this entity has
 	 */
-	protected double degree;
+	protected double degree = 1;
 
 	/**
 	 * The number of fields this entitiy has
@@ -86,7 +86,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * The document boost
 	 */
-	protected double boost;
+	protected double boost = 1;
 	
 	/**
 	 * 
