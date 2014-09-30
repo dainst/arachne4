@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 import de.uni_koeln.arachne.context.ContextPath;
 import de.uni_koeln.arachne.mapping.ImageRowMapper;
 import de.uni_koeln.arachne.service.SQLResponseObject;
-import de.uni_koeln.arachne.sqlutil.ConnectedPathEntitiesSQLQueryBuilder;
-import de.uni_koeln.arachne.sqlutil.SQLFactory;
 import de.uni_koeln.arachne.util.StrUtils;
+import de.uni_koeln.arachne.util.sql.ConnectedPathEntitiesSQLQueryBuilder;
+import de.uni_koeln.arachne.util.sql.SQLFactory;
 
 /**
  * Class to retrieve data via SQL.

@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.sqlutil;
+package de.uni_koeln.arachne.util.sql;
 
 import static org.junit.Assert.*;
 
@@ -13,6 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import de.uni_koeln.arachne.mapping.UserAdministration;
 import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.sql.SQLFactory;
 
 @RunWith(MockitoJUnitRunner.class) 
 public class TestSQLFactory {

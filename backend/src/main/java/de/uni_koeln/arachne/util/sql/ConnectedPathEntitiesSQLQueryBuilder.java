@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.sqlutil;
+package de.uni_koeln.arachne.util.sql;
 
 import java.util.List;
 

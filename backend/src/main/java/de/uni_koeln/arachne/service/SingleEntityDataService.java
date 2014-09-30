@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 import de.uni_koeln.arachne.dao.DataMapDao;
 import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.response.Dataset;
-import de.uni_koeln.arachne.sqlutil.SQLToolbox;
-import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
+import de.uni_koeln.arachne.util.sql.SQLToolbox;
+import de.uni_koeln.arachne.util.sql.TableConnectionDescription;
 
 /**
  * Service to retrieve single datasets from the database.

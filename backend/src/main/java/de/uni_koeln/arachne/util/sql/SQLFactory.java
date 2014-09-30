@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.sqlutil;
+package de.uni_koeln.arachne.util.sql;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

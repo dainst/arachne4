@@ -30,7 +30,7 @@ import de.uni_koeln.arachne.response.FieldList;
 import de.uni_koeln.arachne.response.LinkField;
 import de.uni_koeln.arachne.response.Section;
 import de.uni_koeln.arachne.service.IUserRightsService;
-import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
+import de.uni_koeln.arachne.util.sql.TableConnectionDescription;
 
 /**
  * This class provides functions to find a XML config file by type, extract information based on the XML element from

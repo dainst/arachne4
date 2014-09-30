@@ -21,9 +21,9 @@ import de.uni_koeln.arachne.dao.UserVerwaltungDao;
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.mapping.Session;
 import de.uni_koeln.arachne.mapping.UserAdministration;
-import de.uni_koeln.arachne.sqlutil.Condition;
-import de.uni_koeln.arachne.sqlutil.SQLToolbox;
 import de.uni_koeln.arachne.util.StrUtils;
+import de.uni_koeln.arachne.util.sql.Condition;
+import de.uni_koeln.arachne.util.sql.SQLToolbox;
 
 /**
  * This class allows to query the current users rights. 

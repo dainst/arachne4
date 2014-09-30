@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.sqlutil;
+package de.uni_koeln.arachne.util.sql;
 /**
  * This Object Describes a Connection between two tables by Describing the Fields That are Equal in Both Tables
  *

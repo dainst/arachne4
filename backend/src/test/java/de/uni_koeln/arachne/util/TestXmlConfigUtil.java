@@ -23,7 +23,7 @@ import de.uni_koeln.arachne.context.ContextImageDescriptor;
 import de.uni_koeln.arachne.response.AbstractContent;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Section;
-import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
+import de.uni_koeln.arachne.util.sql.TableConnectionDescription;
 
 @RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(locations={"classpath:test-context.xml"}) 

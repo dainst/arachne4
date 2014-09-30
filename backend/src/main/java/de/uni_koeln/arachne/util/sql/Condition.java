@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.sqlutil;
+package de.uni_koeln.arachne.util.sql;
 /**
  * This Class Represent a Condition in a Where Statement in a Query.
  * the 3 Parts of A Statement are in the End Constructed to a Single String.

@@ -1,8 +1,10 @@
-package de.uni_koeln.arachne.sqlutil;
+package de.uni_koeln.arachne.util.sql;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import de.uni_koeln.arachne.util.sql.Condition;
 
 public class TestCondition {
 

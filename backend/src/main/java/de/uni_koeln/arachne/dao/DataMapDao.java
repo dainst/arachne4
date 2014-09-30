@@ -11,11 +11,11 @@ import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.DatasetMapper;
 import de.uni_koeln.arachne.response.Dataset;
-import de.uni_koeln.arachne.sqlutil.SQLFactory;
-import de.uni_koeln.arachne.sqlutil.SimpleTableEntityQueryBuilder;
-import de.uni_koeln.arachne.sqlutil.SingleEntitySubTablesQueryBuilder;
-import de.uni_koeln.arachne.sqlutil.TableConnectionDescription;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.sql.SQLFactory;
+import de.uni_koeln.arachne.util.sql.SimpleTableEntityQueryBuilder;
+import de.uni_koeln.arachne.util.sql.SingleEntitySubTablesQueryBuilder;
+import de.uni_koeln.arachne.util.sql.TableConnectionDescription;
 /**
  * Querys the DataBase and retrives the Result as Key/Value Map
  */
