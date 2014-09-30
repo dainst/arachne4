@@ -14,6 +14,8 @@ import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
+import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
+import org.elasticsearch.index.query.functionscore.script.ScriptScoreFunctionBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.facet.FacetBuilders;
@@ -261,6 +263,9 @@ public class SearchService {
 	
 	/**
 	 * Builds the elasticsearch query based on the input parameters. It also adds an access control filter to the query.
+	 * The final query is a function score query that modifies the score based on the boost value of a document. 
+	 * Embedded is a filtered query to account for access control and facet filters which finally uses a simple query 
+	 * string query with 'AND' as default operator.  
 	 * @param searchParam The query string.
 	 * @param limit Max number of results.
 	 * @param offset An offset into the result set.
@@ -275,11 +280,17 @@ public class SearchService {
 				final int splitIndex = filterValue.indexOf(':');
 				final String name = filterValue.substring(0, splitIndex);
 				final String value = filterValue.substring(splitIndex+1).replace("\"", ""); 
-				facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(FilterBuilders.termFilter(name, value));
+				facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(FilterBuilders
+						.termFilter(name, value));
 			}
 		}
 		
-		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString(searchParam).defaultOperator(Operator.AND), facetFilter);
+		final QueryBuilder filteredQuery = QueryBuilders.filteredQuery(QueryBuilders.queryString(searchParam)
+				.defaultOperator(Operator.AND), facetFilter);
+		
+		final ScriptScoreFunctionBuilder scoreFunction = ScoreFunctionBuilders
+				.scriptFunction("doc['boost'].value");
+		final QueryBuilder query = QueryBuilders.functionScoreQuery(filteredQuery, scoreFunction).boostMode("multiply");
 						
 		LOGGER.debug("Elastic search query: " + query.toString());
 		return query;
