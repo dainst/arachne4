@@ -9,7 +9,7 @@
     <field datasource=".AnfDatZeitraum"/>
     <field datasource=".AnfDatJt" postfix=". Jt. "/>
     <field datasource=".AnfDatJh" postfix=". Jh. "/>
-    <field datasource=".AnfDatvon"/>
+    <field datasource=".AnfDatvn"/>
     <field datasource=".AnfPraezise" prefix=" (" postfix=") "/>
     <field datasource=".AnfTerminus" prefix=", "/>
     <field datasource=".EndEpoche" postfix=", "/>
@@ -17,7 +17,7 @@
     <field datasource=".EndDatZeitraum"/>
     <field datasource=".EndDatJt" postfix=". Jt. "/>
     <field datasource=".EndDatJh" postfix=". Jh. "/>
-    <field datasource=".EndDatvon"/>
+    <field datasource=".EndDatvn"/>
     <field datasource=".EndPraezise" prefix=" (" postfix=") "/>
     <field datasource=".EndTerminus" prefix=", "/>
     <field datasource=".DatVorschlagAutor" prefix="&lt;br/&gt; - nach: " postfix=" -"/>
