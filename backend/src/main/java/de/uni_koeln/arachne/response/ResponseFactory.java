@@ -143,18 +143,21 @@ public class ResponseFactory {
 		// set thumbnailId
 		response.setThumbnailId(dataset.getThumbnailId());
 		
-		// set degree
-		final Long degree = arachneId.getDegree();
-		if (degree != null && degree > 0) {
-			response.setDegree(degree);
-		}
+		// set connectedEntities
+		final List<Long> connectedEntities = genericSQLDao.getConnectedEntityIds(arachneId.getArachneEntityID());  
+		response.setConnectedEntities(connectedEntities);
 		
+		// set degree
+		if (connectedEntities != null && !connectedEntities.isEmpty()) {
+			response.setDegree(connectedEntities.size());
+		}
+						
 		// set fields
 		response.setFields(dataset.getFields().size() + dataset.getContexts().size());
 				
 		// set boost
-		final double logFields = Math.log(response.fields+1)+1; 
-		final double boost = (logFields*logFields*(Math.log(response.degree)+1))/100+1;
+		final double logFields = Math.log(response.fields + 1) + 1; 
+		final double boost = (logFields * logFields * (Math.log(response.degree) + 1)) / 100 + 1;
 		response.setBoost(boost);
 		
 		// set dataset group
@@ -167,14 +170,11 @@ public class ResponseFactory {
 		}
 		response.setDatasetGroup(dataset.getFieldFromFields(datasetGroupFieldName));
 		// set datasetGroup to "Arachne" (visible for all) for entities that do not have a datasetGroup like 'literatur' to
-		// make the access control in the search easier
+		// make the access control in the search easier/consistent
 		if (response.getDatasetGroup() == null) {
 			response.setDatasetGroup("Arachne");
 		}
 
-		// set connectedEntities
-		response.setConnectedEntities(genericSQLDao.getConnectedEntityIds(arachneId.getArachneEntityID()));
-			
 		// set lastModified
 		Date lastModified;
 		try {
