@@ -26,26 +26,22 @@
             "type":"string"
          },
          "entityId":{
-            "type":"long",
-            "boost":2.0
+            "type":"long"
          },
          "internalId":{
-            "type":"long",
-            "boost":1.5
+            "type":"long"
          },
          "lastModified":{
             "type":"long"
          },
          "subtitle":{
-            "type":"string",
-            "boost":2.4
+            "type":"string"
          },
          "thumbnailId":{
             "type":"long"
          },
          "title":{
-            "type":"string",
-            "boost":4.0
+            "type":"string"
          },
          "type":{
             "type":"string"
