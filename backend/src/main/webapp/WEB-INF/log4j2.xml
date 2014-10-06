@@ -18,11 +18,7 @@
     </Appenders>
     
     <!--     
-    <!- Application Loggers ->
-    <logger name="de.uni_koeln.arachne">
-        <level value="info" />
-    </logger>
-    
+        
     <!- Controller ->
     <logger name="de.uni_koeln.arachne.controller">
         <level value="info" />
@@ -60,7 +56,10 @@
 
     <!-- Root Logger -->
     <Loggers>
-        <logger name="org.springframework.web" level="warn"/>
+        <!-- Spring Web Logger -->
+        <logger name="org.springframework.web" level="info"/>
+        <!-- Application Logger -->
+        <logger name="de.uni_koeln.arachne" level="info" />
         <Root level="info">
             <AppenderRef ref="ROLLING" />
             <!-- <AppenderRef ref="CONSOLE" /> -->
