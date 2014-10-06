@@ -156,8 +156,8 @@ public class ResponseFactory {
 		response.setFields(dataset.getFields().size() + dataset.getContexts().size());
 				
 		// set boost
-		final double logFields = Math.log(response.fields + 1) + 1; 
-		final double boost = (logFields * logFields * (Math.log(response.degree) + 1)) / 100 + 1;
+		final double logFields = Math.log10(response.fields + 1.0d); 
+		final double boost = (logFields * logFields * Math.log10(response.degree + 1.0d)) / 5.0d + 1.0d;
 		response.setBoost(boost);
 		
 		// set dataset group
