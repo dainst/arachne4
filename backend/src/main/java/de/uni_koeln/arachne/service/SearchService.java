@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -13,6 +14,7 @@ import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.index.query.functionscore.script.ScriptScoreFunctionBuilder;
@@ -24,6 +26,7 @@ import org.elasticsearch.search.facet.terms.TermsFacet.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.controller.SearchController;
@@ -50,6 +53,22 @@ public class SearchService {
 	
 	@Autowired
 	private transient Transl8Service ts;
+	
+	private transient final List<String> textSearchFieldList;
+	
+	private transient final List<String> numericSearchFieldList;
+	
+	/**
+	 * Simple constructor which sets the fields to be queried. 
+	 * @param textSearchFields The list of text fields.
+	 * @param numericSearchFields The list of numeric fields.
+	 */
+	@Autowired
+	public SearchService(final @Value("#{config.esTextSearchFields}") String textSearchFields
+			, final @Value("#{config.esNumericSearchFields}") String numericSearchFields) {
+		textSearchFieldList = StrUtils.getCommaSeperatedStringAsList(textSearchFields);
+		numericSearchFieldList = StrUtils.getCommaSeperatedStringAsList(numericSearchFields);
+	}
 	
 	/**
 	 * This method builds and returns an elasticsearch search request. The query is built by the <code>buildQuery</code> method.
@@ -265,7 +284,9 @@ public class SearchService {
 	 * Builds the elasticsearch query based on the input parameters. It also adds an access control filter to the query.
 	 * The final query is a function score query that modifies the score based on the boost value of a document. 
 	 * Embedded is a filtered query to account for access control and facet filters which finally uses a simple query 
-	 * string query with 'AND' as default operator.  
+	 * string query with 'AND' as default operator.
+	 * If the search parameter is numeric the query is performed against all fields else the query is only performed 
+	 * against the text fields.
 	 * @param searchParam The query string.
 	 * @param limit Max number of results.
 	 * @param offset An offset into the result set.
@@ -285,14 +306,26 @@ public class SearchService {
 			}
 		}
 		
-		final QueryBuilder filteredQuery = QueryBuilders.filteredQuery(QueryBuilders.queryString(searchParam)
-				.defaultOperator(Operator.AND), facetFilter);
+		final QueryStringQueryBuilder innerQuery = QueryBuilders.queryString(searchParam)
+				.defaultOperator(Operator.AND);
+		
+		for (String textField: textSearchFieldList) {
+			innerQuery.field(textField);
+		}
+		
+		if (StringUtils.isNumeric(searchParam)) {
+			for (final String numericField: numericSearchFieldList) {
+				innerQuery.field(numericField);
+			}
+		}
+		
+		final QueryBuilder filteredQuery = QueryBuilders.filteredQuery(innerQuery, facetFilter);
 		
 		final ScriptScoreFunctionBuilder scoreFunction = ScoreFunctionBuilders
 				.scriptFunction("doc['boost'].value");
 		final QueryBuilder query = QueryBuilders.functionScoreQuery(filteredQuery, scoreFunction).boostMode("multiply");
 						
-		LOGGER.debug("Elastic search query: " + query.toString());
+		LOGGER.info("Elastic search query: " + query.toString());
 		return query;
 	}
 	
