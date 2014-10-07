@@ -38,7 +38,7 @@ public class SearchController {
 	@Autowired
 	public SearchController(final @Value("#{config.esDefaultLimit}") int defaultLimit,
 			final @Value("#{config.esDefaultFacetLimit}") int defaultFacetLimit,
-			final @Value("#{config.esDefaultFacetList}") String defaultFacetListCS) {
+			final @Value("#{config.esDefaultFacets}") String defaultFacetListCS) {
 		
 		this.defaultLimit = defaultLimit;
 		this.defaultFacetLimit = defaultFacetLimit;
