@@ -96,7 +96,8 @@ public class ESClientUtil implements ServletContextAware {
 			LOGGER.info("Setting up elasticsearch transport client...");
 			node = null;
 			final Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", esName).build();
-			client = new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress(esAddress, esRemotePort));
+			client = new TransportClient(settings);
+			((TransportClient) client).addTransportAddress(new InetSocketTransportAddress(esAddress, esRemotePort));
 		} else {
 			LOGGER.info("Setting up elasticsearch node client...");
 			final Settings settings = ImmutableSettings.settingsBuilder().put("discovery.zen.ping.multicast.enabled", false).build();
