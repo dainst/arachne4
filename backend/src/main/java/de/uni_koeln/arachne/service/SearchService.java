@@ -322,7 +322,8 @@ public class SearchService {
 		final QueryBuilder filteredQuery = QueryBuilders.filteredQuery(innerQuery, facetFilter);
 		
 		final ScriptScoreFunctionBuilder scoreFunction = ScoreFunctionBuilders
-				.scriptFunction("doc['boost'].value");
+				.scriptFunction("doc['boost'].value")
+				.lang("groovy");
 		final QueryBuilder query = QueryBuilders.functionScoreQuery(filteredQuery, scoreFunction).boostMode("multiply");
 						
 		LOGGER.info("Elastic search query: " + query.toString());
