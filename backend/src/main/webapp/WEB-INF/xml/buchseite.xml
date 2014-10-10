@@ -7,7 +7,19 @@
   <display>
     <title>
       <section>
-        <field datasource="buchseite.KurzbeschreibungBuchseite"/>
+        <field datasource="buchseite.KurzbeschreibungBuchseite">
+          <ifEmpty>
+          	<field datasource="buch.BuchTitel">
+              <ifEmpty>
+                <field datasource="zenon.245_a">
+                  <ifEmpty>
+                    <field datasource="buch.KurzbeschreibungBuch"/>
+                  </ifEmpty>
+                </field>
+          	  </ifEmpty>
+        	</field>
+          </ifEmpty>
+        </field>
       </section>
     </title>
     <subtitle>
