@@ -14,7 +14,7 @@
               "mapping": {
                 "type": "string",
                 "omit_norms": true,
-                "index_options" : "docs"
+                "index_options" : "positions"
               },
               "match": "*",
               "match_mapping_type" : "string"
