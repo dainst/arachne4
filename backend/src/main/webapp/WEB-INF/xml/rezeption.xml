@@ -95,6 +95,7 @@
   </display>
   <facets>
     <include type="facet_kategorie"/>
+    <include type="facet_ort"/>
     <facet name="datierungepoche" labelKey="Epoche">
       <context type="datierung">
         <field datasource=".AnfEpoche"/>
@@ -106,7 +107,7 @@
       </context>
     </facet>
     <include type="facet_literatur"/>
-    <facet name="gattungallgemein" labelKey="Gattung allgemein">
+    <facet name="objektgattung" labelKey="Gattung">
       <field datasource="rezeption.GattungAllgemeinRezeption"/>
     </facet>
     <facet name="erhaltung" labelKey="Erhaltung">
@@ -120,9 +121,6 @@
     </facet>
     <facet name="bearbeitungen" labelKey="Bearbeitungen">
       <field datasource="rezeption.BearbeitungenRezeption"/>
-    </facet>
-    <facet name="fundstaat" labelKey="Fundstaat">
-      <field datasource="rezeption.FundstaatRezeption"/>
     </facet>
     <facet name="funktion" labelKey="Anlass">
       <field datasource="rezeption.FunktionRezeption"/>
