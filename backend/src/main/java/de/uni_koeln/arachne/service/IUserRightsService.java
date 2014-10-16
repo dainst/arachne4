@@ -1,7 +1,7 @@
 package de.uni_koeln.arachne.service;
 
 import de.uni_koeln.arachne.mapping.DatasetGroup;
-import de.uni_koeln.arachne.mapping.UserAdministration;
+import de.uni_koeln.arachne.mapping.User;
 
 public interface IUserRightsService {
 
@@ -13,7 +13,7 @@ public interface IUserRightsService {
 	 * Get the current arachne user
 	 * @return UserAdministration the user object or the "anonymous" user if no user is logged in
 	 */
-	public abstract UserAdministration getCurrentUser();
+	public abstract User getCurrentUser();
 
 	/**
 	 * Set the 'dataimport user'.

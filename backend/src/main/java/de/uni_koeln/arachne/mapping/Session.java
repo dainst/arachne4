@@ -17,7 +17,7 @@ public class Session {
 	private String sid;
 	@OneToOne
 	@JoinColumn(name="uid")
-	private UserAdministration user; 
+	private User user; 
 	private Date timestamp;
 	private String ipaddress;
 	private String useragent;
@@ -36,13 +36,13 @@ public class Session {
 	/**
 	 * @return the user
 	 */
-	public UserAdministration getUserAdministration() {
+	public User getUserAdministration() {
 		return user;
 	}
 	/**
 	 * @param user the user to set
 	 */
-	public void setUserAdministration(final UserAdministration user) {
+	public void setUserAdministration(final User user) {
 		this.user = user;
 	}
 	/**

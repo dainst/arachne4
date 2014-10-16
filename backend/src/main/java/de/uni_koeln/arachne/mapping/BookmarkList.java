@@ -29,7 +29,7 @@ public class BookmarkList {
 	
 	@ManyToOne
 	@JoinColumn(name="uid", nullable=false, insertable=true, updatable=false)
-	private UserAdministration user;
+	private User user;
 	
 	@Column(name="name")
 	private String name;
@@ -74,14 +74,14 @@ public class BookmarkList {
 	 */
 	@JsonIgnore
 	@XmlTransient
-	public UserAdministration getUser() {
+	public User getUser() {
 		return user;
 	}
 
 	/**
 	 * @param user the user to set
 	 */
-	public void setUser(final UserAdministration user) {
+	public void setUser(final User user) {
 		this.user = user;
 	}
 

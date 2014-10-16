@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import de.uni_koeln.arachne.mapping.UserAdministration;
+import de.uni_koeln.arachne.mapping.User;
 import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.sql.SQLFactory;
@@ -23,7 +23,7 @@ public class TestSQLFactory {
 	
 	@Before
 	public void setUp() {
-		final UserAdministration user = new UserAdministration();
+		final User user = new User();
 		// set mock user name to 'INDEXING' to not trigger the SQL user rights snippet creation  
 		user.setUsername(IUserRightsService.INDEXING);
 		Mockito.when(mockUserRightsService.getCurrentUser()).thenReturn(user);

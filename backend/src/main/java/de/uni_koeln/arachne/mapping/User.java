@@ -9,9 +9,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name="verwaltung_benutzer")
 @SuppressWarnings("PMD")
-public class UserAdministration {
+public class User {
 	
 		public enum BOOLEAN {
 			TRUE, FALSE
@@ -37,6 +40,7 @@ public class UserAdministration {
 		 * This is the Primary key 
 		 */
 		@Id
+		@GeneratedValue(strategy=GenerationType.IDENTITY)
 		@Column(name="uid")
 		private long uid; 
 		/**
@@ -49,7 +53,7 @@ public class UserAdministration {
 		/**
 		 * The Groups of dataset possesion the User has the Right to view
 		 */
-		@OneToMany(fetch=FetchType.EAGER)
+		@ManyToMany(fetch=FetchType.EAGER)
 		@JoinTable(name="verwaltung_benutzer_datensatzgruppen",
 			joinColumns={@JoinColumn(name="uid")},
 			inverseJoinColumns={@JoinColumn(name="dgid")})

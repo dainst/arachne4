@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.mapping.ImageRightsGroup;
-import de.uni_koeln.arachne.mapping.UserAdministration;
+import de.uni_koeln.arachne.mapping.User;
 import de.uni_koeln.arachne.response.Dataset;
 
 /**
@@ -80,7 +80,7 @@ public class ImageRightsGroupService {
 	 */
 	public int getMaxResolution(final Dataset imageEntity, final ImageRightsGroup imageRightsGroup) {
 		
-		final UserAdministration currentUser = userRightsService.getCurrentUser();
+		final User currentUser = userRightsService.getCurrentUser();
 		
 		// if user doesn't have group he is not allowed to view the image in any resolution
 		if (imageEntity.getField("marbilder.BildrechteGruppe") == null) {
@@ -136,7 +136,7 @@ public class ImageRightsGroupService {
 	 */
 	public String getWatermarkFilename(final Dataset imageEntity, final ImageRightsGroup imageRightsGroup) {
 		
-		final UserAdministration currentUser = userRightsService.getCurrentUser(); 
+		final User currentUser = userRightsService.getCurrentUser(); 
 		
 		// if override_for_group is set and the user has that exact group, the user is allowed to view the image without watermark
 		if (!imageRightsGroup.getOverrideForGroup().isEmpty() && currentUser.hasGroup(imageRightsGroup.getOverrideForGroup())) {

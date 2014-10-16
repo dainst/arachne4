@@ -3,87 +3,136 @@
  */
 package de.uni_koeln.arachne.controller;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
-import net.tanesha.recaptcha.ReCaptchaImpl;
-import net.tanesha.recaptcha.ReCaptchaResponse;
-
-import org.apache.commons.lang3.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import de.uni_koeln.arachne.dao.UserVerwaltungDao;
-import de.uni_koeln.arachne.mapping.UserAdministration;
-import de.uni_koeln.arachne.response.StatusResponse;
-import de.uni_koeln.arachne.util.RegisterFormValidationUtil;
+import de.uni_koeln.arachne.mapping.DatasetGroup;
+import de.uni_koeln.arachne.mapping.User;
 
 /**
- * @author Sven Ole Clemens
- *
+ * @author scuy
  */
 @Controller
 public class UserManagementController {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserManagementController.class);
+	//private static final Logger LOGGER = LoggerFactory.getLogger(UserManagementController.class);
 	
 	@Autowired
 	private transient UserVerwaltungDao userVerwaltungDao;
 	
-	/**
-	 * Method to show the register form
-	 * @return
-	 */
-	@RequestMapping(value = "/user/register", method = RequestMethod.GET)
-	public ModelAndView registerFrom() {
-		
-		return new ModelAndView("registerForm");
+	private transient final List<String> defaultDatasetGroups; 
+	
+	@Autowired
+	public UserManagementController(final @Value("#{config.defaultDatasetGroups.split(',')}") List<String> defaultDatasetGroups) {
+		this.defaultDatasetGroups = defaultDatasetGroups;
 	}
 	
-	@RequestMapping(value = "/user/confirm/{token}", method = RequestMethod.GET)
-	public @ResponseBody Object finishRegistration(
-			@PathVariable("token") final String token,
-			final HttpServletRequest request,
-			final HttpServletResponse response) {
+	@ResponseBody
+	@RequestMapping(value="/user/register", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
+	public Map<String,String> register(@RequestBody Map<String,String> formData, HttpServletResponse response) {
 		
-		final UserAdministration user = userVerwaltungDao.findByAuthToken(token);
-		if(user != null) {
-			user.setLogin_permission(true);
-			user.setEmailAuth(null);
-			userVerwaltungDao.updateUser(user);
+		Map<String,String> result = new HashMap<String,String>();
+		
+		// simple attempt to keep bots from issuing register requests
+		if (!(formData.containsKey("iAmHuman") && formData.get("iAmHuman").equals("humanIAm"))) {
+			throw new RegistrationException("ui.register.bot");
 		}
-		StatusResponse statusResponse = new StatusResponse();
-		statusResponse.setMessage("MEGAGEIL!!! Du darfst jetzt die hammer Datenbank Arachne nicht nur nutzen, sondern dich dazu noch anmelden!!");
-		return statusResponse;
+		
+		User user = new User();
+		
+		user.setUsername(getFormData(formData, "username", true));
+		user.setEmail(getFormData(formData, "email", true));
+		user.setPassword(getFormData(formData, "password", true));
+		user.setFirstname(getFormData(formData, "firstname", true));
+		user.setLastname(getFormData(formData, "lastname", true));
+		user.setStreet(getFormData(formData, "street", true));
+		user.setZip(getFormData(formData, "zip", true));
+		user.setPlace(getFormData(formData, "place", true));
+		user.setCountry(getFormData(formData, "country", true));
+		user.setInstitution(getFormData(formData, "institution", false));
+		user.setHomepage(getFormData(formData, "homepage", false));
+		user.setTelephone(getFormData(formData, "telephone", false));
+		user.setAll_groups(false);
+		user.setGroupID(500);
+		user.setLogin_permission(false);
+		
+		if (!formData.get("email").equals(formData.get("emailValidation"))) {
+			throw new RegistrationException("ui.register.emailsDontMatch");
+		}
+		
+		if (!formData.get("password").equals(formData.get("passwordValidation"))) {
+			throw new RegistrationException("ui.register.passwordsDontMatch");
+		}
+				
+		User existingUser = userVerwaltungDao.findByName(user.getUsername());
+		if (existingUser != null) {
+			throw new RegistrationException("ui.register.usernameTaken");
+		}
+
+		HashSet<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
+		for (String dgName : defaultDatasetGroups) {
+			DatasetGroup datasetGroup = userVerwaltungDao.findDatasetGroupByName(dgName);
+			if (datasetGroup == null) continue;
+			datasetGroups.add(datasetGroup);
+		}
+		user.setDatasetGroups(datasetGroups);
+		
+		userVerwaltungDao.createUser(user);
+		
+		// TODO send mails to user and admin
+		
+		result.put("success", "true");
+		response.setStatus(201);
+		return result;
+		
 	}
 	
-	/**
-	 * Method request for user registration
-	 * @return
-	 * @throws NoSuchAlgorithmException 
-	 */
-	@RequestMapping(value = "/user/register", method = RequestMethod.POST)
-	public @ResponseBody Object register(
+	private String getFormData(Map<String, String> formData,
+			String fieldName, boolean required) {
+		if (required && (!formData.containsKey(fieldName) || formData.get(fieldName).isEmpty())) {
+			throw new RegistrationException("ui.register.fieldMissing." + fieldName);
+		} else {
+			return formData.get(fieldName);
+		}
+	}
+	
+	@ResponseBody
+	@ExceptionHandler(RegistrationException.class)
+	public Map<String,String> handleRequiredFieldException(RegistrationException e, HttpServletResponse response) {
+		Map<String,String> result = new HashMap<String,String>();
+		result.put("success", "false");
+		result.put("message", e.getMessage());
+		response.setStatus(400);
+		return result;
+	}
+	
+	@SuppressWarnings("serial")
+	public static class RegistrationException extends RuntimeException {
+		public RegistrationException(String message) {
+			super(message);
+		}
+	}
+	
+	/*
+	@RequestMapping(value = "/user/register_old", method = RequestMethod.POST)
+	public @ResponseBody Object register_old(
 			@RequestParam(value="recaptcha_challenge_field", required = true) final String challenge,
 			@RequestParam(value="recaptcha_response_field", required = true) final String userResponse,
-			@Valid final RegisterFormValidationUtil registerForm,
+			@Valid final RegisterForm registerForm,
 			final BindingResult bResult,
 			final HttpServletRequest request,
 			final HttpServletResponse response) throws NoSuchAlgorithmException {
@@ -146,6 +195,6 @@ public class UserManagementController {
 		registerForm.clearPasswords();
 		resultMap.put("registerForm", registerForm);
 		return resultMap;
-	}
+	}*/
 	
 }

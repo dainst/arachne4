@@ -19,7 +19,7 @@ import de.uni_koeln.arachne.dao.BookmarkDao;
 import de.uni_koeln.arachne.dao.BookmarkListDao;
 import de.uni_koeln.arachne.mapping.Bookmark;
 import de.uni_koeln.arachne.mapping.BookmarkList;
-import de.uni_koeln.arachne.mapping.UserAdministration;
+import de.uni_koeln.arachne.mapping.User;
 import de.uni_koeln.arachne.service.IUserRightsService;
 
 /**
@@ -52,7 +52,7 @@ public class BookmarkListController {
 			@PathVariable("bookmarkId") final Long bookmarkId,
 			final HttpServletResponse response) {
 		Bookmark result = null;
-		final UserAdministration user = rightsService.getCurrentUser();
+		final User user = rightsService.getCurrentUser();
 		
 		LOGGER.debug("Request for bookmark: " + bookmarkId + " of user: " + user.getId());
 		
@@ -81,7 +81,7 @@ public class BookmarkListController {
 			@PathVariable("bookmarkId") final Long bookmarkId,
 			@RequestBody final Bookmark bookmark,
 			final HttpServletResponse response) {
-		final UserAdministration user = rightsService.getCurrentUser();
+		final User user = rightsService.getCurrentUser();
 		final Bookmark result;
 		final Bookmark oldBookmark;
 		
@@ -116,7 +116,7 @@ public class BookmarkListController {
 	public void handleBookmarkDestroyRequest(
 			final HttpServletResponse response,
 			@PathVariable("bookmarkId") final Long bookmarkId) {
-		final UserAdministration user = rightsService.getCurrentUser();
+		final User user = rightsService.getCurrentUser();
 		final Bookmark bookmark = bookmarkDao.getByBookmarkId(bookmarkId);
 		
 		LOGGER.debug("Request to destroy bookmark: " + bookmarkId + " from user: " + user.getId());
@@ -146,7 +146,7 @@ public class BookmarkListController {
 			@PathVariable("bookmarkListId") final Long bookmarkListId,
 			@RequestBody final Bookmark bookmark,
 			final HttpServletResponse response) {
-		final UserAdministration user = rightsService.getCurrentUser();
+		final User user = rightsService.getCurrentUser();
 		final BookmarkList bookmarkList;
 		final Bookmark result;
 		
@@ -185,7 +185,7 @@ public class BookmarkListController {
 	public @ResponseBody List<BookmarkList> handleGetBookmarksRequest(
 			final HttpServletResponse response) {
 		List<BookmarkList> result = null;
-		final UserAdministration user = rightsService.getCurrentUser();
+		final User user = rightsService.getCurrentUser();
 		
 		LOGGER.debug("Request for all bookmark lists of user: " + user.getId());
 		
@@ -214,7 +214,7 @@ public class BookmarkListController {
 			@PathVariable("bookmarkListId") final Long bookmarkListId,
 			final HttpServletResponse response) {
 		BookmarkList result = null;
-		final UserAdministration user = rightsService.getCurrentUser();
+		final User user = rightsService.getCurrentUser();
 		
 		LOGGER.debug("Request for bookmarkList " + bookmarkListId + " of user: " + user.getId());
 		
@@ -247,7 +247,7 @@ public class BookmarkListController {
 			@RequestBody final BookmarkList bookmarkList,
 			@PathVariable("requestedId") final Long requestedId,
 			final HttpServletResponse response) {
-		final UserAdministration user = rightsService.getCurrentUser();
+		final User user = rightsService.getCurrentUser();
 		final BookmarkList result;
 		final BookmarkList oldBookmarkList;
 		
@@ -288,7 +288,7 @@ public class BookmarkListController {
 	public @ResponseBody BookmarkList handleBookmarkListCreateRequest(
 			@RequestBody final BookmarkList bookmarkList,
 			final HttpServletResponse response) {
-		final UserAdministration user = rightsService.getCurrentUser();
+		final User user = rightsService.getCurrentUser();
 		final BookmarkList result;
 		
 		LOGGER.debug("Request to create bookmarkList for user: " + user.getId());
@@ -319,7 +319,7 @@ public class BookmarkListController {
 	public void handleBookmarkListDestroyRequest(
 			final HttpServletResponse response,
 			@PathVariable("bookmarkListId") final Long bookmarkListId) {
-		final UserAdministration user = rightsService.getCurrentUser();
+		final User user = rightsService.getCurrentUser();
 		final BookmarkList bookmarkList = bookmarkListDao.getByBookmarkListId(bookmarkListId);
 		
 		LOGGER.debug("Request to destroy bookmarkList: " + bookmarkListId + " from user: " + user.getId());

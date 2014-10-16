@@ -1,6 +1,5 @@
 package de.uni_koeln.arachne.dao;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -10,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.uni_koeln.arachne.mapping.UserAdministration;
-import de.uni_koeln.arachne.util.RegisterFormValidationUtil;
+import de.uni_koeln.arachne.mapping.DatasetGroup;
+import de.uni_koeln.arachne.mapping.User;
 
 
 @Repository("UserVerwaltungDao")
@@ -21,45 +20,35 @@ public class UserVerwaltungDao {
     private transient SessionFactory sessionFactory;
 	
 	@Transactional(readOnly=true)
-	public UserAdministration findById(final long uid) {
+	public User findById(final long uid) {
 		Session session = sessionFactory.getCurrentSession();
-		return (UserAdministration) session.get(UserAdministration.class, uid);
+		return (User) session.get(User.class, uid);
 	}
 
 	@Transactional(readOnly=true)
-	public UserAdministration findByName(final String user) {
+	public User findByName(final String user) {
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from UserAdministration as user WHERE user.username LIKE :user")
+		Query query = session.createQuery("from User as user WHERE user.username LIKE :user")
 				.setString("user", user);
 		
-		UserAdministration result = null;
+		User result = null;
 		List<?> queryResult = query.list();
 		if (queryResult.size() > 0) {
-			result = (UserAdministration)queryResult.get(0);
+			result = (User)queryResult.get(0);
 		}
 		return result;
 	}
 	
-	/**
-	 * Method to find an user by the email-authentification token
-	 * @param token
-	 * @return
-	 */
 	@Transactional(readOnly=true)
-	public UserAdministration findByAuthToken(final String token) {
+	public DatasetGroup findDatasetGroupByName(final String name) {
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from UserAdministration as user WHERE user.emailAuth LIKE :token")
-				.setString("token", token);
-		UserAdministration result = null;
-		List<?> queryResult = query.list();
-		if (queryResult.size() > 0) {
-			result = (UserAdministration)queryResult.get(0);
-		}
-		return result;
+		Query query = session.createQuery("from DatasetGroup as group WHERE group.name LIKE :name")
+				.setString("name", name);
+		return (DatasetGroup) query.uniqueResult();
 	}
 	
 	@Transactional
-	public UserAdministration updateUser(final UserAdministration user) {
+	public User updateUser(final User user) {
 		if(user != null) {
 			Session session = sessionFactory.getCurrentSession();
 			session.update(user);
@@ -67,20 +56,10 @@ public class UserVerwaltungDao {
 		return user;
 	}
 	
-	/**
-	 * Method to create a new User-Account in the database
-	 * @param user
-	 * @return
-	 */
 	@Transactional
-	public boolean newUser(RegisterFormValidationUtil user) {
+	public void createUser(final User user) {
 		Session session = sessionFactory.getCurrentSession();
-		Serializable serializable = session.save(user);
-		
-		if(serializable != null) {
-			return true;
-		}
-		
-		return false;
+		session.save(user);
 	}
+
 }

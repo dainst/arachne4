@@ -20,7 +20,7 @@ import de.uni_koeln.arachne.dao.SessionDao;
 import de.uni_koeln.arachne.dao.UserVerwaltungDao;
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.mapping.Session;
-import de.uni_koeln.arachne.mapping.UserAdministration;
+import de.uni_koeln.arachne.mapping.User;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.sql.Condition;
 import de.uni_koeln.arachne.util.sql.SQLToolbox;
@@ -57,7 +57,7 @@ public class UserRightsService implements IUserRightsService {
 	/**
 	 * The Arachne user data set.
 	 */
-	private transient UserAdministration arachneUser = null;
+	private transient User arachneUser = null;
 	
 	private transient List<String> exludedTables;
 	
@@ -107,7 +107,7 @@ public class UserRightsService implements IUserRightsService {
 	 */
 	@Override
 	public void setDataimporter() {
-		arachneUser = new UserAdministration();
+		arachneUser = new User();
 		arachneUser.setUsername(INDEXING);
 		arachneUser.setAll_groups(true);
 		this.isSet = true;
@@ -133,7 +133,7 @@ public class UserRightsService implements IUserRightsService {
 	 * @see de.uni_koeln.arachne.service.IUserRightsService#getCurrentUser()
 	 */
 	@Override
-	public UserAdministration getCurrentUser() {
+	public User getCurrentUser() {
 		initializeUserData();
 		return arachneUser;
 	}

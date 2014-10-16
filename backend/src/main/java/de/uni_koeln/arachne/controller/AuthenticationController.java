@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import de.uni_koeln.arachne.dao.SessionDao;
 import de.uni_koeln.arachne.dao.UserVerwaltungDao;
 import de.uni_koeln.arachne.mapping.Session;
-import de.uni_koeln.arachne.mapping.UserAdministration;
+import de.uni_koeln.arachne.mapping.User;
 import de.uni_koeln.arachne.service.IUserRightsService;
 
 /**
@@ -49,7 +49,7 @@ public class AuthenticationController {
 			final HttpServletResponse response,
 			final HttpServletRequest request) {
 		
-		final UserAdministration user = userDao.findByName(username);
+		final User user = userDao.findByName(username);
 		if (user != null && user.getPassword().equals(encryptedPassword)) {
 			sessionDao.deleteAllSessionsForUser(user.getId());
 			final Session session = new Session();
