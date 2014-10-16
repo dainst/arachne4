@@ -3,20 +3,16 @@
 <category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="literatur" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
   <display>
     <title>
-      <field datasource="literatur.DAIRichtlinien"/>
+      <field datasource="literatur.PS_LiteraturID"/>
     </title>
     <subtitle>
-      <section separator=", ">
-        <field datasource="literatur.Ort"/>
-        <field datasource="literatur.Jahr"/>
+      <section>
+        <field datasource="literatur.DAIRichtlinien"/>
       </section>
     </subtitle>
     <datasections>
       <section labelKey="Informationen zur Literatur">
-        <section separator=", ">
-          <field datasource="literatur.Titel"/>
-          <field datasource="literatur.Band"/>
-        </section>
+        <linkField labelKey="Datensatz im Zenon" prefix="http://zenon.dainst.org/#book/" datasource="literatur.ZenonID"/>
       </section>
     </datasections>
   </display>
