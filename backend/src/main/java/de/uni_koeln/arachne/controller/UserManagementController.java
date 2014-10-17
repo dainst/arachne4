@@ -10,8 +10,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,16 +34,20 @@ import de.uni_koeln.arachne.mapping.User;
 @Controller
 public class UserManagementController {
 	
-	//private static final Logger LOGGER = LoggerFactory.getLogger(UserManagementController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserManagementController.class);
 	
 	@Autowired
 	private transient UserVerwaltungDao userVerwaltungDao;
 	
 	private transient final List<String> defaultDatasetGroups; 
+	private transient final String adminEmail;
 	
 	@Autowired
-	public UserManagementController(final @Value("#{config.defaultDatasetGroups.split(',')}") List<String> defaultDatasetGroups) {
+	public UserManagementController(
+			final @Value("#{config.defaultDatasetGroups.split(',')}") List<String> defaultDatasetGroups,
+			final @Value("#{config.adminEmail}") String adminEmail) {
 		this.defaultDatasetGroups = defaultDatasetGroups;
+		this.adminEmail = adminEmail;
 	}
 	
 	@ResponseBody
@@ -93,8 +102,39 @@ public class UserManagementController {
 		
 		userVerwaltungDao.createUser(user);
 		
-		// TODO send mails to user and admin
+		final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+		mailSender.setHost("smtp.uni-koeln.de");
 		
+		// Mail to User
+		final SimpleMailMessage mailMessage = new SimpleMailMessage();
+    	mailMessage.setFrom("arachne@uni-koeln.de");
+    	mailMessage.setTo(user.getEmail());
+    	mailMessage.setSubject("Ihre Anmeldung bei Arachne");
+    	mailMessage.setText("Ihre Anmeldung bei Arachne ist eingegangen und wird in Kürze von uns bearbeitet werden.\n\nMit freundlichen Grüßen\ndas Arachne-Team");		
+    	try {
+    		mailSender.send(mailMessage);
+    	} catch(MailException e) {
+    		LOGGER.error("Unable to send registration eMail to user.", e);
+    		throw new RegistrationException("ui.registration.emailFailed");
+    	}
+    	
+		final SimpleMailMessage mailMessage2 = new SimpleMailMessage();
+    	mailMessage2.setFrom("arachne@uni-koeln.de");
+    	mailMessage2.setTo(adminEmail);
+    	mailMessage2.setSubject("Anmeldung bei Arachne");
+    	String text = "Ein Benutzer hat sich mit folgenden Daten bei Arachne registriert:\n\n";
+    	text += "Username: " + user.getUsername() + "\n";
+    	text += "Name: " + user.getFirstname() + " " + user.getLastname() + "\n";
+    	text += "E-Mail: " + user.getEmail() + "\n";
+    	text += "\nWenn Sie in Arachne eingeloggt sind, können Sie folgenden Link benutzen um den Benutzer freizuschalten:\n";
+		text += "http://arachne.uni-koeln.de/activate_account/" + user.getId();
+    	mailMessage2.setText(text);		
+    	try {
+    		mailSender.send(mailMessage2);
+    	} catch(MailException e) {
+    		LOGGER.error("Unable to send registration eMail to admin.", e);
+    	}
+    	
 		result.put("success", "true");
 		response.setStatus(201);
 		return result;
