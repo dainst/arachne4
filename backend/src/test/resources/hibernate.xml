@@ -25,7 +25,7 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="annotatedClasses">
 			<list>
-				<value>de.uni_koeln.arachne.mapping.UserAdministration</value>
+				<value>de.uni_koeln.arachne.mapping.User</value>
 				<value>de.uni_koeln.arachne.mapping.ArachneEntity</value>
 				<value>de.uni_koeln.arachne.mapping.Connection</value>
 				<value>de.uni_koeln.arachne.mapping.Session</value>
