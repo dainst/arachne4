@@ -1,9 +1,5 @@
 package de.uni_koeln.arachne.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -15,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.service.IUserRightsService;
 
 
 /**
  * Handles requests for the application home page.
+ * @author Reimar Grabowski
  */
 @Controller
 public class HomeController {
@@ -30,28 +26,16 @@ public class HomeController {
 	@Autowired
 	private transient IUserRightsService userRightsService; 
 	
-	//private Session session = SessionUtil.getSessionFactory().getCurrentSession();
-	
 	/**
-	 * Simply selects the home view to render by returning its name.
+	 * Retrieves the username and sends it to the view to render.
 	 */
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public ModelAndView home(final HttpServletRequest request) {
 		
-		LOGGER.debug("Welcome to Arachne4 alpha!");
-		
-		final String sessionId = request.getSession().getId();
-		LOGGER.debug("Session-ID: " + sessionId);
+		LOGGER.debug("Welcome to Arachne4 beta!");
 		
 		final String username = userRightsService.getCurrentUser().getUsername();		
 		LOGGER.debug("User: " + username);
-		
-		final Set<DatasetGroup> groups = userRightsService.getCurrentUser().getDatasetGroups();
-		final List<String> logGroups = new ArrayList<String>();
-		for (final DatasetGroup group : groups) {
-			logGroups.add(group.getName());
-		}
-		LOGGER.debug("Groups: " + logGroups.toString());
 		
 		final ModelMap modelMap = new ModelMap();
 		modelMap.addAttribute("Username", username);
