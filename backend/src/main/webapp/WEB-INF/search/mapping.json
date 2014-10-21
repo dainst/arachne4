@@ -13,8 +13,8 @@
             "all_template":{
               "mapping": {
                 "type": "string",
-                "omit_norms": true,
-                "index_options" : "positions"
+                "index_options" : "positions",
+                "copy_to" : "content"
               },
               "match": "*",
               "match_mapping_type" : "string"
@@ -47,19 +47,25 @@
             "type":"string"
          },
          "findSpot":{
-         	"type":"string"
+         	"type":"string",
+         	"copy_to" : "content"
          },
          "findSpotLocation":{
          	"type":"geo_point"
          },
          "depository":{
-            "type":"string"
+            "type":"string",
+            "copy_to" : "content"
          },
          "depositoryLocation":{
             "type":"geo_point"
          },
+         "content":{
+         	"type":"string",
+         	"omit_norms": true
+         },
          "boost":{
-         	"type":"double"
+            "type":"double"
          }
       }
    }
