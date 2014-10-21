@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import de.uni_koeln.arachne.dao.UserVerwaltungDao;
+import de.uni_koeln.arachne.dao.UserDao;
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.mapping.User;
 
@@ -37,7 +37,7 @@ public class UserManagementController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserManagementController.class);
 	
 	@Autowired
-	private transient UserVerwaltungDao userVerwaltungDao;
+	private transient UserDao userDao;
 	
 	private transient final List<String> defaultDatasetGroups; 
 	private transient final String adminEmail;
@@ -87,20 +87,20 @@ public class UserManagementController {
 			throw new RegistrationException("ui.register.passwordsDontMatch");
 		}
 				
-		User existingUser = userVerwaltungDao.findByName(user.getUsername());
+		User existingUser = userDao.findByName(user.getUsername());
 		if (existingUser != null) {
 			throw new RegistrationException("ui.register.usernameTaken");
 		}
 
 		HashSet<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
 		for (String dgName : defaultDatasetGroups) {
-			DatasetGroup datasetGroup = userVerwaltungDao.findDatasetGroupByName(dgName);
+			DatasetGroup datasetGroup = userDao.findDatasetGroupByName(dgName);
 			if (datasetGroup == null) continue;
 			datasetGroups.add(datasetGroup);
 		}
 		user.setDatasetGroups(datasetGroups);
 		
-		userVerwaltungDao.createUser(user);
+		userDao.createUser(user);
 		
 		final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setHost("smtp.uni-koeln.de");

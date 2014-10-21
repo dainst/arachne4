@@ -12,9 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.mapping.User;
 
-
-@Repository("UserVerwaltungDao")
-public class UserVerwaltungDao {
+/**
+ * Hibernate DAO for the 'verwaltung_benutzer' table.
+ * @author Reimar Grabowski
+ */
+@Repository("UserDao")
+public class UserDao {
 
 	@Autowired
     private transient SessionFactory sessionFactory;

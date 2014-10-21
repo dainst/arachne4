@@ -11,7 +11,7 @@ public interface IUserRightsService {
 	
 	/**
 	 * Get the current arachne user
-	 * @return UserAdministration the user object or the "anonymous" user if no user is logged in
+	 * @return User the user object or the "anonymous" user if no user is logged in
 	 */
 	public abstract User getCurrentUser();
 

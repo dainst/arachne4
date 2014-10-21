@@ -4,22 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import de.uni_koeln.arachne.dao.SessionDao;
-import de.uni_koeln.arachne.dao.UserVerwaltungDao;
+import de.uni_koeln.arachne.dao.UserDao;
 import de.uni_koeln.arachne.mapping.DatasetGroup;
-import de.uni_koeln.arachne.mapping.Session;
 import de.uni_koeln.arachne.mapping.User;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.sql.Condition;
@@ -30,6 +26,7 @@ import de.uni_koeln.arachne.util.sql.SQLToolbox;
  * It looks up the session, the corresponding user and the groups in the database
  * @author Rasmus Krempel
  * @author Sebastian Cuy
+ * @author Reimar Grabowski
  */
 @Service("userRightsService")
 @Scope(value="request",proxyMode=ScopedProxyMode.INTERFACES)
@@ -41,13 +38,7 @@ public class UserRightsService implements IUserRightsService {
 	 * User management DAO instance.
 	 */
 	@Autowired
-	private transient UserVerwaltungDao userVerwaltungDao; 
-	
-	/**
-	 * Session management DAO instance.
-	 */
-	@Autowired
-	private transient SessionDao sessionDao; 
+	private transient UserDao userDao; 
 	
 	/**
 	 * Flag that indicates if the User Data is loaded.
@@ -79,25 +70,19 @@ public class UserRightsService implements IUserRightsService {
 	 */
 	private void initializeUserData() {
 		if (!isSet) {
-			
-			Session session = null;
-			HttpServletRequest request = null;
-						
-			if (RequestContextHolder.getRequestAttributes() != null) {
-				request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-			}
-						
-			if (request != null) {
-				LOGGER.debug("Session-ID: " + request.getSession().getId());
-				session = sessionDao.findById(request.getSession().getId());
-			}
-			
-			if (session == null) {
-				arachneUser = userVerwaltungDao.findByName(ANONYMOUS_USER_NAME);
+			final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			if (authentication != null) {
+				final String username = authentication.getName();
+				
+				// TODO - change anonymous username in db to make this 'if free'
+				if ("anonymousUser".equals(username)) {
+					arachneUser = userDao.findByName(ANONYMOUS_USER_NAME);
+				} else {
+					arachneUser = userDao.findByName(username);
+				}
 			} else {
-				arachneUser = session.getUserAdministration();
+				arachneUser = userDao.findByName(ANONYMOUS_USER_NAME);
 			}
-			
 			isSet = true;		
 		}
 	}
