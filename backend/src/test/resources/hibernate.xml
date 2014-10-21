@@ -28,7 +28,6 @@
 				<value>de.uni_koeln.arachne.mapping.User</value>
 				<value>de.uni_koeln.arachne.mapping.ArachneEntity</value>
 				<value>de.uni_koeln.arachne.mapping.Connection</value>
-				<value>de.uni_koeln.arachne.mapping.Session</value>
 				<value>de.uni_koeln.arachne.mapping.DatasetGroup</value>
 				<value>de.uni_koeln.arachne.mapping.ImageRightsGroup</value>
 				<value>de.uni_koeln.arachne.mapping.BookmarkList</value>
