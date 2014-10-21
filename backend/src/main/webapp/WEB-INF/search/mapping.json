@@ -14,7 +14,7 @@
               "mapping": {
                 "type": "string",
                 "index_options" : "positions",
-                "copy_to" : "content"
+                "copy_to" : "searchableContent"
               },
               "match": "*",
               "match_mapping_type" : "string"
@@ -48,19 +48,19 @@
          },
          "findSpot":{
          	"type":"string",
-         	"copy_to" : "content"
+         	"copy_to" : "searchableContent"
          },
          "findSpotLocation":{
          	"type":"geo_point"
          },
          "depository":{
             "type":"string",
-            "copy_to" : "content"
+            "copy_to" : "searchableContent"
          },
          "depositoryLocation":{
             "type":"geo_point"
          },
-         "content":{
+         "searchableContent":{
          	"type":"string",
          	"omit_norms": true
          },
