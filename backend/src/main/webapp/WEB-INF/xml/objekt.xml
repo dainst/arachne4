@@ -32,7 +32,7 @@
     <datasections>
       <section labelKey="Informationen zum Objekt">
         <include type="ort"/>
-        <section labelKey="Herkunft" separator=" ,">
+        <section labelKey="Herkunft" separator=", ">
           <field datasource="objekt.Herkunft"/>
           <field datasource="objekt.HerkFundKommentar"/>
           <field datasource="objekt.Fundstaat"/>
