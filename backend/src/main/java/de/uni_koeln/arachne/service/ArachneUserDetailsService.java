@@ -2,6 +2,8 @@ package de.uni_koeln.arachne.service;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +20,8 @@ import de.uni_koeln.arachne.mapping.User;
  */
 public class ArachneUserDetailsService implements UserDetailsService {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ArachneUserDetailsService.class);
+	
 	public static final int MIN_ADMIN_ID = 800;
 	
 	@Autowired
@@ -27,6 +31,7 @@ public class ArachneUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
 		
+		LOGGER.debug("Username: " + username);
 		final User user = userDao.findByName(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("Username not found.");
@@ -34,7 +39,7 @@ public class ArachneUserDetailsService implements UserDetailsService {
 		
 		final ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
 		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-		if (user.getGroupID() > MIN_ADMIN_ID) {
+		if (user.getGroupID() >= MIN_ADMIN_ID) {
 			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		}
 		
