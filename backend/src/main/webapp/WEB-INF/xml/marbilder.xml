@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<!-- just very basic to have at least some definitions -->
-<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="bilder" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="bilder" 
+          xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
   <explicitContextualizers>marbilderbestandort</explicitContextualizers>
   <subtables>
     <subtable connectFieldParent="DateinameMarbilder" connectFieldSubTable="DateinameMarbilderbestand">marbilderbestand</subtable>
