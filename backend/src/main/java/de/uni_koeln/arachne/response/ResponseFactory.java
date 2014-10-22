@@ -37,6 +37,7 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
  * want to use different xml config files a new naming scheme is needed.
  * <br>
  * This class can be autowired.
+ * @author Reimar Grabowski
  */
 @Component
 @Configurable(preConstruction=true)
@@ -149,20 +150,27 @@ public class ResponseFactory {
 		
 		// set degree
 		if (connectedEntities != null && !connectedEntities.isEmpty()) {
-			response.setDegree(connectedEntities.size());
-		}
+			double degree = connectedEntities.size();
+			// do not count connected book pages in degree for books
+			if ("buch".equals(tableName)) {
+				degree -= Double.parseDouble(dataset.getField("buch.BuchSeiten"));
+			}
+			response.setDegree(degree);
+		} 
 						
 		// set fields
 		response.setFields(dataset.getFields().size() + dataset.getContexts().size());
-				
+						
 		// set boost
-		final double logFields = Math.log10(response.fields + 1.0d);
+		double logFields = response.fields;
+		logFields = Math.log10(logFields + 1.0d) + 1.0d;
 		double imageCount = 0;
 		if (response.images != null) {
 			imageCount = response.images.size();
 		}
 		final double logImages = Math.log10(imageCount + 1.0d) + 1.0d;
-		final double boost = (logFields * logFields * logImages * logImages * Math.log10(response.degree + 1.0d)) / 5.0d + 1.0d;
+		final double logDegree = Math.log10(Math.sqrt(response.getDegree() + 1.0d)) + 1.0d;
+		final double boost = logFields * logImages * logDegree / 5.0 + 1.0d;
 		response.setBoost(boost);
 		
 		// set dataset group

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 /**
  * Response object class that returns preformatted output to the frontend.
  * This class is serialized to JSON using <code>Jackson</code>.
+ * @author Reimar Grabowski
  */
 @XmlRootElement(name="entity")
 @XmlSeeAlso({Section.class,Field.class,FieldList.class})
@@ -76,7 +77,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * The number of connections this entity has
 	 */
-	protected double degree = 1;
+	protected double degree = 0;
 
 	/**
 	 * The number of fields this entitiy has
