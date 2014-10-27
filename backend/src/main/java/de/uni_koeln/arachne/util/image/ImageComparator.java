@@ -19,8 +19,8 @@ public class ImageComparator implements Comparator<Image>, Serializable {
 	
 	@Override
 	public int compare(Image image1, Image image2) {
-		String subTitle1 = image1.getSubtitle();
-		String subTitle2 = image2.getSubtitle();
+		String subTitle1 = image1.getImageSubtitle();
+		String subTitle2 = image2.getImageSubtitle();
 
 		if (subTitle1 == null) {
 			LOGGER.warn("Data integrity warning. Missing subtitle on image '" + image1.getImageId() + "'.");
@@ -33,9 +33,9 @@ public class ImageComparator implements Comparator<Image>, Serializable {
 		}
 
 		// Use Interger.MIN_VALUE / 4 to not generate an overflow;
-		int imageNumber1 = subTitle1.contains(",") ? ImageUtils.extractNumberFromImageFilename(image1.getSubtitle()) 
+		int imageNumber1 = subTitle1.contains(",") ? ImageUtils.extractNumberFromImageFilename(image1.getImageSubtitle()) 
 				: Integer.MIN_VALUE / 4;
-		int imageNumber2 = subTitle2.contains(",") ? ImageUtils.extractNumberFromImageFilename(image2.getSubtitle()) 
+		int imageNumber2 = subTitle2.contains(",") ? ImageUtils.extractNumberFromImageFilename(image2.getImageSubtitle()) 
 				: Integer.MIN_VALUE / 4;
 
 		LOGGER.debug("Compare: " + subTitle1 + "[" + imageNumber1 + "]" + " - " + subTitle2 + "[" + imageNumber2 + "]");

@@ -53,7 +53,7 @@ public class SarcophagusImage extends Image {
 
 	public void setImageFields(final Long imageId, final String subtitle, final String project) {
 		this.imageId = imageId;
-		this.subtitle = subtitle;
+		this.imageSubtitle = subtitle;
 		this.project = project;
 	}
 }

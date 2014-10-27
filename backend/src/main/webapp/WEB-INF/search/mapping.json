@@ -60,6 +60,22 @@
          "depositoryLocation":{
             "type":"geo_point"
          },
+         "images": {
+            "properties": {
+                "imageId": {
+                    "type": "long"
+                },
+                "sourceContext": {
+                    "type": "string"
+                },
+                "sourceRecordId": {
+                    "type": "long"
+                },
+                "imageSubtitle": {
+                    "type": "string"
+                }
+            }
+         },
          "searchableContent":{
          	"type":"string",
          	"omit_norms": true

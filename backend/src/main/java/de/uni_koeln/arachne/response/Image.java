@@ -17,9 +17,9 @@ public class Image extends SQLResponseObject {
 	protected Long imageId = null;
 	
 	/**
-	 * The subtitle of the image.
+	 * The imageSubtitle of the image.
 	 */
-	protected String subtitle = null;
+	protected String imageSubtitle = null;
 	
 	
 	/**
@@ -41,12 +41,12 @@ public class Image extends SQLResponseObject {
 		this.imageId = imageId;
 	}
 
-	public String getSubtitle() {
-		return subtitle;
+	public String getImageSubtitle() {
+		return imageSubtitle;
 	}
 
-	public void setSubtitle(final String subtitle) {
-		this.subtitle = subtitle;
+	public void setImageSubtitle(final String imageSubtitle) {
+		this.imageSubtitle = imageSubtitle;
 	}
 
 	public Long getSourceRecordId() {
@@ -67,7 +67,7 @@ public class Image extends SQLResponseObject {
 
 	@Override
 	public String toString() {
-		return "Image [imageId=" + imageId + ", subtitle=" + subtitle
+		return "Image [imageId=" + imageId + ", imageSubtitle=" + imageSubtitle
 				+  ", sourceRecordId="
 				+ sourceRecordId + ", sourceContext="
 				+ sourceContext + "]";

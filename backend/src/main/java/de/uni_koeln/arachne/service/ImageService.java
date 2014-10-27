@@ -50,7 +50,7 @@ public class ImageService {
 			if ("marbilder".equals(arachneId.getTableName())) {
 				final Image image = new Image();
 				image.setImageId(arachneId.getArachneEntityID());
-				image.setSubtitle(dataset.getField("marbilder.DateinameMarbilder"));
+				image.setImageSubtitle(dataset.getField("marbilder.DateinameMarbilder"));
 				final List<Image> imageList = new ArrayList<Image>();
 				imageList.add(image);
 				dataset.setImages(imageList);

@@ -15,7 +15,7 @@ public class ImageRowMapper implements RowMapper<Image> {
 	public Image mapRow(final ResultSet resultSet, final int index) throws SQLException {
 		final Image result = new Image();
 		
-		result.setSubtitle(resultSet.getString(1));
+		result.setImageSubtitle(resultSet.getString(1));
 		result.setImageId(resultSet.getLong(2));
 		
 		if (result.getImageId() == null) {

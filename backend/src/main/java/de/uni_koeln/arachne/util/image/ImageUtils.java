@@ -23,7 +23,7 @@ public class ImageUtils { // NOPMD
 	 */
 	public static Long findThumbnailId(final List<? extends Image> imageList) {
 		Image thumbnail = imageList.get(0);
-		final String subtitle = thumbnail.getSubtitle();
+		final String subtitle = thumbnail.getImageSubtitle();
 		if (subtitle == null) {
 			LOGGER.warn("Data integrity warning. Missing subtitle on image '" + thumbnail.getImageId() + "'.");
 			return null;
@@ -31,8 +31,8 @@ public class ImageUtils { // NOPMD
 		if (imageList.size()>1 && thumbnail != null && subtitle.contains(",")) {
 			Integer lowestNumber = extractNumberFromImageFilename(subtitle);
 			for (final Image potentialThumbnail: imageList) {
-				if (potentialThumbnail.getSubtitle().contains(",")) {
-					final Integer currentNumber = extractNumberFromImageFilename(potentialThumbnail.getSubtitle());
+				if (potentialThumbnail.getImageSubtitle().contains(",")) {
+					final Integer currentNumber = extractNumberFromImageFilename(potentialThumbnail.getImageSubtitle());
 					if (currentNumber<lowestNumber) {
 						thumbnail = potentialThumbnail;
 						lowestNumber = currentNumber;
