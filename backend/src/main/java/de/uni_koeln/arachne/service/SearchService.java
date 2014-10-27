@@ -326,7 +326,7 @@ public class SearchService {
 				.lang("groovy");
 		final QueryBuilder query = QueryBuilders.functionScoreQuery(filteredQuery, scoreFunction).boostMode("multiply");
 						
-		LOGGER.info("Elastic search query: " + query.toString());
+		LOGGER.debug("Elastic search query: " + query.toString());
 		return query;
 	}
 	
