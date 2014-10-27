@@ -24,21 +24,15 @@
     </subtitle>
     <datasections>
       <section labelKey="Informationen zur Topographie">
-        <section labelKey="Lokalisierung">
-          <include type="ort"/>
-          <section>
-            <field datasource="topographie.antikeGriechLandschaftTopographie" prefix="Antike Landschaft: "/>
-            <field datasource="topographie.antikeRoemProvinzTopographie" prefix="Römische Provinz: "/>
-          </section>
-          <section>
-            <field datasource="topographie.Ausdehnung" prefix="Ausdehnung: "/>
-          </section>
-        </section>
+        <include type="ort"/>
         <include type="datierung"/>
         <section labelKey="Beschreibung">
           <field datasource="topographie.TopographieArt"/>
           <field datasource="topographie.TopographieTypus" prefix="Kategorie: "/>
           <field datasource="topographie.TopographieTypusZusatz" prefix="Zusatz: "/>
+          <field datasource="topographie.antikeGriechLandschaftTopographie" prefix="Antike Landschaft: "/>
+          <field datasource="topographie.antikeRoemProvinzTopographie" prefix="Römische Provinz: "/>
+          <field datasource="topographie.Ausdehnung" prefix="Ausdehnung: "/>
           <field datasource="topographie.antikeQuellen" prefix="antike Quellen: "/>
           <field datasource="topographie.freieBeschreibung" prefix="Freie Beschreibung: "/>
           <field datasource="topographie.KommentarTopographie" prefix="Kommentar: "/>
