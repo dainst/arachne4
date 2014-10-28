@@ -4,6 +4,7 @@ package de.uni_koeln.arachne.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.FilterBuilder;
@@ -75,7 +76,9 @@ public class EntityController {
 	
 	@RequestMapping(value="/entity/count", method=RequestMethod.GET, produces="application/json;charset=UTF-8")
 	public @ResponseBody String handleGetEntityCountRequest() {
-		return "{\"entityCount\":" + dataImportService.getIndexedDocuments() + "}";
+		CountResponse countResponse = esClientUtil.getClient().prepareCount(esClientUtil.getSearchIndexAlias())
+				.execute().actionGet();
+		return "{\"entityCount\":" + countResponse.getCount() + "}";
 	}
 	
 	/**
