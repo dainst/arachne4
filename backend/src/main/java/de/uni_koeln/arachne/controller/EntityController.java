@@ -107,7 +107,7 @@ public class EntityController {
      * @param categoryId The internal id of the item to fetch
      * @return A response object containing the data (this is serialized to JSON).
      */
-    @RequestMapping(value="/entity/{category}/{categoryId}", method=RequestMethod.GET, produces="application/json")
+    @RequestMapping(value="/entity/{category}/{categoryId}", method=RequestMethod.GET, produces="application/json;charset=UTF-8")
     public @ResponseBody Object handleGetCategoryIdRequest(
     		@PathVariable("category") final String category,
     		@PathVariable("categoryId") final Long categoryId,
