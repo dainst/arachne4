@@ -18,27 +18,7 @@
     </Appenders>
     
     <!--     
-        
-    <!- Controller ->
-    <logger name="de.uni_koeln.arachne.controller">
-        <level value="info" />
-    </logger>
-    
-    <!- Daos ->
-    <logger name="de.uni_koeln.arachne.dao">
-        <level value="info" />
-    </logger>
-    
-    <!- Services ->
-    <logger name="de.uni_koeln.arachne.service">
-        <level value="info" />
-    </logger>
-    
-    <!- Utils ->
-    <logger name="de.uni_koeln.arachne.utils">
-        <level value="info" />
-    </logger>
-    
+       
     <!- 3rdparty Loggers ->
     <logger name="org.springframework.core">
         <level value="info" />
@@ -57,9 +37,11 @@
     <!-- Root Logger -->
     <Loggers>
         <!-- Spring Web Logger -->
-        <logger name="org.springframework.web" level="info"/>
+        <logger name="org.springframework.web" level="info" />
         <!-- Application Logger -->
         <logger name="de.uni_koeln.arachne" level="info" />
+        <logger name="de.uni_koeln.arachne.controller" level="info" />
+        <logger name="de.uni_koeln.arachne.service" level="info" />
         <Root level="info">
             <AppenderRef ref="ROLLING" />
             <!-- <AppenderRef ref="CONSOLE" /> -->
