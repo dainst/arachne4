@@ -196,11 +196,11 @@ public class EntityController {
     	
     	SearchResponse searchResponse = null;
     	SearchResponse acLessSearchResponse = null;
-    	final FilterBuilder accessFilter = FilterBuilders.boolFilter().must(esClientUtil.getAccessControlFilter());
+    	final FilterBuilder accessFilter = esClientUtil.getAccessControlFilter();
     	
     	if (category == null) {
-    		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString("entityId:" + id), accessFilter);
-    		LOGGER.debug("Entity query: " + query);
+    		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.termQuery("entityId", id), accessFilter);
+    		LOGGER.debug("Entity query [" + id + "]: " + query);
     		searchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
     				.setQuery(query)
     				.setFetchSource(new String[] {"*"}, internalFields)
@@ -209,8 +209,8 @@ public class EntityController {
     				.setSize(1)
     				.execute().actionGet();
     		
-    		final QueryBuilder acLessQuery = QueryBuilders.queryString("entityId:" + id);
-    		LOGGER.debug("Entity query (no access control): " + acLessQuery);
+    		final QueryBuilder acLessQuery = QueryBuilders.termQuery("entityId", id);
+    		LOGGER.debug("Entity query [" + id + "] (no access control): " + acLessQuery);
     		acLessSearchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
     				.setQuery(acLessQuery)
     				.setFetchSource(new String[] {"*"}, internalFields)
@@ -219,8 +219,12 @@ public class EntityController {
     				.setSize(1)
     				.execute().actionGet();
     	} else {
-    		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString("type:" 
-    				+ ts.transl8(category) + " AND " + "internalId:" + id), accessFilter);
+    		final QueryBuilder query = QueryBuilders.filteredQuery(
+    				QueryBuilders.boolQuery()
+    					.must(QueryBuilders.termQuery("type", ts.transl8(category)))
+    					.must(QueryBuilders.termQuery("internalId", id))
+    				, accessFilter);
+    		LOGGER.debug("Entity query [" + ts.transl8(category) + "/" + id + "]: " + query);
     		searchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
     				.setQuery(query)
     				.setFetchSource(new String[] {"*"}, internalFields)
@@ -229,8 +233,10 @@ public class EntityController {
     				.setSize(1)
     				.execute().actionGet();
     		
-    		final QueryBuilder acLessQuery = QueryBuilders.queryString("type:" 
-    				+ ts.transl8(category) + " AND " + "internalId:" + id);
+    		final QueryBuilder acLessQuery = QueryBuilders.boolQuery()
+					.must(QueryBuilders.termQuery("type", ts.transl8(category)))
+					.must(QueryBuilders.termQuery("internalId", id));
+    		LOGGER.debug("Entity query [" + ts.transl8(category) + "/" + id + "] (no access control): " + acLessQuery);
     		acLessSearchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
     				.setQuery(acLessQuery)
     				.setFetchSource(new String[] {"*"}, internalFields)

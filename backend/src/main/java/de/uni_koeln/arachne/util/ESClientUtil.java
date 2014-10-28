@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.Set;
 
 import javax.annotation.PreDestroy;
 import javax.servlet.ServletContext;
@@ -26,9 +27,9 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.QueryFilterBuilder;
+import org.elasticsearch.index.query.OrFilterBuilder;
 import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
@@ -216,42 +217,61 @@ public class ESClientUtil implements ServletContextAware {
 	
 	/**
 	 * This method constructs a access control query filter for Elasticsearch using the <code>UserRightsService</code>.
-	 * @return The constructed query filter.
+	 * @return The constructed filter.
 	 */
-	public QueryFilterBuilder getAccessControlFilter() {
-		final StringBuffer datasetGroups = new StringBuffer(16);
-		boolean first = true;
-		for (final DatasetGroup datasetGroup: userRightsService.getCurrentUser().getDatasetGroups()) {
-			if (first) {
-				first = false;
-			} else {
-				datasetGroups.append(" OR ");
-			}
-			datasetGroups.append(datasetGroup.getName());
+	public BoolFilterBuilder getAccessControlFilter() {
+		final Set<DatasetGroup> datasetGroups = userRightsService.getCurrentUser().getDatasetGroups();
+		final OrFilterBuilder orFilter = FilterBuilders.orFilter();
+		for (final DatasetGroup datasetGroup: datasetGroups) {
+			orFilter.add(FilterBuilders.termFilter("datasetGroup", datasetGroup.getName()));
 		}
-		return FilterBuilders.queryFilter(QueryBuilders.queryString("datasetGroup:" + datasetGroups.toString()));
+		return FilterBuilders.boolFilter().must(orFilter);
 	}
 
+	/**
+	 * Gets the current elasticsearch client for re-use.
+	 * @return The elasticsearch client.
+	 */
 	public Client getClient() {
 		return this.client;
 	}
 	
+	/**
+	 * Indicates whether a remote client is used. 
+	 * @return <code>true</code> if the client is remote else <code>false</code>. 
+	 */
 	public boolean isRemote() {
 		return esRemoteClient;
 	}
 	
+	/**
+	 * Gets the elasticsearch cluster name.
+	 * @return The clustername as <code>String</code>.
+	 */
 	public String getName() {
 		return esName;
 	}
 	
+	/**
+	 * Gets the alias of the current search index.
+	 * @return The alias as <code>String</code>.
+	 */
 	public String getSearchIndexAlias() {
 		return this.searchIndexAlias;
 	}
 	
+	/**
+	 * Returns the maximum number of actions that are bulked in one request.
+	 * @return The maximum number of actions for a bulk.
+	 */
 	public int getBulkActions() {
 		return esBulkActions;
 	}
 	
+	/**
+	 * Returns the maximum size for a bulk request.
+	 * @return The maximum size for a bulk request in MB.
+	 */
 	public int getBulkSize() {
 		return esBulkSize;
 	}

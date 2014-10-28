@@ -43,7 +43,7 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 @Service("SearchService")
 public class SearchService {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SearchService.class);
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
@@ -294,15 +294,15 @@ public class SearchService {
 	 * @return An elasticsearch <code>QueryBuilder</code> which in essence is a complete elasticsearch query.
 	 */
 	private QueryBuilder buildQuery(final String searchParam, final List<String> filterValues) {
-		FilterBuilder facetFilter = FilterBuilders.boolFilter().must(esClientUtil.getAccessControlFilter());
+		FilterBuilder facetFilter = esClientUtil.getAccessControlFilter();
 				
 		if (!StrUtils.isEmptyOrNull(filterValues)) {
 			for (final String filterValue: filterValues) {
 				final int splitIndex = filterValue.indexOf(':');
 				final String name = filterValue.substring(0, splitIndex);
 				final String value = filterValue.substring(splitIndex+1).replace("\"", ""); 
-				facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(FilterBuilders
-						.termFilter(name, value));
+				facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(
+						FilterBuilders.termFilter(name, value));
 			}
 		}
 		
