@@ -23,7 +23,8 @@
       ],
       "properties":{
          "datasetGroup":{
-            "type":"string"
+            "type":"string",
+            "index" : "not_analyzed"
          },
          "entityId":{
             "type":"long"
