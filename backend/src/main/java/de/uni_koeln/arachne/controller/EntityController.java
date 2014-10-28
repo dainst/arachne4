@@ -200,6 +200,7 @@ public class EntityController {
     	
     	if (category == null) {
     		final QueryBuilder query = QueryBuilders.filteredQuery(QueryBuilders.queryString("entityId:" + id), accessFilter);
+    		LOGGER.debug("Entity query: " + query);
     		searchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
     				.setQuery(query)
     				.setFetchSource(new String[] {"*"}, internalFields)
@@ -209,6 +210,7 @@ public class EntityController {
     				.execute().actionGet();
     		
     		final QueryBuilder acLessQuery = QueryBuilders.queryString("entityId:" + id);
+    		LOGGER.debug("Entity query (no access control): " + acLessQuery);
     		acLessSearchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
     				.setQuery(acLessQuery)
     				.setFetchSource(new String[] {"*"}, internalFields)
