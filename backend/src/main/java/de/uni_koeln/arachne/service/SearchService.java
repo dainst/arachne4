@@ -10,12 +10,14 @@ import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
+import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.index.query.functionscore.script.ScriptScoreFunctionBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -29,7 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import de.uni_koeln.arachne.controller.SearchController;
 import de.uni_koeln.arachne.response.SearchResult;
 import de.uni_koeln.arachne.response.SearchResultFacet;
 import de.uni_koeln.arachne.response.SearchResultFacetValue;
@@ -83,6 +84,23 @@ public class SearchService {
 		
 		return esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
 				.setQuery(buildQuery(searchParam, filterValueList))
+				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+				.setFrom(resultOffset)
+				.setSize(resultSize);
+	}
+	
+	/**
+	 * This method builds and returns an elasticsearch context search request. The query is built by the 
+	 * <code>buildContextQuery</code> method.
+	 * @param searchParam The entityId to find the contexts for..
+	 * @param resultSize Max number of results.
+	 * @param resultOffset An offset into the result set.
+	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
+	 */
+	public SearchRequestBuilder buildContextSearchRequest(Long entityId, int resultSize, int resultOffset) {
+		
+		return esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
+				.setQuery(buildContextQuery(entityId))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setFrom(resultOffset)
 				.setSize(resultSize);
@@ -285,8 +303,8 @@ public class SearchService {
 	 * The final query is a function score query that modifies the score based on the boost value of a document. 
 	 * Embedded is a filtered query to account for access control and facet filters which finally uses a simple query 
 	 * string query with 'AND' as default operator.
-	 * If the search parameter is numeric the query is performed against all fields else the query is only performed 
-	 * against the text fields.
+	 * If the search parameter is numeric the query is performed against all configured fields else the query is only 
+	 * performed against the text fields.
 	 * @param searchParam The query string.
 	 * @param limit Max number of results.
 	 * @param offset An offset into the result set.
@@ -331,6 +349,21 @@ public class SearchService {
 	}
 	
 	/**
+	 * Builds the context query.
+	 * @param entityId
+	 * @return The query to retrieve the connected entities.
+	 */
+	private QueryBuilder buildContextQuery(Long entityId) {
+		BoolFilterBuilder accessFilter = esClientUtil.getAccessControlFilter();
+		accessFilter.mustNot(FilterBuilders.termFilter("type", ts.transl8("type_marbilder")));
+		final TermQueryBuilder innerQuery = QueryBuilders.termQuery("connectedEntities", entityId);
+		final QueryBuilder query = QueryBuilders.filteredQuery(innerQuery, accessFilter);
+										
+		LOGGER.debug("Elastic search query: " + query.toString());
+		return query;
+	}
+	
+	/**
 	 * Converts the input string of query filter parameters to a string list of parameters.
 	 * The string is split at every occurrence of ",facet_".
 	 * @param filterString The filter query string to convert.
@@ -353,4 +386,5 @@ public class SearchService {
 			return null;
 		}
 	}
+	
 }

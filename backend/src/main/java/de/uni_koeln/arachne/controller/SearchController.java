@@ -75,10 +75,12 @@ public class SearchController {
 		final List<String> facetList = new ArrayList<String>(defaultFacetList);
 		final List<String> filterValueList = searchService.getFilterValueList(filterValues, facetList);
 		
-		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam, resultSize, resultOffset, filterValueList);
+		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam
+				, resultSize, resultOffset, filterValueList);
 		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
 		
-		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, resultSize, resultOffset, filterValues, facetList);
+		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
+				, resultSize, resultOffset, filterValues, facetList);
 		
 		if (searchResult == null) {
 			LOGGER.error("Search result is null!");
@@ -107,7 +109,25 @@ public class SearchController {
 			@RequestParam(value = "fq", required = false) final String filterValues,
 			@RequestParam(value = "fl", required = false) final Integer facetLimit) {
 		
-		return handleSearchRequest("connectedEntities:" + entityId, limit, offset, filterValues, facetLimit);
+		final int resultSize = limit == null ? defaultLimit : limit;
+		final int resultOffset = offset == null ? 0 : offset;
+		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
+		
+		final List<String> facetList = new ArrayList<String>(defaultFacetList);
+				
+		final SearchRequestBuilder searchRequestBuilder = searchService.buildContextSearchRequest(entityId
+				, resultSize, resultOffset);
+		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
+		
+		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, resultSize
+				, resultOffset, filterValues, facetList);
+		
+		if (searchResult == null) {
+			LOGGER.error("Search result is null!");
+			return new ResponseEntity<String>(HttpStatus.SERVICE_UNAVAILABLE);
+		} else {
+			return searchResult;
+		}
 	}
 	
 }
