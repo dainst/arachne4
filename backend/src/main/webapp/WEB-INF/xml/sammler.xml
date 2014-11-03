@@ -3,17 +3,27 @@
 <category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="sammler" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
   <display>
     <title>
-      <section>
+      <section separator=", ">
         <field datasource="sammler.Nachname"/>
+        <field datasource="sammler.Vorname"/>
       </section>
     </title>
     <subtitle>
       <section>
-        <field datasource="sammler.Vorname"/>
+        <field datasource="sammler.TitelSammler"/>
       </section>
     </subtitle>
     <datasections>
       <section labelKey="Informationen zum Sammler">
+        <section labelKey="Vorname">
+          <field datasource="sammler.Vorname"/>
+        </section>
+        <section labelKey="Nachname">
+          <field datasource="sammler.Nachname"/>
+        </section>
+        <section labelKey="Titel">
+          <field datasource="sammler.TitelSammler"/>
+        </section>
         <section labelKey="Titel">
           <field datasource="sammler.TitelSammler"/>
         </section>
