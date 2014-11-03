@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.rest.RestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -62,7 +63,7 @@ public class SearchController {
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
 	@RequestMapping(value="/search", method=RequestMethod.GET, produces="application/json")
-	public @ResponseBody Object handleSearchRequest(@RequestParam("q") final String searchParam,
+	public @ResponseBody ResponseEntity<?> handleSearchRequest(@RequestParam("q") final String searchParam,
 													  @RequestParam(value = "limit", required = false) final Integer limit,
 													  @RequestParam(value = "offset", required = false) final Integer offset,
 													  @RequestParam(value = "fq", required = false) final String filterValues,
@@ -82,11 +83,10 @@ public class SearchController {
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
 				, resultSize, resultOffset, filterValues, facetList);
 		
-		if (searchResult == null) {
-			LOGGER.error("Search result is null!");
-			return new ResponseEntity<String>(HttpStatus.SERVICE_UNAVAILABLE);
+		if (searchResult.getStatus() != RestStatus.OK) {
+			return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
 		} else {
-			return searchResult;
+			return ResponseEntity.ok().body(searchResult);
 		}
 	}
 	

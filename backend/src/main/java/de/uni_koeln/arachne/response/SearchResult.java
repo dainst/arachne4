@@ -2,7 +2,10 @@ package de.uni_koeln.arachne.response;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.elasticsearch.rest.RestStatus;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -19,7 +22,12 @@ public class SearchResult {
 	private int offset;
 	private List<SearchResultFacet> facets;
 	private List<SearchHit> entities;
+	private RestStatus status;
 
+	public SearchResult() {
+		status = RestStatus.OK;
+	}
+	
 	public void addSearchHit(final SearchHit searchHit) {
 		if (searchHit == null) {
 			return;
@@ -61,6 +69,22 @@ public class SearchResult {
 	}
 	public void setEntities(final List<SearchHit> entities) {
 		this.entities = entities;
+	}
+
+	/**
+	 * Getter for the <code>RestStatus</code> of the search request.
+	 * @return The status.
+	 */
+	public RestStatus getStatus() {
+		return status;
+	}
+
+	/**
+	 * Setter for the <code>RestStatus</code> of the search request.
+	 * @param status The status to set.
+	 */
+	public void setStatus(RestStatus status) {
+		this.status = status;
 	}
 
 }

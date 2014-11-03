@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.action.search.SearchPhaseExecutionException;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -20,6 +21,7 @@ import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.index.query.functionscore.script.ScriptScoreFunctionBuilder;
+import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.facet.FacetBuilders;
@@ -134,9 +136,16 @@ public class SearchService {
 		SearchResponse searchResponse = null;
 		try {
 			searchResponse = searchRequestBuilder.execute().actionGet();
+		} catch (SearchPhaseExecutionException e) {
+			LOGGER.error("Problem executing search. PhaseExecutionException: " + e.getMessage());
+			final SearchResult failedSearch = new SearchResult();
+			failedSearch.setStatus(e.status());
+			return failedSearch;
 		} catch (ElasticsearchException e) {
 			LOGGER.error("Problem executing search. Exception: " + e.getMessage());
-			return null;
+			final SearchResult failedSearch = new SearchResult();
+			failedSearch.setStatus(e.status());
+			return failedSearch;
 		}
 		
 		final SearchHits hits = searchResponse.getHits();
