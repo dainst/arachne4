@@ -3,16 +3,33 @@
 <category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="literatur" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
   <display>
     <title>
-      <field datasource="literatur.PS_LiteraturID"/>
+      <field datasource="literatur.DAIRichtlinien"/>
     </title>
     <subtitle>
       <section>
-        <field datasource="literatur.DAIRichtlinien"/>
+        <field datasource="literatur.Abkuerzungen"/>
       </section>
     </subtitle>
     <datasections>
       <section labelKey="Informationen zur Literatur">
         <linkField labelKey="Datensatz im Zenon" prefix="http://zenon.dainst.org/#book/" datasource="literatur.ZenonID"/>
+        <field datasource="literatur.DAIRichtlinien" prefix="Zitat nach DAI-Richtlinien: "/>
+        <field datasource="literatur.Titel" prefix="Titel: "/>
+        <field datasource="literatur.Reihe" prefix="Reihe: "/>
+        <field datasource="literatur.A1Nachname" prefix="Nachname des Autors: "/>
+        <field datasource="literatur.A1Vorname" prefix="Vorname des Autors: "/>
+        <field datasource="literatur.A2Nachname" prefix="Nachname des Autors: "/>
+        <field datasource="literatur.A2Vorname" prefix="Vorname des Autors: "/>
+        <field datasource="literatur.H1Nachname" prefix="Nachname des Herausgebers: "/>
+        <field datasource="literatur.H1Vorname" prefix="Vorname des Herausgebers: "/>
+        <field datasource="literatur.H2Nachname" prefix="Nachname des Herausgebers: "/>
+        <field datasource="literatur.H2Vorname" prefix="Vorname des Herausgebers: "/>
+        <field datasource="literatur.Jahr" prefix="Jahr: "/>
+        <field datasource="literatur.Ort" prefix="Ort: "/>
+        <field datasource="literatur.Band" prefix="Band: "/>
+        <field datasource="literatur.Abkuerzungen" prefix="Abkürzung: "/>
+        <field datasource="literatur.Auflage" prefix="Auflage: "/>
+        <field datasource="literatur.StichwortSortierung" prefix="Stichwort: "/>
       </section>
     </datasections>
   </display>
