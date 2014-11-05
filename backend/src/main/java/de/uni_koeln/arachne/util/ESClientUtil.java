@@ -41,6 +41,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.context.ServletContextAware;
 
 import de.uni_koeln.arachne.mapping.DatasetGroup;
+import de.uni_koeln.arachne.mapping.User;
 import de.uni_koeln.arachne.service.IUserRightsService;
 
 /**
@@ -220,12 +221,17 @@ public class ESClientUtil implements ServletContextAware {
 	 * @return The constructed filter.
 	 */
 	public BoolFilterBuilder getAccessControlFilter() {
-		final Set<DatasetGroup> datasetGroups = userRightsService.getCurrentUser().getDatasetGroups();
-		final OrFilterBuilder orFilter = FilterBuilders.orFilter();
-		for (final DatasetGroup datasetGroup: datasetGroups) {
-			orFilter.add(FilterBuilders.termFilter("datasetGroup", datasetGroup.getName()));
+		final User user = userRightsService.getCurrentUser();
+		if (user.isAll_groups()) {
+			return FilterBuilders.boolFilter().must(FilterBuilders.matchAllFilter());
+		} else {
+			final Set<DatasetGroup> datasetGroups = user.getDatasetGroups();
+			final OrFilterBuilder orFilter = FilterBuilders.orFilter();
+			for (final DatasetGroup datasetGroup: datasetGroups) {
+				orFilter.add(FilterBuilders.termFilter("datasetGroup", datasetGroup.getName()));
+			}
+			return FilterBuilders.boolFilter().must(orFilter);
 		}
-		return FilterBuilders.boolFilter().must(orFilter);
 	}
 
 	/**
