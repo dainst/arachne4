@@ -137,14 +137,9 @@ public class UserRightsService implements IUserRightsService {
 	 */
 	@Override
 	public boolean userHasDatasetGroup(final DatasetGroup datasetGroup) {
-		final Set<DatasetGroup> datasetGroups = this.getCurrentUser().getDatasetGroups();
+		final User user = getCurrentUser();
 		final String datasetGroupName = datasetGroup.getName();
-		for (final DatasetGroup currentDatasetGroup: datasetGroups) {
-			if (currentDatasetGroup.getName().equals(datasetGroupName)) {
-				return true;
-			}
-		}
-		return false;
+		return user.hasGroup(datasetGroupName);
 	}
 	
 	/* (non-Javadoc)
