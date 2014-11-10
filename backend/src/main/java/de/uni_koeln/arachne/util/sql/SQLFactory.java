@@ -96,7 +96,7 @@ public class SQLFactory {
 
 	public String getConnectedEntityIdsQuery(final long entityId) {
 		final StringBuilder result = new StringBuilder(128)
-			.append("SELECT `Target` FROM `SemanticConnection` WHERE NOT `Target` = 0 AND NOT `TypeTarget` = "
+			.append("SELECT `Target` FROM `SemanticConnection` WHERE NOT `Target` = 0 AND NOT `TypeSource` = "
 					+ "\"marbilder\" AND Source = ")
 			.append(entityId)
 			.append(';');
