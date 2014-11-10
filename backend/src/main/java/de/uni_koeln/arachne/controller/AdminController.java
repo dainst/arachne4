@@ -38,8 +38,8 @@ public class AdminController {
 	@Autowired
 	private transient DataImportService dataImportService;
 
-	// choose some value near the real average DPS for a full import for initialization
-	private transient double averageDPS = 180d;
+	// choose some conservative value
+	private transient double averageDPS = 100d;
 	
 	private transient double smoothingFactor = 0.005d;
 	
