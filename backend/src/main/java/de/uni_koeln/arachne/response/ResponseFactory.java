@@ -386,7 +386,6 @@ public class ResponseFactory {
 	private ObjectNode getFacettedEntityAsJson(final Dataset dataset, final Document document
 			, final FormattedArachneEntity response, final Namespace namespace) {
 
-		ObjectMapper oMapper = jsonUtil.getObjectMapper();
 		ObjectNode json = jsonUtil.getObjectMapper().valueToTree(response);
 
 		// set image facet
@@ -410,6 +409,41 @@ public class ResponseFactory {
 			json.set("facet_aufbewahrungsort", json.arrayNode().add(place + "[" + location + "]"));
 		}
 
+		// add all places with location information as "facet_geo"
+		Context placeContext = dataset.getContext("ort");
+		if (placeContext != null) {
+			final List<String> finalGeoValues = new ArrayList<String>();
+			for (AbstractLink link: placeContext.getAllContexts()) {
+				final String city = link.getFieldFromFields("ort.Stadt");
+				final String country = link.getFieldFromFields("ort.Land");
+				final String additionalInfo = link.getFieldFromFields("ort.Aufbewahrungsort");
+				place = null;
+				if (!StrUtils.isEmptyOrNull(city)) {
+					place = city;				
+					if (!StrUtils.isEmptyOrNull(country)) {
+						place += ", " + country;
+						if (!StrUtils.isEmptyOrNull(additionalInfo)) {
+							place += ", " + additionalInfo;
+						}
+					}
+				}
+				final String lat = link.getFieldFromFields("ort.Latitude");
+				final String lon = link.getFieldFromFields("ort.Longitude");
+				location = null;
+				if (lat != null && lon != null) {
+					location = lat + "," + lon;
+				}
+				if (!StrUtils.isEmptyOrNull(place) && !StrUtils.isEmptyOrNull(location)) {
+					finalGeoValues.add(place + "[" + location + "]");
+				}
+			}
+			ArrayNode arrayNode = json.arrayNode();
+			for (final String finalGeoValue: finalGeoValues) {
+				arrayNode.add(ts.transl8Facet("geo", finalGeoValue));
+			}
+			json.set("facet_geo", arrayNode);
+		}
+		
 		// add all other facets
 		final Element facets = document.getRootElement().getChild("facets", namespace);
 		final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
