@@ -93,7 +93,7 @@ public class TestSQLFactory {
 		String  sqlQuery = sqlFactory.getConnectedEntityIdsQuery(1);
 		
 		assertTrue(sqlQuery.equals("SELECT `Target` FROM `SemanticConnection` WHERE NOT `Target` = 0 AND NOT "
-				+ "`TypeTarget` = \"marbilder\" AND Source = 1;"));
+				+ "`TypeSource` = \"marbilder\" AND Source = 1;"));
 	}
 	
 	@Test
