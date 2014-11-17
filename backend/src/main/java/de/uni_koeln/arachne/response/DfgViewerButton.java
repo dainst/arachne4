@@ -72,7 +72,7 @@ public class DfgViewerButton extends AbstractSpecialNavigationElement {
 			if ("buch".equals(entityId.getTableName())) {
 				final StringBuffer linkBuffer = new StringBuffer(getRequestMapping());
 				linkBuffer.append(entityId.getInternalKey());
-				linkBuffer.append("%26metadataPrefix%3Dmets");
+				linkBuffer.append(".xml");
 				link = linkBuffer.toString();
 			}
 			
