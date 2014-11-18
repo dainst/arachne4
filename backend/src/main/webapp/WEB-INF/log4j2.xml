@@ -2,9 +2,9 @@
 <Configuration>
     <!-- Appenders -->
     <Appenders>
-        <!-- <Console name="CONSOLE" target="SYSTEM_OUT">
+        <Console name="CONSOLE" target="SYSTEM_OUT">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
-        </Console> -->
+        </Console>
     
         <RollingFile name="ROLLING" 
                      fileName="/var/log/arachne/arachnedataservice/dataservice.log" 
@@ -41,7 +41,7 @@
         <!-- Application Logger -->
         <logger name="de.uni_koeln.arachne" level="info" />
         <logger name="de.uni_koeln.arachne.controller" level="info" />
-        <logger name="de.uni_koeln.arachne.service" level="info" />
+        <logger name="de.uni_koeln.arachne.service" level="debug" />
         <Root level="info">
             <AppenderRef ref="ROLLING" />
             <!-- <AppenderRef ref="CONSOLE" /> -->

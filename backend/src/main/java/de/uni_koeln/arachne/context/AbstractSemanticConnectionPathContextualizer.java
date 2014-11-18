@@ -83,6 +83,11 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 			}
 			return result;
 	}
+	
+	public ContextPath getContextPath() {
+		return contextPath;
+	}
+	
 	/**
 	 * Creates a new dataset which is a context from the results of an SQL query.
 	 * @param map The SQL query result.

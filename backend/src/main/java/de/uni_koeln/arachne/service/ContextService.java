@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.context.AbstractContextualizer;
 import de.uni_koeln.arachne.context.AbstractLink;
+import de.uni_koeln.arachne.context.AbstractSemanticConnectionPathContextualizer;
 import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.context.ContextImageDescriptor;
+import de.uni_koeln.arachne.context.ContextPath;
 import de.uni_koeln.arachne.context.IContextualizer;
 import de.uni_koeln.arachne.context.SemanticConnectionsContextualizer;
 import de.uni_koeln.arachne.dao.GenericSQLDao;
@@ -82,13 +84,13 @@ public class ContextService {
 	 */
 	public void addMandatoryContexts(final Dataset parent) {
 		// keep a reference to retrieved contexts for later retrieval of context images
-		Map<String, Context> initializedContexts = new HashMap<String, Context>();
+		//Map<String, Context> initializedContexts = new HashMap<String, Context>();
 		// explicit contextualizers
 		final List<String> explicitContextualizersList = xmlConfigUtil.getExplicitContextualizers(parent.getArachneId().getTableName());
 		for (String contextualizerName: explicitContextualizersList) {
 			final IContextualizer contextualizer = getContextualizerByContextType(contextualizerName);
 			final Context context = new Context(contextualizer.getContextType(), parent, contextualizer.retrieve(parent));
-			initializedContexts.put(contextualizer.getContextType(), context);
+			//initializedContexts.put(contextualizer.getContextType(), context);
 			if (context.getSize() > 0) {
 				parent.addContext(context);
 			}
@@ -98,14 +100,14 @@ public class ContextService {
 		LOGGER.debug("Mandatory Contexts: " + mandatoryContextTypes);
 		for (final String contextType: mandatoryContextTypes) {
 			final Context context = new Context(contextType, parent, getLinks(parent, contextType));
-			initializedContexts.put(contextType, context);
+			//initializedContexts.put(contextType, context);
 			if (context.getSize() > 0) {
 				parent.addContext(context);
 			}
 		}
 		// context images
 		// trigger fetching of context images here to reuse all (even empty) initialized contexts
-		addContextImages(parent, initializedContexts);
+		addContextImages(parent);//, initializedContexts);
 	}
 	
 	/**
@@ -116,9 +118,86 @@ public class ContextService {
 	 * @param initializedContexts Contains already initialized <code>Context</code> objects for reuse here. 
 	 * TODO Handle the thumbnail setting of book pages.
 	 */
-	private void addContextImages(final Dataset parent, final Map<String, Context> initializedContexts) {
+	private void addContextImages(final Dataset parent) {//, final Map<String, Context> initializedContexts) {
 		final List<ContextImageDescriptor> contextImages = xmlConfigUtil.getContextImagesNames(parent.getArachneId().getTableName());
-		if (contextImages != null) {
+		
+		if (contextImages == null) {
+			LOGGER.debug("No Context-Image-Declarations found.");
+			return;
+		}
+
+		final List<Image> resultContextImages = new ArrayList<Image>();
+
+		// check if the source-record contains any images
+		boolean containsImages = false;
+		if (parent.getImages() != null && !parent.getImages().isEmpty()) {
+			containsImages = true;
+		}
+
+		for (final ContextImageDescriptor cur : contextImages) {
+
+			// check contextImage-Preconditions from config
+			if (cur.getContextImageUsage().equals("ifempty") && containsImages) {
+				continue;
+			}
+
+			final String contextName = cur.getContextName();
+			
+			ContextPath contextPath;
+			
+			final IContextualizer contextualizer = getContextualizerByContextType(contextName);
+			if (contextualizer instanceof AbstractSemanticConnectionPathContextualizer) {
+				contextPath = ((AbstractSemanticConnectionPathContextualizer)contextualizer).getContextPath();
+			} else {
+				contextPath = new ContextPath();
+				contextPath.addTypeStepRestriction(contextName);
+			}
+			contextPath.addTypeStepRestriction("marbilder");
+			final List<Map<String, String>> contextContents = this.genericSQLDao.getPathConnectedEntities(
+					parent.getArachneId().getArachneEntityID(),contextPath);
+			
+			if (contextContents != null) {
+				// books get their thumbnail image from a connected page - so check for this
+				long cover = -1;
+				if ("buch".equals(parent.getArachneId().getTableName())) {
+					final String buchCover = parent.getField("buch.Cover");
+					if (buchCover != null) {
+						cover = Long.parseLong(buchCover);
+					}
+				}
+
+				for (final Map<String, String> currentContext : contextContents) {
+					final Image image = new Image();
+					try {
+						final long imageId = Long.parseLong(currentContext.get("SemanticConnection.EntityID"));
+						image.setImageId(imageId);
+						image.setImageSubtitle(currentContext.get("marbilder.DateinameMarbilder"));
+						image.setSourceContext(ts.transl8(contextName));
+						final long sourceRecordId = Long.parseLong(currentContext.get("SemanticConnection.ForeignKeyTarget"));
+						// if cover and the context datasets internal key match this context image is the books thumbnail
+						if (cover > 0 && sourceRecordId == cover) {
+							parent.setThumbnailId(imageId);
+						}
+						image.setSourceRecordId(sourceRecordId);
+						resultContextImages.add(image);
+					} catch (NumberFormatException nfe) {
+						LOGGER.error("Failed to get connected image information [" + parent.getArachneId()
+								.getArachneEntityID() + "]. Got 'SemanticConnection.EntityID' = " + currentContext
+								.get("semanticconnection.EntityID")	+ " - 'SemanticConnection.ForeignKeyTarget' = " 
+								+ currentContext.get("semanticconnection.ForeignKeyTarget"));
+						throw nfe;
+					}
+				}
+			}
+		}
+		LOGGER.debug("Adding " + resultContextImages.size() + " additional images from dataset-contexts...");
+		parent.addImages(resultContextImages);
+
+		// if no thumbnail has been set yet, use one from context
+		if (!resultContextImages.isEmpty() && parent.getThumbnailId() == null) {
+			parent.setThumbnailId(ImageUtils.findThumbnailId(resultContextImages));
+		}
+		/*if (contextImages != null) {
 			// check once if the source-record already contains any images
 			boolean parentHasImages = false;
 			if (parent.getImages() != null && !parent.getImages().isEmpty()) {
@@ -143,7 +222,7 @@ public class ContextService {
             }
 		} else {
 			LOGGER.debug("No Context-Image-Declarations found.");
-		}
+		}*/
 	}
 	
 	/**
@@ -197,7 +276,8 @@ public class ContextService {
 	 * Then reflection is used to create the corresponding class instance.
 	 * <br>
 	 * If no specialized <code>Contextualizer</code> class is found an instance of <code>SemanticConnectionsContextualizer</code> 
-	 * is returned.
+	 * is returned.<br>
+	 * Contextualizers are cached, so only unique instances are created and maintained.
 	 * @param contextType Type of a context of interest  
 	 * @return an appropriate contextualizer serving the specific context indicated by the given <code>contextType</code>
 	 */
