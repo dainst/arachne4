@@ -363,7 +363,6 @@ public class SearchService {
 	 */
 	private QueryBuilder buildContextQuery(Long entityId) {
 		BoolFilterBuilder accessFilter = esClientUtil.getAccessControlFilter();
-		accessFilter.mustNot(FilterBuilders.termFilter("type", ts.transl8("type_marbilder")));
 		final TermQueryBuilder innerQuery = QueryBuilders.termQuery("connectedEntities", entityId);
 		final QueryBuilder query = QueryBuilders.filteredQuery(innerQuery, accessFilter);
 										
