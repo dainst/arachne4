@@ -11,25 +11,90 @@
     <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektplomben</subtable>
     <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektsiegel</subtable>
     <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektterrakotten</subtable>
+    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">datenblattberlin</subtable>
+<!--     <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">datenblattberlin_inschrift</subtable> -->
   </subtables>
   <display>
     <title>
       <section>
-        <field datasource="objekt.KurzbeschreibungObjekt"/>
+        <field datasource="objekt.KurzbeschreibungObjekt" />
       </section>
     </title>
     <subtitle>
       <section separator=", ">
         <section separator=" / ">
-          <field datasource="ort.Stadt"/>
-          <field datasource="ort.Ort_antik"/>
+          <field datasource="ort.Stadt" />
+          <field datasource="ort.Ort_antik" />
         </section>
         <section>
-          <field datasource="ort.Aufbewahrungsort"/>
+          <field datasource="ort.Aufbewahrungsort" />
         </section>
       </section>
     </subtitle>
     <datasections>
+      <section labelKey="Katalogtext">
+      	<section labelKey="Name">
+          <field datasource="datenblattberlin.Name" />
+        </section>
+        <section labelKey="Inventarnummer">
+          <field datasource="datenblattberlin.Inventarnummer" />
+        </section>
+        <section labelKey="Autor">
+          <field datasource="datenblattberlin.Autor" />
+        </section>
+        <section labelKey="Herkunft">
+          <field datasource="datenblattberlin.Herkunft_Berlin" />
+        </section>
+        <section labelKey="Maße">
+          <field datasource="datenblattberlin.Masze" />
+        </section>
+        <section labelKey="Material/Technik">
+          <field datasource="datenblattberlin.MaterialTechnik" />
+        </section>
+        <section labelKey="Erhaltung">
+          <field datasource="datenblattberlin.Erhaltung_Berlin" />
+        </section>
+        <section labelKey="Ergänzungen">
+          <field datasource="datenblattberlin.Ergaenzungen" />
+        </section>
+        <section labelKey="Inschrift">
+          <field datasource="datenblattberlin.Inschrift" />
+<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Anbringungsort" prefix="Anbringugsort: " /> -->
+<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Besonderheiten" prefix="Besonderheiten: " /> -->
+<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Buchstabenhoehe" prefix="Buchstabenhöhe: " /> -->
+<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Zeilenabstand" prefix="Zeilenabstand: " /> -->
+<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Interpunktion" prefix="Interpunktion: " /> -->
+<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Wortlaut" prefix="Wortlaut: " /> -->
+<!--           <field datasource="datenblattberlin_inschrift.Inschrift_kritApparat" prefix="krit. Apparat: " /> -->
+<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Uebersetzung" prefix="Übersetzung: " /> -->
+<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Literatur" prefix="Literatur: " /> -->
+<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Kommentar" prefix="Kommentar: " /> -->
+        </section>
+        <section labelKey="Inventare/Archivalien">
+          <field datasource="datenblattberlin.InventareArchivalien" />
+        </section>
+        <section labelKey="Kataloge">
+          <field datasource="datenblattberlin.Kataloge" />
+        </section>
+        <section labelKey="Literatur">
+          <field datasource="datenblattberlin.Literatur" />
+        </section>
+        <section labelKey="Beschreibung">
+          <field datasource="datenblattberlin.Beschreibung_Berlin" />
+        </section>
+        <section labelKey="Datierung">
+          <field datasource="datenblattberlin.Datierung" />
+        </section>
+        <section labelKey="Interpretation">
+          <field datasource="datenblattberlin.Interpretation" />
+        </section>
+        <section labelKey="Rezeption">
+          <field datasource="datenblattberlin.Rezeption" />
+        </section>
+        <section labelKey="Standort">
+          <field datasource="datenblattberlin.Standort" />
+        </section>
+      </section>
       <section labelKey="Informationen zum Objekt">
         <include type="ort"/>
         <section labelKey="Herkunft" separator=", ">
