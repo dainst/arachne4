@@ -17,21 +17,27 @@
     </subtitle>
     <datasections>
       <section labelKey="Informationen zur Inschrift">
-        <include type="datierung"/>
         <section labelKey="Allgemeine Informationen">
           <section labelKey="Text der Inschrift">
             <field datasource="inschrift.Inschrift"/>
           </section>
-          <section labelKey="Übersetzung">
-            <field datasource="inschrift.Uebersetzung"/>
-          </section>
           <section labelKey="Sprache/Schrift">
             <field datasource="inschrift.Sprache"/>
           </section>
+          <section labelKey="Übersetzung">
+            <field datasource="inschrift.Uebersetzung"/>
+          </section>
           <section labelKey="Kommentar">
-            <field datasource="inschrift.Kommentar"/>
+            <field datasource="inschrift.KommentarInschrift"/>
+          </section>
+          <section labelKey="Corpus">
+            <field datasource="inschrift.Corpus"/>
+          </section>
+          <section labelKey="Publikation">
+            <field datasource="inschrift.Publikation"/>
           </section>
         </section>
+        <include type="datierung"/>
         <include type="literatur"/>
         <include type="uri"/>
       </section>
