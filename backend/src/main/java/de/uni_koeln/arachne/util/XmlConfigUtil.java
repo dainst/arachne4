@@ -544,11 +544,11 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param contextType The type of the context.
 	 * @param separator the currently active separator.
 	 */
-	private void addContextFieldToFieldList(final Element element, final Namespace namespace, final FieldList fieldList, final int index
+	private String addContextFieldToFieldList(final Element element, final Namespace namespace, final FieldList fieldList, final int index
 			,final Dataset dataset, final String contextType, final String separator) {
 		
 		if (!hasMinGroupId(element.getAttributeValue("minGroupId"))) {
-			return;
+			return separator;
 		}
 		
 		final String initialValue = dataset.getFieldFromContext(contextType + element.getAttributeValue("datasource"), index);
@@ -588,16 +588,21 @@ public class XmlConfigUtil implements ServletContextAware {
 					}
 			}
 			
+			String nextSeparator = element.getAttributeValue("separator");
 			String currentListValue = null;
 			if (!fieldList.getValue().isEmpty() && index < fieldList.size()) {
 				currentListValue = fieldList.get(index);
 			}
 			if (currentListValue == null) {
 				fieldList.add(value.toString());
+				nextSeparator = (nextSeparator != null) ? nextSeparator : separator;
+				return nextSeparator;
 			} else {
 				fieldList.modify(index, currentListValue + separator + value);
+				return nextSeparator;
 			}
 		}
+		return separator;
 	}
 	
 	/**
@@ -637,9 +642,12 @@ public class XmlConfigUtil implements ServletContextAware {
 	private void addFieldsToFieldList(final List<Element> children, final Namespace namespace, final FieldList fieldList, final int index
 			, final Dataset dataset, final String contextType,	final String separator) {
 		
+		String nextSeparator = separator;
 		for (final Element element: children) {
-			if (element.getName().equals("field") || element.getName().equals("linkField")) {				
-				addContextFieldToFieldList(element, namespace, fieldList, index, dataset, contextType, separator);
+			if (element.getName().equals("field") || element.getName().equals("linkField")) {
+				nextSeparator = addContextFieldToFieldList(element, namespace, fieldList, index, dataset, contextType
+						, nextSeparator);
+				nextSeparator = (nextSeparator != null) ? nextSeparator : separator; 
 			}
 		}
 	}

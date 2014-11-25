@@ -50,7 +50,12 @@
 					<field datasource="test.DataNoLink2" />
 				</section>
 				<context type="testContext">
-					<field datasource=".value" />
+					<field datasource=".value1" separator="-TestSeparator1-" />
+					<field datasource=".value2" separator="-TestSeparator2-" />
+					<field datasource=".value3" />
+					<field datasource=".value4" />
+					<field datasource=".value5" separator="-TestSeparator2-" />
+					<field datasource=".value6" />
 				</context>
 			</section>
 		</datasections>

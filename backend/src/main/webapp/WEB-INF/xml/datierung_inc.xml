@@ -4,8 +4,8 @@
   	<field datasource=".TypDatierung" postfix=":" />
     <field datasource=".nachantik" />
     <field datasource=".FestDat" prefix="(fest datiert: " postfix=")" />
-    <field datasource=".AnfEpoche" />
-    <field datasource=".AnfKultur"  prefix="," />
+    <field datasource=".AnfEpoche" separator=", " />
+    <field datasource=".AnfKultur" />
     <field datasource=".AnfDatZeitraum" />
     <field datasource=".AnfDatJt" postfix=". Jt." />
     <field datasource=".AnfDatJh" postfix=". Jh." />

@@ -68,7 +68,11 @@ public class TestXmlConfigUtil {
 		
 		linkDataset.setArachneId(new EntityId("testContext", 0L, 1L, false, 0L));
 				
-		linkDataset.setFields("testContext.value", "Test Context Value");
+		linkDataset.setFields("testContext.value1", "Test Context Value1");
+		linkDataset.setFields("testContext.value3", "Test Context Value3");
+		linkDataset.setFields("testContext.value4", "Test Context Value4");
+		linkDataset.setFields("testContext.value5", "Test Context Value5");
+		linkDataset.setFields("testContext.value6", "Test Context Value6");
 		
 		final ArachneLink link = new ArachneLink();
 		link.setEntity1(dataset);
@@ -110,7 +114,8 @@ public class TestXmlConfigUtil {
 		assertNotNull(section);
 		assertFalse(section.getContent().isEmpty());
 		assertEquals(1, section.getContent().size());
-		assertEquals("Test Context Value", section.getContent().get(0).toString());
+		assertEquals("Test Context Value1-TestSeparator1-Test Context Value3<hr>Test Context Value4"
+				+"<hr>Test Context Value5-TestSeparator2-Test Context Value6", section.getContent().get(0).toString());
 	}
 	
 	@Test
