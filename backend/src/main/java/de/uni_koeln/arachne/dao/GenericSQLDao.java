@@ -103,16 +103,4 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
-	public Map<String, String> getBookCoverImage(final long pageId) {
-		final String sql= sqlFactory.getBookCoverImageQuery(pageId);
-		LOGGER.debug(sql);
-		@SuppressWarnings("unchecked")
-		final List<Map<String, String>> queryResult = (List<Map<String, String>>)query(sql
-				, new GenericEntitiesMapper("AdditionalInfosJSON"));
-
-		if (queryResult != null && !queryResult.isEmpty()) {
-			return queryResult.get(0);
-		}
-		return null;
-	}
 }

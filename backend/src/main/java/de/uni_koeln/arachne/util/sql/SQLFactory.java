@@ -118,13 +118,4 @@ public class SQLFactory {
 		return result.toString();
 	}
 	
-	public String getBookCoverImageQuery(final long pageId) {
-		final StringBuilder result = new StringBuilder(256)
-			.append("SELECT e1.Target as EntityID, e1.ForeignKeyTarget as ForeignKeyTarget, `marbilder` . * FROM "
-					+ "SemanticConnection e1 LEFT JOIN `marbilder` ON `marbilder`.`PS_MARBilderID` = "
-					+ "`e1`.`ForeignKeyTarget` WHERE e1.TypeTarget = 'marbilder' AND e1.ForeignKeySource = ")
-			.append(pageId)
-			.append(";");
-		return result.toString();
-	}
 }

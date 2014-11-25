@@ -110,21 +110,16 @@ public class ContextService {
 	 * additional contexts only if needed, uses the contexts to retrieve images.
 	 * Does NOT add the additionally retrieved contexts to the parent dataset or to the retrievedContexts.
 	 * @param parent The dataset to add the images to.
-	 * @param initializedContexts Contains already initialized <code>Context</code> objects for reuse here. 
-	 * TODO Handle the thumbnail setting of book pages.
 	 */
 	private void addContextImages(final Dataset parent) {
 		// add book cover image
 		if ("buch".equals(parent.getArachneId().getTableName())) {
 			try {
-				final Map<String, String> coverImage = genericSQLDao.getBookCoverImage(Long.parseLong(
-						parent.getField("buch.Cover")));
-				final long imageId = Long.parseLong(coverImage.get("SemanticConnection.EntityID"));
-				final Image image = new Image();
-				image.setImageId(imageId);
-				image.setImageSubtitle(coverImage.get("marbilder.DateinameMarbilder"));
+				@SuppressWarnings("unchecked")
+				Image image = ((List<Image>)genericSQLDao.getImageList("buchseite", Long.parseLong(
+						parent.getField("buch.Cover")))).get(0); 
 				parent.addImage(image);
-				parent.setThumbnailId(imageId);
+				parent.setThumbnailId(image.getImageId());
 			} catch (NumberFormatException nfe) {
 				LOGGER.warn("No cover for book [" + parent.getArachneId().getArachneEntityID() + "] found.");
 			}
