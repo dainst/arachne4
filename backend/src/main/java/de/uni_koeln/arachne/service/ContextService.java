@@ -113,7 +113,24 @@ public class ContextService {
 	 * @param initializedContexts Contains already initialized <code>Context</code> objects for reuse here. 
 	 * TODO Handle the thumbnail setting of book pages.
 	 */
-	private void addContextImages(final Dataset parent) {//, final Map<String, Context> initializedContexts) {
+	private void addContextImages(final Dataset parent) {
+		// add book cover image
+		if ("buch".equals(parent.getArachneId().getTableName())) {
+			try {
+				final Map<String, String> coverImage = genericSQLDao.getBookCoverImage(Long.parseLong(
+						parent.getField("buch.Cover")));
+				final long imageId = Long.parseLong(coverImage.get("SemanticConnection.EntityID"));
+				final Image image = new Image();
+				image.setImageId(imageId);
+				image.setImageSubtitle(coverImage.get("marbilder.DateinameMarbilder"));
+				parent.addImage(image);
+				parent.setThumbnailId(imageId);
+			} catch (NumberFormatException nfe) {
+				LOGGER.warn("No cover for book [" + parent.getArachneId().getArachneEntityID() + "] found.");
+			}
+			return;
+		}
+		
 		final List<ContextImageDescriptor> contextImages = xmlConfigUtil.getContextImagesNames(parent.getArachneId().getTableName());
 		
 		if (contextImages == null) {
@@ -129,27 +146,6 @@ public class ContextService {
 			containsImages = true;
 		}
 
-		// add book cover image
-		if ("buch".equals(parent.getArachneId().getTableName())) {
-			final Map<String, String> coverImage = genericSQLDao.getBookCoverImage(Long.parseLong(
-					parent.getField("buch.Cover")));
-			Image image = new Image();
-			try {
-				final long imageId = Long.parseLong(coverImage.get("SemanticConnection.EntityID"));
-				image.setImageId(imageId);
-				image.setImageSubtitle(coverImage.get("marbilder.DateinameMarbilder"));
-				parent.addImage(image);
-				parent.setThumbnailId(imageId);
-			} catch (NumberFormatException nfe) {
-				LOGGER.error("Failed to get connected image information [" + parent.getArachneId()
-						.getArachneEntityID() + "]. Got 'SemanticConnection.EntityID' = " + coverImage
-						.get("semanticconnection.EntityID")	+ " - 'SemanticConnection.ForeignKeyTarget' = " 
-						+ coverImage.get("semanticconnection.ForeignKeyTarget"));
-				throw nfe;
-			}
-			return;
-		}
-		
 		for (final ContextImageDescriptor cur : contextImages) {
 
 			// check contextImage-Preconditions from config
