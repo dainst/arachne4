@@ -101,9 +101,18 @@ public class TestSQLFactory {
 		String  sqlQuery = sqlFactory.getImageListQuery("test", 1);
 		
 		assertTrue(sqlQuery.startsWith("SELECT `marbilder`.`DateinameMarbilder`, `arachneentityidentification`.`ArachneEntityID` FROM "
-					+ "`marbilder` LEFT JOIN `arachneentityidentification` ON (`arachneentityidentification`.`TableName` "
-					+ "= \"marbilder\" AND `arachneentityidentification`.`ForeignKey` = `marbilder`.`PS_MARBilderID`) "
-					+ "WHERE `marbilder`.`FS_TestID` = \"1\""));
+				+ "`marbilder` LEFT JOIN `arachneentityidentification` ON (`arachneentityidentification`.`TableName` "
+				+ "= \"marbilder\" AND `arachneentityidentification`.`ForeignKey` = `marbilder`.`PS_MARBilderID`) "
+				+ "WHERE `marbilder`.`FS_TestID` = \"1\""));
 		assertTrue(sqlQuery.endsWith("insertPermissionSQLhere;"));
+	}
+	
+	@Test
+	public void testGetBookCoverImageQuery() {
+		String sqlQuery = sqlFactory.getBookCoverImageQuery(1);
+		
+		assertTrue(sqlQuery.equals("SELECT e1.Target as EntityID, e1.ForeignKeyTarget as ForeignKeyTarget, "
+				+ "`marbilder` . * FROM SemanticConnection e1 LEFT JOIN `marbilder` ON `marbilder`.`PS_MARBilderID` "
+				+ "= `e1`.`ForeignKeyTarget` WHERE e1.TypeTarget = 'marbilder' AND e1.ForeignKeySource = 1;"));
 	}
 }
