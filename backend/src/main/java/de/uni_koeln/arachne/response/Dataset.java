@@ -347,6 +347,16 @@ public class Dataset {
 		this.arachneId = arachneId;
 	}
 	
+	public void addImage(final Image image) {
+		if (image == null) {
+			return;
+		}
+		if (images == null) {
+			images = new ArrayList<Image>();
+		}
+		images.add(image);
+	}
+	
 	public void addImages(final List<Image> additionalImages) {
 		if(this.images == null) {
 			this.images = additionalImages;
