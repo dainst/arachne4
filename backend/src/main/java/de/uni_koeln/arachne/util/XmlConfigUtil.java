@@ -46,6 +46,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	
 	private static final String DEFAULT_SECTION_SEPARATOR = "<hr>";
 	
+	
 	/**
 	 * The servlet context is needed to load the XML config files. 
 	 */
@@ -543,6 +544,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param dataset The current dataset.
 	 * @param contextType The type of the context.
 	 * @param separator the currently active separator.
+	 * @return the separator that must be used next.
 	 */
 	private String addContextFieldToFieldList(final Element element, final Namespace namespace, final FieldList fieldList, final int index
 			,final Dataset dataset, final String contextType, final String separator) {
