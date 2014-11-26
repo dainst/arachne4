@@ -44,7 +44,6 @@ public class MarbilderbestandortContextualizer extends AbstractContextualizer {
 				resultMap.put("ort." + entry.getKey(), entry.getValue().toString());
 			}
 		}
-		System.out.println(resultMap.toString());
 		final EntityId entityId = new EntityId("ort", -1L, -1L, false, -1L);
 		final Dataset result = new Dataset();
 		result.setArachneId(entityId);
