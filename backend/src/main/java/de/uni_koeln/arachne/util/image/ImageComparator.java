@@ -23,12 +23,10 @@ public class ImageComparator implements Comparator<Image>, Serializable {
 		String subTitle2 = image2.getImageSubtitle();
 
 		if (subTitle1 == null) {
-			LOGGER.warn("Data integrity warning. Missing subtitle on image '" + image1.getImageId() + "'.");
 			return 0;
 		}
 
 		if (subTitle2 == null) {
-			LOGGER.warn("Data integrity warning. Missing subtitle on image '" + image2.getImageId() + "'.");
 			return 0;
 		}
 
