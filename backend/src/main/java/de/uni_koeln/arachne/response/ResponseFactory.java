@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,6 +24,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.uni_koeln.arachne.context.AbstractLink;
 import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.dao.GenericSQLDao;
+import de.uni_koeln.arachne.response.link.ExternalLink;
+import de.uni_koeln.arachne.response.link.ExternalLinkResolver;
 import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.JSONUtil;
@@ -55,6 +58,9 @@ public class ResponseFactory {
 	
 	@Autowired
 	private transient JSONUtil jsonUtil;
+	
+	@Autowired
+	private transient List<ExternalLinkResolver> externalLinkResolvers;
 	
 	// needed for testing
 	public void setXmlConfigUtil(final XmlConfigUtil xmlConfigUtil) {
@@ -346,6 +352,24 @@ public class ResponseFactory {
 	}
 	
 	/**
+	 * Sets the external links of the response according to the list of link resolvers defined.
+	 * @param dataset The current dataset.
+	 * @param response The response object to add the links to.
+	 */
+	private void setExternalLinks(final Dataset dataset, final FormattedArachneEntity response) {
+		LOGGER.debug("setting external links for dataset {}", dataset);
+		LOGGER.debug("objekt {}", dataset.getField("relief.FS_ObjektID"));
+		final List<ExternalLink> externalLinks = new ArrayList<ExternalLink>();
+		if (externalLinkResolvers != null) for (ExternalLinkResolver resolver : externalLinkResolvers) {
+			final ExternalLink externalLink = resolver.resolve(dataset);
+			LOGGER.debug("result fot resolver {} is {}", resolver, externalLink);
+			if (externalLink != null) externalLinks.add(externalLink);
+		}
+		if (!externalLinks.isEmpty()) response.setExternalLinks(externalLinks);
+		LOGGER.debug("set external links to {}", externalLinks);
+	}
+	
+	/**
 	 * Sets the part of the response that is defined in the corresponding XML config file.
 	 * @param dataset The current dataset.
 	 * @param document The xml document describing the output format.
@@ -370,6 +394,9 @@ public class ResponseFactory {
 
 		// Set images
 		response.setImages(dataset.getImages());
+		
+		// set external links
+		setExternalLinks(dataset, response);
 		
 		return getFacettedEntityAsJson(dataset, document, response, namespace);
 	}

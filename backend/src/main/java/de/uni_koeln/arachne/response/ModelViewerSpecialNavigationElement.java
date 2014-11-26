@@ -12,6 +12,10 @@ import org.springframework.stereotype.Component;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.util.EntityId;
 
+/**
+ * replaced by external link resolver (see external-link-resolvers.xml)
+ */
+@Deprecated
 @Component("modelViewerSpecialNavigationElement")
 public class ModelViewerSpecialNavigationElement extends AbstractSpecialNavigationElement {
 

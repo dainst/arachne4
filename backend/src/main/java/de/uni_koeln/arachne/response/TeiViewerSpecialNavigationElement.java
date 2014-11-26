@@ -15,9 +15,13 @@ import de.uni_koeln.arachne.util.StrUtils;
  * 
  * Class contains all necessary information to construct the TEI-Viewer-button 
  * which enables the user to open this browser in an external window
+ * 
+ * replaced by external link resolver (see external-link-resolvers.xml)
+ * 
  * @author Sven Ole Clemens
  *
  */
+@Deprecated
 @Component("teiViewerSpecialNavigationElement")
 public class TeiViewerSpecialNavigationElement extends AbstractSpecialNavigationElement {
 

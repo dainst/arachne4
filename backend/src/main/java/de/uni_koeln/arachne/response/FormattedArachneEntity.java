@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import de.uni_koeln.arachne.response.link.ExternalLink;
+
 /**
  * Response object class that returns preformatted output to the frontend.
  * This class is serialized to JSON using <code>Jackson</code>.
@@ -93,6 +95,11 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	 * 
 	 */
 	protected List<Long> connectedEntities;
+	
+	/**
+	 * Links to external resources (like browsers, viewers ...)
+	 */
+	private List<ExternalLink> externalLinks;
 	
 	/**
 	 * Parameterless constructor initializing title and subtitle.
@@ -220,5 +227,13 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	
 	public void setConnectedEntities(final List<Long> connectedEntities) {
 		this.connectedEntities = connectedEntities;
+	}
+
+	public List<ExternalLink> getExternalLinks() {
+		return externalLinks;
+	}
+
+	public void setExternalLinks(List<ExternalLink> externalLinks) {
+		this.externalLinks = externalLinks;
 	}
 }

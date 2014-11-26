@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd	
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+		
+	<!-- resolver for links to the 3D model viewer -->
+	<bean class="de.uni_koeln.arachne.response.link.SimpleExternalLinkResolver">
+		<property name="label" value="3D-Modell Viewer" />
+		<property name="criteria">
+			<map>
+				<entry key="Dataset.TableName" value="modell3d" />	
+			</map>
+		</property>
+		<property name="linkPattern" value="/3d?id=%s" />
+		<property name="patternFields">
+			<list>
+				<value>Dataset.Id</value>	
+			</list>
+		</property>
+	</bean>
+	
+	<!-- resolver for links to the TEI viewer -->
+	<bean class="de.uni_koeln.arachne.response.link.SimpleExternalLinkResolver">
+		<property name="label" value="TEI-Viewer" />
+		<property name="criteria">
+			<map>
+				<entry key="Dataset.TableName" value="buch" />	
+			</map>
+		</property>
+		<property name="linkPattern" value="http://arachne.uni-koeln.de/Tei-Viewer/cgi-bin/teiviewer.php?manifest=%s" />
+		<property name="patternFields">
+			<list>
+				<value>buch.Verzeichnis</value>	
+			</list>
+		</property>
+	</bean>
+	<bean class="de.uni_koeln.arachne.response.link.SimpleExternalLinkResolver">
+		<property name="label" value="TEI-Viewer" />
+		<property name="criteria">
+			<map>
+				<entry key="Dataset.TableName" value="buchseite" />	
+			</map>
+		</property>
+		<property name="linkPattern" value="http://arachne.uni-koeln.de/Tei-Viewer/cgi-bin/teiviewer.php?scan=%s" />
+		<property name="patternFields">
+			<list>
+				<value>Thumbnail.Subtitle</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- resolver for links to the DFG viewer -->
+	<bean class="de.uni_koeln.arachne.response.link.SimpleExternalLinkResolver">
+		<property name="label" value="DFG-Viewer" />
+		<property name="criteria">
+			<map>
+				<entry key="Dataset.TableName" value="buch" />	
+			</map>
+		</property>
+		<property name="linkPattern" value="http://dfg-viewer.de/show/?set[mets]=http%%3A%%2F%%2Farachne.uni-koeln.de%%2FMetsDocuments%%2Foai_arachne.uni-koeln.de_buch-%s.xml" />
+		<property name="patternFields">
+			<list>
+				<value>Dataset.internalId</value>	
+			</list>
+		</property>
+	</bean>
+	
+	<!-- resolver for links to the sarkophag browser -->
+	<bean class="de.uni_koeln.arachne.response.link.SimpleExternalLinkResolver">
+		<property name="label" value="Sarkophagbrowser" />
+		<property name="criteria">
+			<map>
+				<entry key="objekt.GattungAllgemein" value="Sarkophag" />	
+				<entry key="gruppen.ArtDerGruppe" value="Sarkophaggruppe" />	
+			</map>
+		</property>
+		<property name="exactMatch" value="false" />
+		<property name="linkPattern" value="http://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&amp;sarkophag[jump_to_id]=%s" />
+		<property name="patternFields">
+			<list>
+				<value>Dataset.internalId</value>	
+			</list>
+		</property>
+	</bean>
+	
+	<!-- resolver for links to the mercator browser -->
+	<!-- TODO: better criteria (Arachne 3 has hardcoded IDs, thus matches more often) -->
+	<bean class="de.uni_koeln.arachne.response.link.SimpleExternalLinkResolver">
+		<property name="label" value="Mercatorbrowser" />
+		<property name="criteria">
+			<map>
+				<entry key="objekt.HerkFundKommentar" value="Mercator" />
+				<entry key="reproduktion.KuenstlerReproduktion" value="Mercator" />	
+			</map>
+		</property>
+		<property name="exactMatch" value="false" />
+		<property name="linkPattern" value="http://arachne.uni-koeln.de/browser/index.php?view[layout]=mercator" />
+	</bean>
+	
+	<!-- resolver for links to the siegel browser -->
+	<bean class="de.uni_koeln.arachne.response.link.SimpleExternalLinkResolver">
+		<property name="label" value="Siegelbrowser" />
+		<property name="criteria">
+			<map>
+				<entry key="objektsiegel.CMSNR" value="" />	
+			</map>
+		</property>
+		<property name="linkPattern" value="http://arachne.uni-koeln.de/browser/index.php?view[layout]=siegel_item&amp;objektsiegel[jump_to_id]=%s" />
+		<property name="patternFields">
+			<list>
+				<value>Dataset.internalId</value>	
+			</list>
+		</property>
+	</bean>
+	
+	<!-- resolver for links to the maffeiano browser -->
+	<!-- TODO: not working since criteria cannot be found in the context (why?) -->
+	<bean class="de.uni_koeln.arachne.response.link.SimpleExternalLinkResolver">
+		<property name="label" value="Maffeiano Stichwerk" />
+		<property name="criteria">
+			<map>
+				<entry key="literatur.PS_LiteraturID" value="69" />	
+				<entry key="literaturzitat.FS_WebseiteID" value="" />
+			</map>
+		</property>
+		<property name="matchAllCriteria" value="true" />
+		<property name="linkPattern" value="http://arachne.uni-koeln.de/browser/maffeiano_index.php?view[layout]=Maffeiano_page&amp;Maffeiano[search][PS_WebseiteID]=%s" />
+		<property name="patternFields">
+			<list>
+				<value>literaturzitat.FS_WebseiteID</value>	
+			</list>
+		</property>
+	</bean>
+	
+	<!-- resolver for links to the clarac browser -->
+	<!-- TODO: not working since criteria cannot be found in the context (why?) -->
+	<bean class="de.uni_koeln.arachne.response.link.SimpleExternalLinkResolver">
+		<property name="label" value="Maffeiano Stichwerk" />
+		<property name="criteria">
+			<map>
+				<entry key="literatur.PS_LiteraturID" value="65,66,67,68" />
+			</map>
+		</property>
+		<property name="linkPattern" value="http://arachne.uni-koeln.de/browser/maffeiano_index.php?view[layout]=Maffeiano_page&amp;Maffeiano[search][PS_WebseiteID]=%s" />
+		<property name="patternFields">
+			<list>
+				<value>literaturzitat.FS_WebseiteID</value>	
+			</list>
+		</property>
+	</bean>
+	
+	<!-- resolver for links to the trajan column browser -->
+	<!-- TODO: find mechanism for retrieving correct value for parameter 'relief_nr' -->
+	<bean class="de.uni_koeln.arachne.response.link.SimpleExternalLinkResolver">
+		<property name="label" value="Monumentbrowser zur Trajanssäule" />
+		<property name="criteria">
+			<map>
+				<entry key="topographie.PS_TopgraphieID" value="500033" />
+				<entry key="bauwerk.PS_BauwerkID" value="2100089" />
+				<entry key="objekt.PS_ObjektID" value="30014,29837,130902" />
+				<entry key="relief.FS_ObjektID" value="30014,29837,130902" />
+			</map>
+		</property>
+		<property name="linkPattern" value="http://arachne.uni-koeln.de/browser/?view[layout]=Trajan_item&amp;relief_nr=01" />
+	</bean>
+	
+	<!-- resolver for links to the pergamon altar browser -->
+	<bean class="de.uni_koeln.arachne.response.link.SimpleExternalLinkResolver">
+		<property name="label" value="Monumentbrowser zum Pergamonaltar" />
+		<property name="criteria">
+			<map>
+				<entry key="bauerk.PS_BauwerkID" value="2103257" />
+				<entry key="gruppen.PS_GruppenID" value="402512,402414" />
+				<entry key="objekt.PS_ObjektID" value="34644,40763" />
+				<entry key="relief.FS_ObjektID" value="34644,40763" />
+				<entry key="realien.FS_ObjektID" value="34644,40763" />
+			</map>
+		</property>
+		<property name="linkPattern" value="http://arachne.uni-koeln.de/browser/index.php?view[layout]=pergamonaltar&amp;jump_to_id=%s&amp;category=%s" />
+		<property name="patternFields">
+			<list>
+				<value>Dataset.internalId</value>	
+				<value>Dataset.TableName</value>	
+			</list>
+		</property>
+	</bean>
+	 
+</beans>

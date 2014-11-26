@@ -10,6 +10,10 @@ import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.StrUtils;
 
+/**
+ * replaced by external link resolver (see external-link-resolvers.xml)
+ */
+@Deprecated
 @Component("DfgViewerButton")
 public class DfgViewerButton extends AbstractSpecialNavigationElement {
 

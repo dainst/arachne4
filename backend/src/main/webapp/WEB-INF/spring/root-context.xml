@@ -33,6 +33,9 @@
 
     <import resource="hibernate.xml"/>
 
+	<!-- Imports user-defined resolvers for adding links to entities -->
+	<import resource="external-link-resolvers.xml" />
+
 	<bean id="taskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="2" />
