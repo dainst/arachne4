@@ -54,7 +54,10 @@ public class ImageUtils { // NOPMD
 		// Use Interger.MIN_VALUE / 4 to not generate an overflow in comparisons
 		Integer result = Integer.MAX_VALUE / 4;
 		try {
-			result = Integer.parseInt(imageFilename.split(",")[1].split("\\.")[0]); 
+			final String[] tokens = imageFilename.split(",");
+			if (tokens.length > 1) {
+				result = Integer.parseInt(tokens[1]);
+			} 
 		} catch (NumberFormatException e) { // NOPMD
 			// ignore images where the part after the comma is not a number
 		}
