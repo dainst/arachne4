@@ -182,7 +182,8 @@ public class Dataset {
 	 * </code>fields<code> list is the preferred search location and only if a field is not found there the contexts are 
 	 * searched.
 	 * <br>
-	 * "Dataset" is a special contextualizer name that is used to reference data which is in every dataset (basically the <code>ArachneEntityId</code> object).
+	 * "Dataset" and "Thumbnail" are special contextualizer names that can be used to reference data which is in every dataset
+	 * (basically the <code>ArachneEntityId</code> and <code>Image</code> objects).
 	 * This function returns these values, too, as it is faster than doing the look up again via the contextualizer mechanism.
 	 * @param fieldName The full qualified fieldName to look up.
 	 * @return The value of the field or <code>null</code> if the field is not found.
@@ -200,6 +201,18 @@ public class Dataset {
 				} else {
 					if ("TableName".equals(unqualifiedFieldName)) {
 						result = arachneId.getTableName();
+					}
+				}
+			}
+		} else if (fieldName.startsWith("Thumbnail")) {
+			// the magic number is the "thumbnail." char count
+			final String unqualifiedFieldName = fieldName.substring(10);
+			if ("Id".equals(unqualifiedFieldName)) {
+				result = String.valueOf(thumbnailId);
+			} else if ("Subtitle".equals(unqualifiedFieldName)) {
+				for (Image image : images) {
+					if (image.getImageId().equals(thumbnailId)) {
+						result = String.valueOf(image.getImageSubtitle());
 					}
 				}
 			}
