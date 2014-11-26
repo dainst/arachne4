@@ -17,7 +17,8 @@
         	},
             "collation_filter" : {
                 "type" : "icu_collation",
-                "language" : "de"
+                "language" : "de",
+                "numeric" : "true"
             }
         }
     },
