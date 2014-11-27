@@ -47,7 +47,7 @@
     </datasections>
     <contextImages>
       <!-- Show images of the isolatedsherd-records -->
-      <contextImage show="always">Isolatedsherd</contextImage>
+      <contextImage show="always">isolatedsherd</contextImage>
     </contextImages>
   </display>
   <facets>

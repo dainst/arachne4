@@ -196,9 +196,9 @@
     </datasections>
     <contextImages>
       <!-- Show images of the connected types -->
-      <contextImage show="always">Morphology</contextImage>
+      <contextImage show="always">morphology</contextImage>
       <!-- Show images of all sherds connected to the current record -->
-      <contextImage show="always">IsolatedSherd</contextImage>
+      <contextImage show="always">isolatedsherd</contextImage>
       <!-- Show images of fabricdescriptions connected with the current abstract -->
       <contextImage show="always">Mainabstractfabricfabricdescription</contextImage>
     </contextImages>
