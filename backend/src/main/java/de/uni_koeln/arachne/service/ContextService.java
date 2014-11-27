@@ -164,15 +164,6 @@ public class ContextService {
 					parent.getArachneId().getArachneEntityID(), contextPath);
 			
 			if (contextContents != null) {
-				// books get their thumbnail image from a connected page - so check for this
-				long cover = -1;
-				if ("buch".equals(parent.getArachneId().getTableName())) {
-					final String buchCover = parent.getField("buch.Cover");
-					if (buchCover != null) {
-						cover = Long.parseLong(buchCover);
-					}
-				}
-
 				for (final Map<String, String> currentContext : contextContents) {
 					final Image image = new Image();
 					try {
@@ -181,10 +172,6 @@ public class ContextService {
 						image.setImageSubtitle(currentContext.get("marbilder.DateinameMarbilder"));
 						image.setSourceContext(ts.transl8(contextName));
 						final long sourceRecordId = Long.parseLong(currentContext.get("SemanticConnection.ForeignKeyTarget"));
-						// if cover and the context datasets internal key match this context image is the books thumbnail
-						if (cover > 0 && sourceRecordId == cover) {
-							parent.setThumbnailId(imageId);
-						}
 						image.setSourceRecordId(sourceRecordId);
 						resultContextImages.add(image);
 					} catch (NumberFormatException nfe) {
