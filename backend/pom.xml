@@ -17,32 +17,39 @@
 		<org.aspectj-version>1.8.3</org.aspectj-version>
 		<org.slf4j-version>1.7.7</org.slf4j-version>
 		<!-- External lib versions -->
-		<!-- elasticsearch -->
-		<elasticsearch-version>1.4.1</elasticsearch-version>
 		<!-- MySQL-Connector -->
         <mysql-connector-java-version>5.1.34</mysql-connector-java-version>
-		<!-- Hibernate -->
-		<org.hibernate-version>4.3.7.Final</org.hibernate-version>
-		<!-- HikariCP -->
-		<hikariCP-version>2.2.5</hikariCP-version>
+        <!-- Hibernate -->
+        <org.hibernate-version>4.3.7.Final</org.hibernate-version>
+        <!-- HikariCP -->
+        <hikariCP-version>2.2.5</hikariCP-version>
+		<!-- elasticsearch -->
+		<elasticsearch-version>1.4.1</elasticsearch-version>
+		<!-- Snappy -->
+        <snappy-version>1.1.1.3</snappy-version>
 		<!-- Jackson -->
 		<jackson-version>2.4.0</jackson-version>
 		<!-- JDom -->
 		<org.jdom-version>2.0.5</org.jdom-version>
 		<!-- Xerces -->
 		<xerces-version>2.11.0</xerces-version>
-		<!-- Log4J -->
-        <log4j-version>2.0.2</log4j-version>
-		<!-- JUnit -->
-		<junit-version>4.11</junit-version>
-		<!-- mockito -->
-		<org.mockito-version>1.10.8</org.mockito-version>
 		<!-- Guava -->
 		<guava-version>18.0</guava-version> 		
-			
+	    <!-- Javaassist -->		
 		<org.javassist-version>3.18.2-GA</org.javassist-version>
-		<snappy-version>1.1.1.3</snappy-version>
+		<!-- Javax mail -->
+		<javax.mail-version>1.4.7</javax.mail-version>
+		<!-- Commons Lang3 -->
+		<commons-lang3-version>3.3.2</commons-lang3-version>
+		<!-- HTTP Client -->
 		<httpclient-version>4.3.5</httpclient-version>
+		<!-- Log4J -->
+        <log4j-version>2.0.2</log4j-version>
+		<!-- Testing -->
+        <!-- JUnit -->
+        <junit-version>4.11</junit-version>
+        <!-- mockito -->
+        <org.mockito-version>1.10.8</org.mockito-version>
 		<!-- Plugin Versions -->
 		<aspectj-maven-version>1.5</aspectj-maven-version>
 		<maven-failsafe-version>2.17</maven-failsafe-version>
@@ -302,36 +309,17 @@
             <artifactId>guava</artifactId>
             <version>${guava-version}</version>
         </dependency>
-
-		<!-- reCaptcha -->
-		<dependency>
-			<groupId>net.tanesha.recaptcha4j</groupId>
-			<artifactId>recaptcha4j</artifactId>
-			<version>0.0.7</version>
-		</dependency>
-
-		<!-- validation -->
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>1.1.0.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>5.0.1.Final</version>
-		</dependency>
-
-		<dependency>
+        
+        <dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>1.4.7</version>
+			<version>${javax.mail-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.1</version>
+			<version>${commons-lang3-version}</version>
 		</dependency>
 
 		<!-- Apache HTTP Components (needed to support SSL with RestTemplate) -->
@@ -518,11 +506,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat6-maven-plugin</artifactId>
-				<version>${maven-tomcat-version}</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
