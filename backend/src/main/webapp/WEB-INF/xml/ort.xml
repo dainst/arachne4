@@ -18,7 +18,7 @@
       <section labelKey="Informationen zum Ort">
         <section labelKey="Verweise">
         	<linkField labelKey="Datensatz im iDAI.Gazetteer" prefix="http://gazetteer.dainst.org/place/" datasource="ort.Gazetteerid"/>
-        	<linkField labelKey="Datensatz in Geonames" prefix="http://http://www.geonames.org/" datasource="ort.Geonamesid"/>
+        	<linkField labelKey="Datensatz in Geonames" prefix="http://www.geonames.org/" datasource="ort.Geonamesid"/>
         </section>
         <section labelKey="Koordinaten">
           <field datasource="ort.Longitude" prefix="Long: "/>
