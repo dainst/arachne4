@@ -23,8 +23,8 @@
         <mysql-connector-java-version>5.1.34</mysql-connector-java-version>
 		<!-- Hibernate -->
 		<org.hibernate-version>4.3.7.Final</org.hibernate-version>
-		<!-- BoneCP -->
-		<boneCP-version>0.8.0.RELEASE</boneCP-version>
+		<!-- HikariCP -->
+		<hikariCP-version>2.2.5</hikariCP-version>
 		<!-- Jackson -->
 		<jackson-version>2.4.0</jackson-version>
 		<!-- JDom -->
@@ -37,6 +37,8 @@
 		<junit-version>4.11</junit-version>
 		<!-- mockito -->
 		<org.mockito-version>1.10.8</org.mockito-version>
+		<!-- Guava -->
+		<guava-version>18.0</guava-version> 		
 			
 		<org.javassist-version>3.18.2-GA</org.javassist-version>
 		<snappy-version>1.1.1.3</snappy-version>
@@ -265,18 +267,19 @@
 			<version>${jackson-version}</version>
 		</dependency>
 
+        <!-- artifact for Java 6 and 7; 8 needs an other artifact -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP-java6</artifactId>
+            <version>${hikariCP-version}</version>
+            <scope>compile</scope>
+        </dependency>
+
 		<!-- javassist -->
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>${org.javassist-version}</version>
-		</dependency>
-
-		<!-- boneCP -->
-		<dependency>
-			<groupId>com.jolbox</groupId>
-			<artifactId>bonecp</artifactId>
-			<version>${boneCP-version}</version>
 		</dependency>
 
 		<!-- elasticsearch -->
@@ -292,6 +295,13 @@
 			<artifactId>snappy-java</artifactId>
 			<version>${snappy-version}</version>
 		</dependency>
+		
+		<!-- Google Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava-version}</version>
+        </dependency>
 
 		<!-- reCaptcha -->
 		<dependency>

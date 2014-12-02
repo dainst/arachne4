@@ -4,19 +4,12 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
 		destroy-method="close">
-		<property name="driverClass" value="#{config.jdbcDriverClassName}" />
+		<property name="driverClassName" value="#{config.jdbcDriverClassName}" />
 		<property name="jdbcUrl" value="#{config.jdbcUrl}" />
 		<property name="username" value="#{config.jdbcUsername}" />
 		<property name="password" value="#{config.jdbcPassword}" />
-		<property name="idleConnectionTestPeriodInMinutes" value="60" />
-		<property name="idleMaxAgeInMinutes" value="240" />
-		<property name="maxConnectionsPerPartition" value="30" />
-		<property name="minConnectionsPerPartition" value="10" />
-		<property name="partitionCount" value="3" />
-		<property name="acquireIncrement" value="5" />
-		<property name="statementsCacheSize" value="100" />
 	</bean>
 
 	<bean id="sessionFactory"
