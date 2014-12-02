@@ -42,7 +42,7 @@
 		<!-- Commons Lang3 -->
 		<commons-lang3-version>3.3.2</commons-lang3-version>
 		<!-- HTTP Client -->
-		<httpclient-version>4.3.5</httpclient-version>
+		<httpclient-version>4.3.6</httpclient-version>
 		<!-- Log4J -->
         <log4j-version>2.0.2</log4j-version>
 		<!-- Testing -->
