@@ -19,16 +19,26 @@
 		<!-- External lib versions -->
 		<!-- elasticsearch -->
 		<elasticsearch-version>1.4.1</elasticsearch-version>
-		<junit-version>4.11</junit-version>
-		<org.mockito-version>1.10.8</org.mockito-version>
-		<log4j-version>2.0.2</log4j-version>
+		<!-- MySQL-Connector -->
+        <mysql-connector-java-version>5.1.34</mysql-connector-java-version>
+		<!-- Hibernate -->
 		<org.hibernate-version>4.3.6.Final</org.hibernate-version>
-		<mysql-connector-java-version>5.1.32</mysql-connector-java-version>
-		<org.jdom-version>2.0.5</org.jdom-version>
-		<xerces-version>2.11.0</xerces-version>
-		<jackson-version>2.4.0</jackson-version>
-		<org.javassist-version>3.18.2-GA</org.javassist-version>
+		<!-- BoneCP -->
 		<boneCP-version>0.8.0.RELEASE</boneCP-version>
+		<!-- Jackson -->
+		<jackson-version>2.4.0</jackson-version>
+		<!-- JDom -->
+		<org.jdom-version>2.0.5</org.jdom-version>
+		<!-- Xerces -->
+		<xerces-version>2.11.0</xerces-version>
+		<!-- Log4J -->
+        <log4j-version>2.0.2</log4j-version>
+		<!-- JUnit -->
+		<junit-version>4.11</junit-version>
+		<!-- mockito -->
+		<org.mockito-version>1.10.8</org.mockito-version>
+			
+		<org.javassist-version>3.18.2-GA</org.javassist-version>
 		<snappy-version>1.1.1.3</snappy-version>
 		<httpclient-version>4.3.5</httpclient-version>
 		<!-- Plugin Versions -->
