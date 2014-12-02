@@ -16,7 +16,7 @@
 		<property name="linkPattern" value="/3d?id=%s" />
 		<property name="patternFields">
 			<list>
-				<value>Dataset.Id</value>	
+				<value>Dataset.internalID</value>	
 			</list>
 		</property>
 	</bean>
