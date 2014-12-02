@@ -22,7 +22,7 @@
 		<!-- MySQL-Connector -->
         <mysql-connector-java-version>5.1.34</mysql-connector-java-version>
 		<!-- Hibernate -->
-		<org.hibernate-version>4.3.6.Final</org.hibernate-version>
+		<org.hibernate-version>4.3.7.Final</org.hibernate-version>
 		<!-- BoneCP -->
 		<boneCP-version>0.8.0.RELEASE</boneCP-version>
 		<!-- Jackson -->
