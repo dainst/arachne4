@@ -77,9 +77,10 @@
 			</map>
 		</property>
 		<property name="exactMatch" value="false" />
-		<property name="linkPattern" value="http://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&amp;sarkophag[jump_to_id]=%s" />
+		<property name="linkPattern" value="http://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&amp;sarkophag[jump_to_project]=%s&amp;sarkophag[jump_to_project_id]=%s" />
 		<property name="patternFields">
 			<list>
+				<value>Dataset.TableName</value>	
 				<value>Dataset.internalId</value>	
 			</list>
 		</property>
