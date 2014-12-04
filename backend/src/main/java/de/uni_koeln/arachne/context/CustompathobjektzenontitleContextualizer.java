@@ -35,8 +35,9 @@ public class CustompathobjektzenontitleContextualizer extends
 				SQL1 + parent.getArachneId().getArachneEntityID() + SQL2, String.class);
 		
 		// queryForList may return a list with only a null value - so we need to check for that
-		if (!StrUtils.isEmptyOrNull(queryResults) && queryResults.get(0) != null) {
+		if (!StrUtils.isEmptyOrNull(queryResults)) {
 			for (final String queryResult: queryResults) {
+				if (queryResult == null) continue;
 				final ArachneLink link = new ArachneLink();
 				link.setEntity1(parent);
 				link.setEntity2(createDatasetFromQueryResults(queryResult));
