@@ -167,11 +167,12 @@ public class ContextService {
 				for (final Map<String, String> currentContext : contextContents) {
 					final Image image = new Image();
 					try {
-						final long imageId = Long.parseLong(currentContext.get("SemanticConnection.EntityID"));
+						LOGGER.debug("currentContext {}", currentContext);
+						final long imageId = Long.parseLong(currentContext.get("semanticconnection.EntityID"));
 						image.setImageId(imageId);
 						image.setImageSubtitle(currentContext.get("marbilder.DateinameMarbilder"));
 						image.setSourceContext(ts.transl8(contextName));
-						final long sourceRecordId = Long.parseLong(currentContext.get("SemanticConnection.ForeignKeyTarget"));
+						final long sourceRecordId = Long.parseLong(currentContext.get("semanticconnection.ForeignKeyTarget"));
 						image.setSourceRecordId(sourceRecordId);
 						resultContextImages.add(image);
 					} catch (NumberFormatException nfe) {
