@@ -1,907 +1,950 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="objekt" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-  <explicitContextualizers>custompathobjektzenontitle</explicitContextualizers>
-  <subtables>
-    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektbauornamentik</subtable>
-    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektgemaelde</subtable>
-    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektkeramik</subtable>
-    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektlebewesen</subtable>
-    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektmosaik</subtable>
-    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektplastik</subtable>
-    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektplomben</subtable>
-    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektsiegel</subtable>
-    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektterrakotten</subtable>
-    <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">datenblattberlin</subtable>
-<!--     <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">datenblattberlin_inschrift</subtable> -->
-  </subtables>
-  <display>
-    <title>
-      <section>
-        <field datasource="objekt.KurzbeschreibungObjekt" />
-      </section>
-    </title>
-    <subtitle>
-      <section separator=", ">
-        <section separator=" / ">
-          <field datasource="ort.Stadt" />
-          <field datasource="ort.Ort_antik" />
-        </section>
-        <section>
-          <field datasource="ort.Aufbewahrungsort" />
-        </section>
-      </section>
-    </subtitle>
-    <datasections>
-      <section labelKey="Katalogtext">
-      	<section labelKey="Name">
-          <field datasource="datenblattberlin.Name" />
-        </section>
-        <section labelKey="Inventarnummer">
-          <field datasource="datenblattberlin.Inventarnummer" />
-        </section>
-        <section labelKey="Autor">
-          <field datasource="datenblattberlin.Autor" />
-        </section>
-        <section labelKey="Herkunft">
-          <field datasource="datenblattberlin.Herkunft_Berlin" />
-        </section>
-        <section labelKey="Maße">
-          <field datasource="datenblattberlin.Masze" />
-        </section>
-        <section labelKey="Material/Technik">
-          <field datasource="datenblattberlin.MaterialTechnik" />
-        </section>
-        <section labelKey="Erhaltung">
-          <field datasource="datenblattberlin.Erhaltung_Berlin" />
-        </section>
-        <section labelKey="Ergänzungen">
-          <field datasource="datenblattberlin.Ergaenzungen" />
-        </section>
-        <section labelKey="Inschrift">
-          <field datasource="datenblattberlin.Inschrift" />
-<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Anbringungsort" prefix="Anbringugsort: " /> -->
-<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Besonderheiten" prefix="Besonderheiten: " /> -->
-<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Buchstabenhoehe" prefix="Buchstabenhöhe: " /> -->
-<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Zeilenabstand" prefix="Zeilenabstand: " /> -->
-<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Interpunktion" prefix="Interpunktion: " /> -->
-<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Wortlaut" prefix="Wortlaut: " /> -->
-<!--           <field datasource="datenblattberlin_inschrift.Inschrift_kritApparat" prefix="krit. Apparat: " /> -->
-<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Uebersetzung" prefix="Übersetzung: " /> -->
-<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Literatur" prefix="Literatur: " /> -->
-<!--           <field datasource="datenblattberlin_inschrift.Inschrift_Kommentar" prefix="Kommentar: " /> -->
-        </section>
-        <section labelKey="Inventare/Archivalien">
-          <field datasource="datenblattberlin.InventareArchivalien" />
-        </section>
-        <section labelKey="Kataloge">
-          <field datasource="datenblattberlin.Kataloge" />
-        </section>
-        <section labelKey="Literatur">
-          <field datasource="datenblattberlin.Literatur" />
-        </section>
-        <section labelKey="Beschreibung">
-          <field datasource="datenblattberlin.Beschreibung_Berlin" />
-        </section>
-        <section labelKey="Datierung">
-          <field datasource="datenblattberlin.Datierung" />
-        </section>
-        <section labelKey="Interpretation">
-          <field datasource="datenblattberlin.Interpretation" />
-        </section>
-        <section labelKey="Rezeption">
-          <field datasource="datenblattberlin.Rezeption" />
-        </section>
-        <section labelKey="Standort">
-          <field datasource="datenblattberlin.Standort" />
-        </section>
-      </section>
-      <section labelKey="Informationen zum Objekt">
-        <include type="ort"/>
-        <section labelKey="Herkunft" separator=", ">
-          <field datasource="objekt.Herkunft"/>
-          <field datasource="objekt.HerkFundKommentar"/>
-          <field datasource="objekt.Fundstaat"/>
-          <field datasource="objekt.Fundort"/>
-          <field datasource="objekt.Fundkontext"/>
-          <field datasource="objekt.FunddatumObjekt"/>
-        </section>
-        <section labelKey="Gattung/Funktion/Kulturepoche">
-          <field datasource="objekt.GattungAllgemein"/>
-          <field datasource="objekt.Funktion"/>
-          <field datasource="objekt.funktionaleVerwendung"/>
-          <field datasource="objekt.zuMonument" prefix="zu Monument gehörig: "/>
-          <field datasource="objekt.SchmuckBeschreibung" prefix="Schmuck Beschreibung: "/>
-          <field datasource="objekt.SchmuckSpezifizierung" prefix="Schmuck Spezifizierung: "/>
-          <field datasource="objekt.Auftraggeber" prefix="Auftraggaber: "/>
-          <field datasource="objekt.Adressat" prefix="Adressat: "/>
-          <field datasource="objekt.Kulturkreis" prefix="Kulturepoche: "/>
-          <field datasource="objekt.AntikerAufstellungsort" prefix="Antiker Aufstellungsort: "/>
-          <field datasource="objekt.antikeGriechLandschaft" prefix="Antike Landschaft: "/>
-          <field datasource="objekt.antikeRoemProvinz" prefix="Antike Römische Provinz: "/>
-          <field datasource="objekt.FreieBeschreibung"/>
-          <field datasource="objekt.Spolie"/>
-        </section>
-        <include type="datierung"/>
-        <section labelKey="Technik">
-          <field datasource="objekt.Technik"/>
-          <field datasource="objekt.TechnikDetails"/>
-        </section>
-        <section labelKey="Material">
-          <field datasource="objekt.Material"/>
-          <field datasource="objekt.Materialbeschreibung"/>
-          <field datasource="objekt.MaterialBemerkung" prefix="Bemerkung: "/>
-        </section>
-        <section labelKey="Erhaltung">
-          <field datasource="objekt.Erhaltung"/>
-          <field datasource="objekt.Erhaltungszustand"/>
-          <field datasource="objekt.Farbreste" prefix="farbreste: "/>
-          <field datasource="objekt.ApplizierteElemente" prefix="Applikationen: "/>
-          <field datasource="objekt.DekorAllgemein" prefix="Dekor: "/>
-          <field datasource="objekt.Bearbeitungen" prefix="Bearbeitungen: "/>
-          <field datasource="objekt.BearbeitungenAntik" prefix="Antike Bearbeitungen: "/>
-          <field datasource="objekt.BearbeitungenModern" prefix="Moderne Bearbeitungen: "/>
-        </section>
-        <section labelKey="Maße">
-          <field datasource="objekt.BreiteGesamt" prefix="Breite: " postfix=" cm"/>
-          <field datasource="objekt.HoeheGesamt" prefix="Höhe: " postfix=" cm"/>
-          <field datasource="objekt.TiefeGesamt" prefix="Tiefe: " postfix=" cm"/>
-          <field datasource="objekt.DurchmesserGesamt" prefix="Durchmesser: " postfix=" cm"/>
-          <field datasource="objekt.GewichtGesamt" prefix="Gewicht: "/>
-          <field datasource="objekt.ObjektMaszeBemerk" prefix="Bemerkung: "/>
-        </section>
-        <section labelKey="Restauration und Analyse">
-          <field datasource="objekt.RekoObjekt"/>
-          <field datasource="objekt.ObjektRestauroRestaurier"/>
-          <field datasource="objekt.ObjektRestauroBeschreibung"/>
-          <field datasource="objekt.ObjektRestauroBeschreibungVorzustand" prefix="Vorzustand: "/>
-          <field datasource="objekt.ObjektRestauroMasznahmen" prefix="Maßnahmen: "/>
-          <field datasource="objekt.ObjektRestauroZeitraum" prefix="Zeitraum: "/>
-          <field datasource="objekt.ObjektRestauroDurchgefuehrtVon" prefix="Restaurator: "/>
-          <field datasource="objekt.ObjektRestauroMasznahmenFruehere" prefix="Frühere Maßnahmen: "/>
-          <field datasource="objekt.ObjektRestauroMaterialBemerk"/>
-          <field datasource="objekt.ObjektRestauroHerstell"/>
-          <field datasource="objekt.ObjektRestauroAnalyseZiel" prefix="Analyseziel: "/>
-          <field datasource="objekt.ObjektRestauroAnalyseMasznahmenMethoden" prefix="Maßnahmen und Methoden: "/>
-          <field datasource="objekt.ObjektRestauroAnalyseDurchgefuehrtVon" prefix="Analyse durchgeführt von: "/>
-          <field datasource="objekt.ObjektRestauroAnalyseZeitraum" prefix="Zeitraum: "/>
-          <field datasource="objekt.ObjektRestauroAnalyseErgebnis" prefix="Ergebnis: "/>
-        </section>
-        <section labelKey="Katalog">
-          <field datasource="objekt.Katalognummer" prefix="Nummer: "/>
-          <field datasource="objekt.Katalogtext" prefix="Katalogtext: "/>
-          <field datasource="objekt.KatalogtextEnglisch" prefix="Katalogtext(englisch): "/>
-        </section>
-        <section labelKey="Inschrift">
-          <field datasource="objekt.InschriftSpracheObjekt" prefix="Sprache bzw Schrift: "/>
-          <field datasource="objekt.InschriftObjekt"/>
-          <field datasource="objekt.InschriftCorpusObjekt"/>
-          <field datasource="objekt.InschriftKommentar"/>
-          <field datasource="objekt.InschriftPublikation"/>
-        </section>
-        <include type="literatur"/>
-        <context type="buch" labelKey="Literatur in Arachne" link="">
-          <field datasource=".contextUri" prefix="$link$"/>
-          <field datasource=".BuchTitel">
-            <ifEmpty>
-              <field datasource="zenon.245_a">
-                <ifEmpty>
-                  <field datasource=".KurzbeschreibungBuch"/>
-                </ifEmpty>
-              </field>
-            </ifEmpty>
-          </field>
-        </context>
-        <include type="uri"/>
-        <section labelKey="Für Bearbeiter" minGroupId="600">
-          <section labelKey="Berlin">
-            <field datasource="objekt.BerlinInstitution" prefix="Institution: "/>
-            <field datasource="objekt.BerlinVerantwortlich" prefix="Verantwortliche: "/>
-            <field datasource="objekt.BerlinObjektID" prefix="ObjektID: "/>
-          </section>
-          <section labelKey="Ausleihe">
-            <field datasource="objekt.ObjektAusleihe" prefix="Verliehen: "/>
-            <field datasource="objekt.ObjektAusleiheLeihnehmer" prefix="Leihnehmer: "/>
-            <field datasource="objekt.ObjektAusleiheZweck" prefix="Zweck: "/>
-            <field datasource="objekt.ObjektAusleiheDauerVon" prefix="Von: "/>
-            <field datasource="objekt.ObjektAusleiheDauerBis" prefix="Bis: "/>
-            <field datasource="objekt.ObjektAusleiheDauenahmeEigentuemer" prefix="Dauernahme Eigentümer: "/>
-          </section>
-          <section>
-            <field datasource="objekt.ArtErwerb"/>
-            <field datasource="objekt.ErwerbDatum" prefix="Erwerbsdatum: "/>
-            <field datasource="objekt.ObjektPreis" prefix="Preis: "/>
-            <field datasource="objekt.ObjektVersicherungswert" prefix="Versicherungswert: "/>
-            <field datasource="objekt.ObjektErwerbUmstand" prefix="Erwerbsumstand: "/>
-          </section>
-          <section labelKey="Leipzig">
-            <field datasource="objekt.LeipTempAufbewahrung" prefix="Aufbewahrung: "/>
-            <field datasource="objekt.LeipTempDat" prefix="Datierung: "/>
-            <field datasource="objekt.LeipTempLit" prefix="Literatur: "/>
-          </section>
-        </section>
-      </section>
-      <section labelKey="Informationen zum Lebewesen">
-        <section labelKey="Lebewesen">
-          <section labelKey="Personen allgemein">
-            <section labelKey="Anzahl Personen">
-              <field datasource="objektlebewesen.lPersonen"/>
-            </section>
-            <section labelKey="Spezifikation  Personengruppe">
-              <field datasource="objektlebewesen.SpezPerson"/>
-            </section>
-          </section>
-          <section labelKey="Personen spezifikation">
-            <section labelKey="Alter">
-              <field datasource="objektlebewesen.lAlter"/>
-            </section>
-            <section labelKey="Geschlecht">
-              <field datasource="objektlebewesen.lGeschlecht"/>
-            </section>
-            <section labelKey="Ethnie">
-              <field datasource="objektlebewesen.lEthnie"/>
-            </section>
-            <section labelKey="Identifizierung">
-              <field datasource="objektlebewesen.Identifizierung"/>
-              <field datasource="objektlebewesen.spezIdentifizierung"/>
-            </section>
-            <section labelKey="Sujet">
-              <field datasource="objektlebewesen.Sujet"/>
-              <field datasource="objektlebewesen.SpezSujet"/>
-            </section>
-          </section>
-          <section labelKey="Tiere">
-            <field datasource="objektlebewesen.Tiere"/>
-          </section>
-        </section>
-        <section labelKey="Objekte">
-          <section labelKey="Verkehr">
-            <field datasource="objektlebewesen.Verkehr"/>
-            <field datasource="objektlebewesen.SpezVerkehr"/>
-          </section>
-          <section labelKey="Gegenstände">
-            <field datasource="objektlebewesen.Gegenstaende"/>
-          </section>
-        </section>
-      </section>
-      <section labelKey="Informationen zur Keramik">
-        <section labelKey="Aussehen">
-          <section labelKey="Gefäßtyp">
-            <field datasource="objektkeramik.GesaesstypKeramik"/>
-          </section>
-          <section labelKey="Gefäßform">
-            <field datasource="objektkeramik.GefaessformenKeramik"/>
-          </section>
-        </section>
-        <section labelKey="Herstellungstechnik">
-          <field datasource="objektkeramik.HerstellungstechnikKeramik"/>
-        </section>
-        <section labelKey="Maltechnik">
-          <field datasource="objektkeramik.MaltechnikKeramik"/>
-        </section>
-        <section labelKey="Dekorationstechnik">
-          <field datasource="objektkeramik.DekorationKeramik"/>
-        </section>
-        <section labelKey="Ware">
-          <field datasource="objektkeramik.WareKeramik"/>
-          <field datasource="objektkeramik.SpezifizierungWareKeramik"/>
-        </section>
-        <section labelKey="Informationen zum Maler">
-          <section labelKey="Maler">
-            <field datasource="objektkeramik.MalerKeramik"/>
-          </section>
-          <section labelKey="Werkstatt/Gruppe/Umkreis des Malers">
-            <field datasource="objektkeramik.MalerWerkstattGruppeUmkreisKeramik"/>
-          </section>
-          <section labelKey="Signiert">
-            <field datasource="objektkeramik.MalerSigniertKeramik"/>
-          </section>
-        </section>
-        <section labelKey="Informationen zum Töpfer">
-          <section labelKey="Töpfer">
-            <field datasource="objektkeramik.ToepferKeramik"/>
-          </section>
-          <section labelKey="Werkstatt/Gruppe/Umkreis des Töpfers">
-            <field datasource="objektkeramik.ToepferWerkstattGruppeUmkreisKeramik"/>
-          </section>
-          <section labelKey="Signiert">
-            <field datasource="objektkeramik.ToepferSigniertKeramik"/>
-          </section>
-        </section>
-        <section labelKey="Provenienz">
-          <field datasource="objektkeramik.ProvenienzKeramik"/>
-        </section>
-        <section labelKey="Dekoration">
-          <section labelKey="Motive">
-            <field datasource="objektkeramik.MotiveKeramik"/>
-            <field datasource="objektkeramik.SpezifizierungMotiveKeramik"/>
-          </section>
-        </section>
-        <section labelKey="Spezifizierung Material">
-          <section labelKey="Oberflächenfarbe">
-            <field datasource="objektkeramik.Oberflaechenfarbe"/>
-          </section>
-          <section labelKey="Scherbenfarbe">
-            <field datasource="objektkeramik.Scherbenfarbe"/>
-          </section>
-          <section labelKey="Korngröße der Magerung">
-            <field datasource="objektkeramik.KrongroesseMagerung"/>
-          </section>
-          <section labelKey="Einschluesse">
-            <field datasource="objektkeramik.Einschluesse"/>
-          </section>
-          <section labelKey="Bruchmuster">
-            <field datasource="objektkeramik.Bruchmuster"/>
-          </section>
-          <section labelKey="Analyse">
-            <field datasource="objektkeramik.Analysen"/>
-          </section>
-        </section>
-      </section>
-      <section labelKey="Information zur Plastik">
-        <section labelKey="Bennung und Charakterisierung">
-          <section labelKey="Benennung">
-            <field datasource="objektplastik.Benennung"/>
-          </section>
-          <section labelKey="Rufname">
-            <field datasource="objektplastik.Rufname"/>
-          </section>
-          <section separator="; ">
-            <field datasource="objektplastik.VorbildWesen"/>
-            <field datasource="objektplastik.VorbildWesen2"/>
-            <field datasource="objektplastik.VorbildStatus"/>
-            <field datasource="objektplastik.Darstellungsweise"/>
-            <field datasource="objektplastik.Geschlecht"/>
-            <field datasource="objektplastik.LebensAlter"/>
-          </section>
-        </section>
-        <section labelKey="Künstlerische Umsetzung">
-          <section labelKey="Provenienz">
-            <field datasource="objektplastik.Provenienz"/>
-          </section>
-          <section labelKey="Stilnachahmung">
-            <field datasource="objektplastik.Stilnachahmung"/>
-          </section>
-          <section labelKey="Künstler">
-            <field datasource="objektplastik.Kuenstler"/>
-            <field datasource="objektplastik.Vergleiche"/>
-          </section>
-          <section labelKey="Typus">
-            <field datasource="objektplastik.Typus"/>
-          </section>
-        </section>
-        <section labelKey="Sujet">
-          <section labelKey="Anzahl Figuren">
-            <field datasource="objektplastik.AnzahlFiguren"/>
-          </section>
-          <section separator="; ">
-            <field datasource="objektplastik.Thema"/>
-            <field datasource="objektplastik.ThemaGoetter"/>
-            <field datasource="objektplastik.ThemaHeroen"/>
-            <field datasource="objektplastik.ThemaMythos"/>
-            <field datasource="objektplastik.ThemaMenschen"/>
-            <field datasource="objektplastik.ThemaPflanzen"/>
-            <field datasource="objektplastik.ThemaTiere"/>
-            <field datasource="objektplastik.ThemeWeitere"/>
-            <field datasource="objektplastik.ThemaFrei"/>
-          </section>
-          <section labelKey="Vergleiche">
-            <field datasource="objektplastik.VergleicheSujet"/>
-          </section>
-        </section>
-        <section labelKey="Form und Maße">
-          <section labelKey="Form" separator="; ">
-            <field datasource="objektplastik.Form"/>
-            <field datasource="objektplastik.erhalteneForm"/>
-            <field datasource="objektplastik.FormatRundplastik"/>
-          </section>
-          <section labelKey="Messung Kopf">
-            <field datasource="objektplastik.MessungKopf"/>
-          </section>
-          <section labelKey="Höhe Kopf">
-            <field datasource="objektplastik.HoeheKopf"/>
-          </section>
-          <section labelKey="MessungStatue">
-            <field datasource="objektplastik.MessungStatue"/>
-          </section>
-          <section labelKey="Höhe Statue">
-            <field datasource="objektplastik.HoeheStatue"/>
-          </section>
-          <section labelKey="Höhe ursprünglich">
-            <field datasource="objektplastik.HoeheUrspruenglich"/>
-          </section>
-        </section>
-        <section labelKey="Haltung">
-          <section labelKey="Aufstellung">
-            <field datasource="objektplastik.Aufstellung"/>
-          </section>
-          <section>
-            <field datasource="objektplastik.Haltung"/>
-          </section>
-          <section labelKey="Tätigkeit">
-            <field datasource="objektplastik.Taetigkeit"/>
-          </section>
-          <section labelKey="Standbein">
-            <field datasource="objektplastik.Standbein"/>
-          </section>
-          <section labelKey="Stütze">
-            <field datasource="objektplastik.Statuenstuetze"/>
-          </section>
-          <section labelKey="Arm links">
-            <section labelKey="Arm">
-              <field datasource="objektplastik.HaltungArmLinks"/>
-            </section>
-            <section labelKey="Hand">
-              <field datasource="objektplastik.HaltungHandLinks"/>
-            </section>
-          </section>
-          <section labelKey="Arm rechts">
-            <section labelKey="Arm">
-              <field datasource="objektplastik.HaltungArmRechts"/>
-            </section>
-            <section>
-              <field datasource="objektplastik.HaltungHandRechts"/>
-            </section>
-          </section>
-        </section>
-        <section labelKey="Kopfdetails">
-          <section labelKey="Kopfwendung">
-            <field datasource="objektplastik.Kopfwendung"/>
-          </section>
-          <section labelKey="Augenbildung">
-            <field datasource="objektplastik.Augenbildung"/>
-          </section>
-          <section labelKey="Haar">
-            <section labelKey="Frisur">
-              <field datasource="objektplastik.Haarfrisur"/>
-            </section>
-            <section labelKey="Zopf">
-              <field datasource="objektplastik.Heerzopf"/>
-            </section>
-            <section labelKey="Stirnhaar">
-              <field datasource="objektplastik.Stirnhaar"/>
-            </section>
-          </section>
-          <section labelKey="Kopfbedeckung" separator=" ">
-            <field datasource="objektplastik.Kopfbedeckung"/>
-            <field datasource="objektplastik.Kopfbeschreibung"/>
-          </section>
-        </section>
-        <section labelKey="Bekleidung" separator="; ">
-          <section>
-            <field datasource="objektplastik.bekleidet"/>
-            <field datasource="objektplastik.Bekleidung"/>
-            <field datasource="objektplastik.BekleidungZusatz"/>
-          </section>
-          <section labelKey="Gürtung">
-            <field datasource="objektplastik.Guertung"/>
-          </section>
-          <section labelKey="Schuhwerk">
-            <field datasource="objektplastik.Schuhwerk"/>
-          </section>
-          <section>
-            <field datasource="objektplastik.BekleidungBeschreibung"/>
-          </section>
-        </section>
-        <section labelKey="Attribute">
-          <section labelKey="Allgemein">
-            <field datasource="objektplastik.AttributeAllgemein"/>
-          </section>
-          <section labelKey="Figur">
-            <field datasource="objektplastik.AttributeFigur"/>
-          </section>
-          <section labelKey="Gegenstand">
-            <field datasource="objektplastik.AttributeGegenstand"/>
-          </section>
-          <section labelKey="Götterattribut">
-            <field datasource="objektplastik.AttributeGoetterattribut"/>
-          </section>
-          <section labelKey="Militaria">
-            <field datasource="objektplastik.AttributeMilitaria"/>
-          </section>
-          <section labelKey="Pflanze">
-            <field datasource="objektplastik.AttributePlfanze"/>
-          </section>
-          <section labelKey="Schmuck">
-            <field datasource="objektplastik.AttributeSchmuck"/>
-          </section>
-          <section labelKey="Tier">
-            <field datasource="objektplastik.AttributeTier"/>
-          </section>
-          <section separator=" ">
-            <field datasource="objektplastik.AttributeSonstige"/>
-            <field datasource="objektplastik.AttributeBeschreibung"/>
-          </section>
-          <section labelKey="Dekoration" separator=" ">
-            <field datasource="objektplastik.Dekorationsrt"/>
-            <field datasource="objektplastik.Dekoration"/>
-          </section>
-        </section>
-        <section labelKey="Reliefträger">
-          <section labelKey="Objekt ist">
-            <field datasource="objektplastik.reliefiert"/>
-          </section>
-          <section labelKey="Reliefträger" separator=" ">
-            <field datasource="objektplastik.TraegerAllgemein"/>
-            <field datasource="objektplastik.FormatRelieftraeger"/>
-            <field datasource="objektplastik.Relieftypus"/>
-          </section>
-        </section>
-        <section labelKey="Bemerkungen">
-          <field datasource="objektplastik.wissKommentar"/>
-          <field datasource="objektplastik.Bemerkungen"/>
-        </section>
-      </section>
-      <section labelKey="Informationen zu Terrakotten">
-        <section labelKey="Technik">
-          <section>
-            <field datasource="objektterrakotten.Terrakottentyp"/>
-            <field datasource="objektterrakotten.Beschreibung" prefix="Beschreibung: "/>
-          </section>
-          <section labelKey="Serie Kopf" separator=", ">
-            <field datasource="objektterrakotten.MatrserKopf"/>
-            <field datasource="objektterrakotten.GenerationKopf"/>
-            <field datasource="objektterrakotten.VariationKopf"/>
-          </section>
-          <section labelKey="Serie Körper" separator=", ">
-            <field datasource="objektterrakotten.MatrserKoerper"/>
-            <field datasource="objektterrakotten.GenerationKoerper"/>
-            <field datasource="objektterrakotten.VariationKoerper"/>
-          </section>
-          <section labelKey="Serie Kopf mit Körper">
-            <field datasource="objektterrakotten.MatrserKopfKoerper"/>
-            <field datasource="objektterrakotten.GenerationKopfKoerper"/>
-            <field datasource="objektterrakotten.VariationKopfKoerper"/>
-            <field datasource="objektterrakotten.Variationsart"/>
-            <field datasource="objektterrakotten.StammCode"/>
-          </section>
-          <section>
-            <field datasource="objektterrakotten.PatrizenqualitaetPur" prefix="Qualität: "/>
-            <field datasource="objektterrakotten.Anbringung" prefix="Anbringung: "/>
-          </section>
-        </section>
-        <section labelKey="Bearbeitung" separator="; ">
-          <field datasource="objektterrakotten.depotfremdeRepliken"/>
-          <field datasource="objektterrakotten.Aufnahmedesiderate"/>
-          <field datasource="objektterrakotten.KatalogtextNoelke"/>
-          <field datasource="objektterrakotten.persNotizen"/>
-          <field datasource="objektterrakotten.KomplexDatierung"/>
-          <field datasource="objektterrakotten.Besonderheit"/>
-        </section>
-      </section>
-      <section labelKey="Informationen zur Bauornamentik">
-        <section labelKey="Bauglied">
-          <field datasource="objektbauornamentik.Bauglied"/>
-          <field datasource="objektbauornamentik.MaszeBauglied" prefix="Maße: "/>
-          <field datasource="objektbauornamentik.ProvenienzBauornamentik" prefix="Provenienz"/>
-          <field datasource="objektbauornamentik.BemerkungenBauornamentik"/>
-        </section>
-        <section labelKey="Bauwerk">
-          <field datasource="objektbauornamentik.Gebaeudetyp"/>
-          <field datasource="objektbauornamentik.BauwerkKulturkreis"/>
-          <field datasource="objektbauornamentik.Bauordnung" prefix="Bauordnung: "/>
-          <field datasource="objektbauornamentik.Architekt" prefix="Architekt: "/>
-          <field datasource="objektbauornamentik.Bauphase" prefix="Bauphase: "/>
-          <field datasource="objektbauornamentik.Position" prefix="Position: "/>
-        </section>
-        <section labelKey="Unterbau" separator="; ">
-          <field datasource="objektbauornamentik.Unterbau"/>
-          <field datasource="objektbauornamentik.UnterbauEuthynterie"/>
-          <field datasource="objektbauornamentik.UnterbauBoden"/>
-          <field datasource="objektbauornamentik.UnterbauPodium"/>
-          <field datasource="objektbauornamentik.UnterbauPiedestal"/>
-          <field datasource="objektbauornamentik.UnterbauKrepis"/>
-          <field datasource="objektbauornamentik.UnterbauTreppenstufen"/>
-          <field datasource="objektbauornamentik.UnterbauSitzstufen"/>
-          <field datasource="objektbauornamentik.UnterbauBeschreibung"/>
-        </section>
-        <section labelKey="Aufgehendes" separator=";  ">
-          <field datasource="objektbauornamentik.Aufgehends"/>
-          <field datasource="objektbauornamentik.AufgehendesBogen"/>
-          <field datasource="objektbauornamentik.AufgehendesWand"/>
-          <field datasource="objektbauornamentik.AufgehendesDecke"/>
-          <field datasource="objektbauornamentik.AufgehendesFenster"/>
-          <field datasource="objektbauornamentik.AufgehendesTuer"/>
-          <field datasource="objektbauornamentik.AufgehendesSonstiges"/>
-          <field datasource="objektbauornamentik.AufgehendesBeschreibung"/>
-        </section>
-        <section labelKey="Stütze / Säule" separator="; ">
-          <field datasource="objektbauornamentik.Saeule"/>
-          <field datasource="objektbauornamentik.SaeuleStuetze"/>
-          <field datasource="objektbauornamentik.SaeulePlinthe"/>
-          <field datasource="objektbauornamentik.SaeuleBasis"/>
-          <field datasource="objektbauornamentik.SaeuleSchaft"/>
-          <field datasource="objektbauornamentik.SaeuleKapitell"/>
-          <field datasource="objektbauornamentik.SaeuleBeschreibung"/>
-        </section>
-        <section labelKey="Gebälkt / Dach" separator="; ">
-          <field datasource="objektbauornamentik.Gebaelk"/>
-          <field datasource="objektbauornamentik.GebaelkArchitrav"/>
-          <field datasource="objektbauornamentik.GebaelkFries"/>
-          <field datasource="objektbauornamentik.GebaelkGesims"/>
-          <field datasource="objektbauornamentik.GebaelkGiebel"/>
-          <field datasource="objektbauornamentik.GebaelkSima"/>
-          <field datasource="objektbauornamentik.GebaelkAttika"/>
-          <field datasource="objektbauornamentik.GebaelkDach"/>
-          <field datasource="objektbauornamentik.GebaelkBeschreibung"/>
-        </section>
-        <section labelKey="Dekor">
-          <section>
-            <field datasource="objektbauornamentik.reliefiertBauornament"/>
-            <field datasource="objektbauornamentik.Profil" prefix="Profil: "/>
-          </section>
-          <section labelKey="Dekorationsart" separator="; ">
-            <field datasource="objektbauornamentik.DekorationsartBauornament"/>
-            <field datasource="objektbauornamentik.Dekorationsart2"/>
-            <field datasource="objektbauornamentik.BemerkungenDekor"/>
-            <field datasource="objektbauornamentik.VergleicheBauornament"/>
-          </section>
-        </section>
-        <section labelKey="Motivkomplexe">
-          <field datasource="objektbauornamentik.Komplex"/>
-          <field datasource="objektbauornamentik.KomplexPalmetten"/>
-          <field datasource="objektbauornamentik.KomplexAkanthusPalmetten"/>
-          <field datasource="objektbauornamentik.KomplexBluetenfries"/>
-          <field datasource="objektbauornamentik.KomplexRanke"/>
-          <field datasource="objektbauornamentik.KomplexGirlande"/>
-          <field datasource="objektbauornamentik.KomplexKandelaber"/>
-          <field datasource="objektbauornamentik.KomplexSonstFriese"/>
-          <field datasource="objektbauornamentik.KomplexKapitelle"/>
-          <field datasource="objektbauornamentik.KomplexBasen"/>
-          <field datasource="objektbauornamentik.KomplexBeschreibung"/>
-        </section>
-        <section labelKey="EinzelMotiv">
-          <section labelKey="Gegenständliche" separator="; ">
-            <field datasource="objektbauornamnentik.GegenstMotiv"/>
-            <field datasource="objektbauornamentik.GegenstMotivAnzahl"/>
-            <field datasource="objektbauornamentik.GegenstMotivBeschreibung"/>
-          </section>
-          <section labelKey="Abstrakte" separator="; ">
-            <field datasource="objektbauornamentik.abstraktMotiv"/>
-            <field datasource="objektbauornamentik.abstraktMotivMaeander"/>
-            <field datasource="objektbauornamentik.abstraktMotivBeschreibung"/>
-          </section>
-          <section labelKey="Pflanzliche">
-            <field datasource="objektbauornamentik.pflanzMotiv"/>
-            <field datasource="objektbauornamentik.pflanzMotivPalmette"/>
-            <field datasource="objektbauornamentik.pflanzMotivAkanthus"/>
-            <field datasource="objektbauornamentik.pflanzMotivBlatt"/>
-            <field datasource="objektbauornamentik.pflanzMotivBluete"/>
-            <field datasource="objektbauornamentik.pflanzMotivCaulis"/>
-            <field datasource="objektbauornamentik.pflanzMotivFrucht"/>
-            <field datasource="objektbauornamentik.pflanzMotivDorKyma"/>
-            <field datasource="objektbauornamentik.pflanzMotivIonKyma"/>
-            <field datasource="objektbauornamentik.pflanzMotivLesbKyma"/>
-            <field datasource="objektbauornamentik.pflanzMotivHelix"/>
-            <field datasource="objektbauornamentik.pflanzMotivBeschreibung"/>
-          </section>
-        </section>
-      </section>
-      <section labelKey="Information zum Gemälde">
-        <section labelKey="Kerndaten - neuzeitliche Gemälde">
-          <field datasource="objektgemaelde.KuenstlerGemaelde" prefix="Künstler: "/>
-          <field datasource="objektgemaelde.KuenstlerVorbildGemaelde" prefix="Künstler Vorbild: "/>
-          <field datasource="objektgemaelde.BeschreibungGemaelde" prefix="Beschreibung: "/>
-          <field datasource="objektgemaelde.TechnikGemaeldeCheck" prefix="Technik: "/>
-          <field datasource="objektgemaelde.TechnikGemaelde" prefix="Spezifikiation Technik: "/>
-          <field datasource="objektgemaelde.GemaeldeMatTraeger" prefix="Material Träger: "/>
-          <field datasource="objektgemaelde.SpezGemaeldeMatTraeger" prefix="Spezifikation Material Träger: "/>
-          <field datasource="objektgemaelde.GemaeldeMatMalerei" prefix="Material Malerei: "/>
-          <field datasource="objektgemaelde.SpezGemaeldeMatMalerei" prefix="Spezifikation Material Malerei: "/>
-          <field datasource="objektgemaelde.Beschreibung" prefix="Beschreibung: "/>
-          <field datasource="objektgemaelde.ZustandGemaelde" prefix="Zustand: "/>
-          <field datasource="objektgemaelde.RestaurierungGemaelde" prefix="Restaurierungen: "/>
-        </section>
-        <section labelKey="Kerndaten - Antike Flächenkunst">
-          <field datasource="objektgemaelde.KuenstlerFlaechenkunst" prefix="Künstler: "/>
-          <field datasource="objektgemaelde.BeschreibungFlaechenkunst" prefix="Beschreibung: "/>
-          <field datasource="objektgemaelde.RestaurierungenFlaechenkunst" prefix="Restaurierungen: "/>
-          <field datasource="objektgemaelde.DekorationsartObjektgemaelde" prefix="Dekorationsart: "/>
-          <field datasource="objektgemaelde.MalereistilObjektgemaelde" prefix="Malereistil: "/>
-          <field datasource="objektgemaelde.MarmorsorteObjektgemaelde" prefix="Marmorsorte: "/>
-          <field datasource="objektgeamelde.MarmorinkrustationenStilObjektgemaelde" prefix="Stil der Marmorinkrustationen: "/>
-        </section>
-        <section labelKey="Bezeichnung">
-          <field datasource="objektgemaelde.Bezeichnet" prefix="Bezeichnet: "/>
-          <field datasource="objektgemaelde.UntenLinks" prefix="Unten Links: "/>
-          <field datasource="objektgemaelde.UntenMitte" prefix="Unten Mitte: "/>
-          <field datasource="objektgemaelde.UntenRechts" prefix="Unten Rechts: "/>
-          <field datasource="objektgemaelde.ObenLinks" prefix="Oben Links: "/>
-          <field datasource="objektgemaelde.ObenMitte" prefix="Oben Mitte: "/>
-          <field datasource="objektgemaelde.ObenRechts" prefix="Oben Rechts: "/>
-        </section>
-        <section labelKey="Maße">
-          <field datasource="objektgemaelde.BildMasze" prefix="Bildmaße: "/>
-          <field datasource="objektgemaelde.PlatteMasze" prefix="Plattenmaße: "/>
-          <field datasource="objektgemaelde.BlattMasze" prefix="Blattmaße: "/>
-        </section>
-      </section>
-      <section labelKey="Informationen zum Mosaik">
-        <section labelKey="Technik">
-          <section>
-            <field datasource="objektmosaik.HerstellungstechnikMosaik"/>
-          </section>
-          <section labelKey="Material" separator="; ">
-            <field datasource="objektmosaik.MaterialMosaik"/>
-            <field datasource="objektmosaik.MaterialSpezifizierungMosaik"/>
-          </section>
-          <section labelKey="Anbringung" separator="; ">
-            <field datasource="objektmosaik.AnbringungMosaik"/>
-            <field datasource="objektmosaik.AnbringungSpezifizierungMosaik"/>
-          </section>
-        </section>
-        <section labelKey="Künstler">
-          <field datasource="objektmosaik.KuenstlerMosaik"/>
-          <field datasource="objektmosaik.SigniertMosaik" prefix="Signiert: "/>
-          <field datasource="objektmosaik.VorbildMosaik" prefix="Vorbild: "/>
-        </section>
-        <section labelKey="Dekoration">
-          <section labelKey="Farbigkeit" separator="; ">
-            <field datasource="objektmosaik.FarbigkeitMosaik"/>
-            <field datasource="objektmosaik.FarbigkeitSpezifizierungMosaik"/>
-          </section>
-          <section labelKey="Rahmung des Mosaiks" separator="; ">
-            <field datasource="objektmosaik.RahmungMosaik"/>
-            <field datasource="objektmosaik.RahmungSpezifizierungMosaik"/>
-          </section>
-          <section labelKey="Dekor" separator="; ">
-            <field datasource="objektmosaik.DekorMosaik"/>
-            <field datasource="objektmosaik.DekorSpezifizierungMosaik"/>
-          </section>
-        </section>
-      </section>
-      <section labelKey="Informationen zum Objekt: Träger von Siegelabdrücken">
-        <section labelKey="Identifikation">
-          <field datasource="objektplomben.pINVNR" prefix="Inventarnummer: "/>
-          <field datasource="objektplomben.pMUSEUM" prefix="Museum / Sammlung: "/>
-        </section>
-        <section labelKey="Herkunft">
-          <field datasource="objektplomben.pFUNDLAND" prefix="Fundland: "/>
-          <field datasource="objektplomben.pORTREGION" prefix="Fundort: "/>
-          <field datasource="objektplomben.pFLORTSTEIL" prefix="Flur / Grabungsstätte: "/>
-          <field datasource="objektplomben.pFUNDPLATZ" prefix="Fundstelle: "/>
-          <field datasource="objektplomben.pPLATZTYPUS" prefix="Platztypus: "/>
-          <field datasource="objektplomben.pKONTEXTDAT" prefix="Kontextdatierung: "/>
-          <field datasource="objektplomben.pBEREICH" prefix="Bereich: "/>
-        </section>
-        <section labelKey="Form / Typus">
-          <field datasource="objektplomben.pPLOMBENFORM" prefix="Plombenform: "/>
-        </section>
-        <section labelKey="Erhaltung">
-          <field datasource="objektplomben.pERHALTUNG"/>
-        </section>
-        <section labelKey="Beschriftung">
-          <field datasource="objektplomben.pSCHRIFT" prefix="Schriftzeichen"/>
-        </section>
-        <section labelKey="Verknüpfter Siegelabdruck Nummer">
-          <field datasource="objektplomben.pCMSNR" prefix="CMS - Nummer: "/>
-        </section>
-      </section>
-      <section labelKey="Informationen zum Objekt: Siegel">
-        <section labelKey="Identifikation">
-          <field datasource="objektsiegel.CMSNR" prefix="CMS - Nummer: "/>
-          <field datasource="objektsiegel.CMSBand" prefix="CMS - Band: "/>
-          <field datasource="objektsiegel.sINVNR" prefix="Inventarnummer: "/>
-          <field datasource="objektsiegel.sMUSEUM" prefix="Muserum / Sammlung: "/>
-        </section>
-        <section labelKey="Herkunft">
-          <field datasource="objektsiegel.FUNDLAND" prefix="Fundland: "/>
-          <field datasource="objektsiegel.ORTREGION" prefix="Fundort: "/>
-          <field datasource="objektsiegel.FLORTSTEIL" prefix="Flur / Grabungsstätte: "/>
-          <field datasource="objektsiegel.FUNDPLATZ" prefix="Fundstelle: "/>
-          <field datasource="objektsiegel.PLATZTYPUS" prefix="Platztypus: "/>
-          <field datasource="objektsiegel.KONTEXTDAT" prefix="Kontextdatierung: "/>
-          <field datasource="objektsiegel.BEREICH" prefix="Bereich: "/>
-        </section>
-        <section labelKey="Form">
-          <field datasource="objektsiegel.SITYPUS" prefix="Siegelform: "/>
-          <field datasource="objektsiegel.SIFANZAHL" prefix="Zahl der Siegelflächen: "/>
-          <field datasource="objektsiegel.SIFWOELBUNG" prefix="Wölbung der Siegelfläche: "/>
-          <field datasource="objektsiegel.SIFUMRISS" prefix="Umriss der Siegelfläche: "/>
-          <field datasource="objektsiegel.SINEBENS" prefix="Nebenseite des Siegels: "/>
-          <field datasource="objektsiegel.BOHRUNGEN" prefix="Art der Durchbohrung: "/>
-        </section>
-        <section labelKey="Material und Technik">
-          <field datasource="objektsiegel.SIFMAT" prefix="Material: "/>
-          <field datasource="objektsiegel.MATERIALGRUPPE" prefix="Materialgruppe: "/>
-          <field datasource="objektsiegel.DEKORTECH" prefix="Bearbeitungstechnik: "/>
-          <field datasource="objektsiegel.SONSTMERK" prefix="Sonstige Merkmale: "/>
-        </section>
-        <section labelKey="Maße und Erhaltung">
-          <field datasource="objektsiegel.SILAENGE" prefix="Länge: "/>
-          <field datasource="objektsiegel.SIBREITE" prefix="Breite: "/>
-          <field datasource="objektsiegel.SIDICKE" prefix="Dicke: "/>
-          <field datasource="objektsiegel.FADENMAX" prefix="Bohrkanal max: "/>
-          <field datasource="objektsiegel.FADENMIN" prefix="Bohrkanal min: "/>
-          <field datasource="objektsiegel.SIZUSTAND" prefix="Zustand: "/>
-          <field datasource="objektsiegel.SIFRAGMENT" prefix="Fragment: "/>
-        </section>
-        <section labelKey="Allgemeine Informationen zum Dekor">
-          <field datasource="objektsiegel.DEKORTYPUS" prefix="Dekortypus: "/>
-          <field datasource="objektsiegel.KOMPOSITIO" prefix="Komposition: "/>
-          <field datasource="objektsiegel.GRUPPE" prefix="Gruppe: "/>
-          <field datasource="objektsiegel.HANDLUNG" prefix="Handlung: "/>
-          <field datasource="objektsiegel.UNKLASS" prefix="Sonstiger Dekor: "/>
-        </section>
-        <section labelKey="Stilistische Einordnung">
-          <field datasource="objektsiegel.STILGRUPPE" prefix="Stilgruppe: "/>
-          <field datasource="objektsiegel.STILDAT" prefix="Stilistische Datierung: "/>
-          <field datasource="objektsiegel.ZEITSTUFE" prefix="Zeitstufe: "/>
-        </section>
-        <section labelKey="Ornamente">
-          <field datasource="objektsiegel.MAKROORNAMENT" prefix="Makroornament: "/>
-          <field datasource="objektsiegel.STANDARDORN" prefix="Standardornament: "/>
-        </section>
-        <section labelKey="Schriftzeichen">
-          <field datasource="objektsiegel.SCHRIFT" prefix="Schrift: "/>
-        </section>
-        <section labelKey="Figürliche Motive außer Lebewesen">
-          <field datasource="objektsiegel.GELAENDE" prefix="Gelände: "/>
-          <field datasource="objektsiegel.sPFLANZEN" prefix="Pflanzen: "/>
-          <field datasource="objektsiegel.SYMBOLE" prefix="Symbole: "/>
-          <field datasource="objektsiegel.MOEBELBAU" prefix="Möbel / Bauten: "/>
-          <field datasource="objektsiegel.GERAETE" prefix="Geräte: "/>
-        </section>
-        <section labelKey="Kommentar">
-          <field datasource="objektsiegel.KOMMENTAR"/>
-        </section>
-      </section>
-    </datasections>
-  </display>
-  <facets>
-    <include type="facet_kategorie"/>
-    <include type="facet_ort"/>
-    <facet name="datierungepoche" labelKey="Epoche">
-      <context type="datierung">
-        <field datasource=".AnfEpoche"/>
-      </context>
-    </facet>
-    <facet name="datierungepoche" labelKey="Epoche">
-      <context type="datierung">
-        <field datasource=".EndEpoche"/>
-      </context>
-    </facet>
-    <include type="facet_literatur"/>
-    <facet name="subkategorie" labelKey="Unterkategorie">
-      <field datasource="KategorieObjekt.Typ"/>
-    </facet>
-    <facet name="objektgattung" labelKey="Gattung">
-      <field datasource="objekt.GattungAllgemein"/>
-    </facet>
-    <facet name="applizierteelemente" labelKey="Applizierte Elemente">
-      <field datasource="objekt.ApplizierteElemente"/>
-    </facet>
-    <facet name="bearbeitungen" labelKey="Bearbeitungen">
-      <field datasource="objekt.Bearbeitungen"/>
-    </facet>
-    <facet name="erhaltung" labelKey="Erhaltung">
-      <field datasource="objekt.Erhaltung"/>
-    </facet>
-    <facet name="funktion" labelKey="Allgemeine Funktion">
-      <field datasource="objekt.Funktion"/>
-    </facet>
-    <facet name="funktionaleverwendung" labelKey="Spezielle Funktion">
-      <field datasource="objekt.funktionaleVerwendung"/>
-    </facet>
-    <facet name="kulturkreis" labelKey="Kulturepoche">
-      <field datasource="objekt.Kulturkreis"/>
-    </facet>
-    <facet name="material" labelKey="Material allgemein">
-      <field datasource="objekt.Material"/>
-    </facet>
-    <facet name="materialbeschreibung" labelKey="Material speziell">
-      <field datasource="objekt.Materialbeschreibung"/>
-    </facet>
-    <facet name="technik" labelKey="Technik">
-      <field datasource="objekt.Technik"/>
-    </facet>
-    <facet name="antikegriechlandschaft" labelKey="Antike Landschaft">
-      <field datasource="objekt.antikeGriechLandschaft"/>
-    </facet>
-    <facet name="antikeroemprovinz" labelKey="Römische Provinz">
-      <field datasource="objekt.antikeRoemProvinz"/>
-    </facet>
-    <facet name="schmuckspezifizierung" labelKey="Schmuck Spezifizierung">
-      <field datasource="objekt.SchmuckSpezifizierung"/>
-    </facet>
-  </facets>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="objekt"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<explicitContextualizers>custompathobjektzenontitle</explicitContextualizers>
+	<subtables>
+		<subtable connectFieldParent="PrimaryKey"
+			connectFieldSubTable="PrimaryKey">objektbauornamentik</subtable>
+		<subtable connectFieldParent="PrimaryKey"
+			connectFieldSubTable="PrimaryKey">objektgemaelde</subtable>
+		<subtable connectFieldParent="PrimaryKey"
+			connectFieldSubTable="PrimaryKey">objektkeramik</subtable>
+		<subtable connectFieldParent="PrimaryKey"
+			connectFieldSubTable="PrimaryKey">objektlebewesen</subtable>
+		<subtable connectFieldParent="PrimaryKey"
+			connectFieldSubTable="PrimaryKey">objektmosaik</subtable>
+		<subtable connectFieldParent="PrimaryKey"
+			connectFieldSubTable="PrimaryKey">objektplastik</subtable>
+		<subtable connectFieldParent="PrimaryKey"
+			connectFieldSubTable="PrimaryKey">objektplomben</subtable>
+		<subtable connectFieldParent="PrimaryKey"
+			connectFieldSubTable="PrimaryKey">objektsiegel</subtable>
+		<subtable connectFieldParent="PrimaryKey"
+			connectFieldSubTable="PrimaryKey">objektterrakotten</subtable>
+		<subtable connectFieldParent="PrimaryKey"
+			connectFieldSubTable="FS_ObjektID">datenblattberlin</subtable>
+		<!-- <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">datenblattberlin_inschrift</subtable> -->
+	</subtables>
+	<display>
+		<title>
+			<section>
+				<field datasource="objekt.KurzbeschreibungObjekt" />
+			</section>
+		</title>
+		<subtitle>
+			<section separator=", ">
+				<section separator=" / ">
+					<field datasource="ort.Stadt" />
+					<field datasource="ort.Ort_antik" />
+				</section>
+				<section>
+					<field datasource="ort.Aufbewahrungsort" />
+				</section>
+			</section>
+		</subtitle>
+		<datasections>
+			<section labelKey="Katalogtext">
+				<section labelKey="Name">
+					<field datasource="datenblattberlin.Name" />
+				</section>
+				<section labelKey="Inventarnummer">
+					<field datasource="datenblattberlin.Inventarnummer" />
+				</section>
+				<section labelKey="Autor">
+					<field datasource="datenblattberlin.Autor" />
+				</section>
+				<section labelKey="Herkunft">
+					<field datasource="datenblattberlin.Herkunft_Berlin" />
+				</section>
+				<section labelKey="Maße">
+					<field datasource="datenblattberlin.Masze" />
+				</section>
+				<section labelKey="Material/Technik">
+					<field datasource="datenblattberlin.MaterialTechnik" />
+				</section>
+				<section labelKey="Erhaltung">
+					<field datasource="datenblattberlin.Erhaltung_Berlin" />
+				</section>
+				<section labelKey="Ergänzungen">
+					<field datasource="datenblattberlin.Ergaenzungen" />
+				</section>
+				<section labelKey="Inschrift">
+					<field datasource="datenblattberlin.Inschrift" />
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Anbringungsort" 
+						prefix="Anbringugsort: " /> -->
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Besonderheiten" 
+						prefix="Besonderheiten: " /> -->
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Buchstabenhoehe" 
+						prefix="Buchstabenhöhe: " /> -->
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Zeilenabstand" 
+						prefix="Zeilenabstand: " /> -->
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Interpunktion" 
+						prefix="Interpunktion: " /> -->
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Wortlaut" 
+						prefix="Wortlaut: " /> -->
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_kritApparat" 
+						prefix="krit. Apparat: " /> -->
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Uebersetzung" 
+						prefix="Übersetzung: " /> -->
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Literatur" 
+						prefix="Literatur: " /> -->
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Kommentar" 
+						prefix="Kommentar: " /> -->
+				</section>
+				<section labelKey="Inventare/Archivalien">
+					<field datasource="datenblattberlin.InventareArchivalien" />
+				</section>
+				<section labelKey="Kataloge">
+					<field datasource="datenblattberlin.Kataloge" />
+				</section>
+				<section labelKey="Literatur">
+					<field datasource="datenblattberlin.Literatur" />
+				</section>
+				<section labelKey="Beschreibung">
+					<field datasource="datenblattberlin.Beschreibung_Berlin" />
+				</section>
+				<section labelKey="Datierung">
+					<field datasource="datenblattberlin.Datierung" />
+				</section>
+				<section labelKey="Interpretation">
+					<field datasource="datenblattberlin.Interpretation" />
+				</section>
+				<section labelKey="Rezeption">
+					<field datasource="datenblattberlin.Rezeption" />
+				</section>
+				<section labelKey="Standort">
+					<field datasource="datenblattberlin.Standort" />
+				</section>
+			</section>
+			<section labelKey="Informationen zum Objekt">
+				<include type="ort" />
+				<section labelKey="Herkunft" separator=", ">
+					<field datasource="objekt.Herkunft" />
+					<field datasource="objekt.HerkFundKommentar" />
+					<field datasource="objekt.Fundstaat" />
+					<field datasource="objekt.Fundort" />
+					<field datasource="objekt.Fundkontext" />
+					<field datasource="objekt.FunddatumObjekt" />
+				</section>
+				<section labelKey="Gattung/Funktion/Kulturepoche">
+					<field datasource="objekt.GattungAllgemein" />
+					<field datasource="objekt.Funktion" />
+					<field datasource="objekt.funktionaleVerwendung" />
+					<field datasource="objekt.zuMonument" prefix="zu Monument gehörig: " />
+					<field datasource="objekt.SchmuckBeschreibung" prefix="Schmuck Beschreibung: " />
+					<field datasource="objekt.SchmuckSpezifizierung" prefix="Schmuck Spezifizierung: " />
+					<field datasource="objekt.Auftraggeber" prefix="Auftraggaber: " />
+					<field datasource="objekt.Adressat" prefix="Adressat: " />
+					<field datasource="objekt.Kulturkreis" prefix="Kulturepoche: " />
+					<field datasource="objekt.AntikerAufstellungsort" prefix="Antiker Aufstellungsort: " />
+					<field datasource="objekt.antikeGriechLandschaft" prefix="Antike Landschaft: " />
+					<field datasource="objekt.antikeRoemProvinz" prefix="Antike Römische Provinz: " />
+					<field datasource="objekt.FreieBeschreibung" />
+					<field datasource="objekt.Spolie" />
+				</section>
+				<include type="datierung" />
+				<section labelKey="Technik">
+					<field datasource="objekt.Technik" />
+					<field datasource="objekt.TechnikDetails" />
+				</section>
+				<section labelKey="Material">
+					<field datasource="objekt.Material" />
+					<field datasource="objekt.Materialbeschreibung" />
+					<field datasource="objekt.MaterialBemerkung" prefix="Bemerkung: " />
+				</section>
+				<section labelKey="Erhaltung">
+					<field datasource="objekt.Erhaltung" />
+					<field datasource="objekt.Erhaltungszustand" />
+					<field datasource="objekt.Farbreste" prefix="farbreste: " />
+					<field datasource="objekt.ApplizierteElemente" prefix="Applikationen: " />
+					<field datasource="objekt.DekorAllgemein" prefix="Dekor: " />
+					<field datasource="objekt.Bearbeitungen" prefix="Bearbeitungen: " />
+					<field datasource="objekt.BearbeitungenAntik" prefix="Antike Bearbeitungen: " />
+					<field datasource="objekt.BearbeitungenModern" prefix="Moderne Bearbeitungen: " />
+				</section>
+				<section labelKey="Maße">
+					<field datasource="objekt.BreiteGesamt" prefix="Breite: "
+						postfix=" cm" />
+					<field datasource="objekt.HoeheGesamt" prefix="Höhe: "
+						postfix=" cm" />
+					<field datasource="objekt.TiefeGesamt" prefix="Tiefe: "
+						postfix=" cm" />
+					<field datasource="objekt.DurchmesserGesamt" prefix="Durchmesser: "
+						postfix=" cm" />
+					<field datasource="objekt.GewichtGesamt" prefix="Gewicht: " />
+					<field datasource="objekt.ObjektMaszeBemerk" prefix="Bemerkung: " />
+				</section>
+				<section labelKey="Restauration und Analyse">
+					<field datasource="objekt.RekoObjekt" />
+					<field datasource="objekt.ObjektRestauroRestaurier" />
+					<field datasource="objekt.ObjektRestauroBeschreibung" />
+					<field datasource="objekt.ObjektRestauroBeschreibungVorzustand"
+						prefix="Vorzustand: " />
+					<field datasource="objekt.ObjektRestauroMasznahmen" prefix="Maßnahmen: " />
+					<field datasource="objekt.ObjektRestauroZeitraum" prefix="Zeitraum: " />
+					<field datasource="objekt.ObjektRestauroDurchgefuehrtVon"
+						prefix="Restaurator: " />
+					<field datasource="objekt.ObjektRestauroMasznahmenFruehere"
+						prefix="Frühere Maßnahmen: " />
+					<field datasource="objekt.ObjektRestauroMaterialBemerk" />
+					<field datasource="objekt.ObjektRestauroHerstell" />
+					<field datasource="objekt.ObjektRestauroAnalyseZiel" prefix="Analyseziel: " />
+					<field datasource="objekt.ObjektRestauroAnalyseMasznahmenMethoden"
+						prefix="Maßnahmen und Methoden: " />
+					<field datasource="objekt.ObjektRestauroAnalyseDurchgefuehrtVon"
+						prefix="Analyse durchgeführt von: " />
+					<field datasource="objekt.ObjektRestauroAnalyseZeitraum"
+						prefix="Zeitraum: " />
+					<field datasource="objekt.ObjektRestauroAnalyseErgebnis"
+						prefix="Ergebnis: " />
+				</section>
+				<section labelKey="Katalog">
+					<field datasource="objekt.Katalognummer" prefix="Nummer: " />
+					<field datasource="objekt.Katalogtext" prefix="Katalogtext: " />
+					<field datasource="objekt.KatalogtextEnglisch" prefix="Katalogtext(englisch): " />
+				</section>
+				<section labelKey="Inschrift">
+					<field datasource="objekt.InschriftSpracheObjekt" prefix="Sprache bzw Schrift: " />
+					<field datasource="objekt.InschriftObjekt" />
+					<field datasource="objekt.InschriftCorpusObjekt" />
+					<field datasource="objekt.InschriftKommentar" />
+					<field datasource="objekt.InschriftPublikation" />
+				</section>
+				<include type="literatur" />
+				<context type="buch" labelKey="Literatur in Arachne" link="">
+					<field datasource=".contextUri" prefix="$link$" />
+					<field datasource=".BuchTitel">
+						<ifEmpty>
+							<field datasource="zenon.245_a">
+								<ifEmpty>
+									<field datasource=".KurzbeschreibungBuch" />
+								</ifEmpty>
+							</field>
+						</ifEmpty>
+					</field>
+				</context>
+				<include type="uri" />
+				<section labelKey="Für Bearbeiter" minGroupId="600">
+					<section labelKey="Berlin">
+						<field datasource="objekt.BerlinInstitution" prefix="Institution: " />
+						<field datasource="objekt.BerlinVerantwortlich" prefix="Verantwortliche: " />
+						<field datasource="objekt.BerlinObjektID" prefix="ObjektID: " />
+					</section>
+					<section labelKey="Ausleihe">
+						<field datasource="objekt.ObjektAusleihe" prefix="Verliehen: " />
+						<field datasource="objekt.ObjektAusleiheLeihnehmer" prefix="Leihnehmer: " />
+						<field datasource="objekt.ObjektAusleiheZweck" prefix="Zweck: " />
+						<field datasource="objekt.ObjektAusleiheDauerVon" prefix="Von: " />
+						<field datasource="objekt.ObjektAusleiheDauerBis" prefix="Bis: " />
+						<field datasource="objekt.ObjektAusleiheDauenahmeEigentuemer"
+							prefix="Dauernahme Eigentümer: " />
+					</section>
+					<section>
+						<field datasource="objekt.ArtErwerb" />
+						<field datasource="objekt.ErwerbDatum" prefix="Erwerbsdatum: " />
+						<field datasource="objekt.ObjektPreis" prefix="Preis: " />
+						<field datasource="objekt.ObjektVersicherungswert" prefix="Versicherungswert: " />
+						<field datasource="objekt.ObjektErwerbUmstand" prefix="Erwerbsumstand: " />
+					</section>
+					<section labelKey="Leipzig">
+						<field datasource="objekt.LeipTempAufbewahrung" prefix="Aufbewahrung: " />
+						<field datasource="objekt.LeipTempDat" prefix="Datierung: " />
+						<field datasource="objekt.LeipTempLit" prefix="Literatur: " />
+					</section>
+				</section>
+			</section>
+			<section labelKey="Informationen zum Lebewesen">
+				<section labelKey="Lebewesen">
+					<section labelKey="Personen allgemein">
+						<section labelKey="Anzahl Personen">
+							<field datasource="objektlebewesen.lPersonen" />
+						</section>
+						<section labelKey="Spezifikation  Personengruppe">
+							<field datasource="objektlebewesen.SpezPerson" />
+						</section>
+					</section>
+					<section labelKey="Personen spezifikation">
+						<section labelKey="Alter">
+							<field datasource="objektlebewesen.lAlter" />
+						</section>
+						<section labelKey="Geschlecht">
+							<field datasource="objektlebewesen.lGeschlecht" />
+						</section>
+						<section labelKey="Ethnie">
+							<field datasource="objektlebewesen.lEthnie" />
+						</section>
+						<section labelKey="Identifizierung">
+							<field datasource="objektlebewesen.Identifizierung" />
+							<field datasource="objektlebewesen.spezIdentifizierung" />
+						</section>
+						<section labelKey="Sujet">
+							<field datasource="objektlebewesen.Sujet" />
+							<field datasource="objektlebewesen.SpezSujet" />
+						</section>
+					</section>
+					<section labelKey="Tiere">
+						<field datasource="objektlebewesen.Tiere" />
+					</section>
+				</section>
+				<section labelKey="Objekte">
+					<section labelKey="Verkehr">
+						<field datasource="objektlebewesen.Verkehr" />
+						<field datasource="objektlebewesen.SpezVerkehr" />
+					</section>
+					<section labelKey="Gegenstände">
+						<field datasource="objektlebewesen.Gegenstaende" />
+					</section>
+				</section>
+			</section>
+			<section labelKey="Informationen zur Keramik">
+				<section labelKey="Aussehen">
+					<section labelKey="Gefäßtyp">
+						<field datasource="objektkeramik.GesaesstypKeramik" />
+					</section>
+					<section labelKey="Gefäßform">
+						<field datasource="objektkeramik.GefaessformenKeramik" />
+					</section>
+				</section>
+				<section labelKey="Herstellungstechnik">
+					<field datasource="objektkeramik.HerstellungstechnikKeramik" />
+				</section>
+				<section labelKey="Maltechnik">
+					<field datasource="objektkeramik.MaltechnikKeramik" />
+				</section>
+				<section labelKey="Dekorationstechnik">
+					<field datasource="objektkeramik.DekorationKeramik" />
+				</section>
+				<section labelKey="Ware">
+					<field datasource="objektkeramik.WareKeramik" />
+					<field datasource="objektkeramik.SpezifizierungWareKeramik" />
+				</section>
+				<section labelKey="Informationen zum Maler">
+					<section labelKey="Maler">
+						<field datasource="objektkeramik.MalerKeramik" />
+					</section>
+					<section labelKey="Werkstatt/Gruppe/Umkreis des Malers">
+						<field datasource="objektkeramik.MalerWerkstattGruppeUmkreisKeramik" />
+					</section>
+					<section labelKey="Signiert">
+						<field datasource="objektkeramik.MalerSigniertKeramik" />
+					</section>
+				</section>
+				<section labelKey="Informationen zum Töpfer">
+					<section labelKey="Töpfer">
+						<field datasource="objektkeramik.ToepferKeramik" />
+					</section>
+					<section labelKey="Werkstatt/Gruppe/Umkreis des Töpfers">
+						<field datasource="objektkeramik.ToepferWerkstattGruppeUmkreisKeramik" />
+					</section>
+					<section labelKey="Signiert">
+						<field datasource="objektkeramik.ToepferSigniertKeramik" />
+					</section>
+				</section>
+				<section labelKey="Provenienz">
+					<field datasource="objektkeramik.ProvenienzKeramik" />
+				</section>
+				<section labelKey="Dekoration">
+					<section labelKey="Motive">
+						<field datasource="objektkeramik.MotiveKeramik" />
+						<field datasource="objektkeramik.SpezifizierungMotiveKeramik" />
+					</section>
+				</section>
+				<section labelKey="Spezifizierung Material">
+					<section labelKey="Oberflächenfarbe">
+						<field datasource="objektkeramik.Oberflaechenfarbe" />
+					</section>
+					<section labelKey="Scherbenfarbe">
+						<field datasource="objektkeramik.Scherbenfarbe" />
+					</section>
+					<section labelKey="Korngröße der Magerung">
+						<field datasource="objektkeramik.KrongroesseMagerung" />
+					</section>
+					<section labelKey="Einschluesse">
+						<field datasource="objektkeramik.Einschluesse" />
+					</section>
+					<section labelKey="Bruchmuster">
+						<field datasource="objektkeramik.Bruchmuster" />
+					</section>
+					<section labelKey="Analyse">
+						<field datasource="objektkeramik.Analysen" />
+					</section>
+				</section>
+			</section>
+			<section labelKey="Information zur Plastik">
+				<section labelKey="Bennung und Charakterisierung">
+					<section labelKey="Benennung">
+						<field datasource="objektplastik.Benennung" />
+					</section>
+					<section labelKey="Rufname">
+						<field datasource="objektplastik.Rufname" />
+					</section>
+					<section separator="; ">
+						<field datasource="objektplastik.VorbildWesen" />
+						<field datasource="objektplastik.VorbildWesen2" />
+						<field datasource="objektplastik.VorbildStatus" />
+						<field datasource="objektplastik.Darstellungsweise" />
+						<field datasource="objektplastik.Geschlecht" />
+						<field datasource="objektplastik.LebensAlter" />
+					</section>
+				</section>
+				<section labelKey="Künstlerische Umsetzung">
+					<section labelKey="Provenienz">
+						<field datasource="objektplastik.Provenienz" />
+					</section>
+					<section labelKey="Stilnachahmung">
+						<field datasource="objektplastik.Stilnachahmung" />
+					</section>
+					<section labelKey="Künstler">
+						<field datasource="objektplastik.Kuenstler" />
+						<field datasource="objektplastik.Vergleiche" />
+					</section>
+					<!-- TODO Link zu Typus -->
+				</section>
+				<section labelKey="Sujet">
+					<section labelKey="Anzahl Figuren">
+						<field datasource="objektplastik.AnzahlFiguren" />
+					</section>
+					<section separator="; ">
+						<field datasource="objektplastik.Thema" />
+						<field datasource="objektplastik.ThemaGoetter" />
+						<field datasource="objektplastik.ThemaHeroen" />
+						<field datasource="objektplastik.ThemaMythos" />
+						<field datasource="objektplastik.ThemaMenschen" />
+						<field datasource="objektplastik.ThemaPflanzen" />
+						<field datasource="objektplastik.ThemaTiere" />
+						<field datasource="objektplastik.ThemeWeitere" />
+						<field datasource="objektplastik.ThemaFrei" />
+					</section>
+					<section labelKey="Vergleiche">
+						<field datasource="objektplastik.VergleicheSujet" />
+					</section>
+				</section>
+				<section labelKey="Form und Maße">
+					<section labelKey="Form" separator="; ">
+						<field datasource="objektplastik.Form" />
+						<field datasource="objektplastik.erhalteneForm" />
+						<field datasource="objektplastik.FormatRundplastik" />
+					</section>
+					<section labelKey="Messung Kopf">
+						<field datasource="objektplastik.MessungKopf" />
+					</section>
+					<section labelKey="Höhe Kopf">
+						<field datasource="objektplastik.HoeheKopf" />
+					</section>
+					<section labelKey="MessungStatue">
+						<field datasource="objektplastik.MessungStatue" />
+					</section>
+					<section labelKey="Höhe Statue">
+						<field datasource="objektplastik.HoeheStatue" />
+					</section>
+					<section labelKey="Höhe ursprünglich">
+						<field datasource="objektplastik.HoeheUrspruenglich" />
+					</section>
+				</section>
+				<section labelKey="Haltung">
+					<section labelKey="Aufstellung">
+						<field datasource="objektplastik.Aufstellung" />
+					</section>
+					<section>
+						<field datasource="objektplastik.Haltung" />
+					</section>
+					<section labelKey="Tätigkeit">
+						<field datasource="objektplastik.Taetigkeit" />
+					</section>
+					<section labelKey="Standbein">
+						<field datasource="objektplastik.Standbein" />
+					</section>
+					<section labelKey="Stütze">
+						<field datasource="objektplastik.Statuenstuetze" />
+					</section>
+					<section labelKey="Arm links">
+						<field datasource="objektplastik.HaltungArmLinks" />
+					</section>
+					<section labelKey="Hand links">
+						<field datasource="objektplastik.HaltungHandLinks" />
+					</section>
+					<section labelKey="Arm rechts">
+						<field datasource="objektplastik.HaltungArmRechts" />
+					</section>
+					<section labelKey="Hand rechts">
+						<field datasource="objektplastik.HaltungHandRechts" />
+					</section>
+				</section>
+				<section labelKey="Kopfdetails">
+					<section labelKey="Kopfwendung">
+						<field datasource="objektplastik.Kopfwendung" />
+					</section>
+					<section labelKey="Augenbildung">
+						<field datasource="objektplastik.Augenbildung" />
+					</section>
+					<section labelKey="Haar">
+						<section labelKey="Frisur">
+							<field datasource="objektplastik.Haarfrisur" />
+						</section>
+						<section labelKey="Zopf">
+							<field datasource="objektplastik.Heerzopf" />
+						</section>
+						<section labelKey="Stirnhaar">
+							<field datasource="objektplastik.Stirnhaar" />
+						</section>
+					</section>
+					<section labelKey="Kopfbedeckung" separator=" ">
+						<field datasource="objektplastik.Kopfbedeckung" />
+						<field datasource="objektplastik.Kopfbeschreibung" />
+					</section>
+				</section>
+				<section labelKey="Bekleidung" separator="; ">
+					<section separator="; ">
+						<field datasource="objektplastik.bekleidet" />
+						<field datasource="objektplastik.Bekleidung" />
+						<field datasource="objektplastik.BekleidungZusatz" />
+					</section>
+					<section labelKey="Gürtung">
+						<field datasource="objektplastik.Guertung" />
+					</section>
+					<section labelKey="Schuhwerk">
+						<field datasource="objektplastik.Schuhwerk" />
+					</section>
+					<section>
+						<field datasource="objektplastik.BekleidungBeschreibung" />
+					</section>
+				</section>
+				<section labelKey="Attribute">
+					<section labelKey="Allgemein">
+						<field datasource="objektplastik.AttributeAllgemein" />
+					</section>
+					<section labelKey="Figur">
+						<field datasource="objektplastik.AttributeFigur" />
+					</section>
+					<section labelKey="Gegenstand">
+						<field datasource="objektplastik.AttributeGegenstand" />
+					</section>
+					<section labelKey="Götterattribut">
+						<field datasource="objektplastik.AttributeGoetterattribut" />
+					</section>
+					<section labelKey="Militaria">
+						<field datasource="objektplastik.AttributeMilitaria" />
+					</section>
+					<section labelKey="Pflanze">
+						<field datasource="objektplastik.AttributePlfanze" />
+					</section>
+					<section labelKey="Schmuck">
+						<field datasource="objektplastik.AttributeSchmuck" />
+					</section>
+					<section labelKey="Tier">
+						<field datasource="objektplastik.AttributeTier" />
+					</section>
+					<section separator=" ">
+						<field datasource="objektplastik.AttributeSonstige" />
+						<field datasource="objektplastik.AttributeBeschreibung" />
+					</section>
+					<section labelKey="Dekoration" separator=" ">
+						<field datasource="objektplastik.Dekorationsrt" />
+						<field datasource="objektplastik.Dekoration" />
+					</section>
+				</section>
+				<section labelKey="Reliefträger">
+					<section labelKey="Objekt ist">
+						<field datasource="objektplastik.reliefiert" />
+					</section>
+					<section labelKey="Reliefträger" separator=" ">
+						<field datasource="objektplastik.TraegerAllgemein" />
+						<field datasource="objektplastik.FormatRelieftraeger" />
+						<field datasource="objektplastik.Relieftypus" />
+					</section>
+				</section>
+				<section labelKey="Bemerkungen">
+					<field datasource="objektplastik.wissKommentar" />
+					<field datasource="objektplastik.Bemerkungen" />
+				</section>
+			</section>
+			<section labelKey="Informationen zu Terrakotten">
+				<section labelKey="Technik">
+					<section>
+						<field datasource="objektterrakotten.Terrakottentyp" />
+						<field datasource="objektterrakotten.Beschreibung" prefix="Beschreibung: " />
+					</section>
+					<section labelKey="Serie Kopf" separator=", ">
+						<field datasource="objektterrakotten.MatrserKopf" />
+						<field datasource="objektterrakotten.GenerationKopf" />
+						<field datasource="objektterrakotten.VariationKopf" />
+					</section>
+					<section labelKey="Serie Körper" separator=", ">
+						<field datasource="objektterrakotten.MatrserKoerper" />
+						<field datasource="objektterrakotten.GenerationKoerper" />
+						<field datasource="objektterrakotten.VariationKoerper" />
+					</section>
+					<section labelKey="Serie Kopf mit Körper">
+						<field datasource="objektterrakotten.MatrserKopfKoerper" />
+						<field datasource="objektterrakotten.GenerationKopfKoerper" />
+						<field datasource="objektterrakotten.VariationKopfKoerper" />
+						<field datasource="objektterrakotten.Variationsart" />
+						<field datasource="objektterrakotten.StammCode" />
+					</section>
+					<section>
+						<field datasource="objektterrakotten.PatrizenqualitaetPur"
+							prefix="Qualität: " />
+						<field datasource="objektterrakotten.Anbringung" prefix="Anbringung: " />
+					</section>
+				</section>
+				<section labelKey="Bearbeitung" separator="; ">
+					<field datasource="objektterrakotten.depotfremdeRepliken" />
+					<field datasource="objektterrakotten.Aufnahmedesiderate" />
+					<field datasource="objektterrakotten.KatalogtextNoelke" />
+					<field datasource="objektterrakotten.persNotizen" />
+					<field datasource="objektterrakotten.KomplexDatierung" />
+					<field datasource="objektterrakotten.Besonderheit" />
+				</section>
+			</section>
+			<section labelKey="Informationen zur Bauornamentik">
+				<section labelKey="Bauglied">
+					<field datasource="objektbauornamentik.Bauglied" />
+					<field datasource="objektbauornamentik.MaszeBauglied" prefix="Maße: " />
+					<field datasource="objektbauornamentik.ProvenienzBauornamentik"
+						prefix="Provenienz" />
+					<field datasource="objektbauornamentik.BemerkungenBauornamentik" />
+				</section>
+				<section labelKey="Bauwerk">
+					<field datasource="objektbauornamentik.Gebaeudetyp" />
+					<field datasource="objektbauornamentik.BauwerkKulturkreis" />
+					<field datasource="objektbauornamentik.Bauordnung" prefix="Bauordnung: " />
+					<field datasource="objektbauornamentik.Architekt" prefix="Architekt: " />
+					<field datasource="objektbauornamentik.Bauphase" prefix="Bauphase: " />
+					<field datasource="objektbauornamentik.Position" prefix="Position: " />
+				</section>
+				<section labelKey="Unterbau" separator="; ">
+					<field datasource="objektbauornamentik.Unterbau" />
+					<field datasource="objektbauornamentik.UnterbauEuthynterie" />
+					<field datasource="objektbauornamentik.UnterbauBoden" />
+					<field datasource="objektbauornamentik.UnterbauPodium" />
+					<field datasource="objektbauornamentik.UnterbauPiedestal" />
+					<field datasource="objektbauornamentik.UnterbauKrepis" />
+					<field datasource="objektbauornamentik.UnterbauTreppenstufen" />
+					<field datasource="objektbauornamentik.UnterbauSitzstufen" />
+					<field datasource="objektbauornamentik.UnterbauBeschreibung" />
+				</section>
+				<section labelKey="Aufgehendes" separator=";  ">
+					<field datasource="objektbauornamentik.Aufgehends" />
+					<field datasource="objektbauornamentik.AufgehendesBogen" />
+					<field datasource="objektbauornamentik.AufgehendesWand" />
+					<field datasource="objektbauornamentik.AufgehendesDecke" />
+					<field datasource="objektbauornamentik.AufgehendesFenster" />
+					<field datasource="objektbauornamentik.AufgehendesTuer" />
+					<field datasource="objektbauornamentik.AufgehendesSonstiges" />
+					<field datasource="objektbauornamentik.AufgehendesBeschreibung" />
+				</section>
+				<section labelKey="Stütze / Säule" separator="; ">
+					<field datasource="objektbauornamentik.Saeule" />
+					<field datasource="objektbauornamentik.SaeuleStuetze" />
+					<field datasource="objektbauornamentik.SaeulePlinthe" />
+					<field datasource="objektbauornamentik.SaeuleBasis" />
+					<field datasource="objektbauornamentik.SaeuleSchaft" />
+					<field datasource="objektbauornamentik.SaeuleKapitell" />
+					<field datasource="objektbauornamentik.SaeuleBeschreibung" />
+				</section>
+				<section labelKey="Gebälkt / Dach" separator="; ">
+					<field datasource="objektbauornamentik.Gebaelk" />
+					<field datasource="objektbauornamentik.GebaelkArchitrav" />
+					<field datasource="objektbauornamentik.GebaelkFries" />
+					<field datasource="objektbauornamentik.GebaelkGesims" />
+					<field datasource="objektbauornamentik.GebaelkGiebel" />
+					<field datasource="objektbauornamentik.GebaelkSima" />
+					<field datasource="objektbauornamentik.GebaelkAttika" />
+					<field datasource="objektbauornamentik.GebaelkDach" />
+					<field datasource="objektbauornamentik.GebaelkBeschreibung" />
+				</section>
+				<section labelKey="Dekor">
+					<section>
+						<field datasource="objektbauornamentik.reliefiertBauornament" />
+						<field datasource="objektbauornamentik.Profil" prefix="Profil: " />
+					</section>
+					<section labelKey="Dekorationsart" separator="; ">
+						<field datasource="objektbauornamentik.DekorationsartBauornament" />
+						<field datasource="objektbauornamentik.Dekorationsart2" />
+						<field datasource="objektbauornamentik.BemerkungenDekor" />
+						<field datasource="objektbauornamentik.VergleicheBauornament" />
+					</section>
+				</section>
+				<section labelKey="Motivkomplexe">
+					<field datasource="objektbauornamentik.Komplex" />
+					<field datasource="objektbauornamentik.KomplexPalmetten" />
+					<field datasource="objektbauornamentik.KomplexAkanthusPalmetten" />
+					<field datasource="objektbauornamentik.KomplexBluetenfries" />
+					<field datasource="objektbauornamentik.KomplexRanke" />
+					<field datasource="objektbauornamentik.KomplexGirlande" />
+					<field datasource="objektbauornamentik.KomplexKandelaber" />
+					<field datasource="objektbauornamentik.KomplexSonstFriese" />
+					<field datasource="objektbauornamentik.KomplexKapitelle" />
+					<field datasource="objektbauornamentik.KomplexBasen" />
+					<field datasource="objektbauornamentik.KomplexBeschreibung" />
+				</section>
+				<section labelKey="EinzelMotiv">
+					<section labelKey="Gegenständliche" separator="; ">
+						<field datasource="objektbauornamnentik.GegenstMotiv" />
+						<field datasource="objektbauornamentik.GegenstMotivAnzahl" />
+						<field datasource="objektbauornamentik.GegenstMotivBeschreibung" />
+					</section>
+					<section labelKey="Abstrakte" separator="; ">
+						<field datasource="objektbauornamentik.abstraktMotiv" />
+						<field datasource="objektbauornamentik.abstraktMotivMaeander" />
+						<field datasource="objektbauornamentik.abstraktMotivBeschreibung" />
+					</section>
+					<section labelKey="Pflanzliche">
+						<field datasource="objektbauornamentik.pflanzMotiv" />
+						<field datasource="objektbauornamentik.pflanzMotivPalmette" />
+						<field datasource="objektbauornamentik.pflanzMotivAkanthus" />
+						<field datasource="objektbauornamentik.pflanzMotivBlatt" />
+						<field datasource="objektbauornamentik.pflanzMotivBluete" />
+						<field datasource="objektbauornamentik.pflanzMotivCaulis" />
+						<field datasource="objektbauornamentik.pflanzMotivFrucht" />
+						<field datasource="objektbauornamentik.pflanzMotivDorKyma" />
+						<field datasource="objektbauornamentik.pflanzMotivIonKyma" />
+						<field datasource="objektbauornamentik.pflanzMotivLesbKyma" />
+						<field datasource="objektbauornamentik.pflanzMotivHelix" />
+						<field datasource="objektbauornamentik.pflanzMotivBeschreibung" />
+					</section>
+				</section>
+			</section>
+			<section labelKey="Information zum Gemälde">
+				<section labelKey="Kerndaten - neuzeitliche Gemälde">
+					<field datasource="objektgemaelde.KuenstlerGemaelde" prefix="Künstler: " />
+					<field datasource="objektgemaelde.KuenstlerVorbildGemaelde"
+						prefix="Künstler Vorbild: " />
+					<field datasource="objektgemaelde.BeschreibungGemaelde"
+						prefix="Beschreibung: " />
+					<field datasource="objektgemaelde.TechnikGemaeldeCheck"
+						prefix="Technik: " />
+					<field datasource="objektgemaelde.TechnikGemaelde" prefix="Spezifikiation Technik: " />
+					<field datasource="objektgemaelde.GemaeldeMatTraeger" prefix="Material Träger: " />
+					<field datasource="objektgemaelde.SpezGemaeldeMatTraeger"
+						prefix="Spezifikation Material Träger: " />
+					<field datasource="objektgemaelde.GemaeldeMatMalerei" prefix="Material Malerei: " />
+					<field datasource="objektgemaelde.SpezGemaeldeMatMalerei"
+						prefix="Spezifikation Material Malerei: " />
+					<field datasource="objektgemaelde.Beschreibung" prefix="Beschreibung: " />
+					<field datasource="objektgemaelde.ZustandGemaelde" prefix="Zustand: " />
+					<field datasource="objektgemaelde.RestaurierungGemaelde"
+						prefix="Restaurierungen: " />
+				</section>
+				<section labelKey="Kerndaten - Antike Flächenkunst">
+					<field datasource="objektgemaelde.KuenstlerFlaechenkunst"
+						prefix="Künstler: " />
+					<field datasource="objektgemaelde.BeschreibungFlaechenkunst"
+						prefix="Beschreibung: " />
+					<field datasource="objektgemaelde.RestaurierungenFlaechenkunst"
+						prefix="Restaurierungen: " />
+					<field datasource="objektgemaelde.DekorationsartObjektgemaelde"
+						prefix="Dekorationsart: " />
+					<field datasource="objektgemaelde.MalereistilObjektgemaelde"
+						prefix="Malereistil: " />
+					<field datasource="objektgemaelde.MarmorsorteObjektgemaelde"
+						prefix="Marmorsorte: " />
+					<field datasource="objektgeamelde.MarmorinkrustationenStilObjektgemaelde"
+						prefix="Stil der Marmorinkrustationen: " />
+				</section>
+				<section labelKey="Bezeichnung">
+					<field datasource="objektgemaelde.Bezeichnet" prefix="Bezeichnet: " />
+					<field datasource="objektgemaelde.UntenLinks" prefix="Unten Links: " />
+					<field datasource="objektgemaelde.UntenMitte" prefix="Unten Mitte: " />
+					<field datasource="objektgemaelde.UntenRechts" prefix="Unten Rechts: " />
+					<field datasource="objektgemaelde.ObenLinks" prefix="Oben Links: " />
+					<field datasource="objektgemaelde.ObenMitte" prefix="Oben Mitte: " />
+					<field datasource="objektgemaelde.ObenRechts" prefix="Oben Rechts: " />
+				</section>
+				<section labelKey="Maße">
+					<field datasource="objektgemaelde.BildMasze" prefix="Bildmaße: " />
+					<field datasource="objektgemaelde.PlatteMasze" prefix="Plattenmaße: " />
+					<field datasource="objektgemaelde.BlattMasze" prefix="Blattmaße: " />
+				</section>
+			</section>
+			<section labelKey="Informationen zum Mosaik">
+				<section labelKey="Technik">
+					<section>
+						<field datasource="objektmosaik.HerstellungstechnikMosaik" />
+					</section>
+					<section labelKey="Material" separator="; ">
+						<field datasource="objektmosaik.MaterialMosaik" />
+						<field datasource="objektmosaik.MaterialSpezifizierungMosaik" />
+					</section>
+					<section labelKey="Anbringung" separator="; ">
+						<field datasource="objektmosaik.AnbringungMosaik" />
+						<field datasource="objektmosaik.AnbringungSpezifizierungMosaik" />
+					</section>
+				</section>
+				<section labelKey="Künstler">
+					<field datasource="objektmosaik.KuenstlerMosaik" />
+					<field datasource="objektmosaik.SigniertMosaik" prefix="Signiert: " />
+					<field datasource="objektmosaik.VorbildMosaik" prefix="Vorbild: " />
+				</section>
+				<section labelKey="Dekoration">
+					<section labelKey="Farbigkeit" separator="; ">
+						<field datasource="objektmosaik.FarbigkeitMosaik" />
+						<field datasource="objektmosaik.FarbigkeitSpezifizierungMosaik" />
+					</section>
+					<section labelKey="Rahmung des Mosaiks" separator="; ">
+						<field datasource="objektmosaik.RahmungMosaik" />
+						<field datasource="objektmosaik.RahmungSpezifizierungMosaik" />
+					</section>
+					<section labelKey="Dekor" separator="; ">
+						<field datasource="objektmosaik.DekorMosaik" />
+						<field datasource="objektmosaik.DekorSpezifizierungMosaik" />
+					</section>
+				</section>
+			</section>
+			<section labelKey="Informationen zum Objekt: Träger von Siegelabdrücken">
+				<section labelKey="Identifikation">
+					<field datasource="objektplomben.pINVNR" prefix="Inventarnummer: " />
+					<field datasource="objektplomben.pMUSEUM" prefix="Museum / Sammlung: " />
+				</section>
+				<section labelKey="Herkunft">
+					<field datasource="objektplomben.pFUNDLAND" prefix="Fundland: " />
+					<field datasource="objektplomben.pORTREGION" prefix="Fundort: " />
+					<field datasource="objektplomben.pFLORTSTEIL" prefix="Flur / Grabungsstätte: " />
+					<field datasource="objektplomben.pFUNDPLATZ" prefix="Fundstelle: " />
+					<field datasource="objektplomben.pPLATZTYPUS" prefix="Platztypus: " />
+					<field datasource="objektplomben.pKONTEXTDAT" prefix="Kontextdatierung: " />
+					<field datasource="objektplomben.pBEREICH" prefix="Bereich: " />
+				</section>
+				<section labelKey="Form / Typus">
+					<field datasource="objektplomben.pPLOMBENFORM" prefix="Plombenform: " />
+				</section>
+				<section labelKey="Erhaltung">
+					<field datasource="objektplomben.pERHALTUNG" />
+				</section>
+				<section labelKey="Beschriftung">
+					<field datasource="objektplomben.pSCHRIFT" prefix="Schriftzeichen" />
+				</section>
+				<section labelKey="Verknüpfter Siegelabdruck Nummer">
+					<field datasource="objektplomben.pCMSNR" prefix="CMS - Nummer: " />
+				</section>
+			</section>
+			<section labelKey="Informationen zum Objekt: Siegel">
+				<section labelKey="Identifikation">
+					<field datasource="objektsiegel.CMSNR" prefix="CMS - Nummer: " />
+					<field datasource="objektsiegel.CMSBand" prefix="CMS - Band: " />
+					<field datasource="objektsiegel.sINVNR" prefix="Inventarnummer: " />
+					<field datasource="objektsiegel.sMUSEUM" prefix="Muserum / Sammlung: " />
+				</section>
+				<section labelKey="Herkunft">
+					<field datasource="objektsiegel.FUNDLAND" prefix="Fundland: " />
+					<field datasource="objektsiegel.ORTREGION" prefix="Fundort: " />
+					<field datasource="objektsiegel.FLORTSTEIL" prefix="Flur / Grabungsstätte: " />
+					<field datasource="objektsiegel.FUNDPLATZ" prefix="Fundstelle: " />
+					<field datasource="objektsiegel.PLATZTYPUS" prefix="Platztypus: " />
+					<field datasource="objektsiegel.KONTEXTDAT" prefix="Kontextdatierung: " />
+					<field datasource="objektsiegel.BEREICH" prefix="Bereich: " />
+				</section>
+				<section labelKey="Form">
+					<field datasource="objektsiegel.SITYPUS" prefix="Siegelform: " />
+					<field datasource="objektsiegel.SIFANZAHL" prefix="Zahl der Siegelflächen: " />
+					<field datasource="objektsiegel.SIFWOELBUNG" prefix="Wölbung der Siegelfläche: " />
+					<field datasource="objektsiegel.SIFUMRISS" prefix="Umriss der Siegelfläche: " />
+					<field datasource="objektsiegel.SINEBENS" prefix="Nebenseite des Siegels: " />
+					<field datasource="objektsiegel.BOHRUNGEN" prefix="Art der Durchbohrung: " />
+				</section>
+				<section labelKey="Material und Technik">
+					<field datasource="objektsiegel.SIFMAT" prefix="Material: " />
+					<field datasource="objektsiegel.MATERIALGRUPPE" prefix="Materialgruppe: " />
+					<field datasource="objektsiegel.DEKORTECH" prefix="Bearbeitungstechnik: " />
+					<field datasource="objektsiegel.SONSTMERK" prefix="Sonstige Merkmale: " />
+				</section>
+				<section labelKey="Maße und Erhaltung">
+					<field datasource="objektsiegel.SILAENGE" prefix="Länge: " />
+					<field datasource="objektsiegel.SIBREITE" prefix="Breite: " />
+					<field datasource="objektsiegel.SIDICKE" prefix="Dicke: " />
+					<field datasource="objektsiegel.FADENMAX" prefix="Bohrkanal max: " />
+					<field datasource="objektsiegel.FADENMIN" prefix="Bohrkanal min: " />
+					<field datasource="objektsiegel.SIZUSTAND" prefix="Zustand: " />
+					<field datasource="objektsiegel.SIFRAGMENT" prefix="Fragment: " />
+				</section>
+				<section labelKey="Allgemeine Informationen zum Dekor">
+					<field datasource="objektsiegel.DEKORTYPUS" prefix="Dekortypus: " />
+					<field datasource="objektsiegel.KOMPOSITIO" prefix="Komposition: " />
+					<field datasource="objektsiegel.GRUPPE" prefix="Gruppe: " />
+					<field datasource="objektsiegel.HANDLUNG" prefix="Handlung: " />
+					<field datasource="objektsiegel.UNKLASS" prefix="Sonstiger Dekor: " />
+				</section>
+				<section labelKey="Stilistische Einordnung">
+					<field datasource="objektsiegel.STILGRUPPE" prefix="Stilgruppe: " />
+					<field datasource="objektsiegel.STILDAT" prefix="Stilistische Datierung: " />
+					<field datasource="objektsiegel.ZEITSTUFE" prefix="Zeitstufe: " />
+				</section>
+				<section labelKey="Ornamente">
+					<field datasource="objektsiegel.MAKROORNAMENT" prefix="Makroornament: " />
+					<field datasource="objektsiegel.STANDARDORN" prefix="Standardornament: " />
+				</section>
+				<section labelKey="Schriftzeichen">
+					<field datasource="objektsiegel.SCHRIFT" prefix="Schrift: " />
+				</section>
+				<section labelKey="Figürliche Motive außer Lebewesen">
+					<field datasource="objektsiegel.GELAENDE" prefix="Gelände: " />
+					<field datasource="objektsiegel.sPFLANZEN" prefix="Pflanzen: " />
+					<field datasource="objektsiegel.SYMBOLE" prefix="Symbole: " />
+					<field datasource="objektsiegel.MOEBELBAU" prefix="Möbel / Bauten: " />
+					<field datasource="objektsiegel.GERAETE" prefix="Geräte: " />
+				</section>
+				<section labelKey="Kommentar">
+					<field datasource="objektsiegel.KOMMENTAR" />
+				</section>
+			</section>
+		</datasections>
+	</display>
+	<facets>
+		<include type="facet_kategorie" />
+		<include type="facet_ort" />
+		<facet name="datierungepoche" labelKey="Epoche">
+			<context type="datierung">
+				<field datasource=".AnfEpoche" />
+			</context>
+		</facet>
+		<facet name="datierungepoche" labelKey="Epoche">
+			<context type="datierung">
+				<field datasource=".EndEpoche" />
+			</context>
+		</facet>
+		<include type="facet_literatur" />
+		<facet name="subkategorie" labelKey="Unterkategorie">
+			<field datasource="KategorieObjekt.Typ" />
+		</facet>
+		<facet name="objektgattung" labelKey="Gattung">
+			<field datasource="objekt.GattungAllgemein" />
+		</facet>
+		<facet name="applizierteelemente" labelKey="Applizierte Elemente">
+			<field datasource="objekt.ApplizierteElemente" />
+		</facet>
+		<facet name="bearbeitungen" labelKey="Bearbeitungen">
+			<field datasource="objekt.Bearbeitungen" />
+		</facet>
+		<facet name="erhaltung" labelKey="Erhaltung">
+			<field datasource="objekt.Erhaltung" />
+		</facet>
+		<facet name="funktion" labelKey="Allgemeine Funktion">
+			<field datasource="objekt.Funktion" />
+		</facet>
+		<facet name="funktionaleverwendung" labelKey="Spezielle Funktion">
+			<field datasource="objekt.funktionaleVerwendung" />
+		</facet>
+		<facet name="kulturkreis" labelKey="Kulturepoche">
+			<field datasource="objekt.Kulturkreis" />
+		</facet>
+		<facet name="material" labelKey="Material allgemein">
+			<field datasource="objekt.Material" />
+		</facet>
+		<facet name="materialbeschreibung" labelKey="Material speziell">
+			<field datasource="objekt.Materialbeschreibung" />
+		</facet>
+		<facet name="technik" labelKey="Technik">
+			<field datasource="objekt.Technik" />
+		</facet>
+		<facet name="antikegriechlandschaft" labelKey="Antike Landschaft">
+			<field datasource="objekt.antikeGriechLandschaft" />
+		</facet>
+		<facet name="antikeroemprovinz" labelKey="Römische Provinz">
+			<field datasource="objekt.antikeRoemProvinz" />
+		</facet>
+		<facet name="schmuckspezifizierung" labelKey="Schmuck Spezifizierung">
+			<field datasource="objekt.SchmuckSpezifizierung" />
+		</facet>
+	</facets>
 </category>
