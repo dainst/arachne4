@@ -133,18 +133,18 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 	 * @param queryResults	the image data retrieved 
 	 */
 	private void extractImageDataFromQueryResults (final Map<String, String> queryResults) {
-		final String sourceType = queryResults.get("semanticconnection.TypeSource");
-		final String targetType = queryResults.get("semanticconnection.TypeTarget");
+		final String sourceType = queryResults.get("SemanticConnection.TypeSource");
+		final String targetType = queryResults.get("SemanticConnection.TypeTarget");
 		final String project;
 		final long imageId;
 		final String filename;
 		
 		if ("marbilder".equals(targetType) && sourceType!=null) {
 			project =  sourceType;
-			imageId = Long.parseLong(queryResults.get("semanticconnection.Target")); 
+			imageId = Long.parseLong(queryResults.get("SemanticConnection.Target")); 
 		} else if ("marbilder".equals(sourceType) && targetType!=null) {
 			project = targetType;
-			imageId = Long.parseLong(queryResults.get("semanticconnection.Source")); 
+			imageId = Long.parseLong(queryResults.get("SemanticConnection.Source")); 
 		} else {
 			return;
 		}

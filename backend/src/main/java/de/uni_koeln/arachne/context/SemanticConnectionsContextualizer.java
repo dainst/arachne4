@@ -78,13 +78,13 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 			final String key = entry.getKey();
 			if (!(key.contains("PS_") && key.contains("ID")) && !(key.contains("Source")) && !(key.contains("Type"))) {
 				// get ArachneEntityID from context query result  
-				if ("semanticconnection.Target".equals(key)) {
+				if ("SemanticConnection.Target".equals(key)) {
 					eId = Long.parseLong(entry.getValue()); 
 					continue;
-				} else if ("semanticconnection.ForeignKeyTarget".equals(key)) {
+				} else if ("SemanticConnection.ForeignKeyTarget".equals(key)) {
 					foreignKey = Long.parseLong(entry.getValue());
 					continue;
-				}  else if ("semanticconnection.ForeignKeyTarget".equals(key)) {
+				}  else if ("SemanticConnection.ForeignKeyTarget".equals(key)) {
 					foreignKey = Long.parseLong(entry.getValue());
 					continue;
 				} 
