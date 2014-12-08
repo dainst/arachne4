@@ -168,19 +168,18 @@ public class ContextService {
 					final Image image = new Image();
 					try {
 						LOGGER.debug("currentContext {}", currentContext);
-						final long imageId = Long.parseLong(currentContext.get("semanticconnection.EntityID"));
+						final long imageId = Long.parseLong(currentContext.get("SemanticConnection.EntityID"));
 						image.setImageId(imageId);
 						image.setImageSubtitle(currentContext.get("marbilder.DateinameMarbilder"));
 						image.setSourceContext(ts.transl8(contextName));
-						final long sourceRecordId = Long.parseLong(currentContext.get("semanticconnection.ForeignKeyTarget"));
+						final long sourceRecordId = Long.parseLong(currentContext.get("SemanticConnection.ForeignKeyTarget"));
 						image.setSourceRecordId(sourceRecordId);
 						resultContextImages.add(image);
 					} catch (NumberFormatException nfe) {
 						LOGGER.error("Failed to get connected image information [" + parent.getArachneId()
 								.getArachneEntityID() + "]. Got 'SemanticConnection.EntityID' = " + currentContext
-								.get("semanticconnection.EntityID")	+ " - 'SemanticConnection.ForeignKeyTarget' = " 
-								+ currentContext.get("semanticconnection.ForeignKeyTarget"));
-						throw nfe;
+								.get("SemanticConnection.EntityID")	+ " - 'SemanticConnection.ForeignKeyTarget' = " 
+								+ currentContext.get("SemanticConnection.ForeignKeyTarget"));
 					}
 				}
 			}
