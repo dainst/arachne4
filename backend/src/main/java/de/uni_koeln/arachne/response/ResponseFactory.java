@@ -353,7 +353,7 @@ public class ResponseFactory {
 		final List<ExternalLink> externalLinks = new ArrayList<ExternalLink>();
 		if (externalLinkResolvers != null) for (ExternalLinkResolver resolver : externalLinkResolvers) {
 			final ExternalLink externalLink = resolver.resolve(dataset);
-			LOGGER.debug("result fot resolver {} is {}", resolver, externalLink);
+			LOGGER.debug("result for resolver {} is {}", resolver, externalLink);
 			if (externalLink != null) externalLinks.add(externalLink);
 		}
 		if (!externalLinks.isEmpty()) response.setExternalLinks(externalLinks);
