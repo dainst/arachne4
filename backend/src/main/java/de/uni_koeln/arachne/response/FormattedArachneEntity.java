@@ -34,7 +34,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * Hierachical structured information of the dataset.
 	 */
-	protected AbstractContent sections;
+	protected List<AbstractContent> sections;
 	
 	/**
 	 * The date of the last Modification of the dataset.
@@ -125,11 +125,11 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		this.subtitle = subtitle;
 	}
 	
-	public AbstractContent getSections() {
+	public List<AbstractContent> getSections() {
 		return sections;
 	}
 
-	public void setSections(final AbstractContent content) {
+	public void setSections(final List<AbstractContent> content) {
 		sections = content;
 	}
 	

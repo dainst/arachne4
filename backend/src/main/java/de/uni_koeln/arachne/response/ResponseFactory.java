@@ -338,16 +338,7 @@ public class ResponseFactory {
 		final List<AbstractContent> contentList = getContentList(dataset, namespace, sections);
 		
 		if (contentList != null) {
-			if (contentList.size() == 1) {
-				response.setSections(contentList.get(0));
-			} else {
-				final Section sectionContent = new Section();
-				sectionContent.setLabel("ContainerSection");
-				for (final AbstractContent content: contentList) {
-					sectionContent.add(content);
-				}
-				response.setSections(sectionContent);
-			}
+			response.setSections(contentList);
 		}
 	}
 	
