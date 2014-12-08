@@ -57,6 +57,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	
 	private transient SAXBuilder xmlParser = null;
 	
+	// TODO add category specific facets to the cache
+	// TODO refactor caching implementations
 	private transient final Map<String, Document> xmlConfigDocuments = new HashMap<String, Document>();
 	
 	private transient final Map<String, Element> xmlIncludeElements = new HashMap<String, Element>();
@@ -336,31 +338,17 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @return A <code>List&lt;String></code>
 	 */
 	public List<String> getFacetsFromXMLFile(final String category) {
-		final String filename = getDocumentFilenameFromType(category);
-		if ("unknown".equals(filename)) {
-			return null;
-		}
-		
 		final List<String> facetList = new ArrayList<String>();
 		
-		final ServletContextResource xmlDocument = new ServletContextResource(getServletContext(), filename);
-	    try {
-	    	final SAXBuilder saxBuilder = new SAXBuilder(new XMLReaderSAX2Factory(false, "org.apache.xerces.parsers.SAXParser"));
-	    	final Document document = saxBuilder.build(xmlDocument.getFile());
-	    	final Namespace namespace = document.getRootElement().getNamespace();
-	    	
-			// Get facets
- 			final Element facets = document.getRootElement().getChild("facets", namespace);
- 			for (final Element element: facets.getChildren()) {
- 				facetList.add(element.getAttributeValue("name")); 				
- 			}
- 			return facetList;
-		} catch (JDOMException e) {
-			LOGGER.error(e.getMessage());
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage());
+		final Document document = getDocument(category); 
+		final Namespace namespace = document.getRootElement().getNamespace();
+		
+		final Element facets = document.getRootElement().getChild("facets", namespace);
+		// TODO make sure the list elements are unique so that it must not be tested later
+		for (final Element element: facets.getChildren()) {
+			facetList.add(element.getAttributeValue("name")); 				 				
 		}
-		return null;
+		return facetList;
 	}
 	
 	/**
