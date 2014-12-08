@@ -23,9 +23,8 @@ import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.index.query.functionscore.script.ScriptScoreFunctionBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.facet.FacetBuilders;
-import org.elasticsearch.search.facet.terms.TermsFacet;
-import org.elasticsearch.search.facet.terms.TermsFacet.Entry;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,8 +113,7 @@ public class SearchService {
 	 */
 	public void addFacets(final List<String> facetList, final int facetSize, final SearchRequestBuilder searchRequestBuilder) {
 		for (final String facetName: facetList) {
-			// return the top 100 facets
-			searchRequestBuilder.addFacet(FacetBuilders.termsFacet(facetName).field(facetName).size(facetSize));
+			searchRequestBuilder.addAggregation(AggregationBuilders.terms(facetName).field(facetName).size(facetSize));
 		}
 	}
 	
@@ -182,6 +180,7 @@ public class SearchService {
 		
 		if (facetList != null) {
 			final List<SearchResultFacet> facets = new ArrayList<SearchResultFacet>();
+			
 			for (final String facetName: facetList) {
 				final Map<String, Long> facetMap = getFacetMap(facetName, searchResponse, filterValues);
 				if (facetMap != null && (filterValueList == null || !filterValueList.contains(facetName))) {
@@ -289,21 +288,12 @@ public class SearchService {
 	 * @return A map containing the facet value as key and the facet count as value.
 	 */
 	private Map<String, Long> getFacetMap(final String name, final SearchResponse searchResponse, final String filterValues) {
-		final TermsFacet facet = (TermsFacet) searchResponse.getFacets().facet(name);
+		Terms aggregator = (Terms)searchResponse.getAggregations().getAsMap().get(name); 
 		final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
-		// workaround for elasticsearch reporting too many facets entries as there should only be one
-		if (facet.getEntries().isEmpty()) {
-			return null;
-		} else {
-			if (filterValues != null && filterValues.contains(name)) {
-				facetMap.put(facet.getEntries().get(0).getTerm().toString(), Long.valueOf(facet.getEntries().get(0).getCount()));
-			} else {
-				for (final Entry entry: facet.getEntries()) {
-					facetMap.put(entry.getTerm().toString(), Long.valueOf(entry.getCount()));
-				}
-			}
-			return facetMap;
+		for (final Terms.Bucket bucket: aggregator.getBuckets()) {
+			facetMap.put(bucket.getKey(), bucket.getDocCount());
 		}
+		return facetMap;
 	}
 	
 	/**
