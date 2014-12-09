@@ -13,7 +13,7 @@
       </section>
     </subtitle>
     <datasections>
-      <section labelKey="Informationen zum Sammlungen">
+      <section labelKey="Informationen zur Sammlung">
         <section labelKey="Lokalisierung">
           <section labelKey="Ort">
             <field datasource="sammlungen.OrtSammlungen"/>
