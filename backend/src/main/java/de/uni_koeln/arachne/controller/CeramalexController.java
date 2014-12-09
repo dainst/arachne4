@@ -33,7 +33,7 @@ import de.uni_koeln.arachne.util.EntityId;
  * 
  * Project-specific Controller, handles Ceramalex-specific requests
  * @author Patrick Gunia
- *
+ * @author Reimar Grabowski
  */
 
 @Controller
@@ -85,7 +85,8 @@ public class CeramalexController  {
 		final Integer maxResultSize = 1000000;
 		final Integer resultOffset = 0;
 		
-		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam, maxResultSize, resultOffset, filterValueList);
+		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam, maxResultSize
+				, resultOffset, filterValueList, null, false);
 		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
 			
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, maxResultSize, resultOffset, filterValues, facetList);

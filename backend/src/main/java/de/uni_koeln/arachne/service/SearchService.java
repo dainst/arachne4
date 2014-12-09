@@ -25,6 +25,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ import de.uni_koeln.arachne.response.SearchResultFacetValue;
 import de.uni_koeln.arachne.util.ESClientUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
+import de.uni_koeln.arachne.util.search.SearchFieldList;
 
 /**
  * This class implements all search functionality.
@@ -55,9 +57,9 @@ public class SearchService {
 	@Autowired
 	private transient Transl8Service ts;
 	
-	private transient final List<String> textSearchFieldList;
+	private transient final SearchFieldList searchFields;
 	
-	private transient final List<String> numericSearchFieldList;
+	private transient final List<String> sortFields;
 	
 	/**
 	 * Simple constructor which sets the fields to be queried. 
@@ -66,9 +68,10 @@ public class SearchService {
 	 */
 	@Autowired
 	public SearchService(final @Value("#{config.esTextSearchFields}") String textSearchFields
-			, final @Value("#{config.esNumericSearchFields}") String numericSearchFields) {
-		textSearchFieldList = StrUtils.getCommaSeperatedStringAsList(textSearchFields);
-		numericSearchFieldList = StrUtils.getCommaSeperatedStringAsList(numericSearchFields);
+			, final @Value("#{config.esNumericSearchFields}") String numericSearchFields
+			, final @Value("#{config.esSortFields}") String sortFields ) {
+		searchFields = new SearchFieldList(textSearchFields, numericSearchFields);
+		this.sortFields = StrUtils.getCommaSeperatedStringAsList(sortFields);
 	}
 	
 	/**
@@ -79,14 +82,17 @@ public class SearchService {
 	 * @param filterValueList A list of values to use for building an elasticsearch fuilter query.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 */
-	public SearchRequestBuilder buildSearchRequest(final String searchParam, final int resultSize, final int resultOffset,
-			final List<String> filterValueList) {
+	public SearchRequestBuilder buildSearchRequest(final String searchParam, final int resultSize
+			, final int resultOffset, final List<String> filterValueList, final String sortField
+			, final Boolean orderDesc) {
 		
-		return esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
+		SearchRequestBuilder result = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
 				.setQuery(buildQuery(searchParam, filterValueList))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setFrom(resultOffset)
 				.setSize(resultSize);
+		addSort(sortField, orderDesc, result);
+		return result;
 	}
 	
 	/**
@@ -97,13 +103,16 @@ public class SearchService {
 	 * @param resultOffset An offset into the result set.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 */
-	public SearchRequestBuilder buildContextSearchRequest(Long entityId, int resultSize, int resultOffset) {
+	public SearchRequestBuilder buildContextSearchRequest(final Long entityId, final int resultSize
+			, final int resultOffset, final String sortField, final Boolean orderDesc) {
 		
-		return esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
+		SearchRequestBuilder result = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
 				.setQuery(buildContextQuery(entityId))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setFrom(resultOffset)
 				.setSize(resultSize);
+		addSort(sortField, orderDesc, result);
+		return result;
 	}
 	
 	/**
@@ -114,6 +123,27 @@ public class SearchService {
 	public void addFacets(final List<String> facetList, final int facetSize, final SearchRequestBuilder searchRequestBuilder) {
 		for (final String facetName: facetList) {
 			searchRequestBuilder.addAggregation(AggregationBuilders.terms(facetName).field(facetName).size(facetSize));
+		}
+	}
+	
+	/**
+	 * Adds sorting to the search request.
+	 * @param sortField The elasticsearch field to sort on (this method takes care of choosing the correct sub-field if 
+	 * any).
+	 * @param orderDesc If the sort should be in descending order.
+	 * @param searchRequestBuilder The request builder to add the sort to.
+	 */
+	public void addSort(final String sortField, final Boolean orderDesc, SearchRequestBuilder searchRequestBuilder) {
+		if (!StrUtils.isEmptyOrNull(sortField) && (sortFields.contains(sortField))) {
+			String field = sortField; 
+			if (searchFields.containsText(sortField)) {
+				field += ".sort";
+			}
+			if (orderDesc != null && orderDesc) {
+				searchRequestBuilder.addSort(field, SortOrder.DESC);
+			} else {
+				searchRequestBuilder.addSort(field, SortOrder.ASC);
+			}
 		}
 	}
 	
@@ -131,6 +161,9 @@ public class SearchService {
 			final String filterValues, final List<String> facetList) {
 		
 		SearchResponse searchResponse = null;
+		
+		// check search params
+		
 		try {
 			searchResponse = searchRequestBuilder.execute().actionGet();
 		} catch (SearchPhaseExecutionException e) {
@@ -325,12 +358,12 @@ public class SearchService {
 		final QueryStringQueryBuilder innerQuery = QueryBuilders.queryString(searchParam)
 				.defaultOperator(Operator.AND);
 		
-		for (String textField: textSearchFieldList) {
+		for (String textField: searchFields.text()) {
 			innerQuery.field(textField);
 		}
 		
 		if (StringUtils.isNumeric(searchParam)) {
-			for (final String numericField: numericSearchFieldList) {
+			for (final String numericField: searchFields.numeric()) {
 				innerQuery.field(numericField);
 			}
 		}
