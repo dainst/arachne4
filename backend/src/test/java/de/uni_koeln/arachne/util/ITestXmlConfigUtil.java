@@ -56,7 +56,6 @@ public class ITestXmlConfigUtil {
 		assertNotNull(xmlConfigUtil.getDocument("relief"));
 		assertNotNull(xmlConfigUtil.getDocument("reproduktion"));
 		assertNotNull(xmlConfigUtil.getDocument("rezeption"));
-		assertNotNull(xmlConfigUtil.getDocument("sammler"));
 		assertNotNull(xmlConfigUtil.getDocument("sammlungen"));
 		assertNotNull(xmlConfigUtil.getDocument("sarkophag"));
 		assertNotNull(xmlConfigUtil.getDocument("surfacetreatment"));
