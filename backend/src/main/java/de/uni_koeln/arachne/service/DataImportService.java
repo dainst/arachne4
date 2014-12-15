@@ -191,12 +191,12 @@ public class DataImportService { // NOPMD
 			LOGGER.info("Dataimport started on index '" + indexName + "'");
 			esClientUtil.setRefreshInterval(indexName, false);
 									
-			final Long entityCount = jdbcTemplate.queryForObject("select count(*) `ArachneEntityID` from `arachneentityidentification`", Long.class);
+			final Long entityCount = jdbcTemplate.queryForObject("select count(*) `ArachneEntityID` from `arachneentityidentification` where `isDeleted` = 0", Long.class);
 			if (entityCount != null) {
 				count.set(entityCount);
 			} else {
-				LOGGER.error("'select count(*) `ArachneEntityID` from `arachneentityidentification`' returned 0 - Dataimport aborted.");
-				throw new Exception("'select count(*) `ArachneEntityID` from `arachneentityidentification`' returned 0");
+				LOGGER.error("'select count(*) `ArachneEntityID` from `arachneentityidentification` where `isDeleted` = 0' returned 0 - Dataimport aborted.");
+				throw new Exception("'select count(*) `ArachneEntityID` from `arachneentityidentification` where `isDeleted` = 0' returned 0");
 			}
 			
 			long startId = 0; 
@@ -224,25 +224,23 @@ public class DataImportService { // NOPMD
 					
 					LOGGER.debug("Creating response");
 					byte[] jsonEntity;
-					if (entityId.isDeleted()) {
-						jsonEntity = responseFactory.createResponseForDeletedEntityAsJson(entityId);
-					} else {
+					if (!entityId.isDeleted()) {
 						jsonEntity = entityService.getFormattedEntityByIdAsJson(entityId);
+						if (jsonEntity == null) {
+							LOGGER.error("Entity " + dbgEntityId + " is null! This should never happen. Check the database immediately.");
+							throw new RuntimeException("Entity " + dbgEntityId + " is null!");
+						} else {
+							if (checkIndexOnDataImport) {
+								entityCompareService.compareToIndex(dbgEntityId, jsonEntity.toString());
+							}
+							LOGGER.debug("Adding entity " + dbgEntityId + " to bulk.");
+							bulkProcessor.add(client.prepareIndex(indexName, "entity", String.valueOf(dbgEntityId))
+									.setSource(jsonEntity).request());
+							index++;
+							indexedDocuments.set(index);
+						}
 					}
 					
-					if (jsonEntity == null) {
-						LOGGER.error("Entity " + dbgEntityId + " is null! This should never happen. Check the database immediately.");
-						throw new RuntimeException("Entity " + dbgEntityId + " is null!");
-					} else {
-						if (checkIndexOnDataImport) {
-							entityCompareService.compareToIndex(dbgEntityId, jsonEntity.toString());
-						}
-						LOGGER.debug("Adding entity " + dbgEntityId + " to bulk.");
-						bulkProcessor.add(client.prepareIndex(indexName, "entity", String.valueOf(dbgEntityId))
-								.setSource(jsonEntity).request());
-						index++;
-						indexedDocuments.set(index);
-					}
 					LOGGER.debug("Update elapsed time");
 					// update elapsed time every second
 					final long now = System.currentTimeMillis();
