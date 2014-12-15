@@ -216,7 +216,7 @@ public class SearchService {
 			
 			for (final String facetName: facetList) {
 				final Map<String, Long> facetMap = getFacetMap(facetName, searchResponse, filterValues);
-				if (facetMap != null && (filterValueList == null || !filterValueList.contains(facetName))) {
+				if (facetMap != null && !facetMap.isEmpty() && (filterValueList == null || !filterValueList.contains(facetName))) {
 					facets.add(getSearchResultFacet(facetName, facetMap));
 				}
 			}
