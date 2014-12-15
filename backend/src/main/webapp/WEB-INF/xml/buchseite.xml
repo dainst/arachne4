@@ -24,7 +24,7 @@
     </title>
     <subtitle>
       <section>
-        <field datasource="buchseite.seite" prefix="Seite: "/>
+        <field datasource="buchseite.seite_natuerlich" prefix="Seite: "/>
       </section>
     </subtitle>
     <datasections>
