@@ -4,7 +4,7 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
 
-     <!-- Spring bean configuration. Tell Spring to bounce off BoneCP -->
+     <!-- Spring bean configuration. Tell Spring to bounce off connection pool -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
 		<property name="targetDataSource" ref="mainDataSource" />
 	</bean>
@@ -17,18 +17,6 @@
         <property name="password" value="#{config.jdbcPassword}" />
     </bean>
     
-    <bean id="drupalDataSource"
-        parent="mainDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-        <property name="driverClassName" value="#{config.drupaljdbcDriverClassName}" />
-        <property name="jdbcUrl" value="#{config.drupaljdbcUrl}" />
-        <property name="username" value="#{config.drupaljdbcUsername}" />
-        <property name="password" value="#{config.drupaljdbcPassword}" />
-    </bean>
-    
-    <bean id="drupalSqlDao" class="de.uni_koeln.arachne.dao.DrupalSQLDao">
-    	<property name="dataSource" ref="drupalDataSource" />
-    </bean>
-
     <bean id="sessionFactory"
         class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 
