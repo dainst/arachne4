@@ -14,7 +14,9 @@ import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.util.EntityId;
 
 /**
- * This contextualizer retrieves internal contexts (tables in the arachne database). 
+ * This contextualizer retrieves internal contexts (tables in the arachne database).
+ * 
+ * @author Reimar Grabowski 
  */
 public class SemanticConnectionsContextualizer implements IContextualizer {
 
@@ -77,14 +79,12 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 		for (final Map.Entry<String, String> entry: map.entrySet()) {
 			final String key = entry.getKey();
 			if (!(key.contains("PS_") && key.contains("ID")) && !(key.contains("Source")) && !(key.contains("Type"))) {
-				// get ArachneEntityID from context query result  
-				if ("SemanticConnection.Target".equals(key)) {
+				// get ArachneEntityID from context query result
+				// Workaround for shitty case insensitiv table names on OSX
+				if ("SemanticConnection.Target".equals(key) || "semanticconnection.Target".equals(key)) {
 					eId = Long.parseLong(entry.getValue()); 
 					continue;
-				} else if ("SemanticConnection.ForeignKeyTarget".equals(key)) {
-					foreignKey = Long.parseLong(entry.getValue());
-					continue;
-				}  else if ("SemanticConnection.ForeignKeyTarget".equals(key)) {
+				} else if ("SemanticConnection.ForeignKeyTarget".equals(key) || "semanticconnection.ForeignKeyTarget".equals(key)) {
 					foreignKey = Long.parseLong(entry.getValue());
 					continue;
 				} 
