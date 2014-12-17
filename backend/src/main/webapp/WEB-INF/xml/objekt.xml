@@ -44,7 +44,7 @@
 			</section>
 		</subtitle>
 		<datasections>
-			<section labelKey="Katalogtext">
+			<section labelKey="Datenblatt Berlin">
 				<section labelKey="Name">
 					<field datasource="datenblattberlin.Name" />
 				</section>
