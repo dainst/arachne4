@@ -3,10 +3,15 @@
   <context type="literatur" labelKey="Literatur" separator=", " link="http://zenon.dainst.org/#book/">
     <field datasource=".ZenonID" prefix="$link$"/>
     <field datasource=".tempLiteratur"/>
-    <field datasource=".Abkuerzungen">
-      <ifEmpty>
-        <field datasource=".DAIRichtlinien"/>
-      </ifEmpty>
+    <!-- AdditionalInfosJSON -->
+    <field datasource=".AntikeTextquelle">
+	    <ifEmpty>
+		    <field datasource=".Abkuerzungen">
+		      <ifEmpty>
+		        <field datasource=".DAIRichtlinien"/>
+		      </ifEmpty>
+		    </field>
+	    </ifEmpty>
     </field>
     <field datasource=".Corpuszitat"/>
     <field datasource=".AntikeTextquelle"/>

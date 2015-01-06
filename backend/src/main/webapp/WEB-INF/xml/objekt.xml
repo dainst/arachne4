@@ -199,10 +199,14 @@
 					<field datasource="objekt.ObjektRestauroAnalyseErgebnis"
 						prefix="Ergebnis: " />
 				</section>
-				<section labelKey="Katalog">
+				<section labelKey="Katalog (deutsch)">
+					<field datasource="objekt.Katalogbearbeitung" prefix="Bearbeiter: " />
 					<field datasource="objekt.Katalognummer" prefix="Nummer: " />
 					<field datasource="objekt.Katalogtext" prefix="Katalogtext: " />
-					<field datasource="objekt.KatalogtextEnglisch" prefix="Katalogtext(englisch): " />
+				</section>
+				<section labelKey="Katalog (englisch)">
+					<field datasource="objekt.KatalogbearbeitungEnglisch" prefix="Bearbeiter: " />
+					<field datasource="objekt.KatalogtextEnglisch" prefix="Katalogtext: " />
 				</section>
 				<section labelKey="Inschrift">
 					<field datasource="objekt.InschriftSpracheObjekt" prefix="Sprache bzw Schrift: " />
