@@ -3,16 +3,11 @@
   <context type="literatur" labelKey="Literatur" separator=", " link="http://zenon.dainst.org/#book/">
     <field datasource=".ZenonID" prefix="$link$"/>
     <field datasource=".tempLiteratur"/>
-    <!-- AdditionalInfosJSON -->
-    <field datasource=".AntikeTextquelle">
-	    <ifEmpty>
-		    <field datasource=".Abkuerzungen">
-		      <ifEmpty>
-		        <field datasource=".DAIRichtlinien"/>
-		      </ifEmpty>
-		    </field>
-	    </ifEmpty>
-    </field>
+	<field datasource=".Abkuerzungen">
+		<ifEmpty>
+			<field datasource=".DAIRichtlinien"/>
+		</ifEmpty>
+	</field>
     <field datasource=".Corpuszitat"/>
     <field datasource=".AntikeTextquelle"/>
     <field datasource=".Seite"/>
@@ -30,9 +25,9 @@
     <!-- AdditionalInfosJSON -->
     <field datasource=".subVoce" prefix="s.v. "/>
     <!-- AdditionalInfosJSON -->
-    <field datasource=".Textauszug" prefix="(Textauszug: '" postfix="')"/>
+    <field datasource=".Textauszug" prefix="[Textauszug: '" postfix="']"/>
     <!-- AdditionalInfosJSON -->
-    <field datasource=".TextauszugUebersetzung" prefix="(Übersetzter Textauszug: '" postfix="')"/>
+    <field datasource=".TextauszugUebersetzung" prefix="[Übersetzter Textauszug: '" postfix="']"/>
     <!-- AdditionalInfosJSON -->
     <field datasource=".KommentarLitZitat" prefix="(" postfix=")"/>
     <field datasource=".Supplement" prefix="Supplement: "/>
