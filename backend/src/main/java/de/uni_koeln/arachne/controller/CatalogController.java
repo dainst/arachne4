@@ -60,23 +60,21 @@ public class CatalogController {
 			final HttpServletResponse response) {
 		CatalogEntry result = null;
 		final User user = rightsService.getCurrentUser();
-		
+
 		LOGGER.debug("Request for catalogEntry: " + catalogEntryId + " of user: " + user.getId());
-		
-		if (rightsService.isSignedInUser()) {
-			result = catalogEntryDao.getByCatalogEntryId(catalogEntryId);
-			if (result == null) {
-				response.setStatus(404);
-			} else if (!result.getCatalog().isCatalogOfUserWithId(user.getId())){
-					result = null;
-					response.setStatus(403);				
-			}
-		} else {
-			response.setStatus(403);
+
+		result = catalogEntryDao.getByCatalogEntryId(catalogEntryId);
+		if (result == null) {
+			response.setStatus(404);
+		} else if (!result.getCatalog().isCatalogOfUserWithId(user.getId()) 
+				&& !result.getCatalog().isPublic()){
+			result = null;
+			response.setStatus(403);				
 		}
+
 		return result;
 	}
-	
+
 	/**
 	 * Handles http POST request for <code>/catalogEntry/{catalogEntryId}/update</code>.
 	 * Returns the catalogEntry created and 200 if the action is permitted.
@@ -153,20 +151,18 @@ public class CatalogController {
 			final HttpServletResponse response) {
 		CatalogHeading result = null;
 		final User user = rightsService.getCurrentUser();
-		
+
 		LOGGER.debug("Request for catalogHeading: " + catalogHeadingId + " of user: " + user.getId());
-		
-		if (rightsService.isSignedInUser()) {
-			result = catalogHeadingDao.getByCatalogHeadingId(catalogHeadingId);
-			if (result == null) {
-				response.setStatus(404);
-			} else if (!result.getCatalog().isCatalogOfUserWithId(user.getId())){
-					result = null;
-					response.setStatus(403);				
-			}
-		} else {
-			response.setStatus(403);
+
+		result = catalogHeadingDao.getByCatalogHeadingId(catalogHeadingId);
+		if (result == null) {
+			response.setStatus(404);
+		} else if (!result.getCatalog().isCatalogOfUserWithId(user.getId())
+				&& !result.getCatalog().isPublic()){
+			result = null;
+			response.setStatus(403);				
 		}
+
 		return result;
 	}
 	
@@ -368,20 +364,18 @@ public class CatalogController {
 			final HttpServletResponse response) {
 		Catalog result = null;
 		final User user = rightsService.getCurrentUser();
-		
+
 		LOGGER.debug("Request for catalog " + catalogId + " of user: " + user.getId());
-		
-		if (rightsService.isSignedInUser()) {
-			result = catalogDao.getByCatalogId(catalogId);
-			if (result == null) {
-				response.setStatus(404);
-			} else if (!result.isCatalogOfUserWithId(user.getId())) {
-				result = null;
-				response.setStatus(403);
-			}
-		} else {
+
+		result = catalogDao.getByCatalogId(catalogId);
+		if (result == null) {
+			response.setStatus(404);
+		} else if (!result.isCatalogOfUserWithId(user.getId())
+				&& !result.isPublic()) {
+			result = null;
 			response.setStatus(403);
 		}
+
 		return result;
 	}
 
