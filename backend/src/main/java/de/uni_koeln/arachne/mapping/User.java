@@ -113,12 +113,15 @@ public class User {
 		 */
 	   	@Column(name="LastLogin")
 		Date lastLogin;
-	   	
+		
 	   	/**
-	   	 * The lists of saved bookmarks owned by the user
+	   	 * List of catalogs owned by the user
 	   	 */
-		@OneToMany(mappedBy="user", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-		private Set<BookmarkList> bookmarkLists;
+		@ManyToMany(fetch=FetchType.EAGER)
+		@JoinTable(name="catalog_benutzer",
+			joinColumns={@JoinColumn(name="uid")},
+			inverseJoinColumns={@JoinColumn(name="catalog_id")})
+		private Set<Catalog> catalogs;
 
 		/**
 		 * @return the id
@@ -399,20 +402,6 @@ public class User {
 		}
 
 		/**
-		 * @return the bookmarkLists
-		 */
-		public Set<BookmarkList> getBookmarkLists() {
-			return bookmarkLists;
-		}
-
-		/**
-		 * @param bookmarkLists the bookmarkLists to set
-		 */
-		public void setBookmarkLists(final Set<BookmarkList> bookmarkLists) {
-			this.bookmarkLists = bookmarkLists;
-		}
-
-		/**
 		 * @return the emailAuth
 		 */
 		public String getEmailAuth() {
@@ -424,5 +413,19 @@ public class User {
 		 */
 		public void setEmailAuth(String emailAuth) {
 			this.emailAuth = emailAuth;
+		}
+
+		/**
+		 * @return the catalogs
+		 */
+		public Set<Catalog> getCatalogs() {
+			return catalogs;
+		}
+
+		/**
+		 * @param catalogs the catalogs to set
+		 */
+		public void setCatalogs(Set<Catalog> catalogs) {
+			this.catalogs = catalogs;
 		}
 }

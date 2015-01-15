@@ -6,38 +6,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.uni_koeln.arachne.mapping.Bookmark;
+import de.uni_koeln.arachne.mapping.CatalogEntry;
 
-@Repository("BookmarkDao")
-public class BookmarkDao {
+@Repository("CatalogEntryDao")
+public class CatalogEntryDao {
 	
 	@Autowired
     private transient SessionFactory sessionFactory;
 	
 	@Transactional(readOnly=true)
-	public Bookmark getByBookmarkId(final long bookmarkId) {
+	public CatalogEntry getByCatalogEntryId(final long catalogEntryId) {
 		Session session = sessionFactory.getCurrentSession();
-		return (Bookmark) session.get(Bookmark.class, bookmarkId);
+		return (CatalogEntry) session.get(CatalogEntry.class, catalogEntryId);
 	}
 	
 	@Transactional
-	public Bookmark updateBookmark(final Bookmark bookmark) {
+	public CatalogEntry updateCatalogEntry(final CatalogEntry catalogEntry) {
 		Session session = sessionFactory.getCurrentSession();
-		session.update(bookmark);
-		return bookmark;
+		session.update(catalogEntry);
+		return catalogEntry;
 	}
 	
 	@Transactional
-	public Bookmark saveBookmark(final Bookmark bookmark) {
+	public CatalogEntry saveCatalogEntry(final CatalogEntry catalogEntry) {
 		Session session = sessionFactory.getCurrentSession();
-		session.save(bookmark);
-		return bookmark;
+		session.save(catalogEntry);
+		return catalogEntry;
 	}
 	
 	@Transactional
-	public void deleteBookmark(final Bookmark bookmark) {
+	public void deleteCatalogEntry(final CatalogEntry catalogEntry) {
 		Session session = sessionFactory.getCurrentSession();
-		session.delete(bookmark);
+		session.delete(catalogEntry);
 	}
 
 }
