@@ -1,0 +1,36 @@
+Anmerkungen
+
+-Links auf andere Projektseiten: con10t-item mit neuer ID als Wert, node aus Drupal angeben? zB: <a href="node/306" con10t-item="palilia20">Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild</a> 
+
+
+
+-Link zu einzelnen Datensätzen in den Katalogen genauso?
+-wie ist das bei Büchern, zB http://arachne.uni-koeln.de/books/CILvI1863?
+-und bei Gruppen? zB Basilica Aemilia, muss man wie bei den Gruppierungen einen Katalog-Datensatz angeben?
+
+Suchmengen:
+die verlinkte ObjektID ist nicht die ArachneEntityID, es wird immer die Kategorie mitspezifiziert, zB: 
+<a href='http://arachne.uni-koeln.de/arachne/index.php?view[layout]=search_result_category&view[caller][project]=&view[page]=0&view[category]=objekt&view[section]=uebersicht&search[sort]=sortKatalognummer&search[data]=ALL&search[sortorder]=ASC&search[mode]=detail&search[match]=similar&view[active_tab]=overview&search[constraints][objekt][PS_GruppenID]=409681' data-arachne-collection="409681" data-arachne-collectionContext="objekt"> Baudenkmäler  </a>
+
+data-arachne-collection ist ein Tag, welches noch von damals stammt, genau wie data-arachne-collectionContext, welches die Kategorie angibt; vllt. con10t-item-context ergänzen?
+
+
+-Struktur der Kataloge: viele Möglichkeiten (im Redmine festgehalten), wie gehe ich da am besten vor?
+Als Platzhalter habe ich den Katalog mit <catalog></catalog> umgeben, egal, welche Struktur er hat (durch Liste gegliedert, durch Absätze und <br /> gegliedert, etc.)
+
+-wann wird con10t-search-query="QUERY_STRING" und wann wird con10t-search-catalog="CATALOG_ID" benutzt? CATALOG_ID = GruppierungID?
+
+-Gruppierungen umwandeln in Kataloge
+
+
+-div in clarac?
+
+-Sarkophag-Browser auf Projektseite verlinkt: <a href="/browser/index.php?view[layout]=sarkophag" onClick="javascript:return openBrowser('/browser/index.php?view[layout]=sarkophag');">zum Sarkophag-Browser</a> Zeile löschen?
+
+
+-bei Publikationen: automatisch generierte Gliederung? Body in der Datenbank ist leer.
+
+
+Es muss zwischen Listen und Katalogen unterschieden werden... Lipps zB ist ein Katalog, die Verschalungstypen von Tombrägel würde ich eher als Liste sehen.
+
+
