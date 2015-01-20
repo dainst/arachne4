@@ -6,4 +6,149 @@
 			"en": "About iDAI.images/Arachne"
 		}
 	}
+	{
+		"id": "",
+		"title": {
+			"de": "Inhalte",
+			"en": "Content"
+		},
+		"children": [
+			{
+				"id": "",
+				"title": {
+					"de": "DAI - Objektdatenbank",
+					"en": "DAI - Objectdatabase"
+				}		
+			},
+			{
+				"id": "idaibookbrowser",
+				"title": {
+					"de": "iDAI.bookbrowser",
+					"en": "iDAI.bookbrowser"
+				}		
+			},
+			{
+				"id": "monumentbrowser",
+				"title": {
+					"de": "Monumentbrowser",
+					"en": "Monument Browser"
+				}		
+			},
+			{
+				"id": "",
+				"title": {
+					"de": "Sammlungen",
+					"en": "Collections"
+				}		
+			},
+			{
+				"id": "",
+				"title": {
+					"de": "Sonstige Projekte",
+					"en": "Other Projects"
+				}		
+			},
+			{
+				"id": "",
+				"title": {
+					"de": "Publikationen",
+					"en": "Collections"
+				},
+				"children": [
+					{
+						"id": "museomaff",
+						"title": {
+							"de": "Das Museo Maffeiano als Online-Edition",
+							"en": "The Museo Maffeiano online-edition"
+						}		
+					},
+					{
+						"id": "corpusantsark",
+						"title": {
+							"de": "Corpus der Antiken Sarkophage"
+						}		
+					},
+					{
+						"id": "corpusminmyk",
+						"title": {
+							"de": "Corpus der minoischen und mykenischen Siegel"
+						}		
+					},
+					{
+						"id": "langwiss",
+						"title": {
+							"de": "Jörn Lang, “Mit Wissen geschmückt?”. Zur bildlichen Rezeption griechischer Dichter und Denker in der römischen Lebenswelt (Wiesbaden 2012)"
+						}		
+					},					
+					{
+						"id": "roseterra",
+						"title": {
+							"de": "H. Rose, Die römischen Terrakottamasken in den Nordwestprovinzen. MAR XXXVII (2006)"
+						}		
+					},
+					{
+						"id": "katalogskulpthess",
+						"title": {
+							"de": "Katalog der Skulpturen im Archäologischen Museum von Thessaloniki"
+						}		
+					},
+					{
+						"id": "hafen",
+						"title": {
+							"de": "Torsten Bendschus – Stefan Feuser, Bilder und Vorstellungen römischer Hafenanlagen. Gattungsübergreifende Dokumentation und kontextualisierte Analyse römischer Hafendarstellungen"
+						}		
+					},
+				]				
+			},
+			{
+				"id": "wissqualarachne",
+				"title": {
+					"de": "Wissenschaftliche Qualifikationsarbeiten",
+					"en": "Dissertations/academic final papers"
+				},
+				"children": [
+					{
+						"id": "roseterra",
+						"title": {
+							"de": "H. Rose, Die römischen Terrakottamasken in den Nordwestprovinzen. MAR XXXVII (2006)"
+						}		
+					},
+				]		
+			},
+			{
+				"id": "paliliastart",
+				"title": {
+					"de": "Palilia",
+					"en": "Palilia"
+				},		
+				"children": [
+					{
+						"id": "palilia20",
+						"title": {
+							"de": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild"
+						}		
+					},
+					{
+						"id": "lippsbasilica",
+						"title": {
+							"de": "Johannes Lipps, Die Basilica Aemilia am Forum Romanum. Der kaiserzeitliche Bau und seine Ornamentik (Diss. Köln 2008)"
+						}		
+					},
+					{
+						"id": "palilia25",
+						"title": {
+							"de": "Palilia 25: M. Tombrägel, Die republikanischen Otiumvillen von Tivoli"
+						}		
+					},
+					{
+						"id": "palilia26",
+						"title": {
+							"de": "Palilia 26: Wolfgang Ehrhardt, Dekorations- und Wohnkontext. Beseitigung, Restaurierung und Konservierung von Wandbemalungen in den kampanischen Antikenstätten (Wiesbaden 2012)"
+						}		
+					},
+
+				]
+			}
+		]	
+	}
 ]
