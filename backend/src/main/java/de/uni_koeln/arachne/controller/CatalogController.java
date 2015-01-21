@@ -99,6 +99,7 @@ public class CatalogController {
 					&& (oldCatalogEntry.getId().equals(catalogEntry.getId()))
 					&& (oldCatalogEntry.getCatalog().isCatalogOfUserWithId(user.getId()))) {
 				catalogEntry.setCatalog(oldCatalogEntry.getCatalog());
+				catalogEntry.setHeading(oldCatalogEntry.getHeading());
 				result = catalogEntryDao.updateCatalogEntry(catalogEntry);
 			} else {
 				result = null;
