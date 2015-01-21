@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -441,12 +442,14 @@ public class CatalogController {
 		LOGGER.debug("Request to create catalog for user: " + user.getId());
 		
 		if (rightsService.isSignedInUser()) {
-			Set<User> users = catalog.getUsers();
+			Set<User> users = new HashSet<User>();
 			users.add(user);
 			catalog.setUsers(users);
-			for (final CatalogEntry catalogEntry : catalog.getCatalogEntries()) {
-				catalogEntry.setId(null);
-				catalogEntry.setCatalog(catalog);
+			if (catalog.getCatalogHeadings() != null){
+				for (final CatalogHeading catalogHeading : catalog.getCatalogHeadings()) {
+					catalogHeading.setId(null);
+					catalogHeading.setCatalog(catalog);
+				}
 			}
 			result = catalogDao.saveCatalog(catalog);
 		} else {

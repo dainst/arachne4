@@ -175,6 +175,7 @@ public class Catalog {
 	/**
 	 * @param catalogHeadings the catalogHeadings to set
 	 */
+	@JsonProperty("catalogHeadings")
 	public void setCatalogHeadings(Set<CatalogHeading> catalogHeadings) {
 		this.catalogHeadings = catalogHeadings;
 	}

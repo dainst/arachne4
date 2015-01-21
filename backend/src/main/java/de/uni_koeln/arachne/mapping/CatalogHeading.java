@@ -81,6 +81,14 @@ public class CatalogHeading {
 	 */
 	public void setCatalog(final Catalog catalog) {
 		this.catalog = catalog;
+		for (CatalogHeading heading : this.getChildren()){
+			heading.setCatalog(catalog);
+			heading.setParent(this);
+		}
+		for (CatalogEntry entry : this.getCatalogEntries()){
+			entry.setCatalog(catalog);
+			entry.setHeading(this);
+		}
 	}
 
 	/**
