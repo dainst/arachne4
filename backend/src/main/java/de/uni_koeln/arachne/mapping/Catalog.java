@@ -50,6 +50,9 @@ public class Catalog {
 	@Column(name="author")
 	private String author;
 	
+	@Column(name="text")
+	private String text;
+	
 	@Column(name="public")
 	private Boolean isPublic;
 
@@ -178,6 +181,20 @@ public class Catalog {
 	@JsonProperty("catalogHeadings")
 	public void setCatalogHeadings(Set<CatalogHeading> catalogHeadings) {
 		this.catalogHeadings = catalogHeadings;
+	}
+
+	/**
+	 * @return the text
+	 */
+	public String getText() {
+		return text;
+	}
+
+	/**
+	 * @param text the text to set
+	 */
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	
