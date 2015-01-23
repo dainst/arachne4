@@ -55,7 +55,7 @@
         </section>
 		<section labelKey="Katalog">
 			<field datasource="gruppen.Katalogbearbeitung" prefix="Bearbeiter: " />
-			<field datasource="gruppen.Katalogtext" prefix="Katalogtext: " />
+			<field datasource="gruppen.Katalogtext" />
 		</section>        
         <include type="literatur"/>
         <include type="uri"/>
