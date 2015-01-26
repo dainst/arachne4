@@ -1,16 +1,23 @@
 package de.uni_koeln.arachne.mapping;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @XmlRootElement
 @Entity
@@ -27,8 +34,11 @@ public class CatalogEntry {
 	private Catalog catalog;
 	
 	@ManyToOne
-	@JoinColumn(name="heading_id", nullable=false, insertable=true, updatable=true)
-	private CatalogHeading catalogHeading;
+	@JoinColumn(name="parent_id", nullable=true, insertable=true, updatable=true)
+	private CatalogEntry parent;
+	
+	@OneToMany(mappedBy="parent", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	private Set<CatalogEntry> children;
 
 	@Column(name="arachne_entity_id")
 	private Long arachneEntityId;
@@ -71,6 +81,12 @@ public class CatalogEntry {
 	 */
 	public void setCatalog(final Catalog catalog) {
 		this.catalog = catalog;
+		if (this.children != null){
+			for (CatalogEntry child : this.getChildren()){
+				child.setCatalog(catalog);
+				child.setParent(this);
+			}	
+		}
 	}
 
 	/**
@@ -102,20 +118,6 @@ public class CatalogEntry {
 	}
 
 	/**
-	 * @return the text
-	 */
-	public String getText() {
-		return text;
-	}
-
-	/**
-	 * @param text the text to set
-	 */
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	/**
 	 * @return the path
 	 */
 	public String getPath() {
@@ -130,19 +132,47 @@ public class CatalogEntry {
 	}
 
 	/**
-	 * @return the heading
+	 * @return the parent
 	 */
 	@JsonIgnore
 	@XmlTransient
-	public CatalogHeading getHeading() {
-		return catalogHeading;
+	public CatalogEntry getParent() {
+		return parent;
 	}
 
 	/**
-	 * @param heading the heading to set
+	 * @param parent the parent to set
 	 */
-	public void setHeading(CatalogHeading heading) {
-		this.catalogHeading = heading;
+	public void setParent(CatalogEntry parent) {
+		this.parent = parent;
+	}	
+
+	/**
+	 * @return the children
+	 */
+	public Set<CatalogEntry> getChildren() {
+		return children;
+	}
+
+	/**
+	 * @param children the children to set
+	 */
+	public void setChildren(Set<CatalogEntry> children) {
+		this.children = children;
+	}
+
+	/**
+	 * @return the text
+	 */
+	public String getText() {
+		return text;
+	}
+
+	/**
+	 * @param text the text to set
+	 */
+	public void setText(String text) {
+		this.text = text;
 	}
 	
 }

@@ -19,15 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.dao.CatalogEntryDao;
 import de.uni_koeln.arachne.dao.CatalogDao;
-import de.uni_koeln.arachne.dao.CatalogHeadingDao;
-import de.uni_koeln.arachne.mapping.CatalogEntry;
 import de.uni_koeln.arachne.mapping.Catalog;
-import de.uni_koeln.arachne.mapping.CatalogHeading;
+import de.uni_koeln.arachne.mapping.CatalogEntry;
 import de.uni_koeln.arachne.mapping.User;
 import de.uni_koeln.arachne.service.IUserRightsService;
 
 /**
- * Handles http requests for <code>/catalogentry</code> and <code>/catalog</code>.
+ * Handles http requests for <code>/catalogEntry</code> and <code>/catalog</code>.
  */
 @Controller
 public class CatalogController {
@@ -39,9 +37,6 @@ public class CatalogController {
 	
 	@Autowired
 	private transient CatalogEntryDao catalogEntryDao;	
-	
-	@Autowired
-	private transient CatalogHeadingDao catalogHeadingDao;
 	
 	@Autowired
 	private transient CatalogDao catalogDao;
@@ -99,7 +94,7 @@ public class CatalogController {
 					&& (oldCatalogEntry.getId().equals(catalogEntry.getId()))
 					&& (oldCatalogEntry.getCatalog().isCatalogOfUserWithId(user.getId()))) {
 				catalogEntry.setCatalog(oldCatalogEntry.getCatalog());
-				catalogEntry.setHeading(oldCatalogEntry.getHeading());
+				catalogEntry.setParent(oldCatalogEntry.getParent());
 				result = catalogEntryDao.updateCatalogEntry(catalogEntry);
 			} else {
 				result = null;
@@ -138,117 +133,26 @@ public class CatalogController {
 		}
 	}
 	
-	
-	/**
-	 * Handles http GET request for <code>/catalogHeading/{catalogHeadingId}</code>.
-	 * Returns a catalogHeading entity which is serialized into JSON or XML depending
-	 * on the requested format.
-	 * If the given id does not refer to a catalogHeading entity, a 404 error code is returned.
-	 * if the catalogHeading is not owned by the current user or no user is signed in, 
-	 * a 403 error code is returned. 
-	 */
-	@RequestMapping(value="/catalogheading/{catalogHeadingId}", method=RequestMethod.GET)
-	public @ResponseBody CatalogHeading handleGetCatalogHeadingRequest(
-			@PathVariable("catalogHeadingId") final Long catalogHeadingId,
-			final HttpServletResponse response) {
-		CatalogHeading result = null;
-		final User user = rightsService.getCurrentUser();
-
-		LOGGER.debug("Request for catalogHeading: " + catalogHeadingId + " of user: " + user.getId());
-
-		result = catalogHeadingDao.getByCatalogHeadingId(catalogHeadingId);
-		if (result == null) {
-			response.setStatus(404);
-		} else if (!result.getCatalog().isCatalogOfUserWithId(user.getId())
-				&& !result.getCatalog().isPublic()){
-			result = null;
-			response.setStatus(403);				
-		}
-
-		return result;
-	}
-	
-	/**
-	 * Handles http POST request for <code>/catalogHeading/{catalogHeadingId}/update</code>.
-	 * Returns the catalogHeading created and 200 if the action is permitted.
-	 * Returns null and 403 if no user is signed in or the signed in user 
-	 * does not own the catalogHeading to be edited.
-	 */
-	@RequestMapping(value="/catalogheading/{catalogHeadingId}", method=RequestMethod.POST)
-	public @ResponseBody CatalogHeading handleUpdateCatalogHeadingRequest(
-			@PathVariable("catalogHeadingId") final Long catalogHeadingId,
-			@RequestBody final CatalogHeading catalogHeading,
-			final HttpServletResponse response) {
-		final User user = rightsService.getCurrentUser();
-		final CatalogHeading result;
-		final CatalogHeading oldCatalogHeading;
-		
-		LOGGER.debug("Request to update catalogHeading: " + catalogHeadingId + " from user: " + user.getId());
-		
-		if (rightsService.isSignedInUser()) {
-			oldCatalogHeading = catalogHeadingDao.getByCatalogHeadingId(catalogHeadingId);
-			if (oldCatalogHeading != null
-					&& (oldCatalogHeading.getId().equals(catalogHeading.getId()))
-					&& (oldCatalogHeading.getCatalog().isCatalogOfUserWithId(user.getId()))) {
-				catalogHeading.setCatalog(oldCatalogHeading.getCatalog());
-				result = catalogHeadingDao.updateCatalogHeading(catalogHeading);
-			} else {
-				result = null;
-				response.setStatus(403);
-			}
-		} else {
-			result = null;
-			response.setStatus(403);
-		}
-		return result;
-	}
-	
-	/**
-	 * Handles http DELETE request for <code>/catalogHeading/{id}</code>.
-	 * Deletes the specified <code>CatalogHeading</code>.
-	 * Returns 204 on success. 
-	 * Returns 403 if the specified catalogHeading is not owned by the current user.
-	 * Returns 404 if the specified catalogHeading can not be retrieved.
-	 */
-	@RequestMapping(value="/catalogheading/{catalogHeadingId}", method=RequestMethod.DELETE)
-	public void handleCatalogHeadingDestroyRequest(
-			final HttpServletResponse response,
-			@PathVariable("catalogHeadingId") final Long catalogHeadingId) {
-		final User user = rightsService.getCurrentUser();
-		final CatalogHeading catalogHeading = catalogHeadingDao.getByCatalogHeadingId(catalogHeadingId);
-		
-		LOGGER.debug("Request to destroy catalogHeading: " + catalogHeadingId + " from user: " + user.getId());
-		
-		if (catalogHeading == null) {
-			response.setStatus(404);
-		} else if (catalogHeading.getCatalog().isCatalogOfUserWithId(user.getId())) {
-			catalogHeadingDao.deleteCatalogHeading(catalogHeading);
-			response.setStatus(204);
-		} else {
-			response.setStatus(403);
-		}
-	}
-	
 	/**
 	 * Handles http POST request for <code>/catalog/{id}/add</code>.
-	 * Creates the submitted <code>CatalogHeading</code> item and adds it to the 
-	 * specified <code>Catalog</code>.
-	 * Returns the <code>CatalogHeading</code> created and 200.
+	 * Creates the submitted <code>CatalogEntry</code> item and adds it to the 
+	 * specified <code>Catalog</code> as a top-level CatalogEntry.
+	 * Returns the <code>CatalogEntry</code> created and 200.
 	 * Returns null and 403 if no user is signed in or the signed in user does
 	 * not own the specified <code>Catalog</code>.
-	 * If the submitted <code>CatalogHeading</code> contains an id value, that value 
+	 * If the submitted <code>CatalogEntry</code> contains an id value, that value 
 	 * is ignored.
 	 */
 	@RequestMapping(value="/catalog/{catalogId}/add", method=RequestMethod.POST)
-	public @ResponseBody CatalogHeading handleCatalogHeadingCreateInCatalogRequest(
+	public @ResponseBody CatalogEntry handleCatalogEntryCreateInCatalogRequest(
 			@PathVariable("catalogId") final Long catalogId,
-			@RequestBody final CatalogHeading catalogHeading,
+			@RequestBody final CatalogEntry catalogEntry,
 			final HttpServletResponse response) {
 		final User user = rightsService.getCurrentUser();
 		final Catalog catalog;
-		final CatalogHeading result;
+		final CatalogEntry result;
 		
-		LOGGER.debug("Request to create catalogHeading in catalog: " + catalogId + "from user: " + user.getId());
+		LOGGER.debug("Request to create catalogEntry in catalog: " + catalogId + "from user: " + user.getId());
 		
 		if (rightsService.isSignedInUser()) {
 			catalog = catalogDao.getByCatalogId(catalogId);
@@ -257,9 +161,9 @@ public class CatalogController {
 				response.setStatus(404);
 			} else {
 				if (catalog.isCatalogOfUserWithId(user.getId())) {
-					catalogHeading.setId(null);
-					catalogHeading.setCatalog(catalog);
-					result = catalogHeadingDao.saveCatalogHeading(catalogHeading);
+					catalogEntry.setId(null);
+					catalogEntry.setCatalog(catalog);
+					result = catalogEntryDao.saveCatalogEntry(catalogEntry);
 				} else {
 					result = null;
 					response.setStatus(403);
@@ -273,35 +177,35 @@ public class CatalogController {
 	}
 	
 	/**
-	 * Handles http POST request for <code>/catalogHeading/{id}/addentry</code>.
+	 * Handles http POST request for <code>/catalogEntry/{id}/add</code>.
 	 * Creates the submitted <code>CatalogEntry</code> item and adds it to the 
-	 * specified <code>CatalogHeading</code>.
+	 * specified <code>CatalogEntry</code> as a child.
 	 * Returns the <code>CatalogEntry</code> created and 200.
 	 * Returns null and 403 if no user is signed in or the signed in user does
-	 * not own the <code>Catalog</code> of the specified <code>CatalogHeading</code>.
+	 * not own the <code>Catalog</code> of the specified <code>CatalogEntry</code>.
 	 * If the submitted <code>CatalogEntry</code> contains an id value, that value 
 	 * is ignored.
 	 */
-	@RequestMapping(value="/catalogheading/{catalogHeadingId}/addentry", method=RequestMethod.POST)
-	public @ResponseBody CatalogEntry handleCatalogEntryCreateRequest(
-			@PathVariable("catalogHeadingId") final Long catalogHeadingId,
+	@RequestMapping(value="/catalogentry/{catalogEntryParentId}/add", method=RequestMethod.POST)
+	public @ResponseBody CatalogEntry handleCatalogEntryCreateInCatalogEntryRequest(
+			@PathVariable("catalogEntryParentId") final Long catalogEntryParentId,
 			@RequestBody final CatalogEntry catalogEntry,
 			final HttpServletResponse response) {
 		final User user = rightsService.getCurrentUser();
-		final CatalogHeading catalogHeading;
+		final CatalogEntry catalogEntryParent;
 		final Catalog catalog;
 		final CatalogEntry result;
 		
-		LOGGER.debug("Request to create catalogEntry in catalogHeading: " + catalogHeadingId + "from user: " + user.getId());
+		LOGGER.debug("Request to create catalogEntry in catalogEntry: " + catalogEntryParentId + "from user: " + user.getId());
 		
 		if (rightsService.isSignedInUser()) {
-			catalogHeading = catalogHeadingDao.getByCatalogHeadingId(catalogHeadingId);
+			catalogEntryParent = catalogEntryDao.getByCatalogEntryId(catalogEntryParentId);
 			
-			if (catalogHeading == null) {
+			if (catalogEntryParent == null) {
 				result = null;
 				response.setStatus(404);
 			} else {
-				catalog = catalogHeading.getCatalog();
+				catalog = catalogEntryParent.getCatalog();
 				if (catalog == null){
 					result = null;
 					response.setStatus(404);
@@ -310,7 +214,7 @@ public class CatalogController {
 					if (catalog.isCatalogOfUserWithId(user.getId())) {
 						catalogEntry.setId(null);
 						catalogEntry.setCatalog(catalog);
-						catalogEntry.setHeading(catalogHeading);
+						catalogEntry.setParent(catalogEntryParent);
 						result = catalogEntryDao.saveCatalogEntry(catalogEntry);
 					} else {
 						result = null;
@@ -323,60 +227,8 @@ public class CatalogController {
 			response.setStatus(403);
 		}
 		return result;
-	}
+	}	
 	
-	/**
-	 * Handles http POST request for <code>/catalogHeading/{id}/addheading</code>.
-	 * Creates the submitted <code>CatalogEntry</code> item and adds it to the 
-	 * specified <code>CatalogHeading</code>.
-	 * Returns the <code>CatalogEntry</code> created and 200.
-	 * Returns null and 403 if no user is signed in or the signed in user does
-	 * not own the <code>Catalog</code> of the specified <code>CatalogHeading</code>.
-	 * If the submitted <code>CatalogEntry</code> contains an id value, that value 
-	 * is ignored.
-	 */
-	@RequestMapping(value="/catalogheading/{catalogHeadingId}/addheading", method=RequestMethod.POST)
-	public @ResponseBody CatalogHeading handleCatalogHeadingCreateInCatalogHeadingRequest(
-			@PathVariable("catalogHeadingId") final Long catalogHeadingId,
-			@RequestBody final CatalogHeading catalogHeading,
-			final HttpServletResponse response) {
-		final User user = rightsService.getCurrentUser();
-		final CatalogHeading catalogHeadingParent;
-		final Catalog catalog;
-		final CatalogHeading result;
-		
-		LOGGER.debug("Request to create catalogHeading in catalogHeading: " + catalogHeadingId + "from user: " + user.getId());
-		
-		if (rightsService.isSignedInUser()) {
-			catalogHeadingParent = catalogHeadingDao.getByCatalogHeadingId(catalogHeadingId);
-			
-			if (catalogHeadingParent == null) {
-				result = null;
-				response.setStatus(404);
-			} else {
-				catalog = catalogHeadingParent.getCatalog();
-				if (catalog == null){
-					result = null;
-					response.setStatus(404);
-				}
-				else {
-					if (catalog.isCatalogOfUserWithId(user.getId())) {
-						catalogHeading.setId(null);
-						catalogHeading.setCatalog(catalog);
-						catalogHeading.setParent(catalogHeadingParent);
-						result = catalogHeadingDao.saveCatalogHeading(catalogHeading);
-					} else {
-						result = null;
-						response.setStatus(403);
-					}
-				}
-			}
-		} else {
-			result = null;
-			response.setStatus(403);
-		}
-		return result;
-	}
 	
 	/**
 	 * Handles http GET request for <code>/catalog</code>.
@@ -461,10 +313,9 @@ public class CatalogController {
 					&& (oldCatalog.getId().equals(catalog.getId()))
 					&& (oldCatalog.isCatalogOfUserWithId(user.getId()))) {
 				catalog.setUsers(oldCatalog.getUsers());
-				if (catalog.getCatalogHeadings() != null){
-					for (final CatalogHeading catalogHeading : catalog.getCatalogHeadings()) {
-						catalogHeading.setId(null);
-						catalogHeading.setCatalog(catalog);
+				if (catalog.getCatalogEntries() != null){
+					for (final CatalogEntry catalogEntry : catalog.getCatalogEntries()) {
+						catalogEntry.setCatalog(catalog);
 					}
 				}
 				result = catalogDao.saveOrUpdateCatalog(catalog);
@@ -500,8 +351,8 @@ public class CatalogController {
 			Set<User> users = new HashSet<User>();
 			users.add(user);
 			catalog.setUsers(users);
-			if (catalog.getCatalogHeadings() != null){
-				for (final CatalogHeading catalogHeading : catalog.getCatalogHeadings()) {
+			if (catalog.getCatalogEntries() != null){
+				for (final CatalogEntry catalogHeading : catalog.getCatalogEntries()) {
 					catalogHeading.setId(null);
 					catalogHeading.setCatalog(catalog);
 				}

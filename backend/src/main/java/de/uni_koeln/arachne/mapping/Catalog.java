@@ -37,12 +37,9 @@ public class Catalog {
 		joinColumns={@JoinColumn(name="catalog_id")},
 		inverseJoinColumns={@JoinColumn(name="uid")})
 	private Set<User> users;
-
-	@OneToMany(mappedBy="catalog", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	private Set<CatalogEntry> catalogEntries;
 	
 	@OneToMany(mappedBy="catalog", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	private Set<CatalogHeading> catalogHeadings;
+	private Set<CatalogEntry> catalogEntries;
 	
 	@Column(name="label")
 	private String label;
@@ -70,21 +67,6 @@ public class Catalog {
 		this.id = id;
 	}
 
-	/**
-	 * @return the catalog entries
-	 */
-	@JsonIgnore
-	@XmlTransient
-	public Set<CatalogEntry> getCatalogEntries() {
-		return catalogEntries;
-	}
-
-	/**
-	 * @param catalogEntries the catalogEntries to set
-	 */
-	public void setCatalogEntries(final Set<CatalogEntry> catalogEntries) {
-		this.catalogEntries = catalogEntries;
-	}
 
 	/**
 	 * @return the label
@@ -154,33 +136,33 @@ public class Catalog {
 	}
 
 	/**
-	 * @return the catalogHeadings without parents
+	 * @return the catalogEntries without parents
 	 */
-	@JsonProperty("catalogHeadings")
-	public Set<CatalogHeading> getCatalogHeadingsWithoutParents() {
-		Set<CatalogHeading> headings = new HashSet<CatalogHeading>();
-		for (CatalogHeading heading : catalogHeadings){
-			if (heading.getParent() == null){
-				headings.add(heading);
+	@JsonProperty("catalogEntries")
+	public Set<CatalogEntry> getCatalogEntriesWithoutParents() {
+		Set<CatalogEntry> entries = new HashSet<CatalogEntry>();
+		for (CatalogEntry entry : catalogEntries){
+			if (entry.getParent() == null){
+				entries.add(entry);
 			}				
 		}
-		return headings;
+		return entries;
 	}
 
 	/**
-	 * @return the catalogHeadings
+	 * @return the catalogEntries
 	 */
 	@JsonIgnore
-	public Set<CatalogHeading> getCatalogHeadings() {
-		return catalogHeadings;
+	public Set<CatalogEntry> getCatalogEntries() {
+		return catalogEntries;
 	}
 
 	/**
-	 * @param catalogHeadings the catalogHeadings to set
+	 * @param catalogEntries the catalogEntries to set
 	 */
-	@JsonProperty("catalogHeadings")
-	public void setCatalogHeadings(Set<CatalogHeading> catalogHeadings) {
-		this.catalogHeadings = catalogHeadings;
+	@JsonProperty("catalogEntries")
+	public void setCatalogEntries(Set<CatalogEntry> catalogEntries) {
+		this.catalogEntries = catalogEntries;
 	}
 
 	/**

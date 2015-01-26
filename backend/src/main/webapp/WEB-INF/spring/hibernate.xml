@@ -29,7 +29,6 @@
 				<value>de.uni_koeln.arachne.mapping.DatasetGroup</value>
 				<value>de.uni_koeln.arachne.mapping.ImageRightsGroup</value>
 				<value>de.uni_koeln.arachne.mapping.CatalogEntry</value>
-				<value>de.uni_koeln.arachne.mapping.CatalogHeading</value>
 				<value>de.uni_koeln.arachne.mapping.Catalog</value>
             </list>
         </property>
