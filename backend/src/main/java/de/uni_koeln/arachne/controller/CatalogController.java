@@ -164,6 +164,7 @@ public class CatalogController {
 					catalogEntry.setId(null);
 					catalogEntry.setCatalog(catalog);
 					result = catalogEntryDao.saveCatalogEntry(catalogEntry);
+					result.generatePath();
 				} else {
 					result = null;
 					response.setStatus(403);
@@ -216,6 +217,7 @@ public class CatalogController {
 						catalogEntry.setCatalog(catalog);
 						catalogEntry.setParent(catalogEntryParent);
 						result = catalogEntryDao.saveCatalogEntry(catalogEntry);
+						result.generatePath();
 					} else {
 						result = null;
 						response.setStatus(403);
@@ -319,6 +321,13 @@ public class CatalogController {
 					}
 				}
 				result = catalogDao.saveOrUpdateCatalog(catalog);
+				
+				// Needs to be done in a second loop because we need IDs for the path
+				if (result.getCatalogEntries() != null){
+					for (final CatalogEntry catalogHeading : result.getCatalogEntries()) {					
+						catalogHeading.generatePath();
+					}
+				}
 			} else {
 				result = null;
 				response.setStatus(403);
@@ -358,6 +367,13 @@ public class CatalogController {
 				}
 			}
 			result = catalogDao.saveCatalog(catalog);
+			
+			// Needs to be done in a second loop because we need IDs for the path
+			if (result.getCatalogEntries() != null){
+				for (final CatalogEntry catalogHeading : result.getCatalogEntries()) {					
+					catalogHeading.generatePath();
+				}
+			}
 		} else {
 			result = null;
 			response.setStatus(403);

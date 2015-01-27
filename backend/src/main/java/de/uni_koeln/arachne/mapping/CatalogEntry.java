@@ -81,10 +81,11 @@ public class CatalogEntry {
 	 */
 	public void setCatalog(final Catalog catalog) {
 		this.catalog = catalog;
+
 		if (this.children != null){
 			for (CatalogEntry child : this.getChildren()){
-				child.setCatalog(catalog);
 				child.setParent(this);
+				child.setCatalog(catalog);
 			}	
 		}
 	}
@@ -173,6 +174,24 @@ public class CatalogEntry {
 	 */
 	public void setText(String text) {
 		this.text = text;
+	}
+	
+	/**
+	 * Recursively generates path attribute for the CatalogEntry and all its descendants
+	 */
+	public void generatePath(){
+		String seperator = "/";
+		 if (this.parent != null){
+			 this.path = this.parent.getPath() + seperator + this.getId();
+		 }
+		 else {
+			 this.path = this.getCatalog().getId() + seperator + this.getId();
+		 }
+		 if (this.children != null){
+				for (CatalogEntry child : this.getChildren()){
+					child.generatePath();
+				}	
+			}
 	}
 	
 }
