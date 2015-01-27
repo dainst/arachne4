@@ -96,6 +96,7 @@ public class CatalogController {
 				catalogEntry.setCatalog(oldCatalogEntry.getCatalog());
 				catalogEntry.setParent(oldCatalogEntry.getParent());
 				result = catalogEntryDao.updateCatalogEntry(catalogEntry);
+				result.generatePath();
 			} else {
 				result = null;
 				response.setStatus(403);
@@ -319,6 +320,13 @@ public class CatalogController {
 					for (final CatalogEntry catalogEntry : catalog.getCatalogEntries()) {
 						catalogEntry.setCatalog(catalog);
 					}
+				}
+				
+				// Get catalogEntries that were included before but are not anymore and delete them
+				Set<CatalogEntry> orphans = catalogEntryDao.getOrphanedCatalogEntries(catalog);
+				
+				for (CatalogEntry orphan : orphans){
+					catalogEntryDao.deleteCatalogEntry(orphan);
 				}
 				result = catalogDao.saveOrUpdateCatalog(catalog);
 				

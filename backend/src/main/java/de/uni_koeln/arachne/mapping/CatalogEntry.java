@@ -16,8 +16,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @XmlRootElement
 @Entity
@@ -85,6 +83,7 @@ public class CatalogEntry {
 		if (this.children != null){
 			for (CatalogEntry child : this.getChildren()){
 				child.setParent(this);
+				catalog.addToCatalogEntries(child);
 				child.setCatalog(catalog);
 			}	
 		}
@@ -161,7 +160,7 @@ public class CatalogEntry {
 	public void setChildren(Set<CatalogEntry> children) {
 		this.children = children;
 	}
-
+	
 	/**
 	 * @return the text
 	 */

@@ -12,13 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -163,6 +161,17 @@ public class Catalog {
 	@JsonProperty("catalogEntries")
 	public void setCatalogEntries(Set<CatalogEntry> catalogEntries) {
 		this.catalogEntries = catalogEntries;
+	}
+	
+	/**
+	 * Add a new CatalogEntry to catalogEntries
+	 * @param entry the CatalogEntry to add
+	 */
+	public void addToCatalogEntries(CatalogEntry entry){
+		if (this.catalogEntries == null){
+			this.catalogEntries = new HashSet<CatalogEntry>();
+		}
+		this.catalogEntries.add(entry);
 	}
 
 	/**
