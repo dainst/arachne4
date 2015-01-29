@@ -54,8 +54,8 @@
           <field datasource="gruppen.ThemaInWorten"/>
         </section>
 		<section labelKey="Katalog">
-			<field datasource="gruppen.Katalogbearbeitung" prefix="Bearbeiter: " />
-			<field datasource="gruppen.Katalogtext" />
+			<field datasource="gruppen.KatalogbearbeitungGruppen" prefix="Bearbeiter: " />
+			<field datasource="gruppen.KatalogtextGruppen" />
 		</section>        
         <include type="literatur"/>
         <include type="uri"/>
