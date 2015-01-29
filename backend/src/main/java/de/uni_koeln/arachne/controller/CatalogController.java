@@ -323,7 +323,7 @@ public class CatalogController {
 					
 					/* We have to use a temporary Set because setCatalog() recursively adds child CatalogEntries to the catalog's CatalogEntries and
 					java.util.ConcurrentModificationException would be thrown if we do this while iterating over the catalog's CatalogEntries directly */				
-					Set<CatalogEntry> temp = new HashSet<CatalogEntry>();
+					List<CatalogEntry> temp = new ArrayList<CatalogEntry>();
 					temp.addAll(catalog.getCatalogEntries());
 					catalog.setCatalogEntries(null);
 					Iterator<CatalogEntry> iter = temp.iterator();
@@ -345,6 +345,7 @@ public class CatalogController {
 				if (result.getCatalogEntries() != null){
 					for (final CatalogEntry catalogHeading : result.getCatalogEntries()) {					
 						catalogHeading.generatePath();
+						catalogEntryDao.updateCatalogEntry(catalogHeading);
 					}
 				}
 			} else {
@@ -383,7 +384,7 @@ public class CatalogController {
 				
 				/* We have to use a temporary Set because setCatalog() recursively adds child CatalogEntries to the catalog's CatalogEntries and
 				java.util.ConcurrentModificationException would be thrown if we do this while iterating over the catalog's CatalogEntries directly */				
-				Set<CatalogEntry> temp = new HashSet<CatalogEntry>();
+				List<CatalogEntry> temp = new ArrayList<CatalogEntry>();
 				temp.addAll(catalog.getCatalogEntries());
 				catalog.setCatalogEntries(null);
 				Iterator<CatalogEntry> iter = temp.iterator();

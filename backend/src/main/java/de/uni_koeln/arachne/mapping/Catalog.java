@@ -1,6 +1,8 @@
 package de.uni_koeln.arachne.mapping;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -37,7 +40,8 @@ public class Catalog {
 	private Set<User> users;
 	
 	@OneToMany(mappedBy="catalog", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	private Set<CatalogEntry> catalogEntries;
+	@OrderColumn(name="index_catalog")
+	private List<CatalogEntry> catalogEntries;
 	
 	@Column(name="label")
 	private String label;
@@ -137,8 +141,8 @@ public class Catalog {
 	 * @return the catalogEntries without parents
 	 */
 	@JsonProperty("catalogEntries")
-	public Set<CatalogEntry> getCatalogEntriesWithoutParents() {
-		Set<CatalogEntry> entries = new HashSet<CatalogEntry>();
+	public List<CatalogEntry> getCatalogEntriesWithoutParents() {
+		List<CatalogEntry> entries = new ArrayList<CatalogEntry>();
 		if (this.catalogEntries != null){
 			for (CatalogEntry entry : catalogEntries){
 				if (entry.getParent() == null){
@@ -153,7 +157,7 @@ public class Catalog {
 	 * @return the catalogEntries
 	 */
 	@JsonIgnore
-	public Set<CatalogEntry> getCatalogEntries() {
+	public List<CatalogEntry> getCatalogEntries() {
 		return catalogEntries;
 	}
 
@@ -161,7 +165,7 @@ public class Catalog {
 	 * @param catalogEntries the catalogEntries to set
 	 */
 	@JsonProperty("catalogEntries")
-	public void setCatalogEntries(Set<CatalogEntry> catalogEntries) {
+	public void setCatalogEntries(List<CatalogEntry> catalogEntries) {
 		this.catalogEntries = catalogEntries;
 	}
 	
@@ -171,7 +175,7 @@ public class Catalog {
 	 */
 	public void addToCatalogEntries(CatalogEntry entry){
 		if (this.catalogEntries == null){
-			this.catalogEntries = new HashSet<CatalogEntry>();
+			this.catalogEntries = new ArrayList<CatalogEntry>();
 		}
 		this.catalogEntries.add(entry);
 	}

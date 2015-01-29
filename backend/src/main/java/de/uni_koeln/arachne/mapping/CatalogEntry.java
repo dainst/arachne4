@@ -1,6 +1,6 @@
 package de.uni_koeln.arachne.mapping;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -36,7 +37,8 @@ public class CatalogEntry {
 	private CatalogEntry parent;
 	
 	@OneToMany(mappedBy="parent", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	private Set<CatalogEntry> children;
+	@OrderColumn(name="index_parent")
+	private List<CatalogEntry> children;
 
 	@Column(name="arachne_entity_id")
 	private Long arachneEntityId;
@@ -150,14 +152,14 @@ public class CatalogEntry {
 	/**
 	 * @return the children
 	 */
-	public Set<CatalogEntry> getChildren() {
+	public List<CatalogEntry> getChildren() {
 		return children;
 	}
 
 	/**
 	 * @param children the children to set
 	 */
-	public void setChildren(Set<CatalogEntry> children) {
+	public void setChildren(List<CatalogEntry> children) {
 		this.children = children;
 	}
 	
