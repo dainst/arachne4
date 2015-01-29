@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.controller;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -166,6 +167,7 @@ public class CatalogController {
 					catalogEntry.setCatalog(catalog);
 					result = catalogEntryDao.saveCatalogEntry(catalogEntry);
 					result.generatePath();
+					catalogEntryDao.updateCatalogEntry(result);
 				} else {
 					result = null;
 					response.setStatus(403);
@@ -219,6 +221,7 @@ public class CatalogController {
 						catalogEntry.setParent(catalogEntryParent);
 						result = catalogEntryDao.saveCatalogEntry(catalogEntry);
 						result.generatePath();
+						catalogEntryDao.updateCatalogEntry(result);
 					} else {
 						result = null;
 						response.setStatus(403);
@@ -317,18 +320,26 @@ public class CatalogController {
 					&& (oldCatalog.isCatalogOfUserWithId(user.getId()))) {
 				catalog.setUsers(oldCatalog.getUsers());
 				if (catalog.getCatalogEntries() != null){
-					for (final CatalogEntry catalogEntry : catalog.getCatalogEntries()) {
-						catalogEntry.setCatalog(catalog);
-					}
+					
+					/* We have to use a temporary Set because setCatalog() recursively adds child CatalogEntries to the catalog's CatalogEntries and
+					java.util.ConcurrentModificationException would be thrown if we do this while iterating over the catalog's CatalogEntries directly */				
+					Set<CatalogEntry> temp = new HashSet<CatalogEntry>();
+					temp.addAll(catalog.getCatalogEntries());
+					catalog.setCatalogEntries(null);
+					Iterator<CatalogEntry> iter = temp.iterator();
+				    while (iter.hasNext()) {
+				    	
+				    	CatalogEntry entry = iter.next();		
+						entry.setCatalog(catalog);					
+						catalog.addToCatalogEntries(entry);				
+				    }
+					
 				}
+				
+				result = catalogDao.saveOrUpdateCatalog(catalog);
 				
 				// Get catalogEntries that were included before but are not anymore and delete them
-				Set<CatalogEntry> orphans = catalogEntryDao.getOrphanedCatalogEntries(catalog);
-				
-				for (CatalogEntry orphan : orphans){
-					catalogEntryDao.deleteCatalogEntry(orphan);
-				}
-				result = catalogDao.saveOrUpdateCatalog(catalog);
+				catalogEntryDao.deleteOrphanedCatalogEntries(result);
 				
 				// Needs to be done in a second loop because we need IDs for the path
 				if (result.getCatalogEntries() != null){
@@ -368,18 +379,30 @@ public class CatalogController {
 			Set<User> users = new HashSet<User>();
 			users.add(user);
 			catalog.setUsers(users);
-			if (catalog.getCatalogEntries() != null){
-				for (final CatalogEntry catalogHeading : catalog.getCatalogEntries()) {
-					catalogHeading.setId(null);
-					catalogHeading.setCatalog(catalog);
-				}
+			if (catalog.getCatalogEntries() != null){	
+				
+				/* We have to use a temporary Set because setCatalog() recursively adds child CatalogEntries to the catalog's CatalogEntries and
+				java.util.ConcurrentModificationException would be thrown if we do this while iterating over the catalog's CatalogEntries directly */				
+				Set<CatalogEntry> temp = new HashSet<CatalogEntry>();
+				temp.addAll(catalog.getCatalogEntries());
+				catalog.setCatalogEntries(null);
+				Iterator<CatalogEntry> iter = temp.iterator();
+			    while (iter.hasNext()) {
+			    	
+			    	CatalogEntry entry = iter.next();		
+			    	entry.setId(null);
+					entry.setCatalog(catalog);					
+					catalog.addToCatalogEntries(entry);				
+			    }
+				
 			}
 			result = catalogDao.saveCatalog(catalog);
 			
 			// Needs to be done in a second loop because we need IDs for the path
 			if (result.getCatalogEntries() != null){
-				for (final CatalogEntry catalogHeading : result.getCatalogEntries()) {					
+				for (final CatalogEntry catalogHeading : result.getCatalogEntries()) {	
 					catalogHeading.generatePath();
+					catalogEntryDao.updateCatalogEntry(catalogHeading);
 				}
 			}
 		} else {

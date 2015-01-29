@@ -139,10 +139,12 @@ public class Catalog {
 	@JsonProperty("catalogEntries")
 	public Set<CatalogEntry> getCatalogEntriesWithoutParents() {
 		Set<CatalogEntry> entries = new HashSet<CatalogEntry>();
-		for (CatalogEntry entry : catalogEntries){
-			if (entry.getParent() == null){
-				entries.add(entry);
-			}				
+		if (this.catalogEntries != null){
+			for (CatalogEntry entry : catalogEntries){
+				if (entry.getParent() == null){
+					entries.add(entry);
+				}				
+			}
 		}
 		return entries;
 	}

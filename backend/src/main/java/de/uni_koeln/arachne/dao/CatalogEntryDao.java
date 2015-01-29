@@ -1,8 +1,7 @@
 package de.uni_koeln.arachne.dao;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -26,27 +25,27 @@ public class CatalogEntryDao {
 		return (CatalogEntry) session.get(CatalogEntry.class, catalogEntryId);
 	}
 	
-	@Transactional(readOnly=true)
-	public Set<CatalogEntry> getOrphanedCatalogEntries(final Catalog catalog) {
-		Set<CatalogEntry> orphans = new HashSet<CatalogEntry>();
+	@Transactional
+	public void deleteOrphanedCatalogEntries(final Catalog catalog) {
+		List<Long> ids = new ArrayList<Long>();
+		String querystring = "DELETE catalog_entry FROM catalog_entry LEFT JOIN catalog ON catalog_entry.catalog_id = catalog.id WHERE catalog.id = :catalogId";
+		Query query;
+		
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("select c from CatalogEntry c left join c.catalog cat where cat.id = :catalogId")
-				.setLong("catalogId", catalog.getId());
-		@SuppressWarnings("unchecked")
-		List<CatalogEntry> result = query.list();
-		for (CatalogEntry entry : result){
-			boolean found = false;
+		if (catalog.getCatalogEntries() != null){
 			for (CatalogEntry referenced : catalog.getCatalogEntries()){
-				if (referenced.getId() == entry.getId()){
-					found = true;
-					break;
-				}
+				ids.add(referenced.getId());
 			}
-			if (!found){
-				orphans.add(entry);
-			}
+			query = session.createSQLQuery(querystring + " AND catalog_entry.id NOT IN (:ids)")
+					.setLong("catalogId", catalog.getId())
+					.setParameterList("ids", ids);
+			
 		}
-		return orphans;
+		else {
+			query = session.createSQLQuery(querystring)
+					.setLong("catalogId", catalog.getId());
+		}
+		query.executeUpdate();
 	}
 	
 	@Transactional
