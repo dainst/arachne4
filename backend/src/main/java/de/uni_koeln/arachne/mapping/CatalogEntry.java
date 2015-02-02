@@ -192,7 +192,20 @@ public class CatalogEntry {
 				for (CatalogEntry child : this.getChildren()){
 					child.generatePath();
 				}	
-			}
+		 }
+	}
+	
+	/**
+	 * Recursively removes this entry and all its descendants from the catalog
+	 */
+	public void removeFromCatalog(){
+		
+		if (this.children != null){
+			for (CatalogEntry child : this.getChildren()){
+				child.removeFromCatalog();
+			}	
+		}
+		this.catalog.getCatalogEntries().remove(this);
 	}
 	
 }

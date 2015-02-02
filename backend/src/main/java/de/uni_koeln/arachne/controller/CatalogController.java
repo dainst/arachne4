@@ -128,6 +128,9 @@ public class CatalogController {
 		if (catalogEntry == null) {
 			response.setStatus(404);
 		} else if (catalogEntry.getCatalog().isCatalogOfUserWithId(user.getId())) {
+			Catalog catalog = catalogEntry.getCatalog();
+			catalogEntry.removeFromCatalog();
+			catalogDao.saveOrUpdateCatalog(catalog);
 			catalogEntryDao.deleteCatalogEntry(catalogEntry);
 			response.setStatus(204);
 		} else {
