@@ -1,0 +1,37 @@
+[
+	{
+		"id": "ueber",
+		"title": {
+			"de": "Über iDAI.images/Arachne",
+			"en": "About iDAI.images/Arachne"
+		}
+	},
+	{
+		"id": "interfaces",
+		"title": {
+			"de": "Interfaces",
+			"en": "Interfaces"
+		}
+	}
+	{
+		"id": "doku",
+		"title": {
+			"de": "Dokumentation/FAQ",
+			"en": "Documentation/FAQ"
+		}
+	}
+	{
+		"id": "lizenz",
+		"title": {
+			"de": "Lizenz",
+			"en": "License / Orders"
+		}
+	}
+	{
+		"id": "analysearachne",
+		"title": {
+			"de": "Analyse zur Arachne-Nutzung",
+			"en": "Arachne usage analysis"
+		}
+	}
+]
