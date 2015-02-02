@@ -1,0 +1,26 @@
+[
+	{
+		"id:": "paliliastart",
+		"text": "Die Bände der seit 1997 bestehende Reihe „Palilia“ des Deutschen Archäologischen Instituts Rom bestechen durch gute Lesbarkeit und handlichen Umfang. Um dies weiterhin zu garantieren, gleichzeitig aber auch die Veröffentlichung von Werken zu ermöglichen, die auf umfangreichen Materialdokumentationen beruhen, beschreiten CoDArchLab und das DAI Rom neue Wege der archäologischen Publikation: die Supplementierung gedruckter Werke durch die der Buchstruktur angepaßte digitale Bereitstellung zusätzlicher Materialien."
+	}
+	{
+		"id": "carare",
+		"text": "Das DAI nimmt über die online-Datenbank Arachne als Mitantragsteller am multinationalen Europäischen Projekt CARARE teil. Gegenstand dieses Projektes ist die Integration von Inhalten aus den Bereichen archäologischer und architektonischer Kulturgüter in Europeana, einen Online-Service, der das kulturelle Erbe Europas zusammenführen soll."
+	}
+	{
+		"id": "corpusminmyk",
+		"text": "Der Gesamtkatalog der Skulpturen in der Antikensammlung der Staatlichen Museen zu Berlin enthält rund 2.600 griechische, zyprische, etruskische und römische Skulpturen in Stein sowie die wenigen Großbronzen (Bestände und Verluste). Der Katalog basiert auf einer vollständigen wissenschaftlichen Neubearbeitung der antiken Skulpturen, die im Rahmen des „Berliner Skulpturennetzwerks. Kontextualisierung und Übersetzung antiker Plastik“ durchgeführt wurde. Dieses Kooperationsprojekt zwischen der Antikensammlung der Staatlichen Museen zu Berlin und dem Institut für Klassische Archäologie der Freien Universität Berlin wurde in den Jahren 2009 bis 2012 vom Bundesministerium für Bildung und Forschung (BMBF) gefördert."
+	}
+	{
+		"id": "wissqualarachne",
+		"text": "Eines von Arachnes ursprünglichen Zielen war, die Arbeit an wissenschaftlichen Projekten zu unterstützen, zu vereinfachen und damit auch zu beschleunigen. Auch wenn inzwischen viele funktionale Aspekte und eine erhebliche Komplexität hinzugekommen sind, ist dieses Ausgangsziel nach wie vor gültig. Konkret bedeutet dies, daß in der Vergangenheit eine ganze Reihe von Magister-, Dissertations- und Habilitationsarbeiten mit Arachne durchgeführt worden sind, die sowohl in Köln als auch in anderen Universitäten angesiedelt waren."
+	}
+	{
+		"id": "arapacis",
+		"text": "In Arachne werden Informationen zu Objekten normalerweise durch Suchabfragen erschlossen. Gegenüber diesem Information Retrieval ist von Seiten der Benutzer das Browsing (Blättern) oftmals die häufiger angewandte Navigationsform. Obwohl Arachne diese Möglichkeit durch den eingebauten Kontextbrowser ohnehin bietet, soll dies an einigen exemplarischen, bilderreichen Monumenten oder Gattungen noch expliziter realisiert werden."
+	}
+	{
+		"id": "pergaltarbrowser",
+		"text": "Der Große Fries und der Telephosfreis des Pergamonaltars in Berlin sind zentrale Monumente der antiken Kunstgeschichte. Mit Hilfe eines dedizierten Bildbrowsers können diese beiden Relieffriese bis ins Detail erschlossen werden, bleiben aber zugleich mit dem gesamten Inhalt von Arachne kontextualisiert. In Zukunft sollen hier auch die nicht anpassenden Fragmente aus den Magazinen des Pergamonmuseums angezeigt werden, so dass der Pergamonbrowser als visuelles Arbeitsinstrument für weitere Forschungen dienen kann."
+	}
+]
