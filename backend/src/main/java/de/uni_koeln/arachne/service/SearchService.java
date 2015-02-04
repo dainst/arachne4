@@ -1,11 +1,13 @@
 package de.uni_koeln.arachne.service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.aspectj.weaver.ast.And;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.search.SearchPhaseExecutionException;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -31,6 +33,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Ordering;
 
 import de.uni_koeln.arachne.response.SearchResult;
 import de.uni_koeln.arachne.response.SearchResultFacet;
@@ -158,7 +162,7 @@ public class SearchService {
 	 * @return The search result.
 	 */
 	public SearchResult executeSearchRequest(final SearchRequestBuilder searchRequestBuilder, final int resultSize, final int resultOffset,
-			final String filterValues, final List<String> facetList) {
+			final List<String> filterValueList, final List<String> facetList) {
 		
 		SearchResponse searchResponse = null;
 		
@@ -203,7 +207,6 @@ public class SearchService {
 		}
 		
 		// add facet search results
-		final List<String> filterValueList = filterQueryStringToStringList(filterValues);
 		if (filterValueList != null) {
 			for (int i=0; i<filterValueList.size(); i++) {
 				final int colon = filterValueList.get(i).indexOf(':');
@@ -215,7 +218,7 @@ public class SearchService {
 			final List<SearchResultFacet> facets = new ArrayList<SearchResultFacet>();
 			
 			for (final String facetName: facetList) {
-				final Map<String, Long> facetMap = getFacetMap(facetName, searchResponse, filterValues);
+				final Map<String, Long> facetMap = getFacetMap(facetName, searchResponse);
 				if (facetMap != null && !facetMap.isEmpty() && (filterValueList == null || !filterValueList.contains(facetName))) {
 					facets.add(getSearchResultFacet(facetName, facetMap));
 				}
@@ -243,19 +246,26 @@ public class SearchService {
 	 * @return filter values as list.
 	 */
 	public List<String> getFilterValueList(final String filterValues, final List<String> facetList) {
-		List<String> result = null; 
+		List<String> result = null;
 		if (!StrUtils.isEmptyOrNullOrZero(filterValues)) {
+			if (filterValues.contains("facet_bestandsname") && !filterValues.contains("facet_subkategoriebestand_level")) {
+				facetList.add("facet_subkategoriebestand_level1");
+			}
 			result = filterQueryStringToStringList(filterValues);
 			for (final String filterValue: result) {
-				if (filterValue.contains("facet_kategorie")) {
+				if (filterValue.startsWith("facet_kategorie")) {
 					List<String> categorySpecificFacetsList = getCategorySpecificFacetList(result);
 					for (String facet : categorySpecificFacetsList) {
 						if (!facetList.contains(facet)) {
 							facetList.add(facet);
 						}
 					}
-					break;
-				}
+				} else {
+					if (filterValue.startsWith("facet_subkategoriebestand_level")) {
+						int level = extractLevelFromFilterValue(filterValue);
+						facetList.add("facet_subkategoriebestand_level" + (level + 1));
+					}
+				}					
 			}
 		}
 		return result;
@@ -320,7 +330,7 @@ public class SearchService {
 	 * @param searchResponse The search response to work on.
 	 * @return A map containing the facet value as key and the facet count as value.
 	 */
-	private Map<String, Long> getFacetMap(final String name, final SearchResponse searchResponse, final String filterValues) {
+	private Map<String, Long> getFacetMap(final String name, final SearchResponse searchResponse) {
 		Terms aggregator = (Terms)searchResponse.getAggregations().getAsMap().get(name); 
 		final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
 		for (final Terms.Bucket bucket: aggregator.getBuckets()) {
@@ -396,6 +406,7 @@ public class SearchService {
 	/**
 	 * Converts the input string of query filter parameters to a string list of parameters.
 	 * The string is split at every occurrence of ",facet_".
+	 * For "facet_subkategoriebestand_level" only the highest level is kept.
 	 * @param filterString The filter query string to convert.
 	 * @return a string list containing the separated parameters or <code>null</code> if the conversion fails.
 	 */
@@ -411,10 +422,45 @@ public class SearchService {
 				result.add(subString);
 			}
 			result.add(string);
+			// keep only highest level of "facet_subkategoriebestand_level"
+			int highestLevel = 0;
+			String highestLevelValue = "";
+			final List<String> resultCopy = new ArrayList<String>(result);
+			for (final String filterValue : resultCopy) {
+				if (filterValue.startsWith("facet_subkategoriebestand_level")) {
+					final int level = extractLevelFromFilterValue(filterValue);
+					if (level > highestLevel) {
+						highestLevel = level;
+						if (!"".equals(highestLevelValue)) {
+							result.remove(highestLevelValue);
+						}
+						highestLevelValue = filterValue;
+					} else {
+						result.remove(filterValue);
+					}
+				}
+			}
+			
 			return result;
 		} else {
 			return null;
 		}
+	}
+	
+	/**
+	 * Extracts the level of a dynamic facet from a filter value and returns it as an <code>int</code>.
+	 * @param filterValue A filter value as given by the "fq" http parameter.
+	 * @return The level of the facet or -1 in case of failure.
+	 */
+	private int extractLevelFromFilterValue(final String filterValue) {
+		int result;
+		try {
+			result = Integer.parseInt(filterValue.substring(31, filterValue.indexOf(':')));
+		} catch (NumberFormatException e) {
+			LOGGER.warn("Number Format exception whrn parsing filter value: ", filterValue);
+			result = -1;
+		}
+		return result;
 	}
 	
 }

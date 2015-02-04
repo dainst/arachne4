@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -461,6 +460,15 @@ public class ResponseFactory {
 			json.set("facet_geo", arrayNode);
 		}
 		
+		// add subcategory facet for marbilderbestand.Unterkategorie
+		String levelValue = dataset.getField("KategorieMarbilder.UnterkategorieLevel1");
+		int level = 1;
+		while (!StrUtils.isEmptyOrNull(levelValue)) {
+			json.set("facet_subkategoriebestand_level" + level, json.arrayNode().add(levelValue));
+			level++;
+			levelValue = dataset.getField("KategorieMarbilder.UnterkategorieLevel" + level);
+		}
+		
 		// add all other facets
 		final Element facets = document.getRootElement().getChild("facets", namespace);
 		final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
@@ -472,8 +480,13 @@ public class ResponseFactory {
 
 			// split multi value facets at ';' and look for facet translations
 			final List<String> finalFacetValues = new ArrayList<String>();
-			for (final String facetValue: facetValues) {
+			for (String facetValue: facetValues) {
 				if (facetValue.contains(";")) {
+					// TODO review
+					// remove leading semicola
+					if (facetValue.startsWith(";")) {
+						facetValue = facetValue.substring(1);						
+					}
 					final List<String> splitValues = new ArrayList<String>(Arrays.asList(facetValue.split(";")));
 					finalFacetValues.addAll(splitValues);
 				} else {

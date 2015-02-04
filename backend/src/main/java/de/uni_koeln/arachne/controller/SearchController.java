@@ -85,7 +85,7 @@ public class SearchController {
 		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
 				
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
-				, resultSize, resultOffset, filterValues, facetList);
+				, resultSize, resultOffset, filterValueList, facetList);
 		
 		if (searchResult.getStatus() != RestStatus.OK) {
 			return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
@@ -120,13 +120,14 @@ public class SearchController {
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 
 		final List<String> facetList = new ArrayList<String>(defaultFacetList);
+		final List<String> filterValueList = searchService.getFilterValueList(filterValues, facetList);
 				
 		final SearchRequestBuilder searchRequestBuilder = searchService.buildContextSearchRequest(entityId
 				, resultSize, resultOffset, sortField, orderDesc);
 		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
 		
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, resultSize
-				, resultOffset, filterValues, facetList);
+				, resultOffset, filterValueList, facetList);
 		
 		if (searchResult == null) {
 			LOGGER.error("Search result is null!");

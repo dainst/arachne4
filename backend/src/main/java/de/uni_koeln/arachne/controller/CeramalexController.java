@@ -81,7 +81,7 @@ public class CeramalexController  {
 		
 		final List<String> facetList = new ArrayList<String>();
 		final List<String> filterValueList = searchService.getFilterValueList(filterValues, facetList);
-		
+				
 		final Integer maxResultSize = 1000000;
 		final Integer resultOffset = 0;
 		
@@ -89,7 +89,8 @@ public class CeramalexController  {
 				, resultOffset, filterValueList, null, false);
 		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
 			
-		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, maxResultSize, resultOffset, filterValues, facetList);
+		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, maxResultSize
+				, resultOffset, filterValueList, facetList);
 		LOGGER.debug("#Found records: " + searchResult.getSize());
 
 		if (searchResult == null || searchResult.getEntities() == null) {

@@ -29,6 +29,17 @@ public class KategoriemarbilderContextualizer extends AbstractContextualizer {
 			subcategory.put("KategorieMarbilder.Typ", "strukturiert");
 		} else {
 			subcategory.put("KategorieMarbilder.Typ", "unstrukturiert");
+			String value = parent.getField("marbilderbestand.Unterkategorie");
+			if (!StrUtils.isEmptyOrNull(value)) {
+				String[] subcategoryStrings = value.split(";");
+				int level = 0;
+				for (String subcategoryString: subcategoryStrings) {
+					if (!StrUtils.isEmptyOrNull(subcategoryString)) {
+						level++;
+						subcategory.put("KategorieMarbilder.UnterkategorieLevel" + level, subcategoryString);
+					}
+				}
+			}
 		}
 		parent.appendFields(subcategory);
 		return null;
