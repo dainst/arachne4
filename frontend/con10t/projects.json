@@ -178,6 +178,14 @@
 							"de": "Antikensammlung der Staatlichen Museen zu Berlin",
 							"en": "Antiquities Collection of the Berlin State Museums"							
 						}		
+					}, 
+					{
+						"id": "skulpberlinantik",
+						"title": {
+							"de": "Die Skulpturen der Berliner Antikensammlung",
+							"en": "Berlin Sculpture-Network - contextualization and translation of ancient sculpture",
+							"it": "Le sculture della Berliner Antikensammlung"							
+						}		
 					},
 					{
 						"id": "berlinsamml",
