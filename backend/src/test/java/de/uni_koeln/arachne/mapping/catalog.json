@@ -1,0 +1,50 @@
+{
+    "id": 27,
+    "label": "Die Basilica Aemilia auf dem Forum Romanum in Rom: Brennpunkt des öffentlichen Lebens",
+    "author": "Testauthor",
+    "text": "Nach der Errichtung in den 60er Jahren des 2. Jhs. v. Chr. durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius Nobilior wurde die Basilica mehrmals zerstört [...]",
+    "public": false,
+    "catalogEntries": [
+        {
+            "id": 61,
+            "children": [],
+            "arachneEntityId": null,
+            "label": "Vorbebauung"
+        },
+        {
+            "id": 62,
+            "children": [
+                {
+                    "id": 63,
+                    "children": [
+                        {
+                            "id": 64,
+                            "children": [
+                                {
+                                    "id": 65,
+                                    "children": [
+                                        {
+                                            "id": 66,
+                                            "children": null,
+                                            "arachneEntityId": 1184191,
+                                            "label": "Fundamente der Innensäulen",
+                                            "text": "Die Fundamente der Innensäulen."
+                                        }
+                                    ],
+                                    "arachneEntityId": null,
+                                    "label": "Fundamente"
+                                }
+                            ],
+                            "arachneEntityId": null,
+                            "label": "Republikanische Zeit"
+                        }
+                    ],
+                    "arachneEntityId": null,
+                    "label": "Aula"
+                }
+            ],
+            "arachneEntityId": null,
+            "label": "Basilica Aemilia"
+        }
+    ]
+}

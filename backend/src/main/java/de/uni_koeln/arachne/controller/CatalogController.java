@@ -346,9 +346,9 @@ public class CatalogController {
 				
 				// Needs to be done in a second loop because we need IDs for the path
 				if (result.getCatalogEntries() != null){
-					for (final CatalogEntry catalogHeading : result.getCatalogEntries()) {					
-						catalogHeading.generatePath();
-						catalogEntryDao.updateCatalogEntry(catalogHeading);
+					for (final CatalogEntry entry : result.getCatalogEntriesWithoutParents()) {					
+						entry.generatePath();
+						catalogEntryDao.updateCatalogEntry(entry);
 					}
 				}
 			} else {
@@ -404,7 +404,7 @@ public class CatalogController {
 			
 			// Needs to be done in a second loop because we need IDs for the path
 			if (result.getCatalogEntries() != null){
-				for (final CatalogEntry catalogHeading : result.getCatalogEntries()) {	
+				for (final CatalogEntry catalogHeading : result.getCatalogEntriesWithoutParents()) {	
 					catalogHeading.generatePath();
 					catalogEntryDao.updateCatalogEntry(catalogHeading);
 				}
