@@ -55,21 +55,42 @@
               <field datasource="bauwerk.GebaeudetypSpeziell"/>
             </section>
           </section>
-          <section labelKey="Erhaltung">
-            <field datasource="bauwerk.ErhaltungBauwerk"/>
+          <section labelKey="Produkte - Material">
+            <field datasource="bauwerk.ProduktMaterial"/>
           </section>
-          <section labelKey="Beschreibung">
-            <field datasource="bauwerk.BeschreibungBauwerk"/>
+          <section labelKey="Produkte - Materialspezifizierung">
+            <field datasource="bauwerk.ProduktMaterialSpezifizierung"/>
           </section>
-          <section labelKey="Architekt">
-            <field datasource="bauwerk.Architekt"/>
+          <section labelKey="Produkte - Funktion">
+            <field datasource="bauwerk.ProduktFunktion"/>
           </section>
-          <section labelKey="Antiker Kontext">
-            <field datasource="bauwerk.Kontext"/>
+          <section labelKey="Produkte - Form">
+            <field datasource="bauwerk.ProduktForm"/>
           </section>
           <section labelKey="Bauordnung">
             <field datasource="bauwerk.Bauordnung"/>
             <field datasource="bauwerk.BauordnungBemerkung"/>
+          </section>
+          <section labelKey="Architekt">
+            <field datasource="bauwerk.Architekt"/>
+          </section>
+          <section labelKey="Erhaltung">
+            <field datasource="bauwerk.ErhaltungBauwerk"/>
+          </section>
+          <section labelKey="Befund">
+            <field datasource="bauwerk.Befund"/>
+          </section>
+          <section labelKey="Einbindung">
+            <field datasource="bauwerk.Einbindung"/>
+          </section>
+          <section labelKey="Beschreibung">
+            <field datasource="bauwerk.BeschreibungBauwerk"/>
+          </section>
+          <section labelKey="Archäometrische Messungen">
+            <field datasource="bauwerk.ArchaeometrischeMessungen"/>
+          </section>
+          <section labelKey="Antiker Kontext">
+            <field datasource="bauwerk.Kontext"/>
           </section>
         </section>
         <section labelKey="Geschichte">
@@ -133,5 +154,26 @@
     <facet name="regioromitalien" labelKey="Regio Rom/Italien">
       <field datasource="bauwerk.RegioRomItalien"/>
     </facet>
+     <facet name="produktmaterial" labelKey="Produkt - Material">
+     	<field datasource="bauwerk.ProduktMaterial"/>
+     </facet>
+     <facet name="produktmaterialspezifizierung" labelKey="Produkt - Materialspezifizierung">
+     	<field datasource="bauwerk.ProduktMaterialSpezifizierung"/>
+     </facet>
+     <facet name="produktfunktion" labelKey="Produkt - Funktion">
+     	<field datasource="bauwerk.ProduktFunktion"/>
+     </facet>
+     <facet name="produktform" labelKey="Produkt - Form">
+     	<field datasource="bauwerk.ProduktForm"/>
+     </facet>  
+     <facet name="befund" labelKey="Befund">
+     	<field datasource="bauwerk.Befund"/>
+     </facet>
+     <facet name="einbindung" labelKey="Einbindung">
+     	<field datasource="bauwerk.Einbindung"/>
+     </facet>
+     <facet name="archaeometrischemessungen" labelKey="Archäometrische Messungen">
+     	<field datasource="bauwerk.ArchaeometrischeMessungen"/>
+     </facet>
   </facets>
 </category>
