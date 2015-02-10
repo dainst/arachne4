@@ -407,8 +407,10 @@ public class ESClientUtil implements ServletContextAware {
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
 		} finally {
-			connection.disconnect();
-			connection = null;
+			if (connection != null) {
+				connection.disconnect();
+				connection = null;
+			}
 		}
 		return result.toString();
 	}

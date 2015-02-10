@@ -203,8 +203,10 @@ public class ImageController {
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage());
 		} finally {
-			connection.disconnect();
-			connection = null;
+			if (connection != null) {
+				connection.disconnect();
+				connection = null;
+			}
 		}
 		return null;
 	}
@@ -278,8 +280,10 @@ public class ImageController {
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage());
 		} finally {
-			connection.disconnect();
-			connection = null;
+			if (connection != null) {
+				connection.disconnect();
+				connection = null;
+			}
 		}
 		return null;
 	}
@@ -417,8 +421,10 @@ public class ImageController {
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage());
 		} finally {
-			connection.disconnect();
-			connection = null;
+			if (connection != null) {
+				connection.disconnect();
+				connection = null;
+			}
 		}
 		return null;
 	}
@@ -492,8 +498,10 @@ public class ImageController {
 				LOGGER.error(e.getMessage());
 			} finally {
 				response.setStatus(404);
-				connection.disconnect();
-				connection = null;
+				if (connection != null) {
+					connection.disconnect();
+					connection = null;
+				}
 			}
 		} else {
 			response.setStatus(imageProperties.httpResponseCode);

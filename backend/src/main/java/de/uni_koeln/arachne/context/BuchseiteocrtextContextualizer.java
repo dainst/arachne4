@@ -102,8 +102,10 @@ public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage());
 		} finally {
-			connection.disconnect();
-			connection = null;
+			if (connection != null) {
+				connection.disconnect();
+				connection = null;
+			}
 		}
 		return result;
 	}
