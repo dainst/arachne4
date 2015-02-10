@@ -211,44 +211,45 @@ public class ResponseFactory {
 				final String city = link.getFieldFromFields("ort.Stadt");
 				final String country = link.getFieldFromFields("ort.Land");
 				final String additionalInfo = link.getFieldFromFields("ort.Aufbewahrungsort");
-				String place = null;
+				String placeName = null;
 				if (!StrUtils.isEmptyOrNull(city)) {
-					place = city;				
+					placeName = city;				
 					if (!StrUtils.isEmptyOrNull(country)) {
-						place += ", " + country;
+						placeName += ", " + country;
 						if (!StrUtils.isEmptyOrNull(additionalInfo)) {
-							place += ", " + additionalInfo;
+							placeName += ", " + additionalInfo;
 						}
 					}
 				}
-				final String locationDescription = link.getFieldFromFields("ort.ArtOrtsangabe");
-				final String lat = link.getFieldFromFields("ort.Latitude");
-				final String lon = link.getFieldFromFields("ort.Longitude");
-				String location = null;
-				if (lat != null && lon != null) {
-					location = lat + "," + lon;
-				}
-				if (!StrUtils.isEmptyOrNull(place) && !StrUtils.isEmptyOrNull(locationDescription)) {
-					if ("Fundort".equals(locationDescription)) {
-						response.setFindSpot(place);
-						if (!StrUtils.isEmptyOrNull(location)) {
-							response.setFindSpotLocation(location);
+				final String relation = link.getFieldFromFields("ort.ArtOrtsangabe");
+				final String latitude = link.getFieldFromFields("ort.Latitude");
+				final String longitude = link.getFieldFromFields("ort.Longitude");
+				
+				if (!StrUtils.isEmptyOrNull(placeName) && !StrUtils.isEmptyOrNull(relation)) {
+					if ("Fundort".equals(relation)) {
+						final Place place = new Place(placeName, relation);
+						if (!StrUtils.isEmptyOrNull(latitude) && !StrUtils.isEmptyOrNull(latitude)) {
+							place.setLocation(latitude, longitude);
 						}
+						response.addPlace(place);
 					} else {
-						if (locationDescription.contains("Aufbewahrung") && !locationDescription.contains("temporäre")
-								&& !locationDescription.contains("vorheriger")) {
-							response.setDepository(place);
-							if (!StrUtils.isEmptyOrNull(location)) {
-								response.setDepositoryLocation(location);
+						if (relation.contains("Aufbewahrung") && !relation.contains("temporäre")
+								&& !relation.contains("vorheriger")) {
+							final Place place = new Place(placeName, "Aufbewahrungsort");
+							if (!StrUtils.isEmptyOrNull(latitude) && !StrUtils.isEmptyOrNull(latitude)) {
+								place.setLocation(latitude, longitude);
 							}
+							response.addPlace(place);
 						} else {
-							if ("in situ".equals(locationDescription)) {
-								response.setFindSpot(place);
-								response.setDepository(place);
-								if (!StrUtils.isEmptyOrNull(location)) {
-									response.setFindSpotLocation(location);
-									response.setDepositoryLocation(location);
+							if ("in situ".equals(relation)) {
+								final Place findSpot = new Place(placeName, "Fundort");
+								final Place depository = new Place(placeName, "Aufbewahrungsort");
+								if (!StrUtils.isEmptyOrNull(latitude) && !StrUtils.isEmptyOrNull(latitude)) {
+									findSpot.setLocation(latitude, longitude);
+									depository.setLocation(latitude, longitude);
 								}
+								response.addPlace(findSpot);
+								response.addPlace(depository);
 							}
 						}
 					}
@@ -403,7 +404,7 @@ public class ResponseFactory {
 			, final FormattedArachneEntity response, final Namespace namespace) {
 
 		ObjectNode json = jsonUtil.getObjectMapper().valueToTree(response);
-
+		
 		// set image facet
 		if (dataset.getThumbnailId() == null) {
 			json.set("facet_image", json.arrayNode().add("nein"));
@@ -412,19 +413,28 @@ public class ResponseFactory {
 		}
 
 		// add the geo facets
-		// TODO check if this can be moved to the xmls to get more control over positioning of the facets
-		String place = response.getFindSpot();
-		String location = response.getFindSpotLocation();
-		if (place != null && location != null) {
-			json.set("facet_fundort", json.arrayNode().add(place + "[" + location + "]"));
-		}
+		for (final Place place : response.places) {
+			if (!Arrays.asList(place.getLocation()).isEmpty()) {
+				final String relation = place.getRelation();
+				if (relation != null) {
+					switch (relation) {
+					case "Fundort":
+						json.set("facet_fundort", json.arrayNode().add(place.getName() 
+								+ Arrays.asList(place.getLocation()).toString()));
+						break;
 
-		place = response.getDepository();
-		location = response.getDepositoryLocation();
-		if (place != null && location != null) {
-			json.set("facet_aufbewahrungsort", json.arrayNode().add(place + "[" + location + "]"));
+					case "Aufbewahrungsort":
+						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName() 
+								+ Arrays.asList(place.getLocation()).toString()));
+						break;
+						
+					default:
+						break;
+					}
+				}
+			}
 		}
-
+		
 		// add all places with location information as "facet_geo"
 		Context placeContext = dataset.getContext("ort");
 		if (placeContext != null) {
@@ -433,7 +443,7 @@ public class ResponseFactory {
 				final String city = link.getFieldFromFields("ort.Stadt");
 				final String country = link.getFieldFromFields("ort.Land");
 				final String additionalInfo = link.getFieldFromFields("ort.Aufbewahrungsort");
-				place = null;
+				String place = null;
 				if (!StrUtils.isEmptyOrNull(city)) {
 					place = city;				
 					if (!StrUtils.isEmptyOrNull(country)) {
@@ -445,7 +455,7 @@ public class ResponseFactory {
 				}
 				final String lat = link.getFieldFromFields("ort.Latitude");
 				final String lon = link.getFieldFromFields("ort.Longitude");
-				location = null;
+				String location = null;
 				if (lat != null && lon != null) {
 					location = lat + "," + lon;
 				}

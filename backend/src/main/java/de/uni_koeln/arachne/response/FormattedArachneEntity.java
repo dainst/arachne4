@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.response;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -57,24 +58,29 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	protected Long thumbnailId;
 
 	/**
+	 * The places this entity is connected to.
+	 */
+	protected List<Place> places = new ArrayList<Place>();
+	
+	/**
 	 * The find spot this entity is connected to
 	 */
-	protected String findSpot = null;
+	//protected String findSpot = null;
 	
 	/**
 	 * The geo coordinates of the find spot.
 	 */
-	protected String findSpotLocation = null;
+	//protected String findSpotLocation = null;
 	
 	/**
 	 * The depository this entity is connected to
 	 */
-	protected String depository = null;
+	//protected String depository = null;
 	
 	/**
 	 * The geo coordinates of the depository.
 	 */
-	protected String depositoryLocation = null;
+	//protected String depositoryLocation = null;
 	
 	/**
 	 * The number of connections this entity has
@@ -164,7 +170,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	public void setThumbnailId(final Long thumbnailId) {
 		this.thumbnailId = thumbnailId;
 	}
-
+	/*
 	public String getFindSpot() {
 		return this.findSpot;
 	}
@@ -195,7 +201,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	
 	public void setDepositoryLocation(final String depositoryLocation) {
 		this.depositoryLocation = depositoryLocation;
-	}
+	}*/
 	
 	public double getDegree() {
 		return degree;
@@ -235,5 +241,17 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 
 	public void setExternalLinks(List<ExternalLink> externalLinks) {
 		this.externalLinks = externalLinks;
+	}
+	
+	public List<Place> getPlaces() {
+		return places;
+	}
+	
+	/**
+	 * Adds a place to the places list.
+	 * @param place The place to add.
+	 */
+	public void addPlace(final Place place) {
+		places.add(place);
 	}
 }
