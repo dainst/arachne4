@@ -23,8 +23,8 @@
 				<value>de.uni_koeln.arachne.mapping.Connection</value>
 				<value>de.uni_koeln.arachne.mapping.DatasetGroup</value>
 				<value>de.uni_koeln.arachne.mapping.ImageRightsGroup</value>
-				<value>de.uni_koeln.arachne.mapping.BookmarkList</value>
-				<value>de.uni_koeln.arachne.mapping.Bookmark</value>
+				<value>de.uni_koeln.arachne.mapping.Catalog</value>
+				<value>de.uni_koeln.arachne.mapping.CatalogEntry</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
