@@ -40,4 +40,14 @@ public class ExternalLink extends AbstractLink {
 	public void setUri2(final String uri2) {
 		this.uri2 = uri2;
 	}
+
+	@Override
+	public Dataset getEntity1() {
+		return getEntity();
+	}
+
+	@Override
+	public Dataset getEntity2() {
+		return null;
+	}
 }
