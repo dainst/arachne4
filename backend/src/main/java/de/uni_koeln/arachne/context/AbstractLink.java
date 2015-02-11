@@ -34,17 +34,13 @@ public abstract class AbstractLink {
 	 * If the first side of the connection is an Arachne Dataset this function returns the <code>Dataset</code> 
 	 * entity. Returns null unless overwritten in the implementing class.
 	 */
-	public Dataset getEntity1() {
-		return null;
-	}
-	
+	public abstract Dataset getEntity1();
+		
 	/**
 	 * If the second side of the connection is an Arachne Dataset this function returns the <code>Dataset</code> 
 	 * entity. Returns null unless overwritten in the implementing class.
 	 */
-	public Dataset getEntity2() {
-		return null;
-	}
+	public abstract Dataset getEntity2();
 	
 	public String getLinkType() {
 		return linkType;
