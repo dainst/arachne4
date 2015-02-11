@@ -14,11 +14,11 @@ import java.util.Map;
  */
 public class SQLToolbox { // NOPMD
 	
-	private static final Map<String, String> primaryKeyNames = new HashMap<String, String>();
+	private static final Map<String, String> PRIMARY_KEY_NAMES = new HashMap<String, String>();
 	static {
-		primaryKeyNames.put("marbilder", "PS_MARBilderID");
-		primaryKeyNames.put("zenon", "zenonid");
-		primaryKeyNames.put("arachneentitydegrees", "ArachneEntityID");
+		PRIMARY_KEY_NAMES.put("marbilder", "PS_MARBilderID");
+		PRIMARY_KEY_NAMES.put("zenon", "zenonid");
+		PRIMARY_KEY_NAMES.put("arachneentitydegrees", "ArachneEntityID");
 	}
 	
 	/**
@@ -27,10 +27,10 @@ public class SQLToolbox { // NOPMD
 	 * @return The name of the Primary key of that Table example PS_BauwerkID
 	 */
 	public static String generatePrimaryKeyName(final String tablename){
-		final String primaryKeyName = primaryKeyNames.get(tablename);
+		final String primaryKeyName = PRIMARY_KEY_NAMES.get(tablename);
 		if (primaryKeyName == null) {
 			final String newPrimaryKeyName = "PS_" + ucFirst(tablename) + "ID";
-			primaryKeyNames.put(tablename, newPrimaryKeyName);
+			PRIMARY_KEY_NAMES.put(tablename, newPrimaryKeyName);
 			return newPrimaryKeyName;
 		} else {
 			return primaryKeyName; 
