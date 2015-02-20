@@ -98,6 +98,7 @@ public class CatalogController {
 				catalogEntry.setParent(oldCatalogEntry.getParent());
 				result = catalogEntryDao.updateCatalogEntry(catalogEntry);
 				result.generatePath();
+				catalogDao.saveOrUpdateCatalog(result.getCatalog());
 			} else {
 				result = null;
 				response.setStatus(403);
@@ -166,11 +167,12 @@ public class CatalogController {
 				response.setStatus(404);
 			} else {
 				if (catalog.isCatalogOfUserWithId(user.getId())) {
-					catalogEntry.setId(null);
+					catalogEntry.setId(null);	
 					catalogEntry.setCatalog(catalog);
+					catalog.addToCatalogEntries(catalogEntry);
 					result = catalogEntryDao.saveCatalogEntry(catalogEntry);
 					result.generatePath();
-					catalogEntryDao.updateCatalogEntry(result);
+					catalogDao.saveOrUpdateCatalog(catalog);
 				} else {
 					result = null;
 					response.setStatus(403);
@@ -219,12 +221,14 @@ public class CatalogController {
 				}
 				else {
 					if (catalog.isCatalogOfUserWithId(user.getId())) {
-						catalogEntry.setId(null);
-						catalogEntry.setCatalog(catalog);
+						catalogEntry.setId(null);						
 						catalogEntry.setParent(catalogEntryParent);
+						catalogEntryParent.addToChildren(catalogEntry);
+						catalogEntry.setCatalog(catalog);
+						catalog.addToCatalogEntries(catalogEntry);
 						result = catalogEntryDao.saveCatalogEntry(catalogEntry);
 						result.generatePath();
-						catalogEntryDao.updateCatalogEntry(result);
+						catalogDao.saveOrUpdateCatalog(catalog);
 					} else {
 						result = null;
 						response.setStatus(403);
@@ -251,7 +255,6 @@ public class CatalogController {
 			final HttpServletResponse response) {
 		List<Catalog> result = null;
 		final User user = rightsService.getCurrentUser();
-		
 		LOGGER.debug("Request for all catalogs of user: " + user.getId());
 		
 		if (rightsService.isSignedInUser()) {

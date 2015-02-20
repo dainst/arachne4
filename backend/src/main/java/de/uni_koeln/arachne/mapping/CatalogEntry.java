@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.mapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -161,6 +162,17 @@ public class CatalogEntry {
 	 */
 	public void setChildren(List<CatalogEntry> children) {
 		this.children = children;
+	}
+	
+	/**
+	 * Adds CatalogEntry to list of children
+	 * @param child the child to add
+	 */
+	public void addToChildren(CatalogEntry child){
+		if (this.children == null){
+			this.children = new ArrayList<CatalogEntry>();
+		}
+		this.children.add(child);
 	}
 	
 	/**
