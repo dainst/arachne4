@@ -60,20 +60,6 @@
             "type":"string",
             "index" : "not_analyzed"
          },
-         "findSpot":{
-         	"type":"string",
-         	"copy_to" : "searchableContent"
-         },
-         "findSpotLocation":{
-         	"type":"geo_point"
-         },
-         "depository":{
-            "type":"string",
-            "copy_to" : "searchableContent"
-         },
-         "depositoryLocation":{
-            "type":"geo_point"
-         },
          "images": {
             "properties": {
                 "imageId": {

@@ -97,7 +97,6 @@ public class DataImportService { // NOPMD
 	private transient final AtomicBoolean running;
 	private transient final AtomicLong indexedDocuments;
 	private transient final AtomicLong count;
-	private transient final AtomicLong documentsInIndex;
 	
 	private transient boolean terminate = false;
 	private transient double lastDPS;
@@ -111,7 +110,6 @@ public class DataImportService { // NOPMD
 		running = new AtomicBoolean(false);
 		indexedDocuments = new AtomicLong(0);
 		count = new AtomicLong(0);
-		documentsInIndex = new AtomicLong(0);
 		this.PROFILING = profiling;
 		this.checkIndexOnDataImport = checkIndexOnDataImport;
 		this.ID_LIMIT = esBulkActions;
@@ -267,7 +265,6 @@ public class DataImportService { // NOPMD
 				}
 				esClientUtil.setRefreshInterval(indexName, true);
 				esClientUtil.updateSearchIndex();
-				documentsInIndex.set(index);
 				final long elapsedTime = (System.currentTimeMillis() - startTime);
 				final String success = "Import of " + index + " documents finished in " + elapsedTime/1000f/60f/60f + " hours ("
 						+ index/((float)elapsedTime/1000) + " documents per second)."; 
@@ -335,10 +332,6 @@ public class DataImportService { // NOPMD
 	
 	public long getCount() {
 		return count.get();
-	}
-	
-	public long getDocumentsInIndex() {
-		return documentsInIndex.get();
 	}
 	
 	public double getLastDPS() {
