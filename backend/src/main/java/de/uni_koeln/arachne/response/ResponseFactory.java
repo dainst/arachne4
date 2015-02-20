@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import de.uni_koeln.arachne.context.AbstractLink;
 import de.uni_koeln.arachne.context.Context;
+import de.uni_koeln.arachne.dao.CatalogEntryDao;
 import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.response.link.ExternalLink;
 import de.uni_koeln.arachne.response.link.ExternalLinkResolver;
@@ -33,8 +34,9 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 /**
  * Factory class to create the different kinds of responses from a dataset.
- * The <code>createX</code> methods may access xml config files to create the response objects. These config files are found in the <code>WEB-INF/xml/</code> directory.
- * Currently only the <code>createFormattedArachneEntity</code> method uses these files so that the naming scheme <code>$(TYPE).xml</code> is sufficient. If other methods
+ * The <code>createX</code> methods may access xml config files to create the response objects. These config files are 
+ * found in the <code>WEB-INF/xml/</code> directory. Currently only the <code>createFormattedArachneEntity</code> 
+ * method uses these files so that the naming scheme <code>$(TYPE).xml</code> is sufficient. If other methods
  * want to use different xml config files a new naming scheme is needed.
  * <br>
  * This class can be autowired.
@@ -51,6 +53,9 @@ public class ResponseFactory {
 	
 	@Autowired
 	private transient GenericSQLDao genericSQLDao;
+	
+	@Autowired
+	private transient CatalogEntryDao catalogEntryDao;
 	
 	@Autowired
 	private transient Transl8Service ts;
@@ -151,6 +156,10 @@ public class ResponseFactory {
 		// set connectedEntities
 		final List<Long> connectedEntities = genericSQLDao.getConnectedEntityIds(arachneId.getArachneEntityID());  
 		response.setConnectedEntities(connectedEntities);
+		
+		// set catalogIds
+		final List<Long> catalogIds = catalogEntryDao.getPublicCatalogIdsByEntityId(arachneId.getArachneEntityID());
+		response.setCatalogIds(catalogIds);
 		
 		// set degree
 		if (connectedEntities != null && !connectedEntities.isEmpty()) {

@@ -63,30 +63,10 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	protected List<Place> places = new ArrayList<Place>();
 	
 	/**
-	 * The find spot this entity is connected to
+	 * A list of catalogs this entity is part of.
 	 */
-	//protected String findSpot = null;
+	protected List<Long> catalogIds;
 	
-	/**
-	 * The geo coordinates of the find spot.
-	 */
-	//protected String findSpotLocation = null;
-	
-	/**
-	 * The depository this entity is connected to
-	 */
-	//protected String depository = null;
-	
-	/**
-	 * The geo coordinates of the depository.
-	 */
-	//protected String depositoryLocation = null;
-	
-	/**
-	 * The number of connections this entity has
-	 */
-	protected double degree = 0;
-
 	/**
 	 * The number of fields this entitiy has
 	 */
@@ -98,9 +78,14 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	protected double boost = 1;
 	
 	/**
-	 * 
+	 * List of entities that are connected to this entity.
 	 */
 	protected List<Long> connectedEntities;
+	
+	/**
+	 * The number of connections this entity has
+	 */
+	protected double degree = 0;
 	
 	/**
 	 * Links to external resources (like browsers, viewers ...)
@@ -170,38 +155,6 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	public void setThumbnailId(final Long thumbnailId) {
 		this.thumbnailId = thumbnailId;
 	}
-	/*
-	public String getFindSpot() {
-		return this.findSpot;
-	}
-	
-	public void setFindSpot(final String findSpot) {
-		this.findSpot = findSpot;		
-	}
-
-	public String getFindSpotLocation() {
-		return this.findSpotLocation;
-	}
-	
-	public void setFindSpotLocation(final String findSpotLocation) {
-		this.findSpotLocation = findSpotLocation;
-	}
-	
-	public String getDepository() {
-		return this.depository;
-	}
-	
-	public void setDepository(final String depository) {
-		this.depository = depository;		
-	}
-
-	public String getDepositoryLocation() {
-		return this.depositoryLocation;
-	}
-	
-	public void setDepositoryLocation(final String depositoryLocation) {
-		this.depositoryLocation = depositoryLocation;
-	}*/
 	
 	public double getDegree() {
 		return degree;
@@ -253,5 +206,19 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	 */
 	public void addPlace(final Place place) {
 		places.add(place);
+	}
+
+	/**
+	 * @return the catalogIds
+	 */
+	public List<Long> getCatalogIds() {
+		return catalogIds;
+	}
+
+	/**
+	 * @param catalogIds the catalogIds to set
+	 */
+	public void setCatalogIds(List<Long> catalogIds) {
+		this.catalogIds = catalogIds;
 	}
 }
