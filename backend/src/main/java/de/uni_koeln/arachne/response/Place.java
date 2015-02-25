@@ -1,7 +1,10 @@
 package de.uni_koeln.arachne.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import de.uni_koeln.arachne.util.StrUtils;
 
 /**
  * Class to hold place information for entities.
@@ -10,6 +13,12 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class Place {
 
+	@JsonInclude(Include.NON_NULL)
+	private class Location {
+		public String lat;
+		public String lon;
+	}
+	
 	/**
 	 * The name of the place
 	 */
@@ -21,26 +30,24 @@ public class Place {
 	private String relation = null;
 	
 	/**
-	 * Geo-coordinates as <code>String</code> array.
+	 * Geo-coordinates as <code>Location</code> object.
 	 */
-	private String[] location;
+	private Location location = null;
 	
 	public Place(final String name) {
 		this.name = name;
-		location = new String[2];
 	}
 	
 	public Place(final String name, final String relation) {
 		this.name = name;
-		location = new String[2];
 		this.relation = relation;
 	}
 	
 	public Place(final String name, final String latitude, final String longitude, final String relation) {
 		this.name = name;
-		location = new String[2];
-		location[0] = latitude;
-		location[1] = longitude;
+		location = new Location();
+		location.lat = latitude;
+		location.lon = longitude;
 		this.relation = relation;
 	}
 	
@@ -73,17 +80,32 @@ public class Place {
 	}
 
 	/**
-	 * @return the location
+	 * @return the location as string or <code>null</code> if the location is empty.
 	 */
-	public String[] getLocation() {
-		return location;
+	@JsonIgnore
+	public String getLocationAsString() {
+		if (location != null) {
+			return '[' + location.lat + ',' + location.lon + ']';
+		} else {
+			return null;
+		}
 	}
 
+	/**
+	 * @return the location as string
+	 */
+	public Location getLocation() {
+		return location;
+	}
+	
 	/**
 	 * @param latitude the latitude of this place
 	 */
 	public void setLocation(final String latitude, final String longitude) {
-		this.location[0] = latitude;
-		this.location[1] = longitude;
+		if (!StrUtils.isEmptyOrNull(latitude) && !StrUtils.isEmptyOrNull(longitude)) {
+			location = new Location();
+			location.lat = latitude;
+			location.lon = longitude;
+		}
 	}
 }

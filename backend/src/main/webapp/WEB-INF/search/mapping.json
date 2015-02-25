@@ -76,6 +76,22 @@
                 }
             }
          },
+         "places": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "relation": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "geo_point",
+                    "lat_lon": true,
+                    "normalize": false,
+                    "validate": true
+                }
+            }
+         },
          "searchableContent":{
          	"type":"string",
          	"omit_norms": true

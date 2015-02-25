@@ -423,18 +423,19 @@ public class ResponseFactory {
 
 		// add the geo facets
 		for (final Place place : response.places) {
-			if (!Arrays.asList(place.getLocation()).isEmpty()) {
+			final String location = place.getLocationAsString();
+			if (!StrUtils.isEmptyOrNull(location)) {
 				final String relation = place.getRelation();
 				if (relation != null) {
 					switch (relation) {
 					case "Fundort":
 						json.set("facet_fundort", json.arrayNode().add(place.getName() 
-								+ Arrays.asList(place.getLocation()).toString()));
+								+ location));
 						break;
 
 					case "Aufbewahrungsort":
 						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName() 
-								+ Arrays.asList(place.getLocation()).toString()));
+								+ location));
 						break;
 						
 					default:
