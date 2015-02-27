@@ -52,7 +52,7 @@
             "fields": {
                 "sort": { 
                     "type":     "string",
-                    "analyzer": "collation"
+                    "index": "not_analyzed"
                 }
             }
          },
