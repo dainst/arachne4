@@ -15,6 +15,15 @@
             </Policies>
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
+        <RollingFile name="Profile" 
+                     fileName="/var/log/arachne/arachnedataservice/profile.log" 
+                     filePattern="/var/log/arachne/arachnedataservice/profile-%i.log">
+            <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10240KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
     </Appenders>
     
     <!--     
@@ -47,5 +56,8 @@
             <AppenderRef ref="ROLLING" />
             <!-- <AppenderRef ref="CONSOLE" /> -->
         </Root>
+        <Logger name="Profiling">
+            <AppenderRef ref="Profile" />
+        </Logger>
     </Loggers>
 </Configuration>

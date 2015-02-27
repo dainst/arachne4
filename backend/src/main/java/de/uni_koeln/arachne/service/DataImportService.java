@@ -3,8 +3,6 @@ package de.uni_koeln.arachne.service;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
 
 import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
@@ -45,6 +43,8 @@ import de.uni_koeln.arachne.util.EntityId;
 @Service("DataImportService")
 public class DataImportService { // NOPMD
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataImportService.class);
+	
+	private static final Logger LOGGER_PROF = LoggerFactory.getLogger("Profiling");
 	
 	private final int ID_LIMIT;
 	
@@ -93,23 +93,23 @@ public class DataImportService { // NOPMD
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
-	private transient final AtomicLong elapsedTime;
-	private transient final AtomicBoolean running;
-	private transient final AtomicLong indexedDocuments;
-	private transient final AtomicLong count;
+	private transient long elapsedTime = 0;
+	private transient boolean running = false;
+	private transient long indexedDocuments = 0;
+	private transient long count = 0;
 	
 	private transient boolean terminate = false;
-	private transient double lastDPS;
+	private transient long etr = 0;
+	// choose some conservative value
+	private transient double lastDPS = 100;
+	private transient double averageDPS = 100d;
+	private transient double smoothingFactor = 0.005d;
 	
 	@Autowired
 	public DataImportService(final @Value("#{config.profilingDataimport}") boolean profiling
 			, final @Value("#{config.checkIndexOnDataImport}") boolean checkIndexOnDataImport
 			, final @Value("#{config.esBulkActions}") int esBulkActions) {
 		
-		elapsedTime = new AtomicLong(0);
-		running = new AtomicBoolean(false);
-		indexedDocuments = new AtomicLong(0);
-		count = new AtomicLong(0);
 		this.PROFILING = profiling;
 		this.checkIndexOnDataImport = checkIndexOnDataImport;
 		this.ID_LIMIT = esBulkActions;
@@ -124,9 +124,9 @@ public class DataImportService { // NOPMD
 		// request scope hack (enabling session scope) - needed so the UserRightsService can be used
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(new MockHttpServletRequest()));
 		terminate = false;
-		running.set(true);
-		indexedDocuments.set(0);		
-		elapsedTime.set(0);
+		running = true;
+		indexedDocuments = 0;		
+		elapsedTime = 0;
 		long dbgEntityId = 0;
 		
 		userRightsService.setDataimporter();
@@ -180,7 +180,7 @@ public class DataImportService { // NOPMD
 						
 			if ("NoIndex".equals(indexName)) {
 				LOGGER.error("Dataimport failed. No index found.");
-				running.set(false);
+				running = false;
 				return;
 			}
 			
@@ -191,7 +191,7 @@ public class DataImportService { // NOPMD
 									
 			final Long entityCount = jdbcTemplate.queryForObject("select count(*) `ArachneEntityID` from `arachneentityidentification` where `isDeleted` = 0", Long.class);
 			if (entityCount != null) {
-				count.set(entityCount);
+				count = entityCount;
 			} else {
 				LOGGER.error("'select count(*) `ArachneEntityID` from `arachneentityidentification` where `isDeleted` = 0' returned 0 - Dataimport aborted.");
 				throw new Exception("'select count(*) `ArachneEntityID` from `arachneentityidentification` where `isDeleted` = 0' returned 0");
@@ -211,7 +211,7 @@ public class DataImportService { // NOPMD
 					startId = currentEntityId.getEntityId();
 					
 					if (terminate) {
-						running.set(false);
+						running = false;
 						break dataimport;
 					}
 					
@@ -235,7 +235,7 @@ public class DataImportService { // NOPMD
 							bulkProcessor.add(client.prepareIndex(indexName, "entity", String.valueOf(dbgEntityId))
 									.setSource(jsonEntity).request());
 							index++;
-							indexedDocuments.set(index);
+							indexedDocuments = index;
 						}
 					}
 					
@@ -245,15 +245,16 @@ public class DataImportService { // NOPMD
 					final long lastStep = now - deltaT;
 					if (lastStep > 1000) {
 						deltaT = now;
-						elapsedTime.set(now - startTime);
+						elapsedTime = now - startTime;
 						
 						lastDPS = (double)(index - lastDocuments) / lastStep * 1000d;
 						lastDocuments = index;
+						calculateAverageDPSAndETR();
 					}
 				}
 			} while (!entityIds.isEmpty());
 			bulkProcessor.close();
-			if (running.get()) {
+			if (running) {
 				// wait a little bit to let the bulk request finish as bulkprocessoor.close() is non-blocking
 				int retries = 0;
 				while (listener.getOpenRequests() > 0 && !listener.hasFailed() && retries < 60) {
@@ -289,7 +290,7 @@ public class DataImportService { // NOPMD
 		// disable request scope hack
 		((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).requestCompleted();
 		RequestContextHolder.resetRequestAttributes();
-		running.set(false);
+		running = false;
 	}
 	
 	// TODO move to utility class
@@ -309,6 +310,16 @@ public class DataImportService { // NOPMD
 		return result;
 	}
 	
+	private float calculateAverageDPSAndETR() {
+		if (running && elapsedTime > 0 && indexedDocuments > 0) {
+			averageDPS = smoothingFactor * lastDPS + (1 - smoothingFactor) * averageDPS;
+			etr = (long)((double)(count - indexedDocuments) / averageDPS);
+			LOGGER_PROF.info(indexedDocuments + " - " + averageDPS);
+			return (float)averageDPS;
+		}
+		return 0.0f;
+	}
+	
 	/**
 	 * Method to signal that the task shall stop.
 	 */
@@ -319,22 +330,26 @@ public class DataImportService { // NOPMD
 	}
 	
 	public long getElapsedTime() {
-		return elapsedTime.get();
+		return elapsedTime;
 	}
 	
 	public boolean isRunning() {
-		return running.get();
+		return running;
 	}
 	
 	public long getIndexedDocuments() {
-		return indexedDocuments.get();
+		return indexedDocuments;
 	}
 	
 	public long getCount() {
-		return count.get();
+		return count;
 	}
 	
-	public double getLastDPS() {
-		return lastDPS;
+	public double getAverageDPS() {
+		return averageDPS;
+	}
+
+	public long getEstimatedTimeRemaining() {
+		return etr;
 	}
 }

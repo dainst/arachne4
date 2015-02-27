@@ -28,7 +28,7 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 @Controller
 public class AdminController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
-	
+		
 	@Autowired
 	private transient IUserRightsService userRightsService;
 	
@@ -38,11 +38,6 @@ public class AdminController {
 	@Autowired
 	private transient DataImportService dataImportService;
 
-	// choose some conservative value
-	private transient double averageDPS = 100d;
-	
-	private transient double smoothingFactor = 0.005d;
-	
 	/**
 	 * Handles HTTP GET requests to /admin/cache.   
 	 * @param response The outgoing HTTP response.
@@ -111,20 +106,14 @@ public class AdminController {
 			response.setElapsedTime(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes(elapsedTime)
 					,TimeUnit.MILLISECONDS.toSeconds(elapsedTime) 
 					- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime))) + " minutes");
-			long count = dataImportService.getCount();
-			response.setCount(count);
-			double lastDPS = dataImportService.getLastDPS();
-			response.setCount(count);
-			long indexedDocuments = dataImportService.getIndexedDocuments();
-			response.setIndexedDocuments(indexedDocuments);
-			if (elapsedTime > 0 && indexedDocuments > 0) {
-				averageDPS = smoothingFactor * lastDPS + (1 - smoothingFactor) * averageDPS;
-				long etr = (long)((double)(count - indexedDocuments) / averageDPS);
-				response.setEstimatedTimeRemaining(String.format("%d:%02d", TimeUnit.SECONDS.toMinutes(etr)
-						,TimeUnit.SECONDS.toSeconds(etr) 
-						- TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(etr))) + " minutes");
-				response.setDocumentsPerSecond((float)averageDPS);
-			}
+			
+			response.setCount(dataImportService.getCount());
+			response.setIndexedDocuments(dataImportService.getIndexedDocuments());
+			final long etr = dataImportService.getEstimatedTimeRemaining();
+			response.setEstimatedTimeRemaining(String.format("%d:%02d", TimeUnit.SECONDS.toMinutes(etr)
+					,TimeUnit.SECONDS.toSeconds(etr) 
+					- TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(etr))) + " minutes");
+			response.setDocumentsPerSecond((float)dataImportService.getAverageDPS());
 			return response;
 		} else {
 			return new StatusResponse("Dataimport", "idle");
