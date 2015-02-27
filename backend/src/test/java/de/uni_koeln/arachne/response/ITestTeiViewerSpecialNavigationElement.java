@@ -11,6 +11,8 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
+import de.uni_koeln.arachne.response.special_navigation.AbstractSpecialNavigationElement;
+import de.uni_koeln.arachne.response.special_navigation.TeiViewerSpecialNavigationElement;
 import de.uni_koeln.arachne.testconfig.WebContextTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)

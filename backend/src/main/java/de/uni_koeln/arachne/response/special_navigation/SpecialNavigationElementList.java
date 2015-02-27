@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.response;
+package de.uni_koeln.arachne.response.special_navigation;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.response;
+package de.uni_koeln.arachne.response.special_navigation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

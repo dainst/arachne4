@@ -32,9 +32,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import de.uni_koeln.arachne.response.SearchResult;
-import de.uni_koeln.arachne.response.SearchResultFacet;
-import de.uni_koeln.arachne.response.SearchResultFacetValue;
+import de.uni_koeln.arachne.response.search.SearchResult;
+import de.uni_koeln.arachne.response.search.SearchResultFacet;
+import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
 import de.uni_koeln.arachne.util.ESClientUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
@@ -191,7 +191,7 @@ public class SearchService {
 			if (intThumbnailId != null) {
 				thumbnailId = Long.valueOf(intThumbnailId);
 			}
-			searchResult.addSearchHit(new de.uni_koeln.arachne.response.SearchHit(Long.valueOf(currenthit.getId())
+			searchResult.addSearchHit(new de.uni_koeln.arachne.response.search.SearchHit(Long.valueOf(currenthit.getId())
 					, (String)(currenthit.getSource().get("type"))
 					, (String)(currenthit.getSource().get("title"))
 					, (String)(currenthit.getSource().get("subtitle"))

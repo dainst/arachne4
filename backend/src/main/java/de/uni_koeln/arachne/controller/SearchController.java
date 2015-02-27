@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uni_koeln.arachne.response.SearchResult;
+import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.service.SearchService;
 
 

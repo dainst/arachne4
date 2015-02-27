@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.response;
+package de.uni_koeln.arachne.response.search;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

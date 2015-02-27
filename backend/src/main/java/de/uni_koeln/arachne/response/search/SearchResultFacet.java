@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.response;
+package de.uni_koeln.arachne.response.search;
 
 import java.util.ArrayList;
 import java.util.List;

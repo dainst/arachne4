@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.response;
+package de.uni_koeln.arachne.response.search;
 
 /**
  * This class represents one facet value of a <code>SearchResultFacet</code>.

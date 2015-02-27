@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import de.uni_koeln.arachne.response.AbstractSpecialNavigationElement;
-import de.uni_koeln.arachne.response.CeramalexQuantifySpecialNavigationElement;
-import de.uni_koeln.arachne.response.DfgViewerButton;
-import de.uni_koeln.arachne.response.ModelViewerSpecialNavigationElement;
-import de.uni_koeln.arachne.response.SpecialNavigationElementList;
-import de.uni_koeln.arachne.response.TeiViewerSpecialNavigationElement;
+import de.uni_koeln.arachne.response.special_navigation.AbstractSpecialNavigationElement;
+import de.uni_koeln.arachne.response.special_navigation.CeramalexQuantifySpecialNavigationElement;
+import de.uni_koeln.arachne.response.special_navigation.DfgViewerButton;
+import de.uni_koeln.arachne.response.special_navigation.ModelViewerSpecialNavigationElement;
+import de.uni_koeln.arachne.response.special_navigation.SpecialNavigationElementList;
+import de.uni_koeln.arachne.response.special_navigation.TeiViewerSpecialNavigationElement;
 
 /**
  * 
