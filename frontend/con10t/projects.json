@@ -332,6 +332,12 @@
                             "en": "The Basilica Aemilia"
                         }
                     },
+                     {
+                        "id": "kanatha",
+                        "title": {
+                            "de": "Die Heiligtümer in Kanatha"
+                        }
+                    },
                     {
                         "id": "claracstart",
                         "title": {
