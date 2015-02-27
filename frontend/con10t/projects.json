@@ -333,6 +333,12 @@
                         }
                     },
                     {
+                        "id": "kanatha",
+                        "title": {
+                            "de": "Die Heiligtümer in Kanatha"
+                        }
+                    },
+                    {
                         "id": "claracstart",
                         "title": {
                             "de": "Clarac, Musée de sculpture",
