@@ -81,7 +81,7 @@
         </section>
         <section labelKey="BibId" separator=", ">
           <field datasource="buch.bibid"/>
-          <linkField labelKey="Zenon" datasource="buch.bibid" prefix="http://zenon.dainst.org/#book/"/>
+          <linkField labelKey="Zenon" datasource="buch.bibid" prefix="http://zenon.dainst.org/Record/"/>
         </section>
         <section labelKey="Band">
           <field datasource="buch.Band"/>

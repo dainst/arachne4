@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
-  <context type="literatur" labelKey="Literatur" separator=", " link="http://zenon.dainst.org/#book/">
+  <context type="literatur" labelKey="Literatur" separator=", " link="http://zenon.dainst.org/Record/">
     <field datasource=".ZenonID" prefix="$link$"/>
     <field datasource=".tempLiteratur"/>
 	<field datasource=".Abkuerzungen">
