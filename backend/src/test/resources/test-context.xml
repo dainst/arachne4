@@ -19,7 +19,7 @@
 	
 	<tx:annotation-driven />
 	
-	<util:properties id="config" location="classpath:config/application.properties"/>
+	<util:properties id="config" location="file:src/main/resources/config/application.properties"/>
 	
 	<import resource="classpath:hibernate.xml"/>
 	
