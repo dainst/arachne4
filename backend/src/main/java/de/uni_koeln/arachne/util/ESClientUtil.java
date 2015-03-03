@@ -299,7 +299,7 @@ public class ESClientUtil implements ServletContextAware {
 	 * set the new alias (this should only occur on the first dataimport as no alias to delete exists at that point). If this also fails 
 	 * the method throws the corresponding exception.
 	 */
-	public void updateSearchIndex() throws IllegalStateException, IndexMissingException {
+	public String updateSearchIndex() throws IllegalStateException, IndexMissingException {
 		final String indexName = getDataImportIndexName();
 		final String oldName = INDEX_2.equals(indexName) ? INDEX_1 : INDEX_2;
 		try {
@@ -332,7 +332,8 @@ public class ESClientUtil implements ServletContextAware {
 				LOGGER.error("Failed to set alias. Index Missing.");
 				throw ime;
 			}
-		}		
+		}
+		return indexName;
 	}
 
 	/**
@@ -342,7 +343,7 @@ public class ESClientUtil implements ServletContextAware {
 	private String getDataImportIndexName() {
 		String result = INDEX_1;
 		final String url = esFullAddress + "*/_alias/*";
-		if (sendRequest(url, "GET").equals("{\"" + INDEX_1 + "\":{\"aliases\":{\"arachne4\":{}}}}")) {
+		if (sendRequest(url, "GET").contains(INDEX_1)) {
 			result = INDEX_2;
 		}
 		return result;

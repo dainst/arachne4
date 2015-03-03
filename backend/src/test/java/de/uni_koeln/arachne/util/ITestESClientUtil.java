@@ -8,8 +8,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,18 +23,31 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class) 
 @ContextConfiguration(locations = {"classpath:test-context.xml"}) 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ITestESClientUtil {
 	
 	@Autowired
 	private transient ESClientUtil esClientUtil;
 
 	@Before
-	public void setupContext() {
+	public void setUp() {
 		esClientUtil.setServletContext(new MockServletContext("file:src/main/webapp"));
+		
+		try {
+			Field indexName;
+			indexName = ESClientUtil.class.getDeclaredField("INDEX_1");
+			indexName.setAccessible(true);
+			indexName.set(esClientUtil, "test_arachne4_1");
+			indexName = ESClientUtil.class.getDeclaredField("INDEX_2");
+			indexName.setAccessible(true);
+			indexName.set(esClientUtil, "test_arachne4_2");
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
-	public void validateSetting() {
+	public void test1ValidateSetting() {
 		try {
 			final Field settingsFile = ESClientUtil.class.getDeclaredField("SETTINGS_FILE");
 			settingsFile.setAccessible(true);
@@ -48,7 +63,7 @@ public class ITestESClientUtil {
 	}
 	
 	@Test
-	public void validateMapping() {
+	public void test2ValidateMapping() {
 		try {
 			final Field mappingFile = ESClientUtil.class.getDeclaredField("MAPPING_FILE");
 			mappingFile.setAccessible(true);
@@ -61,6 +76,29 @@ public class ITestESClientUtil {
 				| IllegalArgumentException | InvocationTargetException e) {
 			fail(e.toString());
 		}
+	}
+	
+	@Test
+	public void test3GetClient() {
+		assertNotNull(esClientUtil.getClient());
+	}
+	
+	@Test
+	public void test4GetDataimportIndex() {
+		final String index = esClientUtil.getDataImportIndex();
+		assertNotEquals("NoIndex", index);
+	}
+	
+	@Test
+	public void test5UpdateSearchIndex() {
+		assertEquals("test_arachne4_1", esClientUtil.updateSearchIndex());
+		esClientUtil.getDataImportIndex();
+		assertEquals("test_arachne4_2", esClientUtil.updateSearchIndex());
+	}
+	
+	@Test
+	public void test6DeleteIndex() {
+		assertTrue("Deletion of index 'test_arachne4_2' failed!", esClientUtil.deleteIndex("test_arachne4_2"));
 	}
 	
 	private boolean isValidJson(final String json) {
