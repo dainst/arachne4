@@ -347,33 +347,33 @@ public class ESClientUtil implements ServletContextAware {
 	/**
 	 * Reads the elastic search json configs from the given file   
 	 * @param filename The path to the json file.
-	 * @return The JSON mapping as <code>String</code>.
+	 * @return The JSON as <code>String</code>.
 	 */
 	private String getJsonFromFile(final String filename) {
-		StringBuilder mapping = new StringBuilder(64);
+		StringBuilder result = new StringBuilder(64);
 		InputStream inputStream = null;
 		try {
 			inputStream = servletContext.getResourceAsStream(filename);
 			final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 			String inputLine;
 			while ((inputLine = bufferedReader.readLine()) != null) {
-				mapping.append(inputLine);
+				result.append(inputLine);
 				LOGGER.debug(inputLine);
 			}
 		} catch (IOException e) {
 			LOGGER.error("Could not read '" + filename + "'. " + e.getMessage());
-			mapping = new StringBuilder("undefined");
+			result = new StringBuilder("undefined");
 		} finally {
 			if (inputStream != null) {
 				try {
 					inputStream.close();
 				} catch (IOException e) {
 					LOGGER.error("Could not close '" + filename + "'. " + e.getMessage());
-					mapping = new StringBuilder("undefined");
+					result = new StringBuilder("undefined");
 				}
 			}
 		}
-		return mapping.toString();
+		return result.toString();
 	}
 	
 	// TODO: move to own class or replace with restTemplate (?)
