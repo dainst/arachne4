@@ -49,34 +49,35 @@ import de.uni_koeln.arachne.service.IUserRightsService;
  */
 @Repository("ESClientUtil")
 public class ESClientUtil implements ServletContextAware {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ESClientUtil.class);
-	
-	private transient ServletContext servletContext;
-	
-	@Autowired
-	private transient IUserRightsService userRightsService;
-	
-	private transient final String esName;
-	private transient final int esBulkActions;
-	private transient final int esBulkSize;
-	private transient final boolean esRemoteClient;
-	private transient final String esFullAddress ;
-	
-	private transient final Node node;
-	private transient final Client client;
-	
+
 	private static final String MAPPING_FILE = "/WEB-INF/search/mapping.json";
+
 	private static final String SETTINGS_FILE = "/WEB-INF/search/settings.json";
-		
+
 	private static final String ES_MAPPING_SUCCESS = "Elasticsearch mapping set.";
 	private static final String ES_MAPPING_FAILURE = "Failed to set elasticsearch mapping.";
-	
-	private static final String INDEX_1 = "arachne4_1";
-	private static final String INDEX_2 = "arachne4_2";
+	// Not 'final' so that it can be changed via reflection when testing
+	private static String INDEX_1 = "arachne4_1";
+	private static String INDEX_2 = "arachne4_2";
+	private transient ServletContext servletContext;
+
+	@Autowired
+	private transient IUserRightsService userRightsService;
+	private transient final String esName;
+
+	private transient final int esBulkActions;
+	private transient final int esBulkSize;
+
+	private transient final boolean esRemoteClient;
+	private transient final String esFullAddress ;
+
+	private transient final Node node;
+	private transient final Client client;
 
 	private transient final String searchIndexAlias;
-	
+
 	@Autowired
 	public ESClientUtil(final @Value("#{config.esProtocol}") String esProtocol
 			, final @Value("#{config.esAddress}") String esAddress
@@ -86,14 +87,14 @@ public class ESClientUtil implements ServletContextAware {
 			, final @Value("#{config.esBulkSize}") int esBulkSize
 			, final @Value("#{config.esClientTypeRemote}") boolean esRemoteClient
 			, final @Value("#{config.esRESTPort}") String esRESTPort) {
-		
+
 		this.esName = esName;
 		this.searchIndexAlias = esName;
 		this.esBulkActions = esBulkActions;
 		this.esBulkSize = esBulkSize;
 		this.esRemoteClient = esRemoteClient;
 		esFullAddress  = esProtocol + "://" + esAddress + ':' + esRESTPort + '/';
-		
+
 		if (esRemoteClient) {
 			LOGGER.info("Setting up elasticsearch transport client...");
 			node = null;
@@ -107,7 +108,84 @@ public class ESClientUtil implements ServletContextAware {
 			client = node.client();
 		}
 	}
-	
+
+	/**
+	 * Deletes the elasticsearch index with the given name.
+	 * @param indexName The name of the index to delete.
+	 * @return A boolean value indicating success.
+	 */
+	public boolean deleteIndex(final String indexName) {
+		boolean result = true;
+		LOGGER.info("Deleting index " + indexName);
+		DeleteIndexResponse delete = null;
+		try {
+			delete = client.admin().indices().prepareDelete(indexName).execute().actionGet();
+			if (!delete.isAcknowledged()) {
+				LOGGER.error("Index " + indexName + " was not deleted.");
+				result = false;
+			}
+		} catch (IndexMissingException e) { // NOPMD
+			// No problem if no index exists as it should be deleted anyways
+		}
+		return result;
+	}
+
+	/**
+	 * Closes the elastic search client or node.
+	 */
+	@PreDestroy
+	public void destroy() {
+		if (esRemoteClient) {
+			LOGGER.info("Closing elasticsearch transport client...");
+			client.close();
+		} else {
+			LOGGER.info("Closing elasticsearch node client...");
+			node.close();
+		}
+	}
+
+	/**
+	 * This method constructs a access control query filter for Elasticsearch using the <code>UserRightsService</code>.
+	 * @return The constructed filter.
+	 */
+	public BoolFilterBuilder getAccessControlFilter() {
+		final User user = userRightsService.getCurrentUser();
+		if (user.isAll_groups()) {
+			return FilterBuilders.boolFilter().must(FilterBuilders.matchAllFilter());
+		} else {
+			final Set<DatasetGroup> datasetGroups = user.getDatasetGroups();
+			final OrFilterBuilder orFilter = FilterBuilders.orFilter();
+			for (final DatasetGroup datasetGroup: datasetGroups) {
+				orFilter.add(FilterBuilders.termFilter("datasetGroup", datasetGroup.getName()));
+			}
+			return FilterBuilders.boolFilter().must(orFilter);
+		}
+	}
+
+	/**
+	 * Returns the maximum number of actions that are bulked in one request.
+	 * @return The maximum number of actions for a bulk.
+	 */
+	public int getBulkActions() {
+		return esBulkActions;
+	}
+
+	/**
+	 * Returns the maximum size for a bulk request.
+	 * @return The maximum size for a bulk request in MB.
+	 */
+	public int getBulkSize() {
+		return esBulkSize;
+	}
+
+	/**
+	 * Gets the current elasticsearch client for re-use.
+	 * @return The elasticsearch client.
+	 */
+	public Client getClient() {
+		return this.client;
+	}
+
 	/**
 	 * This method creates the new elasticsearch index that will be used for the dataimport and sets its mapping. It deletes any
 	 * existing index of the same name and it fails if the the mapping cannot be set.
@@ -116,42 +194,104 @@ public class ESClientUtil implements ServletContextAware {
 	public String getDataImportIndex() {
 		String result = "NoIndex";
 		final String indexName = getDataImportIndexName();
-				
+
 		deleteIndex(indexName);
-		
+
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
-		
+
 		final String settings = getJsonFromFile(SETTINGS_FILE);
-		
+
 		CreateIndexRequestBuilder prepareCreate = client.admin().indices().prepareCreate(indexName);
-		
+
 		if (!"undefined".equals(settings)) {
 			prepareCreate = prepareCreate.setSettings(ImmutableSettings.settingsBuilder().loadFromSource(settings));
 		}
-		
+
 		final CreateIndexResponse createResponse = prepareCreate.execute().actionGet();
-		
+
 		if (!createResponse.isAcknowledged()) {
 			LOGGER.error("Failed to create index '" + indexName + "'");
 			return result;
 		}
 		LOGGER.info("Created index " + indexName);
-		
+
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
-		
+
 		if (ES_MAPPING_SUCCESS.equals(setMapping(indexName))) {
 			result = indexName;
 		}
-		
+
 		return result;
+	}
+
+	/**
+	 * Gets the elasticsearch cluster name.
+	 * @return The clustername as <code>String</code>.
+	 */
+	public String getName() {
+		return esName;
+	}
+
+	/**
+	 * Gets the alias of the current search index.
+	 * @return The alias as <code>String</code>.
+	 */
+	public String getSearchIndexAlias() {
+		return this.searchIndexAlias;
+	}
+
+	/**
+	 * Indicates whether a remote client is used. 
+	 * @return <code>true</code> if the client is remote else <code>false</code>. 
+	 */
+	public boolean isRemote() {
+		return esRemoteClient;
+	}
+
+	public void setRefreshInterval(final String indexName, final boolean enabled) {
+		// close index		
+		final CloseIndexResponse closeResponse = client.admin().indices()
+				.prepareClose(indexName)
+				.execute().actionGet();
+		if (!closeResponse.isAcknowledged()) {
+			LOGGER.error("Failed to close index '" + indexName + "'.");
+		}
+
+		// update settings
+		String refreshValue = "1s";
+		if (!enabled) {
+			refreshValue = "-1";
+		}
+		final Settings settings = ImmutableSettings.settingsBuilder().put("refresh_intervall", refreshValue).build();
+
+		final UpdateSettingsResponse response = client.admin().indices()
+				.prepareUpdateSettings(indexName)
+				.setSettings(settings)
+				.execute().actionGet();
+		if (!response.isAcknowledged()) {
+			LOGGER.error("Failed to set 'refresh_interval' to " + refreshValue + " on index '" + indexName + "'.");
+		}
+
+		// open index
+		final OpenIndexResponse openResponse = client.admin().indices()
+				.prepareOpen(indexName)
+				.execute().actionGet();
+		if (!openResponse.isAcknowledged()) {
+			LOGGER.error("Failed to open index '" + indexName + "'.");
+		}
+	}
+
+	@Override
+	public void setServletContext(final ServletContext servletContext) {
+		this.servletContext = servletContext;
 	}
 
 	/**
@@ -194,112 +334,6 @@ public class ESClientUtil implements ServletContextAware {
 			}
 		}		
 	}
-	
-	/**
-	 * Deletes the elasticsearch index with the given name.
-	 * @param indexName The name of the index to delete.
-	 * @return A boolean value indicating success.
-	 */
-	public boolean deleteIndex(final String indexName) {
-		boolean result = true;
-		LOGGER.info("Deleting index " + indexName);
-		DeleteIndexResponse delete = null;
-		try {
-			delete = client.admin().indices().prepareDelete(indexName).execute().actionGet();
-			if (!delete.isAcknowledged()) {
-				LOGGER.error("Index " + indexName + " was not deleted.");
-				result = false;
-			}
-		} catch (IndexMissingException e) { // NOPMD
-			// No problem if no index exists as it should be deleted anyways
-		}
-		return result;
-	}
-	
-	/**
-	 * This method constructs a access control query filter for Elasticsearch using the <code>UserRightsService</code>.
-	 * @return The constructed filter.
-	 */
-	public BoolFilterBuilder getAccessControlFilter() {
-		final User user = userRightsService.getCurrentUser();
-		if (user.isAll_groups()) {
-			return FilterBuilders.boolFilter().must(FilterBuilders.matchAllFilter());
-		} else {
-			final Set<DatasetGroup> datasetGroups = user.getDatasetGroups();
-			final OrFilterBuilder orFilter = FilterBuilders.orFilter();
-			for (final DatasetGroup datasetGroup: datasetGroups) {
-				orFilter.add(FilterBuilders.termFilter("datasetGroup", datasetGroup.getName()));
-			}
-			return FilterBuilders.boolFilter().must(orFilter);
-		}
-	}
-
-	/**
-	 * Gets the current elasticsearch client for re-use.
-	 * @return The elasticsearch client.
-	 */
-	public Client getClient() {
-		return this.client;
-	}
-	
-	/**
-	 * Indicates whether a remote client is used. 
-	 * @return <code>true</code> if the client is remote else <code>false</code>. 
-	 */
-	public boolean isRemote() {
-		return esRemoteClient;
-	}
-	
-	/**
-	 * Gets the elasticsearch cluster name.
-	 * @return The clustername as <code>String</code>.
-	 */
-	public String getName() {
-		return esName;
-	}
-	
-	/**
-	 * Gets the alias of the current search index.
-	 * @return The alias as <code>String</code>.
-	 */
-	public String getSearchIndexAlias() {
-		return this.searchIndexAlias;
-	}
-	
-	/**
-	 * Returns the maximum number of actions that are bulked in one request.
-	 * @return The maximum number of actions for a bulk.
-	 */
-	public int getBulkActions() {
-		return esBulkActions;
-	}
-	
-	/**
-	 * Returns the maximum size for a bulk request.
-	 * @return The maximum size for a bulk request in MB.
-	 */
-	public int getBulkSize() {
-		return esBulkSize;
-	}
-	
-	@Override
-	public void setServletContext(final ServletContext servletContext) {
-		this.servletContext = servletContext;
-	}
-	
-	/**
-	 * Closes the elastic search client or node.
-	 */
-	@PreDestroy
-	public void destroy() {
-		if (esRemoteClient) {
-			LOGGER.info("Closing elasticsearch transport client...");
-			client.close();
-		} else {
-			LOGGER.info("Closing elasticsearch node client...");
-			node.close();
-		}
-	}
 
 	/**
 	 * Sends a HTTP request to the elasticsearch alias endpoint to determine the index name to use for the dataimport.
@@ -314,36 +348,6 @@ public class ESClientUtil implements ServletContextAware {
 		return result;
 	}
 
-	/**
-	 * Sets the elasticsearch mapping on the specified index by reading the 'mapping.json' file and sending it as REST request to 
-	 * elasticsearch.
-	 * @return A status message.
-	 */
-	private String setMapping(final String indexName) {
-		String message = ES_MAPPING_FAILURE;
-
-		final String mapping = getJsonFromFile(MAPPING_FILE);
-
-		if ("undefined".equals(mapping)) {
-			return message;
-		}
-
-		final PutMappingResponse putResponse = client.admin().indices()
-				.preparePutMapping(indexName)
-				.setType("entity")
-				.setSource(mapping)
-				.execute().actionGet();
-		
-		if (putResponse.isAcknowledged()) {
-			message = ES_MAPPING_SUCCESS;
-			LOGGER.info(ES_MAPPING_SUCCESS);
-		} else {
-			LOGGER.error(ES_MAPPING_FAILURE);
-		}
-		
-		return message;
-	}
-	
 	/**
 	 * Reads the elastic search json configs from the given file   
 	 * @param filename The path to the json file.
@@ -375,10 +379,10 @@ public class ESClientUtil implements ServletContextAware {
 		}
 		return result.toString();
 	}
-	
+
 	// TODO: move to own class or replace with restTemplate (?)
 	private String sendRequest(final String url, final String method) {
-		
+
 		final StringBuilder result = new StringBuilder(32); 
 		HttpURLConnection connection = null;
 		try {
@@ -415,36 +419,33 @@ public class ESClientUtil implements ServletContextAware {
 		return result.toString();
 	}
 
-	public void setRefreshInterval(final String indexName, final boolean enabled) {
-		// close index		
-		final CloseIndexResponse closeResponse = client.admin().indices()
-				.prepareClose(indexName)
+	/**
+	 * Sets the elasticsearch mapping on the specified index by reading the 'mapping.json' file and sending it as REST request to 
+	 * elasticsearch.
+	 * @return A status message.
+	 */
+	private String setMapping(final String indexName) {
+		String message = ES_MAPPING_FAILURE;
+
+		final String mapping = getJsonFromFile(MAPPING_FILE);
+
+		if ("undefined".equals(mapping)) {
+			return message;
+		}
+
+		final PutMappingResponse putResponse = client.admin().indices()
+				.preparePutMapping(indexName)
+				.setType("entity")
+				.setSource(mapping)
 				.execute().actionGet();
-		if (!closeResponse.isAcknowledged()) {
-			LOGGER.error("Failed to close index '" + indexName + "'.");
+
+		if (putResponse.isAcknowledged()) {
+			message = ES_MAPPING_SUCCESS;
+			LOGGER.info(ES_MAPPING_SUCCESS);
+		} else {
+			LOGGER.error(ES_MAPPING_FAILURE);
 		}
-		
-		// update settings
-		String refreshValue = "1s";
-		if (!enabled) {
-			refreshValue = "-1";
-		}
-		final Settings settings = ImmutableSettings.settingsBuilder().put("refresh_intervall", refreshValue).build();
-		
-		final UpdateSettingsResponse response = client.admin().indices()
-				.prepareUpdateSettings(indexName)
-				.setSettings(settings)
-				.execute().actionGet();
-		if (!response.isAcknowledged()) {
-			LOGGER.error("Failed to set 'refresh_interval' to " + refreshValue + " on index '" + indexName + "'.");
-		}
-		
-		// open index
-		final OpenIndexResponse openResponse = client.admin().indices()
-				.prepareOpen(indexName)
-				.execute().actionGet();
-		if (!openResponse.isAcknowledged()) {
-			LOGGER.error("Failed to open index '" + indexName + "'.");
-		}
+
+		return message;
 	}
 }
