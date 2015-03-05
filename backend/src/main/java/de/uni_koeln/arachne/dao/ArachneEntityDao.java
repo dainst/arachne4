@@ -3,9 +3,11 @@ package de.uni_koeln.arachne.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Query;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +27,7 @@ public class ArachneEntityDao {
 	 */
 	@Transactional(readOnly=true)
 	public ArachneEntity getByEntityID(final long arachneEntityID) {
-		Session session = sessionFactory.getCurrentSession();
+		final Session session = sessionFactory.getCurrentSession();
 		return (ArachneEntity) session.get(ArachneEntity.class, arachneEntityID);
 	}
 	
@@ -37,19 +39,11 @@ public class ArachneEntityDao {
 	 */
 	@Transactional(readOnly=true)
 	public ArachneEntity getByTablenameAndInternalKey(final String tableName, final long internalId) {
-		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from ArachneEntity where ForeignKey like :internalId and TableName like :tableName")
-				.setLong("internalId", internalId)
-				.setString("tableName", tableName);
-						
-		@SuppressWarnings("unchecked")
-		final List<ArachneEntity> list = (List<ArachneEntity>) query.list();
-		
-		if (list.isEmpty()) {
-			return null;
-		} else {
-			return (ArachneEntity) list.get(0);
-		}
+		final Session session = sessionFactory.getCurrentSession();
+		final Criteria criteria = session.createCriteria(ArachneEntity.class);
+		criteria.add(Restrictions.eq("foreignKey", internalId));
+		criteria.add(Restrictions.like("tableName", tableName));
+		return (ArachneEntity) criteria.uniqueResult();
 	}
 	
 	/**
@@ -60,14 +54,14 @@ public class ArachneEntityDao {
 	 */
 	@Transactional(readOnly=true)
 	public List<ArachneEntity> getByLimitedEntityIdRange(final long startId, final int limit) {
-		
-		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from ArachneEntity where entityId > :startId order by entityId asc")
-				.setLong("startId", startId)
-				.setMaxResults(limit);
-		
+		final Session session = sessionFactory.getCurrentSession();
+		final Criteria criteria = session.createCriteria(ArachneEntity.class);
+		criteria.add(Restrictions.gt("entityId", startId));
+		criteria.addOrder(Order.asc("entityId"));
+		criteria.setMaxResults(limit);
+				
 		@SuppressWarnings("unchecked")
-		final List<ArachneEntity> list = (List<ArachneEntity>) query.list();
+		final List<ArachneEntity> list = (List<ArachneEntity>) criteria.list();
 				
 		if (list.isEmpty()) {
 			return new ArrayList<ArachneEntity>();
