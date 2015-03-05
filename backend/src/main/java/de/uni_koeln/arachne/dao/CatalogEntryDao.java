@@ -46,36 +46,17 @@ public class CatalogEntryDao {
 	@SuppressWarnings({ "PMD", "unchecked" })
 	public List<Object[]> getCatalogIdsAndPathsByEntityId(final long entityId) {
 		final List<Object[]> result = new ArrayList<Object[]>();
-		// ugly native SQL workaround for mapping issues - but it should be faster :)
 		final Session session = sessionFactory.getCurrentSession();
-		final SQLQuery query = session.createSQLQuery(
-				"SELECT catalog_id, path FROM arachne.catalog_entry WHERE arachne_entity_id = :entity_id");
-		query.setParameter("entity_id", entityId);
-		query.addScalar("catalog_id", StandardBasicTypes.LONG);
-		query.addScalar("path", StandardBasicTypes.STRING);
-		final List<Object[]> queryResults = query.list();
-		if (!queryResults.isEmpty()) {
-			for (Object[] queryResult : queryResults) {
-				Catalog catalog = catalogDao.getByCatalogId((Long)queryResult[0]);
-				if (catalog.isPublic()) {
-					result.add(queryResult);
-				}
-			}
-		}
-		
-		// TODO reenable when the mapping is fixed - currently the query sometimes works and sometimes does not
-		// if it doesn't it throws a "null index column for collection"-exception
-		/*final Session session = sessionFactory.getCurrentSession();
 		final Criteria criteria = session.createCriteria(CatalogEntry.class);
 		criteria.add(Restrictions.eq("arachneEntityId", entityId));
-		criteria.setProjection(Projections.property("catalog"));
 		criteria.addOrder(Order.asc("catalog.id"));
 		
-		for (Catalog catalog : (List<Catalog>) (List<?>) criteria.list()) {
+		for (CatalogEntry catalogEntry : (List<CatalogEntry>) (List<?>) criteria.list()) {
+			final Catalog catalog = catalogEntry.getCatalog(); 
 			if (catalog.isPublic()) {
-				result.add(catalog.getId());
+				result.add(new Object[] {catalog.getId(), catalogEntry.getPath()});
 			}
-		}*/
+		}
 		
 		return result;
 	}
