@@ -1,393 +1,398 @@
 [
-	{
-		"id": "ueber",
-		"title": {
-			"de": "Über iDAI.images/Arachne",
-			"en": "About iDAI.images/Arachne"
-		}
-	}
-	{
-		"id": "",
-		"title": {
-			"de": "Inhalte",
-			"en": "Content"
-		},
-		"children": [
-			{
-				"id": "",
-				"title": {
-					"de": "DAI - Objektdatenbank",
-					"en": "DAI - Objectdatabase"
-				},
-				"children": [
-					{
-						"id": "emagines",
-						"title": {
-							"de": "Emagines",
-							"en": "Emagines",
-							"it": "Emagines"
-						}		
-					},
-					{
-						"id": "",
-						"title": {
-							"de": "Fotothek DAI Istanbul",
-							"en": "DAI Istanbul photo archive"
-						}		
-					},
-					{
-						"id": "",
-						"title": {
-							"de": "Fotothek DAI Kairo",
-							"en": "DAI Cairo photo archive"
-						}		
-					},
-					{
-						"id": "",
-						"title": {
-							"de": "Fotothek DAI Madrid",
-							"en": "DAI Madrid photo archive"
-						}		
-					},
-					{
-						"id": "",
-						"title": {
-							"de": "Fotothek DAI Rom",
-							"en": "DAI Rome photo archive"
-						},
-						"children": [
-							{
-								"id": "skulpturnegdairom",
-								"title": {
-									"de": "Skulpturennegative DAI ROM",
-									"en": "Sculpture Negatives of the DAI Rome"								
-								}		
-							},
-							{
-								"id": "nachlassroeder",
-								"title": {
-									"de": "Nachlass Josef Röder",
-									"en": "Scholarly bequests of Josef Röder"								
-								}		
-							},
-							{
-								"id": "invbuecherrom",
-								"title": {
-									"de": "Inventarbücher",
-									"en": "Inventory registers"								
-								}		
-							},
-							{
-								"id": "imagegrid",
-								"title": {
-									"de": "Image Grid DAI Rom",
-									"en": "Image Grid DAI Rome"								
-								}		
-							}	
-						]
-					},
-					{
-						"id": "fotoarchivdaiberlin",
-						"title": {
-							"de": "Fotoarchiv der Zentrale des DAI in Berlin",
-							"en": "DAI Head Office photo archive"
-						}				
-					},
-					{
-						"id": "daiorient",
-						"title": {
-							"de": "Fotothek DAI Orientabteilung",
-						}				
-					}
-				]
-			},
-			{
-				"id": "idaibookbrowser",
-				"title": {
-					"de": "iDAI.bookbrowser",
-					"en": "iDAI.bookbrowser",
-					"it": "iDAI.bookbrowser"
-				},
-				"children": [
-					{
-						"id": "rezeptionantike",
-						"title": {
-							"de": "Rezeption der Antike im semantischen Netz",
-							"en": "Reception of Antiquity in a Semantic Network"								
-						}		
-					},
-					{
-						"id": "antikzeichnung",
-						"title": {
-							"de": "Die Antike in Zeichnung, Plan und Bauaufnahme",
-							"en": "The Antiquity in Drawing, Plan and Architectural Survey"								
-						}		
-					}
-				]	
-			},
-			{
-				"id": "monumentbrowser",
-				"title": {
-					"de": "Monumentbrowser",
-					"en": "Monument Browser"
-				},
-				"children": [
-					{
-						"id": "arapacis",
-						"title": {
-							"de": "Ara Pacis",
-							"en": "Ara Pacis",
-							"it": "Ara Pacis"								
-						}		
-					},
-					{
-						"id": "pergaltarbrowser",
-						"title": {
-							"de": "Pergamonaltarbrowser",
-							"en": "Pergamon Altar Browser",
-							"it": "Altare di Pergamo"								
-						}		
-					},
-					{
-						"id": "corpusantsark",
-						"title": {
-							"de": "Corpus der Antiken Sarkophage",
-							"en": "Corpus of Ancient Sarcophagi"								
-						}		
-					},
-					{
-						"id": "traianssaeule",
-						"title": {
-							"de": "Trajanssäule",
-							"en": "Trajan’s Column",
-							"it": "Colonna Traiana"								
-						}		
-					},
-					{
-						"id": "mercatorplan",
-						"title": {
-							"de": "Kölnplan des Arnold Mercator",
-							"en": "Mercator’s Map of Cologne"								
-						}		
-					},
-				]			
-			},
-			{
-				"id": "",
-				"title": {
-					"de": "Sammlungen",
-					"en": "Collections"
-				},
-				"children": [
-					{
-						"id": "antiksammlberlin",
-						"title": {
-							"de": "Antikensammlung der Staatlichen Museen zu Berlin",
-							"en": "Antiquities Collection of the Berlin State Museums"							
-						}		
-					},
-					{
-						"id": "berlinsamml",
-						"title": {
-							"de": "Katalog der Gipsabgüsse nach griechisch-römischen Skulpturen in Berliner Sammlungen",
-							"en": "Image database of the Cast Collection of Ancient Sculpture in Berlin"							
-						}		
-					},
-					{
-						"id": "sammlakakunst",
-						"title": {
-							"de": "Abgußsammlung Bonn",
-							"en": "Plaster Cast Collection Bonn"							
-						}		
-					},
-					{
-						"id": "sammlsaarbr",
-						"title": {
-							"de": "Abgußsammlung Saarbrücken",
-							"en": "Cast collection Saarbrücken"							
-						}		
-					},
-					{
-						"id": "schlossfulda",
-						"title": {
-							"de": "Schloß Fasanerie (Adolphseck) bei Fulda",
-							"en": "Fasanerie Castle (Adolphseck) near Fulda"							
-						}		
-					},
-					{
-						"id": "gipsleipzigsamml",
-						"title": {
-							"de": "Antikenmuseum der Universität Leipzig",
-							"en": "Museum of Antiquities of the Leipzig University"							
-						}		
-					},
-					{
-						"id": "",
-						"title": {
-							"de": "Fotosammlung Max von Oppenheim",
-							"en": "The Max von Oppenheim photo collection",
-														
-						}		
-					},
-				]		
-			},
-			{
-				"id": "",
-				"title": {
-					"de": "Sonstige Projekte",
-					"en": "Other Projects"
-				}		
-			},
-			{
-				"id": "",
-				"title": {
-					"de": "Publikationen",
-					"en": "Collections"
-				},
-				"children": [
-					{
-						"id": "basilaemil",
-						"title": {
-							"de": "Die Basilica Aemilia",
-							"en": "The Basilica Aemilia"
-						}		
-					},
-					{
-						"id": "claracstart",
-						"title": {
-							"de": "Clarac, Musée de sculpture",
-							"en": "Clarac, Musée de sculpture"
-						}		
-					},
-					{
-						"id": "museomaff",
-						"title": {
-							"de": "Das Museo Maffeiano als Online-Edition",
-							"en": "The Museo Maffeiano online-edition"
-						}		
-					},
-					{
-						"id": "corpusantsark",
-						"title": {
-							"de": "Corpus der Antiken Sarkophage",
-							"en": "Corpus of Ancient Sarcophagi"
-						}		
-					},
-					{
-						"id": "corpusminmyk",
-						"title": {
-							"de": "Corpus der minoischen und mykenischen Siegel",
-							"en": "Corpus of Minoan and Mycenaean Seals"
-						}		
-					},
-					{
-						"id": "langwiss",
-						"title": {
-							"de": "Jörn Lang, “Mit Wissen geschmückt?”. Zur bildlichen Rezeption griechischer Dichter und Denker in der römischen Lebenswelt (Wiesbaden 2012)"
-						}		
-					},					
-					{
-						"id": "roseterra",
-						"title": {
-							"de": "H. Rose, Die römischen Terrakottamasken in den Nordwestprovinzen. MAR XXXVII (2006)",
-							"en": "H. Rose, Roman Terracotta Masks in the Northwestern Provinces (Die römischen Terrakottamasken in den Nordwestprovinzen. MAR XXXVII)"
-						}		
-					},
-					{
-						"id": "katalogskulpthess",
-						"title": {
-							"de": "Katalog der Skulpturen im Archäologischen Museum von Thessaloniki",
-							"en": "Katalog der Skulpturen im Archäologischen Museum von Thessaloniki"
-						}		
-					},
-					{
-						"id": "hafen",
-						"title": {
-							"de": "Torsten Bendschus – Stefan Feuser, Bilder und Vorstellungen römischer Hafenanlagen. Gattungsübergreifende Dokumentation und kontextualisierte Analyse römischer Hafendarstellungen"
-						}		
-					}
-				]				
-			},
-			{
-				"id": "wissqualarachne",
-				"title": {
-					"de": "Wissenschaftliche Qualifikationsarbeiten",
-					"en": "Dissertations/academic final papers"
-				},
-				"children": [
-					{
-						"id": "roseterra",
-						"title": {
-							"de": "H. Rose, Die römischen Terrakottamasken in den Nordwestprovinzen. MAR XXXVII (2006)"
-						}		
-					}
-				]		
-			},
-			{
-				"id": "paliliastart",
-				"title": {
-					"de": "Palilia",
-					"en": "Palilia"
-				},		
-				"children": [
-					{
-						"id": "palilia20",
-						"title": {
-							"de": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild",
-							"en": "Palilia 20: Alexandra W. Busch, Military in Rome. Military and paramilitary units in the imperial cityscape"
-						}		
-					},
-					{
-						"id": "lippsbasilica",
-						"title": {
-							"de": "Palilia 24: Johannes Lipps, Die Basilica Aemilia am Forum Romanum. Der kaiserzeitliche Bau und seine Ornamentik (Diss. Köln 2008)",
-							"en": "Palilia 24: Johannes Lipps, The Basilica Aemilia on the Forum Romanum. The building and its ornamentation in imperial times (Dissertation, Cologne 2008)"
-						}		
-					},
-					{
-						"id": "palilia25",
-						"title": {
-							"de": "Palilia 25: M. Tombrägel, Die republikanischen Otiumvillen von Tivoli. Palilia 25",
-							"en": "Palilia 25: Martin Tombrägel, The Republican otium-villas at Tivoli"
-						}		
-					},
-					{
-						"id": "palilia26",
-						"title": {
-							"de": "Palilia 26: Wolfgang Ehrhardt, Dekorations- und Wohnkontext. Beseitigung, Restaurierung und Konservierung von Wandbemalungen in den kampanischen Antikenstätten",
-							"en": "Palilia 26: Wolfgang Ehrhardt, Decorative and residential context. Removal, restoration and preservation of wall paintings in the Campanian antique sites"
-						}		
-					}
-				]
-			}
-		]	
-	}
-	{
-		"id": "interfaces",
-		"title": {
-			"de": "Interfaces",
-			"en": "Interfaces"
-		}
-	}
-	{
-		"id": "doku",
-		"title": {
-			"de": "Dokumentation/FAQ",
-			"en": "Documentation/FAQ"
-		}
-	}
-	{
-		"id": "lizenz",
-		"title": {
-			"de": "Lizenz",
-			"en": "License / Orders"
-		}
-	}
-	{
-		"id": "analysearachne",
-		"title": {
-			"de": "Analyse zur Arachne-Nutzung",
-			"en": "Arachne usage analysis"
-		}
-	}
-]
+    {
+        "id": "ueber",
+        "title": {
+            "de": "Über iDAI.images/Arachne",
+            "en": "About iDAI.images/Arachne"
+        }
+    },
+    {
+        "id": "",
+        "title": {
+            "de": "Inhalte",
+            "en": "Content"
+        },
+        "children": [
+            {
+                "id": "",
+                "title": {
+                    "de": "DAI - Objektdatenbank",
+                    "en": "DAI - Objectdatabase"
+                },
+                "children": [
+                    {
+                        "id": "emagines",
+                        "title": {
+                            "de": "Emagines",
+                            "en": "Emagines",
+                            "it": "Emagines"
+                        }
+                    },
+                    {
+                        "id": "",
+                        "title": {
+                            "de": "Fotothek DAI Istanbul",
+                            "en": "DAI Istanbul photo archive"
+                        }
+                    },
+                    {
+                        "id": "",
+                        "title": {
+                            "de": "Fotothek DAI Kairo",
+                            "en": "DAI Cairo photo archive"
+                        }
+                    },
+                    {
+                        "id": "",
+                        "title": {
+                            "de": "Fotothek DAI Madrid",
+                            "en": "DAI Madrid photo archive"
+                        }
+                    },
+                    {
+                        "id": "",
+                        "title": {
+                            "de": "Fotothek DAI Rom",
+                            "en": "DAI Rome photo archive"
+                        },
+                        "children": [
+                            {
+                                "id": "skulpturnegdairom",
+                                "title": {
+                                    "de": "Skulpturennegative DAI ROM",
+                                    "en": "Sculpture Negatives of the DAI Rome"
+                                }
+                            },
+                            {
+                                "id": "nachlassroeder",
+                                "title": {
+                                    "de": "Nachlass Josef Röder",
+                                    "en": "Scholarly bequests of Josef Röder"
+                                }
+                            },
+                            {
+                                "id": "invbuecherrom",
+                                "title": {
+                                    "de": "Inventarbücher",
+                                    "en": "Inventory registers"
+                                }
+                            },
+                            {
+                                "id": "imagegrid",
+                                "title": {
+                                    "de": "Image Grid DAI Rom",
+                                    "en": "Image Grid DAI Rome"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "id": "fotoarchivdaiberlin",
+                        "title": {
+                            "de": "Fotoarchiv der Zentrale des DAI in Berlin",
+                            "en": "DAI Head Office photo archive"
+                        }
+                    },
+                    {
+                        "id": "daiorient",
+                        "title": {
+                            "de": "Fotothek DAI Orientabteilung"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "idaibookbrowser",
+                "title": {
+                    "de": "iDAI.bookbrowser",
+                    "en": "iDAI.bookbrowser",
+                    "it": "iDAI.bookbrowser"
+                },
+                "children": [
+                    {
+                        "id": "rezeptionantike",
+                        "title": {
+                            "de": "Rezeption der Antike im semantischen Netz",
+                            "en": "Reception of Antiquity in a Semantic Network"
+                        }
+                    },
+                    {
+                        "id": "antikzeichnung",
+                        "title": {
+                            "de": "Die Antike in Zeichnung, Plan und Bauaufnahme",
+                            "en": "The Antiquity in Drawing, Plan and Architectural Survey"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "monumentbrowser",
+                "title": {
+                    "de": "Monumentbrowser",
+                    "en": "Monument Browser"
+                },
+                "children": [
+                    {
+                        "id": "arapacis",
+                        "title": {
+                            "de": "Ara Pacis",
+                            "en": "Ara Pacis",
+                            "it": "Ara Pacis"
+                        }
+                    },
+                    {
+                        "id": "pergaltarbrowser",
+                        "title": {
+                            "de": "Pergamonaltarbrowser",
+                            "en": "Pergamon Altar Browser",
+                            "it": "Altare di Pergamo"
+                        }
+                    },
+                    {
+                        "id": "corpusantsark",
+                        "title": {
+                            "de": "Corpus der Antiken Sarkophage",
+                            "en": "Corpus of Ancient Sarcophagi"
+                        }
+                    },
+                    {
+                        "id": "traianssaeule",
+                        "title": {
+                            "de": "Trajanssäule",
+                            "en": "Trajan’s Column",
+                            "it": "Colonna Traiana"
+                        }
+                    },
+                    {
+                        "id": "mercatorplan",
+                        "title": {
+                            "de": "Kölnplan des Arnold Mercator",
+                            "en": "Mercator’s Map of Cologne"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "",
+                "title": {
+                    "de": "Sammlungen",
+                    "en": "Collections"
+                },
+                "children": [
+                    {
+                        "id": "antiksammlberlin",
+                        "title": {
+                            "de": "Antikensammlung der Staatlichen Museen zu Berlin",
+                            "en": "Antiquities Collection of the Berlin State Museums"
+                        }
+                    },
+                    {
+                        "id": "berlinsamml",
+                        "title": {
+                            "de": "Katalog der Gipsabgüsse nach griechisch-römischen Skulpturen in Berliner Sammlungen",
+                            "en": "Image database of the Cast Collection of Ancient Sculpture in Berlin"
+                        }
+                    },
+                    {
+                        "id": "sammlakakunst",
+                        "title": {
+                            "de": "Abgußsammlung Bonn",
+                            "en": "Plaster Cast Collection Bonn"
+                        }
+                    },
+                    {
+                        "id": "sammlsaarbr",
+                        "title": {
+                            "de": "Abgußsammlung Saarbrücken",
+                            "en": "Cast collection Saarbrücken"
+                        }
+                    },
+                    {
+                        "id": "schlossfulda",
+                        "title": {
+                            "de": "Schloß Fasanerie (Adolphseck) bei Fulda",
+                            "en": "Fasanerie Castle (Adolphseck) near Fulda"
+                        }
+                    },
+                    {
+                        "id": "gipsleipzigsamml",
+                        "title": {
+                            "de": "Antikenmuseum der Universität Leipzig",
+                            "en": "Museum of Antiquities of the Leipzig University"
+                        }
+                    },
+                    {
+                        "id": "",
+                        "title": {
+                            "de": "Fotosammlung Max von Oppenheim",
+                            "en": "The Max von Oppenheim photo collection"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "",
+                "title": {
+                    "de": "Sonstige Projekte",
+                    "en": "Other Projects"
+                }
+            },
+            {
+                "id": "",
+                "title": {
+                    "de": "Publikationen",
+                    "en": "Collections"
+                },
+                "children": [
+                    {
+                        "id": "basilaemil",
+                        "title": {
+                            "de": "Die Basilica Aemilia",
+                            "en": "The Basilica Aemilia"
+                        }
+                    },
+                    {
+                        "id": "kanatha",
+                        "title": {
+                            "de": "Die Heiligtümer in Kanatha"
+                        }
+                    },
+                    {
+                        "id": "claracstart",
+                        "title": {
+                            "de": "Clarac, Musée de sculpture",
+                            "en": "Clarac, Musée de sculpture"
+                        }
+                    },
+                    {
+                        "id": "museomaff",
+                        "title": {
+                            "de": "Das Museo Maffeiano als Online-Edition",
+                            "en": "The Museo Maffeiano online-edition"
+                        }
+                    },
+                    {
+                        "id": "corpusantsark",
+                        "title": {
+                            "de": "Corpus der Antiken Sarkophage",
+                            "en": "Corpus of Ancient Sarcophagi"
+                        }
+                    },
+                    {
+                        "id": "corpusminmyk",
+                        "title": {
+                            "de": "Corpus der minoischen und mykenischen Siegel",
+                            "en": "Corpus of Minoan and Mycenaean Seals"
+                        }
+                    },
+                    {
+                        "id": "langwiss",
+                        "title": {
+                            "de": "Jörn Lang, “Mit Wissen geschmückt?”. Zur bildlichen Rezeption griechischer Dichter und Denker in der römischen Lebenswelt (Wiesbaden 2012)"
+                        }
+                    },
+                    {
+                        "id": "roseterra",
+                        "title": {
+                            "de": "H. Rose, Die römischen Terrakottamasken in den Nordwestprovinzen. MAR XXXVII (2006)",
+                            "en": "H. Rose, Roman Terracotta Masks in the Northwestern Provinces (Die römischen Terrakottamasken in den Nordwestprovinzen. MAR XXXVII)"
+                        }
+                    },
+                    {
+                        "id": "katalogskulpthess",
+                        "title": {
+                            "de": "Katalog der Skulpturen im Archäologischen Museum von Thessaloniki",
+                            "en": "Katalog der Skulpturen im Archäologischen Museum von Thessaloniki"
+                        }
+                    },
+                    {
+                        "id": "hafen",
+                        "title": {
+                            "de": "Torsten Bendschus – Stefan Feuser, Bilder und Vorstellungen römischer Hafenanlagen. Gattungsübergreifende Dokumentation und kontextualisierte Analyse römischer Hafendarstellungen"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "wissqualarachne",
+                "title": {
+                    "de": "Wissenschaftliche Qualifikationsarbeiten",
+                    "en": "Dissertations/academic final papers"
+                },
+                "children": [
+                    {
+                        "id": "roseterra",
+                        "title": {
+                            "de": "H. Rose, Die römischen Terrakottamasken in den Nordwestprovinzen. MAR XXXVII (2006)"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "paliliastart",
+                "title": {
+                    "de": "Palilia",
+                    "en": "Palilia"
+                },
+                "children": [
+                    {
+                        "id": "palilia20",
+                        "title": {
+                            "de": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild",
+                            "en": "Palilia 20: Alexandra W. Busch, Military in Rome. Military and paramilitary units in the imperial cityscape"
+                        }
+                    },
+                    {
+                        "id": "lippsbasilica",
+                        "title": {
+                            "de": "Palilia 24: Johannes Lipps, Die Basilica Aemilia am Forum Romanum. Der kaiserzeitliche Bau und seine Ornamentik (Diss. Köln 2008)",
+                            "en": "Palilia 24: Johannes Lipps, The Basilica Aemilia on the Forum Romanum. The building and its ornamentation in imperial times (Dissertation, Cologne 2008)"
+                        }
+                    },
+                    {
+                        "id": "palilia25",
+                        "title": {
+                            "de": "Palilia 25: M. Tombrägel, Die republikanischen Otiumvillen von Tivoli. Palilia 25",
+                            "en": "Palilia 25: Martin Tombrägel, The Republican otium-villas at Tivoli"
+                        }
+                    },
+                    {
+                        "id": "palilia26",
+                        "title": {
+                            "de": "Palilia 26: Wolfgang Ehrhardt, Dekorations- und Wohnkontext. Beseitigung, Restaurierung und Konservierung von Wandbemalungen in den kampanischen Antikenstätten",
+                            "en": "Palilia 26: Wolfgang Ehrhardt, Decorative and residential context. Removal, restoration and preservation of wall paintings in the Campanian antique sites"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "interfaces",
+        "title": {
+            "de": "Interfaces",
+            "en": "Interfaces"
+        }
+    },
+    {
+        "id": "doku",
+        "title": {
+            "de": "Dokumentation/FAQ",
+            "en": "Documentation/FAQ"
+        }
+    },
+    {
+        "id": "lizenz",
+        "title": {
+            "de": "Lizenz",
+            "en": "License / Orders"
+        }
+    },
+    {
+        "id": "analysearachne",
+        "title": {
+            "de": "Analyse zur Arachne-Nutzung",
+            "en": "Arachne usage analysis"
+        }
+    }
+]	
