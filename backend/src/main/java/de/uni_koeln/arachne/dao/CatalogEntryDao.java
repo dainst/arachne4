@@ -13,6 +13,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.LongType;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,20 +44,21 @@ public class CatalogEntryDao {
 	 */
 	@Transactional(readOnly=true)
 	@SuppressWarnings({ "PMD", "unchecked" })
-	public List<Long> getPublicCatalogIdsByEntityId(final long entityId) {
-		final List<Long> result = new ArrayList<Long>();
+	public List<Object[]> getCatalogIdsAndPathsByEntityId(final long entityId) {
+		final List<Object[]> result = new ArrayList<Object[]>();
 		// ugly native SQL workaround for mapping issues - but it should be faster :)
 		final Session session = sessionFactory.getCurrentSession();
 		final SQLQuery query = session.createSQLQuery(
-				"SELECT catalog_id FROM arachne.catalog_entry WHERE arachne_entity_id = :entity_id");
+				"SELECT catalog_id, path FROM arachne.catalog_entry WHERE arachne_entity_id = :entity_id");
 		query.setParameter("entity_id", entityId);
-		query.addScalar("catalog_id", LongType.INSTANCE);
-		final List<Long> queryResult = query.list();
-		if (!queryResult.isEmpty()) {
-			for (Long catalogId : queryResult) {
-				Catalog catalog = catalogDao.getByCatalogId(catalogId);
+		query.addScalar("catalog_id", StandardBasicTypes.LONG);
+		query.addScalar("path", StandardBasicTypes.STRING);
+		final List<Object[]> queryResults = query.list();
+		if (!queryResults.isEmpty()) {
+			for (Object[] queryResult : queryResults) {
+				Catalog catalog = catalogDao.getByCatalogId((Long)queryResult[0]);
 				if (catalog.isPublic()) {
-					result.add(catalogId);
+					result.add(queryResult);
 				}
 			}
 		}

@@ -68,6 +68,11 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	protected List<Long> catalogIds;
 	
 	/**
+	 * A list of catalogEntry paths.
+	 */
+	protected List<String> catalogPaths;
+	
+	/**
 	 * The number of fields this entitiy has
 	 */
 	protected int fields; 
@@ -218,7 +223,21 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * @param catalogIds the catalogIds to set
 	 */
-	public void setCatalogIds(List<Long> catalogIds) {
+	public void setCatalogIds(final List<Long> catalogIds) {
 		this.catalogIds = catalogIds;
+	}
+	
+	/**
+	 * @return the catalogPaths
+	 */
+	public List<String> getCatalogPaths() {
+		return catalogPaths;
+	}
+
+	/**
+	 * @param catalogIds the catalogIds to set
+	 */
+	public void setCatalogPaths(final List<String> catalogPaths) {
+		this.catalogPaths = catalogPaths;
 	}
 }

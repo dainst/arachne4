@@ -41,6 +41,8 @@ public class TestResponseFactory { // NOPMD
 	@InjectMocks private ResponseFactory responseFactory = new ResponseFactory();
 	
 	private List<Long> mockIdList = null;
+	
+	private List<Object[]> mockCatalogDataList = null;
 		
 	private Dataset dataset = null;	
 	
@@ -77,7 +79,16 @@ public class TestResponseFactory { // NOPMD
 			mockIdList.add(i);
 		}
 		Mockito.when(genericSQLDao.getConnectedEntityIds(0)).thenReturn(mockIdList);
-		Mockito.when(catalogEntryDao.getPublicCatalogIdsByEntityId(0)).thenReturn(mockIdList);
+		
+		mockCatalogDataList = new ArrayList<Object[]>();
+		mockCatalogDataList.add(new Object[] {1L, "1"});
+		for (int i = 2; i < 6; i++) {
+			final Object[] mockCatalogData = new Object[2];
+			mockCatalogData[0] = (long)i;
+			mockCatalogData[1] = (String)mockCatalogDataList.get(i-2)[1] + '/' + i;
+			mockCatalogDataList.add(mockCatalogData);
+		}
+		Mockito.when(catalogEntryDao.getCatalogIdsAndPathsByEntityId(0)).thenReturn(mockCatalogDataList);
 		Mockito.when(ts.transl8(Mockito.anyString())).thenReturn("type_test");
 		Mockito.when(ts.transl8Facet(Mockito.anyString(), Mockito.anyString())).then(AdditionalAnswers.returnsSecondArg());
 		Mockito.when(jsonUtil.getObjectMapper()).thenReturn(new ObjectMapper());

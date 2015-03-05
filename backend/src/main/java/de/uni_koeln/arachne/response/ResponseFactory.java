@@ -157,9 +157,16 @@ public class ResponseFactory {
 		final List<Long> connectedEntities = genericSQLDao.getConnectedEntityIds(arachneId.getArachneEntityID());  
 		response.setConnectedEntities(connectedEntities);
 		
-		// set catalogIds
-		final List<Long> catalogIds = catalogEntryDao.getPublicCatalogIdsByEntityId(arachneId.getArachneEntityID());
+		// set catalogEntry data
+		final List<Long> catalogIds = new ArrayList<Long>();
+		final List<String> catalogPaths = new ArrayList<String>();
+		final List<Object[]> catalogData = catalogEntryDao.getCatalogIdsAndPathsByEntityId(arachneId.getArachneEntityID());
+		for (Object[] objects : catalogData) {
+			catalogIds.add((Long)objects[0]);
+			catalogPaths.add((String)objects[1]);
+		}
 		response.setCatalogIds(catalogIds);
+		response.setCatalogPaths(catalogPaths);
 		
 		// set degree
 		if (connectedEntities != null && !connectedEntities.isEmpty()) {
