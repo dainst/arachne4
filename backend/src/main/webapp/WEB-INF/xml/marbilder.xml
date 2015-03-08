@@ -5,6 +5,7 @@
   <explicitContextualizers>marbilderbestandort</explicitContextualizers>
   <subtables>
     <subtable connectFieldParent="DateinameMarbilder" connectFieldSubTable="DateinameMarbilderbestand">marbilderbestand</subtable>
+    <subtable connectFieldParent="DateinameMarbilder" connectFieldSubTable="DateinameMarbilderinventar">marbilderinventar</subtable>
   </subtables>
   <display>
     <title>
