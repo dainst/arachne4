@@ -1,7 +1,6 @@
 package de.uni_koeln.arachne.mapping;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,7 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -39,17 +38,14 @@ public class Catalog {
 	private Set<User> users;
 	
 	@OneToMany(mappedBy="catalog", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@OrderColumn(name="index_catalog")
-	private List<CatalogEntry> catalogEntries;
+	private Set<CatalogEntry> catalogEntries;
 	
-	@Column(name="label")
-	private String label;
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "root_id")
+	private CatalogEntry root;
 	
 	@Column(name="author")
 	private String author;
-	
-	@Column(name="text")
-	private String text;
 	
 	@Column(name="public")
 	private Boolean isPublic;
@@ -66,21 +62,6 @@ public class Catalog {
 	 */
 	public void setId(final Long id) {
 		this.id = id;
-	}
-
-
-	/**
-	 * @return the label
-	 */
-	public String getLabel() {
-		return label;
-	}
-
-	/**
-	 * @param label the label to set
-	 */
-	public void setLabel(final String label) {
-		this.label = label;
 	}
 
 	/**
@@ -137,26 +118,10 @@ public class Catalog {
 	}
 
 	/**
-	 * @return the catalogEntries without parents
-	 */
-	@JsonProperty("catalogEntries")
-	public List<CatalogEntry> getCatalogEntriesWithoutParents() {
-		List<CatalogEntry> entries = new ArrayList<CatalogEntry>();
-		if (this.catalogEntries != null){
-			for (CatalogEntry entry : catalogEntries){
-				if (entry.getParent() == null){
-					entries.add(entry);
-				}				
-			}
-		}
-		return entries;
-	}
-
-	/**
 	 * @return the catalogEntries
 	 */
 	@JsonIgnore
-	public List<CatalogEntry> getCatalogEntries() {
+	public Set<CatalogEntry> getCatalogEntries() {
 		return catalogEntries;
 	}
 
@@ -164,7 +129,7 @@ public class Catalog {
 	 * @param catalogEntries the catalogEntries to set
 	 */
 	@JsonProperty("catalogEntries")
-	public void setCatalogEntries(List<CatalogEntry> catalogEntries) {
+	public void setCatalogEntries(Set<CatalogEntry> catalogEntries) {
 		this.catalogEntries = catalogEntries;
 	}
 	
@@ -174,23 +139,23 @@ public class Catalog {
 	 */
 	public void addToCatalogEntries(CatalogEntry entry){
 		if (this.catalogEntries == null){
-			this.catalogEntries = new ArrayList<CatalogEntry>();
+			this.catalogEntries = new HashSet<CatalogEntry>();
 		}
 		this.catalogEntries.add(entry);
 	}
 
 	/**
-	 * @return the text
+	 * @return the root
 	 */
-	public String getText() {
-		return text;
+	public CatalogEntry getRoot() {
+		return root;
 	}
 
 	/**
-	 * @param text the text to set
+	 * @param root the root to set
 	 */
-	public void setText(String text) {
-		this.text = text;
+	public void setRoot(CatalogEntry root) {
+		this.root = root;
 	}
 
 	
