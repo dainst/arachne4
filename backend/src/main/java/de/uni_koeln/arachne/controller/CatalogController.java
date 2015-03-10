@@ -74,11 +74,10 @@ public class CatalogController {
 	}
 
 	/**
-	 * Handles http PUT request for
-	 * <code>/catalogEntry/{catalogEntryId}</code>. Returns the
-	 * catalogEntry created and 200 if the action is permitted. Returns null and
-	 * 403 if no user is signed in or the signed in user does not own the
-	 * catalogEntry to be edited.
+	 * Handles http PUT request for <code>/catalogEntry/{catalogEntryId}</code>.
+	 * Returns the catalogEntry created and 200 if the action is permitted.
+	 * Returns null and 403 if no user is signed in or the signed in user does
+	 * not own the catalogEntry to be edited.
 	 */
 	@RequestMapping(value = "/catalogentry/{catalogEntryId}", method = RequestMethod.PUT)
 	public @ResponseBody CatalogEntry handleUpdateCatalogEntryRequest(
@@ -137,7 +136,7 @@ public class CatalogController {
 		} else if (catalogEntry.getCatalog()
 				.isCatalogOfUserWithId(user.getId())) {
 			CatalogEntry parent = catalogEntry.getParent();
-			parent.getChildren().remove((int)catalogEntry.getIndexParent());
+			parent.getChildren().remove((int) catalogEntry.getIndexParent());
 			catalogEntryDao.updateCatalogEntry(parent);
 			catalogEntryDao.deleteCatalogEntry(catalogEntry);
 			response.setStatus(204);
@@ -216,7 +215,8 @@ public class CatalogController {
 		LOGGER.debug("Request to create catalogEntry " + "from user: "
 				+ user.getId());
 
-		if (rightsService.isSignedInUser() && catalogEntry.getParentId() != null) {
+		if (rightsService.isSignedInUser()
+				&& catalogEntry.getParentId() != null) {
 			catalogEntryParent = catalogEntryDao
 					.getByCatalogEntryId(catalogEntry.getParentId());
 
@@ -229,8 +229,9 @@ public class CatalogController {
 				if (catalog.isCatalogOfUserWithId(user.getId())) {
 					catalogEntry.setId(null);
 					catalogEntry.setParent(catalogEntryParent);
-					if (catalogEntry.getIndexParent() >= catalogEntryParent
-							.getChildren().size()) {
+					if (catalogEntry.getIndexParent() == null
+							|| catalogEntry.getIndexParent() >= catalogEntryParent
+									.getChildren().size()) {
 						catalogEntryParent.addToChildren(catalogEntry);
 					} else {
 						catalogEntryParent.getChildren().add(
@@ -308,10 +309,10 @@ public class CatalogController {
 	}
 
 	/**
-	 * Handles http PUT request for <code>/catalog/{catalogId}</code>.
-	 * Returns the catalog created and 200 if the action is permitted. Returns
-	 * null and 403 if no user is signed in or the signed in user does not own
-	 * the catalog to be edited. This method accepts updates on nested
+	 * Handles http PUT request for <code>/catalog/{catalogId}</code>. Returns
+	 * the catalog created and 200 if the action is permitted. Returns null and
+	 * 403 if no user is signed in or the signed in user does not own the
+	 * catalog to be edited. This method accepts updates on nested
 	 * <code>CatalogEntry</code> items' fields. and creates nested
 	 * <code>CatalogEntry</code> items if they do not already exist. It does not
 	 * automatically delete items, that are missing from the list of nested
