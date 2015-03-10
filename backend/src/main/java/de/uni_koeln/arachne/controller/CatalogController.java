@@ -74,13 +74,13 @@ public class CatalogController {
 	}
 
 	/**
-	 * Handles http POST request for
-	 * <code>/catalogEntry/{catalogEntryId}/update</code>. Returns the
+	 * Handles http PUT request for
+	 * <code>/catalogEntry/{catalogEntryId}</code>. Returns the
 	 * catalogEntry created and 200 if the action is permitted. Returns null and
 	 * 403 if no user is signed in or the signed in user does not own the
 	 * catalogEntry to be edited.
 	 */
-	@RequestMapping(value = "/catalogentry/{catalogEntryId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/catalogentry/{catalogEntryId}", method = RequestMethod.PUT)
 	public @ResponseBody CatalogEntry handleUpdateCatalogEntryRequest(
 			@PathVariable("catalogEntryId") final Long catalogEntryId,
 			@RequestBody final CatalogEntry catalogEntry,
@@ -308,7 +308,7 @@ public class CatalogController {
 	}
 
 	/**
-	 * Handles http POST request for <code>/catalog/{catalogId}/update</code>.
+	 * Handles http PUT request for <code>/catalog/{catalogId}</code>.
 	 * Returns the catalog created and 200 if the action is permitted. Returns
 	 * null and 403 if no user is signed in or the signed in user does not own
 	 * the catalog to be edited. This method accepts updates on nested
@@ -317,7 +317,7 @@ public class CatalogController {
 	 * automatically delete items, that are missing from the list of nested
 	 * <code>CatalogEntry</code> items.
 	 */
-	@RequestMapping(value = "/catalog/{requestedId}", method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = "/catalog/{requestedId}", method = RequestMethod.PUT, consumes = "application/json")
 	public @ResponseBody Catalog handleCatalogUpdateRequest(
 			@RequestBody final Catalog catalog,
 			@PathVariable("requestedId") final Long requestedId,
