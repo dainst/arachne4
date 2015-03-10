@@ -244,9 +244,6 @@ public class SearchService {
 	public List<String> getFilterValueList(final String filterValues, final List<String> facetList) {
 		List<String> result = null;
 		if (!StrUtils.isEmptyOrNullOrZero(filterValues)) {
-			if (filterValues.contains("facet_bestandsname") && !filterValues.contains("facet_subkategoriebestand_level")) {
-				facetList.add("facet_subkategoriebestand_level1");
-			}
 			result = filterQueryStringToStringList(filterValues);
 			for (final String filterValue: result) {
 				if (filterValue.startsWith("facet_kategorie")) {
@@ -262,6 +259,9 @@ public class SearchService {
 						facetList.add("facet_subkategoriebestand_level" + (level + 1));
 					}
 				}					
+			}
+			if (filterValues.contains("facet_bestandsname") && !filterValues.contains("facet_subkategoriebestand_level")) {
+				facetList.add("facet_subkategoriebestand_level1");
 			}
 		}
 		return result;
