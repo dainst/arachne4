@@ -4,22 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StandardBasicTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.uni_koeln.arachne.mapping.Catalog;
 import de.uni_koeln.arachne.mapping.CatalogEntry;
+import de.uni_koeln.arachne.service.IUserRightsService;
 
 @Repository("CatalogEntryDao")
 public class CatalogEntryDao {
@@ -27,9 +22,8 @@ public class CatalogEntryDao {
 	@Autowired
     private transient SessionFactory sessionFactory;
 	
-	// ugly but needed for the 'getPublicCatalogIdsByEntityId'-workaround
 	@Autowired
-    private transient CatalogDao catalogDao;
+	private transient IUserRightsService userRightsService;
 	
 	@Transactional(readOnly=true)
 	public CatalogEntry getByCatalogEntryId(final long catalogEntryId) {
@@ -38,47 +32,67 @@ public class CatalogEntryDao {
 	}
 	
 	/**
-	 * Gets a list of catalog identifiers that are connected to an entity. The list is in ascending order.
+	 * Gets a list containing public catalog identifiers and corresponding catalog paths that are connected to an 
+	 * entity. The list is in ascending order.
 	 * @param entityId The entity identifier of interest.
-	 * @return A list of catalog ids. 
+	 * @return A list of <code>Object[2]</code>. Id first, then path.
 	 */
 	@Transactional(readOnly=true)
-	@SuppressWarnings({ "PMD", "unchecked" })
-	public List<Object[]> getCatalogIdsAndPathsByEntityId(final long entityId) {
+	public List<Object[]> getPublicCatalogIdsAndPathsByEntityId(final long entityId) {
 		final List<Object[]> result = new ArrayList<Object[]>();
-		final Session session = sessionFactory.getCurrentSession();
-		final Criteria criteria = session.createCriteria(CatalogEntry.class);
-		criteria.add(Restrictions.eq("arachneEntityId", entityId));
-		criteria.addOrder(Order.asc("catalog.id"));
-		
-		for (CatalogEntry catalogEntry : (List<CatalogEntry>) (List<?>) criteria.list()) {
+		for (final CatalogEntry catalogEntry : getByEntityId(entityId)) {
 			final Catalog catalog = catalogEntry.getCatalog(); 
 			if (catalog.isPublic()) {
-				result.add(new Object[] {catalog.getId(), catalogEntry.getPath()});
+				result.add(new Object[] {catalog.getId(), catalogEntry.getPath()}); // NOPMD
 			}
 		}
 		
 		return result;
 	}
 	
+	/**
+	 * Gets a list of private catalog identifiers that are connected to an entity. The list is in ascending order.
+	 * @param entityId The entity identifier of interest.
+	 * @return A list of catalog ids. 
+	 */
+	@Transactional(readOnly=true)
+	public List<Long> getPrivateCatalogIdsAndPathsByEntityId(final long entityId) {
+		final List<Long> result = new ArrayList<Long>();
+		for (final CatalogEntry catalogEntry : getByEntityId(entityId)) {
+			final Catalog catalog = catalogEntry.getCatalog(); 
+			if (!catalog.isPublic() && catalog.isCatalogOfUserWithId(userRightsService.getCurrentUser().getId())) {
+				result.add(catalog.getId());
+			}
+		}
+		
+		return result;
+	}
+	
+	@SuppressWarnings({ "PMD", "unchecked" })
+	private List<CatalogEntry> getByEntityId(final long entityId) {
+		final Session session = sessionFactory.getCurrentSession();
+		final Criteria criteria = session.createCriteria(CatalogEntry.class);
+		criteria.add(Restrictions.eq("arachneEntityId", entityId));
+		return (List<CatalogEntry>) criteria.list();
+	}
+	
 	@Transactional
 	public void deleteOrphanedCatalogEntries(final Catalog catalog) {
-		List<Long> ids = new ArrayList<Long>();
-		String querystring = "DELETE catalog_entry FROM catalog_entry LEFT JOIN catalog ON catalog_entry.catalog_id = "
+		final List<Long> catalogEntryIds = new ArrayList<Long>();
+		final String querystring = "DELETE catalog_entry FROM catalog_entry LEFT JOIN catalog ON catalog_entry.catalog_id = "
 				+ "catalog.id WHERE catalog.id = :catalogId";
 		Query query;
 		
-		Session session = sessionFactory.getCurrentSession();
-		if (catalog.getCatalogEntries() != null){
-			for (CatalogEntry referenced : catalog.getCatalogEntries()){
-				ids.add(referenced.getId());
+		final Session session = sessionFactory.getCurrentSession();
+		if (catalog.getCatalogEntries() != null) {
+			for (final CatalogEntry referenced : catalog.getCatalogEntries()){
+				catalogEntryIds.add(referenced.getId());
 			}
 			query = session.createSQLQuery(querystring + " AND catalog_entry.id NOT IN (:ids)")
 					.setLong("catalogId", catalog.getId())
-					.setParameterList("ids", ids);
+					.setParameterList("ids", catalogEntryIds);
 			
-		}
-		else {
+		} else {
 			query = session.createSQLQuery(querystring)
 					.setLong("catalogId", catalog.getId());
 		}
@@ -87,21 +101,21 @@ public class CatalogEntryDao {
 	
 	@Transactional
 	public CatalogEntry updateCatalogEntry(final CatalogEntry catalogEntry) {
-		Session session = sessionFactory.getCurrentSession();
+		final Session session = sessionFactory.getCurrentSession();
 		session.update(catalogEntry);
 		return catalogEntry;
 	}
 	
 	@Transactional
 	public CatalogEntry saveCatalogEntry(final CatalogEntry catalogEntry) {
-		Session session = sessionFactory.getCurrentSession();
+		final Session session = sessionFactory.getCurrentSession();
 		session.save(catalogEntry);
 		return catalogEntry;
 	}
 	
 	@Transactional
 	public void deleteCatalogEntry(final CatalogEntry catalogEntry) {
-		Session session = sessionFactory.getCurrentSession();
+		final Session session = sessionFactory.getCurrentSession();
 		session.delete(catalogEntry);
 	}
 
