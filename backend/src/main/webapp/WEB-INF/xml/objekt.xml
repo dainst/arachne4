@@ -897,7 +897,7 @@
 			</context>
 		</facet>
 		<include type="facet_literatur" />
-		<facet name="subkategorie" labelKey="Unterkategorie">
+		<facet name="subkategorie_objekt" labelKey="Unterkategorie">
 			<field datasource="KategorieObjekt.Typ" />
 		</facet>
 		<facet name="objektgattung" labelKey="Gattung">

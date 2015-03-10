@@ -124,7 +124,7 @@
   <facets>
     <include type="facet_kategorie"/>
     <include type="facet_ort"/>
-    <facet name="subkategorie" labelKey="Unterkategorie">
+    <facet name="subkategorie_bilder" labelKey="Unterkategorie">
       <field datasource="KategorieMarbilder.Typ"/>
     </facet>
     <facet name="bestandsname" labelKey="Bestandsname">
