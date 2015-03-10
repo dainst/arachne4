@@ -24,8 +24,8 @@ import org.springframework.web.client.RestClientException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-import de.uni_koeln.arachne.util.ArachneRestTemplate;
 import de.uni_koeln.arachne.util.JSONUtil;
+import de.uni_koeln.arachne.util.network.ArachneRestTemplate;
 
 /**
  * Gets the translations lazily from transl8 and offers translation functionality.

@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.util;
+package de.uni_koeln.arachne.util.network;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

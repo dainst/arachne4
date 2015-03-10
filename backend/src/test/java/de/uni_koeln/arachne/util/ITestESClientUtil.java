@@ -21,6 +21,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.uni_koeln.arachne.util.network.ESClientUtil;
+
 @RunWith(SpringJUnit4ClassRunner.class) 
 @ContextConfiguration(locations = {"classpath:test-context.xml"}) 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)

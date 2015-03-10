@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.util;
+package de.uni_koeln.arachne.util.network;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -17,8 +17,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.uni_koeln.arachne.util.ESClientUtil;
 import de.uni_koeln.arachne.util.JSONUtil;
+import de.uni_koeln.arachne.util.network.ESClientUtil;
 
 @Service
 @Scope("prototype")

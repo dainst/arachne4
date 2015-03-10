@@ -160,7 +160,7 @@ public class ResponseFactory {
 		// set catalogEntry data
 		final List<Long> catalogIds = new ArrayList<Long>();
 		final List<String> catalogPaths = new ArrayList<String>();
-		final List<Object[]> catalogData = catalogEntryDao.getCatalogIdsAndPathsByEntityId(arachneId.getArachneEntityID());
+		final List<Object[]> catalogData = catalogEntryDao.getPublicCatalogIdsAndPathsByEntityId(arachneId.getArachneEntityID());
 		for (Object[] objects : catalogData) {
 			catalogIds.add((Long)objects[0]);
 			catalogPaths.add((String)objects[1]);

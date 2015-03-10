@@ -1,10 +1,9 @@
 package de.uni_koeln.arachne.service;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.List;
 
 import javax.annotation.PreDestroy;
+import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
 import org.elasticsearch.action.bulk.BulkProcessor;
@@ -30,8 +29,10 @@ import com.google.common.base.Throwables;
 
 import de.uni_koeln.arachne.mapping.ArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
-import de.uni_koeln.arachne.util.ESClientUtil;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.network.BasicNetwork;
+import de.uni_koeln.arachne.util.network.ESClientUtil;
+import de.uni_koeln.arachne.util.system.ExternalProcess;
 
 /**
  * This class implements the dataimport into elastic search. It is realized as a <code>@Service</code> so it can make 
@@ -82,6 +83,9 @@ public class DataImportService { // NOPMD
 	@Autowired
 	private transient EntityCompareService entityCompareService;
 	
+	@Autowired
+	private transient ServletContext servletContext;
+	
 	private transient JdbcTemplate jdbcTemplate;
 	
 	/**
@@ -123,6 +127,10 @@ public class DataImportService { // NOPMD
 	public void start() { 
 		// request scope hack (enabling session scope) - needed so the UserRightsService can be used
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(new MockHttpServletRequest()));
+		
+		// run scripts
+		//createSemanticConnectionTable();
+		
 		terminate = false;
 		running = true;
 		indexedDocuments = 0;		
@@ -270,12 +278,12 @@ public class DataImportService { // NOPMD
 				final String success = "Import of " + index + " documents finished in " + elapsedTime/1000f/60f/60f + " hours ("
 						+ index/((float)elapsedTime/1000) + " documents per second)."; 
 				LOGGER.info(success);
-				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + getHostName() + ") - success", success);
+				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - success", success);
 				contextService.clearCache();
 			} else {
 				LOGGER.info("Dataimport aborted.");
 				esClientUtil.deleteIndex(indexName);
-				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + getHostName() + ") - abort", "Dataimport was manually aborted.");
+				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - abort", "Dataimport was manually aborted.");
 			}
 		}
 		// TODO: find out if it is possible to catch less generic exceptions here
@@ -283,7 +291,7 @@ public class DataImportService { // NOPMD
 			final String failure = "Dataimport failed at [" + dbgEntityId + "] with: ";
 			LOGGER.error(failure, e);
 			final String stacktrace = Throwables.getStackTraceAsString(e);
-			mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + getHostName() + ") - failure"
+			mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - failure"
 					, failure + e.toString() + System.getProperty("line.separator") + "StackTrace: " + stacktrace);
 			esClientUtil.deleteIndex(indexName);
 		}
@@ -293,28 +301,19 @@ public class DataImportService { // NOPMD
 		running = false;
 	}
 	
-	// TODO move to utility class
-	
-	/**
-	 * Determines the host name as <code>String</code>.
-	 * @return The host name of the system or "UnknownHost" in case of failure.
-	 */
-	private String getHostName() {
-		String result = "UnknownHost";
-		try {
-			final InetAddress localHost = InetAddress.getLocalHost();
-			result = localHost.getHostName();
-		} catch (UnknownHostException e) {
-			LOGGER.warn("Could not determine local host name.");
-		}
-		return result;
-	}
-	
+	private void createSemanticConnectionTable() {
+		String relativePath = "/resources/scripts/FillEntityConnectionTable.php";
+		String absolutePath = servletContext.getRealPath(relativePath);
+		ExternalProcess.runBlocking(new String[] {"php", absolutePath});
+	}	
+
 	private float calculateAverageDPSAndETR() {
 		if (running && elapsedTime > 0 && indexedDocuments > 0) {
 			averageDPS = smoothingFactor * lastDPS + (1 - smoothingFactor) * averageDPS;
 			etr = (long)((double)(count - indexedDocuments) / averageDPS);
-			LOGGER_PROF.info(indexedDocuments + " - " + averageDPS);
+			if (PROFILING) {
+				LOGGER_PROF.info(indexedDocuments + " - " + averageDPS);
+			}
 			return (float)averageDPS;
 		}
 		return 0.0f;

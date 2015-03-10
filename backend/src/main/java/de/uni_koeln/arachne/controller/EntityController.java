@@ -27,8 +27,8 @@ import de.uni_koeln.arachne.service.ImageService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.service.Transl8Service;
-import de.uni_koeln.arachne.util.ESClientUtil;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.network.ESClientUtil;
 
 /**
  * Handles http requests (currently only get) for <code>/entity<code> and <code>/data</code>.

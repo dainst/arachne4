@@ -88,7 +88,7 @@ public class TestResponseFactory { // NOPMD
 			mockCatalogData[1] = (String)mockCatalogDataList.get(i-2)[1] + '/' + i;
 			mockCatalogDataList.add(mockCatalogData);
 		}
-		Mockito.when(catalogEntryDao.getCatalogIdsAndPathsByEntityId(0)).thenReturn(mockCatalogDataList);
+		Mockito.when(catalogEntryDao.getPublicCatalogIdsAndPathsByEntityId(0)).thenReturn(mockCatalogDataList);
 		Mockito.when(ts.transl8(Mockito.anyString())).thenReturn("type_test");
 		Mockito.when(ts.transl8Facet(Mockito.anyString(), Mockito.anyString())).then(AdditionalAnswers.returnsSecondArg());
 		Mockito.when(jsonUtil.getObjectMapper()).thenReturn(new ObjectMapper());

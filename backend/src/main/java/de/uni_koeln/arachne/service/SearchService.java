@@ -35,9 +35,9 @@ import org.springframework.stereotype.Service;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
-import de.uni_koeln.arachne.util.ESClientUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
+import de.uni_koeln.arachne.util.network.ESClientUtil;
 import de.uni_koeln.arachne.util.search.SearchFieldList;
 
 /**
