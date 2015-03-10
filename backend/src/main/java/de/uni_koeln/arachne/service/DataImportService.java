@@ -302,7 +302,7 @@ public class DataImportService { // NOPMD
 	}
 	
 	private void createSemanticConnectionTable() {
-		String relativePath = "/resources/scripts/FillEntityConnectionTable.php";
+		String relativePath = "/WEB-INF/scripts/FillEntityConnectionTable.php";
 		String absolutePath = servletContext.getRealPath(relativePath);
 		ExternalProcess.runBlocking(new String[] {"php", absolutePath});
 	}	

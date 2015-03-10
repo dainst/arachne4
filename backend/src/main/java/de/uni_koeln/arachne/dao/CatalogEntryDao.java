@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import de.uni_koeln.arachne.mapping.Catalog;
 import de.uni_koeln.arachne.mapping.CatalogEntry;
 import de.uni_koeln.arachne.service.IUserRightsService;
-import de.uni_koeln.arachne.service.UserRightsService;
 
 @Repository("CatalogEntryDao")
 public class CatalogEntryDao {
