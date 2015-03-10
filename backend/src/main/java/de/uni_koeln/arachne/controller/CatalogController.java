@@ -2,7 +2,6 @@ package de.uni_koeln.arachne.controller;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -137,13 +136,15 @@ public class CatalogController {
 			response.setStatus(404);
 		} else if (catalogEntry.getCatalog()
 				.isCatalogOfUserWithId(user.getId())) {
+			CatalogEntry parent = catalogEntry.getParent();
+			parent.getChildren().remove((int)catalogEntry.getIndexParent());
+			catalogEntryDao.updateCatalogEntry(parent);
 			catalogEntryDao.deleteCatalogEntry(catalogEntry);
 			response.setStatus(204);
 		} else {
 			response.setStatus(403);
 		}
 	}
-	
 
 	/**
 	 * Handles http POST request for <code>/catalogEntry/{id}/add</code>.
@@ -188,11 +189,60 @@ public class CatalogController {
 						catalogEntry.setCatalog(catalog);
 						catalogEntryDao.updateCatalogEntry(catalogEntryParent);
 						catalogEntry.generatePath();
-						result = catalogEntryDao.updateCatalogEntry(catalogEntry);
+						result = catalogEntryDao
+								.updateCatalogEntry(catalogEntry);
 					} else {
 						result = null;
 						response.setStatus(403);
 					}
+				}
+			}
+		} else {
+			result = null;
+			response.setStatus(403);
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/catalogentry", method = RequestMethod.POST)
+	public @ResponseBody CatalogEntry handleCatalogEntryCreateRequest(
+			@RequestBody final CatalogEntry catalogEntry,
+			final HttpServletResponse response) {
+		final User user = rightsService.getCurrentUser();
+		final CatalogEntry catalogEntryParent;
+		final Catalog catalog;
+		final CatalogEntry result;
+
+		LOGGER.debug("Request to create catalogEntry " + "from user: "
+				+ user.getId());
+
+		if (rightsService.isSignedInUser() && catalogEntry.getParentId() != null) {
+			catalogEntryParent = catalogEntryDao
+					.getByCatalogEntryId(catalogEntry.getParentId());
+
+			if (catalogEntryParent == null) {
+				result = null;
+				response.setStatus(404);
+			} else {
+
+				catalog = catalogEntryParent.getCatalog();
+				if (catalog.isCatalogOfUserWithId(user.getId())) {
+					catalogEntry.setId(null);
+					catalogEntry.setParent(catalogEntryParent);
+					if (catalogEntry.getIndexParent() >= catalogEntryParent
+							.getChildren().size()) {
+						catalogEntryParent.addToChildren(catalogEntry);
+					} else {
+						catalogEntryParent.getChildren().add(
+								catalogEntry.getIndexParent(), catalogEntry);
+					}
+					catalogEntry.setCatalog(catalog);
+					catalogEntryDao.updateCatalogEntry(catalogEntryParent);
+					catalogEntry.generatePath();
+					result = catalogEntryDao.updateCatalogEntry(catalogEntry);
+				} else {
+					result = null;
+					response.setStatus(403);
 				}
 			}
 		} else {
@@ -286,8 +336,8 @@ public class CatalogController {
 					&& (oldCatalog.isCatalogOfUserWithId(user.getId()))) {
 				catalog.setUsers(oldCatalog.getUsers());
 				catalog.setCatalogEntries(null);
-				catalog.getRoot().setCatalog(catalog);
 				catalog.addToCatalogEntries(catalog.getRoot());
+				catalog.getRoot().setCatalog(catalog);
 
 				result = catalogDao.saveOrUpdateCatalog(catalog);
 

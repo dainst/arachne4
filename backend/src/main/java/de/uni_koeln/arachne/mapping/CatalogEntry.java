@@ -53,6 +53,15 @@ public class CatalogEntry {
 	@Column(name="path")
 	private String path;
 	
+	@Column(name="parent_id", nullable=true, insertable=false, updatable=false)
+	private Long parentId;
+	
+	@Column(name="index_parent", nullable=true, insertable=false, updatable=false)
+	private Integer indexParent;
+	
+	@Column(name="catalog_id", nullable=false, insertable=false, updatable=false)
+	private Long catalogId;
+	
 	/**
 	 * @return the id
 	 */
@@ -85,9 +94,11 @@ public class CatalogEntry {
 
 		if (this.children != null){
 			for (CatalogEntry child : this.getChildren()){
-				child.setParent(this);
-				catalog.addToCatalogEntries(child);
-				child.setCatalog(catalog);
+				if (child != null){
+					child.setParent(this);
+					catalog.addToCatalogEntries(child);
+					child.setCatalog(catalog);
+				}
 			}	
 		}
 	}
@@ -202,7 +213,9 @@ public class CatalogEntry {
 		 }
 		 if (this.children != null){
 				for (CatalogEntry child : this.getChildren()){
-					child.generatePath();
+					if (child != null){
+						child.generatePath();
+					}
 				}	
 		 }
 	}
@@ -218,6 +231,48 @@ public class CatalogEntry {
 			}	
 		}
 		this.catalog.getCatalogEntries().remove(this);
+	}
+
+	/**
+	 * @return the parentId
+	 */
+	public Long getParentId() {
+		return parentId;
+	}
+
+	/**
+	 * @param parentId the parentId to set
+	 */
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+
+	/**
+	 * @return the indexParent
+	 */
+	public Integer getIndexParent() {
+		return indexParent;
+	}
+
+	/**
+	 * @param indexParent the indexParent to set
+	 */
+	public void setIndexParent(Integer indexParent) {
+		this.indexParent = indexParent;
+	}
+
+	/**
+	 * @return the catalogId
+	 */
+	public Long getCatalogId() {
+		return catalogId;
+	}
+
+	/**
+	 * @param catalogId the catalogId to set
+	 */
+	public void setCatalogId(Long catalogId) {
+		this.catalogId = catalogId;
 	}
 	
 }

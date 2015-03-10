@@ -4,9 +4,6 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -21,46 +18,44 @@ import com.google.common.io.Resources;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestCatalog {
-	
+
 	public static Catalog catalog;
-	
+
 	@BeforeClass
-	public static void setUp() throws JsonParseException, JsonMappingException, IOException{
-        URL resource = TestCatalog.class.getResource("/WEB-INF/json/catalog.json");       
+	public static void setUp() throws JsonParseException, JsonMappingException,
+			IOException {
+		URL resource = TestCatalog.class
+				.getResource("/WEB-INF/json/catalog.json");
 		ObjectMapper mapper = new ObjectMapper();
-		catalog = mapper.readValue(Resources.toString(resource, Charsets.UTF_8), Catalog.class);
+		catalog = mapper.readValue(
+				Resources.toString(resource, Charsets.UTF_8), Catalog.class);
 	}
-	
+
 	@Test
-	public void test1Deserialization(){		
+	public void test1Deserialization() {
 		assertNotNull(catalog);
-		assertNotNull(catalog.getCatalogEntries());
-		assertNull(catalog.getCatalogEntries().get(0).getCatalog());
+		assertNotNull(catalog.getRoot());
+		assertNotNull(catalog.getRoot().getChildren());
+		assertNull(catalog.getCatalogEntries());
 	}
-	
+
 	@Test
-	public void test2SetCatalog(){
-		List<CatalogEntry> temp = new ArrayList<CatalogEntry>();
-		temp.addAll(catalog.getCatalogEntries());
-		catalog.setCatalogEntries(null);
-		Iterator<CatalogEntry> iter = temp.iterator();
-	    while (iter.hasNext()) {	    	
-	    	CatalogEntry entry = iter.next();		
-			entry.setCatalog(catalog);					
-			catalog.addToCatalogEntries(entry);				
-	    }
-	    assertEquals(catalog.getCatalogEntries().size(), 6);
-	    for (CatalogEntry entry : catalog.getCatalogEntries()){
-	    	assertSame(catalog, entry.getCatalog());
-	    }
-	}
-	
-	@Test	
-	public void test3GeneratePath(){
-		for (final CatalogEntry entry : catalog.getCatalogEntriesWithoutParents()) {	
-			assertNotNull(entry.getCatalog());
-			entry.generatePath();
+	public void test2SetCatalog() {
+
+		catalog.addToCatalogEntries(catalog.getRoot());
+		catalog.getRoot().setCatalog(catalog);
+
+		assertEquals(catalog.getCatalogEntries().size(), 7);
+		for (CatalogEntry entry : catalog.getCatalogEntries()) {
+			assertSame(catalog, entry.getCatalog());
 		}
+	}
+
+	@Test
+	public void test3GeneratePath() {
+
+		catalog.getRoot().generatePath();
+
 		for (final CatalogEntry entry : catalog.getCatalogEntries()) {
 			assertNotNull(entry.getPath());
 			assertTrue(entry.getPath().endsWith(entry.getId().toString()));
@@ -68,17 +63,13 @@ public class TestCatalog {
 			assertTrue(entry.getPath().contains("/"));
 		}
 	}
-	
+
 	@Test
-	public void test4RemoveFromCatalog(){
-		List<CatalogEntry> temp = new ArrayList<CatalogEntry>();
-		temp.addAll(catalog.getCatalogEntriesWithoutParents());
-		Iterator<CatalogEntry> iter = temp.iterator();
-	    while (iter.hasNext()) {	    	
-	    	CatalogEntry entry = iter.next();		
-			entry.removeFromCatalog();	
-	    }
-	    assertEquals(catalog.getCatalogEntries().size(), 0);
+	public void test4RemoveFromCatalog() {
+
+		catalog.getRoot().removeFromCatalog();
+
+		assertEquals(catalog.getCatalogEntries().size(), 0);
 	}
 
 }

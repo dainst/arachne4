@@ -1,50 +1,80 @@
 {
-    "id": 27,
-    "label": "Die Basilica Aemilia auf dem Forum Romanum in Rom: Brennpunkt des öffentlichen Lebens",
+    "id": 83,
+    "root": {
+        "id": 597,
+        "children": [
+            {
+                "id": 594,
+                "children": [],
+                "arachneEntityId": null,
+                "label": "Vorbebauung",
+                "text": null,
+                "parentId": 597,
+                "indexParent": 0,
+                "catalogId": 83
+            },
+            {
+                "id": 593,
+                "children": [
+                    {
+                        "id": 595,
+                        "children": [
+                            {
+                                "id": 596,
+                                "children": [
+                                    {
+                                        "id": 598,
+                                        "children": [                                           
+                                            {
+                                                "id": 599,
+                                                "children": [],
+                                                "arachneEntityId": 1184191,
+                                                "label": "Fundamente der Innensäulen",
+                                                "text": "Die Fundamente der Innensäulen.",
+                                                "parentId": 598,
+                                                "indexParent": 0,
+                                                "catalogId": 83
+                                            }
+                                        ],
+                                        "arachneEntityId": null,
+                                        "label": "Fundamente",
+                                        "text": null,
+                                        "parentId": 596,
+                                        "indexParent": 0,
+                                        "catalogId": 83
+                                    }
+                                ],
+                                "arachneEntityId": null,
+                                "label": "Republikanische Zeit",
+                                "text": null,
+                                "parentId": 595,
+                                "indexParent": 0,
+                                "catalogId": 83
+                            }
+                        ],
+                        "arachneEntityId": null,
+                        "label": "Aula",
+                        "text": null,
+                        "parentId": 593,
+                        "indexParent": 0,
+                        "catalogId": 83
+                    }
+                ],
+                "arachneEntityId": null,
+                "label": "Basilica Aemilia",
+                "text": null,
+                "parentId": 597,
+                "indexParent": 1,
+                "catalogId": 83
+            }
+        ],
+        "arachneEntityId": null,
+        "label": "Die Basilica Aemilia auf dem Forum Romanum in Rom: Brennpunkt des öffentlichen Lebens",
+        "text": "Nach der Errichtung in den 60er Jahren des 2. Jhs. v. Chr. durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius Nobilior wurde die Basilica mehrmals zerstört [...]",
+        "parentId": null,
+        "indexParent": null,
+        "catalogId": 83
+    },
     "author": "Testauthor",
-    "text": "Nach der Errichtung in den 60er Jahren des 2. Jhs. v. Chr. durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius Nobilior wurde die Basilica mehrmals zerstört [...]",
-    "public": false,
-    "catalogEntries": [
-        {
-            "id": 61,
-            "children": [],
-            "arachneEntityId": null,
-            "label": "Vorbebauung"
-        },
-        {
-            "id": 62,
-            "children": [
-                {
-                    "id": 63,
-                    "children": [
-                        {
-                            "id": 64,
-                            "children": [
-                                {
-                                    "id": 65,
-                                    "children": [
-                                        {
-                                            "id": 66,
-                                            "children": null,
-                                            "arachneEntityId": 1184191,
-                                            "label": "Fundamente der Innensäulen",
-                                            "text": "Die Fundamente der Innensäulen."
-                                        }
-                                    ],
-                                    "arachneEntityId": null,
-                                    "label": "Fundamente"
-                                }
-                            ],
-                            "arachneEntityId": null,
-                            "label": "Republikanische Zeit"
-                        }
-                    ],
-                    "arachneEntityId": null,
-                    "label": "Aula"
-                }
-            ],
-            "arachneEntityId": null,
-            "label": "Basilica Aemilia"
-        }
-    ]
+    "public": false
 }
