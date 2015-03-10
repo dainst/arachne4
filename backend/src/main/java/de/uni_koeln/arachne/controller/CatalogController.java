@@ -35,7 +35,7 @@ public class CatalogController {
 			.getLogger(CatalogController.class);
 
 	@Autowired
-	private transient IUserRightsService rightsService;
+	private transient IUserRightsService userRightsService;
 
 	@Autowired
 	private transient CatalogEntryDao catalogEntryDao;
@@ -56,7 +56,7 @@ public class CatalogController {
 			@PathVariable("catalogEntryId") final Long catalogEntryId,
 			final HttpServletResponse response) {
 		CatalogEntry result = null;
-		final User user = rightsService.getCurrentUser();
+		final User user = userRightsService.getCurrentUser();
 
 		LOGGER.debug("Request for catalogEntry: " + catalogEntryId
 				+ " of user: " + user.getId());
@@ -73,6 +73,14 @@ public class CatalogController {
 		return result;
 	}
 
+	@RequestMapping(value = "/catalogByEntity/{entityId}", method = RequestMethod.GET)
+	public @ResponseBody List<Long> handleGetCatalogByEntityRequest(
+			@PathVariable("entityId") final Long entityId,
+			final HttpServletResponse response) {
+		
+		return catalogEntryDao.getPrivateCatalogIdsByEntityId(entityId);
+	}
+	
 	/**
 	 * Handles http PUT request for <code>/catalogEntry/{catalogEntryId}</code>.
 	 * Returns the catalogEntry created and 200 if the action is permitted.
@@ -84,14 +92,14 @@ public class CatalogController {
 			@PathVariable("catalogEntryId") final Long catalogEntryId,
 			@RequestBody final CatalogEntry catalogEntry,
 			final HttpServletResponse response) {
-		final User user = rightsService.getCurrentUser();
+		final User user = userRightsService.getCurrentUser();
 		final CatalogEntry result;
 		final CatalogEntry oldCatalogEntry;
 
 		LOGGER.debug("Request to update catalogEntry: " + catalogEntryId
 				+ " from user: " + user.getId());
 
-		if (rightsService.isSignedInUser()) {
+		if (userRightsService.isSignedInUser()) {
 			oldCatalogEntry = catalogEntryDao
 					.getByCatalogEntryId(catalogEntryId);
 			if (oldCatalogEntry != null
@@ -124,7 +132,7 @@ public class CatalogController {
 	public void handleCatalogEntryDestroyRequest(
 			final HttpServletResponse response,
 			@PathVariable("catalogEntryId") final Long catalogEntryId) {
-		final User user = rightsService.getCurrentUser();
+		final User user = userRightsService.getCurrentUser();
 		final CatalogEntry catalogEntry = catalogEntryDao
 				.getByCatalogEntryId(catalogEntryId);
 
@@ -160,7 +168,7 @@ public class CatalogController {
 			@PathVariable("catalogEntryParentId") final Long catalogEntryParentId,
 			@RequestBody final CatalogEntry catalogEntry,
 			final HttpServletResponse response) {
-		final User user = rightsService.getCurrentUser();
+		final User user = userRightsService.getCurrentUser();
 		final CatalogEntry catalogEntryParent;
 		final Catalog catalog;
 		final CatalogEntry result;
@@ -168,7 +176,7 @@ public class CatalogController {
 		LOGGER.debug("Request to create catalogEntry in catalogEntry: "
 				+ catalogEntryParentId + "from user: " + user.getId());
 
-		if (rightsService.isSignedInUser()) {
+		if (userRightsService.isSignedInUser()) {
 			catalogEntryParent = catalogEntryDao
 					.getByCatalogEntryId(catalogEntryParentId);
 
@@ -207,7 +215,7 @@ public class CatalogController {
 	public @ResponseBody CatalogEntry handleCatalogEntryCreateRequest(
 			@RequestBody final CatalogEntry catalogEntry,
 			final HttpServletResponse response) {
-		final User user = rightsService.getCurrentUser();
+		final User user = userRightsService.getCurrentUser();
 		final CatalogEntry catalogEntryParent;
 		final Catalog catalog;
 		final CatalogEntry result;
@@ -215,8 +223,9 @@ public class CatalogController {
 		LOGGER.debug("Request to create catalogEntry " + "from user: "
 				+ user.getId());
 
-		if (rightsService.isSignedInUser()
+		if (userRightsService.isSignedInUser()
 				&& catalogEntry.getParentId() != null) {
+
 			catalogEntryParent = catalogEntryDao
 					.getByCatalogEntryId(catalogEntry.getParentId());
 
@@ -264,10 +273,10 @@ public class CatalogController {
 	public @ResponseBody List<Catalog> handleGetCatalogsRequest(
 			final HttpServletResponse response) {
 		List<Catalog> result = null;
-		final User user = rightsService.getCurrentUser();
+		final User user = userRightsService.getCurrentUser();
 		LOGGER.debug("Request for all catalogs of user: " + user.getId());
 
-		if (rightsService.isSignedInUser()) {
+		if (userRightsService.isSignedInUser()) {
 			result = catalogDao.getByUid(user.getId());
 			if (result == null || result.isEmpty()) {
 				result = new ArrayList<Catalog>();
@@ -291,7 +300,7 @@ public class CatalogController {
 			@PathVariable("catalogId") final Long catalogId,
 			final HttpServletResponse response) {
 		Catalog result = null;
-		final User user = rightsService.getCurrentUser();
+		final User user = userRightsService.getCurrentUser();
 
 		LOGGER.debug("Request for catalog " + catalogId + " of user: "
 				+ user.getId());
@@ -323,14 +332,14 @@ public class CatalogController {
 			@RequestBody final Catalog catalog,
 			@PathVariable("requestedId") final Long requestedId,
 			final HttpServletResponse response) {
-		final User user = rightsService.getCurrentUser();
+		final User user = userRightsService.getCurrentUser();
 		final Catalog result;
 		final Catalog oldCatalog;
 
 		LOGGER.debug("Request to update catalog: " + catalog.getId()
 				+ " of user: " + user.getId());
 
-		if (rightsService.isSignedInUser()) {
+		if (userRightsService.isSignedInUser()) {
 			oldCatalog = catalogDao.getByCatalogId(requestedId);
 			if (oldCatalog != null
 					&& (oldCatalog.getId().equals(catalog.getId()))
@@ -371,12 +380,12 @@ public class CatalogController {
 	public @ResponseBody Catalog handleCatalogCreateRequest(
 			@RequestBody final Catalog catalog,
 			final HttpServletResponse response) {
-		final User user = rightsService.getCurrentUser();
+		final User user = userRightsService.getCurrentUser();
 		final Catalog result;
 
 		LOGGER.debug("Request to create catalog for user: " + user.getId());
 
-		if (rightsService.isSignedInUser()) {
+		if (userRightsService.isSignedInUser()) {
 			Set<User> users = new HashSet<User>();
 			users.add(user);
 			catalog.setUsers(users);
@@ -408,7 +417,7 @@ public class CatalogController {
 	@RequestMapping(value = "/catalog/{catalogId}", method = RequestMethod.DELETE)
 	public void handleCatalogDestroyRequest(final HttpServletResponse response,
 			@PathVariable("catalogId") final Long catalogId) {
-		final User user = rightsService.getCurrentUser();
+		final User user = userRightsService.getCurrentUser();
 		final Catalog catalog = catalogDao.getByCatalogId(catalogId);
 
 		LOGGER.debug("Request to destroy catalog: " + catalogId

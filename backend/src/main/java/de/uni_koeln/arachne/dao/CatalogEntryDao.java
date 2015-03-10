@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import de.uni_koeln.arachne.mapping.Catalog;
 import de.uni_koeln.arachne.mapping.CatalogEntry;
 import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.service.UserRightsService;
 
 @Repository("CatalogEntryDao")
 public class CatalogEntryDao {
@@ -56,15 +57,16 @@ public class CatalogEntryDao {
 	 * @return A list of catalog ids. 
 	 */
 	@Transactional(readOnly=true)
-	public List<Long> getPrivateCatalogIdsAndPathsByEntityId(final long entityId) {
+	public List<Long> getPrivateCatalogIdsByEntityId(final long entityId) {
 		final List<Long> result = new ArrayList<Long>();
-		for (final CatalogEntry catalogEntry : getByEntityId(entityId)) {
-			final Catalog catalog = catalogEntry.getCatalog(); 
-			if (!catalog.isPublic() && catalog.isCatalogOfUserWithId(userRightsService.getCurrentUser().getId())) {
-				result.add(catalog.getId());
+		if (userRightsService.isSignedInUser()) {
+			for (final CatalogEntry catalogEntry : getByEntityId(entityId)) {
+				final Catalog catalog = catalogEntry.getCatalog(); 
+				if (!catalog.isPublic() && catalog.isCatalogOfUserWithId(userRightsService.getCurrentUser().getId())) {
+					result.add(catalog.getId());
+				}
 			}
 		}
-		
 		return result;
 	}
 	
