@@ -91,13 +91,12 @@ public class EntityController {
 	public @ResponseBody Object handleGetEntityIdRequest(
 			@PathVariable("entityId") final Long entityId,
 			@RequestParam(value = "live", required = false) final Boolean isLive,
-			final HttpServletRequest request,
 			final HttpServletResponse response) {
 		
 		if (isLive != null && isLive) {
 			return getEntityFromDB(entityId, null, response);
 		} else {
-			return getEntityFromIndex(entityId, null, request, response);
+			return getEntityFromIndex(entityId, null, response);
 		}
 	}
     
@@ -114,14 +113,13 @@ public class EntityController {
     		@PathVariable("category") final String category,
     		@PathVariable("categoryId") final Long categoryId,
     		@RequestParam(value = "live", required = false) final Boolean isLive,
-    		final HttpServletRequest request,
     		final HttpServletResponse response) {
     	
     	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
     	if (isLive != null && isLive) {
 			return getEntityFromDB(categoryId, category, response);
 		} else {
-			return getEntityFromIndex(categoryId, category, request, response);
+			return getEntityFromIndex(categoryId, category, response);
 		}
     }
 
@@ -190,7 +188,7 @@ public class EntityController {
      * @return The response body as <code>String</code>.
      */
      private String getEntityFromIndex(final Long id, final String category //NOPMD
-    		,final HttpServletRequest request, final HttpServletResponse response) { 
+    		, final HttpServletResponse response) { 
     	
     	final Long startTime = System.currentTimeMillis();
     	    	
@@ -255,7 +253,10 @@ public class EntityController {
     		if (acLessSearchResponse.getHits().getTotalHits() == 1) {
     			response.setStatus(403);
     		} else {
-    			response.setStatus(404);
+    			// if the entity is not found in the ES index it may have been deleted, so we try to retrieve it from 
+    			// the DB to get a nice deleted message without duplicating code or burdening the dataimport with the 
+    			// task of keeping track of deleted entities or adding them to the index
+    			return getEntityFromDB(id, category, response);
     		}
     		result = null;
     	}
