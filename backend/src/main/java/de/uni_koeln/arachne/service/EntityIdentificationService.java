@@ -52,7 +52,7 @@ public class EntityIdentificationService {
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
 	private EntityId getByEntityId(final Long entityId) {
-		return constructArachneID(arachneEntityDao.getByEntityID(entityId));
+		return new EntityId(arachneEntityDao.getByEntityID(entityId));
 	}
 	
 	/**
@@ -63,21 +63,6 @@ public class EntityIdentificationService {
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
 	private EntityId getByTablenameAndInternalKey(final String tableName, final Long internalKey){
-		return constructArachneID(arachneEntityDao.getByTablenameAndInternalKey(tableName, internalKey));
-	}
-	
-	/**
-	 * Constructs an <code>ArachneId</code> instance.
-	 * @param arachneEntity The <code>ArachneEntity</code> for which the instance should be created.
-	 * @return The new instance or <code>null</code>.
-	 */
-	public EntityId constructArachneID(final ArachneEntity arachneEntity){
-		if (arachneEntity == null) {
-			return null;	
-		} else {
-			return new EntityId(arachneEntity.getTableName(), arachneEntity.getForeignKey(), arachneEntity.getEntityId()
-					, arachneEntity.isDeleted(), arachneEntity.getDegree());
-		}
-		
+		return new EntityId(arachneEntityDao.getByTablenameAndInternalKey(tableName, internalKey));
 	}
 }
