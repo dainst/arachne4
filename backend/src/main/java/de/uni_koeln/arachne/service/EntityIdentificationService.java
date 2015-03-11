@@ -24,11 +24,11 @@ public class EntityIdentificationService {
 	public EntityId getId(final Long arachneEntityId) {
 		return getByEntityId(arachneEntityId);
 	}
-		
+	
 	/**
-	 * Gets a range of <code>ArachneEntityIds</code>.
-	 * @param start First id in the range.
-	 * @param end Last id in the range. 
+	 * Gets all identifiers of a dataset by table name and internal key. This is the external reference ID for the dataset in Arachne.
+	 * @param tableName The name of the SQL table.
+	 * @param internalKey The internalkey of the entity. 
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
 	public EntityId getId(final String tableName, final Long internalKey) {
@@ -36,10 +36,10 @@ public class EntityIdentificationService {
 	}
 	
 	/**
-	 * Gets all identifiers of a dataset by table name and internal key. This is the external reference ID for the dataset in Arachne.
-	 * @param tableName The name of the SQL table.
-	 * @param internalKey The internalkey of the entity. 
-	 * @return an <code>ArachneId</code> object that contains all the identification information.
+	 * Gets a range of <code>ArachneEntityIds</code>.
+	 * @param startId The first id in the range.
+	 * @param limit The number of entities in the returned list. 
+	 * @return a list of <code>ArachneId</code>s.
 	 */
 	public List<ArachneEntity> getByLimitedEntityIdRange(final long startId, final int limit) {
 		return arachneEntityDao.getByLimitedEntityIdRange(startId, limit);
