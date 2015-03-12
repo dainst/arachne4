@@ -92,6 +92,19 @@
                 }
             }
          },
+         "dates": {
+         	"properties": {
+         		"label": {
+         			"type": "string"
+         		},
+         		"relation": {
+         			"type": "string"
+         		},
+         		"date": {
+         			"type": "date"
+         		}
+         	}
+         },
          "searchableContent":{
          	"type":"string",
          	"omit_norms": true

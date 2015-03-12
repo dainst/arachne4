@@ -178,8 +178,8 @@ public class Dataset {
 	}
 	
 	/**
-	 * Looks up a field in the </code>fields<code> list	or in the contexts and returns its value. The 
-	 * </code>fields<code> list is the preferred search location and only if a field is not found there the contexts are 
+	 * Looks up a field in the <code>fields</code> list	or in the contexts and returns its value. The 
+	 * <code>fields</code> list is the preferred search location and only if a field is not found there the contexts are 
 	 * searched.
 	 * <br>
 	 * "Dataset" and "Thumbnail" are special contextualizer names that can be used to reference data which is in every dataset

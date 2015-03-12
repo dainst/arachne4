@@ -27,6 +27,7 @@ import de.uni_koeln.arachne.dao.GenericSQLDao;
 import de.uni_koeln.arachne.response.link.ExternalLink;
 import de.uni_koeln.arachne.response.link.ExternalLinkResolver;
 import de.uni_koeln.arachne.service.Transl8Service;
+import de.uni_koeln.arachne.util.DateUtils;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.StrUtils;
@@ -47,6 +48,12 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 public class ResponseFactory {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
+	
+	public static final String[] PHOTO_DATE_FIELDS =  {
+		"marbilder.Fotodatum",
+		"marbilderbestand.Aufnahmedatum",
+		"marbilderinventar.03_Aufnahmedatum"
+	};
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
@@ -272,6 +279,41 @@ public class ResponseFactory {
 				}
 			}
 		}
+		
+		// set date information
+		
+		// add dates from datierungen
+		// TODO set parsed date when available in database
+		Context dateContext = dataset.getContext("datierung");		
+		if (dateContext != null) {
+			for (AbstractLink link: dateContext.getAllContexts()) {
+				final String startEra = link.getFieldFromFields("datierung.AnfEpoche");
+				if (!StrUtils.isEmptyOrNull(startEra)) {
+					final DateAssertion dateAssertion = new DateAssertion(startEra, "Datierung");
+					response.addDate(dateAssertion);
+				}
+				final String endEra = link.getFieldFromFields("datierung.EndEpoche");
+				if (!StrUtils.isEmptyOrNull(startEra)) {
+					final DateAssertion dateAssertion = new DateAssertion(endEra, "Datierung");
+					response.addDate(dateAssertion);
+				}
+			}
+		}
+		
+		// add marbilder creation dates
+		if ("marbilder".equals(tableName)) {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			for (String field : PHOTO_DATE_FIELDS) {
+				String value = dataset.getField(field);
+				if (value == null) continue;
+				Date date = DateUtils.parseDate(value);
+				if (date != null) {
+					DateAssertion dateAssertion = new DateAssertion(value, "Aufnahme", format.format(date));
+					response.addDate(dateAssertion);
+				}
+			}
+		}
+		
 		return response;
 	}
 	
