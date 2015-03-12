@@ -61,6 +61,11 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	 * The places this entity is connected to.
 	 */
 	protected List<Place> places = new ArrayList<Place>();
+
+	/**
+	 * The dates this entity is connected to.
+	 */
+	protected List<DateAssertion> dates = new ArrayList<DateAssertion>();
 	
 	/**
 	 * A list of catalogs this entity is part of.
@@ -211,6 +216,18 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	 */
 	public void addPlace(final Place place) {
 		places.add(place);
+	}
+	
+	public List<DateAssertion> getDates() {
+		return dates;
+	}
+	
+	/**
+	 * Adds a place to the places list.
+	 * @param place The place to add.
+	 */
+	public void addDate(final DateAssertion date) {
+		dates.add(date);
 	}
 
 	/**
