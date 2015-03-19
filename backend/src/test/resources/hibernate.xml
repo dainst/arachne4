@@ -18,13 +18,13 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="annotatedClasses">
 			<list>
-				<value>de.uni_koeln.arachne.mapping.User</value>
-				<value>de.uni_koeln.arachne.mapping.ArachneEntity</value>
-				<value>de.uni_koeln.arachne.mapping.Connection</value>
-				<value>de.uni_koeln.arachne.mapping.DatasetGroup</value>
-				<value>de.uni_koeln.arachne.mapping.ImageRightsGroup</value>
-				<value>de.uni_koeln.arachne.mapping.Catalog</value>
-				<value>de.uni_koeln.arachne.mapping.CatalogEntry</value>
+				<value>de.uni_koeln.arachne.mapping.hibernate.User</value>
+				<value>de.uni_koeln.arachne.mapping.hibernate.ArachneEntity</value>
+				<value>de.uni_koeln.arachne.mapping.hibernate.Connection</value>
+				<value>de.uni_koeln.arachne.mapping.hibernate.DatasetGroup</value>
+				<value>de.uni_koeln.arachne.mapping.hibernate.ImageRightsGroup</value>
+				<value>de.uni_koeln.arachne.mapping.hibernate.Catalog</value>
+				<value>de.uni_koeln.arachne.mapping.hibernate.CatalogEntry</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
