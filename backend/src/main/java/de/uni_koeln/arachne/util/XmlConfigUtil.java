@@ -3,8 +3,10 @@ package de.uni_koeln.arachne.util;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 
@@ -333,18 +335,18 @@ public class XmlConfigUtil implements ServletContextAware {
 	}
 	
 	/**
-	 * This method looks up which facets are defined in an XML file describing a category and returns them as a list. 
+	 * This method looks up which facets are defined in an XML file describing a category. 
 	 * @param category The name of the category.
-	 * @return A <code>List&lt;String></code>
+	 * @return A <code>Set&lt;String></code> of the category specific facets.
 	 */
-	public List<String> getFacetsFromXMLFile(final String category) {
-		final List<String> facetList = new ArrayList<String>();
+	public Set<String> getFacetsFromXMLFile(final String category) {
+		final Set<String> facetList = new HashSet<String>();
 		
 		final Document document = getDocument(category); 
 		final Namespace namespace = document.getRootElement().getNamespace();
 		
 		final Element facets = document.getRootElement().getChild("facets", namespace);
-		// TODO make sure the list elements are unique so that it must not be tested later
+		
 		for (final Element element: facets.getChildren()) {
 			facetList.add(element.getAttributeValue("name")); 				 				
 		}

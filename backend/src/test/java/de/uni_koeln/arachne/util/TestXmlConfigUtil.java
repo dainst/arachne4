@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -213,14 +214,14 @@ public class TestXmlConfigUtil {
 
 	@Test
 	public void testGetFacetsFromXMLFile() {
-		List<String> facets = xmlConfigUtil.getFacetsFromXMLFile("test");
+		Set<String> facets = xmlConfigUtil.getFacetsFromXMLFile("test");
 		
 		assertNotNull(facets);
 		assertFalse(facets.isEmpty());
 		assertEquals(3, facets.size());
-		assertEquals("kategorie", facets.get(0));
-		assertEquals("test", facets.get(1));
-		assertEquals("multivaluetest", facets.get(2));
+		assertTrue(facets.contains("kategorie"));
+		assertTrue(facets.contains("test"));
+		assertTrue(facets.contains("multivaluetest"));
 	}
 	
 	@Test

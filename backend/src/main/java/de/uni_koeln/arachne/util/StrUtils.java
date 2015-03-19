@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 /**
@@ -30,7 +31,7 @@ public class StrUtils { // NOPMD
 	public static boolean isEmptyOrNull(final String string) {
 		return string == null || string.isEmpty();
 	}
-	
+		
 	/**
 	 * This method returns if a <code>List<String></code> is empty or <code>null</code>.
 	 * @param stringList to test.
@@ -40,6 +41,15 @@ public class StrUtils { // NOPMD
 		return stringList == null || stringList.isEmpty();
 	}
 
+	/**
+	 * This method returns if a <code>Set<String></code> is empty or <code>null</code>.
+	 * @param string set to test.
+	 * @return <code>true</code> or <code>false</code>
+	 */
+	public static boolean isEmptyOrNull(final Set<String> stringSet) {
+		return stringSet == null || stringSet.isEmpty();
+	}
+	
 	/**
 	 * This method returns if a <code>StringBuilder</code> is empty or <code>null</code>.
 	 * @param stringBuilder

@@ -1,9 +1,11 @@
 package de.uni_koeln.arachne.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.ElasticsearchException;
@@ -247,7 +249,7 @@ public class SearchService {
 			result = filterQueryStringToStringList(filterValues);
 			for (final String filterValue: result) {
 				if (filterValue.startsWith("facet_kategorie")) {
-					List<String> categorySpecificFacetsList = getCategorySpecificFacetList(result);
+					Set<String> categorySpecificFacetsList = getCategorySpecificFacets(result);
 					for (String facet : categorySpecificFacetsList) {
 						if (!facetList.contains(facet)) {
 							facetList.add(facet);
@@ -273,8 +275,8 @@ public class SearchService {
 	 * any results.
 	 * @return The list of category specific facets or <code>null</code>.
 	 */
-	public List<String> getCategorySpecificFacetList(final	List<String> filterValueList) {
-		final List<String> result = new ArrayList<String>();
+	public Set<String> getCategorySpecificFacets(final	List<String> filterValueList) {
+		final Set<String> result = new HashSet<String>();
 		for (String filterValue: filterValueList) {
 			if (filterValue.startsWith("facet_kategorie")) {
 				filterValue = filterValue.substring(16);
@@ -290,7 +292,7 @@ public class SearchService {
 				final String[] categories = filterValue.split("\\s");
 				if (categories.length > 0) {
 					for (int i = 0; i < categories.length; i++) {
-						final List<String> facets = xmlConfigUtil.getFacetsFromXMLFile(categories[i]);
+						final Set<String> facets = xmlConfigUtil.getFacetsFromXMLFile(categories[i]);
 						addFacetsToResult(result, facets);
 					}
 				}
@@ -308,7 +310,7 @@ public class SearchService {
 	 * @param result List of facet names.
 	 * @param facets Unique list of facet names.
 	 */
-	private void addFacetsToResult(final List<String> result, final List<String> facets) {
+	private void addFacetsToResult(final Set<String> result, final Set<String> facets) {
 		if (!StrUtils.isEmptyOrNull(facets)) {
 			for (final String facet: facets) {
 				final String facetName = "facet_" + facet;
