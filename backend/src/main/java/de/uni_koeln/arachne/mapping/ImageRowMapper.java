@@ -3,17 +3,19 @@ package de.uni_koeln.arachne.mapping;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 
 import de.uni_koeln.arachne.response.Image;
+import de.uni_koeln.arachne.service.DataIntegrityLogService;
 
 /*
  * Customized <code>RowMapper</code> to map the SQL query result to an <code>Image</code>.
  */
 public class ImageRowMapper implements RowMapper<Image> {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ImageRowMapper.class);
+		
+	@Autowired
+	private transient DataIntegrityLogService dataIntegrityLogService;
 	
 	@Override
 	public Image mapRow(final ResultSet resultSet, final int index) throws SQLException {
@@ -22,7 +24,7 @@ public class ImageRowMapper implements RowMapper<Image> {
 		if (fileName != null) {
 			result.setImageSubtitle(fileName.substring(0, fileName.lastIndexOf('.')));
 		} else {
-			LOGGER.warn("Data Integrity Warning: Image without filename. PS_MARBilderID: " + resultSet.getLong(2));
+			dataIntegrityLogService.logWarning(resultSet.getLong(2), "PS_MARBilderID", "Image without filename.");
 		}
 		result.setImageId(resultSet.getLong(2));
 				

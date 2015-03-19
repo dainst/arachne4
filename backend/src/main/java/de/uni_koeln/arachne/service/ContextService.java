@@ -36,6 +36,9 @@ public class ContextService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ContextService.class);
 	
 	@Autowired
+	private transient DataIntegrityLogService dataIntegrityLogService;
+	
+	@Autowired
 	private transient EntityIdentificationService entityIdentificationService; 
 	
 	/**
@@ -43,7 +46,7 @@ public class ContextService {
 	 * to determine which contexts the <code>addContext</code> method adds to a given dataset.
 	 */	
 	@Autowired
-	private transient ConnectionService arachneConnectionService; 
+	private transient ConnectionService arachneConnectionService;
 	
 	/**
 	 * Service to access ids in 'cross tables'.
@@ -121,7 +124,7 @@ public class ContextService {
 				parent.addImage(image);
 				parent.setThumbnailId(image.getImageId());
 			} catch (NumberFormatException nfe) {
-				LOGGER.warn("No cover for book [" + parent.getArachneId().getArachneEntityID() + "] found.");
+				dataIntegrityLogService.logWarning(parent.getArachneId().getInternalKey(), "PS_BuchID", "No cover found.");
 			}
 			return;
 		}

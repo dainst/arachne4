@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import de.uni_koeln.arachne.response.Image;
+import de.uni_koeln.arachne.service.DataIntegrityLogService;
 
 /**
  * This class implements utility functions for working with images
@@ -25,6 +27,7 @@ public class ImageUtils { // NOPMD
 		Image thumbnail = imageList.get(0);
 		final String subtitle = thumbnail.getImageSubtitle();
 		if (subtitle == null) {
+			// TODO must somehow use the DataIntegrityLogService
 			LOGGER.warn("Data integrity warning. Missing subtitle on image '" + thumbnail.getImageId() + "'.");
 			return null;
 		}

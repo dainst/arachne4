@@ -17,6 +17,7 @@ import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.image.ImageComparator;
 import de.uni_koeln.arachne.util.image.ImageUtils;
+import de.uni_koeln.arachne.util.sql.SQLToolbox;
 
 /**
  * This service class provides the means to retrieve images from the database.
@@ -25,6 +26,9 @@ import de.uni_koeln.arachne.util.image.ImageUtils;
 public class ImageService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageService.class);
+	
+	@Autowired
+	private transient DataIntegrityLogService dataIntegrityLogService;
 	
 	@Autowired
 	private transient GenericSQLDao genericSQLDao; 
@@ -68,7 +72,13 @@ public class ImageService {
 				dataset.setImages(imageList);
 				// get thumbnail from imageList
 				if (imageList != null && !imageList.isEmpty()) {
-					dataset.setThumbnailId(ImageUtils.findThumbnailId(imageList));
+					final Long thumbnailId = ImageUtils.findThumbnailId(imageList);
+					dataset.setThumbnailId(thumbnailId);
+					if (thumbnailId == null) {
+						dataIntegrityLogService.logWarning(arachneId.getInternalKey()
+								, SQLToolbox.generatePrimaryKeyName(arachneId.getTableName()), "Could not determine "
+								+ "thumbnailId.");
+					}
 				}
 			}
 		}

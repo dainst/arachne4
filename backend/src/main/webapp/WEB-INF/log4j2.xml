@@ -24,6 +24,15 @@
             </Policies>
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
+        <RollingFile name="DataIntegrity" 
+                     fileName="/var/log/arachne/arachnedataservice/data_integrity.log" 
+                     filePattern="/var/log/arachne/arachnedataservice/data_integrity-%i.log">
+            <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10240KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
     </Appenders>
     
     <!--     
@@ -56,6 +65,10 @@
         
         <Logger name="Profiling" additivity="false">
             <AppenderRef ref="Profile" />
+        </Logger>
+        
+        <Logger name="DataIntegrityLogger" additivity="false">
+            <AppenderRef ref="DataIntegrity" />
         </Logger>
         
         <Root  level="info">
