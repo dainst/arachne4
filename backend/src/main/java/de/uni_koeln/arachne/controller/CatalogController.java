@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import de.uni_koeln.arachne.dao.CatalogEntryDao;
-import de.uni_koeln.arachne.dao.CatalogDao;
+import de.uni_koeln.arachne.dao.hibernate.CatalogDao;
+import de.uni_koeln.arachne.dao.hibernate.CatalogEntryDao;
 import de.uni_koeln.arachne.mapping.Catalog;
 import de.uni_koeln.arachne.mapping.CatalogEntry;
 import de.uni_koeln.arachne.mapping.User;

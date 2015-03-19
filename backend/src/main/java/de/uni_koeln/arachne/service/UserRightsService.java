@@ -14,7 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import de.uni_koeln.arachne.dao.UserDao;
+import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.DatasetGroup;
 import de.uni_koeln.arachne.mapping.User;
 import de.uni_koeln.arachne.util.StrUtils;

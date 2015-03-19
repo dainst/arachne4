@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.dao;
+package de.uni_koeln.arachne.dao.jdbc;
 
 import java.util.List;
 import java.util.Map;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.context.ContextPath;
+import de.uni_koeln.arachne.mapping.GenericEntitiesMapper;
 import de.uni_koeln.arachne.mapping.ImageRowMapper;
 import de.uni_koeln.arachne.service.SQLResponseObject;
 import de.uni_koeln.arachne.util.StrUtils;

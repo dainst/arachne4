@@ -19,7 +19,7 @@ import de.uni_koeln.arachne.context.ContextImageDescriptor;
 import de.uni_koeln.arachne.context.ContextPath;
 import de.uni_koeln.arachne.context.IContextualizer;
 import de.uni_koeln.arachne.context.SemanticConnectionsContextualizer;
-import de.uni_koeln.arachne.dao.GenericSQLDao;
+import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.util.XmlConfigUtil;

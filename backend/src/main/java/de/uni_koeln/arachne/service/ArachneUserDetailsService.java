@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import de.uni_koeln.arachne.dao.UserDao;
+import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.User;
 
 /**

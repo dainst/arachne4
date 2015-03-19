@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.dao;
+package de.uni_koeln.arachne.mapping;
 
 import java.io.IOException;
 import java.sql.ResultSet;

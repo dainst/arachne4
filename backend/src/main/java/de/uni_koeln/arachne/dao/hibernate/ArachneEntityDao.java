@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.dao;
+package de.uni_koeln.arachne.dao.hibernate;
 
 import java.util.ArrayList;
 import java.util.List;

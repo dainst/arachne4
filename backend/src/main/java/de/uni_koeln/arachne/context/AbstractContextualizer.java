@@ -2,7 +2,7 @@ package de.uni_koeln.arachne.context;
 
 import java.util.List;
 
-import de.uni_koeln.arachne.dao.GenericSQLDao;
+import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.IUserRightsService;

@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.dao;
+package de.uni_koeln.arachne.dao.hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,7 @@ import de.uni_koeln.arachne.mapping.Connection;
 
 /**
  * Data access class to retrieve information from the 'Verknuepfungen' table via hibernate.
+ * @author Reimar Grabowski
  */
 @Repository("ArachneConnectionDao")
 public class ConnectionDao {

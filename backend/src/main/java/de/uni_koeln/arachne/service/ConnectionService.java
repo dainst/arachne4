@@ -1,10 +1,11 @@
 package de.uni_koeln.arachne.service;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.uni_koeln.arachne.dao.ConnectionDao;
+import de.uni_koeln.arachne.dao.hibernate.ConnectionDao;
 
 /**
  * Service class to query the 'Verknuepfungen' table.

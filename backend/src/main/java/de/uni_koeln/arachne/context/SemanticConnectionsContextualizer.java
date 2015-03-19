@@ -9,7 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uni_koeln.arachne.dao.GenericSQLDao;
+import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.util.EntityId;
 

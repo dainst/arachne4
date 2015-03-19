@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import de.uni_koeln.arachne.dao.GenericSQLDao;
+import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.util.EntityId;
