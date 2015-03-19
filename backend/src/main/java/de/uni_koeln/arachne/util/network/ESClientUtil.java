@@ -40,8 +40,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.context.ServletContextAware;
 
-import de.uni_koeln.arachne.mapping.DatasetGroup;
-import de.uni_koeln.arachne.mapping.User;
+import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
+import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.IUserRightsService;
 
 /**

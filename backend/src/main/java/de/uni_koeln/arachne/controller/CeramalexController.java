@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.uni_koeln.arachne.dao.hibernate.ArachneEntityDao;
-import de.uni_koeln.arachne.mapping.ArachneEntity;
+import de.uni_koeln.arachne.mapping.hibernate.ArachneEntity;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.QuantificationContent;
 import de.uni_koeln.arachne.response.search.SearchHit;

@@ -16,6 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
+import de.uni_koeln.arachne.mapping.hibernate.Catalog;
+import de.uni_koeln.arachne.mapping.hibernate.CatalogEntry;
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestCatalog {
 

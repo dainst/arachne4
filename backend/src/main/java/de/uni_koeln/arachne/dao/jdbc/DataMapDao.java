@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import de.uni_koeln.arachne.mapping.DatasetMapper;
+import de.uni_koeln.arachne.mapping.jdbc.DatasetMapper;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.sql.SQLFactory;

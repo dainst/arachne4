@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.uni_koeln.arachne.mapping.DatasetGroup;
-import de.uni_koeln.arachne.mapping.User;
+import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
+import de.uni_koeln.arachne.mapping.hibernate.User;
 
 /**
  * Hibernate DAO for the 'verwaltung_benutzer' table.

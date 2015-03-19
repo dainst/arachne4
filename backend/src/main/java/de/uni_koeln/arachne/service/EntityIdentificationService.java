@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.hibernate.ArachneEntityDao;
-import de.uni_koeln.arachne.mapping.ArachneEntity;
+import de.uni_koeln.arachne.mapping.hibernate.ArachneEntity;
 import de.uni_koeln.arachne.util.EntityId;
 
 

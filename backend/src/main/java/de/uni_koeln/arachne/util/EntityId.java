@@ -3,7 +3,7 @@ package de.uni_koeln.arachne.util;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import de.uni_koeln.arachne.mapping.ArachneEntity;
+import de.uni_koeln.arachne.mapping.hibernate.ArachneEntity;
 
 @XmlRootElement
 public class EntityId {

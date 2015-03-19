@@ -1,7 +1,7 @@
 package de.uni_koeln.arachne.service;
 
-import de.uni_koeln.arachne.mapping.DatasetGroup;
-import de.uni_koeln.arachne.mapping.User;
+import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
+import de.uni_koeln.arachne.mapping.hibernate.User;
 
 public interface IUserRightsService {
 

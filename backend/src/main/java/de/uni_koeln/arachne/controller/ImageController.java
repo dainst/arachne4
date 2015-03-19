@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.uni_koeln.arachne.dao.hibernate.ImageRightsDao;
-import de.uni_koeln.arachne.mapping.ImageRightsGroup;
+import de.uni_koeln.arachne.mapping.hibernate.ImageRightsGroup;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.ImageRightsGroupService;

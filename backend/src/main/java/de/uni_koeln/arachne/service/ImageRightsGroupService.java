@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import de.uni_koeln.arachne.mapping.ImageRightsGroup;
-import de.uni_koeln.arachne.mapping.User;
+import de.uni_koeln.arachne.mapping.hibernate.ImageRightsGroup;
+import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.response.Dataset;
 
 /**

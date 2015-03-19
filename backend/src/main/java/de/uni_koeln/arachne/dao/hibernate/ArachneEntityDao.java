@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.uni_koeln.arachne.mapping.ArachneEntity;
+import de.uni_koeln.arachne.mapping.hibernate.ArachneEntity;
 
 @Repository("ArachneEntityDao")
 public class ArachneEntityDao {

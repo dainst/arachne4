@@ -27,7 +27,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.google.common.base.Throwables;
 
-import de.uni_koeln.arachne.mapping.ArachneEntity;
+import de.uni_koeln.arachne.mapping.hibernate.ArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.network.BasicNetwork;

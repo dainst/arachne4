@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.mapping;
+package de.uni_koeln.arachne.mapping.hibernate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

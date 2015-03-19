@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.uni_koeln.arachne.mapping.Connection;
+import de.uni_koeln.arachne.mapping.hibernate.Connection;
 
 /**
  * Data access class to retrieve information from the 'Verknuepfungen' table via hibernate.

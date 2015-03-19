@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.mapping;
+package de.uni_koeln.arachne.mapping.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;

@@ -15,8 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
-import de.uni_koeln.arachne.mapping.DatasetGroup;
-import de.uni_koeln.arachne.mapping.User;
+import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
+import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.sql.Condition;
 import de.uni_koeln.arachne.util.sql.SQLToolbox;

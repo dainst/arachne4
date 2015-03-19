@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.context.ContextPath;
-import de.uni_koeln.arachne.mapping.GenericEntitiesMapper;
-import de.uni_koeln.arachne.mapping.ImageRowMapper;
+import de.uni_koeln.arachne.mapping.jdbc.GenericEntitiesMapper;
+import de.uni_koeln.arachne.mapping.jdbc.ImageRowMapper;
 import de.uni_koeln.arachne.service.SQLResponseObject;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.sql.ConnectedPathEntitiesSQLQueryBuilder;

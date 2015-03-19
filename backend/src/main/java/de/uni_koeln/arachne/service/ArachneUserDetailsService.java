@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
-import de.uni_koeln.arachne.mapping.User;
+import de.uni_koeln.arachne.mapping.hibernate.User;
 
 /**
  * Sping UserDetailsService implementation to retrieve user information from the DB.

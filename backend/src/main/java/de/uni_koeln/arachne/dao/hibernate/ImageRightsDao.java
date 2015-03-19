@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.uni_koeln.arachne.mapping.ImageRightsGroup;
+import de.uni_koeln.arachne.mapping.hibernate.ImageRightsGroup;
 
 @Repository
 public class ImageRightsDao {
