@@ -62,6 +62,7 @@ public class SearchController {
 	 * @param facetLimit The maximum number of returned facets. (optional)
 	 * @param SortField The field to sort on. Must be one listed in esSortFields in application.properties. (optional)
 	 * @param desOrder If the sort order should be descending. The default order is ascending. (optional)
+	 * @param boundingBox A String with comma separated coordinates representing the top left and bottom right coordinates of a bounding box (order: lat, long, optional)
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
 	@RequestMapping(value="/search", method=RequestMethod.GET, produces="application/json")
@@ -71,7 +72,8 @@ public class SearchController {
 			@RequestParam(value = "fq", required = false) final String filterValues,
 			@RequestParam(value = "fl", required = false) final Integer facetLimit,
 			@RequestParam(value = "sort", required = false) final String sortField,
-			@RequestParam(value = "desc", required = false) final Boolean orderDesc) {
+			@RequestParam(value = "desc", required = false) final Boolean orderDesc,
+			@RequestParam(value = "bbox", required = false) final String boundingBox) {
 
 		final int resultSize = limit == null ? defaultLimit : limit;
 		final int resultOffset = offset == null ? 0 : offset;
@@ -80,8 +82,24 @@ public class SearchController {
 		final List<String> facetList = new ArrayList<String>(defaultFacetList);
 		final List<String> filterValueList = searchService.getFilterValueList(filterValues, facetList);
 		
+		double[] bbCoords = null;
+		if (boundingBox != null) {
+			String[] bBoxSplit = boundingBox.split(",");
+			if (bBoxSplit.length != 4) {
+				return ResponseEntity.badRequest().body("{ \"message\": \"Could not parse bounding box.\"");
+			}
+			bbCoords = new double[4];
+			for (int i = 0; i < bBoxSplit.length; i++) {
+				try {
+					bbCoords[i] = Double.parseDouble(bBoxSplit[i]);
+				} catch (Exception e) {
+					return ResponseEntity.badRequest().body("{ \"message\": \"Could not parse bounding box.\"");
+				}
+			}
+		}
+		
 		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam
-				, resultSize, resultOffset, filterValueList, sortField, orderDesc);
+				, resultSize, resultOffset, filterValueList, sortField, orderDesc, bbCoords);
 		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
 				
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder

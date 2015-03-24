@@ -86,7 +86,7 @@ public class CeramalexController  {
 		final Integer resultOffset = 0;
 		
 		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam, maxResultSize
-				, resultOffset, filterValueList, null, false);
+				, resultOffset, filterValueList, null, false, null);
 		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
 			
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, maxResultSize

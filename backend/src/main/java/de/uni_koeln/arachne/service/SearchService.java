@@ -13,9 +13,11 @@ import org.elasticsearch.action.search.SearchPhaseExecutionException;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.index.query.AndFilterBuilder;
 import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.GeoBoundingBoxFilterBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
@@ -82,14 +84,15 @@ public class SearchService {
 	 * @param resultSize Max number of results.
 	 * @param resultOffset An offset into the result set.
 	 * @param filterValueList A list of values to use for building an elasticsearch fuilter query.
+	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 */
 	public SearchRequestBuilder buildSearchRequest(final String searchParam, final int resultSize
 			, final int resultOffset, final List<String> filterValueList, final String sortField
-			, final Boolean orderDesc) {
+			, final Boolean orderDesc, final double[] bbCoords) {
 		
 		SearchRequestBuilder result = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
-				.setQuery(buildQuery(searchParam, filterValueList))
+				.setQuery(buildQuery(searchParam, filterValueList, bbCoords))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setFrom(resultOffset)
 				.setSize(resultSize);
@@ -311,7 +314,7 @@ public class SearchService {
 	 * @param facets Unique list of facet names.
 	 */
 	private void addFacetsToResult(final Set<String> result, final Set<String> facets) {
-		if (!StrUtils.isEmptyOrNull(facets)) {
+		if (facets != null) {
 			for (final String facet: facets) {
 				final String facetName = "facet_" + facet;
 				if (!result.contains(facetName)) {
@@ -340,17 +343,18 @@ public class SearchService {
 	/**
 	 * Builds the elasticsearch query based on the input parameters. It also adds an access control filter to the query.
 	 * The final query is a function score query that modifies the score based on the boost value of a document. 
-	 * Embedded is a filtered query to account for access control and facet filters which finally uses a simple query 
-	 * string query with 'AND' as default operator.
+	 * Embedded is a filtered query to account for access control, facet and bounding box filters
+	 * which finally uses a simple query string query with 'AND' as default operator.
 	 * If the search parameter is numeric the query is performed against all configured fields else the query is only 
 	 * performed against the text fields.
 	 * @param searchParam The query string.
 	 * @param limit Max number of results.
 	 * @param offset An offset into the result set.
 	 * @param filterValues A list of values to create a filter query from.
+	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)
 	 * @return An elasticsearch <code>QueryBuilder</code> which in essence is a complete elasticsearch query.
 	 */
-	private QueryBuilder buildQuery(final String searchParam, final List<String> filterValues) {
+	private QueryBuilder buildQuery(final String searchParam, final List<String> filterValues, final double[] bbCoords) {
 		FilterBuilder facetFilter = esClientUtil.getAccessControlFilter();
 				
 		if (!StrUtils.isEmptyOrNull(filterValues)) {
@@ -376,7 +380,15 @@ public class SearchService {
 			}
 		}
 		
-		final QueryBuilder filteredQuery = QueryBuilders.filteredQuery(innerQuery, facetFilter);
+		final QueryBuilder filteredQuery;
+		if (bbCoords != null) {
+			GeoBoundingBoxFilterBuilder bBoxFilter = FilterBuilders.geoBoundingBoxFilter("places.location")
+					.topLeft(bbCoords[0], bbCoords[1]).bottomRight(bbCoords[2], bbCoords[3]);
+			AndFilterBuilder andFilter = FilterBuilders.andFilter(facetFilter, bBoxFilter);
+			filteredQuery = QueryBuilders.filteredQuery(innerQuery, andFilter);
+		} else {
+			filteredQuery = QueryBuilders.filteredQuery(innerQuery, facetFilter);
+		}
 		
 		final ScriptScoreFunctionBuilder scoreFunction = ScoreFunctionBuilders
 				.scriptFunction("doc['boost'].value")
