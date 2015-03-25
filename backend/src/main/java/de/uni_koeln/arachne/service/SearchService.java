@@ -28,6 +28,7 @@ import org.elasticsearch.index.query.functionscore.script.ScriptScoreFunctionBui
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.geogrid.GeoHashGrid;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
@@ -51,6 +52,8 @@ import de.uni_koeln.arachne.util.search.SearchFieldList;
 public class SearchService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearchService.class);
+	
+	private static final String GEO_HASH_GRID_FACET_NAME = "facet_geogrid";
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
@@ -129,6 +132,15 @@ public class SearchService {
 		for (final String facetName: facetList) {
 			searchRequestBuilder.addAggregation(AggregationBuilders.terms(facetName).field(facetName).size(facetSize));
 		}
+	}
+	
+	/**
+	 * Adds the geohash grid facet to the search request. 
+	 * @param searchRequestBuilder The outgoing search request that gets the facets added.
+	 */
+	public void addGeoHashGridFacet(final int facetSize, final SearchRequestBuilder searchRequestBuilder) {
+		searchRequestBuilder.addAggregation(AggregationBuilders.geohashGrid(GEO_HASH_GRID_FACET_NAME)
+				.field("places.location").size(facetSize));
 	}
 	
 	/**
@@ -223,6 +235,16 @@ public class SearchService {
 				if (facetMap != null && !facetMap.isEmpty() && (filterValueList == null || !filterValueList.contains(facetName))) {
 					facets.add(getSearchResultFacet(facetName, facetMap));
 				}
+			}
+			// the geogrid facet must be handled differently
+			GeoHashGrid aggregator = (GeoHashGrid)searchResponse.getAggregations().getAsMap().get(GEO_HASH_GRID_FACET_NAME); 
+			final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
+			for (final GeoHashGrid.Bucket bucket: aggregator.getBuckets()) {
+				facetMap.put(bucket.getKey(), bucket.getDocCount());
+			}
+			if (facetMap != null && !facetMap.isEmpty() && (filterValueList == null
+					|| !filterValueList.contains(GEO_HASH_GRID_FACET_NAME))) {
+				facets.add(getSearchResultFacet(GEO_HASH_GRID_FACET_NAME, facetMap));
 			}
 			searchResult.setFacets(facets);
 		}
