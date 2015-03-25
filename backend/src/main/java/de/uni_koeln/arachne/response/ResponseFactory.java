@@ -249,33 +249,11 @@ public class ResponseFactory {
 				final String longitude = link.getFieldFromFields("ort.Longitude");
 				
 				if (!StrUtils.isEmptyOrNull(placeName) && !StrUtils.isEmptyOrNull(relation)) {
-					if ("Fundort".equals(relation)) {
-						final Place place = new Place(placeName, relation);
-						if (!StrUtils.isEmptyOrNull(latitude) && !StrUtils.isEmptyOrNull(latitude)) {
-							place.setLocation(latitude, longitude);
-						}
-						response.addPlace(place);
-					} else {
-						if (relation.contains("Aufbewahrung") && !relation.contains("temporäre")
-								&& !relation.contains("vorheriger")) {
-							final Place place = new Place(placeName, "Aufbewahrungsort");
-							if (!StrUtils.isEmptyOrNull(latitude) && !StrUtils.isEmptyOrNull(latitude)) {
-								place.setLocation(latitude, longitude);
-							}
-							response.addPlace(place);
-						} else {
-							if ("in situ".equals(relation)) {
-								final Place findSpot = new Place(placeName, "Fundort");
-								final Place depository = new Place(placeName, "Aufbewahrungsort");
-								if (!StrUtils.isEmptyOrNull(latitude) && !StrUtils.isEmptyOrNull(latitude)) {
-									findSpot.setLocation(latitude, longitude);
-									depository.setLocation(latitude, longitude);
-								}
-								response.addPlace(findSpot);
-								response.addPlace(depository);
-							}
-						}
+					final Place place = new Place(placeName, relation);
+					if (!StrUtils.isEmptyOrNull(latitude) && !StrUtils.isEmptyOrNull(latitude)) {
+						place.setLocation(latitude, longitude);
 					}
+					response.addPlace(place);
 				}
 			}
 		}
@@ -284,7 +262,7 @@ public class ResponseFactory {
 		
 		// add dates from datierungen
 		// TODO set parsed date when available in database
-		Context dateContext = dataset.getContext("datierung");		
+		Context dateContext = dataset.getContext("datierung");
 		if (dateContext != null) {
 			for (AbstractLink link: dateContext.getAllContexts()) {
 				final String startEra = link.getFieldFromFields("datierung.AnfEpoche");
