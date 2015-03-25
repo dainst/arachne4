@@ -12,6 +12,7 @@ public class DateUtils {
 	private static final Map<String, String> DATE_FORMAT_REGEXPS = new HashMap<String, String>() {{
 	    put("^\\d{2}\\.\\d{2}\\.\\d{2}$", "dd.MM.yy");
 	    put("^\\d{2}\\.\\d{2}\\.\\d{4}$", "dd.MM.yyyy");
+	    put("^\\d{4}\\-\\d{2}\\-\\d{2}$", "yyyy-MM-dd");
 	    put("^\\d{2}/\\d{4}$", "MM/yyyy");
 	    put("^\\d{4}$", "yyyy");
 	}};
