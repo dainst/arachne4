@@ -101,7 +101,7 @@ public class SearchController {
 		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam
 				, resultSize, resultOffset, filterValueList, sortField, orderDesc, bbCoords);
 		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
-		searchService.addGeoHashGridFacet(resultFacetLimit, searchRequestBuilder);
+		searchService.addGeoHashGridFacet(facetList, resultFacetLimit, searchRequestBuilder);
 				
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
 				, resultSize, resultOffset, filterValueList, facetList);

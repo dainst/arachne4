@@ -28,8 +28,7 @@ import org.elasticsearch.index.query.functionscore.script.ScriptScoreFunctionBui
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.geogrid.GeoHashGrid;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -135,12 +134,14 @@ public class SearchService {
 	}
 	
 	/**
-	 * Adds the geohash grid facet to the search request. 
-	 * @param searchRequestBuilder The outgoing search request that gets the facets added.
+	 * Adds the geohash grid facet to the search request and the facet list.
+	 * @param facetList A string list containing the facet names that the geo hash grid name will be addded to.
+	 * @param searchRequestBuilder The outgoing search request that gets the facet added.
 	 */
-	public void addGeoHashGridFacet(final int facetSize, final SearchRequestBuilder searchRequestBuilder) {
+	public void addGeoHashGridFacet(final List<String> facetList, final int facetSize, final SearchRequestBuilder searchRequestBuilder) {
 		searchRequestBuilder.addAggregation(AggregationBuilders.geohashGrid(GEO_HASH_GRID_FACET_NAME)
 				.field("places.location").size(facetSize));
+		facetList.add(GEO_HASH_GRID_FACET_NAME);
 	}
 	
 	/**
@@ -235,16 +236,6 @@ public class SearchService {
 				if (facetMap != null && !facetMap.isEmpty() && (filterValueList == null || !filterValueList.contains(facetName))) {
 					facets.add(getSearchResultFacet(facetName, facetMap));
 				}
-			}
-			// the geogrid facet must be handled differently
-			GeoHashGrid aggregator = (GeoHashGrid)searchResponse.getAggregations().getAsMap().get(GEO_HASH_GRID_FACET_NAME); 
-			final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
-			for (final GeoHashGrid.Bucket bucket: aggregator.getBuckets()) {
-				facetMap.put(bucket.getKey(), bucket.getDocCount());
-			}
-			if (facetMap != null && !facetMap.isEmpty() && (filterValueList == null
-					|| !filterValueList.contains(GEO_HASH_GRID_FACET_NAME))) {
-				facets.add(getSearchResultFacet(GEO_HASH_GRID_FACET_NAME, facetMap));
 			}
 			searchResult.setFacets(facets);
 		}
@@ -354,9 +345,9 @@ public class SearchService {
 	 * @return A map containing the facet value as key and the facet count as value.
 	 */
 	private Map<String, Long> getFacetMap(final String name, final SearchResponse searchResponse) {
-		Terms aggregator = (Terms)searchResponse.getAggregations().getAsMap().get(name); 
+		MultiBucketsAggregation aggregator = (MultiBucketsAggregation)searchResponse.getAggregations().getAsMap().get(name); 
 		final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
-		for (final Terms.Bucket bucket: aggregator.getBuckets()) {
+		for (final MultiBucketsAggregation.Bucket bucket: aggregator.getBuckets()) {
 			facetMap.put(bucket.getKey(), bucket.getDocCount());
 		}
 		return facetMap;
