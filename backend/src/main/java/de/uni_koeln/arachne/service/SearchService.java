@@ -405,7 +405,7 @@ public class SearchService {
 		
 		final ScriptScoreFunctionBuilder scoreFunction = ScoreFunctionBuilders
 				.scriptFunction("doc['boost'].value")
-				.lang("groovy");
+				.lang("expression");
 		final QueryBuilder query = QueryBuilders.functionScoreQuery(filteredQuery, scoreFunction).boostMode("multiply");
 						
 		LOGGER.debug("Elastic search query: " + query.toString());
