@@ -87,6 +87,7 @@
                 "location": {
                     "type": "geo_point",
                     "lat_lon": true,
+                    "geohash_prefix": true,
                     "normalize": false,
                     "validate": true
                 }
