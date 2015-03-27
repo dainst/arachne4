@@ -213,11 +213,7 @@ public class SearchService {
 					, (String)(currenthit.getSource().get("type"))
 					, (String)(currenthit.getSource().get("title"))
 					, (String)(currenthit.getSource().get("subtitle"))
-					, thumbnailId
-					, (String)(currenthit.getSource().get("findSpot"))
-					, (String)(currenthit.getSource().get("findSpotlocation"))
-					, (String)(currenthit.getSource().get("depository"))
-					, (String)(currenthit.getSource().get("depositorylocation"))));
+					, thumbnailId));
 		}
 		
 		// add facet search results

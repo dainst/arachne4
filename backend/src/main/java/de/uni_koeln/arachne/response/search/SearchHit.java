@@ -13,22 +13,13 @@ public class SearchHit {
 	private transient final String title;
 	private transient final String subtitle;
 	private transient final Long thumbnailId;
-	private transient final String findSpot;
-	private transient final String findSpotLocation;
-	private transient final String depository;
-	private transient final String depositoryLocation;
-	
-	public SearchHit(final long entityId, final String type, final String title, final String subtitle, final Long thumbnailId
-			, final String findSpot, final String findSpotLocation, final String depository, final String depositoryLocation) {
+		
+	public SearchHit(final long entityId, final String type, final String title, final String subtitle, final Long thumbnailId) {
 		this.entityId = entityId;
 		this.type = type;
 		this.title = title;
 		this.subtitle = subtitle;
 		this.thumbnailId = thumbnailId;
-		this.findSpot = findSpot;
-		this.findSpotLocation = findSpotLocation;
-		this.depository = depository;
-		this.depositoryLocation = depositoryLocation;
 	}
 	
 	public long getEntityId() {
@@ -49,21 +40,5 @@ public class SearchHit {
 	
 	public Long getThumbnailId() {
 		return this.thumbnailId;
-	}
-	
-	public String getFindSpot() {
-		return this.findSpot;
-	}
-	
-	public String getFindSpotLocation() {
-		return this.findSpotLocation;
-	}
-	
-	public String getDepository() {
-		return this.depository;
-	}
-	
-	public String getDepositoryLocation() {
-		return this.depositoryLocation;
 	}
 }
