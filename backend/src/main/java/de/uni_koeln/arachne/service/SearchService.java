@@ -53,6 +53,7 @@ public class SearchService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearchService.class);
 	
 	private static final String GEO_HASH_GRID_FACET_NAME = "facet_geogrid";
+	private static final String GEO_HASH_GRID_FIELD = "places.location";
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
@@ -370,9 +371,15 @@ public class SearchService {
 			for (final String filterValue: filterValues) {
 				final int splitIndex = filterValue.indexOf(':');
 				final String name = filterValue.substring(0, splitIndex);
-				final String value = filterValue.substring(splitIndex+1).replace("\"", ""); 
-				facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(
-						FilterBuilders.termFilter(name, value));
+				final String value = filterValue.substring(splitIndex+1).replace("\"", "");
+				// TODO find a way to get a facets type to unify this
+				if (name.equals(GEO_HASH_GRID_FACET_NAME)) {
+					facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(
+							FilterBuilders.geoHashCellFilter(GEO_HASH_GRID_FIELD, value));
+				} else {
+					facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(
+							FilterBuilders.termFilter(name, value));
+				}
 			}
 		}
 		
