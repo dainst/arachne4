@@ -94,9 +94,11 @@ public class SearchService {
 			, final int resultOffset, final List<String> filterValueList, final String sortField
 			, final Boolean orderDesc, final double[] bbCoords) {
 		
+		SearchType searchType = (resultSize > 0) ? SearchType.DFS_QUERY_THEN_FETCH : SearchType.COUNT;
+		
 		SearchRequestBuilder result = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
 				.setQuery(buildQuery(searchParam, filterValueList, bbCoords))
-				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+				.setSearchType(searchType)
 				.setFrom(resultOffset)
 				.setSize(resultSize);
 		addSort(sortField, orderDesc, result);
