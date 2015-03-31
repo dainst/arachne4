@@ -73,11 +73,13 @@ public class SearchController {
 			@RequestParam(value = "fl", required = false) final Integer facetLimit,
 			@RequestParam(value = "sort", required = false) final String sortField,
 			@RequestParam(value = "desc", required = false) final Boolean orderDesc,
-			@RequestParam(value = "bbox", required = false) final String boundingBox) {
+			@RequestParam(value = "bbox", required = false) final String boundingBox,
+			@RequestParam(value = "ghprec", required = false) final Integer geoHashPrecision) {
 
 		final int resultSize = limit == null ? defaultLimit : limit;
 		final int resultOffset = offset == null ? 0 : offset;
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
+		final int resultGeoHashPrecision = geoHashPrecision == null ? 5 : geoHashPrecision;
 
 		final List<String> facetList = new ArrayList<String>(defaultFacetList);
 		final List<String> filterValueList = searchService.getFilterValueList(filterValues, facetList);
@@ -101,7 +103,7 @@ public class SearchController {
 		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam
 				, resultSize, resultOffset, filterValueList, sortField, orderDesc, bbCoords);
 		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
-		searchService.addGeoHashGridFacet(facetList, resultFacetLimit, searchRequestBuilder);
+		searchService.addGeoHashGridFacet(resultGeoHashPrecision, facetList, resultFacetLimit, searchRequestBuilder);
 				
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
 				, resultSize, resultOffset, filterValueList, facetList);

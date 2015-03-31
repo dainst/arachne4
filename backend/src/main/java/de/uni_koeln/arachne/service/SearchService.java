@@ -141,9 +141,10 @@ public class SearchService {
 	 * @param facetList A string list containing the facet names that the geo hash grid name will be addded to.
 	 * @param searchRequestBuilder The outgoing search request that gets the facet added.
 	 */
-	public void addGeoHashGridFacet(final List<String> facetList, final int facetSize, final SearchRequestBuilder searchRequestBuilder) {
+	public void addGeoHashGridFacet(final int precision, final List<String> facetList, final int facetSize
+			, final SearchRequestBuilder searchRequestBuilder) {
 		searchRequestBuilder.addAggregation(AggregationBuilders.geohashGrid(GEO_HASH_GRID_FACET_NAME)
-				.field("places.location").size(facetSize));
+				.field("places.location").precision(precision).size(facetSize));
 		facetList.add(GEO_HASH_GRID_FACET_NAME);
 	}
 	
