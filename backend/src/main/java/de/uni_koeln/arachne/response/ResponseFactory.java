@@ -55,6 +55,8 @@ public class ResponseFactory {
 		"marbilderinventar.03_Aufnahmedatum"
 	};
 	
+	private static final String FACET_ORTSANGABE_NAME = "facet_ortsangabe";
+	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
 	
@@ -449,11 +451,13 @@ public class ResponseFactory {
 		}
 
 		// add the geo facets
+		ArrayNode relations = json.arrayNode();
 		for (final Place place : response.places) {
 			final String location = place.getLocationAsString();
-			if (!StrUtils.isEmptyOrNull(location)) {
-				final String relation = place.getRelation();
-				if (relation != null) {
+			final String relation = place.getRelation();
+			if (relation != null) {
+				relations.add(relation);
+				if (!StrUtils.isEmptyOrNull(location)) {
 					switch (relation) {
 					case "Fundort":
 						json.set("facet_fundort", json.arrayNode().add(place.getName() 
@@ -464,14 +468,17 @@ public class ResponseFactory {
 						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName() 
 								+ location));
 						break;
-						
+
 					default:
 						break;
 					}
 				}
 			}
 		}
-		
+		if (relations.size() > 0) {
+			json.set(FACET_ORTSANGABE_NAME, relations);
+		}
+				
 		// add all places with location information as "facet_geo"
 		Context placeContext = dataset.getContext("ort");
 		if (placeContext != null) {
