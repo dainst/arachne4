@@ -1,7 +1,5 @@
 package de.uni_koeln.arachne.response;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 

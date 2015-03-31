@@ -1,7 +1,6 @@
 package de.uni_koeln.arachne.controller;
 
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.elasticsearch.action.count.CountResponse;

@@ -33,8 +33,10 @@
 		<org.jdom-version>2.0.5</org.jdom-version>
 		<!-- Xerces -->
 		<xerces-version>2.11.0</xerces-version>
+		<!-- geo -->
+        <geo-version>0.7.1</geo-version>
 		<!-- Guava -->
-		<guava-version>18.0</guava-version> 		
+        <guava-version>18.0</guava-version> 		
 	    <!-- Javaassist -->		
 		<org.javassist-version>3.18.2-GA</org.javassist-version>
 		<!-- Javax mail -->
@@ -302,6 +304,13 @@
 			<artifactId>snappy-java</artifactId>
 			<version>${snappy-version}</version>
 		</dependency>
+		
+		<!-- geo -->
+		<dependency>
+            <groupId>com.github.davidmoten</groupId>
+            <artifactId>geo</artifactId>
+            <version>${geo-version}</version>
+        </dependency>
 		
 		<!-- Google Guava -->
         <dependency>

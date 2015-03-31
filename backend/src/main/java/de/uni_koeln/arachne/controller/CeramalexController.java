@@ -80,17 +80,17 @@ public class CeramalexController  {
 		modelMap.put("searchParam", searchParam);
 		
 		final List<String> facetList = new ArrayList<String>();
-		final List<String> filterValueList = searchService.getFilterValueList(filterValues, facetList);
+		final Map<String, String> filters = searchService.getFilters(1, filterValues, facetList);
 				
 		final Integer maxResultSize = 1000000;
 		final Integer resultOffset = 0;
 		
 		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam, maxResultSize
-				, resultOffset, filterValueList, null, false, null);
+				, resultOffset, filters, null, false, null);
 		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
 			
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, maxResultSize
-				, resultOffset, filterValueList, facetList);
+				, resultOffset, filters, facetList);
 		LOGGER.debug("#Found records: " + searchResult.getSize());
 
 		if (searchResult == null || searchResult.getEntities() == null) {

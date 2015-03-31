@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,6 +36,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import com.github.davidmoten.geo.GeoHash;
+import com.github.davidmoten.geo.LatLong;
 
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
@@ -86,18 +90,18 @@ public class SearchService {
 	 * @param searchParam The query string.
 	 * @param resultSize Max number of results.
 	 * @param resultOffset An offset into the result set.
-	 * @param filterValueList A list of values to use for building an elasticsearch fuilter query.
+	 * @param filters A list of values to use for building an elasticsearch fuilter query.
 	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 */
 	public SearchRequestBuilder buildSearchRequest(final String searchParam, final int resultSize
-			, final int resultOffset, final List<String> filterValueList, final String sortField
+			, final int resultOffset, final Map<String, String> filters, final String sortField
 			, final Boolean orderDesc, final double[] bbCoords) {
 		
 		SearchType searchType = (resultSize > 0) ? SearchType.DFS_QUERY_THEN_FETCH : SearchType.COUNT;
 		
 		SearchRequestBuilder result = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
-				.setQuery(buildQuery(searchParam, filterValueList, bbCoords))
+				.setQuery(buildQuery(searchParam, filters, bbCoords))
 				.setSearchType(searchType)
 				.setFrom(resultOffset)
 				.setSize(resultSize);
@@ -179,8 +183,8 @@ public class SearchService {
 	 * @param facetList The values for facetting.
 	 * @return The search result.
 	 */
-	public SearchResult executeSearchRequest(final SearchRequestBuilder searchRequestBuilder, final int resultSize, final int resultOffset,
-			final List<String> filterValueList, final List<String> facetList) {
+	public SearchResult executeSearchRequest(final SearchRequestBuilder searchRequestBuilder, final int resultSize,
+			final int resultOffset,	final Map<String, String> filters, final List<String> facetList) {
 		
 		SearchResponse searchResponse = null;
 		
@@ -221,19 +225,12 @@ public class SearchService {
 		}
 		
 		// add facet search results
-		if (filterValueList != null) {
-			for (int i=0; i<filterValueList.size(); i++) {
-				final int colon = filterValueList.get(i).indexOf(':');
-				filterValueList.set(i, filterValueList.get(i).substring(0, colon));
-			}
-		}
-		
 		if (facetList != null) {
 			final List<SearchResultFacet> facets = new ArrayList<SearchResultFacet>();
 			
 			for (final String facetName: facetList) {
 				final Map<String, Long> facetMap = getFacetMap(facetName, searchResponse);
-				if (facetMap != null && !facetMap.isEmpty() && (filterValueList == null || !filterValueList.contains(facetName))) {
+				if (facetMap != null && !facetMap.isEmpty() && (filters == null || !filters.containsKey(facetName))) {
 					facets.add(getSearchResultFacet(facetName, facetMap));
 				}
 			}
@@ -255,17 +252,23 @@ public class SearchService {
 	/**
 	 * Creates a list of filter values from the filterValues <code>String</code> and sets the category specific facets in the 
 	 * <code>facetList</code> if the corresponding facet is found in the filterValue <code>String</code>.
+	 * @param geoHashPrecision The precision used to convert latlon-values to geohashes.
 	 * @param filterValues String of filter values
 	 * @param facetList List of facet fields.
 	 * @return filter values as list.
 	 */
-	public List<String> getFilterValueList(final String filterValues, final List<String> facetList) {
-		List<String> result = null;
+	public Map<String, String> getFilters(final int geoHashPrecision, final String filterValues, final List<String> facetList) {
+		HashMap<String, String> result = new HashMap<String, String>();
 		if (!StrUtils.isEmptyOrNullOrZero(filterValues)) {
-			result = filterQueryStringToStringList(filterValues);
-			for (final String filterValue: result) {
+			List<String> filterValueList = filterQueryStringToStringList(filterValues);
+			for (final String filterValue: filterValueList) {
+				final int splitIndex = filterValue.indexOf(':');
+				final String name = filterValue.substring(0, splitIndex);
+				final String value = filterValue.substring(splitIndex+1).replace("\"", "");
+				result.put(name, value);
+				
 				if (filterValue.startsWith("facet_kategorie")) {
-					Set<String> categorySpecificFacetsList = getCategorySpecificFacets(result);
+					Set<String> categorySpecificFacetsList = getCategorySpecificFacets(filterValueList);
 					for (String facet : categorySpecificFacetsList) {
 						if (!facetList.contains(facet)) {
 							facetList.add(facet);
@@ -275,8 +278,17 @@ public class SearchService {
 					if (filterValue.startsWith("facet_subkategoriebestand_level")) {
 						int level = extractLevelFromFilterValue(filterValue);
 						facetList.add("facet_subkategoriebestand_level" + (level + 1));
+					}	else {
+						if (filterValue.startsWith(GEO_HASH_GRID_FACET_NAME)) {
+							final String[] coordsAsStringArray = value.substring(1, value.length() - 1).split(",");
+							final String geoHash = GeoHash.encodeHash(
+									Double.parseDouble(coordsAsStringArray[0]),
+									Double.parseDouble(coordsAsStringArray[1]),
+									geoHashPrecision);
+							result.put(name, geoHash);
+						}
 					}
-				}					
+				}
 			}
 			if (filterValues.contains("facet_bestandsname") && !filterValues.contains("facet_subkategoriebestand_level")) {
 				facetList.add("facet_subkategoriebestand_level1");
@@ -284,7 +296,7 @@ public class SearchService {
 		}
 		return result;
 	}
-	
+		
 	/**
 	 * Extracts the category specific facets from the corresponding xml file.
 	 * @param filterValueList The list of facets including their values. The facet "facet_kategorie" must be present to get 
@@ -347,8 +359,16 @@ public class SearchService {
 	private Map<String, Long> getFacetMap(final String name, final SearchResponse searchResponse) {
 		MultiBucketsAggregation aggregator = (MultiBucketsAggregation)searchResponse.getAggregations().getAsMap().get(name); 
 		final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
-		for (final MultiBucketsAggregation.Bucket bucket: aggregator.getBuckets()) {
-			facetMap.put(bucket.getKey(), bucket.getDocCount());
+		// TODO find a better way to convert facet values
+		if (name.equals(GEO_HASH_GRID_FACET_NAME)) {
+			for (final MultiBucketsAggregation.Bucket bucket: aggregator.getBuckets()) {
+				final LatLong coord = GeoHash.decodeHash(bucket.getKey());
+				facetMap.put("[" + coord.getLat() + ',' + coord.getLon() + ']', bucket.getDocCount());
+			}
+		} else {
+			for (final MultiBucketsAggregation.Bucket bucket: aggregator.getBuckets()) {
+				facetMap.put(bucket.getKey(), bucket.getDocCount());
+			}
 		}
 		return facetMap;
 	}
@@ -363,25 +383,22 @@ public class SearchService {
 	 * @param searchParam The query string.
 	 * @param limit Max number of results.
 	 * @param offset An offset into the result set.
-	 * @param filterValues A list of values to create a filter query from.
+	 * @param filters A list of values to create a filter query from.
 	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)
 	 * @return An elasticsearch <code>QueryBuilder</code> which in essence is a complete elasticsearch query.
 	 */
-	private QueryBuilder buildQuery(final String searchParam, final List<String> filterValues, final double[] bbCoords) {
+	private QueryBuilder buildQuery(final String searchParam, final Map<String, String> filters, final double[] bbCoords) {
 		FilterBuilder facetFilter = esClientUtil.getAccessControlFilter();
 				
-		if (!StrUtils.isEmptyOrNull(filterValues)) {
-			for (final String filterValue: filterValues) {
-				final int splitIndex = filterValue.indexOf(':');
-				final String name = filterValue.substring(0, splitIndex);
-				final String value = filterValue.substring(splitIndex+1).replace("\"", "");
+		if (!filters.isEmpty()) {
+			for (final Map.Entry<String, String> filter: filters.entrySet()) {
 				// TODO find a way to get a facets type to unify this
-				if (name.equals(GEO_HASH_GRID_FACET_NAME)) {
+				if (filter.getKey().equals(GEO_HASH_GRID_FACET_NAME)) {
 					facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(
-							FilterBuilders.geoHashCellFilter(GEO_HASH_GRID_FIELD, value));
+							FilterBuilders.geoHashCellFilter(GEO_HASH_GRID_FIELD, filter.getValue()));
 				} else {
 					facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(
-							FilterBuilders.termFilter(name, value));
+							FilterBuilders.termFilter(filter.getKey(), filter.getValue()));
 				}
 			}
 		}

@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.rest.RestStatus;
@@ -62,7 +63,9 @@ public class SearchController {
 	 * @param facetLimit The maximum number of returned facets. (optional)
 	 * @param SortField The field to sort on. Must be one listed in esSortFields in application.properties. (optional)
 	 * @param desOrder If the sort order should be descending. The default order is ascending. (optional)
-	 * @param boundingBox A String with comma separated coordinates representing the top left and bottom right coordinates of a bounding box (order: lat, long, optional)
+	 * @param boundingBox A String with comma separated coordinates representing the top left and bottom right 
+	 * coordinates of a bounding box; order: lat, long (optional)
+	 * @param ghprec The geoHash precision; a value between 1 and 12 (optional)
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
 	@RequestMapping(value="/search", method=RequestMethod.GET, produces="application/json")
@@ -82,7 +85,7 @@ public class SearchController {
 		final int resultGeoHashPrecision = geoHashPrecision == null ? 5 : geoHashPrecision;
 
 		final List<String> facetList = new ArrayList<String>(defaultFacetList);
-		final List<String> filterValueList = searchService.getFilterValueList(filterValues, facetList);
+		final Map<String, String> filters = searchService.getFilters(resultGeoHashPrecision, filterValues, facetList);
 		
 		double[] bbCoords = null;
 		if (boundingBox != null) {
@@ -101,12 +104,12 @@ public class SearchController {
 		}
 		
 		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam
-				, resultSize, resultOffset, filterValueList, sortField, orderDesc, bbCoords);
+				, resultSize, resultOffset, filters, sortField, orderDesc, bbCoords);
 		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
 		searchService.addGeoHashGridFacet(resultGeoHashPrecision, facetList, resultFacetLimit, searchRequestBuilder);
 				
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
-				, resultSize, resultOffset, filterValueList, facetList);
+				, resultSize, resultOffset, filters, facetList);
 		
 		if (searchResult.getStatus() != RestStatus.OK) {
 			return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
@@ -141,14 +144,14 @@ public class SearchController {
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 
 		final List<String> facetList = new ArrayList<String>(defaultFacetList);
-		final List<String> filterValueList = searchService.getFilterValueList(filterValues, facetList);
+		final Map<String, String> filters = searchService.getFilters(1, filterValues, facetList);
 				
 		final SearchRequestBuilder searchRequestBuilder = searchService.buildContextSearchRequest(entityId
 				, resultSize, resultOffset, sortField, orderDesc);
 		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
 		
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, resultSize
-				, resultOffset, filterValueList, facetList);
+				, resultOffset, filters, facetList);
 		
 		if (searchResult == null) {
 			LOGGER.error("Search result is null!");
