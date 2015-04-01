@@ -30,7 +30,7 @@ public class DataIntegrityLogService {
 	 */
 	public void logWarning(final long identifier, final String identifierType, final String message) {
 		warnings.add(new DataIntegrityWarning(identifier, identifierType, message));
-		LOGGER.warn(message, " " + identifierType + ": " + identifier);
+		LOGGER.warn(message + " " + identifierType + ": " + identifier);
 	}
 	
 	/**
