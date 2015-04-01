@@ -64,7 +64,7 @@ public class SearchController {
 	 * @param SortField The field to sort on. Must be one listed in esSortFields in application.properties. (optional)
 	 * @param desOrder If the sort order should be descending. The default order is ascending. (optional)
 	 * @param boundingBox A String with comma separated coordinates representing the top left and bottom right 
-	 * coordinates of a bounding box; order: lat, long (optional)
+	 * coordinates of a bounding box; order: lat, lon (optional)
 	 * @param ghprec The geoHash precision; a value between 1 and 12 (optional)
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
