@@ -34,6 +34,11 @@ public class Place {
 	 */
 	private Location location = null;
 	
+	/**
+	 * The Gazetteer-ID of the place.
+	 */
+	private Long gazetteerId = null;
+	
 	public Place(final String name) {
 		this.name = name;
 	}
@@ -107,5 +112,19 @@ public class Place {
 			location.lat = latitude;
 			location.lon = longitude;
 		}
+	}
+
+	/**
+	 * @return the gazetteerId
+	 */
+	public Long getGazetteerId() {
+		return gazetteerId;
+	}
+
+	/**
+	 * @param gazetteerId the gazetteerId to set
+	 */
+	public void setGazetteerId(Long gazetteerId) {
+		this.gazetteerId = gazetteerId;
 	}
 }
