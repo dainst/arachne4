@@ -1,47 +1,187 @@
 
 <div class="row">
+	<!--
 	<h1>GraKo</h1>
 
 	<p>
 		<a href="http://archaeologie.uni-koeln.de/node/567">Archäologie vormoderner Wirtschaftsräume</a>.
 	</p>
+	-->
 </div>
 
 <div class="row fullscreenrow">
-	<div ng-controller="MapCtrl">
 
 	<div ng-init="
 overlays = {
-	ba_roads: {
-		name: 'Roman Roads',
-		type: 'wms',
-		url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
-		layerOptions: {
-			layers: 'geonode:ba_roads',
-			format: 'image/png',
-			transparent: true
+	groups: [
+		{
+			name: 'Physiogeographie',
+			overlays: [
+				{
+					key: 'coastline',
+					name: 'Antiker Küstenverlauf',
+					type: 'wms',
+					url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+					layerOptions: {
+						layers: 'geonode:coastline',
+						format: 'image/png',
+						transparent: true
+					}
+				},
+				{
+					key: 'europe_data',
+					name: 'Minerallagerstätten in Europa',
+					type: 'wms',
+					url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+					layerOptions: {
+						layers: 'geonode:europe_data',
+						format: 'image/png',
+						transparent: true
+					}
+				}
+			]
+		},
+		{
+			name: 'Transportwege',
+			overlays: [
+				{
+					key: 'ba_roads',
+					name: 'Römisches Straßennetz',
+					type: 'wms',
+					url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+					layerOptions: {
+						layers: 'geonode:ba_roads',
+						format: 'image/png',
+						transparent: true
+					}
+				},
+				{
+					key: 'mccormicketal2008_schiffswracks',
+					name: 'Schiffswracks 1-1500 n. Chr',
+					type: 'wms',
+					url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+					layerOptions: {
+						layers: 'geonode:mccormicketal2008_schiffswracks',
+						format: 'image/png',
+						transparent: true
+					}
+				}
+			]
+		},
+		{
+			name: 'Römisches Reich',
+			overlays: [
+				{
+					key: 'roman_empire_ad_14_provinces',
+					name: 'Provinzen 14 n. Chr.',
+					type: 'wms',
+					url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+					layerOptions: {
+						layers: 'geonode:roman_empire_ad_14_provinces',
+						format: 'image/png',
+						transparent: true
+					}
+				},
+				{
+					key: 'roman_empire_ad_69_provinces',
+					name: 'Provinzen 69 n. Chr.',
+					type: 'wms',
+					url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+					layerOptions: {
+						layers: 'geonode:roman_empire_ad_69_provinces',
+						format: 'image/png',
+						transparent: true
+					}
+				},
+				{
+					key: 'ba_100_provinces',
+					name: 'Provinzen 100 n. Chr.',
+					type: 'wms',
+					url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+					layerOptions: {
+						layers: 'geonode:ba_100_provinces',
+						format: 'image/png',
+						transparent: true
+					}
+				},
+				{
+					key: 'roman_empire_ad_117',
+					name: 'Provinzen 117 n. Chr.',
+					type: 'wms',
+					url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+					layerOptions: {
+						layers: 'geonode:roman_empire_ad_117',
+						format: 'image/png',
+						transparent: true
+					}
+				},
+				{
+					key: 'roman_empire_ad_200_provinces',
+					name: 'Provinzen 200 n. Chr.',
+					type: 'wms',
+					url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+					layerOptions: {
+						layers: 'geonode:roman_empire_ad_200_provinces',
+						format: 'image/png',
+						transparent: true
+					}
+				}
+			]
+		},
+		{
+			name: 'Sonstige antike Reiche',
+			overlays: [
+				{
+					key: 'alexander_extent',
+					name: 'Alexander',
+					type: 'wms',
+					url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+					layerOptions: {
+						layers: 'geonode:alexander_extent',
+						format: 'image/png',
+						transparent: true
+					}
+				},
+				{
+					key: 'persian_extent',
+					name: 'Perser',
+					type: 'wms',
+					url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+					layerOptions: {
+						layers: 'geonode:persian_extent',
+						format: 'image/png',
+						transparent: true
+					}
+				},
+				{
+					key: 'hasmonean',
+					name: 'Hasmonäer',
+					type: 'wms',
+					url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+					layerOptions: {
+						layers: 'geonode:hasmonean',
+						format: 'image/png',
+						transparent: true
+					}
+				},
+				{
+					key: 'herod',
+					name: 'Herodes',
+					type: 'wms',
+					url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+					layerOptions: {
+						layers: 'geonode:herod',
+						format: 'image/png',
+						transparent: true
+					}
+				}
+			]
 		}
-	},
-	syr1930: {
-		name: 'Syrien 1930',
-		type: 'wms',
-		url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
-		layerOptions: {
-			layers: 'geonode:syrher_syr1930',
-			format: 'image/png',
-			transparent: true
-		}
-	}
+	]
 }
 "></div>
 
-		<!-- Loading-Icon -->
-		<div ng-hide="resultSize >= 0" class="loading"></div>
+		<con10t-catalog-map overlays="overlays" />
 
-		<div ar-map-menu route="projects/grako" result-size="resultSize" facet-limit="facetLimit" mapfacet="mapfacet" mapfacet-names="mapfacetNames"current-query="currentQuery" facets="facets" overlays="overlays"></div>
-
-		<div map ng-if="resultSize != null" mapfacet="mapfacet" current-query="currentQuery" overlays="overlays" class="col-md-12 fullscreenMap" id="map"></div>
-
-	</div>
 </div>
 
