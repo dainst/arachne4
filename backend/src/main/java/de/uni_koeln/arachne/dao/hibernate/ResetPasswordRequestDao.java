@@ -41,11 +41,17 @@ public class ResetPasswordRequestDao {
 		return null;
 	}
 	
-	@Transactional
-	public ResetPasswordRequest saveOrUpdate(final ResetPasswordRequest resetPasswordRequest) {
-		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(resetPasswordRequest);
-		return resetPasswordRequest;
+	@SuppressWarnings({ "PMD", "unchecked" })
+	@Transactional(readOnly=true)
+	public ResetPasswordRequest getByUserId(final long userId) {
+		final Session session = sessionFactory.getCurrentSession();
+		final Criteria criteria = session.createCriteria(ResetPasswordRequest.class);
+		criteria.add(Restrictions.eq("userId", userId));
+		final List<ResetPasswordRequest> queryResult = criteria.list();
+		if (!queryResult.isEmpty()) {
+			return queryResult.get(0);
+		}
+		return null;
 	}
 	
 	@Transactional
@@ -61,7 +67,6 @@ public class ResetPasswordRequestDao {
 		session.delete(resetPasswordRequest);
 	}
 	
-	// TODO use scheduler to run periodically
 	@SuppressWarnings({ "PMD", "unchecked" })
 	@Transactional
 	public void deleteExpiredRequests() {

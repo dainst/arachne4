@@ -6,7 +6,6 @@ package de.uni_koeln.arachne.controller;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -182,47 +181,56 @@ public class UserManagementController {
 		User userByName = userDao.findByName(userName);
 		if (userByName != null && userByName.equals(userByEMailAddress)) {
 			if (userByName.getFirstname().equals(firstName) && userByName.getZip().equals(zipCode)) {
-				final String token = random.getNewToken();
-				final Calendar calender = Calendar.getInstance();
-				final long now = calender.getTime().getTime();
-				calender.setTimeInMillis(now);
-				calender.add(Calendar.HOUR_OF_DAY, 12);
-				final Timestamp expirationDate = new Timestamp(calender.getTime().getTime()); 
-				
-				ResetPasswordRequest request = new ResetPasswordRequest();
-				request.setToken(token);
-				request.setUserId(userByName.getId());
-				request.setExpirationDate(expirationDate);
-				resetPasswordRequestDao.saveOrUpdate(request);
-								
-				// sent mail with activation link to user
-				final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-				mailSender.setHost("smtp.uni-koeln.de");
-				
-				final SimpleMailMessage userMail = new SimpleMailMessage();
-		    	userMail.setFrom("arachne@uni-koeln.de");
-		    	userMail.setTo(userByEMailAddress.getEmail());
-		    	userMail.setSubject("Passwort zurückgesetzt bei Arachne");
-		    	
-		    	final String newLine = System.lineSeparator();
-		    	final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-		    	final String nowString = dateFormat.format(now);
-		    	final String expirationDateString = dateFormat.format(expirationDate);
-		    	final String linkString = "http://lakota.archaeologie.uni-koeln.de/user/activation/" + token;
-		    	
-		    	String text = "Sie haben ihr Passwort bei Arachne am " + nowString + " zurückgesetzt." + newLine;
-		    	text += "Bitte folgen sie diesem Link um den Prozess abzuschließen: " + linkString + newLine;
-		    	text += "Dieser Link ist bis zum " + expirationDateString + " gültig.";
-		    	userMail.setText(text);		
-		    	try {
-		    		mailSender.send(userMail);
-		    	} catch(MailException e) {
-		    		LOGGER.error("Unable to send registration eMail to admin.", e);
-		    	}
-				
-		    	result.put("success", "true");
-				response.setStatus(200);
-				return result;
+				// get rid of all expired requests
+				resetPasswordRequestDao.deleteExpiredRequests();
+				final ResetPasswordRequest resetPasswordRequest = resetPasswordRequestDao.getByUserId(userByName.getId());
+				// if there is already a request pending do not allow to add a new one
+				if (resetPasswordRequest == null) {
+					final String token = random.getNewToken();
+					final Calendar calender = Calendar.getInstance();
+					final long now = calender.getTime().getTime();
+					calender.setTimeInMillis(now);
+					calender.add(Calendar.HOUR_OF_DAY, 12);
+					final Timestamp expirationDate = new Timestamp(calender.getTime().getTime()); 
+
+					ResetPasswordRequest request = new ResetPasswordRequest();
+					request.setToken(token);
+					request.setUserId(userByName.getId());
+					request.setExpirationDate(expirationDate);
+					resetPasswordRequestDao.save(request);
+
+					// sent mail with activation link to user
+					final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+					mailSender.setHost("smtp.uni-koeln.de");
+
+					final SimpleMailMessage userMail = new SimpleMailMessage();
+					userMail.setFrom("arachne@uni-koeln.de");
+					userMail.setTo(userByName.getEmail());
+					userMail.setSubject("Passwort zurückgesetzt bei Arachne");
+
+					final String newLine = System.lineSeparator();
+					final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					final String nowString = dateFormat.format(now);
+					final String expirationDateString = dateFormat.format(expirationDate);
+					final String linkString = "http://lakota.archaeologie.uni-koeln.de/user/activation/" + token;
+
+					String text = "Sie haben ihr Passwort bei Arachne am " + nowString + " zurückgesetzt." + newLine;
+					text += "Bitte folgen sie diesem Link um den Prozess abzuschließen: " + linkString + newLine;
+					text += "Dieser Link ist bis zum " + expirationDateString + " gültig.";
+					userMail.setText(text);		
+					try {
+						mailSender.send(userMail);
+					} catch(MailException e) {
+						LOGGER.error("Unable to send password activation eMail to user: " + userByName.getEmail(), e);
+						resetPasswordRequestDao.delete(request);
+						result.put("success", "false");
+						response.setStatus(400);
+						return result;
+					}
+					result.put("success", "true");
+					response.setStatus(200);
+					return result;
+				}
 			}	
 		}
 		result.put("success", "false");
