@@ -69,7 +69,7 @@ public class ResetPasswordRequestDao {
 		final Calendar calender = Calendar.getInstance();
 		final Timestamp now = new Timestamp(calender.getTime().getTime());
 		final Criteria criteria = session.createCriteria(ResetPasswordRequest.class);
-		criteria.add(Restrictions.lt("expiration_date", now));
+		criteria.add(Restrictions.lt("expirationDate", now));
 		final List<ResetPasswordRequest> queryResult = criteria.list();
 		for (final ResetPasswordRequest resetPasswordRequest : queryResult) {
 			session.delete(resetPasswordRequest);
