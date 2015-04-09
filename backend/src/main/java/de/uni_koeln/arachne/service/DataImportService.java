@@ -86,6 +86,9 @@ public class DataImportService { // NOPMD
 	@Autowired
 	private transient ServletContext servletContext;
 	
+	@Autowired
+	private transient DataIntegrityLogService dataIntegrityLogService;
+	
 	private transient JdbcTemplate jdbcTemplate;
 	
 	/**
@@ -276,7 +279,8 @@ public class DataImportService { // NOPMD
 				esClientUtil.updateSearchIndex();
 				final long elapsedTime = (System.currentTimeMillis() - startTime);
 				final String success = "Import of " + index + " documents finished in " + elapsedTime/1000f/60f/60f + " hours ("
-						+ index/((float)elapsedTime/1000) + " documents per second)."; 
+						+ index/((float)elapsedTime/1000) + " documents per second)." + System.getProperty("line.separator")
+						+ dataIntegrityLogService.getSummary();
 				LOGGER.info(success);
 				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - success", success);
 				contextService.clearCache();
