@@ -30,6 +30,7 @@
 				<value>de.uni_koeln.arachne.mapping.hibernate.ImageRightsGroup</value>
 				<value>de.uni_koeln.arachne.mapping.hibernate.CatalogEntry</value>
 				<value>de.uni_koeln.arachne.mapping.hibernate.Catalog</value>
+				<value>de.uni_koeln.arachne.mapping.hibernate.ResetPasswordRequest</value>
             </list>
         </property>
         <property name="hibernateProperties">

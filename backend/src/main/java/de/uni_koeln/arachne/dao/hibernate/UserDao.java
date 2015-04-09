@@ -43,6 +43,20 @@ public class UserDao {
 	}
 	
 	@Transactional(readOnly=true)
+	public User findByEMailAddress(final String eMailAddress) {
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from User as user WHERE user.email LIKE :eMailAddress")
+				.setString("eMailAddress", eMailAddress);
+		
+		User result = null;
+		List<?> queryResult = query.list();
+		if (queryResult.size() > 0) {
+			result = (User)queryResult.get(0);
+		}
+		return result;
+	}
+	
+	@Transactional(readOnly=true)
 	public DatasetGroup findDatasetGroupByName(final String name) {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery("from DatasetGroup as group WHERE group.name LIKE :name")
@@ -64,5 +78,4 @@ public class UserDao {
 		Session session = sessionFactory.getCurrentSession();
 		session.save(user);
 	}
-
 }

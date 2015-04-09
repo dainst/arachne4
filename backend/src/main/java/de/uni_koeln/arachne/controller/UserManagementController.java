@@ -3,6 +3,10 @@
  */
 package de.uni_koeln.arachne.controller;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,17 +23,22 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import de.uni_koeln.arachne.dao.hibernate.ResetPasswordRequestDao;
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
+import de.uni_koeln.arachne.mapping.hibernate.ResetPasswordRequest;
 import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.util.security.Random;
 
 /**
  * @author scuy
+ * @author Reimar Grabowski
  */
 @Controller
 public class UserManagementController {
@@ -38,6 +47,12 @@ public class UserManagementController {
 	
 	@Autowired
 	private transient UserDao userDao;
+	
+	@Autowired
+	private transient ResetPasswordRequestDao resetPasswordRequestDao;
+	
+	@Autowired
+	private transient Random random;
 	
 	private transient final List<String> defaultDatasetGroups; 
 	private transient final String adminEmail;
@@ -49,7 +64,7 @@ public class UserManagementController {
 		this.defaultDatasetGroups = defaultDatasetGroups;
 		this.adminEmail = adminEmail;
 	}
-	
+		
 	@ResponseBody
 	@RequestMapping(value="/user/register", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
 	public Map<String,String> register(@RequestBody Map<String,String> formData, HttpServletResponse response) {
@@ -139,6 +154,115 @@ public class UserManagementController {
 		response.setStatus(201);
 		return result;
 		
+	}
+	
+	/**
+	 * If enough information about the user account is provided (meaning user name, eMail address, first name and 
+	 * zip code) then a request to change the password of the identified user account is created.
+	 * An eMail containing a registration link that is valid for 12 hours is sent to the user.
+	 * <br/>
+	 * If the validation of the user fails no information is returned why it failed (this is on purpose to not disclose 
+	 * information to a potential attacker).
+	 * @param userCredentials Credentials to identify the User including the new password as JSON object.
+	 * @param response The outgoing HTTP response.
+	 * @return A message indicating success or failure.
+	 */
+	@ResponseBody
+	@RequestMapping(value="/user/reset", method=RequestMethod.POST,
+			produces="application/json;charset=UTF-8")
+	public Map<String,String> reset(@RequestBody Map<String,String> userCredentials, HttpServletResponse response) {
+		Map<String,String> result = new HashMap<String,String>();
+		
+		final String userName = getFormData(userCredentials, "username", true);
+		final String eMailAddress = getFormData(userCredentials, "email", true);
+		final String firstName = getFormData(userCredentials, "firstname", true);
+		final String zipCode = getFormData(userCredentials, "zip", true);
+		 
+		User userByEMailAddress = userDao.findByEMailAddress(eMailAddress);
+		User userByName = userDao.findByName(userName);
+		if (userByName != null && userByName.equals(userByEMailAddress)) {
+			if (userByName.getFirstname().equals(firstName) && userByName.getZip().equals(zipCode)) {
+				final String token = random.getNewToken();
+				final Calendar calender = Calendar.getInstance();
+				final long now = calender.getTime().getTime();
+				calender.setTimeInMillis(now);
+				calender.add(Calendar.HOUR_OF_DAY, 12);
+				final Timestamp expirationDate = new Timestamp(calender.getTime().getTime()); 
+				
+				ResetPasswordRequest request = new ResetPasswordRequest();
+				request.setToken(token);
+				request.setUserId(userByName.getId());
+				request.setExpirationDate(expirationDate);
+				resetPasswordRequestDao.saveOrUpdate(request);
+								
+				// sent mail with activation link to user
+				final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+				mailSender.setHost("smtp.uni-koeln.de");
+				
+				final SimpleMailMessage userMail = new SimpleMailMessage();
+		    	userMail.setFrom("arachne@uni-koeln.de");
+		    	userMail.setTo(userByEMailAddress.getEmail());
+		    	userMail.setSubject("Passwort zurückgesetzt bei Arachne");
+		    	
+		    	final String newLine = System.lineSeparator();
+		    	final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		    	final String nowString = dateFormat.format(now);
+		    	final String expirationDateString = dateFormat.format(expirationDate);
+		    	final String linkString = "http://lakota.archaeologie.uni-koeln.de/user/activation/" + token;
+		    	
+		    	String text = "Sie haben ihr Passwort bei Arachne am " + nowString + " zurückgesetzt." + newLine;
+		    	text += "Bitte folgen sie diesem Link um den Prozess abzuschließen: " + linkString + newLine;
+		    	text += "Dieser Link ist bis zum " + expirationDateString + " gültig.";
+		    	userMail.setText(text);		
+		    	try {
+		    		mailSender.send(userMail);
+		    	} catch(MailException e) {
+		    		LOGGER.error("Unable to send registration eMail to admin.", e);
+		    	}
+				
+		    	result.put("success", "true");
+				response.setStatus(200);
+				return result;
+			}	
+		}
+		result.put("success", "false");
+		response.setStatus(400);
+		return result;
+	}
+	
+	/**
+	 * This method is the second and last step in the 'forgot password' process. It changes the password of a user to 
+	 * the provided on.
+	 * @param token The token representing the 'PasswordResetRequest'.
+	 * @param password The new password to set
+	 * @param response The HTTP servlet response.
+	 * @return A message indicating success or failure.
+	 */
+	@ResponseBody
+	@RequestMapping(value="/user/activation/{token}", method=RequestMethod.POST,
+			produces="application/json;charset=UTF-8")
+	public void changePasswordAfterResetRequest(@PathVariable("token") final String token,
+			@RequestBody Map<String,String> password, HttpServletResponse response) {
+		
+		response.setStatus(404);
+		final ResetPasswordRequest resetPasswordRequest = resetPasswordRequestDao.getByToken(token);
+		if (resetPasswordRequest != null) {
+			final String newPassword = getFormData(password, "password", true);
+			if (newPassword.equals(getFormData(password, "passwordConfirm", true))) {
+				final Calendar calender = Calendar.getInstance();
+				final Timestamp now = new Timestamp(calender.getTime().getTime());
+				if (now.before(resetPasswordRequest.getExpirationDate())) {
+					final User user = userDao.findById(resetPasswordRequest.getUserId());
+					user.setPassword(newPassword);
+					userDao.updateUser(user);
+					response.setStatus(200);
+				}
+				resetPasswordRequestDao.delete(resetPasswordRequest);
+			} else {
+				response.setStatus(400);
+			}
+		}
+		return;
 	}
 	
 	private String getFormData(Map<String, String> formData,
