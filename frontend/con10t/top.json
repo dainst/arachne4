@@ -12,21 +12,21 @@
 			"de": "Interfaces",
 			"en": "Interfaces"
 		}
-	}
+	},
 	{
 		"id": "doku",
 		"title": {
 			"de": "Dokumentation/FAQ",
 			"en": "Documentation/FAQ"
 		}
-	}
+	},
 	{
 		"id": "lizenz",
 		"title": {
 			"de": "Lizenz",
 			"en": "License / Orders"
 		}
-	}
+	},
 	{
 		"id": "analysearachne",
 		"title": {
