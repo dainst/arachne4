@@ -1,99 +1,22 @@
 [
 	{
-		"id:": "paliliastart",
-		"text": "Die Bände der seit 1997 bestehende Reihe „Palilia“ des Deutschen Archäologischen Instituts Rom bestechen durch gute Lesbarkeit und handlichen Umfang. Um dies weiterhin zu garantieren, gleichzeitig aber auch die Veröffentlichung von Werken zu ermöglichen, die auf umfangreichen Materialdokumentationen beruhen, beschreiten CoDArchLab und das DAI Rom neue Wege der archäologischen Publikation: die Supplementierung gedruckter Werke durch die der Buchstruktur angepaßte digitale Bereitstellung zusätzlicher Materialien."
-	},
-	{
-		"id": "carare",
-		"text": "Das DAI nimmt über die online-Datenbank Arachne als Mitantragsteller am multinationalen Europäischen Projekt CARARE teil. Gegenstand dieses Projektes ist die Integration von Inhalten aus den Bereichen archäologischer und architektonischer Kulturgüter in Europeana, einen Online-Service, der das kulturelle Erbe Europas zusammenführen soll."
-	},
-	{
-		"id": "corpusminmyk",
-		"text": "Der Gesamtkatalog der Skulpturen in der Antikensammlung der Staatlichen Museen zu Berlin enthält rund 2.600 griechische, zyprische, etruskische und römische Skulpturen in Stein sowie die wenigen Großbronzen (Bestände und Verluste). Der Katalog basiert auf einer vollständigen wissenschaftlichen Neubearbeitung der antiken Skulpturen, die im Rahmen des „Berliner Skulpturennetzwerks. Kontextualisierung und Übersetzung antiker Plastik“ durchgeführt wurde. Dieses Kooperationsprojekt zwischen der Antikensammlung der Staatlichen Museen zu Berlin und dem Institut für Klassische Archäologie der Freien Universität Berlin wurde in den Jahren 2009 bis 2012 vom Bundesministerium für Bildung und Forschung (BMBF) gefördert."
-	},
-	{
-		"id": "wissqualarachne",
-		"text": "Eines von Arachnes ursprünglichen Zielen war, die Arbeit an wissenschaftlichen Projekten zu unterstützen, zu vereinfachen und damit auch zu beschleunigen. Auch wenn inzwischen viele funktionale Aspekte und eine erhebliche Komplexität hinzugekommen sind, ist dieses Ausgangsziel nach wie vor gültig. Konkret bedeutet dies, daß in der Vergangenheit eine ganze Reihe von Magister-, Dissertations- und Habilitationsarbeiten mit Arachne durchgeführt worden sind, die sowohl in Köln als auch in anderen Universitäten angesiedelt waren."
-	},
-	{
-		"id": "arapacis",
-		"text": "In Arachne werden Informationen zu Objekten normalerweise durch Suchabfragen erschlossen. Gegenüber diesem Information Retrieval ist von Seiten der Benutzer das Browsing (Blättern) oftmals die häufiger angewandte Navigationsform. Obwohl Arachne diese Möglichkeit durch den eingebauten Kontextbrowser ohnehin bietet, soll dies an einigen exemplarischen, bilderreichen Monumenten oder Gattungen noch expliziter realisiert werden."
-	},
-	{
-		"id": "pergaltarbrowser",
-		"text": "Der Große Fries und der Telephosfreis des Pergamonaltars in Berlin sind zentrale Monumente der antiken Kunstgeschichte. Mit Hilfe eines dedizierten Bildbrowsers können diese beiden Relieffriese bis ins Detail erschlossen werden, bleiben aber zugleich mit dem gesamten Inhalt von Arachne kontextualisiert. In Zukunft sollen hier auch die nicht anpassenden Fragmente aus den Magazinen des Pergamonmuseums angezeigt werden, so dass der Pergamonbrowser als visuelles Arbeitsinstrument für weitere Forschungen dienen kann."
-	},
-	{
-		"id": "databasepausanias",
-		"text": "Die »Beschreibung Griechenlands« (periegesis tes Hellados) des Pausanias, die nach der Mitte des 2. Jahrhunderts n. Chr. im geistigen Umfeld der sog. Zweiten Sophistik entstand, überliefert unter der klassizistischen Prämisse, »alle griechischen Angelegenheiten« (panta ta Hellenika) zu betrachten, zahllose Sehenswürdigkeiten (theoremata) und die mit ihnen verknüpfte mündliche bzw. schriftliche Überlieferung (logoi), die der Schriftsteller in den Städten und Heiligtümern des kaiserzeitlichen Griechenlands antraf und aufzeichnete."
-	},
-	{
-		"id": "afrarchcologne",
-		"text": "Die lange Tradition der Kölner Afrikaforschung äußert sich neben vielfältigen Publikationen auch in einer umfangreichen Sammlung von Funden, Diapositiven, Zeichnungen und Texten. Diese befinden sich in der seit 1986 bestehenden Forschungsstelle Afrika des Instituts für Ur- und Frühgeschichte der Universität zu Köln."
+		"id": "rezeptionantike",
+		"text": "Rezeption der Antike im semantischen Netz"
 	},
 	{
 		"id": "antikzeichnung",
-		"text": "Digitalisierung und virtuelle Bereitstellung zweier Sammlungen des wissenschaftlichen Archivs am DAI Rom: des historischen 'Handzeichnungen'-Archivs, vorrangig aus dem 19. Jh., sowie eines Teils des 'Architektenarchivs’, der zeichnerischen Dokumentation der Feldforschungsprojekte nach 1953."
+		"text": "Die Antike in Zeichnung, Plan und Bauaufnahme"
 	},
 	{
-		"id": "antiksammlberlin",
-		"text": "Der Gesamtkatalog der Skulpturen in der Antikensammlung der Staatlichen Museen zu Berlin enthält rund 2.600 griechische, zyprische, etruskische und römische Skulpturen in Stein sowie die wenigen Großbronzen (Bestände und Verluste)."
+		"id": "afrarchcologne",
+		"text": "African Archaeology Archive Cologne"
 	},
 	{
-		"id": "rwwa",
-		"text": "Die Stiftung Rheinisch-Westfälisches Wirtschaftsarchiv zu Köln (RWWA) hat eine Sammlung von ungefähr 15.000 Glasnegativen vom Ende des 19. bis weit in die zweite Hälfte des 20. Jahrhunderts. Darunter befinden sich solche namhafter Industriefotografen."
-	},
-	{
-		"id": "",
-		"text": "Das Corpus Inscriptionum Latinarum (CIL) ist eine umfassende Sammlung von antiken lateinischen Inschriften aus allen Teilen des Römischen Reiches. Öffentliche und persönliche Inschriften werfen Licht auf alle Aspekte des römischen Lebens und der Geschichte."
-	},
-	{
-		"id": "",
-		"text": "Der digitale Katalog illuminierter Handschriften des mittelalterlichen Spaniens basiert auf einem Bestand von ca. 4500 farbigen Kleinbilddiapositiven, die sich im Deutschen Archäologischen Institut in Madrid (DAI) befinden. Die Sammlung wurde zwischen 1962 bis 1965 auf Initiative des damaligen Direktors und Kunsthistorikers Helmut Schlunk zusammengetragen, der ein großes Interesse an der frühmittelalterlichen spanischen Kunst hatte."
-	},
-	{
-		"id": "berlinsamml",
-		"text": "Der Katalog der Gipsabgüsse nach griechisch-römischen Skulpturen enthält rund 3.500 Gipsabgüsse, die sich heute in den Beständen der Freien Universität, der Staatlichen Museen zu Berlin (Antikensammlung und Gipsformerei) und der Humboldt-Universität befinden. Der Katalog basiert auf einer vollständigen wissenschaftlichen Neuaufnahme der Objekte, die im Rahmen des „Berliner Skulpturennetzwerks. Kontextualisierung und Übersetzung antiker Plastik“ erstellt wurde."
-	},
-	{
-		"id": "imagegrid",
-		"text": "Ziel des Projekts Image Grid ist die Entwicklung und der Einsatz automatisierter Verfahren zur inhaltlichen Erschließung großer Bildmengen. Dabei kommen verschiedene Methoden aus dem Bereich der Informationsextraktion zum Einsatz, die auf unterschiedliche Quellen angewandt werden. Durch diese ist es möglich, große Teile der Fotobestände des DAI Rom zu kontextualisieren und in einem dediziertem Recherchewerkzeug, der Digitalen Fotothek, online verfügbar zu machen."
+		"id": "databasepausanias",
+		"text": "Datenbank - Bildwerke bei Pausanias"
 	},
 	{
 		"id": "hellespont",
-		"text": "Als Partner des Deutschen Archäologischen Instituts wird das CoDArchLab mit der Perseus Digital Library der Tufts University kooperieren, um die digitalen Bestände zur Altertumswissenschaft beider Institutionen zu kombinieren. Dadurch wird eine der umfangreichsten, für öffentlichen und wissenschaftlichen Gebrauch bereitstehenden Online-Ressourcen zur griechisch-römischen Antike geschaffen."
-	},
-	{
-		"id": "",
-		"text": "Der Nachlass besteht aus einer umfangreichen wissenschaftlichen Fachbibliothek (Bücher und Sonderdrucke – zusammen etwa 20.000 Titel) sowie einem wissenschaftlichen Archiv (Korrespondenz, Akten und Materialsammlung – zusammen etwa 50.000 Seiten), das 60 Jahre Forschungstätigkeit widerspiegelt. Die archäologische Materialsammlung beinhaltet zahlreiche hallstattzeitliche Funde und ermöglicht Einblicke in Kossacks geographisch und thematisch umfassende archäologische Fragestellungen."
-	},
-	{
-		"id": "mercatorplan",
-		"text": "Aus Mitteln der Archäologischen Gesellschaft Köln wurde Frau Stefanie Steidle mit der archäologischen und sammlungsgeschichtlichen Bearbeitung von Antiken betraut, die auf dem Kölnplan des Arnold Mercator von 1570 dargestellt oder mit diesen unmittelbar vergleichbar sind. Aus diesen Mitteln wurde auch die Programmierung eines Mercatorbrowsers finanziert, der auf den objektbezogenen und sammlungsgeschichtlichen Datensätzen der Antiken in der Webdatenbank Arachne aufbaut und diese visualisiert. Die den Plan optisch rahmenden Antikendarstellungen werden dabei zu anklickbaren »Hotspots« definiert und führen zu den einzelnen Datensätzen der »wirklichen« Objekte und ihren sammlungsgeschichtlichen Kontexten."
-	},
-	{
-		"id": "analysearachne",
-		"text": "In den von Andreas Geißler durchgeführten und von Prof. Dr. Manfred Thaller sowie Prof. Dr. Förtsch betreuten Forschungen wird untersucht, ob eine anonymisierte Aufzeichnung und Auswertung von Rechercheprozessen in historisch-kulturwissenschaftlichen Objektdatenbanken zur automatisierten Erweiterung der Kontextualisierung dieser Datenbanken genutzt werden kann."
-	},
-	{
-		"id": "",
-		"text": "Die Fotosammlung wurde in einem Gemeinschaftsprojekt des Bankarchivs mit dem Forschungsarchiv für Antike Plastik am Archäologischen Institut der Universität zu Köln komplett eingescannt, die Bilder einzeln bearbeitet und über die Datenbank Arachne erschlossen."
-	},
-	{
-		"id": "sammlakakunst",
-		"text": "Das Akademische Kunstmuseum, die Antikensammlung der Universität Bonn, beherbergt eine der größten Gipsabgusssammlungen Europas. Die Bonner Abgüsse werden sukzessive von Mitarbeitern des Forschungsarchivs fotografisch erfasst und in Arachne überführt. Durch die Verknüpfung der Gipsabgüsse mit den entsprechenden Originalen können sonst umständlich zu recherchierende Informationen leicht zusammengetragen werden. Es bieten sich zudem Querverbindungen zu anderen Gipsabgußsammlungen in Leipzig und Saarbrücken."
-	},
-	{
-		"id": "traianssaeule",
-		"text": "Die Trajanssäule ist eines der zentralen bilderreichen Monumente der antiken Kunstgeschichte. Mit Hilfe eines dedizierten Bildbrowsers kann sie bis ins Detail erschlossen werden, bleibt aber zugleich mit dem gesamten Inhalt von Arachne kontextualisiert. Insgesamt werden hier 3 große Fotokampagnen des DAI Rom sowie der Gipsabguß im Museo Civiltà dokumentiert."
-	},
-	{
-		"id": "idaibookbrowser",
-		"text": "Der iDAI.Bookbrowser integriert Dokumente in die Objektstruktur von Arachne. Damit eröffnet er die Möglichkeit, direkte Verknüpfungen zwischen Objekten der 'realen Welt' und ihren textuellen Beschreibungen zu realisieren, die damit aus ihrer isolierten Präsentation gelöst und in ihrem kulturellen Umfeld kontextualisierbar werden."
-	},
-	{
-		"id": "emagines",
-		"text": "Das DAI verfügt aufgrund seiner Forschungstradition weltweit über die größten und ältesten Bildbestände im Bereich der Archäologie der Mittelmeerländer. Sie werden unter dem Projekttitel Emagines in einer strategischen Langzeitplanung digitalisiert und über die vom Deutschen Archäologischen Institut und dem CoDArchLab betriebene Webdatenbank Arachne weltweit zugänglich gemacht."
+		"text": "Das Hellespont-Projekt"
 	}
-
 ]
