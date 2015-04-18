@@ -1,27 +1,30 @@
 package de.uni_koeln.arachne.controller;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.rest.RestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.service.SearchService;
 
-
 /**
- * Handles http requests (currently only get) for <code>/search<code>.
+ * Handles HTTP search requests.
+ * 
+ * @author Reimar Grabowski
  */
 @Controller
 public class SearchController {
@@ -31,20 +34,40 @@ public class SearchController {
 	@Autowired
 	private transient SearchService searchService;
 	
-	private transient final List<String> defaultFacetList; 
-	
 	private transient final int defaultFacetLimit;
 	
 	private transient final int defaultLimit;
 	
 	@Autowired
 	public SearchController(final @Value("#{config.esDefaultLimit}") int defaultLimit,
-			final @Value("#{config.esDefaultFacetLimit}") int defaultFacetLimit,
-			final @Value("#{config.esDefaultFacets}") String defaultFacetListCS) {
+			final @Value("#{config.esDefaultFacetLimit}") int defaultFacetLimit) {
 		
 		this.defaultLimit = defaultLimit;
 		this.defaultFacetLimit = defaultFacetLimit;
-		defaultFacetList = new ArrayList<String>(Arrays.asList(defaultFacetListCS.split(",")));
+	}
+	
+	/**
+	 * Fix for a Spring problem to bind the correct array values to a String array if only one array assignment is 
+	 * present in the URL and the value includes commas.
+	 * <br>
+	 * For example:
+	 * <br>
+	 * URL: .../search?fq="facet_aufbewahrungsort:"Westgriechenland, Griechenland"
+	 * <br>
+	 * will be bound to the array like this:
+	 * <br>
+	 * filterValues[0] =  facet_aufbewahrungsort:"Westgriechenland"
+	 * filterValues[1] = Griechendland
+	 * <br>
+	 * instead of the correct way
+	 * <br>
+	 * filterValues[0] =  facet_aufbewahrungsort:"Westgriechenland, Griechendland"
+	 *   
+	 * @param binder A Spring <code>WebDataBinder</code> to register a custom editor on.
+	 */
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+	    binder.registerCustomEditor(String[].class, new StringArrayPropertyEditor(null));
 	}
 	
 	/**
@@ -65,51 +88,43 @@ public class SearchController {
 	 * @param desOrder If the sort order should be descending. The default order is ascending. (optional)
 	 * @param boundingBox A String with comma separated coordinates representing the top left and bottom right 
 	 * coordinates of a bounding box; order: lat, lon (optional)
-	 * @param ghprec The geoHash precision; a value between 1 and 12 (optional)
+	 * @param ghprec The geoHash precision; a value between 1 and 12. (optional)
+	 * @param sortfacet The names of the facets that should be sorted alphabetically. (optional)
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
-	@RequestMapping(value="/search", method=RequestMethod.GET, produces="application/json")
+	@RequestMapping(value="/search", method=RequestMethod.GET, produces="application/json;charset=UTF-8")
 	public @ResponseBody ResponseEntity<?> handleSearchRequest(@RequestParam("q") final String searchParam,
 			@RequestParam(value = "limit", required = false) final Integer limit,
 			@RequestParam(value = "offset", required = false) final Integer offset,
-			@RequestParam(value = "fq", required = false) final String filterValues,
+			@RequestParam(value = "fq", required = false) final String[] filterValues,
 			@RequestParam(value = "fl", required = false) final Integer facetLimit,
 			@RequestParam(value = "sort", required = false) final String sortField,
 			@RequestParam(value = "desc", required = false) final Boolean orderDesc,
-			@RequestParam(value = "bbox", required = false) final String boundingBox,
-			@RequestParam(value = "ghprec", required = false) final Integer geoHashPrecision) {
-
+			@RequestParam(value = "bbox", required = false) final Double[] boundingBox,
+			@RequestParam(value = "ghprec", required = false) final Integer geoHashPrecision,
+			@RequestParam(value = "sortfacet", required = false) final String[] facetsToSort) {
+		
 		final int resultSize = limit == null ? defaultLimit : limit;
 		final int resultOffset = offset == null ? 0 : offset;
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 		final int resultGeoHashPrecision = geoHashPrecision == null ? 5 : geoHashPrecision;
-
-		final List<String> facetList = new ArrayList<String>(defaultFacetList);
-		final Map<String, String> filters = searchService.getFilters(resultGeoHashPrecision, filterValues, facetList);
 		
-		double[] bbCoords = null;
-		if (boundingBox != null) {
-			String[] bBoxSplit = boundingBox.split(",");
-			if (bBoxSplit.length != 4) {
-				return ResponseEntity.badRequest().body("{ \"message\": \"Could not parse bounding box.\"");
-			}
-			bbCoords = new double[4];
-			for (int i = 0; i < bBoxSplit.length; i++) {
-				try {
-					bbCoords[i] = Double.parseDouble(bBoxSplit[i]);
-				} catch (Exception e) {
-					return ResponseEntity.badRequest().body("{ \"message\": \"Could not parse bounding box.\"");
-				}
-			}
+		Multimap<String, String> filters = HashMultimap.create();
+		if (filterValues != null) {
+			filters = searchService.getFilters(Arrays.asList(filterValues), resultGeoHashPrecision);
 		}
 		
+		if (boundingBox != null) {
+			if (boundingBox.length != 4) {
+				return ResponseEntity.badRequest().body("{ \"message\": \"Incorrect number of bounding box coordinates.\"");
+			}
+		}
+				
 		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam
-				, resultSize, resultOffset, filters, sortField, orderDesc, bbCoords);
-		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
-		searchService.addGeoHashGridFacet(resultGeoHashPrecision, facetList, searchRequestBuilder);
+				, resultSize, resultOffset, filters, resultFacetLimit, sortField, orderDesc, boundingBox);
 				
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
-				, resultSize, resultOffset, filters, facetList);
+				, resultSize, resultOffset, filters);
 		
 		if (searchResult.getStatus() != RestStatus.OK) {
 			return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
@@ -134,7 +149,7 @@ public class SearchController {
 	public @ResponseBody Object handleContextRequest(@PathVariable("entityId") final Long entityId,
 			@RequestParam(value = "limit", required = false) final Integer limit,
 			@RequestParam(value = "offset", required = false) final Integer offset,
-			@RequestParam(value = "fq", required = false) final String filterValues,
+			@RequestParam(value = "fq", required = false) final String[] filterValues,
 			@RequestParam(value = "fl", required = false) final Integer facetLimit,
 			  @RequestParam(value = "sort", required = false) final String sortField,
 			  @RequestParam(value = "desc", required = false) final Boolean orderDesc) {
@@ -143,15 +158,16 @@ public class SearchController {
 		final int resultOffset = offset == null ? 0 : offset;
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 
-		final List<String> facetList = new ArrayList<String>(defaultFacetList);
-		final Map<String, String> filters = searchService.getFilters(1, filterValues, facetList);
-				
-		final SearchRequestBuilder searchRequestBuilder = searchService.buildContextSearchRequest(entityId
-				, resultSize, resultOffset, sortField, orderDesc);
-		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
+		Multimap<String, String> filters = HashMultimap.create();
+		if (filterValues != null) {
+			filters = searchService.getFilters(Arrays.asList(filterValues), 0);
+		}
 		
+		final SearchRequestBuilder searchRequestBuilder = searchService.buildContextSearchRequest(entityId
+				, resultSize, resultOffset, filters, resultFacetLimit, sortField, orderDesc);
+				
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, resultSize
-				, resultOffset, filters, facetList);
+				, resultOffset, filters);
 		
 		if (searchResult == null) {
 			LOGGER.error("Search result is null!");

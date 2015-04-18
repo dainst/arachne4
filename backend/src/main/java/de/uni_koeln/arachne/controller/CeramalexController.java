@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 import de.uni_koeln.arachne.dao.hibernate.ArachneEntityDao;
 import de.uni_koeln.arachne.mapping.hibernate.ArachneEntity;
@@ -79,18 +83,19 @@ public class CeramalexController  {
 		modelMap.put("facets", filterValues);
 		modelMap.put("searchParam", searchParam);
 		
-		final List<String> facetList = new ArrayList<String>();
-		final Map<String, String> filters = searchService.getFilters(1, filterValues, facetList);
-				
 		final Integer maxResultSize = 1000000;
 		final Integer resultOffset = 0;
 		
+		Multimap<String, String> filters = HashMultimap.create();
+		if (filterValues != null) {
+			filters = searchService.getFilters(Arrays.asList(filterValues), 0);
+		}
+		
 		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam, maxResultSize
-				, resultOffset, filters, null, false, null);
-		searchService.addFacets(facetList, resultFacetLimit, searchRequestBuilder);
-			
+				, resultOffset, filters, resultFacetLimit, null, false, null);
+					
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, maxResultSize
-				, resultOffset, filters, facetList);
+				, resultOffset, filters);
 		LOGGER.debug("#Found records: " + searchResult.getSize());
 
 		if (searchResult == null || searchResult.getEntities() == null) {
@@ -149,6 +154,7 @@ public class CeramalexController  {
 		}
 		
 		modelMap.put("message", message);
+		
 		LOGGER.debug("Finished Quantity-Processing");
 		return new ModelAndView("ceramalexQuantification", modelMap);
 	}

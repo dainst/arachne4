@@ -36,8 +36,8 @@ public class EntityCompareService {
 	public void compareToIndex(final Long entityId, final String json) {
 		    	
     	SearchResponse searchResponse = null;
-    	    	
-    	final QueryBuilder acLessQuery = QueryBuilders.queryString("entityId:" + entityId);
+    	// TODO use id query instead
+    	final QueryBuilder acLessQuery = QueryBuilders.queryStringQuery("entityId:" + entityId);
     	searchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
     			.setQuery(acLessQuery)
     			.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)

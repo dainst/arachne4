@@ -1,9 +1,9 @@
 package de.uni_koeln.arachne.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,6 +39,8 @@ import org.springframework.stereotype.Service;
 
 import com.github.davidmoten.geo.GeoHash;
 import com.github.davidmoten.geo.LatLong;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
@@ -46,18 +48,18 @@ import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.network.ESClientUtil;
+import de.uni_koeln.arachne.util.search.Aggregation;
 import de.uni_koeln.arachne.util.search.SearchFieldList;
 
 /**
  * This class implements all search functionality.
+ * 
+ * @author Reimar Grabowski
  */
 @Service("SearchService")
 public class SearchService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearchService.class);
-	
-	private static final String GEO_HASH_GRID_FACET_NAME = "facet_geogrid";
-	private static final String GEO_HASH_GRID_FIELD = "places.location";
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
@@ -72,40 +74,58 @@ public class SearchService {
 	
 	private transient final List<String> sortFields;
 	
+	private transient final List<String> defaultFacetList;
+	
 	/**
 	 * Simple constructor which sets the fields to be queried. 
 	 * @param textSearchFields The list of text fields.
 	 * @param numericSearchFields The list of numeric fields.
+	 * @param sortFields The list of fields to sort on.
+	 * @param defaultFacetList The names of the default facets (these are all terms aggregations).
 	 */
 	@Autowired
-	public SearchService(final @Value("#{config.esTextSearchFields}") String textSearchFields
-			, final @Value("#{config.esNumericSearchFields}") String numericSearchFields
-			, final @Value("#{config.esSortFields}") String sortFields ) {
+	public SearchService(final @Value("#{config.esTextSearchFields.split(',')}") List<String> textSearchFields
+			, final @Value("#{config.esNumericSearchFields.split(',')}") List<String> numericSearchFields
+			, final @Value("#{config.esSortFields}.split(',')}") List<String> sortFields
+			, final @Value("#{config.esDefaultFacets.split(',')}") List<String> defaultFacetList) {
+		
 		searchFields = new SearchFieldList(textSearchFields, numericSearchFields);
-		this.sortFields = StrUtils.getCommaSeperatedStringAsList(sortFields);
+		this.sortFields = sortFields;
+		this.defaultFacetList = defaultFacetList;
 	}
 	
 	/**
 	 * This method builds and returns an elasticsearch search request. The query is built by the <code>buildQuery</code> method.
 	 * @param searchParam The query string.
-	 * @param resultSize Max number of results.
-	 * @param resultOffset An offset into the result set.
-	 * @param filters A list of values to use for building an elasticsearch fuilter query.
+	 * @param size Max number of results.
+	 * @param offset An offset into the result set.
+	 * @param facetLimit The maximum number of distinct facet values returned.
+	 * @param filters The filters of the HTTP 'fq' parameter as Map.
+	 * @param sortField The field to sort on.
+	 * @param orderDesc Boolean indicating the sort order.
 	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 */
-	public SearchRequestBuilder buildSearchRequest(final String searchParam, final int resultSize
-			, final int resultOffset, final Map<String, String> filters, final String sortField
-			, final Boolean orderDesc, final double[] bbCoords) {
+	public SearchRequestBuilder buildSearchRequest(final String searchParam
+			, final int size
+			, final int offset
+			, final Multimap<String, String> filters
+			, final int facetLimit
+			, final String sortField
+			, final Boolean orderDesc
+			, final Double[] bbCoords) {
 		
-		SearchType searchType = (resultSize > 0) ? SearchType.DFS_QUERY_THEN_FETCH : SearchType.COUNT;
+		SearchType searchType = (size > 0) ? SearchType.DFS_QUERY_THEN_FETCH : SearchType.COUNT;
 		
 		SearchRequestBuilder result = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
 				.setQuery(buildQuery(searchParam, filters, bbCoords))
 				.setSearchType(searchType)
-				.setFrom(resultOffset)
-				.setSize(resultSize);
+				.setFrom(offset)
+				.setSize(size);
+		
 		addSort(sortField, orderDesc, result);
+		addFacets(getFacetList(filters, facetLimit), result);
+		
 		return result;
 	}
 	
@@ -113,19 +133,31 @@ public class SearchService {
 	 * This method builds and returns an elasticsearch context search request. The query is built by the 
 	 * <code>buildContextQuery</code> method.
 	 * @param searchParam The entityId to find the contexts for..
-	 * @param resultSize Max number of results.
-	 * @param resultOffset An offset into the result set.
+	 * @param size Max number of results.
+	 * @param offset An offset into the result set.
+	 * @param facetLimit The maximum number of distinct facet values returned.  
+	 * @param filters The filters of the HTTP 'fq' parameter as Map.
+	 * @param sortField The field to sort on.
+	 * @param orderDesc Boolean indicating the sort order.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 */
-	public SearchRequestBuilder buildContextSearchRequest(final Long entityId, final int resultSize
-			, final int resultOffset, final String sortField, final Boolean orderDesc) {
+	public SearchRequestBuilder buildContextSearchRequest(final Long entityId
+			, final int size
+			, final int offset
+			, Multimap<String, String> filters
+			, int facetLimit
+			, final String sortField
+			, final Boolean orderDesc) {
 		
 		SearchRequestBuilder result = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
 				.setQuery(buildContextQuery(entityId))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-				.setFrom(resultOffset)
-				.setSize(resultSize);
+				.setFrom(offset)
+				.setSize(size);
+		
 		addSort(sortField, orderDesc, result);
+		addFacets(getFacetList(filters, facetLimit), result);
+		
 		return result;
 	}
 	
@@ -134,9 +166,10 @@ public class SearchService {
 	 * @param facetList A string list containing the facet names to add. 
 	 * @param searchRequestBuilder The outgoing search request that gets the facets added.
 	 */
-	public void addFacets(final List<String> facetList, final int facetSize, final SearchRequestBuilder searchRequestBuilder) {
-		for (final String facetName: facetList) {
-			searchRequestBuilder.addAggregation(AggregationBuilders.terms(facetName).field(facetName).size(facetSize));
+	public void addFacets(final Set<Aggregation> facetList, final SearchRequestBuilder searchRequestBuilder) {
+		
+		for (final Aggregation aggregation: facetList) {
+			searchRequestBuilder.addAggregation(aggregation.build());
 		}
 	}
 	
@@ -147,9 +180,10 @@ public class SearchService {
 	 */
 	public void addGeoHashGridFacet(final int precision, final List<String> facetList
 			, final SearchRequestBuilder searchRequestBuilder) {
-		searchRequestBuilder.addAggregation(AggregationBuilders.geohashGrid(GEO_HASH_GRID_FACET_NAME)
+		
+		searchRequestBuilder.addAggregation(AggregationBuilders.geohashGrid(Aggregation.GEO_HASH_GRID_NAME)
 				.field("places.location").precision(precision).size(0));
-		facetList.add(GEO_HASH_GRID_FACET_NAME);
+		facetList.add(Aggregation.GEO_HASH_GRID_NAME);
 	}
 	
 	/**
@@ -160,6 +194,7 @@ public class SearchService {
 	 * @param searchRequestBuilder The request builder to add the sort to.
 	 */
 	public void addSort(final String sortField, final Boolean orderDesc, SearchRequestBuilder searchRequestBuilder) {
+		
 		if (!StrUtils.isEmptyOrNull(sortField) && (sortFields.contains(sortField))) {
 			String field = sortField; 
 			if (searchFields.containsText(sortField)) {
@@ -177,14 +212,14 @@ public class SearchService {
 	 * Executes a search request on the elasticsearch index. The response is processed and returned as a <code>SearchResult</code> 
 	 * instance. 
 	 * @param searchRequestBuilder The search request in elasticsearchs internal format.
-	 * @param resultSize Max number of results.
-	 * @param resultOffset An offset into the resultset.
+	 * @param size Max number of results.
+	 * @param offset An offset into the resultset.
 	 * @param filterValues A <code>String</code> containing the filter values used in the query.
 	 * @param facetList The values for facetting.
 	 * @return The search result.
 	 */
-	public SearchResult executeSearchRequest(final SearchRequestBuilder searchRequestBuilder, final int resultSize,
-			final int resultOffset,	final Map<String, String> filters, final List<String> facetList) {
+	public SearchResult executeSearchRequest(final SearchRequestBuilder searchRequestBuilder, final int size,
+			final int offset,	final Multimap<String, String> filters) {
 		
 		SearchResponse searchResponse = null;
 		
@@ -207,8 +242,8 @@ public class SearchService {
 		final SearchHits hits = searchResponse.getHits();
 		
 		final SearchResult searchResult = new SearchResult();
-		searchResult.setLimit(resultSize);
-		searchResult.setOffset(resultOffset);
+		searchResult.setLimit(size);
+		searchResult.setOffset(offset);
 		searchResult.setSize(hits.totalHits());
 		
 		for (final SearchHit currenthit: hits) {
@@ -225,154 +260,140 @@ public class SearchService {
 		}
 		
 		// add facet search results
-		if (facetList != null) {
-			final List<SearchResultFacet> facets = new ArrayList<SearchResultFacet>();
-			
-			for (final String facetName: facetList) {
-				final Map<String, Long> facetMap = getFacetMap(facetName, searchResponse);
-				if (facetMap != null && !facetMap.isEmpty() && (filters == null || !filters.containsKey(facetName))) {
-					facets.add(getSearchResultFacet(facetName, facetMap));
+		final List<SearchResultFacet> facets = new ArrayList<SearchResultFacet>();
+		Map<String, org.elasticsearch.search.aggregations.Aggregation> aggregations = searchResponse.getAggregations().getAsMap();
+		for (final String aggregationName : aggregations.keySet()) {
+			final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
+			MultiBucketsAggregation aggregator = (MultiBucketsAggregation)aggregations.get(aggregationName);
+			// TODO find a better way to convert facet values
+			if (aggregationName.equals(Aggregation.GEO_HASH_GRID_NAME)) {
+				for (final MultiBucketsAggregation.Bucket bucket: aggregator.getBuckets()) {
+					final LatLong coord = GeoHash.decodeHash(bucket.getKey());
+					facetMap.put("[" + coord.getLat() + ',' + coord.getLon() + ']', bucket.getDocCount());
+				}
+			} else {
+				for (final MultiBucketsAggregation.Bucket bucket: aggregator.getBuckets()) {
+					facetMap.put(bucket.getKey(), bucket.getDocCount());
 				}
 			}
-			searchResult.setFacets(facets);
+			if (facetMap != null && !facetMap.isEmpty() && (filters == null || !filters.containsKey(aggregationName))) {
+				facets.add(getSearchResultFacet(aggregationName, facetMap));
+			}
 		}
+		searchResult.setFacets(facets);
 		
 		return searchResult;
 	}
 	
-	private SearchResultFacet getSearchResultFacet(final String facetName, final Map<String, Long> facetMap) {
-		final SearchResultFacet result = new SearchResultFacet(facetName);
-		for (final Map.Entry<String, Long> entry: facetMap.entrySet()) {
-			final SearchResultFacetValue facetValue = new SearchResultFacetValue(entry.getKey(), entry.getKey(), entry.getValue());
-			result.addValue(facetValue);
-		}
-		return result;
-	}
-
 	/**
-	 * Creates a list of filter values from the filterValues <code>String</code> and sets the category specific facets in the 
-	 * <code>facetList</code> if the corresponding facet is found in the filterValue <code>String</code>.
-	 * @param geoHashPrecision The precision used to convert latlon-values to geohashes.
+	 * Creates a Map of filter name value pairs from the filterValues list. Since a Mulitmap is used multiple values can 
+	 * be used for one filter.
 	 * @param filterValues String of filter values
-	 * @param facetList List of facet fields.
+	 * @param geoHashPrecision The precision used to convert latlon-values to geohashes. 
 	 * @return filter values as list.
 	 */
-	public Map<String, String> getFilters(final int geoHashPrecision, final String filterValues, final List<String> facetList) {
-		HashMap<String, String> result = new HashMap<String, String>();
-		if (!StrUtils.isEmptyOrNullOrZero(filterValues)) {
-			List<String> filterValueList = filterQueryStringToStringList(filterValues);
-			for (final String filterValue: filterValueList) {
+	public Multimap<String, String> getFilters(List<String> filterValues, int geoHashPrecision) {
+		
+		Multimap<String, String> result = LinkedHashMultimap.create();
+		
+		if (!StrUtils.isEmptyOrNull(filterValues)) {
+			for (final String filterValue : filterValues) {
 				final int splitIndex = filterValue.indexOf(':');
 				final String name = filterValue.substring(0, splitIndex);
 				final String value = filterValue.substring(splitIndex+1).replace("\"", "");
 				result.put(name, value);
-				
-				if (filterValue.startsWith("facet_kategorie")) {
-					Set<String> categorySpecificFacetsList = getCategorySpecificFacets(filterValueList);
-					for (String facet : categorySpecificFacetsList) {
-						if (!facetList.contains(facet)) {
-							facetList.add(facet);
+
+				if (filterValue.startsWith(Aggregation.GEO_HASH_GRID_NAME)) {
+					final String[] coordsAsStringArray = value.substring(1, value.length() - 1).split(",");
+					final String geoHash = GeoHash.encodeHash(
+							Double.parseDouble(coordsAsStringArray[0]),
+							Double.parseDouble(coordsAsStringArray[1]),
+							geoHashPrecision);
+					result.put(name, geoHash);
+				}
+			}
+			// keep only highest level of "facet_subkategoriebestand_level"
+			int highestLevel = 0;
+			String highestLevelValue = "";
+			final Multimap<String, String> resultCopy = LinkedHashMultimap.create(result);
+			for (final String filter : resultCopy.keySet()) {
+				if (filter.startsWith("facet_subkategoriebestand_level")) {
+					final int level = extractLevelFromFilter(filter);
+					if (level > highestLevel) {
+						highestLevel = level;
+						if (!"".equals(highestLevelValue)) {
+							result.removeAll(highestLevelValue);
 						}
-					}
-				} else {
-					if (filterValue.startsWith("facet_subkategoriebestand_level")) {
-						int level = extractLevelFromFilterValue(filterValue);
-						facetList.add("facet_subkategoriebestand_level" + (level + 1));
-					}	else {
-						if (filterValue.startsWith(GEO_HASH_GRID_FACET_NAME)) {
-							final String[] coordsAsStringArray = value.substring(1, value.length() - 1).split(",");
-							final String geoHash = GeoHash.encodeHash(
-									Double.parseDouble(coordsAsStringArray[0]),
-									Double.parseDouble(coordsAsStringArray[1]),
-									geoHashPrecision);
-							result.put(name, geoHash);
-						}
+						highestLevelValue = filter;
+					} else {
+						result.removeAll(filter);
 					}
 				}
 			}
-			if (filterValues.contains("facet_bestandsname") && !filterValues.contains("facet_subkategoriebestand_level")) {
-				facetList.add("facet_subkategoriebestand_level1");
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Creates a set of <code>Aggregations</code> from the filters and <code>defaultFacetList</code>. If the category 
+	 * filter is present category specific facets will be added.
+	 * @param filters The filter map.
+	 * @param limit The maximum number of distinct facet values returned.
+	 * @return A set of <code>Aggregations</code>.
+	 */
+	private Set<Aggregation> getFacetList(final Multimap<String, String> filters, final int limit) {
+		
+		final Set<Aggregation> result = new LinkedHashSet<Aggregation>();
+		result.addAll(getCategorySpecificFacets(filters, limit));
+		
+		for (final String facetName : defaultFacetList) {
+			result.add(new Aggregation(facetName, facetName, limit));
+		}
+		
+		// TODO look for a more general way to handle dynamic facets
+		boolean isFacetSubkategorieBestandPresent = false;
+		for (final String filter : filters.keySet()) {
+			if (filter.startsWith("facet_subkategoriebestand_level")) {
+				isFacetSubkategorieBestandPresent = true;
+				final int level = extractLevelFromFilter(filter);
+				final String name = "facet_subkategoriebestand_level" + (level + 1); 
+				result.add(new Aggregation(name, name, limit));
 			}
 		}
+		
+		if (filters.containsKey("facet_bestandsname") && !isFacetSubkategorieBestandPresent) {
+			final String name = "facet_subkategoriebestand_level1";
+			result.add(new Aggregation(name, name, limit));
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Extracts the category specific facets from the corresponding xml file.
+	 * @param filters The list of facets including their values. The facet Aggregation.CATEGORY_FACET must be present to get 
+	 * any results.
+	 * @param limit The maximum number of distinct facet values returned.
+	 * @return The list of category specific facets or <code>null</code>.
+	 */
+	private Set<Aggregation> getCategorySpecificFacets(final Multimap<String, String> filters, final int limit) {
+		
+		final Set<Aggregation> result = new LinkedHashSet<Aggregation>();
+		Collection<String> categories = filters.get(Aggregation.CATEGORY_FACET);
+		
+		if (!filters.isEmpty() && !categories.isEmpty()) {
+			final String category = ts.categoryLookUp(categories.iterator().next());		
+			final Set<String> facets = xmlConfigUtil.getFacetsFromXMLFile(category);
+			for (String facet : facets) {
+				facet = "facet_" + facet;
+				result.add(new Aggregation(facet, facet, limit));
+			}
+		}
+		
 		return result;
 	}
 		
-	/**
-	 * Extracts the category specific facets from the corresponding xml file.
-	 * @param filterValueList The list of facets including their values. The facet "facet_kategorie" must be present to get 
-	 * any results.
-	 * @return The list of category specific facets or <code>null</code>.
-	 */
-	public Set<String> getCategorySpecificFacets(final	List<String> filterValueList) {
-		final Set<String> result = new HashSet<String>();
-		for (String filterValue: filterValueList) {
-			if (filterValue.startsWith("facet_kategorie")) {
-				filterValue = filterValue.substring(16);
-				// the only multicategory query that makes sense is "OR" combined 
-				filterValue = filterValue.replace("OR", "");
-				filterValue = filterValue.replace("(", "");
-				filterValue = filterValue.replace(")", "");
-				filterValue = filterValue.trim();
-				filterValue = filterValue.replaceAll("\"", "");
-				filterValue = filterValue.replaceAll("\\s+", " ");
-				filterValue = ts.categoryLookUp(filterValue);
-								
-				final String[] categories = filterValue.split("\\s");
-				if (categories.length > 0) {
-					for (int i = 0; i < categories.length; i++) {
-						final Set<String> facets = xmlConfigUtil.getFacetsFromXMLFile(categories[i]);
-						addFacetsToResult(result, facets);
-					}
-				}
-				// no need to process more than one parameter
-				return result;
-		    }
-		}
-		return null;
-	}
-
-	/**
-	 * Adds the unique facet names found in facets to result.
-	 * </br>
-	 * Side effect: The input variable result is changed directly. 
-	 * @param result List of facet names.
-	 * @param facets Unique list of facet names.
-	 */
-	private void addFacetsToResult(final Set<String> result, final Set<String> facets) {
-		if (facets != null) {
-			for (final String facet: facets) {
-				final String facetName = "facet_" + facet;
-				if (!result.contains(facetName)) {
-					result.add("facet_" + facet);
-				}
-			}
-		}
-	}
-	
-	/**
-	 * This method extracts the facet search results from the response and works around a problem of elasticsearch returning 
-	 * too many facets for terms that are queried.
-	 * @param name A facet name.
-	 * @param searchResponse The search response to work on.
-	 * @return A map containing the facet value as key and the facet count as value.
-	 */
-	private Map<String, Long> getFacetMap(final String name, final SearchResponse searchResponse) {
-		MultiBucketsAggregation aggregator = (MultiBucketsAggregation)searchResponse.getAggregations().getAsMap().get(name); 
-		final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
-		// TODO find a better way to convert facet values
-		if (name.equals(GEO_HASH_GRID_FACET_NAME)) {
-			for (final MultiBucketsAggregation.Bucket bucket: aggregator.getBuckets()) {
-				final LatLong coord = GeoHash.decodeHash(bucket.getKey());
-				facetMap.put("[" + coord.getLat() + ',' + coord.getLon() + ']', bucket.getDocCount());
-			}
-		} else {
-			for (final MultiBucketsAggregation.Bucket bucket: aggregator.getBuckets()) {
-				facetMap.put(bucket.getKey(), bucket.getDocCount());
-			}
-		}
-		return facetMap;
-	}
-	
 	/**
 	 * Builds the elasticsearch query based on the input parameters. It also adds an access control filter to the query.
 	 * The final query is a function score query that modifies the score based on the boost value of a document. 
@@ -381,21 +402,23 @@ public class SearchService {
 	 * If the search parameter is numeric the query is performed against all configured fields else the query is only 
 	 * performed against the text fields.
 	 * @param searchParam The query string.
-	 * @param limit Max number of results.
-	 * @param offset An offset into the result set.
-	 * @param filters A list of values to create a filter query from.
+	 * @param filters The filter from the HTTP 'fq' parameter as map to create a filter query from.
 	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)
 	 * @return An elasticsearch <code>QueryBuilder</code> which in essence is a complete elasticsearch query.
 	 */
-	private QueryBuilder buildQuery(final String searchParam, final Map<String, String> filters, final double[] bbCoords) {
+	private QueryBuilder buildQuery(final String searchParam
+			, final Multimap<String, String> filters
+			, final Double[] bbCoords) {
+		
 		FilterBuilder facetFilter = esClientUtil.getAccessControlFilter();
 				
 		if (!filters.isEmpty()) {
-			for (final Map.Entry<String, String> filter: filters.entrySet()) {
-				// TODO find a way to get a facets type to unify this
-				if (filter.getKey().equals(GEO_HASH_GRID_FACET_NAME)) {
+			for (final Map.Entry<String, Collection<String>> filter: filters.asMap().entrySet()) {
+				// TODO find a way to unify this
+				if (filter.getKey().equals(Aggregation.GEO_HASH_GRID_NAME)) {
+					final String filterValue = filter.getValue().iterator().next();
 					facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(
-							FilterBuilders.geoHashCellFilter(GEO_HASH_GRID_FIELD, filter.getValue()));
+							FilterBuilders.geoHashCellFilter(Aggregation.GEO_HASH_GRID_FIELD, filterValue));
 				} else {
 					facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(
 							FilterBuilders.termFilter(filter.getKey(), filter.getValue()));
@@ -403,7 +426,7 @@ public class SearchService {
 			}
 		}
 		
-		final QueryStringQueryBuilder innerQuery = QueryBuilders.queryString(searchParam)
+		final QueryStringQueryBuilder innerQuery = QueryBuilders.queryStringQuery(searchParam)
 				.defaultOperator(Operator.AND);
 		
 		for (String textField: searchFields.text()) {
@@ -430,7 +453,7 @@ public class SearchService {
 				.scriptFunction("doc['boost'].value")
 				.lang("expression");
 		final QueryBuilder query = QueryBuilders.functionScoreQuery(filteredQuery, scoreFunction).boostMode("multiply");
-						
+		
 		LOGGER.debug("Elastic search query: " + query.toString());
 		return query;
 	}
@@ -441,6 +464,7 @@ public class SearchService {
 	 * @return The query to retrieve the connected entities.
 	 */
 	private QueryBuilder buildContextQuery(Long entityId) {
+		
 		BoolFilterBuilder accessFilter = esClientUtil.getAccessControlFilter();
 		final TermQueryBuilder innerQuery = QueryBuilders.termQuery("connectedEntities", entityId);
 		final QueryBuilder query = QueryBuilders.filteredQuery(innerQuery, accessFilter);
@@ -448,65 +472,35 @@ public class SearchService {
 		LOGGER.debug("Elastic search query: " + query.toString());
 		return query;
 	}
-	
-	/**
-	 * Converts the input string of query filter parameters to a string list of parameters.
-	 * The string is split at every occurrence of ",facet_".
-	 * For "facet_subkategoriebestand_level" only the highest level is kept.
-	 * @param filterString The filter query string to convert.
-	 * @return a string list containing the separated parameters or <code>null</code> if the conversion fails.
-	 */
-	private List<String> filterQueryStringToStringList(final String filterString) {
-		String string = filterString;
-		if (string != null && string.startsWith("facet_")) {
-			final List<String> result = new ArrayList<String>();
-			int index = string.indexOf(",facet_");
-			while (index != -1) {
-				final String subString = string.substring(0, index);
-				string = string.substring(index + 1);
-				index = string.indexOf(",facet_");
-				result.add(subString);
-			}
-			result.add(string);
-			// keep only highest level of "facet_subkategoriebestand_level"
-			int highestLevel = 0;
-			String highestLevelValue = "";
-			final List<String> resultCopy = new ArrayList<String>(result);
-			for (final String filterValue : resultCopy) {
-				if (filterValue.startsWith("facet_subkategoriebestand_level")) {
-					final int level = extractLevelFromFilterValue(filterValue);
-					if (level > highestLevel) {
-						highestLevel = level;
-						if (!"".equals(highestLevelValue)) {
-							result.remove(highestLevelValue);
-						}
-						highestLevelValue = filterValue;
-					} else {
-						result.remove(filterValue);
-					}
-				}
-			}
-			
-			return result;
-		} else {
-			return null;
+		
+	private SearchResultFacet getSearchResultFacet(final String facetName, final Map<String, Long> facetMap) {
+		
+		final SearchResultFacet result = new SearchResultFacet(facetName);
+		
+		for (final Map.Entry<String, Long> entry: facetMap.entrySet()) {
+			final SearchResultFacetValue facetValue = new SearchResultFacetValue(entry.getKey(), entry.getKey(), entry.getValue());
+			result.addValue(facetValue);
 		}
+		
+		return result;
 	}
 	
 	/**
 	 * Extracts the level of a dynamic facet from a filter value and returns it as an <code>int</code>.
-	 * @param filterValue A filter value as given by the "fq" http parameter.
+	 * @param filter A filter name as given by the "fq" HTTP parameter.
 	 * @return The level of the facet or -1 in case of failure.
 	 */
-	private int extractLevelFromFilterValue(final String filterValue) {
+	private int extractLevelFromFilter(final String filter) {
+		
 		int result;
+		
 		try {
-			result = Integer.parseInt(filterValue.substring(31, filterValue.indexOf(':')));
+			result = Integer.parseInt(filter.substring(31, filter.length()));
 		} catch (NumberFormatException e) {
-			LOGGER.warn("Number Format exception whrn parsing filter value: ", filterValue);
+			LOGGER.warn("Number Format exception when parsing filter: ", filter);
 			result = -1;
 		}
+		
 		return result;
-	}
-	
+	}	
 }

@@ -32,6 +32,7 @@ import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
+import de.uni_koeln.arachne.util.search.Aggregation;
 
 /**
  * Factory class to create the different kinds of responses from a dataset.
@@ -41,6 +42,7 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
  * want to use different xml config files a new naming scheme is needed.
  * <br>
  * This class can be autowired.
+ * 
  * @author Reimar Grabowski
  */
 @Component
@@ -54,8 +56,6 @@ public class ResponseFactory {
 		"marbilderbestand.Aufnahmedatum",
 		"marbilderinventar.03_Aufnahmedatum"
 	};
-	
-	private static final String FACET_ORTSANGABE_NAME = "facet_ortsangabe";
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
@@ -480,7 +480,7 @@ public class ResponseFactory {
 			}
 		}
 		if (relations.size() > 0) {
-			json.set(FACET_ORTSANGABE_NAME, relations);
+			json.set(Aggregation.RELATION_FACET, relations);
 		}
 				
 		// add all places with location information as "facet_geo"
@@ -540,7 +540,6 @@ public class ResponseFactory {
 			final List<String> finalFacetValues = new ArrayList<String>();
 			for (String facetValue: facetValues) {
 				if (facetValue.contains(";")) {
-					// TODO review
 					// remove leading semicola
 					if (facetValue.startsWith(";")) {
 						facetValue = facetValue.substring(1);						

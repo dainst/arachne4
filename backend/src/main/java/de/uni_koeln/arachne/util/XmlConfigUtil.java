@@ -341,14 +341,16 @@ public class XmlConfigUtil implements ServletContextAware {
 	 */
 	public Set<String> getFacetsFromXMLFile(final String category) {
 		final Set<String> facetList = new HashSet<String>();
-		
-		final Document document = getDocument(category); 
-		final Namespace namespace = document.getRootElement().getNamespace();
-		
-		final Element facets = document.getRootElement().getChild("facets", namespace);
-		
-		for (final Element element: facets.getChildren()) {
-			facetList.add(element.getAttributeValue("name")); 				 				
+
+		final Document document = getDocument(category);
+		if (document != null) {
+			final Namespace namespace = document.getRootElement().getNamespace();
+
+			final Element facets = document.getRootElement().getChild("facets", namespace);
+
+			for (final Element element: facets.getChildren()) {
+				facetList.add(element.getAttributeValue("name")); 				 				
+			}
 		}
 		return facetList;
 	}

@@ -27,23 +27,23 @@ public class SearchFieldList {
 	private ImmutableList<String> numericSearchFieldsWithBoosts;
 	
 	/**
-	 * Constructor that takes two lists of field names as comman separated <code>Strings</code>.
-	 * @param textSearchFieldsAsString The text fields to search on.
-	 * @param numericSearchFieldsAsString The numeric fields to search on.
+	 * Constructor that takes two lists of field names.
+	 * @param textSearchFields The text fields to search on.
+	 * @param numericSearchFields The numeric fields to search on.
 	 */
-	public SearchFieldList(final String textSearchFieldsAsString, final String numericSearchFieldsAsString) {
-		if (!StrUtils.isEmptyOrNull(textSearchFieldsAsString)) {
-			SearchFieldListPair textLists = initLists(textSearchFieldsAsString);
-			textSearchFields = textLists.getList();
-			textSearchFieldsWithBoosts = textLists.getListWithBoosts();			
+	public SearchFieldList(final List<String> textSearchFields, final List<String> numericSearchFields) {
+		if (!StrUtils.isEmptyOrNull(textSearchFields)) {
+			SearchFieldListPair textLists = initLists(textSearchFields);
+			this.textSearchFields = textLists.getList();
+			this.textSearchFieldsWithBoosts = textLists.getListWithBoosts();			
 		} else {
 			LOGGER.warn("No text search fields provided. Check 'application.properties' file.");
 		}
 		
-		if (!StrUtils.isEmptyOrNull(numericSearchFieldsAsString)) {
-			SearchFieldListPair numericLists = initLists(numericSearchFieldsAsString);
-			numericSearchFields = numericLists.getList();
-			numericSearchFieldsWithBoosts = numericLists.getListWithBoosts();
+		if (!StrUtils.isEmptyOrNull(numericSearchFields)) {
+			SearchFieldListPair numericLists = initLists(numericSearchFields);
+			this.numericSearchFields = numericLists.getList();
+			this.numericSearchFieldsWithBoosts = numericLists.getListWithBoosts();
 		} else {
 			LOGGER.warn("No numeric search fields provided. Check 'application.properties' file.");
 		}
@@ -86,14 +86,13 @@ public class SearchFieldList {
 	/**
 	 * Method initializing two search field lists. One list only contains the field name while the other contains the 
 	 * field name and an appended boost value in elasticsearch syntax.
-	 * @param searchFields The search fields as comma separated <code>String</code>.
+	 * @param searchFields The list of search fields.
 	 * @param listWithoutBoosts The list only containing the field names. This will be newly created.
 	 * @return The list containing field names with added boost values.
 	 */
-	private SearchFieldListPair initLists(final String searchFields) {
-		final List<String> listWithBoosts = StrUtils.getCommaSeperatedStringAsList(searchFields);
+	private SearchFieldListPair initLists(final List<String> searchFields) {
 		final List<String> list = new ArrayList<String>();
-		for (final String field: listWithBoosts) {
+		for (final String field: searchFields) {
 			int boostCharPos = field.indexOf('^');
 			if (boostCharPos > 0) {
 				list.add(field.substring(0, boostCharPos));
@@ -101,7 +100,7 @@ public class SearchFieldList {
 				list.add(field);
 			}
 		}
-		return new SearchFieldListPair(list, listWithBoosts);
+		return new SearchFieldListPair(list, searchFields);
 	}
 
 }
