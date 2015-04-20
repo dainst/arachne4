@@ -55,6 +55,13 @@ public class Aggregation {
 		this.size = size;
 	}
 	
+	public Aggregation(final Type type, final String name, final String field, final int size) {
+		this.type = type;
+		this.name = name;
+		this.field = field;
+		this.size = size;
+	}
+	
 	public Aggregation(final Type type, final String name, final String field, final int size, 
 			final Order order) {
 		this.type = type;

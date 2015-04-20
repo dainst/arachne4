@@ -92,7 +92,7 @@ public class CeramalexController  {
 		}
 		
 		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam, maxResultSize
-				, resultOffset, filters, resultFacetLimit, null, false, null);
+				, resultOffset, filters, resultFacetLimit, null, false, null, null);
 					
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, maxResultSize
 				, resultOffset, filters);

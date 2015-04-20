@@ -107,8 +107,12 @@ public class SearchController {
 		final int resultSize = limit == null ? defaultLimit : limit;
 		final int resultOffset = offset == null ? 0 : offset;
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
-		final int resultGeoHashPrecision = geoHashPrecision == null ? 5 : geoHashPrecision;
-		
+		int resultGeoHashPrecision = -1;
+		// limit geohash precision to 10 as it is plenty of resolution
+		if (geoHashPrecision != null && geoHashPrecision > 0 && geoHashPrecision < 10) {
+			resultGeoHashPrecision = geoHashPrecision;
+		}
+				
 		Multimap<String, String> filters = HashMultimap.create();
 		if (filterValues != null) {
 			filters = searchService.getFilters(Arrays.asList(filterValues), resultGeoHashPrecision);
@@ -121,7 +125,7 @@ public class SearchController {
 		}
 				
 		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam
-				, resultSize, resultOffset, filters, resultFacetLimit, sortField, orderDesc, boundingBox);
+				, resultSize, resultOffset, filters, resultFacetLimit, sortField, orderDesc, resultGeoHashPrecision, boundingBox);
 				
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
 				, resultSize, resultOffset, filters);

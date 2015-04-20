@@ -103,6 +103,7 @@ public class SearchService {
 	 * @param filters The filters of the HTTP 'fq' parameter as Map.
 	 * @param sortField The field to sort on.
 	 * @param orderDesc Boolean indicating the sort order.
+	 * @param geoHashPrecision 
 	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 */
@@ -113,6 +114,7 @@ public class SearchService {
 			, final int facetLimit
 			, final String sortField
 			, final Boolean orderDesc
+			, final Integer geoHashPrecision
 			, final Double[] bbCoords) {
 		
 		SearchType searchType = (size > 0) ? SearchType.DFS_QUERY_THEN_FETCH : SearchType.COUNT;
@@ -124,7 +126,7 @@ public class SearchService {
 				.setSize(size);
 		
 		addSort(sortField, orderDesc, result);
-		addFacets(getFacetList(filters, facetLimit), result);
+		addFacets(getFacetList(filters, facetLimit, geoHashPrecision), result);
 		
 		return result;
 	}
@@ -156,7 +158,7 @@ public class SearchService {
 				.setSize(size);
 		
 		addSort(sortField, orderDesc, result);
-		addFacets(getFacetList(filters, facetLimit), result);
+		addFacets(getFacetList(filters, facetLimit, -1), result);
 		
 		return result;
 	}
@@ -338,11 +340,14 @@ public class SearchService {
 	/**
 	 * Creates a set of <code>Aggregations</code> from the filters and <code>defaultFacetList</code>. If the category 
 	 * filter is present category specific facets will be added.
+	 * <br>
+	 * If the geohash variable is set the geo grid aggregation will be added.
 	 * @param filters The filter map.
 	 * @param limit The maximum number of distinct facet values returned.
+	 * @param geoHashPrecision The length of the geohash used in the geo grid aggregation.
 	 * @return A set of <code>Aggregations</code>.
 	 */
-	private Set<Aggregation> getFacetList(final Multimap<String, String> filters, final int limit) {
+	private Set<Aggregation> getFacetList(final Multimap<String, String> filters, final int limit, Integer geoHashPrecision) {
 		
 		final Set<Aggregation> result = new LinkedHashSet<Aggregation>();
 		result.addAll(getCategorySpecificFacets(filters, limit));
@@ -365,6 +370,14 @@ public class SearchService {
 		if (filters.containsKey("facet_bestandsname") && !isFacetSubkategorieBestandPresent) {
 			final String name = "facet_subkategoriebestand_level1";
 			result.add(new Aggregation(name, name, limit));
+		}
+		
+		// aggregations - if more aggregations are used this should perhaps be moved to its own method
+		
+		// geo grid
+		if (geoHashPrecision > -1) {
+			result.add(new Aggregation(Aggregation.Type.GEOHASH, Aggregation.GEO_HASH_GRID_NAME
+					, Aggregation.GEO_HASH_GRID_FIELD, 0));
 		}
 		
 		return result;
