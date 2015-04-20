@@ -42,6 +42,7 @@ import com.github.davidmoten.geo.LatLong;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
+import de.uni_koeln.arachne.controller.SearchParameters;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
@@ -96,37 +97,23 @@ public class SearchService {
 	
 	/**
 	 * This method builds and returns an elasticsearch search request. The query is built by the <code>buildQuery</code> method.
-	 * @param searchParam The query string.
-	 * @param size Max number of results.
-	 * @param offset An offset into the result set.
-	 * @param facetLimit The maximum number of distinct facet values returned.
+	 * @param searchParameters The search parameter object. 
 	 * @param filters The filters of the HTTP 'fq' parameter as Map.
-	 * @param sortField The field to sort on.
-	 * @param orderDesc Boolean indicating the sort order.
-	 * @param geoHashPrecision 
-	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 */
-	public SearchRequestBuilder buildSearchRequest(final String searchParam
-			, final int size
-			, final int offset
-			, final Multimap<String, String> filters
-			, final int facetLimit
-			, final String sortField
-			, final Boolean orderDesc
-			, final Integer geoHashPrecision
-			, final Double[] bbCoords) {
+	public SearchRequestBuilder buildDefaultSearchRequest(final SearchParameters searchParameters
+			, final Multimap<String, String> filters) {
 		
-		SearchType searchType = (size > 0) ? SearchType.DFS_QUERY_THEN_FETCH : SearchType.COUNT;
+		SearchType searchType = (searchParameters.getLimit() > 0) ? SearchType.DFS_QUERY_THEN_FETCH : SearchType.COUNT;
 		
 		SearchRequestBuilder result = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
-				.setQuery(buildQuery(searchParam, filters, bbCoords))
+				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox()))
 				.setSearchType(searchType)
-				.setFrom(offset)
-				.setSize(size);
+				.setFrom(searchParameters.getOffset())
+				.setSize(searchParameters.getLimit());
 		
-		addSort(sortField, orderDesc, result);
-		addFacets(getFacetList(filters, facetLimit, geoHashPrecision), result);
+		addSort(searchParameters.getSortField(), searchParameters.isOrderDesc(), result);
+		addFacets(getFacetList(filters, searchParameters.getFacetLimit(), searchParameters.getGeoHashPrecision()), result);
 		
 		return result;
 	}
@@ -159,6 +146,25 @@ public class SearchService {
 		
 		addSort(sortField, orderDesc, result);
 		addFacets(getFacetList(filters, facetLimit, -1), result);
+		
+		return result;
+	}
+	
+	/**
+	 * Builds a search request with a single facet and "*" as search param to retrieve all values of the given facet.
+	 * @param facetName The name of the facet of interest.
+	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
+	 */
+	public SearchRequestBuilder buildIndexSearchRequest(final String facetName) {
+		
+		SearchRequestBuilder result = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
+				.setQuery(buildQuery("*", null, null))
+				.setSearchType(SearchType.COUNT)
+				.setSize(0);
+		
+		final Set<Aggregation> aggregations = new LinkedHashSet<Aggregation>();
+		aggregations.add(new Aggregation(facetName, facetName, 0));
+		addFacets(aggregations, result);
 		
 		return result;
 	}
@@ -425,7 +431,7 @@ public class SearchService {
 		
 		FilterBuilder facetFilter = esClientUtil.getAccessControlFilter();
 				
-		if (!filters.isEmpty()) {
+		if (filters != null && !filters.isEmpty()) {
 			for (final Map.Entry<String, Collection<String>> filter: filters.asMap().entrySet()) {
 				// TODO find a way to unify this
 				if (filter.getKey().equals(Aggregation.GEO_HASH_GRID_NAME)) {
@@ -453,7 +459,7 @@ public class SearchService {
 		}
 		
 		final QueryBuilder filteredQuery;
-		if (bbCoords != null) {
+		if (bbCoords.length == 4) {
 			GeoBoundingBoxFilterBuilder bBoxFilter = FilterBuilders.geoBoundingBoxFilter("places.location")
 					.topLeft(bbCoords[0], bbCoords[1]).bottomRight(bbCoords[2], bbCoords[3]);
 			AndFilterBuilder andFilter = FilterBuilders.andFilter(facetFilter, bBoxFilter);

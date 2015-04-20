@@ -1,6 +1,10 @@
 package de.uni_koeln.arachne.controller;
 
+import java.text.Collator;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.rest.RestStatus;
@@ -19,6 +23,8 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import de.uni_koeln.arachne.response.search.SearchResult;
+import de.uni_koeln.arachne.response.search.SearchResultFacet;
+import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
 import de.uni_koeln.arachne.service.SearchService;
 
 /**
@@ -79,7 +85,7 @@ public class SearchController {
 	 * StatusMessage</code>.
 	 * <br>
 	 * The search result can only be serialized to JSON as JAXB cannot handle Maps.
-	 * @param searchParam The value of the search parameter. (mandatory)
+	 * @param queryString The value of the search parameter. (mandatory)
 	 * @param limit The maximum number of returned entities. (optional)
 	 * @param offset The offset into the list of entities (used for paging). (optional)
 	 * @param filterValues The values of the elasticsearch filter query. (optional)
@@ -93,7 +99,7 @@ public class SearchController {
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
 	@RequestMapping(value="/search", method=RequestMethod.GET, produces="application/json;charset=UTF-8")
-	public @ResponseBody ResponseEntity<?> handleSearchRequest(@RequestParam("q") final String searchParam,
+	public @ResponseBody ResponseEntity<?> handleSearchRequest(@RequestParam("q") final String queryString,
 			@RequestParam(value = "limit", required = false) final Integer limit,
 			@RequestParam(value = "offset", required = false) final Integer offset,
 			@RequestParam(value = "fq", required = false) final String[] filterValues,
@@ -105,30 +111,32 @@ public class SearchController {
 			@RequestParam(value = "sortfacet", required = false) final String[] facetsToSort) {
 		
 		final int resultSize = limit == null ? defaultLimit : limit;
-		final int resultOffset = offset == null ? 0 : offset;
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
-		int resultGeoHashPrecision = -1;
-		// limit geohash precision to 10 as it is plenty of resolution
-		if (geoHashPrecision != null && geoHashPrecision > 0 && geoHashPrecision < 10) {
-			resultGeoHashPrecision = geoHashPrecision;
-		}
-				
+		
+		final SearchParameters searchParameters = new SearchParameters() 
+				.setQuery(queryString)
+				.setLimit(resultSize)
+				.setOffset(offset)
+				.setFacetLimit(resultFacetLimit)
+				.setSortField(sortField)
+				.setOrderDesc(orderDesc)
+				.setBoundingBox(boundingBox)
+				.setGeoHashPrecision(geoHashPrecision);
+		
 		Multimap<String, String> filters = HashMultimap.create();
 		if (filterValues != null) {
-			filters = searchService.getFilters(Arrays.asList(filterValues), resultGeoHashPrecision);
+			filters = searchService.getFilters(Arrays.asList(filterValues), searchParameters.getGeoHashPrecision());
 		}
 		
-		if (boundingBox != null) {
-			if (boundingBox.length != 4) {
-				return ResponseEntity.badRequest().body("{ \"message\": \"Incorrect number of bounding box coordinates.\"");
-			}
+		if (boundingBox != null && searchParameters.getBoundingBox().length > 0) {
+			return ResponseEntity.badRequest().body("{ \"message\": \"Invalid bounding box coordinates.\"");
 		}
 				
-		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam
-				, resultSize, resultOffset, filters, resultFacetLimit, sortField, orderDesc, resultGeoHashPrecision, boundingBox);
+		final SearchRequestBuilder searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters
+				, filters);
 				
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
-				, resultSize, resultOffset, filters);
+				, resultSize, searchParameters.getOffset(), filters);
 		
 		if (searchResult.getStatus() != RestStatus.OK) {
 			return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
@@ -181,4 +189,37 @@ public class SearchController {
 		}
 	}
 	
+	/**
+	 * Returns a list of all distinct values of the given facet. The list is ordered alphabetically.
+	 * @param facetName The name of the facet to get the values for.
+	 * @return The ordered list of values as JSON array.
+	 */
+	@RequestMapping(value="/index/{facetName}", method=RequestMethod.GET, produces="application/json;charset=UTF-8")
+	public @ResponseBody ResponseEntity<?> handleIndexRequest(@PathVariable("facetName") final String facetName) {
+		
+		if (facetName.startsWith("facet_") || facetName.startsWith("agg_")) {
+			final SearchRequestBuilder searchRequestBuilder = searchService.buildIndexSearchRequest(facetName);
+
+			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
+					, 0, 0, null);
+
+			if (searchResult.getStatus() != RestStatus.OK) {
+				return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
+			} else {
+				final List<String> result = new ArrayList<String>();
+				final SearchResultFacet facet = searchResult.getFacets().get(0);
+				final List<SearchResultFacetValue> values = facet.getValues();
+				
+				for (SearchResultFacetValue searchResultFacetValue : values) {
+					result.add(searchResultFacetValue.getValue());
+				}
+				
+				// sort alphabetically
+				Collections.sort(result, Collator.getInstance());
+				
+				return ResponseEntity.ok().body(result);
+			}
+		}
+		return ResponseEntity.badRequest().build();
+	}
 }

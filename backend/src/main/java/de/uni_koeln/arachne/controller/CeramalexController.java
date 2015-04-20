@@ -34,8 +34,8 @@ import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.util.EntityId;
 
 /**
+ * Project-specific Controller, handles Ceramalex-specific requests.
  * 
- * Project-specific Controller, handles Ceramalex-specific requests
  * @author Patrick Gunia
  * @author Reimar Grabowski
  */
@@ -86,13 +86,19 @@ public class CeramalexController  {
 		final Integer maxResultSize = 1000000;
 		final Integer resultOffset = 0;
 		
+		final SearchParameters searchParameters = new SearchParameters()
+				.setQuery(searchParam)
+				.setLimit(maxResultSize)
+				.setOffset(resultOffset)
+				.setFacetLimit(resultFacetLimit);
+		
 		Multimap<String, String> filters = HashMultimap.create();
 		if (filterValues != null) {
 			filters = searchService.getFilters(Arrays.asList(filterValues), 0);
 		}
 		
-		final SearchRequestBuilder searchRequestBuilder = searchService.buildSearchRequest(searchParam, maxResultSize
-				, resultOffset, filters, resultFacetLimit, null, false, null, null);
+		final SearchRequestBuilder searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters
+				, filters);
 					
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, maxResultSize
 				, resultOffset, filters);
