@@ -158,7 +158,7 @@ public class SearchService {
 	public SearchRequestBuilder buildIndexSearchRequest(final String facetName) {
 		
 		SearchRequestBuilder result = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
-				.setQuery(buildQuery("*", null, null))
+				.setQuery(buildQuery("*", null, new Double[0]))
 				.setSearchType(SearchType.COUNT)
 				.setSize(0);
 		
