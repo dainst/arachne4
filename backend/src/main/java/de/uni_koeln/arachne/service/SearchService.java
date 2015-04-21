@@ -381,7 +381,7 @@ public class SearchService {
 		// aggregations - if more aggregations are used this should perhaps be moved to its own method
 		
 		// geo grid
-		if (geoHashPrecision > -1) {
+		if (geoHashPrecision > 0) {
 			result.add(new Aggregation(Aggregation.Type.GEOHASH, Aggregation.GEO_HASH_GRID_NAME
 					, Aggregation.GEO_HASH_GRID_FIELD, 0));
 		}
