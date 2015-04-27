@@ -55,6 +55,20 @@ public class Aggregation {
 		this.size = size;
 	}
 	
+	/**
+	 * Convenience constructor for terms aggregations where name and field are equal and you can set the order. 
+	 * @param name The name of the aggregation which must also be the field name in the elastic search index.
+	 * @param size The maximum number of returned aggregation results.
+	 * @param order The order in which the result values are sorted.
+	 */
+	public Aggregation(final String name, final int size, final Order order) {
+		type = Type.TERMS;
+		this.name = name;
+		this.field = name;
+		this.size = size;
+		this.order = order;
+	}
+	
 	public Aggregation(final Type type, final String name, final String field, final int size) {
 		this.type = type;
 		this.name = name;

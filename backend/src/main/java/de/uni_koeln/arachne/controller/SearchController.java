@@ -214,9 +214,6 @@ public class SearchController {
 					result.add(searchResultFacetValue.getValue());
 				}
 				
-				// sort alphabetically
-				Collections.sort(result, Collator.getInstance());
-				
 				return ResponseEntity.ok().body(result);
 			}
 		}

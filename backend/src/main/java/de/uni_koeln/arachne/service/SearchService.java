@@ -163,7 +163,7 @@ public class SearchService {
 				.setSize(0);
 		
 		final Set<Aggregation> aggregations = new LinkedHashSet<Aggregation>();
-		aggregations.add(new Aggregation(facetName, facetName, 0));
+		aggregations.add(new Aggregation(facetName, 0, Aggregation.Order.TERMS));
 		addFacets(aggregations, result);
 		
 		return result;
