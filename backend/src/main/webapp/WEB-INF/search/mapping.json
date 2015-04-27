@@ -4,7 +4,7 @@
          {
             "facet_template":{
                "mapping":{
-                  "analyzer":"keyword"
+                  "analyzer":"collation"
                },
                "match":"facet*"
             }
@@ -51,7 +51,7 @@
             "type":"string",
             "fields": {
                 "sort": { 
-                    "type":     "string",
+                    "type": "string",
                     "index": "not_analyzed"
                 }
             }
