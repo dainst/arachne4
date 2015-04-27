@@ -33,9 +33,13 @@ import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.ResetPasswordRequest;
 import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.util.StrUtils;
+import de.uni_koeln.arachne.util.StrUtils.FormDataException;
 import de.uni_koeln.arachne.util.security.Random;
 
 /**
+ * Controller that handles user registration and password reset/activation requests.
+ * 
  * @author scuy
  * @author Reimar Grabowski
  */
@@ -72,38 +76,38 @@ public class UserManagementController {
 		
 		// simple attempt to keep bots from issuing register requests
 		if (!(formData.containsKey("iAmHuman") && formData.get("iAmHuman").equals("humanIAm"))) {
-			throw new RegistrationException("ui.register.bot");
+			throw new FormDataException("ui.register.bot");
 		}
 		
 		User user = new User();
 		
-		user.setUsername(getFormData(formData, "username", true));
-		user.setEmail(getFormData(formData, "email", true));
-		user.setPassword(getFormData(formData, "password", true));
-		user.setFirstname(getFormData(formData, "firstname", true));
-		user.setLastname(getFormData(formData, "lastname", true));
-		user.setStreet(getFormData(formData, "street", true));
-		user.setZip(getFormData(formData, "zip", true));
-		user.setPlace(getFormData(formData, "place", true));
-		user.setCountry(getFormData(formData, "country", true));
-		user.setInstitution(getFormData(formData, "institution", false));
-		user.setHomepage(getFormData(formData, "homepage", false));
-		user.setTelephone(getFormData(formData, "telephone", false));
+		user.setUsername(StrUtils.getFormData(formData, "username", true, "ui.register."));
+		user.setEmail(StrUtils.getFormData(formData, "email", true, "ui.register."));
+		user.setPassword(StrUtils.getFormData(formData, "password", true, "ui.register."));
+		user.setFirstname(StrUtils.getFormData(formData, "firstname", true, "ui.register."));
+		user.setLastname(StrUtils.getFormData(formData, "lastname", true, "ui.register."));
+		user.setStreet(StrUtils.getFormData(formData, "street", true, "ui.register."));
+		user.setZip(StrUtils.getFormData(formData, "zip", true, "ui.register."));
+		user.setPlace(StrUtils.getFormData(formData, "place", true, "ui.register."));
+		user.setCountry(StrUtils.getFormData(formData, "country", true, "ui.register."));
+		user.setInstitution(StrUtils.getFormData(formData, "institution", false, "ui.register."));
+		user.setHomepage(StrUtils.getFormData(formData, "homepage", false, "ui.register."));
+		user.setTelephone(StrUtils.getFormData(formData, "telephone", false, "ui.register."));
 		user.setAll_groups(false);
 		user.setGroupID(500);
 		user.setLogin_permission(false);
 		
 		if (!formData.get("email").equals(formData.get("emailValidation"))) {
-			throw new RegistrationException("ui.register.emailsDontMatch");
+			throw new FormDataException("ui.register.emailsDontMatch");
 		}
 		
 		if (!formData.get("password").equals(formData.get("passwordValidation"))) {
-			throw new RegistrationException("ui.register.passwordsDontMatch");
+			throw new FormDataException("ui.register.passwordsDontMatch");
 		}
 				
 		User existingUser = userDao.findByName(user.getUsername());
 		if (existingUser != null) {
-			throw new RegistrationException("ui.register.usernameTaken");
+			throw new FormDataException("ui.register.usernameTaken");
 		}
 
 		HashSet<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
@@ -129,7 +133,7 @@ public class UserManagementController {
     		mailSender.send(mailMessage);
     	} catch(MailException e) {
     		LOGGER.error("Unable to send registration eMail to user.", e);
-    		throw new RegistrationException("ui.registration.emailFailed");
+    		throw new FormDataException("ui.registration.emailFailed");
     	}
     	
 		final SimpleMailMessage mailMessage2 = new SimpleMailMessage();
@@ -172,10 +176,10 @@ public class UserManagementController {
 	public Map<String,String> reset(@RequestBody Map<String,String> userCredentials, HttpServletResponse response) {
 		Map<String,String> result = new HashMap<String,String>();
 		
-		final String userName = getFormData(userCredentials, "username", true);
-		final String eMailAddress = getFormData(userCredentials, "email", true);
-		final String firstName = getFormData(userCredentials, "firstname", true);
-		final String zipCode = getFormData(userCredentials, "zip", true);
+		final String userName = StrUtils.getFormData(userCredentials, "username", true, "ui.passwordreset.");
+		final String eMailAddress = StrUtils.getFormData(userCredentials, "email", true, "ui.passwordreset.");
+		final String firstName = StrUtils.getFormData(userCredentials, "firstname", true, "ui.passwordreset.");
+		final String zipCode = StrUtils.getFormData(userCredentials, "zip", true, "ui.passwordreset.");
 		 
 		User userByEMailAddress = userDao.findByEMailAddress(eMailAddress);
 		User userByName = userDao.findByName(userName);
@@ -255,8 +259,8 @@ public class UserManagementController {
 		response.setStatus(404);
 		final ResetPasswordRequest resetPasswordRequest = resetPasswordRequestDao.getByToken(token);
 		if (resetPasswordRequest != null) {
-			final String newPassword = getFormData(password, "password", true);
-			if (newPassword.equals(getFormData(password, "passwordConfirm", true))) {
+			final String newPassword = StrUtils.getFormData(password, "password", true, "ui.passwordactivation.");
+			if (newPassword.equals(StrUtils.getFormData(password, "passwordConfirm", true, "ui.passwordactivation."))) {
 				final Calendar calender = Calendar.getInstance();
 				final Timestamp now = new Timestamp(calender.getTime().getTime());
 				if (now.before(resetPasswordRequest.getExpirationDate())) {
@@ -273,30 +277,13 @@ public class UserManagementController {
 		return;
 	}
 	
-	private String getFormData(Map<String, String> formData,
-			String fieldName, boolean required) {
-		if (required && (!formData.containsKey(fieldName) || formData.get(fieldName).isEmpty())) {
-			throw new RegistrationException("ui.register.fieldMissing." + fieldName);
-		} else {
-			return formData.get(fieldName);
-		}
-	}
-	
 	@ResponseBody
-	@ExceptionHandler(RegistrationException.class)
-	public Map<String,String> handleRequiredFieldException(RegistrationException e, HttpServletResponse response) {
+	@ExceptionHandler(StrUtils.FormDataException.class)
+	public Map<String,String> handleRequiredFieldException(FormDataException e, HttpServletResponse response) {
 		Map<String,String> result = new HashMap<String,String>();
 		result.put("success", "false");
 		result.put("message", e.getMessage());
 		response.setStatus(400);
 		return result;
 	}
-	
-	@SuppressWarnings("serial")
-	public static class RegistrationException extends RuntimeException {
-		public RegistrationException(String message) {
-			super(message);
-		}
-	}
-	
 }
