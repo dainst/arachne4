@@ -28,8 +28,11 @@ public class ContactController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 	
-	@Value("#{config.contactEmail}")
-	private transient String contactEmail;
+	private transient final String contactEmail;
+	
+	public ContactController(final @Value("#{config.contactEmail}") String contactEmail) {
+		this.contactEmail = contactEmail;
+	}
 	
 	/**
 	 * Implements the api endpoint for the contact form.
