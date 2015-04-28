@@ -4,7 +4,7 @@
          {
             "facet_template":{
                "mapping":{
-                  "analyzer":"collation"
+                  "analyzer":"keyword_lowercase"
                },
                "match":"facet*"
             }

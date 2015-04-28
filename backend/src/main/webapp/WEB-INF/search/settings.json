@@ -8,6 +8,10 @@
             "collation" : {
                 "tokenizer" : "keyword",
                 "filter" : ["collation_filter"]
+            },
+            "keyword_lowercase": {
+                "tokenizer" : "keyword",
+                "filter" : ["lowercase"]
             }
         },
         "filter" : {
