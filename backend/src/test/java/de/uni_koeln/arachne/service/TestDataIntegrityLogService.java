@@ -9,6 +9,8 @@ public class TestDataIntegrityLogService {
 
 	private transient DataIntegrityLogService dataIntegrityLogService;
 	
+	private final String newLine = System.lineSeparator();
+	
 	@Before
 	public void setUp() throws Exception {
 		dataIntegrityLogService = new DataIntegrityLogService();
@@ -16,12 +18,15 @@ public class TestDataIntegrityLogService {
 
 	@Test
 	public void testGetSummary() {
-		assertEquals("No warnings.", dataIntegrityLogService.getSummary());
+		assertEquals("Data Integrity Report" + newLine + "---------------------" + newLine 
+				+ "No warnings.", dataIntegrityLogService.getSummary());
 		logTestWarnings();
-		assertEquals("'Test Warning #1.': 5\n"
-				+ "'Test Warning #2.': 3\n"
-				+ "'Test Warning #3.': 2\n"
-				+ "\n"
+		assertEquals("Data Integrity Report" + newLine
+				+ "---------------------" + newLine
+				+ "'Test Warning #1.': 5" + newLine
+				+ "'Test Warning #2.': 3" + newLine
+				+ "'Test Warning #3.': 2" + newLine
+				+ newLine
 				+ "Total warnings: 10"
 				, dataIntegrityLogService.getSummary());
 	}
@@ -30,7 +35,8 @@ public class TestDataIntegrityLogService {
 	public void testClear() {
 		logTestWarnings();
 		dataIntegrityLogService.clear();
-		assertEquals("No warnings.", dataIntegrityLogService.getSummary());
+		assertEquals("Data Integrity Report" + newLine + "---------------------" + newLine 
+				+ "No warnings.", dataIntegrityLogService.getSummary());
 	}
 
 	private void logTestWarnings() {

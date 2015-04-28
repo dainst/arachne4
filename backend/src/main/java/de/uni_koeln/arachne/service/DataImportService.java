@@ -279,8 +279,8 @@ public class DataImportService { // NOPMD
 				esClientUtil.updateSearchIndex();
 				final long elapsedTime = (System.currentTimeMillis() - startTime);
 				final String success = "Import of " + index + " documents finished in " + elapsedTime/1000f/60f/60f + " hours ("
-						+ index/((float)elapsedTime/1000) + " documents per second)." + System.getProperty("line.separator")
-						+ dataIntegrityLogService.getSummary();
+						+ index/((float)elapsedTime/1000) + " documents per second)." + System.lineSeparator()
+						+ System.lineSeparator() + dataIntegrityLogService.getSummary();
 				LOGGER.info(success);
 				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - success", success);
 				contextService.clearCache();

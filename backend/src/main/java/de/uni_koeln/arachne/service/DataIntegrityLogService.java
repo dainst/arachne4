@@ -38,22 +38,24 @@ public class DataIntegrityLogService {
 	 * @return A string list containing the summary.
 	 */
 	public String getSummary() {
-		final String lineSeparator = System.getProperty("line.separator");
-		// magic number is length of "No warnings."
-		final StringBuilder result = new StringBuilder(12); 
+		final String newLine = System.lineSeparator();
+		final StringBuilder result = new StringBuilder("Data Integrity Report")
+				.append(newLine)
+				.append("---------------------")
+				.append(newLine); 
 		final Set<String> uniqueWarnings = getUniqueWarnings();
 		int totalCount = 0;
 		
 		for (final String message : uniqueWarnings) {
 			final int count = getWarningsByMessage(message).size();
-			result.append("'" + message + "': " + count + lineSeparator);
+			result.append("'" + message + "': " + count + newLine);
 			totalCount += count;
 		}
 		
-		if (result.toString().isEmpty()) {
+		if (uniqueWarnings.isEmpty()) {
 			result.append("No warnings.");
 		} else {
-			result.append(lineSeparator);
+			result.append(newLine);
 			result.append("Total warnings: " + totalCount);
 		}
 		
