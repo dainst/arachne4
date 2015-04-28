@@ -359,7 +359,7 @@ public class SearchService {
 		result.addAll(getCategorySpecificFacets(filters, limit));
 		
 		for (final String facetName : defaultFacetList) {
-			result.add(new Aggregation(facetName, facetName, limit));
+			result.add(new Aggregation(facetName, limit));
 		}
 		
 		// TODO look for a more general way to handle dynamic facets
@@ -369,13 +369,13 @@ public class SearchService {
 				isFacetSubkategorieBestandPresent = true;
 				final int level = extractLevelFromFilter(filter);
 				final String name = "facet_subkategoriebestand_level" + (level + 1); 
-				result.add(new Aggregation(name, name, limit));
+				result.add(new Aggregation(name, limit));
 			}
 		}
 		
 		if (filters.containsKey("facet_bestandsname") && !isFacetSubkategorieBestandPresent) {
 			final String name = "facet_subkategoriebestand_level1";
-			result.add(new Aggregation(name, name, limit));
+			result.add(new Aggregation(name, limit));
 		}
 		
 		// aggregations - if more aggregations are used this should perhaps be moved to its own method
@@ -406,7 +406,7 @@ public class SearchService {
 			final Set<String> facets = xmlConfigUtil.getFacetsFromXMLFile(category);
 			for (String facet : facets) {
 				facet = "facet_" + facet;
-				result.add(new Aggregation(facet, facet, limit));
+				result.add(new Aggregation(facet, limit));
 			}
 		}
 		

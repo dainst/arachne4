@@ -14,10 +14,16 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
  */
 public class Aggregation {
 
+	/**
+	 * Possible sort orders.
+	 */
 	public static enum Order {
 		DOC, TERMS
 	}
 	
+	/**
+	 * Supported aggregation types.
+	 */
 	public static enum Type {
 		TERMS, GEOHASH
 	}
@@ -27,17 +33,35 @@ public class Aggregation {
 	
 	public static final String GEO_HASH_GRID_NAME = "agg_geogrid";
 	public static final String GEO_HASH_GRID_FIELD = "places.location";
-		
+	
+	/**
+	 * The name of the aggregation.
+	 */
 	private String name = "";
 	
+	/**
+	 * The field name in the Elasticsearch index to aggregate results for.
+	 */
 	private String field = "";
 	
+	/**
+	 * The aggregations type.
+	 */
 	final private Type type;
 	
+	/**
+	 * The maximum number of results/buckets for this aggregation.
+	 */
 	private int size = 0;
 	
+	/**
+	 * The sort order of the aggregation.
+	 */
 	private Order order = Order.DOC;
 	
+	/**
+	 * The geohash precision of a aggregation of type 'GEOHASH'.
+	 */
 	private int geoHashPrecision = 5;
 	
 	/**
@@ -48,15 +72,20 @@ public class Aggregation {
 		this.type = Type.TERMS;
 	}
 	
-	public Aggregation(final String name, final String field, final int size) {
+	/**
+	 * Convenience constructor for terms aggregations where name and field are equal and you can set the size. 
+	 * @param name The name of the aggregation which must also be the field name in the elastic search index.
+	 * @param size The maximum number of returned aggregation results.
+	 */
+	public Aggregation(final String name, final int size) {
 		type = Type.TERMS;
 		this.name = name;
-		this.field = field;
+		this.field = name;
 		this.size = size;
 	}
 	
 	/**
-	 * Convenience constructor for terms aggregations where name and field are equal and you can set the order. 
+	 * Convenience constructor for terms aggregations where name and field are equal and you can set size and order. 
 	 * @param name The name of the aggregation which must also be the field name in the elastic search index.
 	 * @param size The maximum number of returned aggregation results.
 	 * @param order The order in which the result values are sorted.
@@ -69,23 +98,28 @@ public class Aggregation {
 		this.order = order;
 	}
 	
+	/**
+	 * Constructor to set all non type specific fields except.
+	 * @param type The type of the aggregation (TERMS or GEOHASH).
+	 * @param name The name of the aggregation which must also be the field name in the elastic search index.
+	 * @param field The field in the Elasticseasrch index this aggregation works on.
+	 * @param size The maximum number of returned aggregation results.
+	 */
 	public Aggregation(final Type type, final String name, final String field, final int size) {
-		this.type = type;
+		this.type = Type.TERMS;
 		this.name = name;
 		this.field = field;
 		this.size = size;
-	}
-	
-	public Aggregation(final Type type, final String name, final String field, final int size, 
-			final Order order) {
-		this.type = type;
-		this.name = name;
-		this.field = field;
-		this.size = size;
-		this.order = order;
 	}
 
+	/**
+	 * Builds an aggregation that is usable by the Elasticsearch API from the current values. If <code>field</code> is 
+	 * not set <code>name</code> is used instead. 
+	 * @return
+	 */
 	public AbstractAggregationBuilder build() {
+		String field = this.field;
+		field = "".equals(field) ? name : field;
 		switch (type) {
 		case TERMS:
 			return AggregationBuilders.terms(name).field(field).order(getESOrder()).size(size);
@@ -114,7 +148,7 @@ public class Aggregation {
 	}
 
 	/**
-	 * @return the field
+	 * @return the field.
 	 */
 	public String getField() {
 		return field;
@@ -162,6 +196,11 @@ public class Aggregation {
 		return type;
 	}
 	
+	/**
+	 * Returns a Elasticsearch API usable search order instance for terms aggregations based on the value of 
+	 * <code>order</code>.
+	 * @return The current search order.
+	 */
 	private org.elasticsearch.search.aggregations.bucket.terms.Terms.Order getESOrder() {
 		switch (order) {
 		case TERMS:
