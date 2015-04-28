@@ -49,7 +49,7 @@ public class ContactController {
 			, produces="application/json;charset=UTF-8")
 	public void changePasswordAfterResetRequest(@RequestBody Map<String,String> contactInformation
 			, final HttpServletResponse response) {
-		System.out.println(contactEmail);
+		
 		final String name = StrUtils.getFormData(contactInformation, "name", true, "ui.contact.");
 		final String eMailAddress = StrUtils.getFormData(contactInformation, "email", true, "ui.contact.");
 		final String subject = StrUtils.getFormData(contactInformation, "subject", true, "ui.contact.");
