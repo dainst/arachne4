@@ -1,121 +1,122 @@
-{
-   "entity":{
-      "dynamic_templates":[
-         {
-            "facet_template":{
-               "mapping":{
-                  "analyzer":"keyword_lowercase"
-               },
-               "match":"facet*"
-            }
-         },
-         {
-            "all_template":{
-              "mapping": {
-                "type": "string",
-                "index_options" : "positions",
-                "copy_to" : "searchableContent"
-              },
-              "match": "*",
-              "match_mapping_type" : "string"
-            }
-         }
-      ],
-      "properties":{
-         "datasetGroup":{
-            "type":"string",
-            "index" : "not_analyzed"
-         },
-         "entityId":{
-            "type":"long"
-         },
-         "internalId":{
-            "type":"long"
-         },
-         "lastModified":{
-            "type":"long"
-         },
-         "subtitle":{
-            "type":"string",
-            "fields": {
-                "sort": { 
-                    "type":     "string",
-                    "analyzer": "collation"
+{  
+    "entity":{  
+        "dynamic_templates":[  
+            {  
+                "facet_template":{  
+                    "mapping":{  
+                        "type":"string",
+                        "index":"not_analyzed"
+                    },
+                    "match":"facet*"
+                }
+            },
+            {  
+                "all_template":{  
+                    "mapping":{  
+                        "type":"string",
+                        "index_options":"positions",
+                        "copy_to":"searchableContent"
+                    },
+                    "match":"*",
+                    "match_mapping_type":"string"
                 }
             }
-         },
-         "thumbnailId":{
-            "type":"long"
-         },
-         "title":{
-            "type":"string",
-            "fields": {
-                "sort": { 
-                    "type": "string",
-                    "index": "not_analyzed"
+        ],
+        "properties":{  
+            "datasetGroup":{  
+                "type":"string",
+                "index":"not_analyzed"
+            },
+            "entityId":{  
+                "type":"long"
+            },
+            "internalId":{  
+                "type":"long"
+            },
+            "lastModified":{  
+                "type":"long"
+            },
+            "subtitle":{  
+                "type":"string",
+                "fields":{  
+                    "sort":{  
+                        "type":"string",
+                        "analyzer":"collation"
+                    }
                 }
-            }
-         },
-         "type":{
-            "type":"string",
-            "index" : "not_analyzed"
-         },
-         "images": {
-            "properties": {
-                "imageId": {
-                    "type": "long"
-                },
-                "sourceContext": {
-                    "type": "string"
-                },
-                "sourceRecordId": {
-                    "type": "long"
-                },
-                "imageSubtitle": {
-                    "type": "string"
+            },
+            "thumbnailId":{  
+                "type":"long"
+            },
+            "title":{  
+                "type":"string",
+                "fields":{  
+                    "sort":{  
+                        "type":"string",
+                        "index":"not_analyzed"
+                    }
                 }
-            }
-         },
-         "places": {
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "relation": {
-                    "type": "string"
-                },
-                "location": {
-                    "type": "geo_point",
-                    "lat_lon": true,
-                    "geohash_prefix": true,
-                    "normalize": false,
-                    "validate": true
-                },
-                "gazetteerId" : {
-                    "type": "long"
+            },
+            "type":{  
+                "type":"string",
+                "index":"not_analyzed"
+            },
+            "images":{  
+                "properties":{  
+                    "imageId":{  
+                        "type":"long"
+                    },
+                    "sourceContext":{  
+                        "type":"string"
+                    },
+                    "sourceRecordId":{  
+                        "type":"long"
+                    },
+                    "imageSubtitle":{  
+                        "type":"string"
+                    }
                 }
+            },
+            "places":{  
+                "properties":{  
+                    "name":{  
+                        "type":"string"
+                    },
+                    "relation":{  
+                        "type":"string"
+                    },
+                    "location":{  
+                        "type":"geo_point",
+                        "lat_lon":true,
+                        "geohash_prefix":true,
+                        "normalize":false,
+                        "validate":true
+                    },
+                    "gazetteerId":{  
+                        "type":"long"
+                    }
+                }
+            },
+            "dates":{  
+                "properties":{  
+                    "label":{  
+                        "type":"string"
+                    },
+                    "relation":{  
+                        "type":"string"
+                    },
+                    "date":{  
+                        "type":"date"
+                    }
+                }
+            },
+            "searchableContent":{  
+                "type":"string",
+                "omit_norms":true
+            },
+            "boost":{  
+                "type":"double"
             }
-         },
-         "dates": {
-         	"properties": {
-         		"label": {
-         			"type": "string"
-         		},
-         		"relation": {
-         			"type": "string"
-         		},
-         		"date": {
-         			"type": "date"
-         		}
-         	}
-         },
-         "searchableContent":{
-         	"type":"string",
-         	"omit_norms": true
-         },
-         "boost":{
-            "type": "double"
-         }
-      }
-   }
+        }
+    }
 }
