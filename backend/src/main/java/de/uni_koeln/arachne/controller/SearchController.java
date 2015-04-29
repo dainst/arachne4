@@ -190,12 +190,19 @@ public class SearchController {
 	}
 	
 	/**
-	 * Returns a list of all distinct values of the given facet. The list is ordered alphabetically.
+	 * Returns a list of all distinct values of the given facet. The list is ordered alphabetically. A sublist can be 
+	 * requested with the 'group' HTTP parameter. Supported values are:<br>
+	 * '<' for all values with initial letters lower than numeric (actually lower than '0').<br>
+	 * '$' for all values with a numeric initial letter.<br>
+	 * 'a'..'z' for all values starting with the corresponding letter.<br>
+	 * '>' for all values with intial letter greater than alphabetic (actually greater than 'zzz').<br>   
 	 * @param facetName The name of the facet to get the values for.
+	 * @param group A single char indicating which group to retrieve.
 	 * @return The ordered list of values as JSON array.
 	 */
 	@RequestMapping(value="/index/{facetName}", method=RequestMethod.GET, produces="application/json;charset=UTF-8")
-	public @ResponseBody ResponseEntity<?> handleIndexRequest(@PathVariable("facetName") final String facetName) {
+	public @ResponseBody ResponseEntity<?> handleIndexRequest(@PathVariable("facetName") final String facetName
+			, @RequestParam(value = "group", required = false) Character groupMarker) {
 		
 		if (facetName.startsWith("facet_") || facetName.startsWith("agg_")) {
 			final SearchRequestBuilder searchRequestBuilder = searchService.buildIndexSearchRequest(facetName);
@@ -206,7 +213,7 @@ public class SearchController {
 			if (searchResult.getStatus() != RestStatus.OK) {
 				return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
 			} else {
-				final List<String> result = new ArrayList<String>();
+				List<String> result = new ArrayList<String>();
 				final SearchResultFacet facet = searchResult.getFacets().get(0);
 				final List<SearchResultFacetValue> values = facet.getValues();
 				
@@ -215,11 +222,69 @@ public class SearchController {
 				}
 				
 				// sort alphabetically
-				Collections.sort(result, Collator.getInstance());
+				final Collator collator = Collator.getInstance();
+				Collections.sort(result, collator);
+				
+				if (groupMarker != null) {
+					result = getSubList(result, groupMarker);
+				}
 				
 				return ResponseEntity.ok().body(result);
 			}
 		}
 		return ResponseEntity.badRequest().build();
+	}
+
+	/**
+	 * Generates a sublist from the given list. The sublist to get is defined by the marker.
+	 * @param inputList The list to get a sublist from.
+	 * @param marker A marker indicating which sublist to generate.
+	 * @return The sublist.
+	 */
+	private List<String> getSubList(final List<String> inputList, final char marker) {
+		final List<String> result = new ArrayList<String>();
+		final Collator collator = Collator.getInstance();
+		
+		if (marker == '<' || marker == '$' || (Character.isLetter(marker) && Character.isLowerCase(marker))) {
+			String lowerLimit = "";
+			String upperLimit = "";
+
+			switch (marker) {
+			case '<':
+				upperLimit = "0";
+				break;
+
+			case '$':
+				lowerLimit = "0";
+				upperLimit = "a";
+				break;
+				
+			case 'z':
+				lowerLimit = Character.toString(marker);
+				upperLimit = "zzz";
+				break;
+				
+			default:
+				lowerLimit = Character.toString(marker);
+				upperLimit = Character.toString((char)(marker + 1));
+				break;
+			}
+
+			for (final String value : inputList) {
+				if (collator.compare(value, upperLimit) < 0 && collator.compare(value, lowerLimit) >= 0) {
+					result.add(value);
+				}
+			}
+		} else {
+			if (marker == '>') {
+				for (final String value : inputList) {
+					if (collator.compare(value, "zzz") > 0) {
+						result.add(value);
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 }
