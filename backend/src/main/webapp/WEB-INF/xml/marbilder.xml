@@ -6,6 +6,8 @@
   <subtables>
     <subtable connectFieldParent="DateinameMarbilder" connectFieldSubTable="DateinameMarbilderbestand">marbilderbestand</subtable>
     <subtable connectFieldParent="DateinameMarbilder" connectFieldSubTable="DateinameMarbilderinventar">marbilderinventar</subtable>
+    <subtable connectFieldParent="DateinameMarbilder" connectFieldSubTable="DateinameRwwa">marbilderrwwa</subtable>
+    <subtable connectFieldParent="DateinameMarbilder" connectFieldSubTable="DateinameOppenheim">marbilderoppenheim</subtable>
   </subtables>
   <display>
     <title>
@@ -115,6 +117,43 @@
           <field datasource="marbilderbestand.ArbeitsnotizMARBilderBestand" prefix="Interne Arbeitsnotiz: "/>
           <field datasource="marbilderbestand.DateinameMarbilder_alt" prefix="Alter Dateiname: "/>
         </section>
+        <section labelKey="Oppenheim Felder">
+          <field datasource="marbilderoppenheim.BandOppenheim" prefix="Band: "/>
+          <field datasource="marbilderoppenheim.BandsignaturAlt" prefix="Alte Bandsignatur: "/>
+          <field datasource="marbilderoppenheim.BandsignaturNeu" prefix="Neue Bandsignatur: "/>
+          <field datasource="marbilderoppenheim.DarstellungMarbilderOppenheim" prefix="Darstellung: "/>
+          <field datasource="marbilderoppenheim.Fotodatum" prefix="Fotodatum: "/>
+          <field datasource="marbilderoppenheim.FotografOppenheim" prefix="Fotograf:"/>
+          <field datasource="marbilderoppenheim.Fotonummer" prefix="Fotonummer: "/>
+          <field datasource="marbilderoppenheim.KurzbeschreibungMarbilderoppenheim" prefix="Beschreibung: "/>
+          <field datasource="marbilderoppenheim.Museum" prefix="Museum: "/>
+          <field datasource="marbilderoppenheim.Negativ" prefix="Negativ: "/>
+          <field datasource="marbilderoppenheim.OrtOppenheim" prefix="Ort: "/>
+          <field datasource="marbilderoppenheim.Seitenzahl" prefix="Seitenzahl: "/>
+          <field datasource="marbilderoppenheim.Staat_Gegend" prefix="Staat/Gegend: "/>
+          <field datasource="marbilderoppenheim.Standort" prefix="Standort: "/>
+          <field datasource="marbilderoppenheim.SignaturSeite" prefix="Seitensignatur: "/>
+        </section>
+        <section labelKey="RWWA Felder">
+          <field datasource="marbilderrwwa.Klassifikation" prefix="Klassifikation: "/>
+          <field datasource="marbilderrwwa.KurzbeschreibungMarbilderRwwa" prefix="Beschreibung: "/>
+          <field datasource="marbilderrwwa.Signatur" prefix="Signatur: "/>
+          <field datasource="marbilderrwwa.AltSignatur" prefix="Alte Signatur: "/>
+          <field datasource="marbilderrwwa.AltSignatur2" prefix="Alte Signatur 2: "/>
+          <field datasource="marbilderrwwa.Anlass" prefix="Anlass:"/>
+          <field datasource="marbilderrwwa.Bestand" prefix="Bestand: "/>
+          <field datasource="marbilderrwwa.NrFotofinder" prefix="Fotofinder Nr.: "/>
+          <field datasource="marbilderrwwa.Format" prefix="Format: "/>
+          <field datasource="marbilderrwwa.Fotograf" prefix="Fotograf: "/>
+          <field datasource="marbilderrwwa.Laufzeit" prefix="Laufzeit: "/>
+          <field datasource="marbilderrwwa.Laufzeitbeschreibung" prefix="Laufzeitbeschreibung: "/>
+          <field datasource="marbilderrwwa.LfdNr" prefix="Laufende Nr.: "/>
+          <field datasource="marbilderrwwa.Motiv_alphabetisch" prefix="Motiv: "/>
+          <field datasource="marbilderrwwa.Negativnummer" prefix="Negativnummer: "/>
+          <field datasource="marbilderrwwa.Typ" prefix="Typ: "/>
+          <field datasource="marbilderrwwa.Inhalt" prefix="Inhalt: "/>
+          <field datasource="marbilderrwwa.Technik" prefix="Technik: "/>
+        </section>
         <section labelKey="Pfad" minGroupId="600">
           <field datasource="marbilder.Pfad"/>
         </section>
@@ -129,6 +168,8 @@
     </facet>
     <facet name="bestandsname" labelKey="Bestandsname">
       <field datasource="marbilderbestand.Bestandsname"/>
+      <field datasource="marbilderoppenheim.Facette"/>
+      <field datasource="marbilderrwwa.Facette"/>
     </facet>
   </facets>
 </category>
