@@ -87,11 +87,12 @@ public class SearchService {
 	@Autowired
 	public SearchService(final @Value("#{config.esTextSearchFields.split(',')}") List<String> textSearchFields
 			, final @Value("#{config.esNumericSearchFields.split(',')}") List<String> numericSearchFields
-			, final @Value("#{config.esSortFields}.split(',')}") List<String> sortFields
+			, final @Value("#{config.esSortFields.split(',')}") List<String> sortFields
 			, final @Value("#{config.esDefaultFacets.split(',')}") List<String> defaultFacetList) {
 		
 		searchFields = new SearchFieldList(textSearchFields, numericSearchFields);
 		this.sortFields = sortFields;
+		System.out.println(sortFields);
 		this.defaultFacetList = defaultFacetList;
 	}
 	
@@ -227,12 +228,10 @@ public class SearchService {
 	 * @return The search result.
 	 */
 	public SearchResult executeSearchRequest(final SearchRequestBuilder searchRequestBuilder, final int size,
-			final int offset,	final Multimap<String, String> filters) {
+			final int offset, final Multimap<String, String> filters) {
 		
 		SearchResponse searchResponse = null;
-		
-		// check search params
-		
+						
 		try {
 			searchResponse = searchRequestBuilder.execute().actionGet();
 		} catch (SearchPhaseExecutionException e) {
