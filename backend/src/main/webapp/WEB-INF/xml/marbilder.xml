@@ -168,7 +168,11 @@
     </facet>
     <facet name="bestandsname" labelKey="Bestandsname">
       <field datasource="marbilderbestand.Bestandsname"/>
+    </facet>
+    <facet name="bestandsname" labelKey="Bestandsname">  
       <field datasource="marbilderoppenheim.Facette"/>
+    </facet>
+    <facet name="bestandsname" labelKey="Bestandsname">  
       <field datasource="marbilderrwwa.Facette"/>
     </facet>
   </facets>
