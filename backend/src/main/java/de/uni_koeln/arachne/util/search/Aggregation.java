@@ -106,7 +106,7 @@ public class Aggregation {
 	 * @param size The maximum number of returned aggregation results.
 	 */
 	public Aggregation(final Type type, final String name, final String field, final int size) {
-		this.type = Type.TERMS;
+		this.type = type;
 		this.name = name;
 		this.field = field;
 		this.size = size;
