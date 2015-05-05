@@ -1,112 +1,36 @@
 package de.uni_koeln.arachne.util.search;
 
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 
 /**
- * Class to hold all information about a facet like name, type, field to work on, etc.
- * <br>
- * For hashCode and equals only name, type and field are considered for equality as they identify a facet. The other 
- * fields of this class are parameters for the facet execution.
- * 
+ * Base Class for elasticsearch facets/aggregations.
+ *  
  * @author Reimar Grabowski
  */
-public class Aggregation {
+public abstract class Aggregation {
 
-	/**
-	 * Possible sort orders.
-	 */
-	public static enum Order {
-		DOC, TERMS
-	}
-	
-	/**
-	 * Supported aggregation types.
-	 */
-	public static enum Type {
-		TERMS, GEOHASH
-	}
-	
-	public static final String CATEGORY_FACET = "facet_kategorie";
-	public static final String RELATION_FACET = "facet_ortsangabe";
-	
-	public static final String GEO_HASH_GRID_NAME = "agg_geogrid";
-	public static final String GEO_HASH_GRID_FIELD = "places.location";
-	
 	/**
 	 * The name of the aggregation.
 	 */
-	private String name = "";
+	protected String name = "";
 	
 	/**
 	 * The field name in the Elasticsearch index to aggregate results for.
 	 */
-	private String field = "";
-	
-	/**
-	 * The aggregations type.
-	 */
-	final private Type type;
+	protected String field = "";
 	
 	/**
 	 * The maximum number of results/buckets for this aggregation.
 	 */
-	private int size = 0;
+	protected int size = 0;
 	
 	/**
-	 * The sort order of the aggregation.
-	 */
-	private Order order = Order.DOC;
-	
-	/**
-	 * The geohash precision of a aggregation of type 'GEOHASH'.
-	 */
-	private int geoHashPrecision = 5;
-	
-	/**
-	 * Per default a terms aggregation is constructed. 
-	 * @param builderType The ES AggregationsBuilder class that is used to generate the aggregation.
-	 */
-	public Aggregation() {
-		this.type = Type.TERMS;
-	}
-	
-	/**
-	 * Convenience constructor for terms aggregations where name and field are equal and you can set the size. 
-	 * @param name The name of the aggregation which must also be the field name in the elastic search index.
-	 * @param size The maximum number of returned aggregation results.
-	 */
-	public Aggregation(final String name, final int size) {
-		type = Type.TERMS;
-		this.name = name;
-		this.field = name;
-		this.size = size;
-	}
-	
-	/**
-	 * Convenience constructor for terms aggregations where name and field are equal and you can set size and order. 
-	 * @param name The name of the aggregation which must also be the field name in the elastic search index.
-	 * @param size The maximum number of returned aggregation results.
-	 * @param order The order in which the result values are sorted.
-	 */
-	public Aggregation(final String name, final int size, final Order order) {
-		type = Type.TERMS;
-		this.name = name;
-		this.field = name;
-		this.size = size;
-		this.order = order;
-	}
-	
-	/**
-	 * Constructor to set all non type specific fields except.
-	 * @param type The type of the aggregation (TERMS or GEOHASH).
+	 * Constructor to set all fields.
 	 * @param name The name of the aggregation which must also be the field name in the elastic search index.
 	 * @param field The field in the Elasticseasrch index this aggregation works on.
 	 * @param size The maximum number of returned aggregation results.
 	 */
-	public Aggregation(final Type type, final String name, final String field, final int size) {
-		this.type = type;
+	public Aggregation(final String name, final String field, final int size) {
 		this.name = name;
 		this.field = field;
 		this.size = size;
@@ -117,21 +41,7 @@ public class Aggregation {
 	 * not set <code>name</code> is used instead. 
 	 * @return
 	 */
-	public AbstractAggregationBuilder build() {
-		String field = this.field;
-		field = "".equals(field) ? name : field;
-		switch (type) {
-		case TERMS:
-			return AggregationBuilders.terms(name).field(field).order(getESOrder()).size(size);
-			
-		case GEOHASH:
-			return AggregationBuilders.geohashGrid(name).field(field).precision(geoHashPrecision).size(size);
-			
-		default:
-			break;
-		}
-		return null;
-	}
+	public abstract AbstractAggregationBuilder build();
 	
 	/**
 	 * @return the name
@@ -175,41 +85,8 @@ public class Aggregation {
 		this.size = size;
 	}
 
-	/**
-	 * @return the order
-	 */
-	public Order getOrder() {
-		return order;
-	}
-
-	/**
-	 * @param order the order to set
-	 */
-	public void setOrder(Order order) {
-		this.order = order;
-	}
-
-	/**
-	 * @return the type
-	 */
-	public Type getType() {
-		return type;
-	}
+	// For hashCode and equals only name, type and field are considered for equality as they identify a facet.
 	
-	/**
-	 * Returns a Elasticsearch API usable search order instance for terms aggregations based on the value of 
-	 * <code>order</code>.
-	 * @return The current search order.
-	 */
-	private org.elasticsearch.search.aggregations.bucket.terms.Terms.Order getESOrder() {
-		switch (order) {
-		case TERMS:
-			return Terms.Order.term(true);
-		default:
-			return Terms.Order.count(false);
-		}
-	}
-
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -219,7 +96,6 @@ public class Aggregation {
 		int result = 1;
 		result = prime * result + ((field == null) ? 0 : field.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 
@@ -250,9 +126,6 @@ public class Aggregation {
 				return false;
 			}
 		} else if (!name.equals(other.name)) {
-			return false;
-		}
-		if (type != other.type) {
 			return false;
 		}
 		return true;

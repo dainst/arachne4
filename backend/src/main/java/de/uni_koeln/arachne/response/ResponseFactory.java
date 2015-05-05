@@ -32,7 +32,7 @@ import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
-import de.uni_koeln.arachne.util.search.Aggregation;
+import de.uni_koeln.arachne.util.search.TermsAggregation;
 
 /**
  * Factory class to create the different kinds of responses from a dataset.
@@ -480,7 +480,7 @@ public class ResponseFactory {
 			}
 		}
 		if (relations.size() > 0) {
-			json.set(Aggregation.RELATION_FACET, relations);
+			json.set(TermsAggregation.RELATION_FACET, relations);
 		}
 				
 		// add all places with location information as "facet_geo"

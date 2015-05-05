@@ -28,7 +28,6 @@ import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.index.query.functionscore.script.ScriptScoreFunctionBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
@@ -50,7 +49,9 @@ import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.network.ESClientUtil;
 import de.uni_koeln.arachne.util.search.Aggregation;
+import de.uni_koeln.arachne.util.search.GeoHashGridAggregation;
 import de.uni_koeln.arachne.util.search.SearchFieldList;
+import de.uni_koeln.arachne.util.search.TermsAggregation;
 
 /**
  * This class implements all search functionality.
@@ -92,7 +93,6 @@ public class SearchService {
 		
 		searchFields = new SearchFieldList(textSearchFields, numericSearchFields);
 		this.sortFields = sortFields;
-		System.out.println(sortFields);
 		this.defaultFacetList = defaultFacetList;
 	}
 	
@@ -164,7 +164,7 @@ public class SearchService {
 				.setSize(0);
 		
 		final Set<Aggregation> aggregations = new LinkedHashSet<Aggregation>();
-		aggregations.add(new Aggregation(facetName, 0, Aggregation.Order.TERMS));
+		aggregations.add(new TermsAggregation(facetName, 0, TermsAggregation.Order.TERMS));
 		addFacets(aggregations, result);
 		
 		return result;
@@ -180,19 +180,6 @@ public class SearchService {
 		for (final Aggregation aggregation: facetList) {
 			searchRequestBuilder.addAggregation(aggregation.build());
 		}
-	}
-	
-	/**
-	 * Adds the geohash grid facet to the search request and the facet list.
-	 * @param facetList A string list containing the facet names that the geo hash grid name will be addded to.
-	 * @param searchRequestBuilder The outgoing search request that gets the facet added.
-	 */
-	public void addGeoHashGridFacet(final int precision, final List<String> facetList
-			, final SearchRequestBuilder searchRequestBuilder) {
-		
-		searchRequestBuilder.addAggregation(AggregationBuilders.geohashGrid(Aggregation.GEO_HASH_GRID_NAME)
-				.field("places.location").precision(precision).size(0));
-		facetList.add(Aggregation.GEO_HASH_GRID_NAME);
 	}
 	
 	/**
@@ -273,7 +260,7 @@ public class SearchService {
 			final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
 			MultiBucketsAggregation aggregator = (MultiBucketsAggregation)aggregations.get(aggregationName);
 			// TODO find a better way to convert facet values
-			if (aggregationName.equals(Aggregation.GEO_HASH_GRID_NAME)) {
+			if (aggregationName.equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
 				for (final MultiBucketsAggregation.Bucket bucket: aggregator.getBuckets()) {
 					final LatLong coord = GeoHash.decodeHash(bucket.getKey());
 					facetMap.put("[" + coord.getLat() + ',' + coord.getLon() + ']', bucket.getDocCount());
@@ -310,7 +297,7 @@ public class SearchService {
 				final String value = filterValue.substring(splitIndex+1).replace("\"", "");
 				result.put(name, value);
 
-				if (filterValue.startsWith(Aggregation.GEO_HASH_GRID_NAME)) {
+				if (filterValue.startsWith(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
 					final String[] coordsAsStringArray = value.substring(1, value.length() - 1).split(",");
 					final String geoHash = GeoHash.encodeHash(
 							Double.parseDouble(coordsAsStringArray[0]),
@@ -358,7 +345,7 @@ public class SearchService {
 		result.addAll(getCategorySpecificFacets(filters, limit));
 		
 		for (final String facetName : defaultFacetList) {
-			result.add(new Aggregation(facetName, limit));
+			result.add(new TermsAggregation(facetName, limit));
 		}
 		
 		// TODO look for a more general way to handle dynamic facets
@@ -368,21 +355,21 @@ public class SearchService {
 				isFacetSubkategorieBestandPresent = true;
 				final int level = extractLevelFromFilter(filter);
 				final String name = "facet_subkategoriebestand_level" + (level + 1); 
-				result.add(new Aggregation(name, limit));
+				result.add(new TermsAggregation(name, limit));
 			}
 		}
 		
 		if (filters.containsKey("facet_bestandsname") && !isFacetSubkategorieBestandPresent) {
 			final String name = "facet_subkategoriebestand_level1";
-			result.add(new Aggregation(name, limit));
+			result.add(new TermsAggregation(name, limit));
 		}
 		
 		// aggregations - if more aggregations are used this should perhaps be moved to its own method
 		
 		// geo grid
 		if (geoHashPrecision > 0) {
-			result.add(new Aggregation(Aggregation.Type.GEOHASH, Aggregation.GEO_HASH_GRID_NAME
-					, Aggregation.GEO_HASH_GRID_FIELD, 0));
+			result.add(new GeoHashGridAggregation(GeoHashGridAggregation.GEO_HASH_GRID_NAME
+					, GeoHashGridAggregation.GEO_HASH_GRID_FIELD, geoHashPrecision, 0));
 		}
 		
 		return result;
@@ -398,14 +385,14 @@ public class SearchService {
 	private Set<Aggregation> getCategorySpecificFacets(final Multimap<String, String> filters, final int limit) {
 		
 		final Set<Aggregation> result = new LinkedHashSet<Aggregation>();
-		Collection<String> categories = filters.get(Aggregation.CATEGORY_FACET);
+		Collection<String> categories = filters.get(TermsAggregation.CATEGORY_FACET);
 		
 		if (!filters.isEmpty() && !categories.isEmpty()) {
 			final String category = ts.categoryLookUp(categories.iterator().next());		
 			final Set<String> facets = xmlConfigUtil.getFacetsFromXMLFile(category);
 			for (String facet : facets) {
 				facet = "facet_" + facet;
-				result.add(new Aggregation(facet, limit));
+				result.add(new TermsAggregation(facet, limit));
 			}
 		}
 		
@@ -433,10 +420,10 @@ public class SearchService {
 		if (filters != null && !filters.isEmpty()) {
 			for (final Map.Entry<String, Collection<String>> filter: filters.asMap().entrySet()) {
 				// TODO find a way to unify this
-				if (filter.getKey().equals(Aggregation.GEO_HASH_GRID_NAME)) {
+				if (filter.getKey().equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
 					final String filterValue = filter.getValue().iterator().next();
 					facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(
-							FilterBuilders.geoHashCellFilter(Aggregation.GEO_HASH_GRID_FIELD, filterValue));
+							FilterBuilders.geoHashCellFilter(GeoHashGridAggregation.GEO_HASH_GRID_FIELD, filterValue));
 				} else {
 					facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(
 							FilterBuilders.termFilter(filter.getKey(), filter.getValue()));
