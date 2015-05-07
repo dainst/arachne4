@@ -295,8 +295,7 @@ public class SearchService {
 				final int splitIndex = filterValue.indexOf(':');
 				final String name = filterValue.substring(0, splitIndex);
 				final String value = filterValue.substring(splitIndex+1).replace("\"", "");
-				result.put(name, value);
-
+				
 				if (filterValue.startsWith(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
 					final String[] coordsAsStringArray = value.substring(1, value.length() - 1).split(",");
 					final String geoHash = GeoHash.encodeHash(
@@ -304,6 +303,8 @@ public class SearchService {
 							Double.parseDouble(coordsAsStringArray[1]),
 							geoHashPrecision);
 					result.put(name, geoHash);
+				} else {
+					result.put(name, value);
 				}
 			}
 			// keep only highest level of "facet_subkategoriebestand_level"
