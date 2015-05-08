@@ -32,6 +32,7 @@ import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.service.SearchService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.search.SearchParameters;
 
 /**
  * Project-specific Controller, handles Ceramalex-specific requests.

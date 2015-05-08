@@ -41,7 +41,6 @@ import com.github.davidmoten.geo.LatLong;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
-import de.uni_koeln.arachne.controller.SearchParameters;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
@@ -51,6 +50,7 @@ import de.uni_koeln.arachne.util.network.ESClientUtil;
 import de.uni_koeln.arachne.util.search.Aggregation;
 import de.uni_koeln.arachne.util.search.GeoHashGridAggregation;
 import de.uni_koeln.arachne.util.search.SearchFieldList;
+import de.uni_koeln.arachne.util.search.SearchParameters;
 import de.uni_koeln.arachne.util.search.TermsAggregation;
 
 /**

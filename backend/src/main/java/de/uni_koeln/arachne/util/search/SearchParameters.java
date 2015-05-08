@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.controller;
+package de.uni_koeln.arachne.util.search;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

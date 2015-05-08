@@ -26,6 +26,7 @@ import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
 import de.uni_koeln.arachne.service.SearchService;
+import de.uni_koeln.arachne.util.search.SearchParameters;
 
 /**
  * Handles HTTP search requests.
