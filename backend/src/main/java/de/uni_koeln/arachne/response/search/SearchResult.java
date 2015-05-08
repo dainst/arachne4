@@ -3,10 +3,12 @@ package de.uni_koeln.arachne.response.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.print.attribute.HashAttributeSet;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.elasticsearch.rest.RestStatus;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -71,6 +73,14 @@ public class SearchResult {
 		this.entities = entities;
 	}
 
+	@JsonIgnore
+	public int facetSize() {
+		if (facets != null && !facets.isEmpty()) {
+			return facets.size();
+		}
+		return 0;
+	}
+	
 	/**
 	 * Getter for the <code>RestStatus</code> of the search request.
 	 * @return The status.

@@ -62,12 +62,12 @@ public class SearchController {
 	 * <br>
 	 * will be bound to the array like this:
 	 * <br>
-	 * filterValues[0] =  facet_aufbewahrungsort:"Westgriechenland"
+	 * filterValues[0] = facet_aufbewahrungsort:"Westgriechenland"
 	 * filterValues[1] = Griechendland
 	 * <br>
 	 * instead of the correct way
 	 * <br>
-	 * filterValues[0] =  facet_aufbewahrungsort:"Westgriechenland, Griechendland"
+	 * filterValues[0] = facet_aufbewahrungsort:"Westgriechenland, Griechendland"
 	 *   
 	 * @param binder A Spring <code>WebDataBinder</code> to register a custom editor on.
 	 */
@@ -210,10 +210,12 @@ public class SearchController {
 			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
 					, 0, 0, null);
 
-			if (searchResult.getStatus() != RestStatus.OK) {
-				return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
-			} else {
+			if (searchResult.getStatus() == RestStatus.OK) {
+				if (searchResult.facetSize() != 1) {
+					return ResponseEntity.badRequest().build();
+				}
 				List<String> result = new ArrayList<String>();
+				
 				final SearchResultFacet facet = searchResult.getFacets().get(0);
 				final List<SearchResultFacetValue> values = facet.getValues();
 				
@@ -230,6 +232,8 @@ public class SearchController {
 				}
 				
 				return ResponseEntity.ok().body(result);
+			} else {
+				return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
 			}
 		}
 		return ResponseEntity.badRequest().build();
