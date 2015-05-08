@@ -8,15 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import de.uni_koeln.arachne.service.MailService;
 import de.uni_koeln.arachne.util.StrUtils;
 
 /**
@@ -28,6 +26,9 @@ import de.uni_koeln.arachne.util.StrUtils;
 public class ContactController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
+	
+	@Autowired
+	private transient MailService mailService;
 	
 	private transient final String contactEmail;
 	
@@ -53,22 +54,12 @@ public class ContactController {
 		final String name = StrUtils.getFormData(contactInformation, "name", true, "ui.contact.");
 		final String eMailAddress = StrUtils.getFormData(contactInformation, "email", true, "ui.contact.");
 		final String subject = StrUtils.getFormData(contactInformation, "subject", true, "ui.contact.");
-		final String message = StrUtils.getFormData(contactInformation, "message", true, "ui.contact.");
+		final String messageBody = StrUtils.getFormData(contactInformation, "message", true, "ui.contact.");
 		
-		final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		mailSender.setHost("smtp.uni-koeln.de");
-
-		final SimpleMailMessage userMail = new SimpleMailMessage();
-		userMail.setFrom("arachne@uni-koeln.de");
-		userMail.setTo(contactEmail);
-		userMail.setReplyTo(name + "<" + eMailAddress + ">");
-		userMail.setSubject("[Arachne4 via Kontaktformular] " + subject);
-		userMail.setText(message);
-		
-		try {
-			mailSender.send(userMail);
-		} catch(MailException e) {
-			LOGGER.error("Unable to send contact form eMail. ", e);
+		final String replyTo = name + "<" + eMailAddress + ">";
+				
+		if (!mailService.sendMail(contactEmail, replyTo, "[Arachne4 via Kontaktformular] " + subject, messageBody)) {
+			LOGGER.error("Unable to send contact form eMail.");
 			response.setStatus(500);
 			return;
 		}

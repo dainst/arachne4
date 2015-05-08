@@ -44,6 +44,18 @@ public class MailService {
 	 * @return A flag indicating success of the operation.
 	 */
 	public boolean sendMail(final String recipient, final String subject, final String messageBody) {
+		return sendMail(recipient, null, subject, messageBody);
+	}
+	
+	/**
+	 * Method to send a mail message. SMPT-Server and sender are configured servlet-wide via 'application.properties'.
+	 * @param recipient The recipient of the message.
+	 * @param replyTo The address to send replies to. 
+	 * @param subject The subject of the message.
+	 * @param messageBody The body of the message.
+	 * @return A flag indicating success of the operation.
+	 */
+	public boolean sendMail(final String recipient, final String replyTo, final String subject, final String messageBody) {
 		final SimpleMailMessage mailMessage = new SimpleMailMessage();
 		
 		mailMessage.setFrom(sender);
@@ -51,6 +63,9 @@ public class MailService {
 			mailMessage.setTo(recipient);
 			mailMessage.setSubject(subject);
 			mailMessage.setText(messageBody);
+			if (!StrUtils.isEmptyOrNull(replyTo)) {
+				mailMessage.setReplyTo(replyTo);
+			}
 			try {
 				mailSender.send(mailMessage);
 				LOGGER.debug("Sending email to '" + recipient + "' with subject '" + subject + "' suceeded");
