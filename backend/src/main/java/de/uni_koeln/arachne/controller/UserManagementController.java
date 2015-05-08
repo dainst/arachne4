@@ -17,9 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +30,7 @@ import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.ResetPasswordRequest;
 import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.service.MailService;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.StrUtils.FormDataException;
 import de.uni_koeln.arachne.util.security.Random;
@@ -48,6 +46,8 @@ public class UserManagementController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserManagementController.class);
 	
+	private static final String newLine = System.lineSeparator();
+	
 	@Autowired
 	private transient UserDao userDao;
 	
@@ -57,20 +57,27 @@ public class UserManagementController {
 	@Autowired
 	private transient Random random;
 	
+	@Autowired
+	private transient MailService mailService; 
+	
 	private transient final List<String> defaultDatasetGroups; 
 	private transient final String adminEmail;
+	private transient final String serverAddress;
 	
 	@Autowired
 	public UserManagementController(
 			final @Value("#{config.defaultDatasetGroups.split(',')}") List<String> defaultDatasetGroups,
-			final @Value("#{config.adminEmail}") String adminEmail) {
+			final @Value("#{config.adminEmail}") String adminEmail,
+			final @Value("#{config.serverAddress}") String serverAddress) {
 		this.defaultDatasetGroups = defaultDatasetGroups;
 		this.adminEmail = adminEmail;
+		this.serverAddress = serverAddress;
 	}
 		
 	@ResponseBody
 	@RequestMapping(value="/user/register", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
-	public Map<String,String> register(@RequestBody Map<String,String> formData, HttpServletResponse response) {
+	public Map<String,String> register(@RequestBody Map<String,String> formData, HttpServletResponse response) 
+			throws FormDataException {
 		
 		Map<String,String> result = new HashMap<String,String>();
 		
@@ -120,41 +127,32 @@ public class UserManagementController {
 		
 		userDao.createUser(user);
 		
-		final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		mailSender.setHost("smtp.uni-koeln.de");
-		
-		// Mail to User
-		final SimpleMailMessage mailMessage = new SimpleMailMessage();
-    	mailMessage.setFrom("arachne@uni-koeln.de");
-    	mailMessage.setTo(user.getEmail());
-    	mailMessage.setSubject("Ihre Anmeldung bei Arachne");
-    	mailMessage.setText("Ihre Anmeldung bei Arachne ist eingegangen und wird in Kürze von uns bearbeitet werden.\n\nMit freundlichen Grüßen\ndas Arachne-Team");		
-    	try {
-    		mailSender.send(mailMessage);
-    	} catch(MailException e) {
-    		LOGGER.error("Unable to send registration eMail to user.", e);
+		// mail to user
+		String messageBody = "Ihre Anmeldung bei Arachne ist eingegangen und wird in Kürze von uns bearbeitet "
+				+ "werden." + newLine + newLine + "Mit freundlichen Grüßen" + newLine + "das Arachne-Team";		
+    	
+    	if (!mailService.sendMail(user.getEmail(), "Ihre Anmeldung bei Arachne", messageBody)) {
+    		LOGGER.error("Unable to send registration eMail to user.");
     		throw new FormDataException("ui.registration.emailFailed");
     	}
     	
-		final SimpleMailMessage mailMessage2 = new SimpleMailMessage();
-    	mailMessage2.setFrom("arachne@uni-koeln.de");
-    	mailMessage2.setTo(adminEmail);
-    	mailMessage2.setSubject("Anmeldung bei Arachne");
-    	String text = "Ein Benutzer hat sich mit folgenden Daten bei Arachne registriert:\n\n";
-    	text += "Username: " + user.getUsername() + "\n";
-    	text += "Name: " + user.getFirstname() + " " + user.getLastname() + "\n";
-    	text += "E-Mail: " + user.getEmail() + "\n";
-    	text += "\nWenn Sie in Arachne eingeloggt sind, können Sie folgenden Link benutzen um den Benutzer freizuschalten:\n";
-		text += "http://arachne.uni-koeln.de/activate_account/" + user.getId();
-    	mailMessage2.setText(text);		
-    	try {
-    		mailSender.send(mailMessage2);
-    	} catch(MailException e) {
-    		LOGGER.error("Unable to send registration eMail to admin.", e);
+    	// mail to admin
+		messageBody = "Ein Benutzer hat sich mit folgenden Daten bei Arachne registriert:" + newLine + newLine
+				+ "Username: " + user.getUsername() + newLine
+				+ "Name: " + user.getFirstname() + " " + user.getLastname() + newLine
+				+ "E-Mail: " + user.getEmail() + newLine + newLine
+				+ "Wenn Sie in Arachne eingeloggt sind, können Sie folgenden Link benutzen um den Benutzer "
+    			+ "freizuschalten:" + newLine
+    			+ "http://arachne.uni-koeln.de/activate_account/" + user.getId();
+    			
+    	if (!mailService.sendMail(adminEmail, "Anmeldung bei Arachne", messageBody)) {
+    		LOGGER.error("Unable to send registration eMail to admin.");
+    		throw new FormDataException("ui.registration.emailToAdminFailed");
     	}
-    	
-		result.put("success", "true");
+    		
+    	result.put("success", "true");
 		response.setStatus(201);
+    	
 		return result;
 		
 	}
@@ -204,28 +202,17 @@ public class UserManagementController {
 					resetPasswordRequestDao.save(request);
 
 					// sent mail with activation link to user
-					final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-					mailSender.setHost("smtp.uni-koeln.de");
-
-					final SimpleMailMessage userMail = new SimpleMailMessage();
-					userMail.setFrom("arachne@uni-koeln.de");
-					userMail.setTo(userByName.getEmail());
-					userMail.setSubject("Passwort zurückgesetzt bei Arachne");
-
-					final String newLine = System.lineSeparator();
 					final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					final String nowString = dateFormat.format(now);
 					final String expirationDateString = dateFormat.format(expirationDate);
-					final String linkString = "http://lakota.archaeologie.uni-koeln.de/user/activation/" + token;
+					final String linkString = "http://" + serverAddress + "/user/activation/" + token;
 
-					String text = "Sie haben ihr Passwort bei Arachne am " + nowString + " zurückgesetzt." + newLine;
-					text += "Bitte folgen sie diesem Link um den Prozess abzuschließen: " + linkString + newLine;
-					text += "Dieser Link ist bis zum " + expirationDateString + " gültig.";
-					userMail.setText(text);		
-					try {
-						mailSender.send(userMail);
-					} catch(MailException e) {
-						LOGGER.error("Unable to send password activation eMail to user: " + userByName.getEmail(), e);
+					final String messageBody = "Sie haben ihr Passwort bei Arachne am " + nowString + " zurückgesetzt." 
+							+ newLine + "Bitte folgen sie diesem Link um den Prozess abzuschließen: " + linkString 
+							+ newLine + "Dieser Link ist bis zum " + expirationDateString + " gültig.";
+					
+					if (!mailService.sendMail(userByName.getEmail(), "Passwort zurückgesetzt bei Arachne", messageBody)) {
+						LOGGER.error("Unable to send password activation eMail to user: " + userByName.getEmail());
 						resetPasswordRequestDao.delete(request);
 						result.put("success", "false");
 						response.setStatus(400);
