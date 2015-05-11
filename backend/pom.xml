@@ -52,7 +52,9 @@
         <junit-version>4.12</junit-version>
         <!-- mockito -->
         <org.mockito-version>1.10.8</org.mockito-version>
-		<!-- Plugin Versions -->
+        <!-- JSONassert -->
+        <jsonassert-version>0.9.0</jsonassert-version>
+        <!-- Plugin Versions -->
 		<aspectj-maven-version>1.5</aspectj-maven-version>
 		<maven-failsafe-version>2.17</maven-failsafe-version>
 		<maven-javadoc-version>2.9.1</maven-javadoc-version>
@@ -227,6 +229,14 @@
 			<version>${junit-version}</version>
 			<scope>test</scope>
 		</dependency>
+
+        <!-- JSONassert -->
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>${jsonassert-version}</version>
+            <scope>test</scope>
+        </dependency>
 
 		<!-- Mockito -->
 		<dependency>

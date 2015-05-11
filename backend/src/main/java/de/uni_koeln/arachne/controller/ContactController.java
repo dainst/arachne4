@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -8,7 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.service.MailService;
 import de.uni_koeln.arachne.util.StrUtils;
+import de.uni_koeln.arachne.util.StrUtils.FormDataException;
+import de.uni_koeln.arachne.util.network.CustomMediaType;
 
 /**
  * Controller that handles the HTTP API endpoint for the contact form. 
@@ -46,9 +53,8 @@ public class ContactController {
 	@ResponseBody
 	@RequestMapping(value="/contact"
 			, method=RequestMethod.POST
-			, consumes="application/json;charset=UTF-8"
-			, produces="application/json;charset=UTF-8")
-	public void changePasswordAfterResetRequest(@RequestBody Map<String,String> contactInformation
+			, consumes={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
+	public void handleContactRequest(@RequestBody Map<String,String> contactInformation
 			, final HttpServletResponse response) {
 		
 		final String name = StrUtils.getFormData(contactInformation, "name", true, "ui.contact.");
@@ -65,5 +71,16 @@ public class ContactController {
 		}
 		response.setStatus(200);
 		return;
+	}
+	
+	@ResponseBody
+	@ExceptionHandler(StrUtils.FormDataException.class)
+	public ResponseEntity<Map<String,String>> handleFromDataException(FormDataException e) {
+		Map<String,String> body = new HashMap<String,String>();
+		body.put("success", "false");
+		body.put("message", e.getMessage());
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", CustomMediaType.APPLICATION_JSON_UTF8_VALUE);
+		return new ResponseEntity<Map<String,String>>(body, headers, HttpStatus.BAD_REQUEST);
 	}
 }
