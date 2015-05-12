@@ -437,8 +437,6 @@ public class User {
 			result = prime * result
 					+ ((all_groups == null) ? 0 : all_groups.hashCode());
 			result = prime * result
-					+ ((catalogs == null) ? 0 : catalogs.hashCode());
-			result = prime * result
 					+ ((country == null) ? 0 : country.hashCode());
 			result = prime * result
 					+ ((datasetGroups == null) ? 0 : datasetGroups.hashCode());
@@ -491,13 +489,6 @@ public class User {
 			}
 			User other = (User) obj;
 			if (all_groups != other.all_groups) {
-				return false;
-			}
-			if (catalogs == null) {
-				if (other.catalogs != null) {
-					return false;
-				}
-			} else if (!catalogs.equals(other.catalogs)) {
 				return false;
 			}
 			if (country == null) {
@@ -620,4 +611,6 @@ public class User {
 			}
 			return true;
 		}
+		
+		
 }
