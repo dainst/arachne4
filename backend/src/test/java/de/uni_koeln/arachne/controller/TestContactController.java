@@ -41,7 +41,8 @@ public class TestContactController {
 		final String json = "{\"name\":\"some name\","
 				+ "\"email\":\"some mail address\","
 				+ "\"subject\":\"some subject\","
-				+ "\"message\":\"some message\"}";
+				+ "\"message\":\"some message\","
+				+ "\"iAmHuman\":\"humanIAm\"}";
 		
 		mockMvc.perform(
 				post("/contact")
@@ -51,11 +52,27 @@ public class TestContactController {
 	}
 	
 	@Test
+	public void testValidDataAsBot() throws Exception {
+		final String json = "{\"name\":\"some name\","
+				+ "\"email\":\"some mail address\","
+				+ "\"subject\":\"some subject\","
+				+ "\"message\":\"some message\"}";
+		
+		mockMvc.perform(
+				post("/contact")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().is4xxClientError())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{\"success\":\"false\",\"message\":\"ui.contact.bot\"}"));
+	}
+	
+	@Test
 	public void testInvalidDataMissingName() throws Exception {
 		mockMvc.perform(
 				post("/contact")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"some\":\"random garbage\"}"))
+				.content("{\"some\":\"random garbage\",\"iAmHuman\":\"humanIAm\"}"))
 				.andExpect(status().is4xxClientError())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 				.andExpect(content().json("{\"success\":\"false\",\"message\":\"ui.contact.fieldMissing.name\"}"));
@@ -66,7 +83,8 @@ public class TestContactController {
 		final String json = "{\"name\":\"some name\","
 				+ "\"some\":\"random garbage\","
 				+ "\"subject\":\"some subject\","
-				+ "\"message\":\"some message\"}";
+				+ "\"message\":\"some message\","
+				+ "\"iAmHuman\":\"humanIAm\"}";
 		
 		mockMvc.perform(
 				post("/contact")
@@ -82,7 +100,8 @@ public class TestContactController {
 		final String json = "{\"name\":\"some name\","
 				+ "\"email\":\"some mail address\","
 				+ "\"some\":\"random garbage\","
-				+ "\"message\":\"some message\"}";
+				+ "\"message\":\"some message\","
+				+ "\"iAmHuman\":\"humanIAm\"}";
 		
 		mockMvc.perform(
 				post("/contact")
@@ -98,7 +117,8 @@ public class TestContactController {
 		final String json = "{\"name\":\"some name\","
 				+ "\"email\":\"some mail address\","
 				+ "\"subject\":\"some subject\","
-				+ "\"some\":\"random garbage\"}";
+				+ "\"some\":\"random garbage\","
+				+ "\"iAmHuman\":\"humanIAm\"}";
 		
 		mockMvc.perform(
 				post("/contact")

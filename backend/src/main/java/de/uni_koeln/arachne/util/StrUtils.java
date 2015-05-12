@@ -2,7 +2,6 @@ package de.uni_koeln.arachne.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -105,21 +104,5 @@ public class StrUtils { // NOPMD
 			}
 		}
 		return result;
-	}
-	
-	public static String getFormData(final Map<String, String> formData, final String fieldName, final boolean required
-			, final String messagePrefix) throws FormDataException {
-		if (required && (!formData.containsKey(fieldName) || formData.get(fieldName).isEmpty())) {
-			throw new FormDataException(messagePrefix + "fieldMissing." + fieldName);
-		} else {
-			return formData.get(fieldName);
-		}
-	}
-	
-	@SuppressWarnings("serial")
-	public static class FormDataException extends RuntimeException {
-		public FormDataException(String message) {
-			super(message);
-		}
 	}
 }

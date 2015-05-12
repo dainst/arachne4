@@ -25,14 +25,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import static de.uni_koeln.arachne.util.FormDataUtils.*;
+
 import de.uni_koeln.arachne.dao.hibernate.ResetPasswordRequestDao;
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.ResetPasswordRequest;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.MailService;
-import de.uni_koeln.arachne.util.StrUtils;
-import de.uni_koeln.arachne.util.StrUtils.FormDataException;
 import de.uni_koeln.arachne.util.security.Random;
 
 /**
@@ -81,25 +81,22 @@ public class UserManagementController {
 		
 		Map<String,String> result = new HashMap<String,String>();
 		
-		// simple attempt to keep bots from issuing register requests
-		if (!(formData.containsKey("iAmHuman") && formData.get("iAmHuman").equals("humanIAm"))) {
-			throw new FormDataException("ui.register.bot");
-		}
+		checkForBot(formData, "ui.register.");
 		
 		User user = new User();
 		
-		user.setUsername(StrUtils.getFormData(formData, "username", true, "ui.register."));
-		user.setEmail(StrUtils.getFormData(formData, "email", true, "ui.register."));
-		user.setPassword(StrUtils.getFormData(formData, "password", true, "ui.register."));
-		user.setFirstname(StrUtils.getFormData(formData, "firstname", true, "ui.register."));
-		user.setLastname(StrUtils.getFormData(formData, "lastname", true, "ui.register."));
-		user.setStreet(StrUtils.getFormData(formData, "street", true, "ui.register."));
-		user.setZip(StrUtils.getFormData(formData, "zip", true, "ui.register."));
-		user.setPlace(StrUtils.getFormData(formData, "place", true, "ui.register."));
-		user.setCountry(StrUtils.getFormData(formData, "country", true, "ui.register."));
-		user.setInstitution(StrUtils.getFormData(formData, "institution", false, "ui.register."));
-		user.setHomepage(StrUtils.getFormData(formData, "homepage", false, "ui.register."));
-		user.setTelephone(StrUtils.getFormData(formData, "telephone", false, "ui.register."));
+		user.setUsername(getFormData(formData, "username", true, "ui.register."));
+		user.setEmail(getFormData(formData, "email", true, "ui.register."));
+		user.setPassword(getFormData(formData, "password", true, "ui.register."));
+		user.setFirstname(getFormData(formData, "firstname", true, "ui.register."));
+		user.setLastname(getFormData(formData, "lastname", true, "ui.register."));
+		user.setStreet(getFormData(formData, "street", true, "ui.register."));
+		user.setZip(getFormData(formData, "zip", true, "ui.register."));
+		user.setPlace(getFormData(formData, "place", true, "ui.register."));
+		user.setCountry(getFormData(formData, "country", true, "ui.register."));
+		user.setInstitution(getFormData(formData, "institution", false, "ui.register."));
+		user.setHomepage(getFormData(formData, "homepage", false, "ui.register."));
+		user.setTelephone(getFormData(formData, "telephone", false, "ui.register."));
 		user.setAll_groups(false);
 		user.setGroupID(500);
 		user.setLogin_permission(false);
@@ -156,7 +153,7 @@ public class UserManagementController {
 		return result;
 		
 	}
-	
+
 	/**
 	 * If enough information about the user account is provided (meaning user name, eMail address, first name and 
 	 * zip code) then a request to change the password of the identified user account is created.
@@ -174,10 +171,12 @@ public class UserManagementController {
 	public Map<String,String> reset(@RequestBody Map<String,String> userCredentials, HttpServletResponse response) {
 		Map<String,String> result = new HashMap<String,String>();
 		
-		final String userName = StrUtils.getFormData(userCredentials, "username", true, "ui.passwordreset.");
-		final String eMailAddress = StrUtils.getFormData(userCredentials, "email", true, "ui.passwordreset.");
-		final String firstName = StrUtils.getFormData(userCredentials, "firstname", true, "ui.passwordreset.");
-		final String zipCode = StrUtils.getFormData(userCredentials, "zip", true, "ui.passwordreset.");
+		checkForBot(userCredentials, "ui.passwordreset.");		
+		
+		final String userName = getFormData(userCredentials, "username", true, "ui.passwordreset.");
+		final String eMailAddress = getFormData(userCredentials, "email", true, "ui.passwordreset.");
+		final String firstName = getFormData(userCredentials, "firstname", true, "ui.passwordreset.");
+		final String zipCode = getFormData(userCredentials, "zip", true, "ui.passwordreset.");
 		 
 		User userByEMailAddress = userDao.findByEMailAddress(eMailAddress);
 		User userByName = userDao.findByName(userName);
@@ -243,11 +242,13 @@ public class UserManagementController {
 	public void changePasswordAfterResetRequest(@PathVariable("token") final String token,
 			@RequestBody Map<String,String> password, HttpServletResponse response) {
 		
+		checkForBot(password, "ui.passwordactivation.");
+		
 		response.setStatus(404);
 		final ResetPasswordRequest resetPasswordRequest = resetPasswordRequestDao.getByToken(token);
 		if (resetPasswordRequest != null) {
-			final String newPassword = StrUtils.getFormData(password, "password", true, "ui.passwordactivation.");
-			if (newPassword.equals(StrUtils.getFormData(password, "passwordConfirm", true, "ui.passwordactivation."))) {
+			final String newPassword = getFormData(password, "password", true, "ui.passwordactivation.");
+			if (newPassword.equals(getFormData(password, "passwordConfirm", true, "ui.passwordactivation."))) {
 				final Calendar calender = Calendar.getInstance();
 				final Timestamp now = new Timestamp(calender.getTime().getTime());
 				if (now.before(resetPasswordRequest.getExpirationDate())) {
@@ -265,7 +266,7 @@ public class UserManagementController {
 	}
 	
 	@ResponseBody
-	@ExceptionHandler(StrUtils.FormDataException.class)
+	@ExceptionHandler(FormDataException.class)
 	public Map<String,String> handleRequiredFieldException(FormDataException e, HttpServletResponse response) {
 		Map<String,String> result = new HashMap<String,String>();
 		result.put("success", "false");

@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import static de.uni_koeln.arachne.util.FormDataUtils.*;
+
 import de.uni_koeln.arachne.service.MailService;
-import de.uni_koeln.arachne.util.StrUtils;
-import de.uni_koeln.arachne.util.StrUtils.FormDataException;
 import de.uni_koeln.arachne.util.network.CustomMediaType;
 
 /**
@@ -57,10 +57,12 @@ public class ContactController {
 	public void handleContactRequest(@RequestBody Map<String,String> contactInformation
 			, final HttpServletResponse response) {
 		
-		final String name = StrUtils.getFormData(contactInformation, "name", true, "ui.contact.");
-		final String eMailAddress = StrUtils.getFormData(contactInformation, "email", true, "ui.contact.");
-		final String subject = StrUtils.getFormData(contactInformation, "subject", true, "ui.contact.");
-		final String messageBody = StrUtils.getFormData(contactInformation, "message", true, "ui.contact.");
+		checkForBot(contactInformation, "ui.contact.");
+		
+		final String name = getFormData(contactInformation, "name", true, "ui.contact.");
+		final String eMailAddress = getFormData(contactInformation, "email", true, "ui.contact.");
+		final String subject = getFormData(contactInformation, "subject", true, "ui.contact.");
+		final String messageBody = getFormData(contactInformation, "message", true, "ui.contact.");
 		
 		final String replyTo = name + "<" + eMailAddress + ">";
 				
@@ -74,7 +76,7 @@ public class ContactController {
 	}
 	
 	@ResponseBody
-	@ExceptionHandler(StrUtils.FormDataException.class)
+	@ExceptionHandler(FormDataException.class)
 	public ResponseEntity<Map<String,String>> handleFromDataException(FormDataException e) {
 		Map<String,String> body = new HashMap<String,String>();
 		body.put("success", "false");
