@@ -323,7 +323,6 @@
                 },
                 "children": [
                     {
-<<<<<<< HEAD
                         "id": "palilia20",
                         "title": {
                             "de": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild",
@@ -332,14 +331,11 @@
                         }
                     },
                     {
-=======
->>>>>>> afafe12c0cf5cd285ac524af6d45f801c39d5fb4
                         "id": "lippsbasilica",
                         "title": {
                             "de": "Palilia 24: Johannes Lipps, Die Basilica Aemilia am Forum Romanum. Der kaiserzeitliche Bau und seine Ornamentik (Diss. Köln 2008)",
                             "en": "Palilia 24: Johannes Lipps, The Basilica Aemilia on the Forum Romanum. The building and its ornamentation in imperial times (Dissertation, Cologne 2008)"
                         }
-<<<<<<< HEAD
                     },
                     {
                         "id": "palilia25",
@@ -355,8 +351,6 @@
                             "de": "Palilia 26: Wolfgang Ehrhardt, Dekorations- und Wohnkontext. Beseitigung, Restaurierung und Konservierung von Wandbemalungen in den kampanischen Antikenstätten",
                             "en": "Palilia 26: Wolfgang Ehrhardt, Decorative and residential context. Removal, restoration and preservation of wall paintings in the Campanian antique sites"
                         }
-=======
->>>>>>> afafe12c0cf5cd285ac524af6d45f801c39d5fb4
                     }
                 ]
             }
