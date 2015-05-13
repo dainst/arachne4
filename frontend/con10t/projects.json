@@ -14,48 +14,12 @@
                 },
                 "children": [
                     {
-                        "id": "emagines",
-                        "title": {
-                            "de": "Emagines",
-                            "en": "Emagines",
-                            "it": "Emagines"
-                        }
-                    },
-                    {
-                        "id": "fotoistanbul",
-                        "title": {
-                            "de": "Fotothek DAI Istanbul",
-                            "en": "DAI Istanbul photo archive"
-                        }
-                    },
-                    {
-                        "id": "fotokairo",
-                        "title": {
-                            "de": "Fotothek DAI Kairo",
-                            "en": "DAI Cairo photo archive"
-                        }
-                    },
-                    {
-                        "id": "fotomadrid",
-                        "title": {
-                            "de": "Fotothek DAI Madrid",
-                            "en": "DAI Madrid photo archive"
-                        }
-                    },
-                    {
                         "id": "fotorom",
                         "title": {
                             "de": "Fotothek DAI Rom",
                             "en": "DAI Rome photo archive"
                         },
                         "children": [
-                            {
-                                "id": "skulpturnegdairom",
-                                "title": {
-                                    "de": "Skulpturennegative DAI ROM",
-                                    "en": "Sculpture Negatives of the DAI Rome"
-                                }
-                            },
                             {
                                 "id": "nachlassroeder",
                                 "title": {
@@ -80,13 +44,6 @@
                         ]
                     },
                     {
-                        "id": "fotoarchivdaiberlin",
-                        "title": {
-                            "de": "Fotoarchiv der Zentrale des DAI in Berlin",
-                            "en": "DAI Head Office photo archive"
-                        }
-                    },
-                    {
                         "id": "daiorient",
                         "title": {
                             "de": "Fotothek DAI Orientabteilung"
@@ -100,23 +57,7 @@
                     "de": "iDAI.bookbrowser",
                     "en": "iDAI.bookbrowser",
                     "it": "iDAI.bookbrowser"
-                },
-                "children": [
-                    {
-                        "id": "rezeptionantike",
-                        "title": {
-                            "de": "Rezeption der Antike im semantischen Netz",
-                            "en": "Reception of Antiquity in a Semantic Network"
-                        }
-                    },
-                    {
-                        "id": "antikzeichnung",
-                        "title": {
-                            "de": "Die Antike in Zeichnung, Plan und Bauaufnahme",
-                            "en": "The Antiquity in Drawing, Plan and Architectural Survey"
-                        }
-                    }
-                ]
+                }  
             },
             {
                 "id": "monumentbrowser",
@@ -227,14 +168,6 @@
                         }
                     },
                     {
-                        "id": "",
-                        "title": {
-                            "de": "Fotosammlung Max von Oppenheim",
-                            "en": "The Max von Oppenheim photo collection",
-                            "it": "La collezione fotografica di Max von Oppenheim"
-                        }
-                    },
-                    {
                         "id": "stendal",
                         "title": {
                             "de": "Gemälde- und Grafiksammlung Stendal",
@@ -246,13 +179,6 @@
                         "title": {
                             "de": "Archäologisches Museum Thessaloniki",
                             "en": "Archaeological Museum of Thessaloniki"
-                        }
-                    },
-                    {
-                        "id": "",
-                        "title": {
-                            "de": "Nachlass Georg Kossack",
-                            "en": "Bequests of Georg Kossack"
                         }
                     },
                     {
@@ -271,6 +197,13 @@
                 },
                 "children": [
                     {
+                        "id": "analysearachne",
+                        "title": {
+                            "de": "Analyse zur Arachne-Nutzung",
+                            "en": "Analyse zur Arachne-Nutzung"
+                        }
+                    },
+                    {
                         "id": "afrarchcologne",
                         "title": {
                             "de": "African Archaeology Archive Cologne",
@@ -285,38 +218,10 @@
                         }
                     },
                     {
-                        "id": "",
-                        "title": {
-                            "de": "CIL Open Access",
-                            "en": "CIL Open Access"
-                        }
-                    },
-                    {
-                        "id": "databasepausanias",
-                        "title": {
-                            "de": "Datenbank - Bildwerke bei Pausanias",
-                            "en": "Database “Images in Pausanias”"
-                        }
-                    },
-                    {
-                        "id": "",
-                        "title": {
-                            "de": "Spanische Codices",
-                            "en": "Spanish Codices"
-                        }
-                    },
-                    {
                         "id": "hellespont",
                         "title": {
                             "de": "Das Hellespont-Projekt",
                             "en": "The Hellespont Project"
-                        }
-                    },
-                    {
-                        "id": "rwwa",
-                        "title": {
-                            "de": "Rheinisch-Westfälisches Wirtschaftsarchiv",
-                            "en": "Rhine-Westphalia Economy Archive"
                         }
                     }
                 ]
@@ -337,12 +242,6 @@
                         }
                     },
                      {
-                        "id": "kanatha",
-                        "title": {
-                            "de": "Die Heiligtümer in Kanatha"
-                        }
-                    },
-                    {
                         "id": "kanatha",
                         "title": {
                             "de": "Die Heiligtümer in Kanatha"
@@ -375,12 +274,6 @@
                             "de": "Corpus der minoischen und mykenischen Siegel",
                             "en": "Corpus of Minoan and Mycenaean Seals",
                             "it": "Corpus dei sigilli minoici e micenei"
-                        }
-                    },
-                    {
-                        "id": "langwiss",
-                        "title": {
-                            "de": "Jörn Lang, “Mit Wissen geschmückt?”. Zur bildlichen Rezeption griechischer Dichter und Denker in der römischen Lebenswelt (Wiesbaden 2012)"
                         }
                     },
                     {
@@ -430,6 +323,7 @@
                 },
                 "children": [
                     {
+<<<<<<< HEAD
                         "id": "palilia20",
                         "title": {
                             "de": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild",
@@ -438,11 +332,14 @@
                         }
                     },
                     {
+=======
+>>>>>>> afafe12c0cf5cd285ac524af6d45f801c39d5fb4
                         "id": "lippsbasilica",
                         "title": {
                             "de": "Palilia 24: Johannes Lipps, Die Basilica Aemilia am Forum Romanum. Der kaiserzeitliche Bau und seine Ornamentik (Diss. Köln 2008)",
                             "en": "Palilia 24: Johannes Lipps, The Basilica Aemilia on the Forum Romanum. The building and its ornamentation in imperial times (Dissertation, Cologne 2008)"
                         }
+<<<<<<< HEAD
                     },
                     {
                         "id": "palilia25",
@@ -458,6 +355,8 @@
                             "de": "Palilia 26: Wolfgang Ehrhardt, Dekorations- und Wohnkontext. Beseitigung, Restaurierung und Konservierung von Wandbemalungen in den kampanischen Antikenstätten",
                             "en": "Palilia 26: Wolfgang Ehrhardt, Decorative and residential context. Removal, restoration and preservation of wall paintings in the Campanian antique sites"
                         }
+=======
+>>>>>>> afafe12c0cf5cd285ac524af6d45f801c39d5fb4
                     }
                 ]
             }

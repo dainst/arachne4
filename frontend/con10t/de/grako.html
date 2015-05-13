@@ -195,9 +195,21 @@ overlays = {
 		'facet_einbindung'
 	]"></div>
 
+	<div ng-init="facetsSelect = [
+		{
+			key: 'catalogIds',
+			value: 20
+		},
+		{
+			key: 'facet_kategorie',
+			value: 'Bauwerke'
+		}
+	]"></div>
+
 	<con10t-catalog-map overlays="overlays"
 		menu-title="Antike Werkst&auml;tten"
 		facets-allow="facetsAllow"
+		facets-select="facetsSelect"
 	/>
 
 </div>
