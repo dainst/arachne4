@@ -169,14 +169,16 @@
                 "id": "",
                 "title": {
                     "de": "Sammlungen",
-                    "en": "Collections"
+                    "en": "Collections",
+                    "it": "Collezioni"
                 },
                 "children": [
                     {
                         "id": "antiksammlberlin",
                         "title": {
                             "de": "Antikensammlung der Staatlichen Museen zu Berlin",
-                            "en": "Antiquities Collection of the Berlin State Museums"
+                            "en": "Antiquities Collection of the Berlin State Museums",
+                            "it": "Collezione di antichità del Museo statale di Berlino"
                         }
                     },
                     {
@@ -191,7 +193,8 @@
                         "id": "berlinsamml",
                         "title": {
                             "de": "Katalog der Gipsabgüsse nach griechisch-römischen Skulpturen in Berliner Sammlungen",
-                            "en": "Image database of the Cast Collection of Ancient Sculpture in Berlin"
+                            "en": "Image database of the Cast Collection of Ancient Sculpture in Berlin",
+                            "it": "Database delle immagini della Collezione di riproduzioni di scultura antica di Berlino"
                         }
                     },
                     {
@@ -329,7 +332,8 @@
                         "id": "basilaemil",
                         "title": {
                             "de": "Die Basilica Aemilia",
-                            "en": "The Basilica Aemilia"
+                            "en": "The Basilica Aemilia",
+                            "it": "La basilica Aemilia"
                         }
                     },
                      {
@@ -421,14 +425,16 @@
                 "id": "paliliastart",
                 "title": {
                     "de": "Palilia",
-                    "en": "Palilia"
+                    "en": "Palilia",
+                    "it": "Palilia"
                 },
                 "children": [
                     {
                         "id": "palilia20",
                         "title": {
                             "de": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild",
-                            "en": "Palilia 20: Alexandra W. Busch, Military in Rome. Military and paramilitary units in the imperial cityscape"
+                            "en": "Palilia 20: Alexandra W. Busch, Military in Rome. Military and paramilitary units in the imperial cityscape",
+                            "it": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild (2012)"
                         }
                     },
                     {
@@ -442,7 +448,8 @@
                         "id": "palilia25",
                         "title": {
                             "de": "Palilia 25: M. Tombrägel, Die republikanischen Otiumvillen von Tivoli. Palilia 25",
-                            "en": "Palilia 25: Martin Tombrägel, The Republican otium-villas at Tivoli"
+                            "en": "Palilia 25: Martin Tombrägel, The Republican otium-villas at Tivoli",
+                            "it": "Palilia 25: M. Tombrägel, Die republikanischen Otiumvillen von Tivoli. Palilia 25 (Wiesbaden 2012)"
                         }
                     },
                     {
