@@ -88,7 +88,7 @@ public class TestContactController {
 		
 		mockMvc.perform(
 				post("/contact")
-				.contentType(MediaType.APPLICATION_JSON)
+				.contentType(APPLICATION_JSON_UTF8)
 				.content(json))
 				.andExpect(status().is4xxClientError())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -105,7 +105,7 @@ public class TestContactController {
 		
 		mockMvc.perform(
 				post("/contact")
-				.contentType(MediaType.APPLICATION_JSON)
+				.contentType(APPLICATION_JSON_UTF8)
 				.content(json))
 				.andExpect(status().is4xxClientError())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -122,7 +122,7 @@ public class TestContactController {
 		
 		mockMvc.perform(
 				post("/contact")
-				.contentType(MediaType.APPLICATION_JSON)
+				.contentType(APPLICATION_JSON_UTF8)
 				.content(json))
 				.andExpect(status().is4xxClientError())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))

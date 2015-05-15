@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import static de.uni_koeln.arachne.util.network.CustomMediaType.*;
 import static de.uni_koeln.arachne.util.FormDataUtils.*;
-
 import de.uni_koeln.arachne.service.MailService;
-import de.uni_koeln.arachne.util.network.CustomMediaType;
+import de.uni_koeln.arachne.util.FormDataUtils.FormDataException;
 
 /**
  * Controller that handles the HTTP API endpoint for the contact form. 
@@ -53,7 +53,7 @@ public class ContactController {
 	@ResponseBody
 	@RequestMapping(value="/contact"
 			, method=RequestMethod.POST
-			, consumes={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
+			, consumes={APPLICATION_JSON_UTF8_VALUE})
 	public void handleContactRequest(@RequestBody Map<String,String> contactInformation
 			, final HttpServletResponse response) {
 		
@@ -75,6 +75,11 @@ public class ContactController {
 		return;
 	}
 	
+	/**
+	 * Exception handler for FormDataExceptions.
+	 * @param e The thrown <code>FormDataException</code>.
+	 * @return A HTTP response with status 'bad request' and an error message as body.
+	 */
 	@ResponseBody
 	@ExceptionHandler(FormDataException.class)
 	public ResponseEntity<Map<String,String>> handleFromDataException(FormDataException e) {
@@ -82,7 +87,7 @@ public class ContactController {
 		body.put("success", "false");
 		body.put("message", e.getMessage());
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", CustomMediaType.APPLICATION_JSON_UTF8_VALUE);
+		headers.add("Content-Type", APPLICATION_JSON_UTF8_VALUE);
 		return new ResponseEntity<Map<String,String>>(body, headers, HttpStatus.BAD_REQUEST);
 	}
 }
