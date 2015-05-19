@@ -31,13 +31,13 @@ public class Catalog {
 	@GeneratedValue
 	private Long id; // NOPMD
 	
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name="catalog_benutzer",
 		joinColumns={@JoinColumn(name="catalog_id")},
 		inverseJoinColumns={@JoinColumn(name="uid")})
 	private Set<User> users;
 	
-	@OneToMany(mappedBy="catalog", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="catalog", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private Set<CatalogEntry> catalogEntries;
 	
 	@OneToOne(cascade = CascadeType.ALL)

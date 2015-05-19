@@ -185,9 +185,9 @@ public class DataImportService { // NOPMD
 			}
 			final BulkProcessorListener listener = new BulkProcessorListener();
 			final BulkProcessor bulkProcessor = BulkProcessor.builder(client, listener)
-			.setBulkActions(esClientUtil.getBulkActions())
-			.setBulkSize(new ByteSizeValue(esClientUtil.getBulkSize(), ByteSizeUnit.MB))
-			.build();
+					.setBulkActions(esClientUtil.getBulkActions())
+					.setBulkSize(new ByteSizeValue(esClientUtil.getBulkSize(), ByteSizeUnit.MB))
+					.build();
 						
 			if ("NoIndex".equals(indexName)) {
 				LOGGER.error("Dataimport failed. No index found.");

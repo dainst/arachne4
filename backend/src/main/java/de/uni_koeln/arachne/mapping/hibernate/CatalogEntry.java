@@ -37,7 +37,7 @@ public class CatalogEntry {
 	@JoinColumn(name="parent_id", nullable=true, insertable=true, updatable=true)
 	private CatalogEntry parent;
 	
-	@OneToMany(mappedBy="parent", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="parent", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@OrderColumn(name="index_parent")
 	private List<CatalogEntry> children;
 

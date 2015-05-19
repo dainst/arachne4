@@ -39,6 +39,7 @@ public class ContextConfiguration {
 		final Properties hibernateProperties = new Properties();
 		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 		hibernateProperties.setProperty("hibernate.show_sql", "false");
+		hibernateProperties.setProperty("hibernate.enable_lazy_load_no_trans", "true");
 		
 		final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource());
