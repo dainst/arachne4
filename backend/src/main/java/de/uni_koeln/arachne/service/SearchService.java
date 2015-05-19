@@ -41,6 +41,7 @@ import com.github.davidmoten.geo.LatLong;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
+import de.uni_koeln.arachne.response.Place;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
@@ -250,7 +251,8 @@ public class SearchService {
 					, (String)(currenthit.getSource().get("type"))
 					, (String)(currenthit.getSource().get("title"))
 					, (String)(currenthit.getSource().get("subtitle"))
-					, thumbnailId));
+					, thumbnailId
+					, (List<Place>)currenthit.getSource().get("places")));
 		}
 		
 		// add facet search results
