@@ -165,6 +165,12 @@
                         }
                     },
                     {
+                        "id": "oppenheim",
+                        "title": {
+                            "de": "Die Fotosammlung Max von Oppenheim"
+                        }
+                    },
+                    {
                         "id": "stendal",
                         "title": {
                             "de": "Gemälde- und Grafiksammlung Stendal",
