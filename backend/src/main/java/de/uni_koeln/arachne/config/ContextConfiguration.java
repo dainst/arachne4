@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
@@ -34,6 +35,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableWebMvc
 @EnableAsync
 @EnableTransactionManagement
+@EnableSpringConfigured
 @PropertySource("classpath:config/application.properties")
 public class ContextConfiguration extends WebMvcConfigurerAdapter {
 
