@@ -46,8 +46,8 @@ public class SearchController {
 	private transient final int defaultLimit;
 	
 	@Autowired
-	public SearchController(final @Value("#{config.esDefaultLimit}") int defaultLimit,
-			final @Value("#{config.esDefaultFacetLimit}") int defaultFacetLimit) {
+	public SearchController(final @Value("${esDefaultLimit}") int defaultLimit,
+			final @Value("${esDefaultFacetLimit}") int defaultFacetLimit) {
 		
 		this.defaultLimit = defaultLimit;
 		this.defaultFacetLimit = defaultFacetLimit;

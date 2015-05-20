@@ -29,8 +29,8 @@ public class MailService {
 	 * Constructor initializing the SMTP host and the mail sender. 
 	 */
 	@Autowired
-	public MailService(final @Value("#{config.mailSMTPServer}") String smtpServer
-			, final @Value("#{config.mailSender}") String sender) {
+	public MailService(final @Value("${mailSMTPServer}") String smtpServer
+			, final @Value("${mailSender}") String sender) {
 		
 		mailSender.setHost(smtpServer);
 		this.sender = sender;

@@ -60,7 +60,7 @@ public class CeramalexController  {
 	private static final String FOREIGN_KEY_LABEL = "mainabstract.FS_QuantitiesID";
 		
 	@Autowired
-	public CeramalexController(final @Value("#{config.esDefaultFacetLimit}") int defaultFacetLimit) {
+	public CeramalexController(final @Value("${esDefaultFacetLimit}") int defaultFacetLimit) {
 		this.defaultFacetLimit = defaultFacetLimit;
 	}
 	

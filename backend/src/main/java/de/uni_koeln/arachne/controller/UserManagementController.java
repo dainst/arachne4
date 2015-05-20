@@ -66,9 +66,9 @@ public class UserManagementController {
 	
 	@Autowired
 	public UserManagementController(
-			final @Value("#{config.defaultDatasetGroups.split(',')}") List<String> defaultDatasetGroups,
-			final @Value("#{config.adminEmail}") String adminEmail,
-			final @Value("#{config.serverAddress}") String serverAddress) {
+			final @Value("#{'${defaultDatasetGroups}'.split(',')}") List<String> defaultDatasetGroups,
+			final @Value("${adminEmail}") String adminEmail,
+			final @Value("${serverAddress}") String serverAddress) {
 		this.defaultDatasetGroups = defaultDatasetGroups;
 		this.adminEmail = adminEmail;
 		this.serverAddress = serverAddress;

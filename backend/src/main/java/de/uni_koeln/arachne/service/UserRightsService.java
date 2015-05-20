@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.User;
-import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.sql.Condition;
 import de.uni_koeln.arachne.util.sql.SQLToolbox;
 
@@ -50,18 +49,11 @@ public class UserRightsService implements IUserRightsService {
 	 */
 	private transient User arachneUser = null;
 	
-	private transient List<String> exludedTables;
+	private transient List<String> excludedTables;
 	
 	@Autowired
-	@Value("#{config.authFreeTables}")
-	public void setExcludeTables(final String authFreeTablesCSS) {
-		final List<String> authFreeTables = StrUtils.getCommaSeperatedStringAsList(authFreeTablesCSS);
-		exludedTables = new ArrayList<String>();
-		if (authFreeTables != null) {
-			exludedTables.addAll(authFreeTables);
-		} else {
-			LOGGER.error("Problem configuring authentication free tables. List is: " + authFreeTables);
-		}
+	public void setExcludedTables(@Value("#{'${authFreeTables}'.split(',')}") final List<String> authFreeTables) {
+		excludedTables = authFreeTables;
 	}
 	
 	/**
@@ -152,7 +144,7 @@ public class UserRightsService implements IUserRightsService {
 			return "";
 		} else {
 			//in This case The User is Authorized to see Everything
-			if (arachneUser.isAll_groups() || exludedTables.contains(tableName)) {
+			if (arachneUser.isAll_groups() || excludedTables.contains(tableName)) {
 				return "";
 			} else {
 				return buildSQL(tableName);

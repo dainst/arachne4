@@ -79,14 +79,14 @@ public class ESClientUtil implements ServletContextAware {
 	private transient final String searchIndexAlias;
 
 	@Autowired
-	public ESClientUtil(final @Value("#{config.esProtocol}") String esProtocol
-			, final @Value("#{config.esAddress}") String esAddress
-			, final @Value("#{config.esRemotePort}") int esRemotePort
-			, final @Value("#{config.esName}") String esName
-			, final @Value("#{config.esBulkActions}") int esBulkActions
-			, final @Value("#{config.esBulkSize}") int esBulkSize
-			, final @Value("#{config.esClientTypeRemote}") boolean esRemoteClient
-			, final @Value("#{config.esRESTPort}") String esRESTPort) {
+	public ESClientUtil(final @Value("${esProtocol}") String esProtocol
+			, final @Value("${esAddress}") String esAddress
+			, final @Value("${esRemotePort}") int esRemotePort
+			, final @Value("${esName}") String esName
+			, final @Value("${esBulkActions}") int esBulkActions
+			, final @Value("${esBulkSize}") int esBulkSize
+			, final @Value("${esClientTypeRemote}") boolean esRemoteClient
+			, final @Value("${esRESTPort}") String esRESTPort) {
 
 		this.esName = esName;
 		this.searchIndexAlias = esName;

@@ -87,10 +87,10 @@ public class SearchService {
 	 * @param defaultFacetList The names of the default facets (these are all terms aggregations).
 	 */
 	@Autowired
-	public SearchService(final @Value("#{config.esTextSearchFields.split(',')}") List<String> textSearchFields
-			, final @Value("#{config.esNumericSearchFields.split(',')}") List<String> numericSearchFields
-			, final @Value("#{config.esSortFields.split(',')}") List<String> sortFields
-			, final @Value("#{config.esDefaultFacets.split(',')}") List<String> defaultFacetList) {
+	public SearchService(final @Value("#{'${esTextSearchFields}'.split(',')}") List<String> textSearchFields
+			, final @Value("#{'${esNumericSearchFields}'.split(',')}") List<String> numericSearchFields
+			, final @Value("#{'${esSortFields}'.split(',')}") List<String> sortFields
+			, final @Value("#{'${esDefaultFacets}'.split(',')}") List<String> defaultFacetList) {
 		
 		searchFields = new SearchFieldList(textSearchFields, numericSearchFields);
 		this.sortFields = sortFields;
@@ -215,6 +215,7 @@ public class SearchService {
 	 * @param facetList The values for facetting.
 	 * @return The search result.
 	 */
+	@SuppressWarnings("unchecked")
 	public SearchResult executeSearchRequest(final SearchRequestBuilder searchRequestBuilder, final int size,
 			final int offset, final Multimap<String, String> filters) {
 		

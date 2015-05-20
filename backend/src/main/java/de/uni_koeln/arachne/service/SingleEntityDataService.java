@@ -38,8 +38,8 @@ public class SingleEntityDataService {
 	private transient final List<String> authFreeTables;
 	
 	@Autowired
-	public SingleEntityDataService(final @Value("#{config.authFreeTables}") String authFreeTablesAsCSS) {
-		authFreeTables = StrUtils.getCommaSeperatedStringAsList(authFreeTablesAsCSS);
+	public SingleEntityDataService(final @Value("#{'${authFreeTables}'.split(',')}") List<String> authFreeTables) {
+		this.authFreeTables = authFreeTables;
 	}
 	
 	/**

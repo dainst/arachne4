@@ -73,15 +73,15 @@ public class ImageController {
 	 * @param resolutionPREVIEW Width for preview resolution images.
 	 */
 	@Autowired
-	public ImageController(final @Value("#{config.imageServerPath}") String imageServerPath,
-			final @Value("#{config.imageServerName}") String imageServerName,
-			final @Value("#{config.imageServerExtension}") String imageServerExtension,
-			final @Value("#{config.imagePath}") String imagePath,
-			final @Value("#{config.imageServerReadTimeout}") int imageServerReadTimeout,
-			final @Value("#{config.imageResolutionHIGH}") int resolutionHIGH,
-			final @Value("#{config.imageResolutionPREVIEW}") int resolutionPREVIEW,
-			final @Value("#{config.imageResolutionTHUMBNAIL}") int resolutionTHUMBNAIL,
-			final @Value("#{config.imageResolutionICON}") int resolutionICON) {
+	public ImageController(final @Value("${imageServerPath}") String imageServerPath,
+			final @Value("${imageServerName}") String imageServerName,
+			final @Value("${imageServerExtension}") String imageServerExtension,
+			final @Value("${imagePath}") String imagePath,
+			final @Value("${imageServerReadTimeout}") int imageServerReadTimeout,
+			final @Value("${imageResolutionHIGH}") int resolutionHIGH,
+			final @Value("${imageResolutionPREVIEW}") int resolutionPREVIEW,
+			final @Value("${imageResolutionTHUMBNAIL}") int resolutionTHUMBNAIL,
+			final @Value("${imageResolutionICON}") int resolutionICON) {
 			
 		this.imageServerPath = imageServerPath;
 		this.imageServerName = imageServerName;

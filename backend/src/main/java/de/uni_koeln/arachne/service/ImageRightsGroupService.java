@@ -37,9 +37,9 @@ public class ImageRightsGroupService {
 	 * @param resolutionPREVIEW Width for preview resolution images.
 	 */
 	@Autowired
-	public ImageRightsGroupService(final @Value("#{config.imageResolutionHIGH}") int resolutionHIGH,
-			final @Value("#{config.imageResolutionTHUMBNAIL}") int resolutionTHUMBNAIL,
-			final @Value("#{config.imageResolutionPREVIEW}") int resolutionPREVIEW) {
+	public ImageRightsGroupService(final @Value("${imageResolutionHIGH}") int resolutionHIGH,
+			final @Value("${imageResolutionTHUMBNAIL}") int resolutionTHUMBNAIL,
+			final @Value("${imageResolutionPREVIEW}") int resolutionPREVIEW) {
 		
 		this.resolution_HIGH = resolutionHIGH;
 		this.resolution_THUMBNAIL = resolutionTHUMBNAIL;

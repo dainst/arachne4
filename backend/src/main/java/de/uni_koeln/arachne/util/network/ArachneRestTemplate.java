@@ -11,8 +11,8 @@ import org.springframework.web.client.RestTemplate;
 public class ArachneRestTemplate extends RestTemplate {
 
 	@Autowired
-	public ArachneRestTemplate(final @Value("#{config.restConnectionTimeout}") int restConnectionTimeout,
-			final @Value("#{config.restReadTimeout}") int restReadTimeout) {
+	public ArachneRestTemplate(final @Value("${restConnectionTimeout}") int restConnectionTimeout,
+			final @Value("${restReadTimeout}") int restReadTimeout) {
 		if (getRequestFactory() instanceof SimpleClientHttpRequestFactory) {
             ((SimpleClientHttpRequestFactory)getRequestFactory()).setConnectTimeout(restConnectionTimeout);
             ((SimpleClientHttpRequestFactory)getRequestFactory()).setReadTimeout(restReadTimeout);

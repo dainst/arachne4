@@ -34,10 +34,21 @@
     	
 	<!-- The definition of the Root Spring Container shared by all Servlets 
 		and Filters -->
+    <context-param>
+	   <param-name>contextClass</param-name>
+	   <param-value>
+            org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+        </param-value>
+    </context-param>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
+		<param-value>de.uni_koeln.arachne.config.ApplicationConfiguration</param-value>
+	</context-param>		
+		
+	<!-- <context-param>
+		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring/root-context.xml,/WEB-INF/spring/security-context.xml</param-value>
-	</context-param>
+	</context-param>-->
 
     <!-- Spring security filters -->
     <filter>
@@ -59,9 +70,15 @@
 		<servlet-name>appServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
-		</init-param>
+            <param-name>contextClass</param-name>
+            <param-value>
+                org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>de.uni_koeln.arachne.config.ContextConfiguration</param-value>
+        </init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 

@@ -19,8 +19,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -75,12 +73,6 @@ public class DataImportService { // NOPMD
 	private transient ResponseFactory responseFactory;
 	
 	@Autowired
-	private transient ThreadPoolTaskExecutor executor;
-	
-	@Autowired
-	private transient ThreadPoolTaskScheduler scheduler;
-	
-	@Autowired
 	private transient EntityCompareService entityCompareService;
 	
 	@Autowired
@@ -109,13 +101,13 @@ public class DataImportService { // NOPMD
 	private transient long etr = 0;
 	// choose some conservative value
 	private transient double lastDPS = 100;
-	private transient double averageDPS = 100d;
+	private transient double averageDPS = 100;
 	private transient double smoothingFactor = 0.005d;
 	
 	@Autowired
-	public DataImportService(final @Value("#{config.profilingDataimport}") boolean profiling
-			, final @Value("#{config.checkIndexOnDataImport}") boolean checkIndexOnDataImport
-			, final @Value("#{config.esBulkActions}") int esBulkActions) {
+	public DataImportService(final @Value("${profilingDataimport}") boolean profiling
+			, final @Value("${checkIndexOnDataImport}") boolean checkIndexOnDataImport
+			, final @Value("${esBulkActions}") int esBulkActions) {
 		
 		this.PROFILING = profiling;
 		this.checkIndexOnDataImport = checkIndexOnDataImport;

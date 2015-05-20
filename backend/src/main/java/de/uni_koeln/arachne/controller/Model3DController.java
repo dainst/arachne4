@@ -54,7 +54,7 @@ public class Model3DController {
 	private transient final String basePath;
 	
 	@Autowired
-	public Model3DController(final @Value("#{config.model3dBasePath}") String basePath) {
+	public Model3DController(final @Value("${model3dBasePath}") String basePath) {
 		this.basePath = basePath;
 	}
 	

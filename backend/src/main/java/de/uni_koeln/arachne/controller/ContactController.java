@@ -40,7 +40,7 @@ public class ContactController {
 	private transient final String contactEmail;
 	
 	@Autowired
-	public ContactController(final @Value("#{config.contactEmail}") String contactEmail) {
+	public ContactController(final @Value("${contactEmail}") String contactEmail) {
 		this.contactEmail = contactEmail;
 	}
 	

@@ -34,7 +34,7 @@ public class EntityService {
 	private transient ResponseFactory responseFactory;
 	
 	@Autowired
-	public EntityService(final @Value("#{config.profilingEntityRetrieval}") boolean profiling) {
+	public EntityService(final @Value("${profilingEntityRetrieval}") boolean profiling) {
 		this.PROFILING = profiling;
 	}
 	

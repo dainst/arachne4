@@ -3,7 +3,6 @@ package de.uni_koeln.arachne.response.search;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.print.attribute.HashAttributeSet;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.elasticsearch.rest.RestStatus;

@@ -1,7 +1,6 @@
 package de.uni_koeln.arachne.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,7 +21,7 @@ import de.uni_koeln.arachne.util.sql.SQLToolbox;
 /**
  * This service class provides the means to retrieve images from the database.
  */
-@Service("ArachneImageService")
+@Service("ImageService")
 public class ImageService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageService.class);
@@ -36,8 +35,8 @@ public class ImageService {
 	private transient final List<String> excludeList;
 	
 	@Autowired
-	public ImageService(final @Value("#{config.imageExcludeList}") String imageExcludeListCS) {
-		excludeList = new ArrayList<String>(Arrays.asList(imageExcludeListCS.split(",")));
+	public ImageService(final @Value("#{'$imageExcludeList}'.split(',')}") List<String> imageExcludeList) {
+		excludeList = imageExcludeList;
 	}
 	
 	/**

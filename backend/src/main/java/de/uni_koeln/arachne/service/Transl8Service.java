@@ -52,7 +52,7 @@ public class Transl8Service {
 	private transient String transl8Url;
 	
 	@Autowired
-	public Transl8Service(final @Value("#{config.transl8Url}") String transl8Url) {
+	public Transl8Service(final @Value("${transl8Url}") String transl8Url) {
 		this.transl8Url = transl8Url;
 		languages.add("de");
 		translationsAvailable.put(languages.get(0), false);
