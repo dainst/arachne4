@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 import de.uni_koeln.arachne.service.ArachneUserDetailsService;
@@ -34,7 +35,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/**").hasAnyRole("USER", "ADMIN", "ANONYMOUS")
 			.and()
 				.httpBasic()
-				.authenticationEntryPoint(authenticationEntryPoint());
+				.authenticationEntryPoint(authenticationEntryPoint())
+			.and()
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
 	@Bean
