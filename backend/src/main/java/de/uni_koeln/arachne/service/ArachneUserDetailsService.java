@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.hibernate.User;
@@ -18,6 +19,7 @@ import de.uni_koeln.arachne.mapping.hibernate.User;
  * Sping UserDetailsService implementation to retrieve user information from the DB.
  * @author Reimar Grabowski
  */
+@Service
 public class ArachneUserDetailsService implements UserDetailsService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ArachneUserDetailsService.class);
