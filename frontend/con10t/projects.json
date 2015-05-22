@@ -63,7 +63,8 @@
                 "id": "monumentbrowser",
                 "title": {
                     "de": "Monumentbrowser",
-                    "en": "Monument Browser"
+                    "en": "Monument Browser",
+                    "it": "Browser dei monumenti"
                 },
                 "children": [
                     {
@@ -236,7 +237,8 @@
                 "id": "",
                 "title": {
                     "de": "Publikationen",
-                    "en": "Collections"
+                    "en": "Collections",
+                    "it": "Pubblicazioni"
                 },
                 "children": [
                     {
@@ -309,7 +311,7 @@
                 "title": {
                     "de": "Wissenschaftliche Qualifikationsarbeiten",
                     "en": "Dissertations/academic final papers",
-                    "it": "Tesi di dottorato/lavori di qualificazione scientifica"
+                    "it": "Tesi di laurea e di dottorato"
                 },
                 "children": [
                     {
