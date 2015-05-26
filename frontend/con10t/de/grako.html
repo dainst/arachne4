@@ -182,20 +182,23 @@ overlays = {
 }
 "></div>
 
-	<div ng-init="facetsAllow = [
-		'facet_literatur',
+<div ng-init="mapConfig = {
+	menuTitle: 'Antike Werkst&auml;tten',
+	menuHeadingSearch: 'Suche in Projektdatens&auml;tzen',
+	menuShowMapfacetSelection: false,
+	menuFacetsAllow: [
+		'facet_kulturkreis',
 		'facet_datierungepoche',
 		'facet_gebaeudetypspeziell',
-		'facet_kulturkreis',
 		'facet_produktmaterial',
-		'facet_produktfunktion',
 		'facet_produktform',
+		'facet_produktfunktion',
 		'facet_befund',
 		'facet_kontext',
-		'facet_einbindung'
-	]"></div>
-
-	<div ng-init="facetsSelect = [
+		'facet_einbindung',
+		'facet_literatur'
+	],
+	facetsSelect: [
 		{
 			key: 'catalogIds',
 			value: 20
@@ -204,13 +207,10 @@ overlays = {
 			key: 'facet_kategorie',
 			value: 'Bauwerke'
 		}
-	]"></div>
+	]
+}"></div>
 
-	<con10t-catalog-map overlays="overlays"
-		menu-title="Antike Werkst&auml;tten"
-		facets-allow="facetsAllow"
-		facets-select="facetsSelect"
-	/>
+	<con10t-catalog-map overlays="overlays" map-config="mapConfig" />
 
 </div>
 
