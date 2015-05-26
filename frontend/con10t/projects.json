@@ -63,7 +63,8 @@
                 "id": "monumentbrowser",
                 "title": {
                     "de": "Monumentbrowser",
-                    "en": "Monument Browser"
+                    "en": "Monument Browser",
+                    "it": "Browser dei monumenti"
                 },
                 "children": [
                     {
@@ -236,7 +237,8 @@
                 "id": "",
                 "title": {
                     "de": "Publikationen",
-                    "en": "Collections"
+                    "en": "Collections",
+                    "it": "Pubblicazioni"
                 },
                 "children": [
                     {
@@ -309,7 +311,7 @@
                 "title": {
                     "de": "Wissenschaftliche Qualifikationsarbeiten",
                     "en": "Dissertations/academic final papers",
-                    "it": "Tesi di dottorato/lavori di qualificazione scientifica"
+                    "it": "Tesi di laurea e di dottorato"
                 },
                 "children": [
                     {
@@ -355,7 +357,8 @@
                         "id": "palilia26",
                         "title": {
                             "de": "Palilia 26: Wolfgang Ehrhardt, Dekorations- und Wohnkontext. Beseitigung, Restaurierung und Konservierung von Wandbemalungen in den kampanischen Antikenstätten",
-                            "en": "Palilia 26: Wolfgang Ehrhardt, Decorative and residential context. Removal, restoration and preservation of wall paintings in the Campanian antique sites"
+                            "en": "Palilia 26: Wolfgang Ehrhardt, Decorative and residential context. Removal, restoration and preservation of wall paintings in the Campanian antique sites",
+                            "it": "Palilia 26: Wolfgang Ehrhardt, Dekorations- und Wohnkontext. Beseitigung, Restaurierung und Konservierung von Wandbemalungen in den kampanischen Antikenstätten"
                         }
                     }
                 ]
