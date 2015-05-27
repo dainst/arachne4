@@ -225,6 +225,13 @@
                         }
                     },
                     {
+                        "id": "spacodices",
+                        "title": {
+                            "de": "Spanische Codices",
+                            "en": "Spanish Codices"
+                        }
+                    },
+                    {
                         "id": "hellespont",
                         "title": {
                             "de": "Das Hellespont-Projekt",
@@ -282,6 +289,12 @@
                             "de": "Corpus der minoischen und mykenischen Siegel",
                             "en": "Corpus of Minoan and Mycenaean Seals",
                             "it": "Corpus dei sigilli minoici e micenei"
+                        }
+                    },
+                    {
+                        "id": "langwiss",
+                        "title": {
+                            "de": "Jörn Lang, “Mit Wissen geschmückt?”. Zur bildlichen Rezeption griechischer Dichter und Denker in der römischen Lebenswelt (Wiesbaden 2012)"
                         }
                     },
                     {
