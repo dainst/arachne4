@@ -200,21 +200,24 @@
                 "id": "",
                 "title": {
                     "de": "Sonstige Projekte",
-                    "en": "Other Projects"
+                    "en": "Other Projects",
+                    "it": "Altri progetti"
                 },
                 "children": [
                     {
                         "id": "analysearachne",
                         "title": {
                             "de": "Analyse zur Arachne-Nutzung",
-                            "en": "Analyse zur Arachne-Nutzung"
+                            "en": "Analyse zur Arachne-Nutzung",
+                            "it": "Analisi dell'utilizzo di Arachne"
                         }
                     },
                     {
                         "id": "afrarchcologne",
                         "title": {
                             "de": "African Archaeology Archive Cologne",
-                            "en": "African Archaeology Archive Cologne"
+                            "en": "African Archaeology Archive Cologne",
+                            "it": "Archivio archeologico africano di Colonia"
                         }
                     },
                     {
