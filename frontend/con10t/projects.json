@@ -189,6 +189,13 @@
                         }
                     },
                     {
+                        "id": "kossack",
+                        "title": {
+                            "de": "Nachlass Georg Kossack",
+                            "en": "Bequests of Georg Kossack"
+                        }
+                    },
+                    {
                         "id": "antikeplastik",
                         "title": {
                             "de": "Antike Plastik 5.0://"
@@ -225,6 +232,13 @@
                         "title": {
                             "de": "CARARE",
                             "en": "CARARE"
+                        }
+                    },
+                    {
+                        "id": "cilopac",
+                        "title": {
+                            "de": "CIL Open Access",
+                            "en": "CIL Open Access"
                         }
                     },
                     {
