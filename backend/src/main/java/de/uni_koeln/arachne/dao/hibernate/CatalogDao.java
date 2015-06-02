@@ -69,7 +69,9 @@ public class CatalogDao {
 	@Transactional
 	public void destroyCatalog(final Catalog catalog) {
 		Session session = sessionFactory.getCurrentSession();
-		session.delete(catalog);
+		// hack: get catalog by ID in order to prevent NonUniqueObjectException
+		Object attachedCatalog = session.get(Catalog.class, catalog.getId());
+		session.delete(attachedCatalog);
 	}
 	
 	/**
@@ -85,9 +87,11 @@ public class CatalogDao {
 	}
 
 	private void eagerFetchChildren(CatalogEntry entry) {
-		Hibernate.initialize(entry.getChildren());
-		for (CatalogEntry child : entry.getChildren()) {
-			eagerFetchChildren(child);
+		if (entry != null && entry.getChildren() != null) {
+			Hibernate.initialize(entry.getChildren());
+			for (CatalogEntry child : entry.getChildren()) {
+				eagerFetchChildren(child);
+			}
 		}
 	}
 	
