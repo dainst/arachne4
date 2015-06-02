@@ -72,8 +72,8 @@
         </Logger>
         
         <Root  level="info">
-            <!-- <AppenderRef ref="ROLLING" /> -->
-            <AppenderRef ref="CONSOLE" />
+            <AppenderRef ref="ROLLING" />
+            <!-- <AppenderRef ref="CONSOLE" /> -->
         </Root>
     </Loggers>
 </Configuration>
