@@ -48,7 +48,8 @@ public class TestContactController {
 				post("/contact")
 				.contentType(APPLICATION_JSON_UTF8)
 				.content(json))
-				.andExpect(status().isOk());
+				.andExpect(status().isOk())
+				.andExpect(content().string(""));
 	}
 	
 	@Test
