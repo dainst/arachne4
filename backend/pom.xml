@@ -53,7 +53,7 @@
         <!-- mockito -->
         <org.mockito-version>1.10.8</org.mockito-version>
         <!-- JSONassert -->
-        <jsonassert-version>0.9.0</jsonassert-version>
+        <jsonassert-version>1.2.3</jsonassert-version>
         <!-- Plugin Versions -->
 		<aspectj-maven-version>1.5</aspectj-maven-version>
 		<maven-failsafe-version>2.17</maven-failsafe-version>
