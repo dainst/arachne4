@@ -1,5 +1,7 @@
 package de.uni_koeln.arachne.response;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -27,6 +29,10 @@ public class StatusResponse {
 	private Long indexedDocuments;
 	
 	private Float documentsPerSecond;
+	
+	private List<String> cachedDocuments;
+	
+	private List<String> cachedIncludeElements;
 	
 	/**
 	 * Empty default constructor.
@@ -109,5 +115,32 @@ public class StatusResponse {
 	public void setCount(Long count) {
 		this.count = count;
 	}
-	
+
+	/**
+	 * @return the cachedDocuments
+	 */
+	public List<String> getCachedDocuments() {
+		return cachedDocuments;
+	}
+
+	/**
+	 * @param cachedDocuments the cachedDocuments to set
+	 */
+	public void setCachedDocuments(List<String> cachedDocuments) {
+		this.cachedDocuments = cachedDocuments;
+	}
+
+	/**
+	 * @return the cachedIncludeElements
+	 */
+	public List<String> getCachedIncludeElements() {
+		return cachedIncludeElements;
+	}
+
+	/**
+	 * @param cachedIncludeElements the cachedIncludeElements to set
+	 */
+	public void setCachedIncludeElements(List<String> cachedIncludeElements) {
+		this.cachedIncludeElements = cachedIncludeElements;
+	}	
 }

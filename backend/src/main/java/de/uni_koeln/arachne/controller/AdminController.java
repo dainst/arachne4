@@ -1,5 +1,8 @@
 package de.uni_koeln.arachne.controller;
 
+import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8_VALUE;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit; 
 
@@ -43,32 +46,28 @@ public class AdminController {
 	 * @param response The outgoing HTTP response.
 	 * @return A <code>StatusResponse</code> containing the status of the XML configuration document cache or <code>null</code> on error-
 	 */
-	@RequestMapping(value="/admin/cache", method=RequestMethod.GET)
+	@RequestMapping(value = "/admin/cache", method = RequestMethod.GET
+			, produces = {APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody StatusResponse getCacheStatus(final HttpServletResponse response) {
 		
 		LOGGER.debug("User GroupID: " + userRightsService.getCurrentUser().getGroupID());
 		if (userRightsService.getCurrentUser().getGroupID() >= UserRightsService.MIN_ADMIN_ID) {
-			final StringBuilder result = new StringBuilder("Cached documents:");
+			final StatusResponse result = new StatusResponse();
 			final List<String> cachedDocuments = xmlConfigUtil.getXMLConfigDocumentList();
 			if (cachedDocuments.isEmpty()) {
-				result.append(" none");
+				result.setCachedDocuments(Arrays.asList("none"));
 			} else {
-				for (final String document: cachedDocuments) {
-					result.append(" " + document + ".xml");
-				}
+				result.setCachedDocuments(cachedDocuments);
 			}
 
-			result.append(" - Cached include elements:");
 			final List<String> cachedElements = xmlConfigUtil.getXMLIncludeElementList();
 			if (cachedElements.isEmpty()) {
-				result.append(" none");
+				result.setCachedDocuments(Arrays.asList("none"));
 			} else {
-				for (final String element: cachedElements) {
-					result.append(" " + element + "_inc.xml");
-				}
+				result.setCachedIncludeElements(cachedElements);
 			}
 
-			return new StatusResponse(result.toString());
+			return result;
 		}
 		response.setStatus(403);
 		return null;
@@ -80,7 +79,8 @@ public class AdminController {
 	 * @param response The outgoing HTTP response.
 	 * @return A <code>StatusResponse</code> containing the status of the XML configuration document cache or <code>null<code> on error.
 	 */
-	@RequestMapping(value="/admin/cache", method=RequestMethod.DELETE)
+	@RequestMapping(value="/admin/cache", method=RequestMethod.DELETE
+			, produces = {APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody StatusResponse handleCache(final HttpServletResponse response) {
 				
 		LOGGER.debug("User GroupID: " + userRightsService.getCurrentUser().getGroupID());
@@ -97,7 +97,8 @@ public class AdminController {
 	 * Returns the current status of the Elasticsearch data import.
 	 * @return A <code>StatusResponse</code> object.
 	 */
-	@RequestMapping(value="/admin/dataimport", method=RequestMethod.GET)
+	@RequestMapping(value="/admin/dataimport", method=RequestMethod.GET
+			, produces = {APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody StatusResponse getDataImportStatus() {
 		
 		if (dataImportService.isRunning()) {
@@ -127,7 +128,8 @@ public class AdminController {
 	 * @param response The outgoing HTTP response.
 	 * @return A <code>StatusResponse</code> containing the current dataimport status or <code>null</code> on error.
 	 */
-	@RequestMapping(value="/admin/dataimport", method=RequestMethod.POST)
+	@RequestMapping(value="/admin/dataimport", method=RequestMethod.POST
+			, produces = {APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody StatusResponse handleDataImport(@RequestParam(value = "command", required = true) final String command
 			, final HttpServletResponse response) {
 		
