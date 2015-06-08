@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.response;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -70,7 +71,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * A list of catalogs this entity is part of.
 	 */
-	protected List<Long> catalogIds;
+	protected Set<Long> catalogIds;
 	
 	/**
 	 * A list of catalogEntry paths.
@@ -233,14 +234,14 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * @return the catalogIds
 	 */
-	public List<Long> getCatalogIds() {
+	public Set<Long> getCatalogIds() {
 		return catalogIds;
 	}
 
 	/**
 	 * @param catalogIds the catalogIds to set
 	 */
-	public void setCatalogIds(final List<Long> catalogIds) {
+	public void setCatalogIds(final Set<Long> catalogIds) {
 		this.catalogIds = catalogIds;
 	}
 	

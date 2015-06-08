@@ -4,8 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -167,7 +169,7 @@ public class ResponseFactory {
 		response.setConnectedEntities(connectedEntities);
 		
 		// set catalogEntry data
-		final List<Long> catalogIds = new ArrayList<Long>();
+		final Set<Long> catalogIds = new HashSet<Long>();
 		final List<String> catalogPaths = new ArrayList<String>();
 		final List<Object[]> catalogData = catalogEntryDao.getPublicCatalogIdsAndPathsByEntityId(arachneId.getArachneEntityID());
 		for (Object[] objects : catalogData) {
