@@ -59,6 +59,8 @@ public class DataIntegrityLogService {
 			result.append("Total warnings: " + totalCount);
 		}
 		
+		warnings.clear();
+		
 		return result.toString();
 	}
 	
