@@ -17,75 +17,33 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.ContextConfiguration;
 
-import de.uni_koeln.arachne.context.AbstractLink;
-import de.uni_koeln.arachne.context.ArachneLink;
-import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.context.ContextImageDescriptor;
 import de.uni_koeln.arachne.response.AbstractContent;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Section;
 import de.uni_koeln.arachne.util.sql.TableConnectionDescription;
+import de.uni_koeln.arachne.testconfig.TestData;
 
 @RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(locations={"classpath:test-context.xml"}) 
 public class TestXmlConfigUtil {
+	
+	private transient TestData testData;
+	
 	private transient XmlConfigUtil xmlConfigUtil;
 	
 	@Before
 	public void initXMLConfig() {
 		xmlConfigUtil = new XmlConfigUtil();
 		xmlConfigUtil.setServletContext(new MockServletContext("file:src/test/resources"));
+		
+		testData = new TestData();
 	}
 	
 	@After
 	public void releaseXMLConfig() {
 		xmlConfigUtil = null;
-	}
-	
-	private Dataset getTestDataSet() {
-		final Dataset dataset = new Dataset();
-		
-		dataset.setArachneId(new EntityId("test", 0L, 0L, false, 0L));
-				
-		dataset.setFields("test.Title", "Title of the Test");
-		
-		dataset.setFields("test.Subtitle", "Subtitle of the Test");
-		
-		dataset.setFields("test.DataPrefix", "success");
-		dataset.setFields("test.DataPostfix", "PostfixTest");
-		
-		dataset.setFields("test.DataSeparatorBefore", "first");
-		dataset.setFields("test.DataSeparatorAfter", "second");
-		
-		dataset.setFields("test.DataLink1", "http://testserver.com/link1.html");
-		dataset.setFields("test.DataLink2", "link2");
-		dataset.setFields("test.DataNoLink1", "Start");
-		dataset.setFields("test.DataNoLink2", "End");
-		
-		dataset.setFields("test.facetTest", "test facet value");
-		dataset.setFields("test.facetMultiValueTest", "value 1;value 2;value 3");
-		
-		final Dataset linkDataset = new Dataset();
-		
-		linkDataset.setArachneId(new EntityId("testContext", 0L, 1L, false, 0L));
-				
-		linkDataset.setFields("testContext.value1", "Test Context Value1");
-		linkDataset.setFields("testContext.value3", "Test Context Value3");
-		linkDataset.setFields("testContext.value4", "Test Context Value4");
-		linkDataset.setFields("testContext.value5", "Test Context Value5");
-		linkDataset.setFields("testContext.value6", "Test Context Value6");
-		
-		final ArachneLink link = new ArachneLink();
-		link.setEntity1(dataset);
-		link.setEntity2(linkDataset);
-		
-		final List<AbstractLink> contexts = new ArrayList<AbstractLink>();
-		contexts.add(link);
-		
-		final Context context = new Context("testContext", dataset, contexts);
-		dataset.addContext(context);		
-		
-		return dataset;
+		testData = null;
 	}
 	
 	@Test
@@ -110,7 +68,7 @@ public class TestXmlConfigUtil {
 		final Element context = testDocument.getRootElement().getChild("display", namespace)
 				.getChild("datasections", namespace).getChild("section", namespace).getChild("context", namespace);
 		
-		final Section section = xmlConfigUtil.getContentFromContext(context, namespace, getTestDataSet()); 
+		final Section section = xmlConfigUtil.getContentFromContext(context, namespace, testData.getTestDataset()); 
 		
 		assertNotNull(section);
 		assertFalse(section.getContent().isEmpty());
@@ -126,7 +84,7 @@ public class TestXmlConfigUtil {
 		final List<Element> sections = testDocument.getRootElement().getChild("display", namespace)
 				.getChild("datasections", namespace).getChild("section", namespace).getChildren("section", namespace);
 		
-		final Dataset dataset = getTestDataSet();
+		final Dataset dataset = testData.getTestDataset();
 		
 		final List<String> expected = new ArrayList<String>(3);
 		expected.add("Testdata prefix/postfix: PrefixTest=success<hr>PostfixTest=success");
@@ -231,7 +189,7 @@ public class TestXmlConfigUtil {
 		final Element section = testDocument.getRootElement().getChild("display", namespace)
 				.getChild("title", namespace).getChild("section", namespace);
 				
-		final Dataset dataset = getTestDataSet();
+		final Dataset dataset = testData.getTestDataset();
 		
 		StringBuilder ifEmptySB = xmlConfigUtil.getIfEmptyFromField(section, namespace, dataset);
 		assertNull(ifEmptySB);

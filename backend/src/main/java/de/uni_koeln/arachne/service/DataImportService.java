@@ -29,7 +29,6 @@ import de.uni_koeln.arachne.mapping.hibernate.ArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.network.BasicNetwork;
-import de.uni_koeln.arachne.util.network.ESClientUtil;
 import de.uni_koeln.arachne.util.system.ExternalProcess;
 
 /**
@@ -52,7 +51,7 @@ public class DataImportService { // NOPMD
 	private final boolean checkIndexOnDataImport;
 	
 	@Autowired
-	private transient ESClientUtil esClientUtil;
+	private transient ESService esService;
 	
 	@Autowired
 	private transient IUserRightsService userRightsService;
@@ -134,12 +133,12 @@ public class DataImportService { // NOPMD
 		
 		userRightsService.setDataimporter();
 		
-		final String indexName = esClientUtil.getDataImportIndex();
+		final String indexName = esService.getDataImportIndex();
 		try {
 			long deltaT = 0;
 			int index = 0;
 						
-			final Client client = esClientUtil.getClient();
+			final Client client = esService.getClient();
 			
 			class BulkProcessorListener implements BulkProcessor.Listener {
 				// used to check if last bulk request has finished
@@ -177,8 +176,8 @@ public class DataImportService { // NOPMD
 			}
 			final BulkProcessorListener listener = new BulkProcessorListener();
 			final BulkProcessor bulkProcessor = BulkProcessor.builder(client, listener)
-					.setBulkActions(esClientUtil.getBulkActions())
-					.setBulkSize(new ByteSizeValue(esClientUtil.getBulkSize(), ByteSizeUnit.MB))
+					.setBulkActions(esService.getBulkActions())
+					.setBulkSize(new ByteSizeValue(esService.getBulkSize(), ByteSizeUnit.MB))
 					.build();
 						
 			if ("NoIndex".equals(indexName)) {
@@ -190,7 +189,7 @@ public class DataImportService { // NOPMD
 			final long startTime = System.currentTimeMillis();
 			
 			LOGGER.info("Dataimport started on index '" + indexName + "'");
-			esClientUtil.setRefreshInterval(indexName, false);
+			esService.setRefreshInterval(indexName, false);
 									
 			final Long entityCount = jdbcTemplate.queryForObject("select count(*) `ArachneEntityID` from `arachneentityidentification` where `isDeleted` = 0", Long.class);
 			if (entityCount != null) {
@@ -267,8 +266,8 @@ public class DataImportService { // NOPMD
 				if (retries > 59) {
 					throw new RuntimeException("Bulk request did not finish in 1 minute.");
 				}
-				esClientUtil.setRefreshInterval(indexName, true);
-				esClientUtil.updateSearchIndex();
+				esService.setRefreshInterval(indexName, true);
+				esService.updateSearchIndex();
 				final long elapsedTime = (System.currentTimeMillis() - startTime);
 				final String success = "Import of " + index + " documents finished in " + elapsedTime/1000f/60f/60f + " hours ("
 						+ index/((float)elapsedTime/1000) + " documents per second)." + System.lineSeparator()
@@ -278,7 +277,7 @@ public class DataImportService { // NOPMD
 				contextService.clearCache();
 			} else {
 				LOGGER.info("Dataimport aborted.");
-				esClientUtil.deleteIndex(indexName);
+				esService.deleteIndex(indexName);
 				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - abort", "Dataimport was manually aborted.");
 			}
 		}
@@ -289,7 +288,7 @@ public class DataImportService { // NOPMD
 			final String stacktrace = Throwables.getStackTraceAsString(e);
 			mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - failure"
 					, failure + e.toString() + System.getProperty("line.separator") + "StackTrace: " + stacktrace);
-			esClientUtil.deleteIndex(indexName);
+			esService.deleteIndex(indexName);
 		}
 		// disable request scope hack
 		((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).requestCompleted();

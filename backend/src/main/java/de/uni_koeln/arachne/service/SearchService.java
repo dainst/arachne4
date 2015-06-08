@@ -47,7 +47,6 @@ import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
-import de.uni_koeln.arachne.util.network.ESClientUtil;
 import de.uni_koeln.arachne.util.search.Aggregation;
 import de.uni_koeln.arachne.util.search.GeoHashGridAggregation;
 import de.uni_koeln.arachne.util.search.SearchFieldList;
@@ -68,7 +67,7 @@ public class SearchService {
 	private transient XmlConfigUtil xmlConfigUtil;
 	
 	@Autowired
-	private transient ESClientUtil esClientUtil;
+	private transient ESService esService;
 	
 	@Autowired
 	private transient Transl8Service ts;
@@ -108,7 +107,7 @@ public class SearchService {
 		
 		SearchType searchType = (searchParameters.getLimit() > 0) ? SearchType.DFS_QUERY_THEN_FETCH : SearchType.COUNT;
 		
-		SearchRequestBuilder result = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
+		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
 				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox()))
 				.setSearchType(searchType)
 				.setFrom(searchParameters.getOffset())
@@ -140,7 +139,7 @@ public class SearchService {
 			, final String sortField
 			, final Boolean orderDesc) {
 		
-		SearchRequestBuilder result = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
+		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
 				.setQuery(buildContextQuery(entityId))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setFrom(offset)
@@ -159,7 +158,7 @@ public class SearchService {
 	 */
 	public SearchRequestBuilder buildIndexSearchRequest(final String facetName) {
 		
-		SearchRequestBuilder result = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
+		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
 				.setQuery(buildQuery("*", null, new Double[0]))
 				.setSearchType(SearchType.COUNT)
 				.setSize(0);
@@ -419,7 +418,7 @@ public class SearchService {
 			, final Multimap<String, String> filters
 			, final Double[] bbCoords) {
 		
-		FilterBuilder facetFilter = esClientUtil.getAccessControlFilter();
+		FilterBuilder facetFilter = esService.getAccessControlFilter();
 				
 		if (filters != null && !filters.isEmpty()) {
 			for (final Map.Entry<String, Collection<String>> filter: filters.asMap().entrySet()) {
@@ -474,7 +473,7 @@ public class SearchService {
 	 */
 	private QueryBuilder buildContextQuery(Long entityId) {
 		
-		BoolFilterBuilder accessFilter = esClientUtil.getAccessControlFilter();
+		BoolFilterBuilder accessFilter = esService.getAccessControlFilter();
 		final TermQueryBuilder innerQuery = QueryBuilders.termQuery("connectedEntities", entityId);
 		final QueryBuilder query = QueryBuilders.filteredQuery(innerQuery, accessFilter);
 										

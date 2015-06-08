@@ -4,19 +4,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.StringWithHTTPStatus;
 
-@Service("EntityService")
+/**
+ * Service to retrieve entities either from the elasticsearch index or the db.
+ * 
+ * @author Reimar Grabowski
+ */
+@Service
 public class EntityService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityService.class);
 	
-	private final boolean PROFILING;
+	@Autowired
+	private transient EntityIdentificationService entityIdentificationService;
 	
 	@Autowired
 	private transient SingleEntityDataService singleEntityDataService;
@@ -31,12 +39,80 @@ public class EntityService {
 	private transient IUserRightsService userRightsService;
 	
 	@Autowired
-	private transient ResponseFactory responseFactory;
+	private transient Transl8Service ts;
 	
 	@Autowired
-	public EntityService(final @Value("${profilingEntityRetrieval}") boolean profiling) {
+	private transient ESService esService;
+	
+	@Autowired
+	private transient ResponseFactory responseFactory;
+	
+	private transient final boolean PROFILING;
+	private transient final String[] internalFields;
+	
+	@Autowired
+	public EntityService(final @Value("${profilingEntityRetrieval}") boolean profiling
+			, final @Value("#{'${internalFields}'.split(',')}") String[] internalFields) {
 		this.PROFILING = profiling;
+		this.internalFields = internalFields;
 	}
+	
+	public StringWithHTTPStatus getEntityFromIndex(final Long id, final String category) {
+		
+    	final StringWithHTTPStatus result = esService.getDocumentFromCurrentIndex(id, category, internalFields);
+    	    	
+    	if (result.getStatus() == HttpStatus.NOT_FOUND ) {
+    		// if the entity is not found in the ES index it may have been deleted, so we try to retrieve it from 
+    		// the DB to get a nice deleted message without duplicating code or burdening the dataimport with the 
+    		// task of keeping track of deleted entities or adding them to the index
+    		return getEntityFromDB(id, category);
+    	}
+    	
+    	return result;
+	}
+	
+	/**
+     * Internal function handling all http GET requests for <code>/entity/*</code>.
+     * It fetches the data for a given entity and returns it as a response object.
+     * <br>
+     * If the entity is not found a HTTP 404 error message is returned.
+     * <br>
+     * If the user does not have permission to see an entity a HTTP 403 status message is returned.
+     * @param id The unique entity ID if no category is given else the internal ID.
+     * @param category The category to query or <code>null</code>.
+     * @param response The <code>HttpServeletRsponse</code> object.
+     * @return The response body as <code>String</code>.
+     */
+    public StringWithHTTPStatus getEntityFromDB(final Long id, final String category) { 
+    	final EntityId entityId;
+    	if (category == null) {
+    		entityId = entityIdentificationService.getId(id);
+    	} else {
+    		entityId = entityIdentificationService.getId(category, id);
+    	}
+    	
+    	if (entityId == null) {
+    		return new StringWithHTTPStatus(HttpStatus.NOT_FOUND);
+    	}
+    	
+    	LOGGER.debug("Request for entity: " + entityId.getArachneEntityID() + " - type: " + entityId.getTableName());
+    	
+    	if (entityId.isDeleted()) {
+    		return new StringWithHTTPStatus(responseFactory.createResponseForDeletedEntityAsJsonString(entityId));
+    	}
+    	
+    	final String result = getFormattedEntityByIdAsJsonString(entityId);
+    	
+    	if ("forbidden".equals(result)) {
+    		return new StringWithHTTPStatus(HttpStatus.FORBIDDEN);
+    	}
+    	
+    	if (result != null) {
+    		return new StringWithHTTPStatus(result);
+    	}
+    	
+    	return new StringWithHTTPStatus(HttpStatus.NOT_FOUND);
+    }
 	
 	/**
 	 * This functions retrieves a <code>FromattedArachneEntity</code> as JSON <code>String</code>.

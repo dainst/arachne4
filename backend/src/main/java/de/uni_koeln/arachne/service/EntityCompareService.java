@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.uni_koeln.arachne.util.JSONUtil;
-import de.uni_koeln.arachne.util.network.ESClientUtil;
 
 @Service
 @Scope("prototype")
@@ -27,7 +26,7 @@ public class EntityCompareService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityCompareService.class);
 	
 	@Autowired
-	private transient ESClientUtil esClientUtil;
+	private transient ESService esService;
 	
 	@Autowired
 	private transient JSONUtil jsonUtil;
@@ -38,7 +37,7 @@ public class EntityCompareService {
     	SearchResponse searchResponse = null;
     	// TODO use id query instead
     	final QueryBuilder acLessQuery = QueryBuilders.queryStringQuery("entityId:" + entityId);
-    	searchResponse = esClientUtil.getClient().prepareSearch(esClientUtil.getSearchIndexAlias())
+    	searchResponse = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
     			.setQuery(acLessQuery)
     			.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
     			.setFrom(0)

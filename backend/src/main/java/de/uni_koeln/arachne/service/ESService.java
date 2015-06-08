@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.util.network;
+package de.uni_koeln.arachne.service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,35 +22,45 @@ import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.admin.indices.open.OpenIndexResponse;
 import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsResponse;
+import org.elasticsearch.action.count.CountResponse;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.BoolFilterBuilder;
+import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.OrFilterBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
+import org.elasticsearch.rest.RestStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Repository;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.context.ServletContextAware;
 
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.User;
-import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.util.StringWithHTTPStatus;
 
 /**
- * Utility class to provide a reusable elastic search client and access to the configuration values.
+ * Class to provide methods for interaction with the elasticsearch index.
+ * 
+ * @author Reimar Grabowski
  */
-@Repository("ESClientUtil")
-public class ESClientUtil implements ServletContextAware {
+@Service
+public class ESService implements ServletContextAware {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ESClientUtil.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ESService.class);
 
 	private static final String MAPPING_FILE = "/WEB-INF/search/mapping.json";
 
@@ -65,6 +75,10 @@ public class ESClientUtil implements ServletContextAware {
 
 	@Autowired
 	private transient IUserRightsService userRightsService;
+	
+	@Autowired
+	private transient Transl8Service ts;
+	
 	private transient final String esName;
 
 	private transient final int esBulkActions;
@@ -79,7 +93,7 @@ public class ESClientUtil implements ServletContextAware {
 	private transient final String searchIndexAlias;
 
 	@Autowired
-	public ESClientUtil(final @Value("${esProtocol}") String esProtocol
+	public ESService(final @Value("${esProtocol}") String esProtocol
 			, final @Value("${esAddress}") String esAddress
 			, final @Value("${esRemotePort}") int esRemotePort
 			, final @Value("${esName}") String esName
@@ -303,8 +317,10 @@ public class ESClientUtil implements ServletContextAware {
 		final String indexName = getDataImportIndexName();
 		final String oldName = INDEX_2.equals(indexName) ? INDEX_1 : INDEX_2;
 		try {
-			final IndicesAliasesResponse indexResponse = client.admin().indices().prepareAliases().addAlias(indexName, searchIndexAlias)
-					.removeAlias(oldName, searchIndexAlias).execute().actionGet();
+			final IndicesAliasesResponse indexResponse = client.admin().indices().prepareAliases()
+					.addAlias(indexName, searchIndexAlias)
+					.removeAlias(oldName, searchIndexAlias)
+					.execute().actionGet();
 			LOGGER.debug("Trying to set alias for '" + indexName + "' and delete alias for '" + oldName + "'");
 			if (indexResponse.isAcknowledged()) {
 				LOGGER.info("Set alias for '" + indexName + "'");
@@ -336,6 +352,92 @@ public class ESClientUtil implements ServletContextAware {
 		return indexName;
 	}
 
+	/**
+	 * Returns the number of documents in the search index.
+	 * @return The number of documents or -1 on error.
+	 */
+	public long getCount() {
+		final CountResponse countResponse = getClient().prepareCount(getSearchIndexAlias()).execute().actionGet();
+		if (countResponse.status() == RestStatus.OK) {
+			return countResponse.getCount();
+		} else {
+			LOGGER.error("Getting count from search index failed. Cause: " + countResponse.status().toString());
+			return -1;
+		}
+	}
+
+	/**
+	 * Retrieves a document from the current index. Access control is handled transparently.
+	 * @param id The entityId of the document or the internal ID of the entity if a category is given.
+	 * @param internalFields Fields that must not be included in the response.
+	 * @return The entity or <code>null</code> and an HTTP status code.
+	 */
+	public StringWithHTTPStatus getDocumentFromCurrentIndex(final long id, final String category
+			, final String[] internalFields) {
+		
+		SearchResponse searchResponse = null;
+		SearchResponse acLessSearchResponse = null;
+		final FilterBuilder accessFilter = getAccessControlFilter();
+
+		if (category == null) {
+			final QueryBuilder query = QueryBuilders.filteredQuery(
+					QueryBuilders.termQuery("entityId", id), accessFilter);
+			LOGGER.debug("Entity query [" + id + "]: " + query);
+			searchResponse = getClient().prepareSearch(getSearchIndexAlias())
+					.setQuery(query)
+					.setFetchSource(new String[] {"*"}, internalFields)
+					.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+					.setFrom(0)
+					.setSize(1)
+					.execute().actionGet();
+
+			final QueryBuilder acLessQuery = QueryBuilders.termQuery("entityId", id);
+			LOGGER.debug("Entity query [" + id + "] (no access control): " + acLessQuery);
+			acLessSearchResponse = getClient().prepareSearch(getSearchIndexAlias())
+					.setQuery(acLessQuery)
+					.setFetchSource(new String[] {"*"}, internalFields)
+					.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+					.setFrom(0)
+					.setSize(1)
+					.execute().actionGet();
+		} else {
+			final QueryBuilder query = QueryBuilders.filteredQuery(
+					QueryBuilders.boolQuery()
+					.must(QueryBuilders.termQuery("type", ts.transl8(category)))
+					.must(QueryBuilders.termQuery("internalId", id))
+					, accessFilter);
+			LOGGER.debug("Entity query [" + ts.transl8(category) + "/" + id + "]: " + query);
+			searchResponse = getClient().prepareSearch(getSearchIndexAlias())
+					.setQuery(query)
+					.setFetchSource(new String[] {"*"}, internalFields)
+					.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+					.setFrom(0)
+					.setSize(1)
+					.execute().actionGet();
+
+			final QueryBuilder acLessQuery = QueryBuilders.boolQuery()
+					.must(QueryBuilders.termQuery("type", ts.transl8(category)))
+					.must(QueryBuilders.termQuery("internalId", id));
+			LOGGER.debug("Entity query [" + ts.transl8(category) + "/" + id + "] (no access control): " + acLessQuery);
+			acLessSearchResponse = getClient().prepareSearch(getSearchIndexAlias())
+					.setQuery(acLessQuery)
+					.setFetchSource(new String[] {"*"}, internalFields)
+					.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+					.setFrom(0)
+					.setSize(1)
+					.execute().actionGet();
+		}
+		
+		if (searchResponse.getHits().getTotalHits() == 1) {
+    		return new StringWithHTTPStatus(searchResponse.getHits().getAt(0).getSourceAsString());
+    	} else {
+    		if (acLessSearchResponse.getHits().getTotalHits() == 1) {
+    			return new StringWithHTTPStatus(HttpStatus.FORBIDDEN);
+    		}
+    	}
+    	return new StringWithHTTPStatus(HttpStatus.NOT_FOUND);
+	}
+	
 	/**
 	 * Sends a HTTP request to the elasticsearch alias endpoint to determine the index name to use for the dataimport.
 	 * @return The index name of the index currently not in use. Either <code>arachne4_1</code> or <code>arachne4_2</code>.
