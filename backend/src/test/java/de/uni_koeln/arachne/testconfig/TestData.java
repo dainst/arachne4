@@ -65,6 +65,9 @@ public class TestData {
 		testDataset.setFields("test.DataSeparatorBefore", "first");
 		testDataset.setFields("test.DataSeparatorAfter", "second");
 		
+		testDataset.setFields("test.DataSearchReplace", "incorrectly replaced");
+		testDataset.setFields("test.DataTrimEnd", "correctly trimmed trimmed");
+		
 		testDataset.setFields("test.DataLink1", "http://testserver.com/link1.html");
 		testDataset.setFields("test.DataLink2", "link2");
 		testDataset.setFields("test.DataNoLink1", "Start");

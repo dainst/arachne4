@@ -554,7 +554,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			value = new StringBuilder(16).append(initialValue);
 		}
 		
-		value = processSearchReplace(element, value);	
+		value = processValueEdits(element, value);	
 	
 		final String postfix = element.getAttributeValue("postfix");
 		final String prefix = element.getAttributeValue("prefix");
@@ -669,7 +669,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			value = new StringBuilder(16).append(initialValue);
 		}
 		
-		value = processSearchReplace(element, value);
+		value = processValueEdits(element, value);
 		
 		final String postfix = element.getAttributeValue("postfix");
 		final String prefix = element.getAttributeValue("prefix");
@@ -718,7 +718,7 @@ public class XmlConfigUtil implements ServletContextAware {
 				value = new StringBuilder(16).append(initialValue);
 			}
 			
-			value = processSearchReplace(element, value);	
+			value = processValueEdits(element, value);	
 			
 			final String postfix = element.getAttributeValue("postfix");
 			final String prefix = element.getAttributeValue("prefix");
@@ -1034,27 +1034,34 @@ public class XmlConfigUtil implements ServletContextAware {
 	}
 	
 	/**
-	 * Procedure realizes the search-replace-functionality of the XML-field-elements
-	 * @param element Element containing the value
-	 * @param value Stringbuilder which contains the current element-content
-	 * @return Value with "search" replaced by "replace"
+	 * Method implementing the text edit attributes of the XML elements.
+	 * @param element Element containing the value.
+	 * @param value Stringbuilder which contains the current element-content.
+	 * @return The edited value.
 	 */
-	private StringBuilder processSearchReplace(final Element element, final StringBuilder value) {
-		
-		if (value == null) {
+	private StringBuilder processValueEdits(final Element element, final StringBuilder value) {
+		if (value == null || value.length() < 1) {
 			return value;
 		}
 		
 		final String search = element.getAttributeValue("search");
 		final String replace = element.getAttributeValue("replace");
+		final String trimEnd = element.getAttributeValue("trimEnd");
 		
-		if (search == null || replace == null) {
-			return value;
-		} else {
-			String tempValue = value.toString();
+		String tempValue = value.toString();
+		
+		if (search != null && replace != null) {
 			tempValue = tempValue.replaceAll(search, replace);
-			return new StringBuilder(16).append(tempValue); 
 		}
+		
+		if (trimEnd != null) {
+			int endIndex = tempValue.lastIndexOf(trimEnd);
+			if (endIndex > 0) {
+				tempValue = tempValue.substring(0, endIndex);
+			}
+		}
+		
+		return new StringBuilder(16).append(tempValue);
 	}
 	
 	/**

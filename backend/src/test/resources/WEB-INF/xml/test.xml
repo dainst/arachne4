@@ -42,6 +42,10 @@
 					<field datasource="test.DataSeparatorBefore" />
 					<field datasource="test.DataSeparatorAfter" />
 				</section>
+				<section labelKey="Testdata value edit">
+                    <field datasource="test.DataSearchReplace" search="incorrectly" replace="correctly"/>
+                    <field datasource="test.DataTrimEnd" trimEnd=" trimmed" />
+                </section>
 				<section labelKey="Testdata linkField">
 					<field datasource="test.DataNoLink1" />
 					<linkField datasource="test.DataLink1" labelKey="TestLink1" />

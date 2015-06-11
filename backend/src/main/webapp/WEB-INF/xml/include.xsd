@@ -60,6 +60,7 @@
     <xs:attribute name="postfix" type="xs:string"/>
     <xs:attribute name="search" type="xs:string"/>
     <xs:attribute name="replace" type="xs:string"/>
+    <xs:attribute name="trimEnd" type="xs:string"/>
     <xs:attribute name="separator" type="xs:string"/>
     <xs:attribute name="minGroupId" type="xs:string"/>
   </xs:complexType>
