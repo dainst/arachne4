@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 
@@ -1049,7 +1051,10 @@ public class XmlConfigUtil implements ServletContextAware {
 		final String trimEnd = element.getAttributeValue("trimEnd");
 		
 		if (search != null && replace != null) {
-			value.replace(value.indexOf(search), search.length(), replace);
+			Matcher matcher = Pattern.compile(search).matcher(value);
+			while (matcher.find()) {
+				value.replace(matcher.start(), matcher.end(), replace);
+			}
 		}
 		
 		if (trimEnd != null) {
