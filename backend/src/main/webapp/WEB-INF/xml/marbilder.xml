@@ -12,7 +12,7 @@
   <display>
     <title>
       <section>
-        <field datasource="marbilder.DateinameMarbilder" search=".jpg" replace="" />
+        <field datasource="marbilder.DateinameMarbilder" search="\.jpg" replace="" />
       </section>
     </title>
     <subtitle>
