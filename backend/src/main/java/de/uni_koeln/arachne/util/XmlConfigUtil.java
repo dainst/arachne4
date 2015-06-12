@@ -1048,20 +1048,18 @@ public class XmlConfigUtil implements ServletContextAware {
 		final String replace = element.getAttributeValue("replace");
 		final String trimEnd = element.getAttributeValue("trimEnd");
 		
-		String tempValue = value.toString();
-		
 		if (search != null && replace != null) {
-			tempValue = tempValue.replaceAll(search, replace);
+			value.replace(value.indexOf(search), search.length(), replace);
 		}
 		
 		if (trimEnd != null) {
-			int endIndex = tempValue.lastIndexOf(trimEnd);
+			int endIndex = value.lastIndexOf(trimEnd);
 			if (endIndex > 0) {
-				tempValue = tempValue.substring(0, endIndex);
+				value.delete(endIndex, value.length());
 			}
 		}
 		
-		return new StringBuilder(16).append(tempValue);
+		return value;
 	}
 	
 	/**
