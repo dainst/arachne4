@@ -1054,6 +1054,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			Matcher matcher = Pattern.compile(search).matcher(value);
 			while (matcher.find()) {
 				value.replace(matcher.start(), matcher.end(), replace);
+				matcher.region(matcher.start() + replace.length(), value.length());
 			}
 		}
 		
