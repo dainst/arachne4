@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import de.uni_koeln.arachne.service.ESService;
 import de.uni_koeln.arachne.service.EntityService;
-import de.uni_koeln.arachne.util.StringWithHTTPStatus;
+import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestEntityController {
@@ -42,13 +42,13 @@ public class TestEntityController {
 		when(esService.getCount()).thenReturn(666l, -1l);
 		
 		when(entityService.getEntityFromIndex(1l, null))
-			.thenReturn(new StringWithHTTPStatus("{test:value}", HttpStatus.OK));
+			.thenReturn(new TypeWithHTTPStatus<String>("{test:value}", HttpStatus.OK));
 		when(entityService.getEntityFromIndex(1l, "test"))
-			.thenReturn(new StringWithHTTPStatus("{test:value}", HttpStatus.OK));
+			.thenReturn(new TypeWithHTTPStatus<String>("{test:value}", HttpStatus.OK));
 		when(entityService.getEntityFromDB(1l, null))
-			.thenReturn(new StringWithHTTPStatus("{test:value}", HttpStatus.OK));
+			.thenReturn(new TypeWithHTTPStatus<String>("{test:value}", HttpStatus.OK));
 		when(entityService.getEntityFromDB(1l, "test"))
-			.thenReturn(new StringWithHTTPStatus("{test:value}", HttpStatus.OK));
+			.thenReturn(new TypeWithHTTPStatus<String>("{test:value}", HttpStatus.OK));
 	}
 
 	@Test

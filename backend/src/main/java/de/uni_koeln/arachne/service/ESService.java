@@ -50,7 +50,7 @@ import org.springframework.web.context.ServletContextAware;
 
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.User;
-import de.uni_koeln.arachne.util.StringWithHTTPStatus;
+import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 
 /**
  * Class to provide methods for interaction with the elasticsearch index.
@@ -372,7 +372,7 @@ public class ESService implements ServletContextAware {
 	 * @param internalFields Fields that must not be included in the response.
 	 * @return The entity or <code>null</code> and an HTTP status code.
 	 */
-	public StringWithHTTPStatus getDocumentFromCurrentIndex(final long id, final String category
+	public TypeWithHTTPStatus<String> getDocumentFromCurrentIndex(final long id, final String category
 			, final String[] internalFields) {
 		
 		SearchResponse searchResponse = null;
@@ -429,13 +429,13 @@ public class ESService implements ServletContextAware {
 		}
 		
 		if (searchResponse.getHits().getTotalHits() == 1) {
-    		return new StringWithHTTPStatus(searchResponse.getHits().getAt(0).getSourceAsString());
+    		return new TypeWithHTTPStatus<String>(searchResponse.getHits().getAt(0).getSourceAsString());
     	} else {
     		if (acLessSearchResponse.getHits().getTotalHits() == 1) {
-    			return new StringWithHTTPStatus(HttpStatus.FORBIDDEN);
+    			return new TypeWithHTTPStatus<String>(HttpStatus.FORBIDDEN);
     		}
     	}
-    	return new StringWithHTTPStatus(HttpStatus.NOT_FOUND);
+    	return new TypeWithHTTPStatus<String>(HttpStatus.NOT_FOUND);
 	}
 	
 	/**

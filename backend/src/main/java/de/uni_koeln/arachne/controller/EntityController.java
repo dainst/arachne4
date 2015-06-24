@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import de.uni_koeln.arachne.service.ESService;
 import de.uni_koeln.arachne.service.EntityService;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
-import de.uni_koeln.arachne.util.StringWithHTTPStatus;
+import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 
 /**
  * Handles http requests (currently only get) for <code>/entity<code> and <code>/data</code>.
@@ -56,7 +56,7 @@ public class EntityController {
 			@RequestParam(value = "live", required = false) final Boolean isLive,
 			final HttpServletResponse response) {
 		
-		final StringWithHTTPStatus result;
+		final TypeWithHTTPStatus<String> result;
 		if (isLive != null && isLive) {
 			result = entityService.getEntityFromDB(entityId, null);
 		} else {
@@ -81,7 +81,7 @@ public class EntityController {
     		final HttpServletResponse response) {
     	
     	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
-    	final StringWithHTTPStatus result;
+    	final TypeWithHTTPStatus<String> result;
 		if (isLive != null && isLive) {
 			result = entityService.getEntityFromDB(categoryId, category);
 		} else {

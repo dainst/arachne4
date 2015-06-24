@@ -16,7 +16,7 @@ import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.testconfig.TestData;
 import de.uni_koeln.arachne.util.EntityId;
-import de.uni_koeln.arachne.util.StringWithHTTPStatus;
+import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestEntityService {
@@ -48,6 +48,7 @@ public class TestEntityService {
 	private EntityService entityService = new EntityService(false, new String[] {"boost","connectedEntities","degree","fields"});
 	
 	@Before
+	@SuppressWarnings("unchecked")
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		
@@ -72,19 +73,20 @@ public class TestEntityService {
 		when(entityIdentificationService.getId("test", 0l)).thenReturn(testId);
 		
 		when(esService.getDocumentFromCurrentIndex(anyLong(), anyString(), any(String[].class)))
-			.thenReturn(new StringWithHTTPStatus(null, HttpStatus.NOT_FOUND));
+			.thenReturn(new TypeWithHTTPStatus<String>(null, HttpStatus.NOT_FOUND));
+		
 		when(esService.getDocumentFromCurrentIndex(0l, null
 				, new String[] {"boost","connectedEntities","degree","fields"}))
-			.thenReturn(new StringWithHTTPStatus(HttpStatus.FORBIDDEN), new StringWithHTTPStatus("Test Doc", HttpStatus.OK));
+			.thenReturn(new TypeWithHTTPStatus<String>(HttpStatus.FORBIDDEN), new TypeWithHTTPStatus<String>("Test Doc", HttpStatus.OK));
 		when(esService.getDocumentFromCurrentIndex(0l, "test"
 				, new String[] {"boost","connectedEntities","degree","fields"}))
-			.thenReturn(new StringWithHTTPStatus("Test Doc", HttpStatus.OK));
+			.thenReturn(new TypeWithHTTPStatus<String>("Test Doc", HttpStatus.OK));
 	}
 
 	@Test
 	public void testGetEntityFromIndex() {
 		// get by entityId (forbidden)
-		StringWithHTTPStatus result = entityService.getEntityFromIndex(0l, null); 
+		TypeWithHTTPStatus<String> result = entityService.getEntityFromIndex(0l, null); 
 		assertEquals(HttpStatus.FORBIDDEN, result.getStatus());
 		assertNull(result.getValue());
 
@@ -118,7 +120,7 @@ public class TestEntityService {
 	@Test
 	public void testGetEntityFromDB() {
 		// get by entityId (forbidden)
-		StringWithHTTPStatus result = entityService.getEntityFromDB(0l, null); 
+		TypeWithHTTPStatus<String> result = entityService.getEntityFromDB(0l, null); 
 		assertEquals(HttpStatus.FORBIDDEN, result.getStatus());
 		assertNull(result.getValue());
 		

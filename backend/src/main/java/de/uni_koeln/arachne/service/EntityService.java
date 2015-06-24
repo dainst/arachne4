@@ -11,7 +11,7 @@ import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.util.EntityId;
-import de.uni_koeln.arachne.util.StringWithHTTPStatus;
+import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 
 /**
  * Service to retrieve entities either from the elasticsearch index or the db.
@@ -57,9 +57,9 @@ public class EntityService {
 		this.internalFields = internalFields;
 	}
 	
-	public StringWithHTTPStatus getEntityFromIndex(final Long id, final String category) {
+	public TypeWithHTTPStatus<String> getEntityFromIndex(final Long id, final String category) {
 		
-    	final StringWithHTTPStatus result = esService.getDocumentFromCurrentIndex(id, category, internalFields);
+    	final TypeWithHTTPStatus<String> result = esService.getDocumentFromCurrentIndex(id, category, internalFields);
     	    	
     	if (result.getStatus() == HttpStatus.NOT_FOUND ) {
     		// if the entity is not found in the ES index it may have been deleted, so we try to retrieve it from 
@@ -83,7 +83,7 @@ public class EntityService {
      * @param response The <code>HttpServeletRsponse</code> object.
      * @return The response body as <code>String</code>.
      */
-    public StringWithHTTPStatus getEntityFromDB(final Long id, final String category) { 
+    public TypeWithHTTPStatus<String> getEntityFromDB(final Long id, final String category) { 
     	final EntityId entityId;
     	if (category == null) {
     		entityId = entityIdentificationService.getId(id);
@@ -92,26 +92,26 @@ public class EntityService {
     	}
     	
     	if (entityId == null) {
-    		return new StringWithHTTPStatus(HttpStatus.NOT_FOUND);
+    		return new TypeWithHTTPStatus<String>(HttpStatus.NOT_FOUND);
     	}
     	
     	LOGGER.debug("Request for entity: " + entityId.getArachneEntityID() + " - type: " + entityId.getTableName());
     	
     	if (entityId.isDeleted()) {
-    		return new StringWithHTTPStatus(responseFactory.createResponseForDeletedEntityAsJsonString(entityId));
+    		return new TypeWithHTTPStatus<String>(responseFactory.createResponseForDeletedEntityAsJsonString(entityId));
     	}
     	
     	final String result = getFormattedEntityByIdAsJsonString(entityId);
     	
     	if ("forbidden".equals(result)) {
-    		return new StringWithHTTPStatus(HttpStatus.FORBIDDEN);
+    		return new TypeWithHTTPStatus<String>(HttpStatus.FORBIDDEN);
     	}
     	
     	if (result != null) {
-    		return new StringWithHTTPStatus(result);
+    		return new TypeWithHTTPStatus<String>(result);
     	}
     	
-    	return new StringWithHTTPStatus(HttpStatus.NOT_FOUND);
+    	return new TypeWithHTTPStatus<String>(HttpStatus.NOT_FOUND);
     }
 	
 	/**

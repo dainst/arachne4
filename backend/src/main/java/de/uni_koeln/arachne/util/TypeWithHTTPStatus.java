@@ -3,13 +3,14 @@ package de.uni_koeln.arachne.util;
 import org.springframework.http.HttpStatus;
 
 /**
- * Simple class that holds a String and a status. Used to allow methods to return a string and an HTTP status code; 
+ * Simple class that holds a class instance of any type and an http status. Used to allow methods to return a string 
+ * and an HTTP status code; 
  * 
  * @author Reimar Grabowski
  */
-public class StringWithHTTPStatus {
+public class TypeWithHTTPStatus<T> {
 
-	private String value;
+	private T value;
 	
 	private HttpStatus status;
 	
@@ -17,7 +18,7 @@ public class StringWithHTTPStatus {
 	 * Convenience constructor to only set the value setting the status code to 200.
 	 * @param value The string value.
 	 */
-	public StringWithHTTPStatus(final String value) {
+	public TypeWithHTTPStatus(final T value) {
 		this.value = value;
 		status = HttpStatus.OK;
 	}
@@ -26,7 +27,7 @@ public class StringWithHTTPStatus {
 	 * Convenience constructor to only set the status code setting the value to <code>null</code>.
 	 * @param value The string value.
 	 */
-	public StringWithHTTPStatus(final HttpStatus status) {
+	public TypeWithHTTPStatus(final HttpStatus status) {
 		this.value = null;
 		this.status = status;
 	}
@@ -35,7 +36,7 @@ public class StringWithHTTPStatus {
 	 * Convenience constructor initializing the instance with a value and a status code.
 	 * @param value The string value.
 	 */
-	public StringWithHTTPStatus(final String value, final HttpStatus status) {
+	public TypeWithHTTPStatus(final T value, final HttpStatus status) {
 		this.value = value;
 		this.status = status;
 	}
@@ -43,14 +44,14 @@ public class StringWithHTTPStatus {
 	/**
 	 * @return the value
 	 */
-	public String getValue() {
+	public T getValue() {
 		return value;
 	}
 
 	/**
 	 * @param value the value to set
 	 */
-	public void setValue(String value) {
+	public void setValue(T value) {
 		this.value = value;
 	}
 

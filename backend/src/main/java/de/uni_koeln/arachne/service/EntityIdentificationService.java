@@ -52,7 +52,12 @@ public class EntityIdentificationService {
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
 	private EntityId getByEntityId(final Long entityId) {
-		return new EntityId(arachneEntityDao.getByEntityID(entityId));
+		EntityId result = new EntityId();
+		ArachneEntity entity = arachneEntityDao.getByEntityID(entityId);
+		if (entity != null) {
+			result = new EntityId(entity);
+		}
+		return result;
 	}
 	
 	/**

@@ -1,12 +1,19 @@
 package de.uni_koeln.arachne.testconfig;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.Resources;
 
 import de.uni_koeln.arachne.context.AbstractLink;
 import de.uni_koeln.arachne.context.ArachneLink;
@@ -46,7 +53,10 @@ public class TestData {
 			+ "\"facet_kategorie\":[\"test\"],"
 			+ "\"facet_test\":[\"test facet value\"],"
 			+ "\"facet_multivaluetest\":[\"value 1\",\"value 2\",\"value 3\"]}";
-		
+	
+	private final String zoomifyImageProperties 
+			= "<IMAGE_PROPERTIES WIDTH=\"1600\" HEIGHT=\"1000\" NUMTILES=\"28\" NUMIMAGES=\"1\" VERSION=\"1.8\" TILESIZE=\"256\" />";
+	
 	private final Dataset testDataset = new Dataset();
 	
 	private final EntityId deletedEntity = new EntityId("test", 2L, 2L, true, 0L);
@@ -117,5 +127,31 @@ public class TestData {
 		final ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode testJson = objectMapper.readTree(jsonString);
 		return objectMapper.writeValueAsBytes(testJson);
+	}
+	
+	public BufferedImage getTestImageJPEG() throws IOException {
+		final URL resource = TestData.class.getResource("/WEB-INF/images/greif.jpeg");
+		final InputStream stream = Resources.asByteSource(resource).openStream();
+		final BufferedImage result = ImageIO.read(stream);
+		stream.close();
+		return result;
+	}
+	
+	public BufferedImage getScaledTestImageJPEG(int width, int height) throws IOException {
+		final BufferedImage origImage = getTestImageJPEG();
+		if (width <= 0) {
+			width = origImage.getWidth();
+		}
+		if (height <= 0) {
+			height = origImage.getHeight();
+		}
+		final Image image = origImage.getScaledInstance(width, height, Image.SCALE_FAST);
+		final BufferedImage resultImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		resultImage.getGraphics().drawImage(image, 0, 0, null);
+		return resultImage;
+	}
+	
+	public String getZoomifyPropertiesXML() {
+		return zoomifyImageProperties;
 	}
 }

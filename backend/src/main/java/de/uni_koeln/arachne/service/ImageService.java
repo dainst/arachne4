@@ -19,7 +19,9 @@ import de.uni_koeln.arachne.util.image.ImageUtils;
 import de.uni_koeln.arachne.util.sql.SQLToolbox;
 
 /**
- * This service class provides the means to retrieve images from the database.
+ * This service class provides the means to retrieve image meta data from the database.
+ * 
+ * @author Reimar Grabowski
  */
 @Service("ImageService")
 public class ImageService {
