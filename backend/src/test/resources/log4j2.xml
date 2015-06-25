@@ -10,7 +10,7 @@
     <!-- Root Logger -->
     <Loggers>
         <Root level="info">
-            <AppenderRef ref="CONSOLE" />
+            <!-- <AppenderRef ref="CONSOLE" /> -->
         </Root>
     </Loggers>
 </Configuration>

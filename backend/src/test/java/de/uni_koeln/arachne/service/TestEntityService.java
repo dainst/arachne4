@@ -109,8 +109,7 @@ public class TestEntityService {
 		result = entityService.getEntityFromIndex(0l, "testo");
 		assertEquals(HttpStatus.NOT_FOUND, result.getStatus());
 		assertNull(result.getValue());
-		
-		
+				
 		// entity is deleted (get by entityId)
 		result = entityService.getEntityFromIndex(2l, null);
 		assertEquals(HttpStatus.OK, result.getStatus());

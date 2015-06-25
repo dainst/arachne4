@@ -9,7 +9,7 @@ import de.uni_koeln.arachne.util.sql.Condition;
 public class TestCondition {
 
 	@Test
-	public void testCondition() {
+	public void testCondition1() {
 		final Condition toTest1 =  new Condition();
 		
 		toTest1.setPart1("`bauwerk`.`PS_BauwerkID`");
@@ -17,7 +17,10 @@ public class TestCondition {
 		toTest1.setOperator("=");
 		
 		assertEquals(toTest1.toString(), "`bauwerk`.`PS_BauwerkID` = 100");
-		
+	}
+
+	@Test
+	public void testCondition2() {
 		final Condition toTest2 =  new Condition();
 		
 		toTest2.setPart1("`bauwerk`.`kurzbeschreibungBauwerk`");

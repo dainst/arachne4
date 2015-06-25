@@ -99,7 +99,9 @@ public class SearchController {
 	 * @param sortfacet The names of the facets that should be sorted alphabetically. (optional)
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
-	@RequestMapping(value="/search", method=RequestMethod.GET, produces="application/json;charset=UTF-8")
+	@RequestMapping(value="/search",
+			method=RequestMethod.GET,
+			produces="application/json;charset=UTF-8")
 	public @ResponseBody ResponseEntity<?> handleSearchRequest(@RequestParam("q") final String queryString,
 			@RequestParam(value = "limit", required = false) final Integer limit,
 			@RequestParam(value = "offset", required = false) final Integer offset,
@@ -164,8 +166,8 @@ public class SearchController {
 			@RequestParam(value = "offset", required = false) final Integer offset,
 			@RequestParam(value = "fq", required = false) final String[] filterValues,
 			@RequestParam(value = "fl", required = false) final Integer facetLimit,
-			  @RequestParam(value = "sort", required = false) final String sortField,
-			  @RequestParam(value = "desc", required = false) final Boolean orderDesc) {
+			@RequestParam(value = "sort", required = false) final String sortField,
+			@RequestParam(value = "desc", required = false) final Boolean orderDesc) {
 
 		final int resultSize = limit == null ? defaultLimit : limit;
 		final int resultOffset = offset == null ? 0 : offset;

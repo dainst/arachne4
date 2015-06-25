@@ -47,16 +47,19 @@ public class TestXmlConfigUtil {
 	}
 	
 	@Test
-	public void testGetDocument() {
+	public void testGetDocumentValid() {
 		// uncached
 		assertNotNull(xmlConfigUtil.getDocument("test"));
 		
 		// cached
 		assertNotNull(xmlConfigUtil.getDocument("test"));
-		
+	}
+	
+	@Test
+	public void testGetDocumentInvalid() {		
 		// uncached
 		assertNull(xmlConfigUtil.getDocument("unknowntype"));
-		
+
 		// cached
 		assertNull(xmlConfigUtil.getDocument("unknowntype"));
 	}
@@ -102,7 +105,7 @@ public class TestXmlConfigUtil {
 	}
 		
 	@Test
-	public void testGetContextImagesNames() {
+	public void testGetContextImagesNamesValid() {
 		// uncached
 		List<ContextImageDescriptor> contextImageDescriptors = xmlConfigUtil.getContextImagesNames("test");
 		
@@ -126,7 +129,11 @@ public class TestXmlConfigUtil {
 		
 		assertEquals("testifempty", contextImageDescriptors.get(1).getContextName());
 		assertEquals("ifEmpty", contextImageDescriptors.get(1).getContextImageUsage());
-		
+	}
+	
+	@Test
+	public void testGetContextImagesNamesInvalid() {
+		List<ContextImageDescriptor> contextImageDescriptors = xmlConfigUtil.getContextImagesNames("test");
 		// uncached
 		contextImageDescriptors = xmlConfigUtil.getContextImagesNames("unknowntype");
 		assertNotNull(contextImageDescriptors);
@@ -139,7 +146,7 @@ public class TestXmlConfigUtil {
 	}
 	
 	@Test
-	public void testGetExplicitContextualizers() {
+	public void testGetExplicitContextualizersValid() {
 		// uncached
 		List<String> contextualizers = xmlConfigUtil.getExplicitContextualizers("test");
 		
@@ -159,9 +166,12 @@ public class TestXmlConfigUtil {
 		assertEquals("testcontextualizer1", contextualizers.get(0));
 		assertEquals("testcontextualizer2", contextualizers.get(1));
 		assertEquals("testcontextualizer3", contextualizers.get(2));
-		
+	}
+	
+	@Test
+	public void testGetExplicitContextualizersInvalid() {		
 		// uncached
-		contextualizers = xmlConfigUtil.getExplicitContextualizers("unkowntype");
+		List<String> contextualizers = xmlConfigUtil.getExplicitContextualizers("unkowntype");
 		assertNotNull(contextualizers);
 		assertTrue(contextualizers.isEmpty());
 		
@@ -201,7 +211,7 @@ public class TestXmlConfigUtil {
 	}
 	
 	@Test
-	public void testGetSubcategories() {
+	public void testGetSubcategoriesValid() {
 		// uncached
 		List<TableConnectionDescription> subCategories = xmlConfigUtil.getSubCategories("test");
 		assertNotNull(subCategories);
@@ -247,9 +257,12 @@ public class TestXmlConfigUtil {
 		// TODO update when the corresponding querybuilder is replaced
 		//assertEquals("PSTestSubTable2_ID", tableConnectionDescription.getField2());
 		assertEquals("PrimaryKey", tableConnectionDescription.getField2());
-		
+	}
+	
+	@Test
+	public void testGetSubcategoriesInvalid() {
 		// uncached
-		subCategories = xmlConfigUtil.getSubCategories("unknowntype");
+		List<TableConnectionDescription> subCategories = xmlConfigUtil.getSubCategories("unknowntype");
 		assertNotNull(subCategories);
 		assertTrue(subCategories.isEmpty());
 		

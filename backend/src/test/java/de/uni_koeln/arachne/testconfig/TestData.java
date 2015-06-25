@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import org.elasticsearch.index.engine.Engine.Get;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +21,9 @@ import de.uni_koeln.arachne.context.AbstractLink;
 import de.uni_koeln.arachne.context.ArachneLink;
 import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.response.Place;
+import de.uni_koeln.arachne.response.search.SearchHit;
+import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.util.EntityId;
 
 /**
@@ -153,5 +158,11 @@ public class TestData {
 	
 	public String getZoomifyPropertiesXML() {
 		return zoomifyImageProperties;
+	}
+	
+	public SearchResult getDefaultSearchResult() {
+		final SearchResult result = new SearchResult();
+		result.addSearchHit(new SearchHit(0, "test", "Test title", "Test subtitle", 0l, new ArrayList<Place>()));
+		return result;
 	}
 }

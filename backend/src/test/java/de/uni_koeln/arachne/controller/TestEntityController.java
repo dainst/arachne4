@@ -71,38 +71,39 @@ public class TestEntityController {
 	}
 	
 	@Test
-	public void testHandleGetEntityIdRequest() throws Exception {
-		// index
+	public void testHandleGetEntityIdRequestIndex() throws Exception {
 		mockMvc.perform(
 				get("/entity/1")
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 				.andExpect(content().json("{test:value}"));
-		
-		// db
-		mockMvc.perform(
-				get("/entity/1")
-					.param("live", "true")
-					.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
-				.andExpect(content().string("{test:value}"));
-		
-		// doesn't make sense to test failing scenarios here as the work is done in the EntityService which is mocked
 	}
 	
 	@Test
-	public void testHandleGetCategoryIdRequest() throws Exception {
-		// index
+	public void testHandleGetEntityIdRequestDB() throws Exception {		
+		mockMvc.perform(
+				get("/entity/1")
+					.param("live", "true")
+					.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().string("{test:value}"));
+		
+	}
+	
+	@Test
+	public void testHandleGetCategoryIdRequestIndex() throws Exception {
 		mockMvc.perform(
 				get("/entity/test/1")
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 				.andExpect(content().json("{test:value}"));
-		
-		// db
+	}
+	
+	@Test
+	public void testHandleGetCategoryIdRequestDB() throws Exception {
 		mockMvc.perform(
 				get("/entity/test/1")
 					.param("live", "true")
@@ -110,8 +111,6 @@ public class TestEntityController {
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 				.andExpect(content().string("{test:value}"));
-		
-		// doesn't make sense to test failing scenarios here as the work is done in the EntityService which is mocked
 	}
 	
 	/*

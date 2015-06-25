@@ -85,8 +85,7 @@ public class TestImageController {
 	}
 
 	@Test
-	public void testGetWidth() throws Exception {
-		// working
+	public void testGetWidthValidId() throws Exception {
 		MvcResult result = mockMvc.perform(
 				get("/image/width/0").param("width", "666")
 				.accept(MediaType.IMAGE_JPEG))
@@ -95,10 +94,11 @@ public class TestImageController {
 				.andReturn();
 
 		BufferedImage resultImage = ImageIO.read(new ByteArrayInputStream(result.getResponse().getContentAsByteArray()));
-
 		assertEquals(666, resultImage.getWidth());
-
-		// invalid id
+	}
+	
+	@Test
+	public void testGetWidthInvalidId() throws Exception {
 		mockMvc.perform(
 				get("/image/width/1").param("width", "666")
 				.accept(MediaType.IMAGE_JPEG))
@@ -106,8 +106,7 @@ public class TestImageController {
 	}
 
 	@Test
-	public void testGetHeight() throws Exception {
-		// working
+	public void testGetHeightValidId() throws Exception {
 		MvcResult result = mockMvc.perform(
 				get("/image/height/0").param("height", "666")
 				.accept(MediaType.IMAGE_JPEG))
@@ -116,10 +115,11 @@ public class TestImageController {
 				.andReturn();
 
 		BufferedImage resultImage = ImageIO.read(new ByteArrayInputStream(result.getResponse().getContentAsByteArray()));
-
 		assertEquals(666, resultImage.getHeight());
-
-		// invalid id
+	}
+	
+	@Test
+	public void testGetHeightInvalidId() throws Exception {
 		mockMvc.perform(
 				get("/image/height/1").param("height", "666")
 				.accept(MediaType.IMAGE_JPEG))
@@ -127,8 +127,7 @@ public class TestImageController {
 	}
 
 	@Test
-	public void testGetImage() throws Exception {
-		// working
+	public void testGetImageValidId() throws Exception {
 		MvcResult result = mockMvc.perform(
 				get("/image/0")
 				.accept(MediaType.IMAGE_JPEG))
@@ -137,11 +136,12 @@ public class TestImageController {
 				.andReturn();
 
 		BufferedImage resultImage = ImageIO.read(new ByteArrayInputStream(result.getResponse().getContentAsByteArray()));
-
 		assertEquals(240, resultImage.getWidth());
 		assertEquals(236, resultImage.getHeight());
-
-		// invalid id
+	}
+	
+	@Test
+	public void testGetImageInvalidId() throws Exception {
 		mockMvc.perform(
 				get("/image/1")
 				.accept(MediaType.IMAGE_JPEG))
@@ -149,8 +149,7 @@ public class TestImageController {
 	}
 	
 	@Test
-	public void testGetPreviewImage() throws Exception {
-		// working
+	public void testGetPreviewImageValidId() throws Exception {
 		MvcResult result = mockMvc.perform(
 				get("/image/preview/0")
 				.accept(MediaType.IMAGE_JPEG))
@@ -159,11 +158,12 @@ public class TestImageController {
 				.andReturn();
 
 		BufferedImage resultImage = ImageIO.read(new ByteArrayInputStream(result.getResponse().getContentAsByteArray()));
-
 		assertEquals(600, resultImage.getWidth());
 		assertEquals(600, resultImage.getHeight());
-
-		// invalid id
+	}
+	
+	@Test
+	public void testGetPreviewImageInvalidId() throws Exception {
 		mockMvc.perform(
 				get("/image/preview/1")
 				.accept(MediaType.IMAGE_JPEG))
@@ -171,8 +171,7 @@ public class TestImageController {
 	}
 	
 	@Test
-	public void testGetThumbnailImage() throws Exception {
-		// working
+	public void testGetThumbnailImageValidId() throws Exception {
 		MvcResult result = mockMvc.perform(
 				get("/image/thumbnail/0")
 				.accept(MediaType.IMAGE_JPEG))
@@ -181,11 +180,12 @@ public class TestImageController {
 				.andReturn();
 
 		BufferedImage resultImage = ImageIO.read(new ByteArrayInputStream(result.getResponse().getContentAsByteArray()));
-
 		assertEquals(150, resultImage.getWidth());
 		assertEquals(150, resultImage.getHeight());
-
-		// invalid id
+	}
+	
+	@Test
+	public void testGetThumbnailImageInvalidId() throws Exception {
 		mockMvc.perform(
 				get("/image/thumbnail/1")
 				.accept(MediaType.IMAGE_JPEG))
@@ -193,8 +193,7 @@ public class TestImageController {
 	}
 	
 	@Test
-	public void testGetIconImage() throws Exception {
-		// working
+	public void testGetIconImageValidId() throws Exception {
 		MvcResult result = mockMvc.perform(
 				get("/image/icon/0")
 				.accept(MediaType.IMAGE_JPEG))
@@ -203,11 +202,12 @@ public class TestImageController {
 				.andReturn();
 
 		BufferedImage resultImage = ImageIO.read(new ByteArrayInputStream(result.getResponse().getContentAsByteArray()));
-
 		assertEquals(50, resultImage.getWidth());
 		assertEquals(50, resultImage.getHeight());
-
-		// invalid id
+	}
+	
+	@Test
+	public void testGetIconImageInvalidId() throws Exception {
 		mockMvc.perform(
 				get("/image/icon/1")
 				.accept(MediaType.IMAGE_JPEG))
@@ -215,15 +215,16 @@ public class TestImageController {
 	}
 	
 	@Test
-	public void testGetImagePropertiesForZoomifyViewer() throws Exception {
-		// working
+	public void testGetImagePropertiesForZoomifyViewerValidId() throws Exception {
 		mockMvc.perform(
 				get("/image/zoomify/0/ImageProperties.xml")
 				.accept(MediaType.APPLICATION_XML))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_XML));
-		
-		// invlid id
+	}
+	
+	@Test
+	public void testGetImagePropertiesForZoomifyViewerInvalidId() throws Exception {
 		mockMvc.perform(
 				get("/image/zoomify/1/ImageProperties.xml")
 				.accept(MediaType.APPLICATION_XML))
@@ -231,15 +232,16 @@ public class TestImageController {
 	}
 	
 	@Test
-	public void testGetImageForZoomifyViewer() throws Exception {
-		// working
+	public void testGetImageForZoomifyViewerValidId() throws Exception {
 		mockMvc.perform(
 				get("/image/zoomify/0/0-0-0.jpg")
 				.accept(MediaType.IMAGE_JPEG))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.IMAGE_JPEG));
-		
-		// invlid id
+	}
+	
+	@Test
+	public void testGetImageForZoomifyViewerInvalidId() throws Exception {
 		mockMvc.perform(
 				get("/image/zoomify/1/0-0-0.jpg")
 				.accept(MediaType.IMAGE_JPEG))
