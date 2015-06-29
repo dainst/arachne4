@@ -87,7 +87,7 @@ public class CeramalexController  {
 		final Integer maxResultSize = 1000000;
 		final Integer resultOffset = 0;
 		
-		final SearchParameters searchParameters = new SearchParameters()
+		final SearchParameters searchParameters = new SearchParameters(0)
 				.setQuery(searchParam)
 				.setLimit(maxResultSize)
 				.setOffset(resultOffset)

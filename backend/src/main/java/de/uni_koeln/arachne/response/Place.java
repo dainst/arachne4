@@ -10,10 +10,10 @@ import de.uni_koeln.arachne.util.StrUtils;
  * Class to hold place information for entities.
  * @author Reimar Grabowski
  */
-@JsonInclude(Include.NON_NULL)
+@JsonInclude(Include.NON_EMPTY)
 public class Place {
 
-	@JsonInclude(Include.NON_NULL)
+	@JsonInclude(Include.NON_EMPTY)
 	private class Location {
 		public String lat;
 		public String lon;

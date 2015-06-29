@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * Class to hold date information for entities.
  * @author Sebastian Cuy
  */
-@JsonInclude(Include.NON_NULL)
+@JsonInclude(Include.NON_EMPTY)
 public class DateAssertion {
 	
 	/**

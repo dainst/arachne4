@@ -20,7 +20,7 @@ import de.uni_koeln.arachne.response.link.ExternalLink;
  */
 @XmlRootElement(name="entity")
 @XmlSeeAlso({Section.class,Field.class,FieldList.class})
-@JsonInclude(Include.NON_NULL)
+@JsonInclude(Include.NON_EMPTY)
 public class FormattedArachneEntity extends BaseArachneEntity {
 	
 	/**

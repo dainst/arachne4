@@ -113,12 +113,13 @@ public class SearchController {
 			@RequestParam(value = "ghprec", required = false) final Integer geoHashPrecision,
 			@RequestParam(value = "sortfacet", required = false) final String[] facetsToSort) {
 		
-		final int resultSize = limit == null ? defaultLimit : limit;
+		// TODO implement sorting of facet values
+		
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 		
-		final SearchParameters searchParameters = new SearchParameters() 
+		final SearchParameters searchParameters = new SearchParameters(defaultLimit) 
 				.setQuery(queryString)
-				.setLimit(resultSize)
+				.setLimit(limit)
 				.setOffset(offset)
 				.setFacetLimit(resultFacetLimit)
 				.setSortField(sortField)
@@ -131,7 +132,8 @@ public class SearchController {
 			filters = searchService.getFilters(Arrays.asList(filterValues), searchParameters.getGeoHashPrecision());
 		}
 		
-		if (boundingBox != null && searchParameters.getBoundingBox().length > 0) {
+		int bbLength = searchParameters.getBoundingBox().length;
+		if (boundingBox != null && bbLength != 4) {
 			return ResponseEntity.badRequest().body("{ \"message\": \"Invalid bounding box coordinates.\"");
 		}
 				
@@ -139,7 +141,7 @@ public class SearchController {
 				, filters);
 				
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
-				, resultSize, searchParameters.getOffset(), filters);
+				, searchParameters.getLimit(), searchParameters.getOffset(), filters);
 		
 		if (searchResult.getStatus() != RestStatus.OK) {
 			return ResponseEntity.status(searchResult.getStatus().getStatus()).build();

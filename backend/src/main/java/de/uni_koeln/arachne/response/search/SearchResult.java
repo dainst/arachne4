@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * Class representing a search result. This class is the return type of a search request.
  */
 @XmlRootElement
-@JsonInclude(Include.NON_NULL)
+@JsonInclude(Include.NON_EMPTY)
 public class SearchResult {
 
 	private long size;

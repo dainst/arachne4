@@ -265,7 +265,7 @@ public class ResponseFactory {
 				}
 			}
 		}
-		
+				
 		// set date information
 		
 		// add dates from datierungen

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * This class is used as the return type of admin request.
  */
 @XmlRootElement
-@JsonInclude(value=Include.NON_NULL)
+@JsonInclude(value=Include.NON_EMPTY)
 public class StatusResponse {
 	/**
 	 * The message body of the response.

@@ -24,6 +24,8 @@ import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Place;
 import de.uni_koeln.arachne.response.search.SearchHit;
 import de.uni_koeln.arachne.response.search.SearchResult;
+import de.uni_koeln.arachne.response.search.SearchResultFacet;
+import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
 import de.uni_koeln.arachne.util.EntityId;
 
 /**
@@ -162,7 +164,23 @@ public class TestData {
 	
 	public SearchResult getDefaultSearchResult() {
 		final SearchResult result = new SearchResult();
-		result.addSearchHit(new SearchHit(0, "test", "Test title", "Test subtitle", 0l, new ArrayList<Place>()));
+		result.addSearchHit(new SearchHit(0l, "test", "Test title", "Test subtitle", 0l, new ArrayList<Place>()));
+		result.addSearchHit(new SearchHit(1l, "test", "Test title 1", "Test subtitle 1", 1l, new ArrayList<Place>()));
+		result.setSize(2);
+		final SearchResultFacet facet1 = new SearchResultFacet("facet_test1");
+		facet1.addValue(new SearchResultFacetValue("test1_value1", "", 1));
+		facet1.addValue(new SearchResultFacetValue("test1_value2", "", 2));
+		final SearchResultFacet facet2 = new SearchResultFacet("facet_test2");
+		facet2.addValue(new SearchResultFacetValue("test2_value1", "", 4));
+		final SearchResultFacet facet3 = new SearchResultFacet("facet_test3");
+		facet3.addValue(new SearchResultFacetValue("test3_value1", "", 13));
+		facet3.addValue(new SearchResultFacetValue("test3_value2", "", 12));
+		facet3.addValue(new SearchResultFacetValue("test3_value3", "", 11));
+		final List<SearchResultFacet> facets = new ArrayList<SearchResultFacet>();
+		facets.add(facet1);
+		facets.add(facet2);
+		facets.add(facet3);
+		result.setFacets(facets);
 		return result;
 	}
 }

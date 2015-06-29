@@ -54,6 +54,16 @@ public class SearchParameters {
 	private int geoHashPrecision;
 
 	/**
+	 * Constructor that sets a default limit.
+	 * @param defaultLimit The limit to set. Must be greater than -1.
+	 */
+	public SearchParameters(final int defaultLimit) {
+		if (defaultLimit > -1) { 
+			limit = defaultLimit;
+		}
+	}
+	
+	/**
 	 * @return the query
 	 */
 	public String getQuery() {
@@ -183,7 +193,7 @@ public class SearchParameters {
 	 */
 	public SearchParameters setGeoHashPrecision(Integer geoHashPrecision) {
 		// limit geohash precision to 10 as it is plenty of resolution
-		if (geoHashPrecision != null && geoHashPrecision > 0 && geoHashPrecision < 10) {
+		if (geoHashPrecision != null && geoHashPrecision > 0 && geoHashPrecision < 11) {
 			this.geoHashPrecision = geoHashPrecision;
 		}
 		return this;

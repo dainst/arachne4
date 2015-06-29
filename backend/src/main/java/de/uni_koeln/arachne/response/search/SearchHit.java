@@ -10,7 +10,7 @@ import de.uni_koeln.arachne.response.Place;
 /**
  * Simple class to hold the data of one hit of the search result.
  */
-@JsonInclude(Include.NON_NULL)
+@JsonInclude(Include.NON_EMPTY)
 public class SearchHit {
 	private transient final long entityId;
 	private transient final String type;
