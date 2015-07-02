@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import static de.uni_koeln.arachne.util.network.CustomMediaType.*;
 import de.uni_koeln.arachne.service.ESService;
 import de.uni_koeln.arachne.service.EntityService;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
@@ -33,7 +34,9 @@ public class EntityController {
 	@Autowired
 	private transient ESService esService;
 	
-	@RequestMapping(value="/entity/count", method=RequestMethod.GET, produces="application/json;charset=UTF-8")
+	@RequestMapping(value="/entity/count", 
+			method=RequestMethod.GET, 
+			produces={APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody ResponseEntity<String> handleGetEntityCountRequest() {
 		final long count = esService.getCount();
 		if (count > -1) {
@@ -50,7 +53,9 @@ public class EntityController {
 	 * @param entityId The unique entity id of the item to fetch.
      * @return A response object containing the data (this is serialized to JSON).
      */
-	@RequestMapping(value="/entity/{entityId}", method=RequestMethod.GET, produces="application/json;charset=UTF-8")
+	@RequestMapping(value="/entity/{entityId}", 
+			method=RequestMethod.GET, 
+			produces={APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody ResponseEntity<String> handleGetEntityIdRequest(
 			@PathVariable("entityId") final Long entityId,
 			@RequestParam(value = "live", required = false) final Boolean isLive,
@@ -73,7 +78,9 @@ public class EntityController {
      * @param categoryId The internal id of the item to fetch
      * @return A response object containing the data (this is serialized to JSON).
      */
-    @RequestMapping(value="/entity/{category}/{categoryId}", method=RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @RequestMapping(value="/entity/{category}/{categoryId}", 
+    		method=RequestMethod.GET, 
+    		produces={APPLICATION_JSON_UTF8_VALUE})
     public @ResponseBody ResponseEntity<String> handleGetCategoryIdRequest(
     		@PathVariable("category") final String category,
     		@PathVariable("categoryId") final Long categoryId,

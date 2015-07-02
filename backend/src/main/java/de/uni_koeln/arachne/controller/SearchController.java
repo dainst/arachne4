@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
+import static de.uni_koeln.arachne.util.network.CustomMediaType.*;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
@@ -101,7 +102,7 @@ public class SearchController {
 	 */
 	@RequestMapping(value="/search",
 			method=RequestMethod.GET,
-			produces="application/json;charset=UTF-8")
+			produces={APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody ResponseEntity<?> handleSearchRequest(@RequestParam("q") final String queryString,
 			@RequestParam(value = "limit", required = false) final Integer limit,
 			@RequestParam(value = "offset", required = false) final Integer offset,
@@ -164,7 +165,7 @@ public class SearchController {
 	 */
 	@RequestMapping(value="/contexts/{entityId}",
 			method=RequestMethod.GET,
-			produces="application/json;charset=UTF-8")
+			produces={APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody Object handleContextRequest(@PathVariable("entityId") final Long entityId,
 			@RequestParam(value = "limit", required = false) final Integer limit,
 			@RequestParam(value = "offset", required = false) final Integer offset,
@@ -212,8 +213,10 @@ public class SearchController {
 	 * @param group A single char indicating which group to retrieve.
 	 * @return The ordered list of values as JSON array.
 	 */
-	@RequestMapping(value="/index/{facetName}", method=RequestMethod.GET, produces="application/json;charset=UTF-8")
-	public @ResponseBody ResponseEntity<?> handleIndexRequest(@PathVariable("facetName") final String facetName
+	@RequestMapping(value="/index/{facetName}", 
+			method=RequestMethod.GET, 
+			produces={APPLICATION_JSON_UTF8_VALUE})
+	public @ResponseBody ResponseEntity<List<String>> handleIndexRequest(@PathVariable("facetName") final String facetName
 			, @RequestParam(value = "group", required = false) Character groupMarker) {
 		
 		if (facetName.startsWith("facet_") || facetName.startsWith("agg_")) {
@@ -224,7 +227,7 @@ public class SearchController {
 
 			if (searchResult.getStatus() == RestStatus.OK) {
 				if (searchResult.facetSize() != 1) {
-					return ResponseEntity.badRequest().build();
+					return new ResponseEntity<List<String>>(HttpStatus.BAD_REQUEST);
 				}
 				List<String> result = new ArrayList<String>();
 				
@@ -245,10 +248,10 @@ public class SearchController {
 				
 				return ResponseEntity.ok().body(result);
 			} else {
-				return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
+				return new ResponseEntity<List<String>>(HttpStatus.valueOf(searchResult.getStatus().getStatus()));
 			}
 		}
-		return ResponseEntity.badRequest().build();
+		return new ResponseEntity<List<String>>(HttpStatus.BAD_REQUEST);
 	}
 
 	/**
