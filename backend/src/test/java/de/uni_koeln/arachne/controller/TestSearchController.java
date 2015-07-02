@@ -4,7 +4,7 @@ import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 // needed to use .andDo(print()) for debugging
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+// import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -97,6 +97,61 @@ public class TestSearchController {
 					searchResult.setFacets(newFacets);
 				}
 								
+				return null;
+			}
+		});
+		
+		when(searchService.buildContextSearchRequest(anyLong(), any(SearchParameters.class), any(Multimap.class)))
+		.then(new Answer<SearchRequestBuilder>() {
+			@Override
+			public SearchRequestBuilder answer(InvocationOnMock invocation)	throws Throwable {
+				final Object[] args = invocation.getArguments();
+				final long entityId = (long)args[0];
+				if (entityId != 0) {
+					searchResult.setSize(0);
+					searchResult.setLimit(1);
+					searchResult.setOffset(0);
+					searchResult.setEntities(null);
+					searchResult.setFacets(null);
+				} else {
+					final SearchParameters searchParams = (SearchParameters)args[1];
+
+					List<SearchHit> entites = searchResult.getEntities();
+					int resultSize = entites.size();
+					int limit = searchParams.getLimit();
+					int offset = searchParams.getOffset();
+
+					if (resultSize > offset) {
+						final int toIndex = (limit + offset) > resultSize ? resultSize : (limit + offset);
+						searchResult.setEntities(entites.subList(offset, toIndex));
+						entites = searchResult.getEntities();
+					}
+					searchResult.setOffset(searchParams.getOffset());
+
+					searchResult.setLimit(limit);
+					if (resultSize > limit) {
+						searchResult.setEntities(entites.subList(0, limit));
+					}
+
+					final int facetLimit = searchParams.getFacetLimit();
+					if (facetLimit > 0) {
+						final List<SearchResultFacet> newFacets = new ArrayList<SearchResultFacet>();
+						for (SearchResultFacet facet : searchResult.getFacets()) {
+							List<SearchResultFacetValue> facetValues = facet.getValues();
+							if (facetValues.size() > facetLimit) {
+								facetValues = facetValues.subList(0, facetLimit);
+								final SearchResultFacet newFacet = new SearchResultFacet(facet.getName());
+								for (SearchResultFacetValue facetValue : facetValues) {
+									newFacet.addValue(facetValue);
+								}
+								newFacets.add(newFacet);
+							} else {
+								newFacets.add(facet);
+							}
+						}
+						searchResult.setFacets(newFacets);
+					}
+				}		
 				return null;
 			}
 		});
@@ -735,5 +790,477 @@ public class TestSearchController {
 				.andExpect(status().is4xxClientError());
 	}*/
 	
-	// TODO add tests fo other endpoints
+	@Test
+	public void testContextSearchNoParameters() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":2,"
+						+ "\"limit\":1,"
+						+ "\"offset\":0,"
+						+ "\"facets\":["
+						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test1_value1\",\"count\":1},"
+						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
+						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test3_value1\",\"count\":13},"
+						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
+						+ "\"entities\":["
+						+ "{\"thumbnailId\":0,"
+						+ "\"entityId\":0,"
+						+ "\"title\":\"Test title\","
+						+ "\"subtitle\":\"Test subtitle\","
+						+ "\"type\":\"test\"}],"
+						+ "\"status\":\"OK\"}"));
+	}
+
+	@Test
+	public void testContextSearchNoParameterInvalidId() throws Exception {
+		mockMvc.perform(
+				get("/contexts/1")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":0,"
+						+ "\"limit\":1,"
+						+ "\"offset\":0,"
+						+ "\"status\":\"OK\"}"));
+	}
+	
+	@Test
+	public void testContextSearchLimit() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("limit", "1")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":2,"
+						+ "\"limit\":1,"
+						+ "\"offset\":0,"
+						+ "\"facets\":["
+						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test1_value1\",\"count\":1},"
+						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
+						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test3_value1\",\"count\":13},"
+						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
+						+ "\"entities\":["
+						+ "{\"thumbnailId\":0,"
+						+ "\"entityId\":0,"
+						+ "\"title\":\"Test title\","
+						+ "\"subtitle\":\"Test subtitle\","
+						+ "\"type\":\"test\"}],"
+						+ "\"status\":\"OK\"}"));
+	}
+	
+	@Test
+	public void testContextSearchLimit0() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("limit", "0")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":2,"
+						+ "\"limit\":0,"
+						+ "\"offset\":0,"
+						+ "\"facets\":["
+						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test1_value1\",\"count\":1},"
+						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
+						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test3_value1\",\"count\":13},"
+						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
+						+ "\"status\":\"OK\"}"));
+	}
+	
+	@Test
+	public void testContextSearchLimit2() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("limit", "2")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":2,"
+						+ "\"limit\":2,"
+						+ "\"offset\":0,"
+						+ "\"facets\":["
+						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test1_value1\",\"count\":1},"
+						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
+						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test3_value1\",\"count\":13},"
+						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
+						+ "\"entities\":["
+						+ "{\"thumbnailId\":0,"
+						+ "\"entityId\":0,"
+						+ "\"title\":\"Test title\","
+						+ "\"subtitle\":\"Test subtitle\","
+						+ "\"type\":\"test\"},"
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"title\":\"Test title 1\","
+						+ "\"subtitle\":\"Test subtitle 1\","
+						+ "\"type\":\"test\"}],"
+						+ "\"status\":\"OK\"}"));
+	}
+	
+	@Test
+	public void testContextSearchLimitNegativeInt() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("limit", "-1")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":2,"
+						+ "\"limit\":1,"
+						+ "\"offset\":0,"
+						+ "\"facets\":["
+						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test1_value1\",\"count\":1},"
+						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
+						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test3_value1\",\"count\":13},"
+						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
+						+ "\"entities\":["
+						+ "{\"thumbnailId\":0,"
+						+ "\"entityId\":0,"
+						+ "\"title\":\"Test title\","
+						+ "\"subtitle\":\"Test subtitle\","
+						+ "\"type\":\"test\"}],"
+						+ "\"status\":\"OK\"}"));
+	}
+	
+	@Test
+	public void testContextSearchLimitInvalidFloat() throws Exception {
+		mockMvc.perform(
+				get("/conetxts/0").param("limit", "1.7")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().is4xxClientError());
+	}
+	
+	@Test
+	public void testContextSearchLimitInvalidString() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("limit", "high")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().is4xxClientError());
+	}
+	
+	@Test
+	public void testContextSearchOffset() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("offset", "1")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":2,"
+						+ "\"limit\":1,"
+						+ "\"offset\":1,"
+						+ "\"facets\":["
+						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test1_value1\",\"count\":1},"
+						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
+						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test3_value1\",\"count\":13},"
+						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
+						+ "\"entities\":["
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"title\":\"Test title 1\","
+						+ "\"subtitle\":\"Test subtitle 1\","
+						+ "\"type\":\"test\"}],"
+						+ "\"status\":\"OK\"}"));
+	}
+	
+	@Test
+	public void testContextSearchOffsetNegativeInt() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("offset", "-1")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":2,"
+						+ "\"limit\":1,"
+						+ "\"offset\":0,"
+						+ "\"facets\":["
+						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test1_value1\",\"count\":1},"
+						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
+						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test3_value1\",\"count\":13},"
+						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
+						+ "\"entities\":["
+						+ "{\"thumbnailId\":0,"
+						+ "\"entityId\":0,"
+						+ "\"title\":\"Test title\","
+						+ "\"subtitle\":\"Test subtitle\","
+						+ "\"type\":\"test\"}],"
+						+ "\"status\":\"OK\"}"));
+	}
+	
+	@Test
+	public void testContextSearchOffsetInvalidFloat() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("offset", "1.7")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().is4xxClientError());
+	}
+	
+	@Test
+	public void testContextSearchOffsetInvalidString() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("offset", "high")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().is4xxClientError());
+	}
+	
+	@Test
+	public void testContextSearchFq() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("fq", "facet_test2:\"test2_value1\"")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":2,"
+						+ "\"limit\":1,"
+						+ "\"offset\":0,"
+						+ "\"facets\":["
+						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test1_value1\",\"count\":1},"
+						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test3_value1\",\"count\":13},"
+						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
+						+ "\"entities\":["
+						+ "{\"thumbnailId\":0,"
+						+ "\"entityId\":0,"
+						+ "\"title\":\"Test title\","
+						+ "\"subtitle\":\"Test subtitle\","
+						+ "\"type\":\"test\"}],"
+						+ "\"status\":\"OK\"}"));
+	}
+	
+	@Test
+	public void testContextSearchFqUnknownFacet() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("fq", "facet_unknown:\"some value\"")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":2,"
+						+ "\"limit\":1,"
+						+ "\"offset\":0,"
+						+ "\"facets\":["
+						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test1_value1\",\"count\":1},"
+						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
+						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test3_value1\",\"count\":13},"
+						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
+						+ "\"entities\":["
+						+ "{\"thumbnailId\":0,"
+						+ "\"entityId\":0,"
+						+ "\"title\":\"Test title\","
+						+ "\"subtitle\":\"Test subtitle\","
+						+ "\"type\":\"test\"}],"
+						+ "\"status\":\"OK\"}"));
+	}
+	
+	@Test
+	public void testContextSearchFqInvalidFacet() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("fq", "f,a:c,e+t")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":2,"
+						+ "\"limit\":1,"
+						+ "\"offset\":0,"
+						+ "\"facets\":["
+						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test1_value1\",\"count\":1},"
+						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
+						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test3_value1\",\"count\":13},"
+						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
+						+ "\"entities\":["
+						+ "{\"thumbnailId\":0,"
+						+ "\"entityId\":0,"
+						+ "\"title\":\"Test title\","
+						+ "\"subtitle\":\"Test subtitle\","
+						+ "\"type\":\"test\"}],"
+						+ "\"status\":\"OK\"}"));
+	}
+	
+	@Test
+	public void testContextSearchFl() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("fl", "1")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":2,"
+						+ "\"limit\":1,"
+						+ "\"offset\":0,"
+						+ "\"facets\":["
+						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test1_value1\",\"count\":1}]},"
+						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
+						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test3_value1\",\"count\":13}]}],"
+						+ "\"entities\":["
+						+ "{\"thumbnailId\":0,"
+						+ "\"entityId\":0,"
+						+ "\"title\":\"Test title\","
+						+ "\"subtitle\":\"Test subtitle\","
+						+ "\"type\":\"test\"}],"
+						+ "\"status\":\"OK\"}"));		
+	}
+	
+	@Test
+	public void testContextSearchFlLimit0() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("fl", "0")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":2,"
+						+ "\"limit\":1,"
+						+ "\"offset\":0,"
+						+ "\"facets\":["
+						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test1_value1\",\"count\":1},"
+						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
+						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test3_value1\",\"count\":13},"
+						+ "{\"value\":\"test3_value2\",\"count\":12},"
+						+ "{\"value\":\"test3_value3\",\"count\":11}]}],"
+						+ "\"entities\":["
+						+ "{\"thumbnailId\":0,"
+						+ "\"entityId\":0,"
+						+ "\"title\":\"Test title\","
+						+ "\"subtitle\":\"Test subtitle\","
+						+ "\"type\":\"test\"}],"
+						+ "\"status\":\"OK\"}"));
+	}
+	
+	@Test
+	public void testContextSearchSort() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("sort", "title")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":2,"
+						+ "\"limit\":1,"
+						+ "\"offset\":0,"
+						+ "\"facets\":["
+						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test1_value1\",\"count\":1},"
+						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
+						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test3_value1\",\"count\":13},"
+						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
+						+ "\"entities\":["
+						+ "{\"thumbnailId\":0,"
+						+ "\"entityId\":0,"
+						+ "\"title\":\"Test title\","
+						+ "\"subtitle\":\"Test subtitle\","
+						+ "\"type\":\"test\"}],"
+						+ "\"status\":\"OK\"}"));
+	}
+	
+	@Test
+	public void testContextSearchDesc() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("desc", "true")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":2,"
+						+ "\"limit\":1,"
+						+ "\"offset\":0,"
+						+ "\"facets\":["
+						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test1_value1\",\"count\":1},"
+						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
+						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test3_value1\",\"count\":13},"
+						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
+						+ "\"entities\":["
+						+ "{\"thumbnailId\":0,"
+						+ "\"entityId\":0,"
+						+ "\"title\":\"Test title\","
+						+ "\"subtitle\":\"Test subtitle\","
+						+ "\"type\":\"test\"}],"
+						+ "\"status\":\"OK\"}"));
+	}
+	
+	@Test
+	public void testContextSearchDescInvalidInt() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("desc", "2")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().is4xxClientError());
+	}
+	
+	@Test
+	public void testContextSearchDescInvalidFloat() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("desc", "2.1")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().is4xxClientError());
+	}
+	
+	@Test
+	public void testContextSearchDescInvalidString() throws Exception {
+		mockMvc.perform(
+				get("/contexts/0").param("desc", "maybe")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().is4xxClientError());
+	}
+	
+	// TODO add tests for index endpoint
 }

@@ -162,7 +162,9 @@ public class SearchController {
 	 * @param facetLimit The maximum number of returned facets. (optional)
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
-	@RequestMapping(value="/contexts/{entityId}", method=RequestMethod.GET, produces="application/json")
+	@RequestMapping(value="/contexts/{entityId}",
+			method=RequestMethod.GET,
+			produces="application/json;charset=UTF-8")
 	public @ResponseBody Object handleContextRequest(@PathVariable("entityId") final Long entityId,
 			@RequestParam(value = "limit", required = false) final Integer limit,
 			@RequestParam(value = "offset", required = false) final Integer offset,
@@ -171,9 +173,14 @@ public class SearchController {
 			@RequestParam(value = "sort", required = false) final String sortField,
 			@RequestParam(value = "desc", required = false) final Boolean orderDesc) {
 
-		final int resultSize = limit == null ? defaultLimit : limit;
-		final int resultOffset = offset == null ? 0 : offset;
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
+		
+		final SearchParameters searchParameters = new SearchParameters(defaultLimit) 
+				.setLimit(limit)
+				.setOffset(offset)
+				.setFacetLimit(resultFacetLimit)
+				.setSortField(sortField)
+				.setOrderDesc(orderDesc);
 
 		Multimap<String, String> filters = HashMultimap.create();
 		if (filterValues != null) {
@@ -181,10 +188,10 @@ public class SearchController {
 		}
 		
 		final SearchRequestBuilder searchRequestBuilder = searchService.buildContextSearchRequest(entityId
-				, resultSize, resultOffset, filters, resultFacetLimit, sortField, orderDesc);
+				, searchParameters, filters);
 				
-		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, resultSize
-				, resultOffset, filters);
+		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
+				, searchParameters.getLimit(), searchParameters.getOffset(), filters);
 		
 		if (searchResult == null) {
 			LOGGER.error("Search result is null!");

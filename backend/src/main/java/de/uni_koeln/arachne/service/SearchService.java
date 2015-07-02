@@ -122,31 +122,22 @@ public class SearchService {
 	/**
 	 * This method builds and returns an elasticsearch context search request. The query is built by the 
 	 * <code>buildContextQuery</code> method.
-	 * @param searchParam The entityId to find the contexts for..
-	 * @param size Max number of results.
-	 * @param offset An offset into the result set.
-	 * @param facetLimit The maximum number of distinct facet values returned.  
+	 * @param entityId The entityId to find the contexts for..
+	 * @param searchParameters The search parameter object. 
 	 * @param filters The filters of the HTTP 'fq' parameter as Map.
-	 * @param sortField The field to sort on.
-	 * @param orderDesc Boolean indicating the sort order.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 */
-	public SearchRequestBuilder buildContextSearchRequest(final Long entityId
-			, final int size
-			, final int offset
-			, Multimap<String, String> filters
-			, int facetLimit
-			, final String sortField
-			, final Boolean orderDesc) {
+	public SearchRequestBuilder buildContextSearchRequest(final long entityId, final SearchParameters searchParameters
+			, Multimap<String, String> filters) {
 		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
 				.setQuery(buildContextQuery(entityId))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-				.setFrom(offset)
-				.setSize(size);
+				.setFrom(searchParameters.getOffset())
+				.setSize(searchParameters.getLimit());
 		
-		addSort(sortField, orderDesc, result);
-		addFacets(getFacetList(filters, facetLimit, -1), result);
+		addSort(searchParameters.getSortField(), searchParameters.isOrderDesc(), result);
+		addFacets(getFacetList(filters, searchParameters.getFacetLimit(), -1), result);
 		
 		return result;
 	}
