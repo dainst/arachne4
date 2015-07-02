@@ -9,6 +9,8 @@ import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.junit.Before;
@@ -53,11 +55,15 @@ public class TestSearchController {
 		
 		final TestData testData = new TestData();
 		final SearchResult searchResult = testData.getDefaultSearchResult();
-		
+		// this is a neat trick to get a final, mutable boolean value which I can reference in the overriden answer
+		// methods
+		final AtomicBoolean isIndexSearch = new AtomicBoolean(false);
+				
 		when(searchService.buildDefaultSearchRequest(any(SearchParameters.class), any(Multimap.class)))
 		.then(new Answer<SearchRequestBuilder>() {
 			@Override
 			public SearchRequestBuilder answer(InvocationOnMock invocation)	throws Throwable {
+				isIndexSearch.set(false);
 				final Object[] args = invocation.getArguments();
 				final SearchParameters searchParams = (SearchParameters)args[0];
 				
@@ -105,6 +111,7 @@ public class TestSearchController {
 		.then(new Answer<SearchRequestBuilder>() {
 			@Override
 			public SearchRequestBuilder answer(InvocationOnMock invocation)	throws Throwable {
+				isIndexSearch.set(false);
 				final Object[] args = invocation.getArguments();
 				final long entityId = (long)args[0];
 				if (entityId != 0) {
@@ -156,22 +163,41 @@ public class TestSearchController {
 			}
 		});
 		
+		when(searchService.buildIndexSearchRequest(anyString()))
+		.then(new Answer<SearchResult>() {
+			@Override
+			public SearchResult answer(InvocationOnMock invocation) throws Throwable {
+				final String facetName = invocation.getArgumentAt(0, String.class);
+				ListIterator<SearchResultFacet> iterator = searchResult.getFacets().listIterator();
+				while (iterator.hasNext()) {
+					SearchResultFacet facet = (SearchResultFacet) iterator.next();
+					if (!facetName.equals(facet.getName())) {
+						iterator.remove();
+					}
+				}
+				return null;
+			}
+		});
+		
 		when(searchService.executeSearchRequest(eq((SearchRequestBuilder)null), anyInt(), anyInt(), any(Multimap.class)))
-		.thenAnswer(new Answer<SearchResult>() {
+		.then(new Answer<SearchResult>() {
 			@Override
 			public SearchResult answer(InvocationOnMock invocation) throws Throwable {
 				final Object[] args = invocation.getArguments();
-				final Multiset<String> keyMultiset = ((Multimap<String, String>)args[3]).keys();
-				
-				if (!keyMultiset.isEmpty()) {
-					String key = (String)keyMultiset.toArray()[0];
-					List<SearchResultFacet> newFacets = new ArrayList<SearchResultFacet>();
-					for (SearchResultFacet facet : searchResult.getFacets()) {
-						if (!key.equals(facet.getName())) {
-							newFacets.add(facet);
+
+				if (args[3] != null) {
+					final Multiset<String> keyMultiset  = ((Multimap<String, String>)args[3]).keys();
+
+					if (!keyMultiset.isEmpty()) {
+						String key = (String)keyMultiset.toArray()[0];
+						List<SearchResultFacet> newFacets = new ArrayList<SearchResultFacet>();
+						for (SearchResultFacet facet : searchResult.getFacets()) {
+							if (!key.equals(facet.getName())) {
+								newFacets.add(facet);
+							}
 						}
+						searchResult.setFacets(newFacets);
 					}
-					searchResult.setFacets(newFacets);
 				}
 				return searchResult;
 			}
@@ -329,7 +355,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/search").param("q", "*").param("limit", "1.7")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -337,7 +363,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/search").param("q", "*").param("limit", "high")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -403,7 +429,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/search").param("q", "*").param("offset", "1.7")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -411,7 +437,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/search").param("q", "*").param("offset", "high")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -619,7 +645,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/search").param("q", "*").param("desc", "2")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -627,7 +653,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/search").param("q", "*").param("desc", "2.1")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -635,7 +661,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/search").param("q", "*").param("desc", "maybe")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -672,7 +698,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/search").param("q", "*").param("bbox", "0,0,1")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -680,7 +706,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/search").param("q", "*").param("bbox", "0,0,1,1,2")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -688,7 +714,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/search").param("q", "*").param("bbox", "bbox")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -725,7 +751,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/search").param("q", "*").param("ghprec", "5.5")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -733,7 +759,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/search").param("q", "*").param("ghprec", "high")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -951,9 +977,9 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchLimitInvalidFloat() throws Exception {
 		mockMvc.perform(
-				get("/conetxts/0").param("limit", "1.7")
+				get("/contexts/0").param("limit", "1.7")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -961,7 +987,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/contexts/0").param("limit", "high")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -1027,7 +1053,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/contexts/0").param("offset", "1.7")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -1035,7 +1061,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/contexts/0").param("offset", "high")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -1243,7 +1269,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/contexts/0").param("desc", "2")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -1251,7 +1277,7 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/contexts/0").param("desc", "2.1")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -1259,8 +1285,35 @@ public class TestSearchController {
 		mockMvc.perform(
 				get("/contexts/0").param("desc", "maybe")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isBadRequest());
 	}
 	
-	// TODO add tests for index endpoint
+	@Test
+	public void testIndexSearchNoParameter() throws Exception {
+		mockMvc.perform(
+				get("/index/facet_test1")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("["
+						+ "\"test1_value1\","
+						+ "\"test1_value2\""
+						+ "]"));
+	}
+	
+	@Test
+	public void testIndexSearchNoParameterUnknownFacet() throws Exception {
+		mockMvc.perform(
+				get("/contexts/facet_unknown")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	public void testIndexSearchNoParameterInvalidFacet() throws Exception {
+		mockMvc.perform(
+				get("/index/f,a:c,e+t")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isBadRequest());
+	}	
 }
