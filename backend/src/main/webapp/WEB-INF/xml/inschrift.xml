@@ -41,10 +41,18 @@
 				</section>
 				<include type="datierung" />
 				<include type="literatur" />
-				<include type="literatur_arachne"/>
+				<include type="literatur_arachne" />
 				<include type="uri" />
 			</section>
 		</datasections>
+		<editorsection>
+			<section labelKey="Für Bearbeiter">
+				<field datasource="inschrift.DatensatzGruppeInschrift" prefix="Datensatz-Gruppe: " />
+				<field datasource="inschrift.ArbeitsnotizInschrift" prefix="Interne Arbeitsnotiz: " />
+				<field datasource="inschrift.BearbeiterInschrift" prefix="Erstellt von: " />
+				<field datasource="inschrift.KorrektorInschrift" prefix="Bearbeitet von: " />
+			</section>
+		</editorsection>
 	</display>
 	<facets>
 		<include type="facet_kategorie" />

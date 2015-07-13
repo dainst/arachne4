@@ -1,76 +1,85 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- just very basic to have at least some definitions -->
-<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="person" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-  <display>
-    <title>
-      <section separator=" ">
-        <field datasource="person.Titel" search=";" replace="/"/>
-        <field datasource="person.VornameSonst"/>
-        <field datasource="person.Namenszusatz"/>
-        <field datasource="person.FamVatersnameSonst"/>
-        <field datasource="person.Cognomen"/>
-        <field datasource="person.Beiname" prefix="(" postfix=")"/>
-      </section>
-    </title>
-    <subtitle>
-      <section separator=", ">
-        <field datasource="person.Kurzbeschreibung"/>
-      </section>
-    </subtitle>
-    <datasections>
-      <section labelKey="Informationen zur Person">
-        <include type="ort"/>
-        <include type="datierung"/>
-        <section labelKey="Allgemeine Informationen">
-          <section labelKey="Beschreibung">
-            <field datasource="person.Kurzbeschreibung"/>
-          </section>
-          <section labelKey="Titel" separator="/">
-            <field datasource="person.Titel" search=";" replace="/"/>
-          </section>
-          <section labelKey="Geschlecht">
-            <field datasource="person.Geschlecht"/>
-          </section>
-          <section labelKey="Nationalität">
-            <field datasource="person.EthnieNationalitaet"/>
-          </section>
-        </section>
-        <section labelKey="Informationen zum Namen ">
-          <section labelKey="Synonyme Vorname" separator=", ">
-            <field datasource="person.VornameSonstSynonym1"/>
-            <field datasource="person.VornameSonstSynonym2"/>
-            <field datasource="person.VornameSonstSynonym3"/>
-            <field datasource="person.VornameSonstSynonym4"/>
-          </section>
-          <section labelKey="Synonyme Familien-/Vatersname" separator=", ">
-            <field datasource="person.FamVatersnameSonstSynonym1"/>
-            <field datasource="person.FamVatersnameSonstSynonym2"/>
-            <field datasource="person.FamVatersnameSonstSynonym3"/>
-            <field datasource="person.FamVatersnameSonstSynonym4"/>
-          </section>
-          <section labelKey="Synonyme Cognomen" separator=", ">
-            <field datasource="person.CognomenSynonym1"/>
-            <field datasource="person.CognomenSynonym2"/>
-            <field datasource="person.CognomenSynonym3"/>
-            <field datasource="person.CognomenSynonym4"/>
-          </section>
-        </section>
-        <include type="literatur"/>
-        <include type="uri"/>
-      </section>
-    </datasections>
-  </display>
-  <facets>
-    <include type="facet_kategorie"/>
-    <include type="facet_literatur"/>
-    <facet name="titel" labelKey="Titel">
-      <field datasource="person.Titel"/>
-    </facet>
-    <facet name="geschlecht" labelKey="Geschlecht">
-      <field datasource="person.Geschlecht"/>
-    </facet>
-    <facet name="ethnienationalitaet" labelKey="Nationalität">
-      <field datasource="person.EthnieNationalitaet"/>
-    </facet>
-  </facets>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="person"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<display>
+		<title>
+			<section separator=" ">
+				<field datasource="person.Titel" search=";" replace="/" />
+				<field datasource="person.VornameSonst" />
+				<field datasource="person.Namenszusatz" />
+				<field datasource="person.FamVatersnameSonst" />
+				<field datasource="person.Cognomen" />
+				<field datasource="person.Beiname" prefix="(" postfix=")" />
+			</section>
+		</title>
+		<subtitle>
+			<section separator=", ">
+				<field datasource="person.Kurzbeschreibung" />
+			</section>
+		</subtitle>
+		<datasections>
+			<section labelKey="Informationen zur Person">
+				<include type="ort" />
+				<include type="datierung" />
+				<section labelKey="Allgemeine Informationen">
+					<section labelKey="Beschreibung">
+						<field datasource="person.Kurzbeschreibung" />
+					</section>
+					<section labelKey="Titel" separator="/">
+						<field datasource="person.Titel" search=";" replace="/" />
+					</section>
+					<section labelKey="Geschlecht">
+						<field datasource="person.Geschlecht" />
+					</section>
+					<section labelKey="Nationalität">
+						<field datasource="person.EthnieNationalitaet" />
+					</section>
+				</section>
+				<section labelKey="Informationen zum Namen ">
+					<section labelKey="Synonyme Vorname" separator=", ">
+						<field datasource="person.VornameSonstSynonym1" />
+						<field datasource="person.VornameSonstSynonym2" />
+						<field datasource="person.VornameSonstSynonym3" />
+						<field datasource="person.VornameSonstSynonym4" />
+					</section>
+					<section labelKey="Synonyme Familien-/Vatersname"
+						separator=", ">
+						<field datasource="person.FamVatersnameSonstSynonym1" />
+						<field datasource="person.FamVatersnameSonstSynonym2" />
+						<field datasource="person.FamVatersnameSonstSynonym3" />
+						<field datasource="person.FamVatersnameSonstSynonym4" />
+					</section>
+					<section labelKey="Synonyme Cognomen" separator=", ">
+						<field datasource="person.CognomenSynonym1" />
+						<field datasource="person.CognomenSynonym2" />
+						<field datasource="person.CognomenSynonym3" />
+						<field datasource="person.CognomenSynonym4" />
+					</section>
+				</section>
+				<include type="literatur" />
+				<include type="uri" />
+			</section>
+		</datasections>
+		<editorsection>
+			<section labelKey="Für Bearbeiter">
+				<field datasource="person.DatensatzGruppePerson" prefix="Datensatz-Gruppe: " />
+				<field datasource="person.ArbeitsnotizPerson" prefix="Interne Arbeitsnotiz: " />
+			</section>
+		</editorsection>
+	</display>
+	<facets>
+		<include type="facet_kategorie" />
+		<include type="facet_literatur" />
+		<facet name="titel" labelKey="Titel">
+			<field datasource="person.Titel" />
+		</facet>
+		<facet name="geschlecht" labelKey="Geschlecht">
+			<field datasource="person.Geschlecht" />
+		</facet>
+		<facet name="ethnienationalitaet" labelKey="Nationalität">
+			<field datasource="person.EthnieNationalitaet" />
+		</facet>
+	</facets>
 </category>

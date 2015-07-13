@@ -22,7 +22,8 @@ import de.uni_koeln.arachne.util.sql.SQLToolbox;
 
 /**
  * This class allows to query the current users rights. 
- * It looks up the session, the corresponding user and the groups in the database
+ * It looks up the session, the corresponding user and the groups in the database.
+ * 
  * @author Rasmus Krempel
  * @author Sebastian Cuy
  * @author Reimar Grabowski
@@ -31,6 +32,7 @@ import de.uni_koeln.arachne.util.sql.SQLToolbox;
 @Scope(value="request",proxyMode=ScopedProxyMode.INTERFACES)
 public class UserRightsService implements IUserRightsService {
 	
+	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserRightsService.class);
 	
 	/**
@@ -105,7 +107,16 @@ public class UserRightsService implements IUserRightsService {
 	public boolean isSignedInUser() {
 		return isSet && !(ANONYMOUS_USER_NAME.equals(arachneUser.getUsername()));
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see de.uni_koeln.arachne.service.UserRightsService#isSignedInUser()
+	 */
+	@Override
+	public boolean userHasAtLeastGroupID(int groupId) {
+		initializeUserData();
+		return groupId <= arachneUser.getGroupID();
+	};
+	
 	/* (non-Javadoc)
 	 * @see de.uni_koeln.arachne.service.IUserRightsService#getCurrentUser()
 	 */

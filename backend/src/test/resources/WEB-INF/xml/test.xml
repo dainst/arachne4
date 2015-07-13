@@ -63,6 +63,11 @@
 				</context>
 			</section>
 		</datasections>
+		<editorsection>
+            <section labelKey="Testdata Editor Section">
+                <field datasource="test.DataEditorSection" />
+            </section>  
+		</editorsection>
 		<contextImages>
             <contextImage show="always">testalways</contextImage>
             <contextImage show="ifEmpty">testifempty</contextImage>

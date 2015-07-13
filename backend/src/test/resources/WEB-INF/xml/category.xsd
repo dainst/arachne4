@@ -12,6 +12,7 @@
               <xs:element name="title" type="SectionContent" minOccurs="1" maxOccurs="1"/>
               <xs:element name="subtitle" type="SectionContent" minOccurs="1" maxOccurs="1"/>
               <xs:element name="datasections" type="SectionContent" minOccurs="1" maxOccurs="1"/>
+              <xs:element name="editorsection" type="EditorSectionContent" minOccurs="0" maxOccurs="1"/>
               <xs:element name="contextImages" type="contextImages" minOccurs="0" maxOccurs="1"/>
             </xs:sequence>
           </xs:complexType>
@@ -54,7 +55,21 @@
     <xs:attribute name="separator" type="xs:string"/>
     <xs:attribute name="prefix" type="xs:string"/>
     <xs:attribute name="postfix" type="xs:string"/>
-    <xs:attribute name="minGroupId" type="xs:string"/>
+  </xs:complexType>
+  <xs:complexType name="EditorSectionContent">
+    <xs:choice minOccurs="1" maxOccurs="1">
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="section" type="EditorSectionContent"/>
+      </xs:choice>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="field" type="FieldContent"/>
+        <xs:element name="linkField" type="LinkFieldContent"/>
+      </xs:choice>
+    </xs:choice>
+    <xs:attribute name="labelKey" type="xs:string"/>
+    <xs:attribute name="separator" type="xs:string"/>
+    <xs:attribute name="prefix" type="xs:string"/>
+    <xs:attribute name="postfix" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="ContextContent">
     <xs:choice maxOccurs="unbounded">
@@ -66,7 +81,6 @@
     <xs:attribute name="labelKey" type="xs:string"/>
     <xs:attribute name="separator" type="xs:string"/>
     <xs:attribute name="link" type="xs:string"/>
-    <xs:attribute name="minGroupId" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="IncludeContent">
     <xs:attribute name="type" type="xs:string" use="required"/>
@@ -95,7 +109,6 @@
     <xs:attribute name="replace" type="xs:string"/>
     <xs:attribute name="trimEnd" type="xs:string"/>
     <xs:attribute name="separator" type="xs:string"/>
-    <xs:attribute name="minGroupId" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="LinkFieldContent">
     <xs:all minOccurs="0">
@@ -112,7 +125,6 @@
     <xs:attribute name="prefix" type="xs:string"/>
     <xs:attribute name="postfix" type="xs:string"/>
     <xs:attribute name="separator" type="xs:string"/>
-    <xs:attribute name="minGroupId" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="contextImages">
     <xs:annotation>

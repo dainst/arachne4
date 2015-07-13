@@ -1,196 +1,230 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- just very basic to have at least some definitions -->
-<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="reproduktion" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-  <display>
-    <title>
-      <section>
-        <field datasource="reproduktion.KurzbeschreibungReproduktion"/>
-      </section>
-    </title>
-    <subtitle>
-      <section separator=", ">
-        <field datasource="literatur.Ort"/>
-        <field datasource="literatur.Jahr"/>
-      </section>
-    </subtitle>
-    <datasections>
-      <section labelKey="Informationen zur Reproduktion">
-        <include type="ort"/>
-        <include type="datierung"/>
-        <section labelKey="Herkunft">
-          <field datasource="reproduktion.HerkunftSlg" prefix="Herkunft: "/>
-          <field datasource="reproduktion.Erwerbsdatum" prefix="Datum des Erwerbs: "/>
-          <field datasource="reproduktion.ReproduktionErwerbUmstand"/>
-          <field datasource="reproduktion.ArtErwerbung"/>
-          <field datasource="reproduktion.ErworbenVon"/>
-          <field datasource="reproduktion.StifterLeihgeber" prefix="Stifter / Leihgeber"/>
-          <field datasource="reproduktion.Vorlagevorhanden"/>
-        </section>
-        <section labelKey="Maße">
-          <field datasource="reproduktion.BreiteGesamtRepro" prefix="Breite: " postfix=" cm"/>
-          <field datasource="reproduktion.HoeheGesamtRepro" prefix="Höhe: " postfix=" cm"/>
-          <field datasource="reproduktion.TiefeGesamtRepro" prefix="Tiefe: " postfix=" cm"/>
-          <field datasource="reproduktion.DurchmesserGesamtRepro" prefix="Durchmesser: " postfix=" cm"/>
-          <field datasource="reproduktion.HoeheKopfRepro" prefix="Kopfhöhe: " postfix=" cm"/>
-          <field datasource="reproduktion.HoeheStatueRepro" prefix="Höhe der Statue: " postfix=" cm"/>
-          <field datasource="reproduktion.ReproMaszeBemerk" prefix="Bemerkung: "/>
-          <field datasource="reproduktion.ReproduktionGewicht" prefix="Gewicht: "/>
-          <field datasource="reproduktion.MessungKopfRepro" prefix="Messung(Kopf): "/>
-          <field datasource="reproduktion.MessungStatueRepro" prefix="Messung(Statue): "/>
-          <field datasource="reproduktion.ReproBildMasze" prefix="Maße(Bild): "/>
-          <field datasource="reproduktion.ReproPlatteMasze" prefix="Maße(Platte): "/>
-          <field datasource="reproduktion.ReproBlattMasze" prefix="Maße(Blatt): "/>
-        </section>
-        <section labelKey="Beschreibung">
-          <field datasource="reproduktion.BearbeitungenReproduktion"/>
-          <field datasource="reproduktion.ZweiDreiDimensional"/>
-          <field datasource="reproduktion.TechnikReproduktion" prefix="Technik: "/>
-          <field datasource="reproduktion.GrundformReproduktion" prefix="Grundform: "/>
-          <field datasource="reproduktion.MaterialReproduktion" prefix="Material: "/>
-          <field datasource="reproduktion.MaterialbeschreibungRepro"/>
-          <field datasource="reproduktion.FormatReproduktion" prefix="Format: "/>
-          <field datasource="reproduktion.ReproBeschreibungGemaelde"/>
-        </section>
-        <section labelKey="Abguß">
-          <field datasource="reproduktion.AbguszformNr" prefix="Nummer: "/>
-          <field datasource="reproduktion.Abgusztechnik" prefix="Technik: "/>
-          <field datasource="reproduktion.Teilabgusz" prefix="Teilabguß: "/>
-          <field datasource="reproduktion.BesonderheitenAbgusz" prefix="Besonderheiten: "/>
-          <field datasource="reproduktion.Farbigkeit" prefix="Farbe: "/>
-        </section>
-        <section labelKey="Bildwerk">
-          <field datasource="reproduktion.TechnikFlaechenkunstReproduktion" prefix="Technik: "/>
-          <field datasource="reproduktion.TraegerFlaechenkunst" prefix="Träger: "/>
-          <field datasource="reproduktion.Ansicht" prefix="Ansicht: "/>
-          <field datasource="reproduktion.Umgebung" prefix="Umgebung: "/>
-        </section>
-        <section labelKey="Modell" separator="; ">
-          <field datasource="reproduktion.ModellMaszstab" prefix="Maßstab: "/>
-          <field datasource="reproduktion.ModellBauphase"/>
-        </section>
-        <section labelKey="Gleiche Gipsform" separator="; ">
-          <field datasource="reproduktion.GleicheGipsformInvNr"/>
-          <field datasource="reproduktion.GleicheGipsformStandort"/>
-          <field datasource="reproduktion.GleicheGipsformSeriennummer"/>
-        </section>
-        <section labelKey="Gattung" separator="; ">
-          <field datasource="reproduktion.GattungAllg"/>
-          <field datasource="reproduktion.GattungSpeziell"/>
-        </section>
-        <section labelKey="Erhaltung" separator="; ">
-          <field datasource="reproduktion.ErhaltungReproduktion"/>
-          <field datasource="reproduktion.ErhaltungszustandReproduktion"/>
-          <field datasource="reproduktion.erhalteneFormReproduktion"/>
-          <field datasource="reproduktion.ReproZustandGemaelde"/>
-          <field datasource="reproduktion.ReproQualitaet" prefix="Qualität der Reproduktion: "/>
-          <field datasource="reproduktion.ReproQualitaetZusatz"/>
-        </section>
-        <section labelKey="Thematik">
-          <field datasource="reproduktion.GottGoettin" prefix="Gottheit: "/>
-          <field datasource="reproduktion.Mischewesen" prefix="Mischwesen: "/>
-          <field datasource="reproduktion.Attribute" prefix="Attribute: "/>
-        </section>
-        <section labelKey="Beschriftung">
-          <field datasource="reproduktion.Beschriftung"/>
-          <field datasource="reproduktion.ReproBezeichnet" prefix="Bezeichnung: "/>
-          <field datasource="reproduktion.ReproUntenLinks" prefix="Unten-links: "/>
-          <field datasource="reproduktion.ReproUntenRechts" prefix="Unten-rechts: "/>
-          <field datasource="reproduktion.ReproUntenMitte" prefix="Unten-mitte: "/>
-          <field datasource="reproduktion.ReproObenLinks" prefix="Oben-links: "/>
-          <field datasource="reproduktion.ReproObenRechts" prefix="Oben-rechts: "/>
-          <field datasource="reproduktion.ReproObenMitte" prefix="Oben-mitte: "/>
-        </section>
-        <section labelKey="Verhältnis Original und Reproduktion">
-          <field datasource="reproduktion.Veraenderungen" prefix="Veränderungen: "/>
-          <field datasource="reproduktion.zusammensetzung" prefix="Zusammensetzung: "/>
-          <field datasource="reproduktion.AbguszMitAltenErgaenzungen" prefix="Reproduktion mit alten Ergänzungen: "/>
-        </section>
-        <section labelKey="Ergänzungen" separator="; ">
-          <field datasource="reproduktion.ErgaenzungenReproduktion"/>
-          <field datasource="reproduktion.sonstigeErgaenzungen"/>
-          <field datasource="reproduktion.sonstigeAbweichungen"/>
-          <field datasource="reproduktion.KuenstlerErgaenzungen" prefix="Künstler der Ergänzungen: "/>
-        </section>
-        <section labelKey="Künstler">
-          <field datasource="reproduktion.KuenstlerReproduktion" prefix="Künstlername: "/>
-          <field datasource="reproduktion.Kuenstlerzuschreibung" prefix="Zuschreibung: "/>
-          <field datasource="reproduktion.KuenstlerSignatur" prefix="Signatur: "/>
-          <field datasource="reproduktion.AbugsformNr" prefix="Abgusform: "/>
-          <field datasource="reproduktion.Hersteller" prefix="Hersteller: "/>
-          <field datasource="reproduktion.ReproAnmerkungenForm" prefix="Anmerkungen zur Form: "/>
-          <field datasource="reproduktion.ReproKuenstlerVorbildGemaelde" prefix="Vorlage: "/>
-        </section>
-        <section labelKey="Kommentar">
-          <field datasource="reproduktion.BemerkungenReproduktion"/>
-          <field datasource="reproduktion.wissKommentarRepro"/>
-        </section>
-        <section labelKey="Für Bearbeiter" minGroupId="600">
-          <section>
-            <field datasource="reproduktion.Bezugsquelle" prefix="Bezugsquelle: "/>
-            <field datasource="reproduktion.Preis" prefix="Preis: "/>
-            <field datasource="reproduktion.PreisImEigenenVerkauf" prefix="Verkaufspreis: "/>
-            <field datasource="reproduktion.Versicherung" prefix="Versicherung: "/>
-            <field datasource="reproduktion.Versicherungswert" prefix="Versicherungswert: "/>
-            <field datasource="reproduktion.FuehrungsblattVorhanden" prefix="Führungsblatt: "/>
-            <field datasource="reproduktion.Besitzverhaeltnisse" prefix="Besitzverhältnisse: "/>
-            <field datasource="reproduktion.Vertraege" prefix="Verträge: "/>
-            <field datasource="reproduktion.ImportTemp" prefix="Import: "/>
-            <field datasource="reproduktion.IstEntliehen" prefix="Verliehen: "/>
-            <field datasource="reproduktion.Entleihung"/>
-            <field datasource="reproduktion.ReproWiederbeschaffung" prefix="Wiederbeschaffung: "/>
-          </section>
-          <section labelKey="Restauration">
-            <field datasource="reproduktion.ReproRestauroBeschreibungVorzustand" prefix="Vorzustand: "/>
-            <field datasource="reproduktion.ReproRestauroBeschreibung" prefix="Beschreibung: "/>
-            <field datasource="reproduktion.ReproRestauroMasznahmen" prefix="Maßnahmen: "/>
-            <field datasource="reproduktion.ReproRestauroMasznahmenFruehere" prefix="Frühere Maßnahmen: "/>
-            <field datasource="reproduktion.ReproRestauroRestaurier" prefix="Restaurierator: "/>
-            <field datasource="reproduktion.ReproRestauroMaterialBemerk" prefix="Bemerkung Material: "/>
-            <field datasource="reproduktion.ReproRestauroZeitraum" prefix="Zeitraum: "/>
-            <field datasource="reproduktion.ReproRestauroDurchgefuehrtVon" prefix="Durchgeführt von: "/>
-            <field datasource="reproduktion.ReproRestauroAnalyseMasznahmenMethoden" prefix="Analyse Maßnahmen: "/>
-            <field datasource="reproduktion.ReproRestauroAnalyseDurchgefuehrtVon" prefix="Analyst: "/>
-            <field datasource="reproduktion.ReproRestauroAnalyseZeitraum" prefix="Zeitraum: "/>
-            <field datasource="reproduktion.ReproRestauroAnalyseErgebnis" prefix="Ergebnis: "/>
-          </section>
-        </section>
-        <include type="literatur"/>
-        <include type="uri"/>
-      </section>
-    </datasections>
-  </display>
-  <facets>
-    <include type="facet_kategorie"/>
-    <include type="facet_literatur"/>
-    <facet name="bearbeitungen" labelKey="Bearbeitungen">
-      <field datasource="reproduktion.BearbeitungenReproduktion"/>
-    </facet>
-    <facet name="ergaenzungen" labelKey="Ergaenzungen">
-      <field datasource="reproduktion.ErgaenzungenReproduktion"/>
-    </facet>
-    <facet name="erhaltung" labelKey="Erhaltung">
-      <field datasource="reproduktion.ErhaltungReproduktion"/>
-    </facet>
-    <facet name="gattungallgemein" labelKey="Gattung">
-      <field datasource="reproduktion.GattungAllg"/>
-    </facet>
-    <facet name="gattungspeziell" labelKey="Gattung Zusatz">
-      <field datasource="reproduktion.GattungSpeziell"/>
-    </facet>
-    <facet name="gottgoettin" labelKey="Gottheit">
-      <field datasource="reproduktion.GottGoettin"/>
-    </facet>
-    <facet name="mischwesen" labelKey="Mischwesen">
-      <field datasource="reproduktion.Mischwesen"/>
-    </facet>
-    <facet name="material" labelKey="Material">
-      <field datasource="reproduktion.MaterialReproduktion"/>
-    </facet>
-    <facet name="technik" labelKey="Technik">
-      <field datasource="reproduktion.TechnikReproduktion"/>
-    </facet>
-    <facet name="grundform" labelKey="Grundform">
-      <field datasource="reproduktion.GrundformReproduktion"/>
-    </facet>
-  </facets>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="reproduktion"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<display>
+		<title>
+			<section>
+				<field datasource="reproduktion.KurzbeschreibungReproduktion" />
+			</section>
+		</title>
+		<subtitle>
+			<section separator=", ">
+				<field datasource="literatur.Ort" />
+				<field datasource="literatur.Jahr" />
+			</section>
+		</subtitle>
+		<datasections>
+			<section labelKey="Informationen zur Reproduktion">
+				<include type="ort" />
+				<include type="datierung" />
+				<section labelKey="Herkunft">
+					<field datasource="reproduktion.HerkunftSlg" prefix="Herkunft: " />
+					<field datasource="reproduktion.Erwerbsdatum" prefix="Datum des Erwerbs: " />
+					<field datasource="reproduktion.ReproduktionErwerbUmstand" />
+					<field datasource="reproduktion.ArtErwerbung" />
+					<field datasource="reproduktion.ErworbenVon" />
+					<field datasource="reproduktion.StifterLeihgeber" prefix="Stifter / Leihgeber" />
+					<field datasource="reproduktion.Vorlagevorhanden" />
+				</section>
+				<section labelKey="Maße">
+					<field datasource="reproduktion.BreiteGesamtRepro" prefix="Breite: "
+						postfix=" cm" />
+					<field datasource="reproduktion.HoeheGesamtRepro" prefix="Höhe: "
+						postfix=" cm" />
+					<field datasource="reproduktion.TiefeGesamtRepro" prefix="Tiefe: "
+						postfix=" cm" />
+					<field datasource="reproduktion.DurchmesserGesamtRepro"
+						prefix="Durchmesser: " postfix=" cm" />
+					<field datasource="reproduktion.HoeheKopfRepro" prefix="Kopfhöhe: "
+						postfix=" cm" />
+					<field datasource="reproduktion.HoeheStatueRepro" prefix="Höhe der Statue: "
+						postfix=" cm" />
+					<field datasource="reproduktion.ReproMaszeBemerk" prefix="Bemerkung: " />
+					<field datasource="reproduktion.ReproduktionGewicht" prefix="Gewicht: " />
+					<field datasource="reproduktion.MessungKopfRepro" prefix="Messung(Kopf): " />
+					<field datasource="reproduktion.MessungStatueRepro" prefix="Messung(Statue): " />
+					<field datasource="reproduktion.ReproBildMasze" prefix="Maße(Bild): " />
+					<field datasource="reproduktion.ReproPlatteMasze" prefix="Maße(Platte): " />
+					<field datasource="reproduktion.ReproBlattMasze" prefix="Maße(Blatt): " />
+				</section>
+				<section labelKey="Beschreibung">
+					<field datasource="reproduktion.BearbeitungenReproduktion" />
+					<field datasource="reproduktion.ZweiDreiDimensional" />
+					<field datasource="reproduktion.TechnikReproduktion" prefix="Technik: " />
+					<field datasource="reproduktion.GrundformReproduktion"
+						prefix="Grundform: " />
+					<field datasource="reproduktion.MaterialReproduktion" prefix="Material: " />
+					<field datasource="reproduktion.MaterialbeschreibungRepro" />
+					<field datasource="reproduktion.FormatReproduktion" prefix="Format: " />
+					<field datasource="reproduktion.ReproBeschreibungGemaelde" />
+				</section>
+				<section labelKey="Abguß">
+					<field datasource="reproduktion.AbguszformNr" prefix="Nummer: " />
+					<field datasource="reproduktion.Abgusztechnik" prefix="Technik: " />
+					<field datasource="reproduktion.Teilabgusz" prefix="Teilabguß: " />
+					<field datasource="reproduktion.BesonderheitenAbgusz" prefix="Besonderheiten: " />
+					<field datasource="reproduktion.Farbigkeit" prefix="Farbe: " />
+				</section>
+				<section labelKey="Bildwerk">
+					<field datasource="reproduktion.TechnikFlaechenkunstReproduktion"
+						prefix="Technik: " />
+					<field datasource="reproduktion.TraegerFlaechenkunst" prefix="Träger: " />
+					<field datasource="reproduktion.Ansicht" prefix="Ansicht: " />
+					<field datasource="reproduktion.Umgebung" prefix="Umgebung: " />
+				</section>
+				<section labelKey="Modell" separator="; ">
+					<field datasource="reproduktion.ModellMaszstab" prefix="Maßstab: " />
+					<field datasource="reproduktion.ModellBauphase" />
+				</section>
+				<section labelKey="Gleiche Gipsform" separator="; ">
+					<field datasource="reproduktion.GleicheGipsformInvNr" />
+					<field datasource="reproduktion.GleicheGipsformStandort" />
+					<field datasource="reproduktion.GleicheGipsformSeriennummer" />
+				</section>
+				<section labelKey="Gattung" separator="; ">
+					<field datasource="reproduktion.GattungAllg" />
+					<field datasource="reproduktion.GattungSpeziell" />
+				</section>
+				<section labelKey="Erhaltung" separator="; ">
+					<field datasource="reproduktion.ErhaltungReproduktion" />
+					<field datasource="reproduktion.ErhaltungszustandReproduktion" />
+					<field datasource="reproduktion.erhalteneFormReproduktion" />
+					<field datasource="reproduktion.ReproZustandGemaelde" />
+					<field datasource="reproduktion.ReproQualitaet" prefix="Qualität der Reproduktion: " />
+					<field datasource="reproduktion.ReproQualitaetZusatz" />
+				</section>
+				<section labelKey="Thematik">
+					<field datasource="reproduktion.GottGoettin" prefix="Gottheit: " />
+					<field datasource="reproduktion.Mischewesen" prefix="Mischwesen: " />
+					<field datasource="reproduktion.Attribute" prefix="Attribute: " />
+				</section>
+				<section labelKey="Beschriftung">
+					<field datasource="reproduktion.Beschriftung" />
+					<field datasource="reproduktion.ReproBezeichnet" prefix="Bezeichnung: " />
+					<field datasource="reproduktion.ReproUntenLinks" prefix="Unten-links: " />
+					<field datasource="reproduktion.ReproUntenRechts" prefix="Unten-rechts: " />
+					<field datasource="reproduktion.ReproUntenMitte" prefix="Unten-mitte: " />
+					<field datasource="reproduktion.ReproObenLinks" prefix="Oben-links: " />
+					<field datasource="reproduktion.ReproObenRechts" prefix="Oben-rechts: " />
+					<field datasource="reproduktion.ReproObenMitte" prefix="Oben-mitte: " />
+				</section>
+				<section labelKey="Verhältnis Original und Reproduktion">
+					<field datasource="reproduktion.Veraenderungen" prefix="Veränderungen: " />
+					<field datasource="reproduktion.zusammensetzung" prefix="Zusammensetzung: " />
+					<field datasource="reproduktion.AbguszMitAltenErgaenzungen"
+						prefix="Reproduktion mit alten Ergänzungen: " />
+				</section>
+				<section labelKey="Ergänzungen" separator="; ">
+					<field datasource="reproduktion.ErgaenzungenReproduktion" />
+					<field datasource="reproduktion.sonstigeErgaenzungen" />
+					<field datasource="reproduktion.sonstigeAbweichungen" />
+					<field datasource="reproduktion.KuenstlerErgaenzungen"
+						prefix="Künstler der Ergänzungen: " />
+				</section>
+				<section labelKey="Künstler">
+					<field datasource="reproduktion.KuenstlerReproduktion"
+						prefix="Künstlername: " />
+					<field datasource="reproduktion.Kuenstlerzuschreibung"
+						prefix="Zuschreibung: " />
+					<field datasource="reproduktion.KuenstlerSignatur" prefix="Signatur: " />
+					<field datasource="reproduktion.AbugsformNr" prefix="Abgusform: " />
+					<field datasource="reproduktion.Hersteller" prefix="Hersteller: " />
+					<field datasource="reproduktion.ReproAnmerkungenForm" prefix="Anmerkungen zur Form: " />
+					<field datasource="reproduktion.ReproKuenstlerVorbildGemaelde"
+						prefix="Vorlage: " />
+				</section>
+				<section labelKey="Kommentar">
+					<field datasource="reproduktion.BemerkungenReproduktion" />
+					<field datasource="reproduktion.wissKommentarRepro" />
+				</section>
+				<include type="literatur" />
+				<include type="uri" />
+			</section>
+		</datasections>
+		<editorsection>
+			<section labelKey="Für Bearbeiter">
+				<field datasource="reproduktion.DatensatzGruppeReproduktion" prefix="Datensatz-Gruppe: " />
+				<field datasource="reproduktion.ArbeitsnotizReproduktion" prefix="Interne Arbeitsnotiz: " />
+				<field datasource="reproduktion.BearbeiterReproduktion" prefix="Erstellt von: " />
+				<field datasource="reproduktion.KorrektorReproduktion" prefix="Bearbeitet von: " />
+			</section>
+			<section>
+				<field datasource="reproduktion.Bezugsquelle" prefix="Bezugsquelle: " />
+				<field datasource="reproduktion.Preis" prefix="Preis: " />
+				<field datasource="reproduktion.PreisImEigenenVerkauf" prefix="Verkaufspreis: " />
+				<field datasource="reproduktion.Versicherung" prefix="Versicherung: " />
+				<field datasource="reproduktion.Versicherungswert" prefix="Versicherungswert: " />
+				<field datasource="reproduktion.FuehrungsblattVorhanden"
+					prefix="Führungsblatt: " />
+				<field datasource="reproduktion.Besitzverhaeltnisse" prefix="Besitzverhältnisse: " />
+				<field datasource="reproduktion.Vertraege" prefix="Verträge: " />
+				<field datasource="reproduktion.ImportTemp" prefix="Import: " />
+				<field datasource="reproduktion.IstEntliehen" prefix="Verliehen: " />
+				<field datasource="reproduktion.Entleihung" />
+				<field datasource="reproduktion.ReproWiederbeschaffung"
+					prefix="Wiederbeschaffung: " />
+			</section>
+			<section labelKey="Restauration">
+				<field datasource="reproduktion.ReproRestauroBeschreibungVorzustand"
+					prefix="Vorzustand: " />
+				<field datasource="reproduktion.ReproRestauroBeschreibung"
+					prefix="Beschreibung: " />
+				<field datasource="reproduktion.ReproRestauroMasznahmen"
+					prefix="Maßnahmen: " />
+				<field datasource="reproduktion.ReproRestauroMasznahmenFruehere"
+					prefix="Frühere Maßnahmen: " />
+				<field datasource="reproduktion.ReproRestauroRestaurier"
+					prefix="Restaurierator: " />
+				<field datasource="reproduktion.ReproRestauroMaterialBemerk"
+					prefix="Bemerkung Material: " />
+				<field datasource="reproduktion.ReproRestauroZeitraum" prefix="Zeitraum: " />
+				<field datasource="reproduktion.ReproRestauroDurchgefuehrtVon"
+					prefix="Durchgeführt von: " />
+				<field datasource="reproduktion.ReproRestauroAnalyseMasznahmenMethoden"
+					prefix="Analyse Maßnahmen: " />
+				<field datasource="reproduktion.ReproRestauroAnalyseDurchgefuehrtVon"
+					prefix="Analyst: " />
+				<field datasource="reproduktion.ReproRestauroAnalyseZeitraum"
+					prefix="Zeitraum: " />
+				<field datasource="reproduktion.ReproRestauroAnalyseErgebnis"
+					prefix="Ergebnis: " />
+			</section>
+		</editorsection>
+	</display>
+	<facets>
+		<include type="facet_kategorie" />
+		<include type="facet_literatur" />
+		<facet name="bearbeitungen" labelKey="Bearbeitungen">
+			<field datasource="reproduktion.BearbeitungenReproduktion" />
+		</facet>
+		<facet name="ergaenzungen" labelKey="Ergaenzungen">
+			<field datasource="reproduktion.ErgaenzungenReproduktion" />
+		</facet>
+		<facet name="erhaltung" labelKey="Erhaltung">
+			<field datasource="reproduktion.ErhaltungReproduktion" />
+		</facet>
+		<facet name="gattungallgemein" labelKey="Gattung">
+			<field datasource="reproduktion.GattungAllg" />
+		</facet>
+		<facet name="gattungspeziell" labelKey="Gattung Zusatz">
+			<field datasource="reproduktion.GattungSpeziell" />
+		</facet>
+		<facet name="gottgoettin" labelKey="Gottheit">
+			<field datasource="reproduktion.GottGoettin" />
+		</facet>
+		<facet name="mischwesen" labelKey="Mischwesen">
+			<field datasource="reproduktion.Mischwesen" />
+		</facet>
+		<facet name="material" labelKey="Material">
+			<field datasource="reproduktion.MaterialReproduktion" />
+		</facet>
+		<facet name="technik" labelKey="Technik">
+			<field datasource="reproduktion.TechnikReproduktion" />
+		</facet>
+		<facet name="grundform" labelKey="Grundform">
+			<field datasource="reproduktion.GrundformReproduktion" />
+		</facet>
+	</facets>
 </category>

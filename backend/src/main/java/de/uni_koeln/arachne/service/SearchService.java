@@ -72,6 +72,9 @@ public class SearchService {
 	@Autowired
 	private transient Transl8Service ts;
 	
+	@Autowired
+	private transient IUserRightsService userRightsService;
+	
 	private transient final SearchFieldList searchFields;
 	
 	private transient final List<String> sortFields;
@@ -397,9 +400,10 @@ public class SearchService {
 	 * Builds the elasticsearch query based on the input parameters. It also adds an access control filter to the query.
 	 * The final query is a function score query that modifies the score based on the boost value of a document. 
 	 * Embedded is a filtered query to account for access control, facet and bounding box filters
-	 * which finally uses a simple query string query with 'AND' as default operator.
+	 * which finally uses a simple query string query with 'AND' as default operator.<br>
 	 * If the search parameter is numeric the query is performed against all configured fields else the query is only 
-	 * performed against the text fields.
+	 * performed against the text fields.<br>
+	 * If the user is an editor the editorSection field is searched, too.
 	 * @param searchParam The query string.
 	 * @param filters The filter from the HTTP 'fq' parameter as map to create a filter query from.
 	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)
@@ -427,6 +431,10 @@ public class SearchService {
 		
 		final QueryStringQueryBuilder innerQuery = QueryBuilders.queryStringQuery(searchParam)
 				.defaultOperator(Operator.AND);
+		
+		if (userRightsService.userHasAtLeastGroupID(IUserRightsService.MIN_EDITOR_ID)) {
+			innerQuery.field("editorSection");
+		}
 		
 		for (String textField: searchFields.text()) {
 			innerQuery.field(textField);

@@ -24,7 +24,6 @@
     <xs:attribute name="separator" type="xs:string"/>
     <xs:attribute name="prefix" type="xs:string"/>
     <xs:attribute name="postfix" type="xs:string"/>
-    <xs:attribute name="minGroupId" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="ContextContent">
     <xs:choice maxOccurs="unbounded">
@@ -35,7 +34,6 @@
     <xs:attribute name="labelKey" type="xs:string"/>
     <xs:attribute name="separator" type="xs:string"/>
     <xs:attribute name="link" type="xs:string"/>
-    <xs:attribute name="minGroupId" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="FacetContent">
     <xs:choice>
@@ -62,7 +60,6 @@
     <xs:attribute name="replace" type="xs:string"/>
     <xs:attribute name="trimEnd" type="xs:string"/>
     <xs:attribute name="separator" type="xs:string"/>
-    <xs:attribute name="minGroupId" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="LinkFieldContent">
     <xs:all minOccurs="0">
@@ -79,7 +76,6 @@
     <xs:attribute name="prefix" type="xs:string"/>
     <xs:attribute name="postfix" type="xs:string"/>
     <xs:attribute name="separator" type="xs:string"/>
-    <xs:attribute name="minGroupId" type="xs:string"/>
   </xs:complexType>
   <xs:simpleType name="datasourceString">
     <xs:restriction base="xs:string">

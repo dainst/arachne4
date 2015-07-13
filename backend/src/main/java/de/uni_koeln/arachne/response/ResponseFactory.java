@@ -28,6 +28,7 @@ import de.uni_koeln.arachne.dao.hibernate.CatalogEntryDao;
 import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
 import de.uni_koeln.arachne.response.link.ExternalLink;
 import de.uni_koeln.arachne.response.link.ExternalLinkResolver;
+import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.util.DateUtils;
 import de.uni_koeln.arachne.util.EntityId;
@@ -61,6 +62,9 @@ public class ResponseFactory {
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
+	
+	@Autowired
+	private transient IUserRightsService userRightsService;
 	
 	@Autowired
 	private transient GenericSQLDao genericSQLDao;
@@ -151,8 +155,7 @@ public class ResponseFactory {
 	 * @param tableName
 	 * @return
 	 */
-	private FormattedArachneEntity createFormattedArachneEntity(
-			final Dataset dataset, final EntityId arachneId,
+	private FormattedArachneEntity createFormattedArachneEntity(final Dataset dataset, final EntityId arachneId,
 			final String tableName) {
 		final FormattedArachneEntity response = new FormattedArachneEntity();
 		
@@ -426,6 +429,9 @@ public class ResponseFactory {
 
 		// set datasection
 		setSections(dataset, namespace, display, response);
+		
+		// set editor section
+		setEditorSection(dataset, namespace, display, response);
 
 		// Set images
 		response.setImages(dataset.getImages());
@@ -434,6 +440,22 @@ public class ResponseFactory {
 		setExternalLinks(dataset, response);
 		
 		return getFacettedEntityAsJson(dataset, document, response, namespace);
+	}
+
+	private void setEditorSection(Dataset dataset, Namespace namespace,	Element display
+			, FormattedArachneEntity response) {
+		
+		if (userRightsService.userHasAtLeastGroupID(IUserRightsService.MIN_EDITOR_ID) 
+				|| userRightsService.isDataimporter()) {
+			final Element editorSectionElement = display.getChild("editorsection", namespace);
+			if (editorSectionElement != null) {
+				final Section editorSection = (Section)xmlConfigUtil.getContentFromSections(editorSectionElement, namespace
+						, dataset);
+				if (editorSection != null && !editorSection.getContent().isEmpty()) {
+					response.setEditorSection((Section)editorSection.content.get(0));
+				}
+			}				
+		}
 	}
 
 	/**

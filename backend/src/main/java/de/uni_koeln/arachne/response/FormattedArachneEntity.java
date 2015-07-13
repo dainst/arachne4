@@ -14,8 +14,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import de.uni_koeln.arachne.response.link.ExternalLink;
 
 /**
- * Response object class that returns preformatted output to the frontend.
+ * Response object class that returns preformatted output to the frontend and the index.
  * This class is serialized to JSON using <code>Jackson</code>.
+ * 
  * @author Reimar Grabowski
  */
 @XmlRootElement(name="entity")
@@ -37,6 +38,11 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	 * Hierachical structured information of the dataset.
 	 */
 	protected List<AbstractContent> sections;
+	
+	/**
+	 * Section for editor fields. Only shown if the GID of the user is >600.
+	 */
+	protected Section editorSection;
 	
 	/**
 	 * The date of the last Modification of the dataset.
@@ -257,5 +263,19 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	 */
 	public void setCatalogPaths(final List<String> catalogPaths) {
 		this.catalogPaths = catalogPaths;
+	}
+
+	/**
+	 * @return the editorSection
+	 */
+	public Section getEditorSection() {
+		return editorSection;
+	}
+
+	/**
+	 * @param editorSection the editorSection to set
+	 */
+	public void setEditorSection(Section editorSection) {
+		this.editorSection = editorSection;
 	}
 }

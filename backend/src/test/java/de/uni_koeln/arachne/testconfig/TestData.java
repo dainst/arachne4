@@ -10,8 +10,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import org.elasticsearch.index.engine.Engine.Get;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -89,6 +87,8 @@ public class TestData {
 		testDataset.setFields("test.DataLink2", "link2");
 		testDataset.setFields("test.DataNoLink1", "Start");
 		testDataset.setFields("test.DataNoLink2", "End");
+		
+		testDataset.setFields("test.DataEditorSection", "for editors only");
 		
 		testDataset.setFields("test.facetTest", "test facet value");
 		testDataset.setFields("test.facetMultiValueTest", "value 1;value 2;value 3");

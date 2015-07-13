@@ -218,34 +218,6 @@
 				<include type="literatur" />
 				<include type="literatur_arachne"/>
 				<include type="uri" />
-				<section labelKey="Für Bearbeiter" minGroupId="600">
-					<section labelKey="Berlin">
-						<field datasource="objekt.BerlinInstitution" prefix="Institution: " />
-						<field datasource="objekt.BerlinVerantwortlich" prefix="Verantwortliche: " />
-						<field datasource="objekt.BerlinObjektID" prefix="ObjektID: " />
-					</section>
-					<section labelKey="Ausleihe">
-						<field datasource="objekt.ObjektAusleihe" prefix="Verliehen: " />
-						<field datasource="objekt.ObjektAusleiheLeihnehmer" prefix="Leihnehmer: " />
-						<field datasource="objekt.ObjektAusleiheZweck" prefix="Zweck: " />
-						<field datasource="objekt.ObjektAusleiheDauerVon" prefix="Von: " />
-						<field datasource="objekt.ObjektAusleiheDauerBis" prefix="Bis: " />
-						<field datasource="objekt.ObjektAusleiheDauenahmeEigentuemer"
-							prefix="Dauernahme Eigentümer: " />
-					</section>
-					<section>
-						<field datasource="objekt.ArtErwerb" />
-						<field datasource="objekt.ErwerbDatum" prefix="Erwerbsdatum: " />
-						<field datasource="objekt.ObjektPreis" prefix="Preis: " />
-						<field datasource="objekt.ObjektVersicherungswert" prefix="Versicherungswert: " />
-						<field datasource="objekt.ObjektErwerbUmstand" prefix="Erwerbsumstand: " />
-					</section>
-					<section labelKey="Leipzig">
-						<field datasource="objekt.LeipTempAufbewahrung" prefix="Aufbewahrung: " />
-						<field datasource="objekt.LeipTempDat" prefix="Datierung: " />
-						<field datasource="objekt.LeipTempLit" prefix="Literatur: " />
-					</section>
-				</section>
 			</section>
 			<section labelKey="Informationen zum Lebewesen">
 				<section labelKey="Lebewesen">
@@ -882,6 +854,42 @@
 				</section>
 			</section>
 		</datasections>
+		<editorsection>
+            <section labelKey="Für Bearbeiter">
+                <section>
+                    <field datasource="objekt.DatensatzGruppeObjekt" prefix="Datensatz-Gruppe: " />
+                    <field datasource="objekt.Arbeitsnotiz" prefix="Interne Arbeitsnotiz: " />
+                    <field datasource="objekt.BearbeiterObjekt" prefix="Erstellt von: " />
+                    <field datasource="objekt.Korrektor" prefix="Bearbeitet von: " />
+                </section>
+	            <section labelKey="Berlin">
+	                <field datasource="objekt.BerlinInstitution" prefix="Institution: " />
+	                <field datasource="objekt.BerlinVerantwortlich" prefix="Verantwortliche: " />
+	                <field datasource="objekt.BerlinObjektID" prefix="ObjektID: " />
+	            </section>
+	            <section labelKey="Ausleihe">
+	                <field datasource="objekt.ObjektAusleihe" prefix="Verliehen: " />
+	                <field datasource="objekt.ObjektAusleiheLeihnehmer" prefix="Leihnehmer: " />
+	                <field datasource="objekt.ObjektAusleiheZweck" prefix="Zweck: " />
+	                <field datasource="objekt.ObjektAusleiheDauerVon" prefix="Von: " />
+	                <field datasource="objekt.ObjektAusleiheDauerBis" prefix="Bis: " />
+	                <field datasource="objekt.ObjektAusleiheDauenahmeEigentuemer"
+	                    prefix="Dauernahme Eigentümer: " />
+	            </section>
+	            <section>
+	                <field datasource="objekt.ArtErwerb" />
+	                <field datasource="objekt.ErwerbDatum" prefix="Erwerbsdatum: " />
+	                <field datasource="objekt.ObjektPreis" prefix="Preis: " />
+	                <field datasource="objekt.ObjektVersicherungswert" prefix="Versicherungswert: " />
+	                <field datasource="objekt.ObjektErwerbUmstand" prefix="Erwerbsumstand: " />
+	            </section>
+	            <section labelKey="Leipzig">
+	                <field datasource="objekt.LeipTempAufbewahrung" prefix="Aufbewahrung: " />
+	                <field datasource="objekt.LeipTempDat" prefix="Datierung: " />
+	                <field datasource="objekt.LeipTempLit" prefix="Literatur: " />
+	            </section>
+	        </section>
+		</editorsection>
 	</display>
 	<facets>
 		<include type="facet_kategorie" />

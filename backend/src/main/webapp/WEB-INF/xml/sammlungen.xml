@@ -51,9 +51,7 @@
           <field datasource="sammlungen.Hinweise"/>
           <field datasource="sammlungen.AnmerkungSammlungen"/>
         </section>
-        <!-- 
-	        	TODO Sammler und Personen müssen eingepflegt werden
-	        	 -->
+        <!-- TODO Sammler und Personen müssen eingepflegt werden -->
         <section labelKey="Quellen" separator="; ">
           <field datasource="sammlungen.Quellen"/>
         </section>
@@ -61,6 +59,14 @@
         <include type="uri"/>
       </section>
     </datasections>
+    <editorsection>
+            <section labelKey="Für Bearbeiter">
+                <field datasource="sammlungen.DatensatzGruppeSammlungen" prefix="Datensatz-Gruppe: " />
+                <field datasource="sammlungen.ArbeitsnotizSammlungen" prefix="Interne Arbeitsnotiz: " />
+                <field datasource="sammlungen.BearbeiterSammlungen" prefix="Erstellt von: " />
+                <field datasource="sammlungen.KorrektorSammlungen" prefix="Bearbeitet von: " />
+            </section>
+        </editorsection>
   </display>
   <facets>
     <include type="facet_kategorie"/>

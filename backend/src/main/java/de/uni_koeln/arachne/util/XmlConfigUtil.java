@@ -49,8 +49,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	private static final String LINK_PREFIX = "$link$";
 	
 	private static final String DEFAULT_SECTION_SEPARATOR = "<hr>";
-	
-	
+		
 	/**
 	 * The servlet context is needed to load the XML config files. 
 	 */
@@ -97,10 +96,6 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @return A <code>Section</code> object containing the context sections content or <code>null</code> if access is denied.
 	 */
 	public Section getContentFromContext(final Element context, final Namespace namespace, final Dataset dataset) {
-		
-		if (!hasMinGroupId(context.getAttributeValue("minGroupId"))) {
-			return null;
-		}
 		
 		final Section result = new Section();
 		final String contextType = context.getAttributeValue("type");
@@ -230,10 +225,6 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @return A <code>Content</code> object containing the sections content.
 	 */
 	public AbstractContent getContentFromSections(final Element section, final Namespace namespace, final Dataset dataset) {
-		
-		if (!hasMinGroupId(section.getAttributeValue("minGroupId"))) {
-			return null;
-		}
 		
 		final Section result = new Section();
 		//TODO Get translated label string for value of labelKey-attribute in the section element  
@@ -543,10 +534,6 @@ public class XmlConfigUtil implements ServletContextAware {
 	private String addContextFieldToFieldList(final Element element, final Namespace namespace, final FieldList fieldList, final int index
 			,final Dataset dataset, final String contextType, final String separator) {
 		
-		if (!hasMinGroupId(element.getAttributeValue("minGroupId"))) {
-			return separator;
-		}
-		
 		final String initialValue = dataset.getFieldFromContext(contextType + element.getAttributeValue("datasource"), index);
 		
 		StringBuilder value = null;
@@ -658,10 +645,6 @@ public class XmlConfigUtil implements ServletContextAware {
 	private void addFieldToResult(final Element element, final Namespace namespace, final Section result, final Dataset dataset
 			, final String separator) {
 		
-		if (!hasMinGroupId(element.getAttributeValue("minGroupId"))) {
-			return;
-		}
-		
 		final Field field = new Field();
 		StringBuilder value = null;
 		final String initialValue = dataset.getField(element.getAttributeValue("datasource"));
@@ -706,10 +689,6 @@ public class XmlConfigUtil implements ServletContextAware {
 	 */
 	private void addLinkFieldToResult(final Element element, final Section result, final Dataset dataset
 			, final String separator) {
-
-		if (!hasMinGroupId(element.getAttributeValue("minGroupId"))) {
-			return;
-		}
 
 		final String labelKey = element.getAttributeValue("labelKey");
 		if (!StrUtils.isEmptyOrNullOrZero(labelKey) || element.getChild("field") != null) {
@@ -1014,25 +993,6 @@ public class XmlConfigUtil implements ServletContextAware {
 		
 		LOGGER.debug("include file: " + filename);
 		return filename;
-	}
-	
-	/**
-	 * This function compares the given string with the groupID of the current user and returns <code>true</code> if the string value 
-	 * is less than the groupID value or if <code>minGroupIdStr</code> is <code>null</code>. This is used to check which content the 
-	 * currently logged in user is allowed to see.   
-	 * @param minGroupIdStr A string containing the minimum groupId as integer value.
-	 * @return A boolean value indicating if the current user is allowed to see the content.
-	 */
-	private boolean hasMinGroupId(final String minGroupIdStr) {
-		if (!StrUtils.isEmptyOrNullOrZero(minGroupIdStr)) {
-			final int groupId = userRightsService.getCurrentUser().getGroupID();
-			final int minGroupId = Integer.parseInt(minGroupIdStr);
-			LOGGER.debug("minGroupId: " + minGroupId + " - user groupId: " + groupId);
-			if (groupId < minGroupId) {
-				return false;
-			}
-		}
-		return true;
 	}
 	
 	/**

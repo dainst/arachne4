@@ -92,6 +92,14 @@
         <include type="uri"/>
       </section>
     </datasections>
+    <editorsection>
+            <section labelKey="Für Bearbeiter">
+                <field datasource="rezeption.DatensatzGruppeRezeption" prefix="Datensatz-Gruppe: " />
+                <field datasource="rezeption.ArbeitsnotizRezeption" prefix="Interne Arbeitsnotiz: " />
+                <field datasource="rezeption.BearbeiterRezeption" prefix="Erstellt von: " />
+                <field datasource="rezeption.KorrektorRezeption" prefix="Bearbeitet von: " />
+            </section>
+        </editorsection>
   </display>
   <facets>
     <include type="facet_kategorie"/>

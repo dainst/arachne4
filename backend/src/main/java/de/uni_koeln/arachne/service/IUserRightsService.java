@@ -8,6 +8,7 @@ public interface IUserRightsService {
 	public static final String INDEXING = "Indexing";
 	public static final String ANONYMOUS_USER_NAME = "Anonymous";
 	public static final int MIN_ADMIN_ID = 800;
+	public static final int MIN_EDITOR_ID = 600;
 	
 	/**
 	 * Get the current arachne user
@@ -31,6 +32,13 @@ public interface IUserRightsService {
 	 * @return <code>true</code> if the current user is signed in.
 	 */
 	public abstract boolean isSignedInUser();
+	
+	/**
+	 * If the current user has at least the given groupId.
+	 * @param groupId A groupId to check against the users groupId.
+	 * @return <code>true</code> if the given groupId is equal or less than the users groupId.
+	 */
+	public boolean userHasAtLeastGroupID(final int groupId);
 	
 	/**
 	 * Is the given <code>Datasetgroup</code> in the users <code>Set</code> of <code>DatasetGroups</code>.

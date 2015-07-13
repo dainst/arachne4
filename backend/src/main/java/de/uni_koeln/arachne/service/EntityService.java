@@ -49,7 +49,7 @@ public class EntityService {
 	
 	private transient final boolean PROFILING;
 	private transient final String[] internalFields;
-	
+		
 	@Autowired
 	public EntityService(final @Value("${profilingEntityRetrieval}") boolean profiling
 			, final @Value("#{'${internalFields}'.split(',')}") String[] internalFields) {
@@ -59,7 +59,16 @@ public class EntityService {
 	
 	public TypeWithHTTPStatus<String> getEntityFromIndex(final Long id, final String category) {
 		
-    	final TypeWithHTTPStatus<String> result = esService.getDocumentFromCurrentIndex(id, category, internalFields);
+		String[] excludedFields;
+		if (userRightsService.userHasAtLeastGroupID(IUserRightsService.MIN_EDITOR_ID)) {
+			excludedFields = internalFields;
+		} else {
+			excludedFields = new String[internalFields.length + 1];
+			System.arraycopy(internalFields, 0, excludedFields, 0, internalFields.length);
+			excludedFields[internalFields.length] = "editorSection";
+		}
+		
+    	final TypeWithHTTPStatus<String> result = esService.getDocumentFromCurrentIndex(id, category, excludedFields);
     	    	
     	if (result.getStatus() == HttpStatus.NOT_FOUND ) {
     		// if the entity is not found in the ES index it may have been deleted, so we try to retrieve it from 

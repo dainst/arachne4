@@ -193,16 +193,21 @@ public class Dataset {
 		if (fieldName.startsWith("Dataset")) {
 			// the magic number is the "dataset." char count
 			final String unqualifiedFieldName = fieldName.substring(8);
-			if ("Id".equals(unqualifiedFieldName)) {
+			switch (unqualifiedFieldName) {
+			case "Id":
 				result = String.valueOf(arachneId.getArachneEntityID());
-			} else {
-				if ("internalId".equals(unqualifiedFieldName)) {
-					result = String.valueOf(arachneId.getInternalKey());
-				} else {
-					if ("TableName".equals(unqualifiedFieldName)) {
-						result = arachneId.getTableName();
-					}
-				}
+				break;
+				
+			case "internalId":
+				result = String.valueOf(arachneId.getInternalKey());
+				break;
+				
+			case "TableName":
+				result = arachneId.getTableName();
+				break;
+								
+			default:
+				break;
 			}
 		} else if (fieldName.startsWith("Thumbnail")) {
 			// the magic number is the "thumbnail." char count

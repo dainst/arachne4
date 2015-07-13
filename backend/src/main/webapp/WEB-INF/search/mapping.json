@@ -18,6 +18,7 @@
                         "copy_to":"searchableContent"
                     },
                     "match":"*",
+                    "path_unmatch":"editorSection.*",
                     "match_mapping_type":"string"
                 }
             }

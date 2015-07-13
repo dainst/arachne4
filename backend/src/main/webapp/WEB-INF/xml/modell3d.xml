@@ -1,35 +1,40 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- just very basic to have at least some definitions -->
-<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="modell3d" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-  <display>
-    <title>
-      <section>
-        <field datasource="modell3d.Titel"/>
-      </section>
-    </title>
-    <subtitle>
-      <section>
-        <field datasource="modell3d.Dateiname"/>
-      </section>
-    </subtitle>
-    <datasections>
-      <section labelKey="Informationen zum Modell">
-        <section labelKey="Allgemein">
-          <field datasource="modell3d.Dateiname" prefix="Dateiname: "/>
-          <field datasource="modell3d.Dateiformat" prefix="Dateiformat: "/>
-          <field datasource="modell3d.DateinameMTL" prefix="Dateiname (Material): "/>
-        </section>
-        <section labelKey="Angaben zum Modell">
-          <field datasource="modell3d.Modellierer" prefix="Modellierer: "/>
-          <field datasource="modell3d.Lizenz" prefix="Lizenz: "/>
-        </section>
-        <section labelKey="Pfad" minGroupId="600">
-          <field datasource="modell3d.Pfad"/>
-        </section>
-      </section>
-    </datasections>
-  </display>
-  <facets>
-    <include type="facet_kategorie"/>
-  </facets>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="modell3d"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<display>
+		<title>
+			<section>
+				<field datasource="modell3d.Titel" />
+			</section>
+		</title>
+		<subtitle>
+			<section>
+				<field datasource="modell3d.Dateiname" />
+			</section>
+		</subtitle>
+		<datasections>
+			<section labelKey="Informationen zum Modell">
+				<section labelKey="Allgemein">
+					<field datasource="modell3d.Dateiname" prefix="Dateiname: " />
+					<field datasource="modell3d.Dateiformat" prefix="Dateiformat: " />
+					<field datasource="modell3d.DateinameMTL" prefix="Dateiname (Material): " />
+				</section>
+				<section labelKey="Angaben zum Modell">
+					<field datasource="modell3d.Modellierer" prefix="Modellierer: " />
+					<field datasource="modell3d.Lizenz" prefix="Lizenz: " />
+				</section>
+			</section>
+		</datasections>
+		<editorsection>
+			<section labelKey="Für Bearbeiter">
+				<field datasource="modell3d.DatensatzGruppeModell3d" prefix="Datensatz-Gruppe: " />
+				<field datasource="modell3d.Pfad" prefix="Pfad: " />
+			</section>
+		</editorsection>
+	</display>
+	<facets>
+		<include type="facet_kategorie" />
+	</facets>
 </category>

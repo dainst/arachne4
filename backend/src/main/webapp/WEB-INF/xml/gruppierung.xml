@@ -1,59 +1,70 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- just very basic to have at least some definitions -->
-<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="gruppierung" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-  <display>
-    <title>
-      <section separator=" ">
-        <field datasource="gruppierung.KurzbeschreibungGruppierung"/>
-      </section>
-    </title>
-    <subtitle>
-      <section separator=" ">
-        <field datasource="gruppierung.InhaltlicheKategorie"/>
-      </section>
-    </subtitle>
-    <datasections>
-      <section labelKey="Informationen zur Gruppierung">
-        <include type="ort"/>
-        <include type="datierung"/>
-        <section labelKey="Allgemeine Informationen">
-          <section labelKey="Klassifizierung">
-            <field datasource="gruppierung.Klassifizierung"/>
-          </section>
-          <section labelKey="Ausgrabung">
-            <field datasource="gruppierung.Ausgrabung"/>
-          </section>
-          <section labelKey="Beschreibung">
-            <field datasource="gruppierung.BeschreibungGruppierung"/>
-          </section>
-          <section labelKey="Autorität">
-            <field datasource="gruppierung.Autoritaet"/>
-          </section>
-          <section labelKey="Antike Textquelle">
-            <field datasource="gruppierung.AntikeTextquelle"/>
-          </section>
-        </section>
-        <include type="literatur"/>
-        <include type="uri"/>
-      </section>
-    </datasections>
-  </display>
-  <facets>
-    <include type="facet_kategorie"/>
-    <include type="facet_ort"/>
-    <facet name="datierungepoche" labelKey="Epoche">
-      <context type="datierung">
-        <field datasource=".AnfEpoche"/>
-      </context>
-    </facet>
-    <facet name="datierungepoche" labelKey="Epoche">
-      <context type="datierung">
-        <field datasource=".EndEpoche"/>
-      </context>
-    </facet>
-    <include type="facet_literatur"/>
-    <facet name="inhaltlichekategorie" labelKey="Inhaltliche Kategorie">
-      <field datasource="gruppierung.InhaltlicheKategorie"/>
-    </facet>
-  </facets>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="gruppierung"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<display>
+		<title>
+			<section separator=" ">
+				<field datasource="gruppierung.KurzbeschreibungGruppierung" />
+			</section>
+		</title>
+		<subtitle>
+			<section separator=" ">
+				<field datasource="gruppierung.InhaltlicheKategorie" />
+			</section>
+		</subtitle>
+		<datasections>
+			<section labelKey="Informationen zur Gruppierung">
+				<include type="ort" />
+				<include type="datierung" />
+				<section labelKey="Allgemeine Informationen">
+					<section labelKey="Klassifizierung">
+						<field datasource="gruppierung.Klassifizierung" />
+					</section>
+					<section labelKey="Ausgrabung">
+						<field datasource="gruppierung.Ausgrabung" />
+					</section>
+					<section labelKey="Beschreibung">
+						<field datasource="gruppierung.BeschreibungGruppierung" />
+					</section>
+					<section labelKey="Autorität">
+						<field datasource="gruppierung.Autoritaet" />
+					</section>
+					<section labelKey="Antike Textquelle">
+						<field datasource="gruppierung.AntikeTextquelle" />
+					</section>
+				</section>
+				<include type="literatur" />
+				<include type="uri" />
+			</section>
+		</datasections>
+		<editorsection>
+			<section labelKey="Für Bearbeiter">
+				<field datasource="gruppierung.DatensatzGruppeGruppierung"
+					prefix="Datensatz-Gruppe: " />
+				<field datasource="gruppierung.ArbeitsnotizGruppierung"
+					prefix="Interne Arbeitsnotiz: " />
+				<field datasource="gruppierung.BearbeiterGruppierung" prefix="Erstellt von: " />
+			</section>
+		</editorsection>
+	</display>
+	<facets>
+		<include type="facet_kategorie" />
+		<include type="facet_ort" />
+		<facet name="datierungepoche" labelKey="Epoche">
+			<context type="datierung">
+				<field datasource=".AnfEpoche" />
+			</context>
+		</facet>
+		<facet name="datierungepoche" labelKey="Epoche">
+			<context type="datierung">
+				<field datasource=".EndEpoche" />
+			</context>
+		</facet>
+		<include type="facet_literatur" />
+		<facet name="inhaltlichekategorie" labelKey="Inhaltliche Kategorie">
+			<field datasource="gruppierung.InhaltlicheKategorie" />
+		</facet>
+	</facets>
 </category>

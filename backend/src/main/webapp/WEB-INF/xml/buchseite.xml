@@ -1,95 +1,109 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- just very basic to have at least some definitions -->
-<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="buchseite" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-  <subtables>
-    <subtable connectFieldParent="bibidSeite" connectFieldSubTable="001">zenon</subtable>
-  </subtables>
-  <display>
-    <title>
-      <section>
-        <field datasource="buchseite.KurzbeschreibungBuchseite">
-          <ifEmpty>
-          	<field datasource="buch.BuchTitel">
-              <ifEmpty>
-                <field datasource="zenon.245_a">
-                  <ifEmpty>
-                    <field datasource="buch.KurzbeschreibungBuch"/>
-                  </ifEmpty>
-                </field>
-          	  </ifEmpty>
-        	</field>
-          </ifEmpty>
-        </field>
-      </section>
-    </title>
-    <subtitle>
-      <section>
-        <field datasource="buchseite.seite_natuerlich" prefix="Seite: "/>
-      </section>
-    </subtitle>
-    <datasections>
-      <section labelKey="Informationen zur Buchseite">
-        <include type="datierung"/>
-        <section>
-          <field datasource="buchseite.image" prefix="Dateiname: "/>
-          <field datasource="buchseite.Inventarnummern" prefix="Negativnummern: "/>
-          <field datasource="buchseite.InventarbucheiteInfos" prefix="Information zur Inventarbuchseite: "/>
-          <field datasource="buchseite.BuchseiteInhalt" prefix="Inhaltsbeschreibung der Buchseite: "/>
-          <field datasource="buchseite.Originalpaginierung" prefix="Originialpaginierung: "/>
-          <field datasource="buchseite.BuchseiteDokumenttyp" prefix="Typ der Buchseite: "/>
-          <field datasource="buchseite.BuchseiteAnmerkungenKossack" prefix="Anmerkungen Kossack: "/>
-          <field datasource="buchseite.BuchseitePermalinkExtern" prefix="Permalink: "/>
-        </section>
-        <section>
-          <field datasource="buchseite.Inventarnummern" prefix="Negativnummer: "/>
-        </section>
-        <section labelKey="Zenon Meta-Data">
-          <section labelKey="BibID" separator=", ">
-            <field datasource="zenon.001" />
-            <linkField labelKey="Zenon" datasource="buchseite.bibidSeite" prefix="http://zenon.dainst.org/Record/"/>
-          </section>
-          <section labelKey="Autor" separator=", ">
-            <field datasource="zenon.100_a" />
-            <field datasource="zenon.100_b" />
-            <field datasource="zenon.100_c" />
-          </section>
-          <section labelKey="Titel" separator=", ">
-            <field datasource="zenon.245_a" />
-            <field datasource="zenon.245_b" />
-            <field datasource="zenon.245_c" />
-          </section>
-          <section labelKey="Publikationsort">
-            <field datasource="zenon.260_a" />
-          </section>  
-          <section labelKey="Verleger">  
-            <field datasource="zenon.260_b" />
-          </section>  
-          <section labelKey="Publikationsdatum">  
-            <field datasource="zenon.260_c" />
-          </section> 
-          <section labelKey="Physische Beschreibung" separator=", ">
-            <field datasource="zenon.300_a" />
-            <field datasource="zenon.300_b" />
-            <field datasource="zenon.300_c" />
-          </section>
-        </section>
-      </section>
-      <context type="Buchseiteocrtext">
-        <field datasource=".dummyField"/>
-      </context>
-    </datasections>
-  </display>
-  <facets>
-    <include type="facet_kategorie"/>
-    <facet name="datierungepoche" labelKey="Epoche">
-      <context type="datierung">
-        <field datasource=".AnfEpoche"/>
-      </context>
-    </facet>
-    <facet name="datierungepoche" labelKey="Epoche">
-      <context type="datierung">
-        <field datasource=".EndEpoche"/>
-      </context>
-    </facet>
-  </facets>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="buchseite"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<subtables>
+		<subtable connectFieldParent="bibidSeite"
+			connectFieldSubTable="001">zenon</subtable>
+	</subtables>
+	<display>
+		<title>
+			<section>
+				<field datasource="buchseite.KurzbeschreibungBuchseite">
+					<ifEmpty>
+						<field datasource="buch.BuchTitel">
+							<ifEmpty>
+								<field datasource="zenon.245_a">
+									<ifEmpty>
+										<field datasource="buch.KurzbeschreibungBuch" />
+									</ifEmpty>
+								</field>
+							</ifEmpty>
+						</field>
+					</ifEmpty>
+				</field>
+			</section>
+		</title>
+		<subtitle>
+			<section>
+				<field datasource="buchseite.seite_natuerlich" prefix="Seite: " />
+			</section>
+		</subtitle>
+		<datasections>
+			<section labelKey="Informationen zur Buchseite">
+				<include type="datierung" />
+				<section>
+					<field datasource="buchseite.image" prefix="Dateiname: " />
+					<field datasource="buchseite.Inventarnummern" prefix="Negativnummern: " />
+					<field datasource="buchseite.InventarbucheiteInfos" prefix="Information zur Inventarbuchseite: " />
+					<field datasource="buchseite.BuchseiteInhalt" prefix="Inhaltsbeschreibung der Buchseite: " />
+					<field datasource="buchseite.Originalpaginierung" prefix="Originialpaginierung: " />
+					<field datasource="buchseite.BuchseiteDokumenttyp" prefix="Typ der Buchseite: " />
+					<field datasource="buchseite.BuchseiteAnmerkungenKossack"
+						prefix="Anmerkungen Kossack: " />
+					<field datasource="buchseite.BuchseitePermalinkExtern"
+						prefix="Permalink: " />
+				</section>
+				<section>
+					<field datasource="buchseite.Inventarnummern" prefix="Negativnummer: " />
+				</section>
+				<section labelKey="Zenon Meta-Data">
+					<section labelKey="BibID" separator=", ">
+						<field datasource="zenon.001" />
+						<linkField labelKey="Zenon" datasource="buchseite.bibidSeite"
+							prefix="http://zenon.dainst.org/Record/" />
+					</section>
+					<section labelKey="Autor" separator=", ">
+						<field datasource="zenon.100_a" />
+						<field datasource="zenon.100_b" />
+						<field datasource="zenon.100_c" />
+					</section>
+					<section labelKey="Titel" separator=", ">
+						<field datasource="zenon.245_a" />
+						<field datasource="zenon.245_b" />
+						<field datasource="zenon.245_c" />
+					</section>
+					<section labelKey="Publikationsort">
+						<field datasource="zenon.260_a" />
+					</section>
+					<section labelKey="Verleger">
+						<field datasource="zenon.260_b" />
+					</section>
+					<section labelKey="Publikationsdatum">
+						<field datasource="zenon.260_c" />
+					</section>
+					<section labelKey="Physische Beschreibung" separator=", ">
+						<field datasource="zenon.300_a" />
+						<field datasource="zenon.300_b" />
+						<field datasource="zenon.300_c" />
+					</section>
+				</section>
+			</section>
+			<context type="Buchseiteocrtext">
+				<field datasource=".dummyField" />
+			</context>
+		</datasections>
+		<editorsection>
+			<section labelKey="Für Bearbeiter">
+				<field datasource="buchseite.DatensatzGruppeBuchseite" prefix="Datensatz-Gruppe: " />
+				<field datasource="buchseite.ArbeitsnotizBuchseite" prefix="Interne Arbeitsnotiz: " />
+				<field datasource="buchseite.BearbeiterBuchseite" prefix="Erstellt von: " />
+				<field datasource="buchseite.KorrektorBuchseite" prefix="Bearbeitet von: " />
+			</section>
+		</editorsection>
+	</display>
+	<facets>
+		<include type="facet_kategorie" />
+		<facet name="datierungepoche" labelKey="Epoche">
+			<context type="datierung">
+				<field datasource=".AnfEpoche" />
+			</context>
+		</facet>
+		<facet name="datierungepoche" labelKey="Epoche">
+			<context type="datierung">
+				<field datasource=".EndEpoche" />
+			</context>
+		</facet>
+	</facets>
 </category>

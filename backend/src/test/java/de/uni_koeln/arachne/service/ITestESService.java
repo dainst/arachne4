@@ -29,7 +29,7 @@ import de.uni_koeln.arachne.service.ESService;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @WebAppConfiguration
 public class ITestESService {
-	
+	// TODO add exception handler(?) to remove the test indices on failed tests
 	@Autowired
 	private transient ESService esService;
 
