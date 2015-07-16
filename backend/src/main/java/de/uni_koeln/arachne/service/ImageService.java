@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ import de.uni_koeln.arachne.util.sql.SQLToolbox;
 @Service("ImageService")
 public class ImageService {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ImageService.class);
+	//private static final Logger LOGGER = LoggerFactory.getLogger(ImageService.class);
 	
 	@Autowired
 	private transient DataIntegrityLogService dataIntegrityLogService;
@@ -37,7 +37,7 @@ public class ImageService {
 	private transient final List<String> excludeList;
 	
 	@Autowired
-	public ImageService(final @Value("#{'$imageExcludeList}'.split(',')}") List<String> imageExcludeList) {
+	public ImageService(final @Value("#{'${imageExcludeList}'.split(',')}") List<String> imageExcludeList) {
 		excludeList = imageExcludeList;
 	}
 	
@@ -49,7 +49,6 @@ public class ImageService {
 	public void addImages(final Dataset dataset) {
 		final EntityId arachneId = dataset.getArachneId();
 		if (excludeList.contains(arachneId.getTableName())) {
-			LOGGER.debug("excluding " + arachneId.getTableName());
 			return;
 		} else {
 			if ("marbilder".equals(arachneId.getTableName())) {
