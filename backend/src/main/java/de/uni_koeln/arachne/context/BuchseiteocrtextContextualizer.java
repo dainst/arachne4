@@ -1,11 +1,11 @@
 package de.uni_koeln.arachne.context;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +17,18 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.JDOMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 
 import de.uni_koeln.arachne.response.AdditionalContent;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.util.StrUtils;
+import de.uni_koeln.arachne.util.network.ArachneRestTemplate;
 
 public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 	
@@ -29,6 +37,8 @@ public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 	private final static String XELETOR_ADRESS = "http://arachne.uni-koeln.de:6688"; 
 	
 	private final static String CONTEXT_TYPE = "Buchseiteocrtext";
+	
+	private transient final static ArachneRestTemplate restTemplate = new ArachneRestTemplate(1000, 1000);
 
 	/**
 	 * Retrieves ocr text for a book page by querying the xeletor xml server, then adds all
@@ -72,40 +82,27 @@ public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 	 * @return				the pages ocr-Text as XML-String
 	 */
 	private String retrieveTextAsXML(final String directory, final long internalKey) {
-		HttpURLConnection connection = null;
-		final URL serverAdress;
-		final BufferedReader reader;
-		final StringBuilder stringBuilder;
-		String line = null;
-		String result = null;
+		String result = "";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
+		HttpEntity<String> entity = new HttpEntity<String>("", headers);
 		try {
-			serverAdress = new URL(XELETOR_ADRESS 
-					+ "/findnodes?doc%28arachne/" 
+			final URL serverAdress = new URL(XELETOR_ADRESS 
+					+ "/findnodes?doc(arachne/" 
 					+ directory 
-					+ "/transcription.xml%29TEI/text/body/div[@xml:id=%27p"
+					+ "/transcription.xml)TEI/text/body/div[@xml:id='p"
 					+ internalKey
-					+ "%27]");
-			connection = (HttpURLConnection) serverAdress.openConnection();			
-			connection.setRequestMethod("GET");
-			connection.connect();
-			if (connection.getResponseCode() == 200) {
-				reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-				stringBuilder = new StringBuilder();
-				while((line = reader.readLine()) != null) {
-					stringBuilder.append(line + '\n');
-				}
-				reader.close();
-				result = stringBuilder.toString();
+					+ "']");
+						
+			final ResponseEntity<String> response = restTemplate.exchange(serverAdress.toURI(), HttpMethod.GET, entity
+					, String.class);
+			if (response.getStatusCode() == HttpStatus.OK) {
+				return response.getBody();
 			} else {
-				LOGGER.error("Request to retrieve ocr text from " + serverAdress + " returned: " + connection.getResponseCode());
-			}
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage());
-		} finally {
-			if (connection != null) {
-				connection.disconnect();
-				connection = null;
-			}
+				LOGGER.warn("There was a problem contacting XELETOR. OCR text is not available. Http status code: " + response.getStatusCode());
+			}	
+		} catch (RestClientException | MalformedURLException | URISyntaxException e) {
+			LOGGER.warn("There was a problem contacting XELETOR. OCR text is not available. Cause: ", e);
 		}
 		return result;
 	}
