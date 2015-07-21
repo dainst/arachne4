@@ -219,6 +219,14 @@
                 },
                 "children": [
                     {
+                        "id": "syrher",
+                        "title": {
+                            "de": "Das Syrian Heritage Archive Projekt",
+                            "en": "Syrian Heritage Archive Project",
+                            "ar": "إنشاء سجلّ حضاري رقمي لسورية"
+                        }
+                    },
+                    {
                         "id": "analysearachne",
                         "title": {
                             "de": "Analyse zur Arachne-Nutzung",
