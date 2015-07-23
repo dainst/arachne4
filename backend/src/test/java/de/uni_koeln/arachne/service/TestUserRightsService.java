@@ -217,4 +217,32 @@ public class TestUserRightsService {
 		userRightsService.setPropertyOnProtectedObject("userStringValue", "admin changed it", testObject, UserRightsService.MIN_USER_ID);
 		assertEquals("admin changed it", testObject.getUserStringValue());
 	}
+	
+	@Test(expected=ObjectAccessException.class)
+	public void testSetPropertyOnProtectedObjectAdminFieldUser() {
+		ProtectedTestObject testObject = new ProtectedTestObject();
+		final User user = TestUsers.getUser();
+		Authentication authToken = TestUsers.getAuthentication(user);
+		SecurityContextHolder.getContext().setAuthentication(authToken);
+		userRightsService.setPropertyOnProtectedObject("adminStringValue", "user changed it", testObject);
+	}
+	
+	@Test
+	public void testSetPropertyOnProtectedObjectAdminFieldAdmin() {
+		ProtectedTestObject testObject = new ProtectedTestObject();
+		final User user = TestUsers.getAdmin();
+		Authentication authToken = TestUsers.getAuthentication(user);
+		SecurityContextHolder.getContext().setAuthentication(authToken);
+		userRightsService.setPropertyOnProtectedObject("adminStringValue", "admin changed it", testObject);
+		assertEquals("admin changed it", testObject.getAdminStringValue());
+	}
+	
+	@Test(expected=ObjectAccessException.class)
+	public void testSetPropertyOnProtectedObjectWriteProtectedAdmin() {
+		ProtectedTestObject testObject = new ProtectedTestObject();
+		final User user = TestUsers.getAdmin();
+		Authentication authToken = TestUsers.getAuthentication(user);
+		SecurityContextHolder.getContext().setAuthentication(authToken);
+		userRightsService.setPropertyOnProtectedObject("writeProtectedStringValue", "admin changed it", testObject);
+	}
 }
