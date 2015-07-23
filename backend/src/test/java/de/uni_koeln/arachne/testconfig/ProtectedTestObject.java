@@ -8,6 +8,7 @@ import de.uni_koeln.arachne.util.security.UserAccess;
 
 public class ProtectedTestObject extends ProtectedObject {
 
+	@JsonView(JSONView.Admin.class)
 	@UserAccess(UserAccess.Restrictions.writeprotected)
 	private String writeProtectedStringValue;
 	
