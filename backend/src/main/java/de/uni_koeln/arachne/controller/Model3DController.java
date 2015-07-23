@@ -27,7 +27,7 @@ import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
-import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.image.ImageMimeUtil;
@@ -43,7 +43,7 @@ public class Model3DController {
 	private transient EntityIdentificationService entityIdentificationService;
 	
 	@Autowired
-	private transient IUserRightsService userRightsService;
+	private transient UserRightsService userRightsService;
 	
 	@Autowired
 	private transient SingleEntityDataService singleEntityDataService;

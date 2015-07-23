@@ -3,7 +3,7 @@ package de.uni_koeln.arachne.util.sql;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
 
 /**
@@ -13,7 +13,7 @@ import de.uni_koeln.arachne.util.EntityId;
 public class SQLFactory {
 
 	@Autowired
-	private transient IUserRightsService userRightsService;
+	private transient UserRightsService userRightsService;
 	
 	public String getSingleEntityQuery(final EntityId entityId) {
 		final String tableName = entityId.getTableName();

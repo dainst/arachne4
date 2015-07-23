@@ -18,13 +18,20 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import de.uni_koeln.arachne.util.security.JSONView;
+import de.uni_koeln.arachne.util.security.ProtectedObject;
+import de.uni_koeln.arachne.util.security.UserAccess;
 
 @XmlRootElement
+@JsonInclude(Include.NON_EMPTY)
 @Entity
 @Table(name="verwaltung_benutzer")
 @SuppressWarnings("PMD")
-public class User {
+public class User extends ProtectedObject {
 	
 		public enum BOOLEAN {
 			TRUE, FALSE
@@ -37,20 +44,24 @@ public class User {
 		/**
 		 * This is the Primary key 
 		 */
+		@JsonView(JSONView.Admin.class)
+		@UserAccess(UserAccess.Restrictions.writeprotected)
 		@Id
 		@GeneratedValue(strategy=GenerationType.IDENTITY)
 		@Column(name="uid")
-		private long uid; 
+		private long id; 
+		
 		/**
 		 * GroupID
 		 */
-		
+		@JsonView(JSONView.User.class)
 		@Column(name="gid")
 		private String groupID;
 		
 		/**
 		 * The Groups of dataset possesion the User has the Right to view
 		 */
+		@JsonView(JSONView.User.class)
 		@ManyToMany(fetch=FetchType.EAGER)
 		@JoinTable(name="verwaltung_benutzer_datensatzgruppen",
 			joinColumns={@JoinColumn(name="uid")},
@@ -60,33 +71,45 @@ public class User {
 		/**
 		* In Which Table the Connection is Stored
 		*/
+		@JsonView(JSONView.User.class)
 		@Column(name="username")
 		private String username;
 		
+		@UserAccess(UserAccess.Restrictions.writeprotected)
 		@Column
 		private String password;
 
 	   /**
 	    * All user Infos
 	    */
+		@JsonView(JSONView.User.class)
 		@Column(name="institution")
 		private String institution;
+		@JsonView(JSONView.User.class)
 	   	@Column(name="firstname")
 	   	private String firstname; 
+		@JsonView(JSONView.User.class)
 	   	@Column(name="lastname")
 	   	private String lastname;
+		@JsonView(JSONView.User.class)
 	   	@Column(name="email")
 	   	private String email;
+		@JsonView(JSONView.User.class)
 	   	@Column(name="strasse")
 	   	private String street;
+		@JsonView(JSONView.User.class)
 	   	@Column(name="plz")
 	   	private String zip;
+		@JsonView(JSONView.User.class)
 	   	@Column(name="ort")
 	   	private String place;
+		@JsonView(JSONView.User.class)
 	   	@Column(name="homepage")
 	   	private String homepage;
+		@JsonView(JSONView.User.class)
 	   	@Column(name="land")
 	   	private String country;
+		@JsonView(JSONView.User.class)
 	   	@Column(name="telefon")
 	   	private String telephone;
 	   	@Column(name="emailAuth")
@@ -95,13 +118,15 @@ public class User {
 		/**
 		 * Is the User allowed to see all groups
 		 */
+	   	@JsonView(JSONView.Admin.class)
 	   	@Column(name="all_groups")
 	   	@Enumerated(EnumType.STRING)
-		BOOLEAN all_groups;  
+	   	BOOLEAN all_groups;  
 	   	
 		/**
 		 * Is the user allowed to Login
 		 */
+	   	@JsonView(JSONView.Admin.class)
 	   	@Column(name="login_permission")
 	   	@Enumerated(EnumType.STRING)
 		BOOLEAN login_permission;  
@@ -109,13 +134,15 @@ public class User {
 		/**
 		 * Time of the last Login
 		 */
+	   	@JsonView(JSONView.Admin.class)
 	   	@Column(name="LastLogin")
 		Date lastLogin;
 		
 	   	/**
 	   	 * List of catalogs owned by the user
 	   	 */
-		@ManyToMany(fetch=FetchType.EAGER)
+	   	@JsonView(JSONView.Admin.class)
+	   	@ManyToMany(fetch=FetchType.EAGER)
 		@JoinTable(name="catalog_benutzer",
 			joinColumns={@JoinColumn(name="uid")},
 			inverseJoinColumns={@JoinColumn(name="catalog_id")})
@@ -125,14 +152,14 @@ public class User {
 		 * @return the id
 		 */
 		public long getId() {
-			return uid;
+			return id;
 		}
 
 		/**
 		 * @param uid the id to set
 		 */
 		public void setId(final long uid) {
-			this.uid = uid;
+			this.id = uid;
 		}
 
 		/**
@@ -170,7 +197,6 @@ public class User {
 		/**
 		 * @return the password
 		 */
-		@JsonIgnore
 		@XmlTransient
 		public String getPassword() {
 			return password;
@@ -466,7 +492,7 @@ public class User {
 					+ ((street == null) ? 0 : street.hashCode());
 			result = prime * result
 					+ ((telephone == null) ? 0 : telephone.hashCode());
-			result = prime * result + (int) (uid ^ (uid >>> 32));
+			result = prime * result + (int) (id ^ (id >>> 32));
 			result = prime * result
 					+ ((username == null) ? 0 : username.hashCode());
 			result = prime * result + ((zip == null) ? 0 : zip.hashCode());
@@ -592,7 +618,7 @@ public class User {
 			} else if (!telephone.equals(other.telephone)) {
 				return false;
 			}
-			if (uid != other.uid) {
+			if (id != other.id) {
 				return false;
 			}
 			if (username == null) {
@@ -610,7 +636,5 @@ public class User {
 				return false;
 			}
 			return true;
-		}
-		
-		
+		}		
 }

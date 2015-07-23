@@ -5,7 +5,7 @@ import java.util.List;
 import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.service.EntityIdentificationService;
-import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.service.SimpleSQLService;
 import de.uni_koeln.arachne.service.SingleEntityDataService;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
@@ -22,7 +22,7 @@ public abstract class AbstractContextualizer implements IContextualizer {
 	
 	protected transient SingleEntityDataService singleEntityDataService;
 	
-	protected transient IUserRightsService rightsService;
+	protected transient UserRightsService rightsService;
 	
 	protected transient XmlConfigUtil xmlConfigUtil;
 	
@@ -40,7 +40,7 @@ public abstract class AbstractContextualizer implements IContextualizer {
 		this.singleEntityDataService = singleEntityDataService;
 	}
 
-	public void setRightsService(final IUserRightsService rightsService) {
+	public void setRightsService(final UserRightsService rightsService) {
 		this.rightsService = rightsService;
 	}
 

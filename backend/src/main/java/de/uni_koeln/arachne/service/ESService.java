@@ -74,7 +74,7 @@ public class ESService implements ServletContextAware {
 	private transient ServletContext servletContext;
 
 	@Autowired
-	private transient IUserRightsService userRightsService;
+	private transient UserRightsService userRightsService;
 	
 	@Autowired
 	private transient Transl8Service ts;

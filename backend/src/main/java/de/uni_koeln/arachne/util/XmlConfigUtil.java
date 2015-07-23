@@ -33,7 +33,7 @@ import de.uni_koeln.arachne.response.Field;
 import de.uni_koeln.arachne.response.FieldList;
 import de.uni_koeln.arachne.response.LinkField;
 import de.uni_koeln.arachne.response.Section;
-import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.sql.TableConnectionDescription;
 
 /**
@@ -56,7 +56,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	private transient ServletContext servletContext;
 	
 	@Autowired
-	private transient IUserRightsService userRightsService;
+	private transient UserRightsService userRightsService;
 	
 	private transient SAXBuilder xmlParser = null;
 	

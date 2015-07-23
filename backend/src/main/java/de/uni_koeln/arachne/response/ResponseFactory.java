@@ -28,7 +28,7 @@ import de.uni_koeln.arachne.dao.hibernate.CatalogEntryDao;
 import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
 import de.uni_koeln.arachne.response.link.ExternalLink;
 import de.uni_koeln.arachne.response.link.ExternalLinkResolver;
-import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.util.DateUtils;
 import de.uni_koeln.arachne.util.EntityId;
@@ -64,7 +64,7 @@ public class ResponseFactory {
 	private transient XmlConfigUtil xmlConfigUtil;
 	
 	@Autowired
-	private transient IUserRightsService userRightsService;
+	private transient UserRightsService userRightsService;
 	
 	@Autowired
 	private transient GenericSQLDao genericSQLDao;
@@ -445,7 +445,7 @@ public class ResponseFactory {
 	private void setEditorSection(Dataset dataset, Namespace namespace,	Element display
 			, FormattedArachneEntity response) {
 		
-		if (userRightsService.userHasAtLeastGroupID(IUserRightsService.MIN_EDITOR_ID) 
+		if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID) 
 				|| userRightsService.isDataimporter()) {
 			final Element editorSectionElement = display.getChild("editorsection", namespace);
 			if (editorSectionElement != null) {

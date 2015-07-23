@@ -30,7 +30,7 @@ public class TestEntityService {
 	private SingleEntityDataService singleEntityDataService;
 	
 	@Mock
-	private IUserRightsService userRightsService;
+	private UserRightsService userRightsService;
 	
 	@Mock
 	private ESService esService;

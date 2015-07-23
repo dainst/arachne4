@@ -24,7 +24,7 @@ public class ImageRightsGroupService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageRightsGroupService.class);
 		
 	@Autowired
-	private transient IUserRightsService userRightsService;
+	private transient UserRightsService userRightsService;
 
 	private final transient int resolution_HIGH;
 	private final transient int resolution_THUMBNAIL;

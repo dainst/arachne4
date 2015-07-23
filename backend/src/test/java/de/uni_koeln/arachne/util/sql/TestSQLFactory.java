@@ -11,21 +11,21 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import de.uni_koeln.arachne.mapping.hibernate.User;
-import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.sql.SQLFactory;
 
 @RunWith(MockitoJUnitRunner.class) 
 public class TestSQLFactory {
 	
-	@Mock private IUserRightsService mockUserRightsService;
+	@Mock private UserRightsService mockUserRightsService;
 	@InjectMocks private SQLFactory sqlFactory = new SQLFactory();
 	
 	@Before
 	public void setUp() {
 		final User user = new User();
 		// set mock user name to 'INDEXING' to not trigger the SQL user rights snippet creation  
-		user.setUsername(IUserRightsService.INDEXING);
+		user.setUsername(UserRightsService.INDEXING);
 		Mockito.when(mockUserRightsService.getCurrentUser()).thenReturn(user);
 		// set custom SQL snippet
 		Mockito.when(mockUserRightsService.getSQL(Mockito.anyString())).thenReturn("insertPermissionSQLhere");

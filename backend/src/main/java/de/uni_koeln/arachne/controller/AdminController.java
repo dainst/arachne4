@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.response.StatusResponse;
 import de.uni_koeln.arachne.service.DataImportService;
-import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
@@ -33,7 +32,7 @@ public class AdminController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
 		
 	@Autowired
-	private transient IUserRightsService userRightsService;
+	private transient UserRightsService userRightsService;
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;

@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.DataImportService;
-import de.uni_koeln.arachne.service.IUserRightsService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8;
@@ -28,7 +27,7 @@ import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON
 public class TestAdminController {
 
 	@Mock
-	private IUserRightsService userRightsService;
+	private UserRightsService userRightsService;
 	
 	@Mock
 	private XmlConfigUtil xmlConfigUtil;

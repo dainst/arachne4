@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import de.uni_koeln.arachne.context.ContextPath;
-import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.service.UserRightsService;
 
 /**
  * This Class is Builds Context Paths. This Means a Link over one or More Contexts. 
@@ -19,7 +19,7 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectedPathEntitiesSQLQueryBuilder.class);
 	
 	@Autowired
-	transient protected IUserRightsService userRightsService;
+	transient protected UserRightsService userRightsService;
 	
 	transient protected ContextPath contextPath;
 	//Entity ID that is the Startingpoint of the PATH

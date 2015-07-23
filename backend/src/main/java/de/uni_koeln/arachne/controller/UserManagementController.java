@@ -17,6 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,13 +29,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import static de.uni_koeln.arachne.util.FormDataUtils.*;
-
 import de.uni_koeln.arachne.dao.hibernate.ResetPasswordRequestDao;
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.ResetPasswordRequest;
 import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.service.MailService;
+import de.uni_koeln.arachne.util.JSONUtil;
+import de.uni_koeln.arachne.util.network.CustomMediaType;
+import de.uni_koeln.arachne.util.security.JSONView;
 import de.uni_koeln.arachne.util.security.Random;
 
 /**
@@ -60,6 +66,12 @@ public class UserManagementController {
 	@Autowired
 	private transient MailService mailService; 
 	
+	@Autowired
+	private transient UserRightsService userRightsService;
+	
+	@Autowired
+	private transient JSONUtil jsonUtil;
+	
 	private transient final List<String> defaultDatasetGroups; 
 	private transient final String adminEmail;
 	private transient final String serverAddress;
@@ -73,9 +85,74 @@ public class UserManagementController {
 		this.adminEmail = adminEmail;
 		this.serverAddress = serverAddress;
 	}
-		
+	
+	/**
+	 * End point to retrieve user information. Admins get more information returned than a normal user.
+	 * @param username The username of interest.
+	 * @return A JSON serialization of the corresponding User object.
+	 */
+	@RequestMapping(value="/user/{username}", 
+			method=RequestMethod.GET, 
+			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
+	public ResponseEntity<MappingJacksonValue> getUserInfo(@PathVariable("username") String username) {
+		if (userRightsService.isSignedInUser()) {
+			if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID)) {
+				User user = userDao.findByName(username);
+				MappingJacksonValue wrapper = new MappingJacksonValue(user);
+				wrapper.setSerializationView(JSONView.Admin.class);
+				return ResponseEntity.ok(wrapper);
+			} else {
+				User currentUser = userRightsService.getCurrentUser();
+				if (currentUser.equals(userDao.findByName(username))) {
+					MappingJacksonValue wrapper = new MappingJacksonValue(currentUser);
+					wrapper.setSerializationView(JSONView.User.class);
+					return ResponseEntity.ok(wrapper);
+				}
+			}
+		}
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+	}
+	
+	/**
+	 * End point to update (not create) user information. Admins can change more fields (all_groups, etc.) than a 
+	 * normal user.
+	 * @param username The username of interest.
+	 * @return A JSON serialization of the corresponding User object.
+	 */
+	@RequestMapping(value="/user/{username}", 
+			method=RequestMethod.PUT, 
+			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
+	public ResponseEntity<Map<String,String>> updateUserInfo(@PathVariable("username") String username, 
+			@RequestBody Map<String,String> formData) throws FormDataException {
+		if (userRightsService.isSignedInUser()) {
+			checkForBot(formData, "ui.update.");
+			// remove bot data as we want to traverse the map later on
+			formData.remove("iAmHuman");
+			Map<String,String> result = new HashMap<String,String>();
+			User user = userDao.findByName(username);
+			if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID) ||
+					userRightsService.getCurrentUser().equals(user)) {
+				
+				try {
+					for (Map.Entry<String, String> entry : formData.entrySet()) {
+						userRightsService.setPropertyOnProtectedObject(entry.getKey(), entry.getValue(), user
+								, UserRightsService.MIN_USER_ID);
+					}
+				} catch (de.uni_koeln.arachne.service.UserRightsService.ObjectAccessException e) {
+					result.put("Exception", e.getMessage());
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+				}				
+			}
+			result.put("success", "true");
+			return ResponseEntity.ok(result);
+		}
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+	}
+	
 	@ResponseBody
-	@RequestMapping(value="/user/register", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
+	@RequestMapping(value="/user/register", 
+			method=RequestMethod.POST, 
+			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public Map<String,String> register(@RequestBody Map<String,String> formData, HttpServletResponse response) 
 			throws FormDataException {
 		
@@ -84,7 +161,7 @@ public class UserManagementController {
 		checkForBot(formData, "ui.register.");
 		
 		User user = new User();
-		
+		// TODO: replace this uglyness with either a custom serializer or a reflection based approach  
 		user.setUsername(getFormData(formData, "username", true, "ui.register."));
 		user.setEmail(getFormData(formData, "email", true, "ui.register."));
 		user.setPassword(getFormData(formData, "password", true, "ui.register."));
@@ -166,8 +243,9 @@ public class UserManagementController {
 	 * @return A message indicating success or failure.
 	 */
 	@ResponseBody
-	@RequestMapping(value="/user/reset", method=RequestMethod.POST,
-			produces="application/json;charset=UTF-8")
+	@RequestMapping(value="/user/reset", 
+			method=RequestMethod.POST,
+			produces= {CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public Map<String,String> reset(@RequestBody Map<String,String> userCredentials, HttpServletResponse response) {
 		Map<String,String> result = new HashMap<String,String>();
 		
@@ -237,8 +315,9 @@ public class UserManagementController {
 	 * @return A message indicating success or failure.
 	 */
 	@ResponseBody
-	@RequestMapping(value="/user/activation/{token}", method=RequestMethod.POST,
-			produces="application/json;charset=UTF-8")
+	@RequestMapping(value="/user/activation/{token}",
+			method=RequestMethod.POST,
+			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public void changePasswordAfterResetRequest(@PathVariable("token") final String token,
 			@RequestBody Map<String,String> password, HttpServletResponse response) {
 		

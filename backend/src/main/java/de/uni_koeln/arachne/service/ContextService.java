@@ -70,7 +70,7 @@ public class ContextService {
 	 * Service to access the current user.
 	 */
 	@Autowired
-	private transient IUserRightsService rightsService;
+	private transient UserRightsService rightsService;
 	
 	@Autowired
 	private transient Transl8Service ts;

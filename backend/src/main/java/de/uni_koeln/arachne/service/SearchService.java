@@ -73,7 +73,7 @@ public class SearchService {
 	private transient Transl8Service ts;
 	
 	@Autowired
-	private transient IUserRightsService userRightsService;
+	private transient UserRightsService userRightsService;
 	
 	private transient final SearchFieldList searchFields;
 	
@@ -432,7 +432,7 @@ public class SearchService {
 		final QueryStringQueryBuilder innerQuery = QueryBuilders.queryStringQuery(searchParam)
 				.defaultOperator(Operator.AND);
 		
-		if (userRightsService.userHasAtLeastGroupID(IUserRightsService.MIN_EDITOR_ID)) {
+		if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID)) {
 			innerQuery.field("editorSection");
 		}
 		

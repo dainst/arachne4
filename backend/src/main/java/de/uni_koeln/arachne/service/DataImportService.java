@@ -54,7 +54,7 @@ public class DataImportService { // NOPMD
 	private transient ESService esService;
 	
 	@Autowired
-	private transient IUserRightsService userRightsService;
+	private transient UserRightsService userRightsService;
 	
 	@Autowired
 	private transient EntityIdentificationService entityIdentificationService;

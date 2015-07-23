@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.uni_koeln.arachne.mapping.hibernate.Catalog;
 import de.uni_koeln.arachne.mapping.hibernate.CatalogEntry;
-import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.service.UserRightsService;
 
 @Repository("CatalogEntryDao")
 public class CatalogEntryDao {
@@ -23,7 +23,7 @@ public class CatalogEntryDao {
     private transient SessionFactory sessionFactory;
 	
 	@Autowired
-	private transient IUserRightsService userRightsService;
+	private transient UserRightsService userRightsService;
 	
 	@Transactional(readOnly=true)
 	public CatalogEntry getByCatalogEntryId(final long catalogEntryId) {

@@ -36,7 +36,7 @@ public class EntityService {
 	private transient ImageService imageService;
 	
 	@Autowired
-	private transient IUserRightsService userRightsService;
+	private transient UserRightsService userRightsService;
 	
 	@Autowired
 	private transient Transl8Service ts;
@@ -60,7 +60,7 @@ public class EntityService {
 	public TypeWithHTTPStatus<String> getEntityFromIndex(final Long id, final String category) {
 		
 		String[] excludedFields;
-		if (userRightsService.userHasAtLeastGroupID(IUserRightsService.MIN_EDITOR_ID)) {
+		if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID)) {
 			excludedFields = internalFields;
 		} else {
 			excludedFields = new String[internalFields.length + 1];

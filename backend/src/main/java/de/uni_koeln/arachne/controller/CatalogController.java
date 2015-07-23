@@ -22,7 +22,7 @@ import de.uni_koeln.arachne.dao.hibernate.CatalogEntryDao;
 import de.uni_koeln.arachne.mapping.hibernate.Catalog;
 import de.uni_koeln.arachne.mapping.hibernate.CatalogEntry;
 import de.uni_koeln.arachne.mapping.hibernate.User;
-import de.uni_koeln.arachne.service.IUserRightsService;
+import de.uni_koeln.arachne.service.UserRightsService;
 
 /**
  * Handles http requests for <code>/catalogEntry</code> and
@@ -35,7 +35,7 @@ public class CatalogController {
 			.getLogger(CatalogController.class);
 
 	@Autowired
-	private transient IUserRightsService userRightsService;
+	private transient UserRightsService userRightsService;
 
 	@Autowired
 	private transient CatalogEntryDao catalogEntryDao;

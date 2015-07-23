@@ -1,11 +1,14 @@
 package de.uni_koeln.arachne.service;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.PropertyAccessor;
+import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
@@ -14,9 +17,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.util.security.JSONView;
+import de.uni_koeln.arachne.util.security.ProtectedObject;
+import de.uni_koeln.arachne.util.security.UserAccess;
+import de.uni_koeln.arachne.util.security.UserAccess.Restrictions;
 import de.uni_koeln.arachne.util.sql.Condition;
 import de.uni_koeln.arachne.util.sql.SQLToolbox;
 
@@ -29,8 +38,24 @@ import de.uni_koeln.arachne.util.sql.SQLToolbox;
  * @author Reimar Grabowski
  */
 @Service("userRightsService")
-@Scope(value="request",proxyMode=ScopedProxyMode.INTERFACES)
-public class UserRightsService implements IUserRightsService {
+@Scope(value="request",proxyMode=ScopedProxyMode.TARGET_CLASS)
+public class UserRightsService {
+	
+	/**
+	 * Protected object access exception class.
+	 */
+	@SuppressWarnings("serial")
+	public static class ObjectAccessException extends RuntimeException {
+		public ObjectAccessException(String message) {
+			super(message);
+		}
+	}
+
+	public static final String INDEXING = "Indexing";
+	public static final String ANONYMOUS_USER_NAME = "Anonymous";
+	public static final int MIN_ADMIN_ID = 800;
+	public static final int MIN_EDITOR_ID = 600;
+	public static final int MIN_USER_ID = 400;
 	
 	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserRightsService.class);
@@ -81,10 +106,9 @@ public class UserRightsService implements IUserRightsService {
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.uni_koeln.arachne.service.IUserRightsService#setDataimporter()
+	/**
+	 * Set the 'dataimport user'.
 	 */
-	@Override
 	public void setDataimporter() {
 		arachneUser = new User();
 		arachneUser.setUsername(INDEXING);
@@ -92,63 +116,68 @@ public class UserRightsService implements IUserRightsService {
 		this.isSet = true;
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.uni_koeln.arachne.service.IUserRightsService#isDataimporter()
+	/**
+	 * Is the current user the 'dataimport user'.
+	 * @return <code>true</code> if the current user is Solr.
 	 */
-	@Override
 	public boolean isDataimporter() {
 		return isSet && INDEXING.equals(arachneUser.getUsername());
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.uni_koeln.arachne.service.UserRightsService#isSignedInUser()
+	/**
+	 * Is the current user signed in.
+	 * @return <code>true</code> if the current user is signed in.
 	 */
-	@Override
 	public boolean isSignedInUser() {
-		return isSet && !(ANONYMOUS_USER_NAME.equals(arachneUser.getUsername()));
+		initializeUserData();
+		return !(ANONYMOUS_USER_NAME.equals(arachneUser.getUsername()));
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.uni_koeln.arachne.service.UserRightsService#isSignedInUser()
+	/**
+	 * If the current user has at least the given groupId.
+	 * @param groupId A groupId to check against the users groupId.
+	 * @return <code>true</code> if the given groupId is equal or less than the users groupId.
 	 */
-	@Override
 	public boolean userHasAtLeastGroupID(int groupId) {
 		initializeUserData();
 		return groupId <= arachneUser.getGroupID();
 	};
 	
-	/* (non-Javadoc)
-	 * @see de.uni_koeln.arachne.service.IUserRightsService#getCurrentUser()
+	/**
+	 * Get the current arachne user
+	 * @return User the user object or the "anonymous" user if no user is logged in
 	 */
-	@Override
 	public User getCurrentUser() {
 		initializeUserData();
 		return arachneUser;
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.uni_koeln.arachne.service.IUserRightsService#reset()
+	/**
+	 * Method to reset the current user.
 	 */
-	@Override
 	public void reset() {
 		arachneUser = null;
 		isSet = false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.uni_koeln.arachne.service.IUserRightsService#userHasDatasetGroup()
+	/**
+	 * Is the given <code>Datasetgroup</code> in the users <code>Set</code> of <code>DatasetGroups</code>.
+	 * @param datasetGroup A <code>DatasetGroup</code> to check against the user groups.
+	 * @return <code>true</code> if the given <code>DatasetGroup</code> is in the users <code>Set</code>.
 	 */
-	@Override
 	public boolean userHasDatasetGroup(final DatasetGroup datasetGroup) {
 		final User user = getCurrentUser();
 		final String datasetGroupName = datasetGroup.getName();
 		return user.hasGroup(datasetGroupName);
 	}
 	
-	/* (non-Javadoc)
-	 * @see de.uni_koeln.arachne.service.IUserRightsService#getSQL()
+	/**
+	 * Gets the users permissions and converts them to a SQL statement ready to be appended to a SQL <code>WHERE</code> 
+	 * statement.
+	 * @param tableName The name of the table that shall be accessed.
+	 * @return A <code>String</code> that represents the user permission as SQL statement or an empty 
+	 * <code>String</code> if the user is allowed to see everything.
 	 */
-	@Override
 	public String getSQL(final String tableName) {
 		initializeUserData();
 		if (INDEXING.equals(arachneUser.getUsername())) {
@@ -199,5 +228,67 @@ public class UserRightsService implements IUserRightsService {
 			sqlBuilder.append(')');
 		}
 		return sqlBuilder.toString();
+	}
+	
+	/**
+	 * Sets a property on the object associated with this accessor.
+	 * Properties are inspected for annotations (namely @JsonView and @UserAccess) and are only set if the current user 
+	 * has the right to set them. If not an ObjectAccesException is thrown.
+	 * @param fieldName The name of the property to set.
+	 * @param value The value to set.
+	 * @param object The <code>ProtectedObject</code> to set the property on.
+	 * @param minGid The minimum group Id you need to edit a value; 
+	 * @throws ObjectAccessException
+	 */
+	public void setPropertyOnProtectedObject(final String fieldName, final Object value
+			, final ProtectedObject object, final int minGid) throws ObjectAccessException {
+		if (isSignedInUser()) {
+			try {
+				Field field = object.getClass().getDeclaredField(fieldName);
+				if (field.isAnnotationPresent(UserAccess.class)) {
+					UserAccess userAccess = field.getAnnotation(UserAccess.class);
+					Restrictions restrictions = userAccess.value();
+					if (restrictions.equals(Restrictions.writeprotected)) {
+						throw new ObjectAccessException("Field " + fieldName + " is write-protected.");
+					}
+				}
+				if (field.isAnnotationPresent(JsonView.class)) {
+					JsonView jsonView = field.getAnnotation(JsonView.class);
+					Class<?> viewClass = jsonView.value()[0];
+					boolean acccessGranted = false;
+					if (userHasAtLeastGroupID(MIN_ADMIN_ID)) {
+						acccessGranted = viewClass.equals(JSONView.User.class) || viewClass.equals(JSONView.Admin.class);
+					} else {
+						if (userHasAtLeastGroupID(minGid)) {
+							acccessGranted = viewClass.equals(JSONView.User.class);
+						}
+					}
+					if (acccessGranted) {
+						PropertyAccessor userAccessor = PropertyAccessorFactory.forBeanPropertyAccess(object);
+						userAccessor.setPropertyValue(fieldName, value);
+					} else {
+						throw new ObjectAccessException("Access to " + fieldName + " is forbidden.");
+					}
+				}
+			} catch (NoSuchFieldException | SecurityException e) {
+				throw new ObjectAccessException("Field " + fieldName + " does not exist.");
+			}
+		} else {
+			throw new ObjectAccessException("Access to " + fieldName + " is forbidden.");
+		}
+	}
+
+	/**
+	 * Sets a property on the object associated with this accessor.
+	 * Properties are inspected for annotations (namely @JsonView and @UserAccess) and are only set if the current user 
+	 * has the right to set them. If not an ObjectAccesException is thrown.
+	 * @param fieldName The name of the property to set.
+	 * @param value The value to set.
+	 * @param object The <code>ProtectedObject</code> to set the property on. 
+	 * @throws ObjectAccessException
+	 */
+	public void setPropertyOnProtectedObject(final String fieldName, final Object value
+			, final ProtectedObject object) throws ObjectAccessException {
+		setPropertyOnProtectedObject(fieldName, value, object, MIN_EDITOR_ID);
 	}
 }
