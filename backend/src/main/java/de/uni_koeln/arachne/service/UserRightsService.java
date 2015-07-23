@@ -76,11 +76,11 @@ public class UserRightsService {
 	 */
 	private transient User arachneUser = null;
 	
-	private transient List<String> excludedTables;
+	private transient List<String> excludedTables = new ArrayList<String>();
 	
 	@Autowired
 	public void setExcludedTables(@Value("#{'${authFreeTables}'.split(',')}") final List<String> authFreeTables) {
-		excludedTables = authFreeTables;
+		excludedTables.addAll(authFreeTables);
 	}
 	
 	/**
