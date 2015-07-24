@@ -207,6 +207,13 @@
                         "title": {
                             "de": "Antike Plastik 5.0://"
                         }
+                    },
+                    {
+                        "id": "hinkel",
+                        "title": {
+                            "de": "Hinkel"
+                        },
+                        "hidden": true
                     }
                 ]
             },
