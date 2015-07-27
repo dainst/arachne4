@@ -1,16 +1,13 @@
-<div class="row">
-    <p>
-        <a href="/project/syrher?lang=ar">Zur arabischen Version</a>
-    </p>
-
-    <p class="text-center">
-        <img src="../frontimages/syrher.jpg" width="700">
-    </p>
+<div class="row">    
     <div class="col-md-8">
+
+        <p>
+            <img src="../frontimages/syrher.jpg" width="700">
+        </p>
 
         <h1>Syrian Heritage Archive Project</h1>
 
-        <h2>Erstellung digitaler Kulturgüterregister für Syrien</h2>
+        <h2 class="con10t-toc-entry">Erstellung digitaler Kulturgüterregister für Syrien</h2>
 
         <p>Der inzwischen seit mehr als vier Jahren andauernde Bürgerkrieg in Syrien hat sowohl zu einer humanitären
             Katastrophe ungeheuren Ausmaßes als auch
@@ -75,7 +72,13 @@
             Syriens beitragen.
         </p>
 
-        <br><br><br><br>
+        <h2 class="con10t-toc-entry">Thematischer Einstieg</h2>
+
+        <p>
+            <con10t-tree fq="facet_bestandsname:Syrian-Heritage-Archive-Project" wildcard-facet="facet_subkategorie"></con10t-tree>
+        </p>
+
+        <h2 class="con10t-toc-entry">Zusätzliche Informationen</h2>
 
         <p>
             Für zusätzliche Informationen zum Projekt besuchen Sie auch
@@ -97,9 +100,17 @@
                 </li>
             </ul>
         </p>
+
     </div>
     <div class="col-md-4">
-        <con10t-tree fq="facet_bestandsname:Syrian-Heritage-Archive-Project" wildcard-facet="facet_subkategorie">
-        </con10t-tree>
+        <p>
+            <a href="/project/syrher?lang=ar">Zur arabischen Version</a>
+        </p>
+        <h3>Inhalt</h3>
+        <con10t-toc></con10t-toc>
+        <h3>Suche in den Daten des Projekts</h3>
+        <div class="well">
+            <con10t-search fq="facet_bestandsname:Syrian-Heritage-Archive-Project"></con10t-search>
+        </div>
     </div>
 </div>
