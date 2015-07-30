@@ -247,62 +247,63 @@ public class UserManagementController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/user/reset", 
-			method=RequestMethod.POST,
-			produces= {CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
+	method=RequestMethod.POST,
+	produces= {CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public Map<String,String> reset(@RequestBody Map<String,String> userCredentials, HttpServletResponse response) {
 		Map<String,String> result = new HashMap<String,String>();
-		
+
 		checkForBot(userCredentials, "ui.passwordreset.");		
-		
-		final String userName = getFormData(userCredentials, "username", true, "ui.passwordreset.");
-		final String eMailAddress = getFormData(userCredentials, "email", true, "ui.passwordreset.");
-		final String firstName = getFormData(userCredentials, "firstname", true, "ui.passwordreset.");
-		final String zipCode = getFormData(userCredentials, "zip", true, "ui.passwordreset.");
-		 
-		User userByEMailAddress = userDao.findByEMailAddress(eMailAddress);
-		User userByName = userDao.findByName(userName);
-		if (userByName != null && userByName.equals(userByEMailAddress)) {
-			if (userByName.getFirstname().equals(firstName) && userByName.getZip().equals(zipCode)) {
-				// get rid of all expired requests
-				resetPasswordRequestDao.deleteExpiredRequests();
-				final ResetPasswordRequest resetPasswordRequest = resetPasswordRequestDao.getByUserId(userByName.getId());
-				// if there is already a request pending do not allow to add a new one
-				if (resetPasswordRequest == null) {
-					final String token = random.getNewToken();
-					final Calendar calender = Calendar.getInstance();
-					final long now = calender.getTime().getTime();
-					calender.setTimeInMillis(now);
-					calender.add(Calendar.HOUR_OF_DAY, 12);
-					final Timestamp expirationDate = new Timestamp(calender.getTime().getTime()); 
+		if (!userRightsService.isSignedInUser()) {
+			final String userName = getFormData(userCredentials, "username", true, "ui.passwordreset.");
+			final String eMailAddress = getFormData(userCredentials, "email", true, "ui.passwordreset.");
+			final String firstName = getFormData(userCredentials, "firstname", true, "ui.passwordreset.");
+			final String zipCode = getFormData(userCredentials, "zip", true, "ui.passwordreset.");
 
-					ResetPasswordRequest request = new ResetPasswordRequest();
-					request.setToken(token);
-					request.setUserId(userByName.getId());
-					request.setExpirationDate(expirationDate);
-					resetPasswordRequestDao.save(request);
+			User userByEMailAddress = userDao.findByEMailAddress(eMailAddress);
+			User userByName = userDao.findByName(userName);
+			if (userByName != null && userByName.equals(userByEMailAddress)) {
+				if (userByName.getFirstname().equals(firstName) && userByName.getZip().equals(zipCode)) {
+					// get rid of all expired requests
+					resetPasswordRequestDao.deleteExpiredRequests();
+					final ResetPasswordRequest resetPasswordRequest = resetPasswordRequestDao.getByUserId(userByName.getId());
+					// if there is already a request pending do not allow to add a new one
+					if (resetPasswordRequest == null) {
+						final String token = random.getNewToken();
+						final Calendar calender = Calendar.getInstance();
+						final long now = calender.getTime().getTime();
+						calender.setTimeInMillis(now);
+						calender.add(Calendar.HOUR_OF_DAY, 12);
+						final Timestamp expirationDate = new Timestamp(calender.getTime().getTime()); 
 
-					// sent mail with activation link to user
-					final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					final String nowString = dateFormat.format(now);
-					final String expirationDateString = dateFormat.format(expirationDate);
-					final String linkString = "http://" + serverAddress + "/user/activation/" + token;
+						ResetPasswordRequest request = new ResetPasswordRequest();
+						request.setToken(token);
+						request.setUserId(userByName.getId());
+						request.setExpirationDate(expirationDate);
+						resetPasswordRequestDao.save(request);
 
-					final String messageBody = "Sie haben ihr Passwort bei Arachne am " + nowString + " zurückgesetzt." 
-							+ newLine + "Bitte folgen sie diesem Link um den Prozess abzuschließen: " + linkString 
-							+ newLine + "Dieser Link ist bis zum " + expirationDateString + " gültig.";
-					
-					if (!mailService.sendMail(userByName.getEmail(), "Passwort zurückgesetzt bei Arachne", messageBody)) {
-						LOGGER.error("Unable to send password activation eMail to user: " + userByName.getEmail());
-						resetPasswordRequestDao.delete(request);
-						result.put("success", "false");
-						response.setStatus(400);
+						// sent mail with activation link to user
+						final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						final String nowString = dateFormat.format(now);
+						final String expirationDateString = dateFormat.format(expirationDate);
+						final String linkString = "http://" + serverAddress + "/user/activation/" + token;
+
+						final String messageBody = "Sie haben ihr Passwort bei Arachne am " + nowString + " zurückgesetzt." 
+								+ newLine + "Bitte folgen sie diesem Link um den Prozess abzuschließen: " + linkString 
+								+ newLine + "Dieser Link ist bis zum " + expirationDateString + " gültig.";
+
+						if (!mailService.sendMail(userByName.getEmail(), "Passwort zurückgesetzt bei Arachne", messageBody)) {
+							LOGGER.error("Unable to send password activation eMail to user: " + userByName.getEmail());
+							resetPasswordRequestDao.delete(request);
+							result.put("success", "false");
+							response.setStatus(400);
+							return result;
+						}
+						result.put("success", "true");
+						response.setStatus(200);
 						return result;
 					}
-					result.put("success", "true");
-					response.setStatus(200);
-					return result;
-				}
-			}	
+				}	
+			}
 		}
 		result.put("success", "false");
 		response.setStatus(400);
@@ -327,21 +328,23 @@ public class UserManagementController {
 		checkForBot(password, "ui.passwordactivation.");
 		
 		response.setStatus(404);
-		final ResetPasswordRequest resetPasswordRequest = resetPasswordRequestDao.getByToken(token);
-		if (resetPasswordRequest != null) {
-			final String newPassword = getFormData(password, "password", true, "ui.passwordactivation.");
-			if (newPassword.equals(getFormData(password, "passwordConfirm", true, "ui.passwordactivation."))) {
-				final Calendar calender = Calendar.getInstance();
-				final Timestamp now = new Timestamp(calender.getTime().getTime());
-				if (now.before(resetPasswordRequest.getExpirationDate())) {
-					final User user = userDao.findById(resetPasswordRequest.getUserId());
-					user.setPassword(newPassword);
-					userDao.updateUser(user);
-					response.setStatus(200);
+		if (!userRightsService.isSignedInUser()) {
+			final ResetPasswordRequest resetPasswordRequest = resetPasswordRequestDao.getByToken(token);
+			if (resetPasswordRequest != null) {
+				final String newPassword = getFormData(password, "password", true, "ui.passwordactivation.");
+				if (newPassword.equals(getFormData(password, "passwordConfirm", true, "ui.passwordactivation."))) {
+					final Calendar calender = Calendar.getInstance();
+					final Timestamp now = new Timestamp(calender.getTime().getTime());
+					if (now.before(resetPasswordRequest.getExpirationDate())) {
+						final User user = userDao.findById(resetPasswordRequest.getUserId());
+						user.setPassword(newPassword);
+						userDao.updateUser(user);
+						response.setStatus(200);
+					}
+					resetPasswordRequestDao.delete(resetPasswordRequest);
+				} else {
+					response.setStatus(400);
 				}
-				resetPasswordRequestDao.delete(resetPasswordRequest);
-			} else {
-				response.setStatus(400);
 			}
 		}
 		return;
