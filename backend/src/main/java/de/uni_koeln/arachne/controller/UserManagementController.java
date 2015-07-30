@@ -91,7 +91,7 @@ public class UserManagementController {
 	 * @param username The username of interest.
 	 * @return A JSON serialization of the corresponding User object.
 	 */
-	@RequestMapping(value="/user/{username}", 
+	@RequestMapping(value="/userinfo/{username}", 
 			method=RequestMethod.GET, 
 			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<MappingJacksonValue> getUserInfo(@PathVariable("username") String username) {
@@ -119,7 +119,7 @@ public class UserManagementController {
 	 * @param username The username of interest.
 	 * @return A JSON serialization of the corresponding User object.
 	 */
-	@RequestMapping(value="/user/{username}", 
+	@RequestMapping(value="/userinfo/{username}", 
 			method=RequestMethod.PUT, 
 			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<Map<String,String>> updateUserInfo(@PathVariable("username") String username, 
@@ -157,76 +157,79 @@ public class UserManagementController {
 			throws FormDataException {
 		
 		Map<String,String> result = new HashMap<String,String>();
-		
-		checkForBot(formData, "ui.register.");
-		
-		User user = new User();
-		// TODO: replace this uglyness with either a custom serializer or a reflection based approach  
-		user.setUsername(getFormData(formData, "username", true, "ui.register."));
-		user.setEmail(getFormData(formData, "email", true, "ui.register."));
-		user.setPassword(getFormData(formData, "password", true, "ui.register."));
-		user.setFirstname(getFormData(formData, "firstname", true, "ui.register."));
-		user.setLastname(getFormData(formData, "lastname", true, "ui.register."));
-		user.setStreet(getFormData(formData, "street", true, "ui.register."));
-		user.setZip(getFormData(formData, "zip", true, "ui.register."));
-		user.setPlace(getFormData(formData, "place", true, "ui.register."));
-		user.setCountry(getFormData(formData, "country", true, "ui.register."));
-		user.setInstitution(getFormData(formData, "institution", false, "ui.register."));
-		user.setHomepage(getFormData(formData, "homepage", false, "ui.register."));
-		user.setTelephone(getFormData(formData, "telephone", false, "ui.register."));
-		user.setAll_groups(false);
-		user.setGroupID(500);
-		user.setLogin_permission(false);
-		
-		if (!formData.get("email").equals(formData.get("emailValidation"))) {
-			throw new FormDataException("ui.register.emailsDontMatch");
-		}
-		
-		if (!formData.get("password").equals(formData.get("passwordValidation"))) {
-			throw new FormDataException("ui.register.passwordsDontMatch");
-		}
-				
-		User existingUser = userDao.findByName(user.getUsername());
-		if (existingUser != null) {
-			throw new FormDataException("ui.register.usernameTaken");
-		}
+		if (!userRightsService.isSignedInUser()) {
+			checkForBot(formData, "ui.register.");
 
-		HashSet<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
-		for (String dgName : defaultDatasetGroups) {
-			DatasetGroup datasetGroup = userDao.findDatasetGroupByName(dgName);
-			if (datasetGroup == null) continue;
-			datasetGroups.add(datasetGroup);
+			User user = new User();
+
+			user.setUsername(getFormData(formData, "username", true, "ui.register."));
+			user.setEmail(getFormData(formData, "email", true, "ui.register."));
+			user.setPassword(getFormData(formData, "password", true, "ui.register."));
+			user.setFirstname(getFormData(formData, "firstname", true, "ui.register."));
+			user.setLastname(getFormData(formData, "lastname", true, "ui.register."));
+			user.setStreet(getFormData(formData, "street", true, "ui.register."));
+			user.setZip(getFormData(formData, "zip", true, "ui.register."));
+			user.setPlace(getFormData(formData, "place", true, "ui.register."));
+			user.setCountry(getFormData(formData, "country", true, "ui.register."));
+			user.setInstitution(getFormData(formData, "institution", false, "ui.register."));
+			user.setHomepage(getFormData(formData, "homepage", false, "ui.register."));
+			user.setTelephone(getFormData(formData, "telephone", false, "ui.register."));
+			user.setAll_groups(false);
+			user.setGroupID(500);
+			user.setLogin_permission(false);
+
+			if (!formData.get("email").equals(formData.get("emailValidation"))) {
+				throw new FormDataException("ui.register.emailsDontMatch");
+			}
+
+			if (!formData.get("password").equals(formData.get("passwordValidation"))) {
+				throw new FormDataException("ui.register.passwordsDontMatch");
+			}
+
+			User existingUser = userDao.findByName(user.getUsername());
+			if (existingUser != null) {
+				throw new FormDataException("ui.register.usernameTaken");
+			}
+
+			HashSet<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
+			for (String dgName : defaultDatasetGroups) {
+				DatasetGroup datasetGroup = userDao.findDatasetGroupByName(dgName);
+				if (datasetGroup == null) continue;
+				datasetGroups.add(datasetGroup);
+			}
+			user.setDatasetGroups(datasetGroups);
+
+			userDao.createUser(user);
+
+			// mail to user
+			String messageBody = "Ihre Anmeldung bei Arachne ist eingegangen und wird in Kürze von uns bearbeitet "
+					+ "werden." + newLine + newLine + "Mit freundlichen Grüßen" + newLine + "das Arachne-Team";		
+
+			if (!mailService.sendMail(user.getEmail(), "Ihre Anmeldung bei Arachne", messageBody)) {
+				LOGGER.error("Unable to send registration eMail to user.");
+				throw new FormDataException("ui.registration.emailFailed");
+			}
+
+			// mail to admin
+			messageBody = "Ein Benutzer hat sich mit folgenden Daten bei Arachne registriert:" + newLine + newLine
+					+ "Username: " + user.getUsername() + newLine
+					+ "Name: " + user.getFirstname() + " " + user.getLastname() + newLine
+					+ "E-Mail: " + user.getEmail() + newLine + newLine
+					+ "Wenn Sie in Arachne eingeloggt sind, können Sie folgenden Link benutzen um den Benutzer "
+					+ "freizuschalten:" + newLine
+					+ "http://arachne.uni-koeln.de/activate_account/" + user.getId();
+
+			if (!mailService.sendMail(adminEmail, "Anmeldung bei Arachne", messageBody)) {
+				LOGGER.error("Unable to send registration eMail to admin.");
+				throw new FormDataException("ui.registration.emailToAdminFailed");
+			}
+
+			result.put("success", "true");
+			response.setStatus(201);
+		} else {
+			result.put("success", "false");
+			response.setStatus(400);
 		}
-		user.setDatasetGroups(datasetGroups);
-		
-		userDao.createUser(user);
-		
-		// mail to user
-		String messageBody = "Ihre Anmeldung bei Arachne ist eingegangen und wird in Kürze von uns bearbeitet "
-				+ "werden." + newLine + newLine + "Mit freundlichen Grüßen" + newLine + "das Arachne-Team";		
-    	
-    	if (!mailService.sendMail(user.getEmail(), "Ihre Anmeldung bei Arachne", messageBody)) {
-    		LOGGER.error("Unable to send registration eMail to user.");
-    		throw new FormDataException("ui.registration.emailFailed");
-    	}
-    	
-    	// mail to admin
-		messageBody = "Ein Benutzer hat sich mit folgenden Daten bei Arachne registriert:" + newLine + newLine
-				+ "Username: " + user.getUsername() + newLine
-				+ "Name: " + user.getFirstname() + " " + user.getLastname() + newLine
-				+ "E-Mail: " + user.getEmail() + newLine + newLine
-				+ "Wenn Sie in Arachne eingeloggt sind, können Sie folgenden Link benutzen um den Benutzer "
-    			+ "freizuschalten:" + newLine
-    			+ "http://arachne.uni-koeln.de/activate_account/" + user.getId();
-    			
-    	if (!mailService.sendMail(adminEmail, "Anmeldung bei Arachne", messageBody)) {
-    		LOGGER.error("Unable to send registration eMail to admin.");
-    		throw new FormDataException("ui.registration.emailToAdminFailed");
-    	}
-    		
-    	result.put("success", "true");
-		response.setStatus(201);
-    	
 		return result;
 		
 	}
