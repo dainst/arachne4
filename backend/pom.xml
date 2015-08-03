@@ -245,6 +245,14 @@
 			<version>${org.mockito-version}</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- jsonpath -->
+		<dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path-assert</artifactId>
+            <version>0.8.1</version>
+            <scope>test</scope>
+        </dependency>
 
 		<!-- Hibernate -->
 		<dependency>

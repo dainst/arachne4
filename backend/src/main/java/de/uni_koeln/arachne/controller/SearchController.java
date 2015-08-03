@@ -112,9 +112,7 @@ public class SearchController {
 			@RequestParam(value = "desc", required = false) final Boolean orderDesc,
 			@RequestParam(value = "bbox", required = false) final Double[] boundingBox,
 			@RequestParam(value = "ghprec", required = false) final Integer geoHashPrecision,
-			@RequestParam(value = "sortfacet", required = false) final String[] facetsToSort) {
-		
-		// TODO implement sorting of facet values
+			@RequestParam(value = "sf", required = false) final String[] facetsToSort) {
 		
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 		
@@ -126,7 +124,8 @@ public class SearchController {
 				.setSortField(sortField)
 				.setOrderDesc(orderDesc)
 				.setBoundingBox(boundingBox)
-				.setGeoHashPrecision(geoHashPrecision);
+				.setGeoHashPrecision(geoHashPrecision)
+				.setFacetsToSort(facetsToSort);
 		
 		Multimap<String, String> filters = HashMultimap.create();
 		if (filterValues != null) {

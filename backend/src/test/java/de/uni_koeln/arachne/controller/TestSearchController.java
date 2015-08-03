@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -97,6 +98,10 @@ public class TestSearchController {
 							}
 							newFacets.add(newFacet);
 						} else {
+							// for testing sf parameter on facet_test1
+							if (searchParams.getFacetsToSort().contains(facet.getName())) {
+								Collections.sort(facetValues, new FacetValueComparator());
+							}
 							newFacets.add(facet);
 						}
 					}
@@ -219,8 +224,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -248,8 +253,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -277,8 +282,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -300,8 +305,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -334,8 +339,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -379,8 +384,8 @@ public class TestSearchController {
 						+ "\"offset\":1,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -408,8 +413,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -453,8 +458,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
@@ -480,8 +485,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -509,8 +514,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -538,7 +543,7 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -565,8 +570,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -595,8 +600,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -624,8 +629,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -677,8 +682,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -730,8 +735,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -765,7 +770,7 @@ public class TestSearchController {
 	@Test
 	public void testSearchSortFacet() throws Exception {
 		mockMvc.perform(
-				get("/search").param("q", "*").param("sortfacet", "facet_test")
+				get("/search").param("q", "*").param("sf", "facet_test1")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -775,8 +780,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1a\",\"count\":2},"
+						+ "{\"value\":\"test1_value1b\",\"count\":1}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -788,33 +793,43 @@ public class TestSearchController {
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
-						+ "\"status\":\"OK\"}"));
-	}
-	
-	// TODO implement when facet sorting is implemented
-	/*@Test
-	public void testSearchSortFacetInvalidName() throws Exception {
-		mockMvc.perform(
-				get("/search").param("q", "*").param("sortfacet", "the_facet")
-				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+						+ "\"status\":\"OK\"}"))
+				// explicitly test the order as the above does not
+				.andExpect(jsonPath("$.facets[0].values[0].value").value("test1_value1a"))
+				.andExpect(jsonPath("$.facets[0].values[1].value").value("test1_value1b"));
 	}
 	
 	@Test
-	public void testSearchSortFacetInvalidInt() throws Exception {
+	public void testSearchSortFacetInvalidUnknownFacet() throws Exception {
 		mockMvc.perform(
-				get("/search").param("q", "*").param("sortfacet", "2")
+				get("/search").param("q", "*").param("sf", "unknown")
 				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{"
+						+ "\"size\":2,"
+						+ "\"limit\":1,"
+						+ "\"offset\":0,"
+						+ "\"facets\":["
+						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
+						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
+						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
+						+ "[{\"value\":\"test3_value1\",\"count\":13},"
+						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
+						+ "\"entities\":["
+						+ "{\"thumbnailId\":0,"
+						+ "\"entityId\":0,"
+						+ "\"title\":\"Test title\","
+						+ "\"subtitle\":\"Test subtitle\","
+						+ "\"type\":\"test\"}],"
+						+ "\"status\":\"OK\"}"))
+				// explicitly test the order as the above does not
+				.andExpect(jsonPath("$.facets[0].values[0].value").value("test1_value1b"))
+				.andExpect(jsonPath("$.facets[0].values[1].value").value("test1_value1a"));
 	}
-	
-	@Test
-	public void testSearchSortFacetInvalidFloat() throws Exception {
-		mockMvc.perform(
-				get("/search").param("q", "*").param("sortfacet", "2.0")
-				.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().is4xxClientError());
-	}*/
 	
 	@Test
 	public void testContextSearchNoParameters() throws Exception {
@@ -829,8 +844,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -872,8 +887,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -901,8 +916,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -924,8 +939,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -958,8 +973,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -1003,8 +1018,8 @@ public class TestSearchController {
 						+ "\"offset\":1,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -1032,8 +1047,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -1077,8 +1092,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
@@ -1104,8 +1119,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -1133,8 +1148,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -1162,7 +1177,7 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -1189,8 +1204,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -1219,8 +1234,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -1248,8 +1263,8 @@ public class TestSearchController {
 						+ "\"offset\":0,"
 						+ "\"facets\":["
 						+ "{\"name\":\"facet_test1\",\"label\":null,\"values\":"
-						+ "[{\"value\":\"test1_value1\",\"count\":1},"
-						+ "{\"value\":\"test1_value2\",\"count\":2}]},"
+						+ "[{\"value\":\"test1_value1b\",\"count\":1},"
+						+ "{\"value\":\"test1_value1a\",\"count\":2}]},"
 						+ "{\"name\":\"facet_test2\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test2_value1\",\"count\":4}]},"
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
@@ -1296,8 +1311,8 @@ public class TestSearchController {
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 				.andExpect(content().json("["
-						+ "\"test1_value1\","
-						+ "\"test1_value2\""
+						+ "\"test1_value1b\","
+						+ "\"test1_value1a\""
 						+ "]"));
 	}
 	

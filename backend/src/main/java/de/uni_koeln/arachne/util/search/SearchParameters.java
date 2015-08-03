@@ -1,5 +1,9 @@
 package de.uni_koeln.arachne.util.search;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -53,6 +57,11 @@ public class SearchParameters {
 	 */
 	private int geoHashPrecision;
 
+	/**
+	 * 
+	 */
+	private List<String> facetsToSort = new ArrayList<String>();
+	
 	/**
 	 * Constructor that sets a default limit.
 	 * @param defaultLimit The limit to set. Must be greater than -1.
@@ -195,6 +204,21 @@ public class SearchParameters {
 		// limit geohash precision to 10 as it is plenty of resolution
 		if (geoHashPrecision != null && geoHashPrecision > 0 && geoHashPrecision < 11) {
 			this.geoHashPrecision = geoHashPrecision;
+		}
+		return this;
+	}
+
+	public List<String> getFacetsToSort() {
+		return this.facetsToSort;
+	}
+	
+	/**
+	 * @param facetsToSort the facets that should be sorted alphabetically
+	 * @return this
+	 */
+	public SearchParameters setFacetsToSort(final String[] facetsToSort) {
+		if (facetsToSort != null && facetsToSort.length > 0) {
+			this.facetsToSort = Arrays.asList(facetsToSort);
 		}
 		return this;
 	}

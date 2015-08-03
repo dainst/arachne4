@@ -52,6 +52,7 @@ import de.uni_koeln.arachne.util.search.GeoHashGridAggregation;
 import de.uni_koeln.arachne.util.search.SearchFieldList;
 import de.uni_koeln.arachne.util.search.SearchParameters;
 import de.uni_koeln.arachne.util.search.TermsAggregation;
+import de.uni_koeln.arachne.util.search.TermsAggregation.Order;
 
 /**
  * This class implements all search functionality.
@@ -117,7 +118,8 @@ public class SearchService {
 				.setSize(searchParameters.getLimit());
 		
 		addSort(searchParameters.getSortField(), searchParameters.isOrderDesc(), result);
-		addFacets(getFacetList(filters, searchParameters.getFacetLimit(), searchParameters.getGeoHashPrecision()), result);
+		addFacets(getFacetList(filters, searchParameters.getFacetLimit(), searchParameters.getGeoHashPrecision())
+				, searchParameters.getFacetsToSort(), result);
 		
 		return result;
 	}
@@ -140,7 +142,8 @@ public class SearchService {
 				.setSize(searchParameters.getLimit());
 		
 		addSort(searchParameters.getSortField(), searchParameters.isOrderDesc(), result);
-		addFacets(getFacetList(filters, searchParameters.getFacetLimit(), -1), result);
+		addFacets(getFacetList(filters, searchParameters.getFacetLimit(), -1),  searchParameters.getFacetsToSort()
+				, result);
 		
 		return result;
 	}
@@ -159,7 +162,7 @@ public class SearchService {
 		
 		final Set<Aggregation> aggregations = new LinkedHashSet<Aggregation>();
 		aggregations.add(new TermsAggregation(facetName, 0, TermsAggregation.Order.TERMS));
-		addFacets(aggregations, result);
+		addFacets(aggregations, new ArrayList<String>(), result);
 		
 		return result;
 	}
@@ -169,9 +172,13 @@ public class SearchService {
 	 * @param facetList A string list containing the facet names to add. 
 	 * @param searchRequestBuilder The outgoing search request that gets the facets added.
 	 */
-	public void addFacets(final Set<Aggregation> facetList, final SearchRequestBuilder searchRequestBuilder) {
+	public void addFacets(final Set<Aggregation> facetList, final List<String> facetsToSort
+			, final SearchRequestBuilder searchRequestBuilder) {
 		
 		for (final Aggregation aggregation: facetList) {
+			if (aggregation instanceof TermsAggregation && facetsToSort.contains(aggregation.getName())) {
+				((TermsAggregation)aggregation).setOrder(Order.TERMS);
+			}
 			searchRequestBuilder.addAggregation(aggregation.build());
 		}
 	}

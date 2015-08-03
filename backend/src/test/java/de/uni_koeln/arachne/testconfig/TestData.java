@@ -168,8 +168,8 @@ public class TestData {
 		result.addSearchHit(new SearchHit(1l, "test", "Test title 1", "Test subtitle 1", 1l, new ArrayList<Place>()));
 		result.setSize(2);
 		final SearchResultFacet facet1 = new SearchResultFacet("facet_test1");
-		facet1.addValue(new SearchResultFacetValue("test1_value1", "", 1));
-		facet1.addValue(new SearchResultFacetValue("test1_value2", "", 2));
+		facet1.addValue(new SearchResultFacetValue("test1_value1b", "", 1));
+		facet1.addValue(new SearchResultFacetValue("test1_value1a", "", 2));
 		final SearchResultFacet facet2 = new SearchResultFacet("facet_test2");
 		facet2.addValue(new SearchResultFacetValue("test2_value1", "", 4));
 		final SearchResultFacet facet3 = new SearchResultFacet("facet_test3");
