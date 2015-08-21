@@ -30,6 +30,7 @@
 		'facet_einbindung',
 		'facet_literatur'
 	],
+	clustered: false,
 	menuFacetsAppend: {
 		facet_gebaeudetypspeziell: ' (Werkstattgattung)'
 	},
@@ -246,7 +247,7 @@
 	}
 }"></div>
 
-	<div con10t-catalog-map limit="1000" map-config="mapConfig">
+	<div con10t-catalog-map limit="1000" map-config="mapConfig" clustered="mapConfig.clustered">
 
 		<div ng-controller="MapMenuController">
 
