@@ -248,6 +248,38 @@
 
 	<div con10t-catalog-map limit="1000" map-config="mapConfig">
 
+		<div ng-controller="MapMenuController">
+
+			<div id="map-right-menu" class="col-md-2 well well-sm" ng-class="rightMenuToggled ? 'toggled' : ''">
+
+				<h2 class="text-muted uppercase" style="font-variant:small-caps;cursor:pointer"
+					ng-click="rightMenuToggled = !rightMenuToggled">
+				    Antike Werkstätten
+				</h2>
+
+				<div ng-if="rightMenuToggled">
+					<div ar-map-menu-search-info map-config="mapConfig"></div>
+					<div ar-map-menu-search-field map-config="mapConfig"></div>
+					<div ar-map-menu-facet-search map-config="mapConfig"></div>
+				</div>
+			</div>
+
+			<div id="map-left-menu" class="col-md-2 well well-sm"
+				ng-init="leftMenuToggled = overlaysActive()"
+				ng-class="leftMenuToggled ? 'toggled' : ''">
+
+				<h4 ng-click="leftMenuToggled = !leftMenuToggled" style="cursor:pointer">
+					Kartenoptionen
+				</h4>
+
+				<div ng-if="leftMenuToggled">
+					<div ar-map-menu-overlays map-config="mapConfig"></div>
+					<div ar-map-menu-baselayer map-config="mapConfig"></div>
+				</div>
+			</div>
+
+		</div>
+
 	</div>
 
 </div>
