@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" version="5.0" xml:id="TEI.1793467229">
+    <teiHeader xml:id="teiHeader.629396064">
+        <fileDesc xml:id="fileDesc.723248511">
+            <titleStmt xml:id="titleStmt.880282357">
+                <title xml:id="title.890729916">Ionian antiquities / published, with permission of the Society of Dilettanti, by Chandler, M.A., F.S.A., N. Revett, architect; W. Pars, painter.</title>
+                <author xml:id="author.389194975">Wilkins, William, Chandler, Richard, Revett, Nicholas, Pars, William;</author>
+            </titleStmt>
+            <publicationStmt xml:id="publicationStmt.2112239710">
+                <p xml:id="p.360637413">Publication Information</p>
+            </publicationStmt>
+            <sourceDesc xml:id="sourceDesc.1034148457">
+                <msDesc xml:lang="de" xml:id="msDesc.1347961628">
+                    <msIdentifier xml:id="msIdentifier.1224408386">
+                        <country lang="it" xml:id="country.126643388">Germany</country>
+                        <region lang="it" xml:id="region.339127939">North Rhine-Westphalia</region>
+                        <settlement lang="it" xml:id="settlement.301671635">Cologne</settlement>
+                        <institution lang="de" xml:id="institution.2133762525">University of Cologne</institution>
+                        <institution lang="it" xml:id="institution.1386089593">Istituto Archeologico Germanico Roma</institution>
+                        <repository lang="de" xml:id="repository.1317336422">University and public library cologne</repository>
+                        <idno xml:id="idno.2064327631">#unknown</idno>
+                        <idno type="bookId" xml:id="idno.105186895">2</idno>
+                        <idno type="zenonId" xml:id="idno.497102784">000146748</idno>
+                        <msName xml:id="msName.408693285">#unknown</msName>
+                        <altIdentifier xml:id="altIdentifier.1255337889">
+                            <idno xml:id="idno.1584552295">#unknown</idno>
+                        </altIdentifier>
+                    </msIdentifier>
+                    <head xml:id="head.1443437948">
+                        <title xml:id="title.1095103858">Wilkins, William, Chandler, Richard, Revett, Nicholas, Pars, William; - Ionian antiquities / published, with permission of the Society of Dilettanti, by Chandler, M.A., F.S.A., N. Revett, architect; W. Pars, painter.</title>
+                        <note type="caption" xml:id="note.1475686616">- iv, 60 p., VI, XII, X, V pl. : - 58 cm (large 2°). - London : - 1769.</note>
+                        <origPlace xml:id="origPlace.576315909">London</origPlace>
+                    </head>
+                    <msContents xml:id="msContents.1886315524">
+                        <msItem xml:id="msItem.703161833">
+                            <incipit xml:id="incipit.990234593" />
+                            <explicit xml:id="explicit.2022023948" />
+                            <colophon xml:id="colophon.227780261" />
+                        </msItem>
+                    </msContents>
+                    <physDesc xml:id="physDesc.3931207">
+                        <p xml:id="p.1486987673" />
+                        <objectDesc form="codex" xml:id="objectDesc.1534619972">
+                            <supportDesc material="chart" xml:id="supportDesc.1007136365">
+                                <support xml:id="support.471403673">
+                                    <p xml:id="p.1079268934">
+                                        <material xml:id="material.1626091176" />
+                                        <watermark xml:id="watermark.837503310">
+                                            <term xml:id="term.1310308732" />
+                                        </watermark>
+                                    </p>
+                                </support>
+                                <foliation xml:id="foliation.814358328" />
+                            </supportDesc>
+                            <layoutDesc xml:id="layoutDesc.474780901" />
+                        </objectDesc>
+                        <additions xml:id="additions.885978865">
+                            <p xml:id="p.170258291" />
+                        </additions>
+                    </physDesc>
+                    <additional xml:id="additional.1647286639">
+                        <adminInfo xml:id="adminInfo.2061542386">
+                            <note xml:id="note.23999306">
+                                <q type="zenon.500_a" xml:id="q.1776893953">In the introduction to pt. 5, the following statement is made: "The plates now published in this volume for the first time were engraved between 1820 and 1840 from the drawings made by the members of the second Ionian mission sent out by the Society of dilettanti in 1811. These engravings were to have been issued in a companion volume to part III ...; Imprint varies.; The final leaf lists the contents of the two volumes, the first of which was published in 1769 under the title "Ionian antiquities"; Part one was first published in 1769, and an enlarged second edition was issued in 1821. Part 2 was issued in 1797. Part 3 in 1840, part 4 in 1881, and part 5 in 1915.; William Wilkins was the editor of this part until his death in 1839.; Part 1 has title: Ionian antiquities, published with permission of the Society of Dilettanti by R. Chandler, N. Revett [and] W. Pars.</q>
+                            </note>
+                        </adminInfo>
+                        <listBibl xml:id="listBibl.1349072889" />
+                    </additional>
+                </msDesc>
+            </sourceDesc>
+        </fileDesc>
+    </teiHeader>
+
+
+
+    <facsimile xml:base="http://arachne.uni-koeln.de/images/stichwerke/antiquities_of_ionia_1" xml:id="facsimile.543723153">
+        <surface xml:id="surface.841720804">
+            <graphic xml:id="BOOK-antiquitiesofionia01-0001_196" mimeType="jpg" url="BOOK-antiquitiesofionia01-0001_196.jpg" />
+        </surface>
+        <surface xml:id="surface.1326770039">
+            <graphic xml:id="BOOK-antiquitiesofionia01-0002_197" mimeType="jpg" url="BOOK-antiquitiesofionia01-0002_197.jpg" />
+        </surface>
+    </facsimile>
+</TEI>
+
