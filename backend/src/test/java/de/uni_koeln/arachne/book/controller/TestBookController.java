@@ -1,6 +1,5 @@
 package de.uni_koeln.arachne.book.controller;
 
-import static java.util.regex.Pattern.*;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
@@ -9,28 +8,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.mockito.Mockito.*;
 import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8;
 
-import org.json.JSONObject;
+import de.uni_koeln.arachne.book.dao.BookDAO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.skyscreamer.jsonassert.JSONAssert;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.regex.Pattern;
 
 /**
  * @author: Daniel M. de Oliveira
@@ -45,11 +32,14 @@ public class TestBookController {
 
     private MockMvc mockMvc;
 
+    private BookDAO mockBockDao = mock(BookDAO.class);
+
     @Before
     public void setUp(){
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         controller.setBooksPath(BOOKSPATH);
+        controller.setBookDao(mockBockDao);
     }
 
 
@@ -58,8 +48,9 @@ public class TestBookController {
     public void acceptBookPathWithoutEndingSlash() throws Exception {
 
         controller.setBooksPath(BOOKSPATH.substring(0, BOOKSPATH.length() - 1));
+        when (mockBockDao.getTEIFolderName("arachneEntityId")).thenReturn("aoi");
         mockMvc.perform(
-                get("/book/aoi")
+                get("/book/arachneEntityId")
                         .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -68,6 +59,7 @@ public class TestBookController {
     // TODO discuss. questionable if application should not start in this case.
     @Test
     public void invalidBookPath() {
+
         try {
             controller.setBooksPath("/tmp/tmp/tmp/notexisting/");
             fail();
@@ -76,10 +68,20 @@ public class TestBookController {
 
 
     @Test
-    public void xmlNotFound() throws Exception {
-
+    public void entityNoBookIdForEntityID() throws Exception {
+        when (mockBockDao.getTEIFolderName("arachneEntityId")).thenReturn(null);
         mockMvc.perform(
-                get("/book/aoi_not_found")
+                get("/book/arachneEntityId")
+                        .contentType(APPLICATION_JSON_UTF8))
+                .andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    public void xmlNotFound() throws Exception {
+        when (mockBockDao.getTEIFolderName("arachneEntityId")).thenReturn("aoi_not_found");
+        mockMvc.perform(
+                get("/book/arachneEntityId")
                         .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isNotFound());
     }
@@ -88,8 +90,9 @@ public class TestBookController {
     @Test
     public void teiNotWellFormedMissingHeader() throws Exception {
 
+        when (mockBockDao.getTEIFolderName("arachneEntityId")).thenReturn("aoi_ill_formed");
         MvcResult result = mockMvc.perform(
-                get("/book/aoi_ill_formed")
+                get("/book/arachneEntityId")
                         .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isInternalServerError())
                 .andReturn();
@@ -102,8 +105,9 @@ public class TestBookController {
     @Test
     public void convertBookFromXMLtoJSON() throws Exception {
 
+        when (mockBockDao.getTEIFolderName("arachneEntityId")).thenReturn("aoi");
         MvcResult result = mockMvc.perform(
-                get("/book/aoi")
+                get("/book/arachneEntityId")
                         .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andReturn();
