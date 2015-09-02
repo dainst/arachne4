@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.book.dao;
+package de.uni_koeln.arachne.dao.jdbc;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +14,9 @@ import javax.sql.DataSource;
  * @author Daniel M. de Oliveira
  */
 @Repository("BookDao")
-public class BookDAO {
+public class BookDao {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BookDAO.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookDao.class);
 
     private transient DataSource dataSource;
     private transient JdbcTemplate jdbcTemplate;

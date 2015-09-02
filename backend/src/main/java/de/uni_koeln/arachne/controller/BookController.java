@@ -1,5 +1,5 @@
-package de.uni_koeln.arachne.book.controller;
-import de.uni_koeln.arachne.book.dao.BookDAO;
+package de.uni_koeln.arachne.controller;
+import de.uni_koeln.arachne.dao.jdbc.BookDao;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -33,7 +33,7 @@ public class BookController {
     private String booksPath = null;
 
     @Autowired
-    private transient BookDAO bookDao;
+    private transient BookDao bookDao;
 
 
     /**
@@ -179,7 +179,7 @@ public class BookController {
     /**
      * @param bookDao
      */
-    public void setBookDao(BookDAO bookDao){
+    public void setBookDao(BookDao bookDao){
         this.bookDao = bookDao;
     }
 }

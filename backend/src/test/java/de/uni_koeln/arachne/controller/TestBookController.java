@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.book.controller;
+package de.uni_koeln.arachne.controller;
 
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
@@ -8,7 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.mockito.Mockito.*;
 import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8;
 
-import de.uni_koeln.arachne.book.dao.BookDAO;
+import de.uni_koeln.arachne.dao.jdbc.BookDao;
+import de.uni_koeln.arachne.controller.BookController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,14 +26,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @RunWith(MockitoJUnitRunner.class)
 public class TestBookController {
 
-    private static final String BOOKSPATH="src/test/resources/book/controller/BookController/"; // should contain ending slash
+    private static final String BOOKSPATH="src/test/resources/controller/BookController/"; // should contain ending slash
 
     @InjectMocks
     private BookController controller;
 
     private MockMvc mockMvc;
 
-    private BookDAO mockBockDao = mock(BookDAO.class);
+    private BookDao mockBockDao = mock(BookDao.class);
 
     @Before
     public void setUp(){
