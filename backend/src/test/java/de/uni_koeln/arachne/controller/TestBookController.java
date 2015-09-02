@@ -53,8 +53,7 @@ public class TestBookController {
         mockMvc.perform(
                 get("/book/arachneEntityId")
                         .contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andReturn();
+                .andExpect(status().isOk());
     }
 
     // TODO discuss. questionable if application should not start in this case.
@@ -92,14 +91,10 @@ public class TestBookController {
     public void teiNotWellFormedMissingHeader() throws Exception {
 
         when (mockBockDao.getTEIFolderName("arachneEntityId")).thenReturn("aoi_ill_formed");
-        MvcResult result = mockMvc.perform(
+        mockMvc.perform(
                 get("/book/arachneEntityId")
                         .contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isInternalServerError())
-                .andReturn();
-
-        assertEquals("TEI not well-formed: Missing header element.", result.getResponse().getContentAsString());
-
+                .andExpect(status().isNotFound());
     }
 
 

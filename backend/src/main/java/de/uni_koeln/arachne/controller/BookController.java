@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,12 +24,16 @@ import java.util.List;
 
 
 /**
+ * TODO discuss how LOGGING can be tested or if we should neglect testing it.
+ *
  * @author: Daniel M. de Oliveira
  */
 @Controller
 public class BookController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
+
+    private static final String RESPONSE_MSG_NOT_FOUND = "Resource not found.";
 
     private String booksPath = null;
 
@@ -45,15 +50,10 @@ public class BookController {
         }
     }
 
-    /**
-     *
-     */
-    private class Response {
 
-        public Integer status;
-        public String  body;
+    private File teiFile(String bookId){
+        return new File(booksPath+bookId+"/transcription.xml");
     }
-
 
     /**
      * Takes the TEI xml file at booksPath/{bookId}/transcription.xml
@@ -78,46 +78,28 @@ public class BookController {
             final HttpServletResponse response) {
 
         if (booksPath==null) throw new IllegalStateException("bookPath must not be null");
-        if (bookDao==null) throw new IllegalStateException("bookDao must not be null");
+        if (bookDao==null)   throw new IllegalStateException("bookDao must not be null");
 
 
-        String bookId=bookDao.getTEIFolderName(arachneEntityId);
-        if (bookId==null)
-            return ResponseEntity.status(404).body("bookId was null"); // TODO choose proper return code and msg
-
-        File xmlFile = new File(booksPath+bookId+"/transcription.xml");
-        if (!xmlFile.exists())
-            return ResponseEntity.status(404).body("Not found: "+xmlFile);
-
-        Response resp= handleSuccessAndErrorOnXmlTeiParsing(xmlFile);
-        return ResponseEntity.status(resp.status).body(resp.body);
-    }
-
-
-    /**
-     * @param xmlFile an existing file which is assumed to be a valid and well-formed XML / TEI file
-     *
-     * @return <ul><li>a response object with a status of 500
-     *   and an error msg if something went wrong during parsing of xmlFile.
-     *   </li><li>a response object with a status of 200 and a body with the
-     *   JSON string generated during parsing xmlFile</li></ul>
-     */
-    private Response handleSuccessAndErrorOnXmlTeiParsing(File xmlFile){
-        Response resp = new Response();
-        resp.body = "";
-        resp.status = 500;
-        try {
-            resp.body = teiTranscriptToJson(xmlFile);
-            resp.status = 200;
-        } catch (IOException io) {
-            resp.body=io.getMessage();
-        } catch (JDOMException jdomex){
-            resp.body=jdomex.getMessage();
-        } catch (TEIException teie) {
-            resp.body=teie.getMessage();
+        String teiFolderName=bookDao.getTEIFolderName(arachneEntityId);
+        if (teiFolderName==null){
+            LOGGER.error("bookId could not be determined for arachneEntityId: "+arachneEntityId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(RESPONSE_MSG_NOT_FOUND);
         }
-        return resp;
+
+        if (!teiFile(teiFolderName).exists()){
+            LOGGER.error("File not found: "+teiFile(teiFolderName));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(RESPONSE_MSG_NOT_FOUND);
+        }
+
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(buildJsonFromTeiTranscript(teiFile(teiFolderName)));
+        } catch (Exception e){
+            LOGGER.error("An error occured while parsing "+teiFile(teiFolderName)+" -> "+e.getClass() + ":" + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(RESPONSE_MSG_NOT_FOUND) ;
+        }
     }
+
 
 
     /**
@@ -127,7 +109,7 @@ public class BookController {
      * @throws IOException
      * @throws TEIException
      */
-    private String teiTranscriptToJson(File xmlFile) throws JDOMException, IOException, TEIException {
+    private String buildJsonFromTeiTranscript(File xmlFile) throws JDOMException, IOException, TEIException {
 
         SAXBuilder builder = new SAXBuilder();
 
