@@ -1,4 +1,7 @@
 package de.uni_koeln.arachne.controller;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
 import de.uni_koeln.arachne.dao.jdbc.BookDao;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -20,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
 import java.util.List;
 
 
@@ -131,20 +136,32 @@ public class BookController {
      * @param img_filePrefix
      * @return
      */
-    private String convertSurfaceElementsToJson(List listOfSurfaceElements, String img_filePrefix){
-        StringBuilder resultStringBuilder = new StringBuilder();
-        resultStringBuilder.append("{\n\t\"pages\":[\n");
+    private String convertSurfaceElementsToJson(List listOfSurfaceElements, String img_filePrefix)
+            throws IOException {
 
-        for (int i=0;i< listOfSurfaceElements.size();i++){
-            resultStringBuilder.append("\t{\n");
-            resultStringBuilder.append("\t\t\"img_file\":\""+img_filePrefix+"/"+
-                    ((Element) listOfSurfaceElements.get(i)).getChildren().get(0).getAttributeValue("url")+"\"\n\t}");
-            if (i!=listOfSurfaceElements.size()-1) resultStringBuilder.append(",");
-            resultStringBuilder.append("\n");
+        StringWriter sw = new StringWriter();
+        JsonGenerator jsonGenerator = new JsonFactory().createGenerator(sw);
+
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeFieldName("pages");
+        jsonGenerator.writeStartArray();
+
+        for (Object surfaceEl : listOfSurfaceElements){
+
+            jsonGenerator.writeStartObject();
+            jsonGenerator.writeStringField("img_file",img_filePrefix+"/"+
+                    ((Element) surfaceEl).getChildren().get(0).getAttributeValue("url"));
+            jsonGenerator.writeEndObject();
         }
 
-        resultStringBuilder.append("\t]\n}");
-        return resultStringBuilder.toString();
+        jsonGenerator.writeEndArray();
+        jsonGenerator.writeEndObject();
+        jsonGenerator.close();
+
+
+        String result = sw.toString();
+        sw.close();
+        return result;
     }
 
     /**
