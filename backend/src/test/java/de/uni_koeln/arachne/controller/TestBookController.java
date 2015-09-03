@@ -56,7 +56,6 @@ public class TestBookController {
                 .andExpect(status().isOk());
     }
 
-    // TODO discuss. questionable if application should not start in this case.
     @Test
     public void invalidBookPath() {
 
