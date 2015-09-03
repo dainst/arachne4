@@ -27,6 +27,8 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.List;
 
+import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8_VALUE;
+
 
 /**
  * TODO discuss how LOGGING can be tested or if we should neglect testing it.
@@ -77,7 +79,9 @@ public class BookController {
      *   500 if an error occurred during the xml to json transformation
      *
      */
-    @RequestMapping(value="/book/{arachneEntityId}", method=RequestMethod.GET)
+    @RequestMapping(value="/book/{arachneEntityId}",
+            method=RequestMethod.GET,
+            produces = {APPLICATION_JSON_UTF8_VALUE})
     public @ResponseBody ResponseEntity<String> handleGetEntityIdRequest(
             @PathVariable("arachneEntityId") final String arachneEntityId,
             final HttpServletResponse response) {
@@ -165,9 +169,9 @@ public class BookController {
     }
 
     /**
-     * @param booksPath
+     * @param booksPath path to the folder where the TEI files are stored
      */
-    @Value("${booksPath}") // Path to the folder where the TEI files are stored
+    @Value("${booksPath}")
     public void setBooksPath(String booksPath){
         if (!new File(booksPath).exists()) throw new IllegalArgumentException("Must exist: "+booksPath);
 
