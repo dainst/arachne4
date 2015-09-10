@@ -1,23 +1,8 @@
 
-<div class="row">
-	<!--
-	<h1>GraKo</h1>
-
-	<p>
-		<a href="http://archaeologie.uni-koeln.de/node/567">Archäologie vormoderner Wirtschaftsräume</a>.
-	</p>
-	-->
-</div>
-
 <div class="row con10t-fullscreen">
 
-<div ng-init="mapConfig = {
+<div ng-init="config = {
 	menuTitle: 'Antike Werkst&auml;tten',
-	menuHeadingSearch: 'Suche in Projektdatens&auml;tzen',
-	menuShowLayerMenu: true,
-	menuShowOverlays: true,
-	menuShowBaselayers: true,
-	menuShowMapfacetSelection: false,
 	menuFacetsAllow: [
 		'facet_kulturkreis',
 		'facet_datierungepoche',
@@ -257,10 +242,16 @@
 				continuousWorld: true
 			}
 		}
-	}
+	},
+	defaultBaselayer: 'osm'
 }"></div>
 
-	<div con10t-catalog-map limit="1000" map-config="mapConfig" clustered="mapConfig.clustered">
+	<div con10t-catalog-map limit="1000"
+		overlays="config.overlays"
+		baselayers="config.baselayers"
+		default-baselayer="config.defaultBaselayer"
+		facets-select="config.facetsSelect"
+		clustered="config.clustered">
 
 		<div ng-controller="MapMenuController">
 
@@ -273,8 +264,11 @@
 
 				<div ng-if="rightMenuToggled">
 					<div ar-map-menu-search-info type="places"></div>
-					<div ar-map-menu-search-field map-config="mapConfig"></div>
-					<div ar-map-menu-facet-search map-config="mapConfig"></div>
+					<div ar-map-menu-search-field heading="Suche in Projektdatens&auml;tzen"></div>
+					<div ar-map-menu-facet-search facets-append="config.menuFacetsAppend"
+						facets-allow="config.menuFacetsAllow"
+						facets-selected="config.facetsSelect">
+					</div>
 				</div>
 			</div>
 
@@ -287,12 +281,12 @@
 				</h4>
 
 				<div ng-if="leftMenuToggled">
-					<div ar-map-menu-overlays map-config="mapConfig"></div>
-					<div ar-map-menu-baselayer map-config="mapConfig"></div>
+					<div ar-map-menu-overlays overlays="config.overlays"></div>
+					<div ar-map-menu-baselayer baselayers="config.baselayers"></div>
 				</div>
 			</div>
 
-			<div ar-map-zoomcontrol id="ar-map-zoomcontrol" map="map" style="left:19%"></div>
+			<div ar-map-zoomcontrol id="ar-map-zoomcontrol" style="left:19%"></div>
 
 		</div>
 
