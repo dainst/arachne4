@@ -259,7 +259,9 @@
 
 				<h2 class="text-muted uppercase" style="font-variant:small-caps;cursor:pointer"
 					ng-click="rightMenuToggled = !rightMenuToggled">
-				    Antike Werkstätten
+					Antike Werkstätten
+					<span ng-if="rightMenuToggled" class="text-muted small glyphicon glyphicon-chevron-up"></span>
+					<span ng-if="!rightMenuToggled" class="text-muted small glyphicon glyphicon-chevron-down"></span>
 				</h2>
 
 				<div ng-if="rightMenuToggled">
@@ -276,8 +278,10 @@
 				ng-init="leftMenuToggled = overlaysActive()"
 				ng-class="leftMenuToggled ? 'toggled' : ''">
 
-				<h4 ng-click="leftMenuToggled = !leftMenuToggled" style="cursor:pointer">
+				<h4 class="clickable" ng-click="leftMenuToggled = !leftMenuToggled">
 					Kartenoptionen
+					<span ng-if="leftMenuToggled" class="text-muted small glyphicon glyphicon-chevron-up"></span>
+					<span ng-if="!leftMenuToggled" class="text-muted small glyphicon glyphicon-chevron-down"></span>
 				</h4>
 
 				<div ng-if="leftMenuToggled">
