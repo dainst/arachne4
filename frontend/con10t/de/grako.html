@@ -1,300 +1,134 @@
+<div class="row">
+    <div class="col-md-8">
 
-<div class="row con10t-fullscreen">
+        <div>
+            <img style="float:left" src="/con10t/de/grako_img/D-DAI-ATH-Olympia-0120Bearb_2107915,01-small.jpg" width="49%">
+            <h1 style="float:left">
+                Werkstätten in der antiken Welt
+            </h1>
+        </div>
 
-<div ng-init="config = {
-	menuTitle: 'Antike Werkst&auml;tten',
-	menuFacetsAllow: [
-		'facet_kulturkreis',
-		'facet_datierungepoche',
-		'facet_gebaeudetypspeziell',
-		'facet_produktmaterial',
-		'facet_produktform',
-		'facet_produktfunktion',
-		'facet_befund',
-		'facet_kontext',
-		'facet_einbindung',
-		'facet_literatur'
-	],
-	clustered: false,
-	menuFacetsAppend: {
-		facet_gebaeudetypspeziell: ' (Werkstattgattung)'
-	},
-	facetsSelect: [
-		{
-			key: 'catalogIds',
-			value: 92
-		},
-		{
-			key: 'facet_kategorie',
-			value: 'Bauwerke'
-		}
-	],
-	overlays: {
-		groups: [
-			{
-				name: 'Physiogeographie',
-				overlays: [
-					{
-						key: 'coastline',
-						name: 'Antiker Küstenverlauf',
-						type: 'wms',
-						url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
-						layerOptions: {
-							layers: 'geonode:coastline',
-							format: 'image/png',
-							transparent: true
-						},
-						attributionUrl: 'http://geoserver.dainst.org/layers/geonode:coastline'
-					},
-					{
-						key: 'europe_data',
-						name: 'Minerallagerstätten in Europa',
-						type: 'wms',
-						url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
-						layerOptions: {
-							layers: 'geonode:europe_data',
-							format: 'image/png',
-							transparent: true
-						},
-						attributionUrl: 'http://geoserver.dainst.org/layers/geonode:europe_data'
-					}
-				]
-			},
-			{
-				name: 'Transportwege',
-				overlays: [
-					{
-						key: 'ba_roads',
-						name: 'Römisches Straßennetz',
-						type: 'wms',
-						url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
-						layerOptions: {
-							layers: 'geonode:ba_roads',
-							format: 'image/png',
-							transparent: true
-						},
-						attributionUrl: 'http://geoserver.dainst.org/layers/geonode:ba_roads'
-					},
-					{
-						key: 'mccormicketal2008_schiffswracks',
-						name: 'Schiffswracks 1-1500 n. Chr.',
-						type: 'wms',
-						url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
-						layerOptions: {
-							layers: 'geonode:mccormicketal2008_schiffswracks',
-							format: 'image/png',
-							transparent: true,
-							tiled: true
-						},
-						attributionUrl: 'http://geoserver.dainst.org/layers/geonode:mccormicketal2008_schiffswracks'
-					}
-				]
-			},
-			{
-				name: 'Römisches Reich',
-				overlays: [
-					{
-						key: 'roman_empire_ad_14_provinces',
-						name: 'Provinzen 14 n. Chr.',
-						type: 'wms',
-						url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
-						layerOptions: {
-							layers: 'geonode:roman_empire_ad_14_provinces',
-							format: 'image/png',
-							transparent: true
-						},
-						attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_14_provinces'
-					},
-					{
-						key: 'roman_empire_ad_69_provinces',
-						name: 'Provinzen 69 n. Chr.',
-						type: 'wms',
-						url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
-						layerOptions: {
-							layers: 'geonode:roman_empire_ad_69_provinces',
-							format: 'image/png',
-							transparent: true
-						},
-						attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_69_provinces'
-					},
-					{
-						key: 'ba_100_provinces',
-						name: 'Provinzen 100 n. Chr.',
-						type: 'wms',
-						url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
-						layerOptions: {
-							layers: 'geonode:ba_100_provinces',
-							format: 'image/png',
-							transparent: true
-						},
-						attributionUrl: 'http://geoserver.dainst.org/layers/geonode:ba_100_provinces'
-					},
-					{
-						key: 'roman_empire_ad_117',
-						name: 'Provinzen 117 n. Chr.',
-						type: 'wms',
-						url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
-						layerOptions: {
-							layers: 'geonode:roman_empire_ad_117',
-							format: 'image/png',
-							transparent: true
-						},
-						attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_117'
-					},
-					{
-						key: 'roman_empire_ad_200_provinces',
-						name: 'Provinzen 200 n. Chr.',
-						type: 'wms',
-						url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
-						layerOptions: {
-							layers: 'geonode:roman_empire_ad_200_provinces',
-							format: 'image/png',
-							transparent: true
-						},
-						attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_200_provinces'
-					}
-				]
-			},
-			{
-				name: 'Sonstige antike Reiche',
-				overlays: [
-					{
-						key: 'alexander_extent',
-						name: 'Alexander',
-						type: 'wms',
-						url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
-						layerOptions: {
-							layers: 'geonode:alexander_extent',
-							format: 'image/png',
-							transparent: true
-						},
-						attributionUrl: 'http://geoserver.dainst.org/layers/geonode:alexander_extent'
-					},
-					{
-						key: 'persian_extent',
-						name: 'Perser',
-						type: 'wms',
-						url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
-						layerOptions: {
-							layers: 'geonode:persian_extent',
-							format: 'image/png',
-							transparent: true
-						},
-						attributionUrl: 'http://geoserver.dainst.org/layers/geonode:persian_extent'
-					},
-					{
-						key: 'hasmonean',
-						name: 'Hasmonäer',
-						type: 'wms',
-						url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
-						layerOptions: {
-							layers: 'geonode:hasmonean',
-							format: 'image/png',
-							transparent: true
-						},
-						attributionUrl: 'http://geoserver.dainst.org/layers/geonode:hasmonean'
-					},
-					{
-						key: 'herod',
-						name: 'Herodes',
-						type: 'wms',
-						url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
-						layerOptions: {
-							layers: 'geonode:herod',
-							format: 'image/png',
-							transparent: true
-						},
-						attributionUrl: 'http://geoserver.dainst.org/layers/geonode:herod'
-					}
-				]
-			}
-		]
-	},
-	baselayers: {
-		osm: {
-			name: 'OpenStreetMap',
-			type: 'xyz',
-			url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-			layerOptions: {
-				subdomains: ['a', 'b', 'c'],
-				attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
-				continuousWorld: true,
-				maxZoom: 18
-			}
-		},
-		mapquestAerial: {
-			name: 'MapQuest Open Aerial',
-			type: 'xyz',
-			url: 'http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png',
-			layerOptions: {
-				subdomains: ['1', '2', '3', '4'],
-				attribution: 'Tiles Courtesy of <a href=\'http://www.mapquest.com/\' target=\'_blank\'>MapQuest</a> <img src=\'http://developer.mapquest.com/content/osm/mq_logo.png\'>',
-				continuousWorld: true
-			}
-		},
-		romanEmpire: {
-			name: 'Roman Empire',
-			type: 'xyz',
-			url: 'http://pelagios.dme.ait.ac.at/tilesets/imperium//{z}/{x}/{y}.png',
-			layerOptions: {
-				subdomains: ['a', 'b', 'c'],
-				attribution: 'Tiles: <a href=\'http://imperium.ahlfeldt.se/\'>DARE 2014</a>',
-				continuousWorld: true
-			}
-		}
-	},
-	defaultBaselayer: 'osm'
-}"></div>
+        <h2 style="break:both" class="con10t-toc-entry">Einführung</h2>
 
-	<div con10t-catalog-map limit="1000"
-		overlays="config.overlays"
-		baselayers="config.baselayers"
-		default-baselayer="config.defaultBaselayer"
-		facets-select="config.facetsSelect"
-		clustered="config.clustered">
+        <p>
+            Die handwerkliche Produktion bildete einen elementaren Bestandteil antiker Wirtschaftssysteme,
+            schließlich war die Werkstätte ein wichtiger Schnittpunkt zwischen Gewinnung und Nutzung von
+            Rohstoffen, sei es Ton, Stein oder Eisenerz. Im Rahmen des DFG-Graduiertenkollegs 1878
+            »Archäologie vormoderner Wirtschaftsräume« wird eine möglichst vollständige Zusammenstellung der
+            archäologisch bezeugten Werkstätten angelegt. Diese ist weltweit online frei verf&uuml;gbar und stellt
+            so eine wichtige Recherchebasis f&uuml;r weitergehende Fragestellungen und Forschungsprojekte sowie
+            gleichzeitig eine übersichtliche Informationsplattform zum antiken Wirtschafts- und Alltagsleben
+            f&uuml;r die interessierte Öffentlichkeit dar.
+        </p>
 
-		<div ng-controller="MapMenuController">
+        </br>
 
-			<div id="map-right-menu" class="col-md-2 well well-sm" ng-class="rightMenuToggled ? 'toggled' : ''">
+        <h2 class="con10t-toc-entry">Methodik</h2>
 
-				<h2 class="text-muted uppercase" style="font-variant:small-caps;cursor:pointer"
-					ng-click="rightMenuToggled = !rightMenuToggled">
-					Antike Werkstätten
-					<span ng-if="rightMenuToggled" class="text-muted small glyphicon glyphicon-chevron-up"></span>
-					<span ng-if="!rightMenuToggled" class="text-muted small glyphicon glyphicon-chevron-down"></span>
-				</h2>
+        <p>
+            Basierend auf den relevanten Publikationen werden in dem daf&uuml;r eigens adaptierten Ger&uuml;st der
+            Objektdatenbank ARACHNE die wichtigsten Informationen zu den durch archäologische Funde und/oder
+            Befunde nachgewiesenen Werkstätten &uuml;ber ein standardisiertes Vokabular erfasst, um &uuml;bergeordnete
+            Suchen, Vergleiche und Analysen zu ermöglichen. Durch die einheitliche Bereitstellung der
+            ansonsten verstreuten, heterogenen und häufig nur schwer zugänglichen Veröffentlichungen wird die
+            Untersuchung von thematisch, chronologisch oder geographisch &uuml;bergreifenden Aspekten deutlich
+            vereinfacht und beschleunigt.
+        </p>
 
-				<div ng-if="rightMenuToggled">
-					<div ar-map-menu-search-info type="places"></div>
-					<div ar-map-menu-search-field heading="Suche in Projektdatens&auml;tzen"></div>
-					<div ar-map-menu-facet-search facets-append="config.menuFacetsAppend"
-						facets-allow="config.menuFacetsAllow"
-						facets-selected="config.facetsSelect">
-					</div>
-				</div>
-			</div>
+        <p>
+            Die Werkstätten werden im Rahmen der Datenerfassung und -verwaltung mit verschiedenen
+            technischen Ressourcen des Deutschen Archäologischen Instituts und des Cologne Digital
+            Archaeology Laboratory kontextualisiert, sodass weitere Informationen beispielsweise zu
+            relevanten Orten, Literaturzitaten, Rohstoffvorkommen oder Transportwegen bereitgestellt werden
+            können. Das Projekt konzentriert sich auf den Mittelmeerraum in der griechischen und römischen
+            Antike und umfasst gegenwärtig Werkstätten von der portugiesischen Küste bis ins ägyptische
+            Niltal, die von archaischer bis in spätantike Zeit reichen. Mittelfristig könnte die Datenbasis
+            um weitere Werkstätten aus anderen Epochen und Regionen ergänzt werden.
+        </p>
 
-			<div id="map-left-menu" class="col-md-2 well well-sm"
-				ng-init="leftMenuToggled = overlaysActive()"
-				ng-class="leftMenuToggled ? 'toggled' : ''">
+        </br>
 
-				<h4 class="clickable" ng-click="leftMenuToggled = !leftMenuToggled">
-					Kartenoptionen
-					<span ng-if="leftMenuToggled" class="text-muted small glyphicon glyphicon-chevron-up"></span>
-					<span ng-if="!leftMenuToggled" class="text-muted small glyphicon glyphicon-chevron-down"></span>
-				</h4>
+        <h2 class="con10t-toc-entry">Katalog</h2>
 
-				<div ng-if="leftMenuToggled">
-					<div ar-map-menu-overlays overlays="config.overlays"></div>
-					<div ar-map-menu-baselayer baselayers="config.baselayers"></div>
-				</div>
-			</div>
+        <p>
+            <con10t-catalog-tree catalog-id="92" style="width:80%" float:left></con10t-catalog-tree>
+        </p>
 
-			<div ar-map-zoomcontrol id="ar-map-zoomcontrol" style="left:19%"></div>
+        </br>
 
-		</div>
+        <h2 class="con10t-toc-entry">Hinweise zur Nutzung</h2>
 
-	</div>
+        <p>
+            Die Katalogeinträge wurden als Arachne-Objektdatensätze angelegt, die nach Art der verarbeiteten
+            Materialien zu einem Katalog geordnet wurden. Das Klicken auf ein Ordnersymbol zeigt etwaige Unterordner
+            oder aber Datensätze zu einzelnen Werkstätten an, wobei die ausführlichen Informationen zu diesen
+            Bauwerken direkt über den Link aufgerufen werden können. Zudem können Sie über das Lupensymbol rechts
+            stets alle diesem Ordner untergeordneten Datensätze anzeigen. In der Ergebnisansicht bieten Facetten
+            die Möglichkeit, die Datensätze nach bestimmten Kriterien (z.B. Abbildung(en) vorhanden, Ort, Literatur)
+            weiter zu filtern.
+            Darüberhinaus können Sie nach bestimmten Begriffen in den Projektdatensätzen suchen, alle Einträge des
+            Projekts anzeigen oder die kartographische Suchmöglichkeit aller aufgenommenen und georeferenzierten
+            Werkstattfundstellen nutzen.
+        </p>
 
+        </br>
+
+        <h2 class="con10t-toc-entry">Mitarbeiter</h2>
+
+        <p>
+            Leitung: M. Bentz, M. Heinzelmann</br>
+            Administration &amp; technische Konzeption: U. Stockinger</br>
+            technische Umsetzung: D. Neugebauer</br>
+            Dateneingabe: M.-H. Grunwald, L. Kröger, C. Recko, R. Da Vela, C. Widow
+        </p>
+
+        <p>
+            <a href="http://www.cceh.uni-koeln.de/">
+                <img src="/con10t/de/grako_img/CCEH_logo.jpg" height="90" align="left">
+            </a>
+            <a href="http://www.wirtschaftsarchaeologie.de/">
+                <img src="/con10t/de/grako_img/Grako1878_Logo.jpg" height="95">
+            </a>
+        </p>
+
+    </div>
+
+    <div class="col-md-4">
+        <con10t-toc toc-heading="Übersicht"></con10t-toc>
+
+        <h3>Suche in den Daten des Projekts</h3>
+        <con10t-search catalog-id="92"></con10t-search>
+
+        <h3>Kartenansicht</h3>
+        <div ng-init="config = {
+            baselayers: {
+                osm: {
+                    name: 'OpenStreetMap',
+                    type: 'xyz',
+                    url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    layerOptions: {
+                        subdomains: ['a', 'b', 'c'],
+                        attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
+                        continuousWorld: true,
+                        maxZoom: 18
+                    }
+                }
+            },
+            baselayerKey: 'osm',
+            clustered: false
+        }"></div>
+        <div>
+            <a href="/project/grako_map" title="Zur Karte" style="cursor:pointer">
+                Zur vollst&auml;ndigen Karte
+            </a>
+        </div>
+        <div con10t-catalog-map limit="1000"
+            catalog-id="92"
+            baselayers="config.baselayers"
+            default-baselayer="config.baselayerKey"
+            facets-select="config.facetsSelect"
+            clustered="config.clustered">
+        </div>
+
+    </div>
 </div>
-

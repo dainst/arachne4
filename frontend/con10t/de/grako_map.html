@@ -1,0 +1,299 @@
+
+<div class="row con10t-fullscreen">
+
+<div ng-init="config = {
+    menuTitle: 'Antike Werkst&auml;tten',
+    menuFacetsAllow: [
+        'facet_kulturkreis',
+        'facet_datierungepoche',
+        'facet_gebaeudetypspeziell',
+        'facet_produktmaterial',
+        'facet_produktform',
+        'facet_produktfunktion',
+        'facet_befund',
+        'facet_kontext',
+        'facet_einbindung',
+        'facet_literatur'
+    ],
+    clustered: false,
+    menuFacetsAppend: {
+        facet_gebaeudetypspeziell: ' (Werkstattgattung)'
+    },
+    facetsSelect: [
+        {
+            key: 'catalogIds',
+            value: 92
+        },
+        {
+            key: 'facet_kategorie',
+            value: 'Bauwerke'
+        }
+    ],
+    overlays: {
+        groups: [
+            {
+                name: 'Physiogeographie',
+                overlays: [
+                    {
+                        key: 'coastline',
+                        name: 'Antiker Küstenverlauf',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:coastline',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:coastline'
+                    },
+                    {
+                        key: 'europe_data',
+                        name: 'Minerallagerstätten in Europa',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:europe_data',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:europe_data'
+                    }
+                ]
+            },
+            {
+                name: 'Transportwege',
+                overlays: [
+                    {
+                        key: 'ba_roads',
+                        name: 'Römisches Straßennetz',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:ba_roads',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:ba_roads'
+                    },
+                    {
+                        key: 'mccormicketal2008_schiffswracks',
+                        name: 'Schiffswracks 1-1500 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:mccormicketal2008_schiffswracks',
+                            format: 'image/png',
+                            transparent: true,
+                            tiled: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:mccormicketal2008_schiffswracks'
+                    }
+                ]
+            },
+            {
+                name: 'Römisches Reich',
+                overlays: [
+                    {
+                        key: 'roman_empire_ad_14_provinces',
+                        name: 'Provinzen 14 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:roman_empire_ad_14_provinces',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_14_provinces'
+                    },
+                    {
+                        key: 'roman_empire_ad_69_provinces',
+                        name: 'Provinzen 69 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:roman_empire_ad_69_provinces',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_69_provinces'
+                    },
+                    {
+                        key: 'ba_100_provinces',
+                        name: 'Provinzen 100 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:ba_100_provinces',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:ba_100_provinces'
+                    },
+                    {
+                        key: 'roman_empire_ad_117',
+                        name: 'Provinzen 117 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:roman_empire_ad_117',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_117'
+                    },
+                    {
+                        key: 'roman_empire_ad_200_provinces',
+                        name: 'Provinzen 200 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:roman_empire_ad_200_provinces',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_200_provinces'
+                    }
+                ]
+            },
+            {
+                name: 'Sonstige antike Reiche',
+                overlays: [
+                    {
+                        key: 'alexander_extent',
+                        name: 'Alexander',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:alexander_extent',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:alexander_extent'
+                    },
+                    {
+                        key: 'persian_extent',
+                        name: 'Perser',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:persian_extent',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:persian_extent'
+                    },
+                    {
+                        key: 'hasmonean',
+                        name: 'Hasmonäer',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:hasmonean',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:hasmonean'
+                    },
+                    {
+                        key: 'herod',
+                        name: 'Herodes',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:herod',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:herod'
+                    }
+                ]
+            }
+        ]
+    },
+    baselayers: {
+        osm: {
+            name: 'OpenStreetMap',
+            type: 'xyz',
+            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            layerOptions: {
+                subdomains: ['a', 'b', 'c'],
+                attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
+                continuousWorld: true,
+                maxZoom: 18
+            }
+        },
+        mapquestAerial: {
+            name: 'MapQuest Open Aerial',
+            type: 'xyz',
+            url: 'http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png',
+            layerOptions: {
+                subdomains: ['1', '2', '3', '4'],
+                attribution: 'Tiles Courtesy of <a href=\'http://www.mapquest.com/\' target=\'_blank\'>MapQuest</a> <img src=\'http://developer.mapquest.com/content/osm/mq_logo.png\'>',
+                continuousWorld: true
+            }
+        },
+        romanEmpire: {
+            name: 'Roman Empire',
+            type: 'xyz',
+            url: 'http://pelagios.dme.ait.ac.at/tilesets/imperium//{z}/{x}/{y}.png',
+            layerOptions: {
+                subdomains: ['a', 'b', 'c'],
+                attribution: 'Tiles: <a href=\'http://imperium.ahlfeldt.se/\'>DARE 2014</a>',
+                continuousWorld: true
+            }
+        }
+    },
+    defaultBaselayer: 'osm'
+}"></div>
+
+    <div con10t-catalog-map limit="1000"
+        overlays="config.overlays"
+        baselayers="config.baselayers"
+        default-baselayer="config.defaultBaselayer"
+        facets-select="config.facetsSelect"
+        clustered="config.clustered">
+
+        <div ng-controller="MapMenuController">
+
+            <div id="map-right-menu" class="col-md-2 well well-sm" ng-class="rightMenuToggled ? 'toggled' : ''">
+
+                <h2 class="text-muted uppercase" style="font-variant:small-caps;cursor:pointer"
+                    ng-click="rightMenuToggled = !rightMenuToggled">
+                    Antike Werkstätten
+                    <span ng-if="rightMenuToggled" class="text-muted small glyphicon glyphicon-chevron-up"></span>
+                    <span ng-if="!rightMenuToggled" class="text-muted small glyphicon glyphicon-chevron-down"></span>
+                </h2>
+
+                <div ng-if="rightMenuToggled">
+                    <div ar-map-menu-search-info type="places"></div>
+                    <div ar-map-menu-search-field heading="Suche in Projektdatens&auml;tzen"></div>
+                    <div ar-map-menu-facet-search facets-append="config.menuFacetsAppend"
+                        facets-allow="config.menuFacetsAllow"
+                        facets-selected="config.facetsSelect">
+                    </div>
+                </div>
+            </div>
+
+            <div id="map-left-menu" class="col-md-2 well well-sm"
+                ng-init="leftMenuToggled = overlaysActive()"
+                ng-class="leftMenuToggled ? 'toggled' : ''">
+
+                <h4 class="clickable" ng-click="leftMenuToggled = !leftMenuToggled">
+                    Kartenoptionen
+                    <span ng-if="leftMenuToggled" class="text-muted small glyphicon glyphicon-chevron-up"></span>
+                    <span ng-if="!leftMenuToggled" class="text-muted small glyphicon glyphicon-chevron-down"></span>
+                </h4>
+
+                <div ng-if="leftMenuToggled">
+                    <div ar-map-menu-overlays overlays="config.overlays"></div>
+                    <div ar-map-menu-baselayer baselayers="config.baselayers"></div>
+                </div>
+            </div>
+
+            <div ar-map-zoomcontrol id="ar-map-zoomcontrol" style="left:19%"></div>
+
+        </div>
+
+    </div>
+
+</div>
