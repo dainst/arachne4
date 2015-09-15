@@ -276,6 +276,12 @@
                             "de": "Das Hellespont-Projekt",
                             "en": "The Hellespont Project"
                         }
+                    },
+                    {
+                        "id": "grako",
+                        "title": {
+                            "de": "Antike Werkstätten"
+                        }
                     }
                 ]
             },
