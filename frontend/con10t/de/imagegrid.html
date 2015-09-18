@@ -1,76 +1,86 @@
-<div>
-  <h1>Image Grid DAI Rom</h1>
+<div class="row">
+  <div class="col-md-8">
+    <h1>Image Grid DAI Rom</h1>
 
-  <p><a href="http://arachne.uni-koeln.de/fotothek/rom">Digitale Fotothek des
-  DAI Rom</a></p>
+    <p>Ziel des Projektes Image-Grid ist die automatisierte Verknüpfung von
+    Bild und zugehöriger Information. Bei der Bearbeitung enormer Datenmengen –
+    wie etwa den Bildbeständen des Fotothek DAI Rom mit etwa 400.000 Bildern –
+    ist eine Verknüpfung von Bildern mit wissenschaftlichen Daten per Hand so
+    gut wie unmöglich. Innerhalb des Projekts Image-Grid werden anhand mehrerer
+    Teilprojekte Wege entwickelt, die es möglich machen Informationen, sog.
+    Metadaten zu Bilden automatisch zu verbinden:</p>
 
-  <p><a con10t-search-query="vaticanischen%20sculpturen" con10t-search-facet=
-  "facet_kategorie:%22B%C3%BCcher%22">Die Kataloge des Vatikanischen Museums
-  von Walter Amelung im Bookbrowser</a></p>
+    <p>Im Zuge der Digitalisierung archäologischer Publikation des frühen 20
+    Jh. werden die erstellten Daten nicht als digitale Bücher betrachtet,
+    sondern im Sinne des Projekts als „Lieferant“ wichtiger Information zu
+    archäologischen Objekten. So werden anhand der Kataloge von Walter Amelung
+    zu den Vatikanischen Museen exemplarisch digitale Texte mit digitalen
+    Fotografien der beschrieben Objekte kontextualisiert. Über ein
+    Texterkennungsverfahren, dem sog. Optical Character Recognition (OCR)
+    werden die Fotografien der Katalogseiten als Textdatei ausgelesen und
+    dadurch nach bestimmten Begriffen, wie etwa Inventarnummern durchsuchbar.
+    Durch ein speziell modifiziertes sog. Text-Mining Programm können nun die
+    Begriffe vom Text extrahiert werden; nach diesen Begriffen werden bereits
+    bestehende Datensätze in der Arachne durchsucht und bei Übereinstimmung der
+    gleichen Inventarnummer miteinander verbunden. Den einzelnen Seiten werden
+    so Datensätzen und damit Bilder in der Arachne zugeordnet, die exakt auf
+    dieser digitalen Buchseite beschrieben sind.</p>
 
-  <p><a con10t-page="invbuecherrom">Die Inventarbücher der Fotothek des DAI
-  Rom</a></p>
+    <p><img src="./imagegrid_img/image_grid.jpg" align="left"></p>
 
-  <p>Ziel des Projektes Image-Grid ist die automatisierte Verknüpfung von Bild
-  und zugehöriger Information. Bei der Bearbeitung enormer Datenmengen – wie
-  etwa den Bildbeständen des Fotothek DAI Rom mit etwa 400.000 Bildern – ist
-  eine Verknüpfung von Bildern mit wissenschaftlichen Daten per Hand so gut wie
-  unmöglich. Innerhalb des Projekts Image-Grid werden anhand mehrerer
-  Teilprojekte Wege entwickelt, die es möglich machen Informationen, sog.
-  Metadaten zu Bilden automatisch zu verbinden:</p>
+    <p>Zum zweiten Projekt gehört die digitale Weiterverarbeitung der
+    Inventarbücher der Fotothek, DAI Rom, die seit Bestehen der Fotothek 1928
+    geführt werden. Zur Sicherung der einmaligen Dokumente wurden diese
+    digitalisiert und über den Bookbrowser der Arachne-Datenbank
+    veröffentlicht. In den etwa 100 Büchern sind Namen und Beschreibungen zu
+    den jeweiligen Negativen verzeichnet, die in den Jahren 1928 bis 1999
+    erstellt wurden. Jede Negativnummer ist einmalig, um die Bilder jederzeit
+    identifizieren zu können. Da diese Negativnummer auch bei der
+    Digitalisierung der analogen Bestände des DAI Rom als Name der Scans
+    verwendet werden (siehe <a con10t-page="emagines">EMAGINES</a>), ist es
+    möglich die Bilder automatisiert den Seiten des Inventarbuchs und den
+    darauf vermerkten Informationen zu verlinken. Zusätzlich können über diese
+    Negativnummer bereits digitalisierte archäologische Publikationen, wie etwa
+    durch Google Books durchsucht und automatisch mit dem Bild verbunden
+    werden.</p>
 
-  <p>Im Zuge der Digitalisierung archäologischer Publikation des frühen 20 Jh.
-  werden die erstellten Daten nicht als digitale Bücher betrachtet, sondern im
-  Sinne des Projekts als „Lieferant“ wichtiger Information zu archäologischen
-  Objekten. So werden anhand der Kataloge von Walter Amelung zu den
-  Vatikanischen Museen exemplarisch digitale Texte mit digitalen Fotografien
-  der beschrieben Objekte kontextualisiert. Über ein Texterkennungsverfahren,
-  dem sog. Optical Character Recognition (OCR) werden die Fotografien der
-  Katalogseiten als Textdatei ausgelesen und dadurch nach bestimmten Begriffen,
-  wie etwa Inventarnummern durchsuchbar. Durch ein speziell modifiziertes sog.
-  Text-Mining Programm können nun die Begriffe vom Text extrahiert werden; nach
-  diesen Begriffen werden bereits bestehende Datensätze in der Arachne
-  durchsucht und bei Übereinstimmung der gleichen Inventarnummer miteinander
-  verbunden. Den einzelnen Seiten werden so Datensätzen und damit Bilder in der
-  Arachne zugeordnet, die exakt auf dieser digitalen Buchseite beschrieben
-  sind.</p>
+    <p>Zu Beginn der 90er Jahre wurden in Rom die gesamten Bildbestände der
+    Fotothek (ca. 250.000 Bilder) als Mikroplanfilm (sog. Microfiche)
+    archiviert. Um die Bilder auf den Microfiche-Filmen zu identifizieren wurde
+    ein Indexband erstellt, der als Konkordanz zwischen Microfiche und realer
+    Struktur der Fotothek Rom fungierte. Innerhalb des Projekt Image-Grid
+    wurden die Microfiche automatisch hochauflösend gescannt und jede
+    Fotografie auf dem Fiche als einzelnes Bild gespeichert. Die Seiten des
+    Indexband wurde wiederum über OCR als Text-Datei ausgelesen. Anhand des
+    Textes war es über eine eigenes hierfür entwickeltes Programm möglich, die
+    einzelnen Bilder der Fotothek wieder in ihre eigentliche Struktur
+    zurückzuführen und deren hierarchische Systematik wiederherzustellen. Die
+    Struktur der Fotothek ist nun über einen neu entwickelten Browser, die
+    <a href="http://arachne.uni-koeln.de/fotothek/rom">Digitale Fotothek</a>,
+    durchsuchbar. Die einzelnen Projekte fließen schlussendlich in der Arachne
+    zusammen, indem sowohl die Inventarbücher des DAI als auch die digitalen
+    Publikationen mit den einzelnen Bildern automatisch verbunden werden. Der
+    Nutzer kann so vom Bild bzw. archäologischen Objekt auf die Informationen
+    aus Arachne, digitalen Büchern und Inventarbüchern direkt zugreifen. Damit
+    wurde ein wichtiger Schritt in Richtung einer integrierten, digitalen
+    Forschungsumgebung getan, die textuelle und photografische Quellen der
+    Archäologie verbindet.</p>
+  </div>
 
-  <p><img src="./imagegrid_img/image_grid.jpg" align="left"></p>
+  <div class="col-md-4">
+    <br>
+    <br>
 
-  <p>Zum zweiten Projekt gehört die digitale Weiterverarbeitung der
-  Inventarbücher der Fotothek, DAI Rom, die seit Bestehen der Fotothek 1928
-  geführt werden. Zur Sicherung der einmaligen Dokumente wurden diese
-  digitalisiert und über den Bookbrowser der Arachne-Datenbank veröffentlicht.
-  In den etwa 100 Büchern sind Namen und Beschreibungen zu den jeweiligen
-  Negativen verzeichnet, die in den Jahren 1928 bis 1999 erstellt wurden. Jede
-  Negativnummer ist einmalig, um die Bilder jederzeit identifizieren zu können.
-  Da diese Negativnummer auch bei der Digitalisierung der analogen Bestände des
-  DAI Rom als Name der Scans verwendet werden (siehe <a con10t-page=
-  "emagines">EMAGINES</a>), ist es möglich die Bilder automatisiert den Seiten
-  des Inventarbuchs und den darauf vermerkten Informationen zu verlinken.
-  Zusätzlich können über diese Negativnummer bereits digitalisierte
-  archäologische Publikationen, wie etwa durch Google Books durchsucht und
-  automatisch mit dem Bild verbunden werden.</p>
+    <h3>Weiterführende Links</h3>
 
-  <p>Zu Beginn der 90er Jahre wurden in Rom die gesamten Bildbestände der
-  Fotothek (ca. 250.000 Bilder) als Mikroplanfilm (sog. Microfiche) archiviert.
-  Um die Bilder auf den Microfiche-Filmen zu identifizieren wurde ein Indexband
-  erstellt, der als Konkordanz zwischen Microfiche und realer Struktur der
-  Fotothek Rom fungierte. Innerhalb des Projekt Image-Grid wurden die
-  Microfiche automatisch hochauflösend gescannt und jede Fotografie auf dem
-  Fiche als einzelnes Bild gespeichert. Die Seiten des Indexband wurde wiederum
-  über OCR als Text-Datei ausgelesen. Anhand des Textes war es über eine
-  eigenes hierfür entwickeltes Programm möglich, die einzelnen Bilder der
-  Fotothek wieder in ihre eigentliche Struktur zurückzuführen und deren
-  hierarchische Systematik wiederherzustellen. Die Struktur der Fotothek ist
-  nun über einen neu entwickelten Browser, die <a href=
-  "http://arachne.uni-koeln.de/fotothek/rom">Digitale Fotothek</a>,
-  durchsuchbar. Die einzelnen Projekte fließen schlussendlich in der Arachne
-  zusammen, indem sowohl die Inventarbücher des DAI als auch die digitalen
-  Publikationen mit den einzelnen Bildern automatisch verbunden werden. Der
-  Nutzer kann so vom Bild bzw. archäologischen Objekt auf die Informationen aus
-  Arachne, digitalen Büchern und Inventarbüchern direkt zugreifen. Damit wurde
-  ein wichtiger Schritt in Richtung einer integrierten, digitalen
-  Forschungsumgebung getan, die textuelle und photografische Quellen der
-  Archäologie verbindet.</p>
+    <p><a href="http://arachne.uni-koeln.de/fotothek/rom">Digitale Fotothek des
+    DAI Rom</a></p>
+
+    <p><a con10t-search-query="vaticanischen%20sculpturen" con10t-search-facet=
+    "facet_kategorie:%22B%C3%BCcher%22">Die Kataloge des Vatikanischen Museums
+    von Walter Amelung im Bookbrowser</a></p>
+
+    <p><a con10t-page="invbuecherrom">Die Inventarbücher der Fotothek des DAI
+    Rom</a></p>
+  </div>
 </div>

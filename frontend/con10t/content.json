@@ -21,6 +21,27 @@
                         }
                     },
                     {
+                        "id": "fotoistanbul",
+                        "title": {
+                            "de": "Fotothek DAI Istanbul",
+                            "en": "DAI Istanbul photo archive"
+                        }
+                    },
+                    {
+                        "id": "fotokairo",
+                        "title": {
+                            "de": "Fotothek DAI Kairo",
+                            "en": "DAI Cairo photo archive"
+                        }
+                    },
+                    {
+                        "id": "fotomadrid",
+                        "title": {
+                            "de": "Fotothek DAI Madrid",
+                            "en": "DAI Madrid photo archive"
+                        }
+                    },
+                    {
                         "id": "fotorom",
                         "title": {
                             "de": "Fotothek DAI Rom",
@@ -44,11 +65,18 @@
                             {
                                 "id": "imagegrid",
                                 "title": {
-                                    "de": "Image Grid DAI Rom",
-                                    "en": "Image Grid DAI Rome"
+                                    "de": "Image Grid",
+                                    "en": "Image Grid"
                                 }
                             }
                         ]
+                    },
+                    {
+                        "id": "fotoarchivdaiberlin",
+                        "title": {
+                            "de": "Fotoarchiv der Zentrale des DAI in Berlin",
+                            "en": "DAI Head Office photo archive"
+                        }
                     },
                     {
                         "id": "daiorient",
@@ -64,7 +92,23 @@
                     "de": "iDAI.bookbrowser",
                     "en": "iDAI.bookbrowser",
                     "it": "iDAI.bookbrowser"
-                }  
+                },
+                "children": [
+                    {
+                        "id": "rezeptionantike",
+                        "title": {
+                            "de": "Rezeption der Antike im semantischen Netz",
+                            "en": "Reception of Antiquity in a Semantic Network"
+                        }
+                    },
+                    {
+                        "id": "antikzeichnung",
+                        "title": {
+                            "de": "Die Antike in Zeichnung, Plan und Bauaufnahme",
+                            "en": "The Antiquity in Drawing, Plan and Architectural Survey"
+                        }
+                    } 
+                ]
             },
             {
                 "id": "monumentbrowser",
@@ -250,10 +294,30 @@
                         }
                     },
                     {
+                        "id": "preussdenk",
+                        "title": {
+                            "de": "Die preußische Denkmalpflege in der Provinz Brandenburg/Berlin"
+                        }
+                    },
+                    {
                         "id": "carare",
                         "title": {
                             "de": "CARARE",
                             "en": "CARARE"
+                        }
+                    },
+                    {
+                        "id": "databasepausanias",
+                        "title": {
+                            "de": "Datenbank - Bildwerke bei Pausanias",
+                            "en": "Database “Images in Pausanias”"
+                        }
+                    },
+                    {
+                        "id": "rwwa",
+                        "title": {
+                            "de": "Rheinisch-Westfälisches Wirtschaftsarchiv",
+                            "en": "Foundation of Rhine-Westphalia Economy Archive"
                         }
                     },
                     {

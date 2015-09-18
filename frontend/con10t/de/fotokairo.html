@@ -1,10 +1,6 @@
-<div>
+<div class="row">    
+    <div class="col-md-8">
   <h1>Bildarchiv des DAI Kairo</h1>
-
-  <p><a con10t-search-catalog="">Zu den strukturierten Beständen</a></p>
-
-  <p><a con10t-search-catalog="">Vollzugriff auf die unstrukturierten
-  Bestände</a></p>
 
   <h3>Geschichte</h3>
 
@@ -82,4 +78,16 @@
   "http://www.dainst.org/standort/-/organization-display/ZI9STUj61zKB/18467?"
   target="_blank">Bildarchiv der Abteilung Kairo auf der Homepage des Deutschen
   Archäologischen Instituts</a>
-</div>
+ </div>
+    <div class="col-md-4">
+        <br><br><br>
+
+        <h3>Weiterführende Links</h3>
+        <a con10t-search-query="D-DAI-KAI" con10t-search-facet="facet_kategorie:%22Bilder%22">Zu den Bildern der strukturierten Bestände</a>
+
+        <h3>Unstrukturierte Bestände</h3>
+
+        <con10t-tree fq="facet_bestandsname:dai-fotothek-kairo" wildcard-facet="facet_subkategorie">
+  </con10t-tree>
+      </div>
+    </div>
