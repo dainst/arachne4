@@ -49,6 +49,13 @@
                         },
                         "children": [
                             {
+                                "id": "skulpturnegdairom",
+                                "title": {
+                                    "de": "Skulpturennegative DAI Rom",
+                                    "en": "Sculpture Negatives of the DAI Rome"
+                                }
+                            },
+                            {
                                 "id": "nachlassroeder",
                                 "title": {
                                     "de": "Nachlass Josef Röder",
