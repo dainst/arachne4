@@ -118,6 +118,42 @@
         <div class="embed-responsive embed-responsive-16by9 img-thumbnail">
             <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/syHi-2j2-sY" frameborder="0" allowfullscreen></iframe>
         </div></p>
+
+
+        <div ng-init="config = {
+                baselayers: {
+                    osm: {
+                        name: 'OpenStreetMap',
+                        type: 'xyz',
+                        url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        layerOptions: {
+                            subdomains: ['a', 'b', 'c'],
+                            attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
+                            continuousWorld: true,
+                            maxZoom: 18
+                        }
+                    }
+                },
+                facetsSelect: [
+                    {
+                        key: 'facet_bestandsname',
+                        value: 'Syrian-Heritage-Archive-Project'
+                    }
+                ],
+                baselayerKey: 'osm',
+                clustered: false
+            }"></div>
+        <div con10t-map
+             type="grid"
+             limit="0"
+             baselayers="config.baselayers"
+             default-baselayer="config.baselayerKey"
+             facets-select="config.facetsSelect"
+             clustered="config.clustered"
+             lat="35.891275201659134"
+             lng="28.3143310546875"
+             zoom="4">
+        </div>
     </div>
 
     <div class="col-md-4">
