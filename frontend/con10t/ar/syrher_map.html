@@ -1,0 +1,57 @@
+<div hide-footer class="row con10t-fullscreen">
+
+    <div ng-init="config = {
+    clustered: false,
+    menuFacetsAllow: [
+        'facet_bestandsname'
+    ],
+    facetsSelect: [
+        {
+            key: 'facet_bestandsname',
+            value: 'Syrian-Heritage-Archive-Project'
+        }
+    ],
+    baselayers: {
+        osm: {
+            name: 'OpenStreetMap',
+            type: 'xyz',
+            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            layerOptions: {
+                subdomains: ['a', 'b', 'c'],
+                attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
+                continuousWorld: true,
+                maxZoom: 18
+            }
+        }
+    },
+    defaultBaselayer: 'osm'
+}"></div>
+
+
+    <div con10t-map
+         type="grid"
+         limit="5"
+         overlays="config.overlays"
+         baselayers="config.baselayers"
+         default-baselayer="config.defaultBaselayer"
+         facets-select="config.facetsSelect"
+         clustered="config.clustered"
+         lat="33.891275201659134"
+         lng=38.3143310546875"
+         zoom="7">
+
+
+    </div>
+    <div>
+
+        <div id="map-right-menu" class="col-md-2 well well-sm toggled">
+            <h3 class="text-muted uppercase">
+                {{'ui_gridmap_heading'|transl8}}
+            </h3>
+
+            <div ar-map-menu-search-info type="grid"></div>
+            <div ar-map-menu-search-field heading="{{'ui_current_search'|transl8}}"></div>
+            <div ar-map-menu-facet-search></div>
+        </div>
+    </div>
+</div>
