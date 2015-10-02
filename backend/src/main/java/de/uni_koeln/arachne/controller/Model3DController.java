@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -126,7 +127,9 @@ public class Model3DController {
 	 * @return The image file.
 	 */
 	// use regexp workaround for spring truncating at dots in parameters
-	@RequestMapping(value = "/model/material/{modelId}/texture/{textureName:.+}", method = RequestMethod.GET)
+	@RequestMapping(value = "/model/material/{modelId}/texture/{textureName:.+}",
+			method = RequestMethod.GET,
+			produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE, "image/x-rgb"})
 	public @ResponseBody ResponseEntity<byte[]> handleModelRequest(@PathVariable("modelId") final Long modelId
 			, @PathVariable("textureName") final String textureName
 			, final HttpServletResponse response) {
@@ -138,9 +141,14 @@ public class Model3DController {
 		}
 		
 		final byte[] textureData = getTextureData(dataset, textureName);
-		final String mimeType = ImageMimeUtil.getImageType(textureData);
+		String mimeType = ImageMimeUtil.getImageType(textureData);
 		if (mimeType == null) {
-			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+			// currently rgb cannot be detected so if the mime type is null it may be a rgb image
+			if (textureData != null && textureName.toLowerCase().endsWith("rgb")) {
+				mimeType = "image/x-rgb";
+			} else {
+				return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+			}
 		}
 		
 		final HttpHeaders responseHeaders = new HttpHeaders();
@@ -268,7 +276,7 @@ public class Model3DController {
 	 * Reads an image file from disc.
 	 * @param dataset The dataset of interest.
 	 * @param textureName The filename of the image file.
-	 * @return The image data as <code>byte</code> array.
+	 * @return The image data as <code>byte</code> array or <code>null</code> on failure.
 	 */
 	private byte[] getTextureData(final Dataset dataset, final String textureName) {
 		String modelPath = dataset.getFieldFromFields("modell3d.Pfad");

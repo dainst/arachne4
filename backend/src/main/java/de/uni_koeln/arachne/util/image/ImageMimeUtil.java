@@ -19,6 +19,7 @@ public class ImageMimeUtil {
 	 * @return The mime type of the image or null if the data could not be identified.
 	 */
 	@SuppressWarnings("PMD")
+	// TODO add rgb detection mechanism
 	public static String getImageType(final byte[] imageData)
 	{
 		if (imageData!=null) {
