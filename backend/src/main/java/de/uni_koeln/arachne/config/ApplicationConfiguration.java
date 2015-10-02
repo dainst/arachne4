@@ -15,6 +15,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.converter.BufferedImageHttpMessageConverter;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -47,6 +48,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		converters.add(new BufferedImageHttpMessageConverter());
 		converters.add(new StringHttpMessageConverter());
 		converters.add(new MappingJackson2HttpMessageConverter());
+		converters.add(new ByteArrayHttpMessageConverter());
 	}
 	
 	@Override
