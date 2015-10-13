@@ -16,13 +16,52 @@
 	<display>
 		<title>
 			<section>
-				<field datasource="marbilder.DateinameMarbilder" search="\.jpg"
-					replace="" />
+				<field datasource="marbilderbestand.TitelMarbilderbestand">
+					<ifEmpty>
+						<field datasource="marbilder.DateinameMarbilder" search="\.jpg"
+							replace="" />
+					</ifEmpty>
+				</field>
 			</section>
 		</title>
 		<subtitle>
 			<section>
-				<field datasource="marbilder.Scannummer" />
+				<section separator=", ">
+					<section>
+						<field datasource="ort.Aufbewahrungsort">
+							<ifEmpty>
+								<field datasource="marbilderbestand.AufbewahrungHerkunft">
+									<ifEmpty>
+										<field datasource="marbilderinventar.09_Ortsbezeichnung2"></field>
+									</ifEmpty>
+								</field>
+							</ifEmpty>
+						</field>
+					</section>
+					<section separator=" / ">
+						<field datasource="ort.Stadt">
+							<ifEmpty>
+								<field datasource="marbilderbestand.Standstadt">
+									<ifEmpty>
+										<field datasource="marbilderinventar.09_Ortsbezeichnung1"></field>
+									</ifEmpty>
+								</field>
+							</ifEmpty>
+						</field>
+						<field datasource="ort.Ort_antik" />
+					</section>
+					<section>
+						<field datasource="ort.Land">
+							<ifEmpty>
+								<field datasource="marbilderbestand.Standstaat">
+									<ifEmpty>
+										<field datasource="marbilderinventar.Land"></field>
+									</ifEmpty>
+								</field>
+							</ifEmpty>
+						</field>
+					</section>
+				</section>
 			</section>
 		</subtitle>
 		<datasections>
