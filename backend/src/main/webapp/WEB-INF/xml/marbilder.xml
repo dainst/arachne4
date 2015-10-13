@@ -182,6 +182,17 @@
 					<field datasource="marbilderrwwa.Inhalt" prefix="Inhalt: " />
 					<field datasource="marbilderrwwa.Technik" prefix="Technik: " />
 				</section>
+				<section labelKey="AAArC Felder">
+					<field datasource="marbilderbestand.AAArC_Region" prefix="Region: " />
+					<field datasource="marbilderbestand.AAArC_Fundplatz" prefix="Fundplatz: " />
+					<field datasource="marbilderbestand.Bildinhalt_1" prefix="Bildinhalt 1: " />
+					<field datasource="marbilderbestand.Bildinhalt_2" prefix="Bildinhalt 2: " />
+					<field datasource="marbilderbestand.Bildinhalt_3" prefix="Bildinhalt 3: " />
+					<field datasource="marbilderbestand.Favoritenkennung" prefix="Favoritenkennung: " />
+					<field datasource="marbilderbestand.ArtDigitalisat" prefix="Art des Digitalisats: " />
+					<field datasource="marbilderbestand.Material" prefix="Material: " />
+					<field datasource="marbilderbestand.AAArC_Projekt" prefix="Projekt: " />
+				</section>
 			</section>
 		</datasections>
 		<editorsection>
