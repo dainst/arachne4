@@ -235,7 +235,7 @@ public class ResponseFactory {
 		// set geo information 
 		// TODO make the place handling more consistent - needs changes to the db
 		Context placeContext = dataset.getContext("ort");
-		
+
 		if (placeContext != null) {
 			for (AbstractLink link: placeContext.getAllContexts()) {
 				final String city = link.getFieldFromFields("ort.Stadt");
@@ -255,9 +255,12 @@ public class ResponseFactory {
 				final String latitude = link.getFieldFromFields("ort.Latitude");
 				final String longitude = link.getFieldFromFields("ort.Longitude");
 				final String gazetteerId = link.getFieldFromFields("ort.Gazetteerid");
-				
-				if (!StrUtils.isEmptyOrNull(placeName) && !StrUtils.isEmptyOrNull(relation)) {
-					final Place place = new Place(placeName, relation);
+
+				if (!StrUtils.isEmptyOrNull(placeName)) {
+					final Place place = new Place(placeName);
+					if(!StrUtils.isEmptyOrNull(relation)) {
+						place.setRelation(relation);
+					}
 					if (!StrUtils.isEmptyOrNull(latitude) && !StrUtils.isEmptyOrNull(latitude)) {
 						place.setLocation(latitude, longitude);
 					}
