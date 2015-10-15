@@ -55,13 +55,13 @@
         <!-- JSONassert -->
         <jsonassert-version>1.2.3</jsonassert-version>
         <!-- Plugin Versions -->
-		<aspectj-maven-version>1.5</aspectj-maven-version>
-		<maven-failsafe-version>2.17</maven-failsafe-version>
-		<maven-javadoc-version>2.9.1</maven-javadoc-version>
+		<aspectj-maven-version>1.8</aspectj-maven-version>
+		<maven-failsafe-version>2.18.1</maven-failsafe-version>
+		<maven-javadoc-version>2.10.3</maven-javadoc-version>
 		<maven-tomcat-version>2.2</maven-tomcat-version>
-		<maven-dependency-version>2.8</maven-dependency-version>
-		<maven-war-version>2.4</maven-war-version>
-		<maven-compiler-version>3.1</maven-compiler-version>
+		<maven-dependency-version>2.10</maven-dependency-version>
+		<maven-war-version>2.6</maven-war-version>
+		<maven-compiler-version>3.3</maven-compiler-version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
