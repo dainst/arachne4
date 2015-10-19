@@ -24,7 +24,7 @@
         <!-- HikariCP -->
         <hikariCP-version>2.4.1</hikariCP-version>
 		<!-- elasticsearch -->
-		<elasticsearch-version>1.5.2</elasticsearch-version>
+		<elasticsearch-version>1.7.3</elasticsearch-version>
 		<!-- Snappy -->
         <snappy-version>1.1.1.6</snappy-version>
 		<!-- Jackson -->
