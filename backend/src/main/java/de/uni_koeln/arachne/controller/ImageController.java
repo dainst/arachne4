@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -47,7 +48,9 @@ public class ImageController {
 			@PathVariable("entityId") final long entityId) {
 		
 		final TypeWithHTTPStatus<BufferedImage> image = iipService.getImage(entityId, requestedWidth, -1);
-		return ResponseEntity.status(image.getStatus()).body(image.getValue());
+		final HttpHeaders headers = new HttpHeaders();
+		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
+		return ResponseEntity.status(image.getStatus()).headers(headers).body(image.getValue());
 	}
 	
 	/**
@@ -63,7 +66,9 @@ public class ImageController {
 			@PathVariable("entityId") final long entityId) {
 		
 		final TypeWithHTTPStatus<BufferedImage> image = iipService.getImage(entityId, -1, requestedHeight);
-		return ResponseEntity.status(image.getStatus()).body(image.getValue());
+		final HttpHeaders headers = new HttpHeaders();
+		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
+		return ResponseEntity.status(image.getStatus()).headers(headers).body(image.getValue());
 	}
 	
 	/**
@@ -78,7 +83,9 @@ public class ImageController {
 		
 		final TypeWithHTTPStatus<BufferedImage> image = iipService.getImage(entityId
 				, iipService.resolution_HIGH(), iipService.resolution_HIGH());
-		return ResponseEntity.status(image.getStatus()).body(image.getValue());
+		final HttpHeaders headers = new HttpHeaders();
+		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
+		return ResponseEntity.status(image.getStatus()).headers(headers).body(image.getValue());
 	}
 	
 	/**
@@ -94,7 +101,9 @@ public class ImageController {
 		
 		final TypeWithHTTPStatus<BufferedImage> image = iipService.getImage(entityId
 				, iipService.resolution_PREVIEW(), iipService.resolution_PREVIEW());
-		return ResponseEntity.status(image.getStatus()).body(image.getValue());
+		final HttpHeaders headers = new HttpHeaders();
+		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
+		return ResponseEntity.status(image.getStatus()).headers(headers).body(image.getValue());
 	}
 	
 	/**
@@ -110,7 +119,9 @@ public class ImageController {
 		
 		final TypeWithHTTPStatus<BufferedImage> image = iipService.getImage(entityId
 				, iipService.resolution_THUMBNAIL(), iipService.resolution_THUMBNAIL());
-		return ResponseEntity.status(image.getStatus()).body(image.getValue());
+		final HttpHeaders headers = new HttpHeaders();
+		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
+		return ResponseEntity.status(image.getStatus()).headers(headers).body(image.getValue());
 	}
 	
 	/**
@@ -126,7 +137,9 @@ public class ImageController {
 		
 		final TypeWithHTTPStatus<BufferedImage> image = iipService.getImage(entityId
 				, iipService.resolution_ICON(), iipService.resolution_ICON());
-		return ResponseEntity.status(image.getStatus()).body(image.getValue());
+		final HttpHeaders headers = new HttpHeaders();
+		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
+		return ResponseEntity.status(image.getStatus()).headers(headers).body(image.getValue());
 	}
 		
 	/**
@@ -163,7 +176,9 @@ public class ImageController {
 			final HttpServletResponse response) {
 		
 		TypeWithHTTPStatus<String> imageServerResponse = iipService.getImagePropertiesForZoomifyViewer(entityId);
-		return ResponseEntity.status(imageServerResponse.getStatus()).body(imageServerResponse.getValue());
+		final HttpHeaders headers = new HttpHeaders();
+		headers.add("content-Type", MediaType.APPLICATION_XML_VALUE);
+		return ResponseEntity.status(imageServerResponse.getStatus()).headers(headers).body(imageServerResponse.getValue());
 	}
 	
 	/**
@@ -180,6 +195,8 @@ public class ImageController {
 			final HttpServletRequest request, final HttpServletResponse response) {
 		
 		TypeWithHTTPStatus<BufferedImage> imageServerResponse = iipService.getImageForZoomifyViewer(entityId, z, x, y);
-		return ResponseEntity.status(imageServerResponse.getStatus()).body(imageServerResponse.getValue());
+		final HttpHeaders headers = new HttpHeaders();
+		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
+		return ResponseEntity.status(imageServerResponse.getStatus()).headers(headers).body(imageServerResponse.getValue());
 	}
 }
