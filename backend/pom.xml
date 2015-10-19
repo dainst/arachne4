@@ -22,7 +22,7 @@
         <!-- Hibernate -->
         <org.hibernate-version>4.3.11.Final</org.hibernate-version>
         <!-- HikariCP -->
-        <hikariCP-version>2.2.5</hikariCP-version>
+        <hikariCP-version>2.4.1</hikariCP-version>
 		<!-- elasticsearch -->
 		<elasticsearch-version>1.5.2</elasticsearch-version>
 		<!-- Snappy -->
@@ -294,10 +294,10 @@
 			<version>${jackson-version}</version>
 		</dependency>
 
-        <!-- artifact for Java 6 and 7; 8 needs an other artifact -->
+        <!-- artifact for Java 7 and 8 -->
         <dependency>
             <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP-java6</artifactId>
+            <artifactId>HikariCP</artifactId>
             <version>${hikariCP-version}</version>
             <scope>compile</scope>
         </dependency>
