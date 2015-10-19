@@ -20,7 +20,7 @@
 		<!-- MySQL-Connector -->
         <mysql-connector-java-version>5.1.37</mysql-connector-java-version>
         <!-- Hibernate -->
-        <org.hibernate-version>4.3.7.Final</org.hibernate-version>
+        <org.hibernate-version>4.3.11.Final</org.hibernate-version>
         <!-- HikariCP -->
         <hikariCP-version>2.2.5</hikariCP-version>
 		<!-- elasticsearch -->
