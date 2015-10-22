@@ -19,11 +19,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @XmlRootElement
 @Entity
 @Table(name="catalog")
+@JsonInclude(Include.NON_EMPTY)
 @SuppressWarnings("PMD")
 public class Catalog {
 

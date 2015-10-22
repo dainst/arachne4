@@ -21,8 +21,41 @@ public class CatalogDao {
 	
 	@Transactional(readOnly=true)
 	public Catalog getByCatalogId(final long catalogId) {
+		return getByCatalogId(catalogId, true);
+	}
+	
+	/**
+	 * Retrieve a catalog by Id.
+	 * @param catalogId The id of the catalog.
+	 * @param full Indicates if the full catalog (including all entries) or only the 'first level' of the catalog shall
+	 * be retrieved. Defaults to <code>false</code>.
+	 * @return The catalog with the given id.
+	 */
+	@Transactional(readOnly=true)
+	public Catalog getByCatalogId(final long catalogId, final boolean full) {
 		Session session = sessionFactory.getCurrentSession();
-		return eagerFetch((Catalog) session.get(Catalog.class, catalogId));
+		if (full) {
+			return eagerFetch((Catalog) session.get(Catalog.class, catalogId));
+		} else {
+			// a customized query might be more efficient but currently this is fast enough
+			final Catalog catalog = (Catalog) session.get(Catalog.class, catalogId);
+			final CatalogEntry root = catalog.getRoot();
+			for (CatalogEntry entry : root.getChildren()) {
+				final List<CatalogEntry> children = entry.getChildren();
+				if (children.isEmpty()) {
+					entry.setChildren(null);
+				} else {
+					children.clear();
+				}
+			}
+			final Catalog result = new Catalog();
+			result.setAuthor(catalog.getAuthor());
+			result.setId(catalog.getId());
+			result.setPublic(catalog.isPublic());
+			result.setRoot(root);
+			result.setUsers(catalog.getUsers());
+			return result;
+		}
 	}
 	
 	@Transactional(readOnly=true)

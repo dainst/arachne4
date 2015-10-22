@@ -18,10 +18,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @XmlRootElement
 @Entity
 @Table(name="catalog_entry")
+@JsonInclude(Include.NON_EMPTY)
 @SuppressWarnings("PMD")
 public class CatalogEntry {
 
@@ -39,6 +42,7 @@ public class CatalogEntry {
 	
 	@OneToMany(mappedBy="parent", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@OrderColumn(name="index_parent")
+	@JsonInclude(Include.NON_NULL)
 	private List<CatalogEntry> children;
 
 	@Column(name="arachne_entity_id")

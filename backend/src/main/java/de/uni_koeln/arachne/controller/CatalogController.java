@@ -10,11 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.dao.hibernate.CatalogDao;
@@ -31,8 +34,7 @@ import de.uni_koeln.arachne.service.UserRightsService;
 @Controller
 public class CatalogController {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(CatalogController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CatalogController.class);
 
 	@Autowired
 	private transient UserRightsService userRightsService;
@@ -270,8 +272,7 @@ public class CatalogController {
 	 * code is returned.
 	 */
 	@RequestMapping(value = "/catalog", method = RequestMethod.GET)
-	public @ResponseBody List<Catalog> handleGetCatalogsRequest(
-			final HttpServletResponse response) {
+	public @ResponseBody List<Catalog> handleGetCatalogsRequest(final HttpServletResponse response) {
 		List<Catalog> result = null;
 		final User user = userRightsService.getCurrentUser();
 		LOGGER.debug("Request for all catalogs of user: " + user.getId());
@@ -293,28 +294,26 @@ public class CatalogController {
 	 * requested format. If the given id does not refer to a catalog, a 404
 	 * error code is returned. if the catalog is not owned by the current user
 	 * or no user is signed in, a 403 error code is returned.
-	 * 
+	 * @param catalogId The ctalog id of interest.
+	 * @param full If the full catalog shall be retrieved (with all entries) or only root and it's direct children.
+	 * @return The catalog.
 	 */
 	@RequestMapping(value = "/catalog/{catalogId}", method = RequestMethod.GET)
-	public @ResponseBody Catalog handleGetCatalogRequest(
+	public @ResponseBody ResponseEntity<Catalog> handleGetCatalogRequest(
 			@PathVariable("catalogId") final Long catalogId,
-			final HttpServletResponse response) {
-		Catalog result = null;
+			@RequestParam(value = "full", required = false) Boolean full) {
+		
+		full = (full == null) ? false : full;
 		final User user = userRightsService.getCurrentUser();
-
-		LOGGER.debug("Request for catalog " + catalogId + " of user: "
-				+ user.getId());
-
-		result = catalogDao.getByCatalogId(catalogId);
+		Catalog result = catalogDao.getByCatalogId(catalogId, full);
 		if (result == null) {
-			response.setStatus(404);
-		} else if (!result.isCatalogOfUserWithId(user.getId())
-				&& !result.isPublic()) {
+			ResponseEntity.status(HttpStatus.NOT_FOUND);
+		} else if (!result.isCatalogOfUserWithId(user.getId()) && !result.isPublic()) {
 			result = null;
-			response.setStatus(403);
+			ResponseEntity.status(HttpStatus.FORBIDDEN);
 		}
-
-		return result;
+		
+		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 
 	/**
