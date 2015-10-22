@@ -54,35 +54,24 @@ public class CatalogController {
 	 * is returned.
 	 */
 	@RequestMapping(value = "/catalogentry/{catalogEntryId}", method = RequestMethod.GET)
-	public @ResponseBody CatalogEntry handleGetCatalogEntryRequest(
+	public @ResponseBody ResponseEntity<CatalogEntry> handleGetCatalogEntryRequest(
 			@PathVariable("catalogEntryId") final Long catalogEntryId,
-			final HttpServletResponse response) {
+			@RequestParam(value = "full", required = false) Boolean full) {
+		
+		full = (full == null) ? false : full;
 		CatalogEntry result = null;
 		final User user = userRightsService.getCurrentUser();
-
-		LOGGER.debug("Request for catalogEntry: " + catalogEntryId
-				+ " of user: " + user.getId());
-
-		result = catalogEntryDao.getByCatalogEntryId(catalogEntryId);
+		result = catalogEntryDao.getByCatalogEntryId(catalogEntryId, full);
+		
 		if (result == null) {
-			response.setStatus(404);
-		} else if (!result.getCatalog().isCatalogOfUserWithId(user.getId())
-				&& !result.getCatalog().isPublic()) {
-			result = null;
-			response.setStatus(403);
+			ResponseEntity.status(HttpStatus.NOT_FOUND);
+		} else if (!result.getCatalog().isCatalogOfUserWithId(user.getId())	&& !result.getCatalog().isPublic()) {
+			ResponseEntity.status(HttpStatus.FORBIDDEN);
 		}
 
-		return result;
+		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 
-	@RequestMapping(value = "/catalogByEntity/{entityId}", method = RequestMethod.GET)
-	public @ResponseBody List<Long> handleGetCatalogByEntityRequest(
-			@PathVariable("entityId") final Long entityId,
-			final HttpServletResponse response) {
-		
-		return catalogEntryDao.getPrivateCatalogIdsByEntityId(entityId);
-	}
-	
 	/**
 	 * Handles http PUT request for <code>/catalogEntry/{catalogEntryId}</code>.
 	 * Returns the catalogEntry created and 200 if the action is permitted.
@@ -431,5 +420,12 @@ public class CatalogController {
 			response.setStatus(403);
 		}
 	}
-
+	
+	@RequestMapping(value = "/catalogByEntity/{entityId}", method = RequestMethod.GET)
+	public @ResponseBody List<Long> handleGetCatalogByEntityRequest(
+			@PathVariable("entityId") final Long entityId,
+			final HttpServletResponse response) {
+		
+		return catalogEntryDao.getPrivateCatalogIdsByEntityId(entityId);
+	}
 }

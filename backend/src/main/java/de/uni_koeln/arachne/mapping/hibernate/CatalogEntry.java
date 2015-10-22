@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.mapping.hibernate;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -25,8 +27,12 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @Entity
 @Table(name="catalog_entry")
 @JsonInclude(Include.NON_EMPTY)
-@SuppressWarnings("PMD")
-public class CatalogEntry {
+public class CatalogEntry implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue
@@ -42,7 +48,6 @@ public class CatalogEntry {
 	
 	@OneToMany(mappedBy="parent", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@OrderColumn(name="index_parent")
-	@JsonInclude(Include.NON_NULL)
 	private List<CatalogEntry> children;
 
 	@Column(name="arachne_entity_id")
@@ -65,6 +70,10 @@ public class CatalogEntry {
 	
 	@Column(name="catalog_id", nullable=false, insertable=false, updatable=false)
 	private Long catalogId;
+
+	// used to keep track of this information even if the children get deleted to shorten the response
+	@Transient
+	private boolean hasChildren;
 	
 	/**
 	 * @return the id
@@ -177,6 +186,7 @@ public class CatalogEntry {
 	 */
 	public void setChildren(List<CatalogEntry> children) {
 		this.children = children;
+		hasChildren = !children.isEmpty();
 	}
 	
 	/**
@@ -188,6 +198,7 @@ public class CatalogEntry {
 			this.children = new ArrayList<CatalogEntry>();
 		}
 		this.children.add(child);
+		hasChildren = !children.isEmpty();
 	}
 	
 	/**
@@ -279,4 +290,18 @@ public class CatalogEntry {
 		this.catalogId = catalogId;
 	}
 	
+	public boolean isHasChildren() {
+		// children were removed
+		if (children == null) {
+			return hasChildren;
+		} else {
+			return !children.isEmpty();
+		}
+	}
+
+	// clears the children list but keeps the information if the node has children or not
+	public void removeChildren() {
+		hasChildren = !children.isEmpty();
+		children = null;
+	}
 }

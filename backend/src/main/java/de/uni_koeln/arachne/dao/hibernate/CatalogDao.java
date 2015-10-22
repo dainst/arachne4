@@ -41,12 +41,7 @@ public class CatalogDao {
 			final Catalog catalog = (Catalog) session.get(Catalog.class, catalogId);
 			final CatalogEntry root = catalog.getRoot();
 			for (CatalogEntry entry : root.getChildren()) {
-				final List<CatalogEntry> children = entry.getChildren();
-				if (children.isEmpty()) {
-					entry.setChildren(null);
-				} else {
-					children.clear();
-				}
+				entry.removeChildren();
 			}
 			final Catalog result = new Catalog();
 			result.setAuthor(catalog.getAuthor());

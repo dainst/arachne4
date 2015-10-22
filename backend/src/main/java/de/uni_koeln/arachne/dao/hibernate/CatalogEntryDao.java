@@ -27,8 +27,19 @@ public class CatalogEntryDao {
 	
 	@Transactional(readOnly=true)
 	public CatalogEntry getByCatalogEntryId(final long catalogEntryId) {
+		return getByCatalogEntryId(catalogEntryId, false);
+	}
+	
+	@Transactional(readOnly=true)
+	public CatalogEntry getByCatalogEntryId(final long catalogEntryId, final boolean full) {
 		final Session session = sessionFactory.getCurrentSession();
-		return (CatalogEntry) session.get(CatalogEntry.class, catalogEntryId);
+		CatalogEntry result = session.get(CatalogEntry.class, catalogEntryId);
+		if (!full) {
+			for (final CatalogEntry child: result.getChildren()) {
+				child.removeChildren();
+			}
+		}
+		return result;
 	}
 	
 	/**
@@ -69,12 +80,13 @@ public class CatalogEntryDao {
 		return result;
 	}
 	
-	@SuppressWarnings({ "PMD", "unchecked" })
 	private List<CatalogEntry> getByEntityId(final long entityId) {
 		final Session session = sessionFactory.getCurrentSession();
 		final Criteria criteria = session.createCriteria(CatalogEntry.class);
 		criteria.add(Restrictions.eq("arachneEntityId", entityId));
-		return (List<CatalogEntry>) criteria.list();
+		@SuppressWarnings("unchecked")
+		List<CatalogEntry> result = criteria.list();
+		return result;
 	}
 	
 	@Transactional
