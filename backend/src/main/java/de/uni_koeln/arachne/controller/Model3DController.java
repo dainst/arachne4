@@ -129,7 +129,7 @@ public class Model3DController {
 	// use regexp workaround for spring truncating at dots in parameters
 	@RequestMapping(value = "/model/material/{modelId}/texture/{textureName:.+}",
 			method = RequestMethod.GET,
-			produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE, "image/x-rgb"})
+			produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
 	public @ResponseBody ResponseEntity<byte[]> handleModelRequest(@PathVariable("modelId") final Long modelId
 			, @PathVariable("textureName") final String textureName
 			, final HttpServletResponse response) {
@@ -143,12 +143,7 @@ public class Model3DController {
 		final byte[] textureData = getTextureData(dataset, textureName);
 		String mimeType = ImageMimeUtil.getImageType(textureData);
 		if (mimeType == null) {
-			// currently rgb cannot be detected so if the mime type is null it may be a rgb image
-			if (textureData != null && textureName.toLowerCase().endsWith("rgb")) {
-				mimeType = "image/x-rgb";
-			} else {
-				return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
-			}
+			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
 		}
 		
 		final HttpHeaders responseHeaders = new HttpHeaders();

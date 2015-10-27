@@ -1,6 +1,5 @@
 package de.uni_koeln.arachne.controller;
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import de.uni_koeln.arachne.dao.jdbc.BookDao;
 import org.jdom2.Document;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.List;
 
@@ -52,7 +50,9 @@ public class BookController {
      * Used to indicate when TEI xml is not formed as expected.
      */
     private class TEIException extends Exception {
-        public TEIException(String message) {
+        private static final long serialVersionUID = 1L;
+
+		public TEIException(String message) {
             super("TEI not well-formed: "+message);
         }
     }
@@ -140,7 +140,7 @@ public class BookController {
      * @param img_filePrefix
      * @return
      */
-    private String convertSurfaceElementsToJson(List listOfSurfaceElements, String img_filePrefix)
+    private String convertSurfaceElementsToJson(List<?> listOfSurfaceElements, String img_filePrefix)
             throws IOException {
 
         StringWriter sw = new StringWriter();

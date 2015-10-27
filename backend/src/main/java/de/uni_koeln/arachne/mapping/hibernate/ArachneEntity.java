@@ -15,7 +15,6 @@ import javax.persistence.Table;
 @Table(name="arachneentityidentification")
 @SecondaryTables({
 	@SecondaryTable(name="arachneentitydegrees")})
-@SuppressWarnings("PMD")
 public class ArachneEntity {
 	
 	/**

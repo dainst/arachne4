@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 @Entity
 @Table(name="verwaltung_datensatzgruppen")
-@SuppressWarnings("PMD")
 public class DatasetGroup {
 	
 	public DatasetGroup() {

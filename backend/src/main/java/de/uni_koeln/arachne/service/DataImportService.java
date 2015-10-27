@@ -29,7 +29,7 @@ import de.uni_koeln.arachne.mapping.hibernate.ArachneEntity;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.network.BasicNetwork;
-import de.uni_koeln.arachne.util.system.ExternalProcess;
+//import de.uni_koeln.arachne.util.system.ExternalProcess;
 
 /**
  * This class implements the dataimport into elastic search. It is realized as a <code>@Service</code> so it can make 
@@ -296,11 +296,12 @@ public class DataImportService { // NOPMD
 		running = false;
 	}
 	
-	private void createSemanticConnectionTable() {
+	// re-enable when appropriate
+	/*private void createSemanticConnectionTable() {
 		String relativePath = "/WEB-INF/scripts/FillEntityConnectionTable.php";
 		String absolutePath = servletContext.getRealPath(relativePath);
 		ExternalProcess.runBlocking(new String[] {"php", absolutePath});
-	}	
+	}*/	
 
 	private float calculateAverageDPSAndETR() {
 		if (running && elapsedTime > 0 && indexedDocuments > 0) {

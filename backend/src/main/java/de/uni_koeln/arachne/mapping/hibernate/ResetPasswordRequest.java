@@ -14,7 +14,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="verwaltung_benutzer_reset_password_request")
-@SuppressWarnings("PMD")
 public class ResetPasswordRequest {
 
 	@Id

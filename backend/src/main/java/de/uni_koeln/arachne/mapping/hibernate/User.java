@@ -30,7 +30,6 @@ import de.uni_koeln.arachne.util.security.UserAccess;
 @JsonInclude(Include.NON_EMPTY)
 @Entity
 @Table(name="verwaltung_benutzer")
-@SuppressWarnings("PMD")
 public class User extends ProtectedObject {
 	
 		public enum BOOLEAN {

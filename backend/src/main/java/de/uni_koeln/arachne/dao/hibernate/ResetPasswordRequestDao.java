@@ -28,12 +28,12 @@ public class ResetPasswordRequestDao {
 	@Autowired
     private transient SessionFactory sessionFactory;
 	
-	@SuppressWarnings({ "PMD", "unchecked" })
 	@Transactional(readOnly=true)
 	public ResetPasswordRequest getByToken(final String token) {
 		final Session session = sessionFactory.getCurrentSession();
 		final Criteria criteria = session.createCriteria(ResetPasswordRequest.class);
 		criteria.add(Restrictions.eq("token", token));
+		@SuppressWarnings("unchecked")
 		final List<ResetPasswordRequest> queryResult = criteria.list();
 		if (!queryResult.isEmpty()) {
 			return queryResult.get(0);
@@ -41,12 +41,12 @@ public class ResetPasswordRequestDao {
 		return null;
 	}
 	
-	@SuppressWarnings({ "PMD", "unchecked" })
 	@Transactional(readOnly=true)
 	public ResetPasswordRequest getByUserId(final long userId) {
 		final Session session = sessionFactory.getCurrentSession();
 		final Criteria criteria = session.createCriteria(ResetPasswordRequest.class);
 		criteria.add(Restrictions.eq("userId", userId));
+		@SuppressWarnings("unchecked")
 		final List<ResetPasswordRequest> queryResult = criteria.list();
 		if (!queryResult.isEmpty()) {
 			return queryResult.get(0);
@@ -67,7 +67,6 @@ public class ResetPasswordRequestDao {
 		session.delete(resetPasswordRequest);
 	}
 	
-	@SuppressWarnings({ "PMD", "unchecked" })
 	@Transactional
 	public void deleteExpiredRequests() {
 		Session session = sessionFactory.getCurrentSession();
@@ -75,6 +74,7 @@ public class ResetPasswordRequestDao {
 		final Timestamp now = new Timestamp(calender.getTime().getTime());
 		final Criteria criteria = session.createCriteria(ResetPasswordRequest.class);
 		criteria.add(Restrictions.lt("expirationDate", now));
+		@SuppressWarnings("unchecked")
 		final List<ResetPasswordRequest> queryResult = criteria.list();
 		for (final ResetPasswordRequest resetPasswordRequest : queryResult) {
 			session.delete(resetPasswordRequest);

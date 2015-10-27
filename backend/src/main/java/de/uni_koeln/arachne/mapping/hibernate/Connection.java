@@ -11,7 +11,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="Verknuepfungen")
-@SuppressWarnings("PMD")
 public class Connection {
 	@Id
 	@Column(name="PS_VerknuepfungenID")

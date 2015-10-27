@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uni_koeln.arachne.response.Image;
-import de.uni_koeln.arachne.service.DataIntegrityLogService;
+//import de.uni_koeln.arachne.service.DataIntegrityLogService;
 
 /**
  * This class implements utility functions for working with images
