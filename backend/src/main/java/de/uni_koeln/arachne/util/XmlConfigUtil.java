@@ -20,7 +20,6 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.input.sax.XMLReaderSAX2Factory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.context.support.ServletContextResource;
@@ -33,7 +32,6 @@ import de.uni_koeln.arachne.response.Field;
 import de.uni_koeln.arachne.response.FieldList;
 import de.uni_koeln.arachne.response.LinkField;
 import de.uni_koeln.arachne.response.Section;
-import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.sql.TableConnectionDescription;
 
 /**
@@ -54,9 +52,6 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * The servlet context is needed to load the XML config files. 
 	 */
 	private transient ServletContext servletContext;
-	
-	@Autowired
-	private transient UserRightsService userRightsService;
 	
 	private transient SAXBuilder xmlParser = null;
 	

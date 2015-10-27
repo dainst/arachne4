@@ -36,7 +36,6 @@ import de.uni_koeln.arachne.mapping.hibernate.ResetPasswordRequest;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.service.MailService;
-import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.network.CustomMediaType;
 import de.uni_koeln.arachne.util.security.JSONView;
 import de.uni_koeln.arachne.util.security.Random;
@@ -68,9 +67,6 @@ public class UserManagementController {
 	
 	@Autowired
 	private transient UserRightsService userRightsService;
-	
-	@Autowired
-	private transient JSONUtil jsonUtil;
 	
 	private transient final List<String> defaultDatasetGroups; 
 	private transient final String adminEmail;

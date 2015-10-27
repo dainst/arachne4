@@ -44,8 +44,6 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 	 */
 	private transient final List<SarcophagusImage> images;
 	
-	private transient long imageCount = 0L;
-	
 	public SarcophagusimagesContextualizer() {
 		images = new ArrayList<SarcophagusImage>();
 	}
@@ -114,8 +112,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 		while (imagesContextMap.hasNext()) {
 			image = new SarcophagusImage();
 			extractImageDataFromQueryResults(imagesContextMap.next());
-			imageCount++;
-			
+						
 			if (("relief".equals(contextType)) && (sceneNumber != null)) {
 				image.setSceneNumber(sceneNumber);
 				image.setDescription(description);

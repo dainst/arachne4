@@ -3,7 +3,6 @@ package de.uni_koeln.arachne.service;
 import java.util.List;
 
 import javax.annotation.PreDestroy;
-import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
 import org.elasticsearch.action.bulk.BulkProcessor;
@@ -26,7 +25,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.google.common.base.Throwables;
 
 import de.uni_koeln.arachne.mapping.hibernate.ArachneEntity;
-import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.network.BasicNetwork;
 //import de.uni_koeln.arachne.util.system.ExternalProcess;
@@ -69,13 +67,7 @@ public class DataImportService { // NOPMD
 	private transient ContextService contextService;
 	
 	@Autowired
-	private transient ResponseFactory responseFactory;
-	
-	@Autowired
 	private transient EntityCompareService entityCompareService;
-	
-	@Autowired
-	private transient ServletContext servletContext;
 	
 	@Autowired
 	private transient DataIntegrityLogService dataIntegrityLogService;

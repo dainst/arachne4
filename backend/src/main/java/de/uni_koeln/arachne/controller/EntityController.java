@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import static de.uni_koeln.arachne.util.network.CustomMediaType.*;
 import de.uni_koeln.arachne.service.ESService;
 import de.uni_koeln.arachne.service.EntityService;
-import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 
 /**
@@ -24,9 +23,6 @@ import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 public class EntityController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityController.class);
-	
-	@Autowired
-	private transient EntityIdentificationService entityIdentificationService;
 	
 	@Autowired
 	private transient EntityService entityService;

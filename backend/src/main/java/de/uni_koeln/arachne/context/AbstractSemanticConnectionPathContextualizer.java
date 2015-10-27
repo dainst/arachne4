@@ -28,7 +28,8 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 	//TODO Advanced typeStepRestrictions with Array that act as white or Blacklists
 	//TODO Restrict the the Special Values on the Way Like "Fundort" etc.
 	
-	private transient long linkCount = 0l;
+	// not used - what is it for?
+	//private transient long linkCount = 0l;
 	
 	public AbstractSemanticConnectionPathContextualizer() {
 		this.contextPath = new ContextPath();
@@ -78,7 +79,8 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 				
 					link.setEntity2(contextDataset);
 					result.add(link);
-					linkCount++;
+					// ??? - don't really get this
+					//linkCount++;
 				}
 			}
 			return result;

@@ -29,8 +29,6 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 	
 	private transient final GenericSQLDao genericSQLDao;
 	
-	private transient long linkCount = 0l;
-	
 	public SemanticConnectionsContextualizer(final String contextType, final GenericSQLDao genericSQLDao) {
 		this.contextType = contextType;
 		this.genericSQLDao = genericSQLDao;
@@ -57,7 +55,6 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 				link.setEntity1(parent);
 				link.setEntity2(createDatasetFromQueryResults(contextMap.next()));
 				result.add(link);
-				linkCount++;
 			}
 		}
 		return result;

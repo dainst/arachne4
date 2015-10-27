@@ -42,13 +42,6 @@ public class ContextService {
 	private transient EntityIdentificationService entityIdentificationService; 
 	
 	/**
-	 * Service to access the 'Verknuepfungen' table. The information stored in that table is used
-	 * to determine which contexts the <code>addContext</code> method adds to a given dataset.
-	 */	
-	@Autowired
-	private transient ConnectionService arachneConnectionService;
-	
-	/**
 	 * Service to access ids in 'cross tables'.
 	 */
 	@Autowired
@@ -74,9 +67,6 @@ public class ContextService {
 	
 	@Autowired
 	private transient Transl8Service ts;
-	
-	@Autowired
-	private transient ImageService imageService;
 	
 	private transient Map<String, IContextualizer> contextualizers = new HashMap<String, IContextualizer>();
 	

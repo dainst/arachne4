@@ -39,9 +39,6 @@ public class EntityService {
 	private transient UserRightsService userRightsService;
 	
 	@Autowired
-	private transient Transl8Service ts;
-	
-	@Autowired
 	private transient ESService esService;
 	
 	@Autowired

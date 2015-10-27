@@ -18,7 +18,7 @@ public class BookDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BookDao.class);
 
-    private transient DataSource dataSource;
+    protected transient DataSource dataSource;
     private transient JdbcTemplate jdbcTemplate;
 
     /**
