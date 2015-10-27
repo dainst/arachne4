@@ -26,6 +26,7 @@ import de.uni_koeln.arachne.mapping.hibernate.Catalog;
 import de.uni_koeln.arachne.mapping.hibernate.CatalogEntry;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.util.network.CustomMediaType;
 
 /**
  * Handles http requests for <code>/catalogEntry</code> and
@@ -53,7 +54,9 @@ public class CatalogController {
 	 * not owned by the current user or no user is signed in, a 403 error code
 	 * is returned.
 	 */
-	@RequestMapping(value = "/catalogentry/{catalogEntryId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/catalogentry/{catalogEntryId}", 
+			method = RequestMethod.GET, 
+			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<CatalogEntry> handleGetCatalogEntryRequest(
 			@PathVariable("catalogEntryId") final Long catalogEntryId,
 			@RequestParam(value = "full", required = false) Boolean full) {
@@ -64,9 +67,9 @@ public class CatalogController {
 		result = catalogEntryDao.getByCatalogEntryId(catalogEntryId, full);
 		
 		if (result == null) {
-			ResponseEntity.status(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
 		} else if (!result.getCatalog().isCatalogOfUserWithId(user.getId())	&& !result.getCatalog().isPublic()) {
-			ResponseEntity.status(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
 		}
 
 		return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -78,8 +81,11 @@ public class CatalogController {
 	 * Returns null and 403 if no user is signed in or the signed in user does
 	 * not own the catalogEntry to be edited.
 	 */
-	@RequestMapping(value = "/catalogentry/{catalogEntryId}", method = RequestMethod.PUT)
-	public @ResponseBody CatalogEntry handleUpdateCatalogEntryRequest(
+	@RequestMapping(value = "/catalogentry/{catalogEntryId}", 
+			method = RequestMethod.PUT, 
+			consumes = CustomMediaType.APPLICATION_JSON_UTF8_VALUE,
+			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
+	public @ResponseBody ResponseEntity<CatalogEntry> handleUpdateCatalogEntryRequest(
 			@PathVariable("catalogEntryId") final Long catalogEntryId,
 			@RequestBody final CatalogEntry catalogEntry,
 			final HttpServletResponse response) {
@@ -103,14 +109,12 @@ public class CatalogController {
 				result.generatePath();
 				catalogEntryDao.updateCatalogEntry(result);
 			} else {
-				result = null;
-				response.setStatus(403);
+				return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
 			}
 		} else {
-			result = null;
-			response.setStatus(403);
+			return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
 		}
-		return result;
+		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 
 	/**
@@ -119,29 +123,28 @@ public class CatalogController {
 	 * 403 if the specified catalogEntry is not owned by the current user.
 	 * Returns 404 if the specified catalogEntry can not be retrieved.
 	 */
-	@RequestMapping(value = "/catalogentry/{catalogEntryId}", method = RequestMethod.DELETE)
-	public void handleCatalogEntryDestroyRequest(
-			final HttpServletResponse response,
+	@RequestMapping(value = "/catalogentry/{catalogEntryId}", 
+			method = RequestMethod.DELETE, 
+			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Void> handleCatalogEntryDestroyRequest(
 			@PathVariable("catalogEntryId") final Long catalogEntryId) {
+		
 		final User user = userRightsService.getCurrentUser();
-		final CatalogEntry catalogEntry = catalogEntryDao
-				.getByCatalogEntryId(catalogEntryId);
-
-		LOGGER.debug("Request to destroy catalogEntry: " + catalogEntryId
-				+ " from user: " + user.getId());
-
-		if (catalogEntry == null) {
-			response.setStatus(404);
-		} else if (catalogEntry.getCatalog()
-				.isCatalogOfUserWithId(user.getId())) {
-			CatalogEntry parent = catalogEntry.getParent();
-			parent.getChildren().remove((int) catalogEntry.getIndexParent());
-			catalogEntryDao.updateCatalogEntry(parent);
-			catalogEntryDao.deleteCatalogEntry(catalogEntry);
-			response.setStatus(204);
+		final CatalogEntry catalogEntry = catalogEntryDao.getByCatalogEntryId(catalogEntryId);
+		
+		if (catalogEntry != null) {
+			if (catalogEntry.getCatalog()
+					.isCatalogOfUserWithId(user.getId())) {
+				CatalogEntry parent = catalogEntry.getParent();
+				parent.getChildren().remove((int) catalogEntry.getIndexParent());
+				catalogEntryDao.updateCatalogEntry(parent);
+				catalogEntryDao.deleteCatalogEntry(catalogEntry);
+				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+			}
 		} else {
-			response.setStatus(403);
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
+		return ResponseEntity.notFound().build();
 	}
 
 	/**
@@ -154,31 +157,29 @@ public class CatalogController {
 	 * submitted <code>CatalogEntry</code> contains an id value, that value is
 	 * ignored.
 	 */
-	@RequestMapping(value = "/catalogentry/{catalogEntryParentId}/add", method = RequestMethod.POST)
-	public @ResponseBody CatalogEntry handleCatalogEntryCreateInCatalogEntryRequest(
+	@RequestMapping(value = "/catalogentry/{catalogEntryParentId}/add", 
+			method = RequestMethod.POST,
+			consumes = CustomMediaType.APPLICATION_JSON_UTF8_VALUE,
+			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
+	public @ResponseBody ResponseEntity<CatalogEntry> handleCatalogEntryCreateInCatalogEntryRequest(
 			@PathVariable("catalogEntryParentId") final Long catalogEntryParentId,
-			@RequestBody final CatalogEntry catalogEntry,
-			final HttpServletResponse response) {
+			@RequestBody final CatalogEntry catalogEntry) {
+		
 		final User user = userRightsService.getCurrentUser();
 		final CatalogEntry catalogEntryParent;
 		final Catalog catalog;
 		final CatalogEntry result;
-
-		LOGGER.debug("Request to create catalogEntry in catalogEntry: "
-				+ catalogEntryParentId + "from user: " + user.getId());
 
 		if (userRightsService.isSignedInUser()) {
 			catalogEntryParent = catalogEntryDao
 					.getByCatalogEntryId(catalogEntryParentId);
 
 			if (catalogEntryParent == null) {
-				result = null;
-				response.setStatus(404);
+				return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
 			} else {
 				catalog = catalogEntryParent.getCatalog();
 				if (catalog == null) {
-					result = null;
-					response.setStatus(404);
+					return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
 				} else {
 					if (catalog.isCatalogOfUserWithId(user.getId())) {
 						catalogEntry.setId(null);
@@ -190,29 +191,27 @@ public class CatalogController {
 						result = catalogEntryDao
 								.updateCatalogEntry(catalogEntry);
 					} else {
-						result = null;
-						response.setStatus(403);
+						return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
 					}
 				}
 			}
 		} else {
-			result = null;
-			response.setStatus(403);
+			return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
 		}
-		return result;
+		return ResponseEntity.ok(result);
 	}
 
-	@RequestMapping(value = "/catalogentry", method = RequestMethod.POST)
-	public @ResponseBody CatalogEntry handleCatalogEntryCreateRequest(
-			@RequestBody final CatalogEntry catalogEntry,
-			final HttpServletResponse response) {
+	@RequestMapping(value = "/catalogentry", 
+			method = RequestMethod.POST,
+			consumes = CustomMediaType.APPLICATION_JSON_UTF8_VALUE,
+			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
+	public @ResponseBody ResponseEntity<CatalogEntry> handleCatalogEntryCreateRequest(
+			@RequestBody final CatalogEntry catalogEntry) {
+		
 		final User user = userRightsService.getCurrentUser();
 		final CatalogEntry catalogEntryParent;
 		final Catalog catalog;
 		final CatalogEntry result;
-
-		LOGGER.debug("Request to create catalogEntry " + "from user: "
-				+ user.getId());
 
 		if (userRightsService.isSignedInUser()
 				&& catalogEntry.getParentId() != null) {
@@ -221,8 +220,7 @@ public class CatalogController {
 					.getByCatalogEntryId(catalogEntry.getParentId());
 
 			if (catalogEntryParent == null) {
-				result = null;
-				response.setStatus(404);
+				return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
 			} else {
 
 				catalog = catalogEntryParent.getCatalog();
@@ -242,15 +240,13 @@ public class CatalogController {
 					catalogEntry.generatePath();
 					result = catalogEntryDao.updateCatalogEntry(catalogEntry);
 				} else {
-					result = null;
-					response.setStatus(403);
+					return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
 				}
 			}
 		} else {
-			result = null;
-			response.setStatus(403);
+			return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
 		}
-		return result;
+		return ResponseEntity.ok(result);
 	}
 
 	/**
@@ -260,21 +256,22 @@ public class CatalogController {
 	 * catalogs an empty List is returned. If no user is signed in, a 403 error
 	 * code is returned.
 	 */
-	@RequestMapping(value = "/catalog", method = RequestMethod.GET)
-	public @ResponseBody List<Catalog> handleGetCatalogsRequest(final HttpServletResponse response) {
+	@RequestMapping(value = "/catalog", 
+			method = RequestMethod.GET,
+			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
+	public @ResponseBody ResponseEntity<List<Catalog>> handleGetCatalogsRequest() {
 		List<Catalog> result = null;
 		final User user = userRightsService.getCurrentUser();
-		LOGGER.debug("Request for all catalogs of user: " + user.getId());
-
+		
 		if (userRightsService.isSignedInUser()) {
 			result = catalogDao.getByUid(user.getId());
 			if (result == null || result.isEmpty()) {
 				result = new ArrayList<Catalog>();
 			}
 		} else {
-			response.setStatus(403);
+			return new ResponseEntity<List<Catalog>>(HttpStatus.FORBIDDEN);
 		}
-		return result;
+		return ResponseEntity.ok(result);
 	}
 
 	/**
@@ -287,7 +284,9 @@ public class CatalogController {
 	 * @param full If the full catalog shall be retrieved (with all entries) or only root and it's direct children.
 	 * @return The catalog.
 	 */
-	@RequestMapping(value = "/catalog/{catalogId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/catalog/{catalogId}", 
+			method = RequestMethod.GET,
+			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<Catalog> handleGetCatalogRequest(
 			@PathVariable("catalogId") final Long catalogId,
 			@RequestParam(value = "full", required = false) Boolean full) {
@@ -315,17 +314,17 @@ public class CatalogController {
 	 * automatically delete items, that are missing from the list of nested
 	 * <code>CatalogEntry</code> items.
 	 */
-	@RequestMapping(value = "/catalog/{requestedId}", method = RequestMethod.PUT, consumes = "application/json")
-	public @ResponseBody Catalog handleCatalogUpdateRequest(
+	@RequestMapping(value = "/catalog/{requestedId}", 
+			method = RequestMethod.PUT, 
+			consumes = CustomMediaType.APPLICATION_JSON_UTF8_VALUE,
+			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
+	public @ResponseBody ResponseEntity<Catalog> handleCatalogUpdateRequest(
 			@RequestBody final Catalog catalog,
-			@PathVariable("requestedId") final Long requestedId,
-			final HttpServletResponse response) {
+			@PathVariable("requestedId") final Long requestedId) {
+		
 		final User user = userRightsService.getCurrentUser();
 		final Catalog result;
 		final Catalog oldCatalog;
-
-		LOGGER.debug("Request to update catalog: " + catalog.getId()
-				+ " of user: " + user.getId());
 
 		if (userRightsService.isSignedInUser()) {
 			oldCatalog = catalogDao.getByCatalogId(requestedId);
@@ -347,14 +346,12 @@ public class CatalogController {
 				catalogEntryDao.updateCatalogEntry(result.getRoot());
 
 			} else {
-				result = null;
-				response.setStatus(403);
+				return new ResponseEntity<Catalog>(HttpStatus.FORBIDDEN);
 			}
 		} else {
-			result = null;
-			response.setStatus(403);
+			return new ResponseEntity<Catalog>(HttpStatus.FORBIDDEN);
 		}
-		return result;
+		return ResponseEntity.ok(result);
 	}
 
 	/**
@@ -364,14 +361,14 @@ public class CatalogController {
 	 * <code>CatalogEntry</code> items. Existing primary id values in nested
 	 * <code>CatalogEntry</code> items are ignored.
 	 */
-	@RequestMapping(value = "/catalog", method = RequestMethod.POST, consumes = "application/json")
-	public @ResponseBody Catalog handleCatalogCreateRequest(
-			@RequestBody final Catalog catalog,
-			final HttpServletResponse response) {
+	@RequestMapping(value = "/catalog", 
+			method = RequestMethod.POST, 
+			consumes = CustomMediaType.APPLICATION_JSON_UTF8_VALUE,
+			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
+	public @ResponseBody ResponseEntity<Catalog> handleCatalogCreateRequest(@RequestBody final Catalog catalog) {
+
 		final User user = userRightsService.getCurrentUser();
 		final Catalog result;
-
-		LOGGER.debug("Request to create catalog for user: " + user.getId());
 
 		if (userRightsService.isSignedInUser()) {
 			Set<User> users = new HashSet<User>();
@@ -389,10 +386,9 @@ public class CatalogController {
 			catalogDao.saveOrUpdateCatalog(result);
 
 		} else {
-			result = null;
-			response.setStatus(403);
+			return new ResponseEntity<Catalog>(HttpStatus.FORBIDDEN);
 		}
-		return result;
+		return ResponseEntity.ok(result);
 	}
 
 	/**
@@ -402,30 +398,33 @@ public class CatalogController {
 	 * the specified list is not owned by the current user. Returns 404 if the
 	 * specified list can not be retrieved.
 	 */
-	@RequestMapping(value = "/catalog/{catalogId}", method = RequestMethod.DELETE)
-	public void handleCatalogDestroyRequest(final HttpServletResponse response,
-			@PathVariable("catalogId") final Long catalogId) {
+	@RequestMapping(value = "/catalog/{catalogId}", 
+			method = RequestMethod.DELETE)
+	public ResponseEntity<String> handleCatalogDestroyRequest(@PathVariable("catalogId") final Long catalogId) {
+
 		final User user = userRightsService.getCurrentUser();
 		final Catalog catalog = catalogDao.getByCatalogId(catalogId);
 
-		LOGGER.debug("Request to destroy catalog: " + catalogId
-				+ " from user: " + user.getId());
-
 		if (catalog == null) {
-			response.setStatus(404);
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		} else if (catalog.isCatalogOfUserWithId(user.getId())) {
 			catalogDao.destroyCatalog(catalog);
-			response.setStatus(204);
+			return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
 		} else {
-			response.setStatus(403);
+			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
 		}
 	}
 	
-	@RequestMapping(value = "/catalogByEntity/{entityId}", method = RequestMethod.GET)
-	public @ResponseBody List<Long> handleGetCatalogByEntityRequest(
-			@PathVariable("entityId") final Long entityId,
-			final HttpServletResponse response) {
+	@RequestMapping(value = "/catalogByEntity/{entityId}", 
+			method = RequestMethod.GET,
+			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
+	public @ResponseBody ResponseEntity<List<Long>> handleGetCatalogByEntityRequest(
+			@PathVariable("entityId") final Long entityId) {
 		
-		return catalogEntryDao.getPrivateCatalogIdsByEntityId(entityId);
+		final List<Long> result = catalogEntryDao.getPrivateCatalogIdsByEntityId(entityId);
+		if (result == null || result.isEmpty()) {
+			return new ResponseEntity<List<Long>>(HttpStatus.NOT_FOUND);
+		}
+		return ResponseEntity.ok(result);
 	}
 }
