@@ -119,7 +119,6 @@ public class CatalogController {
 	 * Handles http DELETE request for <code>/catalogEntry/{id}</code>. Deletes
 	 * the specified <code>CatalogEntry</code>. Returns 204 on success. Returns
 	 * 403 if the specified catalogEntry is not owned by the current user.
-	 * Returns 404 if the specified catalogEntry can not be retrieved.
 	 */
 	@RequestMapping(value = "/catalogentry/{catalogEntryId}", 
 			method = RequestMethod.DELETE, 
@@ -131,18 +130,16 @@ public class CatalogController {
 		final CatalogEntry catalogEntry = catalogEntryDao.getByCatalogEntryId(catalogEntryId);
 		
 		if (catalogEntry != null) {
-			if (catalogEntry.getCatalog()
-					.isCatalogOfUserWithId(user.getId())) {
+			if (catalogEntry.getCatalog().isCatalogOfUserWithId(user.getId())) {
 				CatalogEntry parent = catalogEntry.getParent();
 				parent.getChildren().remove((int) catalogEntry.getIndexParent());
 				catalogEntryDao.updateCatalogEntry(parent);
 				catalogEntryDao.deleteCatalogEntry(catalogEntry);
-				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+			} else {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 			}
-		} else {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
 	/**
@@ -393,8 +390,7 @@ public class CatalogController {
 	 * Handles http DELETE request for <code>/catalog/{id}</code>. Deletes the
 	 * specified <code>Catalog</code> and all associated
 	 * <code>CatalogEntry</code> items. Returns 204 on success. Returns 403 if
-	 * the specified list is not owned by the current user. Returns 404 if the
-	 * specified list can not be retrieved.
+	 * the specified list is not owned by the current user.
 	 */
 	@RequestMapping(value = "/catalog/{catalogId}", 
 			method = RequestMethod.DELETE)
@@ -403,14 +399,15 @@ public class CatalogController {
 		final User user = userRightsService.getCurrentUser();
 		final Catalog catalog = catalogDao.getByCatalogId(catalogId);
 
-		if (catalog == null) {
-			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
-		} else if (catalog.isCatalogOfUserWithId(user.getId())) {
-			catalogDao.destroyCatalog(catalog);
-			return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+		if (catalog != null) {
+			if (!catalog.isCatalogOfUserWithId(user.getId())) {
+				return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+			} else {
+				catalogDao.destroyCatalog(catalog);
+			}
 		}
+		
+		return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
 	}
 	
 	@RequestMapping(value = "/catalogByEntity/{entityId}", 
