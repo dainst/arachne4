@@ -17,6 +17,7 @@ public class TestUsers {
 
 	public static User getAdmin() {
 		final User user = new User();
+		user.setId(1);
 		user.setUsername("testadmin");
 		user.setFirstname("test");
 		user.setLastname("admin");
@@ -27,6 +28,7 @@ public class TestUsers {
 	
 	public static User getEditor() {
 		final User user = new User();
+		user.setId(2);
 		user.setUsername("testeditor");
 		user.setFirstname("test");
 		user.setLastname("editor");
@@ -40,6 +42,7 @@ public class TestUsers {
 	
 	public static User getUser() {
 		final User user = new User();
+		user.setId(3);
 		user.setUsername("testuser");
 		user.setFirstname("test");
 		user.setLastname("user");
