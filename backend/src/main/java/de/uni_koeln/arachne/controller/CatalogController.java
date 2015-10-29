@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,8 +85,8 @@ public class CatalogController {
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<CatalogEntry> handleUpdateCatalogEntryRequest(
 			@PathVariable("catalogEntryId") final Long catalogEntryId,
-			@RequestBody final CatalogEntry catalogEntry,
-			final HttpServletResponse response) {
+			@RequestBody final CatalogEntry catalogEntry) {
+		
 		final User user = userRightsService.getCurrentUser();
 		final CatalogEntry result;
 		final CatalogEntry oldCatalogEntry;
