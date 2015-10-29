@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ import de.uni_koeln.arachne.util.network.CustomMediaType;
 @Controller
 public class CatalogController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(CatalogController.class);
+	//private static final Logger LOGGER = LoggerFactory.getLogger(CatalogController.class);
 
 	@Autowired
 	private transient UserRightsService userRightsService;
@@ -90,9 +90,6 @@ public class CatalogController {
 		final User user = userRightsService.getCurrentUser();
 		final CatalogEntry result;
 		final CatalogEntry oldCatalogEntry;
-
-		LOGGER.debug("Request to update catalogEntry: " + catalogEntryId
-				+ " from user: " + user.getId());
 
 		if (userRightsService.isSignedInUser()) {
 			oldCatalogEntry = catalogEntryDao
