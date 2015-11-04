@@ -212,7 +212,7 @@ public class CatalogController {
 					.getByCatalogEntryId(catalogEntry.getParentId());
 
 			if (catalogEntryParent == null) {
-				return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
 			} else {
 
 				catalog = catalogEntryParent.getCatalog();
