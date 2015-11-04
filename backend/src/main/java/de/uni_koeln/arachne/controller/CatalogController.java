@@ -287,10 +287,10 @@ public class CatalogController {
 		final User user = userRightsService.getCurrentUser();
 		Catalog result = catalogDao.getByCatalogId(catalogId, full);
 		if (result == null) {
-			ResponseEntity.status(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Catalog>(HttpStatus.NOT_FOUND);
 		} else if (!result.isCatalogOfUserWithId(user.getId()) && !result.isPublic()) {
 			result = null;
-			ResponseEntity.status(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<Catalog>(HttpStatus.FORBIDDEN);
 		}
 		
 		return ResponseEntity.status(HttpStatus.OK).body(result);
