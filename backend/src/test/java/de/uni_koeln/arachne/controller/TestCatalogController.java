@@ -90,11 +90,14 @@ public class TestCatalogController {
 				.getChildren().get(0)
 				.getChildren().get(0)
 				.getChildren().get(0));
+		entryLeaf.getParent().setCatalog(catalog);
 		entryLeaf.setCatalog(catalog);
 		
 		when(catalogEntryDao.getByCatalogEntryId(1, false)).thenReturn(entry);
 		when(catalogEntryDao.getByCatalogEntryId(1, true)).thenReturn(entryFull);
+		when(catalogEntryDao.getByCatalogEntryId(598)).thenReturn(entryLeaf.getParent());
 		when(catalogEntryDao.getByCatalogEntryId(599)).thenReturn(entryLeaf);
+		when(catalogEntryDao.getByCatalogEntryId(600)).thenReturn(null);
 		when(catalogEntryDao.updateCatalogEntry(any(CatalogEntry.class))).thenAnswer(new Answer<CatalogEntry>() {
 
 			@Override
@@ -224,17 +227,84 @@ public class TestCatalogController {
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isNoContent());
 	}
+	
+	@Test
+	public void testHandleCatalogEntryCreateInCatalogEntryRequestValid() throws Exception {
+		mockMvc.perform(
+				post("/catalogentry/599/add")
+					.contentType(APPLICATION_JSON_UTF8)
+					.content("{\"label\": \"Test Label\",\""
+							+ "text\": \"Test Text.\",\""
+							+ "parentId\": 599,\""
+							+ "indexParent\": 0,\""
+							+ "catalogId\": 83}"))
+				.andExpect(status().isOk());
+		
+		// forbidden
+		mockMvc.perform(
+				post("/catalogentry/599/add")
+					.contentType(APPLICATION_JSON_UTF8)
+					.content("{\"label\": \"Test Label\",\""
+							+ "text\": \"Test Text.\",\""
+							+ "parentId\": 599,\""
+							+ "indexParent\": 0,\""
+							+ "catalogId\": 83}"))
+				.andExpect(status().isForbidden());
+	}
+	
+	@Test
+	public void testHandleCatalogEntryCreateInCatalogEntryRequestInvalidPartent() throws Exception {
+		mockMvc.perform(
+				post("/catalogentry/600/add")
+					.contentType(APPLICATION_JSON_UTF8)
+					.content("{\"label\": \"Test Label\",\""
+							+ "text\": \"Test Text.\",\""
+							+ "parentId\": 600,\""
+							+ "indexParent\": 0,\""
+							+ "catalogId\": 83}"))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void testHandleCatalogEntryCreateRequestValid() throws Exception {
+		mockMvc.perform(
+				post("/catalogentry")
+					.contentType(APPLICATION_JSON_UTF8)
+					.content("{\"id\": 599, \""
+							+ "label\": \"Test Label\",\""
+							+ "text\": \"Test Text.\",\""
+							+ "parentId\": 598,\""
+							+ "indexParent\": 0,\""
+							+ "catalogId\": 83}"))
+				.andExpect(status().isOk());
+		
+		// forbidden
+		mockMvc.perform(
+				post("/catalogentry")
+					.contentType(APPLICATION_JSON_UTF8)
+					.content("{\"id\": 599, \""
+							+ "label\": \"Test Label\",\""
+							+ "text\": \"Test Text.\",\""
+							+ "parentId\": 598,\""
+							+ "indexParent\": 0,\""
+							+ "catalogId\": 83}"))
+				.andExpect(status().isForbidden());
+	}
+	
+	@Test
+	public void testHandleCatalogEntryCreateRequestInvalidParent() throws Exception {
+		mockMvc.perform(
+				post("/catalogentry")
+					.contentType(APPLICATION_JSON_UTF8)
+					.content("{\"id\": 599, \""
+							+ "label\": \"Test Label\",\""
+							+ "text\": \"Test Text.\",\""
+							+ "parentId\": 600,\""
+							+ "indexParent\": 0,\""
+							+ "catalogId\": 83}"))
+				.andExpect(status().isBadRequest());
+	}
 	/*
-	@Test
-	public void testHandleCatalogEntryCreateInCatalogEntryRequest() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testHandleCatalogEntryCreateRequest() {
-		fail("Not yet implemented");
-	}
-
 	@Test
 	public void testHandleGetCatalogsRequest() {
 		fail("Not yet implemented");
