@@ -1,0 +1,79 @@
+{  
+    "id":183,
+    "root":{  
+        "children":[  
+            {  
+                "id":594,
+                "label":"Vorbebauung",
+                "path":"183/null/594",
+                "parentId":597,
+                "indexParent":0,
+                "catalogId":183,
+                "hasChildren":false
+            },
+            {  
+                "id":593,
+                "children":[  
+                    {  
+                        "id":595,
+                        "children":[  
+                            {  
+                                "id":596,
+                                "children":[  
+                                    {  
+                                        "id":598,
+                                        "children":[  
+                                            {  
+                                                "id":599,
+                                                "arachneEntityId":1184191,
+                                                "label":"Fundamente der Innensäulen",
+                                                "text":"Die Fundamente der Innensäulen.",
+                                                "path":"183/null/593/595/596/598/599",
+                                                "parentId":598,
+                                                "indexParent":0,
+                                                "catalogId":183,
+                                                "hasChildren":false
+                                            }
+                                        ],
+                                        "label":"Fundamente",
+                                        "path":"183/null/593/595/596/598",
+                                        "parentId":596,
+                                        "indexParent":0,
+                                        "catalogId":183,
+                                        "hasChildren":true
+                                    }
+                                ],
+                                "label":"Republikanische Zeit",
+                                "path":"183/null/593/595/596",
+                                "parentId":595,
+                                "indexParent":0,
+                                "catalogId":183,
+                                "hasChildren":true
+                            }
+                        ],
+                        "label":"Aula",
+                        "path":"183/null/593/595",
+                        "parentId":593,
+                        "indexParent":0,
+                        "catalogId":183,
+                        "hasChildren":true
+                    }
+                ],
+                "label":"Basilica Aemilia",
+                "path":"183/null/593",
+                "parentId":597,
+                "indexParent":1,
+                "catalogId":183,
+                "hasChildren":true
+            }
+        ],
+        "label":"Die Basilica Aemilia auf dem Forum Romanum in Rom: Brennpunkt des öffentlichen Lebens",
+        "text":"Nach der Errichtung in den 60er Jahren des 2. Jhs. v. Chr. durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius Nobilior wurde die Basilica mehrmals zerstört [...]",
+        "path":"183/null",
+        "catalogId":183,
+        "hasChildren":true
+    },
+    "author":"Testauthor",
+    "public":false
+}
+

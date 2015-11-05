@@ -9,6 +9,8 @@ import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON
 //import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,6 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
+import de.uni_koeln.arachne.dao.hibernate.CatalogDao;
 import de.uni_koeln.arachne.dao.hibernate.CatalogEntryDao;
 import de.uni_koeln.arachne.mapping.hibernate.Catalog;
 import de.uni_koeln.arachne.mapping.hibernate.CatalogEntry;
@@ -44,11 +47,15 @@ public class TestCatalogController {
 	@Mock
 	private CatalogEntryDao catalogEntryDao;
 	
+	@Mock
+	private CatalogDao catalogDao;
+	
 	@InjectMocks
 	private CatalogController controller;
 	
 	private MockMvc mockMvc;
 	
+	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
@@ -105,8 +112,44 @@ public class TestCatalogController {
 				Object[] args = invocation.getArguments();
 				return (CatalogEntry) args[0];
 			}
-			
 		});
+
+		when(catalogDao.getByUid(3)).thenReturn(Arrays.asList(catalog));
+		when(catalogDao.getByCatalogId(83)).thenReturn(catalog);
+		when(catalogDao.getByCatalogId(83, true)).thenReturn(catalog);
+		when(catalogDao.saveOrUpdateCatalog(any(Catalog.class))).thenAnswer(new Answer<Catalog>() {
+
+			@Override
+			public Catalog answer(InvocationOnMock invocation) throws Throwable {
+				Object[] args = invocation.getArguments();
+				return (Catalog) args[0];
+			}
+		});
+		
+		when(catalogDao.saveCatalog(any(Catalog.class))).thenAnswer(new Answer<Catalog>() {
+
+			@Override
+			public Catalog answer(InvocationOnMock invocation) throws Throwable {
+				Object[] args = invocation.getArguments();
+				return (Catalog) args[0];
+			}
+		});
+		
+		// catalog children removed
+		final Catalog catalogNoChilds = mapper.readValue(
+				Resources.toString(resource, Charsets.UTF_8), Catalog.class);
+		catalogNoChilds.setUsers(users);
+		final CatalogEntry root = catalogNoChilds.getRoot();
+		for (CatalogEntry catalogEntry : root.getChildren()) {
+			catalogEntry.removeChildren();
+		}
+		
+		when(catalogDao.getByCatalogId(83, false)).thenReturn(catalogNoChilds);
+		
+		when(catalogEntryDao.getPrivateCatalogIdsByEntityId(anyLong()))
+				.thenReturn(new ArrayList<Long>());
+		when(catalogEntryDao.getPrivateCatalogIdsByEntityId(1184191))
+				.thenReturn(Arrays.asList(83L), new ArrayList<Long>());
 	}
 	
 	@Test
@@ -304,35 +347,184 @@ public class TestCatalogController {
 							+ "catalogId\": 83}"))
 				.andExpect(status().isBadRequest());
 	}
-	/*
+	
 	@Test
-	public void testHandleGetCatalogsRequest() {
-		fail("Not yet implemented");
+	public void testHandleGetCatalogsRequest() throws Exception {
+		mockMvc.perform(
+				get("/catalog")
+					.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk());
+		
+		// forbidden
+		mockMvc.perform(
+				get("/catalog")
+					.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isForbidden());
 	}
 
 	@Test
-	public void testHandleGetCatalogRequest() {
-		fail("Not yet implemented");
+	public void testHandleGetCatalogRequestValid() throws Exception {
+		final String expectedNoChildCatalog = "{\"id\":83,\"root\":{\"id\":597,\"children\":[{\"id\":594,\""
+				+ "label\":\"Vorbebauung\",\"parentId\":597,\"indexParent\":0,\"catalogId\":83,\"hasChildren\":false},"
+				+ "{\"id\":593,\"label\":\"Basilica Aemilia\",\"parentId\":597,\"indexParent\":1,\"catalogId\":83,\""
+				+ "hasChildren\":true}],\"label\":\"Die Basilica Aemilia auf dem Forum Romanum in Rom: Brennpunkt "
+				+ "des öffentlichen Lebens\",\"text\":\"Nach der Errichtung in den 60er Jahren des 2. Jhs. v. Chr. "
+				+ "durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius Nobilior wurde die Basilica mehrmals "
+				+ "zerstört [...]\",\"catalogId\":83,\"hasChildren\":true},\"author\":\"Testauthor\",\"public\":false}";
+				
+		mockMvc.perform(
+				get("/catalog/83")
+					.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json(expectedNoChildCatalog));
+		
+		// forbidden
+		mockMvc.perform(
+				get("/catalog/83")
+					.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isForbidden());
+	}
+	
+	@Test
+	public void testHandleGetCatalogRequestFullValid() throws Exception {
+		final URL resource = TestCatalogController.class.getResource("/WEB-INF/json/catalog.json");
+		final ObjectMapper mapper = new ObjectMapper();
+		final Catalog expectedCatalog = mapper.readValue(Resources.toString(resource, Charsets.UTF_8)
+				, Catalog.class);
+		final String expectedCatalogString = mapper.writeValueAsString(expectedCatalog);
+		
+		mockMvc.perform(
+				get("/catalog/83?full=true")
+					.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json(expectedCatalogString));
+	}
+	
+	@Test
+	public void testHandleGetCatalogRequestInvalidId() throws Exception {
+		mockMvc.perform(
+				get("/catalog/84")
+					.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	public void testHandleCatalogUpdateRequestValid() throws Exception {
+		final URL resource = TestCatalogController.class.getResource("/WEB-INF/json/catalog.json");
+		final ObjectMapper mapper = new ObjectMapper();
+		final Catalog catalog = mapper.readValue(Resources.toString(resource, Charsets.UTF_8)
+				, Catalog.class);
+		final String catalogString = mapper.writeValueAsString(catalog);
+		
+		mockMvc.perform(
+				put("/catalog/83")
+					.contentType(APPLICATION_JSON_UTF8)
+					.content(catalogString))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json(catalogString));
+		
+		// forbidden
+		mockMvc.perform(
+				put("/catalog/83")
+					.contentType(APPLICATION_JSON_UTF8)
+					.content(catalogString))
+				.andExpect(status().isForbidden());
+	}
+	
+	@Test
+	public void testHandleCatalogUpdateRequestInvalidId() throws Exception {
+		final URL resource = TestCatalogController.class.getResource("/WEB-INF/json/catalog.json");
+		final ObjectMapper mapper = new ObjectMapper();
+		final Catalog catalog = mapper.readValue(Resources.toString(resource, Charsets.UTF_8)
+				, Catalog.class);
+		final String catalogString = mapper.writeValueAsString(catalog);
+		
+		mockMvc.perform(
+				put("/catalog/84")
+					.contentType(APPLICATION_JSON_UTF8)
+					.content(catalogString))
+				.andExpect(status().isForbidden());
 	}
 
 	@Test
-	public void testHandleCatalogUpdateRequest() {
-		fail("Not yet implemented");
+	public void testHandleCatalogCreateRequestValid() throws Exception {
+		final URL contentRes = TestCatalogController.class.getResource("/WEB-INF/json/catalogId183.json");
+		final ObjectMapper mapper = new ObjectMapper();
+		final Catalog contentCatalog = mapper.readValue(Resources.toString(contentRes, Charsets.UTF_8)
+				, Catalog.class);
+		final String contentCatalogString = mapper.writeValueAsString(contentCatalog);
+		
+		final URL responseRes = TestCatalogController.class.getResource("/WEB-INF/json/catalogId183Response.json");
+		final Catalog responseCatalog = mapper.readValue(Resources.toString(responseRes, Charsets.UTF_8)
+				, Catalog.class);
+		final String responseCatalogString = mapper.writeValueAsString(responseCatalog);
+		
+		mockMvc.perform(
+				post("/catalog")
+					.contentType(APPLICATION_JSON_UTF8)
+					.content(contentCatalogString))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json(responseCatalogString));
+		
+		// forbidden
+		mockMvc.perform(
+				post("/catalog")
+					.contentType(APPLICATION_JSON_UTF8)
+					.content(contentCatalogString))
+				.andExpect(status().isForbidden());
+	}
+	
+	@Test
+	public void testHandleCatalogDestroyRequestValid() throws Exception {
+		mockMvc.perform(
+				delete("/catalog/83")
+					.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isNoContent());
+		
+		// forbidden
+		mockMvc.perform(
+				delete("/catalog/83")
+					.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isForbidden());
+	}
+	
+	@Test
+	public void testHandleCatalogDestroyRequestInvalidId() throws Exception {
+		mockMvc.perform(
+				delete("/catalog/84")
+					.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isNoContent());
 	}
 
 	@Test
-	public void testHandleCatalogCreateRequest() {
-		fail("Not yet implemented");
+	public void testHandleGetCatalogByEntityRequestValid() throws Exception {
+		mockMvc.perform(
+				get("/catalogByEntity/1184191")
+					.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{\"catalogIds\":[83]}"));
+		
+		// forbidden
+		mockMvc.perform(
+				get("/catalogByEntity/1184191")
+					.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{}"));
 	}
 
 	@Test
-	public void testHandleCatalogDestroyRequest() {
-		fail("Not yet implemented");
+	public void testHandleGetCatalogByEntityRequestInvalidId() throws Exception {
+		mockMvc.perform(
+				get("/catalogByEntity/1184192")
+					.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{}"));
 	}
-
-	@Test
-	public void testHandleGetCatalogByEntityRequest() {
-		fail("Not yet implemented");
-	}*/
-
 }
