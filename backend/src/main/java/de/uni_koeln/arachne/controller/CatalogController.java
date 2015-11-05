@@ -423,7 +423,7 @@ public class CatalogController {
 		return ResponseEntity.ok(new CatalogIdList(result));
 	}
 	
-	// getByEntity return type (better JSON response than the pure list)
+	// handleGetCatalogByEntityRequest() return type (better JSON response than the pure list)
 	@JsonInclude(value=Include.NON_EMPTY)
 	private class CatalogIdList {
 		private List<Long> catalogIds;
