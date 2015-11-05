@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import de.uni_koeln.arachne.dao.hibernate.CatalogDao;
 import de.uni_koeln.arachne.dao.hibernate.CatalogEntryDao;
 import de.uni_koeln.arachne.mapping.hibernate.Catalog;
@@ -410,13 +413,28 @@ public class CatalogController {
 	@RequestMapping(value = "/catalogByEntity/{entityId}", 
 			method = RequestMethod.GET,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
-	public @ResponseBody ResponseEntity<List<Long>> handleGetCatalogByEntityRequest(
+	public @ResponseBody ResponseEntity<CatalogIdList> handleGetCatalogByEntityRequest(
 			@PathVariable("entityId") final Long entityId) {
 		
 		final List<Long> result = catalogEntryDao.getPrivateCatalogIdsByEntityId(entityId);
 		if (result == null || result.isEmpty()) {
-			return new ResponseEntity<List<Long>>(HttpStatus.NOT_FOUND);
+			return ResponseEntity.ok(new CatalogIdList(new ArrayList<Long>()));
 		}
-		return ResponseEntity.ok(result);
+		return ResponseEntity.ok(new CatalogIdList(result));
+	}
+	
+	// getByEntity return type (better JSON response than the pure list)
+	@JsonInclude(value=Include.NON_EMPTY)
+	private class CatalogIdList {
+		private List<Long> catalogIds;
+
+		CatalogIdList(final List<Long> catalogIds) {
+			this.catalogIds = catalogIds;
+		}
+		
+		@SuppressWarnings("unused")
+		public List<Long> getCatalogIds() {
+			return catalogIds;
+		}
 	}
 }
