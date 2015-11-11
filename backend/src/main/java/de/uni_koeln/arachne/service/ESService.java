@@ -4,17 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PreDestroy;
 import javax.servlet.ServletContext;
 
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesResponse;
+import org.elasticsearch.action.admin.indices.alias.get.GetAliasesRequest;
 import org.elasticsearch.action.admin.indices.close.CloseIndexResponse;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
@@ -26,7 +24,10 @@ import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.cluster.metadata.AliasMetaData;
+import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
@@ -85,8 +86,7 @@ public class ESService implements ServletContextAware {
 	private transient final int esBulkSize;
 
 	private transient final boolean esRemoteClient;
-	private transient final String esFullAddress ;
-
+	
 	private transient final Node node;
 	private transient final Client client;
 
@@ -107,8 +107,7 @@ public class ESService implements ServletContextAware {
 		this.esBulkActions = esBulkActions;
 		this.esBulkSize = esBulkSize;
 		this.esRemoteClient = esRemoteClient;
-		esFullAddress  = esProtocol + "://" + esAddress + ':' + esRESTPort + '/';
-
+		
 		if (esRemoteClient) {
 			LOGGER.info("Setting up elasticsearch transport client...");
 			node = null;
@@ -444,11 +443,25 @@ public class ESService implements ServletContextAware {
 	 */
 	private String getDataImportIndexName() {
 		String result = INDEX_1;
-		final String url = esFullAddress + "*/_alias/*";
-		if (sendRequest(url, "GET").contains(INDEX_1)) {
+		final Set<String> indices = getIndicesFromAliasName(searchIndexAlias);
+		if (indices.contains(INDEX_1)) {
 			result = INDEX_2;
 		}
 		return result;
+	}
+	
+	/**
+	 * Finds all indices in a given alias name.
+	 * @param aliasName The alias name to find indices in.
+	 * @return The set of found indices.
+	 */
+	private Set<String> getIndicesFromAliasName(String aliasName) {
+	    final IndicesAdminClient indicesAdminClient = client.admin().indices();
+	    final ImmutableOpenMap<String, List<AliasMetaData>> map 
+	    		= indicesAdminClient.getAliases(new GetAliasesRequest(aliasName)).actionGet().getAliases();
+	    final Set<String> allIndices = new HashSet<>();
+	    map.keysIt().forEachRemaining(allIndices::add);
+	    return allIndices;
 	}
 
 	/**
@@ -478,45 +491,6 @@ public class ESService implements ServletContextAware {
 					LOGGER.error("Could not close '" + filename + "'. " + e.getMessage());
 					result = new StringBuilder("undefined");
 				}
-			}
-		}
-		return result.toString();
-	}
-
-	// TODO: move to own class or replace with restTemplate (?)
-	private String sendRequest(final String url, final String method) {
-
-		final StringBuilder result = new StringBuilder(32); 
-		HttpURLConnection connection = null;
-		try {
-			LOGGER.debug("HTTP " + method + ": " + url);
-			final URL requestUrl = new URL(url);
-			connection = (HttpURLConnection)requestUrl.openConnection();			
-			connection.setRequestMethod(method);
-			connection.setReadTimeout(5000);
-			connection.connect();
-
-			if (connection.getResponseCode() == 200) {
-				final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-				String inputLine;
-				while ((inputLine = bufferedReader.readLine()) != null) {
-					result.append(inputLine);
-				}
-			} else {
-				LOGGER.error(method + " (" + url + ") request failed with " + connection.getResponseCode() + ' ' + connection.getResponseMessage());
-			}
-		} catch (MalformedURLException e) {
-			LOGGER.error(e.getMessage(), e);
-		} catch (ProtocolException e) {
-			LOGGER.error(e.getMessage(), e);
-		} catch (SocketTimeoutException e) {
-			LOGGER.error("Elasticsearch REST connection timed out: ", e);
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage(), e);
-		} finally {
-			if (connection != null) {
-				connection.disconnect();
-				connection = null;
 			}
 		}
 		return result.toString();
