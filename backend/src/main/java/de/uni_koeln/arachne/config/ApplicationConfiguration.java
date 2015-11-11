@@ -84,6 +84,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 		hibernateProperties.setProperty("hibernate.show_sql", "false");
 		hibernateProperties.setProperty("hibernate.enable_lazy_load_no_trans", "true");
+		hibernateProperties.setProperty("hibernate.id.new_generator_mappings", "false");
 		
 		final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource());
