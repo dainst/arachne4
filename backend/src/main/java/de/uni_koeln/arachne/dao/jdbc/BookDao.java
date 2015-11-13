@@ -36,13 +36,16 @@ public class BookDao {
      * @return The folder name for the book or <code>null</code> on failure.
      */
     public String getTEIFolderName(final String arachneEntityId) {
-        try {
-            return jdbcTemplate.queryForObject("SELECT Verzeichnis FROM buch LEFT JOIN arachneentityidentification " +
+    	// disabled for missing rights management
+        /* try {
+            // TODO move the SQL generation to SQLFactory especially considering rights management 
+        	return jdbcTemplate.queryForObject("SELECT Verzeichnis FROM buch LEFT JOIN arachneentityidentification " +
                     "ON buch.PS_BuchID=arachneentityidentification.ForeignKey WHERE arachneentityidentification.TableName='buch' " +
                     "AND arachneentityidentification.ArachneEntityID='"+arachneEntityId+"'", String.class);
         } catch (DataAccessException e) {
             LOGGER.error("Failed to execute query '" + arachneEntityId + "'. Cause: ", e);
             return null;
-        }
+        } */
+    	return null;
     }
 }
