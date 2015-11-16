@@ -55,7 +55,7 @@ public class SQLFactory {
 		if (key.equals(tableName)) {
 			key = SQLToolbox.getQualifiedFieldname(tableName, SQLToolbox.generatePrimaryKeyName(key));
 		} else {
-			key = SQLToolbox.getQualifiedFieldname(tableName, SQLToolbox.generateForeignKeyName(key));
+			key = SQLToolbox.getQualifiedFieldname(tableName, key);
 		}
 		field = SQLToolbox.getQualifiedFieldname(tableName, field);
 		
@@ -66,9 +66,9 @@ public class SQLFactory {
 			.append(tableName)
 			.append("` WHERE ")
 			.append(key)
-			.append(" = \"")
+			.append(" = ")
 			.append(id)
-			.append("\" AND ")
+			.append(" AND ")
 			.append(field)
 			.append(" IS NOT NULL");
 		if (!disableAuthorization) {
@@ -115,6 +115,17 @@ public class SQLFactory {
 			.append('"')
 			.append(userRightsService.getSQL("marbilder"))
 			.append(';');
+		return result.toString();
+	}
+
+	public String getLiteratureQuery(String tableName, long internalKey) {
+		final StringBuilder result = new StringBuilder(128)
+				.append("SELECT * FROM literaturzitat LEFT JOIN literatur ON FS_LiteraturID = "
+						+ "PS_LiteraturID WHERE ")
+				.append(SQLToolbox.generateForeignKeyName(tableName))
+				.append(" = ")
+				.append(internalKey)
+				.append(";");
 		return result.toString();
 	}
 	
