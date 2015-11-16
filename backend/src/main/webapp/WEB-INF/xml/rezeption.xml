@@ -88,7 +88,7 @@
           <field datasource="rezeption.wissKommentarRezeption"/>
           <field datasource="rezeption.KatalogtextRezeption" prefix="Katalogtext: "/>
         </section>
-        <include type="literatur"/>
+        <include type="literaturcomplete"/>
         <include type="uri"/>
       </section>
     </datasections>

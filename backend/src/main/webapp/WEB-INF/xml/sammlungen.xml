@@ -55,7 +55,7 @@
         <section labelKey="Quellen" separator="; ">
           <field datasource="sammlungen.Quellen"/>
         </section>
-        <include type="literatur"/>
+        <include type="literaturcomplete"/>
         <include type="uri"/>
       </section>
     </datasections>
