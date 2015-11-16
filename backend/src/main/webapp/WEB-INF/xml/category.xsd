@@ -109,6 +109,7 @@
     <xs:attribute name="replace" type="xs:string"/>
     <xs:attribute name="trimEnd" type="xs:string"/>
     <xs:attribute name="separator" type="xs:string"/>
+    <xs:attribute name="overrideSeparator" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="LinkFieldContent">
     <xs:all minOccurs="0">
@@ -125,6 +126,7 @@
     <xs:attribute name="prefix" type="xs:string"/>
     <xs:attribute name="postfix" type="xs:string"/>
     <xs:attribute name="separator" type="xs:string"/>
+    <xs:attribute name="overrideSeparator" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="contextImages">
     <xs:annotation>

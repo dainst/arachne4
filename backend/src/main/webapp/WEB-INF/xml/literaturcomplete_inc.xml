@@ -1,37 +1,39 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
-  <context type="literatur" labelKey="Literatur" separator=", " link="http://zenon.dainst.org/Record/">
-    <field datasource=".ZenonID" prefix="$link$"/>
-    <field datasource=".tempLiteratur"/>
+  <context type="literaturcomplete" labelKey="Literatur" separator=", ">
+    <field datasource=".arachneLinkStart" separator="" />
+	<field datasource=".tempLiteratur" />
 	<field datasource=".Abkuerzungen">
 		<ifEmpty>
-			<field datasource=".DAIRichtlinien"/>
+			<field datasource=".DAIRichtlinien" />
 		</ifEmpty>
 	</field>
-    <field datasource=".Corpuszitat"/>
-    <field datasource=".AntikeTextquelle"/>
-    <field datasource=".Seite"/>
-    <field datasource=".Anmerkung" prefix="Anm. "/>
+	<field datasource=".Corpuszitat" />
+	<field datasource=".AntikeTextquelle" />
+	<field datasource=".Seite" />
+	<field datasource=".Anmerkung" prefix="Anm. " />
+	<!-- AdditionalInfosJSON -->
+	<field datasource=".Abbildung" prefix="Abb. " />
+	<!-- AdditionalInfosJSON -->
+    <field datasource=".Katnummer" prefix="Kat.Nr. " />
     <!-- AdditionalInfosJSON -->
-    <field datasource=".Abbildung" prefix="Abb. "/>
+    <field datasource=".Tafel" prefix="Taf. " />
     <!-- AdditionalInfosJSON -->
-    <field datasource=".Katnummer" prefix="Kat.Nr. "/>
+    <field datasource=".Figur" prefix="Fig. " />
     <!-- AdditionalInfosJSON -->
-    <field datasource=".Tafel" prefix="Taf. "/>
+    <field datasource=".Beilage" prefix="Beil. " />
     <!-- AdditionalInfosJSON -->
-    <field datasource=".Figur" prefix="Fig. "/>
+    <field datasource=".subVoce" prefix="s.v. " />
     <!-- AdditionalInfosJSON -->
-    <field datasource=".Beilage" prefix="Beil. "/>
+    <field datasource=".Textauszug" prefix="[Textauszug: '" postfix="']" />
     <!-- AdditionalInfosJSON -->
-    <field datasource=".subVoce" prefix="s.v. "/>
+    <field datasource=".TextauszugUebersetzung" prefix="[Übersetzter Textauszug: '" postfix="']" />
     <!-- AdditionalInfosJSON -->
-    <field datasource=".Textauszug" prefix="[Textauszug: '" postfix="']"/>
+    <field datasource=".KommentarLitZitat" prefix="(" postfix=")" />
+    <field datasource=".Supplement" prefix="Supplement: " />
     <!-- AdditionalInfosJSON -->
-    <field datasource=".TextauszugUebersetzung" prefix="[Übersetzter Textauszug: '" postfix="']"/>
-    <!-- AdditionalInfosJSON -->
-    <field datasource=".KommentarLitZitat" prefix="(" postfix=")"/>
-    <field datasource=".Supplement" prefix="Supplement: "/>
-    <!-- AdditionalInfosJSON -->
-    <linkField labelKey="Online verfügbar" datasource=".Onlinequelle"/>
+    <field datasource=".arachneLinkEnd" overrideSeparator="" separator=" " />
+    <linkField labelKey="Online verfügbar" datasource=".Onlinequelle" separator=" " />
+    <linkField labelKey="Zenon" datasource=".ZenonID" prefix="zenon.dainst.org/Record/" overrideSeparator=" " />
   </context>
 </includeSection>

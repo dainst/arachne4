@@ -40,8 +40,7 @@
 					</section>
 				</section>
 				<include type="datierung" />
-				<include type="literatur" />
-				<include type="literatur_arachne" />
+				<include type="literaturcomplete" />
 				<include type="uri" />
 			</section>
 		</datasections>

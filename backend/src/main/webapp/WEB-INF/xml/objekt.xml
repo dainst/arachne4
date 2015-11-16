@@ -215,8 +215,7 @@
 					<field datasource="objekt.InschriftKommentar" />
 					<field datasource="objekt.InschriftPublikation" />
 				</section>
-				<include type="literatur" />
-				<include type="literatur_arachne"/>
+				<include type="literaturcomplete" />
 				<include type="uri" />
 			</section>
 			<section labelKey="Informationen zum Lebewesen">

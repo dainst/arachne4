@@ -85,7 +85,7 @@
 						<field datasource="bauwerksteil.LitInschriftBauwerksteil" />
 					</section>
 				</section>
-				<include type="literatur" />
+				<include type="literaturcomplete" />
 				<include type="uri" />
 			</section>
 		</datasections>

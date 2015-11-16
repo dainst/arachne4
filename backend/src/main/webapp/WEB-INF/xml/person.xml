@@ -58,7 +58,7 @@
 						<field datasource="person.CognomenSynonym4" />
 					</section>
 				</section>
-				<include type="literatur" />
+				<include type="literaturcomplete" />
 				<include type="uri" />
 			</section>
 		</datasections>

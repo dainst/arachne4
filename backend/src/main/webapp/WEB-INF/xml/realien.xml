@@ -212,7 +212,7 @@
 					<field datasource="realien.InschriftRealien" />
 					<field datasource="realien.InschriftCorpusRealien" />
 				</section>
-				<include type="literatur" />
+				<include type="literaturcomplete" />
 				<include type="uri" />
 			</section>
 		</datasections>

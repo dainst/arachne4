@@ -111,7 +111,7 @@
 					<field datasource="bauwerk.Katalogtext" prefix="Katalogtext: " />
 					<field datasource="bauwerk.Katalognummer" prefix="Katalognummer: " />
 				</section>
-				<include type="literatur" />
+				<include type="literaturcomplete" />
 				<include type="uri" />
 			</section>
 		</datasections>
