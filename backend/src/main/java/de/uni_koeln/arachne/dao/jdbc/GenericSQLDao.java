@@ -103,5 +103,17 @@ public class GenericSQLDao extends SQLDao {
 		}
 		return null;
 	}
+
+	public List<Map<String, String>> getLiterature(final String tableName, final Long internalKey) {
+		@SuppressWarnings("unchecked")
+		final List<Map<String, String>> queryResult = (List<Map<String, String>>)query(
+				sqlFactory.getLiteratureQuery(tableName, internalKey)
+				, new GenericEntitiesMapper("AdditionalInfosJSON"));
+
+		if (queryResult != null && !queryResult.isEmpty()) {
+			return queryResult;
+		}
+		return null;
+	}
 	
 }
