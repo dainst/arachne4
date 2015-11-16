@@ -102,6 +102,7 @@ public class TestData {
 		linkDataset.setFields("testContext.value4", "Test Context Value4");
 		linkDataset.setFields("testContext.value5", "Test Context Value5");
 		linkDataset.setFields("testContext.value6", "Test Context Value6");
+		linkDataset.setFields("testContext.value7", "Test Context Value7");
 		
 		final ArachneLink link = new ArachneLink();
 		link.setEntity1(testDataset);

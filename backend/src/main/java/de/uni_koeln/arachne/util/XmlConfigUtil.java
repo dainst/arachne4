@@ -527,7 +527,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @return the separator that must be used next.
 	 */
 	private String addContextFieldToFieldList(final Element element, final Namespace namespace, final FieldList fieldList, final int index
-			,final Dataset dataset, final String contextType, final String separator) {
+			,final Dataset dataset, final String contextType, String separator) {
 		
 		final String initialValue = dataset.getFieldFromContext(contextType + element.getAttributeValue("datasource"), index);
 		
@@ -542,6 +542,9 @@ public class XmlConfigUtil implements ServletContextAware {
 	
 		final String postfix = element.getAttributeValue("postfix");
 		final String prefix = element.getAttributeValue("prefix");
+		final String overrideSeparator = element.getAttributeValue("overrideSeparator");
+		separator = (overrideSeparator == null) ? separator : overrideSeparator ;
+		
 		if (value != null) {
 			if (prefix != null) {
 				value.insert(0, prefix);
@@ -638,7 +641,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param element The description of the field as XML element.
 	 */
 	private void addFieldToResult(final Element element, final Namespace namespace, final Section result, final Dataset dataset
-			, final String separator) {
+			, String separator) {
 		
 		final Field field = new Field();
 		StringBuilder value = null;
@@ -653,7 +656,9 @@ public class XmlConfigUtil implements ServletContextAware {
 		
 		final String postfix = element.getAttributeValue("postfix");
 		final String prefix = element.getAttributeValue("prefix");
-		
+		final String overrideSeparator = element.getAttributeValue("overrideSeparator");
+		separator = (overrideSeparator == null) ? separator : overrideSeparator;
+				
 		if (value != null) {
 			if (prefix != null) {
 				value.insert(0, prefix);
@@ -683,7 +688,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param element The description of the field as XML element.
 	 */
 	private void addLinkFieldToResult(final Element element, final Section result, final Dataset dataset
-			, final String separator) {
+			, String separator) {
 
 		final String labelKey = element.getAttributeValue("labelKey");
 		if (!StrUtils.isEmptyOrNullOrZero(labelKey) || element.getChild("field") != null) {
@@ -698,6 +703,9 @@ public class XmlConfigUtil implements ServletContextAware {
 			
 			final String postfix = element.getAttributeValue("postfix");
 			final String prefix = element.getAttributeValue("prefix");
+			final String overrideSeparator = element.getAttributeValue("overrideSeparator");
+			separator = (overrideSeparator == null) ? separator : overrideSeparator;
+			
 			if (value != null) {
 				if (prefix != null) {
 					value.insert(0, prefix);

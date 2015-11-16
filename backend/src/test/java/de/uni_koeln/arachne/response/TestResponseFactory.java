@@ -138,7 +138,7 @@ public class TestResponseFactory { // NOPMD
 		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
 		assertTrue(response.contains("\"label\":\"Testdata linkField\""));
 		assertTrue(response.contains("\"content\":[{\"value\":\"Start<hr>"
-				+ "<a href=\\\"http://testserver.com/link1.html\\\" target=\\\"_blank\\\">TestLink1</a><hr>"
+				+ "<a href=\\\"http://testserver.com/link1.html\\\" target=\\\"_blank\\\">TestLink1</a>-TestLinkOverride-"
 				+ "<a href=\\\"http://testserver.com/link2.html\\\" target=\\\"_blank\\\">TestLink2</a><hr>End\"}]"));
 	}
 	

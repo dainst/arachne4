@@ -49,7 +49,7 @@
 				<section labelKey="Testdata linkField">
 					<field datasource="test.DataNoLink1" />
 					<linkField datasource="test.DataLink1" labelKey="TestLink1" />
-					<linkField datasource="test.DataLink2" labelKey="TestLink2"
+					<linkField datasource="test.DataLink2" labelKey="TestLink2" overrideSeparator="-TestLinkOverride-"
 						prefix="http://testserver.com/" postfix=".html" />
 					<field datasource="test.DataNoLink2" />
 				</section>
@@ -60,6 +60,7 @@
 					<field datasource=".value4" />
 					<field datasource=".value5" separator="-TestSeparator2-" />
 					<field datasource=".value6" />
+					<field datasource=".value7" overrideSeparator="-TestSeparator3-"/>
 				</context>
 			</section>
 		</datasections>

@@ -77,7 +77,8 @@ public class TestXmlConfigUtil {
 		assertFalse(section.getContent().isEmpty());
 		assertEquals(1, section.getContent().size());
 		assertEquals("Test Context Value1-TestSeparator1-Test Context Value3<hr>Test Context Value4"
-				+"<hr>Test Context Value5-TestSeparator2-Test Context Value6", section.getContent().get(0).toString());
+				+"<hr>Test Context Value5-TestSeparator2-Test Context Value6"
+				+"-TestSeparator3-Test Context Value7", section.getContent().get(0).toString());
 	}
 	
 	@Test
@@ -93,10 +94,12 @@ public class TestXmlConfigUtil {
 		expected.add("Testdata prefix/postfix: PrefixTest=success<hr>PostfixTest=success");
 		expected.add("Testdata separator: first-second");
 		expected.add("Testdata value edit: correctly replaced<hr>correctly trimmed");
-		expected.add("Testdata linkField: Start<hr><a href=\"http://testserver.com/link1.html\">TestLink1</a><hr>"
-				+ "<a href=\"http://testserver.com/link2.html\">TestLink2</a><hr>End");
+		expected.add("Testdata linkField: Start<hr><a href=\"http://testserver.com/link1.html\""
+				+ " target=\"_blank\">TestLink1</a>-TestLinkOverride-"
+				+ "<a href=\"http://testserver.com/link2.html\" target=\"_blank\">TestLink2</a>"
+				+ "<hr>End");
 				
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 4; i++) {
 			final AbstractContent content = xmlConfigUtil.getContentFromSections(sections.get(i), namespace, dataset);
 			assertNotNull(content);
 			assertFalse(content.toString().isEmpty());
