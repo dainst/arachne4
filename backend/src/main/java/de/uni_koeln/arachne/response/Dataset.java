@@ -26,7 +26,7 @@ public class Dataset {
 	/**
 	 * workaround for implementing getUri;
 	 */
-	private transient static final String BASEURI = "http://arachne.dainst.org/entity/";
+	public transient static final String BASEURI = "http://arachne.dainst.org/entity/";
 	
 	/**
 	 * Identification of the Dataset.
