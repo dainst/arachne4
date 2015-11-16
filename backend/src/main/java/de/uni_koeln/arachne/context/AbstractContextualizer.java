@@ -48,7 +48,7 @@ public abstract class AbstractContextualizer implements IContextualizer {
 		this.xmlConfigUtil = xmlConfigUtil;
 	}
 
-	public void setSimpleSQLSerive(final SimpleSQLService simpleSQLService) {
+	public void setSimpleSQLService(final SimpleSQLService simpleSQLService) {
 		this.simpleSQLService = simpleSQLService;
 	}
 	
