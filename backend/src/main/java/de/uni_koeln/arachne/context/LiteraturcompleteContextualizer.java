@@ -31,13 +31,10 @@ public class LiteraturcompleteContextualizer extends AbstractContextualizer {
 			while (contextMap.hasNext()) {
 				Map<String, String> context = contextMap.next();
 				try {
-					final String bookId  = genericSQLDao.getStringField("buch", "bibid"
-							, Long.parseLong(context.get("literatur.ZenonID")), "PS_BuchID");
-					if (!StrUtils.isEmptyOrNull(bookId)) {
-						final long id = entityIdentificationService.getId("buch", Long.parseLong(bookId))
-								.getArachneEntityID();
+					final String entityId = context.get("arachneentityidentification.ArachneEntityID");
+					if (!StrUtils.isEmptyOrNull(entityId)) {
 						context.put(getContextType() + ".arachneLinkStart", "<a href=\"" + Dataset.BASEURI 
-								+ String.valueOf(id) + "\">");
+								+ String.valueOf(entityId) + "\">");
 						context.put(getContextType() + ".arachneLinkEnd", "</a>");
 					}
 				} catch (Exception e) {
