@@ -34,6 +34,6 @@
     <!-- AdditionalInfosJSON -->
     <field datasource=".arachneLinkEnd" overrideSeparator="" separator=" " />
     <linkField labelKey="Online verfügbar" datasource=".Onlinequelle" separator=" " />
-    <linkField labelKey="Zenon" datasource=".ZenonID" prefix="zenon.dainst.org/Record/" overrideSeparator=" " />
+    <linkField labelKey="Zenon" datasource=".ZenonID" prefix="http://zenon.dainst.org/Record/" overrideSeparator=" " />
   </context>
 </includeSection>
