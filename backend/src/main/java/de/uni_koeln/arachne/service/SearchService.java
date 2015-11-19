@@ -345,11 +345,13 @@ public class SearchService {
 			}
 		}
 		
-		String name = "facet_subkategoriebestand_level" + (highestLevel + 1); 
-		result.add(new TermsAggregation(name, limit));
+		if (highestLevel > 0) {
+			final String name = "facet_subkategoriebestand_level" + (highestLevel + 1); 
+			result.add(new TermsAggregation(name, limit));
+		}
 		
 		if (filters.containsKey("facet_bestandsname") && !isFacetSubkategorieBestandPresent) {
-			name = "facet_subkategoriebestand_level1";
+			final String name = "facet_subkategoriebestand_level1";
 			result.add(new TermsAggregation(name, limit));
 		}
 		
