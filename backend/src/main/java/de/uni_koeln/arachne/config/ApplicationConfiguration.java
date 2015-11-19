@@ -73,6 +73,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		hikariDataSource.setJdbcUrl(environment.getProperty("jdbcUrl"));
 		hikariDataSource.setUsername(environment.getProperty("jdbcUsername"));
 		hikariDataSource.setPassword(environment.getProperty("jdbcPassword"));
+		hikariDataSource.setAutoCommit(false);
 		// Tells Spring to bounce off the connection pool
 		final LazyConnectionDataSourceProxy lazyConnectionDataSourceProxy = new LazyConnectionDataSourceProxy(hikariDataSource);
 		return lazyConnectionDataSourceProxy;
@@ -85,6 +86,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		hibernateProperties.setProperty("hibernate.show_sql", "false");
 		hibernateProperties.setProperty("hibernate.enable_lazy_load_no_trans", "true");
 		hibernateProperties.setProperty("hibernate.id.new_generator_mappings", "false");
+		hibernateProperties.setProperty("hibernate.connection.autocommit", "false");
 		
 		final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource());
