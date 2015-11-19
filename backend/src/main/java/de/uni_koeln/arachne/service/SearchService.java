@@ -310,24 +310,6 @@ public class SearchService {
 					result.put(name, value);
 				}
 			}
-			// keep only highest level of "facet_subkategoriebestand_level"
-			int highestLevel = 0;
-			String highestLevelValue = "";
-			final Multimap<String, String> resultCopy = LinkedHashMultimap.create(result);
-			for (final String filter : resultCopy.keySet()) {
-				if (filter.startsWith("facet_subkategoriebestand_level")) {
-					final int level = extractLevelFromFilter(filter);
-					if (level > highestLevel) {
-						highestLevel = level;
-						if (!"".equals(highestLevelValue)) {
-							result.removeAll(highestLevelValue);
-						}
-						highestLevelValue = filter;
-					} else {
-						result.removeAll(filter);
-					}
-				}
-			}
 		}
 		
 		return result;
@@ -353,22 +335,25 @@ public class SearchService {
 		}
 		
 		// TODO look for a more general way to handle dynamic facets
+		int highestLevel = 0;
 		boolean isFacetSubkategorieBestandPresent = false;
 		for (final String filter : filters.keySet()) {
 			if (filter.startsWith("facet_subkategoriebestand_level")) {
 				isFacetSubkategorieBestandPresent = true;
 				final int level = extractLevelFromFilter(filter);
-				final String name = "facet_subkategoriebestand_level" + (level + 1); 
-				result.add(new TermsAggregation(name, limit));
+				highestLevel = (level >= highestLevel) ? level : highestLevel;
 			}
 		}
 		
+		String name = "facet_subkategoriebestand_level" + (highestLevel + 1); 
+		result.add(new TermsAggregation(name, limit));
+		
 		if (filters.containsKey("facet_bestandsname") && !isFacetSubkategorieBestandPresent) {
-			final String name = "facet_subkategoriebestand_level1";
+			name = "facet_subkategoriebestand_level1";
 			result.add(new TermsAggregation(name, limit));
 		}
 		
-		// aggregations - if more aggregations are used this should perhaps be moved to its own method
+		// aggregations - if more aggregation types are used this should perhaps be moved to its own method
 		
 		// geo grid
 		if (geoHashPrecision > 0) {
