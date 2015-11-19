@@ -10,21 +10,7 @@
             key: 'facet_bestandsname',
             value: 'Syrian-Heritage-Archive-Project'
         }
-    ],
-    baselayers: {
-        osm: {
-            name: 'OpenStreetMap',
-            type: 'xyz',
-            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            layerOptions: {
-                subdomains: ['a', 'b', 'c'],
-                attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
-                continuousWorld: true,
-                maxZoom: 18
-            }
-        }
-    },
-    defaultBaselayer: 'osm'
+    ]
 }"></div>
 
 
@@ -33,8 +19,6 @@
          type="grid"
          limit="5"
          overlays="config.overlays"
-         baselayers="config.baselayers"
-         default-baselayer="config.defaultBaselayer"
          facets-select="config.facetsSelect"
          clustered="config.clustered"
          lat="33.891275201659134"

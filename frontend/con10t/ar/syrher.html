@@ -20,34 +20,18 @@
         </div>
 
         <div ng-init="config = {
-            baselayers: {
-                osm: {
-                    name: 'OpenStreetMap',
-                    type: 'xyz',
-                    url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    layerOptions: {
-                        subdomains: ['a', 'b', 'c'],
-                        attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
-                        continuousWorld: true,
-                        maxZoom: 18
-                    }
-                }
-            },
             facetsSelect: [
                 {
                     key: 'facet_bestandsname',
                     value: 'Syrian-Heritage-Archive-Project'
                 }
             ],
-            baselayerKey: 'osm',
             clustered: false
         }"></div>
         <div con10t-map
              class="map"
              type="grid"
              limit="0"
-             baselayers="config.baselayers"
-             default-baselayer="config.baselayerKey"
              facets-select="config.facetsSelect"
              clustered="config.clustered"
              lat="35.891275201659134"
