@@ -108,12 +108,14 @@ public class CatalogDao {
 	 * @param catalog The catalog to be loaded
 	 * @return The catalog with all connected objects fetched.
 	 */
+	@Transactional
 	private Catalog eagerFetch(Catalog catalog) {
 		Hibernate.initialize(catalog.getUsers());
 		eagerFetchChildren(catalog.getRoot());
 		return catalog;
 	}
 
+	@Transactional
 	private void eagerFetchChildren(CatalogEntry entry) {
 		if (entry != null && entry.getChildren() != null) {
 			Hibernate.initialize(entry.getChildren());

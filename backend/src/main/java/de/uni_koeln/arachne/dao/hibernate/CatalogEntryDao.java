@@ -80,6 +80,7 @@ public class CatalogEntryDao {
 		return result;
 	}
 	
+	@Transactional(readOnly=true)
 	private List<CatalogEntry> getByEntityId(final long entityId) {
 		final Session session = sessionFactory.getCurrentSession();
 		final Criteria criteria = session.createCriteria(CatalogEntry.class);

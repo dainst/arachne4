@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,7 @@ import de.uni_koeln.arachne.util.network.CustomMediaType;
  * <code>/catalog</code>.
  */
 @Controller
+@Transactional
 public class CatalogController {
 
 	//private static final Logger LOGGER = LoggerFactory.getLogger(CatalogController.class);

@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.config;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
@@ -66,7 +67,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 	    return propertySourcesPlaceholderConfigurer;
     }
 
-	@Bean
+	@Bean(destroyMethod="close")
 	public DataSource dataSource() {
 		final HikariDataSource hikariDataSource = new HikariDataSource();
 		hikariDataSource.setDriverClassName(environment.getProperty("jdbcDriverClassName"));
@@ -74,9 +75,16 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		hikariDataSource.setUsername(environment.getProperty("jdbcUsername"));
 		hikariDataSource.setPassword(environment.getProperty("jdbcPassword"));
 		hikariDataSource.setAutoCommit(false);
+		hikariDataSource.setLeakDetectionThreshold(20000);
+		
 		// Tells Spring to bounce off the connection pool
-		final LazyConnectionDataSourceProxy lazyConnectionDataSourceProxy = new LazyConnectionDataSourceProxy(hikariDataSource);
-		return lazyConnectionDataSourceProxy;
+		return new LazyConnectionDataSourceProxy(hikariDataSource) {
+			@SuppressWarnings("unused")
+			public void close() throws SQLException  {
+				HikariDataSource datasource = (HikariDataSource) super.getTargetDataSource();
+				datasource.close();
+			}
+		};
 	}
 	
 	@Bean
@@ -84,7 +92,6 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		final Properties hibernateProperties = new Properties();
 		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 		hibernateProperties.setProperty("hibernate.show_sql", "false");
-		hibernateProperties.setProperty("hibernate.enable_lazy_load_no_trans", "true");
 		hibernateProperties.setProperty("hibernate.id.new_generator_mappings", "false");
 		hibernateProperties.setProperty("hibernate.connection.autocommit", "false");
 		
