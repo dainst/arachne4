@@ -122,7 +122,7 @@ public class SQLFactory {
 		final StringBuilder result = new StringBuilder(128)
 				.append("SELECT * FROM literaturzitat "
 						+ "LEFT JOIN literatur ON FS_LiteraturID = PS_LiteraturID "
-						+ "LEFT JOIN buch ON ZenonID = bibid "
+						+ "LEFT JOIN buch ON (ZenonID = bibid AND ZenonID <> '') "
 						+ "LEFT JOIN arachneentityidentification ON (TableName = \"buch\" "
 						+ "AND ForeignKey = PS_BuchID) "
 						+ "WHERE ")
