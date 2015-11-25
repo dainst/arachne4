@@ -175,7 +175,12 @@ public class UserManagementController {
 			user.setGroupID(500);
 			user.setLogin_permission(false);
 
-			if (!formData.get("email").equals(formData.get("emailValidation"))) {
+			final String eMail = formData.get("email"); 
+			if (userDao.findByEMailAddress(eMail) != null) {
+				throw new FormDataException("ui.register.emailAlreadyTaken");
+			}
+			
+			if (!eMail.equals(formData.get("emailValidation"))) {
 				throw new FormDataException("ui.register.emailsDontMatch");
 			}
 
