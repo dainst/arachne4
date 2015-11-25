@@ -134,6 +134,7 @@ public class UserManagementController {
 						userRightsService.setPropertyOnProtectedObject(entry.getKey(), entry.getValue(), user
 								, UserRightsService.MIN_USER_ID);
 					}
+					userDao.updateUser(user);
 				} catch (de.uni_koeln.arachne.service.UserRightsService.ObjectAccessException e) {
 					result.put("Exception", e.getMessage());
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
