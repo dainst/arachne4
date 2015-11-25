@@ -212,8 +212,8 @@ public class TestUserManagementController {
 	@Test
 	public void testRegisterValid() throws Exception {
 		final String json = "{\"username\":\"newTestuser\","
-				+ "\"email\":\"someaddress\","
-				+ "\"emailValidation\":\"someaddress\","
+				+ "\"email\":\"somenewaddress\","
+				+ "\"emailValidation\":\"somenewaddress\","
 				+ "\"password\":\"somepass\","
 				+ "\"passwordValidation\":\"somepass\","
 				+ "\"firstname\":\"some name\","
@@ -253,6 +253,45 @@ public class TestUserManagementController {
 
 	@Test
 	public void testRegisterInvalidMissingField() throws Exception {
+		final String json = "{\"username\":\"newTestuser\","
+				+ "\"email\":\"someaddress\","
+				+ "\"emailValidation\":\"someaddress\","
+				+ "\"password\":\"somepass\","
+				+ "\"passwordValidation\":\"somepass\","
+				+ "\"firstname\":\"some name\","
+				+ "\"lastname\":\"aome other name\","
+				+ "\"street\":\"somestreet\","
+				+ "\"zip\":\"12345\","
+				+ "\"place\":\"some place\","
+				+ "\"country\":\"some country\","
+				+ "\"iAmHuman\":\"humanIAm\"}";
+		
+		// admin dummy request
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest());
+		
+		// user dummy request
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest());
+		
+		// anonymous
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{message:\"ui.register.emailAlreadyTaken\",success:\"false\"}"));
+	}
+	
+	@Test
+	public void testRegisterInvalidEmailAlreadyTaken() throws Exception {
 		final String json = "{\"username\":\"testuser\","
 				+ "\"password\":\"somepass\","
 				+ "\"lastname\":\"aome other name\","
