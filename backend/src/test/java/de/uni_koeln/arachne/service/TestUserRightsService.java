@@ -35,6 +35,7 @@ public class TestUserRightsService {
 		when(userDao.findByName(TestUsers.getUser().getUsername())).thenReturn(TestUsers.getUser());
 		when(userDao.findByName(TestUsers.getEditor().getUsername())).thenReturn(TestUsers.getEditor());
 		when(userDao.findByName(TestUsers.getAdmin().getUsername())).thenReturn(TestUsers.getAdmin());
+		when(userDao.findByName(TestUsers.getUserNoLogin().getUsername())).thenReturn(TestUsers.getUserNoLogin());
 	}
 	
 	
@@ -59,8 +60,24 @@ public class TestUserRightsService {
 	}
 	
 	@Test
+	public void testIsSignedInUserUserNoLogin() {
+		final User user = TestUsers.getUserNoLogin();
+		final Authentication authToken = TestUsers.getAuthentication(user);
+		SecurityContextHolder.getContext().setAuthentication(authToken);
+		assertFalse(userRightsService.isSignedInUser());
+	}
+	
+	@Test
 	public void testUserHasAtLeastGroupIDAnonymous() {
 		SecurityContextHolder.getContext().setAuthentication(null);
+		assertFalse(userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID));
+	}
+	
+	@Test
+	public void testUserHasAtLeastGroupIDUser() {
+		final User user = TestUsers.getUser();
+		final Authentication authToken = TestUsers.getAuthentication(user);
+		SecurityContextHolder.getContext().setAuthentication(authToken);
 		assertFalse(userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID));
 	}
 	
@@ -83,10 +100,22 @@ public class TestUserRightsService {
 	}
 
 	@Test
-	public void testGetCurrentUserAdmin() {
-		final User user = TestUsers.getAdmin();
+	public void testGetCurrentUserUserNoLogin() {
+		User user = TestUsers.getUserNoLogin();
 		final Authentication authToken = TestUsers.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
+		user = userRightsService.getCurrentUser();
+		assertEquals(null, user.getFirstname());
+		assertEquals(null, user.getLastname());
+		assertEquals(0, user.getGroupID());
+	}
+	
+	@Test
+	public void testGetCurrentUserAdmin() {
+		User user = TestUsers.getAdmin();
+		final Authentication authToken = TestUsers.getAuthentication(user);
+		SecurityContextHolder.getContext().setAuthentication(authToken);
+		user = userRightsService.getCurrentUser();
 		assertEquals("testadmin", user.getUsername());
 		assertEquals("test", user.getFirstname());
 		assertEquals("admin", user.getLastname());
@@ -126,6 +155,14 @@ public class TestUserRightsService {
 		Authentication authToken = TestUsers.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		assertFalse(userRightsService.userHasDatasetGroup(new DatasetGroup("editorTestGroup")));
+	}
+	
+	@Test
+	public void testUserHasDatasetGroupFalseNoLogin() {
+		final User user = TestUsers.getUserNoLogin();
+		Authentication authToken = TestUsers.getAuthentication(user);
+		SecurityContextHolder.getContext().setAuthentication(authToken);
+		assertFalse(userRightsService.userHasDatasetGroup(new DatasetGroup("userTestGroup")));
 	}
 	
 	@Test

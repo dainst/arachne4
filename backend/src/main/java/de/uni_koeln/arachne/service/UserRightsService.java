@@ -112,43 +112,53 @@ public class UserRightsService {
 	public void setDataimporter() {
 		arachneUser = new User();
 		arachneUser.setUsername(INDEXING);
+		arachneUser.setLogin_permission(true);
 		arachneUser.setAll_groups(true);
 		this.isSet = true;
 	}
 	
 	/**
 	 * Is the current user the 'dataimport user'.
-	 * @return <code>true</code> if the current user is Solr.
+	 * @return <code>true</code> if the current user is the data importer.
 	 */
 	public boolean isDataimporter() {
 		return isSet && INDEXING.equals(arachneUser.getUsername());
 	}
 	
 	/**
-	 * Is the current user signed in.
+	 * Is the current user signed in and has login permission.
 	 * @return <code>true</code> if the current user is signed in.
 	 */
 	public boolean isSignedInUser() {
 		initializeUserData();
-		return !(ANONYMOUS_USER_NAME.equals(arachneUser.getUsername()));
+		boolean result = isSet && !ANONYMOUS_USER_NAME.equals(arachneUser.getUsername()) 
+				&& arachneUser.isLogin_permission(); 
+		return result;
 	}
 	
 	/**
-	 * If the current user has at least the given groupId.
+	 * If the current user has at least the given groupId and has login permission.
 	 * @param groupId A groupId to check against the users groupId.
-	 * @return <code>true</code> if the given groupId is equal or less than the users groupId.
+	 * @return <code>true</code> if the given groupId is equal or less than the users groupId and the user has 
+	 * login permission.
 	 */
 	public boolean userHasAtLeastGroupID(int groupId) {
 		initializeUserData();
-		return groupId <= arachneUser.getGroupID();
+		boolean result = isSet && groupId <= arachneUser.getGroupID() && arachneUser.isLogin_permission();   
+		return result;
 	};
 	
 	/**
-	 * Get the current arachne user
-	 * @return User the user object or the "anonymous" user if no user is logged in
+	 * Get the current arachne user.
+	 * @return User the user object or the "anonymous" user if no user is logged in or the user 
+	 * has no login permission.
 	 */
 	public User getCurrentUser() {
 		initializeUserData();
+		if (!arachneUser.isLogin_permission()) {
+			arachneUser = userDao.findByName(ANONYMOUS_USER_NAME);
+			isSet = true;
+		}
 		return arachneUser;
 	}
 	
@@ -166,9 +176,9 @@ public class UserRightsService {
 	 * @return <code>true</code> if the given <code>DatasetGroup</code> is in the users <code>Set</code>.
 	 */
 	public boolean userHasDatasetGroup(final DatasetGroup datasetGroup) {
-		final User user = getCurrentUser();
+		initializeUserData();
 		final String datasetGroupName = datasetGroup.getName();
-		return user.hasGroup(datasetGroupName);
+		return isSet && arachneUser.hasGroup(datasetGroupName) && arachneUser.isLogin_permission();
 	}
 	
 	/**

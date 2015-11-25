@@ -21,6 +21,7 @@ public class TestUsers {
 		user.setUsername("testadmin");
 		user.setFirstname("test");
 		user.setLastname("admin");
+		user.setLogin_permission(true);
 		user.setAll_groups(true);
 		user.setGroupID(UserRightsService.MIN_ADMIN_ID);
 		return user;
@@ -32,6 +33,7 @@ public class TestUsers {
 		user.setUsername("testeditor");
 		user.setFirstname("test");
 		user.setLastname("editor");
+		user.setLogin_permission(true);
 		user.setAll_groups(false);
 		Set<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
 		datasetGroups.add(new DatasetGroup("editorTestGroup"));
@@ -46,6 +48,22 @@ public class TestUsers {
 		user.setUsername("testuser");
 		user.setFirstname("test");
 		user.setLastname("user");
+		user.setLogin_permission(true);
+		user.setAll_groups(false);
+		Set<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
+		datasetGroups.add(new DatasetGroup("userTestGroup"));
+		user.setDatasetGroups(datasetGroups);
+		user.setGroupID(UserRightsService.MIN_USER_ID);
+		return user;
+	}
+	
+	public static User getUserNoLogin() {
+		final User user = new User();
+		user.setId(3);
+		user.setUsername("testuser_noLogin");
+		user.setFirstname("test");
+		user.setLastname("user");
+		user.setLogin_permission(false);
 		user.setAll_groups(false);
 		Set<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
 		datasetGroups.add(new DatasetGroup("userTestGroup"));
@@ -57,6 +75,7 @@ public class TestUsers {
 	public static User getAnonymous() {
 		final User user = new User();
 		user.setUsername(UserRightsService.ANONYMOUS_USER_NAME);
+		user.setLogin_permission(false);
 		user.setAll_groups(false);
 		user.setGroupID(0);
 		return user;
