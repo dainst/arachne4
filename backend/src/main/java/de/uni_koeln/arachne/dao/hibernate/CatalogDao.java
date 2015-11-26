@@ -54,7 +54,7 @@ public class CatalogDao {
 	}
 	
 	@Transactional(readOnly=true)
-	public List<Catalog> getByUid(final long uid) {
+	public List<Catalog> getByUid(final long uid, final boolean full) {
 		Session session = sessionFactory.getCurrentSession();		
 		Query query = session.createQuery("select c from Catalog c join c.users u where u.id = :uid")		
 				.setLong("uid", uid);
@@ -64,8 +64,14 @@ public class CatalogDao {
 		if (result.size() < 1) {
 			result = null;
 		} else {
-			for (Catalog catalog : result) {
-				eagerFetch(catalog);
+			if (!full) {
+				for (final Catalog catalog: result) {
+					catalog.getRoot().removeChildren();
+				}
+			} else {
+				for (Catalog catalog : result) {
+					eagerFetch(catalog);
+				}
 			}
 		}
 		return result;

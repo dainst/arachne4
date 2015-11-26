@@ -8,6 +8,7 @@ import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON
 // needed to use .andDo(print()) for debugging
 //import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +27,9 @@ import org.mockito.stubbing.Answer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
@@ -54,6 +58,14 @@ public class TestCatalogController {
 	private CatalogController controller;
 	
 	private MockMvc mockMvc;
+	
+	static final String EXPECTED_CATALOG_NO_CHILDS = "{\"id\":83,\"root\":{\"id\":597,\"children\":[{\"id\":594,\""
+			+ "label\":\"Vorbebauung\",\"parentId\":597,\"indexParent\":0,\"catalogId\":83,\"hasChildren\":false},"
+			+ "{\"id\":593,\"label\":\"Basilica Aemilia\",\"parentId\":597,\"indexParent\":1,\"catalogId\":83,\""
+			+ "hasChildren\":true}],\"label\":\"Die Basilica Aemilia auf dem Forum Romanum in Rom: Brennpunkt "
+			+ "des öffentlichen Lebens\",\"text\":\"Nach der Errichtung in den 60er Jahren des 2. Jhs. v. Chr. "
+			+ "durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius Nobilior wurde die Basilica mehrmals "
+			+ "zerstört [...]\",\"catalogId\":83,\"hasChildren\":true},\"author\":\"Testauthor\",\"public\":false}";
 	
 	@SuppressWarnings("unchecked")
 	@Before
@@ -114,7 +126,7 @@ public class TestCatalogController {
 			}
 		});
 
-		when(catalogDao.getByUid(3)).thenReturn(Arrays.asList(catalog));
+		when(catalogDao.getByUid(3, true)).thenReturn(Arrays.asList(catalog));
 		when(catalogDao.getByCatalogId(83)).thenReturn(catalog);
 		when(catalogDao.getByCatalogId(83, true)).thenReturn(catalog);
 		when(catalogDao.saveOrUpdateCatalog(any(Catalog.class))).thenAnswer(new Answer<Catalog>() {
@@ -144,12 +156,23 @@ public class TestCatalogController {
 			catalogEntry.removeChildren();
 		}
 		
+		when(catalogDao.getByUid(3, false)).thenReturn(Arrays.asList(catalogNoChilds));
 		when(catalogDao.getByCatalogId(83, false)).thenReturn(catalogNoChilds);
 		
 		when(catalogEntryDao.getPrivateCatalogIdsByEntityId(anyLong()))
 				.thenReturn(new ArrayList<Long>());
 		when(catalogEntryDao.getPrivateCatalogIdsByEntityId(1184191))
 				.thenReturn(Arrays.asList(83L), new ArrayList<Long>());
+	}
+	
+	private String getCatalogAsJSONString()
+			throws IOException, JsonParseException, JsonMappingException, JsonProcessingException {
+		final URL resource = TestCatalogController.class.getResource("/WEB-INF/json/catalog.json");
+		final ObjectMapper mapper = new ObjectMapper();
+		final Catalog expectedCatalog = mapper.readValue(Resources.toString(resource, Charsets.UTF_8)
+				, Catalog.class);
+		final String expectedCatalogString = mapper.writeValueAsString(expectedCatalog);
+		return expectedCatalogString;
 	}
 	
 	@Test
@@ -349,11 +372,15 @@ public class TestCatalogController {
 	}
 	
 	@Test
-	public void testHandleGetCatalogsRequest() throws Exception {
+	public void testHandleGetCatalogsRequestValid() throws Exception {
+		final String expectedResult = '[' + EXPECTED_CATALOG_NO_CHILDS + ']';
+		
 		mockMvc.perform(
 				get("/catalog")
 					.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().isOk());
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json(expectedResult));
 		
 		// forbidden
 		mockMvc.perform(
@@ -363,21 +390,25 @@ public class TestCatalogController {
 	}
 
 	@Test
-	public void testHandleGetCatalogRequestValid() throws Exception {
-		final String expectedNoChildCatalog = "{\"id\":83,\"root\":{\"id\":597,\"children\":[{\"id\":594,\""
-				+ "label\":\"Vorbebauung\",\"parentId\":597,\"indexParent\":0,\"catalogId\":83,\"hasChildren\":false},"
-				+ "{\"id\":593,\"label\":\"Basilica Aemilia\",\"parentId\":597,\"indexParent\":1,\"catalogId\":83,\""
-				+ "hasChildren\":true}],\"label\":\"Die Basilica Aemilia auf dem Forum Romanum in Rom: Brennpunkt "
-				+ "des öffentlichen Lebens\",\"text\":\"Nach der Errichtung in den 60er Jahren des 2. Jhs. v. Chr. "
-				+ "durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius Nobilior wurde die Basilica mehrmals "
-				+ "zerstört [...]\",\"catalogId\":83,\"hasChildren\":true},\"author\":\"Testauthor\",\"public\":false}";
-				
+	public void testHandleGetCatalogsRequestValidFull() throws Exception {
+		final String expectedResult = '[' + getCatalogAsJSONString() + ']'; 
+		
+		mockMvc.perform(
+				get("/catalog?full=true")
+					.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json(expectedResult));
+	}
+	
+	@Test
+	public void testHandleGetCatalogRequestValid() throws Exception {				
 		mockMvc.perform(
 				get("/catalog/83")
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
-				.andExpect(content().json(expectedNoChildCatalog));
+				.andExpect(content().json(EXPECTED_CATALOG_NO_CHILDS));
 		
 		// forbidden
 		mockMvc.perform(
@@ -387,12 +418,8 @@ public class TestCatalogController {
 	}
 	
 	@Test
-	public void testHandleGetCatalogRequestFullValid() throws Exception {
-		final URL resource = TestCatalogController.class.getResource("/WEB-INF/json/catalog.json");
-		final ObjectMapper mapper = new ObjectMapper();
-		final Catalog expectedCatalog = mapper.readValue(Resources.toString(resource, Charsets.UTF_8)
-				, Catalog.class);
-		final String expectedCatalogString = mapper.writeValueAsString(expectedCatalog);
+	public void testHandleGetCatalogRequestValidFull() throws Exception {
+		final String expectedCatalogString = getCatalogAsJSONString();
 		
 		mockMvc.perform(
 				get("/catalog/83?full=true")
@@ -401,7 +428,7 @@ public class TestCatalogController {
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 				.andExpect(content().json(expectedCatalogString));
 	}
-	
+
 	@Test
 	public void testHandleGetCatalogRequestInvalidId() throws Exception {
 		mockMvc.perform(
@@ -412,11 +439,7 @@ public class TestCatalogController {
 	
 	@Test
 	public void testHandleCatalogUpdateRequestValid() throws Exception {
-		final URL resource = TestCatalogController.class.getResource("/WEB-INF/json/catalog.json");
-		final ObjectMapper mapper = new ObjectMapper();
-		final Catalog catalog = mapper.readValue(Resources.toString(resource, Charsets.UTF_8)
-				, Catalog.class);
-		final String catalogString = mapper.writeValueAsString(catalog);
+		final String catalogString = getCatalogAsJSONString();
 		
 		mockMvc.perform(
 				put("/catalog/83")
@@ -436,11 +459,7 @@ public class TestCatalogController {
 	
 	@Test
 	public void testHandleCatalogUpdateRequestInvalidId() throws Exception {
-		final URL resource = TestCatalogController.class.getResource("/WEB-INF/json/catalog.json");
-		final ObjectMapper mapper = new ObjectMapper();
-		final Catalog catalog = mapper.readValue(Resources.toString(resource, Charsets.UTF_8)
-				, Catalog.class);
-		final String catalogString = mapper.writeValueAsString(catalog);
+		final String catalogString = getCatalogAsJSONString();
 		
 		mockMvc.perform(
 				put("/catalog/84")

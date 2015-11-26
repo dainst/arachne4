@@ -256,12 +256,15 @@ public class CatalogController {
 	@RequestMapping(value = "/catalog", 
 			method = RequestMethod.GET,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
-	public @ResponseBody ResponseEntity<List<Catalog>> handleGetCatalogsRequest() {
+	public @ResponseBody ResponseEntity<List<Catalog>> handleGetCatalogsRequest(
+			@RequestParam(value = "full", required = false) Boolean full) {
+		
+		full = (full == null) ? false : full;
 		List<Catalog> result = null;
 		final User user = userRightsService.getCurrentUser();
 		
 		if (userRightsService.isSignedInUser()) {
-			result = catalogDao.getByUid(user.getId());
+			result = catalogDao.getByUid(user.getId(), full);
 			if (result == null || result.isEmpty()) {
 				result = new ArrayList<Catalog>();
 			}
