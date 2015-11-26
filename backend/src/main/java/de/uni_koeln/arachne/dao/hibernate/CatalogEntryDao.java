@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -114,21 +115,21 @@ public class CatalogEntryDao {
 	}
 	
 	@Transactional
-	public CatalogEntry updateCatalogEntry(final CatalogEntry catalogEntry) {
+	public CatalogEntry updateCatalogEntry(final CatalogEntry catalogEntry) throws HibernateException {
 		final Session session = sessionFactory.getCurrentSession();
 		session.update(catalogEntry);
 		return catalogEntry;
 	}
 	
 	@Transactional
-	public CatalogEntry saveCatalogEntry(final CatalogEntry catalogEntry) {
+	public CatalogEntry saveCatalogEntry(final CatalogEntry catalogEntry) throws HibernateException {
 		final Session session = sessionFactory.getCurrentSession();
 		session.save(catalogEntry);
 		return catalogEntry;
 	}
 	
 	@Transactional
-	public void deleteCatalogEntry(final CatalogEntry catalogEntry) {
+	public void deleteCatalogEntry(final CatalogEntry catalogEntry) throws HibernateException {
 		final Session session = sessionFactory.getCurrentSession();
 		session.delete(catalogEntry);
 	}

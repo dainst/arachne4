@@ -183,10 +183,17 @@ public class CatalogController {
 						catalogEntry.setParent(catalogEntryParent);
 						catalogEntryParent.addToChildren(catalogEntry);
 						catalogEntry.setCatalog(catalog);
-						catalogEntryDao.updateCatalogEntry(catalogEntryParent);
-						catalogEntry.generatePath();
-						result = catalogEntryDao
-								.updateCatalogEntry(catalogEntry);
+						try {
+							catalogEntryDao.updateCatalogEntry(catalogEntryParent);
+							// TODO change this as it's very ugly
+							// CatalogEntry.path should not contain the CatalogEntry.Id
+							// as it cannot be known yet
+							catalogEntryDao.saveCatalogEntry(catalogEntry);
+							catalogEntry.generatePath();
+							result = catalogEntryDao.updateCatalogEntry(catalogEntry);
+						} catch (Exception e) {
+							return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
+						}
 					} else {
 						return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
 					}
