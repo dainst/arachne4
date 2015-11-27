@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jayway.jsonassert.impl.matcher.IsMapContainingValue;
+
 import static de.uni_koeln.arachne.util.FormDataUtils.*;
 import de.uni_koeln.arachne.dao.hibernate.ResetPasswordRequestDao;
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
@@ -129,23 +131,24 @@ public class UserManagementController {
 			Map<String,String> result = new HashMap<String,String>();
 			User user = userDao.findByName(username);
 			
-			// check if new email shall be set and if check if it is unique
+			// check if new email shall be set and if then check if it is unique
 			final String eMail = getFormData(formData, "email", false, "ui.update.");
 			if (!StrUtils.isEmptyOrNull(eMail)) {
 				final User existingUser = userDao.findByEMailAddress(eMail);
 				if (existingUser != null && !existingUser.equals(user)) {
-					result.put("Exception", "ui.update.emailTaken");
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+					throw new FormDataException("ui.update.emailTaken");
+				}
+				if (!mailService.isValidEmailAddress(eMail)) {
+					throw new FormDataException("ui.update.emailInvalid");
 				}
 			}
 			
-			// check if new username shall be set and if check if it is unique
+			// check if new username shall be set and if then check if it is unique
 			final String usernameForm = getFormData(formData, "username", false, "ui.update.");
 			if (!StrUtils.isEmptyOrNull(usernameForm)) {
 				final User existingUser = userDao.findByName(usernameForm);
 				if (existingUser != null && !existingUser.equals(user)) {
-					result.put("Exception", "ui.update.usernameTaken");
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+					throw new FormDataException("ui.update.usernameTaken");
 				}
 			}
 			
@@ -200,7 +203,11 @@ public class UserManagementController {
 			user.setGroupID(500);
 			user.setLogin_permission(false);
 
-			final String eMail = formData.get("email"); 
+			final String eMail = formData.get("email");
+			if (mailService.isValidEmailAddress(eMail)) {
+				throw new FormDataException("ui.register.emailInvalid");
+			}
+			
 			if (userDao.findByEMailAddress(eMail) != null) {
 				throw new FormDataException("ui.register.emailTaken");
 			}
