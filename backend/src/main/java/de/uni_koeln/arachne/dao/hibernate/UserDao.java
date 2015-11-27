@@ -36,7 +36,7 @@ public class UserDao {
 		
 		User result = null;
 		List<?> queryResult = query.list();
-		if (queryResult.size() > 0) {
+		if (!queryResult.isEmpty()) {
 			result = (User)queryResult.get(0);
 		}
 		return result;
@@ -50,7 +50,7 @@ public class UserDao {
 		
 		User result = null;
 		List<?> queryResult = query.list();
-		if (queryResult.size() > 0) {
+		if (!queryResult.isEmpty()) {
 			result = (User)queryResult.get(0);
 		}
 		return result;

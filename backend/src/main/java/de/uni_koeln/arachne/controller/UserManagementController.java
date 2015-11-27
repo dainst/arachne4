@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -36,6 +37,7 @@ import de.uni_koeln.arachne.mapping.hibernate.ResetPasswordRequest;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.service.MailService;
+import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.network.CustomMediaType;
 import de.uni_koeln.arachne.util.security.JSONView;
 import de.uni_koeln.arachne.util.security.Random;
@@ -126,6 +128,27 @@ public class UserManagementController {
 			formData.remove("iAmHuman");
 			Map<String,String> result = new HashMap<String,String>();
 			User user = userDao.findByName(username);
+			
+			// check if new email shall be set and if check if it is unique
+			final String eMail = getFormData(formData, "email", false, "ui.update.");
+			if (!StrUtils.isEmptyOrNull(eMail)) {
+				final User existingUser = userDao.findByEMailAddress(eMail);
+				if (existingUser != null && !existingUser.equals(user)) {
+					result.put("Exception", "ui.update.emailTaken");
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+				}
+			}
+			
+			// check if new username shall be set and if check if it is unique
+			final String usernameForm = getFormData(formData, "username", false, "ui.update.");
+			if (!StrUtils.isEmptyOrNull(usernameForm)) {
+				final User existingUser = userDao.findByName(usernameForm);
+				if (existingUser != null && !existingUser.equals(user)) {
+					result.put("Exception", "ui.update.usernameTaken");
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+				}
+			}
+			
 			if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID) ||
 					userRightsService.getCurrentUser().equals(user)) {
 				
@@ -138,7 +161,9 @@ public class UserManagementController {
 				} catch (de.uni_koeln.arachne.service.UserRightsService.ObjectAccessException e) {
 					result.put("Exception", e.getMessage());
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
-				}				
+				} catch (DataAccessException e) {
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+				}
 			}
 			result.put("success", "true");
 			return ResponseEntity.ok(result);
@@ -177,7 +202,7 @@ public class UserManagementController {
 
 			final String eMail = formData.get("email"); 
 			if (userDao.findByEMailAddress(eMail) != null) {
-				throw new FormDataException("ui.register.emailAlreadyTaken");
+				throw new FormDataException("ui.register.emailTaken");
 			}
 			
 			if (!eMail.equals(formData.get("emailValidation"))) {
