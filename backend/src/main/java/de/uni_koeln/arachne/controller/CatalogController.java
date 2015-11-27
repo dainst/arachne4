@@ -187,7 +187,7 @@ public class CatalogController {
 							catalogEntryDao.updateCatalogEntry(catalogEntryParent);
 							// TODO change this as it's very ugly
 							// CatalogEntry.path should not contain the CatalogEntry.Id
-							// as it cannot be known yet
+							// as it cannot be known before creation of the CatalogEntry
 							catalogEntryDao.saveCatalogEntry(catalogEntry);
 							catalogEntry.generatePath();
 							result = catalogEntryDao.updateCatalogEntry(catalogEntry);
