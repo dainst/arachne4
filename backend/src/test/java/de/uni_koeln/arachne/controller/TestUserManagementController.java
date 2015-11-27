@@ -91,7 +91,9 @@ public class TestUserManagementController {
 				.setPropertyOnProtectedObject(eq("id"), any(), any(ProtectedObject.class), anyInt());
 		
 		when(userDao.findByName("testuser")).thenReturn(testUser, testUser, null);
+		when(userDao.findByName("existinguser")).thenReturn(new User());
 		when(userDao.findByEMailAddress("someaddress")).thenReturn(testUser);
+		when(userDao.findByEMailAddress("existingaddress")).thenReturn(new User());
 		when(userDao.findById(0)).thenReturn(testUser);
 		when(userDao.findDatasetGroupByName("testGroup1")).thenReturn(new DatasetGroup("testGroup1"));
 		when(userDao.findDatasetGroupByName("testGroup2")).thenReturn(new DatasetGroup("testGroup2"));
@@ -208,7 +210,37 @@ public class TestUserManagementController {
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 				.andExpect(content().json("{Exception:\"Field id is write-protected.\"}"));
 	}
+	
+	@Test
+	public void testUpdateUserInfoInvalidUsernameTaken() throws Exception {
+		final String json = "{\"firstname\":\"some name\","
+				+ "\"username\":\"existinguser\","
+				+ "\"iAmHuman\":\"humanIAm\"}";
+		
+		mockMvc.perform(
+				put("/userinfo/testuser")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{Exception:\"ui.update.usernameTaken\"}"));
+	}
 
+	@Test
+	public void testUpdateUserInfoInvalidEmailTaken() throws Exception {
+		final String json = "{\"firstname\":\"some name\","
+				+ "\"email\":\"existingaddress\","
+				+ "\"iAmHuman\":\"humanIAm\"}";
+		
+		mockMvc.perform(
+				put("/userinfo/testuser")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{Exception:\"ui.update.emailTaken\"}"));
+	}
+	
 	@Test
 	public void testRegisterValid() throws Exception {
 		final String json = "{\"username\":\"newTestuser\","
@@ -287,7 +319,7 @@ public class TestUserManagementController {
 				.content(json))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
-				.andExpect(content().json("{message:\"ui.register.emailAlreadyTaken\",success:\"false\"}"));
+				.andExpect(content().json("{message:\"ui.register.emailTaken\",success:\"false\"}"));
 	}
 	
 	@Test
