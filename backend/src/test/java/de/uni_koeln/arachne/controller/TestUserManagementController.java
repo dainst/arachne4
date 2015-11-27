@@ -92,12 +92,13 @@ public class TestUserManagementController {
 		
 		when(userDao.findByName("testuser")).thenReturn(testUser, testUser, null);
 		when(userDao.findByName("existinguser")).thenReturn(new User());
-		when(userDao.findByEMailAddress("someaddress")).thenReturn(testUser);
-		when(userDao.findByEMailAddress("existingaddress")).thenReturn(new User());
+		when(userDao.findByEMailAddress("someaddress@somedomain.com")).thenReturn(testUser);
+		when(userDao.findByEMailAddress("existingaddress@somedomain.com")).thenReturn(new User());
 		when(userDao.findById(0)).thenReturn(testUser);
 		when(userDao.findDatasetGroupByName("testGroup1")).thenReturn(new DatasetGroup("testGroup1"));
 		when(userDao.findDatasetGroupByName("testGroup2")).thenReturn(new DatasetGroup("testGroup2"));
 		
+		when(mailService.isValidEmailAddress(anyString())).thenCallRealMethod();
 		when(mailService.sendMail(anyString(), anyString(), anyString())).thenReturn(true);
 		
 		when(random.getNewToken()).thenReturn(TOKEN);
@@ -223,11 +224,11 @@ public class TestUserManagementController {
 				.content(json))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
-				.andExpect(content().json("{Exception:\"ui.update.usernameTaken\"}"));
+				.andExpect(content().json("{message:\"ui.update.usernameTaken\"}"));
 	}
 
 	@Test
-	public void testUpdateUserInfoInvalidEmailTaken() throws Exception {
+	public void testUpdateUserInfoInvalidEmailInvalid() throws Exception {
 		final String json = "{\"firstname\":\"some name\","
 				+ "\"email\":\"existingaddress\","
 				+ "\"iAmHuman\":\"humanIAm\"}";
@@ -238,16 +239,31 @@ public class TestUserManagementController {
 				.content(json))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
-				.andExpect(content().json("{Exception:\"ui.update.emailTaken\"}"));
+				.andExpect(content().json("{message:\"ui.update.emailInvalid\"}"));
+	}
+	
+	@Test
+	public void testUpdateUserInfoInvalidEmailTaken() throws Exception {
+		final String json = "{\"firstname\":\"some name\","
+				+ "\"email\":\"existingaddress@somedomain.com\","
+				+ "\"iAmHuman\":\"humanIAm\"}";
+		
+		mockMvc.perform(
+				put("/userinfo/testuser")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{message:\"ui.update.emailTaken\"}"));
 	}
 	
 	@Test
 	public void testRegisterValid() throws Exception {
 		final String json = "{\"username\":\"newTestuser\","
-				+ "\"email\":\"somenewaddress\","
-				+ "\"emailValidation\":\"somenewaddress\","
-				+ "\"password\":\"somepass\","
-				+ "\"passwordValidation\":\"somepass\","
+				+ "\"email\":\"somenewaddress@somedomain.com\","
+				+ "\"emailValidation\":\"somenewaddress@somedomain.com\","
+				+ "\"password\":\"somebetterpass\","
+				+ "\"passwordValidation\":\"somebetterpass\","
 				+ "\"firstname\":\"some name\","
 				+ "\"lastname\":\"aome other name\","
 				+ "\"street\":\"somestreet\","
@@ -284,10 +300,51 @@ public class TestUserManagementController {
 	}
 
 	@Test
-	public void testRegisterInvalidMissingField() throws Exception {
+	public void testRegisterInvalidPasswordTooShort() throws Exception {
 		final String json = "{\"username\":\"newTestuser\","
-				+ "\"email\":\"someaddress\","
-				+ "\"emailValidation\":\"someaddress\","
+				+ "\"email\":\"somenewaddress@somedomain.com\","
+				+ "\"emailValidation\":\"somenewaddress@somedomain.com\","
+				+ "\"password\":\"somepass\","
+				+ "\"passwordValidation\":\"somepass\","
+				+ "\"firstname\":\"some name\","
+				+ "\"lastname\":\"aome other name\","
+				+ "\"street\":\"somestreet\","
+				+ "\"zip\":\"12345\","
+				+ "\"place\":\"some place\","
+				+ "\"country\":\"some country\","
+				+ "\"iAmHuman\":\"humanIAm\"}";
+		
+		// admin
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().json("{\"success\":\"false\"}"));
+		
+		// user
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().json("{\"success\":\"false\"}"));
+		
+		// anonymous
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{message:\"ui.register.passwordTooShort\",success:\"false\"}"));
+	}
+	
+	@Test
+	public void testRegisterInvalidEMailTaken() throws Exception {
+		final String json = "{\"username\":\"newTestuser\","
+				+ "\"email\":\"someaddress@somedomain.com\","
+				+ "\"emailValidation\":\"someaddress@somedomain.com\","
 				+ "\"password\":\"somepass\","
 				+ "\"passwordValidation\":\"somepass\","
 				+ "\"firstname\":\"some name\","
@@ -323,8 +380,164 @@ public class TestUserManagementController {
 	}
 	
 	@Test
-	public void testRegisterInvalidEmailAlreadyTaken() throws Exception {
+	public void testRegisterInvalidEMailInvalid() throws Exception {
+		final String json = "{\"username\":\"newTestuser\","
+				+ "\"email\":\"someaddress\","
+				+ "\"emailValidation\":\"someaddress\","
+				+ "\"password\":\"somepass\","
+				+ "\"passwordValidation\":\"somepass\","
+				+ "\"firstname\":\"some name\","
+				+ "\"lastname\":\"aome other name\","
+				+ "\"street\":\"somestreet\","
+				+ "\"zip\":\"12345\","
+				+ "\"place\":\"some place\","
+				+ "\"country\":\"some country\","
+				+ "\"iAmHuman\":\"humanIAm\"}";
+		
+		// admin dummy request
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest());
+		
+		// user dummy request
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest());
+		
+		// anonymous
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{message:\"ui.register.emailInvalid\",success:\"false\"}"));
+	}
+	
+	@Test
+	public void testRegisterInvalidEMailsDontMatch() throws Exception {
+		final String json = "{\"username\":\"newTestuser\","
+				+ "\"email\":\"somenewaddress@somedomain.com\","
+				+ "\"emailValidation\":\"somenewaddress@someotherdomain.com\","
+				+ "\"password\":\"somepass\","
+				+ "\"passwordValidation\":\"somepass\","
+				+ "\"firstname\":\"some name\","
+				+ "\"lastname\":\"aome other name\","
+				+ "\"street\":\"somestreet\","
+				+ "\"zip\":\"12345\","
+				+ "\"place\":\"some place\","
+				+ "\"country\":\"some country\","
+				+ "\"iAmHuman\":\"humanIAm\"}";
+		
+		// admin dummy request
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest());
+		
+		// user dummy request
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest());
+		
+		// anonymous
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{message:\"ui.register.emailsDontMatch\",success:\"false\"}"));
+	}
+	
+	@Test
+	public void testRegisterInvalidPasswordsDontMatch() throws Exception {
+		final String json = "{\"username\":\"newTestuser\","
+				+ "\"email\":\"somenewaddress@somedomain.com\","
+				+ "\"emailValidation\":\"somenewaddress@somedomain.com\","
+				+ "\"password\":\"somenewpass\","
+				+ "\"passwordValidation\":\"someotherpass\","
+				+ "\"firstname\":\"some name\","
+				+ "\"lastname\":\"aome other name\","
+				+ "\"street\":\"somestreet\","
+				+ "\"zip\":\"12345\","
+				+ "\"place\":\"some place\","
+				+ "\"country\":\"some country\","
+				+ "\"iAmHuman\":\"humanIAm\"}";
+		
+		// admin dummy request
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest());
+		
+		// user dummy request
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest());
+		
+		// anonymous
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{message:\"ui.register.passwordsDontMatch\",success:\"false\"}"));
+	}
+	
+	@Test
+	public void testRegisterInvalidUsernameTaken() throws Exception {
 		final String json = "{\"username\":\"testuser\","
+				+ "\"email\":\"somenewaddress@somedomain.com\","
+				+ "\"emailValidation\":\"somenewaddress@somedomain.com\","
+				+ "\"password\":\"somepass\","
+				+ "\"passwordValidation\":\"somepass\","
+				+ "\"firstname\":\"some name\","
+				+ "\"lastname\":\"aome other name\","
+				+ "\"street\":\"somestreet\","
+				+ "\"zip\":\"12345\","
+				+ "\"place\":\"some place\","
+				+ "\"country\":\"some country\","
+				+ "\"iAmHuman\":\"humanIAm\"}";
+		
+		// admin dummy request
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest());
+		
+		// user dummy request
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest());
+		
+		// anonymous
+		mockMvc.perform(
+				post("/user/register")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{message:\"ui.register.usernameTaken\",success:\"false\"}"));
+	}
+	
+	@Test
+	public void testRegisterInvalidMissingField() throws Exception {
+		final String json = "{\"username\":\"newtestuser\","
 				+ "\"password\":\"somepass\","
 				+ "\"lastname\":\"aome other name\","
 				+ "\"street\":\"somestreet\","
@@ -360,8 +573,8 @@ public class TestUserManagementController {
 	@Test
 	public void testRegisterInvalidBot() throws Exception {
 		final String json = "{\"username\":\"newTestuser\","
-				+ "\"email\":\"someaddress\","
-				+ "\"emailValidation\":\"someaddress\","
+				+ "\"email\":\"someaddress@somedomain.com\","
+				+ "\"emailValidation\":\"someaddress@somedomain.com\","
 				+ "\"password\":\"somepass\","
 				+ "\"passwordValidation\":\"somepass\","
 				+ "\"firstname\":\"some name\","
@@ -401,7 +614,7 @@ public class TestUserManagementController {
 	@Test
 	public void testResetValid() throws Exception {
 		final String json = "{\"username\":\"testuser\","
-				+ "\"email\":\"someaddress\","
+				+ "\"email\":\"someaddress@somedomain.com\","
 				+ "\"firstname\":\"test\","
 				+ "\"zip\":\"12345\","
 				+ "\"iAmHuman\":\"humanIAm\"}";
@@ -433,7 +646,7 @@ public class TestUserManagementController {
 	@Test
 	public void testResetInvalidBot() throws Exception {
 		final String json = "{\"username\":\"testuser\","
-				+ "\"email\":\"someaddress\","
+				+ "\"email\":\"someaddress@somedomain.com\","
 				+ "\"firstname\":\"test\","
 				+ "\"zip\":\"12345\"}";
 		
@@ -464,7 +677,7 @@ public class TestUserManagementController {
 	@Test
 	public void testResetInvalidUnknownUser() throws Exception {
 		final String json = "{\"username\":\"unknownuser\","
-				+ "\"email\":\"someaddress\","
+				+ "\"email\":\"someaddress@somedomain.com\","
 				+ "\"firstname\":\"test\","
 				+ "\"zip\":\"12345\","
 				+ "\"iAmHuman\":\"humanIAm\"}";
@@ -528,7 +741,7 @@ public class TestUserManagementController {
 	@Test
 	public void testResetInvalidIncorrectFirstname() throws Exception {
 		final String json = "{\"username\":\"testuser\","
-				+ "\"email\":\"someaddress\","
+				+ "\"email\":\"someaddress@somedomain.com\","
 				+ "\"firstname\":\"incorrect\","
 				+ "\"zip\":\"12345\","
 				+ "\"iAmHuman\":\"humanIAm\"}";
@@ -560,7 +773,7 @@ public class TestUserManagementController {
 	@Test
 	public void testResetInvalidIncorrectZip() throws Exception {
 		final String json = "{\"username\":\"testuser\","
-				+ "\"email\":\"someaddress\","
+				+ "\"email\":\"someaddress@somedomain.com\","
 				+ "\"firstname\":\"test\","
 				+ "\"zip\":\"54321\","
 				+ "\"iAmHuman\":\"humanIAm\"}";
@@ -592,7 +805,7 @@ public class TestUserManagementController {
 	@Test
 	public void testResetInvalidRequestPending() throws Exception {
 		final String json = "{\"username\":\"testuser\","
-				+ "\"email\":\"someaddress\","
+				+ "\"email\":\"someaddress@somedomain.com\","
 				+ "\"firstname\":\"test\","
 				+ "\"zip\":\"12345\","
 				+ "\"iAmHuman\":\"humanIAm\"}";

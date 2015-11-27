@@ -29,8 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jayway.jsonassert.impl.matcher.IsMapContainingValue;
-
 import static de.uni_koeln.arachne.util.FormDataUtils.*;
 import de.uni_koeln.arachne.dao.hibernate.ResetPasswordRequestDao;
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
@@ -134,12 +132,12 @@ public class UserManagementController {
 			// check if new email shall be set and if then check if it is unique
 			final String eMail = getFormData(formData, "email", false, "ui.update.");
 			if (!StrUtils.isEmptyOrNull(eMail)) {
+				if (!mailService.isValidEmailAddress(eMail)) {
+					throw new FormDataException("ui.update.emailInvalid");
+				}
 				final User existingUser = userDao.findByEMailAddress(eMail);
 				if (existingUser != null && !existingUser.equals(user)) {
 					throw new FormDataException("ui.update.emailTaken");
-				}
-				if (!mailService.isValidEmailAddress(eMail)) {
-					throw new FormDataException("ui.update.emailInvalid");
 				}
 			}
 			
@@ -186,10 +184,36 @@ public class UserManagementController {
 			checkForBot(formData, "ui.register.");
 
 			User user = new User();
-
+			
 			user.setUsername(getFormData(formData, "username", true, "ui.register."));
-			user.setEmail(getFormData(formData, "email", true, "ui.register."));
-			user.setPassword(getFormData(formData, "password", true, "ui.register."));
+			User existingUser = userDao.findByName(user.getUsername());
+			if (existingUser != null) {
+				throw new FormDataException("ui.register.usernameTaken");
+			}
+			
+			final String eMail = getFormData(formData, "email", true, "ui.register.");
+			if (!mailService.isValidEmailAddress(eMail)) {
+				throw new FormDataException("ui.register.emailInvalid");
+			}
+			
+			if (userDao.findByEMailAddress(eMail) != null) {
+				throw new FormDataException("ui.register.emailTaken");
+			}
+			
+			if (!eMail.equals(formData.get("emailValidation"))) {
+				throw new FormDataException("ui.register.emailsDontMatch");
+			}
+			user.setEmail(eMail);
+			
+			final String password = getFormData(formData, "password", true, "ui.register.");
+			if (!password.equals(formData.get("passwordValidation"))) {
+				throw new FormDataException("ui.register.passwordsDontMatch");
+			}
+			if (password.length() < 10) {
+				throw new FormDataException("ui.register.passwordTooShort");
+			}
+			user.setPassword(password);
+			
 			user.setFirstname(getFormData(formData, "firstname", true, "ui.register."));
 			user.setLastname(getFormData(formData, "lastname", true, "ui.register."));
 			user.setStreet(getFormData(formData, "street", true, "ui.register."));
@@ -202,28 +226,6 @@ public class UserManagementController {
 			user.setAll_groups(false);
 			user.setGroupID(500);
 			user.setLogin_permission(false);
-
-			final String eMail = formData.get("email");
-			if (mailService.isValidEmailAddress(eMail)) {
-				throw new FormDataException("ui.register.emailInvalid");
-			}
-			
-			if (userDao.findByEMailAddress(eMail) != null) {
-				throw new FormDataException("ui.register.emailTaken");
-			}
-			
-			if (!eMail.equals(formData.get("emailValidation"))) {
-				throw new FormDataException("ui.register.emailsDontMatch");
-			}
-
-			if (!formData.get("password").equals(formData.get("passwordValidation"))) {
-				throw new FormDataException("ui.register.passwordsDontMatch");
-			}
-
-			User existingUser = userDao.findByName(user.getUsername());
-			if (existingUser != null) {
-				throw new FormDataException("ui.register.usernameTaken");
-			}
 
 			HashSet<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
 			for (String dgName : defaultDatasetGroups) {
