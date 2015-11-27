@@ -55,7 +55,8 @@ public class MailService {
 	 * @param messageBody The body of the message.
 	 * @return A flag indicating success of the operation.
 	 */
-	public boolean sendMail(final String recipient, final String replyTo, final String subject, final String messageBody) {
+	public boolean sendMail(final String recipient, final String replyTo, final String subject, 
+			final String messageBody) {
 		final SimpleMailMessage mailMessage = new SimpleMailMessage();
 		
 		mailMessage.setFrom(sender);
@@ -80,7 +81,7 @@ public class MailService {
 		}
 	}
 	
-	private boolean isValidEmailAddress(final String address) {
+	public boolean isValidEmailAddress(final String address) {
 	    
 		if (address == null) {
 	    	return false;
