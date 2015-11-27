@@ -34,21 +34,24 @@ public class CatalogDao {
 	@Transactional(readOnly=true)
 	public Catalog getByCatalogId(final long catalogId, final boolean full) {
 		Session session = sessionFactory.getCurrentSession();
+		Catalog result = null;
 		if (full) {
 			return eagerFetch((Catalog) session.get(Catalog.class, catalogId));
 		} else {
 			// a customized query might be more efficient but currently this is fast enough
 			final Catalog catalog = (Catalog) session.get(Catalog.class, catalogId);
-			final CatalogEntry root = catalog.getRoot();
-			for (CatalogEntry entry : root.getChildren()) {
-				entry.removeChildren();
+			if (catalog != null) {
+				final CatalogEntry root = catalog.getRoot();
+				for (CatalogEntry entry : root.getChildren()) {
+					entry.removeChildren();
+				}
+				result = new Catalog();
+				result.setAuthor(catalog.getAuthor());
+				result.setId(catalog.getId());
+				result.setPublic(catalog.isPublic());
+				result.setRoot(root);
+				result.setUsers(catalog.getUsers());
 			}
-			final Catalog result = new Catalog();
-			result.setAuthor(catalog.getAuthor());
-			result.setId(catalog.getId());
-			result.setPublic(catalog.isPublic());
-			result.setRoot(root);
-			result.setUsers(catalog.getUsers());
 			return result;
 		}
 	}
