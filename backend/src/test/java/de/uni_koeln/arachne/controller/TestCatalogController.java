@@ -295,43 +295,6 @@ public class TestCatalogController {
 	}
 	
 	@Test
-	public void testHandleCatalogEntryCreateInCatalogEntryRequestValid() throws Exception {
-		mockMvc.perform(
-				post("/catalogentry/599/add")
-					.contentType(APPLICATION_JSON_UTF8)
-					.content("{\"label\": \"Test Label\",\""
-							+ "text\": \"Test Text.\",\""
-							+ "parentId\": 599,\""
-							+ "indexParent\": 0,\""
-							+ "catalogId\": 83}"))
-				.andExpect(status().isOk());
-		
-		// forbidden
-		mockMvc.perform(
-				post("/catalogentry/599/add")
-					.contentType(APPLICATION_JSON_UTF8)
-					.content("{\"label\": \"Test Label\",\""
-							+ "text\": \"Test Text.\",\""
-							+ "parentId\": 599,\""
-							+ "indexParent\": 0,\""
-							+ "catalogId\": 83}"))
-				.andExpect(status().isForbidden());
-	}
-	
-	@Test
-	public void testHandleCatalogEntryCreateInCatalogEntryRequestInvalidPartent() throws Exception {
-		mockMvc.perform(
-				post("/catalogentry/600/add")
-					.contentType(APPLICATION_JSON_UTF8)
-					.content("{\"label\": \"Test Label\",\""
-							+ "text\": \"Test Text.\",\""
-							+ "parentId\": 600,\""
-							+ "indexParent\": 0,\""
-							+ "catalogId\": 83}"))
-				.andExpect(status().isNotFound());
-	}
-
-	@Test
 	public void testHandleCatalogEntryCreateRequestValid() throws Exception {
 		mockMvc.perform(
 				post("/catalogentry")

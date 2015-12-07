@@ -144,67 +144,6 @@ public class CatalogController {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
-	/**
-	 * Handles http POST request for <code>/catalogEntry/{id}/add</code>.
-	 * Creates the submitted <code>CatalogEntry</code> item and adds it to the
-	 * specified <code>CatalogEntry</code> as a child. Returns the
-	 * <code>CatalogEntry</code> created and 200. Returns null and 403 if no
-	 * user is signed in or the signed in user does not own the
-	 * <code>Catalog</code> of the specified <code>CatalogEntry</code>. If the
-	 * submitted <code>CatalogEntry</code> contains an id value, that value is
-	 * ignored.
-	 */
-	@RequestMapping(value = "/catalogentry/{catalogEntryParentId}/add", 
-			method = RequestMethod.POST,
-			consumes = CustomMediaType.APPLICATION_JSON_UTF8_VALUE,
-			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
-	public @ResponseBody ResponseEntity<CatalogEntry> handleCatalogEntryCreateInCatalogEntryRequest(
-			@PathVariable("catalogEntryParentId") final Long catalogEntryParentId,
-			@RequestBody final CatalogEntry catalogEntry) {
-		
-		final User user = userRightsService.getCurrentUser();
-		final CatalogEntry catalogEntryParent;
-		final Catalog catalog;
-		final CatalogEntry result;
-
-		if (userRightsService.isSignedInUser()) {
-			catalogEntryParent = catalogEntryDao
-					.getByCatalogEntryId(catalogEntryParentId);
-
-			if (catalogEntryParent == null) {
-				return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
-			} else {
-				catalog = catalogEntryParent.getCatalog();
-				if (catalog == null) {
-					return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
-				} else {
-					if (catalog.isCatalogOfUserWithId(user.getId())) {
-						catalogEntry.setId(null);
-						catalogEntry.setParent(catalogEntryParent);
-						catalogEntryParent.addToChildren(catalogEntry);
-						catalogEntry.setCatalog(catalog);
-						try {
-							catalogEntryDao.updateCatalogEntry(catalogEntryParent);
-							// TODO change this as it's very ugly
-							// CatalogEntry.path should not contain the CatalogEntry.Id
-							// as it cannot be known before creation of the CatalogEntry
-							catalogEntryDao.saveCatalogEntry(catalogEntry);
-							catalogEntry.generatePath();
-							result = catalogEntryDao.updateCatalogEntry(catalogEntry);
-						} catch (Exception e) {
-							return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
-						}
-					} else {
-						return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
-					}
-				}
-			}
-		} else {
-			return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
-		}
-		return ResponseEntity.ok(result);
-	}
-
 	@RequestMapping(value = "/catalogentry", 
 			method = RequestMethod.POST,
 			consumes = CustomMediaType.APPLICATION_JSON_UTF8_VALUE,
