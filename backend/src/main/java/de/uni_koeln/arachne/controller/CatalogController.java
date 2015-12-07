@@ -154,37 +154,38 @@ public class CatalogController {
 		final User user = userRightsService.getCurrentUser();
 		final CatalogEntry catalogEntryParent;
 		final Catalog catalog;
-		final CatalogEntry result;
+		CatalogEntry result = null;
 
-		if (userRightsService.isSignedInUser()
-				&& catalogEntry.getParentId() != null) {
-
-			catalogEntryParent = catalogEntryDao
-					.getByCatalogEntryId(catalogEntry.getParentId());
-
-			if (catalogEntryParent == null) {
-				return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
-			} else {
-
-				catalog = catalogEntryParent.getCatalog();
-				if (catalog.isCatalogOfUserWithId(user.getId())) {
-					catalogEntry.setId(null);
-					catalogEntry.setParent(catalogEntryParent);
-					if (catalogEntry.getIndexParent() == null
-							|| catalogEntry.getIndexParent() >= catalogEntryParent
-									.getChildren().size()) {
-						catalogEntryParent.addToChildren(catalogEntry);
-					} else {
-						catalogEntryParent.getChildren().add(
-								catalogEntry.getIndexParent(), catalogEntry);
-					}
-					catalogEntry.setCatalog(catalog);
-					catalogEntryDao.updateCatalogEntry(catalogEntryParent);
-					catalogEntry.generatePath();
-					result = catalogEntryDao.updateCatalogEntry(catalogEntry);
+		if (userRightsService.isSignedInUser()) {
+			if (catalogEntry.getParentId() != null) {
+				catalogEntryParent = catalogEntryDao
+						.getByCatalogEntryId(catalogEntry.getParentId());
+				if (catalogEntryParent == null) {
+					return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
 				} else {
-					return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
+					catalog = catalogEntryParent.getCatalog();
+					if (catalog.isCatalogOfUserWithId(user.getId())) {
+						catalogEntry.setId(null);
+						catalogEntry.setParent(catalogEntryParent);
+						if (catalogEntry.getIndexParent() == null
+								|| catalogEntry.getIndexParent() >= catalogEntryParent
+								.getChildren().size()) {
+							catalogEntryParent.addToChildren(catalogEntry);
+						} else {
+							catalogEntryParent.getChildren().add(
+									catalogEntry.getIndexParent(), catalogEntry);
+						}
+						catalogEntry.setCatalog(catalog);
+						catalogEntryDao.updateCatalogEntry(catalogEntryParent);
+						catalogEntryDao.saveCatalogEntry(catalogEntry);
+						catalogEntry.generatePath();
+						result = catalogEntryDao.updateCatalogEntry(catalogEntry);
+					} else {
+						return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
+					}
 				}
+			} else {
+				return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
 			}
 		} else {
 			return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
