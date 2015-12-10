@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -47,7 +47,7 @@ public class CatalogEntry implements Serializable {
 	private CatalogEntry parent;
 	
 	@OneToMany(mappedBy="parent", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	@OrderColumn(name="index_parent")
+	@OrderBy(value="index_parent")
 	private List<CatalogEntry> children;
 
 	@Column(name="arachne_entity_id")
