@@ -112,8 +112,8 @@ public class TestCatalogController {
 		entryLeaf.getParent().setCatalog(catalog);
 		entryLeaf.setCatalog(catalog);
 		
-		when(catalogEntryDao.getByCatalogEntryId(1, false)).thenReturn(entry);
-		when(catalogEntryDao.getByCatalogEntryId(1, true)).thenReturn(entryFull);
+		when(catalogEntryDao.getByCatalogEntryId(1, false, 0, 0)).thenReturn(entry);
+		when(catalogEntryDao.getByCatalogEntryId(1, true, 0, 0)).thenReturn(entryFull);
 		when(catalogEntryDao.getByCatalogEntryId(598)).thenReturn(entryLeaf.getParent());
 		when(catalogEntryDao.getByCatalogEntryId(599)).thenReturn(entryLeaf);
 		when(catalogEntryDao.getByCatalogEntryId(600)).thenReturn(null);

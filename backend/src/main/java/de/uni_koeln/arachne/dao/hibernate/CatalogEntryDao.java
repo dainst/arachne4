@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.dao.hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -28,16 +29,36 @@ public class CatalogEntryDao {
 	
 	@Transactional(readOnly=true)
 	public CatalogEntry getByCatalogEntryId(final long catalogEntryId) {
-		return getByCatalogEntryId(catalogEntryId, false);
+		return getByCatalogEntryId(catalogEntryId, false, 0, 0);
 	}
 	
+	/**
+	 * Retrieves a CatalogEntry from the DB. The parameters are used to restrict the children.
+	 * @param catalogEntryId The entries id.
+	 * @param full If all children of all children should be retrieved or only the direct children of the entry.
+	 * @param limit If <code>full = false</code> then limit restricts the number of direct children to the desired 
+	 * value.
+	 * @param offset If <code>full = false</code> and <code>limit > 0</code> then offset gives an offset into the 
+	 * direct children list.
+	 * @return The CatalogEntry with the given id.
+	 */
 	@Transactional(readOnly=true)
-	public CatalogEntry getByCatalogEntryId(final long catalogEntryId, final boolean full) {
+	public CatalogEntry getByCatalogEntryId(final long catalogEntryId, final boolean full, final int limit
+			, final int offset) {
 		final Session session = sessionFactory.getCurrentSession();
 		CatalogEntry result = session.get(CatalogEntry.class, catalogEntryId);
 		if (!full) {
-			for (final CatalogEntry child: result.getChildren()) {
-				child.removeChildren();
+			int count = 0;
+			final List<CatalogEntry> children = result.getChildren();
+			final ListIterator<CatalogEntry> it = children.listIterator();
+			while (it.hasNext()) {
+				CatalogEntry catalogEntry = (CatalogEntry) it.next();
+				count++;
+				if (limit > 0 && (count <= offset || limit + offset < count)) {
+					it.remove();
+				} else {
+					catalogEntry.removeChildren();
+				}
 			}
 		}
 		return result;

@@ -62,12 +62,16 @@ public class CatalogController {
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<CatalogEntry> handleGetCatalogEntryRequest(
 			@PathVariable("catalogEntryId") final Long catalogEntryId,
-			@RequestParam(value = "full", required = false) Boolean full) {
+			@RequestParam(value = "full", required = false) Boolean full,
+			@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "offset", required = false) Integer offset) {
 		
 		full = (full == null) ? false : full;
+		limit = (limit == null) ? 0 : limit;
+		offset = (offset == null) ? 0 : offset;
 		CatalogEntry result = null;
 		final User user = userRightsService.getCurrentUser();
-		result = catalogEntryDao.getByCatalogEntryId(catalogEntryId, full);
+		result = catalogEntryDao.getByCatalogEntryId(catalogEntryId, full, limit, offset);
 		
 		if (result == null) {
 			return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
