@@ -240,11 +240,15 @@ public class CatalogController {
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<Catalog> handleGetCatalogRequest(
 			@PathVariable("catalogId") final Long catalogId,
-			@RequestParam(value = "full", required = false) Boolean full) {
+			@RequestParam(value = "full", required = false) Boolean full,
+			@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "offset", required = false) Integer offset) {
 		
 		full = (full == null) ? false : full;
+		limit = (limit == null) ? 0 : limit;
+		offset = (offset == null) ? 0 : offset;
 		final User user = userRightsService.getCurrentUser();
-		Catalog result = catalogDao.getByCatalogId(catalogId, full);
+		Catalog result = catalogDao.getByCatalogId(catalogId, full, limit, offset);
 		if (result == null) {
 			return new ResponseEntity<Catalog>(HttpStatus.NOT_FOUND);
 		} else if (!result.isCatalogOfUserWithId(user.getId()) && !result.isPublic()) {

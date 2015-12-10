@@ -128,7 +128,7 @@ public class TestCatalogController {
 
 		when(catalogDao.getByUid(3, true)).thenReturn(Arrays.asList(catalog));
 		when(catalogDao.getByCatalogId(83)).thenReturn(catalog);
-		when(catalogDao.getByCatalogId(83, true)).thenReturn(catalog);
+		when(catalogDao.getByCatalogId(83, true, 0, 0)).thenReturn(catalog);
 		when(catalogDao.saveOrUpdateCatalog(any(Catalog.class))).thenAnswer(new Answer<Catalog>() {
 
 			@Override
@@ -157,7 +157,7 @@ public class TestCatalogController {
 		}
 		
 		when(catalogDao.getByUid(3, false)).thenReturn(Arrays.asList(catalogNoChilds));
-		when(catalogDao.getByCatalogId(83, false)).thenReturn(catalogNoChilds);
+		when(catalogDao.getByCatalogId(83, false, 0, 0)).thenReturn(catalogNoChilds);
 		
 		when(catalogEntryDao.getPrivateCatalogIdsByEntityId(anyLong()))
 				.thenReturn(new ArrayList<Long>());

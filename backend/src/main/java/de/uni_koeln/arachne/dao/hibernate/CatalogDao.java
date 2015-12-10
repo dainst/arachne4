@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.dao.hibernate;
 
 import java.util.List;
+import java.util.ListIterator;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -21,7 +22,7 @@ public class CatalogDao {
 	
 	@Transactional(readOnly=true)
 	public Catalog getByCatalogId(final long catalogId) {
-		return getByCatalogId(catalogId, true);
+		return getByCatalogId(catalogId, true, 0, 0);
 	}
 	
 	/**
@@ -32,7 +33,7 @@ public class CatalogDao {
 	 * @return The catalog with the given id.
 	 */
 	@Transactional(readOnly=true)
-	public Catalog getByCatalogId(final long catalogId, final boolean full) {
+	public Catalog getByCatalogId(final long catalogId, final boolean full, final int limit, final int offset) {
 		Session session = sessionFactory.getCurrentSession();
 		Catalog result = null;
 		if (full) {
@@ -41,11 +42,20 @@ public class CatalogDao {
 			// a customized query might be more efficient but currently this is fast enough
 			final Catalog catalog = (Catalog) session.get(Catalog.class, catalogId);
 			if (catalog != null) {
+				int count = 0;
 				final CatalogEntry root = catalog.getRoot();
-				for (CatalogEntry entry : root.getChildren()) {
-					 // entry can be null if someone messed around with index_parent (f***ing hibernate)
-					if(entry != null) entry.removeChildren();
+				final List<CatalogEntry> children = root.getChildren();
+				final ListIterator<CatalogEntry> it = children.listIterator();
+				while (it.hasNext()) {
+					CatalogEntry catalogEntry = (CatalogEntry) it.next();
+					count++;
+					if (limit > 0 && (count <= offset || limit + offset < count)) {
+						it.remove();
+					} else {
+						catalogEntry.removeChildren();
+					}
 				}
+				// TODO investigate if deep copying is really necessary
 				result = new Catalog();
 				result.setAuthor(catalog.getAuthor());
 				result.setId(catalog.getId());
