@@ -43,7 +43,8 @@ public class CatalogDao {
 			if (catalog != null) {
 				final CatalogEntry root = catalog.getRoot();
 				for (CatalogEntry entry : root.getChildren()) {
-					entry.removeChildren();
+					 // entry can be null if someone messed around with index_parent (f***ing hibernate)
+					if(entry != null) entry.removeChildren();
 				}
 				result = new Catalog();
 				result.setAuthor(catalog.getAuthor());
