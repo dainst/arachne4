@@ -335,6 +335,19 @@ public class TestCatalogController {
 	}
 	
 	@Test
+	public void testHandleCatalogEntryCreateRequestInvalidParentIdMissing() throws Exception {
+		mockMvc.perform(
+				post("/catalogentry")
+					.contentType(APPLICATION_JSON_UTF8)
+					.content("{\"id\": 599, \""
+							+ "label\": \"Test Label\",\""
+							+ "text\": \"Test Text.\",\""
+							+ "indexParent\": 0,\""
+							+ "catalogId\": 83}"))
+				.andExpect(status().isBadRequest());
+	}
+	
+	@Test
 	public void testHandleGetCatalogsRequestValid() throws Exception {
 		final String expectedResult = '[' + EXPECTED_CATALOG_NO_CHILDS + ']';
 		
