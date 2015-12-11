@@ -68,6 +68,20 @@ public class SQLDao {
 	}
 	
 	/**
+	 * Executes a SQL SELECT query that retrieves a single string value.
+	 * @param sqlQuery The sql query string.
+	 * @return The string value retrieved from the field or <code>null</code> on failure.
+	 */
+	protected Long queryForLong(final String sqlQuery) {
+		try {
+			return jdbcTemplate.queryForObject(sqlQuery, Long.class);
+		} catch (DataAccessException e) {
+			LOGGER.error("Failed to execute query '" + sqlQuery + "'. Cause: ", e);
+		}
+		return null;
+	}
+	
+	/**
 	 * Executes a SQL SELECT query that retrieves a list.
 	 * @param sqlQuery The sql query string.
 	 * @param elementType 

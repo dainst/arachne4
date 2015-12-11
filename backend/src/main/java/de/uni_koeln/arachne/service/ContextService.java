@@ -104,16 +104,22 @@ public class ContextService {
 	 * Does NOT add the additionally retrieved contexts to the parent dataset or to the retrievedContexts.
 	 * @param parent The dataset to add the images to.
 	 */
+	@SuppressWarnings("unchecked")
 	private void addContextImages(final Dataset parent) {
 		// add book cover image
 		if ("buch".equals(parent.getArachneId().getTableName())) {
+			Image image = null;
+			Long coverPage = null;
 			try {
-				@SuppressWarnings("unchecked")
-				Image image = ((List<Image>)genericSQLDao.getImageList("buchseite", Long.parseLong(
-						parent.getField("buch.Cover")))).get(0); 
+				coverPage = Long.parseLong(parent.getField("buch.Cover"));
+			} catch (NumberFormatException nfe) {
+				coverPage = genericSQLDao.getBookCoverPage(parent.getArachneId().getInternalKey());
+			}
+			if (coverPage != null) {
+				image = ((List<Image>)genericSQLDao.getImageList("buchseite", coverPage)).get(0);
 				parent.addImage(image);
 				parent.setThumbnailId(image.getImageId());
-			} catch (NumberFormatException nfe) {
+			} else {
 				dataIntegrityLogService.logWarning(parent.getArachneId().getInternalKey(), "PS_BuchID", "No cover found.");
 			}
 			return;

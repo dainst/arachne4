@@ -115,5 +115,13 @@ public class GenericSQLDao extends SQLDao {
 		}
 		return null;
 	}
+
+	public Long getBookCoverPage(Long internalKey) {
+		// TODO move query creation to sql factory
+		final String sqlQuery = "SELECT PS_BuchseiteID FROM buchseite WHERE seite = 0 and FS_BuchID = " 
+				+ internalKey + " LIMIT 1;";
+		final Long cover = queryForLong(sqlQuery);
+		return cover;
+	}
 	
 }
