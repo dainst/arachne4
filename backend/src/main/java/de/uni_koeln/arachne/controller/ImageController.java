@@ -28,6 +28,7 @@ import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
  * @author Reimar Grabowski
  */
 @Controller
+@RequestMapping("/image")
 public class ImageController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageController.class);
@@ -40,7 +41,7 @@ public class ImageController {
 	 * @param entityId The unique ID of the image.
 	 * @return A <code>BufferedImage</code> wrapped in a <code>ResponseEntity</code>.
 	 */
-	@RequestMapping(value = "/image/width/{entityId}", 
+	@RequestMapping(value = "width/{entityId}", 
 			method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<BufferedImage> getWidth(
@@ -58,7 +59,7 @@ public class ImageController {
 	 * @param entityId The unique ID of the image.
 	 * @return A <code>BufferedImage</code> wrapped in a <code>ResponseEntity</code>.
 	 */
-	@RequestMapping(value = "/image/height/{entityId}",
+	@RequestMapping(value = "height/{entityId}",
 			method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<BufferedImage> getHeight(
@@ -76,7 +77,7 @@ public class ImageController {
 	 * @param entityId The unique ID of the image.
 	 * @return A <code>BufferedImage</code> wrapped in a <code>ResponseEntity</code>.
 	 */
-	@RequestMapping(value = "/image/{entityId}",
+	@RequestMapping(value = "{entityId}",
 			method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<BufferedImage> getImage(@PathVariable("entityId") final long entityId) {
@@ -94,7 +95,7 @@ public class ImageController {
 	 * @return A <code>BufferedImage</code> wrapped in a <code>ResponseEntity</code>.
 	 */
 	@Deprecated
-	@RequestMapping(value = "/image/preview/{entityId}",
+	@RequestMapping(value = "preview/{entityId}",
 			method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<BufferedImage> getPreview(@PathVariable("entityId") final long entityId) {
@@ -112,7 +113,7 @@ public class ImageController {
 	 * @return A <code>BufferedImage</code> wrapped in a <code>ResponseEntity</code>.
 	 */
 	@Deprecated
-	@RequestMapping(value = "/image/thumbnail/{entityId}",
+	@RequestMapping(value = "thumbnail/{entityId}",
 			method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<BufferedImage> getThumbnail(@PathVariable("entityId") final long entityId) {
@@ -130,7 +131,7 @@ public class ImageController {
 	 * @return A <code>BufferedImage</code> wrapped in a <code>ResponseEntity</code>.
 	 */
 	@Deprecated
-	@RequestMapping(value = "/image/icon/{entityId}",
+	@RequestMapping(value = "icon/{entityId}",
 			method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<BufferedImage> getIcon(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
@@ -150,7 +151,7 @@ public class ImageController {
 	 * @param response The outgoing HTTP response.
 	 * @return Either the meta data or the image returned by the image server.
 	 */
-	@RequestMapping(value = "/image/iipviewer",
+	@RequestMapping(value = "iipviewer",
 			method = RequestMethod.GET,
 			produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.TEXT_PLAIN_VALUE})
 	@Deprecated
@@ -169,7 +170,7 @@ public class ImageController {
 	 * @param response The outgoing HTTP response.
 	 * @return The meta data as 'ImageProperties.xml'.
 	 */
-	@RequestMapping(value = "/image/zoomify/{entityId}/ImageProperties.xml",
+	@RequestMapping(value = "zoomify/{entityId}/ImageProperties.xml",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_XML_VALUE)
 	public ResponseEntity<String> getImagePropertiesForZoomifyViewer(@PathVariable("entityId") final long entityId,
@@ -189,7 +190,7 @@ public class ImageController {
 	 * @param y Zoomify row. (mandatory)
 	 * @return The requested jpeg image.
 	 */
-	@RequestMapping(value = "/image/zoomify/{entityId}/{z}-{x}-{y}.jpg", method = RequestMethod.GET)
+	@RequestMapping(value = "zoomify/{entityId}/{z}-{x}-{y}.jpg", method = RequestMethod.GET)
 	public ResponseEntity<BufferedImage> getImageForZoomifyViewer(@PathVariable("entityId") final long entityId,
 			@PathVariable("z") final int z, @PathVariable("x") final int x, @PathVariable("y") final int y,
 			final HttpServletRequest request, final HttpServletResponse response) {

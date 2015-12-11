@@ -28,6 +28,7 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
  * This includes requests for statuses (cache or dataimport) as well admin tasks (clearing the cache or starting a dataimport).
  */
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
 		
@@ -45,7 +46,7 @@ public class AdminController {
 	 * @param response The outgoing HTTP response.
 	 * @return A <code>StatusResponse</code> containing the status of the XML configuration document cache or <code>null</code> on error-
 	 */
-	@RequestMapping(value = "/admin/cache", method = RequestMethod.GET
+	@RequestMapping(value = "cache", method = RequestMethod.GET
 			, produces = {APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody StatusResponse getCacheStatus(final HttpServletResponse response) {
 		
@@ -78,7 +79,7 @@ public class AdminController {
 	 * @param response The outgoing HTTP response.
 	 * @return A <code>StatusResponse</code> containing the status of the XML configuration document cache or <code>null<code> on error.
 	 */
-	@RequestMapping(value="/admin/cache", method=RequestMethod.DELETE
+	@RequestMapping(value="cache", method=RequestMethod.DELETE
 			, produces = {APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody StatusResponse handleCache(final HttpServletResponse response) {
 				
@@ -96,7 +97,7 @@ public class AdminController {
 	 * Returns the current status of the Elasticsearch data import.
 	 * @return A <code>StatusResponse</code> object.
 	 */
-	@RequestMapping(value="/admin/dataimport", method=RequestMethod.GET
+	@RequestMapping(value="dataimport", method=RequestMethod.GET
 			, produces = {APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody StatusResponse getDataImportStatus() {
 		
@@ -127,7 +128,7 @@ public class AdminController {
 	 * @param response The outgoing HTTP response.
 	 * @return A <code>StatusResponse</code> containing the current dataimport status or <code>null</code> on error.
 	 */
-	@RequestMapping(value="/admin/dataimport", method=RequestMethod.POST
+	@RequestMapping(value="dataimport", method=RequestMethod.POST
 			, produces = {APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody StatusResponse handleDataImport(@RequestParam(value = "command", required = true) final String command
 			, final HttpServletResponse response) {
