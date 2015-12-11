@@ -371,7 +371,7 @@ public class CatalogController {
 		return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
 	}
 	
-	@RequestMapping(value = "/catalogByEntity/{entityId}", 
+	@RequestMapping(value = "/catalog/list/{entityId}", 
 			method = RequestMethod.GET,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<CatalogIdList> handleGetCatalogByEntityRequest(
