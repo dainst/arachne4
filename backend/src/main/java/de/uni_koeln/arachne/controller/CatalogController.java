@@ -295,6 +295,7 @@ public class CatalogController {
 
 				// Get catalogEntries that were included before but are not
 				// anymore and delete them
+				// TODO evaluate if this is still needed with 'orphanRemoval' set to true for CatalogEntry.children 
 				catalogEntryDao.deleteOrphanedCatalogEntries(result);
 
 				result.getRoot().generatePath();

@@ -46,7 +46,7 @@ public class CatalogEntry implements Serializable {
 	@JoinColumn(name="parent_id", nullable=true, insertable=true, updatable=true)
 	private CatalogEntry parent;
 	
-	@OneToMany(mappedBy="parent", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="parent", cascade=CascadeType.ALL, fetch=FetchType.LAZY, orphanRemoval=true)
 	@OrderBy(value="index_parent")
 	private List<CatalogEntry> children;
 
