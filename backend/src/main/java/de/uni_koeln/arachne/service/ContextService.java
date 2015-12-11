@@ -108,7 +108,6 @@ public class ContextService {
 	private void addContextImages(final Dataset parent) {
 		// add book cover image
 		if ("buch".equals(parent.getArachneId().getTableName())) {
-			Image image = null;
 			Long coverPage = null;
 			try {
 				coverPage = Long.parseLong(parent.getField("buch.Cover"));
@@ -116,12 +115,17 @@ public class ContextService {
 				coverPage = genericSQLDao.getBookCoverPage(parent.getArachneId().getInternalKey());
 			}
 			if (coverPage != null) {
-				image = ((List<Image>)genericSQLDao.getImageList("buchseite", coverPage)).get(0);
-				parent.addImage(image);
-				parent.setThumbnailId(image.getImageId());
-			} else {
-				dataIntegrityLogService.logWarning(parent.getArachneId().getInternalKey(), "PS_BuchID", "No cover found.");
+				List<Image> imageList = (List<Image>)genericSQLDao.getImageList("buchseite", coverPage);
+				if (imageList != null && !imageList.isEmpty()) {
+					Image image = imageList.get(0);
+					parent.addImage(image);
+					parent.setThumbnailId(image.getImageId());
+					return;
+				} else {
+					dataIntegrityLogService.logWarning(coverPage, "PS_BuchseiteID", "Book page 0 without image.");
+				}
 			}
+			dataIntegrityLogService.logWarning(parent.getArachneId().getInternalKey(), "PS_BuchID", "No cover found.");
 			return;
 		}
 		
