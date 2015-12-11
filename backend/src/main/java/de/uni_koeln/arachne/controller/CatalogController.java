@@ -34,8 +34,9 @@ import de.uni_koeln.arachne.util.network.CustomMediaType;
  * Handles http requests for <code>/catalogEntry</code> and
  * <code>/catalog</code>.
  */
-@Controller
 @Transactional
+@Controller
+@RequestMapping("/catalog")
 public class CatalogController {
 
 	//private static final Logger LOGGER = LoggerFactory.getLogger(CatalogController.class);
@@ -57,7 +58,7 @@ public class CatalogController {
 	 * not owned by the current user or no user is signed in, a 403 error code
 	 * is returned.
 	 */
-	@RequestMapping(value = "/catalogentry/{catalogEntryId}", 
+	@RequestMapping(value = "entry/{catalogEntryId}", 
 			method = RequestMethod.GET, 
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<CatalogEntry> handleGetCatalogEntryRequest(
@@ -88,7 +89,7 @@ public class CatalogController {
 	 * Returns null and 403 if no user is signed in or the signed in user does
 	 * not own the catalogEntry to be edited.
 	 */
-	@RequestMapping(value = "/catalogentry/{catalogEntryId}", 
+	@RequestMapping(value = "entry/{catalogEntryId}", 
 			method = RequestMethod.PUT, 
 			consumes = CustomMediaType.APPLICATION_JSON_UTF8_VALUE,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -126,7 +127,7 @@ public class CatalogController {
 	 * the specified <code>CatalogEntry</code>. Returns 204 on success. Returns
 	 * 403 if the specified catalogEntry is not owned by the current user.
 	 */
-	@RequestMapping(value = "/catalogentry/{catalogEntryId}", 
+	@RequestMapping(value = "entry/{catalogEntryId}", 
 			method = RequestMethod.DELETE, 
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Void> handleCatalogEntryDestroyRequest(
@@ -148,7 +149,7 @@ public class CatalogController {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
-	@RequestMapping(value = "/catalogentry", 
+	@RequestMapping(value = "entry", 
 			method = RequestMethod.POST,
 			consumes = CustomMediaType.APPLICATION_JSON_UTF8_VALUE,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -204,7 +205,7 @@ public class CatalogController {
 	 * catalogs an empty List is returned. If no user is signed in, a 403 error
 	 * code is returned.
 	 */
-	@RequestMapping(value = "/catalog", 
+	@RequestMapping(value = "", 
 			method = RequestMethod.GET,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<List<Catalog>> handleGetCatalogsRequest(
@@ -235,7 +236,7 @@ public class CatalogController {
 	 * @param full If the full catalog shall be retrieved (with all entries) or only root and it's direct children.
 	 * @return The catalog.
 	 */
-	@RequestMapping(value = "/catalog/{catalogId}", 
+	@RequestMapping(value = "{catalogId}", 
 			method = RequestMethod.GET,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<Catalog> handleGetCatalogRequest(
@@ -269,7 +270,7 @@ public class CatalogController {
 	 * automatically delete items, that are missing from the list of nested
 	 * <code>CatalogEntry</code> items.
 	 */
-	@RequestMapping(value = "/catalog/{requestedId}", 
+	@RequestMapping(value = "{requestedId}", 
 			method = RequestMethod.PUT, 
 			consumes = CustomMediaType.APPLICATION_JSON_UTF8_VALUE,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -317,7 +318,7 @@ public class CatalogController {
 	 * <code>CatalogEntry</code> items. Existing primary id values in nested
 	 * <code>CatalogEntry</code> items are ignored.
 	 */
-	@RequestMapping(value = "/catalog", 
+	@RequestMapping(value = "", 
 			method = RequestMethod.POST, 
 			consumes = CustomMediaType.APPLICATION_JSON_UTF8_VALUE,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -353,7 +354,7 @@ public class CatalogController {
 	 * <code>CatalogEntry</code> items. Returns 204 on success. Returns 403 if
 	 * the specified list is not owned by the current user.
 	 */
-	@RequestMapping(value = "/catalog/{catalogId}", 
+	@RequestMapping(value = "{catalogId}", 
 			method = RequestMethod.DELETE)
 	public ResponseEntity<String> handleCatalogDestroyRequest(@PathVariable("catalogId") final Long catalogId) {
 
@@ -371,7 +372,7 @@ public class CatalogController {
 		return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
 	}
 	
-	@RequestMapping(value = "/catalog/list/{entityId}", 
+	@RequestMapping(value = "list/{entityId}", 
 			method = RequestMethod.GET,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<CatalogIdList> handleGetCatalogByEntityRequest(

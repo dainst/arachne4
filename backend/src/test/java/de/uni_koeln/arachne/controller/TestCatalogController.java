@@ -178,7 +178,7 @@ public class TestCatalogController {
 	@Test
 	public void testHandleGetCatalogEntryRequestValid() throws Exception {
 		mockMvc.perform(
-				get("/catalogentry/1")
+				get("/catalog/entry/1")
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -191,7 +191,7 @@ public class TestCatalogController {
 		
 		// forbidden
 		mockMvc.perform(
-				get("/catalogentry/1")
+				get("/catalog/entry/1")
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isForbidden());
 	}
@@ -199,7 +199,7 @@ public class TestCatalogController {
 	@Test
 	public void testHandleGetCatalogEntryRequestValidFull() throws Exception {
 		mockMvc.perform(
-				get("/catalogentry/1?full=true")
+				get("/catalog/entry/1?full=true")
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -225,7 +225,7 @@ public class TestCatalogController {
 	@Test
 	public void testHandleGetCatalogEntryRequestInvalidNotFound() throws Exception {
 		mockMvc.perform(
-				get("/catalogentry/2")
+				get("/catalog/entry/2")
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isNotFound());
 	}
@@ -233,7 +233,7 @@ public class TestCatalogController {
 	@Test
 	public void testHandleUpdateCatalogEntryRequestValid() throws Exception {
 		mockMvc.perform(
-				put("/catalogentry/599")
+				put("/catalog/entry/599")
 					.contentType(APPLICATION_JSON_UTF8)
 					.content("{\"id\": 599,\"children\": [],\"arachneEntityId\": 1184191,\""
 							+ "label\": \"Fundamente der Innensäulen\", \"text\": \"Die Fundamente der Innensäulen.\", \""
@@ -242,7 +242,7 @@ public class TestCatalogController {
 		
 		// forbidden
 		mockMvc.perform(
-				put("/catalogentry/599")
+				put("/catalog/entry/599")
 					.contentType(APPLICATION_JSON_UTF8)
 					.content("{\"id\": 599,\"children\": [],\"arachneEntityId\": 1184191,\""
 							+ "label\": \"Fundamente der Innensäulen\", \"text\": \"Die Fundamente der Innensäulen.\", \""
@@ -253,7 +253,7 @@ public class TestCatalogController {
 	@Test
 	public void testHandleUpdateCatalogEntryRequestInvalidEntryId() throws Exception {
 		mockMvc.perform(
-				put("/catalogentry/666")
+				put("/catalog/entry/666")
 					.contentType(APPLICATION_JSON_UTF8)
 					.content("{\"id\": 599,\"children\": [],\"arachneEntityId\": 1184191,\""
 							+ "label\": \"Fundamente der Innensäulen\", \"text\": \"Die Fundamente der Innensäulen.\", \""
@@ -264,7 +264,7 @@ public class TestCatalogController {
 	@Test
 	public void testHandleUpdateCatalogEntryRequestInvalidWrongContentId() throws Exception {
 		mockMvc.perform(
-				put("/catalogentry/599")
+				put("/catalog/entry/599")
 					.contentType(APPLICATION_JSON_UTF8)
 					.content("{\"id\": 666,\"children\": [],\"arachneEntityId\": 1184191,\""
 							+ "label\": \"Fundamente der Innensäulen\", \"text\": \"Die Fundamente der Innensäulen.\", \""
@@ -275,13 +275,13 @@ public class TestCatalogController {
 	@Test
 	public void testHandleCatalogEntryDestroyRequestValid() throws Exception {
 		mockMvc.perform(
-				delete("/catalogentry/599")
+				delete("/catalog/entry/599")
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isNoContent());
 		
 		// forbidden
 		mockMvc.perform(
-				delete("/catalogentry/599")
+				delete("/catalog/entry/599")
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isForbidden());
 	}
@@ -289,7 +289,7 @@ public class TestCatalogController {
 	@Test
 	public void testHandleCatalogEntryDestroyRequestInvalidId() throws Exception {
 		mockMvc.perform(
-				delete("/catalogentry/600")
+				delete("/catalog/entry/600")
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isNoContent());
 	}
@@ -297,7 +297,7 @@ public class TestCatalogController {
 	@Test
 	public void testHandleCatalogEntryCreateRequestValid() throws Exception {
 		mockMvc.perform(
-				post("/catalogentry")
+				post("/catalog/entry")
 					.contentType(APPLICATION_JSON_UTF8)
 					.content("{\"id\": 599, \""
 							+ "label\": \"Test Label\",\""
@@ -309,7 +309,7 @@ public class TestCatalogController {
 		
 		// forbidden
 		mockMvc.perform(
-				post("/catalogentry")
+				post("/catalog/entry")
 					.contentType(APPLICATION_JSON_UTF8)
 					.content("{\"id\": 599, \""
 							+ "label\": \"Test Label\",\""
@@ -323,7 +323,7 @@ public class TestCatalogController {
 	@Test
 	public void testHandleCatalogEntryCreateRequestInvalidParent() throws Exception {
 		mockMvc.perform(
-				post("/catalogentry")
+				post("/catalog/entry")
 					.contentType(APPLICATION_JSON_UTF8)
 					.content("{\"id\": 599, \""
 							+ "label\": \"Test Label\",\""
@@ -337,7 +337,7 @@ public class TestCatalogController {
 	@Test
 	public void testHandleCatalogEntryCreateRequestInvalidParentIdMissing() throws Exception {
 		mockMvc.perform(
-				post("/catalogentry")
+				post("/catalog/entry")
 					.contentType(APPLICATION_JSON_UTF8)
 					.content("{\"id\": 599, \""
 							+ "label\": \"Test Label\",\""
@@ -498,7 +498,7 @@ public class TestCatalogController {
 	@Test
 	public void testHandleGetCatalogByEntityRequestValid() throws Exception {
 		mockMvc.perform(
-				get("/catalogByEntity/1184191")
+				get("/catalog/list/1184191")
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -506,7 +506,7 @@ public class TestCatalogController {
 		
 		// forbidden
 		mockMvc.perform(
-				get("/catalogByEntity/1184191")
+				get("/catalog/list/1184191")
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -516,7 +516,7 @@ public class TestCatalogController {
 	@Test
 	public void testHandleGetCatalogByEntityRequestInvalidId() throws Exception {
 		mockMvc.perform(
-				get("/catalogByEntity/1184192")
+				get("/catalog/list/1184192")
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
