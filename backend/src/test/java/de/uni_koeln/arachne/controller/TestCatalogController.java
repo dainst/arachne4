@@ -438,10 +438,10 @@ public class TestCatalogController {
 		final String catalogString = getCatalogAsJSONString();
 		
 		mockMvc.perform(
-				put("/catalog/84")
+				put("/catalog/84") // <- non existent catalogue
 					.contentType(APPLICATION_JSON_UTF8)
 					.content(catalogString))
-				.andExpect(status().isForbidden());
+				.andExpect(status().isNotFound());
 	}
 
 	@Test

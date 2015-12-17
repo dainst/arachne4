@@ -29,6 +29,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_EMPTY)
 public class CatalogEntry implements Serializable {
 
+    @Transient
+    private boolean removed=false;
+
 	/**
 	 * 
 	 */
@@ -292,7 +295,7 @@ public class CatalogEntry implements Serializable {
 	
 	public boolean isHasChildren() {
 		// children were removed
-		if (children == null) {
+		if (removed||children==null) {
 			return hasChildren;
 		} else {
 			return !children.isEmpty();
@@ -302,6 +305,8 @@ public class CatalogEntry implements Serializable {
 	// clears the children list but keeps the information if the node has children or not
 	public void removeChildren() {
 		hasChildren = !children.isEmpty();
-		children = null;
+
+        children.clear();
+        removed=true;
 	}
 }

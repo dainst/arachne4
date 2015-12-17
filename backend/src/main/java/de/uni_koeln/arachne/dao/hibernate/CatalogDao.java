@@ -35,36 +35,7 @@ public class CatalogDao {
 	@Transactional(readOnly=true)
 	public Catalog getByCatalogId(final long catalogId, final boolean full, final int limit, final int offset) {
 		Session session = sessionFactory.getCurrentSession();
-		Catalog result = null;
-		if (full) {
-			return eagerFetch((Catalog) session.get(Catalog.class, catalogId));
-		} else {
-			// a customized query might be more efficient but currently this is fast enough
-			final Catalog catalog = (Catalog) session.get(Catalog.class, catalogId);
-			if (catalog != null) {
-				int count = 0;
-				final CatalogEntry root = catalog.getRoot();
-				final List<CatalogEntry> children = root.getChildren();
-				final ListIterator<CatalogEntry> it = children.listIterator();
-				while (it.hasNext()) {
-					CatalogEntry catalogEntry = (CatalogEntry) it.next();
-					count++;
-					if (limit > 0 && (count <= offset || limit + offset < count)) {
-						it.remove();
-					} else {
-						catalogEntry.removeChildren();
-					}
-				}
-				// TODO investigate if deep copying is really necessary
-				result = new Catalog();
-				result.setAuthor(catalog.getAuthor());
-				result.setId(catalog.getId());
-				result.setPublic(catalog.isPublic());
-				result.setRoot(root);
-				result.setUsers(catalog.getUsers());
-			}
-			return result;
-		}
+		return eagerFetch((Catalog) session.get(Catalog.class, catalogId));
 	}
 	
 	@Transactional(readOnly=true)
@@ -75,19 +46,11 @@ public class CatalogDao {
 		
 		@SuppressWarnings("unchecked")
 		List<Catalog> result = (List<Catalog>) query.list();
-		if (result.size() < 1) {
-			result = null;
-		} else {
-			if (!full) {
-				for (final Catalog catalog: result) {
-					catalog.getRoot().removeChildren();
-				}
-			} else {
-				for (Catalog catalog : result) {
-					eagerFetch(catalog);
-				}
-			}
-		}
+		if (result.size() < 1) return null;
+
+        for (Catalog catalog : result) {
+            eagerFetch(catalog);
+        }
 		return result;
 	}
 	
@@ -106,6 +69,12 @@ public class CatalogDao {
 		session.saveOrUpdate(catalog);
 		return eagerFetch(catalog);
 	}
+
+    @Transactional
+    public void merge(final Catalog catalog) {
+        Session session = sessionFactory.getCurrentSession();
+        session.merge(catalog);
+    }
 	
 	@Transactional
 	public Catalog saveCatalog(final Catalog catalog) {

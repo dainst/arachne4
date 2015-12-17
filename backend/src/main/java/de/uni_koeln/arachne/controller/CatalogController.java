@@ -105,7 +105,7 @@ public class CatalogController {
 			oldCatalogEntry = catalogEntryDao
 					.getByCatalogEntryId(catalogEntryId);
 			if (oldCatalogEntry != null
-					&& (oldCatalogEntry.getId().equals(catalogEntry.getId()))
+                    && (oldCatalogEntry.getId().equals(catalogEntry.getId()))
 					&& (oldCatalogEntry.getCatalog().isCatalogOfUserWithId(user
 							.getId()))) {
 				catalogEntry.setCatalog(oldCatalogEntry.getCatalog());
@@ -277,38 +277,24 @@ public class CatalogController {
 	public @ResponseBody ResponseEntity<Catalog> handleCatalogUpdateRequest(
 			@RequestBody final Catalog catalog,
 			@PathVariable("requestedId") final Long requestedId) {
-		
+
 		final User user = userRightsService.getCurrentUser();
-		final Catalog result;
+		if (!userRightsService.isSignedInUser())
+            return new ResponseEntity<Catalog>(HttpStatus.FORBIDDEN);
+
 		final Catalog oldCatalog;
+        oldCatalog = catalogDao.getByCatalogId(requestedId);
+        if (oldCatalog==null)
+            return new ResponseEntity<Catalog>(HttpStatus.NOT_FOUND);
 
-		if (userRightsService.isSignedInUser()) {
-			oldCatalog = catalogDao.getByCatalogId(requestedId);
-			if (oldCatalog != null
-					&& (oldCatalog.getId().equals(catalog.getId()))
-					&& (oldCatalog.isCatalogOfUserWithId(user.getId()))) {
-				catalog.setUsers(oldCatalog.getUsers());
-				catalog.setCatalogEntries(null);
-				catalog.addToCatalogEntries(catalog.getRoot());
-				catalog.getRoot().setCatalog(catalog);
+        catalog.setUsers(oldCatalog.getUsers());
+        catalog.setCatalogEntries(null);
+        catalog.addToCatalogEntries(catalog.getRoot());
+        catalog.getRoot().setCatalog(catalog);
+        catalog.setId(oldCatalog.getId());
 
-				result = catalogDao.saveOrUpdateCatalog(catalog);
-
-				// Get catalogEntries that were included before but are not
-				// anymore and delete them
-				// TODO evaluate if this is still needed with 'orphanRemoval' set to true for CatalogEntry.children 
-				catalogEntryDao.deleteOrphanedCatalogEntries(result);
-
-				result.getRoot().generatePath();
-				catalogEntryDao.updateCatalogEntry(result.getRoot());
-
-			} else {
-				return new ResponseEntity<Catalog>(HttpStatus.FORBIDDEN);
-			}
-		} else {
-			return new ResponseEntity<Catalog>(HttpStatus.FORBIDDEN);
-		}
-		return ResponseEntity.ok(result);
+        catalogDao.merge(catalog);
+		return ResponseEntity.ok(catalog);
 	}
 
 	/**
