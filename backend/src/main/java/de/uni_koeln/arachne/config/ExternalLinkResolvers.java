@@ -98,7 +98,7 @@ public class ExternalLinkResolvers {
 				"gruppen.ArtDerGruppe", "Sarkophaggruppe");
 		result.setCriteria(criteria);
 		result.setLinkPattern("http://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item"
-				+ "&amp;sarkophag[jump_to_project]=%s&amp;sarkophag[jump_to_project_id]=%s");
+				+ "&sarkophag[jump_to_project]=%s&sarkophag[jump_to_project_id]=%s");
 		result.setPatternFields(Arrays.asList("Dataset.TableName", "Dataset.internalId"));
 		result.setExactMatch(false);
 		return result;
@@ -120,8 +120,8 @@ public class ExternalLinkResolvers {
 				"relief.FS_ObjektID", "34644,40763",
 				"realien.FS_ObjektID", "34644,40763");
 		result.setCriteria(criteria);
-		result.setLinkPattern("http://arachne.uni-koeln.de/browser/index.php?view[layout]=pergamonaltar&amp;"
-				+ "jump_to_id=%s&amp;category=%s");
+		result.setLinkPattern("http://arachne.uni-koeln.de/browser/index.php?view[layout]=pergamonaltar&"
+				+ "jump_to_id=%s&category=%s");
 		result.setPatternFields(Arrays.asList("Dataset.internalId", "Dataset.TableName"));
 		return result;
 	}
@@ -137,7 +137,7 @@ public class ExternalLinkResolvers {
 		result.setLabel("Siegelbrowser");
 		final Map<String, String> criteria = ImmutableMap.of("objektsiegel.CMSNR", "");
 		result.setCriteria(criteria);
-		result.setLinkPattern("http://arachne.uni-koeln.de/browser/index.php?view[layout]=siegel_item&amp;"
+		result.setLinkPattern("http://arachne.uni-koeln.de/browser/index.php?view[layout]=siegel_item&"
 				+ "objektsiegel[jump_to_id]=%s");
 		result.setPatternFields(Arrays.asList("Dataset.internalId"));
 		return result;
@@ -159,7 +159,7 @@ public class ExternalLinkResolvers {
 				"relief.FS_ObjektID", "30014,29837,130902");
 		result.setCriteria(criteria);
 		// TODO find mechanism for retrieving correct value for parameter 'relief_nr'
-		result.setLinkPattern("http://arachne.uni-koeln.de/browser/?view[layout]=Trajan_item&amp;relief_nr=01");
+		result.setLinkPattern("http://arachne.uni-koeln.de/browser/?view[layout]=Trajan_item&relief_nr=01");
 		return result;
 	}
 	
@@ -196,7 +196,7 @@ public class ExternalLinkResolvers {
 				"literatur.PS_LiteraturID", "69",
 				"literaturzitat.FS_WebseiteID", "");
 		result.setCriteria(criteria);
-		result.setLinkPattern("http://arachne.uni-koeln.de/browser/maffeiano_index.php?view[layout]=Maffeiano_page&amp;"
+		result.setLinkPattern("http://arachne.uni-koeln.de/browser/maffeiano_index.php?view[layout]=Maffeiano_page&"
 				+ "Maffeiano[search][PS_WebseiteID]=%s");
 		result.setPatternFields(Arrays.asList("literaturzitat.FS_WebseiteID"));
 		result.setMatchAllCriteria(true);
@@ -214,7 +214,7 @@ public class ExternalLinkResolvers {
 				<entry key="literatur.PS_LiteraturID" value="65,66,67,68" />
 			</map>
 		</property>
-		<property name="linkPattern" value="http://arachne.uni-koeln.de/browser/maffeiano_index.php?view[layout]=Maffeiano_page&amp;Maffeiano[search][PS_WebseiteID]=%s" />
+		<property name="linkPattern" value="http://arachne.uni-koeln.de/browser/maffeiano_index.php?view[layout]=Maffeiano_page&Maffeiano[search][PS_WebseiteID]=%s" />
 		<property name="patternFields">
 			<list>
 				<value>literaturzitat.FS_WebseiteID</value>	
