@@ -17,7 +17,7 @@
 			</section>
 		</subtitle>
 		<datasections>
-			<section labelKey="Informationen zum Relief">
+			<section labelKey="Informationen zur Szene">
 				<include type="ort" />
 				<include type="datierung" />
 				<section labelKey="Größe">
