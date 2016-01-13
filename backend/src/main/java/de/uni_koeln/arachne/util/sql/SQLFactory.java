@@ -123,7 +123,7 @@ public class SQLFactory {
 				.append("SELECT * FROM literaturzitat "
 						+ "LEFT JOIN literatur ON FS_LiteraturID = PS_LiteraturID "
 						+ "LEFT JOIN buch ON (ZenonID = bibid AND ZenonID <> '') "
-						+ "LEFT JOIN arachneentityidentification ON (TableName = \"buch\" "
+						+ "LEFT JOIN arachneentityidentification ON (TableName = 'buch' "
 						+ "AND ForeignKey = PS_BuchID) "
 						+ "WHERE ")
 				.append(SQLToolbox.generateForeignKeyName(tableName))

@@ -113,7 +113,7 @@ public class TestSQLFactory {
 		assertTrue(sqlQuery.equals("SELECT * FROM literaturzitat "
 				+ "LEFT JOIN literatur ON FS_LiteraturID = PS_LiteraturID "
 				+ "LEFT JOIN buch ON (ZenonID = bibid AND ZenonID <> '') "
-				+ "LEFT JOIN arachneentityidentification ON (TableName = \"buch\" AND ForeignKey = PS_BuchID) "
+				+ "LEFT JOIN arachneentityidentification ON (TableName = 'buch' AND ForeignKey = PS_BuchID) "
 				+ "WHERE FS_TestID = 1;"));
 	}
 }
