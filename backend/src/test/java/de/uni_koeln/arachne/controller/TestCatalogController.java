@@ -34,11 +34,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
-import de.uni_koeln.arachne.dao.hibernate.CatalogDao;
-import de.uni_koeln.arachne.dao.hibernate.CatalogEntryDao;
-import de.uni_koeln.arachne.mapping.hibernate.Catalog;
-import de.uni_koeln.arachne.mapping.hibernate.CatalogEntry;
+import de.uni_koeln.arachne.dao.jdbc.CatalogDao;
+import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
 import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.mapping.jdbc.Catalog;
+import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.testconfig.TestUsers;
 
@@ -87,7 +87,7 @@ public class TestCatalogController {
 		catalog.setUsers(users);
 		CatalogEntry entry = catalog.getRoot();
 		entry.setCatalog(catalog);
-		entry.removeChildren();
+		//entry.removeChildren();
 		
 		// full root entry
 		catalog = mapper.readValue(Resources.toString(resource, Charsets.UTF_8), Catalog.class);
@@ -112,11 +112,11 @@ public class TestCatalogController {
 		entryLeaf.getParent().setCatalog(catalog);
 		entryLeaf.setCatalog(catalog);
 		
-		when(catalogEntryDao.getByCatalogEntryId(1, false, 0, 0)).thenReturn(entry);
-		when(catalogEntryDao.getByCatalogEntryId(1, true, 0, 0)).thenReturn(entryFull);
-		when(catalogEntryDao.getByCatalogEntryId(598)).thenReturn(entryLeaf.getParent());
-		when(catalogEntryDao.getByCatalogEntryId(599)).thenReturn(entryLeaf);
-		when(catalogEntryDao.getByCatalogEntryId(600)).thenReturn(null);
+		when(catalogEntryDao.getById(1, false, 0, 0)).thenReturn(entry);
+		when(catalogEntryDao.getById(1, true, 0, 0)).thenReturn(entryFull);
+		when(catalogEntryDao.getById(598)).thenReturn(entryLeaf.getParent());
+		when(catalogEntryDao.getById(599)).thenReturn(entryLeaf);
+		when(catalogEntryDao.getById(600)).thenReturn(null);
 		when(catalogEntryDao.updateCatalogEntry(any(CatalogEntry.class))).thenAnswer(new Answer<CatalogEntry>() {
 
 			@Override
@@ -127,8 +127,8 @@ public class TestCatalogController {
 		});
 
 		when(catalogDao.getByUid(3, true)).thenReturn(Arrays.asList(catalog));
-		when(catalogDao.getByCatalogId(83)).thenReturn(catalog);
-		when(catalogDao.getByCatalogId(83, true, 0, 0)).thenReturn(catalog);
+		when(catalogDao.getById(83)).thenReturn(catalog);
+		when(catalogDao.getById(83, true, 0, 0)).thenReturn(catalog);
 		when(catalogDao.saveOrUpdateCatalog(any(Catalog.class))).thenAnswer(new Answer<Catalog>() {
 
 			@Override
@@ -153,11 +153,11 @@ public class TestCatalogController {
 		catalogNoChilds.setUsers(users);
 		final CatalogEntry root = catalogNoChilds.getRoot();
 		for (CatalogEntry catalogEntry : root.getChildren()) {
-			catalogEntry.removeChildren();
+			//catalogEntry.removeChildren();
 		}
 		
 		when(catalogDao.getByUid(3, false)).thenReturn(Arrays.asList(catalogNoChilds));
-		when(catalogDao.getByCatalogId(83, false, 0, 0)).thenReturn(catalogNoChilds);
+		when(catalogDao.getById(83, false, 0, 0)).thenReturn(catalogNoChilds);
 		
 		when(catalogEntryDao.getPrivateCatalogIdsByEntityId(anyLong()))
 				.thenReturn(new ArrayList<Long>());

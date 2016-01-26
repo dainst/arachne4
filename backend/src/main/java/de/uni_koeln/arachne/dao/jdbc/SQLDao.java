@@ -44,11 +44,41 @@ public class SQLDao {
 	 * @param rowMapper The RowMapper that Maps the Result of the Query to the an Generic Object Type
 	 * @return Returns a List of objects as identified in the <code>RowMapper</code> or <code>null</code>
 	 */
-	protected List<?> query(final String sQLQuery, final RowMapper<?> rowMapper) {
+	protected <T> List<T> query(final String sQLQuery, final RowMapper<T> rowMapper) {
 		try {
 			return jdbcTemplate.query(sQLQuery,rowMapper);
 		} catch (DataAccessException e) {
 			LOGGER.error("Failed to execute query '" + sQLQuery + "'. Cause: ", e);
+		}
+		return null;
+	}
+	
+	/**
+	 * Executes a SQL SELECT query that retrieves a single object value.
+	 * @param sqlQuery The sql query string.
+	 * @param rowMapper A row mapper to map the result set to an instance of the specified type.
+	 * @return The string value retrieved from the field or <code>null</code> on failure.
+	 */
+	protected <T> T queryForObject(final String sqlQuery, final RowMapper<T> rowMapper) {
+		try {
+			return jdbcTemplate.queryForObject(sqlQuery, rowMapper);
+		} catch (DataAccessException e) {
+			LOGGER.error("Failed to execute query '" + sqlQuery + "'. Cause: ", e);
+		}
+		return null;
+	}
+	
+	/**
+	 * Executes a SQL SELECT query that retrieves a single object value.
+	 * @param sqlQuery The sql query string.
+	 * @param requiredType The type of the result entity
+	 * @return The string value retrieved from the field or <code>null</code> on failure.
+	 */
+	protected <T> T queryForObject(final String sqlQuery, Class<T> requiredType) {
+		try {
+			return jdbcTemplate.queryForObject(sqlQuery, requiredType);
+		} catch (DataAccessException e) {
+			LOGGER.error("Failed to execute query '" + sqlQuery + "'. Cause: ", e);
 		}
 		return null;
 	}
@@ -75,6 +105,20 @@ public class SQLDao {
 	protected Long queryForLong(final String sqlQuery) {
 		try {
 			return jdbcTemplate.queryForObject(sqlQuery, Long.class);
+		} catch (DataAccessException e) {
+			LOGGER.error("Failed to execute query '" + sqlQuery + "'. Cause: ", e);
+		}
+		return null;
+	}
+	
+	/**
+	 * Executes a SQL SELECT query that retrieves a single string value.
+	 * @param sqlQuery The sql query string.
+	 * @return The string value retrieved from the field or <code>null</code> on failure.
+	 */
+	protected Integer queryForInt(final String sqlQuery) {
+		try {
+			return jdbcTemplate.queryForObject(sqlQuery, Integer.class);
 		} catch (DataAccessException e) {
 			LOGGER.error("Failed to execute query '" + sqlQuery + "'. Cause: ", e);
 		}

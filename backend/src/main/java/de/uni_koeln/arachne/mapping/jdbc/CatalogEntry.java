@@ -1,73 +1,42 @@
-package de.uni_koeln.arachne.mapping.hibernate;
+package de.uni_koeln.arachne.mapping.jdbc;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-@XmlRootElement
-@Entity
-@Table(name="catalog_entry")
 @JsonInclude(Include.NON_EMPTY)
 public class CatalogEntry implements Serializable {
 
-    @Transient
-    private boolean removed=false;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue
 	private Long id;
 
-	@ManyToOne
-	@JoinColumn(name="catalog_id", nullable=false, insertable=true, updatable=true)
 	private Catalog catalog;
 	
-	@ManyToOne
-	@JoinColumn(name="parent_id", nullable=true, insertable=true, updatable=true)
 	private CatalogEntry parent;
 	
-	@OneToMany(mappedBy="parent", cascade=CascadeType.ALL, fetch=FetchType.LAZY, orphanRemoval=true)
-	@OrderBy(value="index_parent")
-    @OrderColumn(name="index_parent")
 	private List<CatalogEntry> children;
 
-	@Column(name="arachne_entity_id")
-	private Long arachneEntityId;
+	private long arachneEntityId;
 	
-	@Column(name="label")
 	private String label;
 	
-	@Column(name="text")
 	private String text;
 	
-	@Column(name="path")
 	private String path;
 	
-	@Column(name="parent_id", nullable=true, insertable=false, updatable=false)
 	private Long parentId;
 	
-	@Column(name="index_parent", nullable=true, insertable=false, updatable=false)
 	private Integer indexParent;
 	
-	@Column(name="catalog_id", nullable=false, insertable=false, updatable=false)
-	private Long catalogId;
+	private long catalogId;
 
-	// used to keep track of this information even if the children get deleted to shorten the response
-	@Transient
 	private boolean hasChildren;
-	
+
 	/**
 	 * @return the id
 	 */
@@ -87,7 +56,6 @@ public class CatalogEntry implements Serializable {
 	 * Not serialized, issues with recursion
 	 */
 	@JsonIgnore
-	@XmlTransient
 	public Catalog getCatalog() {
 		return catalog;
 	}
@@ -112,14 +80,14 @@ public class CatalogEntry implements Serializable {
 	/**
 	 * @return the arachneEntityId
 	 */
-	public Long getArachneEntityId() {
+	public long getArachneEntityId() {
 		return arachneEntityId;
 	}
 
 	/**
 	 * @param arachneEntityId the arachneEntityId to set
 	 */
-	public void setArachneEntityId(final Long arachneEntityId) {
+	public void setArachneEntityId(final long arachneEntityId) {
 		this.arachneEntityId = arachneEntityId;
 	}
 
@@ -155,7 +123,6 @@ public class CatalogEntry implements Serializable {
 	 * @return the parent
 	 */
 	@JsonIgnore
-	@XmlTransient
 	public CatalogEntry getParent() {
 		return parent;
 	}
@@ -179,7 +146,6 @@ public class CatalogEntry implements Serializable {
 	 */
 	public void setChildren(List<CatalogEntry> children) {
 		this.children = children;
-		hasChildren = !children.isEmpty();
 	}
 	
 	/**
@@ -191,7 +157,6 @@ public class CatalogEntry implements Serializable {
 			this.children = new ArrayList<CatalogEntry>();
 		}
 		this.children.add(child);
-		hasChildren = !children.isEmpty();
 	}
 	
 	/**
@@ -272,31 +237,26 @@ public class CatalogEntry implements Serializable {
 	/**
 	 * @return the catalogId
 	 */
-	public Long getCatalogId() {
+	public long getCatalogId() {
 		return catalogId;
 	}
 
 	/**
 	 * @param catalogId the catalogId to set
 	 */
-	public void setCatalogId(Long catalogId) {
+	public void setCatalogId(long catalogId) {
 		this.catalogId = catalogId;
+	}
+
+	public void setHasChildren(boolean hasChildren) {
+		this.hasChildren = hasChildren;
 	}
 	
 	public boolean isHasChildren() {
-		// children were removed
-		if (removed||children==null) {
-			return hasChildren;
-		} else {
+		if (children != null) {
 			return !children.isEmpty();
+		} else {
+			return this.hasChildren;
 		}
-	}
-
-	// clears the children list but keeps the information if the node has children or not
-	public void removeChildren() {
-		hasChildren = !children.isEmpty();
-
-        children.clear();
-        removed=true;
 	}
 }

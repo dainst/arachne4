@@ -138,16 +138,6 @@ public class User extends ProtectedObject {
 		Date lastLogin;
 		
 	   	/**
-	   	 * List of catalogs owned by the user
-	   	 */
-	   	@JsonView(JSONView.Admin.class)
-	   	@ManyToMany(fetch=FetchType.EAGER)
-		@JoinTable(name="catalog_benutzer",
-			joinColumns={@JoinColumn(name="uid")},
-			inverseJoinColumns={@JoinColumn(name="catalog_id")})
-		private Set<Catalog> catalogs;
-
-		/**
 		 * @return the id
 		 */
 		public long getId() {
@@ -436,20 +426,6 @@ public class User extends ProtectedObject {
 		 */
 		public void setEmailAuth(String emailAuth) {
 			this.emailAuth = emailAuth;
-		}
-
-		/**
-		 * @return the catalogs
-		 */
-		public Set<Catalog> getCatalogs() {
-			return catalogs;
-		}
-
-		/**
-		 * @param catalogs the catalogs to set
-		 */
-		public void setCatalogs(Set<Catalog> catalogs) {
-			this.catalogs = catalogs;
 		}
 
 		/* (non-Javadoc)

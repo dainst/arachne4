@@ -1,8 +1,9 @@
-package de.uni_koeln.arachne.dao.hibernate;
+package de.uni_koeln.arachne.dao.jdbc;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -11,15 +12,16 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.uni_koeln.arachne.mapping.hibernate.Catalog;
-import de.uni_koeln.arachne.mapping.hibernate.CatalogEntry;
+import de.uni_koeln.arachne.mapping.jdbc.Catalog;
+import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.service.UserRightsService;
 
 @Repository("CatalogEntryDao")
-public class CatalogEntryDao {
+public class CatalogEntryDao extends SQLDao {
 	
 	@Autowired
     private transient SessionFactory sessionFactory;
@@ -28,8 +30,8 @@ public class CatalogEntryDao {
 	private transient UserRightsService userRightsService;
 	
 	@Transactional(readOnly=true)
-	public CatalogEntry getByCatalogEntryId(final long catalogEntryId) {
-		return getByCatalogEntryId(catalogEntryId, false, 0, 0);
+	public CatalogEntry getById(final long catalogEntryId) {
+		return getById(catalogEntryId, false, 0, 0);
 	}
 	
 	/**
@@ -43,9 +45,32 @@ public class CatalogEntryDao {
 	 * @return The CatalogEntry with the given id.
 	 */
 	@Transactional(readOnly=true)
-	public CatalogEntry getByCatalogEntryId(final long catalogEntryId, final boolean full, final int limit
+	public CatalogEntry getById(final long catalogEntryId, final boolean full, final int limit
 			, final int offset) {
-		final Session session = sessionFactory.getCurrentSession();
+		final String sqlQuery = "SELECT * from catalog_entry WHERE id = " + catalogEntryId;
+		if (full) {
+			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryFull);
+			return result;
+		} else {
+			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryDirectChildsOnly);
+			// TODO find a way to limit the result set at query time
+			if (offset > 0) {
+				final List<CatalogEntry> children = result.getChildren();
+				final int childCount = children.size();
+				if (offset < childCount) {
+					children.subList(0, offset).clear();
+				}
+			}
+			if (limit > 0) {
+				final List<CatalogEntry> children = result.getChildren();
+				final int childCount = children.size();
+				if (childCount > limit) {
+					children.subList(limit, childCount).clear();
+				}
+			}
+			return result;
+		}
+		/*final Session session = sessionFactory.getCurrentSession();
 		CatalogEntry result = session.get(CatalogEntry.class, catalogEntryId);
 		if (!full) {
 			int count = 0;
@@ -57,11 +82,55 @@ public class CatalogEntryDao {
 				if (limit > 0 && (count <= offset || limit + offset < count)) {
 					it.remove();
 				} else {
-					catalogEntry.removeChildren();
+					//catalogEntry.removeChildren();
 				}
 			}
 		}
+		return result;*/
+	}
+	
+	@Transactional(readOnly=true)
+	public List<CatalogEntry> getChildrenByParentId(final long parentId, final RowMapper<CatalogEntry> rowMapper) {
+		final String sqlQuery = "SELECT * from catalog_entry WHERE parent_id = " + parentId + " ORDER BY index_parent";
+		List<CatalogEntry> result = query(sqlQuery, rowMapper);
+		if (result != null && result.isEmpty()) {
+			result = null;
+		}
 		return result;
+	}
+	
+	@Transactional(readOnly=true)
+	public int getChildrenSizeByParentId(final long parentId) {
+		final String sqlQuery = "SELECT COUNT(*) from catalog_entry WHERE parent_id = " + parentId;
+		final Integer result = queryForInt(sqlQuery);
+		return result;
+	}
+	
+	private CatalogEntry mapCatalogEntryDirectChildsOnly(ResultSet rs, int rowNum) throws SQLException {
+		final CatalogEntry catalogEntry = new CatalogEntry();
+		catalogEntry.setId(rs.getLong("id"));
+		catalogEntry.setCatalogId(rs.getLong("catalog_id"));
+		catalogEntry.setLabel(rs.getString("label"));
+		catalogEntry.setChildren(getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryNoChilds));
+		return catalogEntry;
+	}
+	
+	private CatalogEntry mapCatalogEntryFull(ResultSet rs, int rowNum) throws SQLException {
+		final CatalogEntry catalogEntry = new CatalogEntry();
+		catalogEntry.setId(rs.getLong("id"));
+		catalogEntry.setCatalogId(rs.getLong("catalog_id"));
+		catalogEntry.setLabel(rs.getString("label"));
+		catalogEntry.setChildren(getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryFull));
+		return catalogEntry;
+	}
+	
+	private CatalogEntry mapCatalogEntryNoChilds(ResultSet rs, int rowNum) throws SQLException {
+		final CatalogEntry catalogEntry = new CatalogEntry();
+		catalogEntry.setId(rs.getLong("id"));
+		catalogEntry.setCatalogId(rs.getLong("catalog_id"));
+		catalogEntry.setLabel(rs.getString("label"));
+		catalogEntry.setHasChildren(getChildrenSizeByParentId(catalogEntry.getId()) > 0);
+		return catalogEntry;
 	}
 	
 	/**

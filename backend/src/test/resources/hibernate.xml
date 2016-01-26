@@ -23,8 +23,6 @@
 				<value>de.uni_koeln.arachne.mapping.hibernate.Connection</value>
 				<value>de.uni_koeln.arachne.mapping.hibernate.DatasetGroup</value>
 				<value>de.uni_koeln.arachne.mapping.hibernate.ImageRightsGroup</value>
-				<value>de.uni_koeln.arachne.mapping.hibernate.Catalog</value>
-				<value>de.uni_koeln.arachne.mapping.hibernate.CatalogEntry</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

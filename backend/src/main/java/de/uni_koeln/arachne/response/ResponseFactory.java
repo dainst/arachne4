@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import de.uni_koeln.arachne.context.AbstractLink;
 import de.uni_koeln.arachne.context.Context;
-import de.uni_koeln.arachne.dao.hibernate.CatalogEntryDao;
+import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
 import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
 import de.uni_koeln.arachne.response.link.ExternalLink;
 import de.uni_koeln.arachne.response.link.ExternalLinkResolver;

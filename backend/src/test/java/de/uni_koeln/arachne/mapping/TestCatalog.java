@@ -16,8 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
-import de.uni_koeln.arachne.mapping.hibernate.Catalog;
-import de.uni_koeln.arachne.mapping.hibernate.CatalogEntry;
+import de.uni_koeln.arachne.mapping.jdbc.Catalog;
+import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestCatalog {
@@ -61,8 +61,8 @@ public class TestCatalog {
 
 		for (final CatalogEntry entry : catalog.getCatalogEntries()) {
 			assertNotNull(entry.getPath());
-			assertTrue(entry.getPath().endsWith(entry.getId().toString()));
-			assertTrue(entry.getPath().startsWith(catalog.getId().toString()));
+			assertTrue(entry.getPath().endsWith(String.valueOf(entry.getId())));
+			assertTrue(entry.getPath().startsWith(String.valueOf(catalog.getId())));
 			assertTrue(entry.getPath().contains("/"));
 		}
 	}

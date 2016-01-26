@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import de.uni_koeln.arachne.dao.hibernate.CatalogDao;
-import de.uni_koeln.arachne.dao.hibernate.CatalogEntryDao;
-import de.uni_koeln.arachne.mapping.hibernate.Catalog;
-import de.uni_koeln.arachne.mapping.hibernate.CatalogEntry;
+import de.uni_koeln.arachne.dao.jdbc.CatalogDao;
+import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
 import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.mapping.jdbc.Catalog;
+import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.network.CustomMediaType;
 
@@ -72,7 +72,7 @@ public class CatalogController {
 		offset = (offset == null) ? 0 : offset;
 		CatalogEntry result = null;
 		final User user = userRightsService.getCurrentUser();
-		result = catalogEntryDao.getByCatalogEntryId(catalogEntryId, full, limit, offset);
+		result = catalogEntryDao.getById(catalogEntryId, full, limit, offset);
 		
 		if (result == null) {
 			return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
@@ -103,7 +103,7 @@ public class CatalogController {
 
 		if (userRightsService.isSignedInUser()) {
 			oldCatalogEntry = catalogEntryDao
-					.getByCatalogEntryId(catalogEntryId);
+					.getById(catalogEntryId);
 			if (oldCatalogEntry != null
                     && (oldCatalogEntry.getId().equals(catalogEntry.getId()))
 					&& (oldCatalogEntry.getCatalog().isCatalogOfUserWithId(user
@@ -134,7 +134,7 @@ public class CatalogController {
 			@PathVariable("catalogEntryId") final Long catalogEntryId) {
 		
 		final User user = userRightsService.getCurrentUser();
-		final CatalogEntry catalogEntry = catalogEntryDao.getByCatalogEntryId(catalogEntryId);
+		final CatalogEntry catalogEntry = catalogEntryDao.getById(catalogEntryId);
 		
 		if (catalogEntry != null) {
 			if (catalogEntry.getCatalog().isCatalogOfUserWithId(user.getId())) {
@@ -164,7 +164,7 @@ public class CatalogController {
 		if (userRightsService.isSignedInUser()) {
 			if (catalogEntry.getParentId() != null) {
 				catalogEntryParent = catalogEntryDao
-						.getByCatalogEntryId(catalogEntry.getParentId());
+						.getById(catalogEntry.getParentId());
 				if (catalogEntryParent == null) {
 					return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
 				} else {
@@ -249,7 +249,7 @@ public class CatalogController {
 		limit = (limit == null) ? 0 : limit;
 		offset = (offset == null) ? 0 : offset;
 		final User user = userRightsService.getCurrentUser();
-		Catalog result = catalogDao.getByCatalogId(catalogId, full, limit, offset);
+		Catalog result = catalogDao.getById(catalogId, full, limit, offset);
 		if (result == null) {
 			return new ResponseEntity<Catalog>(HttpStatus.NOT_FOUND);
 		} else if (!result.isCatalogOfUserWithId(user.getId()) && !result.isPublic()) {
@@ -283,7 +283,7 @@ public class CatalogController {
             return new ResponseEntity<Catalog>(HttpStatus.FORBIDDEN);
 
 		final Catalog oldCatalog;
-        oldCatalog = catalogDao.getByCatalogId(requestedId);
+        oldCatalog = catalogDao.getById(requestedId);
         if (oldCatalog==null)
             return new ResponseEntity<Catalog>(HttpStatus.NOT_FOUND);
 
@@ -345,7 +345,7 @@ public class CatalogController {
 	public ResponseEntity<String> handleCatalogDestroyRequest(@PathVariable("catalogId") final Long catalogId) {
 
 		final User user = userRightsService.getCurrentUser();
-		final Catalog catalog = catalogDao.getByCatalogId(catalogId);
+		final Catalog catalog = catalogDao.getById(catalogId);
 
 		if (catalog != null) {
 			if (!catalog.isCatalogOfUserWithId(user.getId())) {

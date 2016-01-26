@@ -1,7 +1,6 @@
-package de.uni_koeln.arachne.dao.hibernate;
+package de.uni_koeln.arachne.dao.jdbc;
 
 import java.util.List;
-import java.util.ListIterator;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -11,18 +10,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.uni_koeln.arachne.mapping.hibernate.Catalog;
-import de.uni_koeln.arachne.mapping.hibernate.CatalogEntry;
+import de.uni_koeln.arachne.mapping.jdbc.Catalog;
+import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 
 @Repository("CatalogDao")
-public class CatalogDao {
+public class CatalogDao extends SQLDao {
 
 	@Autowired
     private transient SessionFactory sessionFactory;
 	
+	@Autowired
+	private transient CatalogEntryDao catalogEntryDao;
+	
 	@Transactional(readOnly=true)
-	public Catalog getByCatalogId(final long catalogId) {
-		return getByCatalogId(catalogId, true, 0, 0);
+	public Catalog getById(final long catalogId) {
+		final String sqlQuery = "SELECT * from catalog WHERE id = " + catalogId;
+		return queryForObject(sqlQuery, (rs, rowNum) -> {
+			final Catalog catalog = new Catalog();
+			catalog.setId(rs.getLong("id"));
+			catalog.setRoot(catalogEntryDao.getById(rs.getLong("root_id")));
+			catalog.setAuthor(rs.getString("author"));
+			catalog.setPublic(rs.getBoolean("public"));
+			catalog.setDatasetGroup(rs.getString("DatensatzGruppeCatalog"));
+			return catalog;
+		});
 	}
 	
 	/**
@@ -33,7 +44,7 @@ public class CatalogDao {
 	 * @return The catalog with the given id.
 	 */
 	@Transactional(readOnly=true)
-	public Catalog getByCatalogId(final long catalogId, final boolean full, final int limit, final int offset) {
+	public Catalog getById(final long catalogId, final boolean full, final int limit, final int offset) {
 		Session session = sessionFactory.getCurrentSession();
 		return eagerFetch((Catalog) session.get(Catalog.class, catalogId));
 	}
