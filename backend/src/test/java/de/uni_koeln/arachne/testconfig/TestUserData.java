@@ -60,6 +60,7 @@ public class TestUserData {
 		user.setAll_groups(false);
 		Set<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
 		datasetGroups.add(new DatasetGroup("userTestGroup"));
+		datasetGroups.add(new DatasetGroup("anotherTestGroup"));
 		user.setDatasetGroups(datasetGroups);
 		user.setGroupID(UserRightsService.MIN_USER_ID);
 		return user;

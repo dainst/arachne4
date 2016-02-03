@@ -127,7 +127,7 @@ public class TestCatalogController {
 		when(catalogDao.getByUserId(3, true)).thenReturn(Arrays.asList(catalog));
 		when(catalogDao.getById(83)).thenReturn(catalog);
 		when(catalogDao.getById(83, true, 0, 0)).thenReturn(catalog);
-		/*when(catalogDao.saveOrUpdateCatalog(any(Catalog.class))).thenAnswer(new Answer<Catalog>() {
+		when(catalogDao.updateCatalog(any(Catalog.class))).thenAnswer(new Answer<Catalog>() {
 
 			@Override
 			public Catalog answer(InvocationOnMock invocation) throws Throwable {
@@ -135,7 +135,7 @@ public class TestCatalogController {
 				return (Catalog) args[0];
 			}
 		});
-		*/
+		
 		when(catalogDao.saveCatalog(any(Catalog.class))).thenAnswer(new Answer<Catalog>() {
 
 			@Override

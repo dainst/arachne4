@@ -1,9 +1,7 @@
 package de.uni_koeln.arachne.controller;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,7 +74,7 @@ public class CatalogController {
 			return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
 		} else {
 			final Catalog catalog = catalogDao.getById(result.getCatalogId());
-			if (!catalog.isCatalogOfUserWithId(user.getId())	&& !catalog.isPublic()) {
+			if (!catalog.isCatalogOfUserWithId(user.getId()) && !catalog.isPublic()) {
 				return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
 			}
 		}
@@ -151,8 +149,7 @@ public class CatalogController {
 		final User user = userRightsService.getCurrentUser();
 		final CatalogEntry catalogEntryParent;
 		final Catalog catalog;
-		CatalogEntry result = null;
-
+		
 		if (userRightsService.isSignedInUser()) {
 			if (catalogEntry.getParentId() != null) {
 				catalogEntryParent = catalogEntryDao.getById(catalogEntry.getParentId());
@@ -174,8 +171,7 @@ public class CatalogController {
 						catalogEntry.setCatalogId(catalog.getId());
 						catalogEntryDao.updateCatalogEntry(catalogEntryParent);
 						try {
-							catalogEntryDao.saveCatalogEntry(catalogEntry);
-							result = catalogEntryDao.updateCatalogEntry(catalogEntry);
+							return ResponseEntity.ok(catalogEntryDao.saveCatalogEntry(catalogEntry));
 						} catch (Exception e) {
 							LOGGER.error("Failed to save/update catalog entry.", e);
 							return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
@@ -190,7 +186,6 @@ public class CatalogController {
 		} else {
 			return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
 		}
-		return ResponseEntity.ok(result);
 	}
 
 	/**
@@ -215,10 +210,10 @@ public class CatalogController {
 			if (result == null || result.isEmpty()) {
 				result = new ArrayList<Catalog>();
 			}
+			return ResponseEntity.ok(result);
 		} else {
 			return new ResponseEntity<List<Catalog>>(HttpStatus.FORBIDDEN);
 		}
-		return ResponseEntity.ok(result);
 	}
 
 	/**
@@ -273,23 +268,14 @@ public class CatalogController {
 			@RequestBody final Catalog catalog,
 			@PathVariable("requestedId") final Long requestedId) {
 
-		final User user = userRightsService.getCurrentUser();
 		if (!userRightsService.isSignedInUser())
             return new ResponseEntity<Catalog>(HttpStatus.FORBIDDEN);
 
-		final Catalog oldCatalog;
-        oldCatalog = catalogDao.getById(requestedId);
-        if (oldCatalog==null)
+		final Catalog oldCatalog = catalogDao.getById(requestedId);
+        if (oldCatalog == null)
             return new ResponseEntity<Catalog>(HttpStatus.NOT_FOUND);
 
-        catalog.setUserIds(oldCatalog.getUserIds());
-        //catalog.setCatalogEntries(null);
-        //catalog.addToCatalogEntries(catalog.getRoot());
-        catalog.getRoot().setCatalogId(catalog.getId());
-        catalog.setId(oldCatalog.getId());
-
-        //catalogDao.merge(catalog);
-		return ResponseEntity.ok(catalog);
+        return ResponseEntity.ok(catalogDao.updateCatalog(catalog));
 	}
 
 	/**
@@ -305,28 +291,11 @@ public class CatalogController {
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<Catalog> handleCatalogCreateRequest(@RequestBody final Catalog catalog) {
 
-		final User user = userRightsService.getCurrentUser();
-		final Catalog result;
-
 		if (userRightsService.isSignedInUser()) {
-			Set<Long> userIds = new HashSet<Long>();
-			userIds.add(user.getId());
-			catalog.setUserIds(userIds);
-
-			//catalog.setCatalogEntries(null);
-			CatalogEntry root = catalog.getRoot();
-			root.setId(null);
-			root.setCatalogId(catalog.getId());
-			//catalog.addToCatalogEntries(root);
-			result = catalogDao.saveCatalog(catalog);
-
-			//result.getRoot().generatePath();
-			//catalogDao.saveOrUpdateCatalog(result);
-
+			return ResponseEntity.ok(catalogDao.saveCatalog(catalog));
 		} else {
 			return new ResponseEntity<Catalog>(HttpStatus.FORBIDDEN);
 		}
-		return ResponseEntity.ok(result);
 	}
 
 	/**

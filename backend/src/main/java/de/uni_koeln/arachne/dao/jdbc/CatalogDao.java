@@ -50,10 +50,9 @@ public class CatalogDao extends SQLDao {
 	 */
 	@Transactional(readOnly=true)
 	public Catalog getById(final long catalogId, final boolean full, final int limit, final int offset) {	
-		final String sql = "SELECT catalog.*, catalog_benutzer.uid "
+		final String sql = "SELECT * "
 				+ "FROM catalog "
-				+ "LEFT JOIN catalog_benutzer "
-				+ "ON id = catalog_id WHERE id = " 
+				+ "WHERE id = " 
 				+ catalogId
 				+ " AND "
 				+ userRightsService.getSQL("Catalog");
@@ -64,13 +63,18 @@ public class CatalogDao extends SQLDao {
 			catalog.setAuthor(rs.getString("author"));
 			catalog.setPublic(rs.getBoolean("public"));
 			catalog.setDatasetGroup(rs.getString("DatensatzGruppeCatalog"));
-			final Set<Long> userIds = new HashSet<Long>();
-			userIds.add(rs.getLong("uid"));
-			catalog.setUserIds(userIds);
+			catalog.setUserIds(getUserIds(catalog.getId()));
 			return catalog;
 		});
 	}
 	
+	private Set<Long> getUserIds(final long catalogId) {
+		final String sql = "SELECT uid FROM catalog_benutzer WHERE catalog_id = " + catalogId;
+		@SuppressWarnings("unchecked")
+		final List<Long> uids = (List<Long>) queryForList(sql, Long.class);
+		return new HashSet<Long>(uids);
+	}
+
 	public List<Catalog> getByUserId(final long uid, final boolean full) {
 		return getByUserId(uid, full, 0, 0);
 	}
@@ -102,16 +106,7 @@ public class CatalogDao extends SQLDao {
 		
 		return result;
 	}
-	/*
-	@Transactional(readOnly=true)
-	public Catalog getByUidAndCatalogId(final long uid, final long catalogId) {
-		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("select c from Catalog c left join c.users u where u.id = :uid and c.id = :catalogId")
-				.setLong("catalogId", catalogId)
-				.setLong("uid", uid);
-		return (Catalog) query.list().get(0);
-	}
-	*/
+	
 	/**
 	 * Gets a list containing public catalog identifiers and corresponding catalog paths that are connected to an 
 	 * entity. The list is in ascending order.
@@ -201,6 +196,55 @@ public class CatalogDao extends SQLDao {
 	}
 	
 	@Transactional
+	public Catalog updateCatalog(final Catalog newCatalog) {
+		if (newCatalog.getId() != null) {
+			final Catalog oldCatalog = getById(newCatalog.getId());
+			final long userId = userRightsService.getCurrentUser().getId();
+			if (oldCatalog.isCatalogOfUserWithId(userId)) {
+				update(con -> {
+					final String sql = "UPDATE catalog "
+							+ "SET author = ?, public = ?, DatensatzGruppeCatalog = ? "
+							+ "WHERE "
+							+ "catalog.id = ?";
+					PreparedStatement ps = con.prepareStatement(sql);
+					ps.setString(1, newCatalog.getAuthor());
+					ps.setBoolean(2, newCatalog.isPublic());
+					ps.setString(3, newCatalog.getDatasetGroup());
+					ps.setLong(4, newCatalog.getId());
+					return ps;
+				});
+				
+				if (!newCatalog.getUserIds().equals(oldCatalog.getUserIds())) {
+					update(con -> {
+						final String sql = "DELETE FROM catalog_benutzer "
+								+ "WHERE catalog_id = ?";
+						PreparedStatement ps = con.prepareStatement(sql);
+						ps.setLong(1, newCatalog.getId());
+						return ps;
+					});
+					
+					for (long uid : newCatalog.getUserIds()) {
+						update(con -> {
+							final String sql = "INSERT INTO catalog_benutzer "
+									+ "(catalog_id, uid) "
+									+ "VALUES "
+									+ "(?, ?)";
+							PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+							ps.setLong(1, newCatalog.getId());
+							ps.setLong(2, uid);
+							return ps;
+						});
+					}
+				}
+				
+				newCatalog.setRoot(oldCatalog.getRoot());
+				return newCatalog;
+			}
+		}
+		return null;
+	}
+	
+	@Transactional
 	public boolean deleteCatalog(final Long catalogId) throws DataAccessException {
 		final Catalog catalog = getById(catalogId);
 		if (catalog != null && catalog.isCatalogOfUserWithId(userRightsService.getCurrentUser().getId())) {
@@ -216,20 +260,5 @@ public class CatalogDao extends SQLDao {
 			return updatedRows == 1;
 		}
 		return false;
-	}
-	/*
-	@Transactional
-	public Catalog saveOrUpdateCatalog(final Catalog catalog) {
-		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(catalog);
-		return catalog;
-	}
-
-    @Transactional
-    public void merge(final Catalog catalog) {
-        Session session = sessionFactory.getCurrentSession();
-        session.merge(catalog);
-    }
-	*/
-	
+	}	
 }

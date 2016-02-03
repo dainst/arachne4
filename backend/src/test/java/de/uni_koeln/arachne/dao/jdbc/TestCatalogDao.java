@@ -57,14 +57,14 @@ public class TestCatalogDao {
 		MockitoAnnotations.initMocks(this);
 		when(userRightsService.isSignedInUser()).thenReturn(true);
 		when(userRightsService.getCurrentUser()).thenReturn(TestUserData.getUser());
-		when(userRightsService.getSQL("Catalog")).thenReturn("DatensatzGruppeCatalog = 'userTestGroup'");
+		when(userRightsService.getSQL("Catalog")).thenReturn("(DatensatzGruppeCatalog = 'userTestGroup' "
+				+ "OR DatensatzGruppeCatalog = 'anotherTestGroup')");
 		
 		jdbcTemplate = new JdbcTemplate(datasource);
 		new TestCatalogData(jdbcTemplate)
 				.setUpCatalogEntry()
 				.setUpCatalog()
 				.setUpArachneEntityIdentification();
-		//new TestUserData(jdbcTemplate).createUserTable();
 	}
 
 	@After
@@ -73,7 +73,6 @@ public class TestCatalogDao {
 				.tearDownCatalogEntry()
 				.tearDownCatalog()
 				.tearDownArachneEntityIdentification();
-		//new TestUserData(jdbcTemplate).dropUserTable();
 	}
 	
 	@Test
@@ -616,6 +615,57 @@ public class TestCatalogDao {
 		
 		catalog = catalogDao.saveCatalog(catalog);
 		assertNull(catalog);
+	}
+	
+	@Test
+	public void testUpdateCatalog() {
+		final User user = TestUserData.getUser();
+		
+		CatalogEntry root = new CatalogEntry();
+		root.setLabel("the root entry");
+		root.setText("will be ignored");
+		
+		Catalog catalog = new Catalog();
+		catalog.setId(2L);
+		final String newAuthor = user.getFirstname() + " " + user.getLastname() + " new";
+		catalog.setAuthor(newAuthor);
+		catalog.setPublic(true);
+		catalog.setDatasetGroup("anotherTestGroup");
+		catalog.setUserIds(new HashSet<Long>(Arrays.asList(3L)));
+		catalog.setRoot(root);
+		
+		catalog = catalogDao.updateCatalog(catalog);
+		assertNotNull(catalog);
+		assertEquals(catalog, catalogDao.getById(catalog.getId()));
+		
+		assertEquals(newAuthor, catalog.getAuthor());
+		assertTrue(catalog.isPublic());		
+		
+		assertEquals(Long.valueOf(3), catalog.getRoot().getId());
+		assertEquals("root of catalog 2 test label", catalog.getRoot().getLabel());
+		assertEquals("arachneentity test", catalog.getRoot().getText());		
+	}
+	
+	@Test
+	public void testUpdateCatalogAddUser() {
+		final User user = TestUserData.getUser();
+				
+		Catalog catalog = new Catalog();
+		catalog.setId(2L);
+		final String author = user.getFirstname() + " " + user.getLastname();
+		catalog.setAuthor(author);
+		catalog.setPublic(false);
+		catalog.setDatasetGroup("userTestGroup");
+		catalog.setUserIds(new HashSet<Long>(Arrays.asList(3L, 2L)));
+				
+		assertTrue(catalogDao.getByUserId(2L, false).isEmpty());
+		
+		catalog = catalogDao.updateCatalog(catalog);
+		assertNotNull(catalog);
+		assertEquals(catalog, catalogDao.getById(catalog.getId()));
+				
+		assertEquals(2, catalogDao.getByUserId(3L, false).size());
+		assertEquals(1, catalogDao.getByUserId(2L, false).size());
 	}
 	
 	@Test

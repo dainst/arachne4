@@ -178,8 +178,12 @@ public class TestUserRightsService {
 		final User user = TestUserData.getUser();
 		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-		assertEquals(" AND (`testTable`.`DatensatzGruppeTestTable` = \"userTestGroup\")"
-				, userRightsService.getSQL("testTable"));
+		final String sql = userRightsService.getSQL("testTable");
+		assertTrue(sql.startsWith(" AND ("));
+		assertTrue(sql.contains("`testTable`.`DatensatzGruppeTestTable` = \"userTestGroup\""));
+		assertTrue(sql.contains(" OR "));
+		assertTrue(sql.contains("`testTable`.`DatensatzGruppeTestTable` = \"anotherTestGroup\""));
+		assertTrue(sql.endsWith(")"));
 	}
 	
 	@Test(expected=ObjectAccessException.class)

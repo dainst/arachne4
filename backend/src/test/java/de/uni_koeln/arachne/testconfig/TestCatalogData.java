@@ -38,6 +38,10 @@ public class TestCatalogData {
 				+ "catalog_id, uid)"
 				+ "VALUES"
 				+ "(2,3)");
+		jdbcTemplate.execute("INSERT INTO catalog_benutzer("
+				+ "catalog_id, uid)"
+				+ "VALUES"
+				+ "(1,4)");
 		return this;
 	}
 	
