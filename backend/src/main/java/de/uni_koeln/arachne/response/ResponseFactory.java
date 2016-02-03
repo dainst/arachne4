@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import de.uni_koeln.arachne.context.AbstractLink;
 import de.uni_koeln.arachne.context.Context;
-import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
+import de.uni_koeln.arachne.dao.jdbc.CatalogDao;
 import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
 import de.uni_koeln.arachne.response.link.ExternalLink;
 import de.uni_koeln.arachne.response.link.ExternalLinkResolver;
@@ -70,7 +70,7 @@ public class ResponseFactory {
 	private transient GenericSQLDao genericSQLDao;
 	
 	@Autowired
-	private transient CatalogEntryDao catalogEntryDao;
+	private transient CatalogDao catalogDao;
 	
 	@Autowired
 	private transient Transl8Service ts;
@@ -174,7 +174,7 @@ public class ResponseFactory {
 		// set catalogEntry data
 		final Set<Long> catalogIds = new HashSet<Long>();
 		final List<String> catalogPaths = new ArrayList<String>();
-		final List<Object[]> catalogData = catalogEntryDao.getPublicCatalogIdsAndPathsByEntityId(arachneId.getArachneEntityID());
+		final List<Object[]> catalogData = catalogDao.getPublicCatalogIdsAndPathsByEntityId(arachneId.getArachneEntityID());
 		for (Object[] objects : catalogData) {
 			catalogIds.add((Long)objects[0]);
 			catalogPaths.add((String)objects[1]);

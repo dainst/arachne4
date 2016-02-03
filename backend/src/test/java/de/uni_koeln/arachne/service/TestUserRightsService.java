@@ -17,7 +17,7 @@ import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.UserRightsService.ObjectAccessException;
 import de.uni_koeln.arachne.testconfig.ProtectedTestObject;
-import de.uni_koeln.arachne.testconfig.TestUsers;
+import de.uni_koeln.arachne.testconfig.TestUserData;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestUserRightsService {
@@ -31,11 +31,11 @@ public class TestUserRightsService {
 	@Before
 	public void setUp() throws Exception {
 		userRightsService.reset();
-		when(userDao.findByName(UserRightsService.ANONYMOUS_USER_NAME)).thenReturn(TestUsers.getAnonymous());
-		when(userDao.findByName(TestUsers.getUser().getUsername())).thenReturn(TestUsers.getUser());
-		when(userDao.findByName(TestUsers.getEditor().getUsername())).thenReturn(TestUsers.getEditor());
-		when(userDao.findByName(TestUsers.getAdmin().getUsername())).thenReturn(TestUsers.getAdmin());
-		when(userDao.findByName(TestUsers.getUserNoLogin().getUsername())).thenReturn(TestUsers.getUserNoLogin());
+		when(userDao.findByName(UserRightsService.ANONYMOUS_USER_NAME)).thenReturn(TestUserData.getAnonymous());
+		when(userDao.findByName(TestUserData.getUser().getUsername())).thenReturn(TestUserData.getUser());
+		when(userDao.findByName(TestUserData.getEditor().getUsername())).thenReturn(TestUserData.getEditor());
+		when(userDao.findByName(TestUserData.getAdmin().getUsername())).thenReturn(TestUserData.getAdmin());
+		when(userDao.findByName(TestUserData.getUserNoLogin().getUsername())).thenReturn(TestUserData.getUserNoLogin());
 	}
 	
 	
@@ -53,16 +53,16 @@ public class TestUserRightsService {
 
 	@Test
 	public void testIsSignedInUserUser() {
-		final User user = TestUsers.getUser();
-		final Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getUser();
+		final Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		assertTrue(userRightsService.isSignedInUser());
 	}
 	
 	@Test
 	public void testIsSignedInUserUserNoLogin() {
-		final User user = TestUsers.getUserNoLogin();
-		final Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getUserNoLogin();
+		final Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		assertFalse(userRightsService.isSignedInUser());
 	}
@@ -75,16 +75,16 @@ public class TestUserRightsService {
 	
 	@Test
 	public void testUserHasAtLeastGroupIDUser() {
-		final User user = TestUsers.getUser();
-		final Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getUser();
+		final Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		assertFalse(userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID));
 	}
 	
 	@Test
 	public void testUserHasAtLeastGroupIDAdmin() {
-		final User user = TestUsers.getAdmin();
-		final Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getAdmin();
+		final Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		assertTrue(userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID));
 	}
@@ -101,8 +101,8 @@ public class TestUserRightsService {
 
 	@Test
 	public void testGetCurrentUserUserNoLogin() {
-		User user = TestUsers.getUserNoLogin();
-		final Authentication authToken = TestUsers.getAuthentication(user);
+		User user = TestUserData.getUserNoLogin();
+		final Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		user = userRightsService.getCurrentUser();
 		assertEquals(null, user.getFirstname());
@@ -112,8 +112,8 @@ public class TestUserRightsService {
 	
 	@Test
 	public void testGetCurrentUserAdmin() {
-		User user = TestUsers.getAdmin();
-		final Authentication authToken = TestUsers.getAuthentication(user);
+		User user = TestUserData.getAdmin();
+		final Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		user = userRightsService.getCurrentUser();
 		assertEquals("testadmin", user.getUsername());
@@ -124,8 +124,8 @@ public class TestUserRightsService {
 	
 	@Test
 	public void testReset() {
-		final User user = TestUsers.getUser();
-		final Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getUser();
+		final Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		assertTrue(userRightsService.isSignedInUser());
 		SecurityContextHolder.getContext().setAuthentication(null);
@@ -135,48 +135,48 @@ public class TestUserRightsService {
 	
 	@Test
 	public void testUserHasDatasetGroupAllGroups() {
-		final User user = TestUsers.getAdmin();
-		Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getAdmin();
+		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		assertTrue(userRightsService.userHasDatasetGroup(new DatasetGroup("editorTestGroup")));
 	}
 	
 	@Test
 	public void testUserHasDatasetGroupTrue() {
-		final User user = TestUsers.getEditor();
-		Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getEditor();
+		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		assertTrue(userRightsService.userHasDatasetGroup(new DatasetGroup("editorTestGroup")));
 	}
 	
 	@Test
 	public void testUserHasDatasetGroupFalse() {
-		final User user = TestUsers.getUser();
-		Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getUser();
+		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		assertFalse(userRightsService.userHasDatasetGroup(new DatasetGroup("editorTestGroup")));
 	}
 	
 	@Test
 	public void testUserHasDatasetGroupFalseNoLogin() {
-		final User user = TestUsers.getUserNoLogin();
-		Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getUserNoLogin();
+		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		assertFalse(userRightsService.userHasDatasetGroup(new DatasetGroup("userTestGroup")));
 	}
 	
 	@Test
 	public void testGetSQLAllGroups() {
-		final User user = TestUsers.getAdmin();
-		Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getAdmin();
+		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		assertEquals("", userRightsService.getSQL("testTable"));
 	}
 	
 	@Test
 	public void testGetSQLUser() {
-		final User user = TestUsers.getUser();
-		Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getUser();
+		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		assertEquals(" AND (`testTable`.`DatensatzGruppeTestTable` = \"userTestGroup\")"
 				, userRightsService.getSQL("testTable"));
@@ -192,8 +192,8 @@ public class TestUserRightsService {
 	@Test(expected=ObjectAccessException.class)
 	public void testSetPropertyOnProtectedObjectUser() {
 		ProtectedTestObject testObject = new ProtectedTestObject();
-		final User user = TestUsers.getUser();
-		Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getUser();
+		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		userRightsService.setPropertyOnProtectedObject("userStringValue", "user changed it", testObject);
 	}
@@ -201,8 +201,8 @@ public class TestUserRightsService {
 	@Test
 	public void testSetPropertyOnProtectedObjectEditor() {
 		ProtectedTestObject testObject = new ProtectedTestObject();
-		final User user = TestUsers.getEditor();
-		Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getEditor();
+		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		userRightsService.setPropertyOnProtectedObject("userStringValue", "editor changed it", testObject);
 		assertEquals("editor changed it", testObject.getUserStringValue());
@@ -211,8 +211,8 @@ public class TestUserRightsService {
 	@Test
 	public void testSetPropertyOnProtectedObjectAdmin() {
 		ProtectedTestObject testObject = new ProtectedTestObject();
-		final User user = TestUsers.getAdmin();
-		Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getAdmin();
+		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		userRightsService.setPropertyOnProtectedObject("userStringValue", "admin changed it", testObject);
 		assertEquals("admin changed it", testObject.getUserStringValue());
@@ -228,8 +228,8 @@ public class TestUserRightsService {
 	@Test
 	public void testSetPropertyOnProtectedObjectCustomMinGidUser() {
 		ProtectedTestObject testObject = new ProtectedTestObject();
-		final User user = TestUsers.getUser();
-		Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getUser();
+		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		userRightsService.setPropertyOnProtectedObject("userStringValue", "user changed it", testObject, UserRightsService.MIN_USER_ID);
 		assertEquals("user changed it", testObject.getUserStringValue());
@@ -238,8 +238,8 @@ public class TestUserRightsService {
 	@Test
 	public void testSetPropertyOnProtectedObjectCustomMinGidEditor() {
 		ProtectedTestObject testObject = new ProtectedTestObject();
-		final User user = TestUsers.getEditor();
-		Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getEditor();
+		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		userRightsService.setPropertyOnProtectedObject("userStringValue", "editor changed it", testObject, UserRightsService.MIN_USER_ID);
 		assertEquals("editor changed it", testObject.getUserStringValue());
@@ -248,8 +248,8 @@ public class TestUserRightsService {
 	@Test
 	public void testSetPropertyOnProtectedObjectCustomMinGidAdmin() {
 		ProtectedTestObject testObject = new ProtectedTestObject();
-		final User user = TestUsers.getAdmin();
-		Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getAdmin();
+		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		userRightsService.setPropertyOnProtectedObject("userStringValue", "admin changed it", testObject, UserRightsService.MIN_USER_ID);
 		assertEquals("admin changed it", testObject.getUserStringValue());
@@ -258,8 +258,8 @@ public class TestUserRightsService {
 	@Test(expected=ObjectAccessException.class)
 	public void testSetPropertyOnProtectedObjectAdminFieldUser() {
 		ProtectedTestObject testObject = new ProtectedTestObject();
-		final User user = TestUsers.getUser();
-		Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getUser();
+		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		userRightsService.setPropertyOnProtectedObject("adminStringValue", "user changed it", testObject);
 	}
@@ -267,8 +267,8 @@ public class TestUserRightsService {
 	@Test
 	public void testSetPropertyOnProtectedObjectAdminFieldAdmin() {
 		ProtectedTestObject testObject = new ProtectedTestObject();
-		final User user = TestUsers.getAdmin();
-		Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getAdmin();
+		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		userRightsService.setPropertyOnProtectedObject("adminStringValue", "admin changed it", testObject);
 		assertEquals("admin changed it", testObject.getAdminStringValue());
@@ -277,8 +277,8 @@ public class TestUserRightsService {
 	@Test(expected=ObjectAccessException.class)
 	public void testSetPropertyOnProtectedObjectWriteProtectedAdmin() {
 		ProtectedTestObject testObject = new ProtectedTestObject();
-		final User user = TestUsers.getAdmin();
-		Authentication authToken = TestUsers.getAuthentication(user);
+		final User user = TestUserData.getAdmin();
+		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 		userRightsService.setPropertyOnProtectedObject("writeProtectedStringValue", "admin changed it", testObject);
 	}

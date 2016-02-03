@@ -5,13 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,12 +33,11 @@ import de.uni_koeln.arachne.util.network.CustomMediaType;
  * Handles http requests for <code>/catalogEntry</code> and
  * <code>/catalog</code>.
  */
-@Transactional
 @Controller
 @RequestMapping("/catalog")
 public class CatalogController {
 
-	//private static final Logger LOGGER = LoggerFactory.getLogger(CatalogController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CatalogController.class);
 
 	@Autowired
 	private transient UserRightsService userRightsService;
@@ -73,11 +71,14 @@ public class CatalogController {
 		CatalogEntry result = null;
 		final User user = userRightsService.getCurrentUser();
 		result = catalogEntryDao.getById(catalogEntryId, full, limit, offset);
-		
+				
 		if (result == null) {
 			return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
-		} else if (!result.getCatalog().isCatalogOfUserWithId(user.getId())	&& !result.getCatalog().isPublic()) {
-			return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
+		} else {
+			final Catalog catalog = catalogDao.getById(result.getCatalogId());
+			if (!catalog.isCatalogOfUserWithId(user.getId())	&& !catalog.isPublic()) {
+				return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
+			}
 		}
 
 		return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -95,31 +96,24 @@ public class CatalogController {
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<CatalogEntry> handleUpdateCatalogEntryRequest(
 			@PathVariable("catalogEntryId") final Long catalogEntryId,
-			@RequestBody final CatalogEntry catalogEntry) {
+			@RequestBody final CatalogEntry newCatalogEntry) {
 		
 		final User user = userRightsService.getCurrentUser();
-		final CatalogEntry result;
-		final CatalogEntry oldCatalogEntry;
-
-		if (userRightsService.isSignedInUser()) {
-			oldCatalogEntry = catalogEntryDao
-					.getById(catalogEntryId);
-			if (oldCatalogEntry != null
-                    && (oldCatalogEntry.getId().equals(catalogEntry.getId()))
-					&& (oldCatalogEntry.getCatalog().isCatalogOfUserWithId(user
-							.getId()))) {
-				catalogEntry.setCatalog(oldCatalogEntry.getCatalog());
-				catalogEntry.setParent(oldCatalogEntry.getParent());
-				result = catalogEntryDao.updateCatalogEntry(catalogEntry);
-				result.generatePath();
-				catalogEntryDao.updateCatalogEntry(result);
+		final CatalogEntry oldCatalogEntry = catalogEntryDao.getById(catalogEntryId);
+		if (oldCatalogEntry != null) {
+			Catalog catalog = catalogDao.getById(oldCatalogEntry.getCatalogId());
+			if (userRightsService.isSignedInUser() && catalog.isCatalogOfUserWithId(user.getId())) {
+				if (oldCatalogEntry.getId().equals(newCatalogEntry.getId())) {
+						return ResponseEntity.status(HttpStatus.OK).body(
+								catalogEntryDao.updateCatalogEntry(newCatalogEntry));
+				} else {
+					return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
+				}
 			} else {
-				return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
 			}
-		} else {
-			return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(result);
+		return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
 	}
 
 	/**
@@ -137,11 +131,9 @@ public class CatalogController {
 		final CatalogEntry catalogEntry = catalogEntryDao.getById(catalogEntryId);
 		
 		if (catalogEntry != null) {
-			if (catalogEntry.getCatalog().isCatalogOfUserWithId(user.getId())) {
-				CatalogEntry parent = catalogEntry.getParent();
-				parent.getChildren().remove((int) catalogEntry.getIndexParent());
-				catalogEntryDao.updateCatalogEntry(parent);
-				catalogEntryDao.deleteCatalogEntry(catalogEntry);
+			final Catalog catalog = catalogDao.getById(catalogEntry.getCatalogId());
+			if (catalog.isCatalogOfUserWithId(user.getId())) {
+				catalogEntryDao.delete(catalogEntry.getId());
 			} else {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 			}
@@ -163,16 +155,15 @@ public class CatalogController {
 
 		if (userRightsService.isSignedInUser()) {
 			if (catalogEntry.getParentId() != null) {
-				catalogEntryParent = catalogEntryDao
-						.getById(catalogEntry.getParentId());
+				catalogEntryParent = catalogEntryDao.getById(catalogEntry.getParentId());
 				if (catalogEntryParent == null) {
 					return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
 				} else {
-					catalog = catalogEntryParent.getCatalog();
+					catalog = catalogDao.getById(catalogEntryParent.getCatalogId());
 					if (catalog.isCatalogOfUserWithId(user.getId())) {
 						catalogEntry.setId(null);
-						catalogEntry.setParent(catalogEntryParent);
-						if (catalogEntry.getIndexParent() == null
+						catalogEntry.setParentId(catalogEntryParent.getId());
+						if (catalogEntry.getIndexParent() == 0
 								|| catalogEntry.getIndexParent() >= catalogEntryParent
 								.getChildren().size()) {
 							catalogEntryParent.addToChildren(catalogEntry);
@@ -180,11 +171,15 @@ public class CatalogController {
 							catalogEntryParent.getChildren().add(
 									catalogEntry.getIndexParent(), catalogEntry);
 						}
-						catalogEntry.setCatalog(catalog);
+						catalogEntry.setCatalogId(catalog.getId());
 						catalogEntryDao.updateCatalogEntry(catalogEntryParent);
-						catalogEntryDao.saveCatalogEntry(catalogEntry);
-						catalogEntry.generatePath();
-						result = catalogEntryDao.updateCatalogEntry(catalogEntry);
+						try {
+							catalogEntryDao.saveCatalogEntry(catalogEntry);
+							result = catalogEntryDao.updateCatalogEntry(catalogEntry);
+						} catch (Exception e) {
+							LOGGER.error("Failed to save/update catalog entry.", e);
+							return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
+						}
 					} else {
 						return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
 					}
@@ -216,7 +211,7 @@ public class CatalogController {
 		final User user = userRightsService.getCurrentUser();
 		
 		if (userRightsService.isSignedInUser()) {
-			result = catalogDao.getByUid(user.getId(), full);
+			result = catalogDao.getByUserId(user.getId(), full);
 			if (result == null || result.isEmpty()) {
 				result = new ArrayList<Catalog>();
 			}
@@ -287,13 +282,13 @@ public class CatalogController {
         if (oldCatalog==null)
             return new ResponseEntity<Catalog>(HttpStatus.NOT_FOUND);
 
-        catalog.setUsers(oldCatalog.getUsers());
-        catalog.setCatalogEntries(null);
-        catalog.addToCatalogEntries(catalog.getRoot());
-        catalog.getRoot().setCatalog(catalog);
+        catalog.setUserIds(oldCatalog.getUserIds());
+        //catalog.setCatalogEntries(null);
+        //catalog.addToCatalogEntries(catalog.getRoot());
+        catalog.getRoot().setCatalogId(catalog.getId());
         catalog.setId(oldCatalog.getId());
 
-        catalogDao.merge(catalog);
+        //catalogDao.merge(catalog);
 		return ResponseEntity.ok(catalog);
 	}
 
@@ -314,19 +309,19 @@ public class CatalogController {
 		final Catalog result;
 
 		if (userRightsService.isSignedInUser()) {
-			Set<User> users = new HashSet<User>();
-			users.add(user);
-			catalog.setUsers(users);
+			Set<Long> userIds = new HashSet<Long>();
+			userIds.add(user.getId());
+			catalog.setUserIds(userIds);
 
-			catalog.setCatalogEntries(null);
+			//catalog.setCatalogEntries(null);
 			CatalogEntry root = catalog.getRoot();
 			root.setId(null);
-			root.setCatalog(catalog);
-			catalog.addToCatalogEntries(root);
+			root.setCatalogId(catalog.getId());
+			//catalog.addToCatalogEntries(root);
 			result = catalogDao.saveCatalog(catalog);
 
-			result.getRoot().generatePath();
-			catalogDao.saveOrUpdateCatalog(result);
+			//result.getRoot().generatePath();
+			//catalogDao.saveOrUpdateCatalog(result);
 
 		} else {
 			return new ResponseEntity<Catalog>(HttpStatus.FORBIDDEN);
@@ -351,7 +346,7 @@ public class CatalogController {
 			if (!catalog.isCatalogOfUserWithId(user.getId())) {
 				return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
 			} else {
-				catalogDao.destroyCatalog(catalog);
+				catalogDao.deleteCatalog(catalog.getId());
 			}
 		}
 		
@@ -364,14 +359,14 @@ public class CatalogController {
 	public @ResponseBody ResponseEntity<CatalogIdList> handleGetCatalogByEntityRequest(
 			@PathVariable("entityId") final Long entityId) {
 		
-		final List<Long> result = catalogEntryDao.getPrivateCatalogIdsByEntityId(entityId);
+		final List<Long> result = catalogDao.getPrivateCatalogIdsByEntityId(entityId);
 		if (result == null || result.isEmpty()) {
 			return ResponseEntity.ok(new CatalogIdList(new ArrayList<Long>()));
 		}
 		return ResponseEntity.ok(new CatalogIdList(result));
 	}
 	
-	// handleGetCatalogByEntityRequest() return type (better JSON response than the pure list)
+	// return type for 'handleGetCatalogByEntityRequest()' (better JSON response than the pure list)
 	@JsonInclude(value=Include.NON_EMPTY)
 	private class CatalogIdList {
 		private List<Long> catalogIds;

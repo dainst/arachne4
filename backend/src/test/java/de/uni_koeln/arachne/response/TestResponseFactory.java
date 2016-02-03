@@ -21,7 +21,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
+import de.uni_koeln.arachne.dao.jdbc.CatalogDao;
 import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
 import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.service.UserRightsService;
@@ -34,7 +34,7 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 @ContextConfiguration(locations={"classpath:test-context.xml"}) 
 public class TestResponseFactory { // NOPMD
 	@Mock private GenericSQLDao genericSQLDao;
-	@Mock private CatalogEntryDao catalogEntryDao;
+	@Mock private CatalogDao catalogDao;
 	@Mock private Transl8Service ts;
 	@Mock private JSONUtil jsonUtil;
 	@InjectMocks private final ResponseFactory responseFactory = new ResponseFactory();
@@ -68,7 +68,7 @@ public class TestResponseFactory { // NOPMD
 			mockCatalogData[1] = (String)mockCatalogDataList.get(i-2)[1] + '/' + i;
 			mockCatalogDataList.add(mockCatalogData);
 		}
-		when(catalogEntryDao.getPublicCatalogIdsAndPathsByEntityId(0)).thenReturn(mockCatalogDataList);
+		when(catalogDao.getPublicCatalogIdsAndPathsByEntityId(0)).thenReturn(mockCatalogDataList);
 		when(ts.transl8(anyString())).thenReturn("type_test");
 		when(ts.transl8Facet(anyString(), anyString())).then(AdditionalAnswers.returnsSecondArg());
 		when(jsonUtil.getObjectMapper()).thenReturn(new ObjectMapper());

@@ -36,11 +36,10 @@ import com.google.common.io.Resources;
 
 import de.uni_koeln.arachne.dao.jdbc.CatalogDao;
 import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
-import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.service.UserRightsService;
-import de.uni_koeln.arachne.testconfig.TestUsers;
+import de.uni_koeln.arachne.testconfig.TestUserData;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestCatalogController {
@@ -59,13 +58,11 @@ public class TestCatalogController {
 	
 	private MockMvc mockMvc;
 	
-	static final String EXPECTED_CATALOG_NO_CHILDS = "{\"id\":83,\"root\":{\"id\":597,\"children\":[{\"id\":594,\""
-			+ "label\":\"Vorbebauung\",\"parentId\":597,\"indexParent\":0,\"catalogId\":83,\"hasChildren\":false},"
-			+ "{\"id\":593,\"label\":\"Basilica Aemilia\",\"parentId\":597,\"indexParent\":1,\"catalogId\":83,\""
-			+ "hasChildren\":true}],\"label\":\"Die Basilica Aemilia auf dem Forum Romanum in Rom: Brennpunkt "
-			+ "des öffentlichen Lebens\",\"text\":\"Nach der Errichtung in den 60er Jahren des 2. Jhs. v. Chr. "
-			+ "durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius Nobilior wurde die Basilica mehrmals "
-			+ "zerstört [...]\",\"catalogId\":83,\"hasChildren\":true},\"author\":\"Testauthor\",\"public\":false}";
+	static final String EXPECTED_CATALOG_NO_CHILDS = "{\"id\":83,\"root\":{\"id\":597,\"label\":\"Die Basilica Aemilia "
+			+ "auf dem Forum Romanum in Rom: Brennpunkt des öffentlichen Lebens\",\"text\":\"Nach der Errichtung in den"
+			+ " 60er Jahren des 2. Jhs. v. Chr. durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius Nobilior "
+			+ "wurde die Basilica mehrmals zerstört [...]\",\"catalogId\":83,\"hasChildren\":true},\"author\":"
+			+ "\"Testauthor\",\"public\":false}";
 	
 	@SuppressWarnings("unchecked")
 	@Before
@@ -73,48 +70,49 @@ public class TestCatalogController {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 		
-		when(userRightsService.getCurrentUser()).thenReturn(TestUsers.getUser(), TestUsers.getAnonymous());
+		when(userRightsService.getCurrentUser()).thenReturn(TestUserData.getUser(), TestUserData.getAnonymous());
 		when(userRightsService.isSignedInUser()).thenReturn(true, false);
 		
-		final Set<User> users = new HashSet<>();
-		users.add(TestUsers.getUser());
+		final Set<Long> users = new HashSet<Long>();
+		users.add(TestUserData.getUser().getId());
 				
 		URL resource = TestCatalogController.class.getResource("/WEB-INF/json/catalog.json");
 		ObjectMapper mapper = new ObjectMapper();
 		
 		// root - children removed
 		Catalog catalog = mapper.readValue(Resources.toString(resource, Charsets.UTF_8), Catalog.class);
-		catalog.setUsers(users);
+		catalog.setUserIds(users);
 		CatalogEntry entry = catalog.getRoot();
-		entry.setCatalog(catalog);
-		//entry.removeChildren();
+		entry.setCatalogId(catalog.getId());
+		entry.setHasChildren(entry.getChildren() != null || entry.getChildren().isEmpty());
+		entry.setChildren(null);
 		
 		// full root entry
 		catalog = mapper.readValue(Resources.toString(resource, Charsets.UTF_8), Catalog.class);
-		catalog.setUsers(users);
+		catalog.setUserIds(users);
 		CatalogEntry entryFull = catalog.getRoot();
-		entryFull.setCatalog(catalog);
+		entryFull.setCatalogId(catalog.getId());
 		
 		// leaf entry
 		catalog = mapper.readValue(Resources.toString(resource, Charsets.UTF_8), Catalog.class);
-		catalog.setUsers(users);
+		catalog.setUserIds(users);
 		CatalogEntry entryLeaf = catalog.getRoot()
 				.getChildren().get(1)
 				.getChildren().get(0)
 				.getChildren().get(0)
 				.getChildren().get(0)
 				.getChildren().get(0);
-		entryLeaf.setParent(catalog.getRoot()
+		CatalogEntry parent = catalog.getRoot()
 				.getChildren().get(1)
 				.getChildren().get(0)
 				.getChildren().get(0)
-				.getChildren().get(0));
-		entryLeaf.getParent().setCatalog(catalog);
-		entryLeaf.setCatalog(catalog);
+				.getChildren().get(0);
+		parent.setCatalogId(catalog.getId());
+		entryLeaf.setCatalogId(catalog.getId());
 		
 		when(catalogEntryDao.getById(1, false, 0, 0)).thenReturn(entry);
 		when(catalogEntryDao.getById(1, true, 0, 0)).thenReturn(entryFull);
-		when(catalogEntryDao.getById(598)).thenReturn(entryLeaf.getParent());
+		when(catalogEntryDao.getById(598)).thenReturn(parent);
 		when(catalogEntryDao.getById(599)).thenReturn(entryLeaf);
 		when(catalogEntryDao.getById(600)).thenReturn(null);
 		when(catalogEntryDao.updateCatalogEntry(any(CatalogEntry.class))).thenAnswer(new Answer<CatalogEntry>() {
@@ -126,10 +124,10 @@ public class TestCatalogController {
 			}
 		});
 
-		when(catalogDao.getByUid(3, true)).thenReturn(Arrays.asList(catalog));
+		when(catalogDao.getByUserId(3, true)).thenReturn(Arrays.asList(catalog));
 		when(catalogDao.getById(83)).thenReturn(catalog);
 		when(catalogDao.getById(83, true, 0, 0)).thenReturn(catalog);
-		when(catalogDao.saveOrUpdateCatalog(any(Catalog.class))).thenAnswer(new Answer<Catalog>() {
+		/*when(catalogDao.saveOrUpdateCatalog(any(Catalog.class))).thenAnswer(new Answer<Catalog>() {
 
 			@Override
 			public Catalog answer(InvocationOnMock invocation) throws Throwable {
@@ -137,7 +135,7 @@ public class TestCatalogController {
 				return (Catalog) args[0];
 			}
 		});
-		
+		*/
 		when(catalogDao.saveCatalog(any(Catalog.class))).thenAnswer(new Answer<Catalog>() {
 
 			@Override
@@ -150,18 +148,19 @@ public class TestCatalogController {
 		// catalog children removed
 		final Catalog catalogNoChilds = mapper.readValue(
 				Resources.toString(resource, Charsets.UTF_8), Catalog.class);
-		catalogNoChilds.setUsers(users);
+		catalogNoChilds.setUserIds(users);
 		final CatalogEntry root = catalogNoChilds.getRoot();
 		for (CatalogEntry catalogEntry : root.getChildren()) {
-			//catalogEntry.removeChildren();
+			catalogEntry.setHasChildren(catalogEntry.getChildren() != null || catalogEntry.getChildren().isEmpty());
+			catalogEntry.setChildren(null);
 		}
 		
-		when(catalogDao.getByUid(3, false)).thenReturn(Arrays.asList(catalogNoChilds));
+		when(catalogDao.getByUserId(3, false)).thenReturn(Arrays.asList(catalogNoChilds));
 		when(catalogDao.getById(83, false, 0, 0)).thenReturn(catalogNoChilds);
 		
-		when(catalogEntryDao.getPrivateCatalogIdsByEntityId(anyLong()))
+		when(catalogDao.getPrivateCatalogIdsByEntityId(anyLong()))
 				.thenReturn(new ArrayList<Long>());
-		when(catalogEntryDao.getPrivateCatalogIdsByEntityId(1184191))
+		when(catalogDao.getPrivateCatalogIdsByEntityId(1184191))
 				.thenReturn(Arrays.asList(83L), new ArrayList<Long>());
 	}
 	
@@ -269,7 +268,7 @@ public class TestCatalogController {
 					.content("{\"id\": 666,\"children\": [],\"arachneEntityId\": 1184191,\""
 							+ "label\": \"Fundamente der Innensäulen\", \"text\": \"Die Fundamente der Innensäulen.\", \""
 							+ "parentId\": 598, \"indexParent\": 0,\"catalogId\": 83}"))
-				.andExpect(status().isNotFound());
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test

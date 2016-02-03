@@ -17,7 +17,6 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
-import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestCatalog {
@@ -39,40 +38,5 @@ public class TestCatalog {
 		assertNotNull(catalog);
 		assertNotNull(catalog.getRoot());
 		assertNotNull(catalog.getRoot().getChildren());
-		assertNull(catalog.getCatalogEntries());
 	}
-
-	@Test
-	public void test2SetCatalog() {
-
-		catalog.addToCatalogEntries(catalog.getRoot());
-		catalog.getRoot().setCatalog(catalog);
-
-		assertEquals(catalog.getCatalogEntries().size(), 7);
-		for (CatalogEntry entry : catalog.getCatalogEntries()) {
-			assertSame(catalog, entry.getCatalog());
-		}
-	}
-
-	@Test
-	public void test3GeneratePath() {
-
-		catalog.getRoot().generatePath();
-
-		for (final CatalogEntry entry : catalog.getCatalogEntries()) {
-			assertNotNull(entry.getPath());
-			assertTrue(entry.getPath().endsWith(String.valueOf(entry.getId())));
-			assertTrue(entry.getPath().startsWith(String.valueOf(catalog.getId())));
-			assertTrue(entry.getPath().contains("/"));
-		}
-	}
-
-	@Test
-	public void test4RemoveFromCatalog() {
-
-		catalog.getRoot().removeFromCatalog();
-
-		assertEquals(catalog.getCatalogEntries().size(), 0);
-	}
-
 }

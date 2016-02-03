@@ -5,7 +5,7 @@
             {  
                 "id":594,
                 "label":"Vorbebauung",
-                "path":"183/null/594",
+                "path":"183/597",
                 "parentId":597,
                 "indexParent":0,
                 "catalogId":183,
@@ -28,7 +28,7 @@
                                                 "arachneEntityId":1184191,
                                                 "label":"Fundamente der Innensäulen",
                                                 "text":"Die Fundamente der Innensäulen.",
-                                                "path":"183/null/593/595/596/598/599",
+                                                "path":"183/597/593/595/596/598",
                                                 "parentId":598,
                                                 "indexParent":0,
                                                 "catalogId":183,
@@ -36,7 +36,7 @@
                                             }
                                         ],
                                         "label":"Fundamente",
-                                        "path":"183/null/593/595/596/598",
+                                        "path":"183/597/593/595/596",
                                         "parentId":596,
                                         "indexParent":0,
                                         "catalogId":183,
@@ -44,7 +44,7 @@
                                     }
                                 ],
                                 "label":"Republikanische Zeit",
-                                "path":"183/null/593/595/596",
+                                "path":"183/597/593/595",
                                 "parentId":595,
                                 "indexParent":0,
                                 "catalogId":183,
@@ -52,7 +52,7 @@
                             }
                         ],
                         "label":"Aula",
-                        "path":"183/null/593/595",
+                        "path":"183/597/593",
                         "parentId":593,
                         "indexParent":0,
                         "catalogId":183,
@@ -60,7 +60,7 @@
                     }
                 ],
                 "label":"Basilica Aemilia",
-                "path":"183/null/593",
+                "path":"183/597",
                 "parentId":597,
                 "indexParent":1,
                 "catalogId":183,
@@ -69,7 +69,7 @@
         ],
         "label":"Die Basilica Aemilia auf dem Forum Romanum in Rom: Brennpunkt des öffentlichen Lebens",
         "text":"Nach der Errichtung in den 60er Jahren des 2. Jhs. v. Chr. durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius Nobilior wurde die Basilica mehrmals zerstört [...]",
-        "path":"183/null",
+        "path":"183",
         "catalogId":183,
         "hasChildren":true
     },

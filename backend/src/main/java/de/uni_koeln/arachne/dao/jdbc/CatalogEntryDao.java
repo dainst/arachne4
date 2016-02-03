@@ -1,35 +1,37 @@
 package de.uni_koeln.arachne.dao.jdbc;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.Types;
 import java.util.List;
 
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.uni_koeln.arachne.mapping.jdbc.Catalog;
+import com.mysql.jdbc.Statement;
+
+import de.uni_koeln.arachne.dao.hibernate.ArachneEntityDao;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.service.UserRightsService;
 
 @Repository("CatalogEntryDao")
 public class CatalogEntryDao extends SQLDao {
-	
+		
 	@Autowired
-    private transient SessionFactory sessionFactory;
+	private transient ArachneEntityDao arachneEntityDao;
 	
-	@Autowired
 	private transient UserRightsService userRightsService;
 	
-	@Transactional(readOnly=true)
+	// needed to inject mock for testing - it should work without this setter but it does not
+	@Autowired
+	public void setUserRightsService(final UserRightsService userRightsService) {
+		this.userRightsService = userRightsService;
+	}
+	
 	public CatalogEntry getById(final long catalogEntryId) {
 		return getById(catalogEntryId, false, 0, 0);
 	}
@@ -45,48 +47,32 @@ public class CatalogEntryDao extends SQLDao {
 	 * @return The CatalogEntry with the given id.
 	 */
 	@Transactional(readOnly=true)
-	public CatalogEntry getById(final long catalogEntryId, final boolean full, final int limit
-			, final int offset) {
+	public CatalogEntry getById(final long catalogEntryId, final boolean full, final int limit, final int offset) {
 		final String sqlQuery = "SELECT * from catalog_entry WHERE id = " + catalogEntryId;
 		if (full) {
 			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryFull);
 			return result;
 		} else {
 			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryDirectChildsOnly);
-			// TODO find a way to limit the result set at query time
+			// This should be fast enough as limiting at query time did not work reliably for h2
 			if (offset > 0) {
 				final List<CatalogEntry> children = result.getChildren();
-				final int childCount = children.size();
+				final int childCount = children == null ? 0 : children.size();
 				if (offset < childCount) {
 					children.subList(0, offset).clear();
 				}
 			}
 			if (limit > 0) {
 				final List<CatalogEntry> children = result.getChildren();
-				final int childCount = children.size();
-				if (childCount > limit) {
-					children.subList(limit, childCount).clear();
+				if (children != null) {
+					final int childCount = children == null ? 0 : children.size();
+					if (childCount > limit) {
+						children.subList(limit, childCount).clear();
+					}
 				}
 			}
 			return result;
 		}
-		/*final Session session = sessionFactory.getCurrentSession();
-		CatalogEntry result = session.get(CatalogEntry.class, catalogEntryId);
-		if (!full) {
-			int count = 0;
-			final List<CatalogEntry> children = result.getChildren();
-			final ListIterator<CatalogEntry> it = children.listIterator();
-			while (it.hasNext()) {
-				CatalogEntry catalogEntry = (CatalogEntry) it.next();
-				count++;
-				if (limit > 0 && (count <= offset || limit + offset < count)) {
-					it.remove();
-				} else {
-					//catalogEntry.removeChildren();
-				}
-			}
-		}
-		return result;*/
 	}
 	
 	@Transactional(readOnly=true)
@@ -106,122 +92,241 @@ public class CatalogEntryDao extends SQLDao {
 		return result;
 	}
 	
-	private CatalogEntry mapCatalogEntryDirectChildsOnly(ResultSet rs, int rowNum) throws SQLException {
+	/**
+	 * Retrieves a list of <code>CatalogEntries</code> that are connected to an Arachne entity.
+	 * @param entityId The arachne entity id of interest.
+	 * @return A list of catalog entries.
+	 */
+	@Transactional(readOnly=true)
+	public List<CatalogEntry> getByEntityId(final long entityId) {
+		final String sqlQuery = "SELECT * from catalog_entry WHERE arachne_entity_id = " + entityId;
+		List<CatalogEntry> result = query(sqlQuery, this::mapCatalogEntryNoChilds);
+		return result;
+	}
+		
+	@Transactional
+	public CatalogEntry saveCatalogEntry(final CatalogEntry newCatalogEntry) throws DataAccessException {
+		final String catalogIdQuery = "SELECT id "
+				+ "FROM catalog "
+				+ "WHERE id = " 
+				+ newCatalogEntry.getCatalogId()
+				+ " AND "
+				+ userRightsService.getSQL("Catalog");
+		final Long catalogId = queryForLong(catalogIdQuery);
+		
+		if (catalogId != null 
+				&& (newCatalogEntry.getArachneEntityId() == null
+				|| arachneEntityDao.getByEntityID(newCatalogEntry.getArachneEntityId()) != null)) {
+			final Long parentId = newCatalogEntry.getParentId();
+			if (parentId != null) {
+				newCatalogEntry.setPath(getById(parentId).getPath() + '/' + newCatalogEntry.getParentId());
+				int maxIndex = getChildrenSizeByParentId(parentId);
+				if (newCatalogEntry.getIndexParent() > maxIndex) {
+					newCatalogEntry.setIndexParent(maxIndex);
+				}
+
+				update(con -> {
+					final String sql = "UPDATE catalog_entry "
+							+ "SET index_parent = index_parent + 1 "
+							+ "WHERE (index_parent >= ? AND parent_id = ?)";
+					PreparedStatement ps = con.prepareStatement(sql);
+					ps.setLong(1, newCatalogEntry.getIndexParent());
+					ps.setObject(2, newCatalogEntry.getParentId(), Types.BIGINT);
+					return ps;
+				});
+			} else {
+				newCatalogEntry.setPath(String.valueOf(newCatalogEntry.getCatalogId()));
+				final String sql = "SELECT id FROM catalog_entry WHERE (catalog_id = " + newCatalogEntry.getCatalogId() 
+						+ " AND parent_id IS NULL)";
+				final Long catalogRootEntryId = queryForLong(sql);
+				if (catalogRootEntryId != null) {
+					delete(catalogRootEntryId);
+				}
+				newCatalogEntry.setIndexParent(0);
+			}
+			newCatalogEntry.setId(updateReturnKey(con -> {
+				final String sql = "INSERT INTO catalog_entry "
+						+ "(catalog_id, parent_id, arachne_entity_id, index_parent, path, label, text, creation) "
+						+ "VALUES "
+						+ "(?, ?, ?, ?, ?, ?, ?, NOW())";
+				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				ps.setLong(1, newCatalogEntry.getCatalogId());
+				ps.setObject(2, newCatalogEntry.getParentId(), Types.BIGINT);
+				ps.setObject(3, newCatalogEntry.getArachneEntityId(), Types.BIGINT);
+				ps.setInt(4, newCatalogEntry.getIndexParent());
+				ps.setString(5, newCatalogEntry.getPath());
+				ps.setString(6, newCatalogEntry.getLabel());
+				ps.setString(7, newCatalogEntry.getText());
+				return ps;
+			}));
+
+			return newCatalogEntry;
+		}
+		return null;
+	}
+		
+	@Transactional
+	public CatalogEntry updateCatalogEntry(final CatalogEntry newCatalogEntry) throws DataAccessException {
+		
+		// check if parent exists
+		final CatalogEntry parent = getById(newCatalogEntry.getParentId());
+		
+		if (parent != null && parent.getCatalogId() == newCatalogEntry.getCatalogId()) {
+			final CatalogEntry oldEntry = getById(newCatalogEntry.getId());
+			newCatalogEntry.setPath(oldEntry.getPath());
+			if (oldEntry.getIndexParent() != newCatalogEntry.getIndexParent() || 
+					oldEntry.getParentId() != newCatalogEntry.getParentId()) {
+				
+				int maxIndex = getChildrenSizeByParentId(newCatalogEntry.getParentId());
+				if (oldEntry.getParentId() != newCatalogEntry.getParentId()) {
+					newCatalogEntry.setPath(parent.getPath() + '/' + newCatalogEntry.getParentId());
+					if (newCatalogEntry.getIndexParent() > maxIndex) {
+						newCatalogEntry.setIndexParent(maxIndex);
+					}	
+				} else {
+					if (newCatalogEntry.getIndexParent() > maxIndex) {
+						newCatalogEntry.setIndexParent(maxIndex - 1);
+					}
+				}
+				
+				update(con -> {
+					final String sql = "UPDATE catalog_entry "
+							+ "SET index_parent = index_parent - 1 "
+							+ "WHERE (index_parent > ? AND parent_id = ?)";
+					PreparedStatement ps = con.prepareStatement(sql);
+					ps.setLong(1, oldEntry.getIndexParent());
+					ps.setLong(2, oldEntry.getParentId());
+					return ps;
+				});
+
+				update(con -> {
+					final String sql = "UPDATE catalog_entry "
+							+ "SET index_parent = index_parent + 1 "
+							+ "WHERE (index_parent >= ? AND parent_id = ?)";
+					PreparedStatement ps = con.prepareStatement(sql);
+					ps.setLong(1, newCatalogEntry.getIndexParent());
+					ps.setLong(2, newCatalogEntry.getParentId());
+					return ps;
+				});
+			}
+
+			update(con -> {
+				final String sql = "UPDATE catalog_entry SET "
+						+ "catalog_id = ?, parent_id = ?, arachne_entity_id = ?, index_parent = ?, path = ?, label = ?, "
+						+ "text = ? "
+						+ "WHERE id = ?";
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setLong(1, newCatalogEntry.getCatalogId());
+				ps.setObject(2, newCatalogEntry.getParentId(), Types.BIGINT);
+				ps.setObject(3, newCatalogEntry.getArachneEntityId(), Types.BIGINT);
+				ps.setInt(4, newCatalogEntry.getIndexParent());
+				ps.setString(5, newCatalogEntry.getPath());
+				ps.setString(6, newCatalogEntry.getLabel());
+				ps.setString(7, newCatalogEntry.getText());
+				ps.setLong(8, newCatalogEntry.getId());
+				return ps;
+			});
+			return newCatalogEntry;
+		}
+		return null;
+	}
+	
+	/**
+	 * Removes a catalog entry and all its children.
+	 * @param catalogEntryId The catalog entries id.
+	 * @return <code>true</code> if the entry was successfully deleted.
+	 * @throws DataAccessException
+	 */
+	@Transactional
+	public boolean delete(final long catalogEntryId) throws DataAccessException {
+		final CatalogEntry catalogEntry = getById(catalogEntryId);
+		
+		update(con -> {
+			final String sql = "UPDATE catalog_entry "
+					+ "SET index_parent = index_parent - 1 "
+					+ "WHERE (index_parent > ? AND parent_id = ?)";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setLong(1, catalogEntry.getIndexParent());
+			ps.setObject(2, catalogEntry.getParentId(), Types.BIGINT);
+			return ps;
+		});
+		
+		final List<CatalogEntry> children = catalogEntry.getChildren(); 
+		if (children != null) {
+			for (CatalogEntry child : children) {
+				delete(child.getId());
+			}
+		}
+		
+		final int updatedRows = update(con -> {
+			final String sql = "DELETE FROM catalog_entry WHERE id = ?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setLong(1, catalogEntryId);
+			return ps;
+		});
+		
+		return updatedRows == 1;
+	}
+
+	/**
+	 * Maps a SQL result set to the base fields of a catalog entry. It does not care about children at all.
+	 * @param rs The SQL result set.
+	 * @param rowNum The row number.
+	 * @return The mapped <code>CatalogEntry</code>.
+	 * @throws SQLException
+	 */
+	public CatalogEntry mapBaseCatalogEntry (ResultSet rs, int rowNum) throws SQLException {
 		final CatalogEntry catalogEntry = new CatalogEntry();
 		catalogEntry.setId(rs.getLong("id"));
 		catalogEntry.setCatalogId(rs.getLong("catalog_id"));
+		final long parentId = rs.getLong("parent_id");
+		catalogEntry.setParentId(rs.wasNull() ? null : parentId);
+		final long arachneEntityId = rs.getLong("arachne_entity_id");
+		catalogEntry.setArachneEntityId(rs.wasNull() ? null : arachneEntityId);
+		catalogEntry.setIndexParent(rs.getInt("index_parent"));
+		catalogEntry.setPath(rs.getString("path"));
 		catalogEntry.setLabel(rs.getString("label"));
+		catalogEntry.setText(rs.getString("text"));
+		return catalogEntry;
+	}
+	
+	/**
+	 * Maps a SQL result set to a catalog entry. Direct children are included.
+	 * @param rs The SQL result set.
+	 * @param rowNum The row number.
+	 * @return The mapped <code>CatalogEntry</code>.
+	 * @throws SQLException
+	 */
+	public CatalogEntry mapCatalogEntryDirectChildsOnly(ResultSet rs, int rowNum) throws SQLException {
+		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
 		catalogEntry.setChildren(getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryNoChilds));
 		return catalogEntry;
 	}
 	
-	private CatalogEntry mapCatalogEntryFull(ResultSet rs, int rowNum) throws SQLException {
-		final CatalogEntry catalogEntry = new CatalogEntry();
-		catalogEntry.setId(rs.getLong("id"));
-		catalogEntry.setCatalogId(rs.getLong("catalog_id"));
-		catalogEntry.setLabel(rs.getString("label"));
+	/**
+	 * Maps a SQL result set to a catalog entry. All children are included.
+	 * @param rs The SQL result set.
+	 * @param rowNum The row number.
+	 * @return The mapped <code>CatalogEntry</code>.
+	 * @throws SQLException
+	 */
+	public CatalogEntry mapCatalogEntryFull(ResultSet rs, int rowNum) throws SQLException {
+		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
 		catalogEntry.setChildren(getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryFull));
 		return catalogEntry;
 	}
 	
-	private CatalogEntry mapCatalogEntryNoChilds(ResultSet rs, int rowNum) throws SQLException {
-		final CatalogEntry catalogEntry = new CatalogEntry();
-		catalogEntry.setId(rs.getLong("id"));
-		catalogEntry.setCatalogId(rs.getLong("catalog_id"));
-		catalogEntry.setLabel(rs.getString("label"));
+	/**
+	 * Maps a SQL result set to a catalog entry. Children are not included but the <code>hasChildren</code> property 
+	 * is set.
+	 * @param rs The SQL result set.
+	 * @param rowNum The row number.
+	 * @return The mapped <code>CatalogEntry</code>.
+	 * @throws SQLException
+	 */
+	public CatalogEntry mapCatalogEntryNoChilds(ResultSet rs, int rowNum) throws SQLException {
+		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
 		catalogEntry.setHasChildren(getChildrenSizeByParentId(catalogEntry.getId()) > 0);
 		return catalogEntry;
 	}
-	
-	/**
-	 * Gets a list containing public catalog identifiers and corresponding catalog paths that are connected to an 
-	 * entity. The list is in ascending order.
-	 * @param entityId The entity identifier of interest.
-	 * @return A list of <code>Object[2]</code>. Id first, then path.
-	 */
-	@Transactional(readOnly=true)
-	public List<Object[]> getPublicCatalogIdsAndPathsByEntityId(final long entityId) {
-		final List<Object[]> result = new ArrayList<Object[]>();
-		for (final CatalogEntry catalogEntry : getByEntityId(entityId)) {
-			final Catalog catalog = catalogEntry.getCatalog(); 
-			if (catalog.isPublic()) {
-				result.add(new Object[] {catalog.getId(), catalogEntry.getPath()}); // NOPMD
-			}
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * Gets a list of private catalog identifiers that are connected to an entity. The list is in ascending order.
-	 * @param entityId The entity identifier of interest.
-	 * @return A list of catalog ids. 
-	 */
-	@Transactional(readOnly=true)
-	public List<Long> getPrivateCatalogIdsByEntityId(final long entityId) {
-		final List<Long> result = new ArrayList<Long>();
-		if (userRightsService.isSignedInUser()) {
-			for (final CatalogEntry catalogEntry : getByEntityId(entityId)) {
-				final Catalog catalog = catalogEntry.getCatalog(); 
-				if (!catalog.isPublic() && catalog.isCatalogOfUserWithId(userRightsService.getCurrentUser().getId())) {
-					result.add(catalog.getId());
-				}
-			}
-		}
-		return result;
-	}
-	
-	@Transactional(readOnly=true)
-	private List<CatalogEntry> getByEntityId(final long entityId) {
-		final Session session = sessionFactory.getCurrentSession();
-		final Criteria criteria = session.createCriteria(CatalogEntry.class);
-		criteria.add(Restrictions.eq("arachneEntityId", entityId));
-		@SuppressWarnings("unchecked")
-		List<CatalogEntry> result = criteria.list();
-		return result;
-	}
-	
-	@Transactional
-	public void deleteOrphanedCatalogEntries(final Catalog catalog) {
-		final List<Long> catalogEntryIds = new ArrayList<Long>();
-		final String querystring = "DELETE catalog_entry FROM catalog_entry LEFT JOIN catalog ON catalog_entry.catalog_id = "
-				+ "catalog.id WHERE catalog.id = :catalogId";
-		Query query;
-		
-		final Session session = sessionFactory.getCurrentSession();
-		if (catalog.getCatalogEntries() != null) {
-			for (final CatalogEntry referenced : catalog.getCatalogEntries()){
-				catalogEntryIds.add(referenced.getId());
-			}
-			query = session.createSQLQuery(querystring + " AND catalog_entry.id NOT IN (:ids)")
-					.setLong("catalogId", catalog.getId())
-					.setParameterList("ids", catalogEntryIds);
-			
-		} else {
-			query = session.createSQLQuery(querystring)
-					.setLong("catalogId", catalog.getId());
-		}
-		query.executeUpdate();
-	}
-	
-	@Transactional
-	public CatalogEntry updateCatalogEntry(final CatalogEntry catalogEntry) throws HibernateException {
-		final Session session = sessionFactory.getCurrentSession();
-		session.update(catalogEntry);
-		return catalogEntry;
-	}
-	
-	@Transactional
-	public CatalogEntry saveCatalogEntry(final CatalogEntry catalogEntry) throws HibernateException {
-		final Session session = sessionFactory.getCurrentSession();
-		session.save(catalogEntry);
-		return catalogEntry;
-	}
-	
-	@Transactional
-	public void deleteCatalogEntry(final CatalogEntry catalogEntry) throws HibernateException {
-		final Session session = sessionFactory.getCurrentSession();
-		session.delete(catalogEntry);
-	}
-
 }

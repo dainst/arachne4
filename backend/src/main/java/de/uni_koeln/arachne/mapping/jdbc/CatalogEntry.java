@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -13,27 +12,23 @@ public class CatalogEntry implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-	private Long id;
+	private Long id = null;
 
-	private Catalog catalog;
-	
-	private CatalogEntry parent;
-	
 	private List<CatalogEntry> children;
 
-	private long arachneEntityId;
+	private Long arachneEntityId = null;
 	
-	private String label;
+	private String label = null;
 	
-	private String text;
+	private String text = null;
 	
-	private String path;
+	private String path = null;
 	
-	private Long parentId;
+	private Long parentId = null;
 	
-	private Integer indexParent;
+	private int indexParent = 0;
 	
-	private long catalogId;
+	private Long catalogId = null;
 
 	private boolean hasChildren;
 
@@ -52,42 +47,16 @@ public class CatalogEntry implements Serializable {
 	}
 	
 	/**
-	 * @return the catalog
-	 * Not serialized, issues with recursion
-	 */
-	@JsonIgnore
-	public Catalog getCatalog() {
-		return catalog;
-	}
-
-	/**
-	 * @param catalog the catalog to set
-	 */
-	public void setCatalog(final Catalog catalog) {
-		this.catalog = catalog;
-
-		if (this.children != null){
-			for (CatalogEntry child : this.getChildren()){
-				if (child != null){
-					child.setParent(this);
-					catalog.addToCatalogEntries(child);
-					child.setCatalog(catalog);
-				}
-			}	
-		}
-	}
-
-	/**
 	 * @return the arachneEntityId
 	 */
-	public long getArachneEntityId() {
+	public Long getArachneEntityId() {
 		return arachneEntityId;
 	}
 
 	/**
 	 * @param arachneEntityId the arachneEntityId to set
 	 */
-	public void setArachneEntityId(final long arachneEntityId) {
+	public void setArachneEntityId(final Long arachneEntityId) {
 		this.arachneEntityId = arachneEntityId;
 	}
 
@@ -118,21 +87,6 @@ public class CatalogEntry implements Serializable {
 	public void setPath(String path) {
 		this.path = path;
 	}
-
-	/**
-	 * @return the parent
-	 */
-	@JsonIgnore
-	public CatalogEntry getParent() {
-		return parent;
-	}
-
-	/**
-	 * @param parent the parent to set
-	 */
-	public void setParent(CatalogEntry parent) {
-		this.parent = parent;
-	}	
 
 	/**
 	 * @return the children
@@ -174,39 +128,6 @@ public class CatalogEntry implements Serializable {
 	}
 	
 	/**
-	 * Recursively generates path attribute for the CatalogEntry and all its descendants
-	 */
-	public void generatePath(){
-		String seperator = "/";
-		 if (this.parent != null){
-			 this.path = this.parent.getPath() + seperator + this.getId();
-		 }
-		 else {
-			 this.path = this.getCatalog().getId() + seperator + this.getId();
-		 }
-		 if (this.children != null){
-				for (CatalogEntry child : this.getChildren()){
-					if (child != null){
-						child.generatePath();
-					}
-				}	
-		 }
-	}
-	
-	/**
-	 * Recursively removes this entry and all its descendants from the catalog
-	 */
-	public void removeFromCatalog(){
-		
-		if (this.children != null){
-			for (CatalogEntry child : this.getChildren()){
-				child.removeFromCatalog();
-			}	
-		}
-		this.catalog.getCatalogEntries().remove(this);
-	}
-
-	/**
 	 * @return the parentId
 	 */
 	public Long getParentId() {
@@ -223,28 +144,28 @@ public class CatalogEntry implements Serializable {
 	/**
 	 * @return the indexParent
 	 */
-	public Integer getIndexParent() {
+	public int getIndexParent() {
 		return indexParent;
 	}
 
 	/**
 	 * @param indexParent the indexParent to set
 	 */
-	public void setIndexParent(Integer indexParent) {
+	public void setIndexParent(int indexParent) {
 		this.indexParent = indexParent;
 	}
 
 	/**
 	 * @return the catalogId
 	 */
-	public long getCatalogId() {
+	public Long getCatalogId() {
 		return catalogId;
 	}
 
 	/**
 	 * @param catalogId the catalogId to set
 	 */
-	public void setCatalogId(long catalogId) {
+	public void setCatalogId(Long catalogId) {
 		this.catalogId = catalogId;
 	}
 
@@ -258,5 +179,72 @@ public class CatalogEntry implements Serializable {
 		} else {
 			return this.hasChildren;
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((arachneEntityId == null) ? 0 : arachneEntityId.hashCode());
+		result = prime * result + ((catalogId == null) ? 0 : catalogId.hashCode());
+		result = prime * result + (hasChildren ? 1231 : 1237);
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + indexParent;
+		result = prime * result + ((label == null) ? 0 : label.hashCode());
+		result = prime * result + ((parentId == null) ? 0 : parentId.hashCode());
+		result = prime * result + ((path == null) ? 0 : path.hashCode());
+		result = prime * result + ((text == null) ? 0 : text.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CatalogEntry other = (CatalogEntry) obj;
+		if (arachneEntityId == null) {
+			if (other.arachneEntityId != null)
+				return false;
+		} else if (!arachneEntityId.equals(other.arachneEntityId))
+			return false;
+		if (catalogId == null) {
+			if (other.catalogId != null)
+				return false;
+		} else if (!catalogId.equals(other.catalogId))
+			return false;
+		if (hasChildren != other.hasChildren)
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (indexParent != other.indexParent)
+			return false;
+		if (label == null) {
+			if (other.label != null)
+				return false;
+		} else if (!label.equals(other.label))
+			return false;
+		if (parentId == null) {
+			if (other.parentId != null)
+				return false;
+		} else if (!parentId.equals(other.parentId))
+			return false;
+		if (path == null) {
+			if (other.path != null)
+				return false;
+		} else if (!path.equals(other.path))
+			return false;
+		if (text == null) {
+			if (other.text != null)
+				return false;
+		} else if (!text.equals(other.text))
+			return false;
+		return true;
 	}
 }

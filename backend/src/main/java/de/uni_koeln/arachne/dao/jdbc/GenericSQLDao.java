@@ -42,7 +42,6 @@ public class GenericSQLDao extends SQLDao {
 	}
 	
 	public List<Map<String, String>> getConnectedEntities(final String contextType, final long entityId) {
-		@SuppressWarnings("unchecked")
 		final List<Map<String, String>> queryResult = (List<Map<String, String>>)query(sqlFactory
 				.getConnectedEntitiesQuery(contextType, entityId), new GenericEntitiesMapper("AdditionalInfosJSON"));
 
@@ -82,7 +81,6 @@ public class GenericSQLDao extends SQLDao {
 		sqlBuilder.retriveFullDataset(true);
 		final String sql= sqlBuilder.getSQL();
 		LOGGER.debug(sql);
-		@SuppressWarnings("unchecked")
 		final List<Map<String, String>> queryResult = (List<Map<String, String>>)query(sql
 				, new GenericEntitiesMapper("AdditionalInfosJSON"));
 
@@ -94,7 +92,6 @@ public class GenericSQLDao extends SQLDao {
 	
 	public List<? extends SQLResponseObject> getImageList(final String type
 			, final long internalId) {
-		@SuppressWarnings("unchecked")
 		final List<? extends SQLResponseObject> queryResult = (List<? extends SQLResponseObject>)query(sqlFactory
 				.getImageListQuery(type, internalId), new ImageRowMapper());
 				
@@ -105,7 +102,6 @@ public class GenericSQLDao extends SQLDao {
 	}
 
 	public List<Map<String, String>> getLiterature(final String tableName, final Long internalKey) {
-		@SuppressWarnings("unchecked")
 		final List<Map<String, String>> queryResult = (List<Map<String, String>>)query(
 				sqlFactory.getLiteratureQuery(tableName, internalKey)
 				, new GenericEntitiesMapper("AdditionalInfosJSON"));
