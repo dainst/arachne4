@@ -110,8 +110,7 @@ public class CatalogEntryDao extends SQLDao {
 				+ "FROM catalog "
 				+ "WHERE id = " 
 				+ newCatalogEntry.getCatalogId()
-				+ " AND "
-				+ userRightsService.getSQL("Catalog");
+				+ userRightsService.getSQL("catalog");
 		final Long catalogId = queryForLong(catalogIdQuery);
 		
 		if (catalogId != null 

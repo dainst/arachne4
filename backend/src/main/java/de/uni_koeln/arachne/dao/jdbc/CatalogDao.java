@@ -54,8 +54,7 @@ public class CatalogDao extends SQLDao {
 				+ "FROM catalog "
 				+ "WHERE id = " 
 				+ catalogId
-				+ " AND "
-				+ userRightsService.getSQL("Catalog");
+				+ userRightsService.getSQL("catalog");
 		return queryForObject(sql, (rs, rowNum) -> {
 			final Catalog catalog = new Catalog();
 			catalog.setId(rs.getLong("id"));
@@ -85,8 +84,8 @@ public class CatalogDao extends SQLDao {
 			final String sql = "SELECT catalog.*, catalog_benutzer.uid "
 					+ "FROM catalog "
 					+ "LEFT JOIN catalog_benutzer "
-					+ "ON id = catalog_id WHERE uid = ? AND "
-					+ userRightsService.getSQL("Catalog")
+					+ "ON id = catalog_id WHERE uid = ?"
+					+ userRightsService.getSQL("catalog")
 					+ " ORDER BY id";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setLong(1, uid);

@@ -57,7 +57,7 @@ public class TestCatalogDao {
 		MockitoAnnotations.initMocks(this);
 		when(userRightsService.isSignedInUser()).thenReturn(true);
 		when(userRightsService.getCurrentUser()).thenReturn(TestUserData.getUser());
-		when(userRightsService.getSQL("Catalog")).thenReturn("(DatensatzGruppeCatalog = 'userTestGroup' "
+		when(userRightsService.getSQL("catalog")).thenReturn(" AND (DatensatzGruppeCatalog = 'userTestGroup' "
 				+ "OR DatensatzGruppeCatalog = 'anotherTestGroup')");
 		
 		jdbcTemplate = new JdbcTemplate(datasource);
