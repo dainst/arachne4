@@ -81,10 +81,11 @@ public class CatalogDao extends SQLDao {
 	@Transactional(readOnly=true)
 	public List<Catalog> getByUserId(final long uid, final boolean full, final int limit, final int offset) {
 		List<Catalog> result = query(con -> {
-			final String sql = "SELECT catalog.*, catalog_benutzer.uid "
+			final String sql = "SELECT catalog.*, uid "
 					+ "FROM catalog "
 					+ "LEFT JOIN catalog_benutzer "
-					+ "ON id = catalog_id WHERE uid = ?"
+					+ "ON id = catalog_id "
+					+ "WHERE uid = ?"
 					+ userRightsService.getSQL("catalog")
 					+ " ORDER BY id";
 			PreparedStatement ps = con.prepareStatement(sql);
@@ -97,9 +98,7 @@ public class CatalogDao extends SQLDao {
 			catalog.setAuthor(rs.getString("author"));
 			catalog.setPublic(rs.getBoolean("public"));
 			catalog.setDatasetGroup(rs.getString("DatensatzGruppeCatalog"));
-			final Set<Long> userIds = new HashSet<Long>();
-			userIds.add(rs.getLong("uid"));
-			catalog.setUserIds(userIds);
+			catalog.setUserIds(getUserIds(catalog.getId()));
 			return catalog;
 		});
 		

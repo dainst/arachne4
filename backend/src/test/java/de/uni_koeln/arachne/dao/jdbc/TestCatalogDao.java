@@ -85,7 +85,7 @@ public class TestCatalogDao {
 		assertEquals("userTestGroup", catalog.getDatasetGroup());
 		final Set<Long> userIds = catalog.getUserIds();
 		assertNotNull(userIds);
-		assertFalse(userIds.isEmpty());
+		assertEquals(2, userIds.size());
 		
 		final CatalogEntry rootEntry = catalog.getRoot();
 		assertNotNull(rootEntry);
@@ -246,7 +246,7 @@ public class TestCatalogDao {
 		assertEquals("userTestGroup", catalog.getDatasetGroup());
 		Set<Long> userIds = catalog.getUserIds();
 		assertNotNull(userIds);
-		assertFalse(userIds.isEmpty());
+		assertEquals(2, userIds.size());
 		
 		CatalogEntry rootEntry = catalog.getRoot();
 		assertNotNull(rootEntry);
@@ -276,7 +276,7 @@ public class TestCatalogDao {
 		assertEquals("userTestGroup", catalog.getDatasetGroup());
 		userIds = catalog.getUserIds();
 		assertNotNull(userIds);
-		assertFalse(userIds.isEmpty());
+		assertEquals(1, userIds.size());
 		
 		rootEntry = catalog.getRoot();
 		assertNotNull(rootEntry);
