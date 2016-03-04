@@ -277,6 +277,13 @@
                 },
                 "children": [
                     {
+                        "id": "steindorff",
+                        "title": {
+                            "de": "Der Ägyptologe Georg Steindorff: Ein Briefnachlass und dessen wissenschaftsgeschichtliche Erforschung",
+                            "en": "The egyptologist Georg Steindorff: A heritage in letters and its scientific exploration"
+                        }
+                    },
+                    {
                         "id": "syrher",
                         "title": {
                             "de": "Syrian Heritage Archive Project",
