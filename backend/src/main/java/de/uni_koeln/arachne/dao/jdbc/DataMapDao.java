@@ -11,8 +11,9 @@ import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.mapping.jdbc.DatasetMapper;
 import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.EntityId;
-import de.uni_koeln.arachne.util.sql.SQLFactory;
+import de.uni_koeln.arachne.util.sql.SQLToolbox;
 import de.uni_koeln.arachne.util.sql.SimpleTableEntityQueryBuilder;
 import de.uni_koeln.arachne.util.sql.SingleEntitySubTablesQueryBuilder;
 import de.uni_koeln.arachne.util.sql.TableConnectionDescription;
@@ -25,7 +26,7 @@ public class DataMapDao extends SQLDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataMapDao.class);
 	
 	@Autowired
-	private transient SQLFactory sqlFactory;
+	private transient UserRightsService userRightsService;
 	
 	/**
 	 * Gets a map of values by Id
@@ -34,7 +35,7 @@ public class DataMapDao extends SQLDao {
 	 */
 	public Map<String, String> getById(final EntityId arachneId) {			
 
-		final String sql = sqlFactory.getSingleEntityQuery(arachneId);
+		final String sql = getSingleEntityQuery(arachneId);
 		
 		LOGGER.debug(sql);
 		
@@ -88,5 +89,20 @@ public class DataMapDao extends SQLDao {
 			map = temp.get(0);
 		}
 		return map;	
+	}
+	
+	private String getSingleEntityQuery(final EntityId entityId) {
+		final String tableName = entityId.getTableName();
+		final StringBuilder result = new StringBuilder(256)
+			.append("SELECT * FROM `")
+			.append(tableName)
+			
+			.append("` WHERE ")
+			.append(SQLToolbox.getQualifiedFieldname(tableName, SQLToolbox.generatePrimaryKeyName(tableName)))
+			.append(" = ")
+			.append(entityId.getInternalKey())
+			.append(userRightsService.getSQL(tableName))
+			.append(" LIMIT 1;");
+		return result.toString();
 	}
 }
