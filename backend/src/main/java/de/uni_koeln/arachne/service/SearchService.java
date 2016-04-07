@@ -14,11 +14,9 @@ import org.elasticsearch.action.search.SearchPhaseExecutionException;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.index.query.AndFilterBuilder;
-import org.elasticsearch.index.query.BoolFilterBuilder;
-import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
-import org.elasticsearch.index.query.GeoBoundingBoxFilterBuilder;
+import org.elasticsearch.index.query.AndQueryBuilder;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.GeoBoundingBoxQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
@@ -265,12 +263,12 @@ public class SearchService {
 			// TODO find a better way to convert facet values
 			if (aggregationName.equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
 				for (final MultiBucketsAggregation.Bucket bucket: aggregator.getBuckets()) {
-					final LatLong coord = GeoHash.decodeHash(bucket.getKey());
+					final LatLong coord = GeoHash.decodeHash((String) bucket.getKey());
 					facetMap.put("[" + coord.getLat() + ',' + coord.getLon() + ']', bucket.getDocCount());
 				}
 			} else {
 				for (final MultiBucketsAggregation.Bucket bucket: aggregator.getBuckets()) {
-					facetMap.put(bucket.getKey(), bucket.getDocCount());
+					facetMap.put((String) bucket.getKey(), bucket.getDocCount());
 				}
 			}
 			if (facetMap != null && !facetMap.isEmpty() && (filters == null || !filters.containsKey(aggregationName))) {
@@ -407,18 +405,18 @@ public class SearchService {
 			, final Multimap<String, String> filters
 			, final Double[] bbCoords) {
 		
-		FilterBuilder facetFilter = esService.getAccessControlFilter();
+		QueryBuilder facetFilter = esService.getAccessControlFilter();
 				
 		if (filters != null && !filters.isEmpty()) {
 			for (final Map.Entry<String, Collection<String>> filter: filters.asMap().entrySet()) {
 				// TODO find a way to unify this
 				if (filter.getKey().equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
 					final String filterValue = filter.getValue().iterator().next();
-					facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(
-							FilterBuilders.geoHashCellFilter(GeoHashGridAggregation.GEO_HASH_GRID_FIELD, filterValue));
+					facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
+							QueryBuilders.geoHashCellQuery(GeoHashGridAggregation.GEO_HASH_GRID_FIELD, filterValue));
 				} else {
-					facetFilter = FilterBuilders.boolFilter().must(facetFilter).must(
-							FilterBuilders.termFilter(filter.getKey(), filter.getValue()));
+					facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
+							QueryBuilders.termQuery(filter.getKey(), filter.getValue()));
 				}
 			}
 		}
@@ -442,17 +440,16 @@ public class SearchService {
 		
 		final QueryBuilder filteredQuery;
 		if (bbCoords.length == 4) {
-			GeoBoundingBoxFilterBuilder bBoxFilter = FilterBuilders.geoBoundingBoxFilter("places.location")
+			GeoBoundingBoxQueryBuilder bBoxFilter = QueryBuilders.geoBoundingBoxQuery("places.location")
 					.topLeft(bbCoords[0], bbCoords[1]).bottomRight(bbCoords[2], bbCoords[3]);
-			AndFilterBuilder andFilter = FilterBuilders.andFilter(facetFilter, bBoxFilter);
-			filteredQuery = QueryBuilders.filteredQuery(innerQuery, andFilter);
+			AndQueryBuilder andFilter = QueryBuilders.andQuery(facetFilter, bBoxFilter);
+			filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(andFilter);
 		} else {
-			filteredQuery = QueryBuilders.filteredQuery(innerQuery, facetFilter);
+			filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(facetFilter);
 		}
 		
 		final ScriptScoreFunctionBuilder scoreFunction = ScoreFunctionBuilders
-				.scriptFunction("doc['boost'].value")
-				.lang("expression");
+				.scriptFunction("doc['boost'].value");
 		final QueryBuilder query = QueryBuilders.functionScoreQuery(filteredQuery, scoreFunction).boostMode("multiply");
 		
 		LOGGER.debug("Elastic search query: " + query.toString());
@@ -466,7 +463,7 @@ public class SearchService {
 	 */
 	private QueryBuilder buildContextQuery(Long entityId) {
 		
-		BoolFilterBuilder accessFilter = esService.getAccessControlFilter();
+		BoolQueryBuilder accessFilter = esService.getAccessControlFilter();
 		final TermQueryBuilder innerQuery = QueryBuilders.termQuery("connectedEntities", entityId);
 		final QueryBuilder query = QueryBuilders.filteredQuery(innerQuery, accessFilter);
 										

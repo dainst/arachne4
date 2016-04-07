@@ -90,9 +90,7 @@
                         "type":"geo_point",
                         "lat_lon":true,
                         "geohash_prefix":true,
-                        "geohash_precision":9,
-                        "normalize":false,
-                        "validate":true
+                        "geohash_precision":9
                     },
                     "gazetteerId":{  
                         "type":"long"

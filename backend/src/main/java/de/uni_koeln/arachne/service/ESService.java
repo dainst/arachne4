@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,16 +29,12 @@ import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.cluster.metadata.AliasMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
-import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.index.query.BoolFilterBuilder;
-import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
-import org.elasticsearch.index.query.OrFilterBuilder;
+import org.elasticsearch.index.IndexNotFoundException;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
 import org.elasticsearch.rest.RestStatus;
@@ -111,12 +108,13 @@ public class ESService implements ServletContextAware {
 		if (esRemoteClient) {
 			LOGGER.info("Setting up elasticsearch transport client...");
 			node = null;
-			final Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", esName).build();
-			client = new TransportClient(settings);
-			((TransportClient) client).addTransportAddress(new InetSocketTransportAddress(esAddress, esRemotePort));
+			final Settings settings = Settings.settingsBuilder().put("cluster.name", esName).build();
+			client = TransportClient.builder().settings(settings).build();
+			((TransportClient) client).addTransportAddress(new InetSocketTransportAddress(
+					new InetSocketAddress(esAddress, esRemotePort)));
 		} else {
 			LOGGER.info("Setting up elasticsearch node client...");
-			final Settings settings = ImmutableSettings.settingsBuilder().put("discovery.zen.ping.multicast.enabled", false).build();
+			final Settings settings = Settings.settingsBuilder().put("discovery.zen.ping.multicast.enabled", false).build();
 			node = NodeBuilder.nodeBuilder().client(true).clusterName(esName).settings(settings).node();
 			client = node.client();
 		}
@@ -137,7 +135,7 @@ public class ESService implements ServletContextAware {
 				LOGGER.error("Index " + indexName + " was not deleted.");
 				result = false;
 			}
-		} catch (IndexMissingException e) { // NOPMD
+		} catch (IndexNotFoundException e) { // NOPMD
 			// No problem if no index exists as it should be deleted anyways
 		}
 		return result;
@@ -161,17 +159,17 @@ public class ESService implements ServletContextAware {
 	 * This method constructs a access control query filter for Elasticsearch using the <code>UserRightsService</code>.
 	 * @return The constructed filter.
 	 */
-	public BoolFilterBuilder getAccessControlFilter() {
+	public BoolQueryBuilder getAccessControlFilter() {
 		final User user = userRightsService.getCurrentUser();
 		if (user.isAll_groups()) {
-			return FilterBuilders.boolFilter().must(FilterBuilders.matchAllFilter());
+			return QueryBuilders.boolQuery().must(QueryBuilders.matchAllQuery());
 		} else {
 			final Set<DatasetGroup> datasetGroups = user.getDatasetGroups();
-			final OrFilterBuilder orFilter = FilterBuilders.orFilter();
+			final BoolQueryBuilder orFilter = QueryBuilders.boolQuery();
 			for (final DatasetGroup datasetGroup: datasetGroups) {
-				orFilter.add(FilterBuilders.termFilter("datasetGroup", datasetGroup.getName()));
+				orFilter.should(QueryBuilders.termQuery("datasetGroup", datasetGroup.getName()));
 			}
-			return FilterBuilders.boolFilter().must(orFilter);
+			return QueryBuilders.boolQuery().must(orFilter);
 		}
 	}
 
@@ -221,7 +219,7 @@ public class ESService implements ServletContextAware {
 		CreateIndexRequestBuilder prepareCreate = client.admin().indices().prepareCreate(indexName);
 
 		if (!"undefined".equals(settings)) {
-			prepareCreate = prepareCreate.setSettings(ImmutableSettings.settingsBuilder().loadFromSource(settings));
+			prepareCreate = prepareCreate.setSettings(Settings.settingsBuilder().loadFromSource(settings));
 		}
 
 		final CreateIndexResponse createResponse = prepareCreate.execute().actionGet();
@@ -283,7 +281,7 @@ public class ESService implements ServletContextAware {
 		if (!enabled) {
 			refreshValue = "-1";
 		}
-		final Settings settings = ImmutableSettings.settingsBuilder().put("refresh_intervall", refreshValue).build();
+		final Settings settings = Settings.settingsBuilder().put("refresh_intervall", refreshValue).build();
 
 		final UpdateSettingsResponse response = client.admin().indices()
 				.prepareUpdateSettings(indexName)
@@ -312,7 +310,7 @@ public class ESService implements ServletContextAware {
 	 * set the new alias (this should only occur on the first dataimport as no alias to delete exists at that point). If this also fails 
 	 * the method throws the corresponding exception.
 	 */
-	public String updateSearchIndex() throws IllegalStateException, IndexMissingException {
+	public String updateSearchIndex() throws IllegalStateException, IndexNotFoundException {
 		final String indexName = getDataImportIndexName();
 		final String oldName = INDEX_2.equals(indexName) ? INDEX_1 : INDEX_2;
 		try {
@@ -329,7 +327,7 @@ public class ESService implements ServletContextAware {
 				LOGGER.error("Failed to set alias.");
 				throw new IllegalStateException("Failed to set aliases.");
 			}
-		} catch (IndexMissingException e) {
+		} catch (IndexNotFoundException e) {
 			LOGGER.warn("Failed to set alias. Index Missing. Trying to just set the new one.");
 			// perhaps we are running for the first time so try just to add the new alias
 			try {
@@ -343,7 +341,7 @@ public class ESService implements ServletContextAware {
 					LOGGER.error("Failed to set alias.");
 					throw new IllegalStateException("Failed to set aliases."); // NOPMD
 				}
-			} catch (IndexMissingException ime) {
+			} catch (IndexNotFoundException ime) {
 				LOGGER.error("Failed to set alias. Index Missing.");
 				throw ime;
 			}
@@ -376,7 +374,7 @@ public class ESService implements ServletContextAware {
 		
 		SearchResponse searchResponse = null;
 		SearchResponse acLessSearchResponse = null;
-		final FilterBuilder accessFilter = getAccessControlFilter();
+		final QueryBuilder accessFilter = getAccessControlFilter();
 
 		if (category == null) {
 			final QueryBuilder query = QueryBuilders.filteredQuery(
