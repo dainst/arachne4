@@ -26,7 +26,7 @@
 			</section>
 		</title>
 		<subtitle>
-			<section>
+			<section separator=" / ">
 				<field datasource="buchseite.seite_natuerlich" prefix="Seite: " />
 				<field datasource="buchseite.Originalpaginierung" prefix="(" postfix=")" />
 			</section>
