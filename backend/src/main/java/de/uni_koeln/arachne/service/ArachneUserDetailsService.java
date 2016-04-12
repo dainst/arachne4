@@ -16,7 +16,7 @@ import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 
 /**
- * Sping UserDetailsService implementation to retrieve user information from the DB.
+ * Spring UserDetailsService implementation to retrieve user information from the DB.
  * @author Reimar Grabowski
  */
 @Service
