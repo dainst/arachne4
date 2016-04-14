@@ -292,7 +292,12 @@ public class CatalogController {
 	public @ResponseBody ResponseEntity<Catalog> handleCatalogCreateRequest(@RequestBody final Catalog catalog) {
 
 		if (userRightsService.isSignedInUser()) {
-			return ResponseEntity.ok(catalogDao.saveCatalog(catalog));
+			final Catalog savedCatalog = catalogDao.saveCatalog(catalog);
+			if (savedCatalog != null) {
+				return ResponseEntity.ok(savedCatalog);
+			} else {
+				return new ResponseEntity<Catalog>(HttpStatus.UNPROCESSABLE_ENTITY);
+			}
 		} else {
 			return new ResponseEntity<Catalog>(HttpStatus.FORBIDDEN);
 		}

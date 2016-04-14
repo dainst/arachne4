@@ -617,6 +617,25 @@ public class TestCatalogDao {
 		assertNull(catalog);
 	}
 	
+	/* TODO uncomment when real in-memory MySQL is set up for unit test as h2 does not handle "NOT NULL" constrains 
+	 * like MySQL does, meaning it inserts 0 and there is no exception thrown
+	@Test
+	public void testSaveCatalogInvalidMissingDatasetGroup() {
+		final User user = TestUserData.getUser();
+		
+		CatalogEntry root = new CatalogEntry();
+		root.setLabel("new root label");
+		root.setText("some new text");
+		
+		Catalog catalog = new Catalog();
+		catalog.setAuthor(user.getFirstname() + " " + user.getLastname());
+		catalog.setUserIds(new HashSet<Long>(Arrays.asList(3L)));
+		catalog.setRoot(root);
+		
+		catalog = catalogDao.saveCatalog(catalog);
+		assertNull(catalog);
+	}*/
+	
 	@Test
 	public void testUpdateCatalog() {
 		final User user = TestUserData.getUser();

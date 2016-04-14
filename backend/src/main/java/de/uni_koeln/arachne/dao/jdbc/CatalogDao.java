@@ -6,8 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,8 @@ import de.uni_koeln.arachne.service.UserRightsService;
 @Repository("CatalogDao")
 public class CatalogDao extends SQLDao {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(CatalogDao.class);
+	
 	@Autowired
 	private transient CatalogEntryDao catalogEntryDao;
 	
@@ -150,17 +155,22 @@ public class CatalogDao extends SQLDao {
 		catalog.setPublic(false);
 		if (catalog.getId() == null && root != null && root.getId() == null && (root.getArachneEntityId() == null
 				|| arachneEntityDao.getByEntityID(root.getArachneEntityId()) != null)) {
-
-			catalog.setId(updateReturnKey(con -> {
-				final String sql = "INSERT INTO catalog "
-						+ "(author, public, DatensatzGruppeCatalog) "
-						+ "VALUES "
-						+ "(?, 0, ?)";
-				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, catalog.getAuthor());
-				ps.setString(2, catalog.getDatasetGroup());
-				return ps;
-			}));
+			
+			try {
+				catalog.setId(updateReturnKey(con -> {
+					final String sql = "INSERT INTO catalog "
+							+ "(author, public, DatensatzGruppeCatalog) "
+							+ "VALUES "
+							+ "(?, 0, ?)";
+					PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+					ps.setString(1, catalog.getAuthor());
+					ps.setString(2, catalog.getDatasetGroup());
+					return ps;
+				}));
+			} catch (DataIntegrityViolationException e) {
+				LOGGER.error(e.getMessage());
+				return null;
+			} 
 			
 			update(con -> {
 				final String sql = "INSERT INTO catalog_benutzer "

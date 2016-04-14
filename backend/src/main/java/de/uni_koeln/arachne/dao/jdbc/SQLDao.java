@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -178,7 +179,8 @@ public class SQLDao {
 		return jdbcTemplate.update(psc); 
 	}
 	
-	protected long updateReturnKey(final PreparedStatementCreator psc) {
+	protected long updateReturnKey(final PreparedStatementCreator psc) 
+			throws DataAccessException, DataIntegrityViolationException {
 		final KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(psc, keyHolder);
 		return keyHolder.getKey().longValue(); 

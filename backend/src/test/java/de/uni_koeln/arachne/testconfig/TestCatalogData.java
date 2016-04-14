@@ -15,9 +15,9 @@ public class TestCatalogData {
 		jdbcTemplate.execute("CREATE TABLE catalog("
 				+ "id int(10) PRIMARY KEY AUTO_INCREMENT,"
 				+ "root_id int(10),"
-				+ "author varchar(255),"
-				+ "public tinyint(1),"
-				+ "DatensatzGruppeCatalog varchar(255));");
+				+ "author varchar(255) NOT NULL,"
+				+ "public tinyint(1) NOT NULL,"
+				+ "DatensatzGruppeCatalog varchar(255) NOT NULL);");
 		jdbcTemplate.execute("INSERT INTO catalog("
 				+ "id, root_id, author, public, DatensatzGruppeCatalog)"
 				+ "VALUES"
