@@ -172,7 +172,7 @@ public class ResponseFactory {
 		response.setConnectedEntities(connectedEntities);
 		
 		// set catalogEntry data
-		final Set<Long> catalogIds = new HashSet<Long>();
+		/*final Set<Long> catalogIds = new HashSet<Long>();
 		final List<String> catalogPaths = new ArrayList<String>();
 		final List<Object[]> catalogData = catalogDao.getPublicCatalogIdsAndPathsByEntityId(arachneId.getArachneEntityID());
 		for (Object[] objects : catalogData) {
@@ -180,7 +180,7 @@ public class ResponseFactory {
 			catalogPaths.add((String)objects[1]);
 		}
 		response.setCatalogIds(catalogIds);
-		response.setCatalogPaths(catalogPaths);
+		response.setCatalogPaths(catalogPaths);*/
 		
 		// set degree
 		if (connectedEntities != null && !connectedEntities.isEmpty()) {
