@@ -416,7 +416,7 @@ public class SearchService {
 							QueryBuilders.geoHashCellQuery(GeoHashGridAggregation.GEO_HASH_GRID_FIELD, filterValue));
 				} else {
 					facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
-							QueryBuilders.termQuery(filter.getKey(), filter.getValue()));
+							QueryBuilders.termsQuery(filter.getKey(), filter.getValue()));
 				}
 			}
 		}
