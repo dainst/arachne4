@@ -24,6 +24,8 @@ import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.index.query.functionscore.script.ScriptScoreFunctionBuilder;
+import org.elasticsearch.script.Script;
+import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
@@ -107,11 +109,9 @@ public class SearchService {
 	public SearchRequestBuilder buildDefaultSearchRequest(final SearchParameters searchParameters
 			, final Multimap<String, String> filters) {
 		
-		SearchType searchType = (searchParameters.getLimit() > 0) ? SearchType.DFS_QUERY_THEN_FETCH : SearchType.COUNT;
-		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
 				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox()))
-				.setSearchType(searchType)
+				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setFrom(searchParameters.getOffset())
 				.setSize(searchParameters.getLimit());
 		
@@ -449,7 +449,7 @@ public class SearchService {
 		}
 		
 		final ScriptScoreFunctionBuilder scoreFunction = ScoreFunctionBuilders
-				.scriptFunction("doc['boost'].value");
+				.scriptFunction(new Script("doc['boost'].value", ScriptService.ScriptType.INLINE, "expression", null));
 		final QueryBuilder query = QueryBuilders.functionScoreQuery(filteredQuery, scoreFunction).boostMode("multiply");
 		
 		LOGGER.debug("Elastic search query: " + query.toString());
