@@ -19,7 +19,7 @@ public class Catalog {
 	
 	private Boolean isPublic;
 
-	private String datasetGroup;
+	private String datasetGroup = "Arachne";
 	
 	public Long getId() {
 		return id;
