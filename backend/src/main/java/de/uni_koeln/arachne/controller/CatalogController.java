@@ -160,16 +160,7 @@ public class CatalogController {
 					if (catalog.isCatalogOfUserWithId(user.getId())) {
 						catalogEntry.setId(null);
 						catalogEntry.setParentId(catalogEntryParent.getId());
-						if (catalogEntry.getIndexParent() == 0
-								|| catalogEntry.getIndexParent() >= catalogEntryParent
-								.getChildren().size()) {
-							catalogEntryParent.addToChildren(catalogEntry);
-						} else {
-							catalogEntryParent.getChildren().add(
-									catalogEntry.getIndexParent(), catalogEntry);
-						}
 						catalogEntry.setCatalogId(catalog.getId());
-						catalogEntryDao.updateCatalogEntry(catalogEntryParent);
 						try {
 							return ResponseEntity.ok(catalogEntryDao.saveCatalogEntry(catalogEntry));
 						} catch (Exception e) {
