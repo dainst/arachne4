@@ -209,6 +209,9 @@ public class CatalogDao extends SQLDao {
 			final Catalog oldCatalog = getById(newCatalog.getId());
 			final long userId = userRightsService.getCurrentUser().getId();
 			if (oldCatalog.isCatalogOfUserWithId(userId)) {
+				// if no datasetGroup is given use the old one
+				newCatalog.setDatasetGroup(newCatalog.getDatasetGroup() != null ? newCatalog.getDatasetGroup() 
+						: oldCatalog.getDatasetGroup());
 				update(con -> {
 					final String sql = "UPDATE catalog "
 							+ "SET author = ?, public = ?, DatensatzGruppeCatalog = ? "
@@ -222,27 +225,31 @@ public class CatalogDao extends SQLDao {
 					return ps;
 				});
 				
-				if (newCatalog.getUserIds() != null && !oldCatalog.getUserIds().equals(newCatalog.getUserIds())) {
-					update(con -> {
-						final String sql = "DELETE FROM catalog_benutzer "
-								+ "WHERE catalog_id = ?";
-						PreparedStatement ps = con.prepareStatement(sql);
-						ps.setLong(1, newCatalog.getId());
-						return ps;
-					});
-					
-					for (long uid : newCatalog.getUserIds()) {
+				if (newCatalog.getUserIds() != null) {
+					if (!oldCatalog.getUserIds().equals(newCatalog.getUserIds())) {
 						update(con -> {
-							final String sql = "INSERT INTO catalog_benutzer "
-									+ "(catalog_id, uid) "
-									+ "VALUES "
-									+ "(?, ?)";
-							PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+							final String sql = "DELETE FROM catalog_benutzer "
+									+ "WHERE catalog_id = ?";
+							PreparedStatement ps = con.prepareStatement(sql);
 							ps.setLong(1, newCatalog.getId());
-							ps.setLong(2, uid);
 							return ps;
 						});
+
+						for (long uid : newCatalog.getUserIds()) {
+							update(con -> {
+								final String sql = "INSERT INTO catalog_benutzer "
+										+ "(catalog_id, uid) "
+										+ "VALUES "
+										+ "(?, ?)";
+								PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+								ps.setLong(1, newCatalog.getId());
+								ps.setLong(2, uid);
+								return ps;
+							});
+						}
 					}
+				} else {
+					newCatalog.setUserIds(oldCatalog.getUserIds());
 				}
 				
 				newCatalog.setRoot(oldCatalog.getRoot());

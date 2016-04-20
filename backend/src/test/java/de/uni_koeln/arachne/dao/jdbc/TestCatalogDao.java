@@ -710,8 +710,6 @@ public class TestCatalogDao {
 		catalog.setDatasetGroup("userTestGroup");
 		catalog.setUserIds(null);
 				
-		assertTrue(catalogDao.getByUserId(2L, false).isEmpty());
-		
 		catalog = catalogDao.updateCatalog(catalog);
 		assertNotNull(catalog);
 		final Catalog updatedCatalog = catalogDao.getById(catalog.getId());
@@ -722,6 +720,23 @@ public class TestCatalogDao {
 		final Set<Long> userIds = new HashSet<Long>();
 		userIds.add(3L);
 		assertEquals(userIds, updatedCatalog.getUserIds());
+	}
+	
+	@Test
+	public void testUpdateCatalogNoDatasetGroup() {
+		final User user = TestUserData.getUser();
+		
+		Catalog catalog = new Catalog();
+		catalog.setId(2L);
+		final String author = user.getFirstname() + " " + user.getLastname();
+		catalog.setAuthor(author);
+		catalog.setPublic(false);
+		catalog.setDatasetGroup(null);
+						
+		final Catalog updatedCatalog = catalogDao.updateCatalog(catalog);
+		assertNotNull(updatedCatalog);
+		final Catalog persistedCatalog = catalogDao.getById(catalog.getId());
+		assertEquals(updatedCatalog, persistedCatalog);
 	}
 	
 	@Test
