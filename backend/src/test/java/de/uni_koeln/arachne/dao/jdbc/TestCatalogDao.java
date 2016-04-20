@@ -688,6 +688,32 @@ public class TestCatalogDao {
 	}
 	
 	@Test
+	public void testUpdateCatalogNoUserIds() {
+		final User user = TestUserData.getUser();
+				
+		Catalog catalog = new Catalog();
+		catalog.setId(2L);
+		final String author = user.getFirstname() + " " + user.getLastname();
+		catalog.setAuthor(author);
+		catalog.setPublic(false);
+		catalog.setDatasetGroup("userTestGroup");
+		catalog.setUserIds(null);
+				
+		assertTrue(catalogDao.getByUserId(2L, false).isEmpty());
+		
+		catalog = catalogDao.updateCatalog(catalog);
+		assertNotNull(catalog);
+		final Catalog updatedCatalog = catalogDao.getById(catalog.getId());
+		assertEquals(catalog.getAuthor(), updatedCatalog.getAuthor());
+		assertEquals(catalog.getDatasetGroup(), updatedCatalog.getDatasetGroup());
+		assertEquals(catalog.getId(), updatedCatalog.getId());
+		assertEquals(catalog.getRoot(), updatedCatalog.getRoot());
+		final Set<Long> userIds = new HashSet<Long>();
+		userIds.add(3L);
+		assertEquals(userIds, updatedCatalog.getUserIds());
+	}
+	
+	@Test
 	public void testDeleteCatalog() {
 		assertTrue(catalogDao.deleteCatalog(1L));
 		

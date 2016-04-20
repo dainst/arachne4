@@ -222,7 +222,7 @@ public class CatalogDao extends SQLDao {
 					return ps;
 				});
 				
-				if (!newCatalog.getUserIds().equals(oldCatalog.getUserIds())) {
+				if (newCatalog.getUserIds() != null && !oldCatalog.getUserIds().equals(newCatalog.getUserIds())) {
 					update(con -> {
 						final String sql = "DELETE FROM catalog_benutzer "
 								+ "WHERE catalog_id = ?";
