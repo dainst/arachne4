@@ -19,7 +19,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.testconfig.TestCatalogData;
@@ -72,7 +71,7 @@ public class TestCatalogEntryDao {
 		assertEquals(Long.valueOf(1), catalogEntry.getId());
 		assertEquals(Long.valueOf(1), catalogEntry.getCatalogId());
 		assertEquals("root of catalog 1 test label", catalogEntry.getLabel());
-		assertTrue(catalogEntry.isHasChildren());
+		assertTrue(catalogEntry.hasChildren());
 		
 		final List<CatalogEntry> children = catalogEntry.getChildren(); 
 		assertNotNull(children);
@@ -80,21 +79,21 @@ public class TestCatalogEntryDao {
 		assertEquals("child test label No. 1", children.get(0).getLabel());
 		assertNull(children.get(0).getText());
 		assertEquals(Long.valueOf(666), children.get(0).getArachneEntityId());
-		assertTrue(children.get(0).isHasChildren());
+		assertTrue(children.get(0).hasChildren());
 		
 		List<CatalogEntry> childrenLevel1 = children.get(0).getChildren();
 		assertNull(childrenLevel1);
 		assertEquals("child test label No. 2", children.get(1).getLabel());
 		assertEquals("some text for child No. 2", children.get(1).getText());
 		assertNull(children.get(1).getArachneEntityId());
-		assertFalse(children.get(1).isHasChildren());
+		assertFalse(children.get(1).hasChildren());
 		
 		childrenLevel1 = children.get(1).getChildren();
 		assertNull(childrenLevel1);
 		assertEquals("child test label No. 3", children.get(2).getLabel());
 		assertEquals("some text for child No. 3", children.get(2).getText());
 		assertNull(children.get(2).getArachneEntityId());
-		assertFalse(children.get(2).isHasChildren());
+		assertFalse(children.get(2).hasChildren());
 		
 		childrenLevel1 = children.get(2).getChildren();
 		assertNull(childrenLevel1);
@@ -107,37 +106,37 @@ public class TestCatalogEntryDao {
 		assertEquals(Long.valueOf(1), catalogEntry.getId());
 		assertEquals(Long.valueOf(1), catalogEntry.getCatalogId());
 		assertEquals("root of catalog 1 test label", catalogEntry.getLabel());
-		assertTrue(catalogEntry.isHasChildren());
+		assertTrue(catalogEntry.hasChildren());
 		
 		final List<CatalogEntry> children = catalogEntry.getChildren(); 
 		assertNotNull(children);
 		assertEquals(3, children.size());
 		assertEquals("child test label No. 3", children.get(2).getLabel());
-		assertFalse(children.get(2).isHasChildren());
+		assertFalse(children.get(2).hasChildren());
 		List<CatalogEntry> childrenLevel1 = children.get(2).getChildren();
 		assertNull(childrenLevel1);
 		assertEquals("child test label No. 2", children.get(1).getLabel());
-		assertFalse(children.get(1).isHasChildren());
+		assertFalse(children.get(1).hasChildren());
 		childrenLevel1 = children.get(1).getChildren();
 		assertNull(childrenLevel1);
 		assertEquals("child test label No. 1", children.get(0).getLabel());
-		assertTrue(children.get(0).isHasChildren());
+		assertTrue(children.get(0).hasChildren());
 		
 		childrenLevel1 = children.get(0).getChildren();
 		assertNotNull(childrenLevel1);
 		assertEquals(3, childrenLevel1.size());
 		assertEquals("child test label level 1 No. 1", childrenLevel1.get(0).getLabel());
-		assertFalse(childrenLevel1.get(0).isHasChildren());
+		assertFalse(childrenLevel1.get(0).hasChildren());
 		assertEquals("child test label level 1 No. 2", childrenLevel1.get(1).getLabel());
-		assertTrue(childrenLevel1.get(1).isHasChildren());
+		assertTrue(childrenLevel1.get(1).hasChildren());
 		assertEquals("child test label level 1 No. 3", childrenLevel1.get(2).getLabel());
-		assertFalse(childrenLevel1.get(2).isHasChildren());
+		assertFalse(childrenLevel1.get(2).hasChildren());
 		
 		final List<CatalogEntry> childrenLevel2 = childrenLevel1.get(1).getChildren();
 		assertNotNull(childrenLevel2);
 		assertEquals(1, childrenLevel2.size());
 		assertEquals("child test label level 2 No. 1", childrenLevel2.get(0).getLabel());
-		assertTrue(children.get(0).isHasChildren());		
+		assertTrue(children.get(0).hasChildren());
 	}
 	
 	@Test
@@ -147,13 +146,13 @@ public class TestCatalogEntryDao {
 		assertEquals(Long.valueOf(8), catalogEntry.getId());
 		assertEquals(Long.valueOf(1), catalogEntry.getCatalogId());
 		assertEquals("child test label No. 1", catalogEntry.getLabel());
-		assertTrue(catalogEntry.isHasChildren());
+		assertTrue(catalogEntry.hasChildren());
 		
 		final List<CatalogEntry> children = catalogEntry.getChildren(); 
 		assertNotNull(children);
 		assertEquals(1, children.size());
 		assertEquals("child test label level 1 No. 1", children.get(0).getLabel());
-		assertFalse(children.get(0).isHasChildren());
+		assertFalse(children.get(0).hasChildren());
 		
 		final List<CatalogEntry> childrenLevel1 = children.get(0).getChildren();
 		assertNull(childrenLevel1);
@@ -166,18 +165,18 @@ public class TestCatalogEntryDao {
 		assertEquals(Long.valueOf(8), catalogEntry.getId());
 		assertEquals(Long.valueOf(1), catalogEntry.getCatalogId());
 		assertEquals("child test label No. 1", catalogEntry.getLabel());
-		assertTrue(catalogEntry.isHasChildren());
+		assertTrue(catalogEntry.hasChildren());
 		
 		final List<CatalogEntry> children = catalogEntry.getChildren(); 
 		assertNotNull(children);
 		assertEquals(2, children.size());
 		assertEquals("child test label level 1 No. 2", children.get(0).getLabel());
-		assertTrue(children.get(0).isHasChildren());
+		assertTrue(children.get(0).hasChildren());
 		
 		List<CatalogEntry> childrenLevel1 = children.get(0).getChildren();
 		assertNull(childrenLevel1);
 		assertEquals("child test label level 1 No. 3", children.get(1).getLabel());
-		assertFalse(children.get(1).isHasChildren());
+		assertFalse(children.get(1).hasChildren());
 		
 		childrenLevel1 = children.get(0).getChildren();
 		assertNull(childrenLevel1);
@@ -190,13 +189,13 @@ public class TestCatalogEntryDao {
 		assertEquals(Long.valueOf(8), catalogEntry.getId());
 		assertEquals(Long.valueOf(1), catalogEntry.getCatalogId());
 		assertEquals("child test label No. 1", catalogEntry.getLabel());
-		assertTrue(catalogEntry.isHasChildren());
+		assertTrue(catalogEntry.hasChildren());
 		
 		final List<CatalogEntry> children = catalogEntry.getChildren(); 
 		assertNotNull(children);
 		assertEquals(1, children.size());
 		assertEquals("child test label level 1 No. 2", children.get(0).getLabel());
-		assertTrue(children.get(0).isHasChildren());
+		assertTrue(children.get(0).hasChildren());
 		
 		final List<CatalogEntry> childrenLevel1 = children.get(0).getChildren();
 		assertNull(childrenLevel1);		

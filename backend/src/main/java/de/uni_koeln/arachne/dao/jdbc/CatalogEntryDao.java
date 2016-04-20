@@ -325,7 +325,7 @@ public class CatalogEntryDao extends SQLDao {
 	 */
 	public CatalogEntry mapCatalogEntryNoChilds(ResultSet rs, int rowNum) throws SQLException {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
-		catalogEntry.setHasChildren(getChildrenSizeByParentId(catalogEntry.getId()) > 0);
+		catalogEntry.setTotalChildren(getChildrenSizeByParentId(catalogEntry.getId()));
 		return catalogEntry;
 	}
 }
