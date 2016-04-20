@@ -29,11 +29,11 @@ public class Catalog {
 		this.id = id;
 	}
 
+	@JsonIgnore
 	public Set<Long> getUserIds() {
 		return userIds;
 	}
 	
-	@JsonIgnore
 	public void setUserIds(final Set<Long> userIds) {
 		this.userIds = userIds;
 	}
