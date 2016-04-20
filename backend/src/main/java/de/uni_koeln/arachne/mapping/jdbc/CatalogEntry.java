@@ -30,7 +30,7 @@ public class CatalogEntry implements Serializable {
 	
 	private Long catalogId = null;
 
-	private boolean hasChildren;
+	private int totalChildren;
 
 	/**
 	 * @return the id
@@ -169,16 +169,30 @@ public class CatalogEntry implements Serializable {
 		this.catalogId = catalogId;
 	}
 
-	public void setHasChildren(boolean hasChildren) {
-		this.hasChildren = hasChildren;
+	/**
+	 * @param totalChildren the total number of children
+     */
+	public void setTotalChildren(int totalChildren) {
+		this.totalChildren = totalChildren;
 	}
-	
-	public boolean isHasChildren() {
+
+	/**
+	 * @return the total number of children
+     */
+	public int getTotalChildren() {
 		if (children != null) {
-			return !children.isEmpty();
+			return children.size();
 		} else {
-			return this.hasChildren;
+			return this.totalChildren;
 		}
+	}
+
+	/**
+	 * @return true if entry has children, false otherwise
+     */
+	public boolean hasChildren() {
+		if (children == null) return this.totalChildren > 0;
+		else return children.size() > 0;
 	}
 
 	@Override
@@ -187,7 +201,7 @@ public class CatalogEntry implements Serializable {
 		int result = 1;
 		result = prime * result + ((arachneEntityId == null) ? 0 : arachneEntityId.hashCode());
 		result = prime * result + ((catalogId == null) ? 0 : catalogId.hashCode());
-		result = prime * result + (hasChildren ? 1231 : 1237);
+		result = prime * result + totalChildren;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + indexParent;
 		result = prime * result + ((label == null) ? 0 : label.hashCode());
@@ -216,7 +230,7 @@ public class CatalogEntry implements Serializable {
 				return false;
 		} else if (!catalogId.equals(other.catalogId))
 			return false;
-		if (hasChildren != other.hasChildren)
+		if (totalChildren != other.totalChildren)
 			return false;
 		if (id == null) {
 			if (other.id != null)

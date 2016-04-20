@@ -9,7 +9,7 @@
                 "parentId":597,
                 "indexParent":0,
                 "catalogId":183,
-                "hasChildren":false
+                "totalChildren":0
             },
             {  
                 "id":593,
@@ -32,7 +32,7 @@
                                                 "parentId":598,
                                                 "indexParent":0,
                                                 "catalogId":183,
-                                                "hasChildren":false
+                                                "totalChildren":0
                                             }
                                         ],
                                         "label":"Fundamente",
@@ -40,7 +40,7 @@
                                         "parentId":596,
                                         "indexParent":0,
                                         "catalogId":183,
-                                        "hasChildren":true
+                                        "totalChildren":1
                                     }
                                 ],
                                 "label":"Republikanische Zeit",
@@ -48,7 +48,7 @@
                                 "parentId":595,
                                 "indexParent":0,
                                 "catalogId":183,
-                                "hasChildren":true
+                                "totalChildren":1
                             }
                         ],
                         "label":"Aula",
@@ -56,7 +56,7 @@
                         "parentId":593,
                         "indexParent":0,
                         "catalogId":183,
-                        "hasChildren":true
+                        "totalChildren":1
                     }
                 ],
                 "label":"Basilica Aemilia",
@@ -64,14 +64,14 @@
                 "parentId":597,
                 "indexParent":1,
                 "catalogId":183,
-                "hasChildren":true
+                "totalChildren":1
             }
         ],
         "label":"Die Basilica Aemilia auf dem Forum Romanum in Rom: Brennpunkt des öffentlichen Lebens",
         "text":"Nach der Errichtung in den 60er Jahren des 2. Jhs. v. Chr. durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius Nobilior wurde die Basilica mehrmals zerstört [...]",
         "path":"183",
         "catalogId":183,
-        "hasChildren":true
+        "totalChildren":2
     },
     "author":"Testauthor",
     "public":false

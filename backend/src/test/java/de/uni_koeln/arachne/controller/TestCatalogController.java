@@ -61,7 +61,7 @@ public class TestCatalogController {
 	static final String EXPECTED_CATALOG_NO_CHILDS = "{\"id\":83,\"root\":{\"id\":597,\"label\":\"Die Basilica Aemilia "
 			+ "auf dem Forum Romanum in Rom: Brennpunkt des öffentlichen Lebens\",\"text\":\"Nach der Errichtung in den"
 			+ " 60er Jahren des 2. Jhs. v. Chr. durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius Nobilior "
-			+ "wurde die Basilica mehrmals zerstört [...]\",\"catalogId\":83,\"hasChildren\":true},\"author\":"
+			+ "wurde die Basilica mehrmals zerstört [...]\",\"catalogId\":83,\"totalChildren\":2},\"author\":"
 			+ "\"Testauthor\",\"public\":false}";
 	
 	@SuppressWarnings("unchecked")
@@ -84,7 +84,7 @@ public class TestCatalogController {
 		catalog.setUserIds(users);
 		CatalogEntry entry = catalog.getRoot();
 		entry.setCatalogId(catalog.getId());
-		entry.setHasChildren(entry.getChildren() != null || entry.getChildren().isEmpty());
+		entry.setTotalChildren(entry.getTotalChildren());
 		entry.setChildren(null);
 		
 		// full root entry
@@ -151,7 +151,7 @@ public class TestCatalogController {
 		catalogNoChilds.setUserIds(users);
 		final CatalogEntry root = catalogNoChilds.getRoot();
 		for (CatalogEntry catalogEntry : root.getChildren()) {
-			catalogEntry.setHasChildren(catalogEntry.getChildren() != null || catalogEntry.getChildren().isEmpty());
+			entry.setTotalChildren(entry.getTotalChildren());
 			catalogEntry.setChildren(null);
 		}
 		
@@ -186,7 +186,7 @@ public class TestCatalogController {
 						+ "Brennpunkt des öffentlichen Lebens\",\""
 						+ "text\":\"Nach der Errichtung in den 60er Jahren des 2. Jhs. v. Chr. durch "
 						+ "die beiden Konsuln M. Aemilius Lepidus und M. Fulvius Nobilior wurde die "
-						+ "Basilica mehrmals zerstört [...]\",\"catalogId\":83,\"hasChildren\":true})"));
+						+ "Basilica mehrmals zerstört [...]\",\"catalogId\":83,\"totalChildren\":2})"));
 		
 		// forbidden
 		mockMvc.perform(
@@ -204,21 +204,21 @@ public class TestCatalogController {
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 				.andExpect(content().json("{\"id\":597,\"children\":[{\"id\":594,\""
 						+ "label\":\"Vorbebauung\",\"parentId\":597,\"indexParent\":0,\"catalogId\":83,\""
-						+ "hasChildren\":false},{\"id\":593,\"children\":[{\"id\":595,\""
+						+ "totalChildren\":0},{\"id\":593,\"children\":[{\"id\":595,\""
 						+ "children\":[{\"id\":596,\"children\":[{\"id\":598,\""
 						+ "children\":[{\"id\":599,\"arachneEntityId\":1184191,\""
 						+ "label\":\"Fundamente der Innensäulen\",\"text\":\"Die Fundamente der Innensäulen.\",\""
-						+ "parentId\":598,\"indexParent\":0,\"catalogId\":83,\"hasChildren\":false}],\""
+						+ "parentId\":598,\"indexParent\":0,\"catalogId\":83,\"totalChildren\":0}],\""
 						+ "label\":\"Fundamente\",\"parentId\":596,\"indexParent\":0,\"catalogId\":83,\""
-						+ "hasChildren\":true}],\"label\":\"Republikanische Zeit\",\"parentId\":595,\""
-						+ "indexParent\":0,\"catalogId\":83,\"hasChildren\":true}],\"label\":\"Aula\",\""
-						+ "parentId\":593,\"indexParent\":0,\"catalogId\":83,\"hasChildren\":true}],\""
+						+ "totalChildren\":1}],\"label\":\"Republikanische Zeit\",\"parentId\":595,\""
+						+ "indexParent\":0,\"catalogId\":83,\"totalChildren\":1}],\"label\":\"Aula\",\""
+						+ "parentId\":593,\"indexParent\":0,\"catalogId\":83,\"totalChildren\":1}],\""
 						+ "label\":\"Basilica Aemilia\",\"parentId\":597,\"indexParent\":1,\"catalogId\":83,\""
-						+ "hasChildren\":true}],\"label\":\"Die Basilica Aemilia auf dem Forum Romanum in Rom: "
+						+ "totalChildren\":1}],\"label\":\"Die Basilica Aemilia auf dem Forum Romanum in Rom: "
 						+ "Brennpunkt des öffentlichen Lebens\",\"text\":\"Nach der Errichtung in den 60er Jahren "
 						+ "des 2. Jhs. v. Chr. durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius "
 						+ "Nobilior wurde die Basilica mehrmals zerstört [...]\",\"catalogId\":83,\""
-						+ "hasChildren\":true}"));
+						+ "totalChildren\":2}"));
 	}
 	
 	@Test
