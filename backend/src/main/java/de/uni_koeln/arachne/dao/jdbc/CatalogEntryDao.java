@@ -173,7 +173,7 @@ public class CatalogEntryDao extends SQLDao {
 		// check if parent exists
 		final CatalogEntry parent = getById(newCatalogEntry.getParentId());
 		
-		if (parent != null && parent.getCatalogId() == newCatalogEntry.getCatalogId()) {
+		if (parent != null && parent.getCatalogId().equals(newCatalogEntry.getCatalogId())) {
 			final CatalogEntry oldEntry = getById(newCatalogEntry.getId());
 			newCatalogEntry.setPath(oldEntry.getPath());
 			if (oldEntry.getIndexParent() != newCatalogEntry.getIndexParent() || 
