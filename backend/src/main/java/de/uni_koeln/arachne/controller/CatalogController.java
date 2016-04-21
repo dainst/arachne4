@@ -94,7 +94,7 @@ public class CatalogController {
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<CatalogEntry> handleUpdateCatalogEntryRequest(
 			@PathVariable("catalogEntryId") final Long catalogEntryId,
-			@RequestBody final CatalogEntry newCatalogEntry) {
+			@RequestBody CatalogEntry newCatalogEntry) {
 		
 		final User user = userRightsService.getCurrentUser();
 		final CatalogEntry oldCatalogEntry = catalogEntryDao.getById(catalogEntryId);
@@ -102,10 +102,14 @@ public class CatalogController {
 			Catalog catalog = catalogDao.getById(oldCatalogEntry.getCatalogId());
 			if (userRightsService.isSignedInUser() && catalog.isCatalogOfUserWithId(user.getId())) {
 				if (oldCatalogEntry.getId().equals(newCatalogEntry.getId())) {
-						return ResponseEntity.status(HttpStatus.OK).body(
-								catalogEntryDao.updateCatalogEntry(newCatalogEntry));
+					newCatalogEntry = catalogEntryDao.updateCatalogEntry(newCatalogEntry);	
+					if (newCatalogEntry != null) {
+						return ResponseEntity.status(HttpStatus.OK).body(newCatalogEntry);
+					} else {
+						return new ResponseEntity<CatalogEntry>(HttpStatus.UNPROCESSABLE_ENTITY);
+					}
 				} else {
-					return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
+					return new ResponseEntity<CatalogEntry>(HttpStatus.UNPROCESSABLE_ENTITY);
 				}
 			} else {
 				return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
