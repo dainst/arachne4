@@ -33,7 +33,7 @@ public class CatalogEntryDao extends SQLDao {
 	}
 	
 	public CatalogEntry getById(final long catalogEntryId) {
-		return getById(catalogEntryId, false, 0, 0);
+		return getById(catalogEntryId, false, -1, 0);
 	}
 	
 	/**
@@ -41,7 +41,7 @@ public class CatalogEntryDao extends SQLDao {
 	 * @param catalogEntryId The entries id.
 	 * @param full If all children of all children should be retrieved or only the direct children of the entry.
 	 * @param limit If <code>full = false</code> then limit restricts the number of direct children to the desired 
-	 * value.
+	 * value (-1 for no limit).
 	 * @param offset If <code>full = false</code> and <code>limit > 0</code> then offset gives an offset into the 
 	 * direct children list.
 	 * @return The CatalogEntry with the given id.
@@ -53,6 +53,9 @@ public class CatalogEntryDao extends SQLDao {
 			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryFull);
 			return result;
 		} else {
+			if (limit == 0) {
+				return queryForObject(sqlQuery, this::mapCatalogEntryNoChilds);
+			}
 			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryDirectChildsOnly);
 			// This should be fast enough as limiting at query time did not work reliably for h2
 			if (offset > 0) {

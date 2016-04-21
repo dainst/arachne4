@@ -107,8 +107,8 @@ public class TestCatalogController {
 		parent.setCatalogId(catalog.getId());
 		entryLeaf.setCatalogId(catalog.getId());
 		
-		when(catalogEntryDao.getById(1, false, 0, 0)).thenReturn(entry);
-		when(catalogEntryDao.getById(1, true, 0, 0)).thenReturn(entryFull);
+		when(catalogEntryDao.getById(1, false, -1, 0)).thenReturn(entry);
+		when(catalogEntryDao.getById(1, true, -1, 0)).thenReturn(entryFull);
 		when(catalogEntryDao.getById(598)).thenReturn(parent);
 		when(catalogEntryDao.getById(599)).thenReturn(entryLeaf);
 		when(catalogEntryDao.getById(600)).thenReturn(null);
@@ -121,9 +121,9 @@ public class TestCatalogController {
 			}
 		});
 
-		when(catalogDao.getByUserId(3, true)).thenReturn(Arrays.asList(catalog));
+		when(catalogDao.getByUserId(3, true, -1, 0)).thenReturn(Arrays.asList(catalog));
 		when(catalogDao.getById(83)).thenReturn(catalog);
-		when(catalogDao.getById(83, true, 0, 0)).thenReturn(catalog);
+		when(catalogDao.getById(83, true, -1, 0)).thenReturn(catalog);
 		when(catalogDao.updateCatalog(any(Catalog.class))).thenAnswer(new Answer<Catalog>() {
 
 			@Override
@@ -154,8 +154,8 @@ public class TestCatalogController {
 			catalogEntry.setChildren(null);
 		}
 		
-		when(catalogDao.getByUserId(3, false)).thenReturn(Arrays.asList(catalogNoChilds));
-		when(catalogDao.getById(83, false, 0, 0)).thenReturn(catalogNoChilds);
+		when(catalogDao.getByUserId(3, false, -1, 0)).thenReturn(Arrays.asList(catalogNoChilds));
+		when(catalogDao.getById(83, false, -1, 0)).thenReturn(catalogNoChilds);
 		
 		when(catalogDao.getPrivateCatalogIdsByEntityId(anyLong()))
 				.thenReturn(new ArrayList<Long>());

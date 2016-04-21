@@ -64,7 +64,7 @@ public class CatalogController {
 			@RequestParam(value = "offset", required = false) Integer offset) {
 		
 		full = (full == null) ? false : full;
-		limit = (limit == null) ? 0 : limit;
+		limit = (limit == null) ? -1 : limit;
 		offset = (offset == null) ? 0 : offset;
 		CatalogEntry result = null;
 		final User user = userRightsService.getCurrentUser();
@@ -190,14 +190,18 @@ public class CatalogController {
 			method = RequestMethod.GET,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<List<Catalog>> handleGetCatalogsRequest(
-			@RequestParam(value = "full", required = false) Boolean full) {
+			@RequestParam(value = "full", required = false) Boolean full,
+			@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "offset", required = false) Integer offset) {
 		
 		full = (full == null) ? false : full;
+		limit = (limit == null) ? -1 : limit;
+		offset = (offset == null) ? 0 : offset;
 		List<Catalog> result = null;
 		final User user = userRightsService.getCurrentUser();
 		
 		if (userRightsService.isSignedInUser()) {
-			result = catalogDao.getByUserId(user.getId(), full);
+			result = catalogDao.getByUserId(user.getId(), full, limit, offset);
 			if (result == null || result.isEmpty()) {
 				result = new ArrayList<Catalog>();
 			}
@@ -213,7 +217,7 @@ public class CatalogController {
 	 * requested format. If the given id does not refer to a catalog, a 404
 	 * error code is returned. if the catalog is not owned by the current user
 	 * or no user is signed in, a 403 error code is returned.
-	 * @param catalogId The ctalog id of interest.
+	 * @param catalogId The catalog id of interest.
 	 * @param full If the full catalog shall be retrieved (with all entries) or only root and it's direct children.
 	 * @return The catalog.
 	 */
@@ -227,7 +231,7 @@ public class CatalogController {
 			@RequestParam(value = "offset", required = false) Integer offset) {
 		
 		full = (full == null) ? false : full;
-		limit = (limit == null) ? 0 : limit;
+		limit = (limit == null) ? -1 : limit;
 		offset = (offset == null) ? 0 : offset;
 		final User user = userRightsService.getCurrentUser();
 		Catalog result = catalogDao.getById(catalogId, full, limit, offset);

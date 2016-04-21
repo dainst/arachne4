@@ -160,7 +160,7 @@ public class TestCatalogEntryDao {
 	
 	@Test
 	public void testGetByIdLongBooleanIntIntOffset() {
-		final CatalogEntry catalogEntry = catalogEntryDao.getById(8L, false, 0, 1);
+		final CatalogEntry catalogEntry = catalogEntryDao.getById(8L, false, -1, 1);
 		assertNotNull(catalogEntry);
 		assertEquals(Long.valueOf(8), catalogEntry.getId());
 		assertEquals(Long.valueOf(1), catalogEntry.getCatalogId());

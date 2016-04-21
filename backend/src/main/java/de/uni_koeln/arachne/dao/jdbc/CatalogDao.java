@@ -42,7 +42,7 @@ public class CatalogDao extends SQLDao {
 	}
 	
 	public Catalog getById(final long catalogId) {
-		return getById(catalogId, false, 0, 0);
+		return getById(catalogId, false, -1, 0);
 	}
 
 	/**
@@ -50,7 +50,8 @@ public class CatalogDao extends SQLDao {
 	 * @param catalogId The id of the catalog.
 	 * @param full Indicates if the full catalog (including all entries) or only the 'first level' of the catalog shall
 	 * be retrieved. Defaults to <code>false</code>.
-	 * @param limit If <code>full == false</code> then this parameter limits the children of the root entry.
+	 * @param limit If <code>full == false</code> then this parameter limits the children of the root entry (-1 for 
+	 * no limit).
 	 * @param offset If <code>full == false</code> then this parameter is an offset into the children of the root entry.
 	 * @return The catalog with the given id.
 	 */
@@ -80,10 +81,6 @@ public class CatalogDao extends SQLDao {
 		return new HashSet<Long>(uids);
 	}
 
-	public List<Catalog> getByUserId(final long uid, final boolean full) {
-		return getByUserId(uid, full, 0, 0);
-	}
-	
 	@Transactional(readOnly=true)
 	public List<Catalog> getByUserId(final long uid, final boolean full, final int limit, final int offset) {
 		List<Catalog> result = query(con -> {

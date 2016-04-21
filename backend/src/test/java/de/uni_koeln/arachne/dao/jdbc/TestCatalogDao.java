@@ -115,7 +115,7 @@ public class TestCatalogDao {
 	
 	@Test
 	public void testGetByIdLongBooleanIntIntFull() {
-		final Catalog catalog = catalogDao.getById(1, true, 0, 0);
+		final Catalog catalog = catalogDao.getById(1, true, -1, 0);
 		assertNotNull(catalog);
 		assertEquals(Long.valueOf(1), catalog.getId());
 		assertTrue(catalog.isPublic());
@@ -194,7 +194,7 @@ public class TestCatalogDao {
 	
 	@Test
 	public void testGetByIdLongBooleanIntIntOffset() {
-		final Catalog catalog = catalogDao.getById(1, false, 0, 1);
+		final Catalog catalog = catalogDao.getById(1, false, -1, 1);
 		assertNotNull(catalog);
 		assertEquals(Long.valueOf(1), catalog.getId());
 		assertTrue(catalog.isPublic());
@@ -247,7 +247,7 @@ public class TestCatalogDao {
 	
 	@Test
 	public void testGetByUserIdLong() {
-		final List<Catalog> catalogs = catalogDao.getByUserId(3, false);
+		final List<Catalog> catalogs = catalogDao.getByUserId(3, false, -1, 0);
 		assertNotNull(catalogs);
 		assertEquals(2, catalogs.size());
 		
@@ -298,7 +298,7 @@ public class TestCatalogDao {
 	
 	@Test
 	public void testGetByUserIdLongBooleanIntIntFull() {
-		final List<Catalog> catalogs = catalogDao.getByUserId(3, true, 0, 0);
+		final List<Catalog> catalogs = catalogDao.getByUserId(3, true, -1, 0);
 		assertNotNull(catalogs);
 		assertEquals(2, catalogs.size());
 		
@@ -404,7 +404,7 @@ public class TestCatalogDao {
 	
 	@Test
 	public void testGetByUserIdLongBooleanIntIntOffset() {
-		final List<Catalog> catalogs = catalogDao.getByUserId(3, false, 0, 1);
+		final List<Catalog> catalogs = catalogDao.getByUserId(3, false, -1, 1);
 		assertNotNull(catalogs);
 		assertEquals(2, catalogs.size());
 		
@@ -693,14 +693,14 @@ public class TestCatalogDao {
 		catalog.setDatasetGroup("userTestGroup");
 		catalog.setUserIds(new HashSet<Long>(Arrays.asList(3L, 2L)));
 				
-		assertTrue(catalogDao.getByUserId(2L, false).isEmpty());
+		assertTrue(catalogDao.getByUserId(2L, false, -1, 0).isEmpty());
 		
 		catalog = catalogDao.updateCatalog(catalog);
 		assertNotNull(catalog);
 		assertEquals(catalog, catalogDao.getById(catalog.getId()));
 				
-		assertEquals(2, catalogDao.getByUserId(3L, false).size());
-		assertEquals(1, catalogDao.getByUserId(2L, false).size());
+		assertEquals(2, catalogDao.getByUserId(3L, false, -1, 0).size());
+		assertEquals(1, catalogDao.getByUserId(2L, false, -1, 0).size());
 	}
 	
 	@Test
