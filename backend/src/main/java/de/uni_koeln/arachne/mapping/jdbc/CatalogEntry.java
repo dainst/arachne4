@@ -30,7 +30,7 @@ public class CatalogEntry implements Serializable {
 	
 	private Long catalogId = null;
 
-	private int totalChildren = -1;
+	private int totalChildren = 0;
 
 	/**
 	 * @return the id
