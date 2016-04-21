@@ -12,7 +12,8 @@
                 "parentId": 597,
                 "indexParent": 0,
                 "catalogId": 183,
-                "path": "183/597"
+                "path": "183/597",
+                "totalChildren": 0
             },
             {
                 "id": 593,
@@ -35,7 +36,8 @@
                                                 "parentId": 598,
                                                 "indexParent": 0,
                                                 "catalogId": 183,
-                                                "path": "183/597/593/595/596/598"
+                                                "path": "183/597/593/595/596/598",
+                                                "totalChildren": 0
                                             }
                                         ],
                                         "arachneEntityId": null,
@@ -44,7 +46,8 @@
                                         "parentId": 596,
                                         "indexParent": 0,
                                         "catalogId": 183,
-                                        "path": "183/597/593/595/596"
+                                        "path": "183/597/593/595/596",
+                                        "totalChildren": 1
                                     }
                                 ],
                                 "arachneEntityId": null,
@@ -53,7 +56,8 @@
                                 "parentId": 595,
                                 "indexParent": 0,
                                 "catalogId": 183,
-                                "path": "183/597/593/595"
+                                "path": "183/597/593/595",
+                                "totalChildren": 1
                             }
                         ],
                         "arachneEntityId": null,
@@ -62,7 +66,8 @@
                         "parentId": 593,
                         "indexParent": 0,
                         "catalogId": 183,
-                        "path": "183/597/593"
+                        "path": "183/597/593",
+                        "totalChildren": 1
                     }
                 ],
                 "arachneEntityId": null,
@@ -71,7 +76,8 @@
                 "parentId": 597,
                 "indexParent": 1,
                 "catalogId": 183,
-                "path": "183/597"
+                "path": "183/597",
+                "totalChildren": 1
             }
         ],
         "arachneEntityId": null,
@@ -80,7 +86,8 @@
         "parentId": null,
         "indexParent": null,
         "catalogId": 183,
-        "path": "183"
+        "path": "183",
+        "totalChildren": 2
     },
     "author": "Testauthor",
     "public": false

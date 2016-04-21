@@ -515,6 +515,7 @@ public class TestCatalogDao {
 		CatalogEntry root = new CatalogEntry();
 		root.setLabel("new root label");
 		root.setText("some new text");
+        root.setTotalChildren(0);
 		
 		Catalog catalog = new Catalog();
 		catalog.setAuthor(user.getFirstname() + " " + user.getLastname());
@@ -525,7 +526,8 @@ public class TestCatalogDao {
 		catalog = catalogDao.saveCatalog(catalog);
 		assertNotNull(catalog);
 		
-		final Catalog savedCatalog = catalogDao.getById(catalog.getId()); 
+		final Catalog savedCatalog = catalogDao.getById(catalog.getId());
+        assertEquals(catalog.getRoot().getTotalChildren(), savedCatalog.getRoot().getTotalChildren());
 		assertEquals(catalog, savedCatalog);
 		
 		root = catalog.getRoot();
@@ -547,6 +549,7 @@ public class TestCatalogDao {
 		root.setArachneEntityId(666L);
 		root.setLabel("new root label");
 		root.setText("some new text");
+        root.setTotalChildren(0);
 		
 		Catalog catalog = new Catalog();
 		catalog.setAuthor(user.getFirstname() + " " + user.getLastname());
@@ -557,7 +560,8 @@ public class TestCatalogDao {
 		catalog = catalogDao.saveCatalog(catalog);
 		assertNotNull(catalog);
 		
-		final Catalog savedCatalog = catalogDao.getById(catalog.getId()); 
+		final Catalog savedCatalog = catalogDao.getById(catalog.getId());
+        assertEquals(catalog.getRoot().getTotalChildren(), savedCatalog.getRoot().getTotalChildren());
 		assertEquals(catalog, savedCatalog);
 		
 		root = catalog.getRoot();

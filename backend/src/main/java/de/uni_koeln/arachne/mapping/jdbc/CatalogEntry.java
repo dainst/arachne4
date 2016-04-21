@@ -30,7 +30,7 @@ public class CatalogEntry implements Serializable {
 	
 	private Long catalogId = null;
 
-	private int totalChildren;
+	private int totalChildren = -1;
 
 	/**
 	 * @return the id
@@ -180,19 +180,14 @@ public class CatalogEntry implements Serializable {
 	 * @return the total number of children
      */
 	public int getTotalChildren() {
-		if (children != null) {
-			return children.size();
-		} else {
-			return this.totalChildren;
-		}
+		return this.totalChildren;
 	}
 
 	/**
 	 * @return true if entry has children, false otherwise
      */
 	public boolean hasChildren() {
-		if (children == null) return this.totalChildren > 0;
-		else return children.size() > 0;
+		return this.totalChildren > 0;
 	}
 
 	@Override

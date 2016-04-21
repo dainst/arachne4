@@ -238,10 +238,12 @@ public class TestCatalogEntryDao {
 		catalogEntry.setArachneEntityId(667L);
 		catalogEntry.setLabel("root of catalog 2 test label");
 		catalogEntry.setText("some text");
+        catalogEntry.setTotalChildren(0);
 		
 		catalogEntry = catalogEntryDao.saveCatalogEntry(catalogEntry);
 		
 		final CatalogEntry savedCatalogEntry = catalogEntryDao.getById(catalogEntry.getId());
+        assertEquals(catalogEntry.getTotalChildren(), savedCatalogEntry.getTotalChildren());
 		assertEquals(catalogEntry, savedCatalogEntry);
 		assertEquals(Long.valueOf(2), savedCatalogEntry.getCatalogId());
 		assertEquals(Long.valueOf(3), savedCatalogEntry.getParentId());
@@ -258,11 +260,13 @@ public class TestCatalogEntryDao {
 		catalogEntry.setParentId(null);
 		catalogEntry.setLabel("root of catalog 1 test label");
 		catalogEntry.setText("some text");
+        catalogEntry.setTotalChildren(0);
 		
 		catalogEntry = catalogEntryDao.saveCatalogEntry(catalogEntry);
 				
 		final CatalogEntry savedCatalogEntry = catalogEntryDao.getById(catalogEntry.getId());
 		assertNotNull(savedCatalogEntry);
+        assertEquals(catalogEntry.getTotalChildren(), savedCatalogEntry.getTotalChildren());
 		assertEquals(catalogEntry, savedCatalogEntry);
 		assertEquals("1", savedCatalogEntry.getPath());
 		
@@ -283,11 +287,13 @@ public class TestCatalogEntryDao {
 		catalogEntry.setIndexParent(17);
 		catalogEntry.setLabel("root of catalog 1 test label");
 		catalogEntry.setText("some text");
+        catalogEntry.setTotalChildren(0);
 		
 		catalogEntry = catalogEntryDao.saveCatalogEntry(catalogEntry);
 				
 		final CatalogEntry savedCatalogEntry = catalogEntryDao.getById(catalogEntry.getId());
 		assertNotNull(savedCatalogEntry);
+        assertEquals(catalogEntry.getTotalChildren(), savedCatalogEntry.getTotalChildren());
 		assertEquals(catalogEntry, savedCatalogEntry);
 		assertEquals(0, savedCatalogEntry.getIndexParent());		
 		
@@ -443,9 +449,11 @@ public class TestCatalogEntryDao {
 		catalogEntry.setArachneEntityId(667L);
 		catalogEntry.setLabel("some new label");
 		catalogEntry.setText("some text");
-		
+        catalogEntry.setTotalChildren(3);
+
 		catalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
-		
+
+        assertEquals(catalogEntry.getTotalChildren(), catalogEntryDao.getById(8L).getTotalChildren());
 		assertEquals(catalogEntry, catalogEntryDao.getById(8L));
 		assertEquals("1/1", catalogEntry.getPath());
 	}
@@ -458,8 +466,12 @@ public class TestCatalogEntryDao {
 		catalogEntry.setParentId(8L);
 		catalogEntry.setIndexParent(1);
 		catalogEntry.setLabel("child test label level 1 No. 1");
-		
-		assertEquals(catalogEntryDao.updateCatalogEntry(catalogEntry), catalogEntryDao.getById(4L));
+        catalogEntry.setTotalChildren(0);
+
+        CatalogEntry savedCatalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
+
+        assertEquals(catalogEntry.getTotalChildren(), catalogEntryDao.getById(4L).getTotalChildren());
+		assertEquals(savedCatalogEntry, catalogEntryDao.getById(4L));
 		
 		final List<CatalogEntry> catalogEntries = catalogEntryDao.getById(catalogEntry.getParentId()).getChildren();
 		assertEquals(3, catalogEntries.size());
@@ -480,8 +492,12 @@ public class TestCatalogEntryDao {
 		catalogEntry.setParentId(8L);
 		catalogEntry.setIndexParent(1000);
 		catalogEntry.setLabel("child test label level 1 No. 1");
-		
-		assertEquals(catalogEntryDao.updateCatalogEntry(catalogEntry), catalogEntryDao.getById(4L));
+        catalogEntry.setTotalChildren(0);
+
+        CatalogEntry savedCatalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
+
+        assertEquals(catalogEntry.getTotalChildren(), catalogEntryDao.getById(4L).getTotalChildren());
+        assertEquals(savedCatalogEntry, catalogEntryDao.getById(4L));
 		
 		final List<CatalogEntry> catalogEntries = catalogEntryDao.getById(catalogEntry.getParentId()).getChildren();
 		assertEquals(3, catalogEntries.size());
@@ -501,8 +517,12 @@ public class TestCatalogEntryDao {
 		catalogEntry.setParentId(1L);
 		catalogEntry.setIndexParent(0);
 		catalogEntry.setLabel("child test label level 1 No. 1");
-		
-		assertEquals(catalogEntryDao.updateCatalogEntry(catalogEntry), catalogEntryDao.getById(4L));
+        catalogEntry.setTotalChildren(0);
+
+        CatalogEntry savedCatalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
+
+        assertEquals(catalogEntry.getTotalChildren(), catalogEntryDao.getById(4L).getTotalChildren());
+        assertEquals(savedCatalogEntry, catalogEntryDao.getById(4L));
 		
 		List<CatalogEntry> catalogEntries = catalogEntryDao.getById(catalogEntry.getParentId()).getChildren();
 		assertEquals(4, catalogEntries.size());
@@ -530,6 +550,7 @@ public class TestCatalogEntryDao {
 		catalogEntry.setParentId(17L);
 		catalogEntry.setIndexParent(0);
 		catalogEntry.setLabel("child test label level 1 No. 1");
+        catalogEntry.setTotalChildren(0);
 		
 		final CatalogEntry savedCatalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
 		
@@ -545,6 +566,7 @@ public class TestCatalogEntryDao {
 		catalogEntry.setParentId(3L);
 		catalogEntry.setIndexParent(0);
 		catalogEntry.setLabel("child test label level 1 No. 1");
+        catalogEntry.setTotalChildren(0);
 		
 		final CatalogEntry savedCatalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
 		
@@ -560,8 +582,12 @@ public class TestCatalogEntryDao {
 		catalogEntry.setParentId(1L);
 		catalogEntry.setIndexParent(2);
 		catalogEntry.setLabel("child test label level 1 No. 2");
-		
-		assertEquals(catalogEntryDao.updateCatalogEntry(catalogEntry), catalogEntryDao.getById(6L));
+        catalogEntry.setTotalChildren(1);
+
+        CatalogEntry savedCatalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
+
+        assertEquals(catalogEntry.getTotalChildren(), catalogEntryDao.getById(6L).getTotalChildren());
+        assertEquals(savedCatalogEntry, catalogEntryDao.getById(6L));
 		
 		List<CatalogEntry> catalogEntries = catalogEntryDao.getById(catalogEntry.getParentId()).getChildren();
 		assertEquals(4, catalogEntries.size());
@@ -591,8 +617,12 @@ public class TestCatalogEntryDao {
 		catalogEntry.setParentId(1L);
 		catalogEntry.setIndexParent(17);
 		catalogEntry.setLabel("child test label level 1 No. 2");
-		
-		assertEquals(catalogEntryDao.updateCatalogEntry(catalogEntry), catalogEntryDao.getById(6L));
+		catalogEntry.setTotalChildren(1);
+
+        CatalogEntry savedCatalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
+
+        assertEquals(catalogEntry.getTotalChildren(), catalogEntryDao.getById(6L).getTotalChildren());
+        assertEquals(savedCatalogEntry, catalogEntryDao.getById(6L));
 		
 		List<CatalogEntry> catalogEntries = catalogEntryDao.getById(catalogEntry.getParentId()).getChildren();
 		assertEquals(4, catalogEntries.size());
@@ -621,6 +651,7 @@ public class TestCatalogEntryDao {
 		catalogEntry.setParentId(8L);
 		catalogEntry.setIndexParent(2);
 		catalogEntry.setLabel("child test label level 1 No. 2");
+        catalogEntry.setTotalChildren(0);
 		
 		catalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
 		assertNull(catalogEntry);

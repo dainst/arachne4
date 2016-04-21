@@ -10,10 +10,7 @@ import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -84,7 +81,7 @@ public class TestCatalogController {
 		catalog.setUserIds(users);
 		CatalogEntry entry = catalog.getRoot();
 		entry.setCatalogId(catalog.getId());
-		entry.setTotalChildren(entry.getTotalChildren());
+		entry.setTotalChildren(entry.getChildren().size());
 		entry.setChildren(null);
 		
 		// full root entry
@@ -151,7 +148,9 @@ public class TestCatalogController {
 		catalogNoChilds.setUserIds(users);
 		final CatalogEntry root = catalogNoChilds.getRoot();
 		for (CatalogEntry catalogEntry : root.getChildren()) {
-			entry.setTotalChildren(entry.getTotalChildren());
+            final List<CatalogEntry> children = catalogEntry.getChildren();
+			final int childCount = (children != null) ? children.size() : 0;
+            catalogEntry.setTotalChildren(childCount);
 			catalogEntry.setChildren(null);
 		}
 		
