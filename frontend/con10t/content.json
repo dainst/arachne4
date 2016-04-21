@@ -260,6 +260,12 @@
                         }
                     },
                     {
+                        "id": "fotothekmuenchen",
+                        "title": {
+                            "de": "Fotothek München//"
+                        }
+                    },
+                    {
                         "id": "hinkel",
                         "title": {
                             "de": "Hinkel"
