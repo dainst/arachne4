@@ -11,7 +11,8 @@
                 "text": null,
                 "parentId": 597,
                 "indexParent": 0,
-                "catalogId": 83
+                "catalogId": 83,
+                "totalChildren": 0
             },
             {
                 "id": 593,
@@ -33,7 +34,8 @@
                                                 "text": "Die Fundamente der Innensäulen.",
                                                 "parentId": 598,
                                                 "indexParent": 0,
-                                                "catalogId": 83
+                                                "catalogId": 83,
+                                                "totalChildren": 0
                                             }
                                         ],
                                         "arachneEntityId": null,
@@ -41,7 +43,8 @@
                                         "text": null,
                                         "parentId": 596,
                                         "indexParent": 0,
-                                        "catalogId": 83
+                                        "catalogId": 83,
+                                        "totalChildren": 1
                                     }
                                 ],
                                 "arachneEntityId": null,
@@ -49,7 +52,8 @@
                                 "text": null,
                                 "parentId": 595,
                                 "indexParent": 0,
-                                "catalogId": 83
+                                "catalogId": 83,
+                                "totalChildren": 1
                             }
                         ],
                         "arachneEntityId": null,
@@ -57,7 +61,8 @@
                         "text": null,
                         "parentId": 593,
                         "indexParent": 0,
-                        "catalogId": 83
+                        "catalogId": 83,
+                        "totalChildren": 1
                     }
                 ],
                 "arachneEntityId": null,
@@ -65,7 +70,8 @@
                 "text": null,
                 "parentId": 597,
                 "indexParent": 1,
-                "catalogId": 83
+                "catalogId": 83,
+                "totalChildren": 1
             }
         ],
         "arachneEntityId": null,
@@ -73,7 +79,8 @@
         "text": "Nach der Errichtung in den 60er Jahren des 2. Jhs. v. Chr. durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius Nobilior wurde die Basilica mehrmals zerstört [...]",
         "parentId": null,
         "indexParent": null,
-        "catalogId": 83
+        "catalogId": 83,
+        "totalChildren": 2
     },
     "author": "Testauthor",
     "public": false

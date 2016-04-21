@@ -298,7 +298,8 @@ public class CatalogEntryDao extends SQLDao {
 	 */
 	public CatalogEntry mapCatalogEntryDirectChildsOnly(ResultSet rs, int rowNum) throws SQLException {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
-		catalogEntry.setChildren(getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryNoChilds));
+        final List<CatalogEntry> children = getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryNoChilds);
+        setTotalChildren(catalogEntry, children);
 		return catalogEntry;
 	}
 	
@@ -311,7 +312,8 @@ public class CatalogEntryDao extends SQLDao {
 	 */
 	public CatalogEntry mapCatalogEntryFull(ResultSet rs, int rowNum) throws SQLException {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
-		catalogEntry.setChildren(getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryFull));
+        final List<CatalogEntry> children = getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryFull);
+        setTotalChildren(catalogEntry, children);
 		return catalogEntry;
 	}
 	
@@ -328,4 +330,10 @@ public class CatalogEntryDao extends SQLDao {
 		catalogEntry.setTotalChildren(getChildrenSizeByParentId(catalogEntry.getId()));
 		return catalogEntry;
 	}
+
+    private void setTotalChildren(CatalogEntry catalogEntry, List<CatalogEntry> children) {
+        catalogEntry.setChildren(children);
+        final int childCount = (children != null) ? children.size() : 0;
+        catalogEntry.setTotalChildren(childCount);
+    }
 }

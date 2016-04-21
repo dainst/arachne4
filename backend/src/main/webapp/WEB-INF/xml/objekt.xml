@@ -539,7 +539,7 @@
 						<field datasource="objektterrakotten.GenerationKoerper" />
 						<field datasource="objektterrakotten.VariationKoerper" />
 					</section>
-					<section labelKey="Serie Kopf mit Körper">
+					<section labelKey="Kombinationsfolge">
 						<field datasource="objektterrakotten.MatrserKopfKoerper" />
 						<field datasource="objektterrakotten.GenerationKopfKoerper" />
 						<field datasource="objektterrakotten.VariationKopfKoerper" />
@@ -548,7 +548,7 @@
 					</section>
 					<section>
 						<field datasource="objektterrakotten.PatrizenqualitaetPur"
-							prefix="Qualität: " />
+							prefix="Qualität der Abformung: " />
 						<field datasource="objektterrakotten.Anbringung" prefix="Anbringung: " />
 					</section>
 				</section>
