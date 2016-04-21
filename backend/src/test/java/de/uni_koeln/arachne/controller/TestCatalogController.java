@@ -267,7 +267,7 @@ public class TestCatalogController {
 					.content("{\"id\": 666,\"children\": [],\"arachneEntityId\": 1184191,\""
 							+ "label\": \"Fundamente der Innensäulen\", \"text\": \"Die Fundamente der Innensäulen.\", \""
 							+ "parentId\": 598, \"indexParent\": 0,\"catalogId\": 83}"))
-				.andExpect(status().isBadRequest());
+				.andExpect(status().isUnprocessableEntity());
 	}
 	
 	@Test
