@@ -20,6 +20,7 @@ import de.uni_koeln.arachne.dao.hibernate.ArachneEntityDao;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.util.sql.CatalogEntryInfo;
 
 @Repository("CatalogDao")
 public class CatalogDao extends SQLDao {
@@ -116,15 +117,23 @@ public class CatalogDao extends SQLDao {
 	 * @param entityId The entity identifier of interest.
 	 * @return A list of <code>Object[2]</code>. Id first, then path.
 	 */
-	public List<Object[]> getPublicCatalogIdsAndPathsByEntityId(final long entityId) {
-		// TODO replace by custom query
-		final List<Object[]> result = new ArrayList<Object[]>();
-		for (final CatalogEntry catalogEntry : catalogEntryDao.getByEntityId(entityId)) {
-			final Catalog catalog = getById(catalogEntry.getCatalogId()); 
-			if (catalog.isPublic()) {
-				result.add(new Object[] {catalog.getId(), catalogEntry.getPath()}); // NOPMD
-			}
-		}
+	@Transactional(readOnly=true)
+	public List<CatalogEntryInfo> getPublicCatalogIdsAndPathsByEntityId(final long entityId) {
+		final List<CatalogEntryInfo> result = query(con -> {
+			final String sql = "SELECT catalog_id, catalog_entry.id, path, catalog.public "
+					+ "FROM catalog_entry "
+					+ "LEFT JOIN catalog "
+					+ "ON catalog_id = catalog.id "
+					+ "WHERE arachne_entity_id = ? "
+					+ "AND public = 1 "
+					+ userRightsService.getSQL("catalog")
+					+ " ORDER BY catalog_id";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setLong(1, entityId);
+			return ps;
+		}, (rs, rowNum) -> {
+			return new CatalogEntryInfo(rs.getLong("catalog_id"), rs.getString("path"), rs.getLong("id"));
+		});
 		
 		return result;
 	}

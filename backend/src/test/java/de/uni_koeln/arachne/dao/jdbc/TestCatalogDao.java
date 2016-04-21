@@ -30,6 +30,7 @@ import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.testconfig.TestCatalogData;
 import de.uni_koeln.arachne.testconfig.TestUserData;
+import de.uni_koeln.arachne.util.sql.CatalogEntryInfo;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -493,11 +494,11 @@ public class TestCatalogDao {
 	
 	@Test
 	public void testGetPublicCatalogIdsAndPathsByEntityId() {
-		final List<Object[]> catalogData = catalogDao.getPublicCatalogIdsAndPathsByEntityId(666L);
+		final List<CatalogEntryInfo> catalogData = catalogDao.getPublicCatalogIdsAndPathsByEntityId(666L);
 		assertNotNull(catalogData);
 		assertEquals(1, catalogData.size());
-		assertEquals(Long.valueOf(1), (Long)catalogData.get(0)[0]);
-		assertEquals("1/1", (String)catalogData.get(0)[1]);
+		assertEquals(Long.valueOf(1), catalogData.get(0).getCatalogId());
+		assertEquals("1/1/8", catalogData.get(0).getPath());
 	}
 	
 	@Test

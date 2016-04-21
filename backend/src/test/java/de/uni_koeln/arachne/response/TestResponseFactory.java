@@ -29,6 +29,7 @@ import de.uni_koeln.arachne.testconfig.TestData;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
+import de.uni_koeln.arachne.util.sql.CatalogEntryInfo;
 
 @RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(locations={"classpath:test-context.xml"}) 
@@ -44,7 +45,7 @@ public class TestResponseFactory { // NOPMD
 	
 	private List<Long> mockIdList = null;
 	
-	private List<Object[]> mockCatalogDataList = null;
+	private List<CatalogEntryInfo> mockCatalogDataList = null;
 		
 	private Dataset dataset = new TestData().getTestDataset();	
 	
@@ -60,12 +61,11 @@ public class TestResponseFactory { // NOPMD
 		}
 		when(genericSQLDao.getConnectedEntityIds(0)).thenReturn(mockIdList);
 		
-		mockCatalogDataList = new ArrayList<Object[]>();
-		mockCatalogDataList.add(new Object[] {1L, "1"});
+		mockCatalogDataList = new ArrayList<CatalogEntryInfo>();
+		mockCatalogDataList.add(new CatalogEntryInfo(1L, "", 1L));
 		for (int i = 2; i < 6; i++) {
-			final Object[] mockCatalogData = new Object[2];
-			mockCatalogData[0] = (long)i;
-			mockCatalogData[1] = (String)mockCatalogDataList.get(i-2)[1] + '/' + i;
+			final CatalogEntryInfo mockCatalogData = 
+					new CatalogEntryInfo(i, (String)mockCatalogDataList.get(i-2).getPath(), i);
 			mockCatalogDataList.add(mockCatalogData);
 		}
 		when(catalogDao.getPublicCatalogIdsAndPathsByEntityId(0)).thenReturn(mockCatalogDataList);

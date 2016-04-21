@@ -36,6 +36,7 @@ import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.search.TermsAggregation;
+import de.uni_koeln.arachne.util.sql.CatalogEntryInfo;
 
 /**
  * Factory class to create the different kinds of responses from a dataset.
@@ -172,15 +173,16 @@ public class ResponseFactory {
 		response.setConnectedEntities(connectedEntities);
 		
 		// set catalogEntry data
-		/*final Set<Long> catalogIds = new HashSet<Long>();
+		final Set<Long> catalogIds = new HashSet<Long>();
 		final List<String> catalogPaths = new ArrayList<String>();
-		final List<Object[]> catalogData = catalogDao.getPublicCatalogIdsAndPathsByEntityId(arachneId.getArachneEntityID());
-		for (Object[] objects : catalogData) {
-			catalogIds.add((Long)objects[0]);
-			catalogPaths.add((String)objects[1]);
+		final List<CatalogEntryInfo> catalogData = catalogDao
+				.getPublicCatalogIdsAndPathsByEntityId(arachneId.getArachneEntityID());
+		for (CatalogEntryInfo info : catalogData) {
+			catalogIds.add(info.getCatalogId());
+			catalogPaths.add(info.getPath());
 		}
 		response.setCatalogIds(catalogIds);
-		response.setCatalogPaths(catalogPaths);*/
+		response.setCatalogPaths(catalogPaths);
 		
 		// set degree
 		if (connectedEntities != null && !connectedEntities.isEmpty()) {
