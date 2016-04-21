@@ -262,8 +262,9 @@
                     {
                         "id": "fotothekmuenchen",
                         "title": {
-                            "de": "Fotothek München//"
-                        }
+                            "de": "Fotothek München"
+                        },
+                        "hidden": true
                     },
                     {
                         "id": "hinkel",
