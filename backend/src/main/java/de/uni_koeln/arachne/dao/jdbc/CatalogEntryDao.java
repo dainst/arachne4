@@ -171,66 +171,94 @@ public class CatalogEntryDao extends SQLDao {
 	public CatalogEntry updateCatalogEntry(final CatalogEntry newCatalogEntry) throws DataAccessException {
 		
 		// check if parent exists
-		final CatalogEntry parent = getById(newCatalogEntry.getParentId());
-		
-		if (parent != null && parent.getCatalogId().equals(newCatalogEntry.getCatalogId())) {
-			final CatalogEntry oldEntry = getById(newCatalogEntry.getId());
-			newCatalogEntry.setPath(oldEntry.getPath());
-			if (oldEntry.getIndexParent() != newCatalogEntry.getIndexParent() || 
-					oldEntry.getParentId() != newCatalogEntry.getParentId()) {
-				
-				int maxIndex = getChildrenSizeByParentId(newCatalogEntry.getParentId());
-				if (oldEntry.getParentId() != newCatalogEntry.getParentId()) {
-					newCatalogEntry.setPath(parent.getPath() + '/' + newCatalogEntry.getParentId());
-					if (newCatalogEntry.getIndexParent() > maxIndex) {
-						newCatalogEntry.setIndexParent(maxIndex);
-					}	
-				} else {
-					if (newCatalogEntry.getIndexParent() > maxIndex) {
-						newCatalogEntry.setIndexParent(maxIndex - 1);
-					}
-				}
-				
-				update(con -> {
-					final String sql = "UPDATE catalog_entry "
-							+ "SET index_parent = index_parent - 1 "
-							+ "WHERE (index_parent > ? AND parent_id = ?)";
-					PreparedStatement ps = con.prepareStatement(sql);
-					ps.setLong(1, oldEntry.getIndexParent());
-					ps.setLong(2, oldEntry.getParentId());
-					return ps;
-				});
-
-				update(con -> {
-					final String sql = "UPDATE catalog_entry "
-							+ "SET index_parent = index_parent + 1 "
-							+ "WHERE (index_parent >= ? AND parent_id = ?)";
-					PreparedStatement ps = con.prepareStatement(sql);
-					ps.setLong(1, newCatalogEntry.getIndexParent());
-					ps.setLong(2, newCatalogEntry.getParentId());
-					return ps;
-				});
+		CatalogEntry parent = null;
+		if (newCatalogEntry.getParentId() != null) {
+			parent = getById(newCatalogEntry.getParentId());
+			if (parent == null) {
+				return null;
 			}
-
-			update(con -> {
-				final String sql = "UPDATE catalog_entry SET "
-						+ "catalog_id = ?, parent_id = ?, arachne_entity_id = ?, index_parent = ?, path = ?, label = ?, "
-						+ "text = ? "
-						+ "WHERE id = ?";
-				PreparedStatement ps = con.prepareStatement(sql);
-				ps.setLong(1, newCatalogEntry.getCatalogId());
-				ps.setObject(2, newCatalogEntry.getParentId(), Types.BIGINT);
-				ps.setObject(3, newCatalogEntry.getArachneEntityId(), Types.BIGINT);
-				ps.setInt(4, newCatalogEntry.getIndexParent());
-				ps.setString(5, newCatalogEntry.getPath());
-				ps.setString(6, newCatalogEntry.getLabel());
-				ps.setString(7, newCatalogEntry.getText());
-				ps.setLong(8, newCatalogEntry.getId());
-				return ps;
-			});
-			return newCatalogEntry;
 		}
-		return null;
+		
+		if (parent != null) {
+			if (parent.getCatalogId().equals(newCatalogEntry.getCatalogId())) {
+				final CatalogEntry oldEntry = getById(newCatalogEntry.getId());
+				newCatalogEntry.setPath(oldEntry.getPath());
+				if (oldEntry.getIndexParent() != newCatalogEntry.getIndexParent() || 
+						oldEntry.getParentId() != newCatalogEntry.getParentId()) {
+
+					int maxIndex = getChildrenSizeByParentId(newCatalogEntry.getParentId());
+					if (oldEntry.getParentId() != newCatalogEntry.getParentId()) {
+						newCatalogEntry.setPath(parent.getPath() + '/' + newCatalogEntry.getParentId());
+						if (newCatalogEntry.getIndexParent() > maxIndex) {
+							newCatalogEntry.setIndexParent(maxIndex);
+						}	
+					} else {
+						if (newCatalogEntry.getIndexParent() > maxIndex) {
+							newCatalogEntry.setIndexParent(maxIndex - 1);
+						}
+					}
+
+					update(con -> {
+						final String sql = "UPDATE catalog_entry "
+								+ "SET index_parent = index_parent - 1 "
+								+ "WHERE (index_parent > ? AND parent_id = ?)";
+						PreparedStatement ps = con.prepareStatement(sql);
+						ps.setLong(1, oldEntry.getIndexParent());
+						ps.setLong(2, oldEntry.getParentId());
+						return ps;
+					});
+
+					update(con -> {
+						final String sql = "UPDATE catalog_entry "
+								+ "SET index_parent = index_parent + 1 "
+								+ "WHERE (index_parent >= ? AND parent_id = ?)";
+						PreparedStatement ps = con.prepareStatement(sql);
+						ps.setLong(1, newCatalogEntry.getIndexParent());
+						ps.setLong(2, newCatalogEntry.getParentId());
+						return ps;
+					});
+				}
+
+				update(con -> {
+					final String sql = "UPDATE catalog_entry SET "
+							+ "catalog_id = ?, parent_id = ?, arachne_entity_id = ?, index_parent = ?, path = ?, label = ?, "
+							+ "text = ? "
+							+ "WHERE id = ?";
+					PreparedStatement ps = con.prepareStatement(sql);
+					ps.setLong(1, newCatalogEntry.getCatalogId());
+					ps.setObject(2, newCatalogEntry.getParentId(), Types.BIGINT);
+					ps.setObject(3, newCatalogEntry.getArachneEntityId(), Types.BIGINT);
+					ps.setInt(4, newCatalogEntry.getIndexParent());
+					ps.setString(5, newCatalogEntry.getPath());
+					ps.setString(6, newCatalogEntry.getLabel());
+					ps.setString(7, newCatalogEntry.getText());
+					ps.setLong(8, newCatalogEntry.getId());
+					return ps;
+				});
+				return newCatalogEntry;
+			}
+			return null;
+		} else {
+			final CatalogEntry oldEntry = getById(newCatalogEntry.getId());
+			if (oldEntry != null) {
+				newCatalogEntry.setPath(oldEntry.getPath());
+				newCatalogEntry.setTotalChildren(oldEntry.getTotalChildren());
+				
+				update(con -> {
+					final String sql = "UPDATE catalog_entry SET "
+							+ "arachne_entity_id = ?, label = ?, text = ? "
+							+ "WHERE id = ?";
+					PreparedStatement ps = con.prepareStatement(sql);
+					ps.setObject(1, newCatalogEntry.getArachneEntityId(), Types.BIGINT);
+					ps.setString(2, newCatalogEntry.getLabel());
+					ps.setString(3, newCatalogEntry.getText());
+					ps.setLong(4, newCatalogEntry.getId());
+					return ps;
+				});
+				return newCatalogEntry;
+			}
+			return null;
+		}
 	}
 	
 	/**

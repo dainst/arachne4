@@ -459,6 +459,22 @@ public class TestCatalogEntryDao {
 	}
 	
 	@Test
+	public void testUpdateCatalogEntryRoot() {
+		CatalogEntry catalogEntry = new CatalogEntry();
+		catalogEntry.setId(1L);
+		catalogEntry.setCatalogId(1L);
+		catalogEntry.setLabel("updated root of catalog 1 test label");
+		catalogEntry.setText("some text");
+        catalogEntry.setTotalChildren(3);
+
+		catalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
+
+        assertEquals(catalogEntry.getTotalChildren(), catalogEntryDao.getById(1L).getTotalChildren());
+		assertEquals(catalogEntry, catalogEntryDao.getById(1L));
+		assertEquals("1", catalogEntry.getPath());
+	}
+	
+	@Test
 	public void testUpdateCatalogEntryUpdateIndexParent() {
 		CatalogEntry catalogEntry = new CatalogEntry();
 		catalogEntry.setId(4L);
