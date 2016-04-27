@@ -1,7 +1,8 @@
+<div class="con10t-page container">
 
-<div hide-footer class="row map-fullscreen">
+    <div hide-footer class="row map-fullscreen">
 
-<div ng-init="config = {
+        <div ng-init="config = {
     menuTitle: 'Antike Werkst&auml;tten',
     menuFacetsAllow: [
         'facet_kulturkreis',
@@ -246,57 +247,59 @@
     defaultBaselayer: 'osm'
 }"></div>
 
-    <div con10t-map
-        class="map"
-        type="places"
-        limit="1000"
-        overlays="config.overlays"
-        baselayers="config.baselayers"
-        default-baselayer="config.defaultBaselayer"
-        facets-select="config.facetsSelect"
-        clustered="config.clustered">
+        <div con10t-map
+             class="map"
+             type="places"
+             limit="1000"
+             overlays="config.overlays"
+             baselayers="config.baselayers"
+             default-baselayer="config.defaultBaselayer"
+             facets-select="config.facetsSelect"
+             clustered="config.clustered">
 
-        <div ng-controller="MapMenuController">
+            <div ng-controller="MapMenuController">
 
-            <div id="map-right-menu" class="col-md-2 well well-sm" ng-class="rightMenuToggled ? 'toggled' : ''">
+                <div id="map-right-menu" class="col-md-2 well well-sm" ng-class="rightMenuToggled ? 'toggled' : ''">
 
-                <h2 class="text-muted uppercase" style="font-variant:small-caps;cursor:pointer"
-                    ng-click="rightMenuToggled = !rightMenuToggled">
-                    Antike Werkstätten
-                    <span ng-if="rightMenuToggled" class="text-muted small glyphicon glyphicon-chevron-up"></span>
-                    <span ng-if="!rightMenuToggled" class="text-muted small glyphicon glyphicon-chevron-down"></span>
-                </h2>
+                    <h2 class="text-muted uppercase" style="font-variant:small-caps;cursor:pointer"
+                        ng-click="rightMenuToggled = !rightMenuToggled">
+                        Antike Werkstätten
+                        <span ng-if="rightMenuToggled" class="text-muted small glyphicon glyphicon-chevron-up"></span>
+                        <span ng-if="!rightMenuToggled"
+                              class="text-muted small glyphicon glyphicon-chevron-down"></span>
+                    </h2>
 
-                <div ng-if="rightMenuToggled">
-                    <div ar-map-menu-search-info type="places"></div>
-                    <div ar-map-menu-search-field heading="Suche in Projektdatens&auml;tzen"></div>
-                    <div ar-map-menu-facet-search facets-append="config.menuFacetsAppend"
-                        facets-allow="config.menuFacetsAllow"
-                        facets-selected="config.facetsSelect">
+                    <div ng-if="rightMenuToggled">
+                        <div ar-map-menu-search-info type="places"></div>
+                        <div ar-map-menu-search-field heading="Suche in Projektdatens&auml;tzen"></div>
+                        <div ar-map-menu-facet-search facets-append="config.menuFacetsAppend"
+                             facets-allow="config.menuFacetsAllow"
+                             facets-selected="config.facetsSelect">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="map-left-menu" class="col-md-2 well well-sm"
-                ng-init="leftMenuToggled = overlaysActive()"
-                ng-class="leftMenuToggled ? 'toggled' : ''">
+                <div id="map-left-menu" class="col-md-2 well well-sm"
+                     ng-init="leftMenuToggled = overlaysActive()"
+                     ng-class="leftMenuToggled ? 'toggled' : ''">
 
-                <h4 class="clickable" ng-click="leftMenuToggled = !leftMenuToggled">
-                    Kartenoptionen
-                    <span ng-if="leftMenuToggled" class="text-muted small glyphicon glyphicon-chevron-up"></span>
-                    <span ng-if="!leftMenuToggled" class="text-muted small glyphicon glyphicon-chevron-down"></span>
-                </h4>
+                    <h4 class="clickable" ng-click="leftMenuToggled = !leftMenuToggled">
+                        Kartenoptionen
+                        <span ng-if="leftMenuToggled" class="text-muted small glyphicon glyphicon-chevron-up"></span>
+                        <span ng-if="!leftMenuToggled" class="text-muted small glyphicon glyphicon-chevron-down"></span>
+                    </h4>
 
-                <div ng-if="leftMenuToggled">
-                    <div ar-map-menu-overlays overlays="config.overlays"></div>
-                    <div ar-map-menu-baselayer baselayers="config.baselayers"></div>
+                    <div ng-if="leftMenuToggled">
+                        <div ar-map-menu-overlays overlays="config.overlays"></div>
+                        <div ar-map-menu-baselayer baselayers="config.baselayers"></div>
+                    </div>
                 </div>
-            </div>
 
-            <div ar-map-zoomcontrol id="ar-map-zoomcontrol" style="left:19%"></div>
+                <div ar-map-zoomcontrol id="ar-map-zoomcontrol" style="left:19%"></div>
+
+            </div>
 
         </div>
 
     </div>
-
 </div>
