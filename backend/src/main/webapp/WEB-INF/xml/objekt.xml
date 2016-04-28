@@ -529,17 +529,17 @@
 						<field datasource="objektterrakotten.Terrakottentyp" />
 						<field datasource="objektterrakotten.Beschreibung" prefix="Beschreibung: " />
 					</section>
-					<section labelKey="Serie Kopf" separator=", ">
+					<section labelKey="Serie Kopf: " separator=", ">
 						<field datasource="objektterrakotten.MatrserKopf" />
 						<field datasource="objektterrakotten.GenerationKopf" />
 						<field datasource="objektterrakotten.VariationKopf" />
 					</section>
-					<section labelKey="Serie Körper" separator=", ">
+					<section labelKey="Serie Körper: " separator=", ">
 						<field datasource="objektterrakotten.MatrserKoerper" />
 						<field datasource="objektterrakotten.GenerationKoerper" />
 						<field datasource="objektterrakotten.VariationKoerper" />
 					</section>
-					<section labelKey="Kombinationsfolge">
+					<section labelKey="Kombinationsfolge: ">
 						<field datasource="objektterrakotten.MatrserKopfKoerper" />
 						<field datasource="objektterrakotten.GenerationKopfKoerper" />
 						<field datasource="objektterrakotten.VariationKopfKoerper" />
