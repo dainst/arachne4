@@ -121,11 +121,11 @@
 				<include type="ort" />
 				<section labelKey="Herkunft" separator=", ">
 					<field datasource="objekt.Herkunft" />
-					<field datasource="objekt.HerkFundKommentar" />
 					<field datasource="objekt.Fundstaat" />
 					<field datasource="objekt.Fundort" />
 					<field datasource="objekt.Fundkontext" />
 					<field datasource="objekt.FunddatumObjekt" />
+					<field datasource="objekt.HerkFundKommentar" />
 				</section>
 				<section labelKey="Gattung/Funktion/Kulturepoche">
 					<field datasource="objekt.GattungAllgemein" />
