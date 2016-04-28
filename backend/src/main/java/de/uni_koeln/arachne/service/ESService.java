@@ -67,8 +67,8 @@ public class ESService implements ServletContextAware {
 	private static final String ES_MAPPING_SUCCESS = "Elasticsearch mapping set.";
 	private static final String ES_MAPPING_FAILURE = "Failed to set elasticsearch mapping.";
 	// Not 'final' so that it can be changed via reflection when testing
-	private static String INDEX_1 = "arachne4_1";
-	private static String INDEX_2 = "arachne4_2";
+	private static String INDEX_1 = null;
+	private static String INDEX_2 = null;
 	private transient ServletContext servletContext;
 
 	@Autowired
@@ -77,8 +77,9 @@ public class ESService implements ServletContextAware {
 	@Autowired
 	private transient Transl8Service ts;
 	
-	private transient final String esName;
-
+	private transient final String esClusterName;
+	private transient final String esAliasName;
+		
 	private transient final int esBulkActions;
 	private transient final int esBulkSize;
 
@@ -87,20 +88,23 @@ public class ESService implements ServletContextAware {
 	private transient final Node node;
 	private transient final Client client;
 
-	private transient final String searchIndexAlias;
-
 	@Autowired
 	public ESService(final @Value("${esProtocol}") String esProtocol
 			, final @Value("${esAddress}") String esAddress
 			, final @Value("${esRemotePort}") int esRemotePort
-			, final @Value("${esName}") String esName
+			, final @Value("${esClusterName}") String esClusterName
+			, final @Value("${esAliasName}") String esAliasName
+			, final @Value("${esIndexName}") String esIndexName
 			, final @Value("${esBulkActions}") int esBulkActions
 			, final @Value("${esBulkSize}") int esBulkSize
 			, final @Value("${esClientTypeRemote}") boolean esRemoteClient
 			, final @Value("${esRESTPort}") String esRESTPort) {
 
-		this.esName = esName;
-		this.searchIndexAlias = esName;
+		this.esClusterName = esClusterName;
+		INDEX_1 = esIndexName + "_1";
+		INDEX_2 = esIndexName + "_2";
+		this.esAliasName = esAliasName;
+		
 		this.esBulkActions = esBulkActions;
 		this.esBulkSize = esBulkSize;
 		this.esRemoteClient = esRemoteClient;
@@ -108,14 +112,14 @@ public class ESService implements ServletContextAware {
 		if (esRemoteClient) {
 			LOGGER.info("Setting up elasticsearch transport client...");
 			node = null;
-			final Settings settings = Settings.settingsBuilder().put("cluster.name", esName).build();
+			final Settings settings = Settings.settingsBuilder().put("cluster.name", esClusterName).build();
 			client = TransportClient.builder().settings(settings).build();
 			((TransportClient) client).addTransportAddress(new InetSocketTransportAddress(
 					new InetSocketAddress(esAddress, esRemotePort)));
 		} else {
 			LOGGER.info("Setting up elasticsearch node client...");
 			final Settings settings = Settings.settingsBuilder().put("discovery.zen.ping.multicast.enabled", false).build();
-			node = NodeBuilder.nodeBuilder().client(true).clusterName(esName).settings(settings).node();
+			node = NodeBuilder.nodeBuilder().client(true).clusterName(esClusterName).settings(settings).node();
 			client = node.client();
 		}
 	}
@@ -247,8 +251,8 @@ public class ESService implements ServletContextAware {
 	 * Gets the elasticsearch cluster name.
 	 * @return The clustername as <code>String</code>.
 	 */
-	public String getName() {
-		return esName;
+	public String getClusterName() {
+		return esClusterName;
 	}
 
 	/**
@@ -256,7 +260,7 @@ public class ESService implements ServletContextAware {
 	 * @return The alias as <code>String</code>.
 	 */
 	public String getSearchIndexAlias() {
-		return this.searchIndexAlias;
+		return this.esAliasName;
 	}
 
 	/**
@@ -315,8 +319,8 @@ public class ESService implements ServletContextAware {
 		final String oldName = INDEX_2.equals(indexName) ? INDEX_1 : INDEX_2;
 		try {
 			final IndicesAliasesResponse indexResponse = client.admin().indices().prepareAliases()
-					.addAlias(indexName, searchIndexAlias)
-					.removeAlias(oldName, searchIndexAlias)
+					.addAlias(indexName, esAliasName)
+					.removeAlias(oldName, esAliasName)
 					.execute().actionGet();
 			LOGGER.debug("Trying to set alias for '" + indexName + "' and delete alias for '" + oldName + "'");
 			if (indexResponse.isAcknowledged()) {
@@ -331,7 +335,7 @@ public class ESService implements ServletContextAware {
 			LOGGER.warn("Failed to set alias. Index Missing. Trying to just set the new one.");
 			// perhaps we are running for the first time so try just to add the new alias
 			try {
-				final IndicesAliasesResponse indexResponse = client.admin().indices().prepareAliases().addAlias(indexName, searchIndexAlias)
+				final IndicesAliasesResponse indexResponse = client.admin().indices().prepareAliases().addAlias(indexName, esAliasName)
 						.execute().actionGet();
 				if (indexResponse.isAcknowledged()) {
 					LOGGER.info("Set alias for '" + indexName + "'");
@@ -437,11 +441,11 @@ public class ESService implements ServletContextAware {
 	
 	/**
 	 * Sends a HTTP request to the elasticsearch alias endpoint to determine the index name to use for the dataimport.
-	 * @return The index name of the index currently not in use. Either <code>arachne4_1</code> or <code>arachne4_2</code>.
+	 * @return The index name of the index currently not in use.
 	 */
 	private String getDataImportIndexName() {
 		String result = INDEX_1;
-		final Set<String> indices = getIndicesFromAliasName(searchIndexAlias);
+		final Set<String> indices = getIndicesFromAliasName(esAliasName);
 		if (indices.contains(INDEX_1)) {
 			result = INDEX_2;
 		}
