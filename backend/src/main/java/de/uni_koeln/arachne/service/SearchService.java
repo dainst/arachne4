@@ -263,12 +263,12 @@ public class SearchService {
 			// TODO find a better way to convert facet values
 			if (aggregationName.equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
 				for (final MultiBucketsAggregation.Bucket bucket: aggregator.getBuckets()) {
-					final LatLong coord = GeoHash.decodeHash((String) bucket.getKey());
+					final LatLong coord = GeoHash.decodeHash(bucket.getKeyAsString());
 					facetMap.put("[" + coord.getLat() + ',' + coord.getLon() + ']', bucket.getDocCount());
 				}
 			} else {
 				for (final MultiBucketsAggregation.Bucket bucket: aggregator.getBuckets()) {
-					facetMap.put((String) bucket.getKey(), bucket.getDocCount());
+					facetMap.put(bucket.getKeyAsString(), bucket.getDocCount());
 				}
 			}
 			if (facetMap != null && !facetMap.isEmpty() && (filters == null || !filters.containsKey(aggregationName))) {
