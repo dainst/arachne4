@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import de.uni_koeln.arachne.response.Place;
 
@@ -14,15 +15,18 @@ import de.uni_koeln.arachne.response.Place;
 public class SearchHit {
 	private transient final long entityId;
 	private transient final String type;
+	@JsonProperty("@id")
+	private transient final String uri;
 	private transient final String title;
 	private transient final String subtitle;
 	private transient final Long thumbnailId;
 	private transient final List<Place> places;
 		
-	public SearchHit(final long entityId, final String type, final String title, final String subtitle, final Long thumbnailId
-			, List<Place> places) {
+	public SearchHit(final long entityId, final String type, final String uri, final String title
+			, final String subtitle, final Long thumbnailId, List<Place> places) {
 		this.entityId = entityId;
 		this.type = type;
+		this.uri = uri;
 		this.title = title;
 		this.subtitle = subtitle;
 		this.thumbnailId = thumbnailId;
@@ -35,6 +39,10 @@ public class SearchHit {
 	
 	public String getType() {
 		return this.type;
+	}
+	
+	public String getUri() {
+		return this.uri;
 	}
 	
 	public String getTitle() {

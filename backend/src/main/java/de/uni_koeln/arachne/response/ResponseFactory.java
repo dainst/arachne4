@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -85,6 +86,13 @@ public class ResponseFactory {
 	// needed for testing
 	public void setXmlConfigUtil(final XmlConfigUtil xmlConfigUtil) {
 		this.xmlConfigUtil = xmlConfigUtil;
+	}
+	
+	final String serverAddress;
+	
+	@Autowired
+	public ResponseFactory(final @Value("${serverAddress}") String serverAddress) {
+		this.serverAddress = serverAddress;
 	}
 	
 	/**
@@ -164,6 +172,9 @@ public class ResponseFactory {
 		response.setEntityId(arachneId.getArachneEntityID());
 		response.setType(ts.transl8("type_" + tableName));
 		response.setInternalId(arachneId.getInternalKey());
+		
+		// set uri
+		response.setUri("http://" + serverAddress + "/entity/" + arachneId.getArachneEntityID());
 		
 		// set thumbnailId
 		response.setThumbnailId(dataset.getThumbnailId());

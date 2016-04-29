@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import de.uni_koeln.arachne.response.link.ExternalLink;
 
@@ -33,6 +34,9 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	 * The Subtitle of the Dataset
 	 */
 	protected String subtitle;
+	
+	@JsonProperty("@id")
+	protected String uri;
 	
 	/**
 	 * Hierachical structured information of the dataset.
@@ -131,6 +135,14 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 
 	public void setSubtitle(final String subtitle) {
 		this.subtitle = subtitle;
+	}
+	
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(final String uri) {
+		this.uri = uri;
 	}
 	
 	public List<AbstractContent> getSections() {

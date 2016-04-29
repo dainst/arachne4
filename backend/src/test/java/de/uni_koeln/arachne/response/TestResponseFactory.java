@@ -38,7 +38,7 @@ public class TestResponseFactory { // NOPMD
 	@Mock private CatalogDao catalogDao;
 	@Mock private Transl8Service ts;
 	@Mock private JSONUtil jsonUtil;
-	@InjectMocks private final ResponseFactory responseFactory = new ResponseFactory();
+	@InjectMocks private final ResponseFactory responseFactory = new ResponseFactory("testAddress.com");
 	
 	@Mock private UserRightsService userRightsService;
 	@InjectMocks private final XmlConfigUtil xmlConfigUtil = new XmlConfigUtil();

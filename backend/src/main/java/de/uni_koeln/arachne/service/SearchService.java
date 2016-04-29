@@ -248,6 +248,7 @@ public class SearchService {
 			}
 			searchResult.addSearchHit(new de.uni_koeln.arachne.response.search.SearchHit(Long.valueOf(currenthit.getId())
 					, (String)(currenthit.getSource().get("type"))
+					, (String)(currenthit.getSource().get("@id"))
 					, (String)(currenthit.getSource().get("title"))
 					, (String)(currenthit.getSource().get("subtitle"))
 					, thumbnailId
