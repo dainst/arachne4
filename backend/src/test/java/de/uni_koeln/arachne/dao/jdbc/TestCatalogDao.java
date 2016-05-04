@@ -19,6 +19,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -28,13 +30,15 @@ import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.testconfig.EmbeddedDataSourceConfig;
 import de.uni_koeln.arachne.testconfig.TestCatalogData;
 import de.uni_koeln.arachne.testconfig.TestUserData;
 import de.uni_koeln.arachne.util.sql.CatalogEntryInfo;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:unittest-context.xml"})
+@ContextConfiguration(classes=EmbeddedDataSourceConfig.class)
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class TestCatalogDao {
 
 	@Autowired
@@ -59,7 +63,7 @@ public class TestCatalogDao {
 		when(userRightsService.isSignedInUser()).thenReturn(true);
 		when(userRightsService.getCurrentUser()).thenReturn(TestUserData.getUser());
 		when(userRightsService.getSQL("catalog")).thenReturn(" AND (DatensatzGruppeCatalog = 'userTestGroup' "
-				+ "OR DatensatzGruppeCatalog = 'anotherTestGroup')");
+				+ "OR DatensatzGruppeCatalog = 'anotherTestGroup' OR DatensatzGruppeCatalog = 'Arachne')");
 		
 		jdbcTemplate = new JdbcTemplate(datasource);
 		new TestCatalogData(jdbcTemplate)
@@ -577,6 +581,24 @@ public class TestCatalogDao {
 	}
 	
 	@Test
+	public void testSaveCatalogMissingDatasetGroup() {
+		final User user = TestUserData.getUser();
+		
+		CatalogEntry root = new CatalogEntry();
+		root.setLabel("new root label");
+		root.setText("some new text");
+		
+		Catalog catalog = new Catalog();
+		catalog.setAuthor(user.getFirstname() + " " + user.getLastname());
+		catalog.setUserIds(new HashSet<Long>(Arrays.asList(3L)));
+		catalog.setRoot(root);
+		
+		catalog = catalogDao.saveCatalog(catalog);
+		assertNotNull(catalog);
+		assertEquals(catalog, catalogDao.getById(catalog.getId()));
+	}
+	
+	@Test
 	public void testSaveCatalogInvalidCatalogId() {
 		final User user = TestUserData.getUser();
 		
@@ -632,25 +654,6 @@ public class TestCatalogDao {
 		catalog = catalogDao.saveCatalog(catalog);
 		assertNull(catalog);
 	}
-	
-	/* TODO uncomment when real in-memory MySQL is set up for unit test as h2 does not handle "NOT NULL" constrains 
-	 * like MySQL does, meaning it inserts 0 and there is no exception thrown
-	@Test
-	public void testSaveCatalogInvalidMissingDatasetGroup() {
-		final User user = TestUserData.getUser();
-		
-		CatalogEntry root = new CatalogEntry();
-		root.setLabel("new root label");
-		root.setText("some new text");
-		
-		Catalog catalog = new Catalog();
-		catalog.setAuthor(user.getFirstname() + " " + user.getLastname());
-		catalog.setUserIds(new HashSet<Long>(Arrays.asList(3L)));
-		catalog.setRoot(root);
-		
-		catalog = catalogDao.saveCatalog(catalog);
-		assertNull(catalog);
-	}*/
 	
 	@Test
 	public void testUpdateCatalog() {

@@ -69,42 +69,42 @@ public class TestCatalogData {
 		jdbcTemplate.execute("INSERT INTO catalog_entry("
 				+ "id, catalog_id, path, label, last_modified, creation)"
 				+ "VALUES"
-				+ "(1,1,'1','root of catalog 1 test label','1970-01-01','1970-01-01');");
+				+ "(1,1,'1','root of catalog 1 test label','2000-01-01','2000-01-01');");
 		jdbcTemplate.execute("INSERT INTO catalog_entry("
 				+ "id, catalog_id, parent_id, index_parent, arachne_entity_id, path, label, last_modified, creation)"
 				+ "VALUES"
-				+ "(8,1,1,0,666,'1/1','child test label No. 1','1970-01-01','1970-01-01');");
+				+ "(8,1,1,0,666,'1/1','child test label No. 1','2000-01-01','2000-01-01');");
 		jdbcTemplate.execute("INSERT INTO catalog_entry("
 				+ "id, catalog_id, parent_id, index_parent, label, text, last_modified, creation)"
 				+ "VALUES"
-				+ "(2,1,1,1,'child test label No. 2','some text for child No. 2','1970-01-01','1970-01-01');");
+				+ "(2,1,1,1,'child test label No. 2','some text for child No. 2','2000-01-01','2000-01-01');");
 		jdbcTemplate.execute("INSERT INTO catalog_entry("
 				+ "id, catalog_id, parent_id, index_parent, label, text, last_modified, creation)"
 				+ "VALUES"
-				+ "(9,1,1,2,'child test label No. 3','some text for child No. 3','1970-01-01','1970-01-01');");
+				+ "(9,1,1,2,'child test label No. 3','some text for child No. 3','2000-01-01','2000-01-01');");
 		jdbcTemplate.execute("INSERT INTO catalog_entry("
 				+ "id, catalog_id, parent_id, index_parent, path, label, last_modified, creation)"
 				+ "VALUES"
-				+ "(4,1,8,0,'1/8','child test label level 1 No. 1','1970-01-01','1970-01-01');");
+				+ "(4,1,8,0,'1/8','child test label level 1 No. 1','2000-01-01','2000-01-01');");
 		jdbcTemplate.execute("INSERT INTO catalog_entry("
 				+ "id, catalog_id, parent_id, index_parent, label, last_modified, creation)"
 				+ "VALUES"
-				+ "(5,1,8,2,'child test label level 1 No. 3','1970-01-01','1970-01-01');");
+				+ "(5,1,8,2,'child test label level 1 No. 3','2000-01-01','2000-01-01');");
 		jdbcTemplate.execute("INSERT INTO catalog_entry("
 				+ "id, catalog_id, parent_id, index_parent, label, last_modified, creation)"
 				+ "VALUES"
-				+ "(6,1,8,1,'child test label level 1 No. 2','1970-01-01','1970-01-01');");
+				+ "(6,1,8,1,'child test label level 1 No. 2','2000-01-01','2000-01-01');");
 		jdbcTemplate.execute("INSERT INTO catalog_entry("
 				+ "id, catalog_id, parent_id, label, last_modified, creation)"
 				+ "VALUES"
-				+ "(7,1,6,'child test label level 2 No. 1','1970-01-01','1970-01-01');");
+				+ "(7,1,6,'child test label level 2 No. 1','2000-01-01','2000-01-01');");
 		
 		// catalog 2
 		
 		jdbcTemplate.execute("INSERT INTO catalog_entry("
 				+ "id, catalog_id, arachne_entity_id, path, label, text, last_modified, creation)"
 				+ "VALUES"
-				+ "(3,2,666,'2','root of catalog 2 test label','arachneentity test','1970-01-01','1970-01-01');");
+				+ "(3,2,666,'2','root of catalog 2 test label','arachneentity test','2000-01-01','2000-01-01');");
 		return this;
 	}
 	

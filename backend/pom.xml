@@ -43,6 +43,8 @@
 		<javax.mail-version>1.4.7</javax.mail-version>
 		<!-- Commons Lang3 -->
 		<commons-lang3-version>3.3.2</commons-lang3-version>
+		<!-- Commons IO -->
+        <commons-io-version>2.5</commons-io-version>
 		<!-- HTTP Client -->
 		<httpclient-version>4.3.6</httpclient-version>
 		<!-- Log4J -->
@@ -238,12 +240,12 @@
         </dependency>
  
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.190</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-mxj</artifactId>
+            <version>5.0.12</version>
             <scope>test</scope>
         </dependency>
-
+ 
         <!-- JSONassert -->
         <dependency>
             <groupId>org.skyscreamer</groupId>
@@ -367,6 +369,12 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons-lang3-version}</version>
 		</dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io-version}</version>
+        </dependency>
 
 		<!-- Apache HTTP Components (needed to support SSL with RestTemplate) -->
 		<dependency>

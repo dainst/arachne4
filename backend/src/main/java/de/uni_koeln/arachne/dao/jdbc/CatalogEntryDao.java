@@ -57,7 +57,7 @@ public class CatalogEntryDao extends SQLDao {
 				return queryForObject(sqlQuery, this::mapCatalogEntryNoChilds);
 			}
 			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryDirectChildsOnly);
-			// This should be fast enough as limiting at query time did not work reliably for h2
+			// TODO implement limiting at query time
 			if (offset > 0) {
 				final List<CatalogEntry> children = result.getChildren();
 				final int childCount = children == null ? 0 : children.size();

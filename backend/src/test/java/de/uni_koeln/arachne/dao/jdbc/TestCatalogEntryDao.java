@@ -15,18 +15,22 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.testconfig.EmbeddedDataSourceConfig;
 import de.uni_koeln.arachne.testconfig.TestCatalogData;
 import de.uni_koeln.arachne.testconfig.TestUserData;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:unittest-context.xml"})
+@ContextConfiguration(classes=EmbeddedDataSourceConfig.class)
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class TestCatalogEntryDao {
 
 	@Autowired
