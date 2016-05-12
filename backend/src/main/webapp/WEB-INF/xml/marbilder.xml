@@ -86,7 +86,7 @@
 					<field datasource="marbilder.Kommentar" prefix="Kommentar: " />
 					<field datasource="marbilder.AnsichtObjekt" prefix="Ansicht des Objekts: " />
 					<field datasource="marbilder.Fotograf" prefix="Fotograf: " />
-					<field datasource="marbilder.BildtraegerMarbilder" prefix="Bildträger:" />
+					<field datasource="marbilder.BildtraegerMarbilder" prefix="Bildträger: " />
 					<field datasource="marbilder.FilmNr" prefix="Filmnummer: " />
 					<field datasource="marbilder.NegativNr" prefix="Negativnummer: " />
 					<field datasource="marbilder.Scannummer" prefix="Scannummer: " />
@@ -251,6 +251,9 @@
 		</facet>
 		<facet name="bestandsname" labelKey="Bestandsname">
 			<field datasource="marbilderbestand.Bestandsname" />
+		</facet>
+		<facet name="projekttitelMarbilder" labelKey="Projekt">
+			<field datasource="marbilder.ProjekttitelMarbilder"
 		</facet>
 		<facet name="bestandsname" labelKey="Bestandsname">
 			<field datasource="marbilderoppenheim.Facette" />
