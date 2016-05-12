@@ -253,7 +253,7 @@
 			<field datasource="marbilderbestand.Bestandsname" />
 		</facet>
 		<facet name="projekttitelMarbilder" labelKey="Projekt">
-			<field datasource="marbilder.ProjekttitelMarbilder"
+			<field datasource="marbilder.ProjekttitelMarbilder" />
 		</facet>
 		<facet name="bestandsname" labelKey="Bestandsname">
 			<field datasource="marbilderoppenheim.Facette" />
