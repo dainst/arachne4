@@ -304,6 +304,18 @@ public class ESService implements ServletContextAware {
 		}
 	}
 
+	public void setMaxResultWindow(final String indexName, final long value) {
+		final Settings settings = Settings.settingsBuilder().put("max_result_window", value).build();
+
+		final UpdateSettingsResponse response = client.admin().indices()
+				.prepareUpdateSettings(indexName)
+				.setSettings(settings)
+				.execute().actionGet();
+		if (!response.isAcknowledged()) {
+			LOGGER.error("Failed to set 'max_result_window' to " + value + " on index '" + indexName + "'.");
+		}
+	}
+	
 	@Override
 	public void setServletContext(final ServletContext servletContext) {
 		this.servletContext = servletContext;
@@ -358,7 +370,15 @@ public class ESService implements ServletContextAware {
 	 * @return The number of documents or -1 on error.
 	 */
 	public long getCount() {
-		final CountResponse countResponse = getClient().prepareCount(getSearchIndexAlias()).execute().actionGet();
+		return getCount(getSearchIndexAlias());
+	}
+
+	/**
+	 * Returns the number of documents in the given index.
+	 * @return The number of documents or -1 on error.
+	 */
+	public long getCount(final String indexName) {
+		final CountResponse countResponse = getClient().prepareCount(indexName).execute().actionGet();
 		if (countResponse.status() == RestStatus.OK) {
 			return countResponse.getCount();
 		} else {
@@ -366,7 +386,7 @@ public class ESService implements ServletContextAware {
 			return -1;
 		}
 	}
-
+	
 	/**
 	 * Retrieves a document from the current index. Access control is handled transparently.
 	 * @param id The entityId of the document or the internal ID of the entity if a category is given.

@@ -63,6 +63,9 @@
         <logger name="de.uni_koeln.arachne.service" level="info" />
         <logger name="de.uni_koeln.arachne.dao" level="info" />
         
+        <!-- elasticsearch logger -->
+        <logger name="org.elasticsearch" level="info" />
+        
         <!-- Hikari logger -->
         <logger name="com.zaxxer.hikari" level="info" />
         
