@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class SearchParameters {
-	public static final int MAX_RESULT_WINDOW = 1000;
+	public static final int MAX_RESULT_WINDOW = 10000;
 	
 	public static int MAX_LIMIT = 1000;
 
