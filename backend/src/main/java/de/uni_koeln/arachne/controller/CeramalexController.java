@@ -79,7 +79,6 @@ public class CeramalexController  {
 													  @RequestParam(value = "fl", required = false) final Integer facetLimit,
 													  final HttpServletResponse response) {
 
-		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 		final ModelMap modelMap = new ModelMap();
 		modelMap.put("facets", filterValues);
 		modelMap.put("searchParam", searchParam);
@@ -87,11 +86,11 @@ public class CeramalexController  {
 		final Integer maxResultSize = 1000000;
 		final Integer resultOffset = 0;
 		
-		final SearchParameters searchParameters = new SearchParameters(0)
+		final SearchParameters searchParameters = new SearchParameters(0, defaultFacetLimit)
 				.setQuery(searchParam)
 				.setLimit(maxResultSize)
 				.setOffset(resultOffset)
-				.setFacetLimit(resultFacetLimit);
+				.setFacetLimit(facetLimit);
 		
 		Multimap<String, String> filters = HashMultimap.create();
 		if (filterValues != null) {

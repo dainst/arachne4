@@ -19,12 +19,20 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class SearchResult {
 
 	private long size;
+	
 	private int limit;
+	
+	@JsonInclude(Include.NON_DEFAULT)
 	private int offset;
+	
+	private String scrollId;
+	
 	private List<SearchResultFacet> facets;
+	
 	private List<SearchHit> entities;
+	
 	private RestStatus status;
-
+	
 	public SearchResult() {
 		status = RestStatus.OK;
 	}
@@ -44,30 +52,47 @@ public class SearchResult {
 	public long getSize() {
 		return size;
 	}
+	
 	public void setSize(final long size) {
 		this.size = size;
 	}
+	
 	public int getLimit() {
 		return limit;
 	}
+	
 	public void setLimit(final int limit) {
 		this.limit = limit;
 	}
+	
 	public int getOffset() {
 		return offset;
 	}
+	
 	public void setOffset(final int offset) {
 		this.offset = offset;
 	}
+	
+	public String getScrollId() {
+		return scrollId;
+	}
+	
+	public void setScrollId(final String scrollId) {
+		this.scrollId = scrollId;
+	}
+	
 	public List<SearchResultFacet> getFacets() {
 		return facets;
 	}
+	
 	public void setFacets(final List<SearchResultFacet> facets) {
 		this.facets = facets;
 	}
+	
 	public List<SearchHit> getEntities() {
 		return entities;
 	}
+	
 	public void setEntities(final List<SearchHit> entities) {
 		this.entities = entities;
 	}

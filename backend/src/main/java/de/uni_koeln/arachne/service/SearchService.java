@@ -10,6 +10,9 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.action.admin.cluster.node.stats.NodeStats;
+import org.elasticsearch.action.admin.cluster.node.stats.NodesStatsResponse;
+import org.elasticsearch.action.search.ClearScrollResponse;
 import org.elasticsearch.action.search.SearchPhaseExecutionException;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -24,6 +27,7 @@ import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.index.query.functionscore.script.ScriptScoreFunctionBuilder;
+import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.SearchHit;
@@ -34,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.github.davidmoten.geo.GeoHash;
@@ -63,6 +68,8 @@ import de.uni_koeln.arachne.util.search.TermsAggregation.Order;
 public class SearchService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearchService.class);
+	
+	private static final int MAX_OPEN_SCROLL_REQUESTS = 10;
 	
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
@@ -112,8 +119,12 @@ public class SearchService {
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
 				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox()))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-				.setFrom(searchParameters.getOffset())
-				.setSize(searchParameters.getLimit());
+				.setSize(searchParameters.getLimit())
+				.setFrom(searchParameters.getOffset());
+		
+		if (searchParameters.isHarvestMode() && getOpenScrollRequests() < MAX_OPEN_SCROLL_REQUESTS) {
+			result.setScroll("1m");
+		}
 		
 		addSort(searchParameters.getSortField(), searchParameters.isOrderDesc(), result);
 		addFacets(getFacetList(filters, searchParameters.getFacetLimit(), searchParameters.getGeoHashPrecision())
@@ -122,6 +133,20 @@ public class SearchService {
 		return result;
 	}
 	
+	private long getOpenScrollRequests() {
+		NodesStatsResponse nodesStatsResponse = esService.getClient().admin().cluster().prepareNodesStats()
+				.execute().actionGet();
+		
+		long scrollCurrent = 0;
+		
+		for (NodeStats nodeStats : nodesStatsResponse) {
+			scrollCurrent += nodeStats.getIndices().getSearch().getTotal().getScrollCurrent();
+		}
+		
+		// strangely getScrollCurrent() increases by 5 for every request
+		return scrollCurrent / 5;
+	}
+
 	/**
 	 * This method builds and returns an elasticsearch context search request. The query is built by the 
 	 * <code>buildContextQuery</code> method.
@@ -239,6 +264,7 @@ public class SearchService {
 		searchResult.setLimit(size);
 		searchResult.setOffset(offset);
 		searchResult.setSize(hits.totalHits());
+		searchResult.setScrollId(searchResponse.getScrollId());
 		
 		for (final SearchHit currenthit: hits) {
 			final Integer intThumbnailId = (Integer)currenthit.getSource().get("thumbnailId");
@@ -277,6 +303,69 @@ public class SearchService {
 			}
 		}
 		searchResult.setFacets(facets);
+		
+		return searchResult;
+	}
+	
+	/**
+	 * Executes a search scroll request on the elasticsearch index to get the next batch of results.
+	 * @param scrollId The scrollId of the initial search request.
+	 * @return The search result.
+	 */
+	@SuppressWarnings("unchecked")
+	public SearchResult executeSearchScrollRequest(final String scrollId) {
+		SearchResponse searchResponse = null;
+		
+		try {
+			searchResponse = esService.getClient().prepareSearchScroll(scrollId).setScroll("1m").execute().actionGet();
+		} catch (SearchPhaseExecutionException e) {
+			LOGGER.error("Problem executing search. PhaseExecutionException: " + e.getMessage());
+			final SearchResult failedSearch = new SearchResult();
+			failedSearch.setStatus(e.status());
+			return failedSearch;
+		} catch (ElasticsearchException e) {
+			LOGGER.error("Problem executing search. Exception: " + e.getMessage());
+			final SearchResult failedSearch = new SearchResult();
+			failedSearch.setStatus(e.status());
+			return failedSearch;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			// workaround for ES crashing on some (timed out,invalid ???) scroll ids
+			final SearchResult failedSearch = new SearchResult();
+			failedSearch.setStatus(RestStatus.NOT_FOUND);
+			return failedSearch;
+		}
+		
+		final SearchHits hits = searchResponse.getHits();
+		
+		// clear scroll request when a page after the last is requested
+		if (hits.hits().length == 0) {
+			ClearScrollResponse clearScrollResponse = esService.getClient().prepareClearScroll()
+					.addScrollId(searchResponse.getScrollId()).execute().actionGet();
+			if (!clearScrollResponse.isSucceeded()) {
+				LOGGER.warn("Failed to clear scroll with id " + searchResponse.getScrollId() + ". Status: " 
+						+ clearScrollResponse.status());
+			}
+		}
+		
+		final SearchResult searchResult = new SearchResult();
+		searchResult.setLimit(hits.hits().length);
+		searchResult.setSize(hits.totalHits());
+		searchResult.setScrollId(searchResponse.getScrollId());
+		
+		for (final SearchHit currenthit: hits) {
+			final Integer intThumbnailId = (Integer)currenthit.getSource().get("thumbnailId");
+			Long thumbnailId = null;
+			if (intThumbnailId != null) {
+				thumbnailId = Long.valueOf(intThumbnailId);
+			}
+			searchResult.addSearchHit(new de.uni_koeln.arachne.response.search.SearchHit(Long.valueOf(currenthit.getId())
+					, (String)(currenthit.getSource().get("type"))
+					, (String)(currenthit.getSource().get("@id"))
+					, (String)(currenthit.getSource().get("title"))
+					, (String)(currenthit.getSource().get("subtitle"))
+					, thumbnailId
+					, (List<Place>)currenthit.getSource().get("places")));
+		}
 		
 		return searchResult;
 	}

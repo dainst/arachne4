@@ -11,6 +11,7 @@ import org.elasticsearch.rest.RestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -50,7 +51,7 @@ public class SearchController {
 	public SearchController(final @Value("${esDefaultLimit}") int defaultLimit,
 			final @Value("${esDefaultFacetLimit}") int defaultFacetLimit) {
 		
-		this.defaultLimit = defaultLimit;
+		this.defaultLimit = defaultLimit <= SearchParameters.MAX_LIMIT ? defaultLimit : SearchParameters.MAX_LIMIT;
 		this.defaultFacetLimit = defaultFacetLimit;
 	}
 	
@@ -112,20 +113,24 @@ public class SearchController {
 			@RequestParam(value = "desc", required = false) final Boolean orderDesc,
 			@RequestParam(value = "bbox", required = false) final Double[] boundingBox,
 			@RequestParam(value = "ghprec", required = false) final Integer geoHashPrecision,
-			@RequestParam(value = "sf", required = false) final String[] facetsToSort) {
+			@RequestParam(value = "sf", required = false) final String[] facetsToSort,
+			@RequestParam(value = "harvest", required = false) final Boolean harvestMode) {
 		
-		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
-		
-		final SearchParameters searchParameters = new SearchParameters(defaultLimit) 
+		final SearchParameters searchParameters = new SearchParameters(defaultLimit, defaultFacetLimit) 
 				.setQuery(queryString)
 				.setLimit(limit)
 				.setOffset(offset)
-				.setFacetLimit(resultFacetLimit)
+				.setFacetLimit(facetLimit)
 				.setSortField(sortField)
 				.setOrderDesc(orderDesc)
 				.setBoundingBox(boundingBox)
 				.setGeoHashPrecision(geoHashPrecision)
-				.setFacetsToSort(facetsToSort);
+				.setFacetsToSort(facetsToSort)
+				.setHarvestMode(harvestMode);
+		
+		if (!searchParameters.isValid()) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		
 		Multimap<String, String> filters = HashMultimap.create();
 		if (filterValues != null) {
@@ -142,6 +147,25 @@ public class SearchController {
 				
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
 				, searchParameters.getLimit(), searchParameters.getOffset(), filters);
+		
+		if (searchResult.getStatus() != RestStatus.OK) {
+			return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
+		} else {
+			// scroll request cannot be fulfilled due to too many open scroll requests
+			if (searchParameters.isHarvestMode() && searchResult.getScrollId() == null) {
+				HttpHeaders headers = new HttpHeaders();
+				headers.set("Retry-after", "60");
+				return new ResponseEntity<>("", headers, HttpStatus.TOO_MANY_REQUESTS);
+			}
+			return ResponseEntity.ok().body(searchResult);
+		}
+	}
+	
+	@RequestMapping(value="/search/{scrollId}",
+			method=RequestMethod.GET,
+			produces={APPLICATION_JSON_UTF8_VALUE})
+	public @ResponseBody ResponseEntity<?> handleSearchScrollRequest(@PathVariable("scrollId") final String scrollId) {
+		final SearchResult searchResult = searchService.executeSearchScrollRequest(scrollId);
 		
 		if (searchResult.getStatus() != RestStatus.OK) {
 			return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
@@ -175,7 +199,7 @@ public class SearchController {
 
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 		
-		final SearchParameters searchParameters = new SearchParameters(defaultLimit) 
+		final SearchParameters searchParameters = new SearchParameters(defaultLimit, defaultFacetLimit) 
 				.setLimit(limit)
 				.setOffset(offset)
 				.setFacetLimit(resultFacetLimit)

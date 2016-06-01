@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * Convenience class to hold search parameters. As far as it is possible values are stored as the primitive types and 
+ * Class to hold and validate search parameters. As far as it is possible values are stored as the primitive types and 
  * unboxed in the setter methods which take the object types as parameters.
  * 
  * @author Reimar Grabowski
@@ -16,6 +16,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class SearchParameters {
+	public static final int MAX_RESULT_WINDOW = 1000;
+	
+	public static int MAX_LIMIT = 1000;
 
 	/**
 	 * The query string.
@@ -62,13 +65,20 @@ public class SearchParameters {
 	 */
 	private List<String> facetsToSort = new ArrayList<String>();
 	
+	private boolean harvestMode = false;
+	
+	private boolean valid = true;
+	
 	/**
 	 * Constructor that sets a default limit.
 	 * @param defaultLimit The limit to set. Must be greater than -1.
 	 */
-	public SearchParameters(final int defaultLimit) {
+	public SearchParameters(final int defaultLimit, final int defaultFacetLimit) {
 		if (defaultLimit > -1) { 
 			limit = defaultLimit;
+		}
+		if (defaultFacetLimit > -1) {
+			facetLimit = defaultFacetLimit;
 		}
 	}
 	
@@ -99,7 +109,7 @@ public class SearchParameters {
 	 */
 	public SearchParameters setLimit(Integer limit) {
 		if (limit != null && limit > -1) {
-			this.limit = limit;
+			this.limit = limit <= MAX_LIMIT ? limit : MAX_LIMIT;
 		}
 		return this;
 	}
@@ -223,4 +233,29 @@ public class SearchParameters {
 		return this;
 	}
 
+	public boolean isHarvestMode() {
+		return harvestMode;
+	}
+
+	/**
+	 * @param harvestMode if the complete search result will be available via the ES scroll API
+	 * @return this
+	 */
+	public SearchParameters setHarvestMode(Boolean harvestMode) {
+		if (harvestMode != null) {
+			this.harvestMode = harvestMode;
+		}
+		return this;
+	}
+	
+	/**
+	 * Validates the current search parameters.
+	 * @return The validity status of the search parameters.
+	 */
+	public boolean isValid() {
+		if ((this.limit + this.offset > MAX_RESULT_WINDOW) && (harvestMode == false)) {
+			valid = false;
+		}
+		return valid;
+	}
 }
