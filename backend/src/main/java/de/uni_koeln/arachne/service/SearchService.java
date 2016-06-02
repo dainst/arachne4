@@ -17,7 +17,6 @@ import org.elasticsearch.action.search.SearchPhaseExecutionException;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.index.query.AndQueryBuilder;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoBoundingBoxQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -38,7 +37,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.github.davidmoten.geo.GeoHash;
@@ -182,7 +180,7 @@ public class SearchService {
 		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
 				.setQuery(buildQuery("*", null, new Double[0]))
-				.setSearchType(SearchType.COUNT)
+				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setSize(0);
 		
 		final Set<Aggregation> aggregations = new LinkedHashSet<Aggregation>();
@@ -535,7 +533,7 @@ public class SearchService {
 		if (bbCoords.length == 4) {
 			GeoBoundingBoxQueryBuilder bBoxFilter = QueryBuilders.geoBoundingBoxQuery("places.location")
 					.topLeft(bbCoords[0], bbCoords[1]).bottomRight(bbCoords[2], bbCoords[3]);
-			AndQueryBuilder andFilter = QueryBuilders.andQuery(facetFilter, bBoxFilter);
+			BoolQueryBuilder andFilter = QueryBuilders.boolQuery().must(facetFilter).must(bBoxFilter); 
 			filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(andFilter);
 		} else {
 			filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(facetFilter);
@@ -558,7 +556,7 @@ public class SearchService {
 		
 		BoolQueryBuilder accessFilter = esService.getAccessControlFilter();
 		final TermQueryBuilder innerQuery = QueryBuilders.termQuery("connectedEntities", entityId);
-		final QueryBuilder query = QueryBuilders.filteredQuery(innerQuery, accessFilter);
+		final QueryBuilder query = QueryBuilders.boolQuery().must(innerQuery).filter(accessFilter);
 										
 		LOGGER.debug("Elastic search query: " + query.toString());
 		return query;
@@ -569,7 +567,8 @@ public class SearchService {
 		final SearchResultFacet result = new SearchResultFacet(facetName);
 		
 		for (final Map.Entry<String, Long> entry: facetMap.entrySet()) {
-			final SearchResultFacetValue facetValue = new SearchResultFacetValue(entry.getKey(), entry.getKey(), entry.getValue());
+			final SearchResultFacetValue facetValue = 
+					new SearchResultFacetValue(entry.getKey(), entry.getKey(), entry.getValue());
 			result.addValue(facetValue);
 		}
 		

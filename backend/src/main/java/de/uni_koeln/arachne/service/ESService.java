@@ -21,7 +21,6 @@ import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.admin.indices.open.OpenIndexResponse;
 import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsResponse;
-import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
@@ -378,11 +377,15 @@ public class ESService implements ServletContextAware {
 	 * @return The number of documents or -1 on error.
 	 */
 	public long getCount(final String indexName) {
-		final CountResponse countResponse = getClient().prepareCount(indexName).execute().actionGet();
-		if (countResponse.status() == RestStatus.OK) {
-			return countResponse.getCount();
+		final SearchResponse searchResponse = getClient().prepareSearch(indexName)
+				.setQuery(QueryBuilders.matchAllQuery())
+				.setSearchType(SearchType.QUERY_THEN_FETCH)
+				.setSize(0)
+				.execute().actionGet();
+		if (searchResponse.status() == RestStatus.OK) {
+			return searchResponse.getHits().totalHits();
 		} else {
-			LOGGER.error("Getting count from search index failed. Cause: " + countResponse.status().toString());
+			LOGGER.error("Getting count from search index failed. Cause: " + searchResponse.status().toString());
 			return -1;
 		}
 	}
@@ -401,8 +404,8 @@ public class ESService implements ServletContextAware {
 		final QueryBuilder accessFilter = getAccessControlFilter();
 
 		if (category == null) {
-			final QueryBuilder query = QueryBuilders.filteredQuery(
-					QueryBuilders.termQuery("entityId", id), accessFilter);
+			final QueryBuilder query = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("entityId", id))
+					.filter(accessFilter);
 			LOGGER.debug("Entity query [" + id + "]: " + query);
 			searchResponse = getClient().prepareSearch(getSearchIndexAlias())
 					.setQuery(query)
@@ -422,11 +425,9 @@ public class ESService implements ServletContextAware {
 					.setSize(1)
 					.execute().actionGet();
 		} else {
-			final QueryBuilder query = QueryBuilders.filteredQuery(
-					QueryBuilders.boolQuery()
+			final QueryBuilder query = QueryBuilders.boolQuery().must(QueryBuilders.boolQuery()
 					.must(QueryBuilders.termQuery("type", ts.transl8(category)))
-					.must(QueryBuilders.termQuery("internalId", id))
-					, accessFilter);
+					.must(QueryBuilders.termQuery("internalId", id))).filter(accessFilter);
 			LOGGER.debug("Entity query [" + ts.transl8(category) + "/" + id + "]: " + query);
 			searchResponse = getClient().prepareSearch(getSearchIndexAlias())
 					.setQuery(query)
