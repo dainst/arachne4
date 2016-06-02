@@ -28,6 +28,7 @@ import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
 import de.uni_koeln.arachne.service.SearchService;
+import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.search.SearchParameters;
 
 /**
@@ -42,6 +43,9 @@ public class SearchController {
 	
 	@Autowired
 	private transient SearchService searchService;
+	
+	@Autowired
+	private transient UserRightsService userRightsService;
 	
 	private transient final int defaultFacetLimit;
 	
@@ -114,7 +118,11 @@ public class SearchController {
 			@RequestParam(value = "bbox", required = false) final Double[] boundingBox,
 			@RequestParam(value = "ghprec", required = false) final Integer geoHashPrecision,
 			@RequestParam(value = "sf", required = false) final String[] facetsToSort,
-			@RequestParam(value = "harvest", required = false) final Boolean harvestMode) {
+			@RequestParam(value = "scroll", required = false) final Boolean scrollMode) {
+		
+		if (scrollMode != null && scrollMode && !userRightsService.isSignedInUser()) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
 		
 		final SearchParameters searchParameters = new SearchParameters(defaultLimit, defaultFacetLimit) 
 				.setQuery(queryString)
@@ -126,7 +134,7 @@ public class SearchController {
 				.setBoundingBox(boundingBox)
 				.setGeoHashPrecision(geoHashPrecision)
 				.setFacetsToSort(facetsToSort)
-				.setHarvestMode(harvestMode);
+				.setScrollMode(scrollMode);
 		
 		if (!searchParameters.isValid()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -152,7 +160,7 @@ public class SearchController {
 			return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
 		} else {
 			// scroll request cannot be fulfilled due to too many open scroll requests
-			if (searchParameters.isHarvestMode() && searchResult.getScrollId() == null) {
+			if (searchParameters.isScrollMode() && searchResult.getScrollId() == null) {
 				HttpHeaders headers = new HttpHeaders();
 				headers.set("Retry-after", "60");
 				return new ResponseEntity<>("", headers, HttpStatus.TOO_MANY_REQUESTS);
@@ -161,7 +169,7 @@ public class SearchController {
 		}
 	}
 	
-	@RequestMapping(value="/search/{scrollId}",
+	@RequestMapping(value="/search/scroll/{scrollId}",
 			method=RequestMethod.GET,
 			produces={APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody ResponseEntity<?> handleSearchScrollRequest(@PathVariable("scrollId") final String scrollId) {

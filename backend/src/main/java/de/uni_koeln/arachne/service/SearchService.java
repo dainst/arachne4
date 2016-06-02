@@ -122,7 +122,9 @@ public class SearchService {
 				.setSize(searchParameters.getLimit())
 				.setFrom(searchParameters.getOffset());
 		
-		if (searchParameters.isHarvestMode() && getOpenScrollRequests() < MAX_OPEN_SCROLL_REQUESTS) {
+		if (searchParameters.isScrollMode() 
+				&& userRightsService.isSignedInUser()
+				&& getOpenScrollRequests() < MAX_OPEN_SCROLL_REQUESTS) {
 			result.setScroll("1m");
 		}
 		
@@ -308,7 +310,8 @@ public class SearchService {
 	}
 	
 	/**
-	 * Executes a search scroll request on the elasticsearch index to get the next batch of results.
+	 * Executes a search scroll request on the elasticsearch index to get the next batch of results. User must be 
+	 * signed in.
 	 * @param scrollId The scrollId of the initial search request.
 	 * @return The search result.
 	 */

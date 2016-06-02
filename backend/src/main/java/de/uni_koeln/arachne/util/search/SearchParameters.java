@@ -65,7 +65,7 @@ public class SearchParameters {
 	 */
 	private List<String> facetsToSort = new ArrayList<String>();
 	
-	private boolean harvestMode = false;
+	private boolean scrollMode = false;
 	
 	private boolean valid = true;
 	
@@ -233,17 +233,17 @@ public class SearchParameters {
 		return this;
 	}
 
-	public boolean isHarvestMode() {
-		return harvestMode;
+	public boolean isScrollMode() {
+		return scrollMode;
 	}
 
 	/**
-	 * @param harvestMode if the complete search result will be available via the ES scroll API
+	 * @param scrollMode if the complete search result will be available via the ES scroll API
 	 * @return this
 	 */
-	public SearchParameters setHarvestMode(Boolean harvestMode) {
-		if (harvestMode != null) {
-			this.harvestMode = harvestMode;
+	public SearchParameters setScrollMode(Boolean scrollMode) {
+		if (scrollMode != null) {
+			this.scrollMode = scrollMode;
 		}
 		return this;
 	}
@@ -253,7 +253,7 @@ public class SearchParameters {
 	 * @return The validity status of the search parameters.
 	 */
 	public boolean isValid() {
-		if ((this.limit + this.offset > MAX_RESULT_WINDOW) && (harvestMode == false)) {
+		if ((this.limit + this.offset > MAX_RESULT_WINDOW) && (scrollMode == false)) {
 			valid = false;
 		}
 		return valid;
