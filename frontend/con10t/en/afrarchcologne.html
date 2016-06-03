@@ -4,6 +4,12 @@
             <h1>African Archaeology Archive Cologne</h1>
         </div>
         <div class="con10t-sidebar">
+            <h3>Search the project data</h3>
+            <div class="well">
+                <p>
+                    <con10t-search fq="facet_bestandsname:AAArC"></con10t-search>
+                </p>
+            </div>
             <h3>Related Links</h3>
             <p><a href="http://arachne.uni-koeln.de/fotothektest/aaarc">Digital
                 Photograph Archive</a></p>
@@ -45,6 +51,12 @@
                 available online, the deeper exploration and contextualization of the
                 objects represented in ARACHNE is expected in the course of the coming
                 years.</p>
+
+            <h3>Browse by topography</h3>
+            <p>
+                <con10t-tree fq="facet_bestandsname:AAArC" wildcard-facet="facet_subkategorie"></con10t-tree>
+            </p>
+
         </div>
     </div>
 </div>
