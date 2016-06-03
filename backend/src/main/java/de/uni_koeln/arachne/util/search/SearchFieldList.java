@@ -76,11 +76,27 @@ public class SearchFieldList {
 	}
 	
 	/**
+	 * Getter for the list of text search fields (including boost values). Use this list to pass values to elasticsearch.
+	 * @return
+	 */
+	public ImmutableList<String> textNoBoosts() {
+		return textSearchFields;
+	}
+	
+	/**
 	 * Getter for the list of text search fields (including boost values. Use this list to pass values to elasticsearch.
 	 * @return
 	 */
 	public ImmutableList<String> numeric() {
 		return numericSearchFieldsWithBoosts;
+	}
+	
+	/**
+	 * Getter for the list of text search fields (including boost values. Use this list to pass values to elasticsearch.
+	 * @return
+	 */
+	public ImmutableList<String> numericNoBoosts() {
+		return numericSearchFields;
 	}
 	
 	/**

@@ -1,12 +1,14 @@
 package de.uni_koeln.arachne.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.ElasticsearchException;
@@ -124,6 +126,11 @@ public class SearchService {
 				&& userRightsService.isSignedInUser()
 				&& getOpenScrollRequests() < MAX_OPEN_SCROLL_REQUESTS) {
 			result.setScroll("1m");
+		} else {
+			// does only work for text fields
+			for (String textField: searchFields.textNoBoosts()) {
+				result.addHighlightedField(textField);
+			}
 		}
 		
 		addSort(searchParameters.getSortField(), searchParameters.isOrderDesc(), result);
@@ -272,13 +279,20 @@ public class SearchService {
 			if (intThumbnailId != null) {
 				thumbnailId = Long.valueOf(intThumbnailId);
 			}
+			
+			Map<String, List<String>> highlights = currenthit.getHighlightFields().entrySet().stream()
+					.collect(Collectors.toMap(Map.Entry::getKey, entry -> Arrays.stream(entry.getValue().fragments())
+							.map(fragment -> fragment.toString())
+							.collect(Collectors.toList())));
+			
 			searchResult.addSearchHit(new de.uni_koeln.arachne.response.search.SearchHit(Long.valueOf(currenthit.getId())
 					, (String)(currenthit.getSource().get("type"))
 					, (String)(currenthit.getSource().get("@id"))
 					, (String)(currenthit.getSource().get("title"))
 					, (String)(currenthit.getSource().get("subtitle"))
 					, thumbnailId
-					, (List<Place>)currenthit.getSource().get("places")));
+					, (List<Place>)currenthit.getSource().get("places")
+					, highlights));			
 		}
 		
 		// add facet search results
@@ -365,7 +379,8 @@ public class SearchService {
 					, (String)(currenthit.getSource().get("title"))
 					, (String)(currenthit.getSource().get("subtitle"))
 					, thumbnailId
-					, (List<Place>)currenthit.getSource().get("places")));
+					, (List<Place>)currenthit.getSource().get("places"),
+					null));
 		}
 		
 		return searchResult;
