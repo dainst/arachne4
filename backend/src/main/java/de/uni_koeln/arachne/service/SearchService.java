@@ -34,6 +34,7 @@ import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
+import org.elasticsearch.search.highlight.HighlightBuilder.Field;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,7 +118,8 @@ public class SearchService {
 			, final Multimap<String, String> filters) {
 		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
-				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox()))
+				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox(), false))
+				.setHighlighterQuery(buildQuery(searchParameters.getQuery(), filters, null, true))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setSize(searchParameters.getLimit())
 				.setFrom(searchParameters.getOffset());
@@ -127,10 +129,18 @@ public class SearchService {
 				&& getOpenScrollRequests() < MAX_OPEN_SCROLL_REQUESTS) {
 			result.setScroll("1m");
 		} else {
-			// does only work for text fields
-			for (String textField: searchFields.textNoBoosts()) {
-				result.addHighlightedField(textField);
-			}
+			// enable highlighting for all search fields (text fields only)
+			Field field = new Field("title");
+			field.numOfFragments(0);
+			result.addHighlightedField(field);
+			
+			field = new Field("subtitle");
+			field.numOfFragments(0);
+			result.addHighlightedField(field);
+			
+			field = new Field("searchableContent");
+			field.numOfFragments(5);
+			result.addHighlightedField(field);
 		}
 		
 		addSort(searchParameters.getSortField(), searchParameters.isOrderDesc(), result);
@@ -186,7 +196,7 @@ public class SearchService {
 	public SearchRequestBuilder buildIndexSearchRequest(final String facetName) {
 		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
-				.setQuery(buildQuery("*", null, new Double[0]))
+				.setQuery(buildQuery("*", null, null, false))
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setSize(0);
 		
@@ -284,7 +294,7 @@ public class SearchService {
 					.collect(Collectors.toMap(Map.Entry::getKey, entry -> Arrays.stream(entry.getValue().fragments())
 							.map(fragment -> fragment.toString())
 							.collect(Collectors.toList())));
-			
+									
 			searchResult.addSearchHit(new de.uni_koeln.arachne.response.search.SearchHit(Long.valueOf(currenthit.getId())
 					, (String)(currenthit.getSource().get("type"))
 					, (String)(currenthit.getSource().get("@id"))
@@ -505,13 +515,21 @@ public class SearchService {
 	 * @param searchParam The query string.
 	 * @param filters The filter from the HTTP 'fq' parameter as map to create a filter query from.
 	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)
+	 * @param disableAccessControl If the access control query shall be replaced with a match all query
 	 * @return An elasticsearch <code>QueryBuilder</code> which in essence is a complete elasticsearch query.
 	 */
 	private QueryBuilder buildQuery(final String searchParam
 			, final Multimap<String, String> filters
-			, final Double[] bbCoords) {
+			, final Double[] bbCoords
+			, final boolean disableAccessControl) {
 		
-		QueryBuilder facetFilter = esService.getAccessControlFilter();
+		
+		QueryBuilder facetFilter;
+		if (!disableAccessControl) {
+			facetFilter = esService.getAccessControlFilter();
+		} else {
+			facetFilter = QueryBuilders.matchAllQuery();
+		}
 				
 		if (filters != null && !filters.isEmpty()) {
 			for (final Map.Entry<String, Collection<String>> filter: filters.asMap().entrySet()) {
@@ -545,7 +563,7 @@ public class SearchService {
 		}
 		
 		final QueryBuilder filteredQuery;
-		if (bbCoords.length == 4) {
+		if (bbCoords != null && bbCoords.length == 4) {
 			GeoBoundingBoxQueryBuilder bBoxFilter = QueryBuilders.geoBoundingBoxQuery("places.location")
 					.topLeft(bbCoords[0], bbCoords[1]).bottomRight(bbCoords[2], bbCoords[3]);
 			BoolQueryBuilder andFilter = QueryBuilders.boolQuery().must(facetFilter).must(bBoxFilter); 

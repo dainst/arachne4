@@ -258,8 +258,8 @@ public class DataImportService { // NOPMD
 				if (retries > 59) {
 					throw new RuntimeException("Bulk request did not finish in 1 minute.");
 				}
+				esService.setMaxResultWindow(indexName, index);
 				esService.setRefreshInterval(indexName, true);
-				esService.setMaxResultWindow(indexName, esService.getCount(indexName));
 				esService.updateSearchIndex();
 				final long elapsedTime = (System.currentTimeMillis() - startTime);
 				final String success = "Import of " + index + " documents finished in " + elapsedTime/1000f/60f/60f + " hours ("
