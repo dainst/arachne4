@@ -380,6 +380,12 @@
                 },
                 "children": [
                     {
+                        "id": "wohnkulturOstia",
+                        "title": {
+                            "de": "Wohnkultur im spätantiken Ostia"
+                        }
+                    },
+                    {
                         "id": "basilaemil",
                         "title": {
                             "de": "Die Basilica Aemilia",
