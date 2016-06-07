@@ -383,7 +383,8 @@
                         "id": "wohnkulturOstia",
                         "title": {
                             "de": "Wohnkultur im spätantiken Ostia"
-                        }
+                        },
+                        "hidden": true
                     },
                     {
                         "id": "basilaemil",
