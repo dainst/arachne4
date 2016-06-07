@@ -15,7 +15,25 @@
             <p><a href="http://arachne.dainst.org/search?fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22AAArC%22" target="_blank">Images in Arachne</a></p>
             <p><a href="http://arachne.uni-koeln.de/fotothek/aaarc/" target="_blank">Digital Photography Archive</a></p>
             <p><a href="http://www.fstafrika.phil-fak.uni-koeln.de/14839.html?&amp;L=0" target="_blank">AAArC - Forschungstelle Afrika at the University of Cologne</a></p></div>
-            <h3>The Long Road to Wadi Howar</h3>
+                <div ng-init="config = {
+				facetsSelect: [
+					{
+						key: 'facet_bestandsname',
+						value: 'AAArC'
+					}
+				],
+				clustered: false
+			}"></div>
+                <div con10t-map
+                     class="map"
+                     type="grid"
+                     limit="0"
+                     facets-select="config.facetsSelect"
+                     clustered="config.clustered"
+                     lat="3.126"
+                     lng="22.614"
+                     zoom="1">
+                <h3>The Long Road to Wadi Howar</h3>
             <div class="embed-responsive embed-responsive-16by9 img-thumbnail">
                 <iframe frameborder="0" width="480" height="270" src="//www.dailymotion.com/embed/video/k2V0zEHv7sdL4ahQtJA" allowfullscreen></iframe><br /><a href="http://www.dailymotion.com/video/x4d044u_der-lange-weg-ins-wadi-howar_shortfilms" target="_blank">Der Lange Weg Ins Wadi Howar</a> <i>von <a href="http://www.dailymotion.com/AAArCologne" target="_blank">AAArCologne</a></i></div>
             <h3>Life in the Louvre of Nature - Documentation about Harald Pager, SWF 1985</h3>
