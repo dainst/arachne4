@@ -120,6 +120,7 @@ public class SearchService {
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
 				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox(), false))
 				.setHighlighterQuery(buildQuery(searchParameters.getQuery(), filters, null, true))
+				.setHighlighterOrder("score")
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setSize(searchParameters.getLimit())
 				.setFrom(searchParameters.getOffset());
