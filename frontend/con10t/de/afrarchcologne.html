@@ -22,25 +22,7 @@
             <p><a href="http://www.fstafrika.phil-fak.uni-koeln.de/14839.html?&amp;L=0"
                   target="_blank">AAArC - Forschungstelle Afrika an der Universität
                 Köln</a></p></div>
-            <div ng-init="config = {
-				facetsSelect: [
-					{
-						key: 'facet_bestandsname',
-						value: 'AAArC'
-					}
-				],
-				clustered: false
-			}"></div>
-            <div con10t-map
-                 class="map"
-                 type="grid"
-                 limit="0"
-                 facets-select="config.facetsSelect"
-                 clustered="config.clustered"
-                 lat="3.126"
-                 lng="22.614"
-                 zoom="1">
-            </div>
+          
             <br/>
             <br/>
             
@@ -87,10 +69,12 @@
   		<p>Das Projekt wird durch die <a href="http://www.dfg.de/" target=
                     "_blank">Deutsche Forschungsgemeinschaft</a> gefördert.</p>
                     
-            <h3>Topographischer Einstieg</h3>
+            <h3>Geographischer Zugang</h3>
             <p>
                 <con10t-tree fq="facet_bestandsname:AAArC" wildcard-facet="facet_subkategorie"></con10t-tree>
             </p>
+            <p>In den Topographien aufgeführte Literaturzitate berücksichtigen nur Titel mit 
+                Beteiligung von Autoren aus Kölner Projekten.</p>
 
           
           
