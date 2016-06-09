@@ -252,14 +252,14 @@
 		<facet name="bestandsname" labelKey="Bestandsname">
 			<field datasource="marbilderbestand.Bestandsname" />
 		</facet>
-		<facet name="projekttitelMarbilder" labelKey="Projekt">
-			<field datasource="marbilder.ProjekttitelMarbilder" />
-		</facet>
 		<facet name="bestandsname" labelKey="Bestandsname">
 			<field datasource="marbilderoppenheim.Facette" />
 		</facet>
 		<facet name="bestandsname" labelKey="Bestandsname">
 			<field datasource="marbilderrwwa.Facette" />
+		</facet>
+		<facet name="projekttitel" labelKey="Projekt">
+			<field datasource="marbilder.Projekttitel" />
 		</facet>
 	</facets>
 </category>
