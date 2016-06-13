@@ -102,6 +102,18 @@ public class TestResponseFactory { // NOPMD
 	}
 	
 	@Test
+	public void testIds() {
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		assertTrue(response.contains("\"ids\":[\"1\",\"123\",\"1234567890\",\"a1b2c3d4\"]"));
+	}
+	
+	@Test
+	public void testFilename() {
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		assertTrue(response.contains("\"filename\":\"test_filename.ext\""));
+	}
+	
+	@Test
 	public void testTitle() {
 		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
 		assertTrue(response.contains("\"title\":\"Title of the Test\""));

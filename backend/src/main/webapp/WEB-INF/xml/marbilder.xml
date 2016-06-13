@@ -13,6 +13,11 @@
 		<subtable connectFieldParent="DateinameMarbilder"
 			connectFieldSubTable="DateinameOppenheim">marbilderoppenheim</subtable>
 	</subtables>
+	<search>
+	   <filename>
+	       DateinameMarbilder
+	   </filename>
+	</search>
 	<display>
 		<title>
 			<section>

@@ -35,6 +35,10 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	 */
 	protected String subtitle;
 	
+	protected List<String> ids;
+	
+	protected String filename;
+	
 	@JsonProperty("@id")
 	protected String uri;
 	
@@ -289,5 +293,21 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	 */
 	public void setEditorSection(Section editorSection) {
 		this.editorSection = editorSection;
+	}
+
+	public List<String> getIds() {
+		return ids;
+	}
+
+	public void setIds(List<String> ids) {
+		this.ids = ids;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 }

@@ -5,10 +5,22 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
 	<subtables>
-		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="testSubField">testSubTable1</subtable>
-		<subtable connectFieldParent="testParentField" connectFieldSubTable="PrimaryKey">testSubTable2</subtable>
+		<subtable connectFieldParent="PrimaryKey"
+			connectFieldSubTable="testSubField">testSubTable1</subtable>
+		<subtable connectFieldParent="testParentField"
+			connectFieldSubTable="PrimaryKey">testSubTable2</subtable>
 	</subtables>
-	<explicitContextualizers>testcontextualizer1,testcontextualizer2, testcontextualizer3</explicitContextualizers>
+	<explicitContextualizers>
+	   testcontextualizer1,testcontextualizer2, testcontextualizer3
+	</explicitContextualizers>
+	<search>
+		<additionalIds>
+			otherId, anotherId
+		</additionalIds>
+		<filename>
+			filename
+		</filename>
+	</search>
 	<display>
 		<title>
 			<section>
@@ -43,14 +55,16 @@
 					<field datasource="test.DataSeparatorAfter" />
 				</section>
 				<section labelKey="Testdata value edit">
-                    <field datasource="test.DataSearchReplace" search="incorrectly" replace="correctly"/>
-                    <field datasource="test.DataTrimEnd" trimEnd=" trimmed" />
-                </section>
+					<field datasource="test.DataSearchReplace" search="incorrectly"
+						replace="correctly" />
+					<field datasource="test.DataTrimEnd" trimEnd=" trimmed" />
+				</section>
 				<section labelKey="Testdata linkField">
 					<field datasource="test.DataNoLink1" />
 					<linkField datasource="test.DataLink1" labelKey="TestLink1" />
-					<linkField datasource="test.DataLink2" labelKey="TestLink2" overrideSeparator="-TestLinkOverride-"
-						prefix="http://testserver.com/" postfix=".html" />
+					<linkField datasource="test.DataLink2" labelKey="TestLink2"
+						overrideSeparator="-TestLinkOverride-" prefix="http://testserver.com/"
+						postfix=".html" />
 					<field datasource="test.DataNoLink2" />
 				</section>
 				<context type="testContext">
@@ -60,19 +74,19 @@
 					<field datasource=".value4" />
 					<field datasource=".value5" separator="-TestSeparator2-" />
 					<field datasource=".value6" />
-					<field datasource=".value7" overrideSeparator="-TestSeparator3-"/>
+					<field datasource=".value7" overrideSeparator="-TestSeparator3-" />
 				</context>
 			</section>
 		</datasections>
 		<editorsection>
-            <section labelKey="Testdata Editor Section">
-                <field datasource="test.DataEditorSection" />
-            </section>  
+			<section labelKey="Testdata Editor Section">
+				<field datasource="test.DataEditorSection" />
+			</section>
 		</editorsection>
 		<contextImages>
-            <contextImage show="always">testalways</contextImage>
-            <contextImage show="ifEmpty">testifempty</contextImage>
-        </contextImages>
+			<contextImage show="always">testalways</contextImage>
+			<contextImage show="ifEmpty">testifempty</contextImage>
+		</contextImages>
 	</display>
 	<facets>
 		<facet name="kategorie" labelKey="Kategorie">
@@ -86,7 +100,7 @@
 			</field>
 		</facet>
 		<facet name="multivaluetest" labelKey="Multivaluetestfacet">
-            <field datasource="test.facetMultiValueTest" />
+			<field datasource="test.facetMultiValueTest" />
 		</facet>
 	</facets>
 </category>

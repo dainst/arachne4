@@ -96,11 +96,12 @@ public class ResponseFactory {
 	}
 	
 	/**
-	 * Creates a formatted response object as used by the front-end. The structure of this object is defined in the xml config files.
-	 * First the type of the object will be determined from the dataset (e.g. bauwerk). Based on the type the corresponding xml file <code>$(TYPE).xml</code> is read.
-	 * The response is then created, according to the xml file, from the dataset.
+	 * Creates a formatted response object as used by the front-end. The structure of this object is defined in the xml 
+	 * config files. First the type of the object will be determined from the dataset (e.g. bauwerk). Based on the type 
+	 * the corresponding xml file <code>$(TYPE).xml</code> is read. The response is then created, according to the xml 
+	 * file, from the dataset.
 	 * <br>
-	 * The validity of the xml file is not checked!!!
+	 * The validity of the xml file is not checked as this is covered by 'category.xsd'.
 	 * @param dataset The dataset which encapsulates the SQL query results.
 	 * @return A <code>FormattedArachneEntity</code> as JSON (<code>String</code>).
 	 */
@@ -124,11 +125,12 @@ public class ResponseFactory {
 	}
 
 	/**
-	 * Creates a formatted response object as used by the front-end. The structure of this object is defined in the xml config files.
-	 * First the type of the object will be determined from the dataset (e.g. bauwerk). Based on the type the corresponding xml file <code>$(TYPE).xml</code> is read.
-	 * The response is then created, according to the xml file, from the dataset.
+	 * Creates a formatted response object as used by the front-end. The structure of this object is defined in the xml 
+	 * config files. First the type of the object will be determined from the dataset (e.g. bauwerk). Based on the type 
+	 * the corresponding xml file <code>$(TYPE).xml</code> is read. The response is then created, according to the xml 
+	 * file, from the dataset.
 	 * <br>
-	 * The validity of the xml file is not checked!!!
+	 * The validity of the xml file is not checked as this is covered by 'category.xsd'.
 	 * @param dataset The dataset which encapsulates the SQL query results.
 	 * @return A <code>FormattedArachneEntity</code> as JSON (<code>raw bytes</code>).
 	 */
@@ -351,6 +353,46 @@ public class ResponseFactory {
 	}
 	
 	/**
+	 * Retrieves the ids (if any) defined in the <code>additonalIds</code> tag.
+	 * @param dataset The current dataset.
+	 * @param namespace The document namespace
+	 * @param search The search element.
+	 * @return A <code>List<String></code> containg the additional ids.
+	 */
+	private List<String> getAdditionalIds(final Dataset dataset, final Namespace namespace, final Element search) {
+		final List<String> result = new ArrayList<>();
+
+		final Element additionalIds = search.getChild("additionalIds", namespace);
+		if (additionalIds != null) {
+			final String type = dataset.getArachneId().getTableName();
+			final List<String> idFields = StrUtils.getCommaSeperatedStringAsList(additionalIds.getTextNormalize());
+			for (String fieldName : idFields) {
+				result.add(dataset.getFieldFromFields(type + "." + fieldName));
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Retrieves the filename (if any) defined in the <code>filename</code> tag.
+	 * @param dataset The current dataset.
+	 * @param namespace The document namespace
+	 * @param search The search element.
+	 * @return The filename as <code>String</code>.
+	 */
+	private String getFileName(final Dataset dataset, final Namespace namespace, final Element search) {
+		String result = null;
+		final Element filename = search.getChild("filename", namespace);
+		if (filename != null) {
+			final String type = dataset.getArachneId().getTableName();
+			final String fieldName = filename.getTextNormalize();
+			result = dataset.getFieldFromFields(type + "." + fieldName);
+		}
+		return result;
+	}
+	
+	/**
 	 * Retrieves the title for the response.
 	 * @param dataset The current dataset.
 	 * @param namespace The document namespace.
@@ -433,6 +475,23 @@ public class ResponseFactory {
 			, final FormattedArachneEntity response) {
 		
 		final Namespace namespace = document.getRootElement().getNamespace();
+		
+		// set additional search fields
+		// set ids
+		final List<String> ids = new ArrayList<>();
+		ids.add(response.getEntityId().toString());
+		ids.add(response.getInternalId().toString());
+		
+		final Element search = document.getRootElement().getChild("search", namespace);
+		if (search != null) {
+			ids.addAll(getAdditionalIds(dataset, namespace, search));
+						
+			// set filename
+			response.setFilename(getFileName(dataset, namespace, search));
+		}
+		response.setIds(ids);
+		
+		// display
 		final Element display = document.getRootElement().getChild("display", namespace);
 
 		// set title

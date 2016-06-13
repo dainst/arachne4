@@ -35,9 +35,9 @@ import de.uni_koeln.arachne.util.EntityId;
 public class TestData {
 
 	private final String jsonString = "{"
-			+ "\"entityId\":0,"
+			+ "\"entityId\":1,"
 			+ "\"type\":\"type_test\","
-			+ "\"internalId\":0,"
+			+ "\"internalId\":123,"
 			+ "\"datasetGroup\":\"Arachne\","
 			+ "\"title\":\"Title of the Test\","
 			+ "\"subtitle\":\"Subtitle of the Test\","
@@ -64,11 +64,16 @@ public class TestData {
 	
 	private final Dataset testDataset = new Dataset();
 	
-	private final EntityId deletedEntity = new EntityId("test", 2L, 2L, true, 0L);
+	private final EntityId deletedEntity = new EntityId("test", 432L, 32L, true, 0L);
 	
 	public TestData() {
 		// dataset
-		testDataset.setArachneId(new EntityId("test", 0L, 0L, false, 0L));
+		testDataset.setArachneId(new EntityId("test", 123L, 1L, false, 1L));
+				
+		testDataset.setFields("test.otherId", "1234567890");
+		testDataset.setFields("test.anotherId", "a1b2c3d4");
+		
+		testDataset.setFields("test.filename", "test_filename.ext");
 				
 		testDataset.setFields("test.Title", "Title of the Test");
 		
@@ -95,7 +100,7 @@ public class TestData {
 		
 		final Dataset linkDataset = new Dataset();
 		
-		linkDataset.setArachneId(new EntityId("testContext", 0L, 1L, false, 0L));
+		linkDataset.setArachneId(new EntityId("testContext", 12L, 2L, false, null));
 				
 		linkDataset.setFields("testContext.value1", "Test Context Value1");
 		linkDataset.setFields("testContext.value3", "Test Context Value3");
@@ -165,9 +170,9 @@ public class TestData {
 	
 	public SearchResult getDefaultSearchResult() {
 		final SearchResult result = new SearchResult();
-		result.addSearchHit(new SearchHit(0l, "test", "testServer.com/entity/0" ,"Test title", "Test subtitle", 0l
+		result.addSearchHit(new SearchHit(1l, "test", "testServer.com/entity/1" ,"Test title", "Test subtitle", 1l
 				, new ArrayList<Place>(), null));
-		result.addSearchHit(new SearchHit(1l, "test", "testServer.com/entity/1" ,"Test title 1", "Test subtitle 1", 1l
+		result.addSearchHit(new SearchHit(2l, "test", "testServer.com/entity/2" ,"Test title 1", "Test subtitle 1", 2l
 				, new ArrayList<Place>(), null));
 		result.setSize(2);
 		final SearchResultFacet facet1 = new SearchResultFacet("facet_test1");

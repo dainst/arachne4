@@ -119,7 +119,7 @@ public class TestSearchController {
 				isIndexSearch.set(false);
 				final Object[] args = invocation.getArguments();
 				final long entityId = (long)args[0];
-				if (entityId != 0) {
+				if (entityId != 1) {
 					searchResult.setSize(0);
 					searchResult.setLimit(1);
 					searchResult.setOffset(0);
@@ -128,21 +128,21 @@ public class TestSearchController {
 				} else {
 					final SearchParameters searchParams = (SearchParameters)args[1];
 
-					List<SearchHit> entites = searchResult.getEntities();
-					int resultSize = entites.size();
+					List<SearchHit> entities = searchResult.getEntities();
+					int resultSize = entities.size();
 					int limit = searchParams.getLimit();
 					int offset = searchParams.getOffset();
 
 					if (resultSize > offset) {
 						final int toIndex = (limit + offset) > resultSize ? resultSize : (limit + offset);
-						searchResult.setEntities(entites.subList(offset, toIndex));
-						entites = searchResult.getEntities();
+						searchResult.setEntities(entities.subList(offset, toIndex));
+						entities = searchResult.getEntities();
 					}
 					searchResult.setOffset(searchParams.getOffset());
 
 					searchResult.setLimit(limit);
 					if (resultSize > limit) {
-						searchResult.setEntities(entites.subList(0, limit));
+						searchResult.setEntities(entities.subList(0, limit));
 					}
 
 					final int facetLimit = searchParams.getFacetLimit();
@@ -231,9 +231,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -260,9 +260,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -311,15 +311,15 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
-						+ "\"title\":\"Test title\","
-						+ "\"subtitle\":\"Test subtitle\","
-						+ "\"type\":\"test\"},"
 						+ "{\"thumbnailId\":1,"
 						+ "\"entityId\":1,"
 						+ "\"@id\":\"testServer.com/entity/1\","
+						+ "\"title\":\"Test title\","
+						+ "\"subtitle\":\"Test subtitle\","
+						+ "\"type\":\"test\"},"
+						+ "{\"thumbnailId\":2,"
+						+ "\"entityId\":2,"
+						+ "\"@id\":\"testServer.com/entity/2\","
 						+ "\"title\":\"Test title 1\","
 						+ "\"subtitle\":\"Test subtitle 1\","
 						+ "\"type\":\"test\"}],"
@@ -346,8 +346,8 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -391,9 +391,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":1,"
-						+ "\"entityId\":1,"
-						+ "\"@id\":\"testServer.com/entity/1\","
+						+ "{\"thumbnailId\":2,"
+						+ "\"entityId\":2,"
+						+ "\"@id\":\"testServer.com/entity/2\","
 						+ "\"title\":\"Test title 1\","
 						+ "\"subtitle\":\"Test subtitle 1\","
 						+ "\"type\":\"test\"}],"
@@ -420,9 +420,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -463,9 +463,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -492,9 +492,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -521,9 +521,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -548,8 +548,8 @@ public class TestSearchController {
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test3_value1\",\"count\":13}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -577,9 +577,9 @@ public class TestSearchController {
 						+ "{\"value\":\"test3_value2\",\"count\":12},"
 						+ "{\"value\":\"test3_value3\",\"count\":11}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -606,9 +606,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -635,9 +635,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -688,9 +688,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -741,9 +741,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -786,9 +786,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -818,9 +818,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -833,7 +833,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchNoParameters() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0")
+				get("/contexts/1")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -850,9 +850,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -862,7 +862,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchNoParameterInvalidId() throws Exception {
 		mockMvc.perform(
-				get("/contexts/1")
+				get("/contexts/2")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -875,7 +875,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchLimit() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("limit", "1")
+				get("/contexts/1").param("limit", "1")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -892,9 +892,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -904,7 +904,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchLimit0() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("limit", "0")
+				get("/contexts/1").param("limit", "0")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -926,7 +926,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchLimit2() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("limit", "2")
+				get("/contexts/1").param("limit", "2")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -943,14 +943,14 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"},"
-						+ "{\"thumbnailId\":1,"
-						+ "\"entityId\":1,"
-						+ "\"@id\":\"testServer.com/entity/1\","
+						+ "{\"thumbnailId\":2,"
+						+ "\"entityId\":2,"
+						+ "\"@id\":\"testServer.com/entity/2\","
 						+ "\"title\":\"Test title 1\","
 						+ "\"subtitle\":\"Test subtitle 1\","
 						+ "\"type\":\"test\"}],"
@@ -960,7 +960,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchLimitNegativeInt() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("limit", "-1")
+				get("/contexts/1").param("limit", "-1")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -977,9 +977,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -989,7 +989,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchLimitInvalidFloat() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("limit", "1.7")
+				get("/contexts/1").param("limit", "1.7")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isBadRequest());
 	}
@@ -997,7 +997,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchLimitInvalidString() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("limit", "high")
+				get("/contexts/1").param("limit", "high")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isBadRequest());
 	}
@@ -1005,7 +1005,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchOffset() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("offset", "1")
+				get("/contexts/1").param("offset", "1")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -1023,9 +1023,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":1,"
-						+ "\"entityId\":1,"
-						+ "\"@id\":\"testServer.com/entity/1\","
+						+ "{\"thumbnailId\":2,"
+						+ "\"entityId\":2,"
+						+ "\"@id\":\"testServer.com/entity/2\","
 						+ "\"title\":\"Test title 1\","
 						+ "\"subtitle\":\"Test subtitle 1\","
 						+ "\"type\":\"test\"}],"
@@ -1035,7 +1035,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchOffsetNegativeInt() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("offset", "-1")
+				get("/contexts/1").param("offset", "-1")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -1052,9 +1052,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -1064,7 +1064,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchOffsetInvalidFloat() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("offset", "1.7")
+				get("/contexts/1").param("offset", "1.7")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isBadRequest());
 	}
@@ -1072,7 +1072,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchOffsetInvalidString() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("offset", "high")
+				get("/contexts/1").param("offset", "high")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isBadRequest());
 	}
@@ -1080,7 +1080,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchFq() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("fq", "facet_test2:\"test2_value1\"")
+				get("/contexts/1").param("fq", "facet_test2:\"test2_value1\"")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -1095,9 +1095,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -1107,7 +1107,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchFqUnknownFacet() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("fq", "facet_unknown:\"some value\"")
+				get("/contexts/1").param("fq", "facet_unknown:\"some value\"")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -1124,9 +1124,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -1136,7 +1136,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchFqInvalidFacet() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("fq", "f,a:c,e+t")
+				get("/contexts/1").param("fq", "f,a:c,e+t")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -1153,9 +1153,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -1165,7 +1165,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchFl() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("fl", "1")
+				get("/contexts/1").param("fl", "1")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -1180,9 +1180,9 @@ public class TestSearchController {
 						+ "{\"name\":\"facet_test3\",\"label\":null,\"values\":"
 						+ "[{\"value\":\"test3_value1\",\"count\":13}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -1192,7 +1192,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchFlLimit0() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("fl", "0")
+				get("/contexts/1").param("fl", "0")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -1210,9 +1210,9 @@ public class TestSearchController {
 						+ "{\"value\":\"test3_value2\",\"count\":12},"
 						+ "{\"value\":\"test3_value3\",\"count\":11}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -1222,7 +1222,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchSort() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("sort", "title")
+				get("/contexts/1").param("sort", "title")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -1239,9 +1239,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -1251,7 +1251,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchDesc() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("desc", "true")
+				get("/contexts/1").param("desc", "true")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -1268,9 +1268,9 @@ public class TestSearchController {
 						+ "[{\"value\":\"test3_value1\",\"count\":13},"
 						+ "{\"value\":\"test3_value2\",\"count\":12}]}],"
 						+ "\"entities\":["
-						+ "{\"thumbnailId\":0,"
-						+ "\"entityId\":0,"
-						+ "\"@id\":\"testServer.com/entity/0\","
+						+ "{\"thumbnailId\":1,"
+						+ "\"entityId\":1,"
+						+ "\"@id\":\"testServer.com/entity/1\","
 						+ "\"title\":\"Test title\","
 						+ "\"subtitle\":\"Test subtitle\","
 						+ "\"type\":\"test\"}],"
@@ -1280,7 +1280,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchDescInvalidInt() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("desc", "2")
+				get("/contexts/1").param("desc", "2")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isBadRequest());
 	}
@@ -1288,7 +1288,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchDescInvalidFloat() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("desc", "2.1")
+				get("/contexts/1").param("desc", "2.1")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isBadRequest());
 	}
@@ -1296,7 +1296,7 @@ public class TestSearchController {
 	@Test
 	public void testContextSearchDescInvalidString() throws Exception {
 		mockMvc.perform(
-				get("/contexts/0").param("desc", "maybe")
+				get("/contexts/1").param("desc", "maybe")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isBadRequest());
 	}
