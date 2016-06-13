@@ -6,6 +6,9 @@
 	<subtables>
 		<subtable connectFieldParent="bibid" connectFieldSubTable="001">zenon</subtable>
 	</subtables>
+	<search>
+       <additionalIds>bibid</additionalIds>
+    </search>
 	<display>
 		<title>
 			<section>

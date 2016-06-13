@@ -3,6 +3,9 @@
 <category xmlns="http://arachne.uni-koeln.de/schemas/category"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="reproduktion"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<search>
+	   <additionalIds>GleicheGipsformSeriennummer</additionalIds>
+	</search>
 	<display>
 		<title>
 			<section>

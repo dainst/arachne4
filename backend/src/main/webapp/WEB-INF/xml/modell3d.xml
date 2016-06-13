@@ -3,6 +3,9 @@
 <category xmlns="http://arachne.uni-koeln.de/schemas/category"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="modell3d"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<search>
+	   <filename>Dateiname</filename>
+	</search>
 	<display>
 		<title>
 			<section>

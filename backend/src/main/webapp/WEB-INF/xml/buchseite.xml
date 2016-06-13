@@ -7,6 +7,10 @@
 		<subtable connectFieldParent="bibidSeite"
 			connectFieldSubTable="001">zenon</subtable>
 	</subtables>
+	<search>
+	   <additionalIds>bibidSeite, Inventarnummern</additionalIds>
+	   <filename>image</filename>
+	</search>
 	<display>
 		<title>
 			<section>

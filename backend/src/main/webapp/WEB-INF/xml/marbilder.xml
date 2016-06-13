@@ -14,6 +14,7 @@
 			connectFieldSubTable="DateinameOppenheim">marbilderoppenheim</subtable>
 	</subtables>
 	<search>
+	   <additionalIds>Inventarnummer, Bildnummer</additionalIds>
 	   <filename>
 	       DateinameMarbilder
 	   </filename>
