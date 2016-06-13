@@ -24,6 +24,8 @@
 			connectFieldSubTable="PrimaryKey">objektterrakotten</subtable>
 		<subtable connectFieldParent="PrimaryKey"
 			connectFieldSubTable="FS_ObjektID">datenblattberlin</subtable>
+		<subtable connectFieldParent="PrimaryKey"
+				  connectFieldSubTable="FS_ObjektID">fotoabzug</subtable>
 		<!-- <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">datenblattberlin_inschrift</subtable> -->
 	</subtables>
 	<display>
@@ -887,6 +889,9 @@
 	                <field datasource="objekt.LeipTempDat" prefix="Datierung: " />
 	                <field datasource="objekt.LeipTempLit" prefix="Literatur: " />
 	            </section>
+				<section labelKey="Fotoabzüge FA">
+					<field datasource="fotoabzug.FotoNrExtern" prefix="Foto-Nr. Extern: " />
+				</section>
 	        </section>
 		</editorsection>
 	</display>
@@ -946,8 +951,8 @@
 		<facet name="schmuckspezifizierung" labelKey="Schmuck Spezifizierung">
 			<field datasource="objekt.SchmuckSpezifizierung" />
 		</facet>
-		<facet name="projekttitelObjekte" labelKey="Projekt">
-			<field datasource="objekt.projekttitelObjekte" />
+		<facet name="projekttitel" labelKey="Projekt">
+			<field datasource="objekt.Projekttitel" />
 		</facet>
 	</facets>
 </category>
