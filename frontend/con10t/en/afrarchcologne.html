@@ -3,7 +3,7 @@
         description="11 .1. Fahrt Serdeles - Ghat"
         link="https://arachne.dainst.org/entity/5074047">
 </idai-header>
-<div class="con10t-page container">
+<div class="con10t-page teaserpage container">
     <div class="con10t-row">
         <div class="con10t-title">
             <h1>African Archaeology Archive Cologne</h1>
@@ -15,12 +15,11 @@
                     <con10t-search fq="facet_bestandsname:AAArC"></con10t-search>
                 </p>
             </div>
-            <h3>Related Links</h3>
-            <div class="well"><div class="well"><p><a href="http://www.ianus-fdz.de/datenportal/collections/view/2016-00002_DIP_Brandberg" target="_blank">Data in IANUS</a></p>
+            <h3>Related Links</h3><div class="well"><div class="well"><p><a href="http://www.ianus-fdz.de/datenportal/collections/view/2016-00002_DIP_Brandberg" target="_blank">Data in IANUS</a></p>
             <p><a href="http://arachne.dainst.org/search?fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22AAArC%22" target="_blank">Images in Arachne</a></p>
             <p><a href="http://arachne.uni-koeln.de/fotothek/aaarc/" target="_blank">Digital Photography Archive</a></p>
             <p><a href="http://www.fstafrika.phil-fak.uni-koeln.de/14839.html?&amp;L=0" target="_blank">AAArC - Forschungstelle Afrika at the University of Cologne</a></p></div>
-                <div ng-init="config = {
+            <div ng-init="config = {
 				facetsSelect: [
 					{
 						key: 'facet_bestandsname',
@@ -28,6 +27,7 @@
 					}
 				],
 				clustered: false
+
 			}"></div>
                 <div con10t-map
                      class="map"
