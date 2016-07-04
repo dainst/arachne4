@@ -898,6 +898,7 @@
 	<facets>
 		<include type="facet_kategorie" />
 		<include type="facet_ort" />
+		<include type="facet_projekttitel" />
 		<facet name="datierungepoche" labelKey="Epoche">
 			<context type="datierung">
 				<field datasource=".AnfEpoche" />
@@ -950,9 +951,6 @@
 		</facet>
 		<facet name="schmuckspezifizierung" labelKey="Schmuck Spezifizierung">
 			<field datasource="objekt.SchmuckSpezifizierung" />
-		</facet>
-		<facet name="projekttitel" labelKey="Projekt">
-			<field datasource="objekt.Projekttitel" />
 		</facet>
 	</facets>
 </category>
