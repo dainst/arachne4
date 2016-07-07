@@ -1,26 +1,27 @@
 <div class="con10t-page container">
     <div class="con10t-row">
+        <div class="con10t-title">
+            <h1>Fotothek München</h1>
+        </div>
         <div class="con10t-sidebar">
-            <h2>Inhalt</h2>
+            <h3>Objekte</h3>
             <div class="well">
-                <h3>Suche in den Objekten des Projektes</h3>
-                <con10t-search fq=facet_projekttitel:fotothekmuenchen>Suche in den Objekten des Projektes</con10t-search>
+                <con10t-search fq="facet_projekttitel:fotothekmuenchen,facet_kategorie:Einzelobjekte"
+                    search-placeholder="Suche in den Objekten..."></con10t-search><br>             
+                <a con10t-search-query="*"
+                    con10t-search-facet="facet_projekttitel:fotothekmuenchen,facet_kategorie:Einzelobjekte"
+                    class="btn btn-default btn-block">Zeige alle Objekte</a>
             </div>
+            <h3>Bilder</h3>
             <div class="well">
-                <h3>Suche in den Bildern des Projektes</h3>
-                <con10t-search fq=facet_projekttitel:fotothekmuenchen>Suche in den Bildern des Projektes</con10t-search>
-            </div>
-            <div class="well">
-                <a con10t-search-query=*&fq=facet_projekttitel:"fotothekmuenchen" class=
-                        "btn btn-default btn-block">Zeige alle Objekte des Projekts</a>
-                <a con10t-search-query=München%20PZ*&fq=facet_kategorie:"Bilder" class=
-                        "btn btn-default btn-block">Zeige alle Bilder des Projektes</a>
+                <con10t-search fq="facet_projekttitel:fotothekmuenchen,facet_kategorie:Bilder"
+                    search-placeholder="Suche in den Bildern..."></con10t-search><br>
+                <a con10t-search-query="*"
+                    con10t-search-facet="facet_projekttitel:fotothekmuenchen,facet_kategorie:Bilder"
+                    class="btn btn-default btn-block">Zeige alle Bilder</a>
             </div>
         </div>
         <div class="con10t-content">
-            <p>
-            <h1>Fotothek München</h1>
-            </p>
             <p><img stlye="margin-top: 15px;" src="./fotothekmuenchen_img/fotothekmuenchen_01.jpg" width="246px" align=
                     "left" padding="5px"></p>
             <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
