@@ -7,17 +7,19 @@
             <h3>Objekte</h3>
             <div class="well">
                 <con10t-search fq="facet_projekttitel:fotothekmuenchen,facet_kategorie:Einzelobjekte"
-                    search-placeholder="Suche in den Objekten..."></con10t-search><br>             
-                <a con10t-search-query="*"
-                    con10t-search-facet="facet_projekttitel:fotothekmuenchen,facet_kategorie:Einzelobjekte"
+                    append-query="facet_fotonrextern:München PZ*"
+                    search-placeholder="Suche in den Objekten..."></con10t-search><br>
+                <a con10t-search-query="facet_fotonrextern:München PZ*"
+                    con10t-search-facet="facet_kategorie:Einzelobjekte"
                     class="btn btn-default btn-block">Zeige alle Objekte</a>
             </div>
             <h3>Bilder</h3>
             <div class="well">
-                <con10t-search fq="facet_projekttitel:fotothekmuenchen,facet_kategorie:Bilder"
+                <con10t-search fq="facet_kategorie:Bilder"
+                    append-query="facet_kommentar:München PZ*"
                     search-placeholder="Suche in den Bildern..."></con10t-search><br>
-                <a con10t-search-query="*"
-                    con10t-search-facet="facet_projekttitel:fotothekmuenchen,facet_kategorie:Bilder"
+                <a con10t-search-query="facet_kommentar:München PZ*"
+                    con10t-search-facet="facet_kategorie:Bilder"
                     class="btn btn-default btn-block">Zeige alle Bilder</a>
             </div>
         </div>
