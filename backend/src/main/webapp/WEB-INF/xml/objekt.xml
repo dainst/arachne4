@@ -951,8 +951,8 @@
 		<facet name="schmuckspezifizierung" labelKey="Schmuck Spezifizierung">
 			<field datasource="objekt.SchmuckSpezifizierung" />
 		</facet>		
-		<facet name="projekttitel" labelKey="Projekt">
-			<field datasource="objekt.Projekttitel" />
+		<facet name="fotonrextern" labelKey="FotoNrExtern">
+			<field datasource="fotoabzug.FotoNrExtern" />
 		</facet>
 	</facets>
 </category>

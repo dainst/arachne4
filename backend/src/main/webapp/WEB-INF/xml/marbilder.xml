@@ -264,8 +264,8 @@
 		<facet name="bestandsname" labelKey="Bestandsname">
 			<field datasource="marbilderrwwa.Facette" />
 		</facet>
-		<facet name="projekttitel" labelKey="Projekt">
-			<field datasource="marbilder.Projekttitel" />
+		<facet name="kommentar" labelKey="Kommentar">
+			<field datasource="marbilder.Kommentar" />
 		</facet>
 	</facets>
 </category>
