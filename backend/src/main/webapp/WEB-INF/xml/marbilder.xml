@@ -252,7 +252,6 @@
 	<facets>
 		<include type="facet_kategorie" />
 		<include type="facet_ort" />
-		<include type="facet_projekttitel" />
 		<facet name="subkategorie_bilder" labelKey="Unterkategorie">
 			<field datasource="KategorieMarbilder.Typ" />
 		</facet>
@@ -264,6 +263,9 @@
 		</facet>
 		<facet name="bestandsname" labelKey="Bestandsname">
 			<field datasource="marbilderrwwa.Facette" />
+		</facet>
+		<facet name="kommentar" labelKey="Kommentar">
+			<field datasource="marbilder.Kommentar" />
 		</facet>
 	</facets>
 </category>

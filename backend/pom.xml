@@ -393,6 +393,15 @@
 		
 	</dependencies>
 	<repositories>
+
+        <!-- maven central repo -->
+        <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>http://repo.maven.apache.org/maven2</url>
+            <layout>default</layout>
+        </repository>
+
 		<!-- spring main repo -->
 		<repository>
 			<id>springsource-repo</id>
