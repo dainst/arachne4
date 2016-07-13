@@ -101,7 +101,7 @@ public class CeramalexController  {
 				, filters);
 					
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, maxResultSize
-				, resultOffset, filters);
+				, resultOffset, filters, 0);
 		LOGGER.debug("#Found records: " + searchResult.getSize());
 
 		if (searchResult == null || searchResult.getEntities() == null) {

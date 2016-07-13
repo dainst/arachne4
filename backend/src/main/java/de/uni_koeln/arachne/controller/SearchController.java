@@ -113,12 +113,14 @@ public class SearchController {
 			@RequestParam(value = "offset", required = false) final Integer offset,
 			@RequestParam(value = "fq", required = false) final String[] filterValues,
 			@RequestParam(value = "fl", required = false) final Integer facetLimit,
+			@RequestParam(value = "fo", required = false) final Integer facetOffset,
 			@RequestParam(value = "sort", required = false) final String sortField,
 			@RequestParam(value = "desc", required = false) final Boolean orderDesc,
 			@RequestParam(value = "bbox", required = false) final Double[] boundingBox,
 			@RequestParam(value = "ghprec", required = false) final Integer geoHashPrecision,
 			@RequestParam(value = "sf", required = false) final String[] facetsToSort,
-			@RequestParam(value = "scroll", required = false) final Boolean scrollMode) {
+			@RequestParam(value = "scroll", required = false) final Boolean scrollMode,
+			@RequestParam(value = "facet", required = false) final String facet) {
 		
 		if (scrollMode != null && scrollMode && !userRightsService.isSignedInUser()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -129,11 +131,13 @@ public class SearchController {
 				.setLimit(limit)
 				.setOffset(offset)
 				.setFacetLimit(facetLimit)
+				.setFacetOffset(facetOffset)
 				.setSortField(sortField)
 				.setOrderDesc(orderDesc)
 				.setBoundingBox(boundingBox)
 				.setGeoHashPrecision(geoHashPrecision)
 				.setFacetsToSort(facetsToSort)
+				.setFacet(facet)
 				.setScrollMode(scrollMode);
 		
 		if (!searchParameters.isValid()) {
@@ -154,7 +158,7 @@ public class SearchController {
 				, filters);
 				
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
-				, searchParameters.getLimit(), searchParameters.getOffset(), filters);
+				, searchParameters.getLimit(), searchParameters.getOffset(), filters, searchParameters.getFacetOffset());
 		
 		if (searchResult.getStatus() != RestStatus.OK) {
 			return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
@@ -223,7 +227,7 @@ public class SearchController {
 				, searchParameters, filters);
 				
 		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
-				, searchParameters.getLimit(), searchParameters.getOffset(), filters);
+				, searchParameters.getLimit(), searchParameters.getOffset(), filters, 0);
 		
 		if (searchResult == null) {
 			LOGGER.error("Search result is null!");
@@ -254,7 +258,7 @@ public class SearchController {
 			final SearchRequestBuilder searchRequestBuilder = searchService.buildIndexSearchRequest(facetName);
 
 			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
-					, 0, 0, null);
+					, 0, 0, null, 0);
 
 			if (searchResult.getStatus() == RestStatus.OK) {
 				if (searchResult.facetSize() != 1) {

@@ -39,6 +39,11 @@ public class SearchParameters {
 	 * The maximum number of distinct facet values returned. Zero means that all values will be returned.
 	 */
 	private int facetLimit = 0;
+	
+	/**
+	 * An offset into facet lists.
+	 */
+	private int facetOffset = 0;
 
 	/**
 	 * The name of the field to sort on.
@@ -68,6 +73,16 @@ public class SearchParameters {
 	private boolean scrollMode = false;
 	
 	private boolean valid = true;
+	
+	/**
+	 * Whether a full search result or only the values of a single facet are requested.
+	 */
+	private boolean facetMode = false;
+	
+	/**
+	 * The facet to get the values for (setting this sets facetmMode to true)
+	 */
+	private String facet;
 	
 	/**
 	 * Constructor that sets a default limit.
@@ -108,8 +123,12 @@ public class SearchParameters {
 	 * @param limit the limit to set
 	 */
 	public SearchParameters setLimit(Integer limit) {
-		if (limit != null && limit > -1) {
-			this.limit = limit <= MAX_LIMIT ? limit : MAX_LIMIT;
+		if (!facetMode) {
+			if (limit != null && limit > -1) {
+				this.limit = limit <= MAX_LIMIT ? limit : MAX_LIMIT;
+			}
+		} else {
+			this.limit = 0;
 		}
 		return this;
 	}
@@ -125,8 +144,12 @@ public class SearchParameters {
 	 * @param offset the offset to set
 	 */
 	public SearchParameters setOffset(Integer offset) {
-		if (offset != null && offset > 0) {
-			this.offset = offset;
+		if (!facetMode) {
+			if (offset != null && offset > 0) {
+				this.offset = offset;
+			}
+		} else {
+			this.offset = 0;
 		}
 		return this;
 	}
@@ -148,6 +171,23 @@ public class SearchParameters {
 		return this;
 	}
 
+	/**
+	 * @return the facetOffset
+	 */
+	public int getFacetOffset() {
+		return facetOffset;
+	}
+
+	/**
+	 * @param facetOffset the facetOffset to set
+	 */
+	public SearchParameters setFacetOffset(Integer facetOffset) {
+		if (facetOffset != null && facetOffset > -1) {
+			this.facetOffset = facetOffset;
+		}
+		return this;
+	}
+	
 	/**
 	 * @return the sortField
 	 */
@@ -241,11 +281,30 @@ public class SearchParameters {
 	 * @param scrollMode if the complete search result will be available via the ES scroll API
 	 * @return this
 	 */
-	public SearchParameters setScrollMode(Boolean scrollMode) {
-		if (scrollMode != null) {
+	public SearchParameters setScrollMode(final Boolean scrollMode) {
+		if (scrollMode != null && !facetMode) {
 			this.scrollMode = scrollMode;
 		}
 		return this;
+	}
+	
+	public String getFacet() {
+		return facet;
+	}
+
+	public SearchParameters setFacet(final String facet) {
+		if (facet != null && !facet.isEmpty()) {
+			this.facet = facet;
+			facetMode = true;
+			scrollMode = false;
+			limit = 0;
+			offset = 0;
+		}
+		return this;
+	}
+	
+	public boolean isFacetMode() {
+		return facetMode;
 	}
 	
 	/**

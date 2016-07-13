@@ -119,33 +119,37 @@ public class SearchService {
 		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
 				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox(), false))
-				.setHighlighterQuery(buildQuery(searchParameters.getQuery(), filters, null, true))
-				.setHighlighterOrder("score")
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setSize(searchParameters.getLimit())
 				.setFrom(searchParameters.getOffset());
 		
-		if (searchParameters.isScrollMode() 
-				&& userRightsService.isSignedInUser()
-				&& getOpenScrollRequests() < MAX_OPEN_SCROLL_REQUESTS) {
-			result.setScroll("1m");
-		} else {
-			// enable highlighting for all search fields (text fields only)
-			Field field = new Field("title");
-			field.numOfFragments(0);
-			result.addHighlightedField(field);
-			
-			field = new Field("subtitle");
-			field.numOfFragments(0);
-			result.addHighlightedField(field);
-			
-			field = new Field("searchableContent");
-			field.numOfFragments(5);
-			result.addHighlightedField(field);
+		if (!searchParameters.isFacetMode()) {
+			result
+				.setHighlighterQuery(buildQuery(searchParameters.getQuery(), filters, null, true))
+				.setHighlighterOrder("score");
+			if (searchParameters.isScrollMode() 
+					&& userRightsService.isSignedInUser()
+					&& getOpenScrollRequests() < MAX_OPEN_SCROLL_REQUESTS) {
+				result.setScroll("1m");
+			} else {
+				// enable highlighting for all search fields (text fields only)
+				Field field = new Field("title");
+				field.numOfFragments(0);
+				result.addHighlightedField(field);
+
+				field = new Field("subtitle");
+				field.numOfFragments(0);
+				result.addHighlightedField(field);
+
+				field = new Field("searchableContent");
+				field.numOfFragments(5);
+				result.addHighlightedField(field);
+			}
 		}
-		
+
 		addSort(searchParameters.getSortField(), searchParameters.isOrderDesc(), result);
-		addFacets(getFacetList(filters, searchParameters.getFacetLimit(), searchParameters.getGeoHashPrecision())
+		addFacets(getFacetList(filters, searchParameters.getFacetLimit() + searchParameters.getFacetOffset()
+				, searchParameters.getGeoHashPrecision(), searchParameters.getFacet())
 				, searchParameters.getFacetsToSort(), result);
 		
 		return result;
@@ -183,7 +187,7 @@ public class SearchService {
 				.setSize(searchParameters.getLimit());
 		
 		addSort(searchParameters.getSortField(), searchParameters.isOrderDesc(), result);
-		addFacets(getFacetList(filters, searchParameters.getFacetLimit(), -1),  searchParameters.getFacetsToSort()
+		addFacets(getFacetList(filters, searchParameters.getFacetLimit(), -1, null), searchParameters.getFacetsToSort()
 				, result);
 		
 		return result;
@@ -254,11 +258,12 @@ public class SearchService {
 	 * @param offset An offset into the resultset.
 	 * @param filterValues A <code>String</code> containing the filter values used in the query.
 	 * @param facetList The values for facetting.
+	 * @param facetOffset An offset into the facet lists.
 	 * @return The search result.
 	 */
 	@SuppressWarnings("unchecked")
 	public SearchResult executeSearchRequest(final SearchRequestBuilder searchRequestBuilder, final int size,
-			final int offset, final Multimap<String, String> filters) {
+			final int offset, final Multimap<String, String> filters, final int facetOffset) {
 		
 		SearchResponse searchResponse = null;
 						
@@ -314,12 +319,14 @@ public class SearchService {
 			MultiBucketsAggregation aggregator = (MultiBucketsAggregation)aggregations.get(aggregationName);
 			// TODO find a better way to convert facet values
 			if (aggregationName.equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
-				for (final MultiBucketsAggregation.Bucket bucket: aggregator.getBuckets()) {
+				for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
+					final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
 					final LatLong coord = GeoHash.decodeHash(bucket.getKeyAsString());
 					facetMap.put("[" + coord.getLat() + ',' + coord.getLon() + ']', bucket.getDocCount());
 				}
 			} else {
-				for (final MultiBucketsAggregation.Bucket bucket: aggregator.getBuckets()) {
+				for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
+					final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
 					facetMap.put(bucket.getKeyAsString(), bucket.getDocCount());
 				}
 			}
@@ -438,46 +445,52 @@ public class SearchService {
 	 * @param filters The filter map.
 	 * @param limit The maximum number of distinct facet values returned.
 	 * @param geoHashPrecision The length of the geohash used in the geo grid aggregation.
+	 * @param facet A single facet. If not null only an aggregation for this facet will be added.
 	 * @return A set of <code>Aggregations</code>.
 	 */
-	private Set<Aggregation> getFacetList(final Multimap<String, String> filters, final int limit, Integer geoHashPrecision) {
+	private Set<Aggregation> getFacetList(final Multimap<String, String> filters, final int limit
+			, final Integer geoHashPrecision, final String facet) {
 		
 		final Set<Aggregation> result = new LinkedHashSet<Aggregation>();
-		result.addAll(getCategorySpecificFacets(filters, limit));
-		
-		for (final String facetName : defaultFacetList) {
-			result.add(new TermsAggregation(facetName, limit));
-		}
-		
-		// TODO look for a more general way to handle dynamic facets
-		int highestLevel = 0;
-		boolean isFacetSubkategorieBestandPresent = false;
-		for (final String filter : filters.keySet()) {
-			if (filter.startsWith("facet_subkategoriebestand_level")) {
-				isFacetSubkategorieBestandPresent = true;
-				final int level = extractLevelFromFilter(filter);
-				highestLevel = (level >= highestLevel) ? level : highestLevel;
+		if (facet == null || facet.isEmpty()) {
+			result.addAll(getCategorySpecificFacets(filters, limit));
+
+			for (final String facetName : defaultFacetList) {
+				result.add(new TermsAggregation(facetName, limit));
 			}
+			
+			// TODO look for a more general way to handle dynamic facets
+			int highestLevel = 0;
+			boolean isFacetSubkategorieBestandPresent = false;
+			for (final String filter : filters.keySet()) {
+				if (filter.startsWith("facet_subkategoriebestand_level")) {
+					isFacetSubkategorieBestandPresent = true;
+					final int level = extractLevelFromFilter(filter);
+					highestLevel = (level >= highestLevel) ? level : highestLevel;
+				}
+			}
+			
+			if (highestLevel > 0) {
+				final String name = "facet_subkategoriebestand_level" + (highestLevel + 1); 
+				result.add(new TermsAggregation(name, limit));
+			}
+			
+			if (filters.containsKey("facet_bestandsname") && !isFacetSubkategorieBestandPresent) {
+				final String name = "facet_subkategoriebestand_level1";
+				result.add(new TermsAggregation(name, limit));
+			}
+			
+			// aggregations - if more aggregation types are used this should perhaps be moved to its own method
+			
+			// geo grid
+			if (geoHashPrecision > 0) {
+				result.add(new GeoHashGridAggregation(GeoHashGridAggregation.GEO_HASH_GRID_NAME
+						, GeoHashGridAggregation.GEO_HASH_GRID_FIELD, geoHashPrecision, 0));
+			}
+		} else {
+			result.add(new TermsAggregation(facet, limit));
 		}
-		
-		if (highestLevel > 0) {
-			final String name = "facet_subkategoriebestand_level" + (highestLevel + 1); 
-			result.add(new TermsAggregation(name, limit));
-		}
-		
-		if (filters.containsKey("facet_bestandsname") && !isFacetSubkategorieBestandPresent) {
-			final String name = "facet_subkategoriebestand_level1";
-			result.add(new TermsAggregation(name, limit));
-		}
-		
-		// aggregations - if more aggregation types are used this should perhaps be moved to its own method
-		
-		// geo grid
-		if (geoHashPrecision > 0) {
-			result.add(new GeoHashGridAggregation(GeoHashGridAggregation.GEO_HASH_GRID_NAME
-					, GeoHashGridAggregation.GEO_HASH_GRID_FIELD, geoHashPrecision, 0));
-		}
-		
+			
 		return result;
 	}
 	
