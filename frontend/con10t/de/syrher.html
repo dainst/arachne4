@@ -21,11 +21,9 @@
             <con10t-toc></con10t-toc>
             <h3>Suche in den Daten des Projekts</h3>
 
-            <con10t-show-if dataset-group="SyrianHeritage">
-                <div class="well">
-                    <con10t-search fq="facet_bestandsname:Syrian-Heritage-Archive-Project"></con10t-search>
-                </div>
-            </con10t-show-if>
+            <div class="well">
+                <con10t-search fq="facet_bestandsname:Syrian-Heritage-Archive-Project"></con10t-search>
+            </div>
             <div><a href="/project/syrher_map" title="Zur Karte" style="cursor:pointer">
                 <span class="glyphicon glyphicon-fullscreen"></span>
                 Größere Karte
@@ -42,18 +40,16 @@
 				clustered: false
 			}"></div>
 
-            <con10t-show-if dataset-group="SyrianHeritage">
-                <div con10t-map
-                     class="map"
-                     type="grid"
-                     limit="0"
-                     facets-select="config.facetsSelect"
-                     clustered="config.clustered"
-                     lat="35.891275201659134"
-                     lng="28.3143310546875"
-                     zoom="4">
-                </div>
-            </con10t-show-if>
+            <div con10t-map
+                 class="map"
+                 type="grid"
+                 limit="0"
+                 facets-select="config.facetsSelect"
+                 clustered="config.clustered"
+                 lat="35.891275201659134"
+                 lng="28.3143310546875"
+                 zoom="4">
+            </div>
 
             <p></p>
             <div class="embed-responsive embed-responsive-16by9 img-thumbnail">
@@ -138,10 +134,8 @@
             <h2 class="con10t-toc-entry">Thematischer Einstieg</h2>
 
             <p>
-                <con10t-show-if dataset-group="SyrianHeritage">
                 <con10t-tree fq="facet_bestandsname:Syrian-Heritage-Archive-Project"
                              wildcard-facet="facet_subkategorie"></con10t-tree>
-                </con10t-show-if>
             </p>
             <h2 class="con10t-toc-entry">Zusätzliche Informationen</h2>
 
