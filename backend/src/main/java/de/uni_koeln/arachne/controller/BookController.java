@@ -29,9 +29,7 @@ import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON
 
 
 /**
- * TODO discuss how LOGGING can be tested or if we should neglect testing it.
- *
- * @author: Daniel M. de Oliveira
+ * @author: Daniel de Oliveira
  */
 @Controller
 public class BookController {
