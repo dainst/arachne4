@@ -5,8 +5,6 @@
 	<display>
 		<title>
 			<section separator=", ">
-				<field datasource="bauwerksteil.BearbeiterBauwerksteil"
-					prefix="BT" postfix=": " />
 				<field datasource="bauwerksteil.KurzbeschreibungBauwerksteil" />
 			</section>
 		</title>
