@@ -114,7 +114,7 @@ public class ExternalLinkResolvers {
 		final SimpleExternalLinkResolver result = new SimpleExternalLinkResolver();
 		result.setLabel("Monumentbrowser zum Pergamonaltar");
 		final Map<String, String> criteria = ImmutableMap.of(
-				"bauerk.PS_BauwerkID", "2103257",
+				"bauwerk.PS_BauwerkID", "2103257",
 				"gruppen.PS_GruppenID", "402512,402414",
 				"objekt.PS_ObjektID", "34644,40763",
 				"relief.FS_ObjektID", "34644,40763",
