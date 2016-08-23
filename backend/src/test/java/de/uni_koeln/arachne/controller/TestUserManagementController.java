@@ -151,6 +151,32 @@ public class TestUserManagementController {
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isForbidden());
 	}
+
+	@Test
+	public void testGetUserInfoWithDot() throws Exception {
+
+		final User testUserWithDot = new User();
+		testUserWithDot.setUsername("test.user");
+		testUserWithDot.setGroupID(UserRightsService.MIN_ADMIN_ID);
+		testUserWithDot.setFirstname("test");
+		testUserWithDot.setLastname("user");
+		testUserWithDot.setZip("12345");
+		testUserWithDot.setAll_groups(true);
+
+		when(userDao.findByName("test.user")).thenReturn(testUserWithDot, testUserWithDot, null);
+		when(userRightsService.getCurrentUser()).thenReturn(testUserWithDot, testUserWithDot, null);
+
+		mockMvc.perform(
+				get("/userinfo/test.user")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{username:\"test.user\","
+						+ "firstname:\"test\","
+						+ "lastname:\"user\","
+						+ "all_groups:true,"
+						+ "}"));
+	}
 		
 	@Test
 	public void testUpdateUserInfoValid() throws Exception {

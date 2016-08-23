@@ -89,7 +89,8 @@ public class UserManagementController {
 	 * @param username The username of interest.
 	 * @return A JSON serialization of the corresponding User object.
 	 */
-	@RequestMapping(value="/userinfo/{username}", 
+	// use regex addon to disable extension recognition and allow usernames that include dots
+	@RequestMapping(value="/userinfo/{username:.+}",
 			method=RequestMethod.GET, 
 			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<MappingJacksonValue> getUserInfo(@PathVariable("username") String username) {
