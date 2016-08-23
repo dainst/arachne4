@@ -1,0 +1,132 @@
+<idai-header
+        image="/con10t/headerimages/grako_bgr.jpg"
+        description="Olympia, Phidiaswerkstatt"
+        link="https://arachne.dainst.org/entity/10656">
+</idai-header>
+
+<div class="con10t-page teaserpage container">
+    <div class="con10t-row">
+        <div class="con10t-title">
+            <h1>
+                Craft production sites of pre-modern economies
+            </h1>
+        </div>
+        <div class="con10t-sidebar">
+            <con10t-toc toc-heading="Übersicht"></con10t-toc>
+            <h3>Search within the project data</h3>
+            <a con10t-search-query="*&amp;fq=catalogIds:'92'">Show all datasets</a>
+
+            <con10t-search catalog-id="92"></con10t-search>
+            <h3>Map view</h3>
+
+            <div ng-init="config = {
+            baselayers: {
+                osm: {
+                    name: 'OpenStreetMap',
+                    type: 'xyz',
+                    url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    layerOptions: {
+                        subdomains: ['a', 'b', 'c'],
+                        attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
+                        continuousWorld: true,
+                        maxZoom: 18
+                    }
+                }
+            },
+            baselayerKey: 'osm',
+            clustered: false
+        }"></div>
+            <div><a href="/project/grako_map" title="Zur Karte" style="cursor:pointer">
+                <span class="glyphicon glyphicon-fullscreen"></span>
+                Search production sites on the map
+            </a></div>
+
+            <div con10t-map
+                 class="map"
+                 type="places"
+                 limit="1000"
+                 catalog-id="92"
+                 baselayers="config.baselayers"
+                 default-baselayer="config.baselayerKey"
+                 facets-select="config.facetsSelect"
+                 clustered="config.clustered">
+            </div>
+        </div>
+
+        <div class="con10t-content">
+
+            <h2 class="con10t-toc-entry">Introduction</h2>
+
+            <con10t-image src="/con10t/de/grako_img/D-DAI-ATH-Olympia-0120Bearb_2107915,01-small.jpg"
+                          align="right" width="300"
+                          alt="Personengruppe, darunter Wilhelm Dörpfeld, in der byzantinischen Kirche auf dem Areal der Phidiaswerkstatt">
+                Byzantinic church<br>at the Phidias production site
+            </con10t-image>
+
+            Craft production was a key element of pre-modern economies, the workshop acting as an important point of
+            intersection between exploitation and daily use of resources (e.g. clay/pottery, stone/architectural
+            elements, iron ore/tools). Within the framework of the Research Training Group 1878 »Archaeology of
+            pre-modern economies« funded by the DFG, it is aimed to compile craft production sites attested by
+            archaeological material as exhaustively as possible. This data base is accessible for free all over the
+            world, thus providing an important foundation for further scientific questions and projects as well as an
+            overview on essential aspects of the economic and daily life in pre-modern societies for the broader public.
+            </p>
+            <br>
+            <h2 class="con10t-toc-entry">Methodology</h2>
+
+            <p>
+                All craft production sites included in this project are attested by archaeological finds and/or
+                features. The most important information provided in the relevant publications is recorded in the
+                specifically adapted framework of the object data base ARACHNE using a standardised vocabulary to
+                facilitate search queries, comparisons and analyses on a big scale. Since the publications themselves
+                are dispersed, heterogeneous, and often hard to access, this consistent data base should facilitate and
+                accelerate research on thematically, chronologically or geographically comprehensive questions.
+            </p>
+            <p>
+                The workshops are contextualised with various technical resources of the German Archaeological Institute
+                and the Cologne Digital Archaeology Laboratory to provide additional information for example on relevant
+                locations, bibliographic references, deposits of raw material and transport routes. Although the project
+                focusses on the Mediterranean in greco-Roman antiquity, it comprises also other cultural regions and
+                eras (from Mesoamerica to China, from Palaeolithic to the Middle Ages). Data on further workshops (also
+                from other epochs and regions) is added continuously.</p>
+            <br>
+            <h2 class="con10t-toc-entry">Catalogue</h2>
+
+            <p>
+                <con10t-catalog-tree catalog-id="92" style="width:80%" float:left=""></con10t-catalog-tree>
+            </p>
+            <br>
+            <h2 class="con10t-toc-entry">Instructions for use</h2>
+
+            <p>
+                The entries are created as object data sets in ARACHNE and arranged to a catalogue according to the
+                materials processed at the sites. Clicking on a folder symbol shows possible subfolders or data sets on
+                the individual workshops, which can be accessed directly to get detailed information on each site.
+                Besides, you can show all data sets within one folder by clicking on the magnifying glass on the right.
+                The search results can be further filtered according to various criteria (e.g. image(s) available or
+                not, location, publications). Furthermore, you may search for specific terms within the project’s data
+                sets, show all entries or use the cartographic search for all georeferenced records of craft production
+                sites.
+            </p>
+            <br>
+            <h2 class="con10t-toc-entry">Contributors</h2>
+
+            <p>
+                Conception & direction: M. Bentz, M. Heinzelmann<br>
+                Coordination & technical design: U. Stockinger<br>
+                Technical implementation: D. Neugebauer<br>
+                Data acquisition/input: P. Biedermann, M.-H. Grunwald, T. Kerig, L. Kröger, A. Miß, C. Recko, E. R. M.
+                Schmidt, D. Schyle, R. Da Vela, C. Widow
+            </p>
+
+            <p>
+                <a href="http://www.cceh.uni-koeln.de/">
+                    <img src="/con10t/de/grako_img/CCEH_logo.jpg" height="90" align="left">
+                </a>
+                <a href="http://www.wirtschaftsarchaeologie.de/">
+                    <img src="/con10t/de/grako_img/Grako1878_Logo.jpg" height="95">
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
