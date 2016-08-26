@@ -130,12 +130,12 @@
 						prefix="Ortsbezeichnung 2/Unterort: " />
 					<field datasource="marbilderinventar.10_Objekt1" prefix="Kategorie: " />
 					<field datasource="marbilderinventar.11_Objekt2" prefix="Beschreibung: " />
-					<field datasource="marbilderinventar.12_Objekt3" prefix="Iventar- bzw. Fundnummer: " />
+					<field datasource="marbilderinventar.12_Objekt3" prefix="Inventar- bzw. Fundnummer: " />
 					<field datasource="marbilderinventar.13_Dateityp" prefix="Dateityp: " />
 				</section>
 				<section labelKey="Zusätzliche Angaben">
 					<field datasource="marbilderinventar.Land" prefix="Land: " />
-					<field datasource="marbilderinventar.Schlagworte" prefix="Schlagworte: " />
+					<field datasource="marbilderinventar.Schlagworte" prefix="Schlagwörter: " />
 					<field datasource="marbilderinventar.Institution" prefix="Institution: " />
 					<field datasource="marbilderinventar.Negativnr" prefix="Negativnummer: " />
 					<field datasource="marbilderinventar.AltNegativnr" prefix="Alternative Negativnummern: " />
