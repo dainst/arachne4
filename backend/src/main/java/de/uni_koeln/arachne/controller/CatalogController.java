@@ -217,7 +217,7 @@ public class CatalogController {
 
 	/**
 	 * Handles http GET request for <code>/catalog/{catalogId}</code>. Returns a
-	 * catalog entity which is serialized into JSON or XML depending on the
+	 * catalog which is serialized into JSON or XML depending on the
 	 * requested format. If the given id does not refer to a catalog, a 404
 	 * error code is returned. if the catalog is not owned by the current user
 	 * or no user is signed in, a 403 error code is returned.

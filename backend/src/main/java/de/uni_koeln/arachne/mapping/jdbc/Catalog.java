@@ -29,7 +29,6 @@ public class Catalog {
 		this.id = id;
 	}
 
-	@JsonIgnore
 	public Set<Long> getUserIds() {
 		return userIds;
 	}
