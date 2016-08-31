@@ -29,6 +29,10 @@
           <field datasource="ort.Genauigkeit"/>
           <field datasource="ort.Aufbewahrungsort"/>
         </section>
+        <section labelKey="Synonyme">
+          <field datasource="ort.Aufbewahrungsort_Synonym" search=";" replace=" / "/>
+          <field datasource="ort.Stadt_Synonym" search=";" replace=" / "/>
+        </section>
         <section labelKey="Ländercode">
           <field datasource="ort.Countrycode"/>
         </section>
