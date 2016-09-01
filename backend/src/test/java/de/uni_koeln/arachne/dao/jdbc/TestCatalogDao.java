@@ -520,30 +520,76 @@ public class TestCatalogDao {
 		CatalogEntry root = new CatalogEntry();
 		root.setLabel("new root label");
 		root.setText("some new text");
-        root.setTotalChildren(0);
-		
+        root.setTotalChildren(2);
+
+		CatalogEntry child1 = new CatalogEntry();
+		child1.setLabel("first child of root node");
+		child1.setTotalChildren(1);
+
+		CatalogEntry subChild = new CatalogEntry();
+		subChild.setLabel("child of child1");
+		subChild.setTotalChildren(0);
+
+		CatalogEntry child2 = new CatalogEntry();
+		child2.setLabel("second child of root node");
+		child2.setTotalChildren(0);
+
+		root.addToChildren(child1);
+		root.addToChildren(child2);
+
+		child1.addToChildren(subChild);
+
 		Catalog catalog = new Catalog();
 		catalog.setAuthor(user.getFirstname() + " " + user.getLastname());
 		catalog.setDatasetGroup(user.getDatasetGroups().toArray(new DatasetGroup[0])[0].getName());
 		catalog.setUserIds(new HashSet<Long>(Arrays.asList(3L)));
 		catalog.setRoot(root);
-		
-		catalog = catalogDao.saveCatalog(catalog);
-		assertNotNull(catalog);
-		
-		final Catalog savedCatalog = catalogDao.getById(catalog.getId());
-        assertEquals(catalog.getRoot().getTotalChildren(), savedCatalog.getRoot().getTotalChildren());
-		assertEquals(catalog, savedCatalog);
-		
-		root = catalog.getRoot();
-		assertNotNull(root);
-		assertNotNull(root.getId());
-		assertEquals(catalog.getRoot(), catalogEntryDao.getById(catalog.getRoot().getId()));
-		assertNull(root.getParentId());
-		assertEquals(catalog.getId().toString(), root.getPath());
-		assertEquals(0, root.getIndexParent());
-		assertEquals("new root label", root.getLabel());
-		assertEquals("some new text", root.getText());
+
+		final Catalog savedCatalog = catalogDao.saveCatalog(catalog);
+		assertNotNull(savedCatalog);
+
+		final Catalog retrievedCatalog = catalogDao.getById(savedCatalog.getId());
+		assertEquals(savedCatalog.getRoot(), retrievedCatalog.getRoot());
+		assertEquals(savedCatalog, retrievedCatalog);
+
+		final CatalogEntry savedRoot = savedCatalog.getRoot();
+		final CatalogEntry retrievedRoot = catalogEntryDao.getById(savedRoot.getId());
+		assertNotNull(retrievedRoot);
+		assertEquals(savedRoot, retrievedRoot);
+		assertEquals(savedCatalog.getId().toString(),
+				retrievedRoot.getPath());
+		assertEquals(0, retrievedRoot.getIndexParent());
+		assertEquals(2, retrievedRoot.getTotalChildren());
+
+		final CatalogEntry savedChild1 = savedCatalog.getRoot().getChildren().get(0);
+		final CatalogEntry retrievedChild1 = catalogEntryDao.getById(savedChild1.getId());
+		assertNotNull(retrievedChild1);
+		assertEquals(child1.getLabel(), retrievedChild1.getLabel());
+		assertEquals(savedRoot.getId(), retrievedChild1.getParentId());
+		assertEquals(savedCatalog.getId().toString() + "/" + savedRoot.getId(),
+				retrievedChild1.getPath());
+		assertEquals(0, retrievedChild1.getIndexParent());
+		assertEquals(1, retrievedChild1.getTotalChildren());
+
+		final CatalogEntry savedChild2 = savedCatalog.getRoot().getChildren().get(1);
+		final CatalogEntry retrievedChild2 = catalogEntryDao.getById(savedChild2.getId());
+		assertNotNull(retrievedChild2);
+		assertEquals(child2.getLabel(), retrievedChild2.getLabel());
+		assertEquals(savedRoot.getId(), retrievedChild2.getParentId());
+		assertEquals(savedCatalog.getId().toString() + "/" + savedRoot.getId(),
+				retrievedChild2.getPath());
+		assertEquals(1, retrievedChild2.getIndexParent());
+		assertEquals(0, retrievedChild2.getTotalChildren());
+
+		final CatalogEntry savedSubChild = savedCatalog.getRoot().getChildren().get(0).getChildren().get(0);
+		final CatalogEntry retrievedSubChild = catalogEntryDao.getById(savedSubChild.getId());
+		assertNotNull(retrievedSubChild);
+		assertEquals(subChild.getLabel(), retrievedSubChild.getLabel());
+		assertEquals(savedChild1.getId(), retrievedSubChild.getParentId());
+		assertEquals(savedCatalog.getId().toString() + "/" + savedRoot.getId() + "/" + savedChild1.getId(),
+				retrievedSubChild.getPath());
+		assertEquals(0, retrievedSubChild.getIndexParent());
+		assertEquals(0, retrievedSubChild.getTotalChildren());
 	}
 	
 	@Test

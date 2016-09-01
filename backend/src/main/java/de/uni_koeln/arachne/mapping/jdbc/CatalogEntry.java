@@ -225,8 +225,9 @@ public class CatalogEntry implements Serializable {
 				return false;
 		} else if (!catalogId.equals(other.catalogId))
 			return false;
-		if (totalChildren != other.totalChildren)
+		if (totalChildren != other.totalChildren) {
 			return false;
+		}
 		if (id == null) {
 			if (other.id != null)
 				return false;
