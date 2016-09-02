@@ -149,6 +149,7 @@
 				<section labelKey="Technik">
 					<field datasource="objekt.Technik" />
 					<field datasource="objekt.TechnikDetails" />
+					<field datasource="objekt.ApplizierteElemente" prefix="Applikationen: " />
 				</section>
 				<section labelKey="Material">
 					<field datasource="objekt.Material" />
@@ -159,7 +160,6 @@
 					<field datasource="objekt.Erhaltung" />
 					<field datasource="objekt.Erhaltungszustand" />
 					<field datasource="objekt.Farbreste" prefix="farbreste: " />
-					<field datasource="objekt.ApplizierteElemente" prefix="Applikationen: " />
 					<field datasource="objekt.DekorAllgemein" prefix="Dekor: " />
 					<field datasource="objekt.Bearbeitungen" prefix="Bearbeitungen: " />
 					<field datasource="objekt.BearbeitungenAntik" prefix="Antike Bearbeitungen: " />
