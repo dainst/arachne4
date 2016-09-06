@@ -1,5 +1,3 @@
-<div class="con10t-page container">
-    <div class="con10t-row">
 <div hide-footer class="row map-fullscreen">
 
     <div ng-init="config = {
@@ -15,29 +13,23 @@
 }"></div>
 
 
+    <div id="menu" class="col-sm-2">
+        <h3 class="text-muted uppercase">
+            {{'ui_gridmap_heading'|transl8}}
+        </h3>
+
+        <div con10t-map-menu-search-info type="grid"></div>
+        <div con10t-map-menu-search-field heading="{{'ui_current_search'|transl8}}"></div>
+    </div>
+
     <div con10t-map
+         class="col-sm-10"
          id="map"
-         type="grid"
-         limit="5"
+         limit="200"
          overlays="config.overlays"
          facets-select="config.facetsSelect"
          lat="33.891275201659134"
          lng="38.3143310546875"
          zoom="7">
-
-
-    </div>
-    <div>
-
-        <div id="map-right-menu" class="col-md-2 well well-sm toggled">
-            <h3 class="text-muted uppercase">
-                {{'ui_gridmap_heading'|transl8}}
-            </h3>
-
-            <div ar-map-menu-search-info type="grid"></div>
-            <div ar-map-menu-search-field heading="{{'ui_current_search'|transl8}}"></div>
-        </div>
     </div>
 </div>
-</div>
-    </div>
