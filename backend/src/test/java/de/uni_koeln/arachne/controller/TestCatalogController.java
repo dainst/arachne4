@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
+import de.uni_koeln.arachne.util.sql.CatalogEntryExtended;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,6 +61,11 @@ public class TestCatalogController {
 			+ " 60er Jahren des 2. Jhs. v. Chr. durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius Nobilior "
 			+ "wurde die Basilica mehrmals zerstört [...]\",\"catalogId\":83,\"totalChildren\":2},\"author\":"
 			+ "\"Testauthor\",\"public\":false}";
+
+	static final String EXPECTED_CATALOG_LIST = "{\"entry\":{\"id\":599,\"arachneEntityId\":1184191,\"label\":" +
+			"\"Fundamente der Innensäulen\",\"text\":\"Die Fundamente der Innensäulen.\",\"parentId\":598," +
+			"\"indexParent\":0,\"catalogId\":83,\"totalChildren\":0},\"catalogTitle\":\"Die Basilica Aemilia auf dem " +
+			"Forum Romanum in Rom: Brennpunkt des öffentlichen Lebens\",\"catalogAuthor\":\"Testauthor\",\"public\":false}";
 	
 	@SuppressWarnings("unchecked")
 	@Before
@@ -74,6 +80,7 @@ public class TestCatalogController {
 		users.add(TestUserData.getUser().getId());
 				
 		URL resource = TestCatalogController.class.getResource("/WEB-INF/json/catalog.json");
+		URL resource2 = TestCatalogController.class.getResource("/WEB-INF/json/catalog.json");
 		ObjectMapper mapper = new ObjectMapper();
 		
 		// root - children removed
@@ -156,11 +163,15 @@ public class TestCatalogController {
 		
 		when(catalogDao.getByUserId(3, false, -1, 0)).thenReturn(Arrays.asList(catalogNoChilds));
 		when(catalogDao.getById(83, false, -1, 0)).thenReturn(catalogNoChilds);
-		
-		when(catalogDao.getPrivateCatalogIdsByEntityId(anyLong()))
-				.thenReturn(new ArrayList<Long>());
-		when(catalogDao.getPrivateCatalogIdsByEntityId(1184191))
-				.thenReturn(Arrays.asList(83L), new ArrayList<Long>());
+
+		final CatalogEntryExtended info = new CatalogEntryExtended(
+				entryLeaf,
+				catalog.getRoot().getLabel(),
+				catalog.getAuthor(),
+				catalog.isPublic());
+		when(catalogEntryDao.getEntryInfoByEntityId(1184191))
+				.thenReturn(Arrays.asList(info), new ArrayList<CatalogEntryExtended>());
+
 	}
 	
 	private String getCatalogAsJSONString()
@@ -500,7 +511,7 @@ public class TestCatalogController {
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
-				.andExpect(content().json("{\"catalogIds\":[83]}"));
+				.andExpect(content().json("[" + EXPECTED_CATALOG_LIST + "]"));
 		
 		// forbidden
 		mockMvc.perform(
@@ -508,7 +519,7 @@ public class TestCatalogController {
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
-				.andExpect(content().json("{}"));
+				.andExpect(content().json("[]"));
 	}
 
 	@Test
@@ -518,6 +529,6 @@ public class TestCatalogController {
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
-				.andExpect(content().json("{}"));
+				.andExpect(content().json("[]"));
 	}
 }

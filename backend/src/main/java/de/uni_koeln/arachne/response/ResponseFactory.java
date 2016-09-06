@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import de.uni_koeln.arachne.util.sql.CatalogEntryInfo;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
@@ -37,7 +38,7 @@ import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.search.TermsAggregation;
-import de.uni_koeln.arachne.util.sql.CatalogEntryInfo;
+import de.uni_koeln.arachne.util.sql.CatalogEntryExtended;
 
 /**
  * Factory class to create the different kinds of responses from a dataset.
@@ -760,7 +761,6 @@ public class ResponseFactory {
 	 * @param dataset The current dataset.
 	 * @param child The context element of the current facet element.
 	 * @param values A list of facets to add the new facets to.
-	 * @param name The name of the current facet.
 	 */
 	private void getFacetContext(final Dataset dataset, final Element child, final List<String> values) {
 		

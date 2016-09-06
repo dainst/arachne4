@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.sql.DataSource;
 
+import de.uni_koeln.arachne.util.sql.CatalogEntryInfo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +23,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -33,7 +35,7 @@ import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.testconfig.EmbeddedDataSourceConfig;
 import de.uni_koeln.arachne.testconfig.TestCatalogData;
 import de.uni_koeln.arachne.testconfig.TestUserData;
-import de.uni_koeln.arachne.util.sql.CatalogEntryInfo;
+import de.uni_koeln.arachne.util.sql.CatalogEntryExtended;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)

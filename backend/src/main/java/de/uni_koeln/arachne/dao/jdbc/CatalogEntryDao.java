@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
 
+import de.uni_koeln.arachne.util.sql.CatalogEntryExtended;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -20,7 +21,7 @@ import de.uni_koeln.arachne.service.UserRightsService;
 
 @Repository("CatalogEntryDao")
 public class CatalogEntryDao extends SQLDao {
-		
+
 	@Autowired
 	private transient ArachneEntityDao arachneEntityDao;
 	
@@ -104,6 +105,18 @@ public class CatalogEntryDao extends SQLDao {
 	public List<CatalogEntry> getByEntityId(final long entityId) {
 		final String sqlQuery = "SELECT * from catalog_entry WHERE arachne_entity_id = " + entityId;
 		List<CatalogEntry> result = query(sqlQuery, this::mapCatalogEntryNoChilds);
+		return result;
+	}
+
+	public List<CatalogEntryExtended> getEntryInfoByEntityId(final long entityId) {
+		final String sqlQuery = "SELECT e.*, c.author, c.public, r.label from catalog_entry AS e " +
+				"LEFT JOIN catalog AS c ON e.catalog_id = c.id " +
+				"LEFT JOIN catalog_benutzer AS b ON c.id = b.catalog_id " +
+				"LEFT JOIN catalog_entry AS r ON c.root_id = r.id " +
+				"WHERE e.arachne_entity_id = " + entityId + " " +
+				"AND ( c.public = 1 OR b.uid = " + userRightsService.getCurrentUser().getId() + " ) " +
+				"GROUP BY e.id";
+		List<CatalogEntryExtended> result = query(sqlQuery, this::mapCatalogEntryInfo);
 		return result;
 	}
 		
@@ -360,6 +373,12 @@ public class CatalogEntryDao extends SQLDao {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
 		catalogEntry.setTotalChildren(getChildrenSizeByParentId(catalogEntry.getId()));
 		return catalogEntry;
+	}
+
+	public CatalogEntryExtended mapCatalogEntryInfo(ResultSet rs, int rowNum) throws SQLException {
+		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
+		return new CatalogEntryExtended(catalogEntry, rs.getString("r.label"),
+				rs.getString("c.author"), rs.getBoolean("c.public"));
 	}
 
     private void setTotalChildren(CatalogEntry catalogEntry, List<CatalogEntry> children) {

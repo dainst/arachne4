@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import javax.sql.DataSource;
 
+import de.uni_koeln.arachne.util.sql.CatalogEntryExtended;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -209,15 +210,33 @@ public class TestCatalogEntryDao {
 	public void testGetByEntityId() {
 		final List<CatalogEntry> catalogEntries = catalogEntryDao.getByEntityId(666L);
 		assertNotNull(catalogEntries);
-		assertEquals(2, catalogEntries.size());
-		
+		assertEquals(3, catalogEntries.size());
+
 		for (CatalogEntry catalogEntry : catalogEntries) {
 			final String label = catalogEntry.getLabel();
 			if (catalogEntry.getId() == 8) {
 				assertEquals("child test label No. 1", label);
-			} else {
+			} else if (catalogEntry.getId() == 3) {
 				assertEquals("root of catalog 2 test label", label);
 				assertEquals("arachneentity test", catalogEntry.getText());
+			}
+		}
+	}
+
+	@Test
+	public void testGetEntryInfoByEntityId() {
+		final List<CatalogEntryExtended> catalogEntries = catalogEntryDao.getEntryInfoByEntityId(666L);
+		assertNotNull(catalogEntries);
+		assertEquals(2, catalogEntries.size());
+
+		for (CatalogEntryExtended catalogEntry : catalogEntries) {
+			final String label = catalogEntry.getEntry().getLabel();
+			if (catalogEntry.getEntry().getId() == 8) {
+				assertEquals("child test label No. 1", label);
+				assertEquals("root of catalog 1 test label", catalogEntry.getCatalogTitle());
+			} else {
+				assertEquals("root of catalog 2 test label", label);
+				assertEquals("arachneentity test", catalogEntry.getEntry().getText());
 			}
 		}
 	}
@@ -417,7 +436,7 @@ public class TestCatalogEntryDao {
 	@Test
 	public void testSaveCatalogEntryInvalidCatalogDoesNotExist() throws Exception {
 		CatalogEntry catalogEntry = new CatalogEntry();
-		catalogEntry.setCatalogId(3L);
+		catalogEntry.setCatalogId(4L);
 		catalogEntry.setParentId(8L);
 		catalogEntry.setArachneEntityId(667L);
 		catalogEntry.setIndexParent(17);

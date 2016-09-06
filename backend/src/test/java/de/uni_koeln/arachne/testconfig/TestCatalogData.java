@@ -26,6 +26,10 @@ public class TestCatalogData {
 				+ "id, root_id, author, public, DatensatzGruppeCatalog)"
 				+ "VALUES"
 				+ "(2,3,'testuser',0,'userTestGroup');");
+		jdbcTemplate.execute("INSERT INTO catalog("
+				+ "id, root_id, author, public, DatensatzGruppeCatalog)"
+				+ "VALUES"
+				+ "(3,10,'testuser2',0,'userTestGroup');");
 		
 		jdbcTemplate.execute("CREATE TABLE catalog_benutzer("
 				+ "catalog_id INT NOT NULL,"
@@ -42,6 +46,10 @@ public class TestCatalogData {
 				+ "catalog_id, uid)"
 				+ "VALUES"
 				+ "(1,4)");
+		jdbcTemplate.execute("INSERT INTO catalog_benutzer("
+				+ "catalog_id, uid)"
+				+ "VALUES"
+				+ "(3,4)");
 		return this;
 	}
 	
@@ -105,6 +113,14 @@ public class TestCatalogData {
 				+ "id, catalog_id, arachne_entity_id, path, label, text, last_modified, creation)"
 				+ "VALUES"
 				+ "(3,2,666,'2','root of catalog 2 test label','arachneentity test','2000-01-01','2000-01-01');");
+
+		// catalog 3
+
+		jdbcTemplate.execute("INSERT INTO catalog_entry("
+				+ "id, catalog_id, arachne_entity_id, path, label, text, last_modified, creation)"
+				+ "VALUES"
+				+ "(10,3,666,'3','root of catalog 3 test label','arachneentity test','2000-01-01','2000-01-01');");
+
 		return this;
 	}
 	

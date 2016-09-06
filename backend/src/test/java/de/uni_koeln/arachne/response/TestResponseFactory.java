@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uni_koeln.arachne.util.sql.CatalogEntryInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +30,7 @@ import de.uni_koeln.arachne.testconfig.TestData;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
-import de.uni_koeln.arachne.util.sql.CatalogEntryInfo;
+import de.uni_koeln.arachne.util.sql.CatalogEntryExtended;
 
 @RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(locations={"classpath:test-context.xml"}) 
@@ -64,7 +65,7 @@ public class TestResponseFactory { // NOPMD
 		mockCatalogDataList = new ArrayList<CatalogEntryInfo>();
 		mockCatalogDataList.add(new CatalogEntryInfo(1L, "", 1L));
 		for (int i = 2; i < 6; i++) {
-			final CatalogEntryInfo mockCatalogData = 
+			final CatalogEntryInfo mockCatalogData =
 					new CatalogEntryInfo(i, (String)mockCatalogDataList.get(i-2).getPath(), i);
 			mockCatalogDataList.add(mockCatalogData);
 		}

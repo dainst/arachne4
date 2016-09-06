@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import de.uni_koeln.arachne.util.sql.CatalogEntryInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import de.uni_koeln.arachne.dao.hibernate.ArachneEntityDao;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.service.UserRightsService;
-import de.uni_koeln.arachne.util.sql.CatalogEntryInfo;
+import de.uni_koeln.arachne.util.sql.CatalogEntryExtended;
 
 @Repository("CatalogDao")
 public class CatalogDao extends SQLDao {

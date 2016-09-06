@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.uni_koeln.arachne.util.sql.CatalogEntryExtended;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import de.uni_koeln.arachne.dao.jdbc.CatalogDao;
 import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
@@ -329,28 +327,14 @@ public class CatalogController {
 	@RequestMapping(value = "list/{entityId}", 
 			method = RequestMethod.GET,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
-	public @ResponseBody ResponseEntity<CatalogIdList> handleGetCatalogByEntityRequest(
+	public @ResponseBody ResponseEntity<List<CatalogEntryExtended>> handleGetCatalogByEntityRequest(
 			@PathVariable("entityId") final Long entityId) {
 		
-		final List<Long> result = catalogDao.getPrivateCatalogIdsByEntityId(entityId);
+		final List<CatalogEntryExtended> result = catalogEntryDao.getEntryInfoByEntityId(entityId);
 		if (result == null || result.isEmpty()) {
-			return ResponseEntity.ok(new CatalogIdList(new ArrayList<Long>()));
+			return ResponseEntity.ok(new ArrayList<>());
 		}
-		return ResponseEntity.ok(new CatalogIdList(result));
+		return ResponseEntity.ok(result);
 	}
-	
-	// return type for 'handleGetCatalogByEntityRequest()' (better JSON response than the pure list)
-	@JsonInclude(value=Include.NON_EMPTY)
-	private class CatalogIdList {
-		private List<Long> catalogIds;
 
-		CatalogIdList(final List<Long> catalogIds) {
-			this.catalogIds = catalogIds;
-		}
-		
-		@SuppressWarnings("unused")
-		public List<Long> getCatalogIds() {
-			return catalogIds;
-		}
-	}
 }
