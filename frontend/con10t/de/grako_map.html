@@ -222,16 +222,6 @@
                 maxZoom: 18
             }
         },
-        mapquestAerial: {
-            name: 'MapQuest Open Aerial',
-            type: 'xyz',
-            url: 'http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png',
-            layerOptions: {
-                subdomains: ['1', '2', '3', '4'],
-                attribution: 'Tiles Courtesy of <a href=\'http://www.mapquest.com/\' target=\'_blank\'>MapQuest</a> <img src=\'http://developer.mapquest.com/content/osm/mq_logo.png\'>',
-                continuousWorld: true
-            }
-        },
         romanEmpire: {
             name: 'Roman Empire',
             type: 'xyz',
@@ -269,28 +259,6 @@
              baselayers="config.baselayers"
              default-baselayer="config.defaultBaselayer"
              facets-select="config.facetsSelect">
-
-            <div ng-controller="MapMenuController">
-
-                <div id="map-right-menu" class="col-md-2 well well-sm"
-                     ng-init="leftMenuToggled = overlaysActive()"
-                     ng-class="leftMenuToggled ? 'toggled' : ''">
-
-                    <h4 class="clickable" ng-click="leftMenuToggled = !leftMenuToggled">
-                        Kartenoptionen
-                        <span ng-if="leftMenuToggled" class="text-muted small glyphicon glyphicon-chevron-up"></span>
-                        <span ng-if="!leftMenuToggled" class="text-muted small glyphicon glyphicon-chevron-down"></span>
-                    </h4>
-
-                    <div ng-if="leftMenuToggled">
-                        <div con10t-map-menu-overlays overlays="config.overlays"></div>
-                        <div con10t-map-menu-baselayer baselayers="config.baselayers"></div>
-                    </div>
-                </div>
-
-                <div con10t-map-zoomcontrol id="ar-map-zoomcontrol" style="left:19%"></div>
-
-            </div>
         </div>
 
 
