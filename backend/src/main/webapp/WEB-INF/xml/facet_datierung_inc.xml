@@ -3,4 +3,16 @@
   <facet name="kategorie" labelKey="type">
     <field datasource="Dataset.TableName"/>
   </facet>
+
+  <facet name="datierungepoche" labelKey="Epoche">
+    <context type="datierung">
+      <field datasource=".AnfEpoche" />
+    </context>
+  </facet>
+  <facet name="datierungepoche" labelKey="Epoche">
+    <context type="datierung">
+      <field datasource=".EndEpoche" />
+    </context>
+  </facet>
+
 </includeSection>

@@ -6,4 +6,9 @@
       <field datasource=".Land"/>
     </context>
   </facet>
+  <facet name="land" labelKey="Land">
+    <context type="ort">
+      <field datasource=".Land"/>
+    </context>
+  </facet>
 </includeSection>

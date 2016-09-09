@@ -111,16 +111,7 @@
 	</display>
 	<facets>
 		<include type="facet_kategorie" />
-		<facet name="datierungepoche" labelKey="Epoche">
-			<context type="datierung">
-				<field datasource=".AnfEpoche" />
-			</context>
-		</facet>
-		<facet name="datierungepoche" labelKey="Epoche">
-			<context type="datierung">
-				<field datasource=".EndEpoche" />
-			</context>
-		</facet>
+		<include type="facet_datierung" />
 		<include type="facet_literatur" />
 		<facet name="klassifizierung" labelKey="Art des Typus">
 			<field datasource="typus.Klassifizierung" />

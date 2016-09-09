@@ -127,17 +127,8 @@
 	<facets>
 		<include type="facet_kategorie" />
 		<include type="facet_ort" />
-		<facet name="datierungepoche" labelKey="Epoche">
-			<context type="datierung">
-				<field datasource=".AnfEpoche" />
-			</context>
-		</facet>
-		<facet name="datierungepoche" labelKey="Epoche">
-			<context type="datierung">
-				<field datasource=".EndEpoche" />
-			</context>
-		</facet>
 		<include type="facet_literatur" />
+		<include type="facet_datierung" />
 		<facet name="gebaeudetyp" labelKey="Gebäudetyp allgemein">
 			<field datasource="bauwerk.Gebaeudetyp" />
 		</facet>

@@ -205,16 +205,7 @@
   </display>
   <facets>
     <include type="facet_kategorie"/>
-    <facet name="datierungepoche" labelKey="Epoche">
-      <context type="datierung">
-        <field datasource=".AnfEpoche"/>
-      </context>
-    </facet>
-    <facet name="datierungepoche" labelKey="Epoche">
-      <context type="datierung">
-        <field datasource=".EndEpoche"/>
-      </context>
-    </facet>
+    <include type="facet_datierung" />
     <!-- Context-Facets -->
     <facet name="grabungsort" labelKey="Grabungsort">
       <context type="befund" separator=", ">

@@ -96,17 +96,8 @@
     </facet>    
     <facet name="morphology_5thLevel" labelKey="5th Level">
 		<field datasource="morphology.Level5"/>
-    </facet>  
-    <facet name="datierungepoche" labelKey="Epoche">
-      <context type="datierung">
-        <field datasource=".AnfEpoche"/>
-      </context>
     </facet>
-    <facet name="datierungepoche" labelKey="Epoche">
-      <context type="datierung">
-        <field datasource=".EndEpoche"/>
-      </context>
-    </facet>
+    <include type="facet_datierung" />
     <facet name="grabungsinternetypnummer" labelKey="Grabungsinterne Typnummer">
       <context type="mainabstract" separator="">
         <field datasource=".GrabungsinterneTypennummer"/>
