@@ -59,7 +59,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	// TODO refactor caching implementations
 	private transient final Map<String, Document> xmlConfigDocuments = new HashMap<String, Document>();
 	
-	private transient final Map<String, Element> xmlIncludeElements = new HashMap<String, Element>();
+	private transient final Map<String, List<Element>> xmlIncludeElements = new HashMap<>();
 	
 	private transient final Map<String, List<String>> mandatoryContextNames = new HashMap<String, List<String>>();
 	
@@ -293,7 +293,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	/**
 	 * Returns a list of contextualizers found in the <code>explicitContextualizers</code> tag of the xml file. If there 
 	 * is a cached version this is returned else the list is created, cached and then returned.
-	 * @param tableName The category of the parent dataset.
+	 * @param type The category of the parent dataset.
 	 * @return A list containing the names of the explicit contextualizers (may be empty).
 	 */
 	public List<String> getExplicitContextualizers(String type) {
@@ -348,7 +348,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * It is safe to use even if the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.
 	 * @param field The XML element describing the parent of the <code>ifEmpty</code> element.
 	 * @param dataset The current dataset.
-	 * @param nameSpace The current namespace.
+	 * @param namespace The current namespace.
 	 * @return A <code>StringBuilder</code> containing the formatted value or <code>null</code> if no value could be retrieved or
 	 * the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.
 	 */
@@ -375,7 +375,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * It is safe to use even if the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.
 	 * @param element The XML element describing the parent of the <code>ifEmpty</code> element.
 	 * @param dataset The current dataset.
-	 * @param nameSpace The current namespace.
+	 * @param namespace The current namespace.
 	 * @return A <code>StringBuilder</code> containing the formatted value or <code>null</code> if no value could be retrieved or
 	 * the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.
 	 */
@@ -491,7 +491,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	public List<String> getXMLIncludeElementList() {
 		final List<String> result = new ArrayList<String>(); 
 		if (!xmlIncludeElements.keySet().isEmpty()) {
-			for (final Map.Entry<String, Element> entry: xmlIncludeElements.entrySet()) {
+			for (final Map.Entry<String, List<Element>> entry: xmlIncludeElements.entrySet()) {
 				result.add(entry.getKey());
 			}
 		}
@@ -795,11 +795,11 @@ public class XmlConfigUtil implements ServletContextAware {
 	}
 	
 	/**
-	 * Reads an include XML file and returns the contained <code>Element</code>.
-	 * @param type The type of the include element.
-	 * @return The <code>Element</code> extracted from the DOM of the XML include file.
+	 * Reads an include XML file and returns the contained <code>Elements</code>.
+	 * @param type The type of the include elements.
+	 * @return The <code>Elements</code> extracted from the DOM of the XML include file.
 	 */
-	private Element getElementFromFile(final String type) {
+	private List<Element> getElementsFromFile(final String type) {
 		final String filename = getIncludeFilenameFromType(type);
 		if ("unknown".equals(filename)) {
 			return null;
@@ -812,19 +812,26 @@ public class XmlConfigUtil implements ServletContextAware {
 			final Document document = saxBuilder.build(xmlDocument.getFile());
 			final Element rootElement = document.getRootElement();
 			final Namespace namespace = rootElement.getNamespace();
-			// the include element may be either a single section, context or facet
-			Element element = rootElement.getChild("section", namespace);
-			if (element == null) {
-				element = rootElement.getChild("context", namespace);
-				if (element == null) {
-					element = rootElement.getChild("facet", namespace);
+			// the include element may be either a list of section, of context or of facet elements
+			List<Element> elements = rootElement.getChildren("section", namespace);
+			if (elements.isEmpty()) {
+				elements = rootElement.getChildren("context", namespace);
+				if (elements.isEmpty()) {
+					elements = rootElement.getChildren("facet", namespace);
 				}
 			}
-			if (element != null) {
-				element.detach();
-				xmlIncludeElements.put(type, element.clone());
+			if (!elements.isEmpty()) {
+				List<Element> clonedElements = new ArrayList<>();
+				List<Element> detachedElements = new ArrayList<>();
+				while (!elements.isEmpty()) {
+					Element element = elements.get(elements.size()-1).detach();
+					detachedElements.add(element);
+					clonedElements.add(element.clone());
+				}
+				xmlIncludeElements.put(type, clonedElements);
+				return detachedElements;
 			}
-			return element;
+			return elements;
 		} catch (JDOMException e) {
 			LOGGER.error(e.getMessage());
 		} catch (IOException e) {
@@ -971,14 +978,16 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param include The include element to replace.
 	 * @return The real element the include element is replaced with.
 	 */
-	private Element getInclude(final Element include) {
+	private List<Element> getInclude(final Element include) {
 		final String type = include.getAttributeValue("type");
 		
-		final Element cachedElement = xmlIncludeElements.get(type);
-		if (cachedElement == null) {
-			return getElementFromFile(type);
+		final List<Element> cachedElements = xmlIncludeElements.get(type);
+		if (cachedElements == null) {
+			return getElementsFromFile(type);
 		} else {
-			return cachedElement.clone();
+			List<Element> clonedElements = new ArrayList<>();
+			for ( Element element : cachedElements) clonedElements.add(element);
+			return clonedElements;
 		}
 	}
 
