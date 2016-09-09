@@ -986,7 +986,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			return getElementsFromFile(type);
 		} else {
 			List<Element> clonedElements = new ArrayList<>();
-			for ( Element element : cachedElements) clonedElements.add(element);
+			for ( Element element : cachedElements) clonedElements.add(element.clone());
 			return clonedElements;
 		}
 	}
