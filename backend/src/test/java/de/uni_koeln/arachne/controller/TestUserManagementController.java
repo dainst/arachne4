@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,6 +33,7 @@ import de.uni_koeln.arachne.service.MailService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.security.ProtectedObject;
 import de.uni_koeln.arachne.util.security.Random;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestUserManagementController {
@@ -60,8 +62,14 @@ public class TestUserManagementController {
 
 	@Before
 	public void setUp() throws Exception {
+
+		CharacterEncodingFilter filter = new CharacterEncodingFilter();
+		filter.setEncoding("UTF-8");
+		filter.setForceEncoding(true);
+
 		MockitoAnnotations.initMocks(this);
-		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(controller)
+				.addFilter(filter, "/*").build();
 		
 		// use reflection to set defaultDatasetGroups
 		final List<String> defaultDatasetGroupList = new ArrayList<String>();
@@ -172,6 +180,32 @@ public class TestUserManagementController {
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 				.andExpect(content().json("{username:\"test.user\","
+						+ "firstname:\"test\","
+						+ "lastname:\"user\","
+						+ "all_groups:true,"
+						+ "}"));
+	}
+
+	@Test
+	public void testGetUserInfoWithUmlaut() throws Exception {
+
+		final User testUserWithUmlaut = new User();
+		testUserWithUmlaut.setUsername("täst");
+		testUserWithUmlaut.setGroupID(UserRightsService.MIN_ADMIN_ID);
+		testUserWithUmlaut.setFirstname("test");
+		testUserWithUmlaut.setLastname("user");
+		testUserWithUmlaut.setZip("12345");
+		testUserWithUmlaut.setAll_groups(true);
+
+		when(userDao.findByName("täst")).thenReturn(testUserWithUmlaut, testUserWithUmlaut, null);
+		when(userRightsService.getCurrentUser()).thenReturn(testUserWithUmlaut, testUserWithUmlaut, null);
+
+		mockMvc.perform(
+				get("/userinfo/täst")
+						.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{username:\"täst\","
 						+ "firstname:\"test\","
 						+ "lastname:\"user\","
 						+ "all_groups:true,"
