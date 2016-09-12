@@ -562,6 +562,9 @@
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>${maven-tomcat-version}</version>
+				<configuration>
+					<uriEncoding>UTF-8</uriEncoding>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
