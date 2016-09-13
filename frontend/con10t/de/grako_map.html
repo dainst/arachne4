@@ -1,6 +1,6 @@
 
 
-    <div hide-footer class="row map-fullscreen">
+    <div hide-footer class="row fullscreenrow map-fullscreen">
 
         <div ng-init="config = {
     menuTitle: 'Antike Werkst&auml;tten',
@@ -236,7 +236,7 @@
     defaultBaselayer: 'osm'
 }"></div>
 
-        <div id="menu" class="col-sm-2">
+        <div id="menu" class="col-sm-2 fullscreencol">
 
             <h2 class="text-muted uppercase" style="font-variant:small-caps;cursor:pointer"
                 ng-click="rightMenuToggled = !rightMenuToggled">
@@ -252,13 +252,18 @@
         </div>
 
         <div con10t-map
-             class="col-sm-10"
+             class="col-sm-8"
              id="map"
              limit="200"
-             overlays="config.overlays"
              baselayers="config.baselayers"
              default-baselayer="config.defaultBaselayer"
              facets-select="config.facetsSelect">
+        </div>
+
+        <div con10t-map-overlays
+             class="col-sm-2 fullscreencol"
+             overlays="config.overlays"
+             baselayers="config.baselayers">
         </div>
 
 
