@@ -12,18 +12,24 @@
             <con10t-toc toc-heading="Übersicht"></con10t-toc>
             <h3>Objekte</h3>
             <div class="well">
-                <con10t-search catalog-id="136"
-                               search-placeholder="Suche in den Objekten..."></con10t-search>
+                <con10t-search
+                        catalog-id="136"
+                        fq="facet_kategorie:Einzelobjekte"
+                        search-placeholder="Suche in den Objekten..."></con10t-search>
                 <br>
                 <a con10t-search-catalog="136"
+                   con10t-search-facet="facet_kategorie:Einzelobjekte"
                    class="btn btn-default btn-block">Zeige alle Objekte</a>
             </div>
             <h3>Bilder</h3>
             <div class="well">
-                <con10t-search catalog-id="139"
-                               search-placeholder="Suche in den Bildern..."></con10t-search>
+                <con10t-search
+                        catalog-id="139"
+                        fq="facet_kategorie:Bilder"
+                        search-placeholder="Suche in den Bildern..."></con10t-search>
                 <br>
                 <a con10t-search-catalog="139"
+                   con10t-search-facet="facet_kategorie:Bilder"
                    class="btn btn-default btn-block">Zeige alle Bilder</a>
             </div>
 
