@@ -1,4 +1,4 @@
-# con10t 
+# con10t  
 
 Das vorliegende Repositorium bildet die strukturelle und inhaltliche Grundlage für Arachne-Projektseiten, die unter https://arachne.dainst.org/projects zugänglich sind. 
  
