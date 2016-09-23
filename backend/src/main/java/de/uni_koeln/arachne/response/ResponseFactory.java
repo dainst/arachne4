@@ -586,7 +586,7 @@ public class ResponseFactory {
 		// add all places with location information as "facet_geo"
 		Context placeContext = dataset.getContext("ort");
 		if (placeContext != null) {
-			final List<String> finalGeoValues = new ArrayList<String>();
+			ArrayNode placesNode = json.arrayNode();
 			for (AbstractLink link: placeContext.getAllContexts()) {
 				final String city = link.getFieldFromFields("ort.Stadt");
 				final String country = link.getFieldFromFields("ort.Land");
@@ -603,19 +603,28 @@ public class ResponseFactory {
 				}
 				final String lat = link.getFieldFromFields("ort.Latitude");
 				final String lon = link.getFieldFromFields("ort.Longitude");
-				String location = null;
+				final String gazId = link.getFieldFromFields("ort.Gazetteerid");
+
+				ObjectNode placeNode = json.objectNode();
+				if (place != null) placeNode.put("name", place);
 				if (lat != null && lon != null) {
-					location = lat + "," + lon;
+					ObjectNode locationNode = json.objectNode();
+					locationNode.put("lat", lat);
+					locationNode.put("lon", lon);
+					placeNode.set("location", locationNode);
 				}
-				if (!StrUtils.isEmptyOrNull(place) && !StrUtils.isEmptyOrNull(location)) {
-					finalGeoValues.add(place + "[" + location + "]");
+				if (gazId != null) {
+					try {
+						placeNode.put("gazetteerId", Integer.parseInt(gazId));
+					} catch (NumberFormatException e) {
+						LOGGER.error("Error while parsing Gazetteerid: {}", e);
+					}
 				}
+
+				placesNode.add(placeNode);
+
 			}
-			ArrayNode arrayNode = json.arrayNode();
-			for (final String finalGeoValue: finalGeoValues) {
-				arrayNode.add(ts.transl8Facet("geo", finalGeoValue));
-			}
-			json.set("facet_geo", arrayNode);
+			json.put("facet_geo", placesNode.toString());
 		}
 		
 		// add subcategory facet for marbilderbestand.Unterkategorie
