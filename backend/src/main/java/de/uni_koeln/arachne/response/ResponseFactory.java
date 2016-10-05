@@ -621,10 +621,10 @@ public class ResponseFactory {
 					}
 				}
 
-				placesNode.add(placeNode);
+				placesNode.add(placeNode.toString());
 
 			}
-			json.put("facet_geo", placesNode.toString());
+			json.put("facet_geo", placesNode);
 		}
 		
 		// add subcategory facet for marbilderbestand.Unterkategorie
