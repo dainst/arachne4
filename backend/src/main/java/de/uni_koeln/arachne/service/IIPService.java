@@ -5,6 +5,14 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,9 +94,11 @@ public class IIPService {
 		this.resolution_THUMBNAIL = resolutionTHUMBNAIL;
 		this.resolution_ICON = resolutionICON;
 	}
-	
+		
 	/**
-	 * This method retrieves images from the image server and writes them as JPEG directly to the HTTP response. 
+	 * This method retrieves images from the image server.
+	 * If the requested resolution equals 300 the image is loaded from the local cache directory. If the image isn't 
+	 * cached already it will be retrieved from the image server and stored in the cache directory.  
 	 * @param entityId The unique ID of the image.
 	 * @param requestedResolution The requested resolution. Only the constants <code>ImageController.ICON</code>, 
 	 * <code>ImageController.THUMBNAIL</code>, <code>ImageController.PREVIEW</code> and <code>ImageController.HIGH</code> 
@@ -130,23 +140,82 @@ public class IIPService {
 			LOGGER.debug("Watermark: " + imageServerInstance);
 			
 			try {
-				final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension 
-						+ "?FIF=" + imagePath +	URLEncoder.encode(imageName, "UTF8") 
-						+ "&SDS=0,90"
-						+ "&CNT=1.0"
-						+ "&WID=" + width 
-						+ "&HEI=" + height 
-						+ "&QLT=99"
-						+ "&CVT=jpeg");
-				LOGGER.debug("Full server adress: " + serverAdress);
-
-				final BufferedImage image = restTemplate.getForObject(serverAdress.toURI(), BufferedImage.class);
+				BufferedImage image = null;
+				if (requestedHeight == 300) {
+					image = getImageFromCacheDir(imageName);
+				}
+				if (image == null) {
+					final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension 
+							+ "?FIF=" + imagePath +	URLEncoder.encode(imageName, "UTF8") 
+							+ "&SDS=0,90"
+							+ "&CNT=1.0"
+							+ "&WID=" + width 
+							+ "&HEI=" + height 
+							+ "&QLT=99"
+							+ "&CVT=jpeg");
+					LOGGER.debug("Full server adress: " + serverAdress);
+	
+					image = restTemplate.getForObject(serverAdress.toURI(), BufferedImage.class);
+					if (requestedHeight == 300) {
+						writeImageToCacheDir(imageName, image);
+					}
+				}
 				return new TypeWithHTTPStatus<BufferedImage>(image);
 			} catch (RestClientException | URISyntaxException | IOException e) {
 				LOGGER.error(e.getMessage());
 			}
 		}
 		return new TypeWithHTTPStatus<BufferedImage>(HttpStatus.NOT_FOUND);
+	}
+	
+	/**
+	 * Loads a jpeg image from the local cache directory.
+	 * @param imageName The image name (*.ptif) including the path.
+	 * @return The loaded image or <code>null</code> if the image cannot be loaded.
+	 */
+	private BufferedImage getImageFromCacheDir(String imageName) {
+		BufferedImage image = null;
+		Path path = imageNameToCachedImageName(imageName);
+		try {
+			image = ImageIO.read(path.toFile());
+		} catch (IOException e) {
+			LOGGER.warn("Failed to load image '" + path.toString() + "' from cache. Cause: " + e.getMessage());
+		}
+		return image;
+	}
+	
+	/**
+	 * Writes a JPEG image to the cache directory. The path of the image will be kept the same and be created if 
+	 * necessary (a/b/c.ptif will be stored as $cachedir/a/b/c.jpeg).
+	 * @param imageName The image name (*.ptif) including the path.
+	 * @param image The image to save.
+	 */
+	private void writeImageToCacheDir(String imageName, BufferedImage image) {
+		Path path = imageNameToCachedImageName(imageName);
+		Path dirPath = path.getParent();
+		if (Files.notExists(dirPath, LinkOption.NOFOLLOW_LINKS)) {
+			try {
+				Files.createDirectories(dirPath);
+			} catch (IOException e) {
+				LOGGER.error("Failed to create directory '" + dirPath.toString() + "'. Cause: " + e.getMessage());
+			}
+		}
+		try {
+			ImageIO.write(image, "JPEG", path.toFile());
+		} catch (IOException e) {
+			LOGGER.error("Failed to write file '" + path.toString() + "'. Cause: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * Converts the given <code>imageName</code> to the corresponding name used for caching (in essence it replaces the 
+	 * 'ptif' extension with 'jpeg', prefixes the path with the cache directory and returns the result as path object). 
+	 * @param imageName The image name (*.ptif) including the path.
+	 * @return The image path in the cache dir.
+	 */
+	private Path imageNameToCachedImageName(String imageName) {
+		String cachedImageName = "/tmp/" + imageName.substring(0, imageName.length() - 4) + "jpeg";
+		return Paths.get(cachedImageName);
 	}
 	
 	/**
