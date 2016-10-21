@@ -38,7 +38,6 @@ import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.search.TermsAggregation;
-import de.uni_koeln.arachne.util.sql.CatalogEntryExtended;
 
 /**
  * Factory class to create the different kinds of responses from a dataset.

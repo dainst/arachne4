@@ -28,6 +28,11 @@ import de.uni_koeln.arachne.util.network.CustomMediaType;
 /**
  * Handles http requests for <code>/catalogEntry</code> and
  * <code>/catalog</code>.
+ * 
+ * @author Karen Schwane
+ * @author Reimar Grabowski
+ * @author Sebastian Cuy
+ * @author Daniel Marreiros de Oliveira
  */
 @Controller
 @RequestMapping("/catalog")

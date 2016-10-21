@@ -21,8 +21,15 @@ import de.uni_koeln.arachne.dao.hibernate.ArachneEntityDao;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.service.UserRightsService;
-import de.uni_koeln.arachne.util.sql.CatalogEntryExtended;
 
+/**
+ * JDBC based data access object for catalogs.
+ * 
+ * @author Karen Schwane
+ * @author Reimar Grabowski
+ * @author Jan G. Wieners
+ * 
+ */
 @Repository("CatalogDao")
 public class CatalogDao extends SQLDao {
 
@@ -221,7 +228,7 @@ public class CatalogDao extends SQLDao {
                 child = entry.getChildren().get(i);
                 child.setIndexParent(i);
                 child.setParentId(entry.getId());
-                CatalogEntry savedChild = saveEntryRecursive(child, catalogId);
+                saveEntryRecursive(child, catalogId);
             }
         }
         return entry;
