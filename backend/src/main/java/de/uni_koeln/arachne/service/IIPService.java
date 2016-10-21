@@ -109,7 +109,8 @@ public class IIPService {
 		if (imageProperties.httpStatus == HttpStatus.OK) {
 			final String imageName = imageProperties.name;
 			String imageServerInstance = imageProperties.watermark;
-						
+			boolean watermarked = true;
+			
 			int width = -1;
 			int height = -1;
 			
@@ -130,6 +131,7 @@ public class IIPService {
 						
 			if (StrUtils.isEmptyOrNullOrZero(imageServerInstance)) {
 				imageServerInstance = imageServerName;
+				watermarked = false;
 			}
 			
 			LOGGER.debug("Watermark: " + imageServerInstance);
@@ -137,7 +139,7 @@ public class IIPService {
 			try {
 				byte[] image = null;
 				if (requestedHeight == 300) {
-					image = getImageFromCacheDir(imageName);
+					image = getImageFromCacheDir(imageName, watermarked);
 				}
 				if (image == null) {
 					final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension 
@@ -152,7 +154,7 @@ public class IIPService {
 	
 					image = restTemplate.getForObject(serverAdress.toURI(), byte[].class);
 					if (requestedHeight == 300) {
-						writeImageToCacheDir(imageName, image);
+						writeImageToCacheDir(imageName, image, watermarked);
 					}
 				}
 				return new TypeWithHTTPStatus<byte[]>(image);
@@ -166,11 +168,12 @@ public class IIPService {
 	/**
 	 * Loads a jpeg image from the local cache directory.
 	 * @param imageName The image name (*.ptif) including the path.
+	 * @param watermarked 
 	 * @return The loaded image or <code>null</code> if the image cannot be loaded.
 	 */
-	private byte[] getImageFromCacheDir(String imageName) {
+	private byte[] getImageFromCacheDir(String imageName, boolean watermarked) {
 		byte[] image = null;
-		Path path = imageNameToCachedImageName(imageName);
+		Path path = imageNameToCachedImageName(imageName, watermarked);
 		try {
 			image = Files.readAllBytes(path);
 		} catch (IOException e) {
@@ -184,9 +187,10 @@ public class IIPService {
 	 * necessary (a/b/c.ptif will be stored as $cachedir/a/b/c.jpeg).
 	 * @param imageName The image name (*.ptif) including the path.
 	 * @param image The image to save.
+	 * @param watermarked 
 	 */
-	private void writeImageToCacheDir(String imageName, byte[] image) {
-		Path path = imageNameToCachedImageName(imageName);
+	private void writeImageToCacheDir(String imageName, byte[] image, boolean watermarked) {
+		Path path = imageNameToCachedImageName(imageName, watermarked);
 		Path dirPath = path.getParent();
 		if (Files.notExists(dirPath, LinkOption.NOFOLLOW_LINKS)) {
 			try {
@@ -206,10 +210,16 @@ public class IIPService {
 	 * Converts the given <code>imageName</code> to the corresponding name used for caching (in essence it replaces the 
 	 * 'ptif' extension with 'jpeg', prefixes the path with the cache directory and returns the result as path object). 
 	 * @param imageName The image name (*.ptif) including the path.
+	 * @param watermarked 
 	 * @return The image path in the cache dir.
 	 */
-	private Path imageNameToCachedImageName(String imageName) {
-		String cachedImageName = "/tmp/" + imageName.substring(0, imageName.length() - 4) + "jpeg";
+	private Path imageNameToCachedImageName(String imageName, boolean watermarked) {
+		String cachedImageName;
+		if (watermarked) {
+			cachedImageName = "/tmp/" + imageName.substring(0, imageName.length() - 5) + "_watermarked.jpeg";
+		} else {
+			cachedImageName = "/tmp/" + imageName.substring(0, imageName.length() - 4) + "jpeg";
+		}
 		return Paths.get(cachedImageName);
 	}
 	
