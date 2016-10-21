@@ -1,7 +1,5 @@
 package de.uni_koeln.arachne.controller;
 
-import java.awt.image.BufferedImage;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -39,16 +37,16 @@ public class ImageController {
 	/**
 	 * Handles the request for /image/width/{entityId}.
 	 * @param entityId The unique ID of the image.
-	 * @return A <code>BufferedImage</code> wrapped in a <code>ResponseEntity</code>.
+	 * @return A byte array wrapped in a <code>ResponseEntity</code>.
 	 */
 	@RequestMapping(value = "width/{entityId}", 
 			method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
-	public ResponseEntity<BufferedImage> getWidth(
+	public ResponseEntity<byte[]> getWidth(
 			@RequestParam(value = "width", required = true) final int requestedWidth, 
 			@PathVariable("entityId") final long entityId) {
 		
-		final TypeWithHTTPStatus<BufferedImage> image = iipService.getImage(entityId, requestedWidth, -1);
+		final TypeWithHTTPStatus<byte[]> image = iipService.getImage(entityId, requestedWidth, -1);
 		final HttpHeaders headers = new HttpHeaders();
 		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
 		return ResponseEntity.status(image.getStatus()).headers(headers).body(image.getValue());
@@ -57,16 +55,16 @@ public class ImageController {
 	/**
 	 * Handles the request for /image/height/{entityId}.
 	 * @param entityId The unique ID of the image.
-	 * @return A <code>BufferedImage</code> wrapped in a <code>ResponseEntity</code>.
+	 * @return A byte array wrapped in a <code>ResponseEntity</code>.
 	 */
 	@RequestMapping(value = "height/{entityId}",
 			method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
-	public ResponseEntity<BufferedImage> getHeight(
+	public ResponseEntity<byte[]> getHeight(
 			@RequestParam(value = "height", required = true) final int requestedHeight, 
 			@PathVariable("entityId") final long entityId) {
 		
-		final TypeWithHTTPStatus<BufferedImage> image = iipService.getImage(entityId, -1, requestedHeight);
+		final TypeWithHTTPStatus<byte[]> image = iipService.getImage(entityId, -1, requestedHeight);
 		final HttpHeaders headers = new HttpHeaders();
 		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
 		return ResponseEntity.status(image.getStatus()).headers(headers).body(image.getValue());
@@ -75,14 +73,14 @@ public class ImageController {
 	/**
 	 * Handles the request for /image/{entityId}. 
 	 * @param entityId The unique ID of the image.
-	 * @return A <code>BufferedImage</code> wrapped in a <code>ResponseEntity</code>.
+	 * @return A byte array wrapped in a <code>ResponseEntity</code>.
 	 */
 	@RequestMapping(value = "{entityId}",
 			method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
-	public ResponseEntity<BufferedImage> getImage(@PathVariable("entityId") final long entityId) {
+	public ResponseEntity<byte[]> getImage(@PathVariable("entityId") final long entityId) {
 		
-		final TypeWithHTTPStatus<BufferedImage> image = iipService.getImage(entityId
+		final TypeWithHTTPStatus<byte[]> image = iipService.getImage(entityId
 				, iipService.resolution_HIGH(), iipService.resolution_HIGH());
 		final HttpHeaders headers = new HttpHeaders();
 		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
@@ -92,15 +90,15 @@ public class ImageController {
 	/**
 	 * Handles the request for /image/preview/{entityId}.
 	 * @param entityId The unique ID of the image.
-	 * @return A <code>BufferedImage</code> wrapped in a <code>ResponseEntity</code>.
+	 * @return A byte array wrapped in a <code>ResponseEntity</code>.
 	 */
 	@Deprecated
 	@RequestMapping(value = "preview/{entityId}",
 			method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
-	public ResponseEntity<BufferedImage> getPreview(@PathVariable("entityId") final long entityId) {
+	public ResponseEntity<byte[]> getPreview(@PathVariable("entityId") final long entityId) {
 		
-		final TypeWithHTTPStatus<BufferedImage> image = iipService.getImage(entityId
+		final TypeWithHTTPStatus<byte[]> image = iipService.getImage(entityId
 				, iipService.resolution_PREVIEW(), iipService.resolution_PREVIEW());
 		final HttpHeaders headers = new HttpHeaders();
 		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
@@ -110,15 +108,15 @@ public class ImageController {
 	/**
 	 * Handles the request for /image/thumbnail/{entityId}.
 	 * @param entityId The unique ID of the image.
-	 * @return A <code>BufferedImage</code> wrapped in a <code>ResponseEntity</code>.
+	 * @return A byte array wrapped in a <code>ResponseEntity</code>.
 	 */
 	@Deprecated
 	@RequestMapping(value = "thumbnail/{entityId}",
 			method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
-	public ResponseEntity<BufferedImage> getThumbnail(@PathVariable("entityId") final long entityId) {
+	public ResponseEntity<byte[]> getThumbnail(@PathVariable("entityId") final long entityId) {
 		
-		final TypeWithHTTPStatus<BufferedImage> image = iipService.getImage(entityId
+		final TypeWithHTTPStatus<byte[]> image = iipService.getImage(entityId
 				, iipService.resolution_THUMBNAIL(), iipService.resolution_THUMBNAIL());
 		final HttpHeaders headers = new HttpHeaders();
 		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
@@ -128,15 +126,15 @@ public class ImageController {
 	/**
 	 * Handles the request for /image/icon/{entityId}.
 	 * @param entityId The unique ID of the image.
-	 * @return A <code>BufferedImage</code> wrapped in a <code>ResponseEntity</code>.
+	 * @return A byte array wrapped in a <code>ResponseEntity</code>.
 	 */
 	@Deprecated
 	@RequestMapping(value = "icon/{entityId}",
 			method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
-	public ResponseEntity<BufferedImage> getIcon(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+	public ResponseEntity<byte[]> getIcon(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
 		
-		final TypeWithHTTPStatus<BufferedImage> image = iipService.getImage(entityId
+		final TypeWithHTTPStatus<byte[]> image = iipService.getImage(entityId
 				, iipService.resolution_ICON(), iipService.resolution_ICON());
 		final HttpHeaders headers = new HttpHeaders();
 		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
@@ -191,11 +189,11 @@ public class ImageController {
 	 * @return The requested jpeg image.
 	 */
 	@RequestMapping(value = "zoomify/{entityId}/{z}-{x}-{y}.jpg", method = RequestMethod.GET)
-	public ResponseEntity<BufferedImage> getImageForZoomifyViewer(@PathVariable("entityId") final long entityId,
+	public ResponseEntity<byte[]> getImageForZoomifyViewer(@PathVariable("entityId") final long entityId,
 			@PathVariable("z") final int z, @PathVariable("x") final int x, @PathVariable("y") final int y,
 			final HttpServletRequest request, final HttpServletResponse response) {
 		
-		TypeWithHTTPStatus<BufferedImage> imageServerResponse = iipService.getImageForZoomifyViewer(entityId, z, x, y);
+		TypeWithHTTPStatus<byte[]> imageServerResponse = iipService.getImageForZoomifyViewer(entityId, z, x, y);
 		final HttpHeaders headers = new HttpHeaders();
 		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
 		return ResponseEntity.status(imageServerResponse.getStatus()).headers(headers).body(imageServerResponse.getValue());

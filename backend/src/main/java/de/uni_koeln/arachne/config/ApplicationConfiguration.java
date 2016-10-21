@@ -15,7 +15,6 @@ import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.converter.BufferedImageHttpMessageConverter;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -46,7 +45,6 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		converters.add(new BufferedImageHttpMessageConverter());
 		converters.add(new StringHttpMessageConverter());
 		converters.add(new MappingJackson2HttpMessageConverter());
 		converters.add(new ByteArrayHttpMessageConverter());

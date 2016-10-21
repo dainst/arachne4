@@ -1,18 +1,13 @@
 package de.uni_koeln.arachne.service;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,7 +101,7 @@ public class IIPService {
 	 * @param response The outgoing HTTP response.
 	 * @return The requested image or <code>null</code> if no image could be retrieved from the server.
 	 */
-	public TypeWithHTTPStatus<BufferedImage> getImage(final long entityId, final int requestedWidth, final int requestedHeight) {
+	public TypeWithHTTPStatus<byte[]> getImage(final long entityId, final int requestedWidth, final int requestedHeight) {
 		
 		final int requestedResolution = Math.max(requestedWidth, requestedHeight); 
 		final ImageProperties imageProperties = getImageProperties(entityId, requestedResolution);
@@ -140,7 +135,7 @@ public class IIPService {
 			LOGGER.debug("Watermark: " + imageServerInstance);
 			
 			try {
-				BufferedImage image = null;
+				byte[] image = null;
 				if (requestedHeight == 300) {
 					image = getImageFromCacheDir(imageName);
 				}
@@ -155,17 +150,17 @@ public class IIPService {
 							+ "&CVT=jpeg");
 					LOGGER.debug("Full server adress: " + serverAdress);
 	
-					image = restTemplate.getForObject(serverAdress.toURI(), BufferedImage.class);
+					image = restTemplate.getForObject(serverAdress.toURI(), byte[].class);
 					if (requestedHeight == 300) {
 						writeImageToCacheDir(imageName, image);
 					}
 				}
-				return new TypeWithHTTPStatus<BufferedImage>(image);
+				return new TypeWithHTTPStatus<byte[]>(image);
 			} catch (RestClientException | URISyntaxException | IOException e) {
 				LOGGER.error(e.getMessage());
 			}
 		}
-		return new TypeWithHTTPStatus<BufferedImage>(HttpStatus.NOT_FOUND);
+		return new TypeWithHTTPStatus<byte[]>(HttpStatus.NOT_FOUND);
 	}
 	
 	/**
@@ -173,11 +168,11 @@ public class IIPService {
 	 * @param imageName The image name (*.ptif) including the path.
 	 * @return The loaded image or <code>null</code> if the image cannot be loaded.
 	 */
-	private BufferedImage getImageFromCacheDir(String imageName) {
-		BufferedImage image = null;
+	private byte[] getImageFromCacheDir(String imageName) {
+		byte[] image = null;
 		Path path = imageNameToCachedImageName(imageName);
 		try {
-			image = ImageIO.read(path.toFile());
+			image = Files.readAllBytes(path);
 		} catch (IOException e) {
 			LOGGER.warn("Failed to load image '" + path.toString() + "' from cache. Cause: " + e.getMessage());
 		}
@@ -190,7 +185,7 @@ public class IIPService {
 	 * @param imageName The image name (*.ptif) including the path.
 	 * @param image The image to save.
 	 */
-	private void writeImageToCacheDir(String imageName, BufferedImage image) {
+	private void writeImageToCacheDir(String imageName, byte[] image) {
 		Path path = imageNameToCachedImageName(imageName);
 		Path dirPath = path.getParent();
 		if (Files.notExists(dirPath, LinkOption.NOFOLLOW_LINKS)) {
@@ -201,7 +196,7 @@ public class IIPService {
 			}
 		}
 		try {
-			ImageIO.write(image, "JPEG", path.toFile());
+			Files.write(path, image);
 		} catch (IOException e) {
 			LOGGER.error("Failed to write file '" + path.toString() + "'. Cause: " + e.getMessage());
 		}
@@ -272,12 +267,12 @@ public class IIPService {
 				return new TypeWithHTTPStatus<String>(metaData);
 			}
 			
-			final BufferedImage image = restTemplate.getForObject(serverUrl.toURI(), BufferedImage.class);
-			return new TypeWithHTTPStatus<BufferedImage>(image);
+			final byte[] image = restTemplate.getForObject(serverUrl.toURI(), byte[].class);
+			return new TypeWithHTTPStatus<byte[]>(image);
 		} catch (RestClientException | URISyntaxException | IOException e) {
 			LOGGER.error(e.getMessage());
 		}
-		return new TypeWithHTTPStatus<BufferedImage>(HttpStatus.NOT_FOUND);		
+		return new TypeWithHTTPStatus<byte[]>(HttpStatus.NOT_FOUND);		
 	}
 	
 	/**
@@ -325,18 +320,18 @@ public class IIPService {
 	 * @param y Zoomify row.
 	 * @return The requested image or <code>null</code> and an HTTP status.
 	 */
-	public TypeWithHTTPStatus<BufferedImage> getImageForZoomifyViewer(final long entityId, final int z, int x, final int y) {
+	public TypeWithHTTPStatus<byte[]> getImageForZoomifyViewer(final long entityId, final int z, int x, final int y) {
 		
 		LOGGER.debug("Zoomify - ID: " + entityId + "TileGroup - z: " + z + " x: " + x + " y: " + y);
 		
 		final ImageProperties imageProperties = getImageProperties(entityId, resolution_HIGH);
 		
 		if (imageProperties.httpStatus != HttpStatus.OK) {
-			return new TypeWithHTTPStatus<BufferedImage>(imageProperties.httpStatus);
+			return new TypeWithHTTPStatus<byte[]>(imageProperties.httpStatus);
 		}
 		
 		if (imageProperties.resolution != resolution_HIGH) {
-			return new TypeWithHTTPStatus<BufferedImage>(HttpStatus.FORBIDDEN);
+			return new TypeWithHTTPStatus<byte[]>(HttpStatus.FORBIDDEN);
 		}
 
 		final String imageName = imageProperties.name;
@@ -351,12 +346,12 @@ public class IIPService {
 			final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + queryString);
 			LOGGER.debug("Zoomify request: " + serverAdress);
 
-			final BufferedImage image = restTemplate.getForObject(serverAdress.toURI(), BufferedImage.class);
-			return new TypeWithHTTPStatus<BufferedImage>(image);
+			final byte[] image = restTemplate.getForObject(serverAdress.toURI(), byte[].class);
+			return new TypeWithHTTPStatus<byte[]>(image);
 		} catch (RestClientException | URISyntaxException | IOException e) {
 			LOGGER.error(e.getMessage());
 		}
-		return new TypeWithHTTPStatus<BufferedImage>(HttpStatus.NOT_FOUND);
+		return new TypeWithHTTPStatus<byte[]>(HttpStatus.NOT_FOUND);
 	}
 	
 	/**

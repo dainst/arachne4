@@ -22,7 +22,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.BufferedImageHttpMessageConverter;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -47,26 +47,26 @@ public class TestImageController {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(controller)
-				.setMessageConverters(new BufferedImageHttpMessageConverter(), new StringHttpMessageConverter()).build();
+				.setMessageConverters(new ByteArrayHttpMessageConverter(), new StringHttpMessageConverter()).build();
 
 		final TestData testData = new TestData();
 
 		when(iipService.getImage(eq(0l), anyInt(), anyInt()))
-		.then(new Answer<TypeWithHTTPStatus<BufferedImage>>() {
+		.then(new Answer<TypeWithHTTPStatus<byte[]>>() {
 			@Override
-			public TypeWithHTTPStatus<BufferedImage> answer(InvocationOnMock invocation)
+			public TypeWithHTTPStatus<byte[]> answer(InvocationOnMock invocation)
 					throws Throwable {
 				int width = invocation.getArgumentAt(1, int.class);
 				int height = invocation.getArgumentAt(2, int.class);
 
-				TypeWithHTTPStatus<BufferedImage> result = 
-						new TypeWithHTTPStatus<BufferedImage>(testData.getScaledTestImageJPEG(width, height));
+				TypeWithHTTPStatus<byte[]> result = 
+						new TypeWithHTTPStatus<byte[]>(testData.getScaledTestImageJPEG(width, height));
 				return result;
 			}
 		}
 				);
 		when(iipService.getImage(eq(1l), anyInt(), anyInt()))
-		.thenReturn(new TypeWithHTTPStatus<BufferedImage>(HttpStatus.NOT_FOUND));
+		.thenReturn(new TypeWithHTTPStatus<byte[]>(HttpStatus.NOT_FOUND));
 
 		when(iipService.getImagePropertiesForZoomifyViewer(0l))
 		.thenReturn(new TypeWithHTTPStatus<String>(testData.getZoomifyPropertiesXML()));
@@ -74,9 +74,9 @@ public class TestImageController {
 		.thenReturn(new TypeWithHTTPStatus<String>(HttpStatus.NOT_FOUND));
 		
 		when(iipService.getImageForZoomifyViewer(eq(0l), anyInt(), anyInt(), anyInt()))
-		.thenReturn(new TypeWithHTTPStatus<BufferedImage>(testData.getScaledTestImageJPEG(64, 64)));
+		.thenReturn(new TypeWithHTTPStatus<byte[]>(testData.getScaledTestImageJPEG(64, 64)));
 		when(iipService.getImageForZoomifyViewer(eq(1l), anyInt(), anyInt(), anyInt()))
-		.thenReturn(new TypeWithHTTPStatus<BufferedImage>(HttpStatus.NOT_FOUND));
+		.thenReturn(new TypeWithHTTPStatus<byte[]>(HttpStatus.NOT_FOUND));
 		
 		when(iipService.resolution_HIGH()).thenReturn(0);
 		when(iipService.resolution_PREVIEW()).thenReturn(600);

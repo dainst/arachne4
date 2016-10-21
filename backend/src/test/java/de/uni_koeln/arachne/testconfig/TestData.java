@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.testconfig;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -150,7 +151,7 @@ public class TestData {
 		return result;
 	}
 	
-	public BufferedImage getScaledTestImageJPEG(int width, int height) throws IOException {
+	public byte[] getScaledTestImageJPEG(int width, int height) throws IOException {
 		final BufferedImage origImage = getTestImageJPEG();
 		if (width <= 0) {
 			width = origImage.getWidth();
@@ -161,7 +162,14 @@ public class TestData {
 		final Image image = origImage.getScaledInstance(width, height, Image.SCALE_FAST);
 		final BufferedImage resultImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		resultImage.getGraphics().drawImage(image, 0, 0, null);
-		return resultImage;
+		
+		ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();
+		ImageIO.write(resultImage, "jpeg", byteOutStream);
+		byteOutStream.flush();
+		final byte[] result = byteOutStream.toByteArray();
+		byteOutStream.close();
+		
+		return result;
 	}
 	
 	public String getZoomifyPropertiesXML() {
