@@ -21,6 +21,17 @@
                     "path_unmatch":"editorSection.*",
                     "match_mapping_type":"string"
                 }
+            },
+            {  
+                "editor_template":{  
+                    "mapping":{  
+                        "type":"string",
+                        "index_options":"positions",
+                        "copy_to":"searchableEditorContent"
+                    },
+                    "match":"editorSection.*",
+                    "match_mapping_type":"string"
+                }
             }
         ],
         "properties":{  
@@ -123,6 +134,11 @@
                 }
             },
             "searchableContent":{  
+                "type":"string",
+                "omit_norms":true,
+                "store":true
+            },
+            "searchableEditorContent":{  
                 "type":"string",
                 "omit_norms":true,
                 "store":true

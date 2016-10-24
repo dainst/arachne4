@@ -563,7 +563,7 @@ public class SearchService {
 				.defaultOperator(Operator.AND);
 		
 		if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID)) {
-			innerQuery.field("editorSection");
+			innerQuery.field("searchableEditorContent^0.5");
 		}
 		
 		for (String textField: searchFields.text()) {
