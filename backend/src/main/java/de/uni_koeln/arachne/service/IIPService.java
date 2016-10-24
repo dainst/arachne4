@@ -55,6 +55,8 @@ public class IIPService {
 	private final transient String imageServerExtension;
 	private final transient String imagePath;
 		
+	private final transient String imageCacheDir;
+	
 	private final transient int resolution_HIGH;
 	private final transient int resolution_PREVIEW;
 	private final transient int resolution_THUMBNAIL;
@@ -68,6 +70,7 @@ public class IIPService {
 	 * @param resolutionHIGH Width for high resolution images.
 	 * @param resolutionTHUMBNAIL Width for thumbnail images.
 	 * @param resolutionPREVIEW Width for preview resolution images.
+	 * @param imageCacheDir Directory where (300px high) images are cached.
 	 */
 	@Autowired
 	public IIPService(final @Value("${imageServerPath}") String imageServerPath,
@@ -77,7 +80,8 @@ public class IIPService {
 			final @Value("${imageResolutionHIGH}") int resolutionHIGH,
 			final @Value("${imageResolutionPREVIEW}") int resolutionPREVIEW,
 			final @Value("${imageResolutionTHUMBNAIL}") int resolutionTHUMBNAIL,
-			final @Value("${imageResolutionICON}") int resolutionICON) {
+			final @Value("${imageResolutionICON}") int resolutionICON,
+			final @Value("${imageCacheDir}") String imageCacheDir) {
 			
 		this.imageServerPath = imageServerPath;
 		this.imageServerName = imageServerName;
@@ -88,6 +92,22 @@ public class IIPService {
 		this.resolution_PREVIEW = resolutionPREVIEW;
 		this.resolution_THUMBNAIL = resolutionTHUMBNAIL;
 		this.resolution_ICON = resolutionICON;
+		
+		String cacheDir;
+		
+		if (!imageCacheDir.startsWith("/")) {
+			cacheDir = "/" + imageCacheDir;
+		} else {
+			cacheDir = imageCacheDir;
+		}
+		
+		if (!cacheDir.endsWith("/")) {
+			cacheDir += "/";
+		}
+		
+		this.imageCacheDir = cacheDir;
+		
+		LOGGER.info("Image cache directory: " + this.imageCacheDir);
 	}
 		
 	/**
@@ -216,9 +236,9 @@ public class IIPService {
 	private Path imageNameToCachedImageName(String imageName, boolean watermarked) {
 		String cachedImageName;
 		if (watermarked) {
-			cachedImageName = "/tmp/" + imageName.substring(0, imageName.length() - 5) + "_watermarked.jpeg";
+			cachedImageName = imageCacheDir + imageName.substring(0, imageName.length() - 5) + "_watermarked.jpeg";
 		} else {
-			cachedImageName = "/tmp/" + imageName.substring(0, imageName.length() - 4) + "jpeg";
+			cachedImageName = imageCacheDir + imageName.substring(0, imageName.length() - 4) + "jpeg";
 		}
 		return Paths.get(cachedImageName);
 	}
