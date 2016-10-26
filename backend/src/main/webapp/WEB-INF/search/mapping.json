@@ -29,7 +29,7 @@
                         "index_options":"positions",
                         "copy_to":"searchableEditorContent"
                     },
-                    "match":"editorSection.*",
+                    "path_match":"editorSection.*",
                     "match_mapping_type":"string"
                 }
             }
