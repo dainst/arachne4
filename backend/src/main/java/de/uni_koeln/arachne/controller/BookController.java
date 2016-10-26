@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8_VALUE;
@@ -167,18 +169,20 @@ public class BookController {
     }
 
     /**
+     * Sets a books path.
      * @param booksPath path to the folder where the TEI files are stored
      */
     @Value("${booksPath}")
     public void setBooksPath(String booksPath){
-        if (!new File(booksPath).exists()) throw new IllegalArgumentException("Must exist: "+booksPath);
+        if (!Files.exists(Paths.get(booksPath))) throw new IllegalArgumentException("Must exist: "+booksPath);
 
         this.booksPath = booksPath;
         if (!booksPath.endsWith("/")) this.booksPath+="/";
     }
 
     /**
-     * @param bookDao
+     * Sets the data access object for books.
+     * @param bookDao The data access object.
      */
     public void setBookDao(BookDao bookDao){
         this.bookDao = bookDao;

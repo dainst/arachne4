@@ -15,6 +15,12 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import com.mysql.management.MysqldResource;
 import com.mysql.management.MysqldResourceI;
 
+/**
+ * Class to build an 'embedded' SQL database. Used for testing.
+ * 
+ * @author Reimar Grabowski
+ *
+ */
 public class EmbeddedMysqlDatabaseBuilder {
     private static final Logger LOG = LoggerFactory.getLogger(EmbeddedMysqlDatabaseBuilder.class);
 
@@ -28,6 +34,9 @@ public class EmbeddedMysqlDatabaseBuilder {
     private final ResourceLoader resourceLoader;
     private final ResourceDatabasePopulator databasePopulator;
 
+    /**
+     * Default constructor.
+     */
     public EmbeddedMysqlDatabaseBuilder() {
         resourceLoader = new DefaultResourceLoader();
         databasePopulator = new ResourceDatabasePopulator();
@@ -88,15 +97,20 @@ public class EmbeddedMysqlDatabaseBuilder {
         }
     }
 
+    /**
+     * Method to add an SQL script to the database.
+     * @param script The SQL script.
+     * @return <code>this</code> to allow for method chaining.
+     */
     public EmbeddedMysqlDatabaseBuilder addSqlScript(String script) {
         databasePopulator.addScript(resourceLoader.getResource(script));
         return this;
     }
 
     /**
-     * whether to enable mysql foreign key check
-     *
-     * @param foreignKeyCheck
+     * Whether to enable mysql foreign key check.
+     * @param foreignKeyCheck indicates whether foreign key checks should be enabled ot not.
+     * @return <code>this</code> to allow for method chaining.
      */
     public EmbeddedMysqlDatabaseBuilder setForeignKeyCheck(boolean foreignKeyCheck) {
         this.foreignKeyCheck = foreignKeyCheck;
@@ -104,13 +118,17 @@ public class EmbeddedMysqlDatabaseBuilder {
     }
 
     /**
-     * @param databaseName
-     *            the databaseName to set
+     * Setter for the database name.
+     * @param databaseName the databaseName to set
      */
     public final void setDatabaseName(String databaseName) {
         this.databaseName = databaseName;
     }
 
+    /**
+     * Builds the database.
+     * @return The database.
+     */
     public EmbeddedMysqlDatabase build() {
         MysqldResource mysqldResource = createMysqldResource();
         EmbeddedMysqlDatabase database = createDatabase(mysqldResource);

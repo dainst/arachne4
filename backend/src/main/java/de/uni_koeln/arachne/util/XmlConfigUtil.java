@@ -261,8 +261,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	/**
 	 * Methode retrieves ContextImageDescriptor-instances. If these instances have beeen requested before, the method 
 	 * returns cached instances, else it parses the instances from the XML-document
-	 * @param type
-	 * @return
+	 * @param type The type of the dataset.
+	 * @return A list of context image desciptors.
 	 */
 	public List<ContextImageDescriptor> getContextImagesNames(final String type) {
 		final List<ContextImageDescriptor> cachedImageContextDescriptors = contextImageDescriptors.get(type);
@@ -371,15 +371,20 @@ public class XmlConfigUtil implements ServletContextAware {
 	}
 	
 	/**
-	 * Returns the content of a field of the dataset as defined inside an <code>ifEmtpy</code> tag in a <code>Context</code> tag in the XML config file.
-	 * It is safe to use even if the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.
+	 * Returns the content of a field of the dataset as defined inside an <code>ifEmtpy</code> tag in a 
+	 * <code>Context</code> tag in the XML config file.
+	 * It is safe to use even if the passed in <code>Element</code> does not have an <code>ifEmpty</code>-Element as a 
+	 * child.
 	 * @param element The XML element describing the parent of the <code>ifEmpty</code> element.
-	 * @param dataset The current dataset.
 	 * @param namespace The current namespace.
-	 * @return A <code>StringBuilder</code> containing the formatted value or <code>null</code> if no value could be retrieved or
-	 * the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.
+	 * @param dataset The current dataset.
+	 * @param contextType The type of the context.
+	 * @param index The index of the context.
+	 * @return A <code>StringBuilder</code> containing the formatted value or <code>null</code> if no value could be 
+	 * retrieved or the passed in <code>Element</code> does not have an <code>ifEmpty</code>-Element as a child.
 	 */
-	public StringBuilder getIfEmptyContext(final Element element, final Namespace namespace, final Dataset dataset, final String contextType, final int index) {
+	public StringBuilder getIfEmptyContext(final Element element, final Namespace namespace, final Dataset dataset
+			, final String contextType, final int index) {
 		String key;
 		StringBuilder result = null;
 		final Element ifEmptyElement = element.getChild("ifEmpty", namespace);

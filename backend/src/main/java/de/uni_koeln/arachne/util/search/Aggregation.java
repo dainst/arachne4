@@ -39,7 +39,7 @@ public abstract class Aggregation {
 	/**
 	 * Builds an aggregation that is usable by the Elasticsearch API from the current values. If <code>field</code> is 
 	 * not set <code>name</code> is used instead. 
-	 * @return
+	 * @return An ES <code>AggregationBuilder</code>
 	 */
 	public abstract AbstractAggregationBuilder build();
 	

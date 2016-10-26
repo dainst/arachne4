@@ -25,7 +25,7 @@ public class Random {
 	
 	/**
 	 * Getter for the SecureRandom of this class.
-	 * @return
+	 * @return The secure random number generator.
 	 */
 	public SecureRandom getSecureRandom() {
 		return secureRandom;

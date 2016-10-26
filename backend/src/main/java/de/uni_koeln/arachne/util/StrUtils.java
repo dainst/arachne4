@@ -7,6 +7,8 @@ import java.util.StringTokenizer;
 
 /**
  * Class implementing string utility functions.
+ * 
+ * @author Reimar Grabowski
  */
 public class StrUtils { // NOPMD
 	/**
@@ -43,7 +45,7 @@ public class StrUtils { // NOPMD
 
 	/**
 	 * This method returns if a <code>Set<String></code> is empty or <code>null</code>.
-	 * @param string set to test.
+	 * @param stringSet The <code>Set<String></code> to test.
 	 * @return <code>true</code> or <code>false</code>
 	 */
 	public static boolean isEmptyOrNull(final Set<String> stringSet) {
@@ -52,7 +54,7 @@ public class StrUtils { // NOPMD
 	
 	/**
 	 * This method returns if a <code>StringBuilder</code> is empty or <code>null</code>.
-	 * @param stringBuilder
+	 * @param stringBuilder The <code>StringBuilder</code> to test.
 	 * @return <code>true</code> or <code>false</code>
 	 */
 	public static boolean isEmptyOrNull(final StringBuilder stringBuilder) {
@@ -86,6 +88,11 @@ public class StrUtils { // NOPMD
 	    return true;
 	}
 	
+	/**
+	 * Method to URL encode quotation marks in a <code>String</code>.
+	 * @param inputString The string to encode.
+	 * @return The input string with URL encoded quotation marks.
+	 */
 	public static String urlEncodeQuotationMarks(final String inputString) {
 		return inputString.replaceAll("\"", "%22");
 	}

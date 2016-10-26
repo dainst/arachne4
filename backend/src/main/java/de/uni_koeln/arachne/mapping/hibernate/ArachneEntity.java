@@ -13,8 +13,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="arachneentityidentification")
-@SecondaryTables({
-	@SecondaryTable(name="arachneentitydegrees")})
+@SecondaryTables({@SecondaryTable(name="arachneentitydegrees")})
 public class ArachneEntity {
 	
 	/**
@@ -43,7 +42,6 @@ public class ArachneEntity {
 	 */
 	@Column(name="isDeleted")
 	boolean isDeleted; 
-	
 	
 	/**
 	 * This field is joined from the table "aracheentitydegrees". It is a measure for how many entities this entity is 

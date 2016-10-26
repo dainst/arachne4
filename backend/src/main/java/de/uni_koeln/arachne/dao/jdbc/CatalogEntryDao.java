@@ -278,7 +278,7 @@ public class CatalogEntryDao extends SQLDao {
 	 * Removes a catalog entry and all its children.
 	 * @param catalogEntryId The catalog entries id.
 	 * @return <code>true</code> if the entry was successfully deleted.
-	 * @throws DataAccessException
+	 * @throws DataAccessException if there are any issues deleting the catalog entry.
 	 */
 	@Transactional
 	public boolean delete(final long catalogEntryId) throws DataAccessException {
@@ -296,7 +296,7 @@ public class CatalogEntryDao extends SQLDao {
 		
 		final List<CatalogEntry> children = catalogEntry.getChildren(); 
 		if (children != null) {
-			for (CatalogEntry child : children) {
+			for (CatalogEntry child: children) {
 				delete(child.getId());
 			}
 		}
@@ -316,7 +316,7 @@ public class CatalogEntryDao extends SQLDao {
 	 * @param rs The SQL result set.
 	 * @param rowNum The row number.
 	 * @return The mapped <code>CatalogEntry</code>.
-	 * @throws SQLException
+	 * @throws SQLException if a database access error occurs or this method is called on a closed result set.
 	 */
 	public CatalogEntry mapBaseCatalogEntry (ResultSet rs, int rowNum) throws SQLException {
 		final CatalogEntry catalogEntry = new CatalogEntry();
@@ -338,7 +338,7 @@ public class CatalogEntryDao extends SQLDao {
 	 * @param rs The SQL result set.
 	 * @param rowNum The row number.
 	 * @return The mapped <code>CatalogEntry</code>.
-	 * @throws SQLException
+	 * @throws SQLException if a database access error occurs or this method is called on a closed result set.
 	 */
 	public CatalogEntry mapCatalogEntryDirectChildsOnly(ResultSet rs, int rowNum) throws SQLException {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
@@ -352,7 +352,7 @@ public class CatalogEntryDao extends SQLDao {
 	 * @param rs The SQL result set.
 	 * @param rowNum The row number.
 	 * @return The mapped <code>CatalogEntry</code>.
-	 * @throws SQLException
+	 * @throws SQLException if a database access error occurs or this method is called on a closed result set.
 	 */
 	public CatalogEntry mapCatalogEntryFull(ResultSet rs, int rowNum) throws SQLException {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
@@ -362,12 +362,12 @@ public class CatalogEntryDao extends SQLDao {
 	}
 	
 	/**
-	 * Maps a SQL result set to a catalog entry. Children are not included but the <code>hasChildren</code> property 
+	 * Maps a SQL result set to a catalog entry. Children are not included but the <code>totalChildren</code> property 
 	 * is set.
 	 * @param rs The SQL result set.
 	 * @param rowNum The row number.
 	 * @return The mapped <code>CatalogEntry</code>.
-	 * @throws SQLException
+	 * @throws SQLException if a database access error occurs or this method is called on a closed result set.
 	 */
 	public CatalogEntry mapCatalogEntryNoChilds(ResultSet rs, int rowNum) throws SQLException {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
@@ -375,6 +375,14 @@ public class CatalogEntryDao extends SQLDao {
 		return catalogEntry;
 	}
 
+	/**
+	 * Maps a SQL result set to an extended catalog entry. Children are not included and the <code>totalChildren</code> 
+	 * property is not set.
+	 * @param rs The SQL result set.
+	 * @param rowNum The row number.
+	 * @return The mapped <code>CatalogEntry</code>.
+	 * @throws SQLException if a database access error occurs or this method is called on a closed result set.
+	 */
 	public CatalogEntryExtended mapCatalogEntryInfo(ResultSet rs, int rowNum) throws SQLException {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
 		return new CatalogEntryExtended(catalogEntry, rs.getString("r.label"),

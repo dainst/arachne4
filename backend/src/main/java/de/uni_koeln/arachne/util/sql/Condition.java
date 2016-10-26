@@ -58,8 +58,8 @@ public class Condition {
 	}
 	
 	/**
-	 * Set the Target Value of the Condition something like a Value
-	 * @param part2
+	 * Set the target value of the condition.
+	 * @param part2 The value.
 	 */
 	public void setPart2(final String part2) {
 		this.part2 = part2;

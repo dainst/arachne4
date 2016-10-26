@@ -46,15 +46,34 @@ public class UserRightsService {
 	 */
 	@SuppressWarnings("serial")
 	public static class ObjectAccessException extends RuntimeException {
+		/**
+		 * Constructor to create an exception with a message.
+		 * @param message The message of the exception.
+		 */
 		public ObjectAccessException(String message) {
 			super(message);
 		}
 	}
 
+	/**
+	 * Indexing operation (meaning data import).
+	 */
 	public static final String INDEXING = "Indexing";
+	/**
+	 * Username used for anonymous users.
+	 */
 	public static final String ANONYMOUS_USER_NAME = "Anonymous";
+	/**
+	 * Minimum administrator group id.
+	 */
 	public static final int MIN_ADMIN_ID = 800;
+	/**
+	 * Minimum editor group id.
+	 */
 	public static final int MIN_EDITOR_ID = 600;
+	/**
+	 * Minimum user group id.
+	 */
 	public static final int MIN_USER_ID = 400;
 	
 	@SuppressWarnings("unused")
@@ -78,6 +97,11 @@ public class UserRightsService {
 	
 	private transient List<String> excludedTables = new ArrayList<String>();
 	
+	/**
+	 * Sets the tables for which no user authentification will be performed. It takes the names of the table from the 
+	 * 'application.properties' file.
+	 * @param authFreeTables A list of table names.
+	 */
 	@Autowired
 	public void setExcludedTables(@Value("#{'${authFreeTables}'.split(',')}") final List<String> authFreeTables) {
 		excludedTables.addAll(authFreeTables);
@@ -248,7 +272,7 @@ public class UserRightsService {
 	 * @param value The value to set.
 	 * @param object The <code>ProtectedObject</code> to set the property on.
 	 * @param minGid The minimum group Id you need to edit a value; 
-	 * @throws ObjectAccessException
+	 * @throws ObjectAccessException if the current user is not allowed to access the property.
 	 */
 	public void setPropertyOnProtectedObject(final String fieldName, final Object value
 			, final ProtectedObject object, final int minGid) throws ObjectAccessException {
@@ -295,7 +319,7 @@ public class UserRightsService {
 	 * @param fieldName The name of the property to set.
 	 * @param value The value to set.
 	 * @param object The <code>ProtectedObject</code> to set the property on. 
-	 * @throws ObjectAccessException
+	 * @throws ObjectAccessException if the current user is not allowed to access the property.
 	 */
 	public void setPropertyOnProtectedObject(final String fieldName, final Object value
 			, final ProtectedObject object) throws ObjectAccessException {

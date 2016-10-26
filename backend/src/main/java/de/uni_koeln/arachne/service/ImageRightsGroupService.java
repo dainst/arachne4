@@ -47,13 +47,11 @@ public class ImageRightsGroupService {
 	}
 
 	/**
-	 * Method to check, if an user has the correct rights to
-	 * see a resolution
-	 * @param arachneId
-	 * @param currentUser
-	 * @param res 
-	 * @param imageRightsGroup 
-	 * @return
+	 * Method to check, if an user has the rights to see an image at the specified resolution.
+	 * @param imageEntity The dataset of the image.
+	 * @param resolution The resolution the user wants to see.
+	 * @param imageRightsGroup The access group of the image. 
+	 * @return A boolean value indicating if the user is allowed to see images at the specified resolution.
 	 */
 	public boolean checkResolutionRight(final Dataset imageEntity, final int resolution
 			, final ImageRightsGroup imageRightsGroup) {
@@ -74,9 +72,11 @@ public class ImageRightsGroupService {
 	}
 
 	/**
-	 * Method to get the maximum resolution, based on the
-	 * user rights
-	 * @return
+	 * Method to get the maximum resolution, based on the user rights.
+	 * 
+	 * @param imageEntity The dataset of the image.
+	 * @param imageRightsGroup The access group of the image. 
+	 * @return The maximum resolution the user is allowed to see.
 	 */
 	public int getMaxResolution(final Dataset imageEntity, final ImageRightsGroup imageRightsGroup) {
 		
@@ -129,10 +129,9 @@ public class ImageRightsGroupService {
 
 	/**
 	 * Get the filename of the watermark based on the user and an image rights group.
-	 * @param imageEntity
-	 * @param currentUser
-	 * @param imageRightsGroup
-	 * @return
+	 * @param imageEntity The dataset of the image.
+	 * @param imageRightsGroup The image rights group of the image.
+	 * @return The filename of the watermark.
 	 */
 	public String getWatermarkFilename(final Dataset imageEntity, final ImageRightsGroup imageRightsGroup) {
 		

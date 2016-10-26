@@ -9,7 +9,12 @@ import de.uni_koeln.arachne.dao.hibernate.ArachneEntityDao;
 import de.uni_koeln.arachne.mapping.hibernate.ArachneEntity;
 import de.uni_koeln.arachne.util.EntityId;
 
-
+/**
+ * Service class to retrieve information from the <code>arachneentityidentification</code> table.
+ * 
+ * @author Reimar Grabowski
+ *
+ */
 @Service("arachneEntityIdentificationService")
 public class EntityIdentificationService {
 	
@@ -18,7 +23,7 @@ public class EntityIdentificationService {
 	
 	/**
 	 * Gets all identifiers of a dataset by Arachne entity ID. This is the external reference ID for the dataset in Arachne.
-	 * @param arachneEntityId
+	 * @param arachneEntityId The unique Arachne identifier.
 	 * @return an <code>ArachneId</code> object that contains all the identification information.
 	 */
 	public EntityId getId(final Long arachneEntityId) {
