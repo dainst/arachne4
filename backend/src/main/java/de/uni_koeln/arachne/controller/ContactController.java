@@ -39,6 +39,10 @@ public class ContactController {
 	
 	private transient final String contactEmail;
 	
+	/**
+	 * Constructor setting the default contact email address from the 'application.properties' file. 
+	 * @param contactEmail The contact email address.
+	 */
 	@Autowired
 	public ContactController(final @Value("${contactEmail}") String contactEmail) {
 		this.contactEmail = contactEmail;

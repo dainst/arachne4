@@ -15,16 +15,29 @@ public class ContextImageDescriptor {
 	/** Usage of the additionally retrieved images */
 	private transient final String contextImageUsage;
 
+	/**
+	 * Constructor setting all fields.
+	 * @param contextName The name of the context.
+	 * @param contextImageUsage The image usage.
+	 */
 	public ContextImageDescriptor(final String contextName, final String contextImageUsage) {
 		super();
 		this.contextName = contextName;
 		this.contextImageUsage = contextImageUsage;
 	}
 
+	/**
+	 * Getter for the context name.
+	 * @return The context name.
+	 */
 	public String getContextName() {
 		return contextName;
 	}
 
+	/**
+	 * Getter for the image usage.
+	 * @return The image usage.
+	 */
 	public String getContextImageUsage() {
 		return contextImageUsage;
 	}

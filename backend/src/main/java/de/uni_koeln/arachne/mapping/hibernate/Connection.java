@@ -31,26 +31,50 @@ public class Connection {
 	@Column(name="Type")
 	private String type = null; 
 
+	/**
+	 * Getter for the id.
+	 * @return The id.
+	 */
 	public Long getId() {
 		return internalId;
 	}
 
+	/**
+	 * Getter for part1 ('Verknuepfungen.Teil1').
+	 * @return Part1.
+	 */
 	public String getPart1() {
 		return part1;
 	}
 
+	/**
+	 * Getter for part2 ('Verknuepfungen.Teil2').
+	 * @return Part2.
+	 */
 	public String getPart2() {
 		return part2;
 	}
 
+	/**
+	 * Getter for table.
+	 * @return The DB table.
+	 */
 	public String getTable() {
 		return table;
 	}
 	
+	/**
+	 * Getter for the fields.
+	 * @return The fields.
+	 */
 	public String getFields() {
 		return fields;
 	}
 
+	/**
+	 * Getter for the type.
+	 * @return The type.
+	 */
 	public String getType() {
 		return type;
 	}

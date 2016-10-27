@@ -32,6 +32,11 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	
 	transient protected Long foreignKey;
 	
+	/**
+	 * Constructor to set the context path and the entity id to start from.
+	 * @param contextPath The context path.
+	 * @param entityStart The start id.
+	 */
 	public ConnectedPathEntitiesSQLQueryBuilder(final ContextPath contextPath, final Long entityStart) {
 		this.contextPath = contextPath;
 		this.entityStart = entityStart;

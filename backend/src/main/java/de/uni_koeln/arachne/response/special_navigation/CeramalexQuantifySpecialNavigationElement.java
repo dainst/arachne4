@@ -14,6 +14,9 @@ import de.uni_koeln.arachne.util.StrUtils;
 @Component("ceramalexQuantifySpecialNavigationElement")
 public class CeramalexQuantifySpecialNavigationElement extends AbstractSpecialNavigationElement {
 	
+	/**
+	 * Default constructor.
+	 */
 	public CeramalexQuantifySpecialNavigationElement() {
 		super();
 	}

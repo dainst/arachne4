@@ -59,6 +59,10 @@ public class CeramalexController  {
 	
 	private static final String FOREIGN_KEY_LABEL = "mainabstract.FS_QuantitiesID";
 		
+	/**
+	 * Constructor to set the default facet limit.
+	 * @param defaultFacetLimit The facet limit from 'application.properties'.
+	 */
 	@Autowired
 	public CeramalexController(final @Value("${esDefaultFacetLimit}") int defaultFacetLimit) {
 		this.defaultFacetLimit = defaultFacetLimit;
@@ -71,6 +75,7 @@ public class CeramalexController  {
 	 * @param searchParam The value of the search parameter. (mandatory)
 	 * @param filterValues The values of the elasticsearch filter query. (optional)
 	 * @param facetLimit The maximum number of facets. (optional)
+	 * @param response The outgoing {@link HttpServletResponse} for the incoming request.
 	 * @return A response object containing the data or a status response (this is serialized to XML or JSON depending on content negotiation).
 	 */
 	@RequestMapping(value="/project/ceramalex/quantify", method=RequestMethod.GET)
