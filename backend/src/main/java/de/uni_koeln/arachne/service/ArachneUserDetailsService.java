@@ -24,6 +24,9 @@ public class ArachneUserDetailsService implements UserDetailsService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ArachneUserDetailsService.class);
 	
+	/**
+	 * Minimum administrator group id.
+	 */
 	public static final int MIN_ADMIN_ID = 800;
 	
 	@Autowired
