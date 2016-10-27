@@ -10,7 +10,6 @@ import de.uni_koeln.arachne.util.sql.CatalogEntryInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,18 +42,29 @@ public class CatalogDao extends SQLDao {
 
     private transient UserRightsService userRightsService;
 
-    // needed to inject mock for testing - it should work without this setter but it does not
+    /**
+     * Injects the user rights service.<br>
+     * This is needed to inject a mock for testing. It should work without this setter (by autowiring the property) but 
+     * it does not (bug in Spring).
+     * @param userRightsService The {@link UserRightsService}.
+     */
     @Autowired
     public void setUserRightsService(final UserRightsService userRightsService) {
         this.userRightsService = userRightsService;
     }
 
+    /**
+     * Convenience method to retrieve a catalog by id. It retrieves only the 'first level' (root and it's direct 
+     * children).
+     * @param catalogId The catalog id.
+     * @return The catalog.
+     */
     public Catalog getById(final long catalogId) {
         return getById(catalogId, false, -1, 0);
     }
 
     /**
-     * Retrieve a catalog by Id.
+     * Retrieves a catalog by Id.
      *
      * @param catalogId The id of the catalog.
      * @param full      Indicates if the full catalog (including all entries) or only the 'first level' of the catalog shall
@@ -90,6 +100,17 @@ public class CatalogDao extends SQLDao {
         return new HashSet<Long>(uids);
     }
 
+    /**
+     * Retrieves catalogs by user Id.
+     *
+     * @param uid       The user id.
+     * @param full      Indicates if the full catalog (including all entries) or only the 'first level' of the catalog shall
+     *                  be retrieved. Defaults to <code>false</code>.
+     * @param limit     If <code>full == false</code> then this parameter limits the children of the root entry (-1 for
+     *                  no limit).
+     * @param offset    If <code>full == false</code> then this parameter is an offset into the children of the root entry.
+     * @return A list of catalogs belonging to the given user id.
+     */
     @Transactional(readOnly = true)
     public List<Catalog> getByUserId(final long uid, final boolean full, final int limit, final int offset) {
         List<Catalog> result = query(con -> {
@@ -166,6 +187,11 @@ public class CatalogDao extends SQLDao {
         return result;
     }
 
+    /**
+     * Persists a catalog in the DB.
+     * @param catalog The catalog to store.
+     * @return The stored catalog retrieved from the DB or <code>null</code> if it could not be created.
+     */
     @Transactional
     public Catalog saveCatalog(final Catalog catalog) {
         CatalogEntry root = catalog.getRoot();
@@ -234,6 +260,11 @@ public class CatalogDao extends SQLDao {
         return entry;
     }
 
+    /**
+     * Updates a catalog in the DB.
+     * @param newCatalog The updated catalog.
+     * @return The updated catalog retrieved from the DB.
+     */
     @Transactional
     public Catalog updateCatalog(final Catalog newCatalog) {
         if (newCatalog.getId() != null) {
@@ -290,8 +321,13 @@ public class CatalogDao extends SQLDao {
         return null;
     }
 
+    /**
+     * Deletes a catalog in the DB.
+     * @param catalogId The id of the catalog.
+     * @return if the catalog could be deleted.
+     */
     @Transactional
-    public boolean deleteCatalog(final Long catalogId) throws DataAccessException {
+    public boolean deleteCatalog(final Long catalogId) {
         final Catalog catalog = getById(catalogId);
         if (catalog != null && catalog.isCatalogOfUserWithId(userRightsService.getCurrentUser().getId())) {
             catalogEntryDao.delete(catalog.getRoot().getId());

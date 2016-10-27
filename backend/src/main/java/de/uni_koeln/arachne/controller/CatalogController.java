@@ -50,12 +50,17 @@ public class CatalogController {
 	private transient CatalogDao catalogDao;
 
 	/**
-	 * Handles http GET request for <code>/catalogEntry/{catalogEntryId}</code>.
-	 * Returns a catalogEntry entity which is serialized into JSON or XML
-	 * depending on the requested format. If the given id does not refer to a
+	 * Handles HTTP GET requests for <code>/catalog/entry/{catalogEntryId}</code>.
+	 * Returns a catalogEntry entity which is serialized to JSON. If the given id does not refer to a
 	 * catalogEntry entity, a 404 error code is returned. if the catalogEntry is
 	 * not owned by the current user or no user is signed in, a 403 error code
 	 * is returned.
+	 * @param catalogEntryId The id of the catalog entry.
+	 * @param full If all children or only direct children shall be included.
+	 * @param limit If full = false then limit restricts the number of direct children to the desired value 
+	 * (-1 for no limit).
+	 * @param offset If full = false and limit > 0 then offset gives an offset into the direct children list.
+	 * @return A {@link ResponseEntity} containing the catalog entry or the error code on failures.
 	 */
 	@RequestMapping(value = "entry/{catalogEntryId}", 
 			method = RequestMethod.GET, 
@@ -86,10 +91,13 @@ public class CatalogController {
 	}
 
 	/**
-	 * Handles http PUT request for <code>/catalogEntry/{catalogEntryId}</code>.
+	 * Handles HTTP PUT requests for <code>/catalog/entry/{catalogEntryId}</code>.
 	 * Returns the catalogEntry created and 200 if the action is permitted.
 	 * Returns null and 403 if no user is signed in or the signed in user does
 	 * not own the catalogEntry to be edited.
+	 * @param catalogEntryId The catalog id of the catalog the entry shall be added to.
+	 * @param newCatalogEntry The catalog entry to add.
+	 * @return A {@link ResponseEntity} containing the catalog entry or the corresponding error code on failure.
 	 */
 	@RequestMapping(value = "entry/{catalogEntryId}", 
 			method = RequestMethod.PUT, 
@@ -122,9 +130,11 @@ public class CatalogController {
 	}
 
 	/**
-	 * Handles http DELETE request for <code>/catalogEntry/{id}</code>. Deletes
+	 * Handles HTTP DELETE requests for <code>catalog/entry/{catalogEntryId}</code>. Deletes
 	 * the specified <code>CatalogEntry</code>. Returns 204 on success. Returns
 	 * 403 if the specified catalogEntry is not owned by the current user.
+	 * @param catalogEntryId The id of the catalog entry.
+	 * @return A {@link ResponseEntity} without body and only an HTTP status code.
 	 */
 	@RequestMapping(value = "entry/{catalogEntryId}", 
 			method = RequestMethod.DELETE, 
@@ -146,6 +156,14 @@ public class CatalogController {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
+	/**
+	 * Handles HTTP POST requests for <code>catalog/entry</code>.
+	 * Adds/updates the posted catalog entry to the corresponding catalog.
+	 * Returns an HTTP status code 403 if the user is not allowed to modify the catalog the entry belongs to or 400 if 
+	 * the posted catalog entry is not semantically correct.
+	 * @param catalogEntry The catalog entry.
+	 * @return A {@link ResponseEntity} containing the persisted entry or the corresponding error code on failure. 
+	 */
 	@RequestMapping(value = "entry", 
 			method = RequestMethod.POST,
 			consumes = CustomMediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -187,11 +205,14 @@ public class CatalogController {
 	}
 
 	/**
-	 * Handles http GET request for <code>/catalog</code>. Returns all catalogs
-	 * belonging to the user, that is signed in, serialized into JSON or XML
-	 * depending on the requested format. If the current user does not own any
-	 * catalogs an empty List is returned. If no user is signed in, a 403 error
-	 * code is returned.
+	 * Handles http GET request for <code>/catalog</code>. Returns all catalogs belonging to the user 
+	 * that is signed in, serialized to JSON. If the current user does not own any catalogs an empty List is returned. 
+	 * If no user is signed in, a 403 error code is returned.
+	 * @param full Indicates if the full catalog (including all entries) or only the 'first level' of the catalog shall 
+	 * be retrieved. Defaults to false.
+	 * @param limit If full == false then this parameter limits the children of the root entry (-1 for no limit).
+	 * @param offset If full == false then this parameter is an offset into the children of the root entry.
+	 * @return A {@link ResponseEntity} 
 	 */
 	@RequestMapping(value = "", 
 			method = RequestMethod.GET,
@@ -226,6 +247,8 @@ public class CatalogController {
 	 * or no user is signed in, a 403 error code is returned.
 	 * @param catalogId The catalog id of interest.
 	 * @param full If the full catalog shall be retrieved (with all entries) or only root and it's direct children.
+	 * @param limit If full == false then this parameter limits the children of the root entry (-1 for no limit).
+	 * @param offset If full == false then this parameter is an offset into the children of the root entry.
 	 * @return The catalog.
 	 */
 	@RequestMapping(value = "{catalogId}", 
@@ -253,14 +276,15 @@ public class CatalogController {
 	}
 
 	/**
-	 * Handles http PUT request for <code>/catalog/{catalogId}</code>. Returns
-	 * the catalog created and 200 if the action is permitted. Returns null and
-	 * 403 if no user is signed in or the signed in user does not own the
-	 * catalog to be edited. This method accepts updates on nested
-	 * <code>CatalogEntry</code> items' fields. and creates nested
-	 * <code>CatalogEntry</code> items if they do not already exist. It does not
-	 * automatically delete items, that are missing from the list of nested
-	 * <code>CatalogEntry</code> items.
+	 * Handles http PUT request for <code>/catalog/{catalogId}</code>. 
+	 * Updates an in the DB persisted catalog.
+	 * Returns the catalog created and 200 if the action is permitted. Returns null and 403 if no user is signed in or 
+	 * the signed in user does not own the catalog to be edited. This method accepts updates on nested 
+	 * {@link CatalogEntry} items' fields. and creates nested {@link CatalogEntry} items if they do not already exist. 
+	 * It does not automatically delete items, that are missing from the list of nested {@link CatalogEntry} items.
+	 * @param catalog The updated catalog.
+	 * @param requestedId The id of the catalog to update.
+	 * @return A {@link ResponseEntity} containing the updated catalog as retrieved from the DB.
 	 */
 	@RequestMapping(value = "{requestedId}", 
 			method = RequestMethod.PUT, 
@@ -281,11 +305,14 @@ public class CatalogController {
 	}
 
 	/**
-	 * Handles http POST request for <code>/catalog/create</code>. Returns the
-	 * catalog created and 200 if the action is permitted. Returns null and 403
-	 * if no user is signed in. This method creates all nested
-	 * <code>CatalogEntry</code> items. Existing primary id values in nested
-	 * <code>CatalogEntry</code> items are ignored.
+	 * Handles http POST request for <code>/catalog/create</code>.
+	 * Creates a catalog and persists it in the DB. 
+	 * Returns the catalog created and 200 if the action is permitted. Returns 403 if no user is signed in and 422 if 
+	 * the catalog could not be created. 
+	 * This method creates all nested {@link CatalogEntry} items. Existing primary id values in nested
+	 * {@link CatalogEntry} items are ignored.
+	 * @param catalog The catalog.
+	 * @return A {@link ResponseEntity} containing the catalog as retrieved from the DB or a status code on failure.
 	 */
 	@RequestMapping(value = "", 
 			method = RequestMethod.POST, 
@@ -310,6 +337,8 @@ public class CatalogController {
 	 * specified <code>Catalog</code> and all associated
 	 * <code>CatalogEntry</code> items. Returns 204 on success. Returns 403 if
 	 * the specified list is not owned by the current user.
+	 * @param catalogId The catalog id.
+	 * @return A {@link ResponseEntity} containing no body, only a status code.
 	 */
 	@RequestMapping(value = "{catalogId}", 
 			method = RequestMethod.DELETE)
@@ -329,6 +358,12 @@ public class CatalogController {
 		return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
 	}
 	
+	/**
+	 * Handles HTTP GET requests for 'catalog/list/{entityId}'.
+	 * Returns the catalog entries connected to the given entity id.
+	 * @param entityId An entity id.
+	 * @return A {@link ResponseEntity} containing a list of {@link CatalogEntryExtended}.
+	 */
 	@RequestMapping(value = "list/{entityId}", 
 			method = RequestMethod.GET,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
