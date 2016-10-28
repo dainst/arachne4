@@ -246,8 +246,8 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	}
 	
 	/**
-	 * Adds a place to the places list.
-	 * @param place The place to add.
+	 * Adds a date to the dates list.
+	 * @param date The date to add.
 	 */
 	public void addDate(final DateAssertion date) {
 		dates.add(date);
@@ -275,7 +275,8 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	}
 
 	/**
-	 * @param catalogIds the catalogIds to set
+	 * Stter for ctalogPaths.
+	 * @param catalogPaths A list catalog paths.
 	 */
 	public void setCatalogPaths(final List<String> catalogPaths) {
 		this.catalogPaths = catalogPaths;

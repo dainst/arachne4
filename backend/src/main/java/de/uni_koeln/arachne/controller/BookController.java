@@ -62,29 +62,29 @@ public class BookController {
         return new File(booksPath+bookId+"/transcription.xml");
     }
 
+    // TODO discuss naming of img_file
     /**
      * Takes the TEI xml file at booksPath/{bookId}/transcription.xml
      * and renders selected information to a json format which is exemplified by:
      * {
      *     pages : [
      *       {
-     *           img_file : "img_file_url" TODO discuss naming of img_file
+     *           img_file : "img_file_url"
      *       }, ...
      *     ]
      * }
      *
-     * Status code is
-     *   404 if TEI document for bookId is not found
-     *   200 if json could be created successfully
-     *   500 if an error occurred during the xml to json transformation
-     *
+     * @param arachneEntityId The entity id of the book.
+     * @return A {@link ResponseEntity} containing the JSON response or an error status code on failure:</br>
+     * 404 if TEI document for bookId is not found</br>
+     * 200 if json could be created successfully</br>
+     * 500 if an error occurred during the xml to json transformation
      */
     @RequestMapping(value="/book/{arachneEntityId}",
             method=RequestMethod.GET,
             produces = {APPLICATION_JSON_UTF8_VALUE})
     public @ResponseBody ResponseEntity<String> handleGetEntityIdRequest(
-            @PathVariable("arachneEntityId") final String arachneEntityId,
-            final HttpServletResponse response) {
+            @PathVariable("arachneEntityId") final String arachneEntityId) {
 
         if (booksPath==null) throw new IllegalStateException("bookPath must not be null");
         if (bookDao==null)   throw new IllegalStateException("bookDao must not be null");

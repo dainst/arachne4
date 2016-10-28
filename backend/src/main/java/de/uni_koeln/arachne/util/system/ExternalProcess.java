@@ -29,7 +29,7 @@ public class ExternalProcess {
 	 * Runs a command blocking. The commands StdIn and StdErr are logged.
 	 * 
 	 * @param command A string array containing the command and its arguments.
-	 * @param file The working directory name (absolute path).
+	 * @param directoryName The working directory name (absolute path).
 	 */
 	public static void runBlocking(final String[] command, final String directoryName) {
 		final File directory = (directoryName != null) ? new File(directoryName) : null;

@@ -85,8 +85,9 @@ public class SearchParameters {
 	private String facet;
 	
 	/**
-	 * Constructor that sets a default limit.
+	 * Constructor that sets a default limit and facet limit.
 	 * @param defaultLimit The limit to set. Must be greater than -1.
+	 * @param defaultFacetLimit The facet limit to set. Must be greater than -1.
 	 */
 	public SearchParameters(final int defaultLimit, final int defaultFacetLimit) {
 		if (defaultLimit > -1) { 
@@ -105,7 +106,9 @@ public class SearchParameters {
 	}
 
 	/**
-	 * @param query the query to set
+	 * Setter for the query.
+	 * @param query the query to set.
+	 * @return <code>this</code> for method chaining.
 	 */
 	public SearchParameters setQuery(String query) {
 		this.query = query;
@@ -121,6 +124,7 @@ public class SearchParameters {
 
 	/**
 	 * @param limit the limit to set
+	 * @return <code>this</code> for method chaining.
 	 */
 	public SearchParameters setLimit(Integer limit) {
 		if (!facetMode) {
@@ -141,7 +145,8 @@ public class SearchParameters {
 	}
 
 	/**
-	 * @param offset the offset to set
+	 * @param offset the offset to set.
+	 * @return <code>this</code> for method chaining.
 	 */
 	public SearchParameters setOffset(Integer offset) {
 		if (!facetMode) {
@@ -163,6 +168,7 @@ public class SearchParameters {
 
 	/**
 	 * @param facetLimit the facetLimit to set
+	 * @return <code>this</code> for method chaining.
 	 */
 	public SearchParameters setFacetLimit(Integer facetLimit) {
 		if (facetLimit != null && facetLimit > -1) {
@@ -180,6 +186,7 @@ public class SearchParameters {
 
 	/**
 	 * @param facetOffset the facetOffset to set
+	 * @return <code>this</code> for method chaining.
 	 */
 	public SearchParameters setFacetOffset(Integer facetOffset) {
 		if (facetOffset != null && facetOffset > -1) {
@@ -197,6 +204,7 @@ public class SearchParameters {
 
 	/**
 	 * @param sortField the sortField to set
+	 * @return <code>this</code> for method chaining.
 	 */
 	public SearchParameters setSortField(String sortField) {
 		if (sortField != null) {
@@ -214,6 +222,7 @@ public class SearchParameters {
 
 	/**
 	 * @param orderDesc the orderDesc to set
+	 * @return <code>this</code> for method chaining.
 	 */
 	public SearchParameters setOrderDesc(Boolean orderDesc) {
 		if (orderDesc != null) {
@@ -231,6 +240,7 @@ public class SearchParameters {
 
 	/**
 	 * @param boundingBox the boundingBox to set
+	 * @return <code>this</code> for method chaining.
 	 */
 	public SearchParameters setBoundingBox(Double[] boundingBox) {
 		if (boundingBox != null && boundingBox.length == 4) {
@@ -249,6 +259,7 @@ public class SearchParameters {
 
 	/**
 	 * @param geoHashPrecision the geoHashPrecision to set
+	 * @return <code>this</code> for method chaining.
 	 */
 	public SearchParameters setGeoHashPrecision(Integer geoHashPrecision) {
 		// limit geohash precision to 10 as it is plenty of resolution
