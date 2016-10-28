@@ -214,7 +214,8 @@ public class SearchService {
 	
 	/**
 	 * Adds the facet fields specified in <code>facetList</code> to the search request.
-	 * @param facetList A string list containing the facet names to add. 
+	 * @param facetList A string list containing the facet names to add.
+	 * @param facetsToSort A list of facet names. Facets in this list are sorted lexically. 
 	 * @param searchRequestBuilder The outgoing search request that gets the facets added.
 	 */
 	public void addFacets(final Set<Aggregation> facetList, final List<String> facetsToSort
@@ -256,8 +257,7 @@ public class SearchService {
 	 * @param searchRequestBuilder The search request in elasticsearchs internal format.
 	 * @param size Max number of results.
 	 * @param offset An offset into the resultset.
-	 * @param filterValues A <code>String</code> containing the filter values used in the query.
-	 * @param facetList The values for facetting.
+	 * @param filters A <code>String</code> containing the filter values used in the query.
 	 * @param facetOffset An offset into the facet lists.
 	 * @return The search result.
 	 */
@@ -564,6 +564,7 @@ public class SearchService {
 		
 		if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID)) {
 			innerQuery.field("searchableEditorContent^0.5");
+			innerQuery.field("datasetGroup^0.5");
 		}
 		
 		for (String textField: searchFields.text()) {
