@@ -64,12 +64,14 @@ public class IIPService {
 	
 	/**
 	 * Constructor to initialize the image server parameters set in application.properties.
-	 * @param imageServerUrl URL of the image server instance.
+	 * @param imageServerPath The path of the image server.
+	 * @param imageServerName The name of the image server.
+	 * @param imageServerExtension The extension (used for watermarking) of the image server
 	 * @param imagePath Local image path on the server.
-	 * @param imageServerReadTimeout Read timeout for HTTP requests accessing the image server.
 	 * @param resolutionHIGH Width for high resolution images.
 	 * @param resolutionTHUMBNAIL Width for thumbnail images.
 	 * @param resolutionPREVIEW Width for preview resolution images.
+	 * @param resolutionICON Width for icon resolution images. 
 	 * @param imageCacheDir Directory where (300px high) images are cached.
 	 */
 	@Autowired
@@ -115,10 +117,8 @@ public class IIPService {
 	 * If the requested resolution equals 300 the image is loaded from the local cache directory. If the image isn't 
 	 * cached already it will be retrieved from the image server and stored in the cache directory.  
 	 * @param entityId The unique ID of the image.
-	 * @param requestedResolution The requested resolution. Only the constants <code>ImageController.ICON</code>, 
-	 * <code>ImageController.THUMBNAIL</code>, <code>ImageController.PREVIEW</code> and <code>ImageController.HIGH</code> 
-	 * are currently in use but any integer value is allowed.
-	 * @param response The outgoing HTTP response.
+	 * @param requestedWidth The requested width.
+	 * @param requestedHeight The requested height.
 	 * @return The requested image or <code>null</code> if no image could be retrieved from the server.
 	 */
 	public TypeWithHTTPStatus<byte[]> getImage(final long entityId, final int requestedWidth, final int requestedHeight) {
@@ -247,10 +247,8 @@ public class IIPService {
 	 * Here the real work for the <code>getDataForIIPViewer</code> is done. This method sends a HTTP-request to the image server and
 	 * either gets the meta data or a tile of the requested image. If meta data is fetched it is returned. If an image tile is fetched 
 	 * it is written to the HTTP response output stream and <code>null</code> is returned.
-	 * @param request The incoming HTTP request
-	 * @param response The outgoing HTTP response
-	 * @param imageServerInstance The inastance of the image server to use. Sets which watermark is used.
-	 * @param fullQueryString The full query string sent by an IIPImage client.
+	 * @param entityId The entity id of an image.
+	 * @param queryString The full query string sent by an IIPImage client.
 	 * @return Either the meta data of an image wrapped in a <code>ResponseEntity</code> or <code>null</code>.
 	 */
 	@Deprecated
@@ -388,6 +386,7 @@ public class IIPService {
 	 * Method to retrieve the name of the image, the allowed maximum resolution and the watermark to use. Maximum 
 	 * resolution and watermark depend on the rights of the currently logged in user.
 	 * @param entityId The unique image ID.
+	 * @param requestedResolution The requested resolution of the image.
 	 * @return An instance of <code>ImagePorperties</code> containing the name, granted resolution, maximum resolution 
 	 * and watermark of the requested image as well as an HTTP response code indicating success or failure.
 	 */

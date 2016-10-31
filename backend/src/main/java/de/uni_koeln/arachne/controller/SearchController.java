@@ -97,12 +97,16 @@ public class SearchController {
 	 * @param offset The offset into the list of entities (used for paging). (optional)
 	 * @param filterValues The values of the elasticsearch filter query. (optional)
 	 * @param facetLimit The maximum number of returned facets. (optional)
-	 * @param SortField The field to sort on. Must be one listed in esSortFields in application.properties. (optional)
-	 * @param desOrder If the sort order should be descending. The default order is ascending. (optional)
+	 * @param facetOffset An offset for the returned facets. (optional) 
+	 * @param sortField The field to sort on. Must be one listed in esSortFields in application.properties. (optional)
+	 * @param orderDesc If the sort order should be descending. The default order is ascending. (optional)
 	 * @param boundingBox A String with comma separated coordinates representing the top left and bottom right 
 	 * coordinates of a bounding box; order: lat, lon (optional)
-	 * @param ghprec The geoHash precision; a value between 1 and 12. (optional)
-	 * @param sortfacet The names of the facets that should be sorted alphabetically. (optional)
+	 * @param geoHashPrecision The geoHash precision; a value between 1 and 12. (optional)
+	 * @param facetsToSort The names of the facets that should be sorted alphabetically. (optional)
+	 * @param scrollMode If the ES scroll API should be used for the query (user must be logged in to allow this) 
+	 * (optional)
+	 * @param facet If set only the values for this facet will be returned instead of a full search result.
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
 	@RequestMapping(value="/search",
@@ -191,11 +195,14 @@ public class SearchController {
 	 * <br> 
 	 * <br>
 	 * The search result can only be serialized to JSON as JAXB cannot handle Maps.
-	 * @param searchParam The value of the search parameter. (mandatory)
+	 * @param entityId The entity id to retrieve contexts for. (mandatory)
 	 * @param limit The maximum number of returned entities. (optional)
 	 * @param offset The offset into the list of entities (used for paging). (optional)
 	 * @param filterValues The values of the elasticsearch filter query. (optional)
 	 * @param facetLimit The maximum number of returned facets. (optional)
+	 * @param sortField The field to sort results on.
+	 * @param orderDesc Whether the result should be in descending (<code>true</code>) or ascending (<code>false</code>) 
+	 * order.
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
 	@RequestMapping(value="/contexts/{entityId}",
@@ -245,7 +252,7 @@ public class SearchController {
 	 * 'a'..'z' for all values starting with the corresponding letter.<br>
 	 * '>' for all values with intial letter greater than alphabetic (actually greater than 'zzz').<br>   
 	 * @param facetName The name of the facet to get the values for.
-	 * @param group A single char indicating which group to retrieve.
+	 * @param groupMarker A single char indicating which group to retrieve.
 	 * @return The ordered list of values as JSON array.
 	 */
 	@RequestMapping(value="/index/{facetName}", 

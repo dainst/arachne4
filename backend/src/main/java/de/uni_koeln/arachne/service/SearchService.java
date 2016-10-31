@@ -525,7 +525,7 @@ public class SearchService {
 	 * which finally uses a simple query string query with 'AND' as default operator.<br>
 	 * If the search parameter is numeric the query is performed against all configured fields else the query is only 
 	 * performed against the text fields.<br>
-	 * If the user is an editor the editorSection field is searched, too.
+	 * If the user is an editor the editorSection and datasetGroup fields are searched, too.
 	 * @param searchParam The query string.
 	 * @param filters The filter from the HTTP 'fq' parameter as map to create a filter query from.
 	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)

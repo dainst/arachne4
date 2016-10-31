@@ -127,7 +127,7 @@ public class Transl8Service {
 	/**
 	 * Looks up a facet key in the translation map and returns the corresponding value if found or the key else.
 	 * For facet translations the key prefix is generated from the facet name.
-	 * @param name of the facet.
+	 * @param facetName of the facet.
 	 * @param key Key to look up translation for.
 	 * @return Either a translation or the key.
 	 */

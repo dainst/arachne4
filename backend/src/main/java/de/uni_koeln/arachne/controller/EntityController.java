@@ -47,6 +47,7 @@ public class EntityController {
 	 * Requests for /entity/* return formatted data. This will be sent out either as JSON or as XML. The response format is set 
 	 * by Springs content negotiation mechanism.
 	 * @param entityId The unique entity id of the item to fetch.
+	 * @param isLive If the entity shall be fetched from DB (<code>true</code>) or ES (<code>false</code>)
      * @return A response object containing the data (this is serialized to JSON).
      */
 	@RequestMapping(value="/entity/{entityId}", 
@@ -54,8 +55,7 @@ public class EntityController {
 			produces={APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody ResponseEntity<String> handleGetEntityIdRequest(
 			@PathVariable("entityId") final Long entityId,
-			@RequestParam(value = "live", required = false) final Boolean isLive,
-			final HttpServletResponse response) {
+			@RequestParam(value = "live", required = false) final Boolean isLive) {
 		
 		final TypeWithHTTPStatus<String> result;
 		if (isLive != null && isLive) {
@@ -71,7 +71,8 @@ public class EntityController {
      * Requests for /entity/* return formatted data. This will be sent out either as JSON or as XML. The response format is set 
 	 * by Springs content negotiation mechanism.
      * @param category The database table to fetch the item from.
-     * @param categoryId The internal id of the item to fetch
+     * @param categoryId The internal id of the item to fetch.
+     * @param isLive If the entity shall be fetched from DB (<code>true</code>) or ES (<code>false</code>)
      * @return A response object containing the data (this is serialized to JSON).
      */
     @RequestMapping(value="/entity/{category}/{categoryId}", 
@@ -80,8 +81,7 @@ public class EntityController {
     public @ResponseBody ResponseEntity<String> handleGetCategoryIdRequest(
     		@PathVariable("category") final String category,
     		@PathVariable("categoryId") final Long categoryId,
-    		@RequestParam(value = "live", required = false) final Boolean isLive,
-    		final HttpServletResponse response) {
+    		@RequestParam(value = "live", required = false) final Boolean isLive) {
     	
     	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
     	final TypeWithHTTPStatus<String> result;
