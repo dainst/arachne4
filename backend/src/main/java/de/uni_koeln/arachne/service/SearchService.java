@@ -109,7 +109,8 @@ public class SearchService {
 	}
 	
 	/**
-	 * This method builds and returns an elasticsearch search request. The query is built by the <code>buildQuery</code> method.
+	 * This method builds and returns an elasticsearch search request. The query is built by the 
+	 * <code>buildQuery</code> method. 
 	 * @param searchParameters The search parameter object. 
 	 * @param filters The filters of the HTTP 'fq' parameter as Map.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
@@ -144,6 +145,16 @@ public class SearchService {
 				field = new Field("searchableContent");
 				field.numOfFragments(5);
 				result.addHighlightedField(field);
+				
+				if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID)) {
+					field = new Field("datasetGroup");
+					field.numOfFragments(0);
+					result.addHighlightedField(field);
+
+					field = new Field("searchableEditorContent");
+					field.numOfFragments(5);
+					result.addHighlightedField(field);
+				}
 			}
 		}
 
