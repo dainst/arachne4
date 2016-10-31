@@ -3,9 +3,9 @@ package de.uni_koeln.arachne.util;
 import org.springframework.http.HttpStatus;
 
 /**
- * Simple class that holds a class instance of any type and an http status. Used to allow methods to return a string 
+ * Simple class that holds a class instance of any type and an HTTP status. Used to allow methods to return any value 
  * and an HTTP status code; 
- * 
+ * @param <T> The type of the value. 
  * @author Reimar Grabowski
  */
 public class TypeWithHTTPStatus<T> {
@@ -25,7 +25,7 @@ public class TypeWithHTTPStatus<T> {
 
 	/**
 	 * Convenience constructor to only set the status code setting the value to <code>null</code>.
-	 * @param value The string value.
+	 * @param status The HTTP status.
 	 */
 	public TypeWithHTTPStatus(final HttpStatus status) {
 		this.value = null;
@@ -35,6 +35,7 @@ public class TypeWithHTTPStatus<T> {
 	/**
 	 * Convenience constructor initializing the instance with a value and a status code.
 	 * @param value The string value.
+	 * @param status The HTTP status.
 	 */
 	public TypeWithHTTPStatus(final T value, final HttpStatus status) {
 		this.value = value;

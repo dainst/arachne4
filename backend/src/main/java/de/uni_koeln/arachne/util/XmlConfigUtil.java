@@ -86,7 +86,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * <br>
 	 * The validity of the xml file is not checked!!!
 	 * @param context The xml context <code>Element</code> to parse.
-	 * @param namespace The namespace of the document
+	 * @param namespace The namespace of the document.
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Section</code> object containing the context sections content or <code>null</code> if access is denied.
 	 */
@@ -216,6 +216,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * <br>
 	 * The validity of the xml file is not checked!!!
 	 * @param section The xml section <code>Element</code> to parse.
+	 * @param namespace The namespace of the document.
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Content</code> object containing the sections content.
 	 */

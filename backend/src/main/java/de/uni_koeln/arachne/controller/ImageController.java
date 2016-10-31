@@ -37,6 +37,7 @@ public class ImageController {
 	/**
 	 * Handles the request for /image/width/{entityId}.
 	 * @param entityId The unique ID of the image.
+	 * @param requestedWidth The requested width.
 	 * @return A byte array wrapped in a <code>ResponseEntity</code>.
 	 */
 	@RequestMapping(value = "width/{entityId}", 
@@ -55,6 +56,7 @@ public class ImageController {
 	/**
 	 * Handles the request for /image/height/{entityId}.
 	 * @param entityId The unique ID of the image.
+	 * @param requestedHeight The requested height.
 	 * @return A byte array wrapped in a <code>ResponseEntity</code>.
 	 */
 	@RequestMapping(value = "height/{entityId}",
@@ -132,7 +134,7 @@ public class ImageController {
 	@RequestMapping(value = "icon/{entityId}",
 			method = RequestMethod.GET,
 			produces = MediaType.IMAGE_JPEG_VALUE)
-	public ResponseEntity<byte[]> getIcon(@PathVariable("entityId") final long entityId, final HttpServletResponse response) {
+	public ResponseEntity<byte[]> getIcon(@PathVariable("entityId") final long entityId) {
 		
 		final TypeWithHTTPStatus<byte[]> image = iipService.getImage(entityId
 				, iipService.resolution_ICON(), iipService.resolution_ICON());
@@ -190,8 +192,7 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "zoomify/{entityId}/{z}-{x}-{y}.jpg", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getImageForZoomifyViewer(@PathVariable("entityId") final long entityId,
-			@PathVariable("z") final int z, @PathVariable("x") final int x, @PathVariable("y") final int y,
-			final HttpServletRequest request, final HttpServletResponse response) {
+			@PathVariable("z") final int z, @PathVariable("x") final int x, @PathVariable("y") final int y) {
 		
 		TypeWithHTTPStatus<byte[]> imageServerResponse = iipService.getImageForZoomifyViewer(entityId, z, x, y);
 		final HttpHeaders headers = new HttpHeaders();

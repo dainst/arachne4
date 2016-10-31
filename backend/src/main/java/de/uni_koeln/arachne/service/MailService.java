@@ -26,7 +26,10 @@ public class MailService {
 	private transient final String sender;
 	
 	/**
-	 * Constructor initializing the SMTP host and the mail sender. 
+	 * Constructor initializing the SMTP host and the mail sender with the values found in the 'application.properties' 
+	 * file. 
+	 * @param smtpServer The SMTP server URL.
+	 * @param sender The senders mail address. 
 	 */
 	@Autowired
 	public MailService(final @Value("${mailSMTPServer}") String smtpServer

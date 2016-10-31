@@ -86,7 +86,6 @@ public class EntityService {
      * If the user does not have permission to see an entity a HTTP 403 status message is returned.
      * @param id The unique entity ID if no category is given else the internal ID.
      * @param category The category to query or <code>null</code>.
-     * @param response The <code>HttpServeletRsponse</code> object.
      * @return The response body as <code>String</code>.
      */
     public TypeWithHTTPStatus<String> getEntityFromDB(final Long id, final String category) { 

@@ -3,7 +3,7 @@ package de.uni_koeln.arachne.response;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- *  Class that holds and ouputs a HTML formatted limk.
+ *  Class that holds and ouputs an HTML formatted link.
  */
 public class LinkField extends Field {
 	private transient String labelKey;
@@ -26,8 +26,7 @@ public class LinkField extends Field {
 	}
 	
 	/**
-	 * Returns a String containing the values of this class as HTML link.
-	 * @return A HTML tag that is created from <code>value</code> and <code>labelKey</code>.
+	 * Converts <code>value</code> to an HTML tag that is created from <code>value</code> and <code>labelKey</code>.
 	 */
 	public void convertValueToLink() {
 		this.value = "<a href=\"" + this.value + "\" target=\"_blank\">" + this.labelKey + "</a>";

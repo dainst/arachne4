@@ -34,7 +34,8 @@ public class ConnectionDao {
 	
 	/**
 	 * Retrieves a list of 'contexts' that are connected to <code>type</code>.
-	 * @param type The table name to seek connected tables for. 
+	 * @param type The table name to seek connected tables for.
+	 * @return A list of 'contexts'. 
 	 */
 	@Transactional(readOnly=true)
 	public List<String> getConnectionList(final String type) {
