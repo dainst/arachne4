@@ -107,6 +107,7 @@ public class SearchController {
 	 * @param scrollMode If the ES scroll API should be used for the query (user must be logged in to allow this) 
 	 * (optional)
 	 * @param facet If set only the values for this facet will be returned instead of a full search result.
+	 * @param editorFields Whether the editor-only fields should be searched and highlighted.
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
 	@RequestMapping(value="/search",
@@ -124,7 +125,8 @@ public class SearchController {
 			@RequestParam(value = "ghprec", required = false) final Integer geoHashPrecision,
 			@RequestParam(value = "sf", required = false) final String[] facetsToSort,
 			@RequestParam(value = "scroll", required = false) final Boolean scrollMode,
-			@RequestParam(value = "facet", required = false) final String facet) {
+			@RequestParam(value = "facet", required = false) final String facet,
+			@RequestParam(value = "editorfields", required = false) final boolean editorFields) {
 		
 		if (scrollMode != null && scrollMode && !userRightsService.isSignedInUser()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -142,7 +144,9 @@ public class SearchController {
 				.setGeoHashPrecision(geoHashPrecision)
 				.setFacetsToSort(facetsToSort)
 				.setFacet(facet)
-				.setScrollMode(scrollMode);
+				.setScrollMode(scrollMode)
+				.setSearchEditorFields(editorFields && 
+						userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID));
 		
 		if (!searchParameters.isValid()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

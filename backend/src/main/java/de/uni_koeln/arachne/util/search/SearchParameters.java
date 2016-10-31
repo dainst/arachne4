@@ -72,6 +72,11 @@ public class SearchParameters {
 	
 	private boolean scrollMode = false;
 	
+	/**
+	 * Whether the editor-only fields should be searched.
+	 */
+	private boolean searchEditorFields = false;
+	
 	private boolean valid = true;
 	
 	/**
@@ -316,6 +321,15 @@ public class SearchParameters {
 	
 	public boolean isFacetMode() {
 		return facetMode;
+	}
+	
+	public boolean isSearchEditorFields() {
+		return searchEditorFields;
+	}
+	
+	public SearchParameters setSearchEditorFields(boolean searchEditorFields) {
+		this.searchEditorFields = searchEditorFields;
+		return this;
 	}
 	
 	/**

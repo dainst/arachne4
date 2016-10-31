@@ -119,14 +119,16 @@ public class SearchService {
 			, final Multimap<String, String> filters) {
 		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
-				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox(), false))
+				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox(), false
+						, searchParameters.isSearchEditorFields()))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setSize(searchParameters.getLimit())
 				.setFrom(searchParameters.getOffset());
 		
 		if (!searchParameters.isFacetMode()) {
 			result
-				.setHighlighterQuery(buildQuery(searchParameters.getQuery(), filters, null, true))
+				.setHighlighterQuery(buildQuery(searchParameters.getQuery(), filters, null, true
+						, searchParameters.isSearchEditorFields()))
 				.setHighlighterOrder("score");
 			if (searchParameters.isScrollMode() 
 					&& userRightsService.isSignedInUser()
@@ -146,13 +148,13 @@ public class SearchService {
 				field.numOfFragments(5);
 				result.addHighlightedField(field);
 				
-				if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID)) {
+				if (searchParameters.isSearchEditorFields()) {
 					field = new Field("datasetGroup");
 					field.numOfFragments(0);
 					result.addHighlightedField(field);
 
 					field = new Field("searchableEditorContent");
-					field.numOfFragments(5);
+					field.numOfFragments(0);
 					result.addHighlightedField(field);
 				}
 			}
@@ -212,7 +214,7 @@ public class SearchService {
 	public SearchRequestBuilder buildIndexSearchRequest(final String facetName) {
 		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
-				.setQuery(buildQuery("*", null, null, false))
+				.setQuery(buildQuery("*", null, null, false, false))
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setSize(0);
 		
@@ -541,12 +543,14 @@ public class SearchService {
 	 * @param filters The filter from the HTTP 'fq' parameter as map to create a filter query from.
 	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)
 	 * @param disableAccessControl If the access control query shall be replaced with a match all query
+	 * @param searchEditorFields Whether the editor-only fields should be searched.
 	 * @return An elasticsearch <code>QueryBuilder</code> which in essence is a complete elasticsearch query.
 	 */
 	private QueryBuilder buildQuery(final String searchParam
 			, final Multimap<String, String> filters
 			, final Double[] bbCoords
-			, final boolean disableAccessControl) {
+			, final boolean disableAccessControl
+			, final boolean searchEditorFields) {
 		
 		
 		QueryBuilder facetFilter;
@@ -573,7 +577,7 @@ public class SearchService {
 		final QueryStringQueryBuilder innerQuery = QueryBuilders.queryStringQuery(searchParam)
 				.defaultOperator(Operator.AND);
 		
-		if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID)) {
+		if (searchEditorFields) {
 			innerQuery.field("searchableEditorContent^0.5");
 			innerQuery.field("datasetGroup^0.5");
 		}
