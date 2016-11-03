@@ -159,7 +159,7 @@
 				<section labelKey="Erhaltung">
 					<field datasource="objekt.Erhaltung" />
 					<field datasource="objekt.Erhaltungszustand" />
-					<field datasource="objekt.Farbreste" prefix="farbreste: " />
+					<field datasource="objekt.Farbreste" prefix="Farbreste: " />
 					<field datasource="objekt.DekorAllgemein" prefix="Dekor: " />
 					<field datasource="objekt.Bearbeitungen" prefix="Bearbeitungen: " />
 					<field datasource="objekt.BearbeitungenAntik" prefix="Antike Bearbeitungen: " />
