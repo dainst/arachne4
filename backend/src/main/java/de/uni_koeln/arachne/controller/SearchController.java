@@ -106,8 +106,9 @@ public class SearchController {
 	 * @param facetsToSort The names of the facets that should be sorted alphabetically. (optional)
 	 * @param scrollMode If the ES scroll API should be used for the query (user must be logged in to allow this) 
 	 * (optional)
-	 * @param facet If set only the values for this facet will be returned instead of a full search result.
-	 * @param editorFields Whether the editor-only fields should be searched and highlighted.
+	 * @param facet If set only the values for this facet will be returned instead of a full search result. (optional)
+	 * @param editorFields Whether the editor-only fields should be searched and highlighted (optional, 
+	 * default is <code>true</code>).
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
 	@RequestMapping(value="/search",
@@ -126,11 +127,13 @@ public class SearchController {
 			@RequestParam(value = "sf", required = false) final String[] facetsToSort,
 			@RequestParam(value = "scroll", required = false) final Boolean scrollMode,
 			@RequestParam(value = "facet", required = false) final String facet,
-			@RequestParam(value = "editorfields", required = false) final boolean editorFields) {
+			@RequestParam(value = "editorfields", required = false) Boolean editorFields) {
 		
 		if (scrollMode != null && scrollMode && !userRightsService.isSignedInUser()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
+		
+		editorFields = (editorFields == null) ? true : editorFields;
 		
 		final SearchParameters searchParameters = new SearchParameters(defaultLimit, defaultFacetLimit) 
 				.setQuery(queryString)
