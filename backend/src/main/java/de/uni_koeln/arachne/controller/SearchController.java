@@ -28,6 +28,7 @@ import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
 import de.uni_koeln.arachne.service.SearchService;
+import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.search.SearchParameters;
 
@@ -165,22 +166,27 @@ public class SearchController {
 			return ResponseEntity.badRequest().body("{ \"message\": \"Invalid bounding box coordinates.\"");
 		}
 				
-		final SearchRequestBuilder searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters
-				, filters);
-				
-		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
-				, searchParameters.getLimit(), searchParameters.getOffset(), filters, searchParameters.getFacetOffset());
-		
-		if (searchResult.getStatus() != RestStatus.OK) {
-			return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
-		} else {
-			// scroll request cannot be fulfilled due to too many open scroll requests
-			if (searchParameters.isScrollMode() && searchResult.getScrollId() == null) {
-				HttpHeaders headers = new HttpHeaders();
-				headers.set("Retry-after", "60");
-				return new ResponseEntity<>("", headers, HttpStatus.TOO_MANY_REQUESTS);
+		SearchRequestBuilder searchRequestBuilder;
+		try {
+			searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters
+					, filters);
+			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
+					, searchParameters.getLimit(), searchParameters.getOffset(), filters, searchParameters.getFacetOffset());
+			
+			if (searchResult.getStatus() != RestStatus.OK) {
+				return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
+			} else {
+				// scroll request cannot be fulfilled due to too many open scroll requests
+				if (searchParameters.isScrollMode() && searchResult.getScrollId() == null) {
+					HttpHeaders headers = new HttpHeaders();
+					headers.set("Retry-after", "60");
+					return new ResponseEntity<>("", headers, HttpStatus.TOO_MANY_REQUESTS);
+				}
+				return ResponseEntity.ok().body(searchResult);
 			}
-			return ResponseEntity.ok().body(searchResult);
+		} catch (Transl8Exception e) {
+			LOGGER.error("Could not reach tranl8. Cause: ", e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 	
@@ -237,18 +243,25 @@ public class SearchController {
 			filters = searchService.getFilters(Arrays.asList(filterValues), 0);
 		}
 		
-		final SearchRequestBuilder searchRequestBuilder = searchService.buildContextSearchRequest(entityId
-				, searchParameters, filters);
-				
-		final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
-				, searchParameters.getLimit(), searchParameters.getOffset(), filters, 0);
-		
-		if (searchResult == null) {
-			LOGGER.error("Search result is null!");
-			return new ResponseEntity<String>(HttpStatus.SERVICE_UNAVAILABLE);
-		} else {
-			return searchResult;
+		SearchRequestBuilder searchRequestBuilder;
+		try {
+			searchRequestBuilder = searchService.buildContextSearchRequest(entityId
+					, searchParameters, filters);
+			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
+					, searchParameters.getLimit(), searchParameters.getOffset(), filters, 0);
+			
+			if (searchResult == null) {
+				LOGGER.error("Search result is null!");
+				return new ResponseEntity<String>(HttpStatus.SERVICE_UNAVAILABLE);
+			} else {
+				return searchResult;
+			}
+		} catch (Transl8Exception e) {
+			LOGGER.error("Could not reach transl8. Cause: ");
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+				
+		
 	}
 	
 	/**

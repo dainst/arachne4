@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import static de.uni_koeln.arachne.util.network.CustomMediaType.*;
 import de.uni_koeln.arachne.service.ESService;
 import de.uni_koeln.arachne.service.EntityService;
+import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 
 /**
@@ -49,23 +50,29 @@ public class EntityController {
 	 * @param entityId The unique entity id of the item to fetch.
 	 * @param isLive If the entity shall be fetched from DB (<code>true</code>) or ES (<code>false</code>)
      * @return A response object containing the data (this is serialized to JSON).
+	 * @throws Transl8Exception if transl8 cannot be reached. 
      */
 	@RequestMapping(value="/entity/{entityId}", 
 			method=RequestMethod.GET, 
 			produces={APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody ResponseEntity<String> handleGetEntityIdRequest(
 			@PathVariable("entityId") final Long entityId,
-			@RequestParam(value = "live", required = false) final Boolean isLive) {
-		
-		final TypeWithHTTPStatus<String> result;
-		if (isLive != null && isLive) {
-			result = entityService.getEntityFromDB(entityId, null);
-		} else {
-			result = entityService.getEntityFromIndex(entityId, null);
+			@RequestParam(value = "live", required = false) final Boolean isLive) throws Transl8Exception {
+	
+		TypeWithHTTPStatus<String> result;
+		try {	
+			if (isLive != null && isLive) {
+				result = entityService.getEntityFromDB(entityId, null);
+			} else {
+				result = entityService.getEntityFromIndex(entityId, null);
+			}
+		} catch (Transl8Exception e) {
+			LOGGER.error("Failed to contact transl8. Cause: ", e);
+			result = new TypeWithHTTPStatus<String>(HttpStatus.INTERNAL_SERVER_ERROR); 
 		}
 		return ResponseEntity.status(result.getStatus()).body(result.getValue());
 	}
-    
+
     /**
      * Handles http request for /{category}/{id}
      * Requests for /entity/* return formatted data. This will be sent out either as JSON or as XML. The response format is set 
@@ -84,13 +91,18 @@ public class EntityController {
     		@RequestParam(value = "live", required = false) final Boolean isLive) {
     	
     	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
-    	final TypeWithHTTPStatus<String> result;
-		if (isLive != null && isLive) {
-			result = entityService.getEntityFromDB(categoryId, category);
-		} else {
-			result = entityService.getEntityFromIndex(categoryId, category);
-		}
-		return ResponseEntity.status(result.getStatus()).body(result.getValue());
+    	TypeWithHTTPStatus<String> result;
+    	try {
+    		if (isLive != null && isLive) {
+    			result = entityService.getEntityFromDB(categoryId, category);
+    		} else {
+    			result = entityService.getEntityFromIndex(categoryId, category);
+    		}
+    	} catch (Transl8Exception e) {
+    		LOGGER.error("Failed to contact transl8. Cause: ", e);
+    		result = new TypeWithHTTPStatus<String>(HttpStatus.INTERNAL_SERVER_ERROR); 
+    	}
+    	return ResponseEntity.status(result.getStatus()).body(result.getValue());
     }
         
     //////////////////////////////////////////////////////////////////////////////////////////////////

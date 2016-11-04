@@ -47,6 +47,7 @@ import org.springframework.web.context.ServletContextAware;
 
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 
 /**
@@ -400,9 +401,10 @@ public class ESService implements ServletContextAware {
 	 * @param category The category of the entity (may be <code>null</code>).
 	 * @param internalFields Fields that must not be included in the response.
 	 * @return The entity or <code>null</code> and an HTTP status code.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	public TypeWithHTTPStatus<String> getDocumentFromCurrentIndex(final long id, final String category
-			, final String[] internalFields) {
+			, final String[] internalFields) throws Transl8Exception {
 		
 		SearchResponse searchResponse = null;
 		SearchResponse acLessSearchResponse = null;

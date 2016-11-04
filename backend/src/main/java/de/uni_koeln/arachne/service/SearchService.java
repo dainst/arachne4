@@ -51,6 +51,7 @@ import de.uni_koeln.arachne.response.Place;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
+import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.search.Aggregation;
@@ -114,9 +115,10 @@ public class SearchService {
 	 * @param searchParameters The search parameter object. 
 	 * @param filters The filters of the HTTP 'fq' parameter as Map.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	public SearchRequestBuilder buildDefaultSearchRequest(final SearchParameters searchParameters
-			, final Multimap<String, String> filters) {
+			, final Multimap<String, String> filters) throws Transl8Exception {
 		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
 				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox(), false
@@ -189,9 +191,10 @@ public class SearchService {
 	 * @param searchParameters The search parameter object. 
 	 * @param filters The filters of the HTTP 'fq' parameter as Map.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	public SearchRequestBuilder buildContextSearchRequest(final long entityId, final SearchParameters searchParameters
-			, Multimap<String, String> filters) {
+			, Multimap<String, String> filters) throws Transl8Exception {
 		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
 				.setQuery(buildContextQuery(entityId))
@@ -460,9 +463,10 @@ public class SearchService {
 	 * @param geoHashPrecision The length of the geohash used in the geo grid aggregation.
 	 * @param facet A single facet. If not null only an aggregation for this facet will be added.
 	 * @return A set of <code>Aggregations</code>.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	private Set<Aggregation> getFacetList(final Multimap<String, String> filters, final int limit
-			, final Integer geoHashPrecision, final String facet) {
+			, final Integer geoHashPrecision, final String facet) throws Transl8Exception {
 		
 		final Set<Aggregation> result = new LinkedHashSet<Aggregation>();
 		if (facet == null || facet.isEmpty()) {
@@ -513,8 +517,9 @@ public class SearchService {
 	 * any results.
 	 * @param limit The maximum number of distinct facet values returned.
 	 * @return The list of category specific facets or <code>null</code>.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	private Set<Aggregation> getCategorySpecificFacets(final Multimap<String, String> filters, final int limit) {
+	private Set<Aggregation> getCategorySpecificFacets(final Multimap<String, String> filters, final int limit) throws Transl8Exception {
 		
 		final Set<Aggregation> result = new LinkedHashSet<Aggregation>();
 		Collection<String> categories = filters.get(TermsAggregation.CATEGORY_FACET);

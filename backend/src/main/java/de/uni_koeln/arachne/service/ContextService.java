@@ -22,6 +22,7 @@ import de.uni_koeln.arachne.context.SemanticConnectionsContextualizer;
 import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
+import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.image.ImageUtils;
 
@@ -74,8 +75,9 @@ public class ContextService {
 	 * This methods adds all contexts to the dataset that are found in the XML description. It also runs all contextualizers 
 	 * that are marked as explicit in the corresponding xml config file and adds contextImages if neccessary.
 	 * @param parent The dataset to add the contexts to.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public void addMandatoryContexts(final Dataset parent) {
+	public void addMandatoryContexts(final Dataset parent) throws Transl8Exception {
 		// explicit contextualizers
 		final List<String> explicitContextualizersList = xmlConfigUtil.getExplicitContextualizers(parent.getArachneId().getTableName());
 		for (String contextualizerName: explicitContextualizersList) {
@@ -103,9 +105,10 @@ public class ContextService {
 	 * additional contexts only if needed, uses the contexts to retrieve images.
 	 * Does NOT add the additionally retrieved contexts to the parent dataset or to the retrievedContexts.
 	 * @param parent The dataset to add the images to.
+	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
 	@SuppressWarnings("unchecked")
-	private void addContextImages(final Dataset parent) {
+	private void addContextImages(final Dataset parent) throws Transl8Exception {
 		// add book cover image
 		if ("buch".equals(parent.getArachneId().getTableName())) {
 			Long coverPage = null;
