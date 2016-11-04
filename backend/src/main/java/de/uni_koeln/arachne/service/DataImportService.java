@@ -273,9 +273,7 @@ public class DataImportService { // NOPMD
 				esService.deleteIndex(indexName);
 				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - abort", "Dataimport was manually aborted.");
 			}
-		}
-		// TODO: find out if it is possible to catch less generic exceptions here
-		catch (Exception e) {
+		} catch (Exception e) {
 			final String failure = "Dataimport failed at [" + dbgEntityId + "] with: ";
 			LOGGER.error(failure, e);
 			final String stacktrace = Throwables.getStackTraceAsString(e);

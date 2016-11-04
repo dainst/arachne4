@@ -55,22 +55,23 @@ public class XmlConfigUtil implements ServletContextAware {
 	
 	private transient SAXBuilder xmlParser = null;
 	
-	// TODO add category specific facets to the cache
-	// TODO refactor caching implementations
 	private transient final Map<String, Document> xmlConfigDocuments = new HashMap<String, Document>();
 	
 	private transient final Map<String, List<Element>> xmlIncludeElements = new HashMap<>();
 	
-	private transient final Map<String, List<String>> mandatoryContextNames = new HashMap<String, List<String>>();
+	private transient final Map<String, List<String>> mandatoryContextNames = new HashMap<>();
 	
-	private transient final Map<String, List<String>> explicitContextualizers = new HashMap<String, List<String>>();
+	private transient final Map<String, List<String>> explicitContextualizers = new HashMap<>();
 	
-	private transient final Map<String, List<ContextImageDescriptor>> contextImageDescriptors = new HashMap<String, List<ContextImageDescriptor>>();
+	private transient final Map<String, List<ContextImageDescriptor>> contextImageDescriptors = new HashMap<>();
 	
-	private transient final Map<String, List<TableConnectionDescription>> subCategories = new HashMap<String, List<TableConnectionDescription>>();
+	private transient final Map<String, List<TableConnectionDescription>> subCategories = new HashMap<>();
+	
+	private transient final Map<String, Set<String>> facets = new HashMap<>();
 	
 	/**
-	 * Convenience method to clear the current XML config document, element, mandatory contexts and context image descriptors cache.
+	 * Convenience method to clear the current XML config document, element, mandatory contexts and context image 
+	 * descriptors cache.
 	 */
 	public void clearCache() {
 		xmlConfigDocuments.clear();
@@ -78,6 +79,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		mandatoryContextNames.clear();
 		contextImageDescriptors.clear();
 		subCategories.clear();
+		facets.clear();
 	}
 	
 	/**
@@ -236,24 +238,28 @@ public class XmlConfigUtil implements ServletContextAware {
 		result.setSeparator(separator);
 								
 		for (final Element element:children) {
-			if (element.getName().equals("field")) {
+			switch (element.getName()) {
+			case "field":
 				addFieldToResult(element, namespace, result, dataset, separator);
-			} else { 
-				if (element.getName().equals("linkField")) {
-					addLinkFieldToResult(element, result, dataset, separator);
-				} else {
-					if (element.getName().equals("context")) {
-						final Section nextSection = (Section)getContentFromContext(element, namespace, dataset);
-						if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
-							result.add(nextSection);
-						}
-					} else {
-						final Section nextSection = (Section)getContentFromSections(element, namespace, dataset);
-						if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
-							result.add(nextSection);
-						}
-					}
+				break;
+				
+			case "linkField":
+				addLinkFieldToResult(element, result, dataset, separator);
+				break;
+
+			case "context":
+				final Section nextContext = (Section)getContentFromContext(element, namespace, dataset);
+				if (nextContext != null && !((Section)nextContext).getContent().isEmpty()) { 
+					result.add(nextContext);
 				}
+				break;	
+				
+			default:
+				final Section nextSection = (Section)getContentFromSections(element, namespace, dataset);
+				if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
+					result.add(nextSection);
+				}
+				break;
 			}
 		}
 		return result;
@@ -297,7 +303,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param type The category of the parent dataset.
 	 * @return A list containing the names of the explicit contextualizers (may be empty).
 	 */
-	public List<String> getExplicitContextualizers(String type) {
+	public List<String> getExplicitContextualizers(final String type) {
 		final List<String> cachedContextualizers = explicitContextualizers.get(type);
 		if (cachedContextualizers == null) {
 			final Document document = getDocument(type);
@@ -325,23 +331,28 @@ public class XmlConfigUtil implements ServletContextAware {
 	
 	/**
 	 * This method looks up which facets are defined in an XML file describing a category. 
-	 * @param category The name of the category.
+	 * @param type The name of the category.
 	 * @return A <code>Set&lt;String></code> of the category specific facets.
 	 */
-	public Set<String> getFacetsFromXMLFile(final String category) {
-		final Set<String> facetList = new HashSet<String>();
+	public Set<String> getFacetsFromXMLFile(final String type) {
+		Set<String> cachedFacets = facets.get(type);
+		if (cachedFacets == null) {
+			final Set<String> facetList = new HashSet<>();
 
-		final Document document = getDocument(category);
-		if (document != null) {
-			final Namespace namespace = document.getRootElement().getNamespace();
+			final Document document = getDocument(type);
+			if (document != null) {
+				final Namespace namespace = document.getRootElement().getNamespace();
 
-			final Element facets = document.getRootElement().getChild("facets", namespace);
+				final Element facets = document.getRootElement().getChild("facets", namespace);
 
-			for (final Element element: facets.getChildren()) {
-				facetList.add(element.getAttributeValue("name")); 				 				
+				for (final Element element: facets.getChildren()) {
+					facetList.add(element.getAttributeValue("name")); 				 				
+				}
 			}
+			return facetList;
+		} else {
+			return cachedFacets;
 		}
-		return facetList;
 	}
 	
 	/**
