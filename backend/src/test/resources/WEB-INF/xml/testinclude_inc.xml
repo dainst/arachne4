@@ -1,13 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
-  <facet name="datierungepoche" labelKey="Epoche">
-    <context type="datierung">
-      <field datasource=".AnfEpoche" />
-    </context>
+  <facet name="includetest" labelKey="IncludeTestFacet">
+    <field datasource="test.includeTestFacetValue2" />
   </facet>
-  <facet name="datierungepoche" labelKey="Epoche">
-    <context type="datierung">
-      <field datasource=".EndEpoche" />
-    </context>
+  <facet name="includetest" labelKey="IncludeTestFacet">
+    <field datasource="test.includeTestFacetValue1" />
   </facet>
 </includeSection>

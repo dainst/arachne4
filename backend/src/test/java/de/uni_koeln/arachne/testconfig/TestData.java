@@ -58,7 +58,8 @@ public class TestData {
 			+ "\"facet_image\":[\"nein\"],"
 			+ "\"facet_kategorie\":[\"test\"],"
 			+ "\"facet_test\":[\"test facet value\"],"
-			+ "\"facet_multivaluetest\":[\"value 1\",\"value 2\",\"value 3\"]}";
+			+ "\"facet_multivaluetest\":[\"value 1\",\"value 2\",\"value 3\"],"
+			+ "\"facet_includetest\":[\"include value 1\",\"include value 2\"]}";
 	
 	private final String zoomifyImageProperties 
 			= "<IMAGE_PROPERTIES WIDTH=\"1600\" HEIGHT=\"1000\" NUMTILES=\"28\" NUMIMAGES=\"1\" VERSION=\"1.8\" TILESIZE=\"256\" />";
@@ -98,6 +99,8 @@ public class TestData {
 		
 		testDataset.setFields("test.facetTest", "test facet value");
 		testDataset.setFields("test.facetMultiValueTest", "value 1;value 2;value 3");
+		testDataset.setFields("test.includeTestFacetValue1", "include value 1");
+		testDataset.setFields("test.includeTestFacetValue2", "include value 2");
 		
 		final Dataset linkDataset = new Dataset();
 		

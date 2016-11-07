@@ -191,20 +191,22 @@ public class TestXmlConfigUtil {
 		
 		assertNotNull(facets);
 		assertFalse(facets.isEmpty());
-		assertEquals(3, facets.size());
+		assertEquals(4, facets.size());
 		assertTrue(facets.contains("kategorie"));
 		assertTrue(facets.contains("test"));
 		assertTrue(facets.contains("multivaluetest"));
+		assertTrue(facets.contains("includetest"));
 
 		// cached
 		facets = xmlConfigUtil.getFacetsFromXMLFile("test");
 
 		assertNotNull(facets);
 		assertFalse(facets.isEmpty());
-		assertEquals(3, facets.size());
+		assertEquals(4, facets.size());
 		assertTrue(facets.contains("kategorie"));
 		assertTrue(facets.contains("test"));
 		assertTrue(facets.contains("multivaluetest"));
+		assertTrue(facets.contains("includetest"));
 	}
 	
 	@Test

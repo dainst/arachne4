@@ -1058,7 +1058,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	}
 	
 	/**
-	 * Recursive method to find all include tags in an <code>Element</code> and replace them by their corresponding real <code>Element</code>.
+	 * Recursive method to find all include tags in an <code>Element</code> and replace them by their corresponding real 
+	 * <code>Element</code>.
 	 * @param element The DOM element to scan for include elements.
 	 */
 	private void replaceInclude(final Element element) {

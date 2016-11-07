@@ -170,9 +170,11 @@ public class TestResponseFactory { // NOPMD
 	@Test
 	public void testDynamicFacets() throws Transl8Exception {
 		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		System.out.println(response);
 		assertTrue(response.contains("\"facet_kategorie\":[\"test\"]"));
 		assertTrue(response.contains("\"facet_test\":[\"test facet value\"]"));
 		assertTrue(response.contains("\"facet_multivaluetest\":[\"value 1\",\"value 2\",\"value 3\"]"));
+		assertTrue(response.contains("\"facet_includetest\":[\"include value 1\",\"include value 2\"]"));
 	}
 	
 	@Test
@@ -180,6 +182,6 @@ public class TestResponseFactory { // NOPMD
 		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
 		assertTrue(response.contains("\"facet_image\":[\"nein\"]"));
 	}
-	
+
 	// TODO add test for context tag - the current context implementation makes it nearly impossible to test
 }
