@@ -145,6 +145,9 @@
             },
             "boost":{  
                 "type":"double"
+            },
+            "suggest":{
+                "type":"completion"
             }
         }
     }
