@@ -27,11 +27,15 @@ import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.network.ArachneRestTemplate;
 
 /**
- * Gets the translations lazily from transl8 and offers translation functionality.
+ * Gets the translations lazily from transl8 and offers translation functionality.</br>
+ * For development without access to transl8 the exception throwing can be disabled by setting <code>throwException</code> 
+ * to <code>false</code>. CAUTION: Do not forget to enable it again before pushing.
  */
 @Service
 public class Transl8Service {
-
+	// set to false when developing without access to transl8
+	private static final boolean throwException = true;
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Transl8Service.class);
 
 	@Autowired
@@ -73,6 +77,7 @@ public class Transl8Service {
 			final ResponseEntity<String> response = restTemplate.exchange(transl8Url , HttpMethod.GET, entity, String.class);
 			if (response.getStatusCode() == HttpStatus.OK) {
 				final String doc = response.getBody();
+				LOGGER.info("Transl8 document: " + doc);
 				try {
 					translationMap = jsonUtil.getObjectMapper().readValue(doc, HashMap.class);
 				} catch (JsonParseException e) {
@@ -100,8 +105,9 @@ public class Transl8Service {
 				LOGGER.warn("There was a problem contacting transl8. Translations are not available. Http status code: " + response.getStatusCode());
 			}	
 		} catch (RestClientException e) {
-			LOGGER.warn("There was a problem contacting transl8. Translations are not available. Cause: ", e);
-			throw new Transl8Exception();
+			if (throwException) {
+				throw new Transl8Exception("There was a problem contacting transl8. Translations are not available.", e);
+			}
 		}
 	}
 	
@@ -164,14 +170,19 @@ public class Transl8Service {
 		return key;
 	}
 	
+	/**
+	 * Exception thrown if transl8 cannot be reached.
+	 */
 	public class Transl8Exception extends Exception {
-		/**
-		 * 
-		 */
+		
 		private static final long serialVersionUID = 1L;
 
-		public Transl8Exception() {
-			
+		public Transl8Exception(final String message) {
+			super(message);
+		}
+		
+		public Transl8Exception(final String message, final Throwable cause) {
+			super(message, cause);
 		}
 	}
 }
