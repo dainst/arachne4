@@ -30,6 +30,12 @@ import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.network.ArachneRestTemplate;
 
+/**
+ * Contextualizer to retrieve OCR texts of book pages from XELETOR and add it to the corresponding dataset.
+ * 
+ * @author David Neugebauer
+ * @author Reimar Grabowski
+ */
 public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(BuchseiteocrtextContextualizer.class);
@@ -41,13 +47,11 @@ public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 	private transient final static ArachneRestTemplate restTemplate = new ArachneRestTemplate(1000, 1000);
 
 	/**
-	 * Retrieves ocr text for a book page by querying the xeletor xml server, then adds all
+	 * Retrieves OCR text for a book page by querying the xeletor xml server, then adds all
 	 * text content to the dataset as <code>AdditionalContent</code>
-	 * @return	always null, because we are not building actual contexts but only
+	 * @return always null, because we are not building actual contexts but only
 	 * 			adding a custom field to <code>Dataset</code> parent.
-	 * @param parent	the dataset of the buchseite, that the pages text will be added to.
-	 * @param offset 	offset of the context to retrieve.
-	 * @param limit		Maximum number of contexts to retireve.
+	 * @param parent the dataset of the buchseite, that the pages text will be added to.
 	 */
 	public List<AbstractLink> retrieve(final Dataset parent) {
 		if (rightsService.isDataimporter()) {

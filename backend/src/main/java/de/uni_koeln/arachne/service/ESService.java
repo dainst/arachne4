@@ -47,6 +47,7 @@ import org.springframework.web.context.ServletContextAware;
 
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 
 /**
@@ -321,11 +322,14 @@ public class ESService implements ServletContextAware {
 	}
 
 	/**
-	 * Updates the elasticsearch indices by changing the index alias and deleting the unused index. If this fails it tries to only
-	 * set the new alias (this should only occur on the first dataimport as no alias to delete exists at that point). If this also fails 
-	 * the method throws the corresponding exception.
+	 * Updates the elasticsearch indices by changing the index alias and deleting the unused index. If this fails it 
+	 * tries to only set the new alias (this should only occur on the first dataimport as no alias to delete exists at 
+	 * that point). If this also fails the method throws the corresponding exception.
+	 * @throws IllegalStateException if the index alias could not be set.
+	 * @Throws IndexNotFoundException if the index does not exist.
+	 * @return The name of the current search index. 
 	 */
-	public String updateSearchIndex() throws IllegalStateException, IndexNotFoundException {
+	public String updateSearchIndex() throws IllegalStateException {
 		final String indexName = getDataImportIndexName();
 		final String oldName = INDEX_2.equals(indexName) ? INDEX_1 : INDEX_2;
 		try {
@@ -374,6 +378,7 @@ public class ESService implements ServletContextAware {
 
 	/**
 	 * Returns the number of documents in the given index.
+	 * @param indexName The index name.
 	 * @return The number of documents or -1 on error.
 	 */
 	public long getCount(final String indexName) {
@@ -393,11 +398,13 @@ public class ESService implements ServletContextAware {
 	/**
 	 * Retrieves a document from the current index. Access control is handled transparently.
 	 * @param id The entityId of the document or the internal ID of the entity if a category is given.
+	 * @param category The category of the entity (may be <code>null</code>).
 	 * @param internalFields Fields that must not be included in the response.
 	 * @return The entity or <code>null</code> and an HTTP status code.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	public TypeWithHTTPStatus<String> getDocumentFromCurrentIndex(final long id, final String category
-			, final String[] internalFields) {
+			, final String[] internalFields) throws Transl8Exception {
 		
 		SearchResponse searchResponse = null;
 		SearchResponse acLessSearchResponse = null;

@@ -32,6 +32,10 @@ public class ArachneLink extends AbstractLink {
 		return entity1;
 	}
 
+	/**
+	 * Sets the left side of the link.
+	 * @param entity1 A dataset.
+	 */
 	public void setEntity1(final Dataset entity1) {
 		this.entity1 = entity1;
 	}
@@ -40,6 +44,10 @@ public class ArachneLink extends AbstractLink {
 		return entity2;
 	}
 
+	/**
+	 * Sets the right side of the link.
+	 * @param entity2 A dataset.
+	 */
 	public void setEntity2(final Dataset entity2) {
 		this.entity2 = entity2;
 	}

@@ -80,7 +80,6 @@ public class TestCatalogController {
 		users.add(TestUserData.getUser().getId());
 				
 		URL resource = TestCatalogController.class.getResource("/WEB-INF/json/catalog.json");
-		URL resource2 = TestCatalogController.class.getResource("/WEB-INF/json/catalog.json");
 		ObjectMapper mapper = new ObjectMapper();
 		
 		// root - children removed

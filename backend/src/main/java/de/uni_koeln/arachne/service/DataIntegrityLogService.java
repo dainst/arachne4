@@ -24,9 +24,9 @@ public class DataIntegrityLogService {
 	
 	/**
 	 * Adds a warning to the list of warnings this class manages.
-	 * @param identifier The identifier of the object that caused the warning (normally a DB key).
-	 * @param identifierType The type of the identifier (normally a DB key name like 'PSObjekt_ID').
-	 * @param message 
+	 * @param identifier The identifier of the object that caused the warning (usually a DB key).
+	 * @param identifierType The type of the identifier (usually a DB key name like 'PSObjekt_ID').
+	 * @param message The warnings message.
 	 */
 	public void logWarning(final long identifier, final String identifierType, final String message) {
 		warnings.add(new DataIntegrityWarning(identifier, identifierType, message));

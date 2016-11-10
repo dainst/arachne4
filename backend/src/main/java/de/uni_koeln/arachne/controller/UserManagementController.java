@@ -116,7 +116,9 @@ public class UserManagementController {
 	 * End point to update (not create) user information. Admins can change more fields (all_groups, etc.) than a 
 	 * normal user.
 	 * @param username The username of interest.
+	 * @param formData The form data as map.
 	 * @return A JSON serialization of the corresponding User object.
+	 * @throws FormDataException if the email address is invalid or already taken or the username is already taken.
 	 */
 	@RequestMapping(value="/userinfo/{username}", 
 			method=RequestMethod.PUT, 
@@ -353,7 +355,6 @@ public class UserManagementController {
 	 * @param token The token representing the 'PasswordResetRequest'.
 	 * @param password The new password to set
 	 * @param response The HTTP servlet response.
-	 * @return A message indicating success or failure.
 	 */
 	@ResponseBody
 	@RequestMapping(value="/user/activation/{token}",
@@ -384,7 +385,6 @@ public class UserManagementController {
 				}
 			}
 		}
-		return;
 	}
 	
 	@ResponseBody

@@ -142,7 +142,7 @@ public class SimpleExternalLinkResolver implements ExternalLinkResolver {
 	/**
 	 * Set matchAllCriteria flag.
 	 * This determines if all criteria have to be met in order for a link to be created or just one (default).
-	 * @param matchAllCriteria
+	 * @param matchAllCriteria Whether al criteria must match.
 	 */
 	public void setMatchAllCriteria(boolean matchAllCriteria) {
 		this.matchAllCriteria = matchAllCriteria;
@@ -150,7 +150,7 @@ public class SimpleExternalLinkResolver implements ExternalLinkResolver {
 
 	/**
 	 * Get exactMatch flag.
-	 * @return true if exactMatch flag is set, false otherwise
+	 * @return <code>true</code> if exactMatch flag is set, <code>false</code> otherwise
 	 */
 	public boolean isExactMatch() {
 		return exactMatch;
@@ -160,7 +160,7 @@ public class SimpleExternalLinkResolver implements ExternalLinkResolver {
 	 * Set exactMatch flag.
 	 * This determines if the values given in the criteria map have to match to the dataset's
 	 * field content perfectly (default) or if the field only needs to contain the value as a substring.
-	 * @param matchAllCriteria
+	 * @param exactMatch Whether to match the field content exact or as substring.
 	 */
 	public void setExactMatch(boolean exactMatch) {
 		this.exactMatch = exactMatch;

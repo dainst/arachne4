@@ -25,32 +25,56 @@ public class SearchResultFacet {
 	
 	/**
 	 * Convenience constructor to create an instance with name set.
-	 * @param name
+	 * @param name The facet name.
 	 */
 	public SearchResultFacet(final String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Getter for the facet name.
+	 * @return The facet name.
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Setter for the facet name.
+	 * @param name The facet name.
+	 */
 	public void setName(final String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Getter for the facet label.
+	 * @return The facet label.
+	 */
 	public String getLabel() {
 		return label;
 	}
 
+	/**
+	 * Setter for the facet label.
+	 * @param label The facet label.
+	 */
 	public void setLabel(final String label) {
 		this.label = label;
 	}
 
+	/**
+	 * Getter for the facet values.
+	 * @return A list of facet values.
+	 */
 	public List<SearchResultFacetValue> getValues() {
 		return values;
 	}
 	
+	/**
+	 * Adds a value to the facet value list.
+	 * @param value The value to add.
+	 */
 	public void addValue(final SearchResultFacetValue value) {
 		values.add(value);
 	}

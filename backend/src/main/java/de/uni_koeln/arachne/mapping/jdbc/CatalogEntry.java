@@ -7,6 +7,13 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+/**
+ * JDBC Mapping class for catalog entries.
+ * @author Karen Schwane
+ * @author Reimar Grabowski
+ * @author Sebastian Cuy
+ * @Author Jan G. Wieners
+ */
 @JsonInclude(Include.NON_EMPTY)
 public class CatalogEntry implements Serializable {
 

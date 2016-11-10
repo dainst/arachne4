@@ -3,8 +3,8 @@ package de.uni_koeln.arachne.service;
 /**
  * Class to hold data integrity warning information.
  * A summary of the warnings is attached to every dataimport result mail.
- * The information contained in an instance of this class is meant for 'Bearbeiter' so try to make is as easy to understand 
- * as possible. Good practice is to use internal keys as 'identifiers' instead of entity ids.
+ * The information contained in an instance of this class is meant for 'Bearbeiter' so try to make it as easy to 
+ * understand as possible. Good practice is to use internal keys as 'identifiers' instead of entity ids.
  * @author Reimar Grabowski	
  *
  */
@@ -26,6 +26,9 @@ public class DataIntegrityWarning {
 	
 	/**
 	 * Convenience constructor to create a filled instance.
+	 * @param entityId The entity id that caused this warning.
+	 * @param identifierType The type of the entity that caused this warning.
+	 * @param message The warning message.
 	 */
 	public DataIntegrityWarning(final long entityId, final String identifierType, final String message) {
 		this.identifier = entityId;
@@ -41,7 +44,7 @@ public class DataIntegrityWarning {
 	}
 
 	/**
-	 * @param entityId the entityId to set
+	 * @param identifier the entityId to set
 	 */
 	public void setIdentifier(final long identifier) {
 		this.identifier = identifier;

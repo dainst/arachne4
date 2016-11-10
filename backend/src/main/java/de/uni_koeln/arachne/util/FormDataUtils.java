@@ -16,6 +16,10 @@ public class FormDataUtils {
 	 */
 	@SuppressWarnings("serial")
 	public static class FormDataException extends RuntimeException {
+		/**
+		 * Constructor instanciating the exception with message.
+		 * @param message The exception message.
+		 */
 		public FormDataException(String message) {
 			super(message);
 		}
@@ -25,6 +29,8 @@ public class FormDataUtils {
 	 * Simple attempt to keep bots from issuing requests.
 	 * 
 	 * @param formData The form data of the request.
+	 * @param messagePrefix A prefix for the message of a possible {@link FormDataException}.
+	 * @throws FormDataException if the form data doesn't contain the field 'iAmHuman' with the value 'humanIAm'.
 	 */
 	public static void checkForBot(Map<String, String> formData, final String messagePrefix) throws FormDataException {
 		if (!(formData.containsKey("iAmHuman") && formData.get("iAmHuman").equals("humanIAm"))) {

@@ -105,6 +105,7 @@ public class Place {
 	
 	/**
 	 * @param latitude the latitude of this place
+	 * @param longitude the longitude of this place
 	 */
 	public void setLocation(final String latitude, final String longitude) {
 		if (!StrUtils.isEmptyOrNull(latitude) && !StrUtils.isEmptyOrNull(longitude)) {

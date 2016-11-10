@@ -23,8 +23,12 @@ public class ContextEntity extends AbstractContent {
 		return this.contextEntities.add(content);
 	}
 	
+	/**
+	 * Getter for context entities.
+	 * @return The list of context entities. 
+	 */
 	@XmlElementWrapper
-	public List<AbstractContent> getContextEntity() {
+	public List<AbstractContent> getContextEntities() {
 		return this.contextEntities;
 	}
 

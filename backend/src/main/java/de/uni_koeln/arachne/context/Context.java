@@ -34,14 +34,15 @@ public class Context {
 	protected int depthLevel;
 
 	/**
-	 * This list of <code>Link</code> contains the data of the context.
+	 * This list of {@link AbstractLink} contains the data of the context.
 	 */
 	protected transient final List<AbstractLink> contextEntities;
 	
 	/**
 	 * Constructor setting up all needed fields.
 	 * @param contextType The type of context this class manages.
-	 * @param parent The <code>ArachneDataset</code> this context belongs to.
+	 * @param parent The {@link Dataset} this context belongs to.
+	 * @param contextEntities A list of context entities (instances of classes derived from {@link AbstractLink}).
 	 */
 	public Context(final String contextType, final Dataset parent, final List<AbstractLink> contextEntities) {
 		this.contextType = contextType;
@@ -102,6 +103,10 @@ public class Context {
 		return contextEntities.size();
 	}
 	
+	/**
+	 * Getter for the context type.
+	 * @return The context type.
+	 */
 	public String getContextType() {
 		return this.contextType;
 	}

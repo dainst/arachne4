@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.ResponseFactory;
+import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 
@@ -54,7 +55,7 @@ public class EntityService {
 		this.internalFields = internalFields;
 	}
 	
-	public TypeWithHTTPStatus<String> getEntityFromIndex(final Long id, final String category) {
+	public TypeWithHTTPStatus<String> getEntityFromIndex(final Long id, final String category) throws Transl8Exception {
 		
 		String[] excludedFields;
 		if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID)) {
@@ -86,10 +87,10 @@ public class EntityService {
      * If the user does not have permission to see an entity a HTTP 403 status message is returned.
      * @param id The unique entity ID if no category is given else the internal ID.
      * @param category The category to query or <code>null</code>.
-     * @param response The <code>HttpServeletRsponse</code> object.
      * @return The response body as <code>String</code>.
+	 * @throws Transl8Exception if tranl8 cannot be reached. 
      */
-    public TypeWithHTTPStatus<String> getEntityFromDB(final Long id, final String category) { 
+    public TypeWithHTTPStatus<String> getEntityFromDB(final Long id, final String category) throws Transl8Exception { 
     	final EntityId entityId;
     	if (category == null) {
     		entityId = entityIdentificationService.getId(id);
@@ -125,8 +126,9 @@ public class EntityService {
 	 * @param entityId The corresponding EntityId object.
 	 * @return The requested formatted entity as JSON <code>String</code> or "forbidden" to indicate that the user is 
 	 * not allowed to see this entity.
+	 * @throws Transl8Exception if tranl8 cannot be reached. 
 	 */
-	public String getFormattedEntityByIdAsJsonString(final EntityId entityId) {
+	public String getFormattedEntityByIdAsJsonString(final EntityId entityId) throws Transl8Exception {
 		long startTime = 0;
 		if (PROFILING) {
 			startTime = System.currentTimeMillis();
@@ -184,8 +186,9 @@ public class EntityService {
 	 * @param entityId The corresponding EntityId object.
 	 * @return The requested formatted entity object as JSON raw <code>byte</code> array or <code>null</code> to 
 	 * indicate that the user is not allowed to see this entity or any error occurs.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public byte[] getFormattedEntityByIdAsJson(final EntityId entityId) {
+	public byte[] getFormattedEntityByIdAsJson(final EntityId entityId) throws Transl8Exception {
 		long startTime = 0;
 		if (PROFILING) {
 			startTime = System.currentTimeMillis();

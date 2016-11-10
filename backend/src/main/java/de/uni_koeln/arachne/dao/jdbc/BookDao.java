@@ -27,7 +27,8 @@ public class BookDao {
     private transient SimpleSQLService simpleSQLService;
 
     /**
-     * @param arachneEntityId
+     * Gets the name of the folder where the TEI-document for an entity is stored.
+     * @param  arachneEntityId The unique arachne identifier.
      * @return The folder name for the book or <code>null</code> on failure.
      */
     public String getTEIFolderName(final String arachneEntityId) {

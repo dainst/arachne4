@@ -90,7 +90,7 @@ public class TableConnectionDescription {
 	}
 	/**
 	 * Set Field of the Second table That is Desricbed
-	 * @param field1 Field Name
+	 * @param field2 Field Name
 	 */
 	public void setField2(final String field2) {
 		this.field2 = field2;

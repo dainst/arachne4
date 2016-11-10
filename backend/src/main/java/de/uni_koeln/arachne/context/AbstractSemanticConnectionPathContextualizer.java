@@ -31,6 +31,9 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 	// not used - what is it for?
 	//private transient long linkCount = 0l;
 	
+	/**
+	 * Default constructor.
+	 */
 	public AbstractSemanticConnectionPathContextualizer() {
 		this.contextPath = new ContextPath();
 		this.setupContextPath();
@@ -86,6 +89,10 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 			return result;
 	}
 	
+	/**
+	 * Context path getter.
+	 * @return The context path.
+	 */
 	public ContextPath getContextPath() {
 		return contextPath;
 	}

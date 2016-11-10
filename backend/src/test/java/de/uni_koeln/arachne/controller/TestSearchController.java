@@ -34,6 +34,7 @@ import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
 import de.uni_koeln.arachne.service.SearchService;
+import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.testconfig.TestData;
 import de.uni_koeln.arachne.util.search.SearchParameters;
 
@@ -42,6 +43,9 @@ public class TestSearchController {
 	
 	@Mock
 	private SearchService searchService;
+	
+	@Mock
+	private UserRightsService userRightsService;
 	
 	@InjectMocks
 	private SearchController controller = new SearchController(1, 2);
@@ -210,8 +214,12 @@ public class TestSearchController {
 		});
 		
 		when(searchService.getFilters(anyList(), anyInt())).thenCallRealMethod();
+		
+		when(userRightsService.userHasAtLeastGroupID(anyInt())).thenReturn(false);
 	}
 
+	// TODO: add test(s) for editorfields for user with editor rights 
+	
 	@Test
 	public void testSearchNoParameters() throws Exception {
 		mockMvc.perform(

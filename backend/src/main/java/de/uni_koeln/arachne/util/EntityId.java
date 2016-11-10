@@ -39,6 +39,8 @@ public class EntityId {
 	 * @param internalKey Long This is the 
 	 * @param arachneEntityID Long Arachne Identification Number
 	 * @param deleted is Deleted?
+	 * @param degree The degree (a value for the 'quality' of an entity based on connected images and entities as well 
+	 * as the number of fields).
 	 */
 	public EntityId(final String tableName, final Long internalKey, final Long arachneEntityID, final boolean deleted,
 			final Long degree) {

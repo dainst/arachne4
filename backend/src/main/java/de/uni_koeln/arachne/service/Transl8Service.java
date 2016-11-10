@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -60,9 +59,10 @@ public class Transl8Service {
 
 	/**
 	 * Contacts transl8 via rest call and updates the internal translation map.
+	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
 	@SuppressWarnings("unchecked")
-	public void updateTranslations() {
+	private void updateTranslations() throws Transl8Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		headers.set("Accept-Language", languages.get(0));
@@ -99,10 +99,9 @@ public class Transl8Service {
 			} else {
 				LOGGER.warn("There was a problem contacting transl8. Translations are not available. Http status code: " + response.getStatusCode());
 			}	
-		} catch (HttpServerErrorException e) {
-			LOGGER.warn("There was a problem contacting transl8. Translations are not available. Cause: ", e);
 		} catch (RestClientException e) {
 			LOGGER.warn("There was a problem contacting transl8. Translations are not available. Cause: ", e);
+			throw new Transl8Exception();
 		}
 	}
 	
@@ -110,8 +109,9 @@ public class Transl8Service {
 	 * Looks up a key in the translations map and returns the corresponding value if found or the key else.
 	 * @param key Key to look up translation for.
 	 * @return Either a translation or the key.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public String transl8(String key) {
+	public String transl8(String key) throws Transl8Exception {
 		if (!translationsAvailable.get(languages.get(0))) {
 			updateTranslations();
 		}
@@ -127,11 +127,12 @@ public class Transl8Service {
 	/**
 	 * Looks up a facet key in the translation map and returns the corresponding value if found or the key else.
 	 * For facet translations the key prefix is generated from the facet name.
-	 * @param name of the facet.
+	 * @param facetName of the facet.
 	 * @param key Key to look up translation for.
 	 * @return Either a translation or the key.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public String transl8Facet(String facetName, String key) {
+	public String transl8Facet(String facetName, String key) throws Transl8Exception {
 		if (!translationsAvailable.get(languages.get(0))) {
 			updateTranslations();
 		}
@@ -148,8 +149,9 @@ public class Transl8Service {
 	 * Looks up a a category key in the reverse LUT.
 	 * @param key The translated category value.
 	 * @return The category key if found else the unchanged key parameter.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public String categoryLookUp(String key) {
+	public String categoryLookUp(String key) throws Transl8Exception {
 		if (!translationsAvailable.get(languages.get(0))) {
 			updateTranslations();
 		}
@@ -160,5 +162,16 @@ public class Transl8Service {
 			}
 		}
 		return key;
+	}
+	
+	public class Transl8Exception extends Exception {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public Transl8Exception() {
+			
+		}
 	}
 }

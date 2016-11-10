@@ -55,22 +55,23 @@ public class XmlConfigUtil implements ServletContextAware {
 	
 	private transient SAXBuilder xmlParser = null;
 	
-	// TODO add category specific facets to the cache
-	// TODO refactor caching implementations
 	private transient final Map<String, Document> xmlConfigDocuments = new HashMap<String, Document>();
 	
 	private transient final Map<String, List<Element>> xmlIncludeElements = new HashMap<>();
 	
-	private transient final Map<String, List<String>> mandatoryContextNames = new HashMap<String, List<String>>();
+	private transient final Map<String, List<String>> mandatoryContextNames = new HashMap<>();
 	
-	private transient final Map<String, List<String>> explicitContextualizers = new HashMap<String, List<String>>();
+	private transient final Map<String, List<String>> explicitContextualizers = new HashMap<>();
 	
-	private transient final Map<String, List<ContextImageDescriptor>> contextImageDescriptors = new HashMap<String, List<ContextImageDescriptor>>();
+	private transient final Map<String, List<ContextImageDescriptor>> contextImageDescriptors = new HashMap<>();
 	
-	private transient final Map<String, List<TableConnectionDescription>> subCategories = new HashMap<String, List<TableConnectionDescription>>();
+	private transient final Map<String, List<TableConnectionDescription>> subCategories = new HashMap<>();
+	
+	private transient final Map<String, Set<String>> facets = new HashMap<>();
 	
 	/**
-	 * Convenience method to clear the current XML config document, element, mandatory contexts and context image descriptors cache.
+	 * Convenience method to clear the current XML config document, element, mandatory contexts and context image 
+	 * descriptors cache.
 	 */
 	public void clearCache() {
 		xmlConfigDocuments.clear();
@@ -78,6 +79,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		mandatoryContextNames.clear();
 		contextImageDescriptors.clear();
 		subCategories.clear();
+		facets.clear();
 	}
 	
 	/**
@@ -86,7 +88,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * <br>
 	 * The validity of the xml file is not checked!!!
 	 * @param context The xml context <code>Element</code> to parse.
-	 * @param namespace The namespace of the document
+	 * @param namespace The namespace of the document.
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Section</code> object containing the context sections content or <code>null</code> if access is denied.
 	 */
@@ -216,6 +218,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * <br>
 	 * The validity of the xml file is not checked!!!
 	 * @param section The xml section <code>Element</code> to parse.
+	 * @param namespace The namespace of the document.
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Content</code> object containing the sections content.
 	 */
@@ -235,24 +238,28 @@ public class XmlConfigUtil implements ServletContextAware {
 		result.setSeparator(separator);
 								
 		for (final Element element:children) {
-			if (element.getName().equals("field")) {
+			switch (element.getName()) {
+			case "field":
 				addFieldToResult(element, namespace, result, dataset, separator);
-			} else { 
-				if (element.getName().equals("linkField")) {
-					addLinkFieldToResult(element, result, dataset, separator);
-				} else {
-					if (element.getName().equals("context")) {
-						final Section nextSection = (Section)getContentFromContext(element, namespace, dataset);
-						if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
-							result.add(nextSection);
-						}
-					} else {
-						final Section nextSection = (Section)getContentFromSections(element, namespace, dataset);
-						if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
-							result.add(nextSection);
-						}
-					}
+				break;
+				
+			case "linkField":
+				addLinkFieldToResult(element, result, dataset, separator);
+				break;
+
+			case "context":
+				final Section nextContext = (Section)getContentFromContext(element, namespace, dataset);
+				if (nextContext != null && !((Section)nextContext).getContent().isEmpty()) { 
+					result.add(nextContext);
 				}
+				break;	
+				
+			default:
+				final Section nextSection = (Section)getContentFromSections(element, namespace, dataset);
+				if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
+					result.add(nextSection);
+				}
+				break;
 			}
 		}
 		return result;
@@ -261,8 +268,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	/**
 	 * Methode retrieves ContextImageDescriptor-instances. If these instances have beeen requested before, the method 
 	 * returns cached instances, else it parses the instances from the XML-document
-	 * @param type
-	 * @return
+	 * @param type The type of the dataset.
+	 * @return A list of context image desciptors.
 	 */
 	public List<ContextImageDescriptor> getContextImagesNames(final String type) {
 		final List<ContextImageDescriptor> cachedImageContextDescriptors = contextImageDescriptors.get(type);
@@ -296,7 +303,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param type The category of the parent dataset.
 	 * @return A list containing the names of the explicit contextualizers (may be empty).
 	 */
-	public List<String> getExplicitContextualizers(String type) {
+	public List<String> getExplicitContextualizers(final String type) {
 		final List<String> cachedContextualizers = explicitContextualizers.get(type);
 		if (cachedContextualizers == null) {
 			final Document document = getDocument(type);
@@ -324,23 +331,28 @@ public class XmlConfigUtil implements ServletContextAware {
 	
 	/**
 	 * This method looks up which facets are defined in an XML file describing a category. 
-	 * @param category The name of the category.
+	 * @param type The name of the category.
 	 * @return A <code>Set&lt;String></code> of the category specific facets.
 	 */
-	public Set<String> getFacetsFromXMLFile(final String category) {
-		final Set<String> facetList = new HashSet<String>();
+	public Set<String> getFacetsFromXMLFile(final String type) {
+		Set<String> cachedFacets = facets.get(type);
+		if (cachedFacets == null) {
+			final Set<String> facetList = new HashSet<>();
 
-		final Document document = getDocument(category);
-		if (document != null) {
-			final Namespace namespace = document.getRootElement().getNamespace();
+			final Document document = getDocument(type);
+			if (document != null) {
+				final Namespace namespace = document.getRootElement().getNamespace();
 
-			final Element facets = document.getRootElement().getChild("facets", namespace);
+				final Element facets = document.getRootElement().getChild("facets", namespace);
 
-			for (final Element element: facets.getChildren()) {
-				facetList.add(element.getAttributeValue("name")); 				 				
+				for (final Element element: facets.getChildren()) {
+					facetList.add(element.getAttributeValue("name")); 				 				
+				}
 			}
+			return facetList;
+		} else {
+			return cachedFacets;
 		}
-		return facetList;
 	}
 	
 	/**
@@ -371,15 +383,20 @@ public class XmlConfigUtil implements ServletContextAware {
 	}
 	
 	/**
-	 * Returns the content of a field of the dataset as defined inside an <code>ifEmtpy</code> tag in a <code>Context</code> tag in the XML config file.
-	 * It is safe to use even if the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.
+	 * Returns the content of a field of the dataset as defined inside an <code>ifEmtpy</code> tag in a 
+	 * <code>Context</code> tag in the XML config file.
+	 * It is safe to use even if the passed in <code>Element</code> does not have an <code>ifEmpty</code>-Element as a 
+	 * child.
 	 * @param element The XML element describing the parent of the <code>ifEmpty</code> element.
-	 * @param dataset The current dataset.
 	 * @param namespace The current namespace.
-	 * @return A <code>StringBuilder</code> containing the formatted value or <code>null</code> if no value could be retrieved or
-	 * the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.
+	 * @param dataset The current dataset.
+	 * @param contextType The type of the context.
+	 * @param index The index of the context.
+	 * @return A <code>StringBuilder</code> containing the formatted value or <code>null</code> if no value could be 
+	 * retrieved or the passed in <code>Element</code> does not have an <code>ifEmpty</code>-Element as a child.
 	 */
-	public StringBuilder getIfEmptyContext(final Element element, final Namespace namespace, final Dataset dataset, final String contextType, final int index) {
+	public StringBuilder getIfEmptyContext(final Element element, final Namespace namespace, final Dataset dataset
+			, final String contextType, final int index) {
 		String key;
 		StringBuilder result = null;
 		final Element ifEmptyElement = element.getChild("ifEmpty", namespace);

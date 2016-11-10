@@ -32,13 +32,13 @@ import de.uni_koeln.arachne.response.link.ExternalLink;
 import de.uni_koeln.arachne.response.link.ExternalLinkResolver;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.service.Transl8Service;
+import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.util.DateUtils;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.search.TermsAggregation;
-import de.uni_koeln.arachne.util.sql.CatalogEntryExtended;
 
 /**
  * Factory class to create the different kinds of responses from a dataset.
@@ -105,8 +105,9 @@ public class ResponseFactory {
 	 * The validity of the xml file is not checked as this is covered by 'category.xsd'.
 	 * @param dataset The dataset which encapsulates the SQL query results.
 	 * @return A <code>FormattedArachneEntity</code> as JSON (<code>String</code>).
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public String createFormattedArachneEntityAsJsonString(final Dataset dataset) {
+	public String createFormattedArachneEntityAsJsonString(final Dataset dataset) throws Transl8Exception {
 		
 		final EntityId arachneId = dataset.getArachneId(); 
 		final String tableName = arachneId.getTableName();
@@ -134,8 +135,9 @@ public class ResponseFactory {
 	 * The validity of the xml file is not checked as this is covered by 'category.xsd'.
 	 * @param dataset The dataset which encapsulates the SQL query results.
 	 * @return A <code>FormattedArachneEntity</code> as JSON (<code>raw bytes</code>).
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public byte[] createFormattedArachneEntityAsJson(final Dataset dataset) {
+	public byte[] createFormattedArachneEntityAsJson(final Dataset dataset) throws Transl8Exception {
 		
 		final EntityId arachneId = dataset.getArachneId(); 
 		final String tableName = arachneId.getTableName();
@@ -166,9 +168,10 @@ public class ResponseFactory {
 	 * @param arachneId
 	 * @param tableName
 	 * @return
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	private FormattedArachneEntity createFormattedArachneEntity(final Dataset dataset, final EntityId arachneId,
-			final String tableName) {
+			final String tableName) throws Transl8Exception {
 		final FormattedArachneEntity response = new FormattedArachneEntity();
 		
 		// set id content
@@ -471,9 +474,10 @@ public class ResponseFactory {
 	 * @param dataset The current dataset.
 	 * @param document The xml document describing the output format.
 	 * @param response The response object to add the content to.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	private ObjectNode getEntityAsJson(final Dataset dataset, final Document document
-			, final FormattedArachneEntity response) {
+			, final FormattedArachneEntity response) throws Transl8Exception {
 		
 		final Namespace namespace = document.getRootElement().getNamespace();
 		
@@ -541,9 +545,10 @@ public class ResponseFactory {
 	 * @param response The response object to add the content to.
 	 * @param namespace The document namespace.
 	 * @return A Jackson ObjectNode representing the JSON as tree.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	private ObjectNode getFacettedEntityAsJson(final Dataset dataset, final Document document
-			, final FormattedArachneEntity response, final Namespace namespace) {
+			, final FormattedArachneEntity response, final Namespace namespace) throws Transl8Exception {
 
 		ObjectNode json = jsonUtil.getObjectMapper().valueToTree(response);
 		

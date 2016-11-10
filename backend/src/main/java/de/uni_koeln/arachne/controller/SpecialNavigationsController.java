@@ -63,8 +63,14 @@ public class SpecialNavigationsController {
 	 *            The value of the search parameter. (mandatory)
 	 * @param filterValues
 	 *            The values of the elasticsearch filter query. (optional)
-	 * @param facetLimit
-	 *            The maximum number of facets. (optional)
+	 * @param offset
+	 *            An offset into the result set. (optional)
+	 * @param limit
+	 *            A limit for the result set. (optional)            
+	 * @param entityId
+	 * 			  The entity id.
+	 * @param type
+	 * 			  The entity type.
 	 * @return A response object containing the data or a status response (this
 	 *         is serialized to XML or JSON depending on content negotiation).
 	 */
@@ -76,8 +82,7 @@ public class SpecialNavigationsController {
 			@RequestParam(value = "offset", required = false) final Integer offset,
 			@RequestParam(value = "limit", required = false) final Integer limit,
 			@RequestParam(value = "id", required = false, defaultValue = "") final String entityId,
-			@RequestParam(value = "type", required = false, defaultValue = "") final String type,
-			final HttpServletResponse response) {
+			@RequestParam(value = "type", required = false, defaultValue = "") final String type) {
 
 		if ("entity".equals(type) && !entityId.isEmpty()) {
 			return matching(entityId, null);

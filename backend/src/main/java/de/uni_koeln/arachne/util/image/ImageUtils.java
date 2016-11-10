@@ -16,10 +16,9 @@ public class ImageUtils { // NOPMD
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageUtils.class);
 	
 	/**
-	 * This method finds the thumbnailId by finding the image whose filename does not contain a comma or the filename with the
-	 *  lowest number after the comma.
-	 * @param imageList
-	 * @param thumbnail
+	 * This method finds the thumbnailId by finding the image whose filename does not contain a comma or the filename 
+	 * with the lowest number after the comma.
+	 * @param imageList The list of images belonging to a dataset.
 	 * @return The image id of the thumbnail or <code>null</code> on error.
 	 */
 	public static Long findThumbnailId(final List<? extends Image> imageList) {
@@ -50,7 +49,9 @@ public class ImageUtils { // NOPMD
 	
 	/**
 	 * This method finds the number after the comma of a given image filename.
-	 * @returns The extracted number as <code>Integer</code> or <code>Integer.MAX_VALUE</code> in case of a parsing error.
+	 * @param imageFilename The image filename.
+	 * @return The extracted number as <code>Integer</code> or <code>Integer.MAX_VALUE</code> in case of a parsing 
+	 * error.
 	 */
 	public static Integer extractNumberFromImageFilename(final String imageFilename) {
 		// Use Interger.MIN_VALUE / 4 to not generate an overflow in comparisons

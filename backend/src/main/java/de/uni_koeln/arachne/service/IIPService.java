@@ -1,10 +1,13 @@
 package de.uni_koeln.arachne.service;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +55,8 @@ public class IIPService {
 	private final transient String imageServerExtension;
 	private final transient String imagePath;
 		
+	private final transient String imageCacheDir;
+	
 	private final transient int resolution_HIGH;
 	private final transient int resolution_PREVIEW;
 	private final transient int resolution_THUMBNAIL;
@@ -59,12 +64,15 @@ public class IIPService {
 	
 	/**
 	 * Constructor to initialize the image server parameters set in application.properties.
-	 * @param imageServerUrl URL of the image server instance.
+	 * @param imageServerPath The path of the image server.
+	 * @param imageServerName The name of the image server.
+	 * @param imageServerExtension The extension (used for watermarking) of the image server
 	 * @param imagePath Local image path on the server.
-	 * @param imageServerReadTimeout Read timeout for HTTP requests accessing the image server.
 	 * @param resolutionHIGH Width for high resolution images.
 	 * @param resolutionTHUMBNAIL Width for thumbnail images.
 	 * @param resolutionPREVIEW Width for preview resolution images.
+	 * @param resolutionICON Width for icon resolution images. 
+	 * @param imageCacheDir Directory where (300px high) images are cached.
 	 */
 	@Autowired
 	public IIPService(final @Value("${imageServerPath}") String imageServerPath,
@@ -74,7 +82,8 @@ public class IIPService {
 			final @Value("${imageResolutionHIGH}") int resolutionHIGH,
 			final @Value("${imageResolutionPREVIEW}") int resolutionPREVIEW,
 			final @Value("${imageResolutionTHUMBNAIL}") int resolutionTHUMBNAIL,
-			final @Value("${imageResolutionICON}") int resolutionICON) {
+			final @Value("${imageResolutionICON}") int resolutionICON,
+			final @Value("${imageCacheDir}") String imageCacheDir) {
 			
 		this.imageServerPath = imageServerPath;
 		this.imageServerName = imageServerName;
@@ -85,18 +94,34 @@ public class IIPService {
 		this.resolution_PREVIEW = resolutionPREVIEW;
 		this.resolution_THUMBNAIL = resolutionTHUMBNAIL;
 		this.resolution_ICON = resolutionICON;
+		
+		String cacheDir;
+		
+		if (!imageCacheDir.startsWith("/")) {
+			cacheDir = "/" + imageCacheDir;
+		} else {
+			cacheDir = imageCacheDir;
+		}
+		
+		if (!cacheDir.endsWith("/")) {
+			cacheDir += "/";
+		}
+		
+		this.imageCacheDir = cacheDir;
+		
+		LOGGER.info("Image cache directory: " + this.imageCacheDir);
 	}
-	
+		
 	/**
-	 * This method retrieves images from the image server and writes them as JPEG directly to the HTTP response. 
+	 * This method retrieves images from the image server.
+	 * If the requested resolution equals 300 the image is loaded from the local cache directory. If the image isn't 
+	 * cached already it will be retrieved from the image server and stored in the cache directory.  
 	 * @param entityId The unique ID of the image.
-	 * @param requestedResolution The requested resolution. Only the constants <code>ImageController.ICON</code>, 
-	 * <code>ImageController.THUMBNAIL</code>, <code>ImageController.PREVIEW</code> and <code>ImageController.HIGH</code> 
-	 * are currently in use but any integer value is allowed.
-	 * @param response The outgoing HTTP response.
+	 * @param requestedWidth The requested width.
+	 * @param requestedHeight The requested height.
 	 * @return The requested image or <code>null</code> if no image could be retrieved from the server.
 	 */
-	public TypeWithHTTPStatus<BufferedImage> getImage(final long entityId, final int requestedWidth, final int requestedHeight) {
+	public TypeWithHTTPStatus<byte[]> getImage(final long entityId, final int requestedWidth, final int requestedHeight) {
 		
 		final int requestedResolution = Math.max(requestedWidth, requestedHeight); 
 		final ImageProperties imageProperties = getImageProperties(entityId, requestedResolution);
@@ -104,7 +129,8 @@ public class IIPService {
 		if (imageProperties.httpStatus == HttpStatus.OK) {
 			final String imageName = imageProperties.name;
 			String imageServerInstance = imageProperties.watermark;
-						
+			boolean watermarked = true;
+			
 			int width = -1;
 			int height = -1;
 			
@@ -125,38 +151,104 @@ public class IIPService {
 						
 			if (StrUtils.isEmptyOrNullOrZero(imageServerInstance)) {
 				imageServerInstance = imageServerName;
+				watermarked = false;
 			}
 			
 			LOGGER.debug("Watermark: " + imageServerInstance);
 			
 			try {
-				final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension 
-						+ "?FIF=" + imagePath +	URLEncoder.encode(imageName, "UTF8") 
-						+ "&SDS=0,90"
-						+ "&CNT=1.0"
-						+ "&WID=" + width 
-						+ "&HEI=" + height 
-						+ "&QLT=99"
-						+ "&CVT=jpeg");
-				LOGGER.debug("Full server adress: " + serverAdress);
-
-				final BufferedImage image = restTemplate.getForObject(serverAdress.toURI(), BufferedImage.class);
-				return new TypeWithHTTPStatus<BufferedImage>(image);
+				byte[] image = null;
+				if (requestedHeight == 300) {
+					image = getImageFromCacheDir(imageName, watermarked);
+				}
+				if (image == null) {
+					final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension 
+							+ "?FIF=" + imagePath +	URLEncoder.encode(imageName, "UTF8") 
+							+ "&SDS=0,90"
+							+ "&CNT=1.0"
+							+ "&WID=" + width 
+							+ "&HEI=" + height 
+							+ "&QLT=99"
+							+ "&CVT=jpeg");
+					LOGGER.debug("Full server adress: " + serverAdress);
+	
+					image = restTemplate.getForObject(serverAdress.toURI(), byte[].class);
+					if (requestedHeight == 300) {
+						writeImageToCacheDir(imageName, image, watermarked);
+					}
+				}
+				return new TypeWithHTTPStatus<byte[]>(image);
 			} catch (RestClientException | URISyntaxException | IOException e) {
 				LOGGER.error(e.getMessage());
 			}
 		}
-		return new TypeWithHTTPStatus<BufferedImage>(HttpStatus.NOT_FOUND);
+		return new TypeWithHTTPStatus<byte[]>(HttpStatus.NOT_FOUND);
+	}
+	
+	/**
+	 * Loads a jpeg image from the local cache directory.
+	 * @param imageName The image name (*.ptif) including the path.
+	 * @param watermarked 
+	 * @return The loaded image or <code>null</code> if the image cannot be loaded.
+	 */
+	private byte[] getImageFromCacheDir(String imageName, boolean watermarked) {
+		byte[] image = null;
+		Path path = imageNameToCachedImageName(imageName, watermarked);
+		try {
+			image = Files.readAllBytes(path);
+		} catch (IOException e) {
+			LOGGER.warn("Failed to load image '" + path.toString() + "' from cache. Cause: " + e.getMessage());
+		}
+		return image;
+	}
+	
+	/**
+	 * Writes a JPEG image to the cache directory. The path of the image will be kept the same and be created if 
+	 * necessary (a/b/c.ptif will be stored as $cachedir/a/b/c.jpeg).
+	 * @param imageName The image name (*.ptif) including the path.
+	 * @param image The image to save.
+	 * @param watermarked 
+	 */
+	private void writeImageToCacheDir(String imageName, byte[] image, boolean watermarked) {
+		Path path = imageNameToCachedImageName(imageName, watermarked);
+		Path dirPath = path.getParent();
+		if (Files.notExists(dirPath, LinkOption.NOFOLLOW_LINKS)) {
+			try {
+				Files.createDirectories(dirPath);
+			} catch (IOException e) {
+				LOGGER.error("Failed to create directory '" + dirPath.toString() + "'. Cause: " + e.getMessage());
+			}
+		}
+		try {
+			Files.write(path, image);
+		} catch (IOException e) {
+			LOGGER.error("Failed to write file '" + path.toString() + "'. Cause: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * Converts the given <code>imageName</code> to the corresponding name used for caching (in essence it replaces the 
+	 * 'ptif' extension with 'jpeg', prefixes the path with the cache directory and returns the result as path object). 
+	 * @param imageName The image name (*.ptif) including the path.
+	 * @param watermarked 
+	 * @return The image path in the cache dir.
+	 */
+	private Path imageNameToCachedImageName(String imageName, boolean watermarked) {
+		String cachedImageName;
+		if (watermarked) {
+			cachedImageName = imageCacheDir + imageName.substring(0, imageName.length() - 5) + "_watermarked.jpeg";
+		} else {
+			cachedImageName = imageCacheDir + imageName.substring(0, imageName.length() - 4) + "jpeg";
+		}
+		return Paths.get(cachedImageName);
 	}
 	
 	/**
 	 * Here the real work for the <code>getDataForIIPViewer</code> is done. This method sends a HTTP-request to the image server and
 	 * either gets the meta data or a tile of the requested image. If meta data is fetched it is returned. If an image tile is fetched 
 	 * it is written to the HTTP response output stream and <code>null</code> is returned.
-	 * @param request The incoming HTTP request
-	 * @param response The outgoing HTTP response
-	 * @param imageServerInstance The inastance of the image server to use. Sets which watermark is used.
-	 * @param fullQueryString The full query string sent by an IIPImage client.
+	 * @param entityId The entity id of an image.
+	 * @param queryString The full query string sent by an IIPImage client.
 	 * @return Either the meta data of an image wrapped in a <code>ResponseEntity</code> or <code>null</code>.
 	 */
 	@Deprecated
@@ -203,12 +295,12 @@ public class IIPService {
 				return new TypeWithHTTPStatus<String>(metaData);
 			}
 			
-			final BufferedImage image = restTemplate.getForObject(serverUrl.toURI(), BufferedImage.class);
-			return new TypeWithHTTPStatus<BufferedImage>(image);
+			final byte[] image = restTemplate.getForObject(serverUrl.toURI(), byte[].class);
+			return new TypeWithHTTPStatus<byte[]>(image);
 		} catch (RestClientException | URISyntaxException | IOException e) {
 			LOGGER.error(e.getMessage());
 		}
-		return new TypeWithHTTPStatus<BufferedImage>(HttpStatus.NOT_FOUND);		
+		return new TypeWithHTTPStatus<byte[]>(HttpStatus.NOT_FOUND);		
 	}
 	
 	/**
@@ -256,18 +348,18 @@ public class IIPService {
 	 * @param y Zoomify row.
 	 * @return The requested image or <code>null</code> and an HTTP status.
 	 */
-	public TypeWithHTTPStatus<BufferedImage> getImageForZoomifyViewer(final long entityId, final int z, int x, final int y) {
+	public TypeWithHTTPStatus<byte[]> getImageForZoomifyViewer(final long entityId, final int z, int x, final int y) {
 		
 		LOGGER.debug("Zoomify - ID: " + entityId + "TileGroup - z: " + z + " x: " + x + " y: " + y);
 		
 		final ImageProperties imageProperties = getImageProperties(entityId, resolution_HIGH);
 		
 		if (imageProperties.httpStatus != HttpStatus.OK) {
-			return new TypeWithHTTPStatus<BufferedImage>(imageProperties.httpStatus);
+			return new TypeWithHTTPStatus<byte[]>(imageProperties.httpStatus);
 		}
 		
 		if (imageProperties.resolution != resolution_HIGH) {
-			return new TypeWithHTTPStatus<BufferedImage>(HttpStatus.FORBIDDEN);
+			return new TypeWithHTTPStatus<byte[]>(HttpStatus.FORBIDDEN);
 		}
 
 		final String imageName = imageProperties.name;
@@ -282,18 +374,19 @@ public class IIPService {
 			final URL serverAdress = new URL(imageServerPath + imageServerInstance + imageServerExtension + queryString);
 			LOGGER.debug("Zoomify request: " + serverAdress);
 
-			final BufferedImage image = restTemplate.getForObject(serverAdress.toURI(), BufferedImage.class);
-			return new TypeWithHTTPStatus<BufferedImage>(image);
+			final byte[] image = restTemplate.getForObject(serverAdress.toURI(), byte[].class);
+			return new TypeWithHTTPStatus<byte[]>(image);
 		} catch (RestClientException | URISyntaxException | IOException e) {
 			LOGGER.error(e.getMessage());
 		}
-		return new TypeWithHTTPStatus<BufferedImage>(HttpStatus.NOT_FOUND);
+		return new TypeWithHTTPStatus<byte[]>(HttpStatus.NOT_FOUND);
 	}
 	
 	/**
 	 * Method to retrieve the name of the image, the allowed maximum resolution and the watermark to use. Maximum 
 	 * resolution and watermark depend on the rights of the currently logged in user.
 	 * @param entityId The unique image ID.
+	 * @param requestedResolution The requested resolution of the image.
 	 * @return An instance of <code>ImagePorperties</code> containing the name, granted resolution, maximum resolution 
 	 * and watermark of the requested image as well as an HTTP response code indicating success or failure.
 	 */

@@ -38,6 +38,7 @@ public class GeoHashGridAggregation extends Aggregation {
 	 * Constructor to set all fields including 'precision'.
 	 * @param name The name of the aggregation which must also be the field name in the elastic search index.
 	 * @param field The field in the Elasticseasrch index this aggregation works on.
+	 * @param precision The geo hash precision.
 	 * @param size The maximum number of returned aggregation results.
 	 */
 	public GeoHashGridAggregation(String name, String field, int precision, int size) {

@@ -50,10 +50,9 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 	
 	/**
 	 * Retrieve image data and store it in <code>Dataset</code> parent by iterating over connected entities.
-	 * @return	always null, because instead of building actual contexts we only want to add a custom field to <code>Dataset</code> parent.
 	 * @param parent	the dataset of the sarcophagus, that the images will be added to.
-	 * @param offset 	offset of the context to retrieve.
-	 * @param limit		Maximum number of contexts to retireve.
+	 * @return	always null, because instead of building actual contexts we only want to add a custom field to 
+	 * <code>Dataset</code> parent.
 	 */
 	public List<AbstractLink> retrieve(final Dataset parent) {
 		

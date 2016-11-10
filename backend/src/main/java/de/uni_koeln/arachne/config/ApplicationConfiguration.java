@@ -15,7 +15,6 @@ import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.converter.BufferedImageHttpMessageConverter;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -32,6 +31,13 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.zaxxer.hikari.HikariDataSource;
 
+/**
+ * This class holds the application configuration. It configures message converters, view resolvers, datasources, etc.
+ * It replaces the old Spring XML config files. All interaction with this class is automatically done by Spring.
+ * 
+ * @author Reimar Grabowski
+ *
+ */
 @ComponentScan("de.uni_koeln.arachne")
 @Configuration
 @EnableWebMvc
@@ -46,7 +52,6 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		converters.add(new BufferedImageHttpMessageConverter());
 		converters.add(new StringHttpMessageConverter());
 		converters.add(new MappingJackson2HttpMessageConverter());
 		converters.add(new ByteArrayHttpMessageConverter());
@@ -60,6 +65,10 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		registry.viewResolver(resolver);
 	};
 	
+	/**
+	 * Sets the properties file 'application.properties'.
+	 * @return A property sources place holder configurer.
+	 */
 	@Bean
     public static PropertySourcesPlaceholderConfigurer propertyPlaceHolderConfigurer() {
 		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
@@ -67,6 +76,10 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 	    return propertySourcesPlaceholderConfigurer;
     }
 
+	/**
+	 * Configures the JDBC datasource (connection to the DB). A Hikari connection pool is utilized.
+	 * @return The configured datasource.
+	 */
 	@Bean(destroyMethod="close")
 	public DataSource dataSource() {
 		final HikariDataSource hikariDataSource = new HikariDataSource();
@@ -87,6 +100,10 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		};
 	}
 	
+	/**
+	 * Configures a hibernate session factory.
+	 * @return The configured session factory.
+	 */
 	@Bean
 	public LocalSessionFactoryBean sessionFactory() {
 		final Properties hibernateProperties = new Properties();
@@ -103,6 +120,10 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 		return sessionFactory;
 	}
 	
+	/**
+	 * Creates a hibernate transaction manager.
+	 * @return A new transaction manager.
+	 */
 	@Bean
 	public HibernateTransactionManager transactionManager() {
 		return new HibernateTransactionManager(sessionFactory().getObject());

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.ResponseFactory;
+import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.testconfig.TestData;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
@@ -84,7 +85,7 @@ public class TestEntityService {
 	}
 
 	@Test
-	public void testGetEntityFromIndex() {
+	public void testGetEntityFromIndex() throws Transl8Exception {
 		// get by entityId (forbidden)
 		TypeWithHTTPStatus<String> result = entityService.getEntityFromIndex(0l, null); 
 		assertEquals(HttpStatus.FORBIDDEN, result.getStatus());
@@ -117,7 +118,7 @@ public class TestEntityService {
 	}
 	
 	@Test
-	public void testGetEntityFromDB() {
+	public void testGetEntityFromDB() throws Transl8Exception {
 		// get by entityId (forbidden)
 		TypeWithHTTPStatus<String> result = entityService.getEntityFromDB(0l, null); 
 		assertEquals(HttpStatus.FORBIDDEN, result.getStatus());
@@ -150,7 +151,7 @@ public class TestEntityService {
 	}
 
 	@Test
-	public void testGetFormattedEntityByIdAsJsonString() {
+	public void testGetFormattedEntityByIdAsJsonString() throws Transl8Exception {
 		// forbidden - neither has the user the correct datasetgroup nor is the dataimport calling the method
 		assertEquals("forbidden", entityService.getFormattedEntityByIdAsJsonString(testId));
 		
@@ -162,7 +163,7 @@ public class TestEntityService {
 	}
 
 	@Test
-	public void testGetFormattedEntityByIdAsJson() {
+	public void testGetFormattedEntityByIdAsJson() throws Transl8Exception {
 		// forbidden - neither has the user the correct datasetgroup nor is the dataimport calling the method
 		assertNull(entityService.getFormattedEntityByIdAsJson(testId));
 

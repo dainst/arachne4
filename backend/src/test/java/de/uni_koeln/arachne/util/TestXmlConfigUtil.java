@@ -186,8 +186,19 @@ public class TestXmlConfigUtil {
 
 	@Test
 	public void testGetFacetsFromXMLFile() {
+		// uncached
 		Set<String> facets = xmlConfigUtil.getFacetsFromXMLFile("test");
 		
+		assertNotNull(facets);
+		assertFalse(facets.isEmpty());
+		assertEquals(3, facets.size());
+		assertTrue(facets.contains("kategorie"));
+		assertTrue(facets.contains("test"));
+		assertTrue(facets.contains("multivaluetest"));
+
+		// cached
+		facets = xmlConfigUtil.getFacetsFromXMLFile("test");
+
 		assertNotNull(facets);
 		assertFalse(facets.isEmpty());
 		assertEquals(3, facets.size());

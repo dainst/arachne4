@@ -14,6 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import de.uni_koeln.arachne.mapping.hibernate.ArachneEntity;
 
+/**
+ * The arachne entity data access object. 
+ * 
+ * @author Reimar Grabowski
+ *
+ */
 @Repository("ArachneEntityDao")
 public class ArachneEntityDao {
 
@@ -22,7 +28,7 @@ public class ArachneEntityDao {
 	
 	/**
 	 * Retrieves alternative Identifiers by Arachne Entity ID
-	 * @param ArachneEntityID The Arachne Entity ID
+	 * @param arachneEntityID The Arachne Entity ID
 	 * @return Returns a Instance of the Arachne Entity Table Mapping
 	 */
 	@Transactional(readOnly=true)
@@ -48,7 +54,7 @@ public class ArachneEntityDao {
 	
 	/**
 	 * Retrieves alternative Identifiers by range of primary keys.
-	 * @param start First id in the range.
+	 * @param startId First id in the range.
 	 * @param limit Maximum number of ids.
 	 * @return Returns a list of <code>ArachneEntity</code> mappings which may be empty.
 	 */

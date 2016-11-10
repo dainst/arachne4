@@ -14,7 +14,7 @@ public class FacetList {
 	
 	/**
 	 * Adds a facet to the list. If a facet of the same name already exists it adds the values to this facet.
-	 * @param facet
+	 * @param facet The facet to add.
 	 */
 	public void add(final Facet facet) {
 		if (getFacetByName(facet.getName()) > -1) {
@@ -26,11 +26,16 @@ public class FacetList {
 	
 	/**
 	 * Convenience function.
+	 * @return Wether the list is empty.
 	 */
 	public boolean isEmpty() {
 		return data.isEmpty();
 	}
 	
+	/**
+	 * Getter for the backing <code>List<Facet></code>.
+	 * @return The list.
+	 */
 	public List<Facet> getList() {
 		return data;
 	}

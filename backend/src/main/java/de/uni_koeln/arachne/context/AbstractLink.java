@@ -22,38 +22,58 @@ public abstract class AbstractLink {
 	
 	/**
 	 * Function to retrieve the URI of the left side of the link.
+	 * @return The URI as <code>String</code>.
 	 */
 	public abstract String getUri1();	
 	
 	/**
 	 * Function to retrieve the URI of the right side of the link.
+	 * @return The URI as <code>String</code>
 	 */
 	public abstract String getUri2();
 	
 	/**
 	 * If the first side of the connection is an Arachne Dataset this function returns the <code>Dataset</code> 
-	 * entity. Returns null unless overwritten in the implementing class.
+	 * entity.
+	 * @return The dataset.
 	 */
 	public abstract Dataset getEntity1();
 		
 	/**
 	 * If the second side of the connection is an Arachne Dataset this function returns the <code>Dataset</code> 
-	 * entity. Returns null unless overwritten in the implementing class.
+	 * entity.
+	 * @return The dataset.
 	 */
 	public abstract Dataset getEntity2();
 	
+	/**
+	 * Gets the type of the link.
+	 * @return The link type.
+	 */
 	public String getLinkType() {
 		return linkType;
 	}
 	
+	/**
+	 * Sets the link type.
+	 * @param linkType The link type.
+	 */
 	public void setLinkType(final String linkType) {
 		this.linkType = linkType;
 	}
 	
+	/**
+	 * Gets the fields.
+	 * @return The map of field values.
+	 */
 	public Map<String, String> getFields() {
 		return fields;
 	}
 	
+	/**
+	 * Sets the fields.
+	 * @param fields The map of field values.
+	 */
 	public void setFields(final Map<String, String> fields) {
 		this.fields = fields;
 	}

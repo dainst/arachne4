@@ -28,12 +28,12 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * The Title of the Dataset
 	 */
-	protected String title;
+	protected String title = "";
 	
 	/**
 	 * The Subtitle of the Dataset
 	 */
-	protected String subtitle;
+	protected String subtitle = "";
 	
 	protected List<String> ids;
 	
@@ -118,12 +118,9 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	private List<ExternalLink> externalLinks;
 	
 	/**
-	 * Parameterless constructor initializing title and subtitle.
+	 * Elasticsearch suggestion terms
 	 */
-	public FormattedArachneEntity() {
-		title = "";
-		subtitle = "";
-	}	
+	private List<String> suggest = new ArrayList<>();
 	
 	public String getTitle() {
 		return title;
@@ -131,6 +128,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 
 	public void setTitle(final String title) {
 		this.title = title;
+		suggest.add(title);
 	}
 
 	public String getSubtitle() {
@@ -139,6 +137,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 
 	public void setSubtitle(final String subtitle) {
 		this.subtitle = subtitle;
+		suggest.add(subtitle);
 	}
 	
 	public String getUri() {
@@ -246,8 +245,8 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	}
 	
 	/**
-	 * Adds a place to the places list.
-	 * @param place The place to add.
+	 * Adds a date to the dates list.
+	 * @param date The date to add.
 	 */
 	public void addDate(final DateAssertion date) {
 		dates.add(date);
@@ -275,7 +274,8 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	}
 
 	/**
-	 * @param catalogIds the catalogIds to set
+	 * Stter for ctalogPaths.
+	 * @param catalogPaths A list catalog paths.
 	 */
 	public void setCatalogPaths(final List<String> catalogPaths) {
 		this.catalogPaths = catalogPaths;
@@ -309,5 +309,13 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 
 	public void setFilename(String filename) {
 		this.filename = filename;
+	}
+
+	public List<String> getSuggest() {
+		return suggest;
+	}
+
+	public void setSuggest(List<String> suggest) {
+		this.suggest = suggest;
 	}
 }

@@ -15,18 +15,34 @@ public class AdditionalContent {
 	
 	private String ocrText;
 	
+	/**
+	 * Getter for sarcophagus images.
+	 * @return The list of sarcophagus images.
+	 */
 	public List<SarcophagusImage> getSarcophagusImages() {
 		return sarcophagusImages;
 	}
 
+	/**
+	 * Setter for sarcophagus images.
+	 * @param sarcophagusImages A list of sarcophagus images.
+	 */
 	public void setSarcophagusImages(final List<SarcophagusImage> sarcophagusImages) {
 		this.sarcophagusImages = sarcophagusImages;
 	}
 	
+	/**
+	 * Getter for OCR text.
+	 * @return The OCR text.
+	 */
 	public String getOcrText() {
 		return ocrText;
 	}
 
+	/**
+	 * Setter for OCR text.
+	 * @param ocrText An OCR text.
+	 */
 	public void setOcrText(final String ocrText) {
 		this.ocrText = ocrText;
 	}

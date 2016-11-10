@@ -51,6 +51,7 @@ import de.uni_koeln.arachne.response.Place;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
+import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.search.Aggregation;
@@ -109,23 +110,27 @@ public class SearchService {
 	}
 	
 	/**
-	 * This method builds and returns an elasticsearch search request. The query is built by the <code>buildQuery</code> method.
+	 * This method builds and returns an elasticsearch search request. The query is built by the 
+	 * <code>buildQuery</code> method. 
 	 * @param searchParameters The search parameter object. 
 	 * @param filters The filters of the HTTP 'fq' parameter as Map.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	public SearchRequestBuilder buildDefaultSearchRequest(final SearchParameters searchParameters
-			, final Multimap<String, String> filters) {
+			, final Multimap<String, String> filters) throws Transl8Exception {
 		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
-				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox(), false))
+				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox(), false
+						, searchParameters.isSearchEditorFields()))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setSize(searchParameters.getLimit())
 				.setFrom(searchParameters.getOffset());
 		
 		if (!searchParameters.isFacetMode()) {
 			result
-				.setHighlighterQuery(buildQuery(searchParameters.getQuery(), filters, null, true))
+				.setHighlighterQuery(buildQuery(searchParameters.getQuery(), filters, null, true
+						, searchParameters.isSearchEditorFields()))
 				.setHighlighterOrder("score");
 			if (searchParameters.isScrollMode() 
 					&& userRightsService.isSignedInUser()
@@ -144,6 +149,16 @@ public class SearchService {
 				field = new Field("searchableContent");
 				field.numOfFragments(5);
 				result.addHighlightedField(field);
+				
+				if (searchParameters.isSearchEditorFields()) {
+					field = new Field("datasetGroup");
+					field.numOfFragments(0);
+					result.addHighlightedField(field);
+
+					field = new Field("searchableEditorContent");
+					field.numOfFragments(0);
+					result.addHighlightedField(field);
+				}
 			}
 		}
 
@@ -176,9 +191,10 @@ public class SearchService {
 	 * @param searchParameters The search parameter object. 
 	 * @param filters The filters of the HTTP 'fq' parameter as Map.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	public SearchRequestBuilder buildContextSearchRequest(final long entityId, final SearchParameters searchParameters
-			, Multimap<String, String> filters) {
+			, Multimap<String, String> filters) throws Transl8Exception {
 		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
 				.setQuery(buildContextQuery(entityId))
@@ -201,7 +217,7 @@ public class SearchService {
 	public SearchRequestBuilder buildIndexSearchRequest(final String facetName) {
 		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
-				.setQuery(buildQuery("*", null, null, false))
+				.setQuery(buildQuery("*", null, null, false, false))
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setSize(0);
 		
@@ -214,7 +230,8 @@ public class SearchService {
 	
 	/**
 	 * Adds the facet fields specified in <code>facetList</code> to the search request.
-	 * @param facetList A string list containing the facet names to add. 
+	 * @param facetList A string list containing the facet names to add.
+	 * @param facetsToSort A list of facet names. Facets in this list are sorted lexically. 
 	 * @param searchRequestBuilder The outgoing search request that gets the facets added.
 	 */
 	public void addFacets(final Set<Aggregation> facetList, final List<String> facetsToSort
@@ -256,8 +273,7 @@ public class SearchService {
 	 * @param searchRequestBuilder The search request in elasticsearchs internal format.
 	 * @param size Max number of results.
 	 * @param offset An offset into the resultset.
-	 * @param filterValues A <code>String</code> containing the filter values used in the query.
-	 * @param facetList The values for facetting.
+	 * @param filters A <code>String</code> containing the filter values used in the query.
 	 * @param facetOffset An offset into the facet lists.
 	 * @return The search result.
 	 */
@@ -447,9 +463,10 @@ public class SearchService {
 	 * @param geoHashPrecision The length of the geohash used in the geo grid aggregation.
 	 * @param facet A single facet. If not null only an aggregation for this facet will be added.
 	 * @return A set of <code>Aggregations</code>.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	private Set<Aggregation> getFacetList(final Multimap<String, String> filters, final int limit
-			, final Integer geoHashPrecision, final String facet) {
+			, final Integer geoHashPrecision, final String facet) throws Transl8Exception {
 		
 		final Set<Aggregation> result = new LinkedHashSet<Aggregation>();
 		if (facet == null || facet.isEmpty()) {
@@ -500,8 +517,9 @@ public class SearchService {
 	 * any results.
 	 * @param limit The maximum number of distinct facet values returned.
 	 * @return The list of category specific facets or <code>null</code>.
+	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	private Set<Aggregation> getCategorySpecificFacets(final Multimap<String, String> filters, final int limit) {
+	private Set<Aggregation> getCategorySpecificFacets(final Multimap<String, String> filters, final int limit) throws Transl8Exception {
 		
 		final Set<Aggregation> result = new LinkedHashSet<Aggregation>();
 		Collection<String> categories = filters.get(TermsAggregation.CATEGORY_FACET);
@@ -525,17 +543,19 @@ public class SearchService {
 	 * which finally uses a simple query string query with 'AND' as default operator.<br>
 	 * If the search parameter is numeric the query is performed against all configured fields else the query is only 
 	 * performed against the text fields.<br>
-	 * If the user is an editor the editorSection field is searched, too.
+	 * If the user is an editor the editorSection and datasetGroup fields are searched, too.
 	 * @param searchParam The query string.
 	 * @param filters The filter from the HTTP 'fq' parameter as map to create a filter query from.
 	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)
 	 * @param disableAccessControl If the access control query shall be replaced with a match all query
+	 * @param searchEditorFields Whether the editor-only fields should be searched.
 	 * @return An elasticsearch <code>QueryBuilder</code> which in essence is a complete elasticsearch query.
 	 */
 	private QueryBuilder buildQuery(final String searchParam
 			, final Multimap<String, String> filters
 			, final Double[] bbCoords
-			, final boolean disableAccessControl) {
+			, final boolean disableAccessControl
+			, final boolean searchEditorFields) {
 		
 		
 		QueryBuilder facetFilter;
@@ -562,8 +582,9 @@ public class SearchService {
 		final QueryStringQueryBuilder innerQuery = QueryBuilders.queryStringQuery(searchParam)
 				.defaultOperator(Operator.AND);
 		
-		if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID)) {
-			innerQuery.field("editorSection");
+		if (searchEditorFields) {
+			innerQuery.field("searchableEditorContent^0.5");
+			innerQuery.field("datasetGroup^0.5");
 		}
 		
 		for (String textField: searchFields.text()) {
