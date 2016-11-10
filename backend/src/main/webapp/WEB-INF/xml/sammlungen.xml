@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="sammlungen" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-  <display>
+    <subtables>
+        <subtable connectFieldParent="PrimaryKey"
+                  connectFieldSubTable="FS_SammlungenID">personsammlung</subtable>
+    </subtables>
+    <display>
     <title>
       <section separator=" / ">
         <field datasource="sammlungen.KurzbeschreibungSammlungen"/>
@@ -18,8 +22,8 @@
           <section labelKey="Ort">
             <field datasource="sammlungen.OrtSammlungen"/>
           </section>
-          <section labelKey="Land">
-            <field datasource="sammlungen.LandSammlungen"/>
+          <section>
+            <field datasource="sammlungen.LandSammlungen" prefix="Land: "/>
             <field datasource="sammlungen.Herkunftsland" prefix="Herkunftsland: "/>
           </section>
           <include type="ort"/>
@@ -48,12 +52,13 @@
           </section>
         </section>
         <section labelKey="Kommentar">
-          <field datasource="sammlungen.Hinweise"/>
-          <field datasource="sammlungen.AnmerkungSammlungen"/>
+            <field datasource="sammlungen.Hinweise"/>
+            <field datasource="sammlungen.AnmerkungSammlungen"/>
         </section>
         <!-- TODO Sammler und Personen müssen eingepflegt werden -->
+        <include type="personsammlungcomplete"/>
         <section labelKey="Quellen" separator="; ">
-          <field datasource="sammlungen.Quellen"/>
+            <field datasource="sammlungen.Quellen"/>
         </section>
         <include type="literaturcomplete"/>
         <include type="uri"/>

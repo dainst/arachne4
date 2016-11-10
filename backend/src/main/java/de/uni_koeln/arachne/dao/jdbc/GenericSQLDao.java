@@ -197,5 +197,21 @@ public class GenericSQLDao extends SQLDao {
 		final Long cover = queryForLong(sqlQuery);
 		return cover;
 	}
-	
+
+	public List<Map<String, String>> getPersons(final String tableName, final Long internalKey) {
+        final List<Map<String, String>> result = query(con -> {
+            final String sql = "SELECT * FROM personsammlung "
+                    +"LEFT JOIN person ON FS_PersonID = PS_PersonID "
+                    +"WHERE personsammlung.FS_SammlungenID = ? "
+                    +"ORDER BY personsammlung.Sammlerreihenfolge ASC;";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, internalKey);
+            return ps;
+        }, new GenericEntitiesMapper("AdditionalInfosJSON"));
+
+        if (result != null && !result.isEmpty()) {
+            return result;
+        }
+        return null;
+    }
 }
