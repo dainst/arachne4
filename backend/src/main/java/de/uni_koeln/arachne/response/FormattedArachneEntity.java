@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import de.uni_koeln.arachne.response.link.ExternalLink;
+import de.uni_koeln.arachne.response.search.Suggestion;
 
 /**
  * Response object class that returns preformatted output to the frontend and the index.
@@ -120,7 +121,15 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * Elasticsearch suggestion terms
 	 */
-	private List<String> suggest = new ArrayList<>();
+	private Suggestion suggest = new Suggestion();
+	
+	/**
+	 * Passes construction to the {@link BaseArachneEntity} constructor.
+	 * @param type The type of the entity.
+	 */
+	public FormattedArachneEntity(final String type) {
+		super(type);
+	}
 	
 	public String getTitle() {
 		return title;
@@ -224,7 +233,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		return externalLinks;
 	}
 
-	public void setExternalLinks(List<ExternalLink> externalLinks) {
+	public void setExternalLinks(final List<ExternalLink> externalLinks) {
 		this.externalLinks = externalLinks;
 	}
 	
@@ -291,7 +300,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	/**
 	 * @param editorSection the editorSection to set
 	 */
-	public void setEditorSection(Section editorSection) {
+	public void setEditorSection(final Section editorSection) {
 		this.editorSection = editorSection;
 	}
 
@@ -299,7 +308,7 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		return ids;
 	}
 
-	public void setIds(List<String> ids) {
+	public void setIds(final List<String> ids) {
 		this.ids = ids;
 	}
 
@@ -307,15 +316,15 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		return filename;
 	}
 
-	public void setFilename(String filename) {
+	public void setFilename(final String filename) {
 		this.filename = filename;
 	}
 
-	public List<String> getSuggest() {
+	public Suggestion getSuggest() {
 		return suggest;
 	}
 
-	public void setSuggest(List<String> suggest) {
+	public void setSuggest(final Suggestion suggest) {
 		this.suggest = suggest;
 	}
 }

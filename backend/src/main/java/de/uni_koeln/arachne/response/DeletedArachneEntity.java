@@ -32,12 +32,14 @@ public class DeletedArachneEntity extends BaseArachneEntity {
 	}
 	
 	public DeletedArachneEntity() {
+		super(null);
 		this.entityId = -1L;
 		this.type = "unknown";
 		this.internalId = 1L;
 	}
 	
 	public DeletedArachneEntity(final EntityId entityId) {
+		super(null);
 		this.entityId = entityId.getArachneEntityID();
 		this.type = entityId.getTableName();
 		this.internalId = entityId.getInternalKey();

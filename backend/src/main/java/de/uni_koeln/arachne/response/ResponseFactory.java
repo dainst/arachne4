@@ -172,11 +172,10 @@ public class ResponseFactory {
 	 */
 	private FormattedArachneEntity createFormattedArachneEntity(final Dataset dataset, final EntityId arachneId,
 			final String tableName) throws Transl8Exception {
-		final FormattedArachneEntity response = new FormattedArachneEntity();
+		final FormattedArachneEntity response = new FormattedArachneEntity(ts.transl8("type_" + tableName));
 		
 		// set id content
 		response.setEntityId(arachneId.getArachneEntityID());
-		response.setType(ts.transl8("type_" + tableName));
 		response.setInternalId(arachneId.getInternalKey());
 		
 		// set uri

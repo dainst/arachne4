@@ -27,6 +27,7 @@ import static de.uni_koeln.arachne.util.network.CustomMediaType.*;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
+import de.uni_koeln.arachne.response.search.SuggestResult;
 import de.uni_koeln.arachne.service.SearchService;
 import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.service.UserRightsService;
@@ -201,6 +202,19 @@ public class SearchController {
 		} else {
 			return ResponseEntity.ok().body(searchResult);
 		}
+	}
+	
+	@RequestMapping(value="/suggest",
+			method=RequestMethod.GET,
+			produces={APPLICATION_JSON_UTF8_VALUE})
+	public @ResponseBody ResponseEntity<?> handleSuggestRequest(@RequestParam("q") final String queryString) {
+		final SuggestResult suggestResult = searchService.executeSuggestRequest(queryString);
+		
+		//if (suggestResult.getStatus() != RestStatus.OK) {
+		//	return ResponseEntity.status(suggestResult.getStatus().getStatus()).build();
+		//} else {
+			return ResponseEntity.ok().body(suggestResult);
+		//}
 	}
 	
 	/**

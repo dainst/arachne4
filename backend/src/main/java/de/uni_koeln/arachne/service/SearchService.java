@@ -19,6 +19,7 @@ import org.elasticsearch.action.search.SearchPhaseExecutionException;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.action.suggest.SuggestResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoBoundingBoxQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -36,6 +37,7 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 import org.elasticsearch.search.highlight.HighlightBuilder.Field;
 import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,7 @@ import de.uni_koeln.arachne.response.Place;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
+import de.uni_koeln.arachne.response.search.SuggestResult;
 import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
@@ -418,6 +421,30 @@ public class SearchService {
 		}
 		
 		return searchResult;
+	}
+	
+	/**
+	 * Executes a completion suggest request on the elastic search index.
+	 * @param queryString The term to get suggestion for.
+	 * @return The suggestions.
+	 */
+	public SuggestResult executeSuggestRequest(String queryString) {
+		SuggestResult suggestResult = new SuggestResult();
+		
+		CompletionSuggestionBuilder suggestBuilder = new CompletionSuggestionBuilder("complete");
+		suggestBuilder.field("suggest");
+		suggestBuilder.text(queryString);
+		suggestBuilder.size(10);
+		
+		SuggestResponse suggestResponse = esService.getClient().prepareSuggest(esService.getSearchIndexAlias())
+				.addSuggestion(suggestBuilder).execute().actionGet();
+		
+		suggestResponse.getSuggest().forEach(suggestion -> {
+			suggestion.getEntries().forEach(entry -> entry.getOptions()
+					.forEach(option -> suggestResult.addSuggestion(option.getText().string())));
+		});
+		
+		return suggestResult;
 	}
 	
 	/**

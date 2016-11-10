@@ -36,6 +36,15 @@ public class BaseArachneEntity {
 	protected AdditionalContent additionalContent = null;
 	
 	/**
+	 * Constructor setting the type. This is the only way to set the type of an entity to ensure that there are no 
+	 * entities created without a type.
+	 * @param type The type of the entity.
+	 */
+	public BaseArachneEntity(final String type) {
+		this.type = type;
+	}
+	
+	/**
 	 * Entity id getter.
 	 * @return The entity id.
 	 */
@@ -57,14 +66,6 @@ public class BaseArachneEntity {
 	 */
 	public String getType() {
 		return type;
-	}
-
-	/**
-	 * Type setter.
-	 * @param type A type.
-	 */
-	public void setType(final String type) {
-		this.type = type;
 	}
 
 	/**
