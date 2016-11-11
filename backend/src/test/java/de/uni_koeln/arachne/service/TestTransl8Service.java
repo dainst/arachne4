@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -32,6 +33,9 @@ public class TestTransl8Service {
 	
 	@Autowired
 	private ArachneRestTemplate restTemplate;
+	
+	@Value("${transl8Url}")
+	private String transl8URL;
 	
 	private MockRestServiceServer mockServer;
 	
@@ -78,7 +82,7 @@ public class TestTransl8Service {
 	@Test
 	public void testTransl8() throws Transl8Exception {
 		mockServer.expect(
-				requestTo("https://bogusman01.dai-cloud.uni-koeln.de/transl8/translation/json?application=arachne4_backend"))
+				requestTo(transl8URL))
 				.andRespond(withSuccess(transl8Response, MediaType.APPLICATION_JSON));
 		
 		// must get translations from transl8 
@@ -98,7 +102,7 @@ public class TestTransl8Service {
 	@Test
 	public void testTransl8Facet() throws Transl8Exception {
 		mockServer.expect(
-				requestTo("https://bogusman01.dai-cloud.uni-koeln.de/transl8/translation/json?application=arachne4_backend"))
+				requestTo(transl8URL))
 				.andRespond(withSuccess(transl8Response, MediaType.APPLICATION_JSON));
 		
 		// must get translations from transl8 
@@ -118,7 +122,7 @@ public class TestTransl8Service {
 	@Test
 	public void testCategoryLookUp() throws Transl8Exception {
 		mockServer.expect(
-				requestTo("https://bogusman01.dai-cloud.uni-koeln.de/transl8/translation/json?application=arachne4_backend"))
+				requestTo(transl8URL))
 				.andRespond(withSuccess(transl8Response, MediaType.APPLICATION_JSON));
 		
 		// must get translations from transl8 
@@ -138,7 +142,7 @@ public class TestTransl8Service {
 	@Test(expected = Transl8Service.Transl8Exception.class)
 	public void exceptionsEnabled() throws Transl8Exception {
 		mockServer.expect(
-				requestTo("https://bogusman01.dai-cloud.uni-koeln.de/transl8/translation/json?application=arachne4_backend"))
+				requestTo(transl8URL))
 				.andRespond(withServerError());
 		
 		transl8Service.transl8("foobar");
