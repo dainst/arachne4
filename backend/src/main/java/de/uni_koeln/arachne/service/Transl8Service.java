@@ -77,7 +77,6 @@ public class Transl8Service {
 			final ResponseEntity<String> response = restTemplate.exchange(transl8Url , HttpMethod.GET, entity, String.class);
 			if (response.getStatusCode() == HttpStatus.OK) {
 				final String doc = response.getBody();
-				LOGGER.info("Transl8 document: " + doc);
 				try {
 					translationMap = jsonUtil.getObjectMapper().readValue(doc, HashMap.class);
 				} catch (JsonParseException e) {
