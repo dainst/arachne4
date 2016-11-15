@@ -89,11 +89,15 @@ public class ResponseFactory {
 		this.xmlConfigUtil = xmlConfigUtil;
 	}
 	
-	final String serverAddress;
+	final private String serverAddress;
+	
+	final private List<String> suggestFacetList;
 	
 	@Autowired
-	public ResponseFactory(final @Value("${serverAddress}") String serverAddress) {
+	public ResponseFactory(final @Value("${serverAddress}") String serverAddress
+			, final @Value("#{'${esSuggestFacets}'.split(',')}") List<String> suggestFacetList) {
 		this.serverAddress = serverAddress;
+		this.suggestFacetList = suggestFacetList;
 	}
 	
 	/**
@@ -224,6 +228,7 @@ public class ResponseFactory {
 		final double logDegree = Math.log10(Math.sqrt(response.getDegree() + 1.0d)) + 1.0d;
 		final double boost = logFields * logImages * logDegree / 5.0 + 1.0d;
 		response.setBoost(boost);
+		response.getSuggest().setWeight((int) (boost*100));
 		
 		// set dataset group
 		// workaround for table marbilder as it does not adhere to the naming conventions
@@ -550,6 +555,7 @@ public class ResponseFactory {
 			, final FormattedArachneEntity response, final Namespace namespace) throws Transl8Exception {
 
 		ObjectNode json = jsonUtil.getObjectMapper().valueToTree(response);
+		ArrayNode suggestInput = (ArrayNode)json.get("suggest").get("input");
 		
 		// set image facet
 		if (dataset.getThumbnailId() == null) {
@@ -583,6 +589,7 @@ public class ResponseFactory {
 				}
 			}
 		}
+		
 		if (relations.size() > 0) {
 			json.set(TermsAggregation.RELATION_FACET, relations);
 		}
@@ -667,9 +674,13 @@ public class ResponseFactory {
 			ArrayNode arrayNode = json.arrayNode();
 			for (final String finalFacetValue: finalFacetValues) {
 				arrayNode.add(ts.transl8Facet(facetName, finalFacetValue));
+				if (suggestFacetList.contains(facetOutputName)) {
+					suggestInput.add(finalFacetValue);
+				}
 			}
 			json.set(facetOutputName, arrayNode);
 		}
+						
 		return json;
 	}
 	

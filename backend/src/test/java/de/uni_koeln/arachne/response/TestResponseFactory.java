@@ -39,7 +39,9 @@ public class TestResponseFactory { // NOPMD
 	@Mock private CatalogDao catalogDao;
 	@Mock private Transl8Service ts;
 	@Mock private JSONUtil jsonUtil;
-	@InjectMocks private final ResponseFactory responseFactory = new ResponseFactory("testAddress.com");
+	@SuppressWarnings("serial")
+	@InjectMocks private final ResponseFactory responseFactory 
+			= new ResponseFactory("testAddress.com", new ArrayList<String>() {{ add("facet_test"); }});
 	
 	@Mock private UserRightsService userRightsService;
 	@InjectMocks private final XmlConfigUtil xmlConfigUtil = new XmlConfigUtil();
@@ -193,7 +195,6 @@ public class TestResponseFactory { // NOPMD
 	@Test
 	public void testSuggest() throws Transl8Exception {
 		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
-		assertTrue(response.contains("\"suggest\":{\"input\":[\"Title of the Test\""
-				+ ",\"Subtitle of the Test\"],\"weight\":100}"));
+		assertTrue(response.contains("\"suggest\":{\"input\":[\"Title of the Test\",\"test facet value\"],\"weight\":146}"));
 	}
 }

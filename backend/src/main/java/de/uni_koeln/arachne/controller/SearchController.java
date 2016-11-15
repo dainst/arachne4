@@ -27,7 +27,6 @@ import static de.uni_koeln.arachne.util.network.CustomMediaType.*;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
-import de.uni_koeln.arachne.response.search.SuggestResult;
 import de.uni_koeln.arachne.service.SearchService;
 import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.service.UserRightsService;
@@ -203,18 +202,18 @@ public class SearchController {
 			return ResponseEntity.ok().body(searchResult);
 		}
 	}
-	
+
+	/**
+	 * Handles the HTTP request by executing a completion suggest request on the elasticsearch index. 
+	 * @param queryString The prefix to find suggestions for.
+	 * @return Two lists of suggestions containg the same terms in the same order. One as returned from elasticsearch and one 
+	 * where all elasticsearch reserved characters are escaped.
+	 */
 	@RequestMapping(value="/suggest",
 			method=RequestMethod.GET,
 			produces={APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody ResponseEntity<?> handleSuggestRequest(@RequestParam("q") final String queryString) {
-		final SuggestResult suggestResult = searchService.executeSuggestRequest(queryString);
-		
-		//if (suggestResult.getStatus() != RestStatus.OK) {
-		//	return ResponseEntity.status(suggestResult.getStatus().getStatus()).build();
-		//} else {
-			return ResponseEntity.ok().body(suggestResult);
-		//}
+		return ResponseEntity.ok().body(searchService.executeSuggestRequest(queryString));
 	}
 	
 	/**

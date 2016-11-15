@@ -4,7 +4,7 @@ import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 // needed to use .andDo(print()) for debugging
-//import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+// import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -33,6 +33,7 @@ import de.uni_koeln.arachne.response.search.SearchHit;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
+import de.uni_koeln.arachne.response.search.SuggestResult;
 import de.uni_koeln.arachne.service.SearchService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.testconfig.TestData;
@@ -212,6 +213,13 @@ public class TestSearchController {
 				return searchResult;
 			}
 		});
+		
+		when(searchService.executeSuggestRequest(anyString())).thenReturn(new SuggestResult());
+		final SuggestResult suggestResult = new SuggestResult();
+		for (int i=0; i<10; i++) {
+			suggestResult.addSuggestion("ordered result " + i);
+		}
+		when(searchService.executeSuggestRequest("or")).thenReturn(suggestResult);
 		
 		when(searchService.getFilters(anyList(), anyInt())).thenCallRealMethod();
 		
@@ -1337,5 +1345,43 @@ public class TestSearchController {
 				get("/index/f,a:c,e+t")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isBadRequest());
-	}	
+	}
+	
+	@Test
+	public void testSuggest() throws Exception {
+		mockMvc.perform(
+				get("/suggest").param("q", "or")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{\"suggestions\":"
+						+ "[\"ordered result 0\""
+						+ ",\"ordered result 1\""
+						+ ",\"ordered result 2\""
+						+ ",\"ordered result 3\""
+						+ ",\"ordered result 4\""
+						+ ",\"ordered result 5\""
+						+ ",\"ordered result 6\""
+						+ ",\"ordered result 7\""
+						+ ",\"ordered result 8\""
+						+ ",\"ordered result 9\"]}"));
+	}
+	
+	@Test
+	public void testSuggestNoResult() throws Exception {
+		mockMvc.perform(
+				get("/suggest").param("q", "ar")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
+				.andExpect(content().json("{}"));
+	}
+	
+	@Test
+	public void testSuggestNoParam() throws Exception {
+		mockMvc.perform(
+				get("/suggest")
+				.contentType(APPLICATION_JSON_UTF8))
+				.andExpect(status().isBadRequest());
+	}
 }

@@ -146,7 +146,6 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 
 	public void setSubtitle(final String subtitle) {
 		this.subtitle = subtitle;
-		suggest.add(subtitle);
 	}
 	
 	public String getUri() {
