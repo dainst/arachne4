@@ -4,7 +4,7 @@ import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 // needed to use .andDo(print()) for debugging
-// import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+//import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -1325,10 +1325,7 @@ public class TestSearchController {
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
-				.andExpect(content().json("["
-						+ "\"test1_value1b\","
-						+ "\"test1_value1a\""
-						+ "]"));
+				.andExpect(content().json("{\"facetValues\":[\"test1_value1a\",\"test1_value1b\"]}"));
 	}
 	
 	@Test

@@ -1,9 +1,6 @@
 package de.uni_koeln.arachne.controller;
 
-import java.text.Collator;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -24,6 +21,8 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import static de.uni_koeln.arachne.util.network.CustomMediaType.*;
+
+import de.uni_koeln.arachne.response.search.IndexResult;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
@@ -291,7 +290,7 @@ public class SearchController {
 	@RequestMapping(value="/index/{facetName}", 
 			method=RequestMethod.GET, 
 			produces={APPLICATION_JSON_UTF8_VALUE})
-	public @ResponseBody ResponseEntity<List<String>> handleIndexRequest(@PathVariable("facetName") final String facetName
+	public @ResponseBody ResponseEntity<IndexResult> handleIndexRequest(@PathVariable("facetName") final String facetName
 			, @RequestParam(value = "group", required = false) Character groupMarker) {
 		
 		if (facetName.startsWith("facet_") || facetName.startsWith("agg_")) {
@@ -302,83 +301,26 @@ public class SearchController {
 
 			if (searchResult.getStatus() == RestStatus.OK) {
 				if (searchResult.facetSize() != 1) {
-					return new ResponseEntity<List<String>>(HttpStatus.BAD_REQUEST);
+					return new ResponseEntity<IndexResult>(HttpStatus.BAD_REQUEST);
 				}
-				List<String> result = new ArrayList<String>();
+				IndexResult result = new IndexResult();
 				
 				final SearchResultFacet facet = searchResult.getFacets().get(0);
 				final List<SearchResultFacetValue> values = facet.getValues();
 				
 				for (SearchResultFacetValue searchResultFacetValue : values) {
-					result.add(searchResultFacetValue.getValue());
+					result.addValue(searchResultFacetValue.getValue());
 				}
 				
-				// sort alphabetically
-				final Collator collator = Collator.getInstance();
-				Collections.sort(result, collator);
-				
 				if (groupMarker != null) {
-					result = getSubList(result, groupMarker);
+					result.reduce(groupMarker);					
 				}
 				
 				return ResponseEntity.ok().body(result);
 			} else {
-				return new ResponseEntity<List<String>>(HttpStatus.valueOf(searchResult.getStatus().getStatus()));
+				return new ResponseEntity<IndexResult>(HttpStatus.valueOf(searchResult.getStatus().getStatus()));
 			}
 		}
-		return new ResponseEntity<List<String>>(HttpStatus.BAD_REQUEST);
-	}
-
-	/**
-	 * Generates a sublist from the given list. The sublist to get is defined by the marker.
-	 * @param inputList The list to get a sublist from.
-	 * @param marker A marker indicating which sublist to generate.
-	 * @return The sublist.
-	 */
-	private List<String> getSubList(final List<String> inputList, final char marker) {
-		final List<String> result = new ArrayList<String>();
-		final Collator collator = Collator.getInstance();
-		
-		if (marker == '<' || marker == '$' || (Character.isLetter(marker) && Character.isLowerCase(marker))) {
-			String lowerLimit = "";
-			String upperLimit = "";
-
-			switch (marker) {
-			case '<':
-				upperLimit = "0";
-				break;
-
-			case '$':
-				lowerLimit = "0";
-				upperLimit = "a";
-				break;
-				
-			case 'z':
-				lowerLimit = Character.toString(marker);
-				upperLimit = "zzz";
-				break;
-				
-			default:
-				lowerLimit = Character.toString(marker);
-				upperLimit = Character.toString((char)(marker + 1));
-				break;
-			}
-
-			for (final String value : inputList) {
-				if (collator.compare(value, upperLimit) < 0 && collator.compare(value, lowerLimit) >= 0) {
-					result.add(value);
-				}
-			}
-		} else {
-			if (marker == '>') {
-				for (final String value : inputList) {
-					if (collator.compare(value, "zzz") > 0) {
-						result.add(value);
-					}
-				}
-			}
-		}
-
-		return result;
+		return new ResponseEntity<IndexResult>(HttpStatus.BAD_REQUEST);
 	}
 }
