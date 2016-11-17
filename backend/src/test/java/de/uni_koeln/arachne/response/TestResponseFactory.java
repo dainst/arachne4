@@ -192,9 +192,23 @@ public class TestResponseFactory { // NOPMD
 				+"-TestSeparator3-Test Context Value7"));
 	}
 	
+	/**
+	 * Tests if the suggest field is correctly added to the JSON object.
+	 * @throws Transl8Exception
+	 */
 	@Test
 	public void testSuggest() throws Transl8Exception {
-		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		
+		// datasetGroup = 'Arachne'
 		assertTrue(response.contains("\"suggest\":{\"input\":[\"Title of the Test\",\"test facet value\"],\"weight\":146}"));
+		
+		// datasetGroup != 'Arachne'
+		String tableName = dataset.getArachneId().getTableName();
+		String datasetGroupFieldName = tableName+".DatensatzGruppe"+tableName.substring(0,1).toUpperCase()
+				+tableName.substring(1);
+		dataset.getFields().put(datasetGroupFieldName, "NotArachne");
+		response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		assertFalse(response.contains("\"suggest\":{\"input\":[\"Title of the Test\",\"test facet value\"],\"weight\":146}"));
 	}
 }
