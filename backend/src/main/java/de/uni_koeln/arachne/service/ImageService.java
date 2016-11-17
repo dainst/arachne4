@@ -61,7 +61,6 @@ public class ImageService {
 				dataset.setImages(imageList);
 				dataset.setThumbnailId(arachneId.getArachneEntityID());
 			} else {
-				@SuppressWarnings("unchecked")
 				final List<Image> imageList = (List<Image>) genericSQLDao.getImageList(arachneId.getTableName()
 						, arachneId.getInternalKey());
 				// sort image List

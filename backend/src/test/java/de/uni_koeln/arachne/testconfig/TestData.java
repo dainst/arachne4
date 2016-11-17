@@ -53,6 +53,8 @@ public class TestData {
 			+ "\"places\":[],"
 			+ "\"dates\":[],"
 			+ "\"catalogIds\":[1,2,3,4,5],\"catalogPaths\":[\"1\",\"1/2\",\"1/2/3\",\"1/2/3/4\",\"1/2/3/4/5\"],"
+			+ "\"images\":[{\"imageId\":12345,\"imageSubtitle\":\"Image 12345\"}],"
+			+ "\"imageSize\":2,"
 			+ "\"fields\":12,\"boost\":1.587285436745143,\"connectedEntities\":[1,2,3,4,5],"
 			+ "\"degree\":5.0,"
 			+ "\"facet_image\":[\"nein\"],"
@@ -101,6 +103,18 @@ public class TestData {
 		testDataset.setFields("test.facetMultiValueTest", "value 1;value 2;value 3");
 		testDataset.setFields("test.includeTestFacetValue1", "include value 1");
 		testDataset.setFields("test.includeTestFacetValue2", "include value 2");
+		
+		final List<de.uni_koeln.arachne.response.Image> imageList = new ArrayList<>();
+		de.uni_koeln.arachne.response.Image image = new de.uni_koeln.arachne.response.Image();
+		image.setImageId(12345L);
+		image.setImageSubtitle("Image 12345");
+		imageList.add(image);
+		image = new de.uni_koeln.arachne.response.Image();
+		image.setImageId(54321L);
+		image.setImageSubtitle("Image 54321");
+		imageList.add(image);
+		testDataset.setImages(imageList);
+		testDataset.setThumbnailId(12345L);
 		
 		final Dataset linkDataset = new Dataset();
 		

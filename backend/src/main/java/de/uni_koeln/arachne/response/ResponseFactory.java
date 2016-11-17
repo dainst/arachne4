@@ -93,11 +93,15 @@ public class ResponseFactory {
 	
 	final private List<String> suggestFacetList;
 	
+	final private int imageLimit;
+	
 	@Autowired
 	public ResponseFactory(final @Value("${serverAddress}") String serverAddress
-			, final @Value("#{'${esSuggestFacets}'.split(',')}") List<String> suggestFacetList) {
+			, final @Value("#{'${esSuggestFacets}'.split(',')}") List<String> suggestFacetList
+			, final @Value("${imageLimit}") int imageLimit) {
 		this.serverAddress = serverAddress;
 		this.suggestFacetList = suggestFacetList;
+		this.imageLimit = imageLimit;
 	}
 	
 	/**
@@ -523,8 +527,13 @@ public class ResponseFactory {
 		// set editor section
 		setEditorSection(dataset, namespace, display, response);
 
-		// Set images
-		response.setImages(dataset.getImages());
+		// Set images - max 'imageLimit' images
+		List<Image> imageList = dataset.getImages();
+		response.setImageSize(imageList.size());
+		if (imageList.size() > imageLimit) {
+			imageList = imageList.subList(0, imageLimit);
+		}
+		response.setImages(imageList);
 		
 		// set external links
 		setExternalLinks(dataset, response);

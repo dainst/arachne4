@@ -41,7 +41,7 @@ public class TestResponseFactory { // NOPMD
 	@Mock private JSONUtil jsonUtil;
 	@SuppressWarnings("serial")
 	@InjectMocks private final ResponseFactory responseFactory 
-			= new ResponseFactory("testAddress.com", new ArrayList<String>() {{ add("facet_test"); }});
+			= new ResponseFactory("testAddress.com", new ArrayList<String>() {{ add("facet_test"); }}, 1);
 	
 	@Mock private UserRightsService userRightsService;
 	@InjectMocks private final XmlConfigUtil xmlConfigUtil = new XmlConfigUtil();
@@ -170,6 +170,13 @@ public class TestResponseFactory { // NOPMD
 	}
 	
 	@Test
+	public void testImages() throws Transl8Exception {
+		String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		assertTrue(response.contains("\"imageSize\":2"));
+		assertTrue(response.contains("\"images\":[{\"imageId\":12345,\"imageSubtitle\":\"Image 12345\"}]"));
+	}
+	
+	@Test
 	public void testDynamicFacets() throws Transl8Exception {
 		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
 		assertTrue(response.contains("\"facet_kategorie\":[\"test\"]"));
@@ -181,7 +188,7 @@ public class TestResponseFactory { // NOPMD
 	@Test
 	public void testStaticFacets() throws Transl8Exception {
 		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
-		assertTrue(response.contains("\"facet_image\":[\"nein\"]"));
+		assertTrue(response.contains("\"facet_image\":[\"ja\"]"));
 	}
 
 	@Test

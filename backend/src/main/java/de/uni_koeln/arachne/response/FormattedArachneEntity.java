@@ -64,9 +64,14 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	protected AbstractContent context;
 	
 	/**
-	 * The Images that are associated with the dataset
+	 * The Images that are associated with the dataset (or a sub set if too many images are connected to this entity)
 	 */
 	protected List<Image> images;
+	
+	/**
+	 * The number of connected images
+	 */
+	protected int imageSize = 0;
 	
 	/**
 	 * The image id of the thumbnail of the dataset
@@ -189,6 +194,14 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	
 	public void setImages(final List<Image> images) {
 		this.images = images;
+	}
+	
+	public int getImageSize() {
+		return imageSize;
+	}
+
+	public void setImageSize(int imageSize) {
+		this.imageSize = imageSize;
 	}
 	
 	public void setThumbnailId(final Long thumbnailId) {
