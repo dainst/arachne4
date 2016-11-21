@@ -19,6 +19,7 @@ import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.ContextConfiguration;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -41,7 +42,7 @@ public class TestResponseFactory { // NOPMD
 	@Mock private JSONUtil jsonUtil;
 	@SuppressWarnings("serial")
 	@InjectMocks private final ResponseFactory responseFactory 
-			= new ResponseFactory("testAddress.com", new ArrayList<String>() {{ add("facet_test"); }}, 1);
+			= new ResponseFactory("testAddress.com", new ArrayList<String>() {{ add("facet_test"); }}, 2);
 	
 	@Mock private UserRightsService userRightsService;
 	@InjectMocks private final XmlConfigUtil xmlConfigUtil = new XmlConfigUtil();
@@ -50,7 +51,9 @@ public class TestResponseFactory { // NOPMD
 	
 	private List<CatalogEntryInfo> mockCatalogDataList = null;
 		
-	private Dataset dataset = new TestData().getTestDataset();	
+	private Dataset dataset = TestData.getTestDataset();	
+	
+	private ObjectMapper jsonMapper = new ObjectMapper();
 	
 	@Before
 	public void setUp() throws Transl8Exception {
@@ -170,10 +173,11 @@ public class TestResponseFactory { // NOPMD
 	}
 	
 	@Test
-	public void testImages() throws Transl8Exception {
+	public void testImages() throws Transl8Exception, JsonProcessingException {
+		final String expectedJson = jsonMapper.writeValueAsString(dataset.getImages().subList(0, 2));
 		String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
-		assertTrue(response.contains("\"imageSize\":2"));
-		assertTrue(response.contains("\"images\":[{\"imageId\":12345,\"imageSubtitle\":\"Image 12345\"}]"));
+		assertTrue(response.contains("\"imageSize\":4"));
+		assertTrue(response.contains(expectedJson));
 	}
 	
 	@Test

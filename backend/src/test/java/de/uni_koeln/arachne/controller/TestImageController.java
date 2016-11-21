@@ -49,8 +49,6 @@ public class TestImageController {
 		mockMvc = MockMvcBuilders.standaloneSetup(controller)
 				.setMessageConverters(new ByteArrayHttpMessageConverter(), new StringHttpMessageConverter()).build();
 
-		final TestData testData = new TestData();
-
 		when(iipService.getImage(eq(0l), anyInt(), anyInt()))
 		.then(new Answer<TypeWithHTTPStatus<byte[]>>() {
 			@Override
@@ -60,7 +58,7 @@ public class TestImageController {
 				int height = invocation.getArgumentAt(2, int.class);
 
 				TypeWithHTTPStatus<byte[]> result = 
-						new TypeWithHTTPStatus<byte[]>(testData.getScaledTestImageJPEG(width, height));
+						new TypeWithHTTPStatus<byte[]>(TestData.getScaledTestImageJPEG(width, height));
 				return result;
 			}
 		}
@@ -69,12 +67,12 @@ public class TestImageController {
 		.thenReturn(new TypeWithHTTPStatus<byte[]>(HttpStatus.NOT_FOUND));
 
 		when(iipService.getImagePropertiesForZoomifyViewer(0l))
-		.thenReturn(new TypeWithHTTPStatus<String>(testData.getZoomifyPropertiesXML()));
+		.thenReturn(new TypeWithHTTPStatus<String>(TestData.zoomifyImageProperties));
 		when(iipService.getImagePropertiesForZoomifyViewer(1l))
 		.thenReturn(new TypeWithHTTPStatus<String>(HttpStatus.NOT_FOUND));
 		
 		when(iipService.getImageForZoomifyViewer(eq(0l), anyInt(), anyInt(), anyInt()))
-		.thenReturn(new TypeWithHTTPStatus<byte[]>(testData.getScaledTestImageJPEG(64, 64)));
+		.thenReturn(new TypeWithHTTPStatus<byte[]>(TestData.getScaledTestImageJPEG(64, 64)));
 		when(iipService.getImageForZoomifyViewer(eq(1l), anyInt(), anyInt(), anyInt()))
 		.thenReturn(new TypeWithHTTPStatus<byte[]>(HttpStatus.NOT_FOUND));
 		

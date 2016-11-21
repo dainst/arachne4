@@ -1,8 +1,5 @@
 package de.uni_koeln.arachne.controller;
 
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +9,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import static de.uni_koeln.arachne.util.network.CustomMediaType.*;
+
+import java.util.List;
+
+import de.uni_koeln.arachne.response.Image;
+import de.uni_koeln.arachne.response.ImageListResponse;
 import de.uni_koeln.arachne.service.ESService;
+import de.uni_koeln.arachne.service.EntityIdentificationService;
 import de.uni_koeln.arachne.service.EntityService;
+import de.uni_koeln.arachne.service.ImageService;
 import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
+import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 
 /**
@@ -27,6 +32,12 @@ public class EntityController {
 	
 	@Autowired
 	private transient EntityService entityService;
+	
+	@Autowired
+	private transient EntityIdentificationService entityIdentificationService;
+	
+	@Autowired
+	private transient ImageService imageService;
 
 	@Autowired
 	private transient ESService esService;
@@ -105,6 +116,24 @@ public class EntityController {
     	return ResponseEntity.status(result.getStatus()).body(result.getValue());
     }
         
+    @RequestMapping(value="/entity/{entityId}/images", 
+    		method=RequestMethod.GET, 
+    		produces={APPLICATION_JSON_UTF8_VALUE})
+    public @ResponseBody ResponseEntity<ImageListResponse> handleImagesRequest(
+    		@PathVariable("entityId") final long entityId,
+    		@RequestParam(value = "offset", required = false) final Integer offset,
+    		@RequestParam(value = "limit", required = false) final Integer limit) {
+    	
+    	TypeWithHTTPStatus<List<Image>> result;
+    	int imageOffset = (offset == null) ? 0 : offset;
+    	int imageLimit = (limit == null) ? 0 : limit;
+    	final EntityId fullEntityId = entityIdentificationService.getId(entityId);
+    	if (fullEntityId != null) {
+    		result = imageService.getImagesSubList(fullEntityId, imageOffset, imageLimit);
+    		return ResponseEntity.status(result.getStatus()).body(new ImageListResponse(result.getValue()));
+    	}
+    	return new ResponseEntity<ImageListResponse>(HttpStatus.NOT_FOUND);
+    }
     //////////////////////////////////////////////////////////////////////////////////////////////////
     
     /**

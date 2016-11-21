@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 
@@ -51,26 +50,23 @@ public class TestEntityService {
 	@Before
 	@SuppressWarnings("unchecked")
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
-		
-		TestData testData = new TestData();
-		final Dataset testDataset = testData.getTestDataset();
+		final Dataset testDataset = TestData.getTestDataset();
 				
 		when(userRightsService.isDataimporter()).thenReturn(false, false, true);
 		when(userRightsService.userHasDatasetGroup(null)).thenReturn(false, true);
 		
-		testId = testData.getTestId();
+		testId = TestData.getTestDataset().getArachneId();
 		when(singleEntityDataService.getSingleEntityByArachneId(testId)).thenReturn(testDataset);
 		
 		when(responseFactory.createFormattedArachneEntityAsJsonString(testDataset))
-			.thenReturn(testData.getTestJsonAsString());
+			.thenReturn(TestData.jsonString);
 		when(responseFactory.createFormattedArachneEntityAsJson(testDataset))
-		.thenReturn(testData.getTestJson());
+		.thenReturn(TestData.getTestJson());
 		
 		when(entityIdentificationService.getId(anyLong())).thenReturn(null);
 		when(entityIdentificationService.getId(anyString(), anyLong())).thenReturn(null);
 		when(entityIdentificationService.getId(0l)).thenReturn(testId);
-		when(entityIdentificationService.getId(2l)).thenReturn(testData.getDeletedEntity());
+		when(entityIdentificationService.getId(2l)).thenReturn(TestData.deletedEntity);
 		when(entityIdentificationService.getId("test", 0l)).thenReturn(testId);
 		
 		when(esService.getDocumentFromCurrentIndex(anyLong(), anyString(), any(String[].class)))

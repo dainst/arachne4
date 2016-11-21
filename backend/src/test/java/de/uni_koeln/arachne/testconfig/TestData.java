@@ -35,7 +35,7 @@ import de.uni_koeln.arachne.util.EntityId;
  */
 public class TestData {
 
-	private final String jsonString = "{"
+	public static final String jsonString = "{"
 			+ "\"entityId\":1,"
 			+ "\"type\":\"type_test\","
 			+ "\"internalId\":123,"
@@ -63,15 +63,14 @@ public class TestData {
 			+ "\"facet_multivaluetest\":[\"value 1\",\"value 2\",\"value 3\"],"
 			+ "\"facet_includetest\":[\"include value 1\",\"include value 2\"]}";
 	
-	private final String zoomifyImageProperties 
+	public static final String zoomifyImageProperties 
 			= "<IMAGE_PROPERTIES WIDTH=\"1600\" HEIGHT=\"1000\" NUMTILES=\"28\" NUMIMAGES=\"1\" VERSION=\"1.8\" TILESIZE=\"256\" />";
 	
-	private final Dataset testDataset = new Dataset();
-	
-	private final EntityId deletedEntity = new EntityId("test", 432L, 32L, true, 0L);
-	
-	public TestData() {
-		// dataset
+	public static final EntityId deletedEntity = new EntityId("test", 432L, 32L, true, 0L);
+
+	public static Dataset getTestDataset() {
+		final Dataset testDataset = new Dataset();
+		
 		testDataset.setArachneId(new EntityId("test", 123L, 1L, false, 1L));
 				
 		testDataset.setFields("test.otherId", "1234567890");
@@ -106,6 +105,14 @@ public class TestData {
 		
 		final List<de.uni_koeln.arachne.response.Image> imageList = new ArrayList<>();
 		de.uni_koeln.arachne.response.Image image = new de.uni_koeln.arachne.response.Image();
+		image.setImageId(123L);
+		image.setImageSubtitle("Image 123");
+		imageList.add(image);
+		image = new de.uni_koeln.arachne.response.Image();
+		image.setImageId(321L);
+		image.setImageSubtitle("Image 321");
+		imageList.add(image);
+		image = new de.uni_koeln.arachne.response.Image();
 		image.setImageId(12345L);
 		image.setImageSubtitle("Image 12345");
 		imageList.add(image);
@@ -114,7 +121,7 @@ public class TestData {
 		image.setImageSubtitle("Image 54321");
 		imageList.add(image);
 		testDataset.setImages(imageList);
-		testDataset.setThumbnailId(12345L);
+		testDataset.setThumbnailId(123L);
 		
 		final Dataset linkDataset = new Dataset();
 		
@@ -135,32 +142,17 @@ public class TestData {
 		contexts.add(link);
 		
 		final Context context = new Context("testContext", testDataset, contexts);
-		testDataset.addContext(context);		
-	}
-	
-	public Dataset getTestDataset() {
+		testDataset.addContext(context);
 		return testDataset;
 	}
-
-	public EntityId getTestId() {
-		return testDataset.getArachneId();
-	}
 	
-	public EntityId getDeletedEntity() {
-		return deletedEntity;
-	}
-	
-	public String getTestJsonAsString() {
-		return jsonString;
-	}
-	
-	public byte[] getTestJson() throws JsonProcessingException, IOException {
+	public static byte[] getTestJson() throws JsonProcessingException, IOException {
 		final ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode testJson = objectMapper.readTree(jsonString);
 		return objectMapper.writeValueAsBytes(testJson);
 	}
 	
-	public BufferedImage getTestImageJPEG() throws IOException {
+	public static BufferedImage getTestImageJPEG() throws IOException {
 		final URL resource = TestData.class.getResource("/WEB-INF/images/greif.jpeg");
 		final InputStream stream = Resources.asByteSource(resource).openStream();
 		final BufferedImage result = ImageIO.read(stream);
@@ -168,7 +160,7 @@ public class TestData {
 		return result;
 	}
 	
-	public byte[] getScaledTestImageJPEG(int width, int height) throws IOException {
+	public static byte[] getScaledTestImageJPEG(int width, int height) throws IOException {
 		final BufferedImage origImage = getTestImageJPEG();
 		if (width <= 0) {
 			width = origImage.getWidth();
@@ -189,11 +181,7 @@ public class TestData {
 		return result;
 	}
 	
-	public String getZoomifyPropertiesXML() {
-		return zoomifyImageProperties;
-	}
-	
-	public SearchResult getDefaultSearchResult() {
+	public static SearchResult getDefaultSearchResult() {
 		final SearchResult result = new SearchResult();
 		result.addSearchHit(new SearchHit(1l, "test", "testServer.com/entity/1" ,"Test title", "Test subtitle", 1l
 				, new ArrayList<Place>(), null));

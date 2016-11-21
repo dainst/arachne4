@@ -8,12 +8,14 @@ import java.util.List;
 //import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 import de.uni_koeln.arachne.util.image.ImageComparator;
 import de.uni_koeln.arachne.util.image.ImageUtils;
 import de.uni_koeln.arachne.util.sql.SQLToolbox;
@@ -81,6 +83,33 @@ public class ImageService {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Method to get a sublist of connected images. It will not return images for entities which themselves are images 
+	 * (in contrast to 'addImages') as the only image connected to such entity is itself. 
+	 * @param arachneId The entity ID object of an entity.
+	 * @param offset An offset into the image list. 
+	 * @param limit The maximum number of images in the sublist (0 for no limit).
+	 * @return The image sublist and a corresponding HTTP status.
+	 */
+	public TypeWithHTTPStatus<List<Image>> getImagesSubList(final EntityId arachneId, final int offset, final int limit) {
+		if (!excludeList.contains(arachneId.getTableName()) && (!"marbilder".equals(arachneId.getTableName()))) {
+			final List<Image> imageList = (List<Image>) genericSQLDao.getImageList(arachneId.getTableName()
+					, arachneId.getInternalKey());
+			// sort image List
+			if (imageList != null && imageList.size() > 1) {
+				Collections.sort(imageList, new ImageComparator());
+			}
+			int upperBound = limit + offset;
+			upperBound = (upperBound > imageList.size() || limit == 0) ? imageList.size() : upperBound; 
+			try {
+				return new TypeWithHTTPStatus<List<Image>>(imageList.subList(offset, upperBound));
+			} catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+				return new TypeWithHTTPStatus<>(HttpStatus.BAD_REQUEST);
+			}
+		}
+		return new TypeWithHTTPStatus<>(HttpStatus.NOT_FOUND);
 	}
 
 }
