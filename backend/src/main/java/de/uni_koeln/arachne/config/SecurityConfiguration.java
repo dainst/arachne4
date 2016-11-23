@@ -37,6 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.PUT, "/userinfo/**").hasAnyRole("USER", "ADMIN")
 				.antMatchers(HttpMethod.POST, "/user/**").hasRole("ANONYMOUS")
 				.antMatchers(HttpMethod.GET, "/search/scroll/**").hasAnyRole("USER", "ADMIN")
+				.antMatchers(HttpMethod.GET, "/entity/**/images").hasAnyRole("USER", "ADMIN")
 				.antMatchers("/**").hasAnyRole("USER", "ADMIN", "ANONYMOUS")
 			.and()
 				.httpBasic()
