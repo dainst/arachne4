@@ -74,6 +74,12 @@ public class UserManagementController {
 	private transient final String adminEmail;
 	private transient final String serverAddress;
 	
+	/**
+	 * Constructor setting the default dataset groups, the admin eMail and the server address. 
+	 * @param defaultDatasetGroups The list of default dataset groups.
+	 * @param adminEmail The admin eMail address.
+	 * @param serverAddress The server address.
+	 */
 	@Autowired
 	public UserManagementController(
 			final @Value("#{'${defaultDatasetGroups}'.split(',')}") List<String> defaultDatasetGroups,
@@ -117,7 +123,7 @@ public class UserManagementController {
 	 * normal user.
 	 * @param username The username of interest.
 	 * @param formData The form data as map.
-	 * @return A JSON serialization of the corresponding User object.
+	 * @return The JSON serialization of a success message.
 	 * @throws FormDataException if the email address is invalid or already taken or the username is already taken.
 	 */
 	@RequestMapping(value="/userinfo/{username}", 
@@ -175,6 +181,13 @@ public class UserManagementController {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 	
+	/**
+	 * HTTP endpoint for registering a new user.
+	 * @param formData The registration from data.
+	 * @param response The HTTP response.
+	 * @return The JSON serialization of a success message.
+	 * @throws FormDataException if the form data cannot be validated.
+	 */
 	@ResponseBody
 	@RequestMapping(value="/user/register", 
 			method=RequestMethod.POST, 
@@ -387,6 +400,12 @@ public class UserManagementController {
 		}
 	}
 	
+	/**
+	 * Exception handler for {@link FormDataException}s.
+	 * @param e The exception.
+	 * @param response The HTTP response.
+	 * @return A message indicating failure including the original exceptions message.
+	 */
 	@ResponseBody
 	@ExceptionHandler(FormDataException.class)
 	public Map<String,String> handleRequiredFieldException(FormDataException e, HttpServletResponse response) {

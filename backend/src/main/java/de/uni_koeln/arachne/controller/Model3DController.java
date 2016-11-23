@@ -54,6 +54,10 @@ public class Model3DController {
 	
 	private transient final String basePath;
 	
+	/**
+	 * Constructor setting the path to the 3D models directory.
+	 * @param basePath The path.
+	 */
 	@Autowired
 	public Model3DController(final @Value("${model3dBasePath}") String basePath) {
 		this.basePath = basePath;

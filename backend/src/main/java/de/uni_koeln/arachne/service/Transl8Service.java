@@ -54,6 +54,10 @@ public class Transl8Service {
 	
 	private transient String transl8Url;
 	
+	/**
+	 * Constructor setting the Transl8 URL.
+	 * @param transl8Url The Transl8 URL.
+	 */
 	@Autowired
 	public Transl8Service(final @Value("${transl8Url}") String transl8Url) {
 		this.transl8Url = transl8Url;
@@ -176,10 +180,19 @@ public class Transl8Service {
 		
 		private static final long serialVersionUID = 1L;
 
+		/**
+		 * Constructor taking a message argument.
+		 * @param message The exception message.
+		 */
 		public Transl8Exception(final String message) {
 			super(message);
 		}
 		
+		/**
+		 * Constructor taking a message and a cause argument.
+		 * @param message The exception message.
+		 * @param cause The cause of the esception.
+		 */
 		public Transl8Exception(final String message, final Throwable cause) {
 			super(message, cause);
 		}

@@ -51,6 +51,11 @@ public class SearchController {
 	
 	private transient final int defaultLimit;
 	
+	/**
+	 * Constructor setting the default limit and facet limit values.
+	 * @param defaultLimit The default search limit.
+	 * @param defaultFacetLimit the default facet limit.
+	 */
 	@Autowired
 	public SearchController(final @Value("${esDefaultLimit}") int defaultLimit,
 			final @Value("${esDefaultFacetLimit}") int defaultFacetLimit) {
@@ -189,6 +194,12 @@ public class SearchController {
 		}
 	}
 	
+	/**
+	 * Handles the HTTP request by executing a scroll search request with the given <code>scrollId</code>. This means it 
+	 * pages the results of the original scroll search requests.
+	 * @param scrollId The scroll id of the original search.
+	 * @return The next search result of the scroll search.
+	 */
 	@RequestMapping(value="/search/scroll/{scrollId}",
 			method=RequestMethod.GET,
 			produces={APPLICATION_JSON_UTF8_VALUE})
@@ -205,8 +216,7 @@ public class SearchController {
 	/**
 	 * Handles the HTTP request by executing a completion suggest request on the elasticsearch index. 
 	 * @param queryString The prefix to find suggestions for.
-	 * @return Two lists of suggestions containg the same terms in the same order. One as returned from elasticsearch and one 
-	 * where all elasticsearch reserved characters are escaped.
+	 * @return A list of suggestions.
 	 */
 	@RequestMapping(value="/suggest",
 			method=RequestMethod.GET,

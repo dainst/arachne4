@@ -38,6 +38,10 @@ public class ImageService {
 	
 	private transient final List<String> excludeList;
 	
+	/**
+	 * Constructor setting the list of types that do not have any connected images.
+	 * @param imageExcludeList The list of types without images.
+	 */
 	@Autowired
 	public ImageService(final @Value("#{'${imageExcludeList}'.split(',')}") List<String> imageExcludeList) {
 		excludeList = imageExcludeList;

@@ -14,6 +14,11 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import de.uni_koeln.arachne.service.ArachneUserDetailsService;
 import de.uni_koeln.arachne.util.security.ArachneAuthenticationEntryPoint;
 
+/**
+ * Spring security configuration class.
+ * @author Reimar Grabowski
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -47,6 +52,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
+	/**
+	 * Returns a new {@link ArachneAuthenticationEntryPoint}.
+	 * @return The entry point.
+	 */
 	@Bean
 	public AuthenticationEntryPoint authenticationEntryPoint() {
 		return new ArachneAuthenticationEntryPoint();

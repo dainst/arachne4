@@ -42,6 +42,10 @@ public class EntityController {
 	@Autowired
 	private transient ESService esService;
 	
+	/**
+	 * Handles HTTP request for /entity/count.
+	 * @return The number of entities in the elasticsearch index. 
+	 */
 	@RequestMapping(value="/entity/count", 
 			method=RequestMethod.GET, 
 			produces={APPLICATION_JSON_UTF8_VALUE})
@@ -56,8 +60,7 @@ public class EntityController {
 	
 	/**
 	 * Handles http request for /{entityId}.
-	 * Requests for /entity/* return formatted data. This will be sent out either as JSON or as XML. The response format is set 
-	 * by Springs content negotiation mechanism.
+	 * Requests for /entity/* return formatted data as JSON.
 	 * @param entityId The unique entity id of the item to fetch.
 	 * @param isLive If the entity shall be fetched from DB (<code>true</code>) or ES (<code>false</code>)
      * @return A response object containing the data (this is serialized to JSON).
@@ -86,8 +89,7 @@ public class EntityController {
 
     /**
      * Handles http request for /{category}/{id}
-     * Requests for /entity/* return formatted data. This will be sent out either as JSON or as XML. The response format is set 
-	 * by Springs content negotiation mechanism.
+     * Requests for /entity/* return formatted data as JSON.
      * @param category The database table to fetch the item from.
      * @param categoryId The internal id of the item to fetch.
      * @param isLive If the entity shall be fetched from DB (<code>true</code>) or ES (<code>false</code>)
@@ -115,7 +117,14 @@ public class EntityController {
     	}
     	return ResponseEntity.status(result.getStatus()).body(result.getValue());
     }
-        
+    
+    /**
+     * Handles HTTP requests for /entity/{entityId}/images.
+     * @param entityId The entity id.
+     * @param offset An offset into the image list.
+     * @param limit The maximum number of images in the list.
+     * @return The list of connected images limited by 'offset' and 'limit'.
+     */
     @RequestMapping(value="/entity/{entityId}/images", 
     		method=RequestMethod.GET, 
     		produces={APPLICATION_JSON_UTF8_VALUE})

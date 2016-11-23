@@ -17,11 +17,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.uni_koeln.arachne.util.StrUtils;
 
+/**
+ * Maps the {@link ResultSet} of any entity including an optional JSON field. 
+ * @author satan
+ *
+ */
 public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntitiesMapper.class);
 	
 	private final transient String jsonField;
 
+	/**
+	 * Constructor setting the name of the JSON field.
+	 * @param jsonField The name of the field.
+	 */
 	public GenericEntitiesMapper(final String jsonField) {
 		this.jsonField = jsonField;
 	}
