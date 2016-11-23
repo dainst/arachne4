@@ -31,12 +31,26 @@ public class GenericSQLDao extends SQLDao {
 	
 	private transient UserRightsService userRightsService;
 	
-	// needed to inject mock for testing - it should work without this setter but it does not
+	// 
+	/**
+	 * Setter for the UserRightsService. Needed to inject mock for testing - it should work without this setter 
+	 * but it does not (bug in Spring)
+	 * @param userRightsService The UserRightsService.
+	 */
 	@Autowired
 	public void setUserRightsService(final UserRightsService userRightsService) {
 		this.userRightsService = userRightsService;
 	}
-		
+	
+	/**
+	 * Read any string field from the DB.
+	 * @param tableName The table name.
+	 * @param key The id field.
+	 * @param id The id.
+	 * @param field The field to read.
+	 * @param disableAuthorization if user access rights should be taken into account.
+	 * @return The value of the field.
+	 */
 	public String getStringField(final String tableName, String key, final long id, String field
 			, final boolean disableAuthorization) {
 		if (key.equals(tableName)) {
@@ -71,11 +85,25 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
+	/**
+	 * Convenience method to read a string field from the DB without taking user access rights into account.
+	 * @param tableName The table name.
+	 * @param field1 The id field.
+	 * @param field1Id the id.
+	 * @param field2 The field to read.
+	 * @return The value of the field.
+	 */
 	public String getStringField(final String tableName, final String field1, final long field1Id
 			, final String field2) {
 		return getStringField(tableName, field1, field1Id, field2, false);		
 	}
 	
+	/**
+	 * Gets a list of connected entities as key value pairs.
+	 * @param contextType The type of connected entity (a table name).
+	 * @param entityId The entity id to get connected entities for.
+	 * @return The list of connected entities.
+	 */
 	public List<Map<String, String>> getConnectedEntities(final String contextType, final long entityId) {
 		final List<Map<String, String>> result = query(con -> {
 			final String sql = "SELECT * FROM `SemanticConnection` "
@@ -97,6 +125,11 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
+	/**
+	 * Gets a list of connected entities as ids (images excluded).
+	 * @param entityId The entity id to get connected entities for.
+	 * @return The list of ids.
+	 */
 	public List<Long> getConnectedEntityIds(final long entityId) {
 		final String sql = "SELECT `Target` FROM `SemanticConnection` "
 				+ "WHERE NOT `Target` = 0 "
@@ -111,6 +144,12 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
+	/**
+	 * Gets a list of ids for 'path connected' (connected via multiple tables) entities as ids.
+	 * @param entityId The entity id to get connected entities for.
+	 * @param contextPath The path.
+	 * @return The list of ids.
+	 */
 	public List<Long> getPathConnectedEntityIds(final long entityId, final ContextPath contextPath) {
 		final ConnectedPathEntitiesSQLQueryBuilder sqlBuilder = new ConnectedPathEntitiesSQLQueryBuilder(contextPath, entityId);
 		sqlBuilder.retriveFullDataset(false);
@@ -126,6 +165,12 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
+	/**
+	 * Gets a list of ids for 'path connected' (connected via multiple tables) entities as key value pairs.
+	 * @param entityId The entity id to get connected entities for.
+	 * @param contextPath The path.
+	 * @return The list of connected entities.
+	 */
 	public List<Map<String, String>> getPathConnectedEntities(final long entityId, final ContextPath contextPath) {
 		final ConnectedPathEntitiesSQLQueryBuilder sqlBuilder = new ConnectedPathEntitiesSQLQueryBuilder(contextPath, entityId);
 		sqlBuilder.retriveFullDataset(true);
@@ -140,6 +185,12 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 	
+	/**
+	 * Gets a list of connected images for the given entity from the DB. Handles user access rights.
+	 * @param type The type of the entity.
+	 * @param internalId The internal id of the entity.
+	 * @return The list of images.
+	 */
 	public List<Image> getImageList(final String type
 			, final long internalId) {
 		List<Image> result = query(con -> {
@@ -172,6 +223,12 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 
+	/**
+	 * Gets the literature for a given entity.
+	 * @param tableName The table name of the entity.
+	 * @param internalKey The internal key of the entity.
+	 * @return The list of connected literature records.
+	 */
 	public List<Map<String, String>> getLiterature(final String tableName, final Long internalKey) {
 		final List<Map<String, String>>	result = query(con -> {
 			final String sql = "SELECT * FROM literaturzitat "
@@ -191,6 +248,11 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 
+	/**
+	 * Gets the cover page of a book record.
+	 * @param internalKey The internal key of the book.
+	 * @return The id of the cover page.
+	 */
 	public Long getBookCoverPage(Long internalKey) {
 		final String sqlQuery = "SELECT PS_BuchseiteID FROM buchseite WHERE seite = 0 and FS_BuchID = " 
 				+ internalKey + " LIMIT 1;";
@@ -198,14 +260,19 @@ public class GenericSQLDao extends SQLDao {
 		return cover;
 	}
 
-	public List<Map<String, String>> getPersons(final String tableName, final Long internalKey) {
+	/**
+	 * Gets a list of persons connected to a collection as key value pairs. 
+	 * @param collectionId The internal key of the collection ('FS_SammlungenID').
+	 * @return The list of persons.
+	 */
+	public List<Map<String, String>> getPersonsByCollectionId(final Long collectionId) {
         final List<Map<String, String>> result = query(con -> {
             final String sql = "SELECT * FROM personsammlung "
                     +"LEFT JOIN person ON FS_PersonID = PS_PersonID "
                     +"WHERE personsammlung.FS_SammlungenID = ? "
                     +"ORDER BY personsammlung.Sammlerreihenfolge ASC;";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setLong(1, internalKey);
+            ps.setLong(1, collectionId);
             return ps;
         }, new GenericEntitiesMapper("AdditionalInfosJSON"));
 

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -24,6 +23,11 @@ import de.uni_koeln.arachne.testconfig.TestData;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 
+/**
+ * Unit tests for the {@link ImageService} class.
+ * @author Reimar Grabowski
+ *
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class TestImageService {
 
@@ -41,19 +45,18 @@ public class TestImageService {
 	
 	private final EntityId entityId = testDataset.getArachneId();
 	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
+	/**
+	 * Method to initialize the mocks.
+	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		when(genericSQLDao.getImageList(entityId.getTableName(), entityId.getInternalKey()))
 				.thenReturn(testDataset.getImages());
 	}
 
 	/**
 	 * Tests that the addImage method correctly adds the image list.
-	 * @throws Exception
+	 * @throws Exception if the images field cannot be accessed via reflection.
 	 */
 	@Test
 	public void testAddImages() throws Exception {
@@ -72,7 +75,7 @@ public class TestImageService {
 	
 	/**
 	 * Tests that no images are added for categories that are in the exclude list.
-	 * @throws Exception
+	 * @throws Exception if the images field cannot be accessed via reflection.
 	 */
 	@Test
 	public void testAddImagesExcluded() throws Exception {
@@ -93,10 +96,9 @@ public class TestImageService {
 	
 	/**
 	 * Tests that the single image of a 'MARBilder'-entity is added correctly.
-	 * @throws Exception
 	 */
 	@Test
-	public void testAddImagesMARBilder() throws Exception {
+	public void testAddImagesMARBilder() {
 		final Dataset dataset = new Dataset();
 		// shallow copy
 		BeanUtils.copyProperties(testDataset, dataset);

@@ -22,6 +22,7 @@ public class IndexResult {
 	
 	/**
 	 * Adds a value to the value list.
+	 * @param value The value to add.
 	 */
 	public void addValue(final String value) {
 		facetValues.add(value);
@@ -29,13 +30,11 @@ public class IndexResult {
 	
 	/**
 	 * Replaces the current <code>facetValues</code> with a subset of itself. 
-	 * @param inputList The list to get a sublist from.
 	 * @param marker A marker indicating which sublist to generate.</br>
 	 * '<'       : All terms starting with chars 'smaller' than '0'
 	 * '$'       : All terms starting with a number
 	 * 'a' - 'z' : All terms starting with the corresponding letter
 	 * '>'       : All terms starting with charsequences 'larger' than 'zzz'
-	 * @return The sublist.
 	 */
 	public void reduce(final char marker) {
 		if (marker == '<' || marker == '$' || (Character.isLetter(marker) && Character.isLowerCase(marker))) {

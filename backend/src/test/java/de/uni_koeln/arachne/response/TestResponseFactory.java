@@ -205,7 +205,7 @@ public class TestResponseFactory { // NOPMD
 	
 	/**
 	 * Tests if the suggest field is correctly added to the JSON object.
-	 * @throws Transl8Exception
+	 * @throws Transl8Exception Should never been thrown.
 	 */
 	@Test
 	public void testSuggest() throws Transl8Exception {

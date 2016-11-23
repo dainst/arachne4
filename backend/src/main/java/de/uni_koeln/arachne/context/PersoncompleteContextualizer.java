@@ -22,8 +22,8 @@ public class PersoncompleteContextualizer extends AbstractContextualizer {
         final List<AbstractLink> result = new ArrayList<AbstractLink>();
 
         // data from the "person" table
-        final List<Map<String, String>> perContextContents = genericSQLDao.getPersons(
-                parent.getArachneId().getTableName(), parent.getArachneId().getInternalKey());
+        final List<Map<String, String>> perContextContents = genericSQLDao.getPersonsByCollectionId(
+        		parent.getArachneId().getInternalKey());
 
         // check if the books exist in Arachne and construct corresponding link
         if (perContextContents != null) {
