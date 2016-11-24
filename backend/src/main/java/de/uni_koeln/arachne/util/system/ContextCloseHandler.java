@@ -5,8 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.stereotype.Component;
-
-import com.mysql.jdbc.AbandonedConnectionCleanupThread;
+import com.mysql.cj.jdbc.AbandonedConnectionCleanupThread;
 
 /**
  * Class to handle context close events and allow for custom code execution.

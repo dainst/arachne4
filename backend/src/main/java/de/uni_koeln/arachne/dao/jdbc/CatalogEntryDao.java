@@ -6,18 +6,18 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
 
-import de.uni_koeln.arachne.util.sql.CatalogEntryExtended;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysql.jdbc.Statement;
+import com.mysql.cj.api.jdbc.Statement;
 
 import de.uni_koeln.arachne.dao.hibernate.ArachneEntityDao;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.util.sql.CatalogEntryExtended;
 
 /**
  * JDBC data access object for {@link CatalogEntry} instances.
