@@ -135,7 +135,7 @@ public class TestUserManagementController {
 				.andExpect(content().json("{username:\"testuser\","
 						+ "firstname:\"test\","
 						+ "lastname:\"user\","
-						+ "all_groups:true,"
+						+ "all_groups:true"
 						+ "}"));
 		
 		// user
@@ -146,7 +146,7 @@ public class TestUserManagementController {
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 				.andExpect(content().json("{username:\"testuser\","
 						+ "firstname:\"test\","
-						+ "lastname:\"user\","
+						+ "lastname:\"user\""
 						+ "}"))
 				.andReturn();
 		
@@ -181,7 +181,7 @@ public class TestUserManagementController {
 				.andExpect(content().json("{username:\"test.user\","
 						+ "firstname:\"test\","
 						+ "lastname:\"user\","
-						+ "all_groups:true,"
+						+ "all_groups:true"
 						+ "}"));
 	}
 
@@ -207,7 +207,7 @@ public class TestUserManagementController {
 				.andExpect(content().json("{username:\"täst\","
 						+ "firstname:\"test\","
 						+ "lastname:\"user\","
-						+ "all_groups:true,"
+						+ "all_groups:true"
 						+ "}"));
 	}
 		
