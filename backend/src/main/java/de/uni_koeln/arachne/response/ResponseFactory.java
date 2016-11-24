@@ -84,6 +84,9 @@ public class ResponseFactory {
 	@Autowired
 	private transient List<ExternalLinkResolver> externalLinkResolvers;
 	
+	@Autowired
+	private transient CustomBooster customBooster;
+	
 	// needed for testing
 	public void setXmlConfigUtil(final XmlConfigUtil xmlConfigUtil) {
 		this.xmlConfigUtil = xmlConfigUtil;
@@ -226,11 +229,12 @@ public class ResponseFactory {
 		logFields = Math.log10(logFields + 1.0d) + 1.0d;
 		double imageCount = 0;
 		if (response.images != null) {
-			imageCount = response.images.size();
+			imageCount = response.imageSize;
 		}
 		final double logImages = Math.log10(imageCount + 1.0d) + 1.0d;
 		final double logDegree = Math.log10(Math.sqrt(response.getDegree() + 1.0d)) + 1.0d;
-		final double boost = logFields * logImages * logDegree / 5.0 + 1.0d;
+		double boost = logFields * logImages * logDegree / 5.0 + 1.0d;
+		boost *= customBooster.getCategoryBoost(tableName) * customBooster.getSingleEntityBoosts(response.getEntityId());
 		response.setBoost(boost);
 		response.getSuggest().setWeight((int) (boost*100));
 		

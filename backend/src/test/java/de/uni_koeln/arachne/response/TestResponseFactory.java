@@ -36,16 +36,31 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 @RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(locations={"classpath:test-context.xml"}) 
 public class TestResponseFactory { // NOPMD
-	@Mock private GenericSQLDao genericSQLDao;
-	@Mock private CatalogDao catalogDao;
-	@Mock private Transl8Service ts;
-	@Mock private JSONUtil jsonUtil;
+	@Mock 
+	private GenericSQLDao genericSQLDao;
+	
+	@Mock 
+	private CatalogDao catalogDao;
+	
+	@Mock 
+	private Transl8Service ts;
+	
+	@Mock 
+	private JSONUtil jsonUtil;
+	
+	@Mock
+	private CustomBooster customBooster;
+	
 	@SuppressWarnings("serial")
-	@InjectMocks private final ResponseFactory responseFactory 
+	@InjectMocks 
+	private final ResponseFactory responseFactory 
 			= new ResponseFactory("testAddress.com", new ArrayList<String>() {{ add("facet_test"); }}, 2);
 	
-	@Mock private UserRightsService userRightsService;
-	@InjectMocks private final XmlConfigUtil xmlConfigUtil = new XmlConfigUtil();
+	@Mock 
+	private UserRightsService userRightsService;
+	
+	@InjectMocks 
+	private final XmlConfigUtil xmlConfigUtil = new XmlConfigUtil();
 	
 	private List<Long> mockIdList = null;
 	
@@ -75,11 +90,16 @@ public class TestResponseFactory { // NOPMD
 			mockCatalogDataList.add(mockCatalogData);
 		}
 		when(catalogDao.getPublicCatalogIdsAndPathsByEntityId(0)).thenReturn(mockCatalogDataList);
+		
 		when(ts.transl8(anyString())).thenReturn("type_test");
 		when(ts.transl8Facet(anyString(), anyString())).then(AdditionalAnswers.returnsSecondArg());
+		
 		when(jsonUtil.getObjectMapper()).thenReturn(new ObjectMapper());
 		
 		when(userRightsService.userHasAtLeastGroupID(anyInt())).thenReturn(true, false);
+		
+		when(customBooster.getCategoryBoost(anyString())).thenReturn(1.0D);
+		when(customBooster.getSingleEntityBoosts(anyLong())).thenReturn(1.0D);
 	}
 	
 	@Test
