@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,29 +59,37 @@ public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 			}
 			
 			//The rest of the Dataset
-			final String columnValue = resultSet.getString(columnName);
+			String columnValue = resultSet.getString(columnName);
 			if (!StrUtils.isEmptyOrNullOrZero(columnValue)) {
 				if (columnName.equals(jsonField)) {
-					try {
-						@SuppressWarnings("unchecked")
-						final Map<String,String> result = JSONUtil.MAPPER.readValue(columnValue, Map.class);
-						LOGGER.debug(result.toString());
-						dataset.putAll(result);
-						LOGGER.debug(dataset.toString());
-					}
-					catch (JsonParseException e) {
-						String identifierType = SQLToolbox.generatePrimaryKeyName(resultSet.getMetaData().getTableName(i));
-						long identifier = resultSet.getLong(identifierType);
-						System.out.println(identifierType + ": " + identifier);
-						dataIntegrityLogService.logWarning(identifier, identifierType, "Invalid JSON in DB");
-						LOGGER.error("Invalid JSON [" + identifierType + ":" + identifier + "]: " 
-								+ columnName + " = " + columnValue + System.lineSeparator() + "Cause: " + e.getMessage());
-					}
-					catch (JsonMappingException e) {
-						LOGGER.error(e.getMessage());
-					}
-					catch (IOException e) {
-						LOGGER.error(e.getMessage());
+					boolean done = false;
+					boolean fixed = false;
+					while (!done) {
+						try {
+							@SuppressWarnings("unchecked")
+							final Map<String,String> result = JSONUtil.MAPPER.readValue(columnValue, Map.class);
+							LOGGER.debug(result.toString());
+							dataset.putAll(result);
+							done = true;
+							LOGGER.debug(dataset.toString());
+						}
+						catch (JsonParseException e) {
+							if (!fixed) {
+								String identifierType = SQLToolbox.generatePrimaryKeyName(resultSet.getMetaData().getTableName(i));
+								long identifier = resultSet.getLong(identifierType);
+								dataIntegrityLogService.logWarning(identifier, identifierType, "Invalid JSON in DB");
+								LOGGER.error("Invalid JSON [" + identifierType + ":" + identifier + "]: " 
+										+ columnName + " = " + columnValue + System.lineSeparator() + "Cause: " + e.getMessage());
+								columnValue = fixJson(columnValue);
+								fixed = true;
+							} else {
+								done = true;
+							}
+						} catch (JsonMappingException e) {
+							LOGGER.error(e.getMessage(), e);
+						} catch (IOException e) {
+							LOGGER.error(e.getMessage(), e);
+						}
 					}
 				} else {
 					dataset.put(meta.getTableName(i) + "." + columnName, columnValue);
@@ -88,5 +97,30 @@ public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 			}
 		}
 		return dataset;
+	}
+
+	/**
+	 * This method tries to fix the JSON from the DB by escaping quotation marks in JSON values.<br>
+	 * Should be removed when/if this gets fixed on the DB side
+	 * @param columnValue The invalid JSON.
+	 * @return The valid JSON.
+	 */
+	private String fixJson(final String columnValue) {
+		System.out.println(columnValue);
+		String result = "";
+		int start = 0;
+		int end = 0;
+		while (end < columnValue.length() - 2) {
+			// find value
+			start = columnValue.indexOf(":\"", start) + 2;
+			end = columnValue.indexOf("\",", start);
+			if (end < start) {
+				end = columnValue.indexOf("\"}", start);
+			}
+			String jsonValue = columnValue.substring(start, end);
+			result = columnValue.replace(jsonValue, StringEscapeUtils.escapeJson(jsonValue));
+			System.out.println(result);
+		}
+		return result;
 	}
 }
