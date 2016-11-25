@@ -106,12 +106,13 @@ public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 	 * @return The valid JSON.
 	 */
 	private String fixJson(final String columnValue) {
-		System.out.println(columnValue);
 		String result = "";
 		int start = 0;
-		int end = 0;
-		while (end < columnValue.length() - 2) {
+		int lastStart = -1;
+		int end = 2;
+		while (end < columnValue.length() - 2 && start > lastStart) {
 			// find value
+			lastStart = start;
 			start = columnValue.indexOf(":\"", start) + 2;
 			end = columnValue.indexOf("\",", start);
 			if (end < start) {
@@ -119,7 +120,6 @@ public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 			}
 			String jsonValue = columnValue.substring(start, end);
 			result = columnValue.replace(jsonValue, StringEscapeUtils.escapeJson(jsonValue));
-			System.out.println(result);
 		}
 		return result;
 	}
