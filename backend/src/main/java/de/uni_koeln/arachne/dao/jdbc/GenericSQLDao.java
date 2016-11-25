@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import de.uni_koeln.arachne.context.ContextPath;
@@ -249,13 +250,14 @@ public class GenericSQLDao extends SQLDao {
 	}
 
 	/**
-	 * Gets the cover page of a book record.
+	 * Gets the cover page of a book record. The SQL will always return a result so that 'queryForLong' does not throw 
+	 * an {@link EmptyResultDataAccessException}.
 	 * @param internalKey The internal key of the book.
 	 * @return The id of the cover page.
 	 */
 	public Long getBookCoverPage(Long internalKey) {
-		final String sqlQuery = "SELECT PS_BuchseiteID FROM buchseite WHERE seite = 0 and FS_BuchID = " 
-				+ internalKey + " LIMIT 1;";
+		final String sqlQuery = "(SELECT PS_BuchseiteID FROM buchseite WHERE seite = 0 and FS_BuchID = " 
+				+ internalKey + ") UNION (SELECT null) LIMIT 1;";
 		final Long cover = queryForLong(sqlQuery);
 		return cover;
 	}
