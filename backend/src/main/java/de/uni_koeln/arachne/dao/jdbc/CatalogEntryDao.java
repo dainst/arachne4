@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysql.cj.api.jdbc.Statement;
+import com.mysql.jdbc.Statement;
 
 import de.uni_koeln.arachne.dao.hibernate.ArachneEntityDao;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;

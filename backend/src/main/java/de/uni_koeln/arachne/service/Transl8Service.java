@@ -41,9 +41,6 @@ public class Transl8Service {
 	@Autowired
 	private transient ArachneRestTemplate restTemplate;
 	
-	@Autowired
-	private transient JSONUtil jsonUtil;
-
 	private transient Map<String, Boolean> translationsAvailable = new HashMap<String, Boolean>();
 	
 	private transient Map<String, String> translationMap = new HashMap<String, String>();
@@ -82,7 +79,7 @@ public class Transl8Service {
 			if (response.getStatusCode() == HttpStatus.OK) {
 				final String doc = response.getBody();
 				try {
-					translationMap = jsonUtil.getObjectMapper().readValue(doc, HashMap.class);
+					translationMap = JSONUtil.MAPPER.readValue(doc, HashMap.class);
 				} catch (JsonParseException e) {
 					LOGGER.error("Could not parse transl8 response.", e);
 				} catch (JsonMappingException e) {

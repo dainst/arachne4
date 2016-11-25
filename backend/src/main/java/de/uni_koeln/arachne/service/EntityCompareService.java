@@ -28,9 +28,6 @@ public class EntityCompareService {
 	@Autowired
 	private transient ESService esService;
 	
-	@Autowired
-	private transient JSONUtil jsonUtil;
-
 	@Async
 	public void compareToIndex(final Long entityId, final String json) {
 		    	
@@ -52,7 +49,7 @@ public class EntityCompareService {
     	/*if (jsonFromIndex == null) {
     		LOGGER.warn("Entity " + entityId + " not found in index.");
     	} else*/ {
-    		ObjectMapper mapper = jsonUtil.getObjectMapper();
+    		ObjectMapper mapper = JSONUtil.MAPPER;
 			JsonNode jsonDB = null;
 			JsonNode jsonES = null;
 			try {

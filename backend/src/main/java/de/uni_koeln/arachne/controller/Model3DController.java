@@ -49,9 +49,6 @@ public class Model3DController {
 	@Autowired
 	private transient SingleEntityDataService singleEntityDataService;
 	
-	@Autowired
-	private transient JSONUtil jsonUtil;
-	
 	private transient final String basePath;
 	
 	/**
@@ -180,12 +177,12 @@ public class Model3DController {
 	}
 	
 	/**
-	 * Retrieves the information needed by the Jvascript 3D-Viewer from the dataset.
+	 * Retrieves the information needed by the Javascript 3D-Viewer from the dataset.
 	 * @param dataset The dataset of interest.
 	 * @return The meta data as JSON. 
 	 */
 	private String getMetaData(final Dataset dataset) {
-		final ObjectNode result = jsonUtil.getObjectNode();
+		final ObjectNode result = JSONUtil.getObjectNode();
 		result.put("title", dataset.getFieldFromFields("modell3d.Titel"));
 		result.put("format", dataset.getFieldFromFields("modell3d.Dateiformat"));
 		result.put("modeller", dataset.getFieldFromFields("modell3d.Modellierer"));

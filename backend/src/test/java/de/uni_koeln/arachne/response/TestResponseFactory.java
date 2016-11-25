@@ -45,9 +45,6 @@ public class TestResponseFactory { // NOPMD
 	@Mock 
 	private Transl8Service ts;
 	
-	@Mock 
-	private JSONUtil jsonUtil;
-	
 	@Mock
 	private CustomBooster customBooster;
 	
@@ -93,8 +90,6 @@ public class TestResponseFactory { // NOPMD
 		
 		when(ts.transl8(anyString())).thenReturn("type_test");
 		when(ts.transl8Facet(anyString(), anyString())).then(AdditionalAnswers.returnsSecondArg());
-		
-		when(jsonUtil.getObjectMapper()).thenReturn(new ObjectMapper());
 		
 		when(userRightsService.userHasAtLeastGroupID(anyInt())).thenReturn(true, false);
 		

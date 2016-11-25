@@ -9,21 +9,30 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.uni_koeln.arachne.service.DataIntegrityLogService;
+import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.StrUtils;
+import de.uni_koeln.arachne.util.sql.SQLToolbox;
 
 /**
  * Maps the {@link ResultSet} of any entity including an optional JSON field. 
  * @author satan
  *
  */
+@Configurable(preConstruction=true)
 public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntitiesMapper.class);
+
+	@Autowired
+	private transient DataIntegrityLogService dataIntegrityLogService;
 	
 	private final transient String jsonField;
 
@@ -54,13 +63,18 @@ public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 				if (columnName.equals(jsonField)) {
 					try {
 						@SuppressWarnings("unchecked")
-						final Map<String,String> result = new ObjectMapper().readValue(columnValue, Map.class);
+						final Map<String,String> result = JSONUtil.MAPPER.readValue(columnValue, Map.class);
 						LOGGER.debug(result.toString());
 						dataset.putAll(result);
 						LOGGER.debug(dataset.toString());
 					}
 					catch (JsonParseException e) {
-						LOGGER.error(e.getMessage());
+						String identifierType = SQLToolbox.generatePrimaryKeyName(resultSet.getMetaData().getTableName(i));
+						long identifier = resultSet.getLong(identifierType);
+						System.out.println(identifierType + ": " + identifier);
+						dataIntegrityLogService.logWarning(identifier, identifierType, "Invalid JSON in DB");
+						LOGGER.error("Invalid JSON [" + identifierType + ":" + identifier + "]: " 
+								+ columnName + " = " + columnValue + System.lineSeparator() + "Cause: " + e.getMessage());
 					}
 					catch (JsonMappingException e) {
 						LOGGER.error(e.getMessage());

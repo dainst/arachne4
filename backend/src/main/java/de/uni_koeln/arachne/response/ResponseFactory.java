@@ -79,9 +79,6 @@ public class ResponseFactory {
 	private transient Transl8Service ts;
 	
 	@Autowired
-	private transient JSONUtil jsonUtil;
-	
-	@Autowired
 	private transient List<ExternalLinkResolver> externalLinkResolvers;
 	
 	@Autowired
@@ -162,7 +159,7 @@ public class ResponseFactory {
 			
 			byte[] json = null;
 			try {
-				json = jsonUtil.getObjectMapper().writeValueAsBytes(getEntityAsJson(dataset, document, response));
+				json = JSONUtil.MAPPER.writeValueAsBytes(getEntityAsJson(dataset, document, response));
 			} catch (JsonProcessingException e) {
 				LOGGER.error("Failed to serialize entity " + arachneId.getArachneEntityID() + ".Cause: ", e);
 				e.printStackTrace();
@@ -348,7 +345,7 @@ public class ResponseFactory {
 	 */
 	public String createResponseForDeletedEntityAsJsonString(final EntityId entityId) {
 		try {
-			return jsonUtil.getObjectMapper().writeValueAsString(new DeletedArachneEntity(entityId));
+			return JSONUtil.MAPPER.writeValueAsString(new DeletedArachneEntity(entityId));
 		} catch (JsonProcessingException e) {
 			LOGGER.error("Error serializing response for deleted entity [" + entityId + "]. Cause: ", e);
 		}
@@ -362,7 +359,7 @@ public class ResponseFactory {
 	 */
 	public byte[] createResponseForDeletedEntityAsJson(final EntityId entityId) {
 		try {
-			return jsonUtil.getObjectMapper().writeValueAsBytes(new DeletedArachneEntity(entityId));
+			return JSONUtil.MAPPER.writeValueAsBytes(new DeletedArachneEntity(entityId));
 		} catch (JsonProcessingException e) {
 			LOGGER.error("Error serializing response for deleted entity [" + entityId + "]. Cause: ", e);
 		}
@@ -383,8 +380,11 @@ public class ResponseFactory {
 		if (additionalIds != null) {
 			final String type = dataset.getArachneId().getTableName();
 			final List<String> idFields = StrUtils.getCommaSeperatedStringAsList(additionalIds.getTextNormalize());
-			for (String fieldName : idFields) {
-				result.add(dataset.getFieldFromFields(type + "." + fieldName));
+			for (final String fieldName : idFields) {
+				final String value = dataset.getFieldFromFields(type + "." + fieldName);
+				if (value != null) {
+					result.add(value);
+				}
 			}
 		}
 		
@@ -533,9 +533,13 @@ public class ResponseFactory {
 
 		// Set images - max 'imageLimit' images
 		List<Image> imageList = dataset.getImages();
-		response.setImageSize(imageList.size());
-		if (imageList.size() > imageLimit) {
-			imageList = imageList.subList(0, imageLimit);
+		if (imageList != null) {
+			response.setImageSize(imageList.size());
+			if (imageList.size() > imageLimit) {
+				imageList = imageList.subList(0, imageLimit);
+			}
+		} else {
+			response.setImageSize(0);
 		}
 		response.setImages(imageList);
 		
@@ -573,7 +577,7 @@ public class ResponseFactory {
 	private ObjectNode getFacettedEntityAsJson(final Dataset dataset, final Document document
 			, final FormattedArachneEntity response, final Namespace namespace) throws Transl8Exception {
 
-		ObjectNode json = jsonUtil.getObjectMapper().valueToTree(response);
+		ObjectNode json = JSONUtil.MAPPER.valueToTree(response);
 		ArrayNode suggestInput = (ArrayNode)json.get("suggest").get("input");
 		
 		// set image facet
