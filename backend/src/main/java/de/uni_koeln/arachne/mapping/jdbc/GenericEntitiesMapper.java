@@ -80,7 +80,7 @@ public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 								dataIntegrityLogService.logWarning(identifier, identifierType, "Invalid JSON in DB");
 								LOGGER.error("Invalid JSON [" + identifierType + ":" + identifier + "]: " 
 										+ columnName + " = " + columnValue + System.lineSeparator() + "Cause: " + e.getMessage());
-								columnValue = fixJson(columnValue);
+								columnValue = JSONUtil.fixJson(columnValue);
 								fixed = true;
 							} else {
 								done = true;
@@ -99,28 +99,7 @@ public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 		return dataset;
 	}
 
-	/**
-	 * This method tries to fix the JSON from the DB by escaping quotation marks in JSON values.<br>
-	 * Should be removed when/if this gets fixed on the DB side
-	 * @param columnValue The invalid JSON.
-	 * @return The valid JSON.
-	 */
-	private String fixJson(final String columnValue) {
-		String result = "";
-		int start = 0;
-		int lastStart = -1;
-		int end = 2;
-		while (end < columnValue.length() - 2 && start > lastStart) {
-			// find value
-			lastStart = start;
-			start = columnValue.indexOf(":\"", start) + 2;
-			end = columnValue.indexOf("\",", start);
-			if (end < start) {
-				end = columnValue.indexOf("\"}", start);
-			}
-			String jsonValue = columnValue.substring(start, end);
-			result = columnValue.replace(jsonValue, StringEscapeUtils.escapeJson(jsonValue));
-		}
-		return result;
-	}
+	/*private String void extractKeyValue(final String json) {
+		
+	}*/
 }
