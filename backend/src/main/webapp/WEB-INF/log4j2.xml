@@ -8,7 +8,7 @@
     
         <RollingFile name="ROLLING" 
                      fileName="/var/log/arachne/arachnedataservice/dataservice.log" 
-                     filePattern="/var/log/arachne/arachnedataservice/dataservice-%i.log">
+                     filePattern="/var/log/arachne/arachnedataservice/dataservice-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
@@ -17,7 +17,7 @@
         </RollingFile>
         <RollingFile name="Profile" 
                      fileName="/var/log/arachne/arachnedataservice/profile.log" 
-                     filePattern="/var/log/arachne/arachnedataservice/profile-%i.log">
+                     filePattern="/var/log/arachne/arachnedataservice/profile-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
@@ -26,7 +26,7 @@
         </RollingFile>
         <RollingFile name="DataIntegrity" 
                      fileName="/var/log/arachne/arachnedataservice/data_integrity.log" 
-                     filePattern="/var/log/arachne/arachnedataservice/data_integrity-%i.log">
+                     filePattern="/var/log/arachne/arachnedataservice/data_integrity-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
