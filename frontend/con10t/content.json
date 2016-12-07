@@ -285,6 +285,13 @@
                 },
                 "children": [
                     {
+                        "id": "ariadne",
+                        "title": {
+                            "de": "ARIADNE - The Way Forward to Digital Archaeology in Europe",
+                            "en": "ARIADNE - The Way Forward to Digital Archaeology in Europe"
+                        }
+                    },
+                    {
                         "id": "steindorff",
                         "title": {
                             "de": "Der Ägyptologe Georg Steindorff: Ein Briefnachlass und dessen wissenschaftsgeschichtliche Erforschung",
