@@ -945,5 +945,29 @@
 		<facet name="fotonrextern" labelKey="FotoNrExtern">
 			<field datasource="fotoabzug.FotoNrExtern" />
 		</facet>
+		<facet name="geschlecht" labelKey="Geschlecht">
+			<field datasource="objektplastik.Geschlecht" />
+		</facet>
+		<facet name="lebensalter" labelKey="Lebensalter">
+			<field datasource="objektplastik.LebensAlter" />
+		</facet>
+		<facet name="thema" labelKey="Thema">
+			<field datasource="objektplastik.ThemaGoetter" />
+		</facet>
+		<facet name="thema" labelKey="Thema">
+			<field datasource="objektplastik.ThemaHeroen" />
+		</facet>
+		<facet name="thema" labelKey="Thema">
+			<field datasource="objektplastik.ThemaMenschen" />
+		</facet>
+		<facet name="thema" labelKey="Thema">
+			<field datasource="objektplastik.ThemaMythos" />
+		</facet>
+		<facet name="thema" labelKey="Thema">
+			<field datasource="objektplastik.ThemaPflanzen" />
+		</facet>
+		<facet name="thema" labelKey="Thema">
+			<field datasource="objektplastik.ThemaTiere" />
+		</facet>
 	</facets>
 </category>
