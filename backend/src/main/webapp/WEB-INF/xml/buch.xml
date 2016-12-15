@@ -31,11 +31,6 @@
 		<datasections>
 			<section labelKey="Informationen zum Buch">
 				<include type="ort" />
-				<include type="datierung" />
-				<section labelKey="Erscheinungsdatum">
-					<field datasource="buch.PubYearStart" prefix="frühestes geschätztes Publikationsjahr: " />
-					<field datasource="buch.PubYearEnd" prefix="spätestes geschätztes Publikationsjahr: " />
-				</section>
 				<section labelKey="Autor">
 					<field datasource="buch.BuchAuthorQualifier" postfix=": " />
 					<field datasource="buch.BuchAuthor">
@@ -52,6 +47,11 @@
 					</field>
 					<field datasource="zenon.245_b" />
 					<field datasource="zenon.245_c" />
+				</section>
+				<include type="datierung" />
+				<section labelKey="Erscheinungsdatum">
+					<field datasource="buch.PubYearStart" prefix="frühestes geschätztes Publikationsjahr: " />
+					<field datasource="buch.PubYearEnd" prefix="spätestes geschätztes Publikationsjahr: " />
 				</section>
 				<section labelKey="Publikationsort">
 					<field datasource="buch.BuchOrt">
@@ -84,6 +84,12 @@
 					<field datasource="zenon.300_b" />
 					<field datasource="zenon.300_c" />
 				</section>
+                <section labelKey="Allg. Notiz">
+                    <field datasource="zenon.500_a" />
+                </section>
+                <section labelKey="Personennamen">
+                    <field datasource="buch.BuchWeiterePersonen" />
+                </section>
 				<section labelKey="BibId" separator=", ">
 					<field datasource="buch.bibid" />
 					<linkField labelKey="Zenon" datasource="buch.bibid"
