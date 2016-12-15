@@ -7,7 +7,11 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
+/**
+ * Class that provides an object mapper instance and JSON related constants and functions.
+ * @author Reimar Grabowski
+ *
+ */
 public class JSONUtil {
 
 	private static final String JSON_START = "{\"";
@@ -16,12 +20,26 @@ public class JSONUtil {
 	private static final String JSON_KV_SEPARATOR = "\":\"";
 	private static Pattern escape = Pattern.compile("([\"\\\\[\u0000-\u001f]])");
 	
+	/**
+	 * Jackson object mapper. Use this one instead of creating a new one.
+	 */
 	public static final ObjectMapper MAPPER = new ObjectMapper();
 	
+	/**
+	 * Gets a Jackson object node from the node factory.
+	 * @return The new object node.
+	 */
 	public static ObjectNode getObjectNode() {
 		return MAPPER.getNodeFactory().objectNode();
 	}
 
+	/**
+	 * Function to 'repair' invalid JSON. It tries to fix unparsable JSON by escaping special chars in string values, adding 
+	 * missing curly braces and trying to at least get all the values before the value that caused the parse exception. It only 
+	 * meant for simple JSON of the form {"key1":"value1","key2":"value2",etc.}.  
+	 * @param invalidJSON The unparsable JSON.
+	 * @return The 'repaired' JSON.
+	 */
 	public static String fixJson(final String invalidJSON) {
 		StringBuilder result = new StringBuilder("{");
 		if (invalidJSON.startsWith(JSON_START)) {
@@ -39,15 +57,12 @@ public class JSONUtil {
 				int beginIndex = separators.get(i);
 				int endIndex = separators.get(i+1);
 				String keyValue = invalidJSON.substring(beginIndex + 1, endIndex);
-				System.out.println(keyValue);
 				int colon = keyValue.indexOf(JSON_KV_SEPARATOR);
 				if (colon > 0) {
 					String key = keyValue.substring(0, colon + 2);
-					System.out.println("K: " + key);
 					String value = keyValue.substring(colon + 3, keyValue.length());
 					Matcher matcher = escape.matcher(value);
 					value = matcher.replaceAll("\\\\$1");
-					System.out.println("V: " + value);
 					result.append(key);
 					result.append("\"");
 					result.append(value);
@@ -58,8 +73,6 @@ public class JSONUtil {
 			}
 			result.append("}");
 		}
-		System.out.println(result.toString());
-		System.out.println("---");
 		return result.toString();
 	}
 }

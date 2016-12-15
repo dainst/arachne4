@@ -58,6 +58,7 @@
         <jsonassert-version>1.4.0</jsonassert-version>
         <!-- JSON path -->
         <jsonpath-version>2.2.0</jsonpath-version>
+        <openhtml.version>0.0.1-RC8</openhtml.version>
         <!-- Plugin Versions -->
 		<aspectj-maven-version>1.8</aspectj-maven-version>
 		<maven-failsafe-version>2.18.1</maven-failsafe-version>
@@ -378,6 +379,26 @@
             <version>${commons-io-version}</version>
         </dependency>
 
+		<dependency>
+        	<!-- ALWAYS required. -->
+        	<groupId>com.openhtmltopdf</groupId>
+        	<artifactId>openhtmltopdf-core</artifactId>
+        	<version>${openhtml.version}</version>
+    	</dependency>
+
+    	<dependency>
+        	<!-- Required for PDF output. -->
+        	<groupId>com.openhtmltopdf</groupId>
+        	<artifactId>openhtmltopdf-pdfbox</artifactId>
+        	<version>${openhtml.version}</version>
+    	</dependency>
+
+		<dependency>
+    		<groupId>org.apache.pdfbox</groupId>
+    		<artifactId>pdfbox</artifactId>
+    		<version>2.0.3</version>
+		</dependency>
+
 		<!-- Apache HTTP Components (needed to support SSL with RestTemplate) -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -434,6 +455,11 @@
 			<name>MySQL Connector</name>
 			<url>http://mvnrepository.com/artifact/mysql/mysql-connector-java/</url>
 		</repository>
+		<!-- jitpack.io for pfdbox-layout -->
+		<repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
 	</repositories>
 	<build>
 		<plugins>

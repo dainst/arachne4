@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.uni_koeln.arachne.service.DataIntegrityLogService;
 import de.uni_koeln.arachne.util.JSONUtil;
@@ -74,15 +72,17 @@ public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 							LOGGER.debug(dataset.toString());
 						}
 						catch (JsonParseException e) {
+							String identifierType = SQLToolbox.generatePrimaryKeyName(resultSet.getMetaData().getTableName(i));
+							long identifier = resultSet.getLong(identifierType);
 							if (!fixed) {
-								String identifierType = SQLToolbox.generatePrimaryKeyName(resultSet.getMetaData().getTableName(i));
-								long identifier = resultSet.getLong(identifierType);
 								dataIntegrityLogService.logWarning(identifier, identifierType, "Invalid JSON in DB");
-								LOGGER.error("Invalid JSON [" + identifierType + ":" + identifier + "]: " 
+								LOGGER.warn("Invalid JSON [" + identifierType + ":" + identifier + "]: " 
 										+ columnName + " = " + columnValue + System.lineSeparator() + "Cause: " + e.getMessage());
 								columnValue = JSONUtil.fixJson(columnValue);
 								fixed = true;
 							} else {
+								LOGGER.error("Failed to repair invalid JSON [" + identifierType + ":" + identifier + "]: " 
+										+ columnName + " = " + columnValue + System.lineSeparator() + "Cause: " + e.getMessage());
 								done = true;
 							}
 						} catch (JsonMappingException e) {
@@ -98,8 +98,4 @@ public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 		}
 		return dataset;
 	}
-
-	/*private String void extractKeyValue(final String json) {
-		
-	}*/
 }
