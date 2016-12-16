@@ -299,7 +299,7 @@ public class UserManagementController {
 	}
 
 	/**
-	 * HTTP endpoint for deleting a new user. Users can delete themselves or be deleted by admins.
+	 * HTTP endpoint for deleting a user. Users can delete themselves or be deleted by admins.
 	 * @param username The username of interest.
 	 * @param response The HTTP response.
 	 * @return The JSON serialization of a success message.
