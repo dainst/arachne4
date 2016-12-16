@@ -54,7 +54,10 @@ public class UserManagementController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserManagementController.class);
 	
 	private static final String newLine = System.lineSeparator();
-	
+
+	@Value("${testUserName:null}") // should default to null value in when using production configuration
+	private String testUserName;
+
 	@Autowired
 	private transient UserDao userDao;
 	
@@ -241,7 +244,12 @@ public class UserManagementController {
 			user.setTelephone(getFormData(formData, "telephone", false, "ui.register."));
 			user.setAll_groups(false);
 			user.setGroupID(500);
-			user.setLogin_permission(false);
+			if(isTestUser(user)){
+				user.setLogin_permission(true);
+			}
+			else {
+				user.setLogin_permission(false);
+			}
 
 			HashSet<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
 			for (String dgName : defaultDatasetGroups) {
@@ -253,37 +261,41 @@ public class UserManagementController {
 
 			userDao.createUser(user);
 
-			// mail to user
-			String messageBody = "Ihre Anmeldung bei Arachne ist eingegangen und wird in Kürze von uns bearbeitet "
-					+ "werden." + newLine + newLine + "Mit freundlichen Grüßen" + newLine + "das Arachne-Team";		
+			if(!isTestUser(user)){
 
-			if (!mailService.sendMail(user.getEmail(), "Ihre Anmeldung bei Arachne", messageBody)) {
-				LOGGER.error("Unable to send registration eMail to user.");
-				throw new FormDataException("ui.registration.emailFailed");
-			}
+				// mail to user
+				String messageBody = "Ihre Anmeldung bei Arachne ist eingegangen und wird in Kürze von uns bearbeitet "
+						+ "werden." + newLine + newLine + "Mit freundlichen Grüßen" + newLine + "das Arachne-Team";
 
-			// mail to admin
-			messageBody = "Ein Benutzer hat sich mit folgenden Daten bei Arachne registriert:" + newLine + newLine
-					+ "Username: " + user.getUsername() + newLine
-					+ "Name: " + user.getFirstname() + " " + user.getLastname() + newLine
-					+ "E-Mail: " + user.getEmail() + newLine + newLine
-					+ "Wenn Sie in Arachne eingeloggt sind, können Sie folgenden Link benutzen um den Benutzer "
-					+ "freizuschalten:" + newLine
-					+ "http://arachne.uni-koeln.de/activate_account/" + user.getId();
+				if (!mailService.sendMail(user.getEmail(), "Ihre Anmeldung bei Arachne", messageBody)) {
+					LOGGER.error("Unable to send registration eMail to user.");
+					throw new FormDataException("ui.registration.emailFailed");
+				}
 
-			if (!mailService.sendMail(adminEmail, "Anmeldung bei Arachne", messageBody)) {
-				LOGGER.error("Unable to send registration eMail to admin.");
-				throw new FormDataException("ui.registration.emailToAdminFailed");
+				// mail to admin
+				messageBody = "Ein Benutzer hat sich mit folgenden Daten bei Arachne registriert:" + newLine + newLine
+						+ "Username: " + user.getUsername() + newLine
+						+ "Name: " + user.getFirstname() + " " + user.getLastname() + newLine
+						+ "E-Mail: " + user.getEmail() + newLine + newLine
+						+ "Wenn Sie in Arachne eingeloggt sind, können Sie folgenden Link benutzen um den Benutzer "
+						+ "freizuschalten:" + newLine
+						+ "http://arachne.uni-koeln.de/activate_account/" + user.getId();
+
+				if (!mailService.sendMail(adminEmail, "Anmeldung bei Arachne", messageBody)) {
+					LOGGER.error("Unable to send registration eMail to admin.");
+					throw new FormDataException("ui.registration.emailToAdminFailed");
+				}
 			}
 
 			result.put("success", "true");
 			response.setStatus(201);
+
 		} else {
 			result.put("success", "false");
 			response.setStatus(400);
 		}
 		return result;
-		
+
 	}
 
 	/**
@@ -414,5 +426,12 @@ public class UserManagementController {
 		result.put("message", e.getMessage());
 		response.setStatus(400);
 		return result;
+	}
+
+	private boolean isTestUser(User user) {
+		if(testUserName == null)
+			return false;
+		else
+			return user.getUsername().compareTo(testUserName) == 0;
 	}
 }
