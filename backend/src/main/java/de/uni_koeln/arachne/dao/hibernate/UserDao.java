@@ -78,4 +78,10 @@ public class UserDao {
 		Session session = sessionFactory.getCurrentSession();
 		session.save(user);
 	}
+
+	@Transactional
+	public void deleteUser(final User user) {
+		Session session = sessionFactory.getCurrentSession();
+		session.delete(user);
+	}
 }

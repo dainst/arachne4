@@ -299,6 +299,40 @@ public class UserManagementController {
 	}
 
 	/**
+	 * HTTP endpoint for deleting a new user. Users can delete themselves or be deleted by admins.
+	 * @param username The username of interest.
+	 * @param response The HTTP response.
+	 * @return The JSON serialization of a success message.
+	 */
+
+	@ResponseBody
+	@RequestMapping(value="/userinfo/{username}",
+			method=RequestMethod.DELETE,
+			produces= {CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
+	public Map<String,String> delete(@PathVariable("username") String username, HttpServletResponse response) {
+		Map<String,String> result = new HashMap<String,String>();
+
+		if(!userRightsService.isSignedInUser()) {
+			result.put("success", "false");
+			response.setStatus(401);
+			return result;
+		}
+
+		if(username.compareTo(userRightsService.getCurrentUser().getUsername()) != 0
+				&& !userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID)) {
+			result.put("success", "false");
+			response.setStatus(403);
+			return result;
+		}
+
+		userDao.deleteUser(userDao.findByName(username));
+
+		result.put("success", "true");
+		response.setStatus(200);
+		return result;
+	}
+
+	/**
 	 * If enough information about the user account is provided (meaning user name, eMail address, first name and 
 	 * zip code) then a request to change the password of the identified user account is created.
 	 * An eMail containing a registration link that is valid for 12 hours is sent to the user.
