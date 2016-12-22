@@ -1,0 +1,203 @@
+<idai-header
+        image="/con10t/headerimages/syrian-heritage_bgr.jpg"
+        description="Palmyra, Baal-Heiligtum, Bankettsaal"
+        link="http://arachne.dainst.org">
+</idai-header>
+
+<div class="con10t-page teaserpage container">
+
+    <div class="con10t-row">
+
+        <div class="con10t-title">
+            <con10t-image src="/con10t/frontimages/syrher.jpg"
+                          alt="Syrian Heritage Archive Project"></con10t-image>
+        </div>
+
+        <div class="con10t-sidebar">
+            <p>
+                <a href="/project/syrher?lang=ar" target="_self">النسخة العربية</a>
+            </p>
+            <p>
+                <a href="/project/syrher?lang=en" target="_self">English Version</a>
+            </p>
+
+            <con10t-toc toc-heading="Inhalt"></con10t-toc>
+            <h3>Suche in den Daten des Projekts</h3>
+
+            <con10t-show-if dataset-group="SyrianHeritage">
+                <div class="well">
+                    <con10t-search fq="facet_bestandsname:Syrian-Heritage-Archive-Project"></con10t-search>
+                </div>
+            </con10t-show-if>
+            <div><a href="/project/syrher_map" title="Zur Karte" style="cursor:pointer">
+                <span class="glyphicon glyphicon-fullscreen"></span>
+                Größere Karte
+            </a>
+
+            </div>
+            <div ng-init="config = {
+				facetsSelect: [
+					{
+						key: 'facet_bestandsname',
+						value: 'Syrian-Heritage-Archive-Project'
+					}
+				]
+			}"></div>
+
+            <con10t-show-if dataset-group="SyrianHeritage">
+                <div con10t-map
+                     id="map"
+                     limit="200"
+                     facets-select="config.facetsSelect"
+                     lat="35.514040"
+                     lng="38.972066"
+                     zoom="5">
+                </div>
+            </con10t-show-if>
+
+            <div class="embed-responsive embed-responsive-16by9 img-thumbnail">
+                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/beR4W7IWMcs"
+                        frameborder="0" allowfullscreen=""></iframe>
+            </div>
+
+            <div class="embed-responsive embed-responsive-16by9 img-thumbnail">
+                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/syHi-2j2-sY"
+                        frameborder="0" allowfullscreen=""></iframe>
+            </div>
+
+        </div>
+        <div class="con10t-content">
+            <p>
+            <h1>Syrian Heritage Archive Project</h1>
+            </p>
+
+            <h2 class="con10t-toc-entry">Erstellung digitaler Kulturgüterregister für Syrien</h2>
+
+            <con10t-show-if dataset-group="SyrianHeritage">
+
+            <con10t-media-tree
+                    title="Syrian Heritage Archive Project"
+                    header-teaser="5237966"
+                    header-images="[{
+                            entityid: 5447720,
+                            cols: 4,
+                            title: 'Mosque in \ʿAyn al-\ʿArus, Syria'
+                        }, {
+                            entityid: 5449949,
+                            cols: 4,
+                            title: 'Excavation documentary east 1987, ar-Raqqa, ar-Raqqa, Syria'
+                        }, {
+                            entityid: 5448777,
+                            cols: 4,
+                            title: 'Excavation east 1989, ar-Raqqa, ar-Raqqa, Syria'
+                        }]">
+            </con10t-media-tree>
+
+            </con10t-show-if>
+
+            <p>Der inzwischen seit mehr als vier Jahren andauernde Bürgerkrieg in Syrien
+                hat sowohl zu einer humanitären Katastrophe ungeheuren Ausmaßes als auch
+                zur Gefährdung und Zerstörung zahlloser Kulturgüter im Land geführt.</p>
+            <p>Die Kulturlandschaft Syrien gehört hinsichtlich der Anzahl und historischen
+                Bedeutung der dort vorhandenen Denkmäler zu den herausragenden Regionen
+                weltweit. Da in Syrien alle Zeitabschnitte vom Beginn menschlicher Nutzung
+                ab etwa eine Million Jahre vor heute bis in die osmanische Zeit durch archäologische
+                oder historische Monumente belegt sind, verfügt das Land über eines der
+                umfassendsten kulturellen Langzeitarchive, das in weiten Teilen noch nicht
+                wissenschaftlich erschlossen ist. Zerstörungen in den historischen Altstädten
+                wie Aleppo oder Homs sowie die im großen Stil durchgeführten Raubgrabungen
+                in bedeutenden archäologischen Fundplätzen belegen die Dynamik eines Prozesses,
+                der zum unwiederbringlichen Verschwinden der wichtigsten historischen Zeugnisse
+                des Landes führt.</p>
+            <p>Vor dem Hintergrund dieser dramatischen Entwicklungen beabsichtigt das
+                von der <a href="http://www.dainst.org/projekt/-/project-display/199951">Orient-Abteilung des Deutschen
+                    Archäologischen Instituts</a> und dem <a
+                        href="http://www.smb.museum/museums-and-institutions/museum-fuer-islamische-kunst/research/erstellung-digitaler-kulturgueterregister-fuer-syrien.html">
+                    Museum
+                    für Islamische Kunst / SPK</a> durchgeführte Syrian Heritage
+                Archive Project, Grundlagen für die zukünftige Etablierung eines nationalen
+                Registers syrischer Kulturgüter zu schaffen. Beide Institutionen verfügen
+                über umfangreiche Datenbestände zu syrischem Kulturerbe. Viele dieser Forschungsdaten
+                sind jedoch bisher ausschließlich in analoger Form vorhanden, da die digitale
+                Datengenerierung in der Archäologie im größeren Umfang erst gegen Ende
+                der 1990er begonnen hat. Die vollständige Digitalisierung der älteren Datenbestände
+                bildet daher eine wesentliche Voraussetzung für die Datennutzung und ihre
+                sinnvolle Zusammenführung in größeren Datenbankprojekten. Im Rahmen des
+                <a
+                        href="http://www.auswaertiges-amt.de/DE/Aussenpolitik/KulturDialog/Kulturerhalt/Kulturerhalt_node.html">Kulturerhalt-Programms
+                    des Auswärtigen Amtes</a>
+                wird daher die digitale
+                Erschließung dieser wichtigen Informationsressourcen als Kooperationsprojekt
+                zwischen dem DAI und dem Museum für Islamische Kunst seit 2013 gefördert.</p>
+            <p>Dabei werden durch zwei deutsch-syrische Teams in großem Maßstab Forschungsdaten
+                gesichtet, digitalisiert, in der digitalen Forschungsumgebung des DAI (<a
+                        href="http://www.dainst.org/de/forschung/forschung-digital/idai.welt">iDAI.welt</a>)
+                erschlossen, standardisiert verwaltet – und somit nachhaltig
+                gesichert. Über das primäre Ziel eines langfristigen Erhalts dieses Wissens
+                und dessen Bereitstellung hinaus, kann der so entstandene Informationspool
+                zum Ausgangspunkt für Anwendungen verschiedenster Zielsetzungen werden:
+                Im Rahmen der Bemühungen um Erhalt von kulturellem Erbe werden beispielsweise
+                relevante Datenbestände zur Schadenskartierung aufbereitet und für eine
+                spätere Nutzung im Zusammenhang mit Wiederaufbaumaßnahmen verfügbar gemacht.
+                Zudem wird eine Grundlage für die Beobachtung des Kunstmarktes geschaffen,
+                die zukünftig bei der automatisierten Erkennung von Objekten im Kampf gegen
+                den illegalen Handel mit Artefakten aus Raubgrabungen oder Diebstählen
+                eingesetzt werden kann.</p>
+            <p>Der Datenfluss zwischen den verschiedenen Komponenten des DAI-Datenzentrums
+                gewährleistet eine effektive Nutzung der Forschungsdaten. Die Datengrundlagen
+                (Fotos, Zeichnungen, Texte) in der Objektdatenbank <a href="http://arachne.dainst.org">iDAI.objects</a>,
+                der bibliographischen Datenbank <a href="http://zenon.dainst.org/">iDAI.bibliography</a> und
+                Kartenwerke im <a href="http://geoserver.dainst.org/">iDAI.geoserver</a> werden
+                über die Geodatenbank <a href="https://gazetteer.dainst.org">iDAI.gazetteer</a>
+                verbunden
+                und ansprechbar gemacht. Nicht nur systemintern ist ein weitreichender
+                Datenfluss gegeben. Über international standardisierte Schnittstellen wird
+                dieses Denkmälerregister auch mit ähnlichen Projekten zur langfristigen
+                Dokumentation der Kulturgüter Syriens international vernetzbar sein und
+                auf diese Weise zur Erstellung eines nationalen archäologischer und historischer
+                Stätten Syriens beitragen.</p>
+            <h2 class="con10t-toc-entry">Thematischer Einstieg</h2>
+
+            <p>
+                <con10t-show-if dataset-group="SyrianHeritage">
+                    <con10t-tree fq="facet_bestandsname:Syrian-Heritage-Archive-Project"
+                                 hierarchy-facets="facet_ort,facet_subkategoriebestand_level9"></con10t-tree>
+                </con10t-show-if>
+            </p>
+            <h2 class="con10t-toc-entry">Einstieg mit originaler Verzeichnisbaum-Struktur</h2>
+            <p>
+                <con10t-show-if dataset-group="SyrianHeritage">
+                    <con10t-tree fq="facet_bestandsname:Syrian-Heritage-Archive-Project"
+                                 wildcard-facet="facet_subkategorie"></con10t-tree>
+                </con10t-show-if>
+            </p>
+            <h2 class="con10t-toc-entry">Zusätzliche Informationen</h2>
+
+            <p>Für zusätzliche Informationen zum Projekt besuchen Sie auch</p>
+            <ul>
+                <li><a href="http://www.dainst.org/project/199951">
+                    Orient-Abteilung des Deutschen Archäologischen Instituts
+                </a>
+
+                </li>
+                <li>
+                    <a href="http://www.smb.museum/museums-and-institutions/museum-fuer-islamische-kunst/research/erstellung-digitaler-kulturgueterregister-fuer-syrien.html">
+                        Museum für Islamische Kunst / SPK
+                    </a>
+
+                </li>
+                <li>
+                    <a href="http://www.auswaertiges-amt.de/DE/Aussenpolitik/KulturDialog/Kulturerhalt/Kulturerhalt_node.html">
+                        Kulturerhalt-Programm des Auswärtigen Amtes
+                    </a>
+
+                </li>
+                <li>
+                    <a href="https://www.auswaertiges-amt.de/cae/servlet/contentblob/561762/publicationFile/205344/KulturweltenBildband.pdf">
+                        Kulturerhalt-Programm des Auswärtigen Amtes - Kulturwelten Bildband
+                    </a> ( PDF; deutsch - englisch - französisch )
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
