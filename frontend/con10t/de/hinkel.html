@@ -1,7 +1,4 @@
-<idai-header
-        image="/con10t/headerimages/sudanesische-pyramiden.jpg"
-        link="project/hinkel">
-</idai-header>
+<idai-header image="/con10t/headerimages/sudanesische-pyramiden.jpg"></idai-header>
 
 <div class="con10t-page teaserpage container">
 
@@ -12,30 +9,7 @@
         </div>
 
         <div class="con10t-sidebar">
-            <h3>Thematischer Einstieg</h3>
-            <ul>
-                <li>
-                    <a href="project/hinkel">Hauptseite</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_ams">AMS-System</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_wms">Wiss. Materialsammlungen</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_karteikarten">Karteikarten</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_zeichnungen">Zeichnungen</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_karten">Topographische Karten</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_foto-dia">Foto- und Diabestände</a>
-                </li>
-            </ul>
+            <con10t-include src="/con10t/de/hinkel_toc.html"></con10t-include>
         </div>
         <div class="con10t-content">
             <p>
@@ -96,23 +70,29 @@
                 Digitalisierungsprojektes wurde ein Großteil des Bild- und Dokumentenbestandes des Archivs digitalisiert
                 und in die Systeme der iDAI.welt integriert. Die hierbei erfassten Metadaten beruhen in den meisten
                 Fällen auf den Aufzeichnungen Friedrich W. Hinkels und stellen keine wissenschaftliche Auswertung des
+
                 Materials da. Die Digitalisate der <a con10t-search-query="*"
                                                       con10t-search-facet="facet_kategorie:Bilder,facet_bestandsname:Archiv-Friedrich-W-Hinkel,facet_subkategoriebestand_level1:Archiv-Friedrich-W-Hinkel-Negative">Fotos</a>
                 </a>, Dias, <a con10t-search-query="*"
                                con10t-search-facet="facet_kategorie:Bilder,facet_bestandsname:Archiv-Friedrich-W-Hinkel,facet_subkategoriebestand_level1:Archiv-Friedrich-W-Hinkel-Zeichnungen">Zeichnungen</a>
-                und topographischen <a con10t-search-query="*"
-                                       con10t-search-facet="facet_kategorie:Bilder,facet_bestandsname:Archiv-Friedrich-W-Hinkel,facet_subkategoriebestand_level1:Archiv-Friedrich-W-Hinkel-Karten">
-                Karten</a> wurden in die Bild- und Objektdatenbank <a href="https://arachne.dainst.org">iDAI.objects</a>
-                eingelesen. Desweiteren können mehrseitige Digitalisate mit übergreifendem inhaltlichen
-                Zusammenhang wie die <a con10t-search-query="Compilation OR Copy"
-                                        con10t-search-facet="facet_autor:Hinkel\, Friedrich W.,facet_kategorie:Bücher">Karteikarten</a>, <a con10t-search-query="Fotoinventar*"
-                   con10t-search-facet="facet_autor:Hinkel\, Friedrich W.,facet_kategorie:Bücher">Fotoinventare</a>,
-                <a con10t-search-catalog="216">Zeichnungskonvolute</a> und <a  con10t-search-query="AMS Supplements OR AMS Fasc. OR AMS:Files Sudan Antiquities Service OR AMS:General"
-                                                                                                                                                         con10t-search-facet="facet_autor:Hinkel\, Friedrich W.,facet_kategorie:Bücher">wissenschaftlichen Materialsammlungen</a>
-                betrachtet werden. Der Strukturierung der Daten innerhalb von iDAI.objects lag
+                und topographischen
+                <a con10t-search-query="*"
+                   con10t-search-facet="facet_kategorie:Bilder,facet_bestandsname:Archiv-Friedrich-W-Hinkel,facet_subkategoriebestand_level1:Archiv-Friedrich-W-Hinkel-Karten">
+                    Karten</a> wurden in die Bild- und Objektdatenbank <a
+                    href="https://arachne.dainst.org">iDAI.objects</a> eingelesen, während
+                mehrseitige Digitalisate mit übergreifendem inhaltlichen Zusammenhang wie die <a
+                    con10t-search-query="Compilation OR Copy"
+                    con10t-search-facet="facet_autor:Hinkel\, Friedrich W.,facet_kategorie:Bücher">Karteikarten</a>,
+                <a con10t-search-query="Fotoinventar*"
+                   con10t-search-facet="facet_autor:Hinkel\, Friedrich W.,facet_kategorie:Bücher">Fotoinventare</a>, <a
+                    con10t-search-catalog="216">Zeichnungskonvolute</a> und <a
+                    con10t-search-query="AMS Supplements OR AMS Fasc. OR AMS:Files Sudan Antiquities Service OR AMS:General"
+                    con10t-search-facet="facet_autor:Hinkel\, Friedrich W.,facet_kategorie:Bücher">wissenschaftlichen
+                Materialsammlungen</a> in den
+                iDAI.bookbrowser integriert wurden. Der Strukturierung der Daten innerhalb von iDAI.objects lag
                 hierbei das bereits erwähnte AMS-System zugrunde, welches mit über 14.000 Orten im <a
-                    href="https://gazetteer.dainst.org/">iDAI.gazetteer</a>
-                hinterlegt ist. Der iDAI.gazetteer dient daher als primärer Zugangsweg zu diesen Daten. Aufgrund ihrer
+                    href="https://gazetteer.dainst.org/">iDAI.gazetteer</a> hinterlegt ist. Der iDAI.gazetteer dient
+                daher als primärer Zugangsweg zu diesen Daten. Aufgrund ihrer
                 topographischen Gliederung sollen diese Daten zukünftig auch den Grundstein für ein digitales
                 Denkmalregister der National Corporation for Antiquities & Museums bilden.
             </p>
@@ -128,14 +108,14 @@
             </p>
 
             <p>
-                <div>
-                    <a href="/project/hinkel_map" title="Zur Karte" style="cursor:pointer">
-                        <span class="glyphicon glyphicon-fullscreen"></span>
-                        Größere Karte
-                    </a>
-                </div>
+            <div>
+                <a href="/project/hinkel_map" title="Zur Karte" style="cursor:pointer">
+                    <span class="glyphicon glyphicon-fullscreen"></span>
+                    Größere Karte
+                </a>
+            </div>
 
-                <div ng-init="config = {
+            <div ng-init="config = {
                     clustered: false,
                     menuFacetsAllow: [
                         'facet_bestandsname'
@@ -147,18 +127,18 @@
                         }
                     ]
                 }"></div>
-                <con10t-show-if dataset-group="Digital-Hinkel">
-                    <div con10t-map
-                         id="map"
-                         limit="200"
-                         overlays="config.overlays"
-                         facets-select="config.facetsSelect"
-                         lat="15.114552871944115"
-                         lng="31.134765625"
-                         zoom="5"
-                         style="height: 500px">
-                    </div>
-                </con10t-show-if>
+            <con10t-show-if dataset-group="Digital-Hinkel">
+                <div con10t-map
+                     id="map"
+                     limit="200"
+                     overlays="config.overlays"
+                     facets-select="config.facetsSelect"
+                     lat="15.114552871944115"
+                     lng="31.134765625"
+                     zoom="5"
+                     style="height: 500px">
+                </div>
+            </con10t-show-if>
             </p>
 
             <p style="text-align: center;">
