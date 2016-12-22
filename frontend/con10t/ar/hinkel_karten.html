@@ -1,7 +1,5 @@
 <idai-header
-        image="todo.jpg"
-        description="ToDo"
-        link="http://arachne.dainst.org">
+        image="/con10t/img/hinkel/hinkel-karten-teaser.jpg">
 </idai-header>
 
 <div class="con10t-page teaserpage container">
@@ -12,29 +10,10 @@
             <h1>الخرائط الطوبوغرافية</h1>
         </div>
 
-        <div class="con10t-sidebar" dir="rtl">
-            <h3>Inhalt</h3>
-            <ul>
-                <li>
-                    <a href="project/hinkel_ams"> نظام AMS</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_wms">مجموعات المواد العلمية (WMS) الموجودة في أرشيف فريدريخ ڤ. هِنكل</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_karteikarten">بطاقات الفهرسة</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_zeichnungen">الرسومات</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_karten">الخرائط الطوبوغرافية</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_foto-dia">مجموعة الصور والشرائح الشفّافة</a>
-                </li>
-            </ul>
+        <div class="con10t-sidebar">
+            <con10t-include src="/con10t/ar/hinkel_toc.html"></con10t-include>
         </div>
+
         <div class="con10t-content" dir="rtl">
             <p>
                 يضمّ أرشيف فريدريخ ڤ. هِنكل أكثر من ٥٤٠ خريطة طوبوغرافية ذات صيغ ومواد مختلفة تعكس الطيف الكامل
@@ -51,9 +30,15 @@
                 الخاصة بالإضافات المكتوبة بخطّ اليد.
             </p>
             <p>
-                روابط:
+                <a con10t-search-query="*"
+                   con10t-search-facet="facet_kategorie:Bilder,facet_bestandsname:Archiv-Friedrich-W-Hinkel,facet_subkategoriebestand_level1:Archiv-Friedrich-W-Hinkel-Karten">
                 الوصول عبر iDAI.gazetteer
+                </a>
+            </p>
+            <p>
+                <a href="https://gazetteer.dainst.org/search.json?q=recordGroupId:546b0bdde4b074ef5ccb29fe&fq=&limit=1000&type=&pretty=true">
                 الوصول عبر المجموعات غير المنظّمة
+                </a>
             </p>
 
         </div>

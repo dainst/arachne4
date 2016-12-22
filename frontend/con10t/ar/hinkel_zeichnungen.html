@@ -1,7 +1,5 @@
 <idai-header
-        image="todo.jpg"
-        description="ToDo"
-        link="http://arachne.dainst.org">
+        image="/con10t/img/hinkel/hinkel-zeichnungen-teaser.jpg">
 </idai-header>
 
 <div class="con10t-page teaserpage container">
@@ -12,29 +10,10 @@
             <h1>الرسومات:</h1>
         </div>
 
-        <div class="con10t-sidebar" dir="rtl">
-            <h3>Inhalt</h3>
-            <ul>
-                <li>
-                    <a href="project/hinkel_ams"> نظام AMS</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_wms">مجموعات المواد العلمية (WMS) الموجودة في أرشيف فريدريخ ڤ. هِنكل</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_karteikarten">بطاقات الفهرسة</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_zeichnungen">الرسومات</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_karten">الخرائط الطوبوغرافية</a>
-                </li>
-                <li>
-                    <a href="project/hinkel_foto-dia">مجموعة الصور والشرائح الشفّافة</a>
-                </li>
-            </ul>
+        <div class="con10t-sidebar">
+            <con10t-include src="/con10t/ar/hinkel_toc.html"></con10t-include>
         </div>
+
         <div class="con10t-content" dir="rtl">
             <p>
                 ينتمي أكثر من ٤٠٠٠ رسم (معظمها معدّ بشكل يدوي)إلى المواد العلمية التي قام فريدريخ ڤ. هِنكل بجمعها في
@@ -45,26 +24,30 @@
                 مواد منشورة أخرى توجد أيضاً الرسومات الأثرية الخاصّة بالنقوش النافرة المكتشفة في أهرامات مروي والتي قام
                 بإعدادها رسّامون آخرون بناءً على المواصفات التي حدّدها هِنكل. تمّ في إطار عملية الرقمنة تسجيل مجموعة
                 المواد هذه بشكل تفصيلي كما تمّ تحديد هوية المكتشفات المصوّرة.
+            </p>
+            <p>
                 مُهِرَت الرسومات بما مجموعه ٣٦٠٥ رقم حيث سُجِّلت الرسومات ذات الصلة من الناحية الموضوعية معاً. عُرِضت
                 حزم الرسومات المكوّنة من أكثر من ١٠ أوراق مثل تلك المسمّاة بـ Musterbücher والخاصّة بأهرام مروي في
                 iDAI.bookbrowser ضمن السياق الخاصّ بـ iDAI.world في حين رُتِّبت الأوراق الفردية طوبوغرافياً وفق نظام AMS
                 ووُضِعت ضمن المجموعات غير المنتظمة التابعة لـ iDAI.objects كما يمكن البحث عنها وفقاً للمواقع الأثرية في
                 iDAI.gazetteer.
+            </p>
+            <p>
                 يحتفظ معهد الآثار الألماني بحقوق النشر الخاصّة بالرسومات الموجودة في أرشيف فريدريخ ڤ. هِنكل (ما لم يتمّ
                 ذكر خلاف ذلك).
             </p>
+            <p>
+                <a con10t-search-query="*"
+                   con10t-search-facet="facet_kategorie:Bilder,facet_bestandsname:Archiv-Friedrich-W-Hinkel,facet_subkategoriebestand_level1:Archiv-Friedrich-W-Hinkel-Zeichnungen">
+                    رابط مع الرسومات الموجودة في المجموعات غير المنتظمة في iDAI.objects
+                </a>
+            </p>
 
-            <a href="">
-                روابط:
-            </a><br/>
-
-            <a href="">
-                رابط مع الرسومات الموجودة في المجموعات غير المنتظمة في iDAI.objects
-            </a><br/>
-
-            <a href="">
-            رابط مع حزم الرسومات الموجودة في iDAI.bookbrowser
-            </a><br/>
+            <p>
+                <a con10t-search-catalog="216">
+                رابط مع حزم الرسومات الموجودة في iDAI.bookbrowser
+                </a>
+            </p>
 
         </div>
     </div>
