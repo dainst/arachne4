@@ -127,6 +127,40 @@
                 Museums nur nach vorheriger Anmeldung und Freischaltung (Kontakt: hinkel-archiv@dainst.de) einsehbar.
             </p>
 
+            <p>
+                <div>
+                    <a href="/project/hinkel_map" title="Zur Karte" style="cursor:pointer">
+                        <span class="glyphicon glyphicon-fullscreen"></span>
+                        Größere Karte
+                    </a>
+                </div>
+
+                <div ng-init="config = {
+                    clustered: false,
+                    menuFacetsAllow: [
+                        'facet_bestandsname'
+                    ],
+                    facetsSelect: [
+                        {
+                            key: 'facet_bestandsname',
+                            value: 'Archiv-Friedrich-W-Hinkel'
+                        }
+                    ]
+                }"></div>
+                <con10t-show-if dataset-group="Digital-Hinkel">
+                    <div con10t-map
+                         id="map"
+                         limit="200"
+                         overlays="config.overlays"
+                         facets-select="config.facetsSelect"
+                         lat="15.114552871944115"
+                         lng="31.134765625"
+                         zoom="5"
+                         style="height: 500px">
+                    </div>
+                </con10t-show-if>
+            </p>
+
             <p style="text-align: center;">
                 <img style="display: inline-block; height: 110px;" src="/con10t/img/hinkel/AA_Web_de.gif"
                      class="con10t-image con10t-image-center"
