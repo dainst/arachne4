@@ -1,0 +1,118 @@
+<div hide-footer class="row fullscreenrow">
+    <div ng-init="config = {
+clustered: false,
+menuFacetsAllow: [
+    'facet_bestandsname'
+],
+facetsSelect: [
+    {
+        key: 'facet_bestandsname',
+        value: 'Archiv-Friedrich-W-Hinkel'
+    }
+],
+overlays: {
+    groups: [
+        {
+            name: 'Grid',
+            overlays: [
+                {
+                    key: 'gridsudan1dot5x1degrees',
+                    name: 'gridsudan1dot5x1degrees',
+                    type: 'wms',
+                    url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                    layerOptions: {
+                        layers: 'geonode:gridsudan1dot5x1degrees',
+                        format: 'image/png',
+                        transparent: true
+                    },
+                    attributionUrl: 'http://geoserver.dainst.org/layers/geonode:gridsudan1dot5x1degrees'
+                },
+                {
+                    key: 'gridsudan15x15minutes',
+                    name: 'gridsudan15x15minutes',
+                    type: 'wms',
+                    url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                    layerOptions: {
+                        layers: 'geonode:gridsudan15x15minutes',
+                        format: 'image/png',
+                        transparent: true
+                    },
+                    attributionUrl: 'http://geoserver.dainst.org/layers/geonode:gridsudan15x15minutes'
+                }
+            ]
+        },
+        {
+            name: 'Historical maps',
+            overlays: [
+                {
+                    key: 'd_dai_z_arch_fwh_z0276_sudan_ne_36_o_1',
+                    name: 'D-DAI-Z-Arch-FWH-Z0276',
+                    type: 'wms',
+                    url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                    layerOptions: {
+                        layers: 'geonode:d_dai_z_arch_fwh_z0276_sudan_ne_36_o_1',
+                        format: 'image/png',
+                        transparent: true
+                    },
+                    attributionUrl: 'http://geoserver.dainst.org/layers/geonode:d_dai_z_arch_fwh_z0276_sudan_ne_36_o_1'
+                }
+            ]
+        }
+    ]
+},
+baselayers: {
+    osm: {
+        'name': 'OpenStreetMap',
+        'type': 'xyz',
+        'url': 'http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png',
+        'yayerOptions': {
+            'subdomains': ['a', 'b', 'c'],
+            'attribution': '&copy; <a href=\'http://www.opencyclemap.org\'>OpenCycleMap</a>, &copy; <a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
+            'continuousWorld': false,
+            'maxZoom': 18
+        }
+    },
+    romanEmpire: {
+        name: 'Roman Empire',
+        type: 'xyz',
+        url: 'http://dare.ht.lu.se/tiles/imperium/{z}/{x}/{y}.png',
+        layerOptions: {
+            subdomains: ['a', 'b', 'c'],
+            attribution: 'Tiles: <a href=\'http://dare.ht.lu.se/\'>DARE 2014</a>',
+            continuousWorld: true
+        }
+    }
+},
+    defaultBaselayer: 'osm'
+}"></div>
+
+
+    <div id="menu" class="col-sm-2 fullscreencol">
+        <h3 class="text-muted uppercase">
+            {{'ui_gridmap_heading'|transl8}}
+        </h3>
+
+        <div con10t-map-menu-search-info type="grid"></div>
+        <div con10t-map-menu-search-field heading="{{'ui_current_search'|transl8}}"></div>
+    </div>
+
+    <div con10t-map
+         class="col-sm-8 fullscreencol"
+         id="map"
+         limit="200"
+         overlays="config.overlays"
+         baselayers="config.baselayers"
+         default-baselayer="config.defaultBaselayer"
+         facets-select="config.facetsSelect"
+         lat="18.06231230454674"
+         lng="33.837890625"
+         zoom="5">
+    </div>
+
+    <div con10t-map-overlays
+         class="col-sm-2 fullscreencol"
+         overlays="config.overlays"
+         baselayers="config.baselayers">
+    </div>
+
+</div>
