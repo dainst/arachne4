@@ -389,13 +389,14 @@ public class UserManagementController {
 								+ newLine + "Bitte folgen sie diesem Link um den Prozess abzuschließen: " + linkString 
 								+ newLine + "Dieser Link ist bis zum " + expirationDateString + " gültig.";
 
-						if (!mailService.sendMail(userByName.getEmail(), "Passwort zurückgesetzt bei Arachne", messageBody)) {
+						if (!isTestUser(userByName) && !mailService.sendMail(userByName.getEmail(), "Passwort zurückgesetzt bei Arachne", messageBody)) {
 							LOGGER.error("Unable to send password activation eMail to user: " + userByName.getEmail());
 							resetPasswordRequestDao.delete(request);
 							result.put("success", "false");
 							response.setStatus(400);
 							return result;
 						}
+
 						result.put("success", "true");
 						response.setStatus(200);
 						return result;
