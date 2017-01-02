@@ -270,7 +270,72 @@
                     {
                         "id": "hinkel",
                         "title": {
-                            "de": "Hinkel"
+                            "de": "Hinkel",
+                            "en": "Hinkel",
+                            "ar": "أرشيف فريدريخ ڤ. هِنكل بشكلٍ رقمي"
+                        },
+                        "hidden": true
+                    },
+                    {
+                        "id": "hinkel_ams",
+                        "title": {
+                            "de": "Hinkel",
+                            "en": "Hinkel",
+                            "ar": "نظام AMS"
+                        },
+                        "hidden": true
+                    },
+                    {
+                        "id": "hinkel_foto-dia",
+                        "title": {
+                            "de": "Hinkel",
+                            "en": "Hinkel",
+                            "ar": "مجموعة الصور والشرائح الشفّافة"
+                        },
+                        "hidden": true
+                    },
+                    {
+                        "id": "hinkel_karteikarten",
+                        "title": {
+                            "de": "Hinkel",
+                            "en": "Hinkel",
+                            "ar": "بطاقات الفهرسة"
+                        },
+                        "hidden": true
+                    },
+                    {
+                        "id": "hinkel_karten",
+                        "title": {
+                            "de": "Hinkel",
+                            "en": "Hinkel",
+                            "ar": "الخرائط الطوبوغرافية"
+                        },
+                        "hidden": true
+                    },
+                    {
+                        "id": "hinkel_map",
+                        "title": {
+                            "de": "Hinkel",
+                            "en": "Hinkel",
+                            "ar": "Hinkel"
+                        },
+                        "hidden": true
+                    },
+                    {
+                        "id": "hinkel_wms",
+                        "title": {
+                            "de": "Hinkel",
+                            "en": "Hinkel",
+                            "ar": " مجموعات المواد العلمية (WMS) الموجودة في أرشيف فريدريخ ڤ. هِنكل"
+                        },
+                        "hidden": true
+                    },
+                    {
+                        "id": "hinkel_zeichnungen",
+                        "title": {
+                            "de": "Hinkel",
+                            "en": "Hinkel",
+                            "ar": "الرسومات:"
                         },
                         "hidden": true
                     }
