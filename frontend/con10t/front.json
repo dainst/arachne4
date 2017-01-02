@@ -1,14 +1,22 @@
 [
 	{
-		"id": "arapacis",
-		"text": "Ara Pacis"
+		"id": "syrher",
+		"text": "Syrian Heritage Archive Project"
+	},
+	{
+		"id": "hinkel",
+		"text": "Das Archiv von Friedrich W. Hinkel"
+	},
+	{
+		"id": "ariadne",
+		"text": "ARIADNE - Digital Archaeology in Europe"
 	},
 	{
 		"id": "afrarchcologne",
 		"text": "African Archaeology Archive Cologne"
 	},
 	{
-		"id": "hellespont",
-		"text": "Das Hellespont-Projekt"
+		"id": "grako",
+		"text": "Werkstätten vormoderner Wirtschaftsräume"
 	}
 ]
