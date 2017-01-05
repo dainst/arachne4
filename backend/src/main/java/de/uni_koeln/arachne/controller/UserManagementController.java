@@ -340,65 +340,66 @@ public class UserManagementController {
 	public Map<String,String> reset(@RequestBody Map<String,String> userCredentials, HttpServletResponse response) {
 		Map<String,String> result = new HashMap<String,String>();
 
-		checkForBot(userCredentials, "ui.passwordreset.");		
-		if (!userRightsService.isSignedInUser()) {
-			final String userName = getFormData(userCredentials, "username", true, "ui.passwordreset.");
-			final String eMailAddress = getFormData(userCredentials, "email", true, "ui.passwordreset.");
-			final String firstName = getFormData(userCredentials, "firstname", true, "ui.passwordreset.");
-			final String zipCode = getFormData(userCredentials, "zip", true, "ui.passwordreset.");
+		checkForBot(userCredentials, "ui.passwordreset.");
 
-			User userByEMailAddress = userDao.findByEMailAddress(eMailAddress);
-			User userByName = userDao.findByName(userName);
-			if (userByName != null && userByName.equals(userByEMailAddress)) {
-				if (userByName.getFirstname().equals(firstName) && userByName.getZip().equals(zipCode)) {
-					// get rid of all expired requests
-					resetPasswordRequestDao.deleteExpiredRequests();
-					final ResetPasswordRequest resetPasswordRequest = resetPasswordRequestDao.getByUserId(userByName.getId());
-					// if there is already a request pending do not allow to add a new one
-					if (resetPasswordRequest == null) {
-						final String token = random.getNewToken();
-						final Calendar calender = Calendar.getInstance();
-						final long now = calender.getTime().getTime();
-						calender.setTimeInMillis(now);
-						calender.add(Calendar.HOUR_OF_DAY, 12);
-						final Timestamp expirationDate = new Timestamp(calender.getTime().getTime()); 
+        result.put("success", "false");
+        response.setStatus(400);
 
-						ResetPasswordRequest request = new ResetPasswordRequest();
-						request.setToken(token);
-						request.setUserId(userByName.getId());
-						request.setExpirationDate(expirationDate);
-						resetPasswordRequestDao.save(request);
+        if (userRightsService.isSignedInUser()) return result;
 
-						// sent mail with activation link to user
-						final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-						final String nowString = dateFormat.format(now);
-						final String expirationDateString = dateFormat.format(expirationDate);
-						final String linkString = "http://" + serverAddress + "/user/activation/" + token;
+        final String userName = getFormData(userCredentials, "username", true, "ui.passwordreset.");
+        final String eMailAddress = getFormData(userCredentials, "email", true, "ui.passwordreset.");
+        final String firstName = getFormData(userCredentials, "firstname", true, "ui.passwordreset.");
+        final String lastName = getFormData(userCredentials, "lastname", true, "ui.passwordreset.");
+        final String zipCode = getFormData(userCredentials, "zip", true, "ui.passwordreset.");
 
-						final String messageBody = "Sie haben ihr Passwort bei Arachne am " + nowString + " zurückgesetzt." 
-								+ newLine + "Bitte folgen sie diesem Link um den Prozess abzuschließen: " + linkString 
-								+ newLine + "Dieser Link ist bis zum " + expirationDateString + " gültig.";
+        User userByEMailAddress = userDao.findByEMailAddress(eMailAddress);
+        User userByName = userDao.findByName(userName);
+        if (!(userByName != null && userByName.equals(userByEMailAddress))) return result;
+        if (!userByName.getFirstname().equals(firstName) ||
+                !userByName.getZip().equals(zipCode) ||
+                !userByName.getLastname().equals(lastName)) return result;
 
-						if (!isTestUser(userByName) && !mailService.sendMail(userByName.getEmail(), "Passwort zurückgesetzt bei Arachne", messageBody)) {
-							LOGGER.error("Unable to send password activation eMail to user: " + userByName.getEmail());
-							resetPasswordRequestDao.delete(request);
-							result.put("success", "false");
-							response.setStatus(400);
-							return result;
-						}
+        resetPasswordRequestDao.deleteExpiredRequests(); // get rid of all expired requests
+        // if there is already a request pending do not allow to add a new one
+        if (resetPasswordRequestDao.getByUserId(userByName.getId()) != null) return result;
 
-						result.put("success", "true");
-						response.setStatus(200);
-						return result;
-					}
-				}	
-			}
-		}
-		result.put("success", "false");
-		response.setStatus(400);
-		return result;
+
+        final String token = random.getNewToken();
+        final Calendar calender = Calendar.getInstance();
+        final long now = calender.getTime().getTime();
+        calender.setTimeInMillis(now);
+        calender.add(Calendar.HOUR_OF_DAY, 12);
+        final Timestamp expirationDate = new Timestamp(calender.getTime().getTime());
+
+        ResetPasswordRequest request = new ResetPasswordRequest();
+        request.setToken(token);
+        request.setUserId(userByName.getId());
+        request.setExpirationDate(expirationDate);
+        resetPasswordRequestDao.save(request);
+
+        // sent mail with activation link to user
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        final String nowString = dateFormat.format(now);
+        final String expirationDateString = dateFormat.format(expirationDate);
+        final String linkString = "http://" + serverAddress + "/user/activation/" + token;
+
+        final String messageBody = "Sie haben ihr Passwort bei Arachne am " + nowString + " zurückgesetzt."
+                + newLine + "Bitte folgen sie diesem Link um den Prozess abzuschließen: " + linkString
+                + newLine + "Dieser Link ist bis zum " + expirationDateString + " gültig.";
+
+        if (!isTestUser(userByName) && !mailService.sendMail(userByName.getEmail(), "Passwort zurückgesetzt bei Arachne", messageBody)) {
+            LOGGER.error("Unable to send password activation eMail to user: " + userByName.getEmail());
+            resetPasswordRequestDao.delete(request);
+            result.put("success", "false");
+            response.setStatus(400);
+        } else {
+            result.put("success", "true");
+            response.setStatus(200);
+        }
+        return result;
 	}
-	
+
 	/**
 	 * This method is the second and last step in the 'forgot password' process. It changes the password of a user to 
 	 * the provided on.

@@ -1,17 +1,14 @@
 package de.uni_koeln.arachne.controller;
 
-import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
-
-import java.lang.reflect.Field;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
+import de.uni_koeln.arachne.dao.hibernate.ResetPasswordRequestDao;
+import de.uni_koeln.arachne.dao.hibernate.UserDao;
+import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
+import de.uni_koeln.arachne.mapping.hibernate.ResetPasswordRequest;
+import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.service.MailService;
+import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.util.security.ProtectedObject;
+import de.uni_koeln.arachne.util.security.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,17 +19,20 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import de.uni_koeln.arachne.dao.hibernate.ResetPasswordRequestDao;
-import de.uni_koeln.arachne.dao.hibernate.UserDao;
-import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
-import de.uni_koeln.arachne.mapping.hibernate.ResetPasswordRequest;
-import de.uni_koeln.arachne.mapping.hibernate.User;
-import de.uni_koeln.arachne.service.MailService;
-import de.uni_koeln.arachne.service.UserRightsService;
-import de.uni_koeln.arachne.util.security.ProtectedObject;
-import de.uni_koeln.arachne.util.security.Random;
 import org.springframework.web.filter.CharacterEncodingFilter;
+
+import java.lang.reflect.Field;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestUserManagementController {
@@ -675,6 +675,7 @@ public class TestUserManagementController {
 		final String json = "{\"username\":\"testuser\","
 				+ "\"email\":\"someaddress@somedomain.com\","
 				+ "\"firstname\":\"test\","
+				+ "\"lastname\":\"user\","
 				+ "\"zip\":\"12345\","
 				+ "\"iAmHuman\":\"humanIAm\"}";
 		
@@ -708,22 +709,9 @@ public class TestUserManagementController {
 				+ "\"email\":\"someaddress@somedomain.com\","
 				+ "\"firstname\":\"test\","
 				+ "\"zip\":\"12345\"}";
-		
-		// admin
-		mockMvc.perform(
-				post("/user/reset")
-				.contentType(APPLICATION_JSON_UTF8)
-				.content(json))
-				.andExpect(status().isBadRequest())
-				.andExpect(content().json("{success:\"false\"}"));
-		
-		// user
-		mockMvc.perform(
-				post("/user/reset")
-				.contentType(APPLICATION_JSON_UTF8)
-				.content(json))
-				.andExpect(status().isBadRequest())
-				.andExpect(content().json("{success:\"false\"}"));
+
+        when(userRightsService.isSignedInUser()).thenReturn(false);
+
 		// anonymous
 		mockMvc.perform(
 				post("/user/reset")
@@ -740,22 +728,9 @@ public class TestUserManagementController {
 				+ "\"firstname\":\"test\","
 				+ "\"zip\":\"12345\","
 				+ "\"iAmHuman\":\"humanIAm\"}";
-		
-		// admin
-		mockMvc.perform(
-				post("/user/reset")
-				.contentType(APPLICATION_JSON_UTF8)
-				.content(json))
-				.andExpect(status().isBadRequest())
-				.andExpect(content().json("{success:\"false\"}"));
-		
-		// user
-		mockMvc.perform(
-				post("/user/reset")
-				.contentType(APPLICATION_JSON_UTF8)
-				.content(json))
-				.andExpect(status().isBadRequest())
-				.andExpect(content().json("{success:\"false\"}"));
+
+        when(userRightsService.isSignedInUser()).thenReturn(false);
+
 		// anonymous
 		mockMvc.perform(
 				post("/user/reset")
@@ -772,22 +747,9 @@ public class TestUserManagementController {
 				+ "\"firstname\":\"test\","
 				+ "\"zip\":\"12345\","
 				+ "\"iAmHuman\":\"humanIAm\"}";
-		
-		// admin
-		mockMvc.perform(
-				post("/user/reset")
-				.contentType(APPLICATION_JSON_UTF8)
-				.content(json))
-				.andExpect(status().isBadRequest())
-				.andExpect(content().json("{success:\"false\"}"));
-		
-		// user
-		mockMvc.perform(
-				post("/user/reset")
-				.contentType(APPLICATION_JSON_UTF8)
-				.content(json))
-				.andExpect(status().isBadRequest())
-				.andExpect(content().json("{success:\"false\"}"));
+
+        when(userRightsService.isSignedInUser()).thenReturn(false);
+
 		// anonymous
 		mockMvc.perform(
 				post("/user/reset")
@@ -802,24 +764,13 @@ public class TestUserManagementController {
 		final String json = "{\"username\":\"testuser\","
 				+ "\"email\":\"someaddress@somedomain.com\","
 				+ "\"firstname\":\"incorrect\","
+				+ "\"lastname\":\"user\","
 				+ "\"zip\":\"12345\","
 				+ "\"iAmHuman\":\"humanIAm\"}";
-		
-		// admin
-		mockMvc.perform(
-				post("/user/reset")
-				.contentType(APPLICATION_JSON_UTF8)
-				.content(json))
-				.andExpect(status().isBadRequest())
-				.andExpect(content().json("{success:\"false\"}"));
-		
-		// user
-		mockMvc.perform(
-				post("/user/reset")
-				.contentType(APPLICATION_JSON_UTF8)
-				.content(json))
-				.andExpect(status().isBadRequest())
-				.andExpect(content().json("{success:\"false\"}"));
+
+
+        when(userRightsService.isSignedInUser()).thenReturn(false);
+
 		// anonymous
 		mockMvc.perform(
 				post("/user/reset")
@@ -828,6 +779,66 @@ public class TestUserManagementController {
 				.andExpect(status().isBadRequest())
 				.andExpect(content().json("{success:\"false\"}"));
 	}
+
+    @Test
+    public void testResetInvalidMissingFirstname() throws Exception {
+        final String json = "{\"username\":\"testuser\","
+                + "\"email\":\"someaddress@somedomain.com\","
+                + "\"lastname\":\"user\","
+                + "\"zip\":\"12345\","
+                + "\"iAmHuman\":\"humanIAm\"}";
+
+
+        when(userRightsService.isSignedInUser()).thenReturn(false);
+
+        // anonymous
+        mockMvc.perform(
+                post("/user/reset")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("{success:\"false\",message:\"ui.passwordreset.fieldMissing.firstname\"}"));
+    }
+
+    @Test
+    public void testResetInvalidMissingLastname() throws Exception {
+        final String json = "{\"username\":\"testuser\","
+                + "\"email\":\"someaddress@somedomain.com\","
+                + "\"firstname\":\"test\","
+                + "\"zip\":\"12345\","
+                + "\"iAmHuman\":\"humanIAm\"}";
+
+
+        when(userRightsService.isSignedInUser()).thenReturn(false);
+
+        // anonymous
+        mockMvc.perform(
+                post("/user/reset")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("{success:\"false\",message:\"ui.passwordreset.fieldMissing.lastname\"}"));
+    }
+
+    @Test
+    public void testResetInvalidIncorrectLastname() throws Exception {
+        final String json = "{\"username\":\"testuser\","
+                + "\"email\":\"someaddress@somedomain.com\","
+                + "\"firstname\":\"test\","
+                + "\"lastname\":\"incorrect\","
+                + "\"zip\":\"12345\","
+                + "\"iAmHuman\":\"humanIAm\"}";
+
+        when(userRightsService.isSignedInUser()).thenReturn(false);
+
+        // anonymous
+        mockMvc.perform(
+                post("/user/reset")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("{success:\"false\"}"));
+    }
 	
 	@Test
 	public void testResetInvalidIncorrectZip() throws Exception {
@@ -836,22 +847,9 @@ public class TestUserManagementController {
 				+ "\"firstname\":\"test\","
 				+ "\"zip\":\"54321\","
 				+ "\"iAmHuman\":\"humanIAm\"}";
-		
-		// admin
-		mockMvc.perform(
-				post("/user/reset")
-				.contentType(APPLICATION_JSON_UTF8)
-				.content(json))
-				.andExpect(status().isBadRequest())
-				.andExpect(content().json("{success:\"false\"}"));
-		
-		// user
-		mockMvc.perform(
-				post("/user/reset")
-				.contentType(APPLICATION_JSON_UTF8)
-				.content(json))
-				.andExpect(status().isBadRequest())
-				.andExpect(content().json("{success:\"false\"}"));
+
+        when(userRightsService.isSignedInUser()).thenReturn(false);
+
 		// anonymous
 		mockMvc.perform(
 				post("/user/reset")
@@ -866,6 +864,7 @@ public class TestUserManagementController {
 		final String json = "{\"username\":\"testuser\","
 				+ "\"email\":\"someaddress@somedomain.com\","
 				+ "\"firstname\":\"test\","
+				+ "\"lastname\":\"user\","
 				+ "\"zip\":\"12345\","
 				+ "\"iAmHuman\":\"humanIAm\"}";
 		
