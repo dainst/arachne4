@@ -3,16 +3,17 @@
  */
 package de.uni_koeln.arachne.controller;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
+import de.uni_koeln.arachne.dao.hibernate.ResetPasswordRequestDao;
+import de.uni_koeln.arachne.dao.hibernate.UserDao;
+import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
+import de.uni_koeln.arachne.mapping.hibernate.ResetPasswordRequest;
+import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.service.MailService;
+import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.util.StrUtils;
+import de.uni_koeln.arachne.util.network.CustomMediaType;
+import de.uni_koeln.arachne.util.security.JSONView;
+import de.uni_koeln.arachne.util.security.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,25 +23,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static de.uni_koeln.arachne.util.FormDataUtils.*;
-import de.uni_koeln.arachne.dao.hibernate.ResetPasswordRequestDao;
-import de.uni_koeln.arachne.dao.hibernate.UserDao;
-import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
-import de.uni_koeln.arachne.mapping.hibernate.ResetPasswordRequest;
-import de.uni_koeln.arachne.mapping.hibernate.User;
-import de.uni_koeln.arachne.service.UserRightsService;
-import de.uni_koeln.arachne.service.MailService;
-import de.uni_koeln.arachne.util.StrUtils;
-import de.uni_koeln.arachne.util.network.CustomMediaType;
-import de.uni_koeln.arachne.util.security.JSONView;
-import de.uni_koeln.arachne.util.security.Random;
 
 /**
  * Controller that handles user registration and password reset/activation requests.
@@ -351,7 +341,7 @@ public class UserManagementController {
 		Map<String,String> result = new HashMap<String,String>();
 
 		checkForBot(userCredentials, "ui.passwordreset.");		
-		if (!userRightsService.isSignedInUser()) {
+//		if (!userRightsService.isSignedInUser()) {
 			final String userName = getFormData(userCredentials, "username", true, "ui.passwordreset.");
 			final String eMailAddress = getFormData(userCredentials, "email", true, "ui.passwordreset.");
 			final String firstName = getFormData(userCredentials, "firstname", true, "ui.passwordreset.");
@@ -403,7 +393,7 @@ public class UserManagementController {
 					}
 				}	
 			}
-		}
+//		}
 		result.put("success", "false");
 		response.setStatus(400);
 		return result;
