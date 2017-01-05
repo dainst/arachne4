@@ -341,7 +341,7 @@ public class UserManagementController {
 		Map<String,String> result = new HashMap<String,String>();
 
 		checkForBot(userCredentials, "ui.passwordreset.");		
-//		if (!userRightsService.isSignedInUser()) {
+		if (!userRightsService.isSignedInUser()) {
 			final String userName = getFormData(userCredentials, "username", true, "ui.passwordreset.");
 			final String eMailAddress = getFormData(userCredentials, "email", true, "ui.passwordreset.");
 			final String firstName = getFormData(userCredentials, "firstname", true, "ui.passwordreset.");
@@ -393,7 +393,7 @@ public class UserManagementController {
 					}
 				}	
 			}
-//		}
+		}
 		result.put("success", "false");
 		response.setStatus(400);
 		return result;
