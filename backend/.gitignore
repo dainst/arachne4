@@ -1,3 +1,4 @@
 /target/
 src/main/resources/config/application.properties
+.idea
 *.iml
