@@ -12,44 +12,57 @@
         <div class="con10t-sidebar">
             <con10t-toc toc-heading="Übersicht"></con10t-toc>
             <h3>Search within the project data</h3>
-            <a con10t-search-query="*&amp;fq=catalogIds:'92'">Show all datasets</a>
 
-            <con10t-search catalog-id="92"></con10t-search>
+
+			<con10t-show-if dataset-group="ceramalex">4
+				<a con10t-search-query="*&amp;fq=facet_kategorie:'mainabstract'">Search Main Abstracts</a>
+            	<con10t-search fq=facet_kategorie:'mainabstract'></con10t-search>
+			</con10t-show-if>
             <h3>Map view</h3>
 
-            <div ng-init="config = {
-            baselayers: {
-                osm: {
-                    name: 'OpenStreetMap',
-                    type: 'xyz',
-                    url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    layerOptions: {
-                        subdomains: ['a', 'b', 'c'],
-                        attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
-                        continuousWorld: true,
-                        maxZoom: 18
-                    }
-                }
-            },
-            baselayerKey: 'osm',
-            clustered: false
-        }"></div>
+			<!--
             <div><a href="/project/grako_map" title="Zur Karte" style="cursor:pointer">
                 <span class="glyphicon glyphicon-fullscreen"></span>
                 Search production sites on the map
             </a></div>
-
+			-->
             <div con10t-map
-                 id="map"
-                 limit="200"
-                 catalog-id="92"
-                 baselayers="config.baselayers"
-                 default-baselayer="config.baselayerKey"
-                 facets-select="config.facetsSelect">
-            </div>
+					 id="map"
+					 limit="200"
+					 catalog-id="-1"
+					 baselayers="{
+							osm: {
+								name: 'OpenStreetMap',
+								type: 'xyz',
+								url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+								layerOptions: {
+									subdomains: ['a', 'b', 'c'],
+									attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
+									continuousWorld: true,
+									maxZoom: 18
+								}
+							}
+						}"
+					 default-baselayer="osm"
+					 facets-select=""
+				 	 min-zoom="1"
+					 pin-list="[
+						{'name': 'Buto', 					'location': {'lat': 32.191371, 	'lon': 30.743637}, gazetteerID: 2101738},
+						{'name': 'Bubastis / Tell Basta', 	'location': {'lat': 30.570524, 	'lon': 31.514910}},
+						{'name': 'Tell el-Timai', 			'location': {'lat': 30.938611, 	'lon': 31.516389}},
+						{'name': 'Karnak', 					'location': {'lat': 25.719922, 	'lon': 32.657025}},
+						{'name': 'Medamoud', 				'location': {'lat': 25.733828, 	'lon': 32.710031}},
+						{'name': 'Antinopolis', 			'location': {'lat': 27.816667, 	'lon': 30.883333}},
+						{'name': 'Abu Mina', 				'location': {'lat': 30.852130, 	'lon': 29.666070}, gazetteerID: 2282610},
+						{'name': 'Kellia', 					'location': {'lat': 30.776003, 	'lon': 30.368868}},
+						{'name': 'Koptos',				 	'location': {'lat': 25.5944, 	'lon': 32.4857}},
+						{'name': 'Edfu', 					'location': {'lat': 24.978533, 	'lon': 32.874710}},
+						{'name': 'Syene / Assuan', 			'location': {'lat': 24.084561, 	'lon': 32.891864}},
+						{'name': 'Elephantine', 			'location': {'lat': 24.084363, 	'lon': 32.885274}},
+						{'name': 'St. Simeon', 				'location': {'lat': 24.094754, 	'lon': 32.876231}}
 
-			<div>
-
+					 ]"
+				>
 			</div>
 
         </div>
@@ -57,7 +70,6 @@
         <div class="con10t-content">
 
             <h2 class="con10t-toc-entry">Concept</h2>
-
 
 			<con10t-image src="/con10t/img/ceramegypt/image_2.jpg" align="right" width="300" alt="Ceramics from Schedia">
 				Ceramics from Schedia
