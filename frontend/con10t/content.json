@@ -587,6 +587,24 @@
                         }
                     }
                 ]
+            },
+            {
+                "id": "rmstart",
+                "title": {
+                    "de": "Mitteilungen des Deutschen Archäologischen Instituts, Römische Abteilung",
+                    "en": "Mitteilungen des Deutschen Archäologischen Instituts, Römische Abteilung",
+                    "it": "Mitteilungen des Deutschen Archäologischen Instituts, Römische Abteilung"
+                },
+                "children": [
+                    {
+                        "id": "rm121",
+                        "title": {
+                            "de": "Band 121, 2015: I bolli laterizi delle residenze imperiali sul Palatino a Roma",
+                            "en": "Volume 121, 2015: I bolli laterizi delle residenze imperiali sul Palatino a Roma",
+                            "it": "Volume 121, 2015: I bolli laterizi delle residenze imperiali sul Palatino a Roma"
+                        }
+                    }
+                ]
             }
         ]
     }
