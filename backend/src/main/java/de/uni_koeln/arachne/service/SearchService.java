@@ -607,7 +607,8 @@ public class SearchService {
 		}
 		
 		final QueryStringQueryBuilder innerQuery = QueryBuilders.queryStringQuery(searchParam)
-				.defaultOperator(Operator.AND);
+				.defaultOperator(Operator.AND)
+				.analyzeWildcard(true);
 		
 		if (searchEditorFields) {
 			innerQuery.field("searchableEditorContent^0.5");
