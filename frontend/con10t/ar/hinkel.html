@@ -13,10 +13,21 @@
         <div class="con10t-sidebar">
             <div>
                 <p>
-                    <a href="project/hinkel" target="_self">English Version</a>
+                    <a href="project/hinkel?lang=en" target="_self">English Version</a>
+                </p>
+                <p>
+                    <a href="project/hinkel?lang=de" target="_self">Deutsche Version</a>
                 </p>
             </div>
             <con10t-include src="/con10t/ar/hinkel_toc.html"></con10t-include>
+            <div class="well">
+                <con10t-search fq="facet_bestandsname:Archiv-Friedrich-W-Hinkel"></con10t-search>
+            </div>
+
+            <h3 dir="rtl">نظرة عامة مسار</h3>
+            <p>
+                <con10t-tree fq="facet_bestandsname:Archiv-Friedrich-W-Hinkel" wildcard-facet="facet_subkategorie"></con10t-tree>
+            </p>
         </div>
 
         <div class="con10t-content" dir="rtl">
