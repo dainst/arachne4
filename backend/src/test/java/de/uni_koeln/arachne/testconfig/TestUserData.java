@@ -1,9 +1,8 @@
 package de.uni_koeln.arachne.testconfig;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
+import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
+import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.service.UserRightsService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,9 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
-import de.uni_koeln.arachne.mapping.hibernate.User;
-import de.uni_koeln.arachne.service.UserRightsService;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TestUserData {
 
@@ -127,7 +126,7 @@ public class TestUserData {
 	}
 	
 	public TestUserData dropUserTable() throws DataAccessException {
-		jdbcTemplate.execute("DROP TABLE verwaltung_benutzer;");
+		jdbcTemplate.execute("DROP TABLE IF EXISTS verwaltung_benutzer;");
 		return this;
 	}
 	
