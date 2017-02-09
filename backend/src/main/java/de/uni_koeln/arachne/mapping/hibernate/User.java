@@ -43,7 +43,7 @@ public class User extends ProtectedObject {
 		/**
 		 * This is the Primary key 
 		 */
-		@JsonView(JSONView.Admin.class)
+		@JsonView(JSONView.User.class)
 		@UserAccess(UserAccess.Restrictions.writeprotected)
 		@Id
 		@GeneratedValue(strategy=GenerationType.IDENTITY)
