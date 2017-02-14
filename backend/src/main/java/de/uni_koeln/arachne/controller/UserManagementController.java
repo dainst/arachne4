@@ -323,8 +323,8 @@ public class UserManagementController {
 	}
 
 	/**
-	 * If enough information about the user account is provided (meaning user name, eMail address, first name and 
-	 * zip code) then a request to change the password of the identified user account is created.
+	 * If enough information about the user account is provided (meaning user name, eMail address, first name)
+	 * then a request to change the password of the identified user account is created.
 	 * An eMail containing a registration link that is valid for 12 hours is sent to the user.
 	 * <br/>
 	 * If the validation of the user fails no information is returned why it failed (this is on purpose to not disclose 
@@ -351,13 +351,11 @@ public class UserManagementController {
         final String eMailAddress = getFormData(userCredentials, "email", true, "ui.passwordreset.");
         final String firstName = getFormData(userCredentials, "firstname", true, "ui.passwordreset.");
         final String lastName = getFormData(userCredentials, "lastname", true, "ui.passwordreset.");
-        final String zipCode = getFormData(userCredentials, "zip", true, "ui.passwordreset.");
 
         User userByEMailAddress = userDao.findByEMailAddress(eMailAddress);
         User userByName = userDao.findByName(userName);
         if (!(userByName != null && userByName.equals(userByEMailAddress))) return result;
         if (!userByName.getFirstname().equals(firstName) ||
-                !userByName.getZip().equals(zipCode) ||
                 !userByName.getLastname().equals(lastName)) return result;
 
         resetPasswordRequestDao.deleteExpiredRequests(); // get rid of all expired requests
