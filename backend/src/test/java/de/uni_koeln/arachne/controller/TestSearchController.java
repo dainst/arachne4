@@ -1321,7 +1321,7 @@ public class TestSearchController {
 	@Test
 	public void testIndexSearchNoParameter() throws Exception {
 		mockMvc.perform(
-				get("/index/facet_test1")
+				get("/index/key1/facet_test1")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -1339,7 +1339,7 @@ public class TestSearchController {
 	@Test
 	public void testIndexSearchNoParameterInvalidFacet() throws Exception {
 		mockMvc.perform(
-				get("/index/f,a:c,e+t")
+				get("/index/key1/f,a:c,e+t")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isBadRequest());
 	}
