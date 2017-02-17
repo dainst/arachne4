@@ -173,7 +173,7 @@ public class TestSearchController {
 			}
 		});
 		
-		when(searchService.buildIndexSearchRequest(anyString()))
+		when(searchService.buildIndexSearchRequest(anyString(), null))
 		.then(new Answer<SearchResult>() {
 			@Override
 			public SearchResult answer(InvocationOnMock invocation) throws Throwable {
