@@ -297,17 +297,23 @@ public class SearchController {
 	 * @param groupMarker A single char indicating which group to retrieve.
 	 * @return The ordered list of values as JSON array.
 	 */
-	@RequestMapping(value="/index/{facetName}", 
+	@RequestMapping(value="/index/{categoryName}/{facetName}",
 			method=RequestMethod.GET, 
 			produces={APPLICATION_JSON_UTF8_VALUE})
-	public @ResponseBody ResponseEntity<IndexResult> handleIndexRequest(@PathVariable("facetName") final String facetName
-			, @RequestParam(value = "group", required = false) Character groupMarker) {
+	public @ResponseBody ResponseEntity<IndexResult> handleIndexRequest(@PathVariable("facetName") final String facetName, @PathVariable("categoryName") final String categoryName, @RequestParam(value = "group", required = false) Character groupMarker) {
 		
 		if (facetName.startsWith("facet_") || facetName.startsWith("agg_")) {
-			final SearchRequestBuilder searchRequestBuilder = searchService.buildIndexSearchRequest(facetName);
 
-			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
-					, 0, 0, null, 0);
+            Multimap<String, String> filters = HashMultimap.create();
+            final String filterValue = "facet_kategorie:\""+categoryName+"\"";
+            final int splitIndex = filterValue.indexOf(':');
+            final String name = filterValue.substring(0, splitIndex);
+            final String value = filterValue.substring(splitIndex+1).replace("\"", "");
+            filters.put(name, value);
+
+            final SearchRequestBuilder searchRequestBuilder = searchService.buildIndexSearchRequest(facetName, filters);
+
+			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, 0, 0, filters, 0);
 
 			if (searchResult.getStatus() == RestStatus.OK) {
 				if (searchResult.facetSize() != 1) {

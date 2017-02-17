@@ -217,10 +217,10 @@ public class SearchService {
 	 * @param facetName The name of the facet of interest.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 */
-	public SearchRequestBuilder buildIndexSearchRequest(final String facetName) {
+	public SearchRequestBuilder buildIndexSearchRequest(final String facetName, final Multimap<String, String> filters) {
 		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
-				.setQuery(buildQuery("*", null, null, false, false))
+				.setQuery(buildQuery("*", filters, null, false, false))
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setSize(0);
 		
