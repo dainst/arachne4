@@ -46,6 +46,7 @@ public class ExternalLinkResolvers {
 		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "buch");
 		result.setCriteria(criteria);
 		result.setLinkPattern("http://arachne.uni-koeln.de/Tei-Viewer/cgi-bin/teiviewer.php?manifest=%s");
+		result.setValidationPattern("http://arachne.uni-koeln.de/TeiDocuments/%s");
 		result.setPatternFields(Arrays.asList("buch.Verzeichnis"));
 		return result;
 	}

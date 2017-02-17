@@ -2,6 +2,8 @@ package de.uni_koeln.arachne.response.link;
 
 import java.util.List;
 import java.util.Map;
+import java.net.*;
+import java.io.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,8 @@ public class SimpleExternalLinkResolver implements ExternalLinkResolver {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleExternalLinkResolver.class);
 	
 	private String linkPattern;
+
+    private String validationPattern; //used to verfify that link actually exists and does not throw a 404
 	
 	private List<String> patternFields;
 	
@@ -39,7 +43,6 @@ public class SimpleExternalLinkResolver implements ExternalLinkResolver {
 		// test if criteria match
 		outer: for (String critField : getCriteria().keySet()) {
 			String fieldContent = dataset.getField(critField);
-			LOGGER.debug("fieldContent: {}", fieldContent);
 			String critContent = getCriteria().get(critField);
 			if (fieldContent != null) {
 				if (critContent.isEmpty()) {
@@ -47,7 +50,6 @@ public class SimpleExternalLinkResolver implements ExternalLinkResolver {
 					if (!isMatchAllCriteria()) break;
 				} else {
 					String[] critValues = critContent.split(",");
-					LOGGER.debug("critValues {}", critValues[0]);
 					for (String critValue : critValues) {
 						if (isExactMatch()) matches = fieldContent.equals(critValue);
 						else matches = fieldContent.contains(critValue);
@@ -64,39 +66,78 @@ public class SimpleExternalLinkResolver implements ExternalLinkResolver {
 		if (matches) {
 			
 			String url = getLinkPattern();
+            String validationUrl = getValidationPattern();
 			
 			if (getPatternFields() != null && !getPatternFields().isEmpty()) {
 				Object[] patternValues = new Object[getPatternFields().size()];
 				for (int i = 0; i < getPatternFields().size(); i++) {
 					patternValues[i] = dataset.getField(getPatternFields().get(i));
 				}
-				url = String.format(url, patternValues);
+				if(patternValues[0] != null) {
+                    url = String.format(url, patternValues);
+                    validationUrl = String.format(validationUrl, patternValues);
+                }
+                else {
+                    url = null;
+                    validationUrl = null;
+                }
 			}
-		
-			ExternalLink link = new ExternalLink(getLabel(), url);
-			return link;
-			
-		} else {
-			return null;
+            if(fileExists(validationUrl)) {
+                ExternalLink link = new ExternalLink(getLabel(), url);
+                return link;
+            }
 		}
-		
+		return null;
+	}
+
+	public boolean fileExists(String URLString) {
+        if(URLString == null) {
+            return false;
+        }
+        try {
+            HttpURLConnection.setFollowRedirects(false);
+            HttpURLConnection con = (HttpURLConnection) new URL(URLString).openConnection();
+            con.setInstanceFollowRedirects(false);
+            con.setRequestMethod("HEAD");
+            return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
+	/**
+	 * Get the validation pattern.
+	 * @return the validation pattern
+	 */
+	public String getValidationPattern() {
+		return validationPattern;
 	}
 
 	/**
-	 * Get the link pattern.
-	 * @return the link pattern
+	 * Set the validation pattern. (in case it differs from the normal link pattern)
+	 * @param validationPattern link Pattern in Java format string syntax
 	 */
-	public String getLinkPattern() {
-		return linkPattern;
+	public void setValidationPattern(String validationPattern) {
+		this.validationPattern = validationPattern;
 	}
 
-	/**
-	 * Set the link pattern.
-	 * @param linkPattern link Pattern in Java format string syntax
-	 */
-	public void setLinkPattern(String linkPattern) {
-		this.linkPattern = linkPattern;
-	}
+    /**
+     * Get the link pattern.
+     * @return the link pattern
+     */
+    public String getLinkPattern() {
+        return linkPattern;
+    }
+
+    /**
+     * Set the link pattern.
+     * @param linkPattern link Pattern in Java format string syntax
+     */
+    public void setLinkPattern(String linkPattern) {
+        this.linkPattern = linkPattern;
+        setValidationPattern(linkPattern);
+    }
 
 	/**
 	 * Get the list of pattern fields.

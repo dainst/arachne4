@@ -181,21 +181,20 @@ public class ResponseFactory {
 	private FormattedArachneEntity createFormattedArachneEntity(final Dataset dataset, final EntityId arachneId,
 			final String tableName) throws Transl8Exception {
 		final FormattedArachneEntity response = new FormattedArachneEntity(ts.transl8("type_" + tableName));
-		
 		// set id content
 		response.setEntityId(arachneId.getArachneEntityID());
 		response.setInternalId(arachneId.getInternalKey());
-		
+
 		// set uri
 		response.setUri("http://" + serverAddress + "/entity/" + arachneId.getArachneEntityID());
-		
+
 		// set thumbnailId
 		response.setThumbnailId(dataset.getThumbnailId());
-		
+
 		// set connectedEntities
-		final List<Long> connectedEntities = genericSQLDao.getConnectedEntityIds(arachneId.getArachneEntityID());  
+		final List<Long> connectedEntities = genericSQLDao.getConnectedEntityIds(arachneId.getArachneEntityID());
 		response.setConnectedEntities(connectedEntities);
-		
+
 		// set catalogEntry data
 		final Set<Long> catalogIds = new HashSet<Long>();
 		final List<String> catalogPaths = new ArrayList<String>();
@@ -207,7 +206,7 @@ public class ResponseFactory {
 		}
 		response.setCatalogIds(catalogIds);
 		response.setCatalogPaths(catalogPaths);
-		
+
 		// set degree
 		if (connectedEntities != null && !connectedEntities.isEmpty()) {
 			double degree = connectedEntities.size();
@@ -216,11 +215,11 @@ public class ResponseFactory {
 				degree -= Double.parseDouble(dataset.getField("buch.BuchSeiten"));
 			}
 			response.setDegree(degree);
-		} 
-						
+		}
+
 		// set fields
 		response.setFields(dataset.getFields().size() + dataset.getContexts().size());
-						
+
 		// set boost
 		double logFields = response.fields;
 		logFields = Math.log10(logFields + 1.0d) + 1.0d;
@@ -234,7 +233,7 @@ public class ResponseFactory {
 		boost *= customBooster.getCategoryBoost(tableName) * customBooster.getSingleEntityBoosts(response.getEntityId());
 		response.setBoost(boost);
 		response.getSuggest().setWeight((int) (boost*100));
-		
+
 		// set dataset group
 		// workaround for table marbilder as it does not adhere to the naming conventions
 		String datasetGroupFieldName = null;
@@ -244,7 +243,7 @@ public class ResponseFactory {
 			datasetGroupFieldName = tableName+".DatensatzGruppe"+tableName.substring(0,1).toUpperCase()+tableName.substring(1);
 		}
 		response.setDatasetGroup(dataset.getFieldFromFields(datasetGroupFieldName));
-		 
+
 		// set datasetGroup to "Arachne" (visible for all) for entities that do not have a datasetGroup like 'literatur' to
 		// make the access control in the search easier/consistent
 		if (response.getDatasetGroup() == null) {
@@ -260,8 +259,8 @@ public class ResponseFactory {
 			lastModified = null;
 		}
 		response.setLastModified(lastModified);
-		
-		// set geo information 
+
+		// set geo information
 		// TODO make the place handling more consistent - needs changes to the db
 		Context placeContext = dataset.getContext("ort");
 
@@ -272,7 +271,7 @@ public class ResponseFactory {
 				final String additionalInfo = link.getFieldFromFields("ort.Aufbewahrungsort");
 				String placeName = null;
 				if (!StrUtils.isEmptyOrNull(city)) {
-					placeName = city;				
+					placeName = city;
 					if (!StrUtils.isEmptyOrNull(country)) {
 						placeName += ", " + country;
 						if (!StrUtils.isEmptyOrNull(additionalInfo)) {
@@ -300,9 +299,9 @@ public class ResponseFactory {
 				}
 			}
 		}
-				
+
 		// set date information
-		
+
 		// add dates from datierungen
 		// TODO set parsed date when available in database
 		Context dateContext = dataset.getContext("datierung");
@@ -320,7 +319,7 @@ public class ResponseFactory {
 				}
 			}
 		}
-		
+
 		// add marbilder creation dates
 		if ("marbilder".equals(tableName)) {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -334,14 +333,14 @@ public class ResponseFactory {
 				}
 			}
 		}
-		
+
 		return response;
 	}
-	
+
 	/**
 	 * Method to construct a response object for a deleted entity.
 	 * @param entityId The ID of the entity.
-	 * @return The JSON for the deleted entity as <code>String</code>. 
+	 * @return The JSON for the deleted entity as <code>String</code>.
 	 */
 	public String createResponseForDeletedEntityAsJsonString(final EntityId entityId) {
 		try {
@@ -355,7 +354,7 @@ public class ResponseFactory {
 	/**
 	 * Method to construct a response object for a deleted entity.
 	 * @param entityId The ID of the entity.
-	 * @return The JSON for the deleted entity as <code>String</code>. 
+	 * @return The JSON for the deleted entity as <code>String</code>.
 	 */
 	public byte[] createResponseForDeletedEntityAsJson(final EntityId entityId) {
 		try {
@@ -365,7 +364,7 @@ public class ResponseFactory {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Retrieves the ids (if any) defined in the <code>additonalIds</code> tag.
 	 * @param dataset The current dataset.
@@ -387,10 +386,10 @@ public class ResponseFactory {
 				}
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Retrieves the filename (if any) defined in the <code>filename</code> tag.
 	 * @param dataset The current dataset.
@@ -408,7 +407,7 @@ public class ResponseFactory {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Retrieves the title for the response.
 	 * @param dataset The current dataset.
@@ -426,7 +425,7 @@ public class ResponseFactory {
     	}
     	return result;
 	}
-	
+
 	/**
 	 * Retrieves the subtitle for the response.
 	 * @param dataset The current dataset.
@@ -435,7 +434,7 @@ public class ResponseFactory {
 	 * @return A <code>String</code> containing the concatenated values of the <code>subtitle</code> tag.
 	 */
 	private String getSubTitle(final Dataset dataset, final Namespace namespace, final Element display) {
-		
+
 		String result = "";
 		final Element subtitle = display.getChild("subtitle", namespace);
 		if (subtitle.getChild("field", namespace) == null) {
@@ -445,9 +444,9 @@ public class ResponseFactory {
 		}
 		return result;
 	}
-	
+
 	/**
-	 * Sets the sections of the response according to the definitions in the corresponing xml config file. 
+	 * Sets the sections of the response according to the definitions in the corresponing xml config file.
 	 * @param dataset The current dataset.
 	 * @param namespace The document namespace.
 	 * @param display The display element.
@@ -458,64 +457,61 @@ public class ResponseFactory {
 
 		final Element sections = display.getChild("datasections", namespace);
 		final List<AbstractContent> contentList = getContentList(dataset, namespace, sections);
-		
+
 		if (contentList != null) {
 			response.setSections(contentList);
 		}
 	}
-	
+
 	/**
 	 * Sets the external links of the response according to the list of link resolvers defined.
 	 * @param dataset The current dataset.
 	 * @param response The response object to add the links to.
 	 */
 	private void setExternalLinks(final Dataset dataset, final FormattedArachneEntity response) {
-		LOGGER.debug("setting external links for dataset {}", dataset);
 		LOGGER.debug("objekt {}", dataset.getField("relief.FS_ObjektID"));
 		final List<ExternalLink> externalLinks = new ArrayList<ExternalLink>();
 		if (externalLinkResolvers != null) for (ExternalLinkResolver resolver : externalLinkResolvers) {
 			final ExternalLink externalLink = resolver.resolve(dataset);
-			LOGGER.debug("result for resolver {} is {}", resolver, externalLink);
 			if (externalLink != null) externalLinks.add(externalLink);
 		}
 		if (!externalLinks.isEmpty()) response.setExternalLinks(externalLinks);
-		LOGGER.debug("set external links to {}", externalLinks);
 	}
-	
+
 	/**
 	 * Sets the part of the response that is defined in the corresponding XML config file.
 	 * @param dataset The current dataset.
 	 * @param document The xml document describing the output format.
 	 * @param response The response object to add the content to.
-	 * @throws Transl8Exception if transl8 cannot be reached. 
+	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
 	private ObjectNode getEntityAsJson(final Dataset dataset, final Document document
 			, final FormattedArachneEntity response) throws Transl8Exception {
-		
+
 		final Namespace namespace = document.getRootElement().getNamespace();
-		
+
 		// set additional search fields
 		// set ids
 		final List<String> ids = new ArrayList<>();
 		ids.add(response.getEntityId().toString());
 		ids.add(response.getInternalId().toString());
-		
+
 		final Element search = document.getRootElement().getChild("search", namespace);
 		if (search != null) {
 			ids.addAll(getAdditionalIds(dataset, namespace, search));
-						
+
 			// set filename
 			response.setFilename(getFileName(dataset, namespace, search));
 		}
 		response.setIds(ids);
-		
+
 		// display
 		final Element display = document.getRootElement().getChild("display", namespace);
 
 		// set title
 		final String titleStr = getTitleString(dataset, namespace, display);
 		response.setTitle(titleStr);
-		
+
 		// add title to suggest only for entities with datasetGroup 'Arachne'
 		if ("Arachne".equals(response.getDatasetGroup())) {
 			response.getSuggest().add(response.title);
@@ -527,7 +523,7 @@ public class ResponseFactory {
 
 		// set datasection
 		setSections(dataset, namespace, display, response);
-		
+
 		// set editor section
 		setEditorSection(dataset, namespace, display, response);
 
@@ -542,10 +538,9 @@ public class ResponseFactory {
 			response.setImageSize(0);
 		}
 		response.setImages(imageList);
-		
+
 		// set external links
 		setExternalLinks(dataset, response);
-		
 		return getFacettedEntityAsJson(dataset, document, response, namespace);
 	}
 
