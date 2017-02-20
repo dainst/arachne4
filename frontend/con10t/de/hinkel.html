@@ -24,7 +24,7 @@
                 <con10t-search fq="facet_bestandsname:Archiv-Friedrich-W-Hinkel"></con10t-search>
             </div>
 
-            <h3>Pfadübersicht</h3>
+            <h3>Katalog</h3>
             <p>
                 <con10t-tree fq="facet_bestandsname:Archiv-Friedrich-W-Hinkel" wildcard-facet="facet_subkategorie"></con10t-tree>
             </p>
@@ -145,18 +145,16 @@
                         }
                     ]
                 }"></div>
-            <con10t-show-if dataset-group="Digital-Hinkel">
-                <div con10t-map
-                     id="map"
-                     limit="200"
-                     overlays="config.overlays"
-                     facets-select="config.facetsSelect"
-                     lat="15.114552871944115"
-                     lng="31.134765625"
-                     zoom="5"
-                     style="height: 500px">
-                </div>
-            </con10t-show-if>
+           <div con10t-map
+                 id="map"
+                 limit="200"
+                 overlays="config.overlays"
+                 facets-select="config.facetsSelect"
+                 lat="15.114552871944115"
+                 lng="31.134765625"
+                 zoom="5"
+                 style="height: 500px">
+            </div>
             </p>
 
             <p style="text-align: center;">
