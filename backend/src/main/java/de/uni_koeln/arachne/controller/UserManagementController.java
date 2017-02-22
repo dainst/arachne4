@@ -323,6 +323,53 @@ public class UserManagementController {
 	}
 
 	/**
+	 *
+	 */
+
+	@ResponseBody
+	@RequestMapping(value="/user/change",
+	method=RequestMethod.POST,
+	produces= {CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
+
+	public Map<String, String> change(@RequestBody Map<String, String> userCredentials, HttpServletResponse response) {
+		Map<String, String> result = new HashMap<>();
+
+		if(!userRightsService.isSignedInUser()) {
+			result.put("success", "false");
+			response.setStatus(401);
+			return result;
+		}
+
+		User user = userRightsService.getCurrentUser();
+
+		final String oldPassword = getFormData(userCredentials, "oldpassword", true, "ui.passwordchange.");
+		final String newPassword = getFormData(userCredentials, "newpassword", true, "ui.passwordchange.");
+		final String repeatNewPassword = getFormData(userCredentials, "repeat-newpassword", true, "ui.passwordchange.");
+
+		if(user.getPassword().compareTo(oldPassword) != 0) {
+			result.put("success", "false");
+			response.setStatus(400);
+			return result;
+		}
+
+		if (!newPassword.equals(repeatNewPassword)) {
+			throw new FormDataException("ui.register.passwordsDontMatch");
+		}
+		else if (newPassword.length() < 10) {
+			throw new FormDataException("ui.register.passwordTooShort");
+		}
+		else {
+			user.setPassword(newPassword);
+			userDao.updateUser(user);
+
+			result.put("success", "true");
+			response.setStatus(200);
+			return result;
+		}
+
+	}
+
+	/**
 	 * If enough information about the user account is provided (meaning user name, eMail address, first name)
 	 * then a request to change the password of the identified user account is created.
 	 * An eMail containing a registration link that is valid for 12 hours is sent to the user.

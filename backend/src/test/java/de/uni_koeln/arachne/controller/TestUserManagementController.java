@@ -86,6 +86,7 @@ public class TestUserManagementController {
 		testUser.setFirstname("test");
 		testUser.setLastname("user");
 		testUser.setZip("12345");
+		testUser.setPassword("testpass");
 		testUser.setAll_groups(true);
 		
 		// access pattern admin, user and last anonymous
@@ -669,7 +670,84 @@ public class TestUserManagementController {
 				.andExpect(content().json("{\"success\":\"false\",message:\"ui.register.bot\"}"));
 				
 	}
-	
+
+	@Test
+	public void testChangePasswordValid() throws Exception {
+		final String json = "{\"oldpassword\":\"testpass\","
+				+ "\"newpassword\":\"somenewpass\","
+				+ "\"repeat-newpassword\":\"somenewpass\"}";
+
+		mockMvc.perform(
+				post("/user/change")
+				.contentType(APPLICATION_JSON_UTF8)
+				.content(json))
+				.andExpect(status().isOk())
+				.andExpect(content().json("{success:\"true\"}")
+		);
+	}
+
+	@Test
+	public void testChangePasswordNotLoggedIn() throws Exception {
+		when(userRightsService.isSignedInUser()).thenReturn(false);
+
+		final String json = "{\"oldpassword\":\"testpass\","
+				+ "\"newpassword\":\"somenewpass\","
+				+ "\"repeat-newpassword\":\"somenewpass\"}";
+
+		mockMvc.perform(
+				post("/user/change")
+						.contentType(APPLICATION_JSON_UTF8)
+						.content(json))
+				.andExpect(status().isUnauthorized())
+				.andExpect(content().json("{success:\"false\"}")
+				);
+	}
+
+	@Test
+	public void testChangePasswordOldPasswordMismatch() throws Exception {
+		final String json = "{\"oldpassword\":\"wrongpass\","
+				+ "\"newpassword\":\"somenewpass\","
+				+ "\"repeat-newpassword\":\"somenewpass\"}";
+
+		mockMvc.perform(
+				post("/user/change")
+						.contentType(APPLICATION_JSON_UTF8)
+						.content(json))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().json("{success:\"false\"}")
+				);
+	}
+
+	@Test
+	public void testChangePasswordNewPasswordTooShort() throws Exception {
+		final String json = "{\"oldpassword\":\"testpass\","
+				+ "\"newpassword\":\"short\","
+				+ "\"repeat-newpassword\":\"short\"}";
+
+		mockMvc.perform(
+				post("/user/change")
+						.contentType(APPLICATION_JSON_UTF8)
+						.content(json))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().json("{success:\"false\"}")
+				);
+	}
+
+	@Test
+	public void testChangePasswordNewPasswordNotMatching() throws Exception {
+		final String json = "{\"oldpassword\":\"testpass\","
+				+ "\"newpassword\":\"somenewpass\","
+				+ "\"repeat-newpassword\":\"wrongpass\"}";
+
+		mockMvc.perform(
+				post("/user/change")
+						.contentType(APPLICATION_JSON_UTF8)
+						.content(json))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().json("{success:\"false\"}")
+				);
+	}
+
 	@Test
 	public void testResetValid() throws Exception {
 		final String json = "{\"username\":\"testuser\","
