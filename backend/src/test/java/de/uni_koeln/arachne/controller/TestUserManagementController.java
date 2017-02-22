@@ -674,9 +674,9 @@ public class TestUserManagementController {
 
 	@Test
 	public void testChangePasswordValid() throws Exception {
-		final String json = "{\"oldpassword\":\"testpass\","
-				+ "\"newpassword\":\"somenewpass\","
-				+ "\"repeat-newpassword\":\"somenewpass\"}";
+		final String json = "{\"password\":\"testpass\","
+				+ "\"newPassword\":\"somenewpass\","
+				+ "\"newPasswordValidation\":\"somenewpass\"}";
 
 		mockMvc.perform(
 				post("/user/change")
@@ -755,9 +755,9 @@ public class TestUserManagementController {
 
 	@Test
 	public void testChangePasswordNewPasswordNotMatching() throws Exception {
-		final String json = "{\"oldpassword\":\"testpass\","
-				+ "\"newpassword\":\"somenewpass\","
-				+ "\"repeat-newpassword\":\"wrongpass\"}";
+		final String json = "{\"password\":\"testpass\","
+				+ "\"newPassword\":\"somenewpass\","
+				+ "\"newPasswordValidation\":\"wrongpass\"}";
 
 		mockMvc.perform(
 				post("/user/change")

@@ -328,9 +328,8 @@ public class UserManagementController {
 
 	@ResponseBody
 	@RequestMapping(value="/user/change",
-	method=RequestMethod.POST,
-	produces= {CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
-
+		method=RequestMethod.POST,
+		produces= {CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public Map<String, String> change(@RequestBody Map<String, String> userCredentials, HttpServletResponse response) {
 		Map<String, String> result = new HashMap<>();
 
@@ -342,9 +341,9 @@ public class UserManagementController {
 
 		User user = userRightsService.getCurrentUser();
 
-		final String oldPassword = getFormData(userCredentials, "oldpassword", true, "ui.passwordchange.");
-		final String newPassword = getFormData(userCredentials, "newpassword", true, "ui.passwordchange.");
-		final String repeatNewPassword = getFormData(userCredentials, "repeat-newpassword", true, "ui.passwordchange.");
+		final String oldPassword = getFormData(userCredentials, "password", true, "ui.passwordchange.");
+		final String newPassword = getFormData(userCredentials, "newPassword", true, "ui.passwordchange.");
+		final String repeatNewPassword = getFormData(userCredentials, "newPasswordValidation", true, "ui.passwordchange.");
 
 		if(user.getPassword().compareTo(oldPassword) != 0) {
 			result.put("success", "false");
@@ -366,7 +365,6 @@ public class UserManagementController {
 			response.setStatus(200);
 			return result;
 		}
-
 	}
 
 	/**
