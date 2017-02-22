@@ -29,6 +29,7 @@ import java.util.List;
 
 import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -682,8 +683,12 @@ public class TestUserManagementController {
 				.contentType(APPLICATION_JSON_UTF8)
 				.content(json))
 				.andExpect(status().isOk())
-				.andExpect(content().json("{success:\"true\"}")
-		);
+				.andExpect(content().json("{success:\"true\"}"));
+
+		final String password = userRightsService.getCurrentUser().getPassword();
+
+		assertTrue(password.compareTo("testpass") != 0);
+		assertTrue(password.compareTo("somenewpass") == 0);
 	}
 
 	@Test
@@ -701,6 +706,11 @@ public class TestUserManagementController {
 				.andExpect(status().isUnauthorized())
 				.andExpect(content().json("{success:\"false\"}")
 				);
+
+		final String password = userRightsService.getCurrentUser().getPassword();
+
+		assertTrue(password.compareTo("testpass") == 0);
+		assertTrue(password.compareTo("somenewpass") != 0);
 	}
 
 	@Test
@@ -716,6 +726,11 @@ public class TestUserManagementController {
 				.andExpect(status().isBadRequest())
 				.andExpect(content().json("{success:\"false\"}")
 				);
+
+		final String password = userRightsService.getCurrentUser().getPassword();
+
+		assertTrue(password.compareTo("testpass") == 0);
+		assertTrue(password.compareTo("somenewpass") != 0);
 	}
 
 	@Test
@@ -731,6 +746,11 @@ public class TestUserManagementController {
 				.andExpect(status().isBadRequest())
 				.andExpect(content().json("{success:\"false\"}")
 				);
+
+		final String password = userRightsService.getCurrentUser().getPassword();
+
+		assertTrue(password.compareTo("testpass") == 0);
+		assertTrue(password.compareTo("somenewpass") != 0);
 	}
 
 	@Test
@@ -746,6 +766,11 @@ public class TestUserManagementController {
 				.andExpect(status().isBadRequest())
 				.andExpect(content().json("{success:\"false\"}")
 				);
+
+		final String password = userRightsService.getCurrentUser().getPassword();
+
+		assertTrue(password.compareTo("testpass") == 0);
+		assertTrue(password.compareTo("somenewpass") != 0);
 	}
 
 	@Test
