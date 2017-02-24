@@ -453,12 +453,6 @@
                 },
                 "children": [
                     {
-                        "id": "wohnkulturOstia",
-                        "title": {
-                            "de": "Wohnkultur im spätantiken Ostia"
-                        }
-                    },
-                    {
                         "id": "basilaemil",
                         "title": {
                             "de": "Die Basilica Aemilia",
@@ -535,88 +529,94 @@
                     "de": "Hybride Publikationen",
                     "en": "Hybrid Publications",
                     "it": "Pubblicazioni ibride"
+                }
+            },
+            {
+                "id": "",
+                "title": {
+                    "de": "Monographien"
                 },
                 "children": [
                     {
-                        "id": "monostart",
+                        "id": "wohnkulturOstia",
                         "title": {
-                            "de": "Monographien"
+                            "de": "Wohnkultur im spätantiken Ostia"
                         }
-                    },
+                    }
+                ]
+            },
+            {
+                "id": "",
+                "title": {
+                    "de": "Monographische Reihen"
+                },
+                "children": [
                     {
-                        "id": "mrstart",
+                        "id": "paliliastart",
                         "title": {
-                            "de": "Monographische Reihen"
+                            "de": "Palilia",
+                            "en": "Palilia",
+                            "it": "Palilia"
                         },
                         "children": [
                             {
-                                "id": "paliliastart",
+                                "id": "palilia20",
                                 "title": {
-                                    "de": "Palilia",
-                                    "en": "Palilia",
-                                    "it": "Palilia"
-                                },
-                                "children": [
-                                    {
-                                        "id": "palilia20",
-                                        "title": {
-                                            "de": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild",
-                                            "en": "Palilia 20: Alexandra W. Busch, Military in Rome. Military and paramilitary units in the imperial cityscape",
-                                            "it": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild (2012)"
-                                        }
-                                    },
-                                    {
-                                        "id": "lippsbasilica",
-                                        "title": {
-                                            "de": "Palilia 24: Johannes Lipps, Die Basilica Aemilia am Forum Romanum. Der kaiserzeitliche Bau und seine Ornamentik (Diss. Köln 2008)",
-                                            "en": "Palilia 24: Johannes Lipps, The Basilica Aemilia on the Forum Romanum. The building and its ornamentation in imperial times (Dissertation, Cologne 2008)"
-                                        }
-                                    },
-                                    {
-                                        "id": "palilia25",
-                                        "title": {
-                                            "de": "Palilia 25: M. Tombrägel, Die republikanischen Otiumvillen von Tivoli. Palilia 25",
-                                            "en": "Palilia 25: Martin Tombrägel, The Republican otium-villas at Tivoli",
-                                            "it": "Palilia 25: M. Tombrägel, Die republikanischen Otiumvillen von Tivoli. Palilia 25 (Wiesbaden 2012)"
-                                        }
-                                    },
-                                    {
-                                        "id": "palilia26",
-                                        "title": {
-                                            "de": "Palilia 26: Wolfgang Ehrhardt, Dekorations- und Wohnkontext. Beseitigung, Restaurierung und Konservierung von Wandbemalungen in den kampanischen Antikenstätten",
-                                            "en": "Palilia 26: Wolfgang Ehrhardt, Decorative and residential context. Removal, restoration and preservation of wall paintings in the Campanian antique sites",
-                                            "it": "Palilia 26: Wolfgang Ehrhardt, Dekorations- und Wohnkontext. Beseitigung, Restaurierung und Konservierung von Wandbemalungen in den kampanischen Antikenstätten"
-                                        }
-                                    }
-                                ]
+                                    "de": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild",
+                                    "en": "Palilia 20: Alexandra W. Busch, Military in Rome. Military and paramilitary units in the imperial cityscape",
+                                    "it": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild (2012)"
+                                }
+                            },
+                            {
+                                "id": "lippsbasilica",
+                                "title": {
+                                    "de": "Palilia 24: Johannes Lipps, Die Basilica Aemilia am Forum Romanum. Der kaiserzeitliche Bau und seine Ornamentik (Diss. Köln 2008)",
+                                    "en": "Palilia 24: Johannes Lipps, The Basilica Aemilia on the Forum Romanum. The building and its ornamentation in imperial times (Dissertation, Cologne 2008)"
+                                }
+                            },
+                            {
+                                "id": "palilia25",
+                                "title": {
+                                    "de": "Palilia 25: M. Tombrägel, Die republikanischen Otiumvillen von Tivoli. Palilia 25",
+                                    "en": "Palilia 25: Martin Tombrägel, The Republican otium-villas at Tivoli",
+                                    "it": "Palilia 25: M. Tombrägel, Die republikanischen Otiumvillen von Tivoli. Palilia 25 (Wiesbaden 2012)"
+                                }
+                            },
+                            {
+                                "id": "palilia26",
+                                "title": {
+                                    "de": "Palilia 26: Wolfgang Ehrhardt, Dekorations- und Wohnkontext. Beseitigung, Restaurierung und Konservierung von Wandbemalungen in den kampanischen Antikenstätten",
+                                    "en": "Palilia 26: Wolfgang Ehrhardt, Decorative and residential context. Removal, restoration and preservation of wall paintings in the Campanian antique sites",
+                                    "it": "Palilia 26: Wolfgang Ehrhardt, Dekorations- und Wohnkontext. Beseitigung, Restaurierung und Konservierung von Wandbemalungen in den kampanischen Antikenstätten"
+                                }
                             }
                         ]
-                    },
+                    }
+                ]
+            },
+            {
+                "id": "",
+                "title": {
+                    "de": "Zeitschriften",
+                    "en": "Scientific journals",
+                    "it": "Riviste scientifiche"
+                },
+                "children": [
                     {
-                        "id": "zsstart",
+                        "id": "rmstart",
                         "title": {
-                            "de": "Zeitschriften",
-                            "en": "Scientific journals",
-                            "it": "Riviste scientifiche"
+                            "de": "Mitteilungen des Deutschen Archäologischen Instituts, Römische Abteilung",
+                            "en": "Communications from the German Archaeological Institute, Roman Department",
+                            "it": "Dichiarazioni dell'Istituto Archeologico tedesco, Dipartimento di Roma"
                         },
                         "children": [
                             {
-                                "id": "rmstart",
+                                "id": "rm121",
                                 "title": {
-                                    "de": "Mitteilungen des Deutschen Archäologischen Instituts, Römische Abteilung",
-                                    "en": "Communications from the German Archaeological Institute, Roman Department",
-                                    "it": "Dichiarazioni dell'Istituto Archeologico tedesco, Dipartimento di Roma"
-                                },
-                                "children": [
-                                    {
-                                        "id": "rm121",
-                                        "title": {
-                                            "de": "Band 121, 2015: I bolli laterizi delle residenze imperiali sul Palatino a Roma",
-                                            "en": "Volume 121, 2015: I bolli laterizi delle residenze imperiali sul Palatino a Roma",
-                                            "it": "Volume 121, 2015: I bolli laterizi delle residenze imperiali sul Palatino a Roma"
-                                        }
-                                    }
-                                ]
+                                    "de": "Band 121, 2015: I bolli laterizi delle residenze imperiali sul Palatino a Roma",
+                                    "en": "Volume 121, 2015: I bolli laterizi delle residenze imperiali sul Palatino a Roma",
+                                    "it": "Volume 121, 2015: I bolli laterizi delle residenze imperiali sul Palatino a Roma"
+                                }
                             }
                         ]
                     }
