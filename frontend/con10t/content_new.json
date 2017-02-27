@@ -453,6 +453,12 @@
                 },
                 "children": [
                     {
+                        "id": "wohnkulturOstia",
+                        "title": {
+                            "de": "Wohnkultur im spätantiken Ostia"
+                        }
+                    },
+                    {
                         "id": "basilaemil",
                         "title": {
                             "de": "Die Basilica Aemilia",
@@ -526,29 +532,7 @@
             {
                 "id": "",
                 "title": {
-                    "de": "Hybride Publikationen",
-                    "en": "Hybrid Publications",
-                    "it": "Pubblicazioni ibride"
-                }
-            },
-            {
-                "id": "",
-                "title": {
-                    "de": "Monographien"
-                },
-                "children": [
-                    {
-                        "id": "wohnkulturOstia",
-                        "title": {
-                            "de": "Wohnkultur im spätantiken Ostia"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "",
-                "title": {
-                    "de": "Monographische Reihen"
+                    "de": "Digitale Kataloge"
                 },
                 "children": [
                     {
@@ -591,17 +575,7 @@
                                 }
                             }
                         ]
-                    }
-                ]
-            },
-            {
-                "id": "",
-                "title": {
-                    "de": "Zeitschriften",
-                    "en": "Scientific journals",
-                    "it": "Riviste scientifiche"
-                },
-                "children": [
+                    },
                     {
                         "id": "rmstart",
                         "title": {
