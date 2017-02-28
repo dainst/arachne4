@@ -448,7 +448,7 @@
             "id": "",
             "title": {
                 "de": "Digitale Publikationen",
-                "en": "Digital Collections",
+                "en": "Digital publications",
                 "it": "Pubblicazioni digitali"
             },
             "children": [
@@ -532,7 +532,9 @@
         {
             "id": "",
             "title": {
-                "de": "Digitale Kataloge"
+                "de": "Digitale Kataloge",
+                "en": "Digital catalogs",
+                "it": "cataloghi digitali"
             },
             "children": [
                 {
