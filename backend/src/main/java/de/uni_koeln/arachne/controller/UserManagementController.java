@@ -110,7 +110,34 @@ public class UserManagementController {
 		}
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
-	
+
+	/**
+	 * End point to retrieve user information based on their id. Admins get more information returned than a normal user.
+	 * @param uid The user id of interest.
+	 * @return A JSON serialization of the corresponding User object.
+	 */
+	@RequestMapping(value="/userid/{uid}",
+			method=RequestMethod.GET,
+			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
+	public ResponseEntity<MappingJacksonValue> getUserInfo(@PathVariable("uid") long uid) {
+		if (userRightsService.isSignedInUser()) {
+			if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID)) {
+				User user = userDao.findById(uid);
+				MappingJacksonValue wrapper = new MappingJacksonValue(user);
+				wrapper.setSerializationView(JSONView.Admin.class);
+				return ResponseEntity.ok(wrapper);
+			} else {
+				User currentUser = userRightsService.getCurrentUser();
+				if (currentUser.equals(userDao.findById(uid))) {
+					MappingJacksonValue wrapper = new MappingJacksonValue(currentUser);
+					wrapper.setSerializationView(JSONView.User.class);
+					return ResponseEntity.ok(wrapper);
+				}
+			}
+		}
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+	}
+
 	/**
 	 * End point to update (not create) user information. Admins can change more fields (all_groups, etc.) than a 
 	 * normal user.
