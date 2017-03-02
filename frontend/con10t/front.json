@@ -1,22 +1,38 @@
 [
-	{
-		"id": "syrher",
-		"text": "Syrian Heritage Archive Project"
-	},
-	{
-		"id": "hinkel",
-		"text": "Das Archiv von Friedrich W. Hinkel"
-	},
-	{
-		"id": "ariadne",
-		"text": "ARIADNE - Digital Archaeology in Europe"
-	},
-	{
-		"id": "afrarchcologne",
-		"text": "African Archaeology Archive Cologne"
-	},
-	{
-		"id": "grako",
-		"text": "Werkstätten vormoderner Wirtschaftsräume"
-	}
+  {
+    "id": "syrher",
+    "img": "syrher.jpg",
+    "title": {
+      "de": "Syrian Heritage Archive Project",
+      "en": "Syrian Heritage Archive Project"
+    },
+    "teaser": {
+      "de": "Die Kulturlandschaft Syrien gehört hinsichtlich der Anzahl und historischen Bedeutung der dort vorhandenen Denkmäler zu den herausragenden Regionen weltweit. Da in Syrien alle Zeitabschnitte vom Beginn menschlicher Nutzung ab etwa eine Million Jahre vor heute bis in die osmanische Zeit durch archäologische oder historische Monumente belegt sind, verfügt das Land über eines der umfassendsten kulturellen Langzeitarchive, das in weiten Teilen noch nicht wissenschaftlich erschlossen ist. Zerstörungen in den historischen Altstädten wie Aleppo oder Homs sowie die im großen Stil durchgeführten Raubgrabungen in bedeutenden archäologischen Fundplätzen belegen die Dynamik eines Prozesses, der zum unwiederbringlichen Verschwinden der wichtigsten historischen Zeugnisse des Landes führt.",
+      "en": "With regard to density and the historical importance of its heritage sites, Syria’s cultural landscape belongs to the world’s most exceptional regions. As Syria today looks back on a human occupation through archaeological and historical sites dating from about one million years ago right up to the Ottoman Period, it harbours one of the world’s most comprehensive and long-lasting cultural heritage records, which in large parts yet remains to be explored by scholarly research. The destruction of historic city centres such as Aleppo or Homs and the widespread looting at major archaeological sites reveal the dynamics of a process, which leads to the irreversible loss of the county’s chief historic and cultural properties."
+    }
+  },
+  {
+    "id": "hinkel",
+    "img": "hinkel.jpg",
+    "title": {
+      "de": "Das Archiv von Friedrich W. Hinkel",
+      "en": "The Archive of Friedrich W. Hinkel"
+    },
+    "teaser": {
+      "de": "Das Archiv von Friedrich W. Hinkel stellt eines der größten Forschungsarchive zum antiken Sudan dar und spiegelt die über 40 Jahre währende Grabungs- und Forschungstätigkeit Dr. Hinkels im Sudan wider. Beginnend mit seiner Teilnahme an den Ausgrabungen in Musawwarat es Sufra der Humboldt Universität Berlin im Jahr 1961 führte den Architekten Dr. Friedrich W. Hinkel (1925 – 2006) nicht nur ein reges Forschungsinteresse immer wieder in den Sudan, für den er nach Freistellung durch die Akademie ab 1962 auch direkt tätig war, sondern auch eine enge Verbundenheit mit Land und Leuten.",
+      "en": "The archive of Friedrich W. Hinkel represents one of the largest collections of research materials concerning the archaeology of the Ancient Sudan. It is the result of Dr. Hinkel's (1925 - 2006) over 40 years of continued research, beginning with his participation in the Humboldt University's excavation at Musawwarat es Sufra in 1961. From 1962 onwards he was deputized by the Academy of Sciences of GDR to the Sudan's Archaeological Service, for which he worked as an architect focusing on the excavation, reconstruction and conservation of archaeological monuments."
+    }
+  },
+  {
+    "id": "grako",
+    "img": "grako.jpg",
+    "title": {
+      "de": "Werkstätten vormoderner Wirtschaftsräume",
+      "en": "Craft production sites of pre-modern economies"
+    },
+    "teaser": {
+      "de": "Die handwerkliche Produktion bildete einen elementaren Bestandteil vormoderner Wirtschaftssysteme, schließlich war die Werkstätte ein wichtiger Schnittpunkt zwischen Gewinnung und Nutzung von Rohstoffen, sei es Ton, Stein oder Eisenerz. Im Rahmen des DFG-Graduiertenkollegs 1878 \"Archäologie vormoderner Wirtschaftsräume\" wird eine möglichst vollständige Zusammenstellung der archäologisch bezeugten Werkstätten angelegt. Diese ist weltweit online frei verfügbar und stellt so eine wichtige Recherchebasis für weitergehende Fragestellungen und Forschungsprojekte sowie gleichzeitig eine übersichtliche Informationsplattform zum Wirtschafts- und Alltagsleben früherer Gesellschaften für die interessierte Öffentlichkeit dar.",
+      "en": "Craft production was a key element of pre-modern economies, the workshop acting as an important point of intersection between exploitation and daily use of resources (e.g. clay/pottery, stone/architectural elements, iron ore/tools). Within the framework of the Research Training Group 1878 »Archaeology of pre-modern economies« funded by the DFG, it is aimed to compile craft production sites attested by archaeological material as exhaustively as possible. This data base is accessible for free all over the world, thus providing an important foundation for further scientific questions and projects as well as an overview on essential aspects of the economic and daily life in pre-modern societies for the broader public."
+    }
+  }
 ]
