@@ -34,5 +34,29 @@
       "de": "Die handwerkliche Produktion bildete einen elementaren Bestandteil vormoderner Wirtschaftssysteme, schließlich war die Werkstätte ein wichtiger Schnittpunkt zwischen Gewinnung und Nutzung von Rohstoffen, sei es Ton, Stein oder Eisenerz. Im Rahmen des DFG-Graduiertenkollegs 1878 \"Archäologie vormoderner Wirtschaftsräume\" wird eine möglichst vollständige Zusammenstellung der archäologisch bezeugten Werkstätten angelegt. Diese ist weltweit online frei verfügbar und stellt so eine wichtige Recherchebasis für weitergehende Fragestellungen und Forschungsprojekte sowie gleichzeitig eine übersichtliche Informationsplattform zum Wirtschafts- und Alltagsleben früherer Gesellschaften für die interessierte Öffentlichkeit dar.",
       "en": "Craft production was a key element of pre-modern economies, the workshop acting as an important point of intersection between exploitation and daily use of resources (e.g. clay/pottery, stone/architectural elements, iron ore/tools). Within the framework of the Research Training Group 1878 »Archaeology of pre-modern economies« funded by the DFG, it is aimed to compile craft production sites attested by archaeological material as exhaustively as possible. This data base is accessible for free all over the world, thus providing an important foundation for further scientific questions and projects as well as an overview on essential aspects of the economic and daily life in pre-modern societies for the broader public."
     }
+  },
+  {
+    "id": "afrarchcologne",
+    "img": "afrarchcologne.jpg",
+    "title": {
+      "de": "African Archaeology Archive Cologne",
+      "en": "African Archaeology Archive Cologne"
+    },
+    "teaser": {
+      "de": "Seit über fünfzig Jahren findet am Institut für Ur- und Frühgeschichte der Universität zu Köln archäologische Forschung in Afrika statt. Neben der 1963 begonnen Felsbildforschung in Namibia etablierte sich Anfang der 1980er Jahre Nordostafrika als zweite Schwerpunktregion – beides Gebiete, die bis dahin weitgehend \"terra incognita\" prähistorischer Forschung waren. Das Augenmerk der verschiedenen Projekte (darunter die DFG-Projekte Felsbilder im Hohen Brandberg, B.O.S. und SFB 389 ACACIA) lag neben der Felskunst besonders auf den Mensch-Umwelt-Beziehungen.",
+      "en": "For over fifty years, archaeological research in Africa has been done at the Institute of Prehistoric Archaeology at the University of Cologne. In addition to the rock art research started in Namibia in 1963, Northeastern Africa established itself as a second focus region in the early 1980s - both areas that had been largely \"terra incognita\" of prehistoric research until then. The focus of the various projects (including the DFG projects Rock Art in the higher Brandberg, B.O.S. and SFB 389 ACACIA) in addition to the rock art was especially on human-environment relationships."
+    }
+  },
+  {
+    "id": "ariadne",
+    "img": "ariadne.jpg",
+    "title": {
+      "de": "ARIADNE - Digital Archaeology in Europe",
+      "en": "ARIADNE - Digital Archaeology in Europe"
+    },
+    "teaser": {
+      "de": "ARIADNE brings together and integrates existing archaeological research data infrastructures so that researchers can use the various distributed datasets and new and powerful technologies as an integral component of the archaeological research methodology. There is now a large availability of archaeological digital datasets that, together, span different periods, domains and regions; more are continuously created as a result of the increasing use of IT. These are the accumulated outcome of the research of individuals, teams and institutions, but form a vast and fragmented corpus and their potential has been constrained by difficult access and non-homogenous perspectives.",
+      "en": "ARIADNE brings together and integrates existing archaeological research data infrastructures so that researchers can use the various distributed datasets and new and powerful technologies as an integral component of the archaeological research methodology. There is now a large availability of archaeological digital datasets that, together, span different periods, domains and regions; more are continuously created as a result of the increasing use of IT. These are the accumulated outcome of the research of individuals, teams and institutions, but form a vast and fragmented corpus and their potential has been constrained by difficult access and non-homogenous perspectives."
+    }
   }
 ]
