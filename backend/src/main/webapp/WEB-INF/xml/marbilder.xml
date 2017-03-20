@@ -24,8 +24,12 @@
 			<section>
 				<field datasource="marbilderbestand.TitelMarbilderbestand">
 					<ifEmpty>
-						<field datasource="marbilder.DateinameMarbilder" search="\.jpg"
-							   replace="" />
+						<field datasource="marbilderinventar.01_Titel">
+							<ifEmpty>
+								<field datasource="marbilder.DateinameMarbilder" search="\.jpg"
+									   replace="" />
+							</ifEmpty>
+						</field>
 					</ifEmpty>
 				</field>
 			</section>
