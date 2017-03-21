@@ -601,6 +601,13 @@ public class ResponseFactory {
 								+ location));
 						break;
 
+					case "In situ":
+						json.set("facet_fundort", json.arrayNode().add(place.getName()
+								+ location));
+						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName()
+								+ location));
+						break;
+
 					default:
 						break;
 					}
