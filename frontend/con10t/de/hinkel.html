@@ -26,7 +26,8 @@
 
             <h3>Katalog</h3>
             <p>
-                <con10t-tree fq="facet_bestandsname:Archiv-Friedrich-W-Hinkel" wildcard-facet="facet_subkategorie"></con10t-tree>
+                <con10t-tree fq="facet_bestandsname:Archiv-Friedrich-W-Hinkel"
+                             wildcard-facet="facet_subkategorie"></con10t-tree>
             </p>
         </div>
         <div class="con10t-content">
@@ -89,21 +90,23 @@
                 und in die Systeme der iDAI.welt integriert. Die hierbei erfassten Metadaten beruhen in den meisten
                 Fällen auf den Aufzeichnungen Friedrich W. Hinkels und stellen keine wissenschaftliche Auswertung des
 
-                Materials da. Die Digitalisate der <a con10t-search-query="*"
+                Materials da. Die Digitalisate der <a target="_blank" con10t-search-query="*"
                                                       con10t-search-facet="facet_kategorie:Bilder,facet_bestandsname:Archiv-Friedrich-W-Hinkel,facet_subkategoriebestand_level1:Archiv-Friedrich-W-Hinkel-Negative">Fotos</a>
-                </a>, Dias, <a con10t-search-query="*"
+                </a>, Dias, <a target="_blank" con10t-search-query="*"
                                con10t-search-facet="facet_kategorie:Bilder,facet_bestandsname:Archiv-Friedrich-W-Hinkel,facet_subkategoriebestand_level1:Archiv-Friedrich-W-Hinkel-Zeichnungen">Zeichnungen</a>
                 und topographischen
-                <a con10t-search-query="*"
+                <a con10t-search-query="*" target="_blank"
                    con10t-search-facet="facet_kategorie:Bilder,facet_bestandsname:Archiv-Friedrich-W-Hinkel,facet_subkategoriebestand_level1:Archiv-Friedrich-W-Hinkel-Karten">
                     Karten</a> wurden in die Bild- und Objektdatenbank <a
                     href="https://arachne.dainst.org">iDAI.objects</a> eingelesen, während
-                mehrseitige Digitalisate mit übergreifendem inhaltlichen Zusammenhang wie die <a
-                    con10t-search-query="Compilation OR Copy"
-                    con10t-search-facet="facet_autor:Hinkel\, Friedrich W.,facet_kategorie:Bücher">Karteikarten</a>,
-                <a con10t-search-query="Fotoinventar*"
+                mehrseitige Digitalisate mit übergreifendem inhaltlichen Zusammenhang wie die <a target="_blank"
+                                                                                                 con10t-search-query="Compilation OR Copy"
+                                                                                                 con10t-search-facet="facet_autor:Hinkel\, Friedrich W.,facet_kategorie:Bücher">Karteikarten</a>,
+                <a con10t-search-query="Fotoinventar*" target="_blank"
                    con10t-search-facet="facet_autor:Hinkel\, Friedrich W.,facet_kategorie:Bücher">Fotoinventare</a>, <a
+                    target="_blank"
                     con10t-search-catalog="216">Zeichnungskonvolute</a> und <a
+                    target="_blank"
                     con10t-search-query="AMS Supplements OR AMS Fasc. OR AMS:Files Sudan Antiquities Service OR AMS:General"
                     con10t-search-facet="facet_autor:Hinkel\, Friedrich W.,facet_kategorie:Bücher">wissenschaftlichen
                 Materialsammlungen</a> in den
@@ -145,7 +148,7 @@
                         }
                     ]
                 }"></div>
-           <div con10t-map
+            <div con10t-map
                  id="map"
                  limit="200"
                  overlays="config.overlays"
