@@ -29,7 +29,7 @@ public class ExternalLinkResolvers {
 		result.setLabel("3D-Modell Viewer");
 		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "modell3d");
 		result.setCriteria(criteria);
-		result.setLinkPattern("/3d?id=%s");
+		result.setLinkPattern("https://arachne.dainst.org/3d?id=%s");
 		result.setPatternFields(Arrays.asList("Dataset.internalId"));
 		return result;
 	}
