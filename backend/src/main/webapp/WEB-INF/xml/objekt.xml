@@ -941,7 +941,10 @@
 		</facet>
 		<facet name="schmuckspezifizierung" labelKey="Schmuck Spezifizierung">
 			<field datasource="objekt.SchmuckSpezifizierung" />
-		</facet>		
+		</facet>
+		<facet name="fundkontext" labelKey="Fundkontext">
+			<field datasource="objekt.Fundkontext" />
+		</facet>
 		<facet name="fotonrextern" labelKey="FotoNrExtern">
 			<field datasource="fotoabzug.FotoNrExtern" />
 		</facet>
