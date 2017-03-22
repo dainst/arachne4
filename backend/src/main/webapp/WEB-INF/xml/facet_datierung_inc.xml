@@ -10,4 +10,9 @@
       <field datasource=".EndEpoche" />
     </context>
   </facet>
+  <facet name="datierungargument" labelKey="Argument">
+    <context type="datierung">
+      <field datasource=".Argument" />
+    </context>
+  </facet>
 </includeSection>

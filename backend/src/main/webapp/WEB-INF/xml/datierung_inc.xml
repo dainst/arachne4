@@ -4,22 +4,23 @@
   	<field datasource=".TypDatierung" postfix=":" />
     <field datasource=".nachantik" />
     <field datasource=".FestDat" prefix="(fest datiert: " postfix=")" />
-    <field datasource=".AnfEpoche" separator=", " />
+    <field datasource=".AnfEpoche" />
     <field datasource=".AnfKultur" />
     <field datasource=".AnfDatZeitraum" />
     <field datasource=".AnfDatJt" postfix=". Jt." />
     <field datasource=".AnfDatJh" postfix=". Jh." />
     <field datasource=".AnfDatvn" separator=" - "/>
     <field datasource=".AnfPraezise" prefix="(" postfix=")" />
-    <field datasource=".AnfTerminus" prefix="," />
-    <field datasource=".EndEpoche" separator=", " />
+    <field datasource=".AnfTerminus" />
+    <field datasource=".EndEpoche"/>
     <field datasource=".EndKultur" />
     <field datasource=".EndDatZeitraum" />
     <field datasource=".EndDatJt" postfix=". Jt." />
     <field datasource=".EndDatJh" postfix=". Jh." />
     <field datasource=".EndDatvn" separator=" - " />
     <field datasource=".EndPraezise" prefix="(" postfix=")" />
-    <field datasource=".EndTerminus" prefix="," />
-    <field datasource=".DatVorschlagAutor" prefix="&lt;br/&gt; - nach: " postfix=" -" />
+    <field datasource=".EndTerminus" />
+    <field datasource=".Argument" prefix="Argument: " postfix=" - "/>
+    <field datasource=".DatVorschlagAutor" prefix=" nach: " postfix="&lt;br/&gt;" />
   </context>
 </includeSection>
