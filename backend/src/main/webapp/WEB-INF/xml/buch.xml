@@ -29,6 +29,9 @@
 			</section>
 		</subtitle>
 		<datasections>
+            <section labelKey="Permalink">
+                <field datasource="buch.alias" prefix="arachne.dainst.org/books/" />
+            </section>
 			<section labelKey="Informationen zum Buch">
 				<include type="ort" />
 				<section labelKey="Autor">

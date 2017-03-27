@@ -19,7 +19,7 @@ import javax.sql.DataSource;
  * @author Reimar Grabowski
  */
 @Repository("BookDao")
-public class BookDao {
+public class BookDao extends SQLDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BookDao.class);
 
@@ -43,5 +43,18 @@ public class BookDao {
             return null;
         } */
     	return null;
+    }
+
+    /**
+     * Gets the entityID of the book given its alias
+     * @param alias The alias of the book
+     * @return The books entityID as a string
+     */
+    public Long getEntityIDFromAlias(final String alias) {
+        final String query = "SELECT arachneentityidentification.ArachneEntityID FROM `buch` JOIN arachneentityidentification " +
+                "ON buch.PS_BuchID = arachneentityidentification.ForeignKey AND arachneentityidentification.TableName LIKE 'buch' " +
+                "WHERE buch.alias LIKE '" + alias + "'";
+        final long arachneEntityID = queryForLong(query);
+        return arachneEntityID;
     }
 }

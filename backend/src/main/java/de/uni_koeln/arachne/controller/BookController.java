@@ -18,7 +18,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import org.apache.commons.lang3.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +49,6 @@ public class BookController {
     @Autowired
     private transient BookDao bookDao;
 
-
     /**
      * Used to indicate when TEI xml is not formed as expected.
      */
@@ -58,8 +61,29 @@ public class BookController {
     }
 
 
-    private File teiFile(String bookId){
-        return new File(booksPath+bookId+"/transcription.xml");
+    private File teiFile(String bookId){ return new File(booksPath+bookId+"/transcription.xml"); }
+
+    @RequestMapping(value="/books/{alias}",
+            method=RequestMethod.GET,
+            produces = {APPLICATION_JSON_UTF8_VALUE})
+    public ModelAndView handleGetAliasRequest(@PathVariable("alias") final String alias,
+                                              HttpServletRequest req,
+                                              HttpServletResponse res) {
+
+        if(StringUtils.isNumeric(alias)) {
+            LOGGER.info("You should not be here!");
+            return null;
+        }
+
+        if (booksPath==null) throw new IllegalStateException("bookPath must not be null");
+        if (bookDao==null)   throw new IllegalStateException("bookDao must not be null");
+
+        final Long arachneEntityID = bookDao.getEntityIDFromAlias(alias);
+
+        LOGGER.info("Going for it!");
+        ModelAndView mav = new ModelAndView("redirect:" + "/entity/2244313");
+        LOGGER.info("mav: {}", mav);
+        return mav;
     }
 
     // TODO discuss naming of img_file
@@ -109,7 +133,7 @@ public class BookController {
         }
     }
 
-
+    @RequestMapping(value="/book/{}")
 
     /**
      * @param xmlFile
