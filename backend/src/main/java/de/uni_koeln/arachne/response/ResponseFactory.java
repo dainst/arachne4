@@ -469,11 +469,15 @@ public class ResponseFactory {
 	 * @param response The response object to add the links to.
 	 */
 	private void setExternalLinks(final Dataset dataset, final FormattedArachneEntity response) {
-		LOGGER.debug("objekt {}", dataset.getField("relief.FS_ObjektID"));
 		final List<ExternalLink> externalLinks = new ArrayList<ExternalLink>();
+        LOGGER.info("resolvers {}", externalLinkResolvers);
 		if (externalLinkResolvers != null) for (ExternalLinkResolver resolver : externalLinkResolvers) {
 			final ExternalLink externalLink = resolver.resolve(dataset);
-			if (externalLink != null) externalLinks.add(externalLink);
+            LOGGER.info("resolver {} successful", resolver);
+			if (externalLink != null) {
+			    externalLinks.add(externalLink);
+			    LOGGER.info("externalLink {}", externalLink);
+			}
 		}
 		if (!externalLinks.isEmpty()) response.setExternalLinks(externalLinks);
 	}

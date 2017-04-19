@@ -28,6 +28,8 @@ public class SimpleExternalLinkResolver implements ExternalLinkResolver {
 	private List<String> patternFields;
 	
 	private String label;
+
+	private String datasetGroup; //used if external link is tied to a specific dataset. NULL if none required (default)
 	
 	private boolean matchAllCriteria = false;
 	
@@ -37,9 +39,8 @@ public class SimpleExternalLinkResolver implements ExternalLinkResolver {
 	
 	@Override
 	public ExternalLink resolve(Dataset dataset) {
-		
-		boolean matches = false;
-		
+
+	    boolean matches = false;
 		// test if criteria match
 		outer: for (String critField : getCriteria().keySet()) {
 			String fieldContent = dataset.getField(critField);
@@ -82,6 +83,18 @@ public class SimpleExternalLinkResolver implements ExternalLinkResolver {
                     validationUrl = null;
                 }
 			}
+			if(datasetGroup != null) {
+			    String tableName = dataset.getArachneId().getTableName();
+			    String fieldAdress = tableName + ".DatensatzGruppe" + tableName.substring(0,1).toUpperCase() + tableName.substring(1).toLowerCase();
+			    LOGGER.debug("fieldAdress {}", fieldAdress);
+
+			    if(datasetGroup.equals(dataset.getField(fieldAdress))) {
+			        LOGGER.debug("dataset.getField equals");
+                    ExternalLink link = new ExternalLink(getLabel(), url);
+                    return link;
+                }
+                return null;
+            }
             if(fileExists(validationUrl)) {
                 ExternalLink link = new ExternalLink(getLabel(), url);
                 return link;
@@ -108,7 +121,7 @@ public class SimpleExternalLinkResolver implements ExternalLinkResolver {
 
 	/**
 	 * Get the validation pattern.
-	 * @return the validation pattern
+	 * @return the validation pattern as String
 	 */
 	public String getValidationPattern() {
 		return validationPattern;
@@ -121,6 +134,18 @@ public class SimpleExternalLinkResolver implements ExternalLinkResolver {
 	public void setValidationPattern(String validationPattern) {
 		this.validationPattern = validationPattern;
 	}
+
+    /**
+     * Get the dataset group
+     * @return the dataset group as String
+     */
+	public String getDatasetGroup() { return datasetGroup; }
+
+    /**
+     * Set the group required for the external link to show
+     * @param datasetGroup dataset group name
+     */
+	public void setDatasetGroup(String datasetGroup) { this.datasetGroup = datasetGroup; }
 
     /**
      * Get the link pattern.

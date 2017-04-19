@@ -76,6 +76,7 @@ public class ExternalLinkResolvers {
 	public SimpleExternalLinkResolver dfgViewer() {
 		final SimpleExternalLinkResolver result = new SimpleExternalLinkResolver();
 		result.setLabel("DFG-Viewer");
+        result.setDatasetGroup("Arachne");
 		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "buch");
 		result.setCriteria(criteria);
 		result.setLinkPattern("http://dfg-viewer.de/show/"
