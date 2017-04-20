@@ -9,22 +9,25 @@
         </div>
 
         <div class="con10t-sidebar">
-            <div>
-                <p dir="rtl">
+            <div dir="rtl">
+                <p>
                     <a href="project/hinkel?lang=ar" target="_self">النسخة العربية</a>
                 </p>
                 <p>
                     <a href="project/hinkel?lang=en" target="_self">English Version</a>
                 </p>
             </div>
+
             <con10t-include src="/con10t/de/hinkel_toc.html"></con10t-include>
+
             <div class="well">
                 <con10t-search fq="facet_bestandsname:Archiv-Friedrich-W-Hinkel"></con10t-search>
             </div>
 
-            <h3>Pfadübersicht</h3>
+            <h3>Katalog</h3>
             <p>
-                <con10t-tree fq="facet_bestandsname:Archiv-Friedrich-W-Hinkel" wildcard-facet="facet_subkategorie"></con10t-tree>
+                <con10t-tree fq="facet_bestandsname:Archiv-Friedrich-W-Hinkel"
+                             wildcard-facet="facet_subkategorie"></con10t-tree>
             </p>
         </div>
         <div class="con10t-content">
@@ -57,7 +60,7 @@
                 Hinkel für seine Publikationsreihe weiterentwickelte. Mithilfe eines individuellen mehrstelligen
                 alphanumerischen Codes (die sog. AMS-Nummer), kann die Lage einer archäologischen Stätte auf ein Gebiet
                 von ca. 5 x 5 km genau lokalisiert und durch den Verzicht auf zum Teil mehrmals vertretende Ortsnamen
-                eindeutig identifiziert werden (siehe auch: <a href="project/hinkel_ams">AMS</a>).
+                eindeutig identifiziert werden (siehe auch: <a href="project/hinkel_ams?lang=de">AMS</a>).
             </p>
             <p>
                 In seiner Lebenszeit veröffentlichte Dr. Hinkel neben einem einführenden „Guide“ zwei weitere Bände der
@@ -87,21 +90,23 @@
                 und in die Systeme der iDAI.welt integriert. Die hierbei erfassten Metadaten beruhen in den meisten
                 Fällen auf den Aufzeichnungen Friedrich W. Hinkels und stellen keine wissenschaftliche Auswertung des
 
-                Materials da. Die Digitalisate der <a con10t-search-query="*"
+                Materials da. Die Digitalisate der <a target="_blank" con10t-search-query="*"
                                                       con10t-search-facet="facet_kategorie:Bilder,facet_bestandsname:Archiv-Friedrich-W-Hinkel,facet_subkategoriebestand_level1:Archiv-Friedrich-W-Hinkel-Negative">Fotos</a>
-                </a>, Dias, <a con10t-search-query="*"
+                </a>, Dias, <a target="_blank" con10t-search-query="*"
                                con10t-search-facet="facet_kategorie:Bilder,facet_bestandsname:Archiv-Friedrich-W-Hinkel,facet_subkategoriebestand_level1:Archiv-Friedrich-W-Hinkel-Zeichnungen">Zeichnungen</a>
                 und topographischen
-                <a con10t-search-query="*"
+                <a con10t-search-query="*" target="_blank"
                    con10t-search-facet="facet_kategorie:Bilder,facet_bestandsname:Archiv-Friedrich-W-Hinkel,facet_subkategoriebestand_level1:Archiv-Friedrich-W-Hinkel-Karten">
                     Karten</a> wurden in die Bild- und Objektdatenbank <a
                     href="https://arachne.dainst.org">iDAI.objects</a> eingelesen, während
-                mehrseitige Digitalisate mit übergreifendem inhaltlichen Zusammenhang wie die <a
-                    con10t-search-query="Compilation OR Copy"
-                    con10t-search-facet="facet_autor:Hinkel\, Friedrich W.,facet_kategorie:Bücher">Karteikarten</a>,
-                <a con10t-search-query="Fotoinventar*"
+                mehrseitige Digitalisate mit übergreifendem inhaltlichen Zusammenhang wie die <a target="_blank"
+                                                                                                 con10t-search-query="Compilation OR Copy"
+                                                                                                 con10t-search-facet="facet_autor:Hinkel\, Friedrich W.,facet_kategorie:Bücher">Karteikarten</a>,
+                <a con10t-search-query="Fotoinventar*" target="_blank"
                    con10t-search-facet="facet_autor:Hinkel\, Friedrich W.,facet_kategorie:Bücher">Fotoinventare</a>, <a
+                    target="_blank"
                     con10t-search-catalog="216">Zeichnungskonvolute</a> und <a
+                    target="_blank"
                     con10t-search-query="AMS Supplements OR AMS Fasc. OR AMS:Files Sudan Antiquities Service OR AMS:General"
                     con10t-search-facet="facet_autor:Hinkel\, Friedrich W.,facet_kategorie:Bücher">wissenschaftlichen
                 Materialsammlungen</a> in den
@@ -125,7 +130,7 @@
 
             <p>
             <div>
-                <a href="/project/hinkel_map" title="Zur Karte" style="cursor:pointer">
+                <a href="/project/hinkel_map?lang=de" title="Zur Karte" style="cursor:pointer">
                     <span class="glyphicon glyphicon-fullscreen"></span>
                     Größere Karte
                 </a>
@@ -143,18 +148,16 @@
                         }
                     ]
                 }"></div>
-            <con10t-show-if dataset-group="Digital-Hinkel">
-                <div con10t-map
-                     id="map"
-                     limit="200"
-                     overlays="config.overlays"
-                     facets-select="config.facetsSelect"
-                     lat="15.114552871944115"
-                     lng="31.134765625"
-                     zoom="5"
-                     style="height: 500px">
-                </div>
-            </con10t-show-if>
+            <div con10t-map
+                 id="map"
+                 limit="200"
+                 overlays="config.overlays"
+                 facets-select="config.facetsSelect"
+                 lat="15.114552871944115"
+                 lng="31.134765625"
+                 zoom="5"
+                 style="height: 500px">
+            </div>
             </p>
 
             <p style="text-align: center;">

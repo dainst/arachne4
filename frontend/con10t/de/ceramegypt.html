@@ -10,8 +10,17 @@
             <h1>CeramEgypt – Pottery production and consumption in Ptolemaic-Roman Egyptian</h1>
         </div>
         <div class="con10t-sidebar">
-            <con10t-toc toc-heading="Übersicht"></con10t-toc>
-            <h3>Search within the project data</h3>
+
+			<div>
+				<img src="/con10t/img/ceramegypt/logo_ceramegypt.jpg" style="width:100%" />
+				<br>
+				<br>
+			</div>
+
+			<con10t-toc toc-heading="Übersicht"></con10t-toc>
+
+
+			<h3>Search within the project data</h3>
 
 
 			<con10t-show-if dataset-group="ceramalex">4
@@ -27,42 +36,68 @@
             </a></div>
 			-->
             <div con10t-map
-					 id="map"
-					 limit="200"
-					 catalog-id="-1"
-					 baselayers="{
-							osm: {
-								name: 'OpenStreetMap',
-								type: 'xyz',
-								url: 'https://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png',
-								layerOptions: {
-									subdomains: ['a', 'b', 'c'],
-									attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
-									continuousWorld: true,
-									maxZoom: 18
-								}
+				 id="map"
+				 limit="200"
+				 catalog-id="-1"
+				 baselayers="{
+						osm: {
+							name: 'OpenStreetMap',
+							type: 'xyz',
+							url: 'https://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png',
+							layerOptions: {
+								subdomains: ['a', 'b', 'c'],
+								attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
+								continuousWorld: true,
+								maxZoom: 18
 							}
-						}"
-					 default-baselayer="osm"
-					 facets-select=""
-				 	 min-zoom="1"
-					 pin-list="[
-						{'name': 'Buto', 					'location': {'lat': 32.191371, 	'lon': 30.743637}, gazetteerID: 2101738},
-						{'name': 'Bubastis / Tell Basta', 	'location': {'lat': 30.570524, 	'lon': 31.514910}},
-						{'name': 'Tell el-Timai', 			'location': {'lat': 30.938611, 	'lon': 31.516389}},
-						{'name': 'Karnak', 					'location': {'lat': 25.719922, 	'lon': 32.657025}},
-						{'name': 'Medamoud', 				'location': {'lat': 25.733828, 	'lon': 32.710031}},
-						{'name': 'Antinopolis', 			'location': {'lat': 27.816667, 	'lon': 30.883333}},
-						{'name': 'Abu Mina', 				'location': {'lat': 30.852130, 	'lon': 29.666070}, gazetteerID: 2282610},
-						{'name': 'Kellia', 					'location': {'lat': 30.776003, 	'lon': 30.368868}},
-						{'name': 'Koptos',				 	'location': {'lat': 25.5944, 	'lon': 32.4857}},
-						{'name': 'Edfu', 					'location': {'lat': 24.978533, 	'lon': 32.874710}},
-						{'name': 'Syene / Assuan', 			'location': {'lat': 24.084561, 	'lon': 32.891864}},
-						{'name': 'Elephantine', 			'location': {'lat': 24.084363, 	'lon': 32.885274}},
-						{'name': 'St. Simeon', 				'location': {'lat': 24.094754, 	'lon': 32.876231}}
-
-					 ]"
+						}
+					}"
+				 default-baselayer="osm"
+				 facets-select=""
+				 min-zoom="1"
+				 pin-list="[
+					{gazetteerID: 2042791, name: 'Ashmunein', location: {lat: 27.781389, lon: 30.803889}},
+					{gazetteerID: 2277696, name: 'Schedia', location: {lat: 31.138372, lon: 30.188645}},
+					{gazetteerID: 2408802, name: 'Plinthine', location: {lat: 30.967834, lon: 29.566636}},
+					{gazetteerID: 2042872, name: 'Marea', location: {lat: 31.005980, lon: 29.707578}},
+					{gazetteerID: 2408805, name: 'Britisches Konsulat', location: {lat: 31.225046, lon: 29.956130}},
+					{gazetteerID: 2408808, name: 'Gabbari', location: {lat: 31.178217, lon: 29.87968}},
+					{gazetteerID: 2101738, name: 'Buto', location: {lat: 32.191371, lon: 30.743637}},
+					{gazetteerID: 2408810, name: 'Bubastis', location: {lat: 30.570524, lon: 31.514910}},
+					{gazetteerID: 2326736, name: 'Tell el-Timai', location: {lat: 30.938611, lon: 31.516389}},
+					{gazetteerID: 2178702, name: 'Karnak', location: {lat: 25.719922, lon: 32.657025}},
+					{gazetteerID: 2276626, name: 'Medamoud', location: {lat: 25.733828, lon: 32.710031}},
+					{gazetteerID: 2276638, name: 'Nag el-Hagar', location: {lat: 24.354057, lon: 32.914175}},
+					{gazetteerID: 2042797, name: 'Antinopolis', location: {lat: 27.816667, lon: 30.883333}},
+					{gazetteerID: 2282610, name: 'Abu Mina', location: {lat: 30.852130, lon: 29.666070}},
+					{gazetteerID: 2042861, name: 'Kellia', location: {lat: 30.776003, lon: 30.368868}},
+					{gazetteerID: 2277744, name: 'Koptos', location: {lat: 25.995556, lon: 32.815833}},
+					{gazetteerID: 2105497, name: 'Edfu', location: {lat: 24.978533, lon: 32.874710}},
+					{gazetteerID: 2042815, name: 'Syene / Assuan', location: {lat: 24.084561, lon: 32.891864}},
+					{gazetteerID: 2178701, name: 'Elephantine', location: {lat: 24.084363, lon: 32.885274}},
+					{gazetteerID: 2276644, name: 'St. Simeon', location: {lat: 24.094754, lon: 32.876231}},
+					{gazetteerID: 2277687, name: 'Athribis / Tell Attrib', location: {lat: 30.481532, lon: 31.180132}},
+					{gazetteerID: 2042927, name: 'Zawyet el-Mayitin', location: {lat: 28.050000, lon: 30.816667}}
+				 ]"
+				coords_missing="
+					{gazetteerID: 2408806, name: '“Cricket Ground”'},
+					{gazetteerID: 2408807, name: 'Fouat'},
+					{gazetteerID: 2408809, name: 'Majestix'},
+					{gazetteerID: 2408803, name: 'Diana'},
+					{gazetteerID: 2408804, name: 'Akademia'},"
 				>
+			</div>
+
+			<div><br></div>
+
+			<div>
+				<a href="http://www.agence-nationale-recherche.fr/" target="_blank">
+					<img src="/con10t/img/ceramegypt/logo_anr.png" style="width:100%" />
+				</a>
+
+				<a href="http://www.dfg.de/" target="_blank">
+					<img src="/con10t/img/ceramegypt/logo_dfg.png" style="width:100%" />
+				</a>
 			</div>
 
         </div>
@@ -79,7 +114,7 @@
 			<p>The aspect of pottery as a trade commodity constitutes the center of interest of the multi-disciplinary CeramEgypt project. For this, French and German researchers from the Centre d’Études Alexandrines and the Archeological Institute of Cologne– sponsored by the ANR and the DFG – came together to investigate possible scenarios of local, regional and super-regional commercial activities in Hellenistic and Imperial Roman Egypt by re-investigating pottery as the richest and most extensive archaeological material available. In their inquiries, CeramEgypt will be supported by various Egyptian researchers and international projects in Egypt.</p>
 
 			<div style="clear: both"></div>
-			<h2>Methodology & Aims</h2>
+			<h2 class="con10t-toc-entry">Methodology & Aims</h2>
 			<con10t-image src="/con10t/img/ceramegypt/image_method_1.jpg" align="left" width="205" alt="photographing an object">
 				Photographing an Object
 			</con10t-image>
@@ -106,19 +141,11 @@
 			</con10t-image>
 
 			<h2 class="con10t-toc-entry">Team</h2>
-
-			<h3>Directors</h3>
-
-            <ul>
-				Jean-Yves Empereur
-				Michael Heinzelmann
-			</ul>
-
-			<h3>Collaborators & Contributors</h3>
-
 			<ul>
-				<li>Pascale Ballet</li>
-				<li>Marianne Bergmann</li>
+				<li>Jean-Yves Empereur (director)</li>
+				<li>Michael Heinzelmann (director)</li>
+				<li>Pascale Ballet (co-director)</li>
+				<li>Marianne Bergmann (co-director)</li>
 				<li>Mai Abdelgawad</li>
 				<li>Lars Heinze</li>
 				<li>Archer Martin</li>
@@ -126,26 +153,33 @@
 				<li>Rabea Reimann</li>
 				<li>Christiane Römer-Strehl</li>
 				<li>Aude Simony</li>
-            </ul>
-            
-            <h3>External Cooperation Partners</h3 >
-            <ul>
-				<li>Marie-Dominque Nenna (CEAlex)</li>
-				<li>Marianne Bergmann (Schedia)</li>
-				<li>Eva Lange (Bubastis / Tell Basta)</li>
-				<li>Ulrich Hartung (Buto / Tell el-Fara´in)</li>
-				<li>Nadia Licitra (Karnak)</li>
-				<li>Christophe Thiers (Karnak)</li>
-				<li>Romain David (Karnak)</li>
-				<li>Cornelius von Pilgrim (Syene / Aswan)</li>
-				<li>Sabine Ladstätter (Syene / Aswan)</li>
-				<li>Lisa Peloschek (Syene / Aswan)</li>
-				<li>Robert Littman (Tell Timai)</li>
-				<li>Jay Silverstein (Tell Timai)</li>
-				<li>Claudio Gallazzi (Tebtynis)</li>
-				<li>Rosario Pintaudi (Antinopolis)</li>
 			</ul>
-			
+
+			<h2 class="con10t-toc-entry">External Cooperation Partners</h2>
+			<ul>
+				<li>Marie-Dominique Nenna (<a href="http://www.cealex.org/" target="_blank">CEAlex</a>)</li>
+				<li>Marianne Bergmann (<a href="http://www.schedia.de/" target="_blank">Schedia</a>)</li>
+				<li>Eva Lange (<a href="http://www.aegyptologie.uni-wuerzburg.de/wissenschaftforschung/tell_basta_project/" target="_blank">Bubastis / Tell Basta</a>)</li>
+				<li>Ulrich Hartung (<a href="https://www.dainst.org/projekt/-/project-display/63537" target="_blank">Buto / Tell el-Fara´in</a>)</li>
+				<li>Nadia Licitra (<a href="http://www.cfeetk.cnrs.fr/index.php?page=axe-2-theme-2" target="_blank">Karnak</a>)</li>
+				<li>Christophe Thiers (<a href="http://www.cfeetk.cnrs.fr/" target="_blank">Karnak</a>)</li>
+				<li>Romain David (<a href="http://www.cfeetk.cnrs.fr/" target="_blank">Karnak</a>)</li>
+				<li>Cornelius von Pilgrim (<a href="http://swissinst.ch/html/forschung_neu.html" target="_blank">Syene / Aswan</a>)</li>
+				<li>Sabine Ladstätter (<a href="http://www.oeai.at/index.php/386.html" target="_blank">Syene / Aswana</a>)</li>
+				<li>Lisa Peloschek (<a href="http://www.oeai.at/index.php/386.html" target="_blank">Syene / Aswana</a>)</li>
+				<li>Robert Littman (<a href="http://www.telltimai.org/" target="_blank">Tell Timai</a>)</li>
+				<li>Jay Silverstein (<a href="http://www.telltimai.org/" target="_blank">Tell Timai</a>)</li>
+				<li>Claudio Gallazzi (<a href="http://www.ifao.egnet.net/archeologie/tebtynis/" target="_blank">Tebtynis</a>)</li>
+				<li>Rosario Pintaudi (<a href="http://antinoupolis.net/antinoupolisthecity/Antinopolis" target="_blank">Antinopolis</a>)</li>
+			</ul>
+
+
+
+			<h2 class="con10t-toc-entry">Contact</h2>
+			<ul>
+				<li>Rabea Reimann (Rabea.Reimann<b>@</b>uni-koeln.de)</li>
+				<li>Lars Heinze (L.Heinze<b>@</b>uni-koeln.de) </li>
+			</ul>
 
 
 			<img style="padding:0px; width: 100%" src="/con10t/img/ceramegypt/image_1.jpg" alt="Ceramics from Schedia">
