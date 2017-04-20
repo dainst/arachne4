@@ -54,7 +54,8 @@ public class BookDao extends SQLDao {
         final String query = "SELECT arachneentityidentification.ArachneEntityID FROM `buch` JOIN arachneentityidentification " +
                 "ON buch.PS_BuchID = arachneentityidentification.ForeignKey AND arachneentityidentification.TableName LIKE 'buch' " +
                 "WHERE buch.alias LIKE '" + alias + "'";
-        final long arachneEntityID = queryForLong(query);
+        final Long arachneEntityID = queryForLong(query);
+
         return arachneEntityID;
     }
 }

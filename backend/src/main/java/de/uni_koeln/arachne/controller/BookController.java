@@ -63,27 +63,24 @@ public class BookController {
 
     private File teiFile(String bookId){ return new File(booksPath+bookId+"/transcription.xml"); }
 
+    /**
+     * Returns the EntityID for a given alias (to realise permalinks)
+     *
+     * @param alias the alternative name of the book
+     * @return the arachne entity id if book is present. null if not
+     */
     @RequestMapping(value="/books/{alias}",
             method=RequestMethod.GET,
             produces = {APPLICATION_JSON_UTF8_VALUE})
-    public ModelAndView handleGetAliasRequest(@PathVariable("alias") final String alias,
-                                              HttpServletRequest req,
-                                              HttpServletResponse res) {
-
-        if(StringUtils.isNumeric(alias)) {
-            LOGGER.info("You should not be here!");
-            return null;
-        }
+    public @ResponseBody ResponseEntity<String> handleGetAliasRequest(
+            @PathVariable("alias") final String alias) {
 
         if (booksPath==null) throw new IllegalStateException("bookPath must not be null");
         if (bookDao==null)   throw new IllegalStateException("bookDao must not be null");
 
         final Long arachneEntityID = bookDao.getEntityIDFromAlias(alias);
 
-        LOGGER.info("Going for it!");
-        ModelAndView mav = new ModelAndView("redirect:" + "/entity/2244313");
-        LOGGER.info("mav: {}", mav);
-        return mav;
+        return ResponseEntity.ok("{\"entityId\":" + arachneEntityID + "}");
     }
 
     // TODO discuss naming of img_file
