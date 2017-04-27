@@ -606,6 +606,7 @@ public class TestCatalogDao {
 		Catalog catalog = new Catalog();
 		catalog.setAuthor(user.getFirstname() + " " + user.getLastname());
 		catalog.setDatasetGroup(user.getDatasetGroups().toArray(new DatasetGroup[0])[0].getName());
+        catalog.setProjectId("testProjectId");
 		catalog.setUserIds(new HashSet<Long>(Arrays.asList(3L)));
 		catalog.setRoot(root);
 		
