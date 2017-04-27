@@ -17,19 +17,20 @@ public class TestCatalogData {
 				+ "root_id int(10),"
 				+ "author varchar(255) NOT NULL,"
 				+ "public tinyint(1) NOT NULL,"
-				+ "DatensatzGruppeCatalog varchar(255) NOT NULL);");
+				+ "DatensatzGruppeCatalog varchar(255) NOT NULL, "
+                + "ProjektId varchar(255) NOT NULL);");
 		jdbcTemplate.execute("INSERT INTO catalog("
-				+ "id, root_id, author, public, DatensatzGruppeCatalog)"
+				+ "id, root_id, author, public, DatensatzGruppeCatalog, ProjektId)"
 				+ "VALUES"
-				+ "(1,1,'testuser',1,'userTestGroup');");
+				+ "(1,1,'testuser',1,'userTestGroup','');");
 		jdbcTemplate.execute("INSERT INTO catalog("
-				+ "id, root_id, author, public, DatensatzGruppeCatalog)"
+				+ "id, root_id, author, public, DatensatzGruppeCatalog, ProjektId)"
 				+ "VALUES"
-				+ "(2,3,'testuser',0,'userTestGroup');");
+				+ "(2,3,'testuser',0,'userTestGroup','');");
 		jdbcTemplate.execute("INSERT INTO catalog("
-				+ "id, root_id, author, public, DatensatzGruppeCatalog)"
+				+ "id, root_id, author, public, DatensatzGruppeCatalog, ProjektId)"
 				+ "VALUES"
-				+ "(3,10,'testuser2',0,'userTestGroup');");
+				+ "(3,10,'testuser2',0,'userTestGroup','');");
 		
 		jdbcTemplate.execute("CREATE TABLE catalog_benutzer("
 				+ "catalog_id INT NOT NULL,"
