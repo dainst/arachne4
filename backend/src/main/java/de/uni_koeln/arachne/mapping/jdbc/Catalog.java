@@ -20,11 +20,13 @@ public class Catalog {
 	private CatalogEntry root;
 	
 	private String author;
-	
+
 	private Boolean isPublic;
 
 	private String datasetGroup = "Arachne";
-	
+
+	private String projectId;
+
 	/**
 	 * Getter for the id.
 	 * @return The catalog id.
@@ -74,20 +76,36 @@ public class Catalog {
 	}
 
 	/**
-	 * Getter for the author field.
-	 * @return The author.
+	 * Getter for the projectId field.
+	 * @return The projectId.
 	 */
-	public String getAuthor() {
-		return author;
+	public String getProjectId() {
+		return projectId;
 	}
 
 	/**
-	 * Stter for the author field.
-	 * @param author An author.
+	 * Setter for the projectId field.
+	 * @param author An projectId.
 	 */
-	public void setAuthor(String author) {
-		this.author = author;
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
 	}
+
+    /**
+     * Getter for the author field.
+     * @return The author.
+     */
+    public String getAuthor() {
+        return author;
+    }
+
+    /**
+     * Setter for the author field.
+     * @param author An author.
+     */
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
 	/**
 	 * If this catalog is publicly readable.

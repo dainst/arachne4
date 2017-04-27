@@ -88,6 +88,7 @@ public class CatalogDao extends SQLDao {
             catalog.setAuthor(rs.getString("author"));
             catalog.setPublic(rs.getBoolean("public"));
             catalog.setDatasetGroup(rs.getString("DatensatzGruppeCatalog"));
+            catalog.setProjectId(rs.getString("ProjektId"));
             catalog.setUserIds(getUserIds(catalog.getId()));
             return catalog;
         });
@@ -131,6 +132,7 @@ public class CatalogDao extends SQLDao {
             catalog.setAuthor(rs.getString("author"));
             catalog.setPublic(rs.getBoolean("public"));
             catalog.setDatasetGroup(rs.getString("DatensatzGruppeCatalog"));
+            catalog.setProjectId(rs.getString("ProjektId"));
             catalog.setUserIds(getUserIds(catalog.getId()));
             return catalog;
         });
@@ -202,12 +204,13 @@ public class CatalogDao extends SQLDao {
             try {
                 catalog.setId(updateReturnKey(con -> {
                     final String sql = "INSERT INTO catalog "
-                            + "(author, public, DatensatzGruppeCatalog) "
+                            + "(author, public, DatensatzGruppeCatalog, ProjektId) "
                             + "VALUES "
-                            + "(?, 0, ?)";
+                            + "(?, 0, ?, ?)";
                     PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                     ps.setString(1, catalog.getAuthor());
                     ps.setString(2, catalog.getDatasetGroup());
+                    ps.setString(3, catalog.getProjectId());
                     return ps;
                 }));
             } catch (DataIntegrityViolationException e) {
@@ -276,14 +279,15 @@ public class CatalogDao extends SQLDao {
                         : oldCatalog.getDatasetGroup());
                 update(con -> {
                     final String sql = "UPDATE catalog "
-                            + "SET author = ?, public = ?, DatensatzGruppeCatalog = ? "
+                            + "SET author = ?, public = ?, DatensatzGruppeCatalog = ?, ProjektId = ? "
                             + "WHERE "
                             + "catalog.id = ?";
                     PreparedStatement ps = con.prepareStatement(sql);
                     ps.setString(1, newCatalog.getAuthor());
                     ps.setBoolean(2, newCatalog.isPublic());
                     ps.setString(3, newCatalog.getDatasetGroup());
-                    ps.setLong(4, newCatalog.getId());
+                    ps.setString(4, newCatalog.getProjectId());
+                    ps.setLong(5, newCatalog.getId());
                     return ps;
                 });
 

@@ -16,6 +16,8 @@ public class CatalogEntryExtended {
 
 	final private String catalogAuthor;
 
+	final private String projectId;
+
 	final private Boolean isPublic;
 	
 	/**
@@ -25,10 +27,11 @@ public class CatalogEntryExtended {
 	 * @param catalogAuthor The author of the catalog the entry is part of.
 	 * @param isPublic If the catalog the entry is part of is public.
 	 */
-	public CatalogEntryExtended(CatalogEntry entry, String catalogTitle, String catalogAuthor, Boolean isPublic) {
+	public CatalogEntryExtended(CatalogEntry entry, String catalogTitle, String catalogAuthor, String projectId, Boolean isPublic) {
 		this.entry = entry;
 		this.catalogTitle = catalogTitle;
 		this.catalogAuthor = catalogAuthor;
+		this.projectId = projectId;
 		this.isPublic = isPublic;
 	}
 
@@ -53,6 +56,12 @@ public class CatalogEntryExtended {
 	 * @return The author.
 	 */
 	public String getCatalogAuthor() { return catalogAuthor; }
+
+	/**
+	 * Getter for the author of the catalog the entry is part of.
+	 * @return The author.
+	 */
+	public String getProjectId() { return projectId; }
 
 	/**
 	 * Whether the catalog the entry belongs to is publicly accessible.

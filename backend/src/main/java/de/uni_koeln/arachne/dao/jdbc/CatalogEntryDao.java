@@ -143,7 +143,7 @@ public class CatalogEntryDao extends SQLDao {
 	 */
 	@Transactional(readOnly=true)
 	public List<CatalogEntryExtended> getEntryInfoByEntityId(final long entityId) {
-		final String sqlQuery = "SELECT e.*, c.author, c.public, r.label from catalog_entry AS e " +
+		final String sqlQuery = "SELECT e.*, c.author, c.public, c.ProjektId, r.label from catalog_entry AS e " +
 				"LEFT JOIN catalog AS c ON e.catalog_id = c.id " +
 				"LEFT JOIN catalog_benutzer AS b ON c.id = b.catalog_id " +
 				"LEFT JOIN catalog_entry AS r ON c.root_id = r.id " +
@@ -430,7 +430,7 @@ public class CatalogEntryDao extends SQLDao {
 	public CatalogEntryExtended mapCatalogEntryInfo(ResultSet rs, int rowNum) throws SQLException {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
 		return new CatalogEntryExtended(catalogEntry, rs.getString("r.label"),
-				rs.getString("c.author"), rs.getBoolean("c.public"));
+				rs.getString("c.author"), rs.getString("c.ProjektId"), rs.getBoolean("c.public"));
 	}
 
     private void setTotalChildren(CatalogEntry catalogEntry, List<CatalogEntry> children) {
