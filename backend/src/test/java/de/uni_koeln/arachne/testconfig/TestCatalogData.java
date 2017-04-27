@@ -17,7 +17,7 @@ public class TestCatalogData {
 				+ "root_id int(10),"
 				+ "author varchar(255) NOT NULL,"
 				+ "public tinyint(1) NOT NULL,"
-				+ "DatensatzGruppeCatalog varchar(255) NOT NULL, "
+				+ "DatensatzGruppeCatalog varchar(255) NOT NULL,"
                 + "ProjektId varchar(255) NOT NULL);");
 		jdbcTemplate.execute("INSERT INTO catalog("
 				+ "id, root_id, author, public, DatensatzGruppeCatalog, ProjektId)"
