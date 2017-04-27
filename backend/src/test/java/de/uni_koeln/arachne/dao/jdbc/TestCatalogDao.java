@@ -542,7 +542,7 @@ public class TestCatalogDao {
 		Catalog catalog = new Catalog();
 		catalog.setAuthor(user.getFirstname() + " " + user.getLastname());
 		catalog.setDatasetGroup(user.getDatasetGroups().toArray(new DatasetGroup[0])[0].getName());
-        catalog.setProjectId('testProjectId');
+        catalog.setProjectId("testProjectId");
 		catalog.setUserIds(new HashSet<Long>(Arrays.asList(3L)));
 		catalog.setRoot(root);
 
@@ -637,7 +637,7 @@ public class TestCatalogDao {
 		
 		Catalog catalog = new Catalog();
 		catalog.setAuthor(user.getFirstname() + " " + user.getLastname());
-        catalog.setProjectId('testProjectId');
+        catalog.setProjectId("testProjectId");
 		catalog.setUserIds(new HashSet<Long>(Arrays.asList(3L)));
 		catalog.setRoot(root);
 		
@@ -658,7 +658,7 @@ public class TestCatalogDao {
 		catalog.setId(17L);
 		catalog.setAuthor(user.getFirstname() + " " + user.getLastname());
 		catalog.setDatasetGroup(user.getDatasetGroups().toArray(new DatasetGroup[0])[0].getName());
-        catalog.setProjectId('testProjectId');
+        catalog.setProjectId("testProjectId");
 		catalog.setUserIds(new HashSet<Long>(Arrays.asList(3L)));
 		catalog.setRoot(root);
 		
@@ -718,7 +718,7 @@ public class TestCatalogDao {
 		catalog.setAuthor(newAuthor);
 		catalog.setPublic(true);
 		catalog.setDatasetGroup("anotherTestGroup");
-        catalog.setProjectId('testProjectId');
+        catalog.setProjectId("testProjectId");
 		catalog.setUserIds(new HashSet<Long>(Arrays.asList(3L)));
 		catalog.setRoot(root);
 		
@@ -744,7 +744,7 @@ public class TestCatalogDao {
 		catalog.setAuthor(author);
 		catalog.setPublic(false);
 		catalog.setDatasetGroup("userTestGroup");
-        catalog.setProjectId('testProjectId');
+        catalog.setProjectId("testProjectId");
 		catalog.setUserIds(new HashSet<Long>(Arrays.asList(3L, 2L)));
 				
 		assertTrue(catalogDao.getByUserId(2L, false, -1, 0).isEmpty());
@@ -768,7 +768,7 @@ public class TestCatalogDao {
 		catalog.setPublic(false);
 		catalog.setDatasetGroup("userTestGroup");
 		catalog.setUserIds(null);
-        catalog.setProjectId('testProjectId');
+        catalog.setProjectId("testProjectId");
 				
 		catalog = catalogDao.updateCatalog(catalog);
 		assertNotNull(catalog);
@@ -792,7 +792,7 @@ public class TestCatalogDao {
 		catalog.setAuthor(author);
 		catalog.setPublic(false);
 		catalog.setDatasetGroup(null);
-        catalog.setProjectId('testProjectId');
+        catalog.setProjectId("testProjectId");
 						
 		final Catalog updatedCatalog = catalogDao.updateCatalog(catalog);
 		assertNotNull(updatedCatalog);
