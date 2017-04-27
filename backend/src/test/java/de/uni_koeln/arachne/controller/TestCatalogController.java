@@ -167,6 +167,7 @@ public class TestCatalogController {
 				entryLeaf,
 				catalog.getRoot().getLabel(),
 				catalog.getAuthor(),
+				catalog.getProjectId(),
 				catalog.isPublic());
 		when(catalogEntryDao.getEntryInfoByEntityId(1184191))
 				.thenReturn(Arrays.asList(info), new ArrayList<CatalogEntryExtended>());
