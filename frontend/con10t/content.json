@@ -338,6 +338,13 @@
                         "ar": "الرسومات:"
                     },
                     "hidden": true
+                },
+                {
+                    "id": "abguesseMuenchen",
+                    "title": {
+                        "de": "Münchener Abguss Sammlung",
+                        "en": "Plaster Cast Collection Munich"
+                    }
                 }
             ]
         },
