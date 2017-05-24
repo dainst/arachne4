@@ -136,7 +136,7 @@ public class SearchController {
 			@RequestParam(value = "scroll", required = false) final Boolean scrollMode,
 			@RequestParam(value = "facet", required = false) final String facet,
 			@RequestParam(value = "editorfields", required = false) Boolean editorFields,
-			@RequestHeader("Accept-Language") String language) {
+            @RequestHeader(value = "Accept-Language", defaultValue = "de") String language) {
 		
 		if (scrollMode != null && scrollMode && !userRightsService.isSignedInUser()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -253,7 +253,7 @@ public class SearchController {
 			@RequestParam(value = "fl", required = false) final Integer facetLimit,
 			@RequestParam(value = "sort", required = false) final String sortField,
 			@RequestParam(value = "desc", required = false) final Boolean orderDesc,
-            @RequestHeader("Accept-Language") String language) {
+            @RequestHeader(value = "Accept-Language", defaultValue = "de") String language) {
 
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 		

@@ -75,7 +75,7 @@ public class EntityController {
 	public @ResponseBody ResponseEntity<String> handleGetEntityIdRequest(
 			@PathVariable("entityId") final Long entityId,
 			@RequestParam(value = "live", required = false) final Boolean isLive,
-			@RequestHeader("Accept-Language") String language) throws Transl8Exception {
+			@RequestHeader(value = "Accept-Language", defaultValue = "de") String language) throws Transl8Exception {
 	
 		TypeWithHTTPStatus<String> result;
 		try {
@@ -106,7 +106,7 @@ public class EntityController {
     		@PathVariable("category") final String category,
     		@PathVariable("categoryId") final Long categoryId,
     		@RequestParam(value = "live", required = false) final Boolean isLive,
-			@RequestHeader("Accept-Language") String language) {
+			@RequestHeader(value = "Accept-Language", defaultValue = "de") String language) {
     	
     	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
     	TypeWithHTTPStatus<String> result;
