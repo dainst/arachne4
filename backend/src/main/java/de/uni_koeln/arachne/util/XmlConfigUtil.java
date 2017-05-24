@@ -104,7 +104,8 @@ public class XmlConfigUtil implements ServletContextAware {
 		final String contextType = context.getAttributeValue("type");
 
         try {
-            result.setLabel(ts.transl8(context.getAttributeValue("labelKey"), lang));
+            if(context.getAttributeValue("labelKey") != null)
+                result.setLabel(ts.transl8(context.getAttributeValue("labelKey"), lang));
         }
         catch (Transl8Exception e) {
             LOGGER.error("Failed to contact transl8. Cause: ", e);
@@ -241,7 +242,13 @@ public class XmlConfigUtil implements ServletContextAware {
 	public AbstractContent getContentFromSections(final Element section, final Namespace namespace, final Dataset dataset, final String lang) {
 	    try {
             final Section result = new Section();
-            result.setLabel(ts.transl8(section.getAttributeValue("labelKey"), lang));
+
+            if(section.getAttributeValue("labelKey") != null) {
+                if (ts != null)
+                    result.setLabel(ts.transl8(section.getAttributeValue("labelKey"), lang));
+                else
+                    result.setLabel(section.getAttributeValue("labelKey"));
+            }
 
             final List<Element> children = section.getChildren();
 
@@ -732,7 +739,11 @@ public class XmlConfigUtil implements ServletContextAware {
 			, String separator, final String lang) {
 
         try {
-            final String labelKey = ts.transl8(element.getAttributeValue("labelKey"), lang);
+            final String labelKey;
+            if(ts != null)
+                labelKey = ts.transl8(element.getAttributeValue("labelKey"), lang);
+            else
+                labelKey = element.getAttributeValue("labelKey");
             if (!StrUtils.isEmptyOrNullOrZero(labelKey) || element.getChild("field") != null) {
                 final LinkField linkField = new LinkField(labelKey);
                 StringBuilder value = null;

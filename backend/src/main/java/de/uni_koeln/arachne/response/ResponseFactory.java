@@ -122,14 +122,10 @@ public class ResponseFactory {
 		final String tableName = arachneId.getTableName();
 		final Document document = xmlConfigUtil.getDocument(tableName);
 
-		LOGGER.info("document:(createFormattedArachneEntityAsJsonString) {}", document);
-
 		final FormattedArachneEntity response = createFormattedArachneEntity(dataset, arachneId, tableName, lang);
-        LOGGER.info("response: {}", response);
 		if (document != null) {
 			//Set additional Content
 			response.setAdditionalContent(dataset.getAdditionalContent());
-			LOGGER.info("getEntityAsJson: {}", getEntityAsJson(dataset, document, response, lang).toString());
 			return getEntityAsJson(dataset, document, response, lang).toString();
 		}
 
@@ -153,8 +149,6 @@ public class ResponseFactory {
 		final EntityId arachneId = dataset.getArachneId(); 
 		final String tableName = arachneId.getTableName();
 		final Document document = xmlConfigUtil.getDocument(tableName);
-
-		LOGGER.info("document:(createFormattedArachneEntityAsJson) {}", document);
 		
 		final FormattedArachneEntity response = createFormattedArachneEntity(dataset, arachneId, tableName, lang);
 				
@@ -474,13 +468,10 @@ public class ResponseFactory {
 	 */
 	private void setExternalLinks(final Dataset dataset, final FormattedArachneEntity response) {
 		final List<ExternalLink> externalLinks = new ArrayList<ExternalLink>();
-        LOGGER.info("resolvers {}", externalLinkResolvers);
 		if (externalLinkResolvers != null) for (ExternalLinkResolver resolver : externalLinkResolvers) {
 			final ExternalLink externalLink = resolver.resolve(dataset);
-            LOGGER.info("resolver {} successful", resolver);
 			if (externalLink != null) {
 			    externalLinks.add(externalLink);
-			    LOGGER.info("externalLink {}", externalLink);
 			}
 		}
 		if (!externalLinks.isEmpty()) response.setExternalLinks(externalLinks);

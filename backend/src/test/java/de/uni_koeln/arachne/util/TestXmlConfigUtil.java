@@ -72,7 +72,6 @@ public class TestXmlConfigUtil {
 		final Namespace namespace = testDocument.getRootElement().getNamespace();
 		final Element context = testDocument.getRootElement().getChild("display", namespace)
 				.getChild("datasections", namespace).getChild("section", namespace).getChild("context", namespace);
-		
 		final Section section = xmlConfigUtil.getContentFromContext(context, namespace, testData.getTestDataset(), LANG);
 		
 		assertNotNull(section);

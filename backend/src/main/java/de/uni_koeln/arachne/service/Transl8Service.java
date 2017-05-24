@@ -121,7 +121,7 @@ public class Transl8Service {
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	public String transl8(String key, String lang) throws Transl8Exception {
-        if(key != null) {
+        if(key != null && lang != null) {
 			if (!translationsAvailable.get(lang))
 				updateTranslations(lang);
 			if (!translationMap.isEmpty()) {

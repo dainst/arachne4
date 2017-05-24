@@ -135,7 +135,8 @@ public class SearchController {
 			@RequestParam(value = "sf", required = false) final String[] facetsToSort,
 			@RequestParam(value = "scroll", required = false) final Boolean scrollMode,
 			@RequestParam(value = "facet", required = false) final String facet,
-			@RequestParam(value = "editorfields", required = false) Boolean editorFields, final HttpServletRequest req) {
+			@RequestParam(value = "editorfields", required = false) Boolean editorFields,
+			@RequestHeader("Accept-Language") String language) {
 		
 		if (scrollMode != null && scrollMode && !userRightsService.isSignedInUser()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -175,9 +176,7 @@ public class SearchController {
 				
 		SearchRequestBuilder searchRequestBuilder;
 		try {
-			Locale rLoc = req.getLocale();
-			searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters
-					, filters, rLoc.getLanguage());
+			searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters, filters, language);
 			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
 					, searchParameters.getLimit(), searchParameters.getOffset(), filters, searchParameters.getFacetOffset());
 			
@@ -253,7 +252,8 @@ public class SearchController {
 			@RequestParam(value = "fq", required = false) final String[] filterValues,
 			@RequestParam(value = "fl", required = false) final Integer facetLimit,
 			@RequestParam(value = "sort", required = false) final String sortField,
-			@RequestParam(value = "desc", required = false) final Boolean orderDesc, final HttpServletRequest req) {
+			@RequestParam(value = "desc", required = false) final Boolean orderDesc,
+            @RequestHeader("Accept-Language") String language) {
 
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 		
@@ -271,9 +271,7 @@ public class SearchController {
 		
 		SearchRequestBuilder searchRequestBuilder;
 		try {
-			Locale rLoc = req.getLocale();
-			searchRequestBuilder = searchService.buildContextSearchRequest(entityId
-					, searchParameters, filters, rLoc.getLanguage());
+			searchRequestBuilder = searchService.buildContextSearchRequest(entityId, searchParameters, filters, language);
 			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
 					, searchParameters.getLimit(), searchParameters.getOffset(), filters, 0);
 			

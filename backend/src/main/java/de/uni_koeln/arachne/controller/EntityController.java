@@ -75,16 +75,14 @@ public class EntityController {
 	public @ResponseBody ResponseEntity<String> handleGetEntityIdRequest(
 			@PathVariable("entityId") final Long entityId,
 			@RequestParam(value = "live", required = false) final Boolean isLive,
-			final HttpServletRequest req) throws Transl8Exception {
+			@RequestHeader("Accept-Language") String language) throws Transl8Exception {
 	
 		TypeWithHTTPStatus<String> result;
 		try {
-            Locale rLoc = req.getLocale();
 			if (isLive != null && isLive) {
-			    LOGGER.info("rLoc: {}", rLoc.getLanguage());
-				result = entityService.getEntityFromDB(entityId, null, rLoc.getLanguage());
+				result = entityService.getEntityFromDB(entityId, null, language);
 			} else {
-				result = entityService.getEntityFromIndex(entityId, null, rLoc.getLanguage());
+				result = entityService.getEntityFromIndex(entityId, null, language);
 			}
 		} catch (Transl8Exception e) {
 			LOGGER.error("Failed to contact transl8. Cause: ", e);
@@ -108,16 +106,15 @@ public class EntityController {
     		@PathVariable("category") final String category,
     		@PathVariable("categoryId") final Long categoryId,
     		@RequestParam(value = "live", required = false) final Boolean isLive,
-            final HttpServletRequest req) {
+			@RequestHeader("Accept-Language") String language) {
     	
     	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
     	TypeWithHTTPStatus<String> result;
     	try {
-            Locale rLoc = req.getLocale();
     		if (isLive != null && isLive) {
-    			result = entityService.getEntityFromDB(categoryId, category, rLoc.getLanguage());
+    			result = entityService.getEntityFromDB(categoryId, category, language);
     		} else {
-    			result = entityService.getEntityFromIndex(categoryId, category, rLoc.getLanguage());
+    			result = entityService.getEntityFromIndex(categoryId, category, language);
     		}
     	} catch (Transl8Exception e) {
     		LOGGER.error("Failed to contact transl8. Cause: ", e);
