@@ -404,7 +404,7 @@ public class ESService implements ServletContextAware {
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	public TypeWithHTTPStatus<String> getDocumentFromCurrentIndex(final long id, final String category
-			, final String[] internalFields) throws Transl8Exception {
+			, final String[] internalFields, final String lang) throws Transl8Exception {
 		
 		SearchResponse searchResponse = null;
 		SearchResponse acLessSearchResponse = null;
@@ -433,9 +433,9 @@ public class ESService implements ServletContextAware {
 					.execute().actionGet();
 		} else {
 			final QueryBuilder query = QueryBuilders.boolQuery().must(QueryBuilders.boolQuery()
-					.must(QueryBuilders.termQuery("type", ts.transl8(category)))
+					.must(QueryBuilders.termQuery("type", ts.transl8(category, lang)))
 					.must(QueryBuilders.termQuery("internalId", id))).filter(accessFilter);
-			LOGGER.debug("Entity query [" + ts.transl8(category) + "/" + id + "]: " + query);
+			LOGGER.debug("Entity query [" + ts.transl8(category, lang) + "/" + id + "]: " + query);
 			searchResponse = getClient().prepareSearch(getSearchIndexAlias())
 					.setQuery(query)
 					.setFetchSource(new String[] {"*"}, internalFields)
@@ -445,9 +445,9 @@ public class ESService implements ServletContextAware {
 					.execute().actionGet();
 
 			final QueryBuilder acLessQuery = QueryBuilders.boolQuery()
-					.must(QueryBuilders.termQuery("type", ts.transl8(category)))
+					.must(QueryBuilders.termQuery("type", ts.transl8(category, lang)))
 					.must(QueryBuilders.termQuery("internalId", id));
-			LOGGER.debug("Entity query [" + ts.transl8(category) + "/" + id + "] (no access control): " + acLessQuery);
+			LOGGER.debug("Entity query [" + ts.transl8(category, lang) + "/" + id + "] (no access control): " + acLessQuery);
 			acLessSearchResponse = getClient().prepareSearch(getSearchIndexAlias())
 					.setQuery(acLessQuery)
 					.setFetchSource(new String[] {"*"}, internalFields)

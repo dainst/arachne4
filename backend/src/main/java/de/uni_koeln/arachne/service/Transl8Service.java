@@ -47,7 +47,7 @@ public class Transl8Service {
 
 	private transient Map<String, String> categoryMap = new HashMap<String, String>();
 
-	private transient List<String> languages = new ArrayList<String>(1);
+	private transient List<String> languages = new ArrayList<String>(2);
 	
 	private transient String transl8Url;
 	
@@ -59,21 +59,23 @@ public class Transl8Service {
 	public Transl8Service(final @Value("${transl8Url}") String transl8Url) {
 		this.transl8Url = transl8Url;
 		languages.add("de");
-		translationsAvailable.put(languages.get(0), false);
+        languages.add("en");
+        translationsAvailable.put(languages.get(0), false);
+		translationsAvailable.put(languages.get(1), false);
 	}
 
 	/**
 	 * Contacts transl8 via rest call and updates the internal translation map.
+	 * @param index the language in which the key should be retrieved
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
 	@SuppressWarnings("unchecked")
-	private void updateTranslations() throws Transl8Exception {
+	private void updateTranslations(String lang) throws Transl8Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		headers.set("Accept-Language", languages.get(0));
-
+		headers.set("Accept-Language", lang);
+        LOGGER.info("headers: {}", headers);
 		HttpEntity<String> entity = new HttpEntity<String>("", headers);
-
 		try {
 			final ResponseEntity<String> response = restTemplate.exchange(transl8Url , HttpMethod.GET, entity, String.class);
 			if (response.getStatusCode() == HttpStatus.OK) {
@@ -96,7 +98,8 @@ public class Transl8Service {
 							categoryMap.put(entry.getValue(), key.substring(16));
 						}
 					}
-					translationsAvailable.put(languages.get(0), true);
+                    translationsAvailable.put(languages.get(0), true);
+                    translationsAvailable.put(languages.get(1), true);
 					LOGGER.info("Translations are available for: " + languages);
 				} else {
 					LOGGER.error("Translation map is empty. Translations are not available.");
@@ -117,18 +120,22 @@ public class Transl8Service {
 	 * @return Either a translation or the key.
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public String transl8(String key) throws Transl8Exception {
-		if (!translationsAvailable.get(languages.get(0))) {
-			updateTranslations();
-		}
-		if (!translationMap.isEmpty()) {
-			String value = translationMap.get(key);
-			if (value != null) {
-				return value;
+	public String transl8(String key, String lang) throws Transl8Exception {
+        if(key != null) {
+			if (!translationsAvailable.get(lang))
+				updateTranslations(lang);
+			if (!translationMap.isEmpty()) {
+				String value = translationMap.get(key);
+				if (value != null)
+					return value;
 			}
 		}
 		return key;
 	}
+
+	/**public String transl8(String key) throws Transl8Exception {
+	    return transl8(key, "en");
+    }*/
 	
 	/**
 	 * Looks up a facet key in the translation map and returns the corresponding value if found or the key else.
@@ -138,9 +145,9 @@ public class Transl8Service {
 	 * @return Either a translation or the key.
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public String transl8Facet(String facetName, String key) throws Transl8Exception {
-		if (!translationsAvailable.get(languages.get(0))) {
-			updateTranslations();
+	public String transl8Facet(String facetName, String key, final String lang) throws Transl8Exception {
+		if (!translationsAvailable.get(lang)) {
+			updateTranslations(lang);
 		}
 		if (!translationMap.isEmpty()) {
 			String value = translationMap.get("facet_" + facetName + '_' + key);
@@ -157,9 +164,9 @@ public class Transl8Service {
 	 * @return The category key if found else the unchanged key parameter.
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public String categoryLookUp(String key) throws Transl8Exception {
-		if (!translationsAvailable.get(languages.get(0))) {
-			updateTranslations();
+	public String categoryLookUp(String key, final String lang) throws Transl8Exception {
+		if (!translationsAvailable.get(lang)) {
+			updateTranslations(lang);
 		}
 		if (!categoryMap.isEmpty()) {
 			String value = categoryMap.get(key);

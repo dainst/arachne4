@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import static de.uni_koeln.arachne.util.network.CustomMediaType.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import java.util.*;
 
 import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.response.ImageListResponse;
@@ -71,14 +74,17 @@ public class EntityController {
 			produces={APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody ResponseEntity<String> handleGetEntityIdRequest(
 			@PathVariable("entityId") final Long entityId,
-			@RequestParam(value = "live", required = false) final Boolean isLive) throws Transl8Exception {
+			@RequestParam(value = "live", required = false) final Boolean isLive,
+			final HttpServletRequest req) throws Transl8Exception {
 	
 		TypeWithHTTPStatus<String> result;
-		try {	
+		try {
+            Locale rLoc = req.getLocale();
 			if (isLive != null && isLive) {
-				result = entityService.getEntityFromDB(entityId, null);
+			    LOGGER.info("rLoc: {}", rLoc.getLanguage());
+				result = entityService.getEntityFromDB(entityId, null, rLoc.getLanguage());
 			} else {
-				result = entityService.getEntityFromIndex(entityId, null);
+				result = entityService.getEntityFromIndex(entityId, null, rLoc.getLanguage());
 			}
 		} catch (Transl8Exception e) {
 			LOGGER.error("Failed to contact transl8. Cause: ", e);
@@ -101,15 +107,17 @@ public class EntityController {
     public @ResponseBody ResponseEntity<String> handleGetCategoryIdRequest(
     		@PathVariable("category") final String category,
     		@PathVariable("categoryId") final Long categoryId,
-    		@RequestParam(value = "live", required = false) final Boolean isLive) {
+    		@RequestParam(value = "live", required = false) final Boolean isLive,
+            final HttpServletRequest req) {
     	
     	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
     	TypeWithHTTPStatus<String> result;
     	try {
+            Locale rLoc = req.getLocale();
     		if (isLive != null && isLive) {
-    			result = entityService.getEntityFromDB(categoryId, category);
+    			result = entityService.getEntityFromDB(categoryId, category, rLoc.getLanguage());
     		} else {
-    			result = entityService.getEntityFromIndex(categoryId, category);
+    			result = entityService.getEntityFromIndex(categoryId, category, rLoc.getLanguage());
     		}
     	} catch (Transl8Exception e) {
     		LOGGER.error("Failed to contact transl8. Cause: ", e);

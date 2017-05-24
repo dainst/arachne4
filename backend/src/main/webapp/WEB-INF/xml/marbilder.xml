@@ -85,6 +85,7 @@
 
 		<datasections>
 			<section labelKey="Informationen zum Bild">
+				<include type="ort" />
 				<section labelKey="DAI Kernfelder">
 					<field datasource="marbilderbestand.TitelMarbilderbestand" prefix="Titel: ">
 						<ifEmpty>
@@ -169,8 +170,6 @@
 					</field>
 					<field datasource="marbilderinventar.13_Dateityp" prefix="Dateityp: " />
 				</section>
-
-				<include type="ort" />
 				
 				<section labelKey="Allgemein">
 					<field datasource="marbilder.DateinameMarbilder" prefix="Dateiname: " />

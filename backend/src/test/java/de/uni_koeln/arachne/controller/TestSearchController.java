@@ -65,7 +65,7 @@ public class TestSearchController {
 		// methods
 		final AtomicBoolean isIndexSearch = new AtomicBoolean(false);
 				
-		when(searchService.buildDefaultSearchRequest(any(SearchParameters.class), any(Multimap.class)))
+		when(searchService.buildDefaultSearchRequest(any(SearchParameters.class), any(Multimap.class), anyString()))
 		.then(new Answer<SearchRequestBuilder>() {
 			@Override
 			public SearchRequestBuilder answer(InvocationOnMock invocation)	throws Throwable {
@@ -117,7 +117,7 @@ public class TestSearchController {
 			}
 		});
 		
-		when(searchService.buildContextSearchRequest(anyLong(), any(SearchParameters.class), any(Multimap.class)))
+		when(searchService.buildContextSearchRequest(anyLong(), any(SearchParameters.class), any(Multimap.class), anyString()))
 		.then(new Answer<SearchRequestBuilder>() {
 			@Override
 			public SearchRequestBuilder answer(InvocationOnMock invocation)	throws Throwable {

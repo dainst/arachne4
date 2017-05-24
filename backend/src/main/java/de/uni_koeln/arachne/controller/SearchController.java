@@ -1,7 +1,7 @@
 package de.uni_koeln.arachne.controller;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.rest.RestStatus;
@@ -16,6 +16,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -60,7 +63,7 @@ public class SearchController {
 	public SearchController(final @Value("${esDefaultLimit}") int defaultLimit,
 			final @Value("${esDefaultFacetLimit}") int defaultFacetLimit) {
 		
-		this.defaultLimit = defaultLimit <= SearchParameters.MAX_LIMIT ? defaultLimit : SearchParameters.MAX_LIMIT;
+		this.defaultLimit = defaultLimit;
 		this.defaultFacetLimit = defaultFacetLimit;
 	}
 	
@@ -132,7 +135,7 @@ public class SearchController {
 			@RequestParam(value = "sf", required = false) final String[] facetsToSort,
 			@RequestParam(value = "scroll", required = false) final Boolean scrollMode,
 			@RequestParam(value = "facet", required = false) final String facet,
-			@RequestParam(value = "editorfields", required = false) Boolean editorFields) {
+			@RequestParam(value = "editorfields", required = false) Boolean editorFields, final HttpServletRequest req) {
 		
 		if (scrollMode != null && scrollMode && !userRightsService.isSignedInUser()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -172,8 +175,9 @@ public class SearchController {
 				
 		SearchRequestBuilder searchRequestBuilder;
 		try {
+			Locale rLoc = req.getLocale();
 			searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters
-					, filters);
+					, filters, rLoc.getLanguage());
 			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
 					, searchParameters.getLimit(), searchParameters.getOffset(), filters, searchParameters.getFacetOffset());
 			
@@ -249,7 +253,7 @@ public class SearchController {
 			@RequestParam(value = "fq", required = false) final String[] filterValues,
 			@RequestParam(value = "fl", required = false) final Integer facetLimit,
 			@RequestParam(value = "sort", required = false) final String sortField,
-			@RequestParam(value = "desc", required = false) final Boolean orderDesc) {
+			@RequestParam(value = "desc", required = false) final Boolean orderDesc, final HttpServletRequest req) {
 
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 		
@@ -267,8 +271,9 @@ public class SearchController {
 		
 		SearchRequestBuilder searchRequestBuilder;
 		try {
+			Locale rLoc = req.getLocale();
 			searchRequestBuilder = searchService.buildContextSearchRequest(entityId
-					, searchParameters, filters);
+					, searchParameters, filters, rLoc.getLanguage());
 			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
 					, searchParameters.getLimit(), searchParameters.getOffset(), filters, 0);
 			

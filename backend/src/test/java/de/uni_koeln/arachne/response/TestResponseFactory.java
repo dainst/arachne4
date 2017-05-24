@@ -47,7 +47,9 @@ public class TestResponseFactory { // NOPMD
 	
 	@Mock
 	private CustomBooster customBooster;
-	
+
+	private final String LANG = "de";
+
 	@SuppressWarnings("serial")
 	@InjectMocks 
 	private final ResponseFactory responseFactory 
@@ -88,8 +90,8 @@ public class TestResponseFactory { // NOPMD
 		}
 		when(catalogDao.getPublicCatalogIdsAndPathsByEntityId(0)).thenReturn(mockCatalogDataList);
 		
-		when(ts.transl8(anyString())).thenReturn("type_test");
-		when(ts.transl8Facet(anyString(), anyString())).then(AdditionalAnswers.returnsSecondArg());
+		when(ts.transl8(anyString(), anyString())).thenReturn("type_test");
+		when(ts.transl8Facet(anyString(), anyString(), anyString())).then(AdditionalAnswers.returnsSecondArg());
 		
 		when(userRightsService.userHasAtLeastGroupID(anyInt())).thenReturn(true, false);
 		
@@ -99,7 +101,7 @@ public class TestResponseFactory { // NOPMD
 	
 	@Test
 	public void testCreateFormattedArachneEntity() throws Transl8Exception {
-		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertNotNull(response);
 	}
 	
@@ -118,57 +120,57 @@ public class TestResponseFactory { // NOPMD
 	
 	@Test
 	public void testType() throws Transl8Exception {
-		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertTrue(response.contains("\"type\":\"type_test\""));
 	}
 	
 	@Test
 	public void testIds() throws Transl8Exception {
-		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertTrue(response.contains("\"ids\":[\"1\",\"123\",\"1234567890\",\"a1b2c3d4\"]"));
 	}
 	
 	@Test
 	public void testFilename() throws Transl8Exception {
-		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertTrue(response.contains("\"filename\":\"test_filename.ext\""));
 	}
 	
 	@Test
 	public void testTitle() throws Transl8Exception {
-		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertTrue(response.contains("\"title\":\"Title of the Test\""));
 	}
 	
 	@Test
 	public void testSubtitle() throws Transl8Exception {
-		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertTrue(response.contains("\"subtitle\":\"Subtitle of the Test\""));
 	}
 	
 	@Test
 	public void testDatasectionLabel() throws Transl8Exception {
-		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertTrue(response.contains("\"label\":\"Testdata\""));
 	}
 	
 	@Test
 	public void testFieldPrefixPostfix() throws Transl8Exception {
-		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertTrue(response.contains("\"label\":\"Testdata prefix/postfix\""));
 		assertTrue(response.contains("\"content\":[{\"value\":\"PrefixTest=success<hr>PostfixTest=success\"}]"));
 	}
 	
 	@Test
 	public void testFieldSeparator() throws Transl8Exception {
-		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertTrue(response.contains("\"label\":\"Testdata separator\""));
 		assertTrue(response.contains("\"content\":[{\"value\":\"first-second\"}]"));
 	}
 	
 	@Test
 	public void testLinkField() throws Transl8Exception {
-		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertTrue(response.contains("\"label\":\"Testdata linkField\""));
 		assertTrue(response.contains("\"content\":[{\"value\":\"Start<hr>"
 				+ "<a href=\\\"http://testserver.com/link1.html\\\" target=\\\"_blank\\\">TestLink1</a>-TestLinkOverride-"
@@ -177,12 +179,12 @@ public class TestResponseFactory { // NOPMD
 	
 	@Test
 	public void testEditorSection() throws Transl8Exception {
-		String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		// user is an editor
 		assertTrue(response.contains("\"editorSection\":{\"label\":\"Testdata Editor Section\",\"content\":"
 				+ "[{\"value\":\"for editors only\"}]}"));
 		// user is not an editor
-		response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertFalse(response.contains("\"editorSection\":{\"label\":\"Testdata Editor Section\",\"content\":"
 				+ "[{\"value\":\"for editors only\"}]}"));
 	}
@@ -190,14 +192,14 @@ public class TestResponseFactory { // NOPMD
 	@Test
 	public void testImages() throws Transl8Exception, JsonProcessingException {
 		final String expectedJson = jsonMapper.writeValueAsString(dataset.getImages().subList(0, 2));
-		String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertTrue(response.contains("\"imageSize\":4"));
 		assertTrue(response.contains(expectedJson));
 	}
 	
 	@Test
 	public void testDynamicFacets() throws Transl8Exception {
-		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertTrue(response.contains("\"facet_kategorie\":[\"test\"]"));
 		assertTrue(response.contains("\"facet_test\":[\"test facet value\"]"));
 		assertTrue(response.contains("\"facet_multivaluetest\":[\"value 1\",\"value 2\",\"value 3\"]"));
@@ -206,13 +208,13 @@ public class TestResponseFactory { // NOPMD
 	
 	@Test
 	public void testStaticFacets() throws Transl8Exception {
-		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertTrue(response.contains("\"facet_image\":[\"ja\"]"));
 	}
 
 	@Test
 	public void testContext() throws Transl8Exception {
-		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertTrue(response.contains("Test Context Value1-TestSeparator1-Test Context Value3<hr>Test Context Value4"
 				+"<hr>Test Context Value5-TestSeparator2-Test Context Value6"
 				+"-TestSeparator3-Test Context Value7"));
@@ -224,7 +226,7 @@ public class TestResponseFactory { // NOPMD
 	 */
 	@Test
 	public void testSuggest() throws Transl8Exception {
-		String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		
 		// datasetGroup = 'Arachne'
 		assertTrue(response.contains("\"suggest\":{\"input\":[\"Title of the Test\",\"test facet value\"],\"weight\":146}"));
@@ -234,7 +236,7 @@ public class TestResponseFactory { // NOPMD
 		String datasetGroupFieldName = tableName+".DatensatzGruppe"+tableName.substring(0,1).toUpperCase()
 				+tableName.substring(1);
 		dataset.getFields().put(datasetGroupFieldName, "NotArachne");
-		response = responseFactory.createFormattedArachneEntityAsJsonString(dataset);
+		response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		assertFalse(response.contains("\"suggest\":{\"input\":[\"Title of the Test\",\"test facet value\"],\"weight\":146}"));
 	}
 }

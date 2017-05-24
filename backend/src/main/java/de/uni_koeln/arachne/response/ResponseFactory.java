@@ -112,22 +112,25 @@ public class ResponseFactory {
 	 * <br>
 	 * The validity of the xml file is not checked as this is covered by 'category.xsd'.
 	 * @param dataset The dataset which encapsulates the SQL query results.
+     * @param lang the language in which the json should be returned
 	 * @return A <code>FormattedArachneEntity</code> as JSON (<code>String</code>).
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public String createFormattedArachneEntityAsJsonString(final Dataset dataset) throws Transl8Exception {
+	public String createFormattedArachneEntityAsJsonString(final Dataset dataset, final String lang) throws Transl8Exception {
 		
 		final EntityId arachneId = dataset.getArachneId(); 
 		final String tableName = arachneId.getTableName();
 		final Document document = xmlConfigUtil.getDocument(tableName);
-		
-		final FormattedArachneEntity response = createFormattedArachneEntity(dataset, arachneId, tableName);
-				
+
+		LOGGER.info("document:(createFormattedArachneEntityAsJsonString) {}", document);
+
+		final FormattedArachneEntity response = createFormattedArachneEntity(dataset, arachneId, tableName, lang);
+        LOGGER.info("response: {}", response);
 		if (document != null) {
 			//Set additional Content
 			response.setAdditionalContent(dataset.getAdditionalContent());
-			
-			return getEntityAsJson(dataset, document, response).toString();
+			LOGGER.info("getEntityAsJson: {}", getEntityAsJson(dataset, document, response, lang).toString());
+			return getEntityAsJson(dataset, document, response, lang).toString();
 		}
 
 		LOGGER.error("No xml document for '" + tableName + "' found.");
@@ -145,13 +148,15 @@ public class ResponseFactory {
 	 * @return A <code>FormattedArachneEntity</code> as JSON (<code>raw bytes</code>).
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public byte[] createFormattedArachneEntityAsJson(final Dataset dataset) throws Transl8Exception {
+	public byte[] createFormattedArachneEntityAsJson(final Dataset dataset, final String lang) throws Transl8Exception {
 		
 		final EntityId arachneId = dataset.getArachneId(); 
 		final String tableName = arachneId.getTableName();
 		final Document document = xmlConfigUtil.getDocument(tableName);
+
+		LOGGER.info("document:(createFormattedArachneEntityAsJson) {}", document);
 		
-		final FormattedArachneEntity response = createFormattedArachneEntity(dataset, arachneId, tableName);
+		final FormattedArachneEntity response = createFormattedArachneEntity(dataset, arachneId, tableName, lang);
 				
 		if (document != null) {
 			//Set additional Content
@@ -159,7 +164,7 @@ public class ResponseFactory {
 			
 			byte[] json = null;
 			try {
-				json = JSONUtil.MAPPER.writeValueAsBytes(getEntityAsJson(dataset, document, response));
+				json = JSONUtil.MAPPER.writeValueAsBytes(getEntityAsJson(dataset, document, response, lang));
 			} catch (JsonProcessingException e) {
 				LOGGER.error("Failed to serialize entity " + arachneId.getArachneEntityID() + ".Cause: ", e);
 				e.printStackTrace();
@@ -179,8 +184,8 @@ public class ResponseFactory {
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	private FormattedArachneEntity createFormattedArachneEntity(final Dataset dataset, final EntityId arachneId,
-			final String tableName) throws Transl8Exception {
-		final FormattedArachneEntity response = new FormattedArachneEntity(ts.transl8("type_" + tableName));
+			final String tableName, final String lang) throws Transl8Exception {
+		final FormattedArachneEntity response = new FormattedArachneEntity(ts.transl8("type_" + tableName, lang));
 		// set id content
 		response.setEntityId(arachneId.getArachneEntityID());
 		response.setInternalId(arachneId.getInternalKey());
@@ -415,11 +420,11 @@ public class ResponseFactory {
 	 * @param display The display element.
 	 * @return A <code>String</code> containing the concatenated values of the <code>title</code> tag.
 	 */
-	private String getTitleString(final Dataset dataset, final Namespace namespace, final Element display) {
+	private String getTitleString(final Dataset dataset, final Namespace namespace, final Element display, final String lang) {
 		String result = "";
 		final Element title = display.getChild("title", namespace);
     	if (title.getChild("field", namespace) == null) {
-    		result = contentListToString(getContentList(dataset, namespace, title));
+    		result = contentListToString(getContentList(dataset, namespace, title, lang));
     	} else {
     		result = dataset.getField(title.getChild("field", namespace).getAttributeValue("datasource"));
     	}
@@ -433,12 +438,12 @@ public class ResponseFactory {
 	 * @param display The display element.
 	 * @return A <code>String</code> containing the concatenated values of the <code>subtitle</code> tag.
 	 */
-	private String getSubTitle(final Dataset dataset, final Namespace namespace, final Element display) {
+	private String getSubTitle(final Dataset dataset, final Namespace namespace, final Element display, final String lang) {
 
 		String result = "";
 		final Element subtitle = display.getChild("subtitle", namespace);
 		if (subtitle.getChild("field", namespace) == null) {
-			result = contentListToString(getContentList(dataset, namespace, subtitle));
+			result = contentListToString(getContentList(dataset, namespace, subtitle, lang));
 		} else {
 			result = dataset.fields.get(subtitle.getChild("field", namespace).getAttributeValue("datasource"));
 		}
@@ -452,11 +457,10 @@ public class ResponseFactory {
 	 * @param display The display element.
 	 * @param response The response object to add the sections to.
 	 */
-	private void setSections(final Dataset dataset, final Namespace namespace, final Element display
-			, final FormattedArachneEntity response) {
+	private void setSections(final Dataset dataset, final Namespace namespace, final Element display, final FormattedArachneEntity response, final String lang) {
 
 		final Element sections = display.getChild("datasections", namespace);
-		final List<AbstractContent> contentList = getContentList(dataset, namespace, sections);
+		final List<AbstractContent> contentList = getContentList(dataset, namespace, sections, lang);
 
 		if (contentList != null) {
 			response.setSections(contentList);
@@ -490,7 +494,7 @@ public class ResponseFactory {
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
 	private ObjectNode getEntityAsJson(final Dataset dataset, final Document document
-			, final FormattedArachneEntity response) throws Transl8Exception {
+			, final FormattedArachneEntity response, final String lang) throws Transl8Exception {
 
 		final Namespace namespace = document.getRootElement().getNamespace();
 
@@ -513,7 +517,7 @@ public class ResponseFactory {
 		final Element display = document.getRootElement().getChild("display", namespace);
 
 		// set title
-		final String titleStr = getTitleString(dataset, namespace, display);
+		final String titleStr = getTitleString(dataset, namespace, display, lang);
 		response.setTitle(titleStr);
 
 		// add title to suggest only for entities with datasetGroup 'Arachne'
@@ -522,14 +526,14 @@ public class ResponseFactory {
 		}
 
 		// set subtitle
-		final String subtitleStr = getSubTitle(dataset, namespace, display);
+		final String subtitleStr = getSubTitle(dataset, namespace, display, lang);
 		response.setSubtitle(subtitleStr);
 
 		// set datasection
-		setSections(dataset, namespace, display, response);
+		setSections(dataset, namespace, display, response, lang);
 
 		// set editor section
-		setEditorSection(dataset, namespace, display, response);
+		setEditorSection(dataset, namespace, display, response, lang);
 
 		// Set images - max 'imageLimit' images
 		List<Image> imageList = dataset.getImages();
@@ -545,18 +549,18 @@ public class ResponseFactory {
 
 		// set external links
 		setExternalLinks(dataset, response);
-		return getFacettedEntityAsJson(dataset, document, response, namespace);
+		return getFacettedEntityAsJson(dataset, document, response, namespace, lang);
 	}
 
 	private void setEditorSection(Dataset dataset, Namespace namespace,	Element display
-			, FormattedArachneEntity response) {
+			, FormattedArachneEntity response, final String lang) {
 		
 		if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID) 
 				|| userRightsService.isDataimporter()) {
 			final Element editorSectionElement = display.getChild("editorsection", namespace);
 			if (editorSectionElement != null) {
 				final Section editorSection = (Section)xmlConfigUtil.getContentFromSections(editorSectionElement, namespace
-						, dataset);
+						, dataset, lang);
 				if (editorSection != null && !editorSection.getContent().isEmpty()) {
 					response.setEditorSection((Section)editorSection.content.get(0));
 				}
@@ -574,7 +578,7 @@ public class ResponseFactory {
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	private ObjectNode getFacettedEntityAsJson(final Dataset dataset, final Document document
-			, final FormattedArachneEntity response, final Namespace namespace) throws Transl8Exception {
+			, final FormattedArachneEntity response, final Namespace namespace, final String lang) throws Transl8Exception {
 
 		ObjectNode json = JSONUtil.MAPPER.valueToTree(response);
 		ArrayNode suggestInput = (ArrayNode)json.get("suggest").get("input");
@@ -678,7 +682,7 @@ public class ResponseFactory {
 		
 		// add all other facets
 		final Element facets = document.getRootElement().getChild("facets", namespace);
-		final List<Facet> facetList = getFacets(dataset, namespace, facets).getList();
+		final List<Facet> facetList = getFacets(dataset, namespace, facets, lang).getList();
 
 		for (final Facet facet: facetList ) {
 			final String facetName = facet.getName();
@@ -703,7 +707,7 @@ public class ResponseFactory {
 			ArrayNode arrayNode = json.arrayNode();
 			// add facet values to suggest for entities with datasetGroup 'Arachne'
 			for (final String finalFacetValue: finalFacetValues) {
-				arrayNode.add(ts.transl8Facet(facetName, finalFacetValue));
+				arrayNode.add(ts.transl8Facet(facetName, finalFacetValue, lang));
 				if ("Arachne".equals(response.getDatasetGroup()) && suggestFacetList.contains(facetOutputName)) {
 					suggestInput.add(finalFacetValue);
 				}
@@ -721,19 +725,19 @@ public class ResponseFactory {
 	 * @param element The DOM element to retrieve the content of.
 	 * @return A list containing the content of the passed in element.
 	 */
-	private List<AbstractContent> getContentList(final Dataset dataset, final Namespace namespace, final Element element) {
+	private List<AbstractContent> getContentList(final Dataset dataset, final Namespace namespace, final Element element, final String lang) {
 
 		final List<AbstractContent> contentList = new ArrayList<AbstractContent>();
 		
 		final List<Element> children = element.getChildren();
 		for (final Element currentElement:children) {
 			if (currentElement.getName().equals("section")) {
-				final Section section = (Section)xmlConfigUtil.getContentFromSections(currentElement, namespace, dataset);
+				final Section section = (Section)xmlConfigUtil.getContentFromSections(currentElement, namespace, dataset, lang);
 				if (section != null && !section.getContent().isEmpty()) {
 					contentList.add(section);
 				}
 			} else {
-				final Section section = (Section)xmlConfigUtil.getContentFromContext(currentElement, namespace, dataset);
+				final Section section = (Section)xmlConfigUtil.getContentFromContext(currentElement, namespace, dataset, lang);
 				if (section != null && !section.getContent().isEmpty()) {
 					contentList.add(section);
 				}
@@ -769,7 +773,7 @@ public class ResponseFactory {
 	 * @param facets The facet element of the current config file.
 	 * @return A list of facets.
 	 */
-	private FacetList getFacets(final Dataset dataset, final Namespace namespace, final Element facets) {
+	private FacetList getFacets(final Dataset dataset, final Namespace namespace, final Element facets, final String lang) {
 		final FacetList result = new FacetList();
 		final List<Element> children = facets.getChildren();
 		for (final Element element:children) {
@@ -795,7 +799,7 @@ public class ResponseFactory {
 						}
 					} else {
 						if ("context".equals(childName)) {
-							getFacetContext(dataset, child, values);
+							getFacetContext(dataset, child, values, lang);
 						}
 					}
 					if (!values.isEmpty()) {
@@ -816,9 +820,9 @@ public class ResponseFactory {
 	 * @param child The context element of the current facet element.
 	 * @param values A list of facets to add the new facets to.
 	 */
-	private void getFacetContext(final Dataset dataset, final Element child, final List<String> values) {
+	private void getFacetContext(final Dataset dataset, final Element child, final List<String> values, final String lang) {
 		
-		final Section section = xmlConfigUtil.getContentFromContext(child, null, dataset);
+		final Section section = xmlConfigUtil.getContentFromContext(child, null, dataset, lang);
 		if (section != null) {
 			for (final AbstractContent content:section.getContent()) {
 				if (content instanceof FieldList) {

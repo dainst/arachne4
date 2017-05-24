@@ -121,7 +121,7 @@ public class SearchService {
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	public SearchRequestBuilder buildDefaultSearchRequest(final SearchParameters searchParameters
-			, final Multimap<String, String> filters) throws Transl8Exception {
+			, final Multimap<String, String> filters, final String lang) throws Transl8Exception {
 		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
 				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox(), false
@@ -167,7 +167,7 @@ public class SearchService {
 
 		addSort(searchParameters.getSortField(), searchParameters.isOrderDesc(), result);
 		addFacets(getFacetList(filters, searchParameters.getFacetLimit() + searchParameters.getFacetOffset()
-				, searchParameters.getGeoHashPrecision(), searchParameters.getFacet())
+				, searchParameters.getGeoHashPrecision(), searchParameters.getFacet(), lang)
 				, searchParameters.getFacetsToSort(), result);
 		
 		return result;
@@ -197,7 +197,7 @@ public class SearchService {
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	public SearchRequestBuilder buildContextSearchRequest(final long entityId, final SearchParameters searchParameters
-			, Multimap<String, String> filters) throws Transl8Exception {
+			, Multimap<String, String> filters, final String lang) throws Transl8Exception {
 		
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
 				.setQuery(buildContextQuery(entityId))
@@ -206,7 +206,7 @@ public class SearchService {
 				.setSize(searchParameters.getLimit());
 		
 		addSort(searchParameters.getSortField(), searchParameters.isOrderDesc(), result);
-		addFacets(getFacetList(filters, searchParameters.getFacetLimit(), -1, null), searchParameters.getFacetsToSort()
+		addFacets(getFacetList(filters, searchParameters.getFacetLimit(), -1, null, lang), searchParameters.getFacetsToSort()
 				, result);
 		
 		return result;
@@ -305,7 +305,7 @@ public class SearchService {
 		final SearchResult searchResult = new SearchResult();
 		searchResult.setLimit(size);
 		searchResult.setOffset(offset);
-		searchResult.setSize(hits.totalHits());
+		searchResult.setSize(hits.totalHits() <= size ? hits.totalHits() : size);
 		searchResult.setScrollId(searchResponse.getScrollId());
 		
 		for (final SearchHit currenthit: hits) {
@@ -354,7 +354,7 @@ public class SearchService {
 			}
 		}
 		searchResult.setFacets(facets);
-		
+		LOGGER.info("searchResult: {}", searchResult.getEntities());
 		return searchResult;
 	}
 	
@@ -493,11 +493,11 @@ public class SearchService {
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	private Set<Aggregation> getFacetList(final Multimap<String, String> filters, final int limit
-			, final Integer geoHashPrecision, final String facet) throws Transl8Exception {
+			, final Integer geoHashPrecision, final String facet, final String lang) throws Transl8Exception {
 		
 		final Set<Aggregation> result = new LinkedHashSet<Aggregation>();
 		if (facet == null || facet.isEmpty()) {
-			result.addAll(getCategorySpecificFacets(filters, limit));
+			result.addAll(getCategorySpecificFacets(filters, limit, lang));
 
 			for (final String facetName : defaultFacetList) {
 				result.add(new TermsAggregation(facetName, limit));
@@ -546,13 +546,13 @@ public class SearchService {
 	 * @return The list of category specific facets or <code>null</code>.
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	private Set<Aggregation> getCategorySpecificFacets(final Multimap<String, String> filters, final int limit) throws Transl8Exception {
+	private Set<Aggregation> getCategorySpecificFacets(final Multimap<String, String> filters, final int limit, final String lang) throws Transl8Exception {
 		
 		final Set<Aggregation> result = new LinkedHashSet<Aggregation>();
 		Collection<String> categories = filters.get(TermsAggregation.CATEGORY_FACET);
 		
 		if (!filters.isEmpty() && !categories.isEmpty()) {
-			final String category = ts.categoryLookUp(categories.iterator().next());		
+			final String category = ts.categoryLookUp(categories.iterator().next(), lang);
 			final Set<String> facets = xmlConfigUtil.getFacetsFromXMLFile(category);
 			for (String facet : facets) {
 				facet = "facet_" + facet;

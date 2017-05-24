@@ -17,8 +17,6 @@ import org.springframework.stereotype.Component;
 @Scope("request")
 public class SearchParameters {
 	public static final int MAX_RESULT_WINDOW = 10000;
-	
-	public static int MAX_LIMIT = 1000;
 
 	/**
 	 * The query string.
@@ -134,7 +132,7 @@ public class SearchParameters {
 	public SearchParameters setLimit(Integer limit) {
 		if (!facetMode) {
 			if (limit != null && limit > -1) {
-				this.limit = limit <= MAX_LIMIT ? limit : MAX_LIMIT;
+				this.limit = limit;
 			}
 		} else {
 			this.limit = 0;

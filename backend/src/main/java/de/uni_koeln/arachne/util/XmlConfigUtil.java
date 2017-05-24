@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.context.support.ServletContextResource;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import de.uni_koeln.arachne.context.ContextImageDescriptor;
 import de.uni_koeln.arachne.response.AbstractContent;
@@ -33,6 +34,8 @@ import de.uni_koeln.arachne.response.FieldList;
 import de.uni_koeln.arachne.response.LinkField;
 import de.uni_koeln.arachne.response.Section;
 import de.uni_koeln.arachne.util.sql.TableConnectionDescription;
+import de.uni_koeln.arachne.service.Transl8Service;
+import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 
 /**
  * This class provides functions to find a XML config file by type, extract information based on the XML element from
@@ -68,6 +71,9 @@ public class XmlConfigUtil implements ServletContextAware {
 	private transient final Map<String, List<TableConnectionDescription>> subCategories = new HashMap<>();
 	
 	private transient final Map<String, Set<String>> facets = new HashMap<>();
+
+	@Autowired
+    private transient Transl8Service ts;
 	
 	/**
 	 * Convenience method to clear the current XML config document, element, mandatory contexts and context image 
@@ -92,14 +98,18 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Section</code> object containing the context sections content or <code>null</code> if access is denied.
 	 */
-	public Section getContentFromContext(final Element context, final Namespace namespace, final Dataset dataset) {
+	public Section getContentFromContext(final Element context, final Namespace namespace, final Dataset dataset, final String lang) {
 		
 		final Section result = new Section();
 		final String contextType = context.getAttributeValue("type");
-		
-		//TODO Get translated label string for value of labelKey-attribute in the section element  
-		result.setLabel(context.getAttributeValue("labelKey"));
-		
+
+        try {
+            result.setLabel(ts.transl8(context.getAttributeValue("labelKey"), lang));
+        }
+        catch (Transl8Exception e) {
+            LOGGER.error("Failed to contact transl8. Cause: ", e);
+        }
+
 		String parentSeparator = null;
 		if (context.getParentElement().getName().equals("section")) {
 			parentSeparator = context.getParentElement().getAttributeValue("separator");
@@ -134,7 +144,7 @@ public class XmlConfigUtil implements ServletContextAware {
 			
 			FieldList fieldList = new FieldList();
 			for (int i = 0; i < dataset.getContextSize(contextType); i++) {
-				addFieldsToFieldList(children, context.getNamespace(), fieldList, i, dataset, contextType, separator);
+				addFieldsToFieldList(children, context.getNamespace(), fieldList, i, dataset, contextType, separator, lang);
 			}
 			
 			if (link != null) {
@@ -190,11 +200,17 @@ public class XmlConfigUtil implements ServletContextAware {
 
 					// store the section label of the current context
 					final List<Element> childFields = curSection.getChildren();
-					localContext.setLabel(curSection.getAttributeValue("labelKey"));
+
+                    try {
+                        localContext.setLabel(ts.transl8(curSection.getAttributeValue("labelKey"), lang));
+                    }
+                    catch (Transl8Exception e) {
+                        LOGGER.error("Failed to contact transl8. Cause: ", e);
+                    }
 
 					// add all child-fields of the current contextSection and retrieve their values
 					for (final Element childField: childFields) {
-						addContextFieldToFieldList(childField, context.getNamespace(), fieldList, i, dataset, contextType, separator);
+						addContextFieldToFieldList(childField, context.getNamespace(), fieldList, i, dataset, contextType, separator, lang);
 					}
 					
 					// only add to list if fields contain content
@@ -222,47 +238,51 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param dataset The dataset that contains the SQL query results.
 	 * @return A <code>Content</code> object containing the sections content.
 	 */
-	public AbstractContent getContentFromSections(final Element section, final Namespace namespace, final Dataset dataset) {
-		
-		final Section result = new Section();
-		//TODO Get translated label string for value of labelKey-attribute in the section element  
-		result.setLabel(section.getAttributeValue("labelKey"));
-		
-		final List<Element> children = section.getChildren();
-		
-		final String defaultSeparator = DEFAULT_SECTION_SEPARATOR;
-		String separator = section.getAttributeValue("separator"); 
-		if (section.getAttributeValue("separator") == null) {
-			separator = defaultSeparator;
-		}
-		result.setSeparator(separator);
-								
-		for (final Element element:children) {
-			switch (element.getName()) {
-			case "field":
-				addFieldToResult(element, namespace, result, dataset, separator);
-				break;
-				
-			case "linkField":
-				addLinkFieldToResult(element, result, dataset, separator);
-				break;
+	public AbstractContent getContentFromSections(final Element section, final Namespace namespace, final Dataset dataset, final String lang) {
+	    try {
+            final Section result = new Section();
+            result.setLabel(ts.transl8(section.getAttributeValue("labelKey"), lang));
 
-			case "context":
-				final Section nextContext = (Section)getContentFromContext(element, namespace, dataset);
-				if (nextContext != null && !((Section)nextContext).getContent().isEmpty()) { 
-					result.add(nextContext);
-				}
-				break;	
-				
-			default:
-				final Section nextSection = (Section)getContentFromSections(element, namespace, dataset);
-				if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) { 
-					result.add(nextSection);
-				}
-				break;
-			}
-		}
-		return result;
+            final List<Element> children = section.getChildren();
+
+            final String defaultSeparator = DEFAULT_SECTION_SEPARATOR;
+            String separator = section.getAttributeValue("separator");
+            if (section.getAttributeValue("separator") == null) {
+                separator = defaultSeparator;
+            }
+            result.setSeparator(separator);
+
+            for (final Element element:children) {
+                switch (element.getName()) {
+                case "field":
+                    addFieldToResult(element, namespace, result, dataset, separator);
+                    break;
+
+                case "linkField":
+                    addLinkFieldToResult(element, result, dataset, separator, lang);
+                    break;
+
+                case "context":
+                    final Section nextContext = (Section)getContentFromContext(element, namespace, dataset, lang);
+                    if (nextContext != null && !((Section)nextContext).getContent().isEmpty()) {
+                        result.add(nextContext);
+                    }
+                    break;
+
+                default:
+                    final Section nextSection = (Section)getContentFromSections(element, namespace, dataset, lang);
+                    if (nextSection != null && !((Section)nextSection).getContent().isEmpty()) {
+                        result.add(nextSection);
+                    }
+                    break;
+                }
+            }
+                return result;
+        }
+        catch (Transl8Exception e) {
+            LOGGER.error("Failed to contact transl8. Cause: ", e);
+            return null;
+        }
 	}
 	
 	/**
@@ -544,7 +564,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @return the separator that must be used next.
 	 */
 	private String addContextFieldToFieldList(final Element element, final Namespace namespace, final FieldList fieldList, final int index
-			,final Dataset dataset, final String contextType, String separator) {
+			,final Dataset dataset, final String contextType, String separator, final String lang) {
 		
 		final String initialValue = dataset.getFieldFromContext(contextType + element.getAttributeValue("datasource"), index);
 		
@@ -572,18 +592,22 @@ public class XmlConfigUtil implements ServletContextAware {
 			
 			// handle linkFields
 			if (element.getName().contentEquals("linkField")){
-					final String labelKey = element.getAttributeValue("labelKey");
-				
-					if (StrUtils.isEmptyOrNullOrZero(labelKey)) {
-						value = new StringBuilder(32).append("<a href=\"")
-								.append(value.toString())
-								.append("\"  target=\"_blank\">")
-								.append(value.toString())
-								.append("</a>");
-					} else {
-						value.insert(0, "<a href=\"");
-						value.append("\" target=\"_blank\">" + labelKey + "</a>");
-					}
+				try {
+                    final String labelKey = ts.transl8(element.getAttributeValue("labelKey"), lang);
+                    if (StrUtils.isEmptyOrNullOrZero(labelKey)) {
+                        value = new StringBuilder(32).append("<a href=\"")
+                                .append(value.toString())
+                                .append("\"  target=\"_blank\">")
+                                .append(value.toString())
+                                .append("</a>");
+                    } else {
+                        value.insert(0, "<a href=\"");
+                        value.append("\" target=\"_blank\">" + labelKey + "</a>");
+                    }
+				}
+                catch (Transl8Exception e) {
+                    LOGGER.error("Failed to contact transl8. Cause: ", e);
+				}
 			}
 			
 			String nextSeparator = element.getAttributeValue("separator");
@@ -638,13 +662,13 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param separator the currently active separator.
 	 */
 	private void addFieldsToFieldList(final List<Element> children, final Namespace namespace, final FieldList fieldList, final int index
-			, final Dataset dataset, final String contextType,	final String separator) {
+			, final Dataset dataset, final String contextType, final String separator, final String lang) {
 		
 		String nextSeparator = separator;
 		for (final Element element: children) {
 			if (element.getName().equals("field") || element.getName().equals("linkField")) {
 				nextSeparator = addContextFieldToFieldList(element, namespace, fieldList, index, dataset, contextType
-						, nextSeparator);
+						, nextSeparator, lang);
 				nextSeparator = (nextSeparator != null) ? nextSeparator : separator; 
 			}
 		}
@@ -705,46 +729,51 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param element The description of the field as XML element.
 	 */
 	private void addLinkFieldToResult(final Element element, final Section result, final Dataset dataset
-			, String separator) {
+			, String separator, final String lang) {
 
-		final String labelKey = element.getAttributeValue("labelKey");
-		if (!StrUtils.isEmptyOrNullOrZero(labelKey) || element.getChild("field") != null) {
-			final LinkField linkField = new LinkField(labelKey);
-			StringBuilder value = null;
-			final String initialValue = dataset.getField(element.getAttributeValue("datasource"));
-			if (initialValue != null) {
-				value = new StringBuilder(16).append(initialValue);
-			}
-			
-			value = processValueEdits(element, value);	
-			
-			final String postfix = element.getAttributeValue("postfix");
-			final String prefix = element.getAttributeValue("prefix");
-			final String overrideSeparator = element.getAttributeValue("overrideSeparator");
-			separator = (overrideSeparator == null) ? separator : overrideSeparator;
-			
-			if (value != null) {
-				if (prefix != null) {
-					value.insert(0, prefix);
-				}
-				if (postfix != null) {
-					value.append(postfix); 
-				}
-				
-				linkField.setValue(value.toString());
-				linkField.convertValueToLink();
-				
-				// TODO find better solution as the previous content may be a section
-				// If there are more than one field in this section add the value (incl. separator) to the previous field
-				if (result.getContent().isEmpty()) {
-					result.add(linkField);
-				} else {
-					final int contentSize = result.getContent().size();
-					final Field previousContent = (Field)result.getContent().get(contentSize-1);
-					previousContent.setValue(previousContent.getValue() + separator + linkField.getValue());
-				}
-			}
-		}
+        try {
+            final String labelKey = ts.transl8(element.getAttributeValue("labelKey"), lang);
+            if (!StrUtils.isEmptyOrNullOrZero(labelKey) || element.getChild("field") != null) {
+                final LinkField linkField = new LinkField(labelKey);
+                StringBuilder value = null;
+                final String initialValue = dataset.getField(element.getAttributeValue("datasource"));
+                if (initialValue != null) {
+                    value = new StringBuilder(16).append(initialValue);
+                }
+
+                value = processValueEdits(element, value);
+
+                final String postfix = element.getAttributeValue("postfix");
+                final String prefix = element.getAttributeValue("prefix");
+                final String overrideSeparator = element.getAttributeValue("overrideSeparator");
+                separator = (overrideSeparator == null) ? separator : overrideSeparator;
+
+                if (value != null) {
+                    if (prefix != null) {
+                        value.insert(0, prefix);
+                    }
+                    if (postfix != null) {
+                        value.append(postfix);
+                    }
+
+                    linkField.setValue(value.toString());
+                    linkField.convertValueToLink();
+
+                    // TODO find better solution as the previous content may be a section
+                    // If there are more than one field in this section add the value (incl. separator) to the previous field
+                    if (result.getContent().isEmpty()) {
+                        result.add(linkField);
+                    } else {
+                        final int contentSize = result.getContent().size();
+                        final Field previousContent = (Field)result.getContent().get(contentSize-1);
+                        previousContent.setValue(previousContent.getValue() + separator + linkField.getValue());
+                    }
+                }
+            }
+        }
+        catch (Transl8Exception e) {
+            LOGGER.error("Failed to contact transl8. Cause: ", e);
+        }
 	}
 	
 	/**
@@ -1063,16 +1092,18 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param element The DOM element to scan for include elements.
 	 */
 	private void replaceInclude(final Element element) {
-		final List<Element> children = element.getChildren();
-		
-		if (!children.isEmpty()) {
-			final List<Element> staticChildren = new ArrayList<Element>(children);
-			for (final Element currentElement: staticChildren) {
-				if ("include".equals(currentElement.getName())) {
-					element.setContent(element.indexOf(currentElement), getInclude(currentElement));
-				} else {
-					if (!"field".equals(currentElement.getName())) {
-						replaceInclude(currentElement);
+		if(element != null) {
+			final List<Element> children = element.getChildren();
+
+			if (!children.isEmpty()) {
+				final List<Element> staticChildren = new ArrayList<Element>(children);
+				for (final Element currentElement : staticChildren) {
+					if ("include".equals(currentElement.getName())) {
+						element.setContent(element.indexOf(currentElement), getInclude(currentElement));
+					} else {
+						if (!"field".equals(currentElement.getName())) {
+							replaceInclude(currentElement);
+						}
 					}
 				}
 			}

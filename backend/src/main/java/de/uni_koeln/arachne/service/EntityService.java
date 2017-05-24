@@ -55,7 +55,7 @@ public class EntityService {
 		this.internalFields = internalFields;
 	}
 	
-	public TypeWithHTTPStatus<String> getEntityFromIndex(final Long id, final String category) throws Transl8Exception {
+	public TypeWithHTTPStatus<String> getEntityFromIndex(final Long id, final String category, final String lang) throws Transl8Exception {
 		
 		String[] excludedFields;
 		if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID)) {
@@ -66,13 +66,13 @@ public class EntityService {
 			excludedFields[internalFields.length] = "editorSection";
 		}
 		
-    	final TypeWithHTTPStatus<String> result = esService.getDocumentFromCurrentIndex(id, category, excludedFields);
+    	final TypeWithHTTPStatus<String> result = esService.getDocumentFromCurrentIndex(id, category, excludedFields, lang);
     	    	
     	if (result.getStatus() == HttpStatus.NOT_FOUND ) {
     		// if the entity is not found in the ES index it may have been deleted, so we try to retrieve it from 
     		// the DB to get a nice deleted message without duplicating code or burdening the dataimport with the 
     		// task of keeping track of deleted entities or adding them to the index
-    		return getEntityFromDB(id, category);
+    		return getEntityFromDB(id, category, lang);
     	}
     	
     	return result;
@@ -90,7 +90,7 @@ public class EntityService {
      * @return The response body as <code>String</code>.
 	 * @throws Transl8Exception if tranl8 cannot be reached. 
      */
-    public TypeWithHTTPStatus<String> getEntityFromDB(final Long id, final String category) throws Transl8Exception { 
+    public TypeWithHTTPStatus<String> getEntityFromDB(final Long id, final String category, final String lang) throws Transl8Exception {
     	final EntityId entityId;
     	if (category == null) {
     		entityId = entityIdentificationService.getId(id);
@@ -108,7 +108,7 @@ public class EntityService {
     		return new TypeWithHTTPStatus<String>(responseFactory.createResponseForDeletedEntityAsJsonString(entityId));
     	}
     	
-    	final String result = getFormattedEntityByIdAsJsonString(entityId);
+    	final String result = getFormattedEntityByIdAsJsonString(entityId, lang);
     	
     	if ("forbidden".equals(result)) {
     		return new TypeWithHTTPStatus<String>(HttpStatus.FORBIDDEN);
@@ -124,11 +124,12 @@ public class EntityService {
 	/**
 	 * This functions retrieves a <code>FromattedArachneEntity</code> as JSON <code>String</code>.
 	 * @param entityId The corresponding EntityId object.
+	 * @param lang the language in which the json is to be returned
 	 * @return The requested formatted entity as JSON <code>String</code> or "forbidden" to indicate that the user is 
 	 * not allowed to see this entity.
 	 * @throws Transl8Exception if tranl8 cannot be reached. 
 	 */
-	public String getFormattedEntityByIdAsJsonString(final EntityId entityId) throws Transl8Exception {
+	public String getFormattedEntityByIdAsJsonString(final EntityId entityId, final String lang) throws Transl8Exception {
 		long startTime = 0;
 		if (PROFILING) {
 			startTime = System.currentTimeMillis();
@@ -158,12 +159,12 @@ public class EntityService {
     		final long imageTime = System.currentTimeMillis() - nextTime;
     		nextTime = System.currentTimeMillis();
 
-    		contextService.addMandatoryContexts(arachneDataset);
+    		contextService.addMandatoryContexts(arachneDataset, lang);
 
     		final long contextTime = System.currentTimeMillis() - nextTime;
     		nextTime = System.currentTimeMillis();
 
-    		result = responseFactory.createFormattedArachneEntityAsJsonString(arachneDataset);
+    		result = responseFactory.createFormattedArachneEntityAsJsonString(arachneDataset, lang);
 
     		LOGGER.info("-- Fetching entity took " + fetchTime + " ms");
     		LOGGER.info("-- Adding images took " + imageTime + " ms");
@@ -172,9 +173,9 @@ public class EntityService {
     	} else {
     		imageService.addImages(arachneDataset);
 
-    		contextService.addMandatoryContexts(arachneDataset);
+    		contextService.addMandatoryContexts(arachneDataset, lang);
 
-    		result = responseFactory.createFormattedArachneEntityAsJsonString(arachneDataset);
+    		result = responseFactory.createFormattedArachneEntityAsJsonString(arachneDataset, lang);
     	}
     	return result;
 	}
@@ -188,7 +189,7 @@ public class EntityService {
 	 * indicate that the user is not allowed to see this entity or any error occurs.
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public byte[] getFormattedEntityByIdAsJson(final EntityId entityId) throws Transl8Exception {
+	public byte[] getFormattedEntityByIdAsJson(final EntityId entityId, final String lang) throws Transl8Exception {
 		long startTime = 0;
 		if (PROFILING) {
 			startTime = System.currentTimeMillis();
@@ -218,12 +219,12 @@ public class EntityService {
     		final long imageTime = System.currentTimeMillis() - nextTime;
     		nextTime = System.currentTimeMillis();
 
-    		contextService.addMandatoryContexts(arachneDataset);
+    		contextService.addMandatoryContexts(arachneDataset, lang);
 
     		final long contextTime = System.currentTimeMillis() - nextTime;
     		nextTime = System.currentTimeMillis();
 
-    		result = responseFactory.createFormattedArachneEntityAsJson(arachneDataset);
+    		result = responseFactory.createFormattedArachneEntityAsJson(arachneDataset, lang);
 
     		LOGGER.info("-- Fetching entity took " + fetchTime + " ms");
     		LOGGER.info("-- Adding images took " + imageTime + " ms");
@@ -232,9 +233,9 @@ public class EntityService {
     	} else {
     		imageService.addImages(arachneDataset);
 
-    		contextService.addMandatoryContexts(arachneDataset);
+    		contextService.addMandatoryContexts(arachneDataset, lang);
 
-    		result = responseFactory.createFormattedArachneEntityAsJson(arachneDataset);
+    		result = responseFactory.createFormattedArachneEntityAsJson(arachneDataset, lang);
     	}
     	return result;
 	}

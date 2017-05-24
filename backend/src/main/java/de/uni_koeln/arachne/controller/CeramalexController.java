@@ -106,7 +106,7 @@ public class CeramalexController  {
 		SearchRequestBuilder searchRequestBuilder;
 		try {
 			searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters
-					, filters);
+					, filters, "de");
 			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, maxResultSize
 					, resultOffset, filters, 0);
 			LOGGER.debug("#Found records: " + searchResult.getSize());

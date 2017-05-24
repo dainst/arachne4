@@ -29,6 +29,8 @@ import de.uni_koeln.arachne.testconfig.TestData;
 public class TestXmlConfigUtil {
 	
 	private transient TestData testData;
+
+	private final String LANG = "de";
 	
 	private transient XmlConfigUtil xmlConfigUtil;
 	
@@ -71,7 +73,7 @@ public class TestXmlConfigUtil {
 		final Element context = testDocument.getRootElement().getChild("display", namespace)
 				.getChild("datasections", namespace).getChild("section", namespace).getChild("context", namespace);
 		
-		final Section section = xmlConfigUtil.getContentFromContext(context, namespace, testData.getTestDataset()); 
+		final Section section = xmlConfigUtil.getContentFromContext(context, namespace, testData.getTestDataset(), LANG);
 		
 		assertNotNull(section);
 		assertFalse(section.getContent().isEmpty());
@@ -100,7 +102,7 @@ public class TestXmlConfigUtil {
 				+ "<hr>End");
 				
 		for (int i = 0; i < 4; i++) {
-			final AbstractContent content = xmlConfigUtil.getContentFromSections(sections.get(i), namespace, dataset);
+			final AbstractContent content = xmlConfigUtil.getContentFromSections(sections.get(i), namespace, dataset, LANG);
 			assertNotNull(content);
 			assertFalse(content.toString().isEmpty());
 			assertEquals(expected.get(i), content.toString());

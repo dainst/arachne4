@@ -77,7 +77,7 @@ public class ContextService {
 	 * @param parent The dataset to add the contexts to.
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public void addMandatoryContexts(final Dataset parent) throws Transl8Exception {
+	public void addMandatoryContexts(final Dataset parent, final String lang) throws Transl8Exception {
 		// explicit contextualizers
 		final List<String> explicitContextualizersList = xmlConfigUtil.getExplicitContextualizers(parent.getArachneId().getTableName());
 		for (String contextualizerName: explicitContextualizersList) {
@@ -97,7 +97,7 @@ public class ContextService {
 			}
 		}
 		// context images
-		addContextImages(parent);
+		addContextImages(parent, lang);
 	}
 	
 	/**
@@ -108,7 +108,7 @@ public class ContextService {
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
 	@SuppressWarnings("unchecked")
-	private void addContextImages(final Dataset parent) throws Transl8Exception {
+	private void addContextImages(final Dataset parent, final String lang) throws Transl8Exception {
 		// add book cover image
 		if ("buch".equals(parent.getArachneId().getTableName())) {
 			Long coverPage = null;
@@ -177,7 +177,7 @@ public class ContextService {
 						final long imageId = Long.parseLong(currentContext.get("SemanticConnection.EntityID"));
 						image.setImageId(imageId);
 						image.setImageSubtitle(currentContext.get("marbilder.DateinameMarbilder"));
-						image.setSourceContext(ts.transl8(contextName));
+						image.setSourceContext(ts.transl8(contextName, lang));
 						final long sourceRecordId = Long.parseLong(currentContext.get("SemanticConnection.ForeignKeyTarget"));
 						image.setSourceRecordId(sourceRecordId);
 						resultContextImages.add(image);

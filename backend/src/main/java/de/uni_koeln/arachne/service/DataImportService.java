@@ -217,7 +217,7 @@ public class DataImportService { // NOPMD
 					LOGGER.debug("Creating response");
 					byte[] jsonEntity;
 					if (!entityId.isDeleted()) {
-						jsonEntity = entityService.getFormattedEntityByIdAsJson(entityId);
+						jsonEntity = entityService.getFormattedEntityByIdAsJson(entityId, "de");
 						if (jsonEntity == null) {
 							LOGGER.error("Entity " + dbgEntityId + " is null! This should never happen. Check the database immediately.");
 							throw new RuntimeException("Entity " + dbgEntityId + " is null!");

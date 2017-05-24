@@ -28,6 +28,8 @@ import de.uni_koeln.arachne.util.network.ArachneRestTemplate;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:test-context.xml"})
 public class TestTransl8Service {
+	private final String LANG = "de";
+
 	@Autowired
 	private Transl8Service transl8Service;
 	
@@ -86,17 +88,17 @@ public class TestTransl8Service {
 				.andRespond(withSuccess(transl8Response, MediaType.APPLICATION_JSON));
 		
 		// must get translations from transl8 
-		String result = transl8Service.transl8("test_key1");
+		String result = transl8Service.transl8("test_key1", LANG);
 		
 		mockServer.verify();
 		
 		assertEquals("testvalue1", result);
 		
 		// translations already available
-		assertEquals("testvalue2", transl8Service.transl8("test_key2"));
+		assertEquals("testvalue2", transl8Service.transl8("test_key2", LANG));
 		
 		//  no translation available
-		assertEquals("test_key3", transl8Service.transl8("test_key3"));
+		assertEquals("test_key3", transl8Service.transl8("test_key3", LANG));
 	}
 	
 	@Test
@@ -106,17 +108,17 @@ public class TestTransl8Service {
 				.andRespond(withSuccess(transl8Response, MediaType.APPLICATION_JSON));
 		
 		// must get translations from transl8 
-		String result = transl8Service.transl8Facet("test", "key1");
+		String result = transl8Service.transl8Facet("test", "key1", LANG);
 		
 		mockServer.verify();
 		
 		assertEquals("testfacetvalue1", result);
 		
 		// translations already available
-		assertEquals("testfacetvalue2", transl8Service.transl8Facet("test", "key2"));
+		assertEquals("testfacetvalue2", transl8Service.transl8Facet("test", "key2", LANG));
 		
 		// no translation available
-		assertEquals("key3", transl8Service.transl8Facet("test", "key3"));
+		assertEquals("key3", transl8Service.transl8Facet("test", "key3", LANG));
 	}
 
 	@Test
@@ -126,17 +128,17 @@ public class TestTransl8Service {
 				.andRespond(withSuccess(transl8Response, MediaType.APPLICATION_JSON));
 		
 		// must get translations from transl8 
-		String result = transl8Service.categoryLookUp("testcategoryvalue1");
+		String result = transl8Service.categoryLookUp("testcategoryvalue1", LANG);
 		
 		mockServer.verify();
 		
 		assertEquals("key1", result);
 		
 		// translations already available
-		assertEquals("key2", transl8Service.categoryLookUp("testcategoryvalue2"));
+		assertEquals("key2", transl8Service.categoryLookUp("testcategoryvalue2", LANG));
 		
 		// no translation available
-		assertEquals("testcategoryvalue3", transl8Service.categoryLookUp("testcategoryvalue3"));
+		assertEquals("testcategoryvalue3", transl8Service.categoryLookUp("testcategoryvalue3", LANG));
 	}
 	
 	@Test(expected = Transl8Service.Transl8Exception.class)
@@ -145,7 +147,7 @@ public class TestTransl8Service {
 				requestTo(transl8URL))
 				.andRespond(withServerError());
 		
-		transl8Service.transl8("foobar");
+		transl8Service.transl8("foobar", LANG);
 		
 		mockServer.verify();
 	}

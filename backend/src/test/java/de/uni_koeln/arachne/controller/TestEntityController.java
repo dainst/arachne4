@@ -39,6 +39,8 @@ import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 @RunWith(MockitoJUnitRunner.class)
 public class TestEntityController {
 
+	private final String LANG = "de";
+
 	@Mock
 	private ESService esService;
 	
@@ -65,14 +67,14 @@ public class TestEntityController {
 				
 		when(esService.getCount()).thenReturn(666l, -1l);
 		
-		when(entityService.getEntityFromIndex(1l, null)).thenReturn(new TypeWithHTTPStatus<String>("{test:value}"));
-		when(entityService.getEntityFromIndex(1l, "test")).thenReturn(new TypeWithHTTPStatus<String>("{test:value}"));
-		when(entityService.getEntityFromDB(1l, null)).thenReturn(new TypeWithHTTPStatus<String>("{test:value}"));
-		when(entityService.getEntityFromDB(1l, "test")).thenReturn(new TypeWithHTTPStatus<String>("{test:value}"));
+		when(entityService.getEntityFromIndex(1l, null, LANG)).thenReturn(new TypeWithHTTPStatus<String>("{test:value}"));
+		when(entityService.getEntityFromIndex(1l, "test", LANG)).thenReturn(new TypeWithHTTPStatus<String>("{test:value}"));
+		when(entityService.getEntityFromDB(1l, null, LANG)).thenReturn(new TypeWithHTTPStatus<String>("{test:value}"));
+		when(entityService.getEntityFromDB(1l, "test", LANG)).thenReturn(new TypeWithHTTPStatus<String>("{test:value}"));
 		// instance of Transl8Serive to be able to throw its exception 
 		Transl8Service dummyTransl8Service = new Transl8Service("test.server.com");
-		when(entityService.getEntityFromIndex(2l, null)).thenThrow(dummyTransl8Service.new Transl8Exception("test Exception"));
-		when(entityService.getEntityFromIndex(2l, "test")).thenThrow(dummyTransl8Service.new Transl8Exception("test Exception"));
+		when(entityService.getEntityFromIndex(2l, null, LANG)).thenThrow(dummyTransl8Service.new Transl8Exception("test Exception"));
+		when(entityService.getEntityFromIndex(2l, "test", LANG)).thenThrow(dummyTransl8Service.new Transl8Exception("test Exception"));
 		
 		final Dataset testDataset = TestData.getTestDataset();
 		
