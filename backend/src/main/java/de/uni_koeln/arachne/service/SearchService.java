@@ -305,7 +305,7 @@ public class SearchService {
 		final SearchResult searchResult = new SearchResult();
 		searchResult.setLimit(size);
 		searchResult.setOffset(offset);
-		searchResult.setSize(hits.totalHits() <= size ? hits.totalHits() : size);
+		searchResult.setSize(hits.totalHits());
 		searchResult.setScrollId(searchResponse.getScrollId());
 		
 		for (final SearchHit currenthit: hits) {

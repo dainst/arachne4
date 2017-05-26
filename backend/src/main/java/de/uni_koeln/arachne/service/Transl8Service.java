@@ -74,7 +74,6 @@ public class Transl8Service {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		headers.set("Accept-Language", lang);
-        LOGGER.info("headers: {}", headers);
 		HttpEntity<String> entity = new HttpEntity<String>("", headers);
 		try {
 			final ResponseEntity<String> response = restTemplate.exchange(transl8Url , HttpMethod.GET, entity, String.class);
@@ -122,6 +121,7 @@ public class Transl8Service {
 	 */
 	public String transl8(String key, String lang) throws Transl8Exception {
         if(key != null && lang != null) {
+            lang = extractLanguage(lang);
 			if (!translationsAvailable.get(lang))
 				updateTranslations(lang);
 			if (!translationMap.isEmpty()) {
@@ -145,16 +145,19 @@ public class Transl8Service {
 	 * @return Either a translation or the key.
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public String transl8Facet(String facetName, String key, final String lang) throws Transl8Exception {
-		if (!translationsAvailable.get(lang)) {
-			updateTranslations(lang);
-		}
-		if (!translationMap.isEmpty()) {
-			String value = translationMap.get("facet_" + facetName + '_' + key);
-			if (value != null) {
-				return value;
-			}
-		}
+	public String transl8Facet(String facetName, String key, String lang) throws Transl8Exception {
+	    if(facetName != null && key != null && lang != null) {
+            lang = extractLanguage(lang);
+            if (!translationsAvailable.get(lang)) {
+                updateTranslations(lang);
+            }
+            if (!translationMap.isEmpty()) {
+                String value = translationMap.get("facet_" + facetName + '_' + key);
+                if (value != null) {
+                    return value;
+                }
+            }
+        }
 		return key;
 	}
 	
@@ -164,18 +167,34 @@ public class Transl8Service {
 	 * @return The category key if found else the unchanged key parameter.
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	public String categoryLookUp(String key, final String lang) throws Transl8Exception {
-		if (!translationsAvailable.get(lang)) {
-			updateTranslations(lang);
-		}
-		if (!categoryMap.isEmpty()) {
-			String value = categoryMap.get(key);
-			if (value != null) {
-				return value;
+	public String categoryLookUp(String key, String lang) throws Transl8Exception {
+		if(key != null && lang != null) {
+            lang = extractLanguage(lang);
+			if (!translationsAvailable.get(lang)) {
+				updateTranslations(lang);
+			}
+			if (!categoryMap.isEmpty()) {
+				String value = categoryMap.get(key);
+				if (value != null) {
+					return value;
+				}
 			}
 		}
 		return key;
 	}
+
+    /**
+     * Extracts the language key from the accept-language header to prevent server errors
+     */
+	public String extractLanguage(String lang) {
+	    String retLang = lang;
+	    for(String l: languages)
+	        if(retLang.contains(l))
+	            retLang = l;
+	    if(retLang.equals(lang)) //Language is not part of mapped languages, therefore set language to english.
+	        retLang = "en";
+	    return retLang;
+    }
 	
 	/**
 	 * Exception thrown if transl8 cannot be reached.
