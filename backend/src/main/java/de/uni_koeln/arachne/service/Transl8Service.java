@@ -132,10 +132,6 @@ public class Transl8Service {
 		}
 		return key;
 	}
-
-	/**public String transl8(String key) throws Transl8Exception {
-	    return transl8(key, "en");
-    }*/
 	
 	/**
 	 * Looks up a facet key in the translation map and returns the corresponding value if found or the key else.
@@ -189,10 +185,8 @@ public class Transl8Service {
 	public String extractLanguage(String lang) {
 	    String retLang = lang;
 	    for(String l: languages)
-	        if(retLang.contains(l))
-	            retLang = l;
-	    if(retLang.equals(lang)) //Language is not part of mapped languages, therefore set language to english.
-	        retLang = "en";
+            if (retLang.contains(l) || retLang.equals(l))
+                retLang = l;
 	    return retLang;
     }
 	
