@@ -380,6 +380,13 @@
         </dependency>
 
 		<dependency>
+			<!-- Required for CSV output. -->
+			<groupId>net.sf.supercsv</groupId>
+			<artifactId>super-csv</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+
+		<dependency>
         	<!-- ALWAYS required. -->
         	<groupId>com.openhtmltopdf</groupId>
         	<artifactId>openhtmltopdf-core</artifactId>
