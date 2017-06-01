@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import static de.uni_koeln.arachne.util.network.CustomMediaType.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import java.util.*;
 
 import de.uni_koeln.arachne.response.Image;
@@ -75,14 +72,15 @@ public class EntityController {
 	public @ResponseBody ResponseEntity<String> handleGetEntityIdRequest(
 			@PathVariable("entityId") final Long entityId,
 			@RequestParam(value = "live", required = false) final Boolean isLive,
-			@RequestHeader(value = "Accept-Language", defaultValue = "de") String language) throws Transl8Exception {
+			@RequestParam(value = "lang", required = false) final String lang,
+			@RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage) throws Transl8Exception {
 	
 		TypeWithHTTPStatus<String> result;
 		try {
 			if (isLive != null && isLive) {
-				result = entityService.getEntityFromDB(entityId, null, language);
+				result = entityService.getEntityFromDB(entityId, null, (lang == null) ? headerLanguage : lang);
 			} else {
-				result = entityService.getEntityFromIndex(entityId, null, language);
+				result = entityService.getEntityFromIndex(entityId, null, (lang == null) ? headerLanguage : lang);
 			}
 		} catch (Transl8Exception e) {
 			LOGGER.error("Failed to contact transl8. Cause: ", e);
@@ -106,15 +104,16 @@ public class EntityController {
     		@PathVariable("category") final String category,
     		@PathVariable("categoryId") final Long categoryId,
     		@RequestParam(value = "live", required = false) final Boolean isLive,
-			@RequestHeader(value = "Accept-Language", defaultValue = "de") String language) {
+            @RequestParam(value = "lang", required = false) final String lang,
+			@RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage) {
     	
     	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
     	TypeWithHTTPStatus<String> result;
     	try {
     		if (isLive != null && isLive) {
-    			result = entityService.getEntityFromDB(categoryId, category, language);
+    			result = entityService.getEntityFromDB(categoryId, category, (lang==null) ? headerLanguage : lang);
     		} else {
-    			result = entityService.getEntityFromIndex(categoryId, category, language);
+    			result = entityService.getEntityFromIndex(categoryId, category, (lang==null) ? headerLanguage : lang);
     		}
     	} catch (Transl8Exception e) {
     		LOGGER.error("Failed to contact transl8. Cause: ", e);

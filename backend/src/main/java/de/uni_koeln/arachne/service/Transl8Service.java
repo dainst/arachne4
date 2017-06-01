@@ -25,6 +25,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.network.ArachneRestTemplate;
+import sun.rmi.runtime.Log;
+
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * Gets the translations lazily from transl8 and offers translation functionality.</br>
@@ -37,6 +40,8 @@ public class Transl8Service {
 	private static final boolean throwException = true;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Transl8Service.class);
+
+	private static final String DEFAULT_LANG = "en";
 
 	@Autowired
 	private transient ArachneRestTemplate restTemplate;
@@ -66,13 +71,14 @@ public class Transl8Service {
 
 	/**
 	 * Contacts transl8 via rest call and updates the internal translation map.
-	 * @param index the language in which the key should be retrieved
+	 * @param lang the language in which the key should be retrieved
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
 	@SuppressWarnings("unchecked")
 	private void updateTranslations(String lang) throws Transl8Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		LOGGER.info("accepting {}", lang);
 		headers.set("Accept-Language", lang);
 		HttpEntity<String> entity = new HttpEntity<String>("", headers);
 		try {
@@ -97,8 +103,9 @@ public class Transl8Service {
 							categoryMap.put(entry.getValue(), key.substring(16));
 						}
 					}
-                    translationsAvailable.put(languages.get(0), true);
-                    translationsAvailable.put(languages.get(1), true);
+					for (int i = 0; i < languages.size(); i++) //Set other langs to false again
+                        translationsAvailable.put(languages.get(i), false);
+                    translationsAvailable.put(lang, true);
 					LOGGER.info("Translations are available for: " + languages);
 				} else {
 					LOGGER.error("Translation map is empty. Translations are not available.");
@@ -120,12 +127,20 @@ public class Transl8Service {
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	public String transl8(String key, String lang) throws Transl8Exception {
+	    LOGGER.info("Attempting {} to {}", key, lang);
         if(key != null && lang != null) {
             lang = extractLanguage(lang);
-			if (!translationsAvailable.get(lang))
-				updateTranslations(lang);
+            LOGGER.info("Extracted {}", lang);
+			if (!translationsAvailable.get(lang)) {
+                updateTranslations(lang);
+                LOGGER.info("Updated {}", lang);
+			}
+			else
+			    LOGGER.info("not updated for {}", lang);
 			if (!translationMap.isEmpty()) {
+                LOGGER.info("Map not empty");
 				String value = translationMap.get(key);
+                LOGGER.info("value {}", value);
 				if (value != null)
 					return value;
 			}
@@ -183,11 +198,14 @@ public class Transl8Service {
      * Extracts the language key from the accept-language header to prevent server errors
      */
 	public String extractLanguage(String lang) {
+	    boolean found = false;
 	    String retLang = lang;
 	    for(String l: languages)
-            if (retLang.contains(l) || retLang.equals(l))
+            if (retLang.contains(l) || retLang.equals(l)) {
                 retLang = l;
-	    return retLang;
+                found = true;
+            }
+	    return (found) ? retLang : DEFAULT_LANG;
     }
 	
 	/**

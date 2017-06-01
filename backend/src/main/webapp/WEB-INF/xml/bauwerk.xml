@@ -28,7 +28,7 @@
 			</section>
 		</subtitle>
 		<datasections>
-			<section labelKey="Informationen zum Bauwerk">
+			<section labelKey="info_building">
 				<include type="ort" />
 				<section labelKey="Geographische Beschreibung">
 					<section labelKey="Situation">

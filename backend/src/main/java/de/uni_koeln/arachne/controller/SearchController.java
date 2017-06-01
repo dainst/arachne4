@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
@@ -136,7 +133,8 @@ public class SearchController {
 			@RequestParam(value = "scroll", required = false) final Boolean scrollMode,
 			@RequestParam(value = "facet", required = false) final String facet,
 			@RequestParam(value = "editorfields", required = false) Boolean editorFields,
-            @RequestHeader(value = "Accept-Language", defaultValue = "de") String language) {
+			@RequestParam(value = "lang", required = false) final String lang,
+            @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage) {
 		
 		if (scrollMode != null && scrollMode && !userRightsService.isSignedInUser()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -176,7 +174,7 @@ public class SearchController {
 				
 		SearchRequestBuilder searchRequestBuilder;
 		try {
-			searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters, filters, language);
+			searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters, filters, (lang==null) ? headerLanguage : lang);
 			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
 					, searchParameters.getLimit(), searchParameters.getOffset(), filters, searchParameters.getFacetOffset());
 			
@@ -253,7 +251,8 @@ public class SearchController {
 			@RequestParam(value = "fl", required = false) final Integer facetLimit,
 			@RequestParam(value = "sort", required = false) final String sortField,
 			@RequestParam(value = "desc", required = false) final Boolean orderDesc,
-            @RequestHeader(value = "Accept-Language", defaultValue = "de") String language) {
+			@RequestParam(value = "lang", required = false) final String lang,
+            @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage) {
 
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
 		
@@ -271,7 +270,7 @@ public class SearchController {
 		
 		SearchRequestBuilder searchRequestBuilder;
 		try {
-			searchRequestBuilder = searchService.buildContextSearchRequest(entityId, searchParameters, filters, language);
+			searchRequestBuilder = searchService.buildContextSearchRequest(entityId, searchParameters, filters, (lang==null) ? headerLanguage : lang);
 			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
 					, searchParameters.getLimit(), searchParameters.getOffset(), filters, 0);
 			
