@@ -319,6 +319,27 @@ public class ResponseFactory {
 			}
 		}
 
+		// add references from literatur
+		Context referencesContext = dataset.getContext("literatur");
+		if (referencesContext != null) {
+			for (AbstractLink link: referencesContext.getAllContexts()) {
+
+			    final String reference = link.getFieldFromFields("literatur.DAIRichtlinien");
+			    final String ZenonID = link.getFieldFromFields("literatur.ZenonID");
+
+                if (!(StrUtils.isEmptyOrNull(ZenonID) && StrUtils.isEmptyOrNull(reference))) {
+                    response.addReference(
+                            new LitReference(
+                                StrUtils.isEmptyOrNull(ZenonID) ? "" : ZenonID,
+                                StrUtils.isEmptyOrNull(reference) ? "" : reference
+                            )
+                    );
+                }
+			}
+		}
+
+
+
 		// add marbilder creation dates
 		if ("marbilder".equals(tableName)) {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
