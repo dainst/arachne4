@@ -174,7 +174,7 @@ public class SearchController {
 				
 		SearchRequestBuilder searchRequestBuilder;
 		try {
-			searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters, filters, (lang==null) ? headerLanguage : lang);
+			searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters, filters, "de");
 			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
 					, searchParameters.getLimit(), searchParameters.getOffset(), filters, searchParameters.getFacetOffset());
 			
