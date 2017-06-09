@@ -89,10 +89,10 @@
 		<facet name="funktion" labelKey="Funktion">
 			<field datasource="gruppen.FunktionGruppen" />
 		</facet>
-		<facet name="thematik" labelKey="Thematik">
+		<facet name="thematik" labelKey="Thematik" group="thematik">
 			<field datasource="gruppen.ThematikGruppen" />
 		</facet>
-		<facet name="thematikmenschen" labelKey="Thematik">
+		<facet name="thematikmenschen" labelKey="Thematik" group="thematik">
 			<field datasource="gruppen.ThematikMenschen" />
 		</facet>
 		<facet name="archaeologzeugnisse" labelKey="Archäologische Zeugnisse">
