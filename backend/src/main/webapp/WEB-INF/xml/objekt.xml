@@ -15,6 +15,8 @@
 		<subtable connectFieldParent="PrimaryKey"
 			connectFieldSubTable="PrimaryKey">objektmosaik</subtable>
 		<subtable connectFieldParent="PrimaryKey"
+			connectFieldSubTable="PrimaryKey">objektmuenzen</subtable>
+		<subtable connectFieldParent="PrimaryKey"
 			connectFieldSubTable="PrimaryKey">objektplastik</subtable>
 		<subtable connectFieldParent="PrimaryKey"
 			connectFieldSubTable="PrimaryKey">objektplomben</subtable>
@@ -26,8 +28,9 @@
 			connectFieldSubTable="FS_ObjektID">datenblattberlin</subtable>
 		<subtable connectFieldParent="PrimaryKey"
 				  connectFieldSubTable="FS_ObjektID">fotoabzug</subtable>
+				  
 		<!-- <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">datenblattberlin_inschrift</subtable> -->
-	</subtables>
+</subtables>
 	<display>
 		<title>
 			<section>
@@ -758,6 +761,54 @@
 					</section>
 				</section>
 			</section>
+			
+			<section labelKey="Informationen zur Münze">
+		
+				<section labelKey="Erhaltungszustand">
+					<field datasource="objektmuenzen.Muenze_Abnutzung" prefix = "Abnutzung: "/>
+					<field datasource="objektmuenzen.Muenze_Korrosion" prefix = "Korrosion: "/>
+				</section>
+				<section labelKey="Maße"> 
+					<field datasource="objektmuenzen.Muenze_ErhaltungHoehe" prefix = "Höhe: " postfix = " mm"/>
+					<field datasource="objektmuenzen.Muenze_Muenze_ErhaltungDm" prefix = "Durchmesser: " postfix = " mm"/>
+					<field datasource="objektmuenzen.Muenze_ErhaltungStaerke" prefix = "Stärke/Dicke: " postfix = " mm"/>
+					<field datasource="objektmuenzen.Muenze_ErhaltungGewicht" prefix = "Gewicht: " postfix= " g"/>			
+				</section>
+				<section labelKey="Form" separator="; ">
+					<field datasource="objektmuenzen.Muenze_Form"/>
+					<field datasource="objektmuenzen.Muenze_formaleBesonderheiten"/>
+				</section>		
+				<section labelKey="Nominal">
+					<field datasource="objektmuenzen.Muenze_Muenze_Nominal"/>					
+				</section>
+				<section labelKey="Material">
+					<field datasource="objektmuenzen.Muenze_Material"/>
+				</section>
+				<section labelKey="Herstellungstechnik">
+					<field datasource="objektmuenzen.Muenze_Herstellungstechnik"/>
+				</section>
+				<section labelKey="Stempelstellung">
+					<field datasource="objektmuenzen.Muenze_Muenze_Stempelstellung"/>
+				</section>
+				<section labelKey="Münzstätte und Prägeherr">
+					<field datasource="objektmuenzen.Muenze_Muenzstaette" prefix = "Münzstätte: "/>
+					<field datasource="objektmuenzen.Muenze_Praegeherr" prefix = "Prägeherr: "/>
+				</section>
+				<section labelKey="Vorderseite (Avers)">
+					<field datasource="objektmuenzen.Muenze_VorderseiteLegende" prefix = "Legende: "/>
+					<field datasource="objektmuenzen.Muenze_VorderseiteMotiv" prefix = "Motiv: "/>
+					<field datasource="objektmuenzen.Muenze_VorderseiteGegenstempel" prefix = "Gegenstempel: "/>
+				</section>				
+				<section labelKey="Rückseite (Revers)">
+					<field datasource="objektmuenzen.Muenze_RueckseiteLegende" prefix = "Legende: "/>
+					<field datasource="objektmuenzen.Muenze_RueckseiteMotiv" prefix = "Motiv: "/>
+					<field datasource="objektmuenzen.Muenze_RueckseiteGegenstempel" prefix = "Gegenstempel: "/>
+				</section>
+				<section labelKey="Referenz (Typus)">
+					<field datasource="objektmuenzen.Muenze_Muenze_ReferenzTyp"/>			
+				</section>
+			</section>
+			
 			<section labelKey="Informationen zum Objekt: Träger von Siegelabdrücken">
 				<section labelKey="Identifikation">
 					<field datasource="objektplomben.pINVNR" prefix="Inventarnummer: " />
