@@ -28,7 +28,7 @@
 			connectFieldSubTable="FS_ObjektID">datenblattberlin</subtable>
 		<subtable connectFieldParent="PrimaryKey"
 				  connectFieldSubTable="FS_ObjektID">fotoabzug</subtable>
-				  
+
 		<!-- <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">datenblattberlin_inschrift</subtable> -->
 </subtables>
 	<display>
@@ -76,25 +76,25 @@
 				</section>
 				<section labelKey="Inschrift">
 					<field datasource="datenblattberlin.Inschrift" />
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Anbringungsort" 
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Anbringungsort"
 						prefix="Anbringugsort: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Besonderheiten" 
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Besonderheiten"
 						prefix="Besonderheiten: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Buchstabenhoehe" 
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Buchstabenhoehe"
 						prefix="Buchstabenhöhe: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Zeilenabstand" 
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Zeilenabstand"
 						prefix="Zeilenabstand: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Interpunktion" 
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Interpunktion"
 						prefix="Interpunktion: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Wortlaut" 
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Wortlaut"
 						prefix="Wortlaut: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_kritApparat" 
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_kritApparat"
 						prefix="krit. Apparat: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Uebersetzung" 
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Uebersetzung"
 						prefix="Übersetzung: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Literatur" 
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Literatur"
 						prefix="Literatur: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Kommentar" 
+					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Kommentar"
 						prefix="Kommentar: " /> -->
 				</section>
 				<section labelKey="Inventare/Archivalien">
@@ -761,25 +761,25 @@
 					</section>
 				</section>
 			</section>
-			
+
 			<section labelKey="Informationen zur Münze">
-		
+
 				<section labelKey="Erhaltungszustand">
 					<field datasource="objektmuenzen.Muenze_Abnutzung" prefix = "Abnutzung: "/>
 					<field datasource="objektmuenzen.Muenze_Korrosion" prefix = "Korrosion: "/>
 				</section>
-				<section labelKey="Maße"> 
+				<section labelKey="Maße">
 					<field datasource="objektmuenzen.Muenze_ErhaltungHoehe" prefix = "Höhe: " postfix = " mm"/>
-					<field datasource="objektmuenzen.Muenze_Muenze_ErhaltungDm" prefix = "Durchmesser: " postfix = " mm"/>
+					<field datasource="objektmuenzen.Muenze_ErhaltungDm" prefix = "Durchmesser: " postfix = " mm"/>
 					<field datasource="objektmuenzen.Muenze_ErhaltungStaerke" prefix = "Stärke/Dicke: " postfix = " mm"/>
-					<field datasource="objektmuenzen.Muenze_ErhaltungGewicht" prefix = "Gewicht: " postfix= " g"/>			
+					<field datasource="objektmuenzen.Muenze_ErhaltungGewicht" prefix = "Gewicht: " postfix= " g"/>
 				</section>
 				<section labelKey="Form" separator="; ">
 					<field datasource="objektmuenzen.Muenze_Form"/>
 					<field datasource="objektmuenzen.Muenze_formaleBesonderheiten"/>
-				</section>		
+				</section>
 				<section labelKey="Nominal">
-					<field datasource="objektmuenzen.Muenze_Muenze_Nominal"/>					
+					<field datasource="objektmuenzen.Muenze_Nominal"/>
 				</section>
 				<section labelKey="Material">
 					<field datasource="objektmuenzen.Muenze_Material"/>
@@ -788,7 +788,7 @@
 					<field datasource="objektmuenzen.Muenze_Herstellungstechnik"/>
 				</section>
 				<section labelKey="Stempelstellung">
-					<field datasource="objektmuenzen.Muenze_Muenze_Stempelstellung"/>
+					<field datasource="objektmuenzen.Muenze_Stempelstellung"/>
 				</section>
 				<section labelKey="Münzstätte und Prägeherr">
 					<field datasource="objektmuenzen.Muenze_Muenzstaette" prefix = "Münzstätte: "/>
@@ -798,17 +798,17 @@
 					<field datasource="objektmuenzen.Muenze_VorderseiteLegende" prefix = "Legende: "/>
 					<field datasource="objektmuenzen.Muenze_VorderseiteMotiv" prefix = "Motiv: "/>
 					<field datasource="objektmuenzen.Muenze_VorderseiteGegenstempel" prefix = "Gegenstempel: "/>
-				</section>				
+				</section>
 				<section labelKey="Rückseite (Revers)">
 					<field datasource="objektmuenzen.Muenze_RueckseiteLegende" prefix = "Legende: "/>
 					<field datasource="objektmuenzen.Muenze_RueckseiteMotiv" prefix = "Motiv: "/>
 					<field datasource="objektmuenzen.Muenze_RueckseiteGegenstempel" prefix = "Gegenstempel: "/>
 				</section>
 				<section labelKey="Referenz (Typus)">
-					<field datasource="objektmuenzen.Muenze_Muenze_ReferenzTyp"/>			
+					<field datasource="objektmuenzen.Muenze_ReferenzTyp"/>
 				</section>
 			</section>
-			
+
 			<section labelKey="Informationen zum Objekt: Träger von Siegelabdrücken">
 				<section labelKey="Identifikation">
 					<field datasource="objektplomben.pINVNR" prefix="Inventarnummer: " />
@@ -1022,6 +1022,15 @@
 		</facet>
 		<facet name="thema" labelKey="Thema">
 			<field datasource="objektplastik.ThemaTiere" />
+		</facet>
+		<facet name="nominal" labelKey="Nominal">
+			<field datasource="objektmuenzen.Muenze_Nominal" />
+		</facet>
+		<facet name="material" labelKey="Material">
+			<field datasource="objektmuenzen.Muenze_Material" />
+		</facet>
+		<facet name="muenzstaette" labelKey="Münzstätte">
+			<field datasource="objektmuenzen.Muenze_Muenzstaette" />
 		</facet>
 	</facets>
 </category>
