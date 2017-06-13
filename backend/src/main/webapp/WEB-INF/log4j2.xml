@@ -7,8 +7,8 @@
         </Console>
     
         <RollingFile name="ROLLING" 
-                     fileName="/var/log/arachne/arachnedataservice/dataservice.log" 
-                     filePattern="/var/log/arachne/arachnedataservice/dataservice-%d{yyyy-MM-dd}.log">
+                     fileName="C:\Users\shominees\Dev\CoDArchLab\_logs\dataservice.log"
+                     filePattern="C:\Users\shominees\Dev\CoDArchLab\_logs\dataservice-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
@@ -16,8 +16,8 @@
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
         <RollingFile name="Profile" 
-                     fileName="/var/log/arachne/arachnedataservice/profile.log" 
-                     filePattern="/var/log/arachne/arachnedataservice/profile-%d{yyyy-MM-dd}.log">
+                     fileName="C:\Users\shominees\Dev\CoDArchLab\_logs\profile.log"
+                     filePattern="C:\Users\shominees\Dev\CoDArchLab\_logs\profile-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
@@ -25,8 +25,8 @@
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
         <RollingFile name="DataIntegrity" 
-                     fileName="/var/log/arachne/arachnedataservice/data_integrity.log" 
-                     filePattern="/var/log/arachne/arachnedataservice/data_integrity-%d{yyyy-MM-dd}.log">
+                     fileName="C:\Users\shominees\Dev\CoDArchLab\_logs\data_integrity.log"
+                     filePattern="C:\Users\shominees\Dev\CoDArchLab\_logs\data_integrity-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />

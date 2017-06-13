@@ -492,7 +492,7 @@ public class SearchService {
 	 * @return A set of <code>Aggregations</code>.
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	private Set<Aggregation> getFacetList(final Multimap<String, String> filters, final int limit
+	public Set<Aggregation> getFacetList(final Multimap<String, String> filters, final int limit
 			, final Integer geoHashPrecision, final String facet) throws Transl8Exception {
 		
 		final Set<Aggregation> result = new LinkedHashSet<Aggregation>();

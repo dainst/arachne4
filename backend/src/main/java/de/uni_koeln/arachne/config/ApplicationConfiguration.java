@@ -62,15 +62,24 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
         converters.add(new ByteArrayHttpMessageConverter());
     }
 
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        final InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/views/");
-        resolver.setSuffix(".jsp");
-        registry.viewResolver(resolver);
-    }
+//    @Override
+//    public void configureViewResolvers(ViewResolverRegistry registry) {
+//        final InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+//        resolver.setPrefix("/WEB-INF/views/");
+//        resolver.setSuffix(".jsp");
+//        registry.viewResolver(resolver);
+//    }
+
 
     // TODO: check which resolver to use correctly? (which is better?)
+
+    @Bean
+    public ViewResolver jspViewResolver() {
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setPrefix("/WEB-INF/views/");
+        viewResolver.setSuffix(".jsp");
+        return viewResolver;
+    }
 
     /**
      * Configure ContentNegotiationManager
@@ -94,6 +103,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
         List<ViewResolver> resolvers = new ArrayList<>();
 
         resolvers.add(csvViewResolver());
+        resolvers.add(jspViewResolver());
 
         resolver.setViewResolvers(resolvers);
         return resolver;
