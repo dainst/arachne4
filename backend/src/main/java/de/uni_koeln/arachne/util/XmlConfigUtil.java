@@ -33,6 +33,7 @@ import de.uni_koeln.arachne.response.Field;
 import de.uni_koeln.arachne.response.FieldList;
 import de.uni_koeln.arachne.response.LinkField;
 import de.uni_koeln.arachne.response.Section;
+import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.util.sql.TableConnectionDescription;
 import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
@@ -71,6 +72,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	private transient final Map<String, List<TableConnectionDescription>> subCategories = new HashMap<>();
 	
 	private transient final Map<String, Set<String>> facets = new HashMap<>();
+
+	private transient Map<String, SearchResultFacet> facetCache = new HashMap();
 
 	@Autowired
     private transient Transl8Service ts;
@@ -363,6 +366,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 */
 	public Set<String> getFacetsFromXMLFile(final String type) {
 		Set<String> cachedFacets = facets.get(type);
+
 		if (cachedFacets == null) {
 			final Set<String> facetList = new HashSet<>();
 
@@ -370,18 +374,31 @@ public class XmlConfigUtil implements ServletContextAware {
 			if (document != null) {
 				final Namespace namespace = document.getRootElement().getNamespace();
 
-				final Element facets = document.getRootElement().getChild("facets", namespace);
+				final Element facetsElemes = document.getRootElement().getChild("facets", namespace);
 
-				for (final Element element: facets.getChildren()) {
-					facetList.add(element.getAttributeValue("name")); 				 				
+				for (final Element element: facetsElemes.getChildren()) {
+					facetList.add(element.getAttributeValue("name"));
+					facetCache.put(
+						element.getAttributeValue("name"),
+						new SearchResultFacet(
+							element.getAttributeValue("name"),
+							element.getAttributeValue("group")
+						)
+					);
 				}
+				facets.put(type, facetList);
 			}
 			return facetList;
 		} else {
 			return cachedFacets;
 		}
 	}
-	
+
+	public Map<String, SearchResultFacet> getFacetInfo() {
+		return facetCache;
+	}
+
+
 	/**
 	 * Returns the content of a field of the dataset as defined inside an <code>ifEmtpy</code> tag in the XML config file.
 	 * It is safe to use even if the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.

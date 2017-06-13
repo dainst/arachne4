@@ -792,7 +792,8 @@ public class ResponseFactory {
 			if ("facet".equals(element.getName())) {
 				final String name = element.getAttributeValue("name");
 				final String labelKey = element.getAttributeValue("labelKey");
-				final Facet facet = new Facet(name, labelKey);
+				final String group = element.getAttributeValue("group");
+				final Facet facet = new Facet(name, labelKey, group);
 				final Element child = (Element)element.getChildren().get(0); 
 				if (child != null) {
 					final List<String> values = new ArrayList<String>();

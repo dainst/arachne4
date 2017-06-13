@@ -333,10 +333,17 @@ public class SearchService {
 		// add facet search results
 		final List<SearchResultFacet> facets = new ArrayList<SearchResultFacet>();
 		Map<String, org.elasticsearch.search.aggregations.Aggregation> aggregations = searchResponse.getAggregations().getAsMap();
+
+		final Map<String, SearchResultFacet> facetInfo = xmlConfigUtil.getFacetInfo();
+
 		for (final String aggregationName : aggregations.keySet()) {
 			final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
 			MultiBucketsAggregation aggregator = (MultiBucketsAggregation)aggregations.get(aggregationName);
 			// TODO find a better way to convert facet values
+
+
+
+
 			if (aggregationName.equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
 				for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
 					final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
@@ -350,7 +357,7 @@ public class SearchService {
 				}
 			}
 			if (facetMap != null && !facetMap.isEmpty() && (filters == null || !filters.containsKey(aggregationName))) {
-				facets.add(getSearchResultFacet(aggregationName, facetMap));
+				facets.add(getSearchResultFacet(aggregationName, facetMap, facetInfo.get(aggregationName.replace("facet_", ""))));
 			}
 		}
 		searchResult.setFacets(facets);
@@ -658,9 +665,13 @@ public class SearchService {
 		return query;
 	}
 		
-	private SearchResultFacet getSearchResultFacet(final String facetName, final Map<String, Long> facetMap) {
-		
-		final SearchResultFacet result = new SearchResultFacet(facetName);
+	private SearchResultFacet getSearchResultFacet(final String facetName, final Map<String, Long> facetMap,
+		final SearchResultFacet facetInfo) {
+
+		final SearchResultFacet result = new SearchResultFacet(
+			facetName,
+			(facetInfo != null) ? facetInfo.getGroup() : null
+		);
 		
 		for (final Map.Entry<String, Long> entry: facetMap.entrySet()) {
 			final SearchResultFacetValue facetValue = 

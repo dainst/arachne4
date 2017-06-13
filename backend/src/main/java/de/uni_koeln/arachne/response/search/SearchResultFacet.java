@@ -17,6 +17,11 @@ public class SearchResultFacet {
 	 * The translated facet name to show in the frontend.
 	 */
 	private String label;
+
+	/**
+	 * The filter group
+	 */
+	private String group;
 	
 	/**
 	 * The facet values.
@@ -29,6 +34,11 @@ public class SearchResultFacet {
 	 */
 	public SearchResultFacet(final String name) {
 		this.name = name;
+	}
+
+	public SearchResultFacet(final String name, final String group) {
+		this.name = name;
+		this.group = group;
 	}
 
 	/**
@@ -62,6 +72,23 @@ public class SearchResultFacet {
 	public void setLabel(final String label) {
 		this.label = label;
 	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public String getGroup() {
+		return group;
+	}
+
+	/**
+	 *
+	 * @param group
+	 */
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
 
 	/**
 	 * Getter for the facet values.

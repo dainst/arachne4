@@ -915,19 +915,19 @@
 		<facet name="erhaltung" labelKey="Erhaltung">
 			<field datasource="objekt.Erhaltung" />
 		</facet>
-		<facet name="funktion" labelKey="Allgemeine Funktion">
+		<facet name="funktion" labelKey="Allgemeine Funktion" group="funktion">
 			<field datasource="objekt.Funktion" />
 		</facet>
-		<facet name="funktionaleverwendung" labelKey="Spezielle Funktion">
+		<facet name="funktionaleverwendung" labelKey="Spezielle Funktion" group="funktion">
 			<field datasource="objekt.funktionaleVerwendung" />
 		</facet>
 		<facet name="kulturkreis" labelKey="Kulturepoche">
 			<field datasource="objekt.Kulturkreis" />
 		</facet>
-		<facet name="material" labelKey="Material allgemein">
+		<facet name="material" labelKey="Material allgemein" group="material">
 			<field datasource="objekt.Material" />
 		</facet>
-		<facet name="materialbeschreibung" labelKey="Material speziell">
+		<facet name="materialbeschreibung" labelKey="Material speziell" group="material">
 			<field datasource="objekt.Materialbeschreibung" />
 		</facet>
 		<facet name="technik" labelKey="Technik">
