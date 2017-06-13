@@ -40,36 +40,34 @@ public class SearchResultCsvConverter extends AbstractHttpMessageConverter<Searc
 
     @Override
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-        //httpOutputMessage.getBody().write("yolo".getBytes("utf-8"));
-        httpOutputMessage.getHeaders().set(HttpHeaders.CONTENT_TYPE, "text/csv");
-        httpOutputMessage.getHeaders().set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"searchResult.csv\"");
+        httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/csv");
+        httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"searchResult.csv\"");
 
+        // generate CSV content:
+        final String[] headers = {"entityId", "type", "title", "subtitle", "thumbnailId"};
+        final ArrayList<Object> entities = new ArrayList<>();
+        for (final SearchHit hit : searchResult.getEntities()) {
+            // create a generic object with only the values needed for CSV
+            // should match number of fields defined in headers
+            Object csvEntity = new Object[] {
+                    String.valueOf(hit.getEntityId()),
+                    hit.getType(),
+                    hit.getTitle(),
+                    hit.getSubtitle(),
+                    hit.getThumbnailId()
+            };
+            entities.add(csvEntity);
+        }
+
+        // write CSV:
         try (final Writer writer = new OutputStreamWriter(httpOutputMessage.getBody())) {
-            ICsvBeanWriter csvWriter = new CsvBeanWriter(writer, CsvPreference.STANDARD_PREFERENCE);
+            final CsvBeanWriter csvWriter = new CsvBeanWriter(writer, CsvPreference.STANDARD_PREFERENCE);
 
-            // generate CSV content:
-            final String[] headers = {"entityId", "type", "title", "subtitle", "thumbnailId"};
-            final ArrayList<Object> entities = new ArrayList<>();
-            for (final SearchHit hit : searchResult.getEntities()) {
-                // create a generic object with only the values needed for CSV
-                // should match number of fields defined in headers
-                Object csvEntity = new Object[] {
-                        String.valueOf(hit.getEntityId()),
-                        hit.getType(),
-                        hit.getTitle(),
-                        hit.getSubtitle(),
-                        hit.getThumbnailId()
-                };
-                entities.add(csvEntity);
-            }
-
-            // write CSV:
             csvWriter.writeHeader(headers);
             for (final Object entity : entities) {
                 csvWriter.write(entity, headers);
             }
             csvWriter.close();
-
         }
     }
 }
