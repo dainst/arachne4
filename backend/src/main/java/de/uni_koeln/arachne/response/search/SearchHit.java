@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.response.search;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,11 +24,13 @@ public class SearchHit {
 	private transient final Long thumbnailId;
 	private transient final List<Place> places;
 	private transient final Map<String, List<String>> highlights;
+	@JsonIgnore
+	private transient final Map<String, Object> source;
 	
 		
 	public SearchHit(final long entityId, final String type, final String uri, final String title
 			, final String subtitle, final Long thumbnailId, final List<Place> places
-			, final Map<String, List<String>> highlights) {
+			, final Map<String, List<String>> highlights, final Map<String, Object> source) {
 		this.entityId = entityId;
 		this.type = type;
 		this.uri = uri;
@@ -36,6 +39,7 @@ public class SearchHit {
 		this.thumbnailId = thumbnailId;
 		this.places = places;
 		this.highlights = highlights;
+		this.source = source;
 	}
 		
 	public long getEntityId() {
@@ -69,4 +73,7 @@ public class SearchHit {
 	public Map<String, List<String>> getHighlights() {
 		return highlights;
 	}
+
+	public Map<String, Object> getSource() { return source;	}
+
 }

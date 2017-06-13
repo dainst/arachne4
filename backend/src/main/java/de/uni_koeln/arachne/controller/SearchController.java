@@ -117,8 +117,7 @@ public class SearchController {
      * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
      */
     @RequestMapping(value = "/search",
-            method = RequestMethod.GET,
-            produces = {APPLICATION_JSON_UTF8_VALUE})
+            method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity<?> handleSearchRequest(@RequestParam("q") final String queryString,
                                           @RequestParam(value = "limit", required = false) final Integer limit,
@@ -168,7 +167,7 @@ public class SearchController {
 
         int bbLength = searchParameters.getBoundingBox().length;
         if (boundingBox != null && bbLength != 4) {
-            return ResponseEntity.badRequest().body("{ \"message\": \"Invalid bounding box coordinates.\"");
+            return ResponseEntity.badRequest().body("{ \"message\": \"Invalid bounding box coordinates.\"}");
         }
 
         SearchRequestBuilder searchRequestBuilder;
@@ -193,63 +192,6 @@ public class SearchController {
             LOGGER.error("Could not reach tranl8. Cause: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-    }
-
-    /**
-     * Handle request to get CSV output
-     */
-    @RequestMapping(value = "/search.csv",
-            method = RequestMethod.GET,
-            produces = "text/csv")
-    public @ResponseBody
-    ResponseEntity<?> handleCsvRequest(@RequestParam("q") final String queryString,
-                                       @RequestParam(value = "limit", required = false) final Integer limit,
-                                       @RequestParam(value = "offset", required = false) final Integer offset,
-                                       @RequestParam(value = "fq", required = false) final String[] filterValues,
-                                       @RequestParam(value = "fl", required = false) final Integer facetLimit,
-                                       @RequestParam(value = "fo", required = false) final Integer facetOffset,
-                                       @RequestParam(value = "sort", required = false) final String sortField,
-                                       @RequestParam(value = "desc", required = false) final Boolean orderDesc,
-                                       @RequestParam(value = "bbox", required = false) final Double[] boundingBox,
-                                       @RequestParam(value = "ghprec", required = false) final Integer geoHashPrecision,
-                                       @RequestParam(value = "sf", required = false) final String[] facetsToSort,
-                                       @RequestParam(value = "scroll", required = false) final Boolean scrollMode,
-                                       @RequestParam(value = "facet", required = false) final String facet,
-                                       @RequestParam(value = "editorfields", required = false) Boolean editorFields) {
-
-        if (scrollMode != null && scrollMode && !userRightsService.isSignedInUser()) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
-        editorFields = (editorFields == null) ? true : editorFields;
-
-        final SearchParameters searchParameters = new SearchParameters(defaultLimit, defaultFacetLimit)
-                .setQuery(queryString)
-                .setLimit(limit)
-                .setOffset(offset)
-                .setFacetLimit(facetLimit)
-                .setFacetOffset(facetOffset)
-                .setSortField(sortField)
-                .setOrderDesc(orderDesc)
-                .setBoundingBox(boundingBox)
-                .setGeoHashPrecision(geoHashPrecision)
-                .setFacetsToSort(facetsToSort)
-                .setFacet(facet)
-                .setScrollMode(scrollMode)
-                .setSearchEditorFields(editorFields &&
-                        userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID));
-
-        if (!searchParameters.isValid()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        Multimap<String, String> filters = HashMultimap.create();
-        if (filterValues != null) {
-            filters = searchService.getFilters(Arrays.asList(filterValues), searchParameters.getGeoHashPrecision());
-        }
-
-        // temporary for testing!
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     /**

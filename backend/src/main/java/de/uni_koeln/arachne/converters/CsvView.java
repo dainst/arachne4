@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.viewResolvers;
+package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.response.Facet;
 import de.uni_koeln.arachne.response.FacetList;

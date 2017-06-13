@@ -1,7 +1,8 @@
 package de.uni_koeln.arachne.config;
 
 import com.zaxxer.hikari.HikariDataSource;
-import de.uni_koeln.arachne.viewResolvers.CsvViewResolver;
+import de.uni_koeln.arachne.converters.CsvViewResolver;
+import de.uni_koeln.arachne.converters.SearchResultCsvConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -60,64 +61,15 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
         converters.add(new StringHttpMessageConverter());
         converters.add(new MappingJackson2HttpMessageConverter());
         converters.add(new ByteArrayHttpMessageConverter());
+        converters.add(new SearchResultCsvConverter());
     }
 
-//    @Override
-//    public void configureViewResolvers(ViewResolverRegistry registry) {
-//        final InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-//        resolver.setPrefix("/WEB-INF/views/");
-//        resolver.setSuffix(".jsp");
-//        registry.viewResolver(resolver);
-//    }
-
-
-    // TODO: check which resolver to use correctly? (which is better?)
-
-    @Bean
-    public ViewResolver jspViewResolver() {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setPrefix("/WEB-INF/views/");
-        viewResolver.setSuffix(".jsp");
-        return viewResolver;
-    }
-
-    /**
-     * Configure ContentNegotiationManager
-     */
     @Override
-    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-        configurer.defaultContentType(MediaType.APPLICATION_JSON).favorPathExtension(true);
-    }
-
-    /**
-     * Configure ContentNegotiatingViewResolver
-     *
-     * @return An appropriate view resolver
-     */
-    @Bean
-    public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
-        ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
-        resolver.setContentNegotiationManager(manager);
-
-        // Define all possible view resolvers
-        List<ViewResolver> resolvers = new ArrayList<>();
-
-        resolvers.add(csvViewResolver());
-        resolvers.add(jspViewResolver());
-
-        resolver.setViewResolvers(resolvers);
-        return resolver;
-    }
-
-    /**
-     * Configure View resolver to provide CSV output using Super CSV library to
-     * generate CSV output for an object content
-     *
-     * @return A CSV view resolver
-     */
-    @Bean
-    public ViewResolver csvViewResolver() {
-        return new CsvViewResolver();
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        final InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setPrefix("/WEB-INF/views/");
+        resolver.setSuffix(".jsp");
+        registry.viewResolver(resolver);
     }
 
     /**

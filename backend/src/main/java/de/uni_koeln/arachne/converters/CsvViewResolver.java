@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.viewResolvers;
+package de.uni_koeln.arachne.converters;
 
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
