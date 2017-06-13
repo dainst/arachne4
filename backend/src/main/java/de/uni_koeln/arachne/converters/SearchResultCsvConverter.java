@@ -9,7 +9,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.AbstractHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.supercsv.cellprocessor.FmtDate;
+import org.supercsv.cellprocessor.Optional;
+import org.supercsv.cellprocessor.constraint.NotNull;
+import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.CsvListWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
@@ -17,6 +22,9 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 /**
  * @author Sebastian Cuy
@@ -42,32 +50,40 @@ public class SearchResultCsvConverter extends AbstractHttpMessageConverter<Searc
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/csv");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"searchResult.csv\"");
-
-        // generate CSV content:
+        
         final String[] headers = {"entityId", "type", "title", "subtitle", "thumbnailId"};
         final ArrayList<Object> entities = new ArrayList<>();
+        final Writer writer = new OutputStreamWriter(httpOutputMessage.getBody());
+        final CsvListWriter csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
+        final CellProcessor[] processors = getProcessors();
+        csvWriter.writeHeader(headers);
         for (final SearchHit hit : searchResult.getEntities()) {
-            // create a generic object with only the values needed for CSV
-            // should match number of fields defined in headers
-            Object csvEntity = new Object[] {
-                    String.valueOf(hit.getEntityId()),
-                    hit.getType(),
-                    hit.getTitle(),
-                    hit.getSubtitle(),
-                    hit.getThumbnailId()
-            };
-            entities.add(csvEntity);
+            final List<Object> csvEntity = Arrays.asList(new Object[] {
+                String.valueOf(hit.getEntityId()),
+                hit.getType(),
+                hit.getTitle(),
+                hit.getSubtitle(),
+                String.valueOf(hit.getThumbnailId())
+            });
+            csvWriter.write(csvEntity,processors);
         }
 
-        // write CSV:
-        try (final Writer writer = new OutputStreamWriter(httpOutputMessage.getBody())) {
-            final CsvBeanWriter csvWriter = new CsvBeanWriter(writer, CsvPreference.STANDARD_PREFERENCE);
+        csvWriter.close();
 
-            csvWriter.writeHeader(headers);
-            for (final Object entity : entities) {
-                csvWriter.write(entity, headers);
-            }
-            csvWriter.close();
-        }
     }
+
+    private static CellProcessor[] getProcessors() {
+
+        final CellProcessor[] processors = new CellProcessor[] {
+                new Optional(), // entityId
+                new Optional(), // type
+                new Optional(), // title
+                new Optional(), // subtitle
+                new Optional() // thumbnailId
+        };
+
+        return processors;
+    }
+
+
 }
