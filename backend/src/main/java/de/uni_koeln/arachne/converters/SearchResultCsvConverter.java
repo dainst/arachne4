@@ -1,7 +1,5 @@
 package de.uni_koeln.arachne.converters;
 
-import de.uni_koeln.arachne.response.Facet;
-import de.uni_koeln.arachne.response.FacetList;
 import de.uni_koeln.arachne.response.search.SearchHit;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +17,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Sebastian Cuy
@@ -47,26 +44,32 @@ public class SearchResultCsvConverter extends AbstractHttpMessageConverter<Searc
         httpOutputMessage.getHeaders().set(HttpHeaders.CONTENT_TYPE, "text/csv");
         httpOutputMessage.getHeaders().set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"searchResult.csv\"");
 
-        try(final Writer writer = new OutputStreamWriter(httpOutputMessage.getBody())) {
+        try (final Writer writer = new OutputStreamWriter(httpOutputMessage.getBody())) {
+            ICsvBeanWriter csvWriter = new CsvBeanWriter(writer, CsvPreference.STANDARD_PREFERENCE);
 
-            List<String> valuesList = new ArrayList<>();
-            for (final SearchHit entity : searchResult.getEntities()) {
-                valuesList.add(String.valueOf(entity.getEntityId()));
-                valuesList.add(entity.getType());
-                valuesList.add(entity.getTitle());
-                valuesList.add(entity.getSubtitle());
-                valuesList.add(String.valueOf(entity.getThumbnailId()));
-            }
-            final String[] values = new String[valuesList.size()];
-            valuesList.toArray(values);
-
-            final ICsvBeanWriter csvWriter = new CsvBeanWriter(writer, CsvPreference.STANDARD_PREFERENCE);
-
+            // generate CSV content:
             final String[] headers = {"entityId", "type", "title", "subtitle", "thumbnailId"};
-            csvWriter.writeHeader(headers);
-            csvWriter.write(values, headers);
+            final ArrayList<Object> entities = new ArrayList<>();
+            for (final SearchHit hit : searchResult.getEntities()) {
+                // create a generic object with only the values needed for CSV
+                // should match number of fields defined in headers
+                Object csvEntity = new Object[] {
+                        String.valueOf(hit.getEntityId()),
+                        hit.getType(),
+                        hit.getTitle(),
+                        hit.getSubtitle(),
+                        hit.getThumbnailId()
+                };
+                entities.add(csvEntity);
+            }
 
+            // write CSV:
+            csvWriter.writeHeader(headers);
+            for (final Object entity : entities) {
+                csvWriter.write(entity, headers);
+            }
             csvWriter.close();
+
         }
     }
 }
