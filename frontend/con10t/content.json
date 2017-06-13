@@ -449,12 +449,12 @@
                         "en": "Craft production sites of pre-modern economies"
                     }
                 },
-				{
-					"id": "jtfourplace",
-                        "title": {
-                            "de": "Our Place: Our Place in the World",                     
-                        }
-					}
+		{
+		     "id": "jtfourplace",
+                     "title": {
+                         "en": "Our Place: Our Place in the World",                     
+                     }
+		}
             ]
         },
         {
