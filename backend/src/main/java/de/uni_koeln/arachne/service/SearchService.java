@@ -64,6 +64,7 @@ import de.uni_koeln.arachne.util.search.SearchParameters;
 import de.uni_koeln.arachne.util.search.TermsAggregation;
 import de.uni_koeln.arachne.util.search.TermsAggregation.Order;
 
+
 /**
  * This class implements all search functionality.
  * 
@@ -91,25 +92,31 @@ public class SearchService {
 	private transient final SearchFieldList searchFields;
 	
 	private transient final List<String> sortFields;
-	
-	private transient final List<String> defaultFacetList;
-	
+
 	/**
 	 * Simple constructor which sets the fields to be queried. 
 	 * @param textSearchFields The list of text fields.
 	 * @param numericSearchFields The list of numeric fields.
 	 * @param sortFields The list of fields to sort on.
-	 * @param defaultFacetList The names of the default facets (these are all terms aggregations).
 	 */
 	@Autowired
 	public SearchService(final @Value("#{'${esTextSearchFields}'.split(',')}") List<String> textSearchFields
 			, final @Value("#{'${esNumericSearchFields}'.split(',')}") List<String> numericSearchFields
 			, final @Value("#{'${esSortFields}'.split(',')}") List<String> sortFields
-			, final @Value("#{'${esDefaultFacets}'.split(',')}") List<String> defaultFacetList) {
-		
+			//, final @Value("#{'${esDefaultFacets}'.split(',')}") List<String> getDefaultFacetList()
+	) {
+
+
 		searchFields = new SearchFieldList(textSearchFields, numericSearchFields);
 		this.sortFields = sortFields;
-		this.defaultFacetList = defaultFacetList;
+
+	}
+
+	public List<String> getDefaultFacetList() {
+		final List<String> defaultFacetsAsList = new ArrayList<String>();
+		defaultFacetsAsList.addAll(xmlConfigUtil.getFacetsFromXMLFile("_default_facets"));
+		return defaultFacetsAsList;
+
 	}
 	
 	/**
@@ -334,7 +341,6 @@ public class SearchService {
 		final List<SearchResultFacet> facets = new ArrayList<SearchResultFacet>();
 		Map<String, org.elasticsearch.search.aggregations.Aggregation> aggregations = searchResponse.getAggregations().getAsMap();
 
-		final Map<String, SearchResultFacet> facetInfo = xmlConfigUtil.getFacetInfo();
 
 		for (final String aggregationName : aggregations.keySet()) {
 			final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
@@ -357,7 +363,7 @@ public class SearchService {
 				}
 			}
 			if (facetMap != null && !facetMap.isEmpty() && (filters == null || !filters.containsKey(aggregationName))) {
-				facets.add(getSearchResultFacet(aggregationName, facetMap, facetInfo.get(aggregationName.replace("facet_", ""))));
+				facets.add(getSearchResultFacet(aggregationName, facetMap));
 			}
 		}
 		searchResult.setFacets(facets);
@@ -488,7 +494,7 @@ public class SearchService {
 	}
 	
 	/**
-	 * Creates a set of <code>Aggregations</code> from the filters and <code>defaultFacetList</code>. If the category 
+	 * Creates a set of <code>Aggregations</code> from the filters and <code>getDefaultFacetList()</code>. If the category
 	 * filter is present category specific facets will be added.
 	 * <br>
 	 * If the geohash variable is set the geo grid aggregation will be added.
@@ -506,7 +512,7 @@ public class SearchService {
 		if (facet == null || facet.isEmpty()) {
 			result.addAll(getCategorySpecificFacets(filters, limit, lang));
 
-			for (final String facetName : defaultFacetList) {
+			for (final String facetName : getDefaultFacetList()) {
 				result.add(new TermsAggregation(facetName, limit));
 			}
 			
@@ -665,8 +671,9 @@ public class SearchService {
 		return query;
 	}
 		
-	private SearchResultFacet getSearchResultFacet(final String facetName, final Map<String, Long> facetMap,
-		final SearchResultFacet facetInfo) {
+	private SearchResultFacet getSearchResultFacet(final String facetName, final Map<String, Long> facetMap) {
+
+		final SearchResultFacet facetInfo = xmlConfigUtil.getFacetInfo(facetName);
 
 		final SearchResultFacet result = new SearchResultFacet(
 			facetName,

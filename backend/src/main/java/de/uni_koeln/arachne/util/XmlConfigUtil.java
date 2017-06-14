@@ -1,12 +1,7 @@
 package de.uni_koeln.arachne.util;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -366,7 +361,6 @@ public class XmlConfigUtil implements ServletContextAware {
 	 */
 	public Set<String> getFacetsFromXMLFile(final String type) {
 		Set<String> cachedFacets = facets.get(type);
-
 		if (cachedFacets == null) {
 			final Set<String> facetList = new HashSet<>();
 
@@ -374,12 +368,12 @@ public class XmlConfigUtil implements ServletContextAware {
 			if (document != null) {
 				final Namespace namespace = document.getRootElement().getNamespace();
 
-				final Element facetsElemes = document.getRootElement().getChild("facets", namespace);
+				final Element facetsElements = document.getRootElement().getChild("facets", namespace);
 
-				for (final Element element: facetsElemes.getChildren()) {
+				for (final Element element: facetsElements.getChildren()) {
 					facetList.add(element.getAttributeValue("name"));
 					facetCache.put(
-						element.getAttributeValue("name"),
+							element.getAttributeValue("name"),
 						new SearchResultFacet(
 							element.getAttributeValue("name"),
 							element.getAttributeValue("group")
@@ -394,8 +388,18 @@ public class XmlConfigUtil implements ServletContextAware {
 		}
 	}
 
-	public Map<String, SearchResultFacet> getFacetInfo() {
-		return facetCache;
+	/**
+	 *
+	 *
+	 * @param facetName with or without "facet_" - prefix
+	 * @return SearchResultFacet
+	 */
+	public SearchResultFacet getFacetInfo(String facetName) {
+		SearchResultFacet foundFacet = facetCache.get(facetName);
+		if ((foundFacet == null) && (facetName.length() > 5) && (facetName.substring(0,6).equals("facet_"))) {
+			foundFacet = facetCache.get(facetName.substring(6));
+		}
+		return foundFacet;
 	}
 
 

@@ -933,10 +933,10 @@
 		<facet name="technik" labelKey="Technik">
 			<field datasource="objekt.Technik" />
 		</facet>
-		<facet name="antikegriechlandschaft" labelKey="Antike Landschaft">
+		<facet name="antikegriechlandschaft" labelKey="Antike Landschaft" group="place">
 			<field datasource="objekt.antikeGriechLandschaft" />
 		</facet>
-		<facet name="antikeroemprovinz" labelKey="Römische Provinz">
+		<facet name="antikeroemprovinz" labelKey="Römische Provinz"  group="place">
 			<field datasource="objekt.antikeRoemProvinz" />
 		</facet>
 		<facet name="schmuckspezifizierung" labelKey="Schmuck Spezifizierung">
