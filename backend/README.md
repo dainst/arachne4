@@ -46,6 +46,9 @@ mvn clean test
 You need to create the folder `/var/log/arachne/arachnedataservice/` and make it writable
 before you can run the server.
 
+If you have to change the `log4j2.xml`, because you don't develop on Linux, the original content is still available in
+`log4j2.xml.org`. Copy and paste its contents back in `log4j2.xml` in case needed.
+
 Run the server with
 
 ```
