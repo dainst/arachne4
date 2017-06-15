@@ -302,7 +302,7 @@ public class SearchController {
 	@RequestMapping(value="/index/{categoryName}/{facetName}",
 			method=RequestMethod.GET, 
 			produces={APPLICATION_JSON_UTF8_VALUE})
-	public @ResponseBody ResponseEntity<IndexResult> handleIndexRequest(@PathVariable("facetName") final String facetName, @PathVariable("categoryName") final String categoryName, @RequestParam(value = "group", required = false) Character groupMarker) {
+	public @ResponseBody ResponseEntity<IndexResult> handleIndexRequest(@PathVariable("facetName") final String facetName, @PathVariable("categoryName") final String categoryName, @RequestParam(value = "group", required = false) Character groupMarker) throws Transl8Exception {
 		
 		if (facetName.startsWith("facet_") || facetName.startsWith("agg_")) {
 

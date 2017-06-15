@@ -289,7 +289,7 @@ public class SearchService {
 	 */
 	@SuppressWarnings("unchecked")
 	public SearchResult executeSearchRequest(final SearchRequestBuilder searchRequestBuilder, final int size,
-			final int offset, final Multimap<String, String> filters, final int facetOffset) {
+			final int offset, final Multimap<String, String> filters, final int facetOffset) throws Transl8Exception {
 		
 		SearchResponse searchResponse = null;
 						
@@ -341,6 +341,9 @@ public class SearchService {
 		final List<SearchResultFacet> facets = new ArrayList<SearchResultFacet>();
 		Map<String, org.elasticsearch.search.aggregations.Aggregation> aggregations = searchResponse.getAggregations().getAsMap();
 
+		// get category (categories) wich was searched for
+		final Collection<String> categories = filters.get(TermsAggregation.CATEGORY_FACET);
+		final String category = categories.size() > 0 ? ts.categoryLookUp(categories.iterator().next(), "de") : "_default_facets";
 
 		for (final String aggregationName : aggregations.keySet()) {
 			final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
@@ -363,7 +366,7 @@ public class SearchService {
 				}
 			}
 			if (facetMap != null && !facetMap.isEmpty() && (filters == null || !filters.containsKey(aggregationName))) {
-				facets.add(getSearchResultFacet(aggregationName, facetMap));
+				facets.add(getSearchResultFacet(aggregationName, facetMap, category));
 			}
 		}
 		searchResult.setFacets(facets);
@@ -671,10 +674,13 @@ public class SearchService {
 		return query;
 	}
 		
-	private SearchResultFacet getSearchResultFacet(final String facetName, final Map<String, Long> facetMap) {
+	private SearchResultFacet getSearchResultFacet(final String facetName, final Map<String, Long> facetMap,
+												   final String category) {
 
-		final SearchResultFacet facetInfo = xmlConfigUtil.getFacetInfo(facetName);
 
+		final SearchResultFacet facetInfo = xmlConfigUtil.getFacetInfo(category, facetName);
+
+		// @ TODO instead maybe just clone facetInfo, since it already has the right type and so on
 		final SearchResultFacet result = new SearchResultFacet(
 			facetName,
 			(facetInfo != null) ? facetInfo.getGroup() : null

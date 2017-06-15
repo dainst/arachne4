@@ -68,7 +68,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	
 	private transient final Map<String, Set<String>> facets = new HashMap<>();
 
-	private transient Map<String, SearchResultFacet> facetCache = new HashMap();
+	private transient Map<String, Map<String, SearchResultFacet>> facetCache = new HashMap();
 
 	@Autowired
     private transient Transl8Service ts;
@@ -362,7 +362,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	public Set<String> getFacetsFromXMLFile(final String type) {
 		Set<String> cachedFacets = facets.get(type);
 		if (cachedFacets == null) {
-			final Set<String> facetList = new HashSet<>();
+			final Map<String, SearchResultFacet> facetMap = new HashMap();
+			final Set<String> facetNameList = new HashSet<>();
 
 			final Document document = getDocument(type);
 			if (document != null) {
@@ -371,8 +372,8 @@ public class XmlConfigUtil implements ServletContextAware {
 				final Element facetsElements = document.getRootElement().getChild("facets", namespace);
 
 				for (final Element element: facetsElements.getChildren()) {
-					facetList.add(element.getAttributeValue("name"));
-					facetCache.put(
+					facetNameList.add(element.getAttributeValue("name"));
+					facetMap.put(
 							element.getAttributeValue("name"),
 						new SearchResultFacet(
 							element.getAttributeValue("name"),
@@ -380,9 +381,10 @@ public class XmlConfigUtil implements ServletContextAware {
 						)
 					);
 				}
-				facets.put(type, facetList);
+				facets.put(type, facetNameList);
+				facetCache.put(type, facetMap);
 			}
-			return facetList;
+			return facetNameList;
 		} else {
 			return cachedFacets;
 		}
@@ -394,12 +396,24 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * @param facetName with or without "facet_" - prefix
 	 * @return SearchResultFacet
 	 */
-	public SearchResultFacet getFacetInfo(String facetName) {
-		SearchResultFacet foundFacet = facetCache.get(facetName);
-		if ((foundFacet == null) && (facetName.length() > 5) && (facetName.substring(0,6).equals("facet_"))) {
-			foundFacet = facetCache.get(facetName.substring(6));
+	public SearchResultFacet getFacetInfo(String category, String facetName) {
+
+		// do we know that category?
+		if (facetCache.get(category) == null) {
+			return null;
 		}
-		return foundFacet;
+
+		// do it has this facetName?
+		if (facetCache.get(category).get(facetName.substring(6)) != null) {
+			return facetCache.get(category).get(facetName.substring(6)); // remove the "facet_"-prefix
+		}
+
+		// do _default_facets know this facet name?
+		if (facetCache.get("_default_facets").get(facetName) != null) {
+			return facetCache.get("_default_facets").get(facetName);
+		}
+
+		return null;
 	}
 
 
