@@ -129,10 +129,10 @@
 		<include type="facet_ort" />
 		<include type="facet_literatur" />
 		<include type="facet_datierung" />
-		<facet name="gebaeudetyp" labelKey="Gebäudetyp allgemein">
+		<facet name="gebaeudetyp" labelKey="Gebäudetyp allgemein" group="buildingtype">
 			<field datasource="bauwerk.Gebaeudetyp" />
 		</facet>
-		<facet name="gebaeudetypspeziell" labelKey="Gebäudetyp speziell">
+		<facet name="gebaeudetypspeziell" labelKey="Gebäudetyp speziell" group="buildingtype">
 			<field datasource="bauwerk.GebaeudetypSpeziell" />
 		</facet>
 		<facet name="kontext" labelKey="Antiker Kontext">
@@ -144,13 +144,13 @@
 		<facet name="kulturkreis" labelKey="Kulturkreis">
 			<field datasource="bauwerk.BauwerkKulturkreis" />
 		</facet>
-		<facet name="antikegriechlandschaft" labelKey="Antike Landschaft">
+		<facet name="antikegriechlandschaft" labelKey="Antike Landschaft" group="place">
 			<field datasource="bauwerk.antikeGriechLandschaftBauwerk" />
 		</facet>
-		<facet name="antikeroemprovinz" labelKey="Römische Provinz">
+		<facet name="antikeroemprovinz" labelKey="Römische Provinz" group="place">
 			<field datasource="bauwerk.antikeRoemProvinzBauwerk" />
 		</facet>
-		<facet name="regioromitalien" labelKey="Regio Rom/Italien">
+		<facet name="regioromitalien" labelKey="Regio Rom/Italien" group="place">
 			<field datasource="bauwerk.RegioRomItalien" />
 		</facet>
 		<facet name="produktmaterial" labelKey="Produkt - Material">
