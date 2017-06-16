@@ -452,7 +452,8 @@
 				{
 					"id": "jtfourplace",
                         "title": {
-                            "de": "Our Place: Our Place in the World",                     
+                            "de": "Our Place: Our Place in the World"
+							"en": "Our Place: Our Place in the Wolrd"
                         }
 					}
             ]
