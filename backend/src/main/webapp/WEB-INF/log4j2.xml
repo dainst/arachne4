@@ -5,28 +5,28 @@
         <Console name="CONSOLE" target="SYSTEM_OUT">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
         </Console>
-    
-        <RollingFile name="ROLLING" 
-                     fileName="C:\Users\shominees\Dev\CoDArchLab\_logs\dataservice.log"
-                     filePattern="C:\Users\shominees\Dev\CoDArchLab\_logs\dataservice-%d{yyyy-MM-dd}.log">
+
+        <RollingFile name="ROLLING"
+                     fileName="/var/log/arachne/arachnedataservice/dataservice.log"
+                     filePattern="/var/log/arachne/arachnedataservice/dataservice-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
             </Policies>
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
-        <RollingFile name="Profile" 
-                     fileName="C:\Users\shominees\Dev\CoDArchLab\_logs\profile.log"
-                     filePattern="C:\Users\shominees\Dev\CoDArchLab\_logs\profile-%d{yyyy-MM-dd}.log">
+        <RollingFile name="Profile"
+                     fileName="/var/log/arachne/arachnedataservice/profile.log"
+                     filePattern="/var/log/arachne/arachnedataservice/profile-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
             </Policies>
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
-        <RollingFile name="DataIntegrity" 
-                     fileName="C:\Users\shominees\Dev\CoDArchLab\_logs\data_integrity.log"
-                     filePattern="C:\Users\shominees\Dev\CoDArchLab\_logs\data_integrity-%d{yyyy-MM-dd}.log">
+        <RollingFile name="DataIntegrity"
+                     fileName="/var/log/arachne/arachnedataservice/data_integrity.log"
+                     filePattern="/var/log/arachne/arachnedataservice/data_integrity-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
@@ -34,18 +34,18 @@
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
     </Appenders>
-    
-    <!--     
-       
+
+    <!--
+
     <!- 3rdparty Loggers ->
     <logger name="org.springframework.core">
         <level value="info" />
     </logger>
-    
+
     <logger name="org.springframework.beans">
         <level value="info" />
     </logger>
-    
+
     <logger name="org.springframework.context">
         <level value="info" />
     </logger>
@@ -56,27 +56,27 @@
     <Loggers>
         <!-- Spring Web Logger -->
         <logger name="org.springframework.web" level="info" />
-        
+
         <!-- Application Logger -->
         <logger name="de.uni_koeln.arachne" level="info" />
         <logger name="de.uni_koeln.arachne.controller" level="info" />
         <logger name="de.uni_koeln.arachne.service" level="info" />
         <logger name="de.uni_koeln.arachne.dao" level="info" />
-        
+
         <!-- elasticsearch logger -->
         <logger name="org.elasticsearch" level="info" />
-        
+
         <!-- Hikari logger -->
         <logger name="com.zaxxer.hikari" level="info" />
-        
+
         <Logger name="Profiling" additivity="false">
             <AppenderRef ref="Profile" />
         </Logger>
-        
+
         <Logger name="DataIntegrityLogger" additivity="false">
             <AppenderRef ref="DataIntegrity" />
         </Logger>
-        
+
         <Root  level="info">
             <AppenderRef ref="ROLLING" />
             <!-- <AppenderRef ref="CONSOLE" /> -->

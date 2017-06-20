@@ -44,7 +44,7 @@ public class SearchResultCsvConverter extends AbstractHttpMessageConverter<Searc
     @Override
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/csv");
-        httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"searchResult.csv\"");
+        httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.csv\"");
 
         final String[] headers = {"entityId", "type", "title", "subtitle", "thumbnailId"};
         final Writer writer = new OutputStreamWriter(httpOutputMessage.getBody());
