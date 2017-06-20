@@ -1,12 +1,7 @@
 package de.uni_koeln.arachne.config;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Properties;
-
-import javax.inject.Inject;
-import javax.sql.DataSource;
-
+import com.zaxxer.hikari.HikariDataSource;
+import de.uni_koeln.arachne.converters.SearchResultCsvConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -29,14 +24,19 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import com.zaxxer.hikari.HikariDataSource;
+import javax.inject.Inject;
+import javax.sql.DataSource;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * This class holds the application configuration. It configures message converters, view resolvers, datasources, etc.
  * It replaces the old Spring XML config files. All interaction with this class is automatically done by Spring.
- * 
- * @author Reimar Grabowski
  *
+ * @author Reimar Grabowski
+ * @author Patrick Jominet
+ * @author Sebastian Cuy
  */
 @ComponentScan("de.uni_koeln.arachne")
 @Configuration
@@ -47,85 +47,90 @@ import com.zaxxer.hikari.HikariDataSource;
 @PropertySource("classpath:config/application.properties")
 public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 
-	@Inject
-	private Environment environment;	
-		
-	@Override
-	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		converters.add(new StringHttpMessageConverter());
-		converters.add(new MappingJackson2HttpMessageConverter());
-		converters.add(new ByteArrayHttpMessageConverter());
-	}
-	
-	@Override
-	public void configureViewResolvers(ViewResolverRegistry registry) {
-		final InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		resolver.setPrefix("/WEB-INF/views/");
-		resolver.setSuffix(".jsp");
-		registry.viewResolver(resolver);
-	};
-	
-	/**
-	 * Sets the properties file 'application.properties'.
-	 * @return A property sources place holder configurer.
-	 */
-	@Bean
-    public static PropertySourcesPlaceholderConfigurer propertyPlaceHolderConfigurer() {
-		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
-	    propertySourcesPlaceholderConfigurer.setLocation(new ClassPathResource("config/application.properties"));
-	    return propertySourcesPlaceholderConfigurer;
+    @Inject
+    private Environment environment;
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new StringHttpMessageConverter());
+        converters.add(new MappingJackson2HttpMessageConverter());
+        converters.add(new ByteArrayHttpMessageConverter());
+        converters.add(new SearchResultCsvConverter());
     }
 
-	/**
-	 * Configures the JDBC datasource (connection to the DB). A Hikari connection pool is utilized.
-	 * @return The configured datasource.
-	 */
-	@Bean(destroyMethod="close")
-	public DataSource dataSource() {
-		final HikariDataSource hikariDataSource = new HikariDataSource();
-		hikariDataSource.setDriverClassName(environment.getProperty("jdbcDriverClassName"));
-		hikariDataSource.setJdbcUrl(environment.getProperty("jdbcUrl"));
-		hikariDataSource.setUsername(environment.getProperty("jdbcUsername"));
-		hikariDataSource.setPassword(environment.getProperty("jdbcPassword"));
-		hikariDataSource.setAutoCommit(false);
-		hikariDataSource.setLeakDetectionThreshold(20000);
-		
-		// Tells Spring to bounce off the connection pool
-		return new LazyConnectionDataSourceProxy(hikariDataSource) {
-			@SuppressWarnings("unused")
-			public void close() throws SQLException  {
-				HikariDataSource datasource = (HikariDataSource) super.getTargetDataSource();
-				datasource.close();
-			}
-		};
-	}
-	
-	/**
-	 * Configures a hibernate session factory.
-	 * @return The configured session factory.
-	 */
-	@Bean
-	public LocalSessionFactoryBean sessionFactory() {
-		final Properties hibernateProperties = new Properties();
-		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-		hibernateProperties.setProperty("hibernate.show_sql", "false");
-		hibernateProperties.setProperty("hibernate.id.new_generator_mappings", "false");
-		hibernateProperties.setProperty("hibernate.connection.autocommit", "false");
-		
-		final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-		sessionFactory.setDataSource(dataSource());
-		sessionFactory.setHibernateProperties(hibernateProperties);
-		sessionFactory.setPackagesToScan(new String[]{"de.uni_koeln.arachne.mapping.hibernate"});
-		
-		return sessionFactory;
-	}
-	
-	/**
-	 * Creates a hibernate transaction manager.
-	 * @return A new transaction manager.
-	 */
-	@Bean
-	public HibernateTransactionManager transactionManager() {
-		return new HibernateTransactionManager(sessionFactory().getObject());
-	}
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        final InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setPrefix("/WEB-INF/views/");
+        resolver.setSuffix(".jsp");
+        registry.viewResolver(resolver);
+    }
+
+    /**
+     * Sets the properties file 'application.properties'.
+     *
+     * @return A property sources place holder configurer.
+     */
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyPlaceHolderConfigurer() {
+        PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+        propertySourcesPlaceholderConfigurer.setLocation(new ClassPathResource("config/application.properties"));
+        return propertySourcesPlaceholderConfigurer;
+    }
+
+    /**
+     * Configures the JDBC datasource (connection to the DB). A Hikari connection pool is utilized.
+     *
+     * @return The configured datasource.
+     */
+    @Bean(destroyMethod = "close")
+    public DataSource dataSource() {
+        final HikariDataSource hikariDataSource = new HikariDataSource();
+        hikariDataSource.setDriverClassName(environment.getProperty("jdbcDriverClassName"));
+        hikariDataSource.setJdbcUrl(environment.getProperty("jdbcUrl"));
+        hikariDataSource.setUsername(environment.getProperty("jdbcUsername"));
+        hikariDataSource.setPassword(environment.getProperty("jdbcPassword"));
+        hikariDataSource.setAutoCommit(false);
+        hikariDataSource.setLeakDetectionThreshold(20000);
+
+        // Tells Spring to bounce off the connection pool
+        return new LazyConnectionDataSourceProxy(hikariDataSource) {
+            @SuppressWarnings("unused")
+            public void close() throws SQLException {
+                HikariDataSource datasource = (HikariDataSource) super.getTargetDataSource();
+                datasource.close();
+            }
+        };
+    }
+
+    /**
+     * Configures a hibernate session factory.
+     *
+     * @return The configured session factory.
+     */
+    @Bean
+    public LocalSessionFactoryBean sessionFactory() {
+        final Properties hibernateProperties = new Properties();
+        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        hibernateProperties.setProperty("hibernate.show_sql", "false");
+        hibernateProperties.setProperty("hibernate.id.new_generator_mappings", "false");
+        hibernateProperties.setProperty("hibernate.connection.autocommit", "false");
+
+        final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setHibernateProperties(hibernateProperties);
+        sessionFactory.setPackagesToScan("de.uni_koeln.arachne.mapping.hibernate");
+
+        return sessionFactory;
+    }
+
+    /**
+     * Creates a hibernate transaction manager.
+     *
+     * @return A new transaction manager.
+     */
+    @Bean
+    public HibernateTransactionManager transactionManager() {
+        return new HibernateTransactionManager(sessionFactory().getObject());
+    }
 }

@@ -184,9 +184,9 @@ public class TestData {
 	public static SearchResult getDefaultSearchResult() {
 		final SearchResult result = new SearchResult();
 		result.addSearchHit(new SearchHit(1l, "test", "testServer.com/entity/1" ,"Test title", "Test subtitle", 1l
-				, new ArrayList<Place>(), null));
+				, new ArrayList<Place>(), null, null));
 		result.addSearchHit(new SearchHit(2l, "test", "testServer.com/entity/2" ,"Test title 1", "Test subtitle 1", 2l
-				, new ArrayList<Place>(), null));
+				, new ArrayList<Place>(), null, null));
 		result.setSize(2);
 		final SearchResultFacet facet1 = new SearchResultFacet("facet_test1");
 		facet1.addValue(new SearchResultFacetValue("test1_value1b", "", 1));

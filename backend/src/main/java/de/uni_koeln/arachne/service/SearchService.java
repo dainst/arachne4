@@ -309,7 +309,8 @@ public class SearchService {
 		searchResult.setScrollId(searchResponse.getScrollId());
 		
 		for (final SearchHit currenthit: hits) {
-			final Integer intThumbnailId = (Integer)currenthit.getSource().get("thumbnailId");
+			Map<String, Object> source = currenthit.getSource();
+			final Integer intThumbnailId = (Integer) source.get("thumbnailId");
 			Long thumbnailId = null;
 			if (intThumbnailId != null) {
 				thumbnailId = Long.valueOf(intThumbnailId);
@@ -319,15 +320,16 @@ public class SearchService {
 					.collect(Collectors.toMap(Map.Entry::getKey, entry -> Arrays.stream(entry.getValue().fragments())
 							.map(fragment -> fragment.toString())
 							.collect(Collectors.toList())));
-									
+
 			searchResult.addSearchHit(new de.uni_koeln.arachne.response.search.SearchHit(Long.valueOf(currenthit.getId())
-					, (String)(currenthit.getSource().get("type"))
-					, (String)(currenthit.getSource().get("@id"))
-					, (String)(currenthit.getSource().get("title"))
-					, (String)(currenthit.getSource().get("subtitle"))
+					, (String)(source.get("type"))
+					, (String)(source.get("@id"))
+					, (String)(source.get("title"))
+					, (String)(source.get("subtitle"))
 					, thumbnailId
-					, (List<Place>)currenthit.getSource().get("places")
-					, highlights));			
+					, (List<Place>) source.get("places")
+					, highlights
+					, source));
 		}
 		
 		// add facet search results
@@ -405,19 +407,21 @@ public class SearchService {
 		searchResult.setScrollId(searchResponse.getScrollId());
 		
 		for (final SearchHit currenthit: hits) {
-			final Integer intThumbnailId = (Integer)currenthit.getSource().get("thumbnailId");
+			Map<String, Object> source = currenthit.getSource();
+			final Integer intThumbnailId = (Integer) source.get("thumbnailId");
 			Long thumbnailId = null;
 			if (intThumbnailId != null) {
 				thumbnailId = Long.valueOf(intThumbnailId);
 			}
 			searchResult.addSearchHit(new de.uni_koeln.arachne.response.search.SearchHit(Long.valueOf(currenthit.getId())
-					, (String)(currenthit.getSource().get("type"))
-					, (String)(currenthit.getSource().get("@id"))
-					, (String)(currenthit.getSource().get("title"))
-					, (String)(currenthit.getSource().get("subtitle"))
+					, (String)(source.get("type"))
+					, (String)(source.get("@id"))
+					, (String)(source.get("title"))
+					, (String)(source.get("subtitle"))
 					, thumbnailId
-					, (List<Place>)currenthit.getSource().get("places"),
-					null));
+					, (List<Place>) source.get("places"),
+					null
+					, source));
 		}
 		
 		return searchResult;
@@ -492,7 +496,7 @@ public class SearchService {
 	 * @return A set of <code>Aggregations</code>.
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
-	private Set<Aggregation> getFacetList(final Multimap<String, String> filters, final int limit
+	public Set<Aggregation> getFacetList(final Multimap<String, String> filters, final int limit
 			, final Integer geoHashPrecision, final String facet, final String lang) throws Transl8Exception {
 		
 		final Set<Aggregation> result = new LinkedHashSet<Aggregation>();
