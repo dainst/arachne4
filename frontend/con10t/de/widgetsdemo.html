@@ -22,26 +22,12 @@
             <h3>Markup</h3>
             <pre>
 &lt;con10t-show-if <strong>dataset-group="SyrianHeritage"</strong>&gt;
-&lt;div con10t-map
-   id="map"
-   limit="200"
-   facets-select="config.facetsSelect"
-   lat="35.514040"
-   lng="38.972066"
-   zoom="5"&gt;
-&lt;/div&gt;
+    &lt;zu verteckender Inhalt&gt;
 &lt;/con10t-show-if&gt;
             </pre>
             <h3>Darstellung</h3>
             <con10t-show-if dataset-group="SyrianHeritage">
-                <div con10t-map
-                     id="map"
-                     limit="200"
-                     facets-select="config.facetsSelect"
-                     lat="35.514040"
-                     lng="38.972066"
-                     zoom="5">
-                </div>
+                <div style="height: 100px;"></div>
             </con10t-show-if>
 
 
@@ -185,7 +171,7 @@ style=&quot;height: 500px&quot;&gt;
                 <p>Bildanzeige per Arachne-ID</p>
                 <con10t-image entity-id="1926835" width="250">Portrait of a<br>julio-claudian prince</con10t-image>
             </div>
-            <div style="float: right">
+            <div style="float: left; margin-left: 1em">
                 <p>Bildanzeige per URL</p>
                 <con10t-image src="/con10t/img/hinkel/hinkel-ams_01.png" width="250"></con10t-image>
             </div>
@@ -200,7 +186,7 @@ style=&quot;height: 500px&quot;&gt;
             <h3>Darstellung</h3>
             <con10t-include src="/con10t/de/hinkel_toc.html"></con10t-include>
 
-            <h2 class="con10t-toc-entry" style="margin-top: .6em">con10t-media-tree (in Vorbereitung)</h2>
+            <h2 class="con10t-toc-entry" style="margin-top: .6em">Zurschaustellung promineter Beispiele: con10t-media-tree</h2>
             <h3>Markup</h3>
             <pre>
 &lt;con10t-media-tree
@@ -220,7 +206,6 @@ style=&quot;height: 500px&quot;&gt;
             </pre>
             <h3>Darstellung</h3>
             <con10t-media-tree
-                    header-teaser="1246708"
                     title="Rom Einzelmotive"
                     images="[{
                             entityid: 1244857,
