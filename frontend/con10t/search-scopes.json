@@ -1,0 +1,118 @@
+{
+
+  "afrarchcologne": {
+	"facets": [
+	  {
+		"key": "facet_bestandsname",
+		"value": "AAArC"
+	  }
+	]
+  },
+
+  "antiksammlberlin": {
+	"q": "catalogPaths:105"
+  },
+
+  "basilaemil": {
+	"q": "catalogPaths:24"
+  },
+
+  "berlinsamml": {
+	"q": "connectedEntities:1241844",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Reproduktionen"
+	  }
+	]
+  },
+
+  "ceramegypt": {
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "mainabstract"
+	  }
+	]
+  },
+
+  "cilopac": {
+	"q": "catalogPaths:41"
+  },
+
+  "fotoarchivdaiberlin": {
+	"q": "D-DAI-Z",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Bilder"
+	  }
+	]
+  },
+  "fotoistanbul": {
+	"q": "D-DAI-IST",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Bilder"
+	  }
+	]
+  },
+  "fotokairo": {
+	"q": "D-DAI-KAI",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Bilder"
+	  }
+	]
+  },
+  "fotomadrid": {
+	"q": "D-DAI-MAD",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Bilder"
+	  }
+	]
+  },
+
+  "gipsleipzigsamml": {
+	"q": "connectedEntities:1241594",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Einzelobjekte"
+	  }
+	]
+  },
+
+  "grako": {
+	"facets": [
+	  {
+		"key":		"catalogIds",
+		"value":	"92"
+	  }
+	]
+  },
+
+  "oppenheim": {
+	"q": "catalogPaths:54",
+	"facets": [
+	  {
+		"key": "facet_bestandsname",
+		"value": "Fotosammlung Max von Oppenheim"
+	  }
+	]
+  },
+
+  "syrher": {
+	"facets": [
+	  {
+		"key": "facet_bestandsname",
+		"value": "Syrian-Heritage-Archive-Project"
+	  }
+	]
+  }
+
+}
