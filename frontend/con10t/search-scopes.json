@@ -40,6 +40,10 @@
 	"q": "catalogPaths:41"
   },
 
+  "databasepausanias": {
+	"q": "(catalogPaths:111 OR catalogPaths:110)"
+  },
+
   "fotoarchivdaiberlin": {
 	"q": "D-DAI-Z",
 	"facets": [
@@ -92,6 +96,19 @@
 	  {
 		"key":		"catalogIds",
 		"value":	"92"
+	  }
+	]
+  },
+
+  "hafen": {
+	"q": "catalogPaths:22"
+  },
+
+  "hinkel": {
+	"facets": [
+	  {
+		"key": "facet_bestandsname",
+		"value": "Archiv-Friedrich-W-Hinkel"
 	  }
 	]
   },
