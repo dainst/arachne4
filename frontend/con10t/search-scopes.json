@@ -113,12 +113,162 @@
 	]
   },
 
+  "imagegrid": {
+	"q": "vaticanischen sculpturen",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Bücher"
+	  }
+	]
+  },
+
+  "invbuecherrom": {
+	"q": "Inventarbuch",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Bücher"
+	  }
+	]
+  },
+
+  "kanatha": {
+	"q": "catalogPaths:109"
+  },
+
+  "katalogskulpthess":{
+	"q": "connectedEntities:1241674",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Einzelobjekte"
+	  }
+	]
+  },
+
+  "kossack": {
+	"q": "kossack-",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Bücher"
+	  }
+	]
+  },
+
+  "langwiss": {
+	"q": "catalogPaths:38"
+  },
+
+  "lippsbasilica": {
+	"q": "catalogPaths:27"
+  },
+
   "oppenheim": {
-	"q": "catalogPaths:54",
+	"q": "(catalogPaths:54 OR catalogPaths:28)",
 	"facets": [
 	  {
 		"key": "facet_bestandsname",
 		"value": "Fotosammlung Max von Oppenheim"
+	  }
+	]
+  },
+
+  "palilia20Baubefunde": {
+	"q": "(catalogPaths:39 OR catalogPaths:33)"
+  },
+
+
+  "palilia20Grabdenkmaeler": {
+	"q": "(catalogPaths:31 OR catalogPaths:40)"
+  },
+
+  "palilia26": {
+	"q": "catalogPaths:34"
+  },
+
+  "rezeptionantike": {
+	"q": "(catalogPaths:107 OR catalogPaths:108)"
+  },
+
+  "roseterra":{
+	"q": " H. Rose römischen Terrakottamasken Nordwestprovinzen",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Einzelobjekte"
+	  }
+	]
+  },
+
+  "rwwa": {
+	"facets": [
+	  {
+		"key": "facet_bestandsname",
+		"value": "Rheinisch-Westfälisches Wirtschaftsarchiv"
+	  },
+	  {
+		"key": "facet_kategorie",
+		"value": "Bilder"
+	  }
+	]
+  },
+
+  "sammlakakunst": {
+	"q": "connectedEntities:1241765",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Reproduktionen"
+	  }
+	]
+  },
+
+  "sammlsaarbr": {
+	"q": "connectedEntities:1241756",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Reproduktionen"
+	  }
+	]
+  },
+
+  "schlossfulda": {
+	"q": "connectedEntities:1241588",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Einzelobjekte"
+	  }
+	]
+  },
+
+  "skulpturnegdairom": {
+	"q": "catalogPaths:106"
+  },
+
+  "spacodices": {
+	"q": "catalogPaths:32",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Bücher"
+	  }
+	]
+  },
+
+  "spornsiegel": {
+	"q": "connectedEntities:1241917"
+  },
+
+  "stendal": {
+	"q": "connectedEntities:1241766",
+	"facets": [
+	  {
+		"key": "facet_image",
+		"value": "ja"
 	  }
 	]
   },
@@ -130,6 +280,14 @@
 		"value": "Syrian-Heritage-Archive-Project"
 	  }
 	]
+  },
+
+  "widgetsdemo": {
+	"q": "spirit"
+  },
+
+  "wohnkulturOstia": {
+	"q": "catalogPaths:102"
   }
 
 }

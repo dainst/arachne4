@@ -656,6 +656,14 @@
                     "hidden": true
                 }
             ]
+        },
+
+        {
+            "id": "spornsiegel",
+            "title": {
+                "de": "K. Sporn (Hrsg.), Spiegel Europas. Die Antikensammlung im Suermondt-Ludwig-Museum"
+            },
+            "hidden": true
         }
     ]
 }
