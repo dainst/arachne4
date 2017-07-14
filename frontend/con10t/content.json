@@ -664,6 +664,14 @@
                 "de": "K. Sporn (Hrsg.), Spiegel Europas. Die Antikensammlung im Suermondt-Ludwig-Museum"
             },
             "hidden": true
+        },
+
+        {
+            "id": "_testscope",
+            "title": {
+                "en": "The same old fears"
+            },
+            "hidden": true
         }
     ]
 }

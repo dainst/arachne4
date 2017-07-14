@@ -288,6 +288,16 @@
 
   "wohnkulturOstia": {
 	"q": "catalogPaths:102"
+  },
+
+  "_testscope": {
+	"q": "you",
+	"facets": [
+	  {
+		"key": "facet_kategorie",
+		"value": "Personen"
+	  }
+	]
   }
 
 }
