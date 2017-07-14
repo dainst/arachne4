@@ -17,12 +17,7 @@
     menuFacetsAppend: {
         facet_gebaeudetypspeziell: ' (Werkstattgattung)'
     },
-    facetsSelect: [
-        {
-            key: 'catalogIds',
-            value: 92
-        }
-    ],
+    facetsSelect: [],
     overlays: {
         groups: [
             {
@@ -208,7 +203,7 @@
         osm: {
             name: 'OpenStreetMap',
             type: 'xyz',
-            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             layerOptions: {
                 subdomains: ['a', 'b', 'c'],
                 attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
@@ -250,7 +245,8 @@
          limit="200"
          baselayers="config.baselayers"
          default-baselayer="config.defaultBaselayer"
-         facets-select="config.facetsSelect">
+         facets-select="config.facetsSelect"
+    >
     </div>
 
     <div con10t-map-overlays

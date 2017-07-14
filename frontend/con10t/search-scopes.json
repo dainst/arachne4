@@ -100,6 +100,10 @@
 	]
   },
 
+  "grako_map": {
+	"alias": "grako"
+  },
+
   "hafen": {
 	"q": "catalogPaths:22"
   },
@@ -111,6 +115,10 @@
 		"value": "Archiv-Friedrich-W-Hinkel"
 	  }
 	]
+  },
+
+  "hinkel_map": {
+	"alias": "hinkel"
   },
 
   "imagegrid": {
@@ -280,6 +288,10 @@
 		"value": "Syrian-Heritage-Archive-Project"
 	  }
 	]
+  },
+
+  "syrher_map": {
+	"alias": "syrher"
   },
 
   "widgetsdemo": {
