@@ -1,0 +1,184 @@
+<div hide-footer class="row fullscreenrow">
+
+    <div ng-init="config = {
+    menuTitle: 'Funerary Monuments on Roman Centurions',
+    menuFacetsAllow: [
+        'facet_kulturkreis',
+        'facet_datierungepoche',
+        'facet_befund',
+        'facet_kontext',
+        'facet_einbindung',
+        'facet_literatur'
+    ],
+    facetsSelect: [
+        {
+            key: 'catalogIds',
+            value: 69
+        }
+    ],
+    overlays: {
+        groups: [
+            {
+                name: 'Physiogeographie',
+                overlays: [
+                    {
+                        key: 'coastline',
+                        name: 'Antiker Küstenverlauf',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:coastline',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:coastline'
+                    },
+                    {
+                        key: 'europe_data',
+                        name: 'Minerallagerstätten in Europa',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:europe_data',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:europe_data'
+                    }
+                ]
+            },
+            {
+                name: 'Transportwege',
+                overlays: [
+                    {
+                        key: 'ba_roads',
+                        name: 'Römisches Straßennetz',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:ba_roads',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:ba_roads'
+                    }
+                ]
+            },
+            {
+                name: 'Römisches Reich',
+                overlays: [
+                    {
+                        key: 'roman_empire_ad_14_provinces',
+                        name: 'Provinzen 14 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:roman_empire_ad_14_provinces',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_14_provinces'
+                    },
+                    {
+                        key: 'roman_empire_ad_69_provinces',
+                        name: 'Provinzen 69 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:roman_empire_ad_69_provinces',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_69_provinces'
+                    },
+                    {
+                        key: 'ba_100_provinces',
+                        name: 'Provinzen 100 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:ba_100_provinces',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:ba_100_provinces'
+                    },
+                    {
+                        key: 'roman_empire_ad_117',
+                        name: 'Provinzen 117 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:roman_empire_ad_117',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_117'
+                    },
+                    {
+                        key: 'roman_empire_ad_200_provinces',
+                        name: 'Provinzen 200 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:roman_empire_ad_200_provinces',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_200_provinces'
+                    }
+                ]
+            }
+        ]
+    },
+    baselayers: {
+        osm: {
+            name: 'OpenStreetMap',
+            type: 'xyz',
+            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            layerOptions: {
+                subdomains: ['a', 'b', 'c'],
+                attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
+                continuousWorld: true,
+                maxZoom: 18
+            }
+        },
+        romanEmpire: {
+            name: 'Roman Empire',
+            type: 'xyz',
+            url: 'http://dare.ht.lu.se/tiles/imperium/{z}/{x}/{y}.png',
+            layerOptions: {
+                subdomains: ['a', 'b', 'c'],
+                attribution: 'Tiles: <a href=\'http://dare.ht.lu.se/\'>DARE 2014</a>',
+                continuousWorld: true
+            }
+        }
+    },
+    defaultBaselayer: 'osm'
+}"></div>
+    <div id="menu" class="col-sm-2 fullscreencol">
+
+        <h2 class="text-muted uppercase" style="font-variant:small-caps;cursor:pointer"
+            ng-click="rightMenuToggled = !rightMenuToggled">
+            Funerary Monuments on Roman Centurions
+        </h2>
+
+        <div con10t-map-menu-search-info type="places"></div>
+        <div con10t-map-menu-search-field heading="Search in catalogue entries"></div>
+    </div>
+
+    <div con10t-map
+         class="col-sm-8 fullscreencol"
+         id="map"
+         limit="200"
+         baselayers="config.baselayers"
+         default-baselayer="config.defaultBaselayer"
+         facets-select="config.facetsSelect">
+    </div>
+
+    <div con10t-map-overlays
+         class="col-sm-2 fullscreencol"
+         overlays="config.overlays"
+         baselayers="config.baselayers">
+    </div>
+</div>
