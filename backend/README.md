@@ -14,7 +14,10 @@ src/main/resources/config/application.properties
 ``` 
 
 Before building or running the backend, 
-make sure you have a `Java 8 SDK` and `maven` installed on your machine.
+make sure you have a `Java 8 SDK` and `maven` installed on your machine. With Ubuntu and Debian we made the experience that you need Oracle Java.
+
+### image cache dir
+In the config-file, you find a parameter called "imageCacheDir". You need this directory to be existing.
 
 ## Building
 
