@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class to hold one facet of a search result with ordered facet values. 
+ * Class to hold one facet of a search result with ordered facet values.
  */
 public class SearchResultFacet {
 
@@ -12,7 +12,7 @@ public class SearchResultFacet {
 	 * The facet internal name.
 	 */
 	private String name;
-	
+
 	/**
 	 * The translated facet name to show in the frontend.
 	 */
@@ -22,12 +22,17 @@ public class SearchResultFacet {
 	 * The filter group
 	 */
 	private String group;
-	
+
+	/**
+	 * The filter dependency
+	 */
+	private String dependsOn;
+
 	/**
 	 * The facet values.
 	 */
 	private final transient List<SearchResultFacetValue> values = new ArrayList<SearchResultFacetValue>();
-	
+
 	/**
 	 * Convenience constructor to create an instance with name set.
 	 * @param name The facet name.
@@ -36,9 +41,10 @@ public class SearchResultFacet {
 		this.name = name;
 	}
 
-	public SearchResultFacet(final String name, final String group) {
+	public SearchResultFacet(final String name, final String group, final String dependsOn) {
 		this.name = name;
 		this.group = group;
+		this.dependsOn = dependsOn;
 	}
 
 	/**
@@ -89,6 +95,22 @@ public class SearchResultFacet {
 		this.group = group;
 	}
 
+	/**
+	 *
+	 * @return string
+	 */
+	public String getDependsOn() {
+		return dependsOn;
+	}
+
+	/**
+	 *
+	 * @param dependsOn
+	 */
+	public void setDependsOn(String dependsOn) {
+		this.dependsOn = dependsOn;
+	}
+
 
 	/**
 	 * Getter for the facet values.
@@ -97,7 +119,7 @@ public class SearchResultFacet {
 	public List<SearchResultFacetValue> getValues() {
 		return values;
 	}
-	
+
 	/**
 	 * Adds a value to the facet value list.
 	 * @param value The value to add.
@@ -105,5 +127,5 @@ public class SearchResultFacet {
 	public void addValue(final SearchResultFacetValue value) {
 		values.add(value);
 	}
-			
+
 }

@@ -211,7 +211,7 @@
 		<facet name="gattungallgemein" labelKey="Gattung">
 			<field datasource="reproduktion.GattungAllg" />
 		</facet>
-		<facet name="gattungspeziell" labelKey="Gattung Zusatz">
+		<facet name="gattungspeziell" labelKey="Gattung Zusatz" dependsOn="gattungallgemein">
 			<field datasource="reproduktion.GattungSpeziell" />
 		</facet>
 		<facet name="gottgoettin" labelKey="Gottheit">
