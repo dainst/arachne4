@@ -377,7 +377,8 @@ public class XmlConfigUtil implements ServletContextAware {
 							element.getAttributeValue("name"),
 						new SearchResultFacet(
 							element.getAttributeValue("name"),
-							element.getAttributeValue("group")
+							element.getAttributeValue("group"),
+							element.getAttributeValue("dependsOn")
 						)
 					);
 				}
