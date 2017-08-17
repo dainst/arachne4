@@ -50,6 +50,7 @@
 									<xs:attribute name="labelKey" type="xs:string"
 										use="required" />
 									<xs:attribute name="group" type="xs:string" />
+									<xs:attribute name="dependsOn" type="xs:string" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="include" type="IncludeContent" />
