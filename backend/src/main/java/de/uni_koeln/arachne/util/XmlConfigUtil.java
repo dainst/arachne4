@@ -1,12 +1,7 @@
 package de.uni_koeln.arachne.util;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,6 +28,7 @@ import de.uni_koeln.arachne.response.Field;
 import de.uni_koeln.arachne.response.FieldList;
 import de.uni_koeln.arachne.response.LinkField;
 import de.uni_koeln.arachne.response.Section;
+import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.util.sql.TableConnectionDescription;
 import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
@@ -71,6 +67,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	private transient final Map<String, List<TableConnectionDescription>> subCategories = new HashMap<>();
 	
 	private transient final Map<String, Set<String>> facets = new HashMap<>();
+
+	private transient Map<String, Map<String, SearchResultFacet>> facetCache = new HashMap();
 
 	@Autowired
     private transient Transl8Service ts;
@@ -364,24 +362,62 @@ public class XmlConfigUtil implements ServletContextAware {
 	public Set<String> getFacetsFromXMLFile(final String type) {
 		Set<String> cachedFacets = facets.get(type);
 		if (cachedFacets == null) {
-			final Set<String> facetList = new HashSet<>();
+			final Map<String, SearchResultFacet> facetMap = new HashMap();
+			final Set<String> facetNameList = new HashSet<>();
 
 			final Document document = getDocument(type);
 			if (document != null) {
 				final Namespace namespace = document.getRootElement().getNamespace();
 
-				final Element facets = document.getRootElement().getChild("facets", namespace);
+				final Element facetsElements = document.getRootElement().getChild("facets", namespace);
 
-				for (final Element element: facets.getChildren()) {
-					facetList.add(element.getAttributeValue("name")); 				 				
+				for (final Element element: facetsElements.getChildren()) {
+					facetNameList.add(element.getAttributeValue("name"));
+					facetMap.put(
+							element.getAttributeValue("name"),
+						new SearchResultFacet(
+							element.getAttributeValue("name"),
+							element.getAttributeValue("group"),
+							element.getAttributeValue("dependsOn")
+						)
+					);
 				}
+				facets.put(type, facetNameList);
+				facetCache.put(type, facetMap);
 			}
-			return facetList;
+			return facetNameList;
 		} else {
 			return cachedFacets;
 		}
 	}
-	
+
+	/**
+	 *
+	 *
+	 * @param facetName with or without "facet_" - prefix
+	 * @return SearchResultFacet
+	 */
+	public SearchResultFacet getFacetInfo(String category, String facetName) {
+
+		// do we know that category?
+		if (facetCache.get(category) == null) {
+			return null;
+		}
+
+		// do it has this facetName?
+		if (facetCache.get(category).get(facetName.substring(6)) != null) {
+			return facetCache.get(category).get(facetName.substring(6)); // remove the "facet_"-prefix
+		}
+
+		// do _default_facets know this facet name?
+		if (facetCache.get("_default_facets").get(facetName) != null) {
+			return facetCache.get("_default_facets").get(facetName);
+		}
+
+		return null;
+	}
+
+
 	/**
 	 * Returns the content of a field of the dataset as defined inside an <code>ifEmtpy</code> tag in the XML config file.
 	 * It is safe to use even if the passed in <code>Element</code> does not have an <code>ifEmpty-Element</code> as a child.

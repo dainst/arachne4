@@ -19,7 +19,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="display" minOccurs="1" maxOccurs="1">
+				<xs:element name="display" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
 						<xs:sequence>
 							<!-- shouldn't title and subtitle may be only of a single field? -->
@@ -44,11 +44,13 @@
 									<xs:choice>
 										<xs:element name="context" type="ContextContent" />
 										<xs:element name="field" type="FieldContent" />
+										<xs:element name="default" /> <!-- maybe default facets will get some special properties one day -->
 									</xs:choice>
 									<xs:attribute name="name" type="xs:string" use="required" />
 									<xs:attribute name="labelKey" type="xs:string"
 										use="required" />
 									<xs:attribute name="group" type="xs:string" />
+									<xs:attribute name="dependsOn" type="xs:string" />
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="include" type="IncludeContent" />

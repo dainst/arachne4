@@ -355,9 +355,6 @@
 			<field datasource="marbilderinventar.Schlagworte" />
 		</facet>
 		<facet name="aufnahmedatum" labelKey="Aufnahmedatum">
-			<field datasource="marbilderbestand.aufnahmedatum" />
-		</facet>
-		<facet name="aufnahmedatum" labelKey="Aufnahmedatum">
 			<field datasource="marbilderinventar.03_Aufnahmedatum" />
 		</facet>
 	</facets>

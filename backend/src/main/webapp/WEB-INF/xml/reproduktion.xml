@@ -199,35 +199,37 @@
 	<facets>
 		<include type="facet_kategorie" />
 		<include type="facet_literatur" />
-		<facet name="bearbeitungen" labelKey="Bearbeitungen">
+		<facet name="bearbeitungen" labelKey="Bearbeitungen" group="zustand">
 			<field datasource="reproduktion.BearbeitungenReproduktion" />
 		</facet>
-		<facet name="ergaenzungen" labelKey="Ergaenzungen">
+		<facet name="ergaenzungen" labelKey="Ergaenzungen" group="zustand">
 			<field datasource="reproduktion.ErgaenzungenReproduktion" />
 		</facet>
-		<facet name="erhaltung" labelKey="Erhaltung">
+		<facet name="erhaltung" labelKey="Erhaltung" group="zustand">
 			<field datasource="reproduktion.ErhaltungReproduktion" />
 		</facet>
-		<facet name="gattungallgemein" labelKey="Gattung">
-			<field datasource="reproduktion.GattungAllg" />
-		</facet>
-		<facet name="gattungspeziell" labelKey="Gattung Zusatz">
-			<field datasource="reproduktion.GattungSpeziell" />
-		</facet>
-		<facet name="gottgoettin" labelKey="Gottheit">
+
+		<facet name="gottgoettin" labelKey="Gottheit" group="motiv">
 			<field datasource="reproduktion.GottGoettin" />
 		</facet>
-		<facet name="mischwesen" labelKey="Mischwesen">
+		<facet name="mischwesen" labelKey="Mischwesen"  group="motiv">
 			<field datasource="reproduktion.Mischwesen" />
 		</facet>
-		<facet name="material" labelKey="Material">
-			<field datasource="reproduktion.MaterialReproduktion" />
-		</facet>
-		<facet name="technik" labelKey="Technik">
-			<field datasource="reproduktion.TechnikReproduktion" />
-		</facet>
-		<facet name="grundform" labelKey="Grundform">
+		<facet name="grundform" labelKey="Grundform" group="typ">
 			<field datasource="reproduktion.GrundformReproduktion" />
 		</facet>
+		<facet name="gattungallgemein" labelKey="Gattung" group="typ">
+			<field datasource="reproduktion.GattungAllg" />
+		</facet>
+		<facet name="gattungspeziell" labelKey="Gattung Zusatz" dependsOn="gattungallgemein" group="typ">
+			<field datasource="reproduktion.GattungSpeziell" />
+		</facet>
+		<facet name="material" labelKey="Material" group="typ">
+			<field datasource="reproduktion.MaterialReproduktion" />
+		</facet>
+		<facet name="technik" labelKey="Technik" group="typ">
+			<field datasource="reproduktion.TechnikReproduktion" />
+		</facet>
+
 	</facets>
 </category>
