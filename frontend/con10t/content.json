@@ -265,7 +265,7 @@
                     "title": {
                         "de": "Fotothek München"
                     },
-                    "hidden": true
+                    "hidden": false
                 },
                 {
                     "id": "hinkel",
@@ -448,7 +448,14 @@
                         "de": "Werkstätten vormoderner Wirtschaftsräume",
                         "en": "Craft production sites of pre-modern economies"
                     }
-                }
+                },
+        		{
+        		   "id": "jtfourplace",
+                   "title": {
+                        "de": "Our Place: Our Place in the World",
+			            "en": "Our Place: Our Place in the Wolrd"
+                   }
+        		}
             ]
         },
         {
@@ -532,6 +539,12 @@
                     "id": "hafen",
                     "title": {
                         "de": "Torsten Bendschus – Stefan Feuser, Bilder und Vorstellungen römischer Hafenanlagen. Gattungsübergreifende Dokumentation und kontextualisierte Analyse römischer Hafendarstellungen"
+                    }
+                },
+                {
+                    "id": "centurions",
+                    "title": {
+                        "en": "U. Stockinger, Dressed to Drill. The Evidence of Funerary Monuments on Roman Centurions‘ Equipment. Journal of Roman Military Equipment Studies 18, 2017"
                     }
                 }
             ]

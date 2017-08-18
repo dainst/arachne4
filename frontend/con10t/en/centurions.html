@@ -1,0 +1,113 @@
+<idai-header
+        image="/con10t/headerimages/centurions_bgr.png"
+        description=""
+        link="http://arachne.dainst.org/search?q=ulrich%20stockinger">
+</idai-header>
+
+<div class="con10t-page teaserpage container">
+
+    <div class="con10t-row">
+
+        <div class="con10t-title">
+            <h1>Dressed to Drill. The Evidence of Funerary Monuments on Roman Centurions' Equipment.</h1>
+            <h2>U. Stockinger, Journal of Roman Military Equipment Studies 18, 2017</h2>
+        </div>
+
+        <div class="con10t-sidebar">
+            <con10t-toc toc-heading="Content"></con10t-toc>
+
+            <h3>Search in catalog</h3>
+            <p><a con10t-search-query="*&amp;fq=catalogIds:'69'">Show all catalogue entries</a></p>
+            <p><con10t-search catalog-id="69"></con10t-search></p>
+
+            <h3>Spatial Search</h3>
+            <div ng-init="config = {
+                baselayers: {
+                    osm: {
+                        name: 'OpenStreetMap',
+                        type: 'xyz',
+                        url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        layerOptions: {
+                            subdomains: ['a', 'b', 'c'],
+                            attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
+                            continuousWorld: true,
+                            maxZoom: 18
+                        }
+                    }
+                },
+                baselayerKey: 'osm',
+                clustered: false
+            }"></div>
+            <div>
+                <a href="/project/centurions_map" title="Zur Karte" style="cursor:pointer">
+                <span class="glyphicon glyphicon-fullscreen"></span>&nbsp;Enlarge map</a>
+            </div>
+            <div con10t-map
+                 id="map"
+                 limit="200"
+                 catalog-id="69"
+                 baselayers="config.baselayers"
+                 default-baselayer="config.baselayerKey"
+                 facets-select="config.facetsSelect">
+            </div>
+        </div>
+
+        <div class="con10t-content">
+            <h3 class="con10t-toc-entry">Introduction</h3>
+            <p>
+                This catalogue provides additional information on the funerary monuments discussed in the article
+                "Dressed to Drill. The Evidence of Funerary Monuments on Roman Centurions' Equipment", published in
+                the Journal of Roman Military Equipment Studies 18. It was intended to compile as many tombstones
+                erected for centurions depicting some part of the deceased’s military equipment as possible. To prevent
+                circular arguments, this paper only draws on tombstones that feature both an inscription indicating
+                that the deceased was a centurion of the Roman army and a depiction of the soldier or at least some
+                part of his military equipment. References to monuments that have been overlooked would be greatly
+                appreciated.
+            </p>
+
+            <h3 class="con10t-toc-entry">Instructions</h3>
+            <p>
+                The numbers of the catalogue entries correspond to those in the table published in the JRMES and used
+                throughout the article. The funerary monuments of men who did not hold the rank of centurion at death
+                are marked with an asterisk (those promoted to other military or public functions) resp. a superscript
+                'v' (veterans). Some memorials were erected to commemorate also other members of the centurions'
+                families, which affected the representations to various degrees; a '+' following their names identifies
+                these monuments. The data sets are of varying detail, reflecting the extent and quality of the textual
+                and pictorial information available to me. Some memorials are lost, and inscription and representation
+                survive only in documentation (in varying detail). These are indicated with a '°'.
+                <br>
+                There are different ways to explore the entries of the catalogue: The search box enables you to look
+                for certain words in all the data sets. For a spatial search use the map showing the sites where the
+                catalogue entries were found. In addition, you can explore the catalogue arranged according to different
+                criteria (presumed date of manufacture, rank(s) of the deceased within the centurionate, type(s) of
+                unit, and type of representation).
+                <br>
+                Clicking on a folder symbol displays/hides its subfolders resp. the respective catalogue entries. The
+                magnifying glass next to the folder leads to all the corresponding catalogue entries, the number of
+                which does not necessarily correspond to the number in parentheses as it indicates only the quantity
+                of the next subordinate level`s items. You can access the extensive information on a single entry via
+                the blue link followed by the entity ID. Where additional information is available in other scientific
+                online databases, these external sources are provided there. To cite an individual entry of this
+                catalogue, you may use the respective URL, for example Stockinger 2017, no. 1,
+                <a href="http://arachne.dainst.org/6005346">http://arachne.dainst.org/6005346</a>.
+            </p>
+
+            <h3 class="con10t-toc-entry">Catalogue</h3>
+            <p><con10t-catalog-tree catalog-id="69"></con10t-catalog-tree></p>
+
+            <h3 class="con10t-toc-entry">Acknowledgements</h3>
+            <p>
+                I am deeply indebted to Thomas Fischer, Peter Noelke and Ortolf Harl as well as to the staff of several
+                of the museums involved for helping me to fill some gaps in the catalogue and kindly providing me with
+                photographs.
+            </p>
+
+            <h3 class="con10t-toc-entry">Contact</h3>
+            <p>
+                If you have additional information or any other suggestions concerning this catalogue, please
+                contact <a href="mailto:ulrich.stockinger@unibas.ch">ulrich.stockinger@unibas.ch</a>.
+            </p>
+
+        </div>
+    </div>
+</div>

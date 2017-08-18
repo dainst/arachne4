@@ -1,5 +1,17 @@
 [
   {
+    "id": "fotothekmuenchen",
+    "img": "fotothekmuenchen.jpg",
+    "title": {
+      "de": "Fotothek München",
+      "en": "Fotothek München"
+    },
+    "teaser": {
+      "de": "Die seit 1871 bestehende Fotothek des Instituts für Klassische Archäologie zählt heute mehr als 100.000 Aufnahmen. Seit April 2016 wird erstmals daran gearbeitet, diesen umfangreichen Bestand zu digitalisieren und im Internet zur Verfügung zu stellen. Ziel des Projektes „Fotothek digital“ ist es die komplette Münchener Sammlung online erschließbar zu machen.",
+      "en": "Die seit 1871 bestehende Fotothek des Instituts für Klassische Archäologie zählt heute mehr als 100.000 Aufnahmen. Seit April 2016 wird erstmals daran gearbeitet, diesen umfangreichen Bestand zu digitalisieren und im Internet zur Verfügung zu stellen. Ziel des Projektes „Fotothek digital“ ist es die komplette Münchener Sammlung online erschließbar zu machen."
+    }
+  },
+  {
     "id": "syrher",
     "img": "syrher.jpg",
     "title": {
