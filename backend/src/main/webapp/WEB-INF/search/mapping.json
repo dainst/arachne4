@@ -1,18 +1,18 @@
-{  
-    "entity":{  
-        "dynamic_templates":[  
-            {  
-                "facet_template":{  
-                    "mapping":{  
+{
+    "entity":{
+        "dynamic_templates":[
+            {
+                "facet_template":{
+                    "mapping":{
                         "type":"string",
                         "index":"not_analyzed"
                     },
                     "match":"facet*"
                 }
             },
-            {  
-                "all_template":{  
-                    "mapping":{  
+            {
+                "all_template":{
+                    "mapping":{
                         "type":"string",
                         "index_options":"positions",
                         "copy_to":"searchableContent"
@@ -22,9 +22,9 @@
                     "match_mapping_type":"string"
                 }
             },
-            {  
-                "editor_template":{  
-                    "mapping":{  
+            {
+                "editor_template":{
+                    "mapping":{
                         "type":"string",
                         "index_options":"positions",
                         "copy_to":"searchableEditorContent"
@@ -34,116 +34,122 @@
                 }
             }
         ],
-        "properties":{  
-            "datasetGroup":{  
+        "properties":{
+            "datasetGroup":{
                 "type":"string",
                 "index":"not_analyzed"
             },
-            "@id":{  
+            "@id":{
                 "type":"string",
                 "index":"not_analyzed"
             },
-            "entityId":{  
+            "entityId":{
                 "type":"long"
             },
-            "internalId":{  
+            "internalId":{
                 "type":"long"
             },
-            "lastModified":{  
+            "lastModified":{
                 "type":"long"
             },
-            "subtitle":{  
+            "subtitle":{
                 "type":"string",
-                "fields":{  
-                    "sort":{  
+                "fields":{
+                    "sort":{
                         "type":"string",
                         "analyzer":"collation"
                     }
                 }
             },
-            "thumbnailId":{  
+            "thumbnailId":{
                 "type":"long"
             },
-            "title":{  
+            "title":{
                 "type":"string",
-                "fields":{  
-                    "sort":{  
+                "fields":{
+                    "sort":{
                         "type":"string",
                         "index":"not_analyzed"
                     }
                 }
             },
-            "type":{  
+            "type":{
                 "type":"string",
                 "index":"not_analyzed"
             },
             "ids":{
                 "type":"string",
-                "index":"not_analyzed"                       
+                "index":"not_analyzed"
             },
             "filename":{
                 "type":"string",
                 "index":"not_analyzed"
             },
-            "images":{  
-                "properties":{  
-                    "imageId":{  
+            "images":{
+                "properties":{
+                    "imageId":{
                         "type":"long"
                     },
-                    "sourceContext":{  
+                    "sourceContext":{
                         "type":"string"
                     },
-                    "sourceRecordId":{  
+                    "sourceRecordId":{
                         "type":"long"
                     },
-                    "imageSubtitle":{  
+                    "imageSubtitle":{
                         "type":"string"
                     }
                 }
             },
-            "places":{  
-                "properties":{  
-                    "name":{  
+            "places":{
+                "properties":{
+                    "name":{
                         "type":"string"
                     },
-                    "relation":{  
+                    "relation":{
                         "type":"string"
                     },
-                    "location":{  
+                    "location":{
                         "type":"geo_point",
                         "lat_lon":true,
                         "geohash_prefix":true,
                         "geohash_precision":9
                     },
-                    "gazetteerId":{  
+                    "gazetteerId":{
                         "type":"long"
-                    }
-                }
-            },
-            "dates":{  
-                "properties":{  
-                    "label":{  
-                        "type":"string"
                     },
-                    "relation":{  
-                        "type":"string"
+                    "storageFrom":{
+                        "type":"date"
                     },
-                    "date":{  
+                    "storageTo":{
                         "type":"date"
                     }
                 }
             },
-            "searchableContent":{  
+            "dates":{
+                "properties":{
+                    "label":{
+                        "type":"string"
+                    },
+                    "relation":{
+                        "type":"string"
+                    },
+                    "date":{
+                        "type":"date"
+                    }
+                }
+            },
+            "searchableContent":{
                 "type":"string",
                 "omit_norms":true,
                 "store":true
             },
-            "searchableEditorContent":{  
+            "searchableEditorContent":{
                 "type":"string",
                 "omit_norms":true,
                 "store":true
             },
-            "boost":{  
+            "boost":{
                 "type":"double"
             },
             "suggest":{

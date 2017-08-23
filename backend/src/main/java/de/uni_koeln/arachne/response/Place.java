@@ -39,6 +39,16 @@ public class Place {
 	 */
 	private Long gazetteerId = null;
 	
+	/**
+	 * The beginning of the time period of the relation to its parent entity.
+	 */
+	private String storageFrom = null;
+	
+	/**
+	 * The end of the time period of the relation to its parent entity.
+	 */
+	private String storageTo = null;
+	
 	public Place(final String name) {
 		this.name = name;
 	}
@@ -127,5 +137,33 @@ public class Place {
 	 */
 	public void setGazetteerId(Long gazetteerId) {
 		this.gazetteerId = gazetteerId;
+	}
+
+	/**
+	 * @param start date of the relation to parent
+	 */
+	public String getStorageFrom() {
+		return storageFrom;
+	}
+
+	/**
+	 * @param start date of the relation to parent to set
+	 */
+	public void setStorageFrom(String storageFrom) {
+		this.storageFrom = storageFrom;
+	}
+
+	/**
+	 * @param end date of the relation to parent
+	 */
+	public String getStorageTo() {
+		return storageTo;
+	}
+
+	/**
+	 * @param end date of the relation to parent to set
+	 */
+	public void setStorageTo(String storageTo) {
+		this.storageTo = storageTo;
 	}
 }
