@@ -11,8 +11,8 @@
     <field datasource=".BerlinIdentNr" prefix="Berlin Ident.Nr. " />
     <field datasource=".InvNr" prefix="Inv.-Nr. " />
     <field datasource=".AltInvNr" prefix="Alte Inv.-Nr. " />
-    <field datasource=".ArtOrtsangabe" search="Aufbewahrung Automatisch erstellt" replace="Aufbewahrungsort" prefix="&lt;br/&gt;- Ortsangabe ist " postfix=" -" />
-    <field datasource=".AufbewahrungVon" />
-    <field datasource=".AufbewahrungBis" />
+    <field datasource=".ArtOrtsangabe" search="Aufbewahrung Automatisch erstellt" replace="Aufbewahrungsort" prefix="&lt;br/&gt;Art der Ortsangabe: " />
+    <field datasource=".AufbewahrungVon" prefix="&lt;br/&gt;Ortsangabe von: " trimEnd=" " />
+    <field datasource=".AufbewahrungBis" prefix=" bis: " trimEnd=" " />
   </context>
 </includeSection>
