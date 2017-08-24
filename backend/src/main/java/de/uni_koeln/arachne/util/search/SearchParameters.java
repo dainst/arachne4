@@ -54,6 +54,11 @@ public class SearchParameters {
 	private boolean orderDesc = false;
 
 	/**
+	 * A flag indicating if the sort order is lexicographical
+	 */
+	private boolean lexical = false;
+
+	/**
 	 * The coordinates (upper left, lower right) of a geo bounding box to filter the results on.
 	 */
 	private Double[] boundingBox = {};
@@ -230,6 +235,24 @@ public class SearchParameters {
 	public SearchParameters setOrderDesc(Boolean orderDesc) {
 		if (orderDesc != null) {
 			this.orderDesc = orderDesc;
+		}
+		return this;
+	}
+
+	/**
+	 * @return if sorted lexically
+	 */
+	public boolean isLexical() {
+		return lexical;
+	}
+
+	/**
+	 * @param lexical the state of lexically sorting to set
+	 * @return <code>this</code> for method chaining.
+	 */
+	public SearchParameters setLexical(Boolean lexical) {
+		if (lexical != null) {
+			this.lexical = lexical;
 		}
 		return this;
 	}

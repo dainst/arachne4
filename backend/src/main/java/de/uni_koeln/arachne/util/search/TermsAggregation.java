@@ -6,6 +6,8 @@ package de.uni_koeln.arachne.util.search;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Wrapper for an elasticsearch terms aggregation. 
@@ -17,7 +19,9 @@ public class TermsAggregation extends Aggregation {
 
 	public static final String CATEGORY_FACET = "facet_kategorie";
 	public static final String RELATION_FACET = "facet_ortsangabe";
-	
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TermsAggregation.class);
+
 	/**
 	 * Possible sort orders.
 	 */

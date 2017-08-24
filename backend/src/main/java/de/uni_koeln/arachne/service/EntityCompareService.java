@@ -65,7 +65,7 @@ public class EntityCompareService {
 			if (jsonDB != null && jsonDB.equals(jsonES)) {
 				//LOGGER.info("Entity " + entityId + " is the same in DB and index.");
 			} else {
-				LOGGER.info("Entity " + entityId + " differs in DB and index.");
+				//LOGGER.info("Entity " + entityId + " differs in DB and index.");
 			}
     	}
 	}

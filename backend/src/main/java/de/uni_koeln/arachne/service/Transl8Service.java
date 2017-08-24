@@ -78,7 +78,6 @@ public class Transl8Service {
 	private void updateTranslations(String lang) throws Transl8Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		LOGGER.info("accepting {}", lang);
 		headers.set("Accept-Language", lang);
 		HttpEntity<String> entity = new HttpEntity<String>("", headers);
 		try {
@@ -106,7 +105,6 @@ public class Transl8Service {
 					for (int i = 0; i < languages.size(); i++) //Set other langs to false again
                         translationsAvailable.put(languages.get(i), false);
                     translationsAvailable.put(lang, true);
-					LOGGER.info("Translations are available for: " + languages);
 				} else {
 					LOGGER.error("Translation map is empty. Translations are not available.");
 				}
@@ -127,20 +125,12 @@ public class Transl8Service {
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	public String transl8(String key, String lang) throws Transl8Exception {
-	    LOGGER.info("Attempting {} to {}", key, lang);
         if(key != null && lang != null) {
             lang = extractLanguage(lang);
-            LOGGER.info("Extracted {}", lang);
-			if (!translationsAvailable.get(lang)) {
+			if (!translationsAvailable.get(lang))
                 updateTranslations(lang);
-                LOGGER.info("Updated {}", lang);
-			}
-			else
-			    LOGGER.info("not updated for {}", lang);
 			if (!translationMap.isEmpty()) {
-                LOGGER.info("Map not empty");
 				String value = translationMap.get(key);
-                LOGGER.info("value {}", value);
 				if (value != null)
 					return value;
 			}
