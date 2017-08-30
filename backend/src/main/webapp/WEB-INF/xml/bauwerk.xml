@@ -9,21 +9,21 @@
 			</section>
 		</title>
 		<subtitle>
-			<section separator=" / ">
-				<section separator=" / ">
+			<section separator=", ">
+				<section>
 					<field datasource="bauwerk.OrtsnameModern">
 						<ifEmpty>
-							<field datasource="ort.Stadt" />
+							<field datasource="ort.Aufbewahrungsort" />
 						</ifEmpty>
 					</field>
-					<field datasource="bauwerk.OrtsnameAntik">
+					<field datasource="bauwerk.OrtsnameAntik" prefix="(" postfix=")">
 						<ifEmpty>
-							<field datasource="ort.Ort_antik" />
+							<field datasource="ort.Ort_antik" prefix="(" postfix=")" />
 						</ifEmpty>
 					</field>
 				</section>
 				<section>
-					<field datasource="ort.Aufbewahrungsort" />
+					<field datasource="ort.Stadt" />
 				</section>
 			</section>
 		</subtitle>
