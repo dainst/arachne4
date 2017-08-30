@@ -5,15 +5,15 @@
 	<explicitContextualizers>pathobjektort, pathobjektdatierung</explicitContextualizers>
 	<display>
 		<title>
-			<section>
-				<field datasource="objekt.KurzbeschreibungObjekt" />
-			</section>
-		</title>
-		<subtitle>
 			<section separator=" ">
 				<field datasource="relief.Szenennummer" prefix="Szene "
 					postfix=":" />
 				<field datasource="relief.KurzbeschreibungRelief" />
+			</section>
+		</title>
+		<subtitle>
+			<section>
+				<field datasource="objekt.KurzbeschreibungObjekt" />
 			</section>
 		</subtitle>
 		<datasections>
