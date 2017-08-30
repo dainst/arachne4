@@ -11,9 +11,9 @@
       </section>
     </title>
     <subtitle>
-      <section separator=" / ">
-        <field datasource="ort.Ort_antik"/>
+      <section separator=", ">
         <field datasource="ort.Stadt"/>
+        <field datasource="ort.Land"/>
       </section>
     </subtitle>
     <datasections>
