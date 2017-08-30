@@ -39,12 +39,12 @@
 		</title>
 		<subtitle>
 			<section separator=", ">
-				<section separator=" / ">
-					<field datasource="ort.Stadt" />
-					<field datasource="ort.Ort_antik" />
-				</section>
 				<section>
 					<field datasource="ort.Aufbewahrungsort" />
+					<field datasource="ort.Ort_antik" prefix="(" postfix=")" />
+				</section>
+				<section>
+					<field datasource="ort.Stadt" />
 				</section>
 			</section>
 		</subtitle>
