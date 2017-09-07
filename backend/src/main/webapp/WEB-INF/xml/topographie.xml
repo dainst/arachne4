@@ -10,7 +10,7 @@
 		</title>
 		<subtitle>
 			<section separator=", ">
-				<section>
+				<section separator=" ">
 					<field datasource="topographie.modernerOrt">
 						<ifEmpty>
 							<field datasource="ort.Stadt" />
@@ -22,7 +22,9 @@
 						</ifEmpty>
 					</field>
 				</section>
-				<field datasource="ort.Land" />
+                <section>
+                    <field datasource="ort.Land" />
+                </section>
 			</section>
 		</subtitle>
 		<datasections>
