@@ -42,7 +42,8 @@
     </xs:choice>
     <xs:attribute name="name" type="xs:string" use="required"/>
     <xs:attribute name="labelKey" type="xs:string" use="required"/>
-    <xs:attribute name="group" type="xs:string" "/>
+    <xs:attribute name="group" type="xs:string"/>
+    <xs:attribute name="dependsOn" type="xs:string"/>
   </xs:complexType>
   <xs:complexType name="FieldContent">
     <xs:all minOccurs="0">
