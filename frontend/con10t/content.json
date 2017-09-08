@@ -113,7 +113,23 @@
                     "title": {
                         "de": "Die Antike in Zeichnung, Plan und Bauaufnahme",
                         "en": "The Antiquity in Drawing, Plan and Architectural Survey"
+                    },
+                    "hidden": true
+                },
+                {
+                    "id": "handzeichnungen",
+                    "title": {
+                        "de": "Die Antike in Zeichnung, Plan und Bauaufnahme",
+                        "en": "The Antiquity in Drawing, Plan and Architectural Survey"
                     }
+                },
+                {
+                    "id": "handzeichnungen_map",
+                    "title": {
+                        "de": "Die Antike in Zeichnung, große Karte",
+                        "en": "The Antiquity in Drawing, big map"
+                    },
+                    "hidden":true
                 }
             ]
         },
