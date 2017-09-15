@@ -1,0 +1,120 @@
+<idai-header
+        image="/con10t/headerimages/centurions_bgr.png"
+        description=""
+        link="http://arachne.dainst.org/search?q=ulrich%20stockinger">
+</idai-header>
+
+<div class="con10t-page teaserpage container">
+
+    <div class="con10t-row">
+
+        <div class="con10t-title">
+            <h1>Dressed to Drill. The Evidence of Funerary Monuments on Roman Centurions' Equipment.</h1>
+            <h2>U. Stockinger, Journal of Roman Military Equipment Studies 18, 2017</h2>
+        </div>
+
+        <div class="con10t-sidebar">
+            <con10t-toc toc-heading="Content"></con10t-toc>
+
+            <h3>Search in catalog</h3>
+            <p><a con10t-search-query="*&amp;fq=catalogIds:'69'">Show all catalogue entries</a></p>
+            <p><con10t-search catalog-id="69"></con10t-search></p>
+
+            <h3>Spatial Search</h3>
+            <div ng-init="config = {
+                baselayers: {
+                    osm: {
+                        name: 'OpenStreetMap',
+                        type: 'xyz',
+                        url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        layerOptions: {
+                            subdomains: ['a', 'b', 'c'],
+                            attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
+                            continuousWorld: true,
+                            maxZoom: 18
+                        }
+                    }
+                },
+                baselayerKey: 'osm',
+                clustered: false
+            }"></div>
+            <div>
+                <a href="/project/centurions_map" title="Zur Karte" style="cursor:pointer">
+                <span class="glyphicon glyphicon-fullscreen"></span>&nbsp;Enlarge map</a>
+            </div>
+            <div con10t-map
+                 id="map"
+                 limit="200"
+                 catalog-id="69"
+                 baselayers="config.baselayers"
+                 default-baselayer="config.baselayerKey"
+                 facets-select="config.facetsSelect">
+            </div>
+        </div>
+
+        <div class="con10t-content">
+            <h3 class="con10t-toc-entry">Vorbemerkungen</h3>
+            <p>
+                Dieser Katalog stellt zusätzliche Informationen zu jenen Grabdenkmälern bereit, die im
+                Artikel „Dressed to Drill. The Evidence of Funerary Monuments on Roman Centurions’
+                Equipment” besprochen werden (publiziert im Journal of Roman Military Equipment Studies
+                18). Dabei wurde versucht möglichst alle Grabsteine zusammenzutragen, die für (ehemalige)
+                Centurionen errichtet wurden und den Verstorbenen oder zumindest Teile seiner
+                militärischen Ausrüstung zeigen. Um Zirkelschlüsse zu vermeiden, beschränkt sich dieser
+                Artikel ausschließlich auf Monumente mit inschriftlichem Hinweis darauf, dass der
+                Verstorbene als Centurio in der römischen Armee gedient hatte. Für Hinweise auf in diesem
+                Katalog fehlende Grabdenkmäler bin ich Ihnen sehr dankbar.
+            </p>
+
+            <h3 class="con10t-toc-entry">Hinweise zur Nutzung</h3>
+            <p>
+                Die Nummern der Katalogeinträge entsprechen jenen, die im Artikel im JRMES sowie in der
+                dort beigefügten tabellarischen Übersicht verwendet werden. Grabdenkmäler von Männern,
+                die zum Zeitpunkt ihres Todes nicht den Rang eines Centurio innehatten, sind mit einem
+                Asterisk (Beförderung zu anderen militärischen oder öffentlichen Ämtern) bzw. mit einem ‚v‘
+                (Veteranen) gekennzeichnet. Einige Monumente wurde auch für andere Mitglieder der
+                Familie des Centurio errichtet, was die Darstellung in gewissem Grad beeinflusste; sie sind
+                durch ein ‚ + ‘ hinter dem Namen markiert. Den Umfang und die Qualität von mir verfügbaren
+                textlichen und bildlichen Informationen widerspiegelnd sind die Angaben zu den einzelnen
+                Datensätzen unterschiedlich detailliert. Die wenigen Monumente, die verschollen sind und
+                deren Inschrift und Darstellung nur (unterschiedlich genau) dokumentiert überliefert sind,
+                sind mit einem ‚°‘ gekennzeichnet.
+                <br>
+                Die Katalogeinträge können auf verschiedene Weise durchsucht werden: Der Suchschlitz
+                erlaubt Ihnen eine Freitextsuche nach bestimmten Wörtern innerhalb aller Datensätze. Für
+                eine geographische Suche können Sie die Karte nutzen, auf der die Katalogeinträge an ihren
+                Fundorten angezeigt werden. Zusätzlich kann die Katalog nach verschiedenen Kriterien
+                durchgesehen werden (Datierung, Rang/Ränge des Verstorbenen innerhalb des
+                Zenturionats, Truppenart(en) und Darstellungsform).
+                <br>
+                Das Klicken auf ein Ordnersymbol zeigt bzw. versteckt die zugeordneten Unterordner oder
+                Katalogeinträge. Das Lupensymbol neben dem Ordner führt zu allen zugehörigen
+                Katalogeinträgen, deren Anzahl nicht notwendigerweise der Zahl in Klammern entspricht, da
+                diese nur die Anzahl der Objekte auf der nächstunteren Ordnungsebene angibt. Die
+                ausführlichen Informationen zu einem einzelnen Grabdenkmal können über den blauen, von
+                einer Entity-ID gefolgten Link aufgerufen werden. Dort finden sich auch Verweise auf
+                Einträge in anderen wissenschaftlichen Online-Datenbanken, die weitere Informationen
+                liefern. Verwenden Sie bitte die entsprechende URL, um einen bestimmten Katalogeintrag zu
+                zitieren, z. B. Stockinger 2017, no. 1,
+                <a href="http://arachne.dainst.org/6005346">http://arachne.dainst.org/6005346</a>.
+            </p>
+
+            <h3 class="con10t-toc-entry">Catalogue</h3>
+            <p><con10t-catalog-tree catalog-id="69"></con10t-catalog-tree></p>
+
+            <h3 class="con10t-toc-entry">Dank</h3>
+            <p>
+                Ich danke Thomas Fischer, Peter Noelke und Ortolf Harl sowie den Mitarbeitern zahlreicher
+                Museen für die Hilfe beim Schließen von Lücken im Katalog und für die freundliche
+                Bereitstellung von Fotografien.
+            </p>
+
+            <h3 class="con10t-toc-entry">Kontakt</h3>
+            <p>
+                Falls Sie zusätzliche Informationen oder andere Hinweise bzw. Fragen zu diesem Katalog
+                haben, kontaktieren Sie bitte <a href="mailto:ulrich.stockinger@unibas.ch">ulrich.stockinger@unibas.ch</a>.
+            </p>
+
+        </div>
+    </div>
+</div>
