@@ -1,5 +1,7 @@
 package de.uni_koeln.arachne.controller;
 
+import java.security.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import de.uni_koeln.arachne.service.IIPService;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
+
+import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8_VALUE;
 
 /**
  * Handles HTTP GET requests for images
@@ -199,4 +203,26 @@ public class ImageController {
 		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
 		return ResponseEntity.status(imageServerResponse.getStatus()).headers(headers).body(imageServerResponse.getValue());
 	}
+
+    /**
+     * This method handles requests for an image checksum (/image/checksum/entityId)
+     * @param entityId the unique image ID. (mandatory)
+     * @return The requested md5-checksum
+     */
+	@RequestMapping(value = "checksum/{entityId}",
+            method = RequestMethod.GET,
+            produces={APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<byte[]> getChecksum(@PathVariable("entityId") final long entityId) {
+
+        final TypeWithHTTPStatus<byte[]> image = iipService.getImage(entityId, iipService.resolution_HIGH(), iipService.resolution_HIGH());
+	    final byte[] imageByte = image.getValue();
+	    try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] outputByte = md.digest(imageByte);
+            return ResponseEntity.status(image.getStatus()).body(outputByte);
+        }
+        catch(NoSuchAlgorithmException e) {
+	        return null;
+        }
+    }
 }
