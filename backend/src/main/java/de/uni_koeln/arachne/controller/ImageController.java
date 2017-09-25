@@ -214,7 +214,7 @@ public class ImageController {
     public ResponseEntity<String> getChecksum(@PathVariable("entityId") final long entityId) {
 
         final TypeWithHTTPStatus<byte[]> image = iipService.getImage(entityId, iipService.resolution_HIGH(), iipService.resolution_HIGH());
-        if(image.getStatus().equals(HttpStatus.NOT_FOUND))
+        if(image.getStatus().equals(HttpStatus.NOT_FOUND) || image.getStatus().equals(HttpStatus.BAD_REQUEST))
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The requested image (" + entityId + ") has not been found.");
 
 	    final byte[] imageByte = image.getValue();
