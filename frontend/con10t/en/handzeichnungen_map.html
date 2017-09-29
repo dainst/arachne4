@@ -1,0 +1,254 @@
+<div hide-footer class="row fullscreenrow">
+
+    <div ng-init="config = {
+    menuTitle: 'Die Antike in Zeichnung',
+    menuFacetsAllow: [
+        'facet_kulturkreis',
+        'facet_datierungepoche',
+        'facet_befund',
+        'facet_kontext',
+        'facet_einbindung',
+        'facet_literatur'
+    ],
+    facetsSelect: [
+        {
+            key: 'catalogIds',
+            value: 214
+        }
+    ],
+    overlays: {
+        groups: [
+            {
+                name: 'Physiogeographie',
+                overlays: [
+                    {
+                        key: 'coastline',
+                        name: 'Antiker Küstenverlauf',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:coastline',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:coastline'
+                    },
+                    {
+                        key: 'europe_data',
+                        name: 'Minerallagerstätten in Europa',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:europe_data',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:europe_data'
+                    }
+                ]
+            },
+            {
+                name: 'Transportwege',
+                overlays: [
+                    {
+                        key: 'ba_roads',
+                        name: 'Römisches Straßennetz',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:ba_roads',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:ba_roads'
+                    },
+                    {
+                        key: 'mccormicketal2008_schiffswracks',
+                        name: 'Schiffswracks 1-1500 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:mccormicketal2008_schiffswracks',
+                            format: 'image/png',
+                            transparent: true,
+                            tiled: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:mccormicketal2008_schiffswracks'
+                    }
+                ]
+            },
+            {
+                name: 'Römisches Reich',
+                overlays: [
+                    {
+                        key: 'roman_empire_ad_14_provinces',
+                        name: 'Provinzen 14 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:roman_empire_ad_14_provinces',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_14_provinces'
+                    },
+                    {
+                        key: 'roman_empire_ad_69_provinces',
+                        name: 'Provinzen 69 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:roman_empire_ad_69_provinces',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_69_provinces'
+                    },
+                    {
+                        key: 'ba_100_provinces',
+                        name: 'Provinzen 100 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:ba_100_provinces',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:ba_100_provinces'
+                    },
+                    {
+                        key: 'roman_empire_ad_117',
+                        name: 'Provinzen 117 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:roman_empire_ad_117',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_117'
+                    },
+                    {
+                        key: 'roman_empire_ad_200_provinces',
+                        name: 'Provinzen 200 n. Chr.',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:roman_empire_ad_200_provinces',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:roman_empire_ad_200_provinces'
+                    }
+                ]
+            },
+            {
+                name: 'Sonstige antike Reiche',
+                overlays: [
+                    {
+                        key: 'alexander_extent',
+                        name: 'Alexander',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:alexander_extent',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:alexander_extent'
+                    },
+                    {
+                        key: 'persian_extent',
+                        name: 'Perser',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:persian_extent',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:persian_extent'
+                    },
+                    {
+                        key: 'hasmonean',
+                        name: 'Hasmonäer',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:hasmonean',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:hasmonean'
+                    },
+                    {
+                        key: 'herod',
+                        name: 'Herodes',
+                        type: 'wms',
+                        url: 'http://geoserver.dainst.org/geoserver/geonode/wms',
+                        layerOptions: {
+                            layers: 'geonode:herod',
+                            format: 'image/png',
+                            transparent: true
+                        },
+                        attributionUrl: 'http://geoserver.dainst.org/layers/geonode:herod'
+                    }
+                ]
+            }
+        ]
+    },
+    baselayers: {
+        osm: {
+            name: 'OpenStreetMap',
+            type: 'xyz',
+            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            layerOptions: {
+                subdomains: ['a', 'b', 'c'],
+                attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
+                continuousWorld: true,
+                maxZoom: 18
+            }
+        },
+        romanEmpire: {
+            name: 'Roman Empire',
+            type: 'xyz',
+            url: 'http://dare.ht.lu.se/tiles/imperium/{z}/{x}/{y}.png',
+            layerOptions: {
+                subdomains: ['a', 'b', 'c'],
+                attribution: 'Tiles: <a href=\'http://dare.ht.lu.se/\'>DARE 2014</a>',
+                continuousWorld: true
+            }
+        }
+    },
+    defaultBaselayer: 'osm'
+}"></div>
+    <div id="menu" class="col-sm-2 fullscreencol">
+
+        <h2 class="text-muted uppercase" style="font-variant:small-caps;cursor:pointer"
+            ng-click="rightMenuToggled = !rightMenuToggled">
+            Die Antike in Zeichnung
+        </h2>
+
+        <div con10t-map-menu-search-info type="places"></div>
+        <div con10t-map-menu-search-field heading="Suche in Projektdatens&auml;tzen"></div>
+        <div con10t-map-menu-facet-search facets-append="config.menuFacetsAppend"
+             facets-allow="config.menuFacetsAllow"
+             facets-selected="config.facetsSelect">
+        </div>
+    </div>
+
+    <div con10t-map
+         class="col-sm-8 fullscreencol"
+         id="map"
+         limit="200"
+         baselayers="config.baselayers"
+         default-baselayer="config.defaultBaselayer"
+         facets-select="config.facetsSelect">
+    </div>
+
+    <div con10t-map-overlays
+         class="col-sm-2 fullscreencol"
+         overlays="config.overlays"
+         baselayers="config.baselayers">
+    </div>
+</div>
