@@ -455,7 +455,14 @@
                         "de": "Our Place: Our Place in the World",
 			            "en": "Our Place: Our Place in the Wolrd"
                    }
-        		}
+        		},
+                {
+                    "id": "ceramegypt",
+                    "title": {
+                        "de": "CeramEgypt – Pottery production and consumption in Ptolemaic-Roman Egyptian",
+                        "en": "CeramEgypt – Pottery production and consumption in Ptolemaic-Roman Egyptian"
+                    }
+                }
             ]
         },
         {
@@ -681,9 +688,6 @@
 
         {
             "id": "_testscope",
-            "title": {
-                "en": "The same old fears"
-            },
             "hidden": true
         }
     ]
