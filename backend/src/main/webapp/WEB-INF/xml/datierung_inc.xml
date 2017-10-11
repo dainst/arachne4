@@ -1,26 +1,27 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
-  <context type="datierung" labelKey="Datierung" separator=" ">
-  	<field datasource=".TypDatierung" postfix=":" />
-    <field datasource=".nachantik" />
-    <field datasource=".FestDat" prefix="(fest datiert: " postfix=")" />
-    <field datasource=".AnfEpoche" />
-    <field datasource=".AnfKultur" />
-    <field datasource=".AnfDatZeitraum" />
-    <field datasource=".AnfDatJt" postfix=". Jt." />
-    <field datasource=".AnfDatJh" postfix=". Jh." />
-    <field datasource=".AnfDatvn" separator=" - "/>
-    <field datasource=".AnfPraezise" prefix="(" postfix=")" />
-    <field datasource=".AnfTerminus" />
-    <field datasource=".EndEpoche"/>
-    <field datasource=".EndKultur" />
-    <field datasource=".EndDatZeitraum" />
-    <field datasource=".EndDatJt" postfix=". Jt." />
-    <field datasource=".EndDatJh" postfix=". Jh." />
-    <field datasource=".EndDatvn" separator=" - " />
-    <field datasource=".EndPraezise" prefix="(" postfix=")" />
-    <field datasource=".EndTerminus" />
-    <field datasource=".Argument" prefix="Argument: " postfix=" - "/>
-    <field datasource=".DatVorschlagAutor" prefix=" nach: " postfix="&lt;br/&gt;" />
-  </context>
+    <context type="datierung" labelKey="Datierung" separator=" ">
+        <field datasource=".TypDatierung" postfix=":" />
+        <field datasource=".nachantik" />
+        <field datasource=".FestDat" prefix="(fest datiert: " postfix=")" />
+        <field datasource=".AnfEpoche" postfix="," />
+        <field datasource=".AnfKultur" postfix="," />
+        <field datasource=".AnfDatZeitraum" postfix=","/>
+        <field datasource=".AnfDatJt" postfix=". Jt." />
+        <field datasource=".AnfDatJh" postfix=". Jh." />
+        <field datasource=".AnfDatvn" separator=""/>
+        <field datasource=".AnfPraezise" prefix=" (" postfix=")" />
+        <field datasource=".AnfTerminus" prefix=", " postfix=". " />
+        <plain text="-" />
+        <field datasource=".EndEpoche" prefix=" - " postfix="," />
+        <field datasource=".EndKultur" postfix="," />
+        <field datasource=".EndDatZeitraum" postfix="," />
+        <field datasource=".EndDatJt" postfix=". Jt." />
+        <field datasource=".EndDatJh" postfix=". Jh." />
+        <field datasource=".EndDatvn" separator="" />
+        <field datasource=".EndPraezise" prefix=" (" postfix=")" />
+        <field datasource=".EndTerminus" prefix=", " postfix=". "/>
+        <field datasource=".Argument" prefix="&lt;br/&gt;- Argument: "/>
+        <field datasource=".DatVorschlagAutor" prefix="/ nach: " postfix=" - &lt;br/&gt;&lt;br/&gt;" />
+    </context>
 </includeSection>

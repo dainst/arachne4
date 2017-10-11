@@ -312,7 +312,7 @@ public class ResponseFactory {
 					response.addDate(dateAssertion);
 				}
 				final String endEra = link.getFieldFromFields("datierung.EndEpoche");
-				if (!StrUtils.isEmptyOrNull(startEra)) {
+				if (!StrUtils.isEmptyOrNull(endEra)) {
 					final DateAssertion dateAssertion = new DateAssertion(endEra, "Datierung");
 					response.addDate(dateAssertion);
 				}
