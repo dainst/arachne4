@@ -626,11 +626,16 @@ public class XmlConfigUtil implements ServletContextAware {
 		separator = (overrideSeparator == null) ? separator : overrideSeparator ;
 		
 		if (value != null) {
-			if (prefix != null) {
-				value.insert(0, prefix);
+			try {
+				if (prefix != null) {
+					value.insert(0, ts.transl8(prefix, lang));
+				}
+				if (postfix != null) {
+					value.append(ts.transl8(postfix, lang));
+				}
 			}
-			if (postfix != null) {
-				value.append(postfix); 
+			catch (Transl8Exception e) {
+				LOGGER.error("Failed to contact transl8. Cause: ", e);
 			}
 			
 			// handle linkFields
