@@ -47,8 +47,9 @@
 								</field>
 							</ifEmpty>
 						</field>
+						<field datasource="ort.Ort_antik" prefix="(" postfix=")" />
 					</section>
-					<section separator=" / ">
+					<section>
 						<field datasource="ort.Stadt">
 							<ifEmpty>
 								<field datasource="marbilderbestand.Standstadt">
@@ -56,22 +57,6 @@
 										<field datasource="marbilderinventar.09_Ortsbezeichnung1">
 											<ifEmpty>
 												<field datasource="marbilderoppenheim.OrtOppenheim" />
-											</ifEmpty>
-										</field>
-									</ifEmpty>
-								</field>
-							</ifEmpty>
-						</field>
-						<field datasource="ort.Ort_antik" />
-					</section>
-					<section>
-						<field datasource="ort.Land">
-							<ifEmpty>
-								<field datasource="marbilderbestand.Standstaat">
-									<ifEmpty>
-										<field datasource="marbilderinventar.08_Ortsbezeichnung1">
-											<ifEmpty>
-												<field datasource="marbilderoppenheim.Staat_Gegend" />
 											</ifEmpty>
 										</field>
 									</ifEmpty>

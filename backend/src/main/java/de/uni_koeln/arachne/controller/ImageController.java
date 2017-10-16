@@ -1,22 +1,25 @@
 package de.uni_koeln.arachne.controller;
 
+import java.security.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.DatatypeConverter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import de.uni_koeln.arachne.service.IIPService;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
+
+import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8_VALUE;
 
 /**
  * Handles HTTP GET requests for images
@@ -199,4 +202,29 @@ public class ImageController {
 		headers.add("content-Type", MediaType.IMAGE_JPEG_VALUE);
 		return ResponseEntity.status(imageServerResponse.getStatus()).headers(headers).body(imageServerResponse.getValue());
 	}
+
+    /**
+     * This method handles requests for an image checksum (/image/checksum/entityId)
+     * @param entityId the unique image ID. (mandatory)
+     * @return The requested md5-checksum
+     */
+	@RequestMapping(value = "checksum/{entityId}",
+            method = RequestMethod.GET,
+            produces={APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity<String> getChecksum(@PathVariable("entityId") final long entityId) {
+
+        final TypeWithHTTPStatus<byte[]> image = iipService.getImage(entityId, iipService.resolution_HIGH(), iipService.resolution_HIGH());
+        if(image.getStatus().equals(HttpStatus.NOT_FOUND) || image.getStatus().equals(HttpStatus.BAD_REQUEST))
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The requested image (" + entityId + ") has not been found.");
+
+	    final byte[] imageByte = image.getValue();
+	    try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] outputByte = md.digest(imageByte);
+            return ResponseEntity.status(image.getStatus()).body(DatatypeConverter.printHexBinary(outputByte));
+        }
+        catch(NoSuchAlgorithmException e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }

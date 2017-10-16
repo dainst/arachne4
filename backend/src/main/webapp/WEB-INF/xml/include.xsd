@@ -1,89 +1,96 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://arachne.uni-koeln.de/schemas/include" targetNamespace="http://arachne.uni-koeln.de/schemas/include" elementFormDefault="qualified" attributeFormDefault="unqualified">
-  <xs:element name="includeSection">
-    <xs:complexType>
-      <xs:choice minOccurs="1" maxOccurs="unbounded">
-        <xs:element name="section" type="SectionContent"/>
-        <xs:element name="context" type="ContextContent"/>
-        <xs:element name="facet" type="FacetContent"/>
-      </xs:choice>
+    <xs:element name="includeSection">
+        <xs:complexType>
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element name="section" type="SectionContent"/>
+                <xs:element name="context" type="ContextContent"/>
+                <xs:element name="facet" type="FacetContent"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="SectionContent">
+        <xs:choice minOccurs="1" maxOccurs="1">
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="section" type="SectionContent"/>
+                <xs:element name="context" type="ContextContent"/>
+            </xs:choice>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="field" type="FieldContent"/>
+                <xs:element name="linkField" type="LinkFieldContent"/>
+                <xs:element name="plain" type="PlainTextContent" />
+            </xs:choice>
+        </xs:choice>
+        <xs:attribute name="labelKey" type="xs:string"/>
+        <xs:attribute name="separator" type="xs:string"/>
+        <xs:attribute name="prefix" type="xs:string"/>
+        <xs:attribute name="postfix" type="xs:string"/>
     </xs:complexType>
-  </xs:element>
-  <xs:complexType name="SectionContent">
-    <xs:choice minOccurs="1" maxOccurs="1">
-      <xs:choice maxOccurs="unbounded">
-        <xs:element name="section" type="SectionContent"/>
-        <xs:element name="context" type="ContextContent"/>
-      </xs:choice>
-      <xs:choice maxOccurs="unbounded">
-        <xs:element name="field" type="FieldContent"/>
-        <xs:element name="linkField" type="LinkFieldContent"/>
-      </xs:choice>
-    </xs:choice>
-    <xs:attribute name="labelKey" type="xs:string"/>
-    <xs:attribute name="separator" type="xs:string"/>
-    <xs:attribute name="prefix" type="xs:string"/>
-    <xs:attribute name="postfix" type="xs:string"/>
-  </xs:complexType>
-  <xs:complexType name="ContextContent">
-    <xs:choice maxOccurs="unbounded">
-      <xs:element name="field" type="FieldContent"/>
-      <xs:element name="linkField" type="LinkFieldContent"/>
-    </xs:choice>
-    <xs:attribute name="type" type="xs:string" use="required"/>
-    <xs:attribute name="labelKey" type="xs:string"/>
-    <xs:attribute name="separator" type="xs:string"/>
-    <xs:attribute name="link" type="xs:string"/>
-  </xs:complexType>
-  <xs:complexType name="FacetContent">
-    <xs:choice>
-      <xs:element name="context" type="ContextContent"/>
-      <xs:element name="field" type="FieldContent"/>
-    </xs:choice>
-    <xs:attribute name="name" type="xs:string" use="required"/>
-    <xs:attribute name="labelKey" type="xs:string" use="required"/>
-    <xs:attribute name="group" type="xs:string"/>
-    <xs:attribute name="dependsOn" type="xs:string"/>
-  </xs:complexType>
-  <xs:complexType name="FieldContent">
-    <xs:all minOccurs="0">
-      <xs:element name="ifEmpty">
-        <xs:complexType>
-          <xs:choice>
+    <xs:complexType name="ContextContent">
+        <xs:choice maxOccurs="unbounded">
             <xs:element name="field" type="FieldContent"/>
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-    <xs:attribute name="datasource" type="datasourceString" use="required"/>
-    <xs:attribute name="prefix" type="xs:string"/>
-    <xs:attribute name="postfix" type="xs:string"/>
-    <xs:attribute name="search" type="xs:string"/>
-    <xs:attribute name="replace" type="xs:string"/>
-    <xs:attribute name="trimEnd" type="xs:string"/>
-    <xs:attribute name="separator" type="xs:string"/>
-    <xs:attribute name="overrideSeparator" type="xs:string"/>
-  </xs:complexType>
-  <xs:complexType name="LinkFieldContent">
-    <xs:all minOccurs="0">
-      <xs:element name="ifEmpty">
-        <xs:complexType>
-          <xs:choice>
             <xs:element name="linkField" type="LinkFieldContent"/>
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-    </xs:all>
-    <xs:attribute name="datasource" type="datasourceString" use="required"/>
-    <xs:attribute name="labelKey" type="xs:string" use="required"/>
-    <xs:attribute name="prefix" type="xs:string"/>
-    <xs:attribute name="postfix" type="xs:string"/>
-    <xs:attribute name="separator" type="xs:string"/>
-    <xs:attribute name="overrideSeparator" type="xs:string"/>
-  </xs:complexType>
-  <xs:simpleType name="datasourceString">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="[A-Za-z\-_]*\.[A-Za-z0-9\-_]+"/>
-    </xs:restriction>
-  </xs:simpleType>
+            <xs:element name="plain" type="PlainTextContent" />
+        </xs:choice>
+        <xs:attribute name="type" type="xs:string" use="required"/>
+        <xs:attribute name="labelKey" type="xs:string"/>
+        <xs:attribute name="separator" type="xs:string"/>
+        <xs:attribute name="link" type="xs:string"/>
+    </xs:complexType>
+    <xs:complexType name="FacetContent">
+        <xs:choice>
+            <xs:element name="context" type="ContextContent"/>
+            <xs:element name="field" type="FieldContent"/>
+            <xs:element name="plain" type="PlainTextContent" />
+        </xs:choice>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="labelKey" type="xs:string" use="required"/>
+        <xs:attribute name="group" type="xs:string"/>
+        <xs:attribute name="dependsOn" type="xs:string"/>
+    </xs:complexType>
+    <xs:complexType name="FieldContent">
+        <xs:all minOccurs="0">
+            <xs:element name="ifEmpty">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element name="field" type="FieldContent"/>
+                        <xs:element name="plain" type="PlainTextContent" />
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+        <xs:attribute name="datasource" type="datasourceString" use="required"/>
+        <xs:attribute name="prefix" type="xs:string"/>
+        <xs:attribute name="postfix" type="xs:string"/>
+        <xs:attribute name="search" type="xs:string"/>
+        <xs:attribute name="replace" type="xs:string"/>
+        <xs:attribute name="trimEnd" type="xs:string"/>
+        <xs:attribute name="separator" type="xs:string"/>
+        <xs:attribute name="overrideSeparator" type="xs:string"/>
+    </xs:complexType>
+    <xs:complexType name="LinkFieldContent">
+        <xs:all minOccurs="0">
+            <xs:element name="ifEmpty">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element name="linkField" type="LinkFieldContent"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+        <xs:attribute name="datasource" type="datasourceString" use="required"/>
+        <xs:attribute name="labelKey" type="xs:string" use="required"/>
+        <xs:attribute name="prefix" type="xs:string"/>
+        <xs:attribute name="postfix" type="xs:string"/>
+        <xs:attribute name="separator" type="xs:string"/>
+        <xs:attribute name="overrideSeparator" type="xs:string"/>
+    </xs:complexType>
+    <xs:complexType name="PlainTextContent">
+        <xs:attribute name="text" type="xs:string" use="required" />
+    </xs:complexType>
+    <xs:simpleType name="datasourceString">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Za-z\-_]*\.[A-Za-z0-9\-_]+"/>
+        </xs:restriction>
+    </xs:simpleType>
 </xs:schema>

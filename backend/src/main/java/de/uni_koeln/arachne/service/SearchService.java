@@ -175,8 +175,7 @@ public class SearchService {
 		addSort(searchParameters.getSortField(), searchParameters.isOrderDesc(), result);
 		addFacets(getFacetList(filters, searchParameters.getFacetLimit() + searchParameters.getFacetOffset()
 				, searchParameters.getGeoHashPrecision(), searchParameters.getFacet(), lang)
-				, searchParameters.getFacetsToSort(), result);
-
+				, searchParameters.getFacetsToSort(), result, searchParameters.isLexical());
 		return result;
 	}
 
@@ -214,7 +213,7 @@ public class SearchService {
 
 		addSort(searchParameters.getSortField(), searchParameters.isOrderDesc(), result);
 		addFacets(getFacetList(filters, searchParameters.getFacetLimit(), -1, null, lang), searchParameters.getFacetsToSort()
-				, result);
+				, result, searchParameters.isLexical());
 
 		return result;
 	}
@@ -233,7 +232,7 @@ public class SearchService {
 
 		final Set<Aggregation> aggregations = new LinkedHashSet<Aggregation>();
 		aggregations.add(new TermsAggregation(facetName, 0, TermsAggregation.Order.TERMS));
-		addFacets(aggregations, new ArrayList<String>(), result);
+		addFacets(aggregations, new ArrayList<String>(), result, true);
 
 		return result;
 	}
@@ -245,10 +244,10 @@ public class SearchService {
 	 * @param searchRequestBuilder The outgoing search request that gets the facets added.
 	 */
 	public void addFacets(final Set<Aggregation> facetList, final List<String> facetsToSort
-			, final SearchRequestBuilder searchRequestBuilder) {
+			, final SearchRequestBuilder searchRequestBuilder, final Boolean lexically) {
 
 		for (final Aggregation aggregation: facetList) {
-			if (aggregation instanceof TermsAggregation && facetsToSort.contains(aggregation.getName())) {
+			if (lexically || (aggregation instanceof TermsAggregation && facetsToSort.contains(aggregation.getName()))) {
 				((TermsAggregation)aggregation).setOrder(Order.TERMS);
 			}
 			searchRequestBuilder.addAggregation(aggregation.build());
@@ -343,7 +342,7 @@ public class SearchService {
 		final List<SearchResultFacet> facets = new ArrayList<SearchResultFacet>();
 		Map<String, org.elasticsearch.search.aggregations.Aggregation> aggregations = searchResponse.getAggregations().getAsMap();
 
-		// get category (categories) wich was searched for
+		// get category (categories) which was searched for
 		final Collection<String> categories = filters.get(TermsAggregation.CATEGORY_FACET);
 		final String category = categories.size() > 0 ? ts.categoryLookUp(categories.iterator().next(), "de") : "_default_facets";
 
@@ -351,9 +350,6 @@ public class SearchService {
 			final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
 			MultiBucketsAggregation aggregator = (MultiBucketsAggregation)aggregations.get(aggregationName);
 			// TODO find a better way to convert facet values
-
-
-
 
 			if (aggregationName.equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
 				for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
@@ -367,12 +363,11 @@ public class SearchService {
 					facetMap.put(bucket.getKeyAsString(), bucket.getDocCount());
 				}
 			}
-			if (facetMap != null && !facetMap.isEmpty() && (filters == null || !filters.containsKey(aggregationName))) {
+			if (!facetMap.isEmpty() && !filters.containsKey(aggregationName)) {
 				facets.add(getSearchResultFacet(aggregationName, facetMap, category));
 			}
 		}
 		searchResult.setFacets(facets);
-		LOGGER.info("searchResult: {}", searchResult.getEntities());
 		return searchResult;
 	}
 

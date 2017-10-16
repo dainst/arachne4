@@ -44,6 +44,7 @@
 									<xs:choice>
 										<xs:element name="context" type="ContextContent" />
 										<xs:element name="field" type="FieldContent" />
+                                        <xs:element name="plain" type="PlainTextContent" />
 										<xs:element name="default" /> <!-- maybe default facets will get some special properties one day -->
 									</xs:choice>
 									<xs:attribute name="name" type="xs:string" use="required" />
@@ -72,6 +73,7 @@
 			<xs:choice maxOccurs="unbounded">
 				<xs:element name="field" type="FieldContent" />
 				<xs:element name="linkField" type="LinkFieldContent" />
+                <xs:element name="plain" type="PlainTextContent" />
 			</xs:choice>
 		</xs:choice>
 		<xs:attribute name="labelKey" type="xs:string" />
@@ -87,6 +89,7 @@
 			<xs:choice maxOccurs="unbounded">
 				<xs:element name="field" type="FieldContent" />
 				<xs:element name="linkField" type="LinkFieldContent" />
+                <xs:element name="plain" type="PlainTextContent" />
 			</xs:choice>
 		</xs:choice>
 		<xs:attribute name="labelKey" type="xs:string" />
@@ -98,6 +101,7 @@
 		<xs:choice maxOccurs="unbounded">
 			<xs:element name="field" type="FieldContent" />
 			<xs:element name="linkField" type="LinkFieldContent" />
+            <xs:element name="plain" type="PlainTextContent" />
 			<xs:element name="contextSection" type="ContextSection" />
 		</xs:choice>
 		<xs:attribute name="type" type="xs:string" use="required" />
@@ -109,9 +113,10 @@
 		<xs:attribute name="type" type="xs:string" use="required" />
 	</xs:complexType>
 	<xs:complexType name="ContextSection">
-		<xs:sequence maxOccurs="unbounded">
+		<xs:choice maxOccurs="unbounded">
 			<xs:element name="field" type="FieldContent" />
-		</xs:sequence>
+            <xs:element name="plain" type="PlainTextContent" />
+		</xs:choice>
 		<xs:attribute name="labelKey" type="xs:string" />
 		<xs:attribute name="separator" type="xs:string" />
 	</xs:complexType>
@@ -121,6 +126,7 @@
 				<xs:complexType>
 					<xs:choice>
 						<xs:element name="field" type="FieldContent" />
+                        <xs:element name="plain" type="PlainTextContent" />
 					</xs:choice>
 				</xs:complexType>
 			</xs:element>
@@ -152,6 +158,9 @@
 		<xs:attribute name="postfix" type="xs:string" />
 		<xs:attribute name="separator" type="xs:string" />
 		<xs:attribute name="overrideSeparator" type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="PlainTextContent">
+        <xs:attribute name="text" type="xs:string" use="required" />
 	</xs:complexType>
 	<xs:complexType name="contextImages">
 		<xs:annotation>

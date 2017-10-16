@@ -10,8 +10,13 @@
 		</title>
 		<subtitle>
 			<section separator=", ">
-				<field datasource="ort.Ort_antik" />
-				<field datasource="ort.Stadt" />
+				<section>
+					<field datasource="ort.Aufbewahrungsort" />
+					<field datasource="ort.Ort_antik" prefix="(" postfix=")" />
+				</section>
+				<section>
+					<field datasource="ort.Stadt" />
+				</section>
 			</section>
 		</subtitle>
 		<datasections>

@@ -103,6 +103,7 @@ public class SearchController {
 	 * @param facetOffset An offset for the returned facets. (optional) 
 	 * @param sortField The field to sort on. Must be one listed in esSortFields in application.properties. (optional)
 	 * @param orderDesc If the sort order should be descending. The default order is ascending. (optional)
+     * @param lexical If the sort order should be in lexicographical order. (optional)
 	 * @param boundingBox A String with comma separated coordinates representing the top left and bottom right 
 	 * coordinates of a bounding box; order: lat, lon (optional)
 	 * @param geoHashPrecision The geoHash precision; a value between 1 and 12. (optional)
@@ -125,6 +126,7 @@ public class SearchController {
 			@RequestParam(value = "fo", required = false) final Integer facetOffset,
 			@RequestParam(value = "sort", required = false) final String sortField,
 			@RequestParam(value = "desc", required = false) final Boolean orderDesc,
+            @RequestParam(value = "lex", required = false) final Boolean lexical,
 			@RequestParam(value = "bbox", required = false) final Double[] boundingBox,
 			@RequestParam(value = "ghprec", required = false) final Integer geoHashPrecision,
 			@RequestParam(value = "sf", required = false) final String[] facetsToSort,
@@ -148,6 +150,7 @@ public class SearchController {
 				.setFacetOffset(facetOffset)
 				.setSortField(sortField)
 				.setOrderDesc(orderDesc)
+                .setLexical(lexical)
 				.setBoundingBox(boundingBox)
 				.setGeoHashPrecision(geoHashPrecision)
 				.setFacetsToSort(facetsToSort)
@@ -175,7 +178,6 @@ public class SearchController {
 			searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters, filters, "de");
 			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
 					, searchParameters.getLimit(), searchParameters.getOffset(), filters, searchParameters.getFacetOffset());
-			
 			if (searchResult.getStatus() != RestStatus.OK) {
 				return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
 			} else {
@@ -188,7 +190,7 @@ public class SearchController {
 				return ResponseEntity.ok().body(searchResult);
 			}
 		} catch (Transl8Exception e) {
-			LOGGER.error("Could not reach tranl8. Cause: ", e);
+			LOGGER.error("Could not reach transl8. Cause: ", e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
@@ -338,5 +340,29 @@ public class SearchController {
             }
         }
         return new ResponseEntity<IndexResult>(HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value="/index",
+            method=RequestMethod.GET,
+            produces={APPLICATION_JSON_UTF8_VALUE})
+    public @ResponseBody ResponseEntity<?> handleFacetIndexRequest(@RequestParam("q") final String queryString,
+                                                               @RequestParam(value = "limit", required = false) final Integer limit,
+                                                               @RequestParam(value = "offset", required = false) final Integer offset,
+                                                               @RequestParam(value = "fq", required = false) final String[] filterValues,
+                                                               @RequestParam(value = "fl", required = false) final Integer facetLimit,
+                                                               @RequestParam(value = "fo", required = false) final Integer facetOffset,
+                                                               @RequestParam(value = "sort", required = false) final String sortField,
+                                                               @RequestParam(value = "bbox", required = false) final Double[] boundingBox,
+                                                               @RequestParam(value = "ghprec", required = false) final Integer geoHashPrecision,
+                                                               @RequestParam(value = "sf", required = false) final String[] facetsToSort,
+                                                               @RequestParam(value = "scroll", required = false) final Boolean scrollMode,
+                                                               @RequestParam(value = "facet", required = false) final String facet,
+                                                               @RequestParam(value = "editorfields", required = false) Boolean editorFields,
+                                                               @RequestParam(value = "lang", required = false) final String lang,
+                                                               @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage) {
+
+        ResponseEntity<?> result = handleSearchRequest(queryString, limit, offset, filterValues, facetLimit, facetOffset, sortField, false, true, boundingBox, geoHashPrecision, facetsToSort, scrollMode, facet, editorFields, lang, headerLanguage);
+        SearchResult searchResult = (SearchResult) result.getBody();
+        return ResponseEntity.ok().body(searchResult.getFacets());
     }
 }

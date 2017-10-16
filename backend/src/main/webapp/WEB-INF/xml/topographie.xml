@@ -9,19 +9,22 @@
 			</section>
 		</title>
 		<subtitle>
-			<section>
-				<section separator=" / ">
+			<section separator=", ">
+				<section separator=" ">
 					<field datasource="topographie.modernerOrt">
 						<ifEmpty>
 							<field datasource="ort.Stadt" />
 						</ifEmpty>
 					</field>
-					<field datasource="topographie.antikerOrt">
+					<field datasource="topographie.antikerOrt" prefix="(" postfix=")">
 						<ifEmpty>
-							<field datasource="ort.Ort_antik" />
+							<field datasource="ort.Ort_antik" prefix="(" postfix=")" />
 						</ifEmpty>
 					</field>
 				</section>
+                <section>
+                    <field datasource="ort.Land" />
+                </section>
 			</section>
 		</subtitle>
 		<datasections>

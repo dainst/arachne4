@@ -599,6 +599,7 @@
 				<version>${maven-tomcat-version}</version>
 				<configuration>
 					<uriEncoding>UTF-8</uriEncoding>
+                                        <path>/data</path>
 				</configuration>
 			</plugin>
 		</plugins>

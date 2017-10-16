@@ -7,21 +7,12 @@
 	<display>
 		<title>
 			<section>
-				<field datasource="objekt.KurzbeschreibungObjekt" />
+				<field datasource="realien.KurzbeschreibungRealien" />
 			</section>
 		</title>
 		<subtitle>
 			<section>
-				<field datasource="realien.KurzbeschreibungRealien" />
-			</section>
-			<section separator=", ">
-				<section separator=" / ">
-					<field datasource="ort.Stadt" />
-					<field datasource="ort.Ort_antik" />
-				</section>
-				<section>
-					<field datasource="ort.Aufbewahrungsort" />
-				</section>
+				<field datasource="objekt.KurzbeschreibungObjekt" />
 			</section>
 		</subtitle>
 		<datasections>

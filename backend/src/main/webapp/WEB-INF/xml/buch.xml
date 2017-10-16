@@ -29,9 +29,9 @@
 			</section>
 		</subtitle>
 		<datasections>
-            <section labelKey="Permalink">
-                <field datasource="buch.alias" prefix="arachne.dainst.org/books/" />
-            </section>
+			<section labelKey="Permalink">
+				<linkField labelKey="" datasource="buch.alias" prefix="http://arachne.dainst.org/books/" />
+			</section>
 			<section labelKey="Informationen zum Buch">
 				<include type="ort" />
 				<section labelKey="Autor">
@@ -163,6 +163,9 @@
 					<field datasource="buch.BuchMaszeBemerk" />
 				</section>
 				<include type="uri" />
+				<section labelKey="Download">
+					<linkField labelKey="Gesamtes Buch als PDF herunterladen" datasource="buch.Verzeichnis" prefix="http://arachne.dainst.org/download-book/" postfix=".pdf.zip" />
+				</section>
 			</section>
 		</datasections>
 		<editorsection>

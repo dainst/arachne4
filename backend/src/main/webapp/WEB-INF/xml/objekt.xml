@@ -39,12 +39,12 @@
 		</title>
 		<subtitle>
 			<section separator=", ">
-				<section separator=" / ">
-					<field datasource="ort.Stadt" />
-					<field datasource="ort.Ort_antik" />
-				</section>
 				<section>
 					<field datasource="ort.Aufbewahrungsort" />
+					<field datasource="ort.Ort_antik" prefix="(" postfix=")" />
+				</section>
+				<section>
+					<field datasource="ort.Stadt" />
 				</section>
 			</section>
 		</subtitle>
@@ -76,10 +76,10 @@
 				</section>
 				<section labelKey="Inschrift">
 					<field datasource="datenblattberlin.Inschrift" />
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Anbringungsort"
-						prefix="Anbringugsort: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Besonderheiten"
-						prefix="Besonderheiten: " /> -->
+					<!-- <<field datasource="datenblattberlin_inschrift.Inschrift_Anbringungsort"
+						prefix="Anbringugsort: " />-->
+					<!-- <<field datasource="datenblattberlin_inschrift.Inschrift_Besonderheiten"
+						prefix="Besonderheiten: " />-->
 					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Buchstabenhoehe"
 						prefix="Buchstabenhöhe: " /> -->
 					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Zeilenabstand"
@@ -214,11 +214,9 @@
 					<field datasource="objekt.KatalogtextEnglisch" />
 				</section>
 				<section labelKey="Inschrift">
-					<field datasource="objekt.InschriftSpracheObjekt" prefix="Sprache bzw Schrift: " />
-					<field datasource="objekt.InschriftObjekt" />
-					<field datasource="objekt.InschriftCorpusObjekt" />
-					<field datasource="objekt.InschriftKommentar" />
-					<field datasource="objekt.InschriftPublikation" />
+					<field datasource="inschrift.Inschrift" />
+					<field datasource="inschrift.Uebersetzung" />
+					<field datasource="inschrift.Sprache" prefix="Sprache/Schrift: " />
 				</section>
 				<include type="literaturcomplete" />
 				<include type="uri" />
