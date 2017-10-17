@@ -17,7 +17,24 @@ import de.uni_koeln.arachne.response.link.SimpleExternalLinkResolver;
  */
 @Configuration
 public class ExternalLinkResolvers {
-	
+
+	/**
+	 * Resolver for SVG viewer links.
+	 *
+	 * @return The link resolver.
+	 */
+	@Bean
+	public SimpleExternalLinkResolver viewerSVG() {
+		final SimpleExternalLinkResolver result = new SimpleExternalLinkResolver();
+		result.setLabel("SVG Viewer");
+		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "modell3d", "modell3d.Dateiformat", "svg");
+		result.setCriteria(criteria);
+		result.setMatchAllCriteria(true);
+		result.setLinkPattern("https://arachne.dainst.org/SVG?id=%s");
+		result.setPatternFields(Arrays.asList("Dataset.internalId"));
+		return result;
+	}
+
 	/**
 	 * Resolver for 3D model viewer links.
 	 * 
@@ -27,8 +44,9 @@ public class ExternalLinkResolvers {
 	public SimpleExternalLinkResolver viewer3D() {
 		final SimpleExternalLinkResolver result = new SimpleExternalLinkResolver();
 		result.setLabel("3D-Modell Viewer");
-		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "modell3d");
+		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "modell3d", "modell3d.Dateiformat", "obj");
 		result.setCriteria(criteria);
+		result.setMatchAllCriteria(true);
 		result.setLinkPattern("https://arachne.dainst.org/3d?id=%s");
 		result.setPatternFields(Arrays.asList("Dataset.internalId"));
 		return result;
