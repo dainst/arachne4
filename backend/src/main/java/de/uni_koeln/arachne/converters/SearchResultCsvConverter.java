@@ -52,16 +52,21 @@ public class SearchResultCsvConverter extends AbstractHttpMessageConverter<Searc
 
         final CsvListWriter csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
         csvWriter.writeHeader(headers);
-        for (final SearchHit hit : searchResult.getEntities()) {
-            final List<Object> csvEntity = Arrays.asList(new Object[]{
-                    String.valueOf(hit.getEntityId()),
-                    hit.getType(),
-                    hit.getTitle(),
-                    hit.getSubtitle(),
-                    String.valueOf(hit.getThumbnailId())
-            });
-            csvWriter.write(csvEntity, processors);
+
+        final List<SearchHit> entities = searchResult.getEntities();
+        if( entities != null ){
+            for (final SearchHit hit : entities) {
+                final List<Object> csvEntity = Arrays.asList(new Object[]{
+                        String.valueOf(hit.getEntityId()),
+                        hit.getType(),
+                        hit.getTitle(),
+                        hit.getSubtitle(),
+                        String.valueOf(hit.getThumbnailId())
+                });
+                csvWriter.write(csvEntity, processors);
+            }
         }
+
         csvWriter.close();
     }
 
