@@ -2,10 +2,10 @@ package de.uni_koeln.arachne.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import de.uni_koeln.arachne.converters.SearchResultCsvConverter;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import de.uni_koeln.arachne.service.EntityService;
+import de.uni_koeln.arachne.service.Transl8Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
@@ -52,12 +52,22 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     @Inject
     private Environment environment;
 
+    @Autowired
+    private transient EntityService entityService;
+
+    @Autowired
+    private transient Transl8Service translateService;
+
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(new StringHttpMessageConverter());
         converters.add(new MappingJackson2HttpMessageConverter());
         converters.add(new ByteArrayHttpMessageConverter());
-        converters.add(new SearchResultCsvConverter());
+
+        final SearchResultCsvConverter searchResultCsvConverter = new SearchResultCsvConverter();
+        searchResultCsvConverter.setEntityService(entityService);
+        searchResultCsvConverter.setTransl8Service(translateService);
+        converters.add(searchResultCsvConverter);
     }
 
     @Override

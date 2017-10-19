@@ -318,6 +318,12 @@
             <version>${jackson-version}</version>
         </dependency>
 
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20170516</version>
+		</dependency>
+
         <!-- artifact for Java 7 and 8 -->
         <dependency>
             <groupId>com.zaxxer</groupId>
