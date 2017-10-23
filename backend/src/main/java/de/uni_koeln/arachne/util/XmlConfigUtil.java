@@ -746,7 +746,7 @@ public class XmlConfigUtil implements ServletContextAware {
 
         String nextSeparator = separator;
         for (final Element element: children) {
-            LOGGER.info("TESTERING! addFieldsToFieldList {}", element);
+            LOGGER.debug("TESTERING! addFieldsToFieldList {}", element);
             if (element.getName().equals("field") || element.getName().equals("linkField"))
                 nextSeparator = addContextFieldToFieldList(element, namespace, fieldList, index, dataset, contextType, nextSeparator, lang);
             else if(element.getName().equals("plain"))
