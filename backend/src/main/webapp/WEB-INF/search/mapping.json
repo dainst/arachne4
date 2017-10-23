@@ -102,6 +102,7 @@
                 }
             },
             "places":{
+                "type": "nested",
                 "properties":{
                     "name":{
                         "type":"string"
