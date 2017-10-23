@@ -116,8 +116,7 @@ public class SearchController {
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
 	@RequestMapping(value="/search",
-			method=RequestMethod.GET,
-			produces={APPLICATION_JSON_UTF8_VALUE})
+			method=RequestMethod.GET) //produces={APPLICATION_JSON_UTF8_VALUE}) removed because csv export does not work than
 	public @ResponseBody ResponseEntity<?> handleSearchRequest(@RequestParam("q") final String queryString,
 			@RequestParam(value = "limit", required = false) final Integer limit,
 			@RequestParam(value = "offset", required = false) final Integer offset,
