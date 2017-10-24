@@ -2,7 +2,9 @@ package de.uni_koeln.arachne.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import de.uni_koeln.arachne.converters.SearchResultCsvConverter;
+import de.uni_koeln.arachne.converters.SearchResultHtmlConverter;
 import de.uni_koeln.arachne.service.EntityService;
+import de.uni_koeln.arachne.service.IIPService;
 import de.uni_koeln.arachne.service.Transl8Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -27,6 +29,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
@@ -53,10 +56,16 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     private Environment environment;
 
     @Autowired
+    private transient ServletContext servletContext;
+
+    @Autowired
     private transient EntityService entityService;
 
     @Autowired
     private transient Transl8Service translateService;
+
+    @Autowired
+    private transient IIPService iipService;
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -68,6 +77,13 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
         searchResultCsvConverter.setEntityService(entityService);
         searchResultCsvConverter.setTransl8Service(translateService);
         converters.add(searchResultCsvConverter);
+
+        final SearchResultHtmlConverter searchResultHtmlConverter = new SearchResultHtmlConverter();
+        searchResultHtmlConverter.setEntityService(entityService);
+        searchResultHtmlConverter.setTransl8Service(translateService);
+        searchResultHtmlConverter.setServletContext(servletContext);
+        searchResultHtmlConverter.setIIPService(iipService);
+        converters.add(searchResultHtmlConverter);
     }
 
     @Override

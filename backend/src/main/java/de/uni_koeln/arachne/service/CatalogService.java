@@ -41,6 +41,7 @@ public class CatalogService {
 	 * @param catalog The catalog of interest.
 	 * @return The PDF file as byte array.
 	 */
+	/*
 	public byte[] getCatalogAsPdf(final Catalog catalog) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				
@@ -56,7 +57,7 @@ public class CatalogService {
 		}
 		
 		return baos.toByteArray();
-	}
+	}*/
 	
 	/**
 	 * Creates an HTML representation of a catalog. Images are embedded and not links for offline usage.

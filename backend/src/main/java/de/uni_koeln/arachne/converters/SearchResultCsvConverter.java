@@ -31,6 +31,7 @@ import org.json.*;
 /**
  * @author Sebastian Cuy
  * @author Patrick Jominet
+ * @author Paf
  */
 public class SearchResultCsvConverter extends AbstractHttpMessageConverter<SearchResult> {
 

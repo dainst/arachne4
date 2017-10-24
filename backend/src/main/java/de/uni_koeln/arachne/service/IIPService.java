@@ -171,14 +171,14 @@ public class IIPService {
 							+ "&QLT=99"
 							+ "&CVT=jpeg");
 					LOGGER.debug("Full server adress: " + serverAdress);
-	
+
 					image = restTemplate.getForObject(serverAdress.toURI(), byte[].class);
 					if (requestedHeight == 300) {
 						writeImageToCacheDir(imageName, image, watermarked);
 					}
 				}
 				return new TypeWithHTTPStatus<byte[]>(image);
-			} catch (RestClientException | URISyntaxException | IOException e) {
+			} catch (Exception e) {
 				LOGGER.error(e.getMessage());
 			}
 		}
