@@ -16,12 +16,13 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * @author Paf
  */
-public class SearchResultPdfConverter extends AbstractHttpMessageConverter<SearchResult> {
+public class SearchResultPdfConverter extends DataExportConverter {
 
 
     public SearchResultPdfConverter() {
@@ -74,4 +75,8 @@ public class SearchResultPdfConverter extends AbstractHttpMessageConverter<Searc
         return baos.toByteArray();
     }
 
+    @Override
+    void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector) {
+
+    }
 }

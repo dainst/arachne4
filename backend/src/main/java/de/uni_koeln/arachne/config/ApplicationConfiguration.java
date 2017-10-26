@@ -6,6 +6,7 @@ import de.uni_koeln.arachne.converters.SearchResultHtmlConverter;
 import de.uni_koeln.arachne.service.EntityService;
 import de.uni_koeln.arachne.service.IIPService;
 import de.uni_koeln.arachne.service.Transl8Service;
+import de.uni_koeln.arachne.service.UserRightsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
@@ -65,6 +66,9 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     private transient Transl8Service translateService;
 
     @Autowired
+    private transient UserRightsService userRightsService;
+
+    @Autowired
     private transient IIPService iipService;
 
     @Override
@@ -74,15 +78,16 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
         converters.add(new ByteArrayHttpMessageConverter());
 
         final SearchResultCsvConverter searchResultCsvConverter = new SearchResultCsvConverter();
-        searchResultCsvConverter.setEntityService(entityService);
-        searchResultCsvConverter.setTransl8Service(translateService);
+        searchResultCsvConverter.injectService(entityService);
+        searchResultCsvConverter.injectService(translateService);
         converters.add(searchResultCsvConverter);
 
         final SearchResultHtmlConverter searchResultHtmlConverter = new SearchResultHtmlConverter();
-        searchResultHtmlConverter.setEntityService(entityService);
-        searchResultHtmlConverter.setTransl8Service(translateService);
-        searchResultHtmlConverter.setServletContext(servletContext);
-        searchResultHtmlConverter.setIIPService(iipService);
+        searchResultHtmlConverter.injectService(entityService);
+        searchResultHtmlConverter.injectService(translateService);
+        searchResultHtmlConverter.injectService(servletContext);
+        searchResultHtmlConverter.injectService(iipService);
+        searchResultHtmlConverter.injectService(userRightsService);
         converters.add(searchResultHtmlConverter);
     }
 

@@ -2,14 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Arachne - Datenexport</title>
+    <title>Arachne - Data Export</title>
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <style>
+
+        @font-face {
+            font-family: 'Source Sans Pro';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular');
+        }
+
         body {
-            font-family: 'Source Sans Pro',Arial,Helvetica,sans-serif;
+            font-family: 'Source Sans Pro',Arial,Helvetica, sans-serif;
             background: silver;
         }
 
@@ -52,17 +58,120 @@
             min-height: 75%
         }
 
+        .row,
+        .page:after {
+            content: "";
+            display: table;
+            clear: both;
+            width: 100%;
+        }
+
+        .page-right, .page-left {
+            float: left;
+            width: 50%;
+        }
+
+        .title {
+            font-size: medium;
+            font-weight: bold;
+            margin: 0.5em 0 0.2em;
+        }
+
+        .subtitle {
+            font-size: medium;
+            font-weight: normal;
+            margin-top: 0;
+        }
+
         .infobox {
             font-size: small
         }
 
-        .thumbnailbox,
+        .logo-topline-left,
+        .page-right {
+            text-align: left;
+        }
+
+        .logo-topline-right,
+        .page-right,
         .uri {
             text-align: right;
         }
 
-        .thumbnailbox img {
-            margin: 0.5em
+        .thumbnail {
+            margin: 0.5em;
+            float: right;
+        }
+
+        .logo {
+            display: inline-block;
+        }
+
+
+        .logo-topline a {
+            text-decoration: none;
+            color: black
+        }
+        .logo-bottomline {
+            text-align: right;
+            font-size: x-small;
+        }
+        .logo-centerline {
+
+            display: inline-block;
+            float: right;
+            font-size: xx-large;
+            margin-top: 0.2em;
+            margin-bottom: 0.2em;
+        }
+
+        .logo-centerline-initial {
+            color: #37588e
+        }
+
+        .logo-topline-initial {
+            color: white;
+            color: transparent;
+            font-size: xx-large;
+            line-height: 0px;
+        }
+
+        .logo-centerline-body {
+            border-top: 1px solid silver;
+            border-bottom: 1px solid silver;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            padding-top : 2px;
+            padding-bottom: 3px
+        }
+
+        .logo-img {
+            width: 80px;
+            margin-left: -5px;
+        }
+
+        .logo-topline {
+            font-size: 6px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo-topline-right {
+            position:absolute;
+            right: 0;
+            bottom: 0;
+        }
+
+        .logo-topline-left {
+        }
+
+
+        .dataset td:first-child {
+            width: 14em;
+        }
+
+        .imprint {
+            font-size: small
         }
 
 

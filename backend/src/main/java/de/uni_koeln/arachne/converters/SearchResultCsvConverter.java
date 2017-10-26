@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
@@ -33,38 +34,22 @@ import org.json.*;
  * @author Patrick Jominet
  * @author Paf
  */
-public class SearchResultCsvConverter extends AbstractHttpMessageConverter<SearchResult> {
+public class SearchResultCsvConverter extends DataExportConverter {
 
     public SearchResultCsvConverter() {
         super(new MediaType("text", "csv"));
     }
 
-    // because we can notz use @Autowired here
-    private transient EntityService entityService;
-    public void setEntityService(EntityService entityService) {
-        this.entityService = entityService;
-    }
-    private transient Transl8Service transl8Service;
-    public void setTransl8Service(Transl8Service transl8Service) {
-        this.transl8Service = transl8Service;
-    }
 
-    @Override
-    protected boolean supports(Class<?> aClass) {
-        return aClass == SearchResult.class;
-    }
 
-    @Override
-    protected SearchResult readInternal(Class<? extends SearchResult> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
-        throw new UnsupportedOperationException("Reading CSV is not implemented yet and will most likely never be.");
-    }
+
 
     @Override
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/csv");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.csv\"");
 
-        final List<SearchResultFacet> facets = searchResult.getFacets();
+        final List<SearchResultFacet> facets = searchResult.getFacets(); //for (final SearchResultFacet facet : facets) {//facet.getName()
         final List<SearchHit> entities = searchResult.getEntities();
 
         final List<String> headers = createHeaders(facets);
@@ -92,6 +77,9 @@ public class SearchResultCsvConverter extends AbstractHttpMessageConverter<Searc
 
                 TypeWithHTTPStatus entity = null;
 
+
+                // @ TODO the rest is depricated and could be made by getDetails
+                /*
                 if (entityService != null) {
 
                     try {
@@ -101,15 +89,11 @@ public class SearchResultCsvConverter extends AbstractHttpMessageConverter<Searc
                     }
                 }
 
-                for (final SearchResultFacet facet : facets) {
+                for (final SearchResultFacet facet : facets) {//facet.getName()
 
                     if (entity != null) {
                         final String fullEntityString = entity.getValue().toString();
 
-                        /*
-                         * unpacking JSON here again might not be the most elegant solution but
-                         * but writing an entire new function of getting data seemed to be nto very elegant
-                         */
                         final JSONObject fullEntity = new JSONObject(fullEntityString);
 
                         if (fullEntity.has(facet.getName())) {
@@ -136,10 +120,10 @@ public class SearchResultCsvConverter extends AbstractHttpMessageConverter<Searc
                     }
 
 
-                }
 
-                final List<Object> csvEntity = row;
-                csvWriter.write(csvEntity, processors);
+                }
+                */
+                csvWriter.write(row, processors);
             }
         }
 
@@ -170,47 +154,21 @@ public class SearchResultCsvConverter extends AbstractHttpMessageConverter<Searc
         return headers;
     }
 
-    private ArrayList<String> unpackFacetGeo(JSONArray facetGeo) {
 
-        final ArrayList returner = new ArrayList<String>(3);
-
-        String gaz = "";
-        String lat = "";
-        String lon = "";
-        // name is not necessary, since we have the columns land and place etc.
-
-        // take first location
-        Object firstEntryBox = facetGeo.get(0);
-        final JSONObject firstEntry = new JSONObject("" + firstEntryBox); // dont't you remove the "" + -, it won't work then and I have no idea
-
-
-        if (firstEntry.has("gazetteerId")) {
-            gaz = firstEntry.get("gazetteerId").toString();
-        }
-
-        if (firstEntry.has("location")) {
-            final JSONObject location = (JSONObject) firstEntry.get("location");
-            lat = location.get("lat").toString();
-            lon = location.get("lon").toString();
-        }
-
-        returner.add(gaz);
-        returner.add(lat);
-        returner.add(lon);
-
-        return returner;
-    }
 
     private static CellProcessor[] getProcessors(List<String> headers) {
 
         final CellProcessor[] cellProcessor = new StringCellProcessor[headers.size()];
-
-
 
         for(int i=0; i < headers.size(); i++){
             cellProcessor[i] = new Optional();
         }
 
         return cellProcessor;
+    }
+
+    @Override
+    void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector) {
+
     }
 }
