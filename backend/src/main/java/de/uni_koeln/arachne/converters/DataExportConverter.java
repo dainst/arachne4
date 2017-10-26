@@ -64,8 +64,8 @@ public abstract class DataExportConverter extends AbstractHttpMessageConverter<S
 
     // settings; overwrite em
     public Boolean includeEmptyFacets = false;
-
     public Boolean handleOnlyFirstPlace = false;
+    public Boolean sortFacets = true;
     public List<String> skipFacets = Arrays.asList("facet_land", "facet_ort", "facet_ortsangabe");
 
     public String getCurrentUrl() {
@@ -151,11 +151,13 @@ public abstract class DataExportConverter extends AbstractHttpMessageConverter<S
         }
 
         // sort by index
-        Collections.sort(row, new Comparator<DataExportSet>() {
-            public int compare(final DataExportSet object1, final DataExportSet object2) {
-                return object1.index.compareTo(object2.index);
-            }
-        });
+        if (sortFacets) {
+            Collections.sort(row, new Comparator<DataExportSet>() {
+                public int compare(final DataExportSet object1, final DataExportSet object2) {
+                    return object1.index.compareTo(object2.index);
+                }
+            });
+        }
 
         return row;
     }
@@ -177,7 +179,6 @@ public abstract class DataExportConverter extends AbstractHttpMessageConverter<S
             String lon = "";
             String name= "";
             String rel = "";
-
 
             final JSONObject entry = places.getJSONObject(i);
 

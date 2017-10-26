@@ -96,55 +96,54 @@ public class SearchResultHtmlConverter extends DataExportConverter {
     }
 
     private void writeResult(List<SearchHit> entities, List<SearchResultFacet> facets) {
-        if(entities != null) {
-            try {
-                for (final SearchHit hit : entities) {
+        if(entities == null) {
+            return;
+        }
+        try {
+            for (final SearchHit hit : entities) {
 
-                    // there are items wo subtitle and maybe wo title out there...
-                    String title = (hit.getTitle() == null) ? "" : hit.getTitle();
-                    String subtitle = (hit.getSubtitle() == null) ? "" : hit.getSubtitle();
+                // there are items wo subtitle and maybe wo title out there...
+                String title = (hit.getTitle() == null) ? "" : hit.getTitle();
+                String subtitle = (hit.getSubtitle() == null) ? "" : hit.getSubtitle();
 
-                    writer.append("<div class='page'>");
+                writer.append("<div class='page'>");
 
-                    writer.append("<div class='page-left category infobox'>" + hit.getType() + "</div>");
-                    writer.append("<div class='page-right uri infobox'><a href='" + hit.getUri() + "' target='_blank'>" + hit.getUri() + "</a></div>");
+                writer.append("<div class='page-left category infobox'>" + hit.getType() + "</div>");
+                writer.append("<div class='page-right uri infobox'><a href='" + hit.getUri() + "' target='_blank'>" + hit.getUri() + "</a></div>");
 
-                    writer.append("<div class='row'>");
-                    htmlThumbnail(hit.getThumbnailId());
-                    writer.append("<h2 class='title'>" + title + "</h2>");
-                    writer.append("<h3 class='subtitle'>" + subtitle + "</h3>");
+                writer.append("<div class='row'>");
+                htmlThumbnail(hit.getThumbnailId());
+                writer.append("<h2 class='title'>" + title + "</h2>");
+                writer.append("<h3 class='subtitle'>" + subtitle + "</h3>");
 
 
-                    writer.append("<table class='dataset'>");
-                    final ArrayList<DataExportSet> details = (ArrayList) getDetails(hit, facets);
-                    for (DataExportSet detail : details) {
-                        if (detail != null) {
-                            writer.append("<tr><td>" + detail.name + "</td><td>" + detail.value + "</td></tr>");
-                        } else {
-                            writer.append("<tr><td colspan='2'>error</td></tr>");
-                        }
-
+                writer.append("<table class='dataset'>");
+                final ArrayList<DataExportSet> details = (ArrayList) getDetails(hit, facets);
+                for (DataExportSet detail : details) {
+                    if (detail != null) {
+                        writer.append("<tr><td>" + detail.name + "</td><td>" + detail.value + "</td></tr>");
+                    } else {
+                        writer.append("<tr><td colspan='2'>error</td></tr>");
                     }
-                    writer.append("</table>");
-
-                    /*@ TODO Stand jetzt
-                     * # angepasste agg_geo handler schreiben je nach export format
-                     * * merge multifecets
-                     * * und dann den csv exporter reparieren,
-                     * * dann standart auf JSON stellen
-                     * * pdf
-                     */
-
-
-                    writer.append("</div>");
-
-                    writer.append("</div>");
-
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                writer.append("</table>");
 
+                /*@ TODO Stand jetzt
+                 * # angepasste agg_geo handler schreiben je nach export format
+                 * * merge multifecets
+                 * * und dann den csv exporter reparieren,
+                 * * dann standart auf JSON stellen
+                 * * pdf
+                 */
+
+
+                writer.append("</div>");
+
+                writer.append("</div>");
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -178,8 +177,6 @@ public class SearchResultHtmlConverter extends DataExportConverter {
             values.add(facetValues.getString(i));
             longest = Math.max(longest, facetValues.getString(i).length());
         }
-
-
 
         collector.add(new DataExportSet(facetName, facetFullName, String.join((longest > 14 ? "<br>" : ", "), values)));
     }

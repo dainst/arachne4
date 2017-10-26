@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,13 +42,10 @@ public class SearchResultCsvConverter extends DataExportConverter {
     }
 
 
-
-
-
     @Override
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/csv");
-        httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.csv\"");
+        //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.csv\"");
 
         final List<SearchResultFacet> facets = searchResult.getFacets(); //for (final SearchResultFacet facet : facets) {//facet.getName()
         final List<SearchHit> entities = searchResult.getEntities();
@@ -59,72 +57,40 @@ public class SearchResultCsvConverter extends DataExportConverter {
         final CsvListWriter csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
         csvWriter.writeHeader(headers.toArray(new String[headers.size()]));
 
-        if( entities != null ){
+        handleOnlyFirstPlace = true;
+        includeEmptyFacets = true;
+        sortFacets = false;
+        skipFacets = new ArrayList<>();
 
-            for (final SearchHit hit : entities) {
+        if(entities == null) {
+            return;
+        }
 
-                final List<Object> row = new ArrayList<Object>();
+        for (final SearchHit hit : entities) {
 
-                // there are items wo subtitle and maybe wo title out there...
-                String title = (hit.getTitle() == null) ? "" : hit.getTitle().replace("\n", "").replace("\r", "");
-                String subtitle = (hit.getSubtitle() == null) ? "" : hit.getSubtitle().replace("\n", "").replace("\r", "");
+            final List<Object> row = new ArrayList<Object>();
 
-                row.add(String.valueOf(hit.getEntityId()) );
-                row.add(hit.getType());
-                row.add(title);
-                row.add(subtitle);
-                row.add(String.valueOf(hit.getThumbnailId()) );
+            // there are items wo subtitle and maybe wo title out there...
+            String title = (hit.getTitle() == null) ? "" : hit.getTitle().replace("\n", "").replace("\r", "");
+            String subtitle = (hit.getSubtitle() == null) ? "" : hit.getSubtitle().replace("\n", "").replace("\r", "");
 
-                TypeWithHTTPStatus entity = null;
+            row.add(String.valueOf(hit.getEntityId()) );
+            row.add(hit.getType());
+            row.add(title);
+            row.add(subtitle);
+            row.add(String.valueOf(hit.getThumbnailId()));
 
-
-                // @ TODO the rest is depricated and could be made by getDetails
-                /*
-                if (entityService != null) {
-
-                    try {
-                        entity = entityService.getEntityFromIndex(hit.getEntityId(), null, "en");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                for (final SearchResultFacet facet : facets) {//facet.getName()
-
-                    if (entity != null) {
-                        final String fullEntityString = entity.getValue().toString();
-
-                        final JSONObject fullEntity = new JSONObject(fullEntityString);
-
-                        if (fullEntity.has(facet.getName())) {
-                            final Object valueObj = fullEntity.get(facet.getName());
-                            if (valueObj instanceof JSONArray) {
-                                if (facet.getName().equals("facet_geo")) {
-                                    row.addAll(unpackFacetGeo((JSONArray) valueObj));
-                                } else {
-                                    row.add(((JSONArray) valueObj).get(0).toString());
-                                }
-                            } else {
-                                row.add(valueObj.toString());
-                            }
-                        } else {
-                            if (facet.getName().equals("facet_geo")) {
-                                row.add("");
-                                row.add("");
-                                row.add("");
-                            } else {
-                                row.add(""); //"[none: " + facet.getName() + "]"
-                            }
-
-                        }
-                    }
-
-
-
-                }
-                */
-                csvWriter.write(row, processors);
+            final ArrayList<DataExportSet> details = (ArrayList) getDetails(hit, facets);
+            for (DataExportSet detail : details) {
+                row.add(detail.value);
             }
+            try {
+                csvWriter.write(row, processors);
+            } catch (Exception e) {
+                e.getMessage();
+            }
+
+
         }
 
         csvWriter.close();
@@ -145,7 +111,7 @@ public class SearchResultCsvConverter extends DataExportConverter {
                 headers.add("longitude");
             } else {
                 try {
-                    headers.add(transl8Service.transl8(facet.getName(),"de"));
+                    headers.add(transl8Service.transl8(facet.getName(),"en"));
                 } catch (Transl8Service.Transl8Exception e) {
                     headers.add(facet.getName());
                 }
@@ -169,6 +135,8 @@ public class SearchResultCsvConverter extends DataExportConverter {
 
     @Override
     void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector) {
-
+        collector.add(new DataExportSet("","", gazetteerId));
+        collector.add(new DataExportSet("","", lat));
+        collector.add(new DataExportSet("","", lon));
     }
 }
