@@ -134,19 +134,16 @@ public abstract class DataExportConverter extends AbstractHttpMessageConverter<S
                 if (facetName.equals("facet_geo")) {
                     //row.putAll(unpackFacetGeo((JSONArray) valueObj));
                     if (fullEntity.has("places")) {
-                        row.addAll(handlePlaces((JSONArray) fullEntity.get("places")));
+                        handlePlaces((JSONArray) fullEntity.get("places"), row);
                     } else if (fullEntity.has("facet_geo")) {
-                        // some entities (http://bogusman02.dai-cloud.uni-koeln.de/data/entity/1179020) has a facet_geo, but no places
-                        row.addAll(handlePlaces(unpackFacetGeo((JSONArray) fullEntity.get("facet_geo"))));
+                        // some entities (iE http://bogusman02.dai-cloud.uni-koeln.de/data/entity/1179020) has a facet_geo, but no places
+                        handlePlaces(unpackFacetGeo((JSONArray) fullEntity.get("facet_geo")), row);
                     }
-
-
                 } else {
-                    for (int i = 0; i < (handleOnlyFirstPlace ? 1 : ((JSONArray) valueObj).length()); i++) {
-                        row.add(new DataExportSet(facetName, facetFullName, ((JSONArray) valueObj).get(i).toString()));
-                    }
+                    handleFacetValues(facetName, facetFullName, (JSONArray) valueObj, row);
                 }
-            } else {
+
+            } else { // fallback
                 row.add(new DataExportSet(facetName, facetFullName, valueObj.toString()));
             }
 
@@ -171,11 +168,9 @@ public abstract class DataExportConverter extends AbstractHttpMessageConverter<S
         return facetGeo;
     }
 
-    public List<DataExportSet> handlePlaces(JSONArray facetGeo) {
+    public void handlePlaces(JSONArray places, List<DataExportSet> collector) {
 
-        final List<DataExportSet> returner = new ArrayList<DataExportSet>(4){};
-
-        for (int i = 0; i < (handleOnlyFirstPlace ? 1 : facetGeo.length()); i++) {
+        for (int i = 0; i < (handleOnlyFirstPlace ? 1 : places.length()); i++) {
 
             String gaz = "";
             String lat = "";
@@ -184,7 +179,7 @@ public abstract class DataExportConverter extends AbstractHttpMessageConverter<S
             String rel = "";
 
 
-            final JSONObject entry = facetGeo.getJSONObject(i);
+            final JSONObject entry = places.getJSONObject(i);
 
             if (entry.has("name")) {
                 name = entry.get("name").toString();
@@ -204,7 +199,7 @@ public abstract class DataExportConverter extends AbstractHttpMessageConverter<S
                 lon = location.get("lon").toString();
             }
 
-            handlePlace(i, name, gaz, lat, lon, rel, returner);
+            handlePlace(i, name, gaz, lat, lon, rel, collector);
 
         }
         /*
@@ -212,9 +207,14 @@ public abstract class DataExportConverter extends AbstractHttpMessageConverter<S
         returner.put("lat", lat);
         returner.put("lon", lon);
         */
-        return returner;
     }
 
     abstract void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector);
+
+    void handleFacetValues(String facetName, String facetFullName, JSONArray facetValues, List<DataExportSet> collector) {
+        for (int i = 0; i < facetValues.length(); i++) {
+            collector.add(new DataExportSet(facetName, facetFullName, facetValues.get(i).toString()));
+        }
+    };
 
 }

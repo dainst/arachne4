@@ -8,6 +8,7 @@ import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 import de.uni_koeln.arachne.util.security.JSONView;
 import org.apache.xerces.impl.dv.util.Base64;
+import org.json.JSONArray;
 import org.springframework.http.*;
 import org.springframework.http.converter.AbstractHttpMessageConverter;
 
@@ -154,7 +155,7 @@ public class SearchResultHtmlConverter extends DataExportConverter {
         String value = new String();
 
         if (name.equals("") && !lat.equals("") && !lon.equals("")) {
-            name = "[" + lat + "|" + lon + "]";
+            name = "[" + lat + "," + lon + "]";
         }
 
         if (!gazetteerId.equals("")) {
@@ -167,6 +168,22 @@ public class SearchResultHtmlConverter extends DataExportConverter {
 
         collector.add(new DataExportSet(index, fname, value));
     }
+
+    void handleFacetValues(String facetName, String facetFullName, JSONArray facetValues, List<DataExportSet> collector) {
+
+        ArrayList<String> values = new ArrayList<String>();
+        Integer longest = 0;
+
+        for (int i = 0; i < facetValues.length(); i++) {
+            values.add(facetValues.getString(i));
+            longest = Math.max(longest, facetValues.getString(i).length());
+        }
+
+
+
+        collector.add(new DataExportSet(facetName, facetFullName, String.join((longest > 14 ? "<br>" : ", "), values)));
+    }
+
 
     private void htmlThumbnail(Long entityId) {
 
