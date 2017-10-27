@@ -268,7 +268,7 @@ public class XmlConfigUtil implements ServletContextAware {
                         break;
 
                     case "plain":
-                        LOGGER.info("ADDED PLAIN! WITNESS ME!");
+                        LOGGER.debug("ADDED PLAIN! WITNESS ME!");
                         addPlainTextToResult(element, result, dataset, lang);
                         break;
 
@@ -706,9 +706,9 @@ public class XmlConfigUtil implements ServletContextAware {
     private String addContextPlainToFieldList(final Element element, final FieldList fieldList, final int index
             ,final Dataset dataset, final String contextType, String separator, final String lang) {
 
-        LOGGER.info("ELEMENT: {}", element);
+        LOGGER.debug("ELEMENT: {}", element);
         String value = element.getAttributeValue("text");
-        LOGGER.info("VALUE: {}", value);
+        LOGGER.debug("VALUE: {}", value);
         try {
             if(ts != null)
                 value = ts.transl8(value, lang);
