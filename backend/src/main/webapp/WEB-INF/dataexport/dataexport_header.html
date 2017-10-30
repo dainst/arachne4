@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<!-- note that this has to be valid xml for pdf conversion! -->
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"></meta>
     <title>Arachne - Data Export</title>
-
 
     <style>
 
@@ -18,6 +18,8 @@
             font-family: 'Source Sans Pro',Arial,Helvetica, sans-serif;
             background: silver;
         }
+
+
 
         a {
             color: #37588e;
@@ -48,9 +50,8 @@
         .page {
             width: 800px;
             max-width: 100%;
-            border: 1px solid #0000004d;
             border-radius: 2px;
-            box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.38);
+            box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.38);
             background: white;
             padding: 0.5em;
             float: none;
@@ -66,9 +67,14 @@
             width: 100%;
         }
 
-        .page-right, .page-left {
+        .page-left {
             float: left;
-            width: 50%;
+            width: 25%;
+        }
+
+        .page-right {
+            float: left;
+            width: 75%;
         }
 
         .title {
@@ -87,20 +93,26 @@
             font-size: small
         }
 
+
+
         .logo-topline-left,
         .page-right {
             text-align: left;
         }
 
-        .logo-topline-right,
-        .page-right,
-        .uri {
+        .frontmatter .page-right,
+        .logo-topline-right {
             text-align: right;
         }
 
         .thumbnail {
             margin: 0.5em;
+            padding-top: 0.5em;
             float: right;
+        }
+
+        .logo-box {
+            text-align: right;
         }
 
         .logo {
@@ -117,9 +129,7 @@
             font-size: x-small;
         }
         .logo-centerline {
-
             display: inline-block;
-            float: right;
             font-size: xx-large;
             margin-top: 0.2em;
             margin-bottom: 0.2em;
@@ -130,10 +140,9 @@
         }
 
         .logo-topline-initial {
-            color: white;
             color: transparent;
             font-size: xx-large;
-            line-height: 0px;
+            line-height: 0;
         }
 
         .logo-centerline-body {
@@ -162,18 +171,51 @@
             bottom: 0;
         }
 
-        .logo-topline-left {
+        .dataset {
+            width: 100%;
         }
 
-
         .dataset td:first-child {
-            width: 14em;
+            width: 25%;
         }
 
         .imprint {
             font-size: small
         }
 
+        .dataset ul {
+            padding-left: 16px;
+        }
+
+        .dataset li {
+            padding-bottom: 3px;
+        }
+
+
+        @media print {
+            body {
+                background: white;
+                font-size: 75%
+            }
+            .logo-topline-initial {
+                color: white;
+            }
+            .page {
+                width: 100%;
+                page-break-inside: avoid;
+                margin-bottom: 1.5em;
+            }
+            .logo-bottomline {
+                margin-top: 3px;
+            }
+            .frontmatter {
+                clear:both;
+            }
+            .page-right {
+                float: left;
+                width: 60%
+            }
+        }
 
     </style>
 

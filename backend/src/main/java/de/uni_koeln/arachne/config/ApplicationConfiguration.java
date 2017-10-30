@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.config;
 import com.zaxxer.hikari.HikariDataSource;
 import de.uni_koeln.arachne.converters.SearchResultCsvConverter;
 import de.uni_koeln.arachne.converters.SearchResultHtmlConverter;
+import de.uni_koeln.arachne.converters.SearchResultPdfConverter;
 import de.uni_koeln.arachne.service.EntityService;
 import de.uni_koeln.arachne.service.IIPService;
 import de.uni_koeln.arachne.service.Transl8Service;
@@ -63,7 +64,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     private transient EntityService entityService;
 
     @Autowired
-    private transient Transl8Service translateService;
+    private transient Transl8Service transl8Service;
 
     @Autowired
     private transient UserRightsService userRightsService;
@@ -79,16 +80,24 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 
         final SearchResultCsvConverter searchResultCsvConverter = new SearchResultCsvConverter();
         searchResultCsvConverter.injectService(entityService);
-        searchResultCsvConverter.injectService(translateService);
+        searchResultCsvConverter.injectService(transl8Service);
         converters.add(searchResultCsvConverter);
 
         final SearchResultHtmlConverter searchResultHtmlConverter = new SearchResultHtmlConverter();
         searchResultHtmlConverter.injectService(entityService);
-        searchResultHtmlConverter.injectService(translateService);
+        searchResultHtmlConverter.injectService(transl8Service);
         searchResultHtmlConverter.injectService(servletContext);
         searchResultHtmlConverter.injectService(iipService);
         searchResultHtmlConverter.injectService(userRightsService);
         converters.add(searchResultHtmlConverter);
+
+        final SearchResultPdfConverter searchResultPdfConverter = new SearchResultPdfConverter();
+        searchResultPdfConverter.injectService(entityService);
+        searchResultPdfConverter.injectService(transl8Service);
+        searchResultPdfConverter.injectService(servletContext);
+        searchResultPdfConverter.injectService(iipService);
+        searchResultPdfConverter.injectService(userRightsService);
+        converters.add(searchResultPdfConverter);
     }
 
     @Override

@@ -1,22 +1,20 @@
 package de.uni_koeln.arachne.converters;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
-import de.uni_koeln.arachne.mapping.jdbc.Catalog;
-import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
+import de.uni_koeln.arachne.response.search.SearchHit;
 import de.uni_koeln.arachne.response.search.SearchResult;
-import de.uni_koeln.arachne.service.EntityService;
-import de.uni_koeln.arachne.service.Transl8Service;
+import de.uni_koeln.arachne.response.search.SearchResultFacet;
+
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.AbstractHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -24,18 +22,7 @@ import java.util.List;
  */
 public class SearchResultPdfConverter extends DataExportConverter {
 
-
-    public SearchResultPdfConverter() {
-        super(new MediaType("application", "pdf"));
-    }
-
-    // because we can not use @Autowired here
-    private transient EntityService entityService;
-    public void setEntityService(EntityService entityService) { this.entityService = entityService; }
-    private transient Transl8Service transl8Service;
-    public void setTransl8Service(Transl8Service transl8Service) {
-        this.transl8Service = transl8Service;
-    }
+    public SearchResultPdfConverter() { super(MediaType.APPLICATION_PDF); }
 
     @Override
     protected boolean supports(Class<?> aClass) {
@@ -43,37 +30,54 @@ public class SearchResultPdfConverter extends DataExportConverter {
     }
 
     @Override
-    protected SearchResult readInternal(Class<? extends SearchResult> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
-        throw new UnsupportedOperationException("Reading PDF. Dafuq u want from me?");
-    }
-
-    @Override
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/pdf");
-        httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.pdf\"");
-    }
+        //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.pdf\"");
 
+        final List<SearchHit> entities = searchResult.getEntities();
+        final List<SearchResultFacet> facets = searchResult.getFacets();
 
-    public String getAsHtml() {
-        return "!";
-    }
-
-    public byte[] getAsPdf(final Catalog catalog) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        OutputStream outStream = httpOutputMessage.getBody();
 
         PdfRendererBuilder pdfBuilder = new PdfRendererBuilder();
+        String elStringo = getAsHtml(entities, facets);
 
-        pdfBuilder.withHtmlContent(getAsHtml(), "BASEURI");
-        pdfBuilder.toStream(baos);
         try {
+            pdfBuilder.withHtmlContent(elStringo, "/");
+            pdfBuilder.toStream(outStream);
             pdfBuilder.run();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            LOGGER.error("PDF could not be created. Most likely XML error.");
+            outStream.write(new String("Sorry, an error appeared during PDF creation.").getBytes());
             e.printStackTrace();
         }
 
-        return baos.toByteArray();
     }
+
+
+    public String getAsHtml(final List<SearchHit> entities, final List<SearchResultFacet> facets) {
+
+        SearchResultHtmlConverter searchResultHtmlConverter = new SearchResultHtmlConverter();
+
+        searchResultHtmlConverter.injectService(entityService);
+        searchResultHtmlConverter.injectService(transl8Service);
+        searchResultHtmlConverter.injectService(servletContext);
+        searchResultHtmlConverter.injectService(iipService);
+        searchResultHtmlConverter.injectService(userRightsService);
+
+        searchResultHtmlConverter.writer = new StringWriter();
+        searchResultHtmlConverter.htmlHeader();
+        searchResultHtmlConverter.htmlFrontmatter(facets);
+        searchResultHtmlConverter.htmlResults(entities, facets);
+        searchResultHtmlConverter.htmlFooter();
+
+        return searchResultHtmlConverter.writer.toString();
+
+
+    }
+
+
+
 
     @Override
     void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector) {

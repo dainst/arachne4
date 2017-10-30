@@ -45,7 +45,7 @@ public class SearchResultCsvConverter extends DataExportConverter {
     @Override
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/csv");
-        //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.csv\"");
+        httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.csv\"");
 
         final List<SearchResultFacet> facets = searchResult.getFacets(); //for (final SearchResultFacet facet : facets) {//facet.getName()
         final List<SearchHit> entities = searchResult.getEntities();

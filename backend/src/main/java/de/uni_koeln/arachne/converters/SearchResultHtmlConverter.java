@@ -53,8 +53,8 @@ public class SearchResultHtmlConverter extends DataExportConverter {
 
         writer = new OutputStreamWriter(httpOutputMessage.getBody());
         htmlHeader();
-        htmlFrontmatter(searchResult); // @ TODO give facets instead
-        writeResult(entities, facets);
+        htmlFrontmatter(facets);
+        htmlResults(entities, facets);
         htmlFooter();
         writer.close();
     }
@@ -95,7 +95,7 @@ public class SearchResultHtmlConverter extends DataExportConverter {
         return subject;
     }
 
-    private void writeResult(List<SearchHit> entities, List<SearchResultFacet> facets) {
+    public void htmlResults(List<SearchHit> entities, List<SearchResultFacet> facets) {
         if(entities == null) {
             return;
         }
@@ -127,15 +127,6 @@ public class SearchResultHtmlConverter extends DataExportConverter {
                     }
                 }
                 writer.append("</table>");
-
-                /*@ TODO Stand jetzt
-                 * # angepasste agg_geo handler schreiben je nach export format
-                 * * merge multifecets
-                 * * und dann den csv exporter reparieren,
-                 * * dann standart auf JSON stellen
-                 * * pdf
-                 */
-
 
                 writer.append("</div>");
 
@@ -178,7 +169,11 @@ public class SearchResultHtmlConverter extends DataExportConverter {
             longest = Math.max(longest, facetValues.getString(i).length());
         }
 
-        collector.add(new DataExportSet(facetName, facetFullName, String.join((longest > 14 ? "<br>" : ", "), values)));
+        final String facetString = ((longest > 14) && (facetValues.length() > 1))
+            ? "<ul><li>" + String.join("</li><li>", values) + "</li></ul>"
+            : String.join(", ", values);
+
+        collector.add(new DataExportSet(facetName, facetFullName, facetString));
     }
 
 
@@ -200,31 +195,36 @@ public class SearchResultHtmlConverter extends DataExportConverter {
         }
 
         try {
-            writer.append("<img class='thumbnail' src='data:image/jpeg;base64," +  Base64.encode(imageBytes) + "'>");
+            final String line = "<img class='thumbnail' src='data:image/jpeg;base64," +  Base64.encode(imageBytes) + "' alt='thumbnail' ></img>";
+            writer.append(line);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void htmlFrontmatter(SearchResult searchResult) {
+    private byte[] readImage(String imageName) {
 
-        InputStream initFileStream = servletContext.getResourceAsStream("WEB-INF/dataexport/dailogo.svg");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(initFileStream));
-        StringBuffer fileContents = new StringBuffer();
         try {
-            while(reader.ready()){
-                fileContents.append(reader.readLine());
-            }
+            InputStream inputStream = servletContext.getResourceAsStream("WEB-INF/dataexport/" + imageName);
+            Integer size = inputStream.available();
+            byte[] filecontent = new byte[size];
+            inputStream.read(filecontent,0, size);
+            return filecontent;
         } catch (IOException e) {
             e.getMessage();
             //e.printStackTrace();
+            return new byte[0];
         }
+
+    }
+
+    public void htmlFrontmatter(List<SearchResultFacet> facets) {
 
         // create replacements map
         HashMap<String, String> replacements = new HashMap<String, String>();
 
         // logo svg
-        replacements.put("LOGOIMAGEDATA", "data:image/svg+xml;base64," + Base64.encode(String.valueOf(fileContents).getBytes()));
+        replacements.put("LOGOIMAGEDATA", "data:image/png;base64," + Base64.encode(readImage("dailogo.png")));
 
         // date
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -234,7 +234,7 @@ public class SearchResultHtmlConverter extends DataExportConverter {
         // facets
         String facetName = new String();
         ArrayList<String> facetNames = new ArrayList<String>();
-        for (final SearchResultFacet facet : searchResult.getFacets()) {
+        for (final SearchResultFacet facet : facets) {
             facetName = facet.getName();
             try {
                 facetNames.add(transl8Service.transl8(facetName,"de"));
@@ -245,7 +245,7 @@ public class SearchResultHtmlConverter extends DataExportConverter {
         replacements.put("FACETS", Arrays.toString(facetNames.toArray()));
 
         // search url
-        replacements.put("SEARCHURL", getCurrentUrl());
+        replacements.put("SEARCHURL", getCurrentUrl().replace("&", "&amp;").replace("search.pdf", "search"));//
 
         // user
         replacements.put("USER", getCurrentUser());
