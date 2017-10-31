@@ -1,8 +1,6 @@
 package de.uni_koeln.arachne.converters;
 
-import de.uni_koeln.arachne.response.QuantificationContent;
 import de.uni_koeln.arachne.response.search.SearchHit;
-import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.service.EntityService;
 import de.uni_koeln.arachne.service.IIPService;
@@ -13,21 +11,16 @@ import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpInputMessage;
-import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.AbstractHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.util.*;
 
 import org.json.*;
@@ -35,25 +28,31 @@ import org.json.*;
 /**
  * @author Paf
  */
-public abstract class DataExportConverter extends AbstractHttpMessageConverter<SearchResult> {
+public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessageConverter<T> {
 
-    public DataExportConverter(MediaType mediaType) {
+    public AbstractDataExportConverter(MediaType mediaType) {
         super(mediaType);
     }
-
-    @Override
-    protected boolean supports(Class<?> aClass) {
-        return aClass == SearchResult.class;
+    public AbstractDataExportConverter(MediaType... mediaTypes) {
+        super(mediaTypes);
     }
 
+
+
     @Override
-    protected SearchResult readInternal(Class<? extends SearchResult> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
+    protected T readInternal(Class<? extends T> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
         throw new UnsupportedOperationException("Reading other file formats is not implemented yet and will most likely never be.");
     }
+/*
+    @Override
+    protected void writeInternal(T aClass, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
+        throw new UnsupportedOperationException("This Endpoint does not support different output formats");
+    }
+*/
 
     public Writer writer;
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(DataExportConverter.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(AbstractDataExportConverter.class);
 
     // because we can not use @Autowired (by any reason) here we have to inject nesessary classes like this
     public transient EntityService entityService;
@@ -213,12 +212,10 @@ public abstract class DataExportConverter extends AbstractHttpMessageConverter<S
             handlePlace(i, name, gaz, lat, lon, rel, collector);
 
         }
-        /*
-        returner.put("gazetteerId", gaz);
-        returner.put("lat", lat);
-        returner.put("lon", lon);
-        */
+
     }
+
+
 
     abstract void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector);
 

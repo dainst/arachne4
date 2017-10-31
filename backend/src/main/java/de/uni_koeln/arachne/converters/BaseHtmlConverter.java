@@ -1,63 +1,32 @@
 package de.uni_koeln.arachne.converters;
 
-import de.uni_koeln.arachne.mapping.hibernate.User;
-import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
-import de.uni_koeln.arachne.service.IIPService;
-import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
-import de.uni_koeln.arachne.util.security.JSONView;
 import org.apache.xerces.impl.dv.util.Base64;
 import org.json.JSONArray;
 import org.springframework.http.*;
-import org.springframework.http.converter.AbstractHttpMessageConverter;
 
 import de.uni_koeln.arachne.response.search.SearchHit;
-import de.uni_koeln.arachne.service.EntityService;
 import de.uni_koeln.arachne.service.Transl8Service;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.converter.HttpMessageNotWritableException;
-import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.*;
-import java.nio.ByteBuffer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
+
 
 /**
  * @author Paf
  */
-public class SearchResultHtmlConverter extends DataExportConverter {
+public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T> {
+
+    public BaseHtmlConverter() {
+        super(MediaType.TEXT_HTML);
+    }
 
     final String GAZETTEER_URL = "https://gazetteer.dainst.org/app/#!/show/%%%GAZID%%%";
     final String ALTERNATE_GEO_URL = "https://www.openstreetmap.org/?mlat=%%%LAT%%%&mlon=%%%LON%%%&zoom=15";
-
-    public SearchResultHtmlConverter() {
-        super(new MediaType("text", "html"));
-    }
-
-
-    @Override
-    protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-        httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/html");
-        //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.html\"");
-
-        final List<SearchHit> entities = searchResult.getEntities();
-        final List<SearchResultFacet> facets = searchResult.getFacets();
-
-        writer = new OutputStreamWriter(httpOutputMessage.getBody());
-        htmlHeader();
-        htmlFrontmatter(facets);
-        htmlResults(entities, facets);
-        htmlFooter();
-        writer.close();
-    }
 
     private HashMap<String, String> htmlFileCache = new HashMap<String, String>();
 
@@ -137,6 +106,8 @@ public class SearchResultHtmlConverter extends DataExportConverter {
             e.printStackTrace();
         }
     }
+
+
 
     public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector) {
         final String fname = (rel.equals("")) ? "Place " + number.toString() : rel;

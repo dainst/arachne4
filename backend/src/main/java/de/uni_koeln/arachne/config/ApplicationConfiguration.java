@@ -1,9 +1,7 @@
 package de.uni_koeln.arachne.config;
 
 import com.zaxxer.hikari.HikariDataSource;
-import de.uni_koeln.arachne.converters.SearchResultCsvConverter;
-import de.uni_koeln.arachne.converters.SearchResultHtmlConverter;
-import de.uni_koeln.arachne.converters.SearchResultPdfConverter;
+import de.uni_koeln.arachne.converters.*;
 import de.uni_koeln.arachne.service.EntityService;
 import de.uni_koeln.arachne.service.IIPService;
 import de.uni_koeln.arachne.service.Transl8Service;
@@ -34,6 +32,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -74,30 +73,33 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+
+        // default converters
         converters.add(new StringHttpMessageConverter());
         converters.add(new MappingJackson2HttpMessageConverter());
         converters.add(new ByteArrayHttpMessageConverter());
 
-        final SearchResultCsvConverter searchResultCsvConverter = new SearchResultCsvConverter();
-        searchResultCsvConverter.injectService(entityService);
-        searchResultCsvConverter.injectService(transl8Service);
-        converters.add(searchResultCsvConverter);
+        // arachne converters, implementing injectService
+        List<AbstractDataExportConverter<?>> aConverters = new ArrayList<AbstractDataExportConverter<?>>();
 
-        final SearchResultHtmlConverter searchResultHtmlConverter = new SearchResultHtmlConverter();
-        searchResultHtmlConverter.injectService(entityService);
-        searchResultHtmlConverter.injectService(transl8Service);
-        searchResultHtmlConverter.injectService(servletContext);
-        searchResultHtmlConverter.injectService(iipService);
-        searchResultHtmlConverter.injectService(userRightsService);
-        converters.add(searchResultHtmlConverter);
+        aConverters.add(new SearchResult2HtmlConverter());
+        aConverters.add(new Catalog2HtmlConverter());
+        aConverters.add(new SearchResult2PdfConverter());
+        aConverters.add(new Catalog2PdfConverter());
+        aConverters.add(new SearchResult2CsvConverter());
+        aConverters.add(new Catalog2CsvConverter());
 
-        final SearchResultPdfConverter searchResultPdfConverter = new SearchResultPdfConverter();
-        searchResultPdfConverter.injectService(entityService);
-        searchResultPdfConverter.injectService(transl8Service);
-        searchResultPdfConverter.injectService(servletContext);
-        searchResultPdfConverter.injectService(iipService);
-        searchResultPdfConverter.injectService(userRightsService);
-        converters.add(searchResultPdfConverter);
+        for (AbstractDataExportConverter converter : aConverters) {
+            converter.injectService(entityService);
+            converter.injectService(transl8Service);
+            converter.injectService(servletContext);
+            converter.injectService(iipService);
+            converter.injectService(userRightsService);
+        }
+        converters.addAll(aConverters);
+
+
+
     }
 
     @Override
@@ -110,7 +112,13 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-        configurer.defaultContentType(MediaType.APPLICATION_JSON_UTF8);
+        configurer
+            .favorPathExtension(true)
+            .favorParameter(false)
+            .ignoreAcceptHeader(true)
+
+            .defaultContentType(MediaType.APPLICATION_JSON_UTF8);
+            //.useJaf(false) -> dann kommt nur noch JSON
     }
 
     /**

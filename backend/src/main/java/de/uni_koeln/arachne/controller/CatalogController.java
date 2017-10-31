@@ -257,10 +257,8 @@ public class CatalogController {
 	 * @param offset If full == false then this parameter is an offset into the children of the root entry.
 	 * @return The catalog.
 	 */
-	@RequestMapping(value = "{catalogId}", 
-			method = RequestMethod.GET,
-			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
-	public @ResponseBody ResponseEntity<Catalog> handleGetCatalogRequest(
+	@RequestMapping(value = "{catalogId}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<?> handleGetCatalogRequest(
 			@PathVariable("catalogId") final Long catalogId,
 			@RequestParam(value = "full", required = false) Boolean full,
 			@RequestParam(value = "limit", required = false) Integer limit,
@@ -277,47 +275,11 @@ public class CatalogController {
 			result = null;
 			return new ResponseEntity<Catalog>(HttpStatus.FORBIDDEN);
 		}
-		
-		return ResponseEntity.status(HttpStatus.OK).body(result);
-	}
-	
-	// disabled since the corresponding service class is unfinished
-	/*
-	@RequestMapping(value = "{catalogId}", 
-	method = RequestMethod.GET,
-	produces = MediaType.APPLICATION_PDF_VALUE)
-	public @ResponseBody ResponseEntity<byte[]> handleGetCatalogRequestPdf(@PathVariable("catalogId") final Long catalogId) {
-		byte[] result = null;
-		final User user = userRightsService.getCurrentUser();
-		Catalog catalog = catalogDao.getById(catalogId, true, 0, 0);
-		if (catalog == null) {
-			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
-		} else if (!catalog.isCatalogOfUserWithId(user.getId()) && !catalog.isPublic()) {
-			catalog = null;
-			return new ResponseEntity<byte[]>(HttpStatus.FORBIDDEN);
-		}
-		result = pdfService.getCatalogAsPdf(catalog);
-		
-		return ResponseEntity.status(HttpStatus.OK).body(result);
-	}
-	
-	@RequestMapping(value = "{catalogId}", 
-			method = RequestMethod.GET,
-			produces = MediaType.TEXT_HTML_VALUE)
-	public @ResponseBody ResponseEntity<String> handleGetCatalogRequestHtml(@PathVariable("catalogId") final Long catalogId) {
-		String result = null;
-		final User user = userRightsService.getCurrentUser();
-		Catalog catalog = catalogDao.getById(catalogId, true, 0, 0);
-		if (catalog == null) {
-			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
-		} else if (!catalog.isCatalogOfUserWithId(user.getId()) && !catalog.isPublic()) {
-			catalog = null;
-			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-		}
-		result = pdfService.getCatalogAsHtml(catalog);
 
 		return ResponseEntity.status(HttpStatus.OK).body(result);
-	}*/
+	}
+
+
 
 	/**
 	 * Handles http PUT request for <code>/catalog/{catalogId}</code>. 
