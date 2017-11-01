@@ -1,11 +1,9 @@
 package de.uni_koeln.arachne.converters;
 
+import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
 import de.uni_koeln.arachne.response.search.SearchHit;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
-import de.uni_koeln.arachne.service.EntityService;
-import de.uni_koeln.arachne.service.IIPService;
-import de.uni_koeln.arachne.service.Transl8Service;
-import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.service.*;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
@@ -54,12 +52,15 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
     public static final Logger LOGGER = LoggerFactory.getLogger(AbstractDataExportConverter.class);
 
-    // because we can not use @Autowired (by any reason) here we have to inject nesessary classes like this
+    // because we can not use @Autowired (by any reason) here, we have this fuck shit dependency injection here. plz don't hate me.
     public transient EntityService entityService;
     public transient Transl8Service transl8Service;
     public transient ServletContext servletContext;
     public transient IIPService iipService;
     public transient UserRightsService userRightsService;
+    public transient CatalogEntryDao catalogEntryDao;
+    public transient SingleEntityDataService singleEntityDataService;
+    public transient EntityIdentificationService entityIdentificationService;
 
     public void injectService(EntityService entityService) { this.entityService = entityService; }
     public void injectService(Transl8Service transl8Service) {
@@ -68,6 +69,9 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     public void injectService(ServletContext servletContext) { this.servletContext = servletContext; }
     public void injectService(IIPService iipService) { this.iipService = iipService; }
     public void injectService(UserRightsService userRightsService) { this.userRightsService = userRightsService; }
+    public void injectService(CatalogEntryDao catalogEntryDao) { this.catalogEntryDao = catalogEntryDao; }
+    public void injectService(SingleEntityDataService singleEntityDataService) { this.singleEntityDataService = singleEntityDataService; }
+    public void injectService(EntityIdentificationService entityIdentificationService) { this.entityIdentificationService = entityIdentificationService; }
 
     // settings; overwrite em
     public Boolean includeEmptyFacets = false;
@@ -214,8 +218,6 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         }
 
     }
-
-
 
     abstract void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector);
 

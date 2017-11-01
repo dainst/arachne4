@@ -18,8 +18,12 @@ public class Catalog2HtmlConverter extends BaseHtmlConverter<Catalog> {
     protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
         writer = new OutputStreamWriter(httpOutputMessage.getBody());
         htmlHeader();
+        htmlCatalog(catalog);
         htmlFooter();
         writer.close();
     }
+
+
+
 
 }

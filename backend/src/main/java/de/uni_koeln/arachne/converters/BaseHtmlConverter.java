@@ -1,6 +1,13 @@
 package de.uni_koeln.arachne.converters;
 
+import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.mapping.jdbc.Catalog;
+import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
+import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
+import de.uni_koeln.arachne.util.EntityId;
+import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 import org.apache.xerces.impl.dv.util.Base64;
 import org.json.JSONArray;
@@ -9,6 +16,7 @@ import org.springframework.http.*;
 import de.uni_koeln.arachne.response.search.SearchHit;
 import de.uni_koeln.arachne.service.Transl8Service;
 
+import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -249,5 +257,122 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             e.printStackTrace();
         }
     }
+
+    public void htmlCatalog(Catalog catalog) throws IOException {
+        writer.append("<div>");
+        List<CatalogEntry> children = catalog.getRoot().getChildren();
+
+        if (children != null) {
+            for (CatalogEntry child : children) {
+                htmlCatalogEntry(child, 0, "");
+            }
+        }
+        writer.append("</div>");
+    }
+
+        /**
+         * Creates a HTML representation of a {@link CatalogEntry} and all its children.
+         * @param catalogEntry The catalog entry.
+         * @param level The recursion (indentation) level.
+         * @return The entries as HTML.
+         */
+    private void htmlCatalogEntry(final CatalogEntry catalogEntry, final int level, final String headline) throws IOException {
+
+        final Long enitityId = catalogEntry.getArachneEntityId();
+        final String idAsString = (enitityId != null) ? enitityId.toString() : "";
+        final String uri = "https://arachne.dainst.org/entity/" + idAsString;
+        final String label = catalogEntry.getLabel();
+        final String text = catalogEntry.getText();
+        final String headlineTag = "h" + Math.min(6, (level + 1));
+        final String count = catalogEntry.getTotalChildren() + "";
+
+        // entity
+        Dataset dataset = null;
+        if (level < 3) {
+            if (enitityId != null) {
+                dataset = singleEntityDataService.getSingleEntityByArachneId(entityIdentificationService.getId(enitityId));
+            }
+        }
+
+        writer.append("<div class='page'>");
+
+        if (!Objects.equals(headline, "")) {
+            writer.append("<div class='page-left category infobox'>" + headline + "</div>");
+        }
+
+        if (!uri.equals("")) {
+            writer.append("<div class='page-right uri infobox'><a href='" + uri + "' target='_blank'>" + uri + "</a></div>");
+        }
+
+        if ((!count.equals("")) && (!count.equals("0"))) {
+            writer.append("<div class='catalog-count'>" + count + "</div>");
+        }
+
+        writer.append("<div class='row'>");
+
+        if (dataset != null) {
+            final List<Image> imgs = dataset.getImages();
+            if (imgs != null) {
+                htmlThumbnail(imgs.get(0).getImageId());
+            }
+        }
+
+        if (label != null) {
+            writer.append("<" + headlineTag +" class='title'>" + label + "</" + headlineTag + ">");
+        }
+
+        /*
+        if (dataset != null) {
+            writer.append("<p class='subtitle'>" + dataset. + "</p>");
+        }
+        */
+
+        if (text != null) {
+            writer.append("<p>" + text + "</p>");
+        }
+
+        // entity
+        if (dataset != null) {
+            writer.append("<table class='dataset'>");
+
+            //Set<Entry<String, String>> fields = dataset.getFields().entrySet();
+            for (HashMap.Entry<String, String> field : dataset.getFields().entrySet()) {
+                writer.append("<tr><td>" + field.getKey() + "</td><td>" + field.getValue().toString() + "</td></tr>");
+            }
+            writer.append("</table>");
+
+        }
+
+        writer.append("</div>");
+        writer.append("</div>");
+
+        // children
+        writer.append("<div class='subpage'>");
+        List<CatalogEntry> children = realGetChildren(catalogEntry);
+        if (children != null) {
+            for (CatalogEntry child : children) {
+                htmlCatalogEntry(child, level + 1, label);
+            }
+        }
+        writer.append("</div>");
+
+
+    }
+
+    List<CatalogEntry> realGetChildren(CatalogEntry catalogEntry) {
+        final List<CatalogEntry> storedChildren = catalogEntry.getChildren();
+        if (storedChildren != null) {
+            return storedChildren;
+        }
+
+        final User user = userRightsService.getCurrentUser();
+        final CatalogEntry catalogEntry2 = catalogEntryDao.getById(catalogEntry.getId(), true, 5, 0);
+
+        return catalogEntry2.getChildren();
+
+
+    }
+
+
 
 }

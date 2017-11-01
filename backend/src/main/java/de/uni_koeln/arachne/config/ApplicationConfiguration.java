@@ -2,10 +2,8 @@ package de.uni_koeln.arachne.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import de.uni_koeln.arachne.converters.*;
-import de.uni_koeln.arachne.service.EntityService;
-import de.uni_koeln.arachne.service.IIPService;
-import de.uni_koeln.arachne.service.Transl8Service;
-import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
+import de.uni_koeln.arachne.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
@@ -71,6 +69,14 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     @Autowired
     private transient IIPService iipService;
 
+    @Autowired
+    public transient CatalogEntryDao catalogEntryDao;
+
+    @Autowired
+    public transient SingleEntityDataService singleEntityDataService;
+    @Autowired
+    public transient EntityIdentificationService entityIdentificationService;
+
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 
@@ -95,6 +101,9 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
             converter.injectService(servletContext);
             converter.injectService(iipService);
             converter.injectService(userRightsService);
+            converter.injectService(catalogEntryDao);
+            converter.injectService(singleEntityDataService);
+            converter.injectService(entityIdentificationService);
         }
         converters.addAll(aConverters);
 

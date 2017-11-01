@@ -24,7 +24,6 @@ import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
-import de.uni_koeln.arachne.service.CatalogService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.network.CustomMediaType;
 
@@ -51,9 +50,6 @@ public class CatalogController {
 
 	@Autowired
 	private transient CatalogDao catalogDao;
-
-	@Autowired
-	private transient CatalogService pdfService;
 	
 	/**
 	 * Handles HTTP GET requests for <code>/catalog/entry/{catalogEntryId}</code>.
