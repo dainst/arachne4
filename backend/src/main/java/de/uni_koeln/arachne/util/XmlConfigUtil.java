@@ -1,6 +1,9 @@
 package de.uni_koeln.arachne.util;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -148,21 +151,64 @@ public class XmlConfigUtil implements ServletContextAware {
 
             if (link != null) {
                 final FieldList tempFieldList = new FieldList();
+                ArrayList<String> tempPlaceList = new ArrayList<String>();
+
                 for (int index = 0; index < fieldList.size(); index++) {
                     final String field = fieldList.get(index);
                     int separatorIndex = field.indexOf(separator);
-                    if (field.startsWith(LINK_PREFIX) && separatorIndex > -1) {
-                        StringBuilder newValue = new StringBuilder(32).append("<a href=\"");
-                        newValue.append(link);
-                        newValue.append(field.substring(LINK_PREFIX.length(), separatorIndex));
-                        newValue.append("\" target=\"_blank\">");
-                        newValue.append(field.substring(separatorIndex + separator.length()));
-                        newValue.append("</a>");
-                        tempFieldList.add(newValue.toString());
+
+                    // Special case for places, which shall be sorted
+                    if (contextType.equals("ort")) {
+                        if (field.startsWith(LINK_PREFIX) && separatorIndex > -1) {
+	                        StringBuilder newValue = new StringBuilder(32).append("<a href=\"");
+	                        newValue.append(link);
+	                        newValue.append(field.substring(LINK_PREFIX.length(), separatorIndex));
+	                        newValue.append("\" target=\"_blank\">");
+	                        newValue.append(field.substring(separatorIndex + separator.length()));
+	                        newValue.append("</a>");
+	                        tempPlaceList.add(newValue.toString());
+	                    } else {
+	                        tempPlaceList.add(fieldList.get(index).toString());
+	                    }
                     } else {
-                        tempFieldList.add(fieldList.get(index));
+	                    if (field.startsWith(LINK_PREFIX) && separatorIndex > -1) {
+	                        StringBuilder newValue = new StringBuilder(32).append("<a href=\"");
+	                        newValue.append(link);
+	                        newValue.append(field.substring(LINK_PREFIX.length(), separatorIndex));
+	                        newValue.append("\" target=\"_blank\">");
+	                        newValue.append(field.substring(separatorIndex + separator.length()));
+	                        newValue.append("</a>");
+	                        tempFieldList.add(newValue.toString());
+	                    } else {
+	                        tempFieldList.add(fieldList.get(index));
+	                    }
                     }
                 }
+
+                // Sort function for places
+                // first extracts the start date timestamp and then uses that for comparison
+                Collections.sort(tempPlaceList, new Comparator<String>() {
+                    DateFormat f = new SimpleDateFormat("yyyy-mm-dd");
+                    public int compare(String o1, String o2) {
+                        try {
+                            int index1 = o1.indexOf("Ortsangabe von: ") + 16;
+                            int index2 = o2.indexOf("Ortsangabe von: ") + 16;
+                            Date d1 = f.parse(o1.substring(index1, index1 + 10));
+                            Date d2 = f.parse(o2.substring(index2, index2 + 10));
+
+                            return d1.compareTo(d2);
+                        } catch (ParseException e) {
+                            throw new IllegalArgumentException(e);
+                        }
+                    }
+                });
+
+                if (contextType.equals("ort")) {
+                    for (String s: tempPlaceList) {
+                        tempFieldList.add(s);
+                    }
+                }
+
                 fieldList = tempFieldList;
             }
 
