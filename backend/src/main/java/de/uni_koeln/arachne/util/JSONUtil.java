@@ -62,7 +62,7 @@ public class JSONUtil {
 					String key = keyValue.substring(0, colon + 2);
 					String value = keyValue.substring(colon + 3, keyValue.length());
 					Matcher matcher = escape.matcher(value);
-					value = matcher.replaceAll("\\\\$1");
+					value = matcher.replaceAll("\\$1");
 					result.append(key);
 					result.append("\"");
 					result.append(value);
