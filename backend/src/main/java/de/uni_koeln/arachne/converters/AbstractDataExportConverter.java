@@ -94,20 +94,12 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     // unpacks JSON and get all the objects datails against a list of facets
 
 
-    /**
-     *
-     * @param hit
-     * @param facets
-     * @return
-     */
-    public List<DataExportSet> getDetails(SearchHit hit, List<SearchResultFacet> facets) {
-
-        final List<DataExportSet> row = new ArrayList<DataExportSet>(){};
+    public JSONObject getEntity(long entityId) {
 
         TypeWithHTTPStatus entity = null;
 
         try {
-            entity = entityService.getEntityFromIndex(hit.getEntityId(), null, "en");
+            entity = entityService.getEntityFromIndex(entityId, null, "en");
         } catch (Exception e) {
             //e.printStackTrace();  // LOG error
             return null;
@@ -115,6 +107,103 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         if (entity == null) {
             return null;
         }
+
+        final JSONObject fullEntity = new JSONObject(entity.getValue().toString());
+
+        return fullEntity;
+    }
+
+    private void getSectionValueFromJson(List<DataExportSet> row, JSONObject box) {
+       getSectionValueFromJson(row, box, "");
+    }
+
+    private void getSectionValueFromJson(List<DataExportSet> row, JSONObject box, String topLabel) {
+
+        /**
+         *
+         *
+         *
+         * stand : wir können die sectiosn auslesen
+         *
+         * next: Überschriften Zeilen vernünftig markeiren (statt mit ##) und entsprechend auszeichnen
+         *
+         * Tickets:
+         * - sections auslesen
+         * - ui: partiell download / balken
+         * - eingeloggt testen
+         * - timeout
+         *
+         *
+         */
+
+        String label = box.has("label") ? box.get("label").toString() : "";
+        Object boxValue = box.has("value") ? box.get("value") : null;
+
+        if ((!label.equals("")) && (!topLabel.equals(""))) {
+            row.add(new DataExportSet(topLabel,topLabel,"##"));
+        }
+
+        if ((label.equals("")) && (!topLabel.equals(""))) {
+            label = topLabel;
+        }
+
+        if (boxValue instanceof JSONArray) {
+            handleFacetValues(label, label, box.getJSONArray("value"), row);
+        } else if (boxValue != null) {
+            row.add(new DataExportSet(label, label, boxValue.toString()));
+        }
+
+        Object boxContent = box.has("content") ? box.get("content") : null;
+
+        if (boxContent instanceof JSONObject) {
+           getSectionValueFromJson(row, (JSONObject) boxContent, label);
+        } else if (boxContent instanceof JSONArray) {
+            for (int ii = 0; ii < ((JSONArray) boxContent).length(); ii++) {
+                getSectionValueFromJson(row, ((JSONArray) boxContent).getJSONObject(ii), ii == 0 ? label : "");
+            }
+        }
+    }
+
+
+    /**
+     *
+     * @param entityId
+     * @return
+     */
+    public List<DataExportSet> getDetails(long entityId) {
+
+        final List<DataExportSet> row = new ArrayList<DataExportSet>() {};
+        final JSONObject fullEntity = getEntity(entityId);
+
+        if (fullEntity == null) {
+            return row;
+        }
+
+        final JSONArray sections = fullEntity.getJSONArray("sections");
+
+        for (int i = 0; i < sections.length(); i++) {
+            JSONObject section = sections.getJSONObject(i);
+            getSectionValueFromJson(row, section);
+        }
+        return row;
+    }
+
+
+    /**
+     *
+     * @param entityId
+     * @param facets
+     * @return List<DataExportSet>
+     */
+    public List<DataExportSet> getDetails(long entityId, List<SearchResultFacet> facets) {
+
+        final List<DataExportSet> row = new ArrayList<DataExportSet>() {};
+        final JSONObject fullEntity = getEntity(entityId);
+
+        if (fullEntity == null) {
+            return row;
+        }
+
 
         for (final SearchResultFacet facet : facets) {
 
@@ -130,12 +219,6 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
             } catch (Transl8Service.Transl8Exception e) {
                 facetFullName = facetName;
             }
-
-            /*
-             * unpacking JSON here again might not be the most elegant solution but
-             * but writing an entire new function of getting data seemed to be not so very elegant either..
-             */
-            final JSONObject fullEntity = new JSONObject(entity.getValue().toString());
 
             if (!includeEmptyFacets && (!fullEntity.has(facet.getName()))) {
                 continue;

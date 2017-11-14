@@ -60,7 +60,7 @@ public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
             row.add(subtitle);
             row.add(String.valueOf(hit.getThumbnailId()));
 
-            final ArrayList<DataExportSet> details = (ArrayList) getDetails(hit, facets);
+            final ArrayList<DataExportSet> details = (ArrayList) getDetails(hit.getEntityId(), facets);
             for (DataExportSet detail : details) {
                 row.add(detail.value);
             }

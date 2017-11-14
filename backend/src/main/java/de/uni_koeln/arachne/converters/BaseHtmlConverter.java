@@ -93,17 +93,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
                 writer.append("<h2 class='title'>" + title + "</h2>");
                 writer.append("<h3 class='subtitle'>" + subtitle + "</h3>");
 
-
-                writer.append("<table class='dataset'>");
-                final ArrayList<DataExportSet> details = (ArrayList) getDetails(hit, facets);
-                for (DataExportSet detail : details) {
-                    if (detail != null) {
-                        writer.append("<tr><td>" + detail.name + "</td><td>" + detail.value + "</td></tr>");
-                    } else {
-                        writer.append("<tr><td colspan='2'>error</td></tr>");
-                    }
-                }
-                writer.append("</table>");
+                htmlDetailTable((ArrayList) getDetails(hit.getEntityId(), facets));
 
                 writer.append("</div>");
 
@@ -115,6 +105,18 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         }
     }
 
+
+    public void htmlDetailTable(ArrayList<DataExportSet> details) throws IOException {
+        writer.append("<table class='dataset'>");
+        for (DataExportSet detail : details) {
+            if (detail != null) {
+                writer.append("<tr><td>" + detail.name + "</td><td>" + detail.value + "</td></tr>");
+            } else {
+                writer.append("<tr><td colspan='2'>error</td></tr>");
+            }
+        }
+        writer.append("</table>");
+    }
 
 
     public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector) {
@@ -287,10 +289,11 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         final String count = catalogEntry.getTotalChildren() + "";
 
         // entity
-        Dataset dataset = null;
+        ArrayList<DataExportSet> details = null;
         if (level < 3) {
             if (enitityId != null) {
-                dataset = singleEntityDataService.getSingleEntityByArachneId(entityIdentificationService.getId(enitityId));
+                //dataset = singleEntityDataService.getSingleEntityByArachneId(entityIdentificationService.getId(enitityId));
+                details = (ArrayList) getDetails(enitityId);
             }
         }
 
@@ -309,14 +312,14 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         }
 
         writer.append("<div class='row'>");
-
-        if (dataset != null) {
+/*
+        if (details != null) {
             final List<Image> imgs = dataset.getImages();
             if (imgs != null) {
                 htmlThumbnail(imgs.get(0).getImageId());
             }
         }
-
+*/
         if (label != null) {
             writer.append("<" + headlineTag +" class='title'>" + label + "</" + headlineTag + ">");
         }
@@ -332,20 +335,15 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         }
 
         // entity
-        if (dataset != null) {
-            writer.append("<table class='dataset'>");
-
-            //Set<Entry<String, String>> fields = dataset.getFields().entrySet();
-            for (HashMap.Entry<String, String> field : dataset.getFields().entrySet()) {
-                writer.append("<tr><td>" + field.getKey() + "</td><td>" + field.getValue().toString() + "</td></tr>");
-            }
-            writer.append("</table>");
-
+        if (details != null) {
+            htmlDetailTable(details);
         }
 
         writer.append("</div>");
         writer.append("</div>");
 
+        return;
+/*
         // children
         writer.append("<div class='subpage'>");
         List<CatalogEntry> children = realGetChildren(catalogEntry);
@@ -355,7 +353,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             }
         }
         writer.append("</div>");
-
+*/
 
     }
 
