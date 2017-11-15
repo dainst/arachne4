@@ -14,13 +14,13 @@
         </div>
 
         <div class="con10t-sidebar">
-            <con10t-toc toc-heading="Content"></con10t-toc>
+            <con10t-toc toc-heading="Übersicht"></con10t-toc>
 
-            <h3>Search in catalog</h3>
-            <p><a con10t-search-query="*&amp;fq=catalogIds:'69'">Show all catalogue entries</a></p>
+            <h3>Suche im Katalog</h3>
+            <p><a con10t-search-query="*&amp;fq=catalogIds:'69'">Alle Katalogeinträge anzeigen</a></p>
             <p><con10t-search catalog-id="69"></con10t-search></p>
 
-            <h3>Spatial Search</h3>
+            <h3>Kartenansicht</h3>
             <div ng-init="config = {
                 baselayers: {
                     osm: {
@@ -40,7 +40,7 @@
             }"></div>
             <div>
                 <a href="/project/centurions_map" title="Zur Karte" style="cursor:pointer">
-                <span class="glyphicon glyphicon-fullscreen"></span>&nbsp;Enlarge map</a>
+                <span class="glyphicon glyphicon-fullscreen"></span>&nbsp;Karte vergrößern</a>
             </div>
             <div con10t-map
                  id="map"
@@ -99,7 +99,7 @@
                 <a href="http://arachne.dainst.org/6005346">http://arachne.dainst.org/6005346</a>.
             </p>
 
-            <h3 class="con10t-toc-entry">Catalogue</h3>
+            <h3 class="con10t-toc-entry">Katalog</h3>
             <p><con10t-catalog-tree catalog-id="69"></con10t-catalog-tree></p>
 
             <h3 class="con10t-toc-entry">Dank</h3>
