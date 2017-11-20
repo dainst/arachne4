@@ -310,11 +310,15 @@ public class ResponseFactory {
 				}
 			}
 			//Sort places by start date
-			Collections.sort(places, new Comparator<Place>() {
-			    public int compare(Place p1, Place p2) {
-			        return p1.getStorageFrom().compareTo(p2.getStorageFrom());
-			    }
-			});
+			try {
+    			Collections.sort(places, new Comparator<Place>() {
+    			    public int compare(Place p1, Place p2) {
+    			        return p1.getStorageFrom().compareTo(p2.getStorageFrom());
+    			    }
+    			});
+			} catch (NullPointerException e) {
+			    LOGGER.warn("Places object could not be sorted.");
+			}
 			for (Place place: places) {
 				response.addPlace(place);
 			}
