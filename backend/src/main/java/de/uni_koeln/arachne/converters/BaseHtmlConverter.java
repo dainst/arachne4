@@ -109,7 +109,9 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
     public void htmlDetailTable(ArrayList<DataExportSet> details) throws IOException {
         writer.append("<table class='dataset'>");
         for (DataExportSet detail : details) {
-            if (detail != null) {
+            if (detail.isHeadline) {
+                writer.append("<tr><td colspan='2' class='section'>" + detail.name + "</td></tr>");
+            } else if (detail != null) {
                 writer.append("<tr><td>" + detail.name + "</td><td>" + detail.value + "</td></tr>");
             } else {
                 writer.append("<tr><td colspan='2'>error</td></tr>");

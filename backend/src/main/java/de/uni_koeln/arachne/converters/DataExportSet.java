@@ -10,9 +10,17 @@ public class DataExportSet {
         this.value = value;
     }
 
+    public DataExportSet(String index, String name, String value, Boolean isHeadline) {
+        this.index = index;
+        this.name = name;
+        this.value = value;
+        this.isHeadline = isHeadline;
+    }
+
     public DataExportSet[] children;
 
     public String index;
     public String name;
     public String value;
+    public boolean isHeadline;
 }

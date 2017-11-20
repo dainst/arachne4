@@ -136,14 +136,16 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
          *
          */
 
-        String label = box.has("label") ? box.get("label").toString() : "";
+        String label = box.has("label") ? box.get("label").toString() : null;
         Object boxValue = box.has("value") ? box.get("value") : null;
 
-        if ((!label.equals("")) && (!topLabel.equals(""))) {
-            row.add(new DataExportSet(topLabel,topLabel,"##"));
+        label = (label == "null") ? null : label;
+
+        if ((label != null) && (topLabel != null)) {
+            row.add(new DataExportSet(topLabel,topLabel,null, true));
         }
 
-        if ((label.equals("")) && (!topLabel.equals(""))) {
+        if ((label == null) && (topLabel != null)) {
             label = topLabel;
         }
 
@@ -156,10 +158,10 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         Object boxContent = box.has("content") ? box.get("content") : null;
 
         if (boxContent instanceof JSONObject) {
-           getSectionValueFromJson(row, (JSONObject) boxContent, label);
+            getSectionValueFromJson(row, (JSONObject) boxContent, label);
         } else if (boxContent instanceof JSONArray) {
             for (int ii = 0; ii < ((JSONArray) boxContent).length(); ii++) {
-                getSectionValueFromJson(row, ((JSONArray) boxContent).getJSONObject(ii), ii == 0 ? label : "");
+                getSectionValueFromJson(row, ((JSONArray) boxContent).getJSONObject(ii), ii == 0 ? label : null);
             }
         }
     }
