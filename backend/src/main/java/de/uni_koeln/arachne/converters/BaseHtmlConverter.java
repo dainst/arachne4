@@ -34,7 +34,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         super(MediaType.TEXT_HTML);
     }
 
-    public Integer maxCatalogDepth = 2;
+    public Integer maxCatalogDepth = 3;
     public Boolean getImages = true;
 
     final String GAZETTEER_URL = "https://gazetteer.dainst.org/app/#!/show/%%%GAZID%%%";
@@ -205,19 +205,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
     }
 
-    public void htmlFrontmatter(List<SearchResultFacet> facets) {
-
-        // create replacements map
-        HashMap<String, String> replacements = new HashMap<String, String>();
-
-        // logo svg
-        replacements.put("LOGOIMAGEDATA", "data:image/png;base64," + Base64.encode(readImage("dailogo.png")));
-
-        // date
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
-        replacements.put("DATE", dateFormat.format(date));
-
+    public String facetList2String(List<SearchResultFacet> facets) {
         // facets
         String facetName = new String();
         ArrayList<String> facetNames = new ArrayList<String>();
@@ -229,23 +217,48 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
                 facetNames.add(facet.getName());
             }
         }
-        replacements.put("FACETS", Arrays.toString(facetNames.toArray()));
+        return Arrays.toString(facetNames.toArray());
+    }
+
+    public void htmlFrontmatter(String title, String content) throws IOException {
+
+        // date
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        final Date date = new Date();
 
         // search url
-        replacements.put("SEARCHURL", getCurrentUrl().replace("&", "&amp;").replace("search.pdf", "search"));//
+        final String url = getCurrentUrl()
+                .replace("&", "&amp;")
+                .replace(".pdf", "")
+                .replace("?null", "")
+                .replace(".html", "");
 
         // user
-        replacements.put("USER", getCurrentUser());
+        final String user = getCurrentUser();
 
+        // create replacements map
+        HashMap<String, String> replacements = new HashMap<String, String>();
 
+        // logo svg
+        replacements.put("LOGOIMAGEDATA", "data:image/png;base64," + Base64.encode(readImage("dailogo.png")));
 
-        try {
-            writer.append(readHtmlFile("dataexport_frontmatter.html", replacements));
-        } catch (IOException e) {
-            e.getMessage();
-            //e.printStackTrace();
-        }
+        writer.append("<div class='page frontmatter'>");
+        writer.append("<div class='page-body'>");
+        writer.append(readHtmlFile("dataexport_logo.html", replacements));
 
+        writer.append("<div>");
+
+        // serach results export front matter
+        writer.append("<h1>" + title + "</h1>");
+        writer.append(content);
+        writer.append("<p>Accessed: " + date + "</p>");
+        writer.append("<p><a href='" +url + "'>" + url + "</a></p>");
+        writer.append("<p>User: " + user + "</p>");
+
+        writer.append("</div>");
+
+        writer.append("</div>"); //page-body
+        writer.append("</div>"); //page
     }
 
 
@@ -299,12 +312,12 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         // entity
         ArrayList<DataExportSet> details = null;
         JSONObject fullEntity = new JSONObject();
-        if (level < maxCatalogDepth) {
+        //if (level <= maxCatalogDepth) {
             if (entityId != null) {
                 fullEntity = getEntity(entityId);
                 details = (ArrayList) getDetails(fullEntity);
             }
-        }
+        //}
 
         writer.append("<div class='page " + headClass + "'>");
 
@@ -315,7 +328,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         }
         writer.append("</td>");
         writer.append("<td class='page-header-right'>");
-        if (!uri.equals("")) {
+        if (!idAsString.equals("")) {
             writer.append("<a href='" + uri + "' target='_blank'>" + uri + "</a>");
         }
         writer.append("</td>");
@@ -338,7 +351,6 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             writer.append("<" + headlineTag +" class='title'>" + label + "</" + headlineTag + ">");
         }
 
-
         if (text != null) {
             writer.append("<p>" + text + "</p>");
         }
@@ -352,7 +364,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
         writer.append("<div class='page-footer'>");
         if (hasChildren) {
-            writer.append("<span>" + count + " Subelements</span>");
+            writer.append("<span>" + count + " Entries</span>");
         }
         writer.append("</div>"); //page-footer
 

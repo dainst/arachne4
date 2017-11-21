@@ -61,11 +61,7 @@
             float: none;
             margin: 0.5em 0;
         }
-/*
-        .subpage {
-            margin-left: 2em;
-        }
-*/
+
         .page.level-2 .page-body,
         .page.level-2 .page-footer {
             border-left: 0.5em solid #eee;
@@ -91,23 +87,20 @@
             border-left: 3em solid #eee;
         }
 
-        .page.level-2 .page-header {
+        .page.level-3 .page-header-left {
             padding-left: 0.5em;
         }
-        .page.level-3 .page-header {
+        .page.level-4 .page-header-left {
             padding-left: 1em;
         }
-        .page.level-4 .page-header {
+        .page.level-5 .page-header-left {
             padding-left: 1.5em;
         }
-        .page.level-5 .page-header {
+        .page.level-6 .page-header-left {
             padding-left: 2em;
         }
-        .page.level-6 .page-header {
+        .page.level-7 .page-header-left {
             padding-left: 2.5em;
-        }
-        .page.level-7 .page-header {
-            padding-left: 3em;
         }
 
         .page-header {
@@ -241,6 +234,10 @@
         .dataset {
             width: 100%;
             border-collapse: collapse;
+        }
+
+        .dataset tr:first-child td {
+            border: none;
         }
 
         .dataset td:first-child {

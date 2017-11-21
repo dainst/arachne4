@@ -17,8 +17,6 @@ public class DataExportSet {
         this.isHeadline = isHeadline;
     }
 
-    public DataExportSet[] children;
-
     public String index;
     public String name;
     public String value;

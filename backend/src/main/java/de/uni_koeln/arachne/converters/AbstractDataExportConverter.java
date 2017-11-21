@@ -6,6 +6,7 @@ import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.service.*;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 import org.apache.http.client.utils.URIBuilder;
+import org.elasticsearch.rest.RestStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpInputMessage;
@@ -104,7 +105,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
             //e.printStackTrace();  // LOG error
             return null;
         }
-        if (entity == null) {
+        if ((entity == null) || (!entity.getStatus().is2xxSuccessful())) {
             return null;
         }
 

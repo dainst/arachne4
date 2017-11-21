@@ -24,7 +24,7 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
     public BasePdfConverter() { super(MediaType.APPLICATION_PDF); }
 
 
-    public String getAsHtml(final List<SearchHit> entities, final List<SearchResultFacet> facets) {
+    public String getAsHtml(final List<SearchHit> entities, final List<SearchResultFacet> facets) throws IOException {
 
         SearchResult2HtmlConverter htmlConverter = new SearchResult2HtmlConverter();
 
@@ -36,7 +36,7 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
 
         htmlConverter.writer = new StringWriter();
         htmlConverter.htmlHeader();
-        htmlConverter.htmlFrontmatter(facets);
+        htmlConverter.htmlFrontmatter("Search Result", htmlConverter.facetList2String(facets));
         htmlConverter.htmlResults(entities, facets);
         htmlConverter.htmlFooter();
 
