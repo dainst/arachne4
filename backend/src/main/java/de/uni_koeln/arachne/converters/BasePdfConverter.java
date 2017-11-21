@@ -46,7 +46,7 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
     }
 
     @Override
-    void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector) {
+    public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector) {
 
     }
 

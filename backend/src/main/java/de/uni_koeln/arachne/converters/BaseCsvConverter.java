@@ -76,7 +76,7 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
     }
 
     @Override
-    void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector) {
+    public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector) {
         collector.add(new DataExportSet("","", gazetteerId));
         collector.add(new DataExportSet("","", lat));
         collector.add(new DataExportSet("","", lon));

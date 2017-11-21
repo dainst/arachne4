@@ -11,6 +11,7 @@ import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 import org.apache.xerces.impl.dv.util.Base64;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.http.*;
 
 import de.uni_koeln.arachne.response.search.SearchHit;
@@ -285,8 +286,8 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
          */
     private void htmlCatalogEntry(final CatalogEntry catalogEntry, final int level, final String headline) throws IOException {
 
-        final Long enitityId = catalogEntry.getArachneEntityId();
-        final String idAsString = (enitityId != null) ? enitityId.toString() : "";
+        final Long entityId = catalogEntry.getArachneEntityId();
+        final String idAsString = (entityId != null) ? entityId.toString() : "";
         final String uri = "https://arachne.dainst.org/entity/" + idAsString;
         final String label = catalogEntry.getLabel();
         final String text = catalogEntry.getText();
@@ -297,9 +298,11 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
         // entity
         ArrayList<DataExportSet> details = null;
+        JSONObject fullEntity = new JSONObject();
         if (level < maxCatalogDepth) {
-            if (enitityId != null) {
-                details = (ArrayList) getDetails(enitityId);
+            if (entityId != null) {
+                fullEntity = getEntity(entityId);
+                details = (ArrayList) getDetails(fullEntity);
             }
         }
 
@@ -321,11 +324,14 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
         writer.append("<div class='page-body'>");
 
-        if ((details != null) && getImages) {
-            /*final List<Image> imgs = dataset.getImages();
-            if (imgs != null) {
-                htmlThumbnail(imgs.get(0).getImageId());
-            }*/
+        if ((fullEntity != null) && getImages) {
+            if (fullEntity.has("images")) {
+                final JSONArray images = fullEntity.getJSONArray("images");
+                if (images.length() > 0) {
+                    htmlThumbnail(images.getJSONObject(0).getLong("imageId"));
+                }
+            }
+
         }
 
         if (label != null) {
@@ -353,15 +359,12 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         writer.append("</div>"); //page
 
         // children
-        writer.append("<div class='subpage'>");
         List<CatalogEntry> children = realGetChildren(catalogEntry);
         if (children != null) {
             for (CatalogEntry child : children) {
                 htmlCatalogEntry(child, level + 1, label);
             }
         }
-        writer.append("</div>");
-
 
     }
 

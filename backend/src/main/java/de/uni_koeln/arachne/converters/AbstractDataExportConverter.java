@@ -169,22 +169,23 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
     /**
      *
-     * @param entityId
+     * @param fullEntity
      * @return
      */
-    public List<DataExportSet> getDetails(long entityId) {
+    public List<DataExportSet> getDetails(JSONObject fullEntity) {
 
         final List<DataExportSet> row = new ArrayList<DataExportSet>() {};
-        final JSONObject fullEntity = getEntity(entityId);
 
         if (fullEntity == null) {
             return row;
         }
 
+        // subtitle
         if (fullEntity.has("subtitle")) {
             row.add(new DataExportSet("xxx", "xxx", fullEntity.getString("subtitle"), true));
         }
 
+        // sections
         if (!fullEntity.has("sections")) {
             return row;
         }
@@ -195,6 +196,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
             JSONObject section = sections.getJSONObject(i);
             getSectionValueFromJson(row, section);
         }
+
         return row;
     }
 
@@ -238,13 +240,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
             if (valueObj instanceof JSONArray) {
                 if (facetName.equals("facet_geo")) {
-                    //row.putAll(unpackFacetGeo((JSONArray) valueObj));
-                    if (fullEntity.has("places")) {
-                        handlePlaces((JSONArray) fullEntity.get("places"), row);
-                    } else if (fullEntity.has("facet_geo")) {
-                        // some entities (iE http://bogusman02.dai-cloud.uni-koeln.de/data/entity/1179020) has a facet_geo, but no places
-                        handlePlaces(unpackFacetGeo((JSONArray) fullEntity.get("facet_geo")), row);
-                    }
+                    serializePlaces(fullEntity, row);
                 } else {
                     handleFacetValues(facetName, facetFullName, (JSONArray) valueObj, row);
                 }
@@ -268,15 +264,34 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         return row;
     }
 
-    public JSONArray unpackFacetGeo(JSONArray facetGeo) {
-        for (int i = 0; i < (handleOnlyFirstPlace ? 1 : facetGeo.length()); i++) {
-            Object entryBox = facetGeo.get(i);
-            facetGeo.put(i, new JSONObject("" + entryBox)); // don't you remove the "" + -, it won't work then and I have no idea
+    void handleFacetValues(String facetName, String facetFullName, JSONArray facetValues, List<DataExportSet> collector) {
+        for (int i = 0; i < facetValues.length(); i++) {
+            collector.add(new DataExportSet(facetName, facetFullName, facetValues.get(i).toString()));
         }
-        return facetGeo;
+    };
+
+    /**
+     * extracts place information from fulLEntity and add it to collector - accorind to implementation if handlePlace function
+     * @param fullEntity
+     * @param collector
+     */
+    public void serializePlaces(JSONObject fullEntity, List<DataExportSet> collector) {
+        //row.putAll(unpackFacetGeo((JSONArray) valueObj));
+        if (fullEntity.has("places")) {
+            handlePlaces((JSONArray) fullEntity.get("places"), collector);
+        } else if (fullEntity.has("facet_geo")) {
+            // some entities (iE http://bogusman02.dai-cloud.uni-koeln.de/data/entity/1179020) has a facet_geo, but no places
+            handlePlaces(unpackFacetGeo((JSONArray) fullEntity.get("facet_geo")), collector);
+        }
     }
 
-    public void handlePlaces(JSONArray places, List<DataExportSet> collector) {
+    /**
+     * helper function to extract useful information about place
+     *
+     * @param places
+     * @param collector
+     */
+    private void handlePlaces(JSONArray places, List<DataExportSet> collector) {
 
         for (int i = 0; i < (handleOnlyFirstPlace ? 1 : places.length()); i++) {
 
@@ -312,12 +327,35 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
     }
 
-    abstract void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector);
-
-    void handleFacetValues(String facetName, String facetFullName, JSONArray facetValues, List<DataExportSet> collector) {
-        for (int i = 0; i < facetValues.length(); i++) {
-            collector.add(new DataExportSet(facetName, facetFullName, facetValues.get(i).toString()));
+    /**
+     * helper function to extract useful information about place from facet_geo
+     *
+     * @param facetGeo
+     * @return
+     */
+    private JSONArray unpackFacetGeo(JSONArray facetGeo) {
+        for (int i = 0; i < (handleOnlyFirstPlace ? 1 : facetGeo.length()); i++) {
+            Object entryBox = facetGeo.get(i);
+            facetGeo.put(i, new JSONObject("" + entryBox)); // don't you remove the "" + -, it won't work then and I have no idea
         }
-    };
+        return facetGeo;
+    }
+
+    /**
+     *
+     * implement this to define  how places shall get serilized!
+     *
+     * @param number
+     * @param name
+     * @param gazetteerId
+     * @param lat
+     * @param lon
+     * @param rel
+     * @param collector
+     */
+
+    abstract public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector);
+
+
 
 }
