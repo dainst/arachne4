@@ -1,7 +1,7 @@
 <div tiny-footer class="row fullscreenrow">
 
     <div ng-init="config = {
-    menuTitle: 'Antike Werkst&auml;tten',
+    menuTitle: 'Werkstätten vormoderner Wirtschaftsräume',
     menuFacetsAllow: [
         'facet_kulturkreis',
         'facet_datierungepoche',
@@ -17,7 +17,16 @@
     menuFacetsAppend: {
         facet_gebaeudetypspeziell: ' (Werkstattgattung)'
     },
-    facetsSelect: [],
+    facetsSelect: [
+        {
+            key: 'catalogIds',
+            value: 92
+        },
+        {
+            key: 'facet_kategorie',
+            value: 'Bauwerke'
+        }
+    ],
     overlays: {
         groups: [
             {

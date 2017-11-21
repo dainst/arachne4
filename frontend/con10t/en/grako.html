@@ -13,10 +13,11 @@
         </div>
         <div class="con10t-sidebar">
             <con10t-toc toc-heading="Übersicht"></con10t-toc>
-            <h3>Search within the project data</h3>
-            <a con10t-search-query="*&amp;fq=catalogIds:'92'">Show all datasets</a>
 
-            <con10t-search fq="catalogIds:92"></con10t-search>
+            <h3>Search within the project data</h3>
+            <a con10t-search-query>Show all datasets</a>
+            <con10t-search></con10t-search>
+
             <h3>Map view</h3>
 
             <div ng-init="config = {

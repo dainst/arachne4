@@ -1,315 +1,277 @@
 {
-
   "afrarchcologne": {
-	"facets": [
-	  {
-		"key": "facet_bestandsname",
-		"value": "AAArC"
-	  }
-	]
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "AAArC"
+      }
+    ]
   },
-
   "antiksammlberlin": {
-	"q": "catalogPaths:105"
+    "q": "catalogPaths:105"
   },
-
   "basilaemil": {
-	"q": "catalogPaths:24"
+    "q": "catalogPaths:24"
   },
-
   "berlinsamml": {
-	"q": "connectedEntities:1241844",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Reproduktionen"
-	  }
-	]
+    "q": "connectedEntities:1241844",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Reproduktionen"
+      }
+    ]
   },
-
   "ceramegypt": {
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "mainabstract"
-	  }
-	]
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "mainabstract"
+      }
+    ]
   },
-
   "cilopac": {
-	"q": "catalogPaths:41"
+    "q": "catalogPaths:41"
   },
-
   "databasepausanias": {
-	"q": "(catalogPaths:111 OR catalogPaths:110)"
+    "q": "(catalogPaths:111 OR catalogPaths:110)"
   },
-
   "fotoarchivdaiberlin": {
-	"q": "D-DAI-Z",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Bilder"
-	  }
-	]
+    "q": "D-DAI-Z",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bilder"
+      }
+    ]
   },
   "fotoistanbul": {
-	"q": "D-DAI-IST",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Bilder"
-	  }
-	]
+    "q": "D-DAI-IST",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bilder"
+      }
+    ]
   },
   "fotokairo": {
-	"q": "D-DAI-KAI",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Bilder"
-	  }
-	]
+    "q": "D-DAI-KAI",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bilder"
+      }
+    ]
   },
   "fotomadrid": {
-	"q": "D-DAI-MAD",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Bilder"
-	  }
-	]
+    "q": "D-DAI-MAD",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bilder"
+      }
+    ]
   },
-
   "gipsleipzigsamml": {
-	"q": "connectedEntities:1241594",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Einzelobjekte"
-	  }
-	]
+    "q": "connectedEntities:1241594",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Einzelobjekte"
+      }
+    ]
   },
-
   "grako": {
-	"facets": [
-	  {
-		"key":		"catalogIds",
-		"value":	"92"
-	  }
-	]
+    "facets": [
+      {
+        "key": "catalogIds",
+        "value": "92"
+      },
+      {
+        "key": "facet_kategorie",
+        "value": "Bauwerke"
+      }
+    ]
   },
-
   "grako_map": {
-	"alias": "grako"
+    "alias": "grako"
   },
-
   "hafen": {
-	"q": "catalogPaths:22"
+    "q": "catalogPaths:22"
   },
-
   "hinkel": {
-	"facets": [
-	  {
-		"key": "facet_bestandsname",
-		"value": "Archiv-Friedrich-W-Hinkel"
-	  }
-	]
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "Archiv-Friedrich-W-Hinkel"
+      }
+    ]
   },
-
   "hinkel_map": {
-	"alias": "hinkel"
+    "alias": "hinkel"
   },
-
   "imagegrid": {
-	"q": "vaticanischen sculpturen",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Bücher"
-	  }
-	]
+    "q": "vaticanischen sculpturen",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bücher"
+      }
+    ]
   },
-
   "invbuecherrom": {
-	"q": "Inventarbuch",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Bücher"
-	  }
-	]
+    "q": "Inventarbuch",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bücher"
+      }
+    ]
   },
-
   "kanatha": {
-	"q": "catalogPaths:109"
+    "q": "catalogPaths:109"
   },
-
-  "katalogskulpthess":{
-	"q": "connectedEntities:1241674",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Einzelobjekte"
-	  }
-	]
+  "katalogskulpthess": {
+    "q": "connectedEntities:1241674",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Einzelobjekte"
+      }
+    ]
   },
-
   "kossack": {
-	"q": "kossack-",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Bücher"
-	  }
-	]
+    "q": "kossack-",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bücher"
+      }
+    ]
   },
-
   "langwiss": {
-	"q": "catalogPaths:38"
+    "q": "catalogPaths:38"
   },
-
   "lippsbasilica": {
-	"q": "catalogPaths:27"
+    "q": "catalogPaths:27"
   },
-
   "oppenheim": {
-	"q": "(catalogPaths:54 OR catalogPaths:28)",
-	"facets": [
-	  {
-		"key": "facet_bestandsname",
-		"value": "Fotosammlung Max von Oppenheim"
-	  }
-	]
+    "q": "(catalogPaths:54 OR catalogPaths:28)",
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "Fotosammlung Max von Oppenheim"
+      }
+    ]
   },
-
   "palilia20Baubefunde": {
-	"q": "(catalogPaths:39 OR catalogPaths:33)"
+    "q": "(catalogPaths:39 OR catalogPaths:33)"
   },
-
-
   "palilia20Grabdenkmaeler": {
-	"q": "(catalogPaths:31 OR catalogPaths:40)"
+    "q": "(catalogPaths:31 OR catalogPaths:40)"
   },
-
   "palilia26": {
-	"q": "catalogPaths:34"
+    "q": "catalogPaths:34"
   },
-
   "rezeptionantike": {
-	"q": "(catalogPaths:107 OR catalogPaths:108)"
+    "q": "(catalogPaths:107 OR catalogPaths:108)"
   },
-
-  "roseterra":{
-	"q": " H. Rose römischen Terrakottamasken Nordwestprovinzen",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Einzelobjekte"
-	  }
-	]
+  "roseterra": {
+    "q": " H. Rose römischen Terrakottamasken Nordwestprovinzen",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Einzelobjekte"
+      }
+    ]
   },
-
   "rwwa": {
-	"facets": [
-	  {
-		"key": "facet_bestandsname",
-		"value": "Rheinisch-Westfälisches Wirtschaftsarchiv"
-	  },
-	  {
-		"key": "facet_kategorie",
-		"value": "Bilder"
-	  }
-	]
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "Rheinisch-Westfälisches Wirtschaftsarchiv"
+      },
+      {
+        "key": "facet_kategorie",
+        "value": "Bilder"
+      }
+    ]
   },
-
   "sammlakakunst": {
-	"q": "connectedEntities:1241765",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Reproduktionen"
-	  }
-	]
+    "q": "connectedEntities:1241765",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Reproduktionen"
+      }
+    ]
   },
-
   "sammlsaarbr": {
-	"q": "connectedEntities:1241756",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Reproduktionen"
-	  }
-	]
+    "q": "connectedEntities:1241756",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Reproduktionen"
+      }
+    ]
   },
-
   "schlossfulda": {
-	"q": "connectedEntities:1241588",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Einzelobjekte"
-	  }
-	]
+    "q": "connectedEntities:1241588",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Einzelobjekte"
+      }
+    ]
   },
-
   "skulpturnegdairom": {
-	"q": "catalogPaths:106"
+    "q": "catalogPaths:106"
   },
-
   "spacodices": {
-	"q": "catalogPaths:32",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Bücher"
-	  }
-	]
+    "q": "catalogPaths:32",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bücher"
+      }
+    ]
   },
-
   "spornsiegel": {
-	"q": "connectedEntities:1241917"
+    "q": "connectedEntities:1241917"
   },
-
   "stendal": {
-	"q": "connectedEntities:1241766",
-	"facets": [
-	  {
-		"key": "facet_image",
-		"value": "ja"
-	  }
-	]
+    "q": "connectedEntities:1241766",
+    "facets": [
+      {
+        "key": "facet_image",
+        "value": "ja"
+      }
+    ]
   },
-
   "syrher": {
-	"facets": [
-	  {
-		"key": "facet_bestandsname",
-		"value": "Syrian-Heritage-Archive-Project"
-	  }
-	]
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "Syrian-Heritage-Archive-Project"
+      }
+    ]
   },
-
   "syrher_map": {
-	"alias": "syrher"
+    "alias": "syrher"
   },
-
   "widgetsdemo": {
-	"q": "spirit"
+    "q": "spirit"
   },
-
   "wohnkulturOstia": {
-	"q": "catalogPaths:102"
+    "q": "catalogPaths:102"
   },
-
   "_testscope": {
-	"q": "you",
-	"facets": [
-	  {
-		"key": "facet_kategorie",
-		"value": "Personen"
-	  }
-	]
+    "q": "you",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Personen"
+      }
+    ]
   }
-
 }
