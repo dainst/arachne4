@@ -33,6 +33,9 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         super(MediaType.TEXT_HTML);
     }
 
+    public Integer maxCatalogDepth = 2;
+    public Boolean getImages = true;
+
     final String GAZETTEER_URL = "https://gazetteer.dainst.org/app/#!/show/%%%GAZID%%%";
     final String ALTERNATE_GEO_URL = "https://www.openstreetmap.org/?mlat=%%%LAT%%%&mlon=%%%LON%%%&zoom=15";
 
@@ -110,7 +113,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         writer.append("<table class='dataset'>");
         for (DataExportSet detail : details) {
             if (detail.isHeadline) {
-                writer.append("<tr><td colspan='2' class='section'>" + detail.name + "</td></tr>");
+                writer.append("<tr><td colspan='2' class='section'>" + detail.value + "</td></tr>");
             } else if (detail != null) {
                 writer.append("<tr><td>" + detail.name + "</td><td>" + detail.value + "</td></tr>");
             } else {
@@ -288,49 +291,47 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         final String label = catalogEntry.getLabel();
         final String text = catalogEntry.getText();
         final String headlineTag = "h" + Math.min(6, (level + 1));
+        final String headClass = "level-" + level;
         final String count = catalogEntry.getTotalChildren() + "";
+        final Boolean hasChildren = (!count.equals("")) && (!count.equals("0"));
 
         // entity
         ArrayList<DataExportSet> details = null;
-        if (level < 3) {
+        if (level < maxCatalogDepth) {
             if (enitityId != null) {
-                //dataset = singleEntityDataService.getSingleEntityByArachneId(entityIdentificationService.getId(enitityId));
                 details = (ArrayList) getDetails(enitityId);
             }
         }
 
-        writer.append("<div class='page'>");
+        writer.append("<div class='page " + headClass + "'>");
 
+        writer.append("<table class='page-header'><tr>");
+        writer.append("<td class='page-header-left'>");
         if (!Objects.equals(headline, "")) {
-            writer.append("<div class='page-left category infobox'>" + headline + "</div>");
+            writer.append(headline);
         }
-
+        writer.append("</td>");
+        writer.append("<td class='page-header-right'>");
         if (!uri.equals("")) {
-            writer.append("<div class='page-right uri infobox'><a href='" + uri + "' target='_blank'>" + uri + "</a></div>");
+            writer.append("<a href='" + uri + "' target='_blank'>" + uri + "</a>");
         }
+        writer.append("</td>");
+        writer.append("</tr></table>"); // page-header
 
-        if ((!count.equals("")) && (!count.equals("0"))) {
-            writer.append("<div class='catalog-count'>" + count + "</div>");
-        }
 
-        writer.append("<div class='row'>");
-/*
-        if (details != null) {
-            final List<Image> imgs = dataset.getImages();
+        writer.append("<div class='page-body'>");
+
+        if ((details != null) && getImages) {
+            /*final List<Image> imgs = dataset.getImages();
             if (imgs != null) {
                 htmlThumbnail(imgs.get(0).getImageId());
-            }
+            }*/
         }
-*/
+
         if (label != null) {
             writer.append("<" + headlineTag +" class='title'>" + label + "</" + headlineTag + ">");
         }
 
-        /*
-        if (dataset != null) {
-            writer.append("<p class='subtitle'>" + dataset. + "</p>");
-        }
-        */
 
         if (text != null) {
             writer.append("<p>" + text + "</p>");
@@ -341,11 +342,16 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             htmlDetailTable(details);
         }
 
-        writer.append("</div>");
-        writer.append("</div>");
+        writer.append("</div>"); //page-body
 
-        return;
-/*
+        writer.append("<div class='page-footer'>");
+        if (hasChildren) {
+            writer.append("<span>" + count + " Subelements</span>");
+        }
+        writer.append("</div>"); //page-footer
+
+        writer.append("</div>"); //page
+
         // children
         writer.append("<div class='subpage'>");
         List<CatalogEntry> children = realGetChildren(catalogEntry);
@@ -355,7 +361,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             }
         }
         writer.append("</div>");
-*/
+
 
     }
 

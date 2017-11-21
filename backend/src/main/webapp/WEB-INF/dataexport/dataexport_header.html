@@ -19,6 +19,10 @@
             background: silver;
         }
 
+        hr {
+            border: none;
+            margin: 0px;
+        }
 
 
         a {
@@ -51,17 +55,92 @@
         }
 
         .page {
-
             border-radius: 2px;
             box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.38);
             background: white;
-            padding: 0.5em;
             float: none;
             margin: 0.5em 0;
-
+        }
+/*
+        .subpage {
+            margin-left: 2em;
+        }
+*/
+        .page.level-2 .page-body,
+        .page.level-2 .page-footer {
+            border-left: 0.5em solid #eee;
+        }
+        .page.level-3 .page-body,
+        .page.level-3 .page-footer {
+            border-left: 1em solid #eee;
+        }
+        .page.level-4 .page-body,
+        .page.level-4 .page-footer {
+            border-left: 1.5em solid #eee;
+        }
+        .page.level-5 .page-body,
+        .page.level-5 .page-footer {
+            border-left: 2em solid #eee;
+        }
+        .page.level-6 .page-body,
+        .page.level-6 .page-footer {
+            border-left: 2.5em solid #eee;
+        }
+        .page.level-7 .page-body,
+        .page.level-7 .page-footer {
+            border-left: 3em solid #eee;
         }
 
-        .row,
+        .page.level-2 .page-footer {
+            padding-left: 0.5em;
+        }
+        .page.level-3 .page-footer {
+            padding-left: 1em;
+        }
+        .page.level-4 .page-footer {
+            padding-left: 1.5em;
+        }
+        .page.level-5 .page-footer {
+            padding-left: 2em;
+        }
+        .page.level-6 .page-footer {
+            padding-left: 2.5em;
+        }
+        .page.level-7 .page-footer {
+            padding-left: 3em;
+        }
+
+        .page-header {
+            border-top-right-radius: 2px;
+            border-top-left-radius: 2px;
+            background: #eee;
+            font-size: small;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .page-header-left {
+            width: 50%;
+            padding: 0.5em;
+        }
+
+        .page-header-right {
+            text-align: right;
+            width: 50%;
+            padding: 0.5em;
+        }
+
+        .page-body {
+            padding: 0.5em;
+        }
+
+        .page-footer {
+            padding: 1em 0.5em 0.5em 0.5em;
+            text-align: right;
+            border-bottom-right-radius: 2px;
+            border-bottom-left-radius: 2px;
+        }
+
         .page:after {
             content: "";
             display: table;
@@ -69,18 +148,8 @@
             width: 100%;
         }
 
-        .page-left {
-            float: left;
-            min-width: 25%;
-        }
-
-        .page-right {
-            float: left;
-            max-width: 75%;
-        }
-
         .title {
-            font-size: medium;
+            font-size: x-large;
             font-weight: bold;
             margin: 0.5em 0 0.2em;
         }
@@ -91,9 +160,6 @@
             margin-top: 0;
         }
 
-        .infobox {
-            font-size: small
-        }
 
 
 
@@ -175,10 +241,16 @@
 
         .dataset {
             width: 100%;
+            border-collapse: collapse;
         }
 
         .dataset td:first-child {
             width: 25%;
+        }
+
+        .dataset td {
+            border-top: 1px solid #ccc;
+            padding: 0.5em 0;
         }
 
         .dataset td.section {
@@ -192,34 +264,13 @@
 
         .dataset ul {
             padding-left: 16px;
+            margin: 0;
         }
 
         .dataset li {
             padding-bottom: 3px;
         }
 
-        .dataset li
-
-        .subpage {
-            margin-left: 2em;
-        }
-
-        .catalog-count {
-            font-size: 15px;
-            border-radius: 10px;
-            min-width: 10px;
-            height: 20px;
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            text-align: center;
-            vertical-align: middle;
-            display: table-cell;
-            float: right;
-            padding-left: 5px;
-            padding-right: 5px;
-            line-height: 18px;
-            font-weight: bold;
-        }
 
         @media print {
             body {

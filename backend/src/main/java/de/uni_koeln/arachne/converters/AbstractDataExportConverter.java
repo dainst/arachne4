@@ -139,10 +139,10 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         String label = box.has("label") ? box.get("label").toString() : null;
         Object boxValue = box.has("value") ? box.get("value") : null;
 
-        label = (label == "null") ? null : label;
+        label = (Objects.equals(label, "null")) ? null : label;
 
         if ((label != null) && (topLabel != null)) {
-            row.add(new DataExportSet(topLabel,topLabel,null, true));
+            row.add(new DataExportSet("","", topLabel, true));
         }
 
         if ((label == null) && (topLabel != null)) {
@@ -178,6 +178,14 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         final JSONObject fullEntity = getEntity(entityId);
 
         if (fullEntity == null) {
+            return row;
+        }
+
+        if (fullEntity.has("subtitle")) {
+            row.add(new DataExportSet("xxx", "xxx", fullEntity.getString("subtitle"), true));
+        }
+
+        if (!fullEntity.has("sections")) {
             return row;
         }
 
