@@ -17,27 +17,21 @@ public class SearchResult2PdfConverter extends BasePdfConverter<SearchResult> {
     @Override
     protected boolean supports(Class<?> aClass) { return aClass == SearchResult.class; }
 
-    protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-        httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/pdf");
-        //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.pdf\"");
-
-        final List<SearchHit> entities = searchResult.getEntities();
-        final List<SearchResultFacet> facets = searchResult.getFacets();
-
-        OutputStream outStream = httpOutputMessage.getBody();
-
-        PdfRendererBuilder pdfBuilder = new PdfRendererBuilder();
-        String elStringo = getAsHtml(entities, facets);
-
+    protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) {
         try {
-            pdfBuilder.withHtmlContent(elStringo, "/");
-            pdfBuilder.toStream(outStream);
-            pdfBuilder.run();
+            httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/pdf");
+            //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.pdf\"");
+            final List<SearchHit> entities = searchResult.getEntities();
+            final List<SearchResultFacet> facets = searchResult.getFacets();
+            OutputStream outStream = httpOutputMessage.getBody();
+            String elStringo = getAsHtml(entities, facets);
+            writePdf(elStringo, outStream);
         } catch (Exception e) {
-            LOGGER.error("PDF could not be created. Most likely XML error.");
-            outStream.write(new String("Sorry, an error appeared during PDF creation.").getBytes());
-            e.printStackTrace();
+            e.printStackTrace(); // @ Todo
         }
+
+
+
 
     }
 

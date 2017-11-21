@@ -42,8 +42,22 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
 
         return htmlConverter.writer.toString();
 
+    }
+
+    public void writePdf(String content, OutputStream outStream) throws Exception {
+        PdfRendererBuilder pdfBuilder = new PdfRendererBuilder();
+        try {
+            pdfBuilder.withHtmlContent(content, "/");
+            pdfBuilder.toStream(outStream);
+            pdfBuilder.run();
+        } catch (Exception e) {
+            LOGGER.error("PDF could not be created. Most likely XML error.");
+            throw e;
+        }
 
     }
+
+
 
     @Override
     public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector) {
