@@ -10,6 +10,7 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.StringWriter;
 import java.util.List;
 
 public class SearchResult2PdfConverter extends BasePdfConverter<SearchResult> {
@@ -20,12 +21,20 @@ public class SearchResult2PdfConverter extends BasePdfConverter<SearchResult> {
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) {
         try {
             httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/pdf");
-            //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.pdf\"");
+            //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.pdf\""); // @ todo reactivate
             final List<SearchHit> entities = searchResult.getEntities();
             final List<SearchResultFacet> facets = searchResult.getFacets();
             OutputStream outStream = httpOutputMessage.getBody();
-            String elStringo = getAsHtml(entities, facets);
-            writePdf(elStringo, outStream);
+
+            SearchResult2HtmlConverter htmlConverter = getHtmlConverter();
+            htmlConverter.writer = new StringWriter();
+            htmlConverter.htmlHeader();
+            htmlConverter.htmlFrontmatter("Search Result", htmlConverter.facetList2String(facets));
+            htmlConverter.htmlResults(entities, facets);
+            htmlConverter.htmlFooter();
+            writePdf((StringWriter) htmlConverter.writer, outStream);
+            htmlConverter.writer.close();
+
         } catch (Exception e) {
             e.printStackTrace(); // @ Todo
         }

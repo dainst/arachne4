@@ -1,12 +1,10 @@
 package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
-import de.uni_koeln.arachne.response.search.SearchHit;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.service.*;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 import org.apache.http.client.utils.URIBuilder;
-import org.elasticsearch.rest.RestStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpInputMessage;
@@ -20,6 +18,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.json.*;
@@ -79,6 +79,13 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     public Boolean handleOnlyFirstPlace = false;
     public Boolean sortFacets = true;
     public List<String> skipFacets = Arrays.asList("facet_land", "facet_ort", "facet_ortsangabe");
+
+    //meta
+    public String exportTitle;
+    public String exportTimestamp;
+    public String exportUser;
+
+
 
     public String getCurrentUrl() {
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -226,11 +233,11 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
                 continue;
             }
 
-            String facetFullName;
+            String facetFullName = null;
             try {
                 facetFullName = transl8Service.transl8(facet.getName(), "en");
             } catch (Transl8Service.Transl8Exception e) {
-                facetFullName = facetName;
+                e.printStackTrace();
             }
 
             if (!includeEmptyFacets && (!fullEntity.has(facet.getName()))) {
@@ -357,6 +364,13 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
     abstract public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector);
 
+
+    public void setExportMetaData(String title) {
+        this.exportTitle = title;
+        this.exportUser = userRightsService.getCurrentUser().getUsername();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); // @ TODO tansl8
+        this.exportTimestamp = dateFormat.format(new Date());
+    }
 
 
 }

@@ -17,6 +17,7 @@ public class Catalog2HtmlConverter extends BaseHtmlConverter<Catalog> {
 
     @Override
     protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
+        setExportMetaData(catalog.getAuthor() + ": " + catalog.getRoot().getLabel());
         writer = new OutputStreamWriter(httpOutputMessage.getBody());
         htmlHeader();
         htmlCatalogFrontMatter(catalog);
@@ -25,13 +26,7 @@ public class Catalog2HtmlConverter extends BaseHtmlConverter<Catalog> {
         writer.close();
     }
 
-    private void htmlCatalogFrontMatter(Catalog catalog) throws IOException {
-        final String author = catalog.getAuthor();
-        final CatalogEntry root =  catalog.getRoot();
-        final String title = root.getLabel();
-        final String content = "<p>By: " + author + "</p>";
-        htmlFrontmatter(title, content);
-    }
+
 
 
 

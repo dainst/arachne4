@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <!-- note that this has to be valid xml for pdf conversion! -->
 <head>
-    <meta charset="UTF-8"></meta>
+    <meta charset="UTF-8">
     <title>Arachne - Data Export</title>
 
     <style>
@@ -24,6 +24,9 @@
             margin: 0px;
         }
 
+        .frontmatter .page-body {
+            padding-bottom: 2cm;
+        }
 
         a {
             color: #37588e;
@@ -139,6 +142,16 @@
             display: table;
             clear: both;
             width: 100%;
+        }
+
+        .doc-title {
+            font-size: xx-large;
+            margin: 6cm 0 3cm;
+        }
+
+        .doc-title span {
+            display: block;
+            font-size: medium;
         }
 
         .title {
@@ -267,30 +280,94 @@
             padding-bottom: 3px;
         }
 
+        #bottomLeftFooter {
+            position: running(footer);
+            font-family: 'Source Sans Pro',Arial,Helvetica, sans-serif;
+            font-size: 8pt;
+            display: none;
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm 20mm 25mm 20mm; /* DIN 5008 */
+            orphans: 4;
+            widows: 2;
+
+
+            @bottom-left {
+                content: element(footer);
+            }
+
+            @bottom-right {
+                font-family: 'Source Sans Pro',Arial,Helvetica, sans-serif;
+                font-size: 8pt;
+                content: "Page " counter(page) " of " counter(pages);
+            }
+
+        }
+
+
 
         @media print {
+
             body {
                 background: white;
                 font-size: 75%
             }
+
+            #bottomLeftFooter {
+                display: block;
+            }
+
             .logo-topline-initial {
                 color: white;
-            }
-            .page {
-                width: 100%;
-                page-break-inside: avoid;
-                margin-bottom: 1.5em;
             }
             .logo-bottomline {
                 margin-top: 3px;
             }
             .frontmatter {
                 clear:both;
+                page-break-after: always;
             }
-            .page-right {
-                float: left;
-                width: 60%
+
+
+
+            .imprint {
+                page-break-before: always;
             }
+
+            .container {
+                width: 100%;
+                padding: 0;
+            }
+
+            .page-header {
+                page-break-after: avoid;
+            }
+
+            .page {
+                width: 100%;
+                page-break-inside: avoid;
+                margin-bottom: 1.5em;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0;
+            }
+
+            .dataset {
+                page-break-inside: auto;
+            }
+
+            .page-header,
+            .page-body,
+            .page-footer {
+                background: white;
+                border: none;
+            }
+
+
+
+
         }
 
     </style>

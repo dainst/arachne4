@@ -10,6 +10,8 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.util.List;
 
 public class Catalog2PdfConverter extends BasePdfConverter<Catalog> {
@@ -20,19 +22,23 @@ public class Catalog2PdfConverter extends BasePdfConverter<Catalog> {
     }
 
     @Override
-    protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) {
-        try {
-            httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/pdf");
-            //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.pdf\"");
+    protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException {
 
-            OutputStream outStream = httpOutputMessage.getBody();
-            String elStringo = getAsHtml();
+        httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/pdf");
+        //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.pdf\"");
 
-            writePdf(elStringo, outStream);
+        OutputStream outStream = httpOutputMessage.getBody();
 
-        } catch (Exception e) {
-            e.printStackTrace(); // @ Todo
-        }
+        SearchResult2HtmlConverter htmlConverter = getHtmlConverter();
+        htmlConverter.setExportMetaData(catalog.getAuthor() + ": " + catalog.getRoot().getLabel());
+        htmlConverter.writer = new StringWriter();
+        htmlConverter.htmlHeader();
+        htmlConverter.htmlCatalogFrontMatter(catalog);
+        htmlConverter.htmlCatalog(catalog);
+        htmlConverter.htmlFooter();
+        writePdf((StringWriter) htmlConverter.writer, outStream);
+        htmlConverter.writer.close();
+
     }
 
 

@@ -64,12 +64,7 @@ public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
             for (DataExportSet detail : details) {
                 row.add(detail.value);
             }
-            try {
-                csvWriter.write(row, processors);
-            } catch (Exception e) {
-                e.getMessage();
-            }
-
+            csvWriter.write(row, processors);
 
         }
 

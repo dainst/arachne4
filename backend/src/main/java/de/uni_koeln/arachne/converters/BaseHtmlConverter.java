@@ -36,13 +36,16 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
     public Integer maxCatalogDepth = 3;
     public Boolean getImages = true;
+    //public Boolean validXml = true;
 
     final String GAZETTEER_URL = "https://gazetteer.dainst.org/app/#!/show/%%%GAZID%%%";
     final String ALTERNATE_GEO_URL = "https://www.openstreetmap.org/?mlat=%%%LAT%%%&mlon=%%%LON%%%&zoom=15";
 
+
+
     private HashMap<String, String> htmlFileCache = new HashMap<String, String>();
 
-    private String readHtmlFile(String file, HashMap<String, String> replacements) {
+    private String readHtmlFile(String file, HashMap<String, String> replacements) throws IOException {
 
         if (htmlFileCache.containsKey(file)) {
             return replaceList(htmlFileCache.get(file), replacements);
@@ -51,19 +54,17 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         InputStream initFileStream = servletContext.getResourceAsStream("WEB-INF/dataexport/" + file);
         BufferedReader reader = new BufferedReader(new InputStreamReader(initFileStream));
         StringBuffer fileContents = new StringBuffer();
-        try {
-            while(reader.ready()){
-                fileContents.append(reader.readLine());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        while(reader.ready()){
+            fileContents.append(reader.readLine());
         }
+
 
         //htmlFileCache.put(file, fileContents.toString());
 
         return replaceList(fileContents.toString(), replacements);
     }
-    private String readHtmlFile(String file) {
+
+    private String readHtmlFile(String file) throws IOException {
         return readHtmlFile(file, new HashMap<String, String>());
     }
 
@@ -76,36 +77,33 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         return subject;
     }
 
-    public void htmlResults(List<SearchHit> entities, List<SearchResultFacet> facets) {
+    public void htmlResults(List<SearchHit> entities, List<SearchResultFacet> facets) throws IOException {
         if(entities == null) {
             return;
         }
-        try {
-            for (final SearchHit hit : entities) {
 
-                // there are items wo subtitle and maybe wo title out there...
-                String title = (hit.getTitle() == null) ? "" : hit.getTitle();
-                String subtitle = (hit.getSubtitle() == null) ? "" : hit.getSubtitle();
+        for (final SearchHit hit : entities) {
 
-                writer.append("<div class='page'>");
+            // there are items wo subtitle and maybe wo title out there...
+            String title = (hit.getTitle() == null) ? "" : hit.getTitle();
+            String subtitle = (hit.getSubtitle() == null) ? "" : hit.getSubtitle();
 
-                writer.append("<div class='page-left category infobox'>" + hit.getType() + "</div>");
-                writer.append("<div class='page-right uri infobox'><a href='" + hit.getUri() + "' target='_blank'>" + hit.getUri() + "</a></div>");
+            writer.append("<div class='page'>");
 
-                writer.append("<div class='row'>");
-                htmlThumbnail(hit.getThumbnailId());
-                writer.append("<h2 class='title'>" + title + "</h2>");
-                writer.append("<h3 class='subtitle'>" + subtitle + "</h3>");
+            writer.append("<div class='page-left category infobox'>" + hit.getType() + "</div>");
+            writer.append("<div class='page-right uri infobox'><a href='" + hit.getUri() + "' target='_blank'>" + hit.getUri() + "</a></div>");
 
-                htmlDetailTable((ArrayList) getDetails(hit.getEntityId(), facets));
+            writer.append("<div class='row'>");
+            htmlThumbnail(hit.getThumbnailId());
+            writer.append("<h2 class='title'>" + title + "</h2>");
+            writer.append("<h3 class='subtitle'>" + subtitle + "</h3>");
 
-                writer.append("</div>");
+            htmlDetailTable((ArrayList) getDetails(hit.getEntityId(), facets));
 
-                writer.append("</div>");
+            writer.append("</div>");
 
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            writer.append("</div>");
+
         }
     }
 
@@ -164,7 +162,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
     }
 
 
-    private void htmlThumbnail(Long entityId) {
+    private void htmlThumbnail(Long entityId) throws IOException {
 
         if (entityId == null) {
             return;
@@ -181,12 +179,8 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             return;
         }
 
-        try {
-            final String line = "<img class='thumbnail' src='data:image/jpeg;base64," +  Base64.encode(imageBytes) + "' alt='thumbnail' ></img>";
-            writer.append(line);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        final String line = "<img class='thumbnail' src='data:image/jpeg;base64," +  Base64.encode(imageBytes) + "' alt='thumbnail' ></img>";
+        writer.append(line);
     }
 
     private byte[] readImage(String imageName) {
@@ -222,19 +216,12 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
     public void htmlFrontmatter(String title, String content) throws IOException {
 
-        // date
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        final Date date = new Date();
-
         // search url
         final String url = getCurrentUrl()
-                .replace("&", "&amp;")
-                .replace(".pdf", "")
-                .replace("?null", "")
-                .replace(".html", "");
+            .replace(".pdf", "")
+            .replace("?null", "")
+            .replace(".html", "");
 
-        // user
-        final String user = getCurrentUser();
 
         // create replacements map
         HashMap<String, String> replacements = new HashMap<String, String>();
@@ -249,11 +236,18 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         writer.append("<div>");
 
         // serach results export front matter
-        writer.append("<h1>" + title + "</h1>");
-        writer.append(content);
-        writer.append("<p>Accessed: " + date + "</p>");
-        writer.append("<p><a href='" +url + "'>" + url + "</a></p>");
-        writer.append("<p>User: " + user + "</p>");
+        writer.append("<div class='doc-title'>");
+        writer.append(title);
+        writer.append("<span>" + content + "</span>");
+        writer.append("</div>");
+
+        writer.append("<p>");
+        writer.append("Acceced at"); // TODO tranl8
+        writer.append(" " + exportTimestamp + " ");
+        writer.append("by"); // TODO tranl8
+        writer.append(" " + exportUser);
+        writer.append("</p>");
+        writer.append("<p><a href='" + url + "'>" + url + "</a></p>");
 
         writer.append("</div>");
 
@@ -262,21 +256,22 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
     }
 
 
-    public void htmlHeader() {
-        try {
-            writer.append(readHtmlFile("dataexport_header.html"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void htmlHeader() throws IOException {
+        writer.append(readHtmlFile("dataexport_header.html"));
+        // printing layout footer
+        writer.append("<div id='bottomLeftFooter'>");
+        writer.append(exportTitle);
+        writer.append(" | ");
+        writer.append("Acceced at"); // TODO tranl8
+        writer.append(" " + exportTimestamp + " ");
+        writer.append("by"); // TODO tranl8
+        writer.append(" " + exportUser);
+        writer.append("</div>");
     }
 
-    public void htmlFooter() {
-        try {
-            writer.append(readHtmlFile("dataexport_imprint.html"));
-            writer.append(readHtmlFile("dataexport_footer.html"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void htmlFooter() throws IOException {
+        writer.append(readHtmlFile("dataexport_imprint.html"));
+        writer.append(readHtmlFile("dataexport_footer.html"));
     }
 
     public void htmlCatalog(Catalog catalog) throws IOException {
@@ -291,12 +286,26 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         writer.append("</div>");
     }
 
-        /**
-         * Creates a HTML representation of a {@link CatalogEntry} and all its children.
-         * @param catalogEntry The catalog entry.
-         * @param level The recursion (indentation) level.
-         * @return The entries as HTML.
-         */
+    /**
+     * creates the front matter for the catalog export
+     *
+     * @param catalog
+     * @throws IOException
+     */
+    public void htmlCatalogFrontMatter(Catalog catalog) throws IOException {
+        final String author = catalog.getAuthor();
+        final CatalogEntry root =  catalog.getRoot();
+        final String title = root.getLabel();
+        final String content = "<p>By: " + author + "</p>"; // @ todo transl8
+        htmlFrontmatter(title, content);
+    }
+
+    /**
+     * Creates a HTML representation of a {@link CatalogEntry} and all its children.
+     * @param catalogEntry The catalog entry.
+     * @param level The recursion (indentation) level.
+     * @return The entries as HTML.
+     */
     private void htmlCatalogEntry(final CatalogEntry catalogEntry, final int level, final String headline) throws IOException {
 
         final Long entityId = catalogEntry.getArachneEntityId();
@@ -312,12 +321,12 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         // entity
         ArrayList<DataExportSet> details = null;
         JSONObject fullEntity = new JSONObject();
-        //if (level <= maxCatalogDepth) {
-            if (entityId != null) {
-                fullEntity = getEntity(entityId);
-                details = (ArrayList) getDetails(fullEntity);
-            }
-        //}
+
+        if (entityId != null) {
+            fullEntity = getEntity(entityId);
+            details = (ArrayList) getDetails(fullEntity);
+        }
+
 
         writer.append("<div class='page " + headClass + "'>");
 
@@ -380,7 +389,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
     }
 
-    List<CatalogEntry> realGetChildren(CatalogEntry catalogEntry) {
+    private List<CatalogEntry> realGetChildren(CatalogEntry catalogEntry) { // @ TODO analyze why this is neccessary
         final List<CatalogEntry> storedChildren = catalogEntry.getChildren();
         if (storedChildren != null) {
             return storedChildren;
@@ -393,6 +402,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
 
     }
+
 
 
 

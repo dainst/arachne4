@@ -35,7 +35,6 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
     }
 
     protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-        String whatever = "Die crying";
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/csv");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.csv\"");
     }
@@ -55,7 +54,7 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
                 headers.add("longitude");
             } else {
                 try {
-                    headers.add(transl8Service.transl8(facet.getName(),"en"));
+                    headers.add(transl8Service.transl8(facet.getName(),"en")); // @ TODO set language
                 } catch (Transl8Service.Transl8Exception e) {
                     headers.add(facet.getName());
                 }
