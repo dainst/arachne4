@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-<!-- note that this has to be valid xml for pdf conversion! -->
 <head>
     <meta charset="UTF-8">
     <title>%%%title%%%</title>
@@ -264,8 +262,13 @@
         }
 
         .dataset td.section {
-            padding-top: 1em;
+            border-top: none;
+            padding-top: 1.5em;
             font-weight: bold;
+        }
+
+        .error {
+            color: darkred;
         }
 
         .imprint {
@@ -350,9 +353,6 @@
                 padding: 0;
             }
 
-            .page-header {
-                page-break-after: avoid;
-            }
 
             .page {
                 width: 100%;
@@ -368,19 +368,50 @@
                 page-break-inside: auto;
             }
 
-            .page-header,
+            .page-header {
+                border-radius: 0
+                page-break-after: avoid;
+            }
+
             .page-body,
             .page-footer {
                 background: white;
-                border: none;
+                border: none !important;
             }
 
+            h1.title  {
+                border-bottom: 1px solid black;
+                font-size: 16pt !important
+            }
+
+            h2.title  {
+                font-size: 14pt !important;
+                font-weight: bold;
+                border-bottom: 1px solid #ccc
+            }
+
+            h3.title  {
+                font-size: 14pt !important;
+                font-weight: bold;
+                border-bottom: 1px dotted #ccc
+            }
+
+            h4.title  {
+                font-size: 14pt !important;
+                border-bottom: 1px dotted #ccc
+
+            }
+
+            h6.title , h5.title  {
+                font-size: 14pt !important;
+            }
 
 
 
         }
 
     </style>
+
 
 </head>
 <body>

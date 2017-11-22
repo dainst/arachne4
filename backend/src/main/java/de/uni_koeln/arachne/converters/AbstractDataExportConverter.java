@@ -104,7 +104,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     // unpacks JSON and get all the objects datails against a list of facets
 
 
-    public JSONObject getEntity(long entityId) {
+    public JSONObject getEntity(long entityId) throws Exception {
 
         TypeWithHTTPStatus entity = null;
 
@@ -113,6 +113,9 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         } catch (Exception e) {
             //e.printStackTrace();  // LOG error
             return null;
+        }
+        if (!entity.getStatus().is2xxSuccessful()) {
+            throw new Exception(entity.getStatus().toString());
         }
         if ((entity == null) || (!entity.getStatus().is2xxSuccessful())) {
             return null;
@@ -220,7 +223,13 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     public List<DataExportSet> getDetails(long entityId, List<SearchResultFacet> facets) {
 
         final List<DataExportSet> row = new ArrayList<DataExportSet>() {};
-        final JSONObject fullEntity = getEntity(entityId);
+        final JSONObject fullEntity;
+        try {
+            fullEntity = getEntity(entityId);
+        } catch (Exception e) {
+            LOGGER.error("Error retrieving entity " + entityId + ": " + e.getMessage());
+            return row;
+        }
 
         if (fullEntity == null) {
             return row;

@@ -115,8 +115,10 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
                 writer.append("<tr><td colspan='2' class='section'>" + detail.value + "</td></tr>");
             } else if (detail != null) {
                 writer.append("<tr><td>" + detail.name + "</td><td>" + detail.value + "</td></tr>");
+            } else if (detail.name.equals("") && detail.value.equals("")) {
+                // do nothing
             } else {
-                writer.append("<tr><td colspan='2'>error</td></tr>");
+                writer.append("<tr><td colspan='2' class='error'>Unknown Error</td></tr>");
             }
         }
         writer.append("</table>");
@@ -269,6 +271,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         writer.append("</div>");
 
         writer.append("</div>"); //page-body
+
         writer.append("</div>"); //page
     }
     public void htmlFrontmatter() throws IOException {
@@ -301,7 +304,6 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
     }
 
     public void htmlCatalog(Catalog catalog) throws IOException {
-        writer.append("<div>");
         List<CatalogEntry> children = catalog.getRoot().getChildren();
 
         if (children != null) {
@@ -309,7 +311,6 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
                 htmlCatalogEntry(child, 0, "");
             }
         }
-        writer.append("</div>");
     }
 
 
@@ -331,13 +332,19 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         final String headClass = "level-" + level;
         final String count = catalogEntry.getTotalChildren() + "";
         final Boolean hasChildren = (!count.equals("")) && (!count.equals("0"));
+        String error = null;
 
         // entity
         ArrayList<DataExportSet> details = null;
         JSONObject fullEntity = new JSONObject();
 
         if (entityId != null) {
-            fullEntity = getEntity(entityId);
+            try {
+                fullEntity = getEntity(entityId);
+            } catch (Exception e) {
+                error = e.getMessage();
+            }
+
             details = (ArrayList) getDetails(fullEntity);
         }
 
@@ -379,6 +386,11 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         }
 
         // entity
+        if (error != null) {
+            error = (Objects.equals(error, "403")) ? ("User " + exportUser + " is not allowed to access this Dataset.") : ("Unknown Error: " + error); // TODO transl8
+            writer.append("<p class='error'>" + error + "</p>");
+        }
+
         if (details != null) {
             htmlDetailTable(details);
         }
