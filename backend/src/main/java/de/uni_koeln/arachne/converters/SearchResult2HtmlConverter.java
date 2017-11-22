@@ -37,7 +37,7 @@ public class SearchResult2HtmlConverter extends BaseHtmlConverter<SearchResult> 
 
         writer = new OutputStreamWriter(httpOutputMessage.getBody());
         htmlHeader();
-        htmlFrontmatter(title, facetList2String(facets));
+        htmlFrontmatter(title, null, facetList2String(facets));
         htmlResults(entities, facets);
         htmlFooter();
         writer.close();

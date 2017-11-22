@@ -214,7 +214,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         return Arrays.toString(facetNames.toArray());
     }
 
-    public void htmlFrontmatter(String title, String content) throws IOException {
+    public void htmlFrontmatter(String title, String subTitle, String content) throws IOException {
 
         // search url
         final String url = getCurrentUrl()
@@ -238,8 +238,18 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         // serach results export front matter
         writer.append("<div class='doc-title'>");
         writer.append(title);
-        writer.append("<span>" + content + "</span>");
+        if (subTitle != null) {
+            writer.append("<span>" + subTitle + "</span>");
+
+        }
         writer.append("</div>");
+
+        if (content != null) {
+            writer.append("<p>");
+            writer.append(content);
+            writer.append("</p><br><br>");
+        }
+
 
         writer.append("<p>");
         writer.append("Acceced at"); // TODO tranl8
@@ -296,8 +306,9 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         final String author = catalog.getAuthor();
         final CatalogEntry root =  catalog.getRoot();
         final String title = root.getLabel();
-        final String content = "<p>By: " + author + "</p>"; // @ todo transl8
-        htmlFrontmatter(title, content);
+        final String subtitle = "By " + author; // @ todo transl8
+        final String catalogDescription = catalog.getRoot().getText();
+        htmlFrontmatter(title, subtitle, catalogDescription);
     }
 
     /**
