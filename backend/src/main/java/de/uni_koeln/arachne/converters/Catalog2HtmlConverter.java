@@ -17,10 +17,10 @@ public class Catalog2HtmlConverter extends BaseHtmlConverter<Catalog> {
 
     @Override
     protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-        setExportMetaData(catalog.getAuthor() + ": " + catalog.getRoot().getLabel());
+        setExportMetaData(catalog);
         writer = new OutputStreamWriter(httpOutputMessage.getBody());
         htmlHeader();
-        htmlCatalogFrontMatter(catalog);
+        htmlFrontmatter();
         htmlCatalog(catalog);
         htmlFooter();
         writer.close();

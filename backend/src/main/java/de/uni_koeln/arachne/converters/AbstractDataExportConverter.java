@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
+import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.service.*;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
@@ -84,6 +85,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     public String exportTitle;
     public String exportTimestamp;
     public String exportUser;
+    public String exportAuthor;
 
 
 
@@ -370,6 +372,11 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         this.exportUser = userRightsService.getCurrentUser().getUsername();
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); // @ TODO tansl8
         this.exportTimestamp = dateFormat.format(new Date());
+    }
+
+    public void setExportMetaData(Catalog catalog) {
+        this.exportAuthor = catalog.getAuthor();
+        setExportMetaData(catalog.getRoot().getLabel());
     }
 
 

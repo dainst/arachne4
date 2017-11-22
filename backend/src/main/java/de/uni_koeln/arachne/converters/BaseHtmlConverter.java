@@ -214,7 +214,13 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         return Arrays.toString(facetNames.toArray());
     }
 
-    public void htmlFrontmatter(String title, String subTitle, String content) throws IOException {
+
+    /**
+     * creates the first title page of the export
+     * @param content
+     * @throws IOException
+     */
+    public void htmlFrontmatter(String content) throws IOException {
 
         // search url
         final String url = getCurrentUrl()
@@ -237,10 +243,12 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
         // serach results export front matter
         writer.append("<div class='doc-title'>");
-        writer.append(title);
-        if (subTitle != null) {
-            writer.append("<span>" + subTitle + "</span>");
-
+        writer.append(exportTitle);
+        if (exportAuthor != null) {
+            writer.append("<span>");
+            writer.append("by"); // TODO tranl8
+            writer.append(" " + exportAuthor);
+            writer.append("</span>");
         }
         writer.append("</div>");
 
@@ -249,7 +257,6 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             writer.append(content);
             writer.append("</p><br><br>");
         }
-
 
         writer.append("<p>");
         writer.append("Acceced at"); // TODO tranl8
@@ -264,10 +271,19 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         writer.append("</div>"); //page-body
         writer.append("</div>"); //page
     }
+    public void htmlFrontmatter() throws IOException {
+        htmlFrontmatter(null);
+    }
 
 
     public void htmlHeader() throws IOException {
-        writer.append(readHtmlFile("dataexport_header.html"));
+
+        // html header & stuff
+        HashMap<String, String> replacements = new HashMap<String, String>();
+        replacements.put("title", exportTitle);
+        replacements.put("author", exportAuthor != null ? exportAuthor : exportUser);
+        writer.append(readHtmlFile("dataexport_header.html", replacements));
+
         // printing layout footer
         writer.append("<div id='bottomLeftFooter'>");
         writer.append(exportTitle);
@@ -296,20 +312,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         writer.append("</div>");
     }
 
-    /**
-     * creates the front matter for the catalog export
-     *
-     * @param catalog
-     * @throws IOException
-     */
-    public void htmlCatalogFrontMatter(Catalog catalog) throws IOException {
-        final String author = catalog.getAuthor();
-        final CatalogEntry root =  catalog.getRoot();
-        final String title = root.getLabel();
-        final String subtitle = "By " + author; // @ todo transl8
-        final String catalogDescription = catalog.getRoot().getText();
-        htmlFrontmatter(title, subtitle, catalogDescription);
-    }
+
 
     /**
      * Creates a HTML representation of a {@link CatalogEntry} and all its children.

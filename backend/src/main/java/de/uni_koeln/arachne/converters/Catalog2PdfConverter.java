@@ -30,10 +30,10 @@ public class Catalog2PdfConverter extends BasePdfConverter<Catalog> {
         OutputStream outStream = httpOutputMessage.getBody();
 
         SearchResult2HtmlConverter htmlConverter = getHtmlConverter();
-        htmlConverter.setExportMetaData(catalog.getAuthor() + ": " + catalog.getRoot().getLabel());
+        htmlConverter.setExportMetaData(catalog);
         htmlConverter.writer = new StringWriter();
         htmlConverter.htmlHeader();
-        htmlConverter.htmlCatalogFrontMatter(catalog);
+        htmlConverter.htmlFrontmatter();
         htmlConverter.htmlCatalog(catalog);
         htmlConverter.htmlFooter();
         writePdf((StringWriter) htmlConverter.writer, outStream);

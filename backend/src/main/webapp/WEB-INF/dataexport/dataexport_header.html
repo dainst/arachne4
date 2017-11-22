@@ -3,7 +3,8 @@
 <!-- note that this has to be valid xml for pdf conversion! -->
 <head>
     <meta charset="UTF-8">
-    <title>Arachne - Data Export</title>
+    <title>%%%title%%%</title>
+    <meta name="author" content="%%%author%%%">
 
     <style>
 
@@ -306,6 +307,15 @@
 
         }
 
+        @page:first {
+            @bottom-right {
+                display: none
+            }
+            @bottom-left {
+                display: none
+            }
+        }
+
 
 
         @media print {
@@ -325,15 +335,14 @@
             .logo-bottomline {
                 margin-top: 3px;
             }
+
             .frontmatter {
                 clear:both;
-                page-break-after: always;
+                page-break-after: always !important;
             }
 
-
-
             .imprint {
-                page-break-before: always;
+                page-break-before: always!important ;
             }
 
             .container {

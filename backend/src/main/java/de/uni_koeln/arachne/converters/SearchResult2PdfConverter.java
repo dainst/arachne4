@@ -29,7 +29,7 @@ public class SearchResult2PdfConverter extends BasePdfConverter<SearchResult> {
             SearchResult2HtmlConverter htmlConverter = getHtmlConverter();
             htmlConverter.writer = new StringWriter();
             htmlConverter.htmlHeader();
-            htmlConverter.htmlFrontmatter("Search Result", null, htmlConverter.facetList2String(facets));
+            htmlConverter.htmlFrontmatter("Search Result"); // @  TODO transl8
             htmlConverter.htmlResults(entities, facets);
             htmlConverter.htmlFooter();
             writePdf((StringWriter) htmlConverter.writer, outStream);
