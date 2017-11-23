@@ -300,7 +300,7 @@ public class CatalogEntryDao extends SQLDao {
 			if (oldEntry != null) {
 				newCatalogEntry.setPath(oldEntry.getPath());
 				newCatalogEntry.setTotalChildren(oldEntry.getTotalChildren());
-				
+				newCatalogEntry.setAllSuccessors(oldEntry.getAllSuccessors());
 				update(con -> {
 					final String sql = "UPDATE catalog_entry SET "
 							+ "arachne_entity_id = ?, label = ?, text = ? "
@@ -388,6 +388,7 @@ public class CatalogEntryDao extends SQLDao {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
         final List<CatalogEntry> children = getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryNoChilds);
         setTotalChildren(catalogEntry, children);
+        setAllSuccessors(catalogEntry);
 		return catalogEntry;
 	}
 	
@@ -402,6 +403,7 @@ public class CatalogEntryDao extends SQLDao {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
         final List<CatalogEntry> children = getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryFull);
         setTotalChildren(catalogEntry, children);
+        setAllSuccessors(catalogEntry);
 		return catalogEntry;
 	}
 	
@@ -416,6 +418,7 @@ public class CatalogEntryDao extends SQLDao {
 	public CatalogEntry mapCatalogEntryNoChilds(ResultSet rs, int rowNum) throws SQLException {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
 		catalogEntry.setTotalChildren(getChildrenSizeByParentId(catalogEntry.getId()));
+		catalogEntry.setAllSuccessors(setAllSuccessors(catalogEntry));
 		return catalogEntry;
 	}
 
@@ -437,5 +440,19 @@ public class CatalogEntryDao extends SQLDao {
         catalogEntry.setChildren(children);
         final int childCount = (children != null) ? children.size() : 0;
         catalogEntry.setTotalChildren(childCount);
+    }
+
+    private int setAllSuccessors(CatalogEntry catalogEntry) {
+        catalogEntry.setChildren(getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryDirectChildsOnly));
+        int successorCount = 0;
+        if (catalogEntry.hasChildren())
+            for (CatalogEntry i : catalogEntry.getChildren()) {
+                if (i.hasChildren())
+                    successorCount += setAllSuccessors(i);
+                else
+                    successorCount += 1;
+            }
+        catalogEntry.setAllSuccessors(successorCount);
+        return successorCount;
     }
 }
