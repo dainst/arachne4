@@ -279,7 +279,8 @@
                 {
                     "id": "fotothekmuenchen",
                     "title": {
-                        "de": "Fotothek München"
+                        "de": "Fotothek München",
+                        "en": "Fotothek Munich"
                     },
                     "hidden": false
                 },
