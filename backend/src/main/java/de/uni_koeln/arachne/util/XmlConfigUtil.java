@@ -198,7 +198,7 @@ public class XmlConfigUtil implements ServletContextAware {
                             return d1.compareTo(d2);
                         } catch (ParseException e) {
 //                            throw new IllegalArgumentException(e);
-                            LOGGER.warn("Places section could not be sorted.");
+                            LOGGER.debug("Places section could not be sorted.");
                             return 0;
                         }
                     }
