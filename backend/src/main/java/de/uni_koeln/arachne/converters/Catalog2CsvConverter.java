@@ -1,11 +1,17 @@
 package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.supercsv.cellprocessor.ift.CellProcessor;
+import org.supercsv.io.CsvListWriter;
+import org.supercsv.prefs.CsvPreference;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Catalog2CsvConverter extends BaseCsvConverter<Catalog> {
@@ -17,10 +23,20 @@ public class Catalog2CsvConverter extends BaseCsvConverter<Catalog> {
 
     @Override
     protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-        // @ TODO
+
+        httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/csv");
+        //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.csv\"");
+
+        final List<String> headers = getCsvHeaders(catalog);
+
         writer = new OutputStreamWriter(httpOutputMessage.getBody());
-        writer.write("not done yet");
-        writer.close();
+        csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
+
+        setProcessors(headers);
+        csvHeaders(headers);
+        csvBody(catalog);
+
+        csvWriter.close();
     }
 
 

@@ -3,11 +3,7 @@ package de.uni_koeln.arachne.converters;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
-import de.uni_koeln.arachne.response.Dataset;
-import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
-import de.uni_koeln.arachne.util.EntityId;
-import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 import org.apache.xerces.impl.dv.util.Base64;
 import org.json.JSONArray;
@@ -17,10 +13,7 @@ import org.springframework.http.*;
 import de.uni_koeln.arachne.response.search.SearchHit;
 import de.uni_koeln.arachne.service.Transl8Service;
 
-import javax.xml.bind.DatatypeConverter;
 import java.io.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -98,7 +91,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             writer.append("<h2 class='title'>" + title + "</h2>");
             writer.append("<h3 class='subtitle'>" + subtitle + "</h3>");
 
-            htmlDetailTable((ArrayList) getDetails(hit.getEntityId(), facets));
+            htmlDetailTable(getDetails(hit.getEntityId(), facets));
 
             writer.append("</div>");
 
@@ -108,12 +101,13 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
     }
 
 
-    public void htmlDetailTable(ArrayList<DataExportSet> details) throws IOException {
+    public void htmlDetailTable(HashMap<String, DataExportSet> details) throws IOException {
         writer.append("<table class='dataset'>");
-        for (DataExportSet detail : details) {
+        for (String key : details.keySet()) {
+            final DataExportSet detail = details.get(key);
             if (detail.isHeadline) {
                 writer.append("<tr><td colspan='2' class='section'>" + detail.value + "</td></tr>");
-            } else if (detail != null) {
+            } else if (detail.value != null) {
                 writer.append("<tr><td>" + detail.name + "</td><td>" + detail.value + "</td></tr>");
             } else if (detail.name.equals("") && detail.value.equals("")) {
                 // do nothing
@@ -125,11 +119,11 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
     }
 
 
-    public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector) {
+    public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, HashMap<String, DataExportSet> collector) {
         final String fname = (rel.equals("")) ? "Place " + number.toString() : rel;
         number += 1;
         final String index = "place_" + number.toString();
-        String value = new String();
+        String value;
 
         if (name.equals("") && !lat.equals("") && !lon.equals("")) {
             name = "[" + lat + "," + lon + "]";
@@ -143,10 +137,10 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             value = name;
         }
 
-        collector.add(new DataExportSet(index, fname, value));
+        collector.put(getColumnName(index, collector), new DataExportSet(fname, value));
     }
 
-    void handleFacetValues(String facetName, String facetFullName, JSONArray facetValues, List<DataExportSet> collector) {
+    void handleFacetValues(String facetName, String facetFullName, JSONArray facetValues, HashMap<String, DataExportSet> collector) {
 
         ArrayList<String> values = new ArrayList<String>();
         Integer longest = 0;
@@ -160,7 +154,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             ? "<ul><li>" + String.join("</li><li>", values) + "</li></ul>"
             : String.join(", ", values);
 
-        collector.add(new DataExportSet(facetName, facetFullName, facetString));
+        collector.put(getColumnName(facetName, collector), new DataExportSet(facetFullName, facetString));
     }
 
 
@@ -335,7 +329,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         String error = null;
 
         // entity
-        ArrayList<DataExportSet> details = null;
+        HashMap<String, DataExportSet> details = null;
         JSONObject fullEntity = new JSONObject();
 
         if (entityId != null) {
@@ -345,7 +339,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
                 error = e.getMessage();
             }
 
-            details = (ArrayList) getDetails(fullEntity);
+            details = getDetails(fullEntity);
         }
 
 

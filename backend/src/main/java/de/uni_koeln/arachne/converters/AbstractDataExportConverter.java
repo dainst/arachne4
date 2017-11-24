@@ -88,7 +88,6 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     public String exportAuthor;
 
 
-
     public String getCurrentUrl() {
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = sra.getRequest();
@@ -126,28 +125,22 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         return fullEntity;
     }
 
-    private void getSectionValueFromJson(List<DataExportSet> row, JSONObject box) {
+    /**
+     * serialisation of section object
+     * @param row
+     * @param box
+     */
+    private void getSectionValueFromJson(HashMap<String, DataExportSet> row, JSONObject box) {
        getSectionValueFromJson(row, box, "");
     }
 
-    private void getSectionValueFromJson(List<DataExportSet> row, JSONObject box, String topLabel) {
-
-        /**
-         *
-         *
-         *
-         * stand : wir können die sectiosn auslesen
-         *
-         * next: Überschriften Zeilen vernünftig markeiren (statt mit ##) und entsprechend auszeichnen
-         *
-         * Tickets:
-         * - sections auslesen
-         * - ui: partiell download / balken
-         * - eingeloggt testen
-         * - timeout
-         *
-         *
-         */
+    /**
+     * serialisation of section object
+     * @param row
+     * @param box
+     * @param topLabel
+     */
+    private void getSectionValueFromJson(HashMap<String, DataExportSet> row, JSONObject box, String topLabel) {
 
         String label = box.has("label") ? box.get("label").toString() : null;
         Object boxValue = box.has("value") ? box.get("value") : null;
@@ -155,7 +148,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         label = (Objects.equals(label, "null")) ? null : label;
 
         if ((label != null) && (topLabel != null)) {
-            row.add(new DataExportSet("","", topLabel, true));
+            row.put(getColumnName("headline", row), new DataExportSet("", topLabel, true));
         }
 
         if ((label == null) && (topLabel != null)) {
@@ -165,7 +158,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         if (boxValue instanceof JSONArray) {
             handleFacetValues(label, label, box.getJSONArray("value"), row);
         } else if (boxValue != null) {
-            row.add(new DataExportSet(label, label, boxValue.toString()));
+            row.put(getColumnName(label, row), new DataExportSet(label, boxValue.toString()));
         }
 
         Object boxContent = box.has("content") ? box.get("content") : null;
@@ -181,13 +174,13 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
 
     /**
-     *
+     * serialized full Entity to
      * @param fullEntity
      * @return
      */
-    public List<DataExportSet> getDetails(JSONObject fullEntity) {
+    public HashMap<String, DataExportSet> getDetails(JSONObject fullEntity) {
 
-        final List<DataExportSet> row = new ArrayList<DataExportSet>() {};
+        final HashMap<String, DataExportSet> row = new HashMap<String, DataExportSet>() {};
 
         if (fullEntity == null) {
             return row;
@@ -195,7 +188,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
         // subtitle
         if (fullEntity.has("subtitle")) {
-            row.add(new DataExportSet("xxx", "xxx", fullEntity.getString("subtitle"), true));
+            row.put(getColumnName("subtitle", row), new DataExportSet("xxx", fullEntity.getString("subtitle"), true));
         }
 
         // sections
@@ -213,6 +206,13 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         return row;
     }
 
+    public String getColumnName(String col, final HashMap<String, DataExportSet> row) {
+        while (row.containsKey(col)) {
+            col = col + "x";
+        }
+        return col;
+    }
+
 
     /**
      *
@@ -220,9 +220,9 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * @param facets
      * @return List<DataExportSet>
      */
-    public List<DataExportSet> getDetails(long entityId, List<SearchResultFacet> facets) {
+    public HashMap<String, DataExportSet> getDetails(long entityId, List<SearchResultFacet> facets) {
 
-        final List<DataExportSet> row = new ArrayList<DataExportSet>() {};
+        final HashMap<String, DataExportSet> row = new HashMap<String, DataExportSet>() {};
         final JSONObject fullEntity;
         try {
             fullEntity = getEntity(entityId);
@@ -265,27 +265,27 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
                 }
 
             } else { // fallback
-                row.add(new DataExportSet(facetName, facetFullName, valueObj.toString()));
+                row.put(getColumnName(facetName, row), new DataExportSet( facetFullName, valueObj.toString()));
             }
 
 
         }
 
         // sort by index
-        if (sortFacets) {
+        /*if (sortFacets) {
             Collections.sort(row, new Comparator<DataExportSet>() {
                 public int compare(final DataExportSet object1, final DataExportSet object2) {
                     return object1.index.compareTo(object2.index);
                 }
             });
-        }
+        }*/
 
         return row;
     }
 
-    void handleFacetValues(String facetName, String facetFullName, JSONArray facetValues, List<DataExportSet> collector) {
+    void handleFacetValues(String facetName, String facetFullName, JSONArray facetValues, HashMap<String, DataExportSet> collector) {
         for (int i = 0; i < facetValues.length(); i++) {
-            collector.add(new DataExportSet(facetName, facetFullName, facetValues.get(i).toString()));
+            collector.put(getColumnName(facetName, collector), new DataExportSet(facetFullName, facetValues.get(i).toString()));
         }
     };
 
@@ -294,7 +294,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * @param fullEntity
      * @param collector
      */
-    public void serializePlaces(JSONObject fullEntity, List<DataExportSet> collector) {
+    public void serializePlaces(JSONObject fullEntity, HashMap<String, DataExportSet> collector) {
         //row.putAll(unpackFacetGeo((JSONArray) valueObj));
         if (fullEntity.has("places")) {
             handlePlaces((JSONArray) fullEntity.get("places"), collector);
@@ -310,7 +310,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * @param places
      * @param collector
      */
-    private void handlePlaces(JSONArray places, List<DataExportSet> collector) {
+    private void handlePlaces(JSONArray places, HashMap<String, DataExportSet> collector) {
 
         for (int i = 0; i < (handleOnlyFirstPlace ? 1 : places.length()); i++) {
 
@@ -373,7 +373,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * @param collector
      */
 
-    abstract public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector);
+    abstract public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, HashMap<String, DataExportSet> collector);
 
 
     public void setExportMetaData(String title) {

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
@@ -30,12 +31,17 @@ public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
         final List<SearchResultFacet> facets = searchResult.getFacets();
         final List<SearchHit> entities = searchResult.getEntities();
 
-        final List<String> headers = createHeaders(facets);
+        final List<String> headers = getCsvHeaders(facets);
 
-        final Writer writer = new OutputStreamWriter(httpOutputMessage.getBody());
-        final CellProcessor[] processors = getProcessors(headers);
-        final CsvListWriter csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
-        csvWriter.writeHeader(headers.toArray(new String[headers.size()]));
+        writer = new OutputStreamWriter(httpOutputMessage.getBody());
+        csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
+        setProcessors(headers);
+
+        csvHeaders(headers);
+
+
+
+        //*/
 
         handleOnlyFirstPlace = true;
         includeEmptyFacets = true;
@@ -60,15 +66,17 @@ public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
             row.add(subtitle);
             row.add(String.valueOf(hit.getThumbnailId()));
 
-            final ArrayList<DataExportSet> details = (ArrayList) getDetails(hit.getEntityId(), facets);
-            for (DataExportSet detail : details) {
+            final HashMap<String, DataExportSet> details = getDetails(hit.getEntityId(), facets);
+            for (final String key : details.keySet()) {
+                DataExportSet detail = details.get(key);
                 row.add(detail.value);
             }
-            csvWriter.write(row, processors);
-
+            csvWriter.write(row, csvProcessors);
         }
 
+        writer.close();
         csvWriter.close();
+
     }
 }
 

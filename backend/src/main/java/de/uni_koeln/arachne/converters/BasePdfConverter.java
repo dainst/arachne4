@@ -3,7 +3,6 @@ package de.uni_koeln.arachne.converters;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 
 
-import com.sun.org.apache.xml.internal.utils.DOMBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.W3CDom;
 import org.springframework.http.MediaType;
@@ -12,6 +11,7 @@ import org.w3c.dom.Document;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -58,7 +58,7 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
 
 
     @Override
-    public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, List<DataExportSet> collector) {
+    public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, HashMap<String, DataExportSet> collector) {
 
     }
 
