@@ -317,7 +317,7 @@ public class ResponseFactory {
     			    }
     			});
 			} catch (NullPointerException e) {
-			    LOGGER.warn("Places object could not be sorted.");
+			    LOGGER.debug("Places object could not be sorted.");
 			}
 			for (Place place: places) {
 				response.addPlace(place);
