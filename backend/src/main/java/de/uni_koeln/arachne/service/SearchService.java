@@ -34,7 +34,9 @@ import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.bucket.InternalSingleBucketAggregation;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
+import org.elasticsearch.search.aggregations.bucket.geogrid.InternalGeoHashGrid;
 import org.elasticsearch.search.highlight.HighlightBuilder.Field;
 import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
@@ -59,6 +61,7 @@ import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.search.Aggregation;
 import de.uni_koeln.arachne.util.search.GeoHashGridAggregation;
+import de.uni_koeln.arachne.util.search.NestedGeoHashGridAggregation;
 import de.uni_koeln.arachne.util.search.SearchFieldList;
 import de.uni_koeln.arachne.util.search.SearchParameters;
 import de.uni_koeln.arachne.util.search.TermsAggregation;
@@ -348,20 +351,23 @@ public class SearchService {
 
 		for (final String aggregationName : aggregations.keySet()) {
 			final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
-			MultiBucketsAggregation aggregator = (MultiBucketsAggregation)aggregations.get(aggregationName);
-			// TODO find a better way to convert facet values
 
-			if (aggregationName.equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
-				for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
-					final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
-					final LatLong coord = GeoHash.decodeHash(bucket.getKeyAsString());
-					facetMap.put("[" + coord.getLat() + ',' + coord.getLon() + ']', bucket.getDocCount());
-				}
+			if (aggregations.get(aggregationName) instanceof InternalSingleBucketAggregation) {
+			    InternalSingleBucketAggregation nestedAggregator = (InternalSingleBucketAggregation) aggregations.get(aggregationName);
+			    InternalGeoHashGrid aggregator = (InternalGeoHashGrid) nestedAggregator.getAggregations().asList().get(0);
+
+	             for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
+                    final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
+                    final LatLong coord = GeoHash.decodeHash(bucket.getKeyAsString());
+                    facetMap.put("[" + coord.getLat() + ',' + coord.getLon() + ']', bucket.getDocCount());
+                }
 			} else {
-				for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
-					final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
-					facetMap.put(bucket.getKeyAsString(), bucket.getDocCount());
-				}
+			    MultiBucketsAggregation aggregator = (MultiBucketsAggregation)aggregations.get(aggregationName);
+
+			    for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
+                    final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
+                    facetMap.put(bucket.getKeyAsString(), bucket.getDocCount());
+                }
 			}
 			if (!facetMap.isEmpty() && !filters.containsKey(aggregationName)) {
 				facets.add(getSearchResultFacet(aggregationName, facetMap, category));
@@ -543,8 +549,8 @@ public class SearchService {
 
 			// geo grid
 			if (geoHashPrecision > 0) {
-				result.add(new GeoHashGridAggregation(GeoHashGridAggregation.GEO_HASH_GRID_NAME
-						, GeoHashGridAggregation.GEO_HASH_GRID_FIELD, geoHashPrecision, 0));
+				result.add(new NestedGeoHashGridAggregation(GeoHashGridAggregation.GEO_HASH_GRID_NAME
+                        , GeoHashGridAggregation.GEO_HASH_GRID_FIELD, geoHashPrecision, 0));
 			}
 		} else {
 			result.add(new TermsAggregation(facet, limit));
@@ -642,9 +648,12 @@ public class SearchService {
 
 		final QueryBuilder filteredQuery;
 		if (bbCoords != null && bbCoords.length == 4) {
-			GeoBoundingBoxQueryBuilder bBoxFilter = QueryBuilders.geoBoundingBoxQuery("places.location")
+		    GeoBoundingBoxQueryBuilder bBoxFilter = QueryBuilders.geoBoundingBoxQuery("places.location")
 					.topLeft(bbCoords[0], bbCoords[1]).bottomRight(bbCoords[2], bbCoords[3]);
-			BoolQueryBuilder andFilter = QueryBuilders.boolQuery().must(facetFilter).must(bBoxFilter);
+
+		    QueryBuilder nestedbBoxFilter = QueryBuilders.nestedQuery("places", bBoxFilter);
+		    BoolQueryBuilder andFilter = QueryBuilders.boolQuery().must(facetFilter).must(nestedbBoxFilter);
+
 			filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(andFilter);
 		} else {
 			filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(facetFilter);
