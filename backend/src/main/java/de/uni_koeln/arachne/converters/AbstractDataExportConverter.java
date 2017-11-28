@@ -37,18 +37,13 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         super(mediaTypes);
     }
 
+    public TreeSet<String> csvColumns = new TreeSet<String>(){};
 
 
     @Override
     protected T readInternal(Class<? extends T> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
         throw new UnsupportedOperationException("Reading other file formats is not implemented yet and will most likely never be.");
     }
-/*
-    @Override
-    protected void writeInternal(T aClass, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
-        throw new UnsupportedOperationException("This Endpoint does not support different output formats");
-    }
-*/
 
     public Writer writer;
 
@@ -148,7 +143,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         label = (Objects.equals(label, "null")) ? null : label;
 
         if ((label != null) && (topLabel != null)) {
-            row.put(getColumnName("headline", row), new DataExportSet("", topLabel, true));
+            row.put(getColumnName("headline", row, false), new DataExportSet("", topLabel, true));
         }
 
         if ((label == null) && (topLabel != null)) {
@@ -207,9 +202,23 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     }
 
     public String getColumnName(String col, final HashMap<String, DataExportSet> row) {
+        return getColumnName(col, row, true);
+    }
+
+    public String getColumnName(String col, final HashMap<String, DataExportSet> row, Boolean register) {
         while (row.containsKey(col)) {
             col = col + "x";
         }
+
+        if (col == null) {
+            col = "";
+        }
+
+        if (register) {
+            csvColumns.add(col);
+        }
+
+
         return col;
     }
 

@@ -24,6 +24,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeSet;
 
 
 /**
@@ -39,8 +40,29 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
     public CsvListWriter csvWriter;
     public CellProcessor[] csvProcessors;
 
-    public void csvHeaders(List<String> headers) throws IOException {
+
+    public void csvHeaders(TreeSet<String> headers) throws IOException {
         csvWriter.writeHeader(headers.toArray(new String[headers.size()]));
+    }
+
+    public void csvBody(TreeSet<String> headers, ArrayList<HashMap<String, DataExportSet>> table) throws IOException {
+
+        DataExportSet cell;
+        String value = "";
+
+        for (final HashMap<String, DataExportSet> row : table) {
+
+            final ArrayList<String> fullRow = new ArrayList<String>(){};
+
+            for (String header : headers) {
+                cell = row.get(header);
+                value = (cell == null) ? "" : cell.value;
+                fullRow.add(value);
+            }
+
+            csvWriter.write(fullRow);
+        }
+
     }
 
 
@@ -49,9 +71,9 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
      * @param facets
      * @return
      */
-    public List<String> getCsvHeaders(List<SearchResultFacet> facets) {
+    public TreeSet<String> getCsvHeaders(List<SearchResultFacet> facets) {
 
-        final List<String> headers = new ArrayList<String>();
+        final TreeSet<String> headers = new TreeSet<String>();
         headers.add("entityId");
         headers.add("type");
         headers.add("title");
@@ -74,8 +96,8 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
         return headers;
     }
 
-    public List<String> getCsvHeaders(Catalog catalog) {
-        final List<String> headers = new ArrayList<String>();
+    public TreeSet<String> getCsvHeaders(Catalog catalog) {
+        final TreeSet<String> headers = new TreeSet<String>();
         headers.add("order");
         headers.add("entityId");
         headers.add("title");
@@ -84,20 +106,52 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
     }
 
 
+    private List<String> getCsvHeaders(ArrayList<HashMap<String, DataExportSet>> csvTable) {
+        final ArrayList<String> headers = new ArrayList<String>();
+
+
+
+        return headers;
+    }
+
+
+    /**
+     *
+     * @param catalog
+     * @return
+     * @throws IOException
+     */
+    public ArrayList<HashMap<String, DataExportSet>> getCsvTable(Catalog catalog) throws IOException {
+
+        final ArrayList<HashMap<String, DataExportSet>> csvTable = new ArrayList<HashMap<String, DataExportSet>>();
+
+        List<CatalogEntry> children = catalog.getRoot().getChildren();
+
+        if (children != null) {
+            Integer i = 1;
+            for (CatalogEntry child : children) {
+                csvCatalogEntry(child, 0, i++ + "", csvTable);
+            }
+        }
+
+        return csvTable;
+
+    }
+
 
 
     /**
      *
      * @param headers
      */
-    public void setProcessors(List<String> headers) {
+    public void setProcessors(TreeSet<String> headers) {
         csvProcessors = new StringCellProcessor[headers.size()];
         for(int i=0; i < headers.size(); i++){
             csvProcessors[i] = new Optional();
         }
     }
 
-
+/*
     public List<String> mapDetails(ArrayList<DataExportSet> details) {
         List<String> result = new ArrayList<String>();
 
@@ -111,11 +165,12 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
 
     }
 
+
     public List<String> facetList;
+*/
 
-
-    public void csvCatalogEntry(final CatalogEntry catalogEntry, final int level, final String order) throws IOException {
-        final List<Object> row = new ArrayList<Object>();
+    public void csvCatalogEntry(final CatalogEntry catalogEntry, final int level, final String order, final List<HashMap<String, DataExportSet>> table) throws IOException {
+        final HashMap<String, DataExportSet> row = new HashMap<String, DataExportSet>();
 
         final Long entityId = catalogEntry.getArachneEntityId();
 
@@ -126,7 +181,6 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
 
         String error = "";
 
-        HashMap<String, DataExportSet> details;
         JSONObject fullEntity = new JSONObject();
 
         try {
@@ -135,17 +189,18 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
             error = e.getMessage();
         }
 
-        details = getDetails(fullEntity);
+
 
         // serialize
-        row.add(order);
-        row.add(entityId); // id
-        row.add(catalogEntry.getLabel()); // title
+        row.put("order",    new DataExportSet("order", order));
+        row.put("id",       new DataExportSet("id", entityId.toString())); // id
+        row.put("title",    new DataExportSet("title", catalogEntry.getLabel())); // title
+        row.putAll(getDetails(fullEntity));
 
         //row.addAll(details);
         /**
          * stand: wir müssen vorher die Zahl der Spalten kennen
-         * # wir müssen es so ändern dass in de rrow die indices der spalten name ist!
+         * # wir müssen es so ändern dass in der row die indices der spalten name ist!
          * - wir müssen erst alle Zeilen sammeln,
          * - dann gucken welche spalten es gibt und erst dann pronto
          *
@@ -157,11 +212,11 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
         if (children != null) {
             Integer i = 1;
             for (CatalogEntry child : children) {
-                csvCatalogEntry(child, level + 1, order + "." + i++);
+                csvCatalogEntry(child, level + 1, order + "." + i++, table);
             }
         }
 
-        csvWriter.write(row, csvProcessors);
+        table.add(row);
     }
 
 
@@ -179,16 +234,6 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
 
     }
 
-    public void csvBody(Catalog catalog) throws IOException {
-        List<CatalogEntry> children = catalog.getRoot().getChildren();
-
-        if (children != null) {
-            Integer i = 1;
-            for (CatalogEntry child : children) {
-                csvCatalogEntry(child, 0, i++ + "");
-            }
-        }
-    }
 
 
     @Override

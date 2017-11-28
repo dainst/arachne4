@@ -10,8 +10,7 @@ import org.supercsv.prefs.CsvPreference;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class Catalog2CsvConverter extends BaseCsvConverter<Catalog> {
@@ -27,17 +26,22 @@ public class Catalog2CsvConverter extends BaseCsvConverter<Catalog> {
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/csv");
         //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.csv\"");
 
-        final List<String> headers = getCsvHeaders(catalog);
-
         writer = new OutputStreamWriter(httpOutputMessage.getBody());
         csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
 
-        setProcessors(headers);
-        csvHeaders(headers);
-        csvBody(catalog);
+        csvColumns = new TreeSet<String>(){};
+        final ArrayList<HashMap<String, DataExportSet>> csvTable = getCsvTable(catalog);
+
+        setProcessors(csvColumns);
+        csvHeaders(csvColumns);
+        csvBody(csvColumns, csvTable);
+
+
 
         csvWriter.close();
     }
+
+
 
 
 }

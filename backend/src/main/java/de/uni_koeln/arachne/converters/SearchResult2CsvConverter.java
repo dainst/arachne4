@@ -16,6 +16,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeSet;
 
 public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
 
@@ -31,7 +32,7 @@ public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
         final List<SearchResultFacet> facets = searchResult.getFacets();
         final List<SearchHit> entities = searchResult.getEntities();
 
-        final List<String> headers = getCsvHeaders(facets);
+        final TreeSet<String> headers = getCsvHeaders(facets);
 
         writer = new OutputStreamWriter(httpOutputMessage.getBody());
         csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
