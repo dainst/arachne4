@@ -3,6 +3,8 @@ package de.uni_koeln.arachne.response;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -263,6 +265,8 @@ public class ResponseFactory {
 		// TODO make the place handling more consistent - needs changes to the db
 		Context placeContext = dataset.getContext("ort");
 
+		ArrayList<Place> places = new ArrayList<Place>();
+
 		if (placeContext != null) {
 			for (AbstractLink link: placeContext.getAllContexts()) {
 				final String city = link.getFieldFromFields("ort.Stadt");
@@ -302,8 +306,21 @@ public class ResponseFactory {
                     if(!StrUtils.isEmptyOrNull(storageTo)) {
 						place.setStorageTo(storageTo);
 					}
-					response.addPlace(place);
+                    places.add(place);
 				}
+			}
+			//Sort places by start date
+			try {
+    			Collections.sort(places, new Comparator<Place>() {
+    			    public int compare(Place p1, Place p2) {
+    			        return p1.getStorageFrom().compareTo(p2.getStorageFrom());
+    			    }
+    			});
+			} catch (NullPointerException e) {
+			    LOGGER.warn("Places object could not be sorted.");
+			}
+			for (Place place: places) {
+				response.addPlace(place);
 			}
 		}
 

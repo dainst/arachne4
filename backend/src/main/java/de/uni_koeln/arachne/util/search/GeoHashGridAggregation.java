@@ -22,7 +22,7 @@ public class GeoHashGridAggregation extends Aggregation {
 	/**
 	 * The geohash precision of a aggregation of type 'GEOHASH'.
 	 */
-	private int precision = 5;
+	protected int precision = 5;
 		
 	/**
 	 * Constructor to set all fields except 'precision'.
@@ -46,7 +46,7 @@ public class GeoHashGridAggregation extends Aggregation {
 		this.precision = precision;
 	}
 		
-	public AbstractAggregationBuilder build() { 
+	public AbstractAggregationBuilder build() {
 		if (StrUtils.isEmptyOrNull(name) || StrUtils.isEmptyOrNull(field)) {
 			return null;
 		}
