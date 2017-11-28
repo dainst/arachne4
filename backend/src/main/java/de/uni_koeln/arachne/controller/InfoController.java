@@ -19,6 +19,7 @@ import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON
 public class InfoController {
 
     private String buildNumber = null;
+    private String buildDate = null;
 
     /**
      * Hnadles info requests for the build number.
@@ -29,10 +30,15 @@ public class InfoController {
             produces = {APPLICATION_JSON_UTF8_VALUE})
     public @ResponseBody ResponseEntity<String> handleInfoRequest() {
 
-        String responseBody = "{}";
-        if (buildNumber!=null) {
-        	responseBody="{ \"buildNumber\" : \""+buildNumber+"\"}";
+        String responseBody = "{";
+        if (buildNumber != null) {
+            responseBody += "\"buildNumber\" : \"" + buildNumber + "\"";
+            if (buildDate != null) {
+                responseBody += ", \"buildDate\" : \"" + buildDate + "\"";
+            }
         }
+
+        responseBody += "}";
 
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
@@ -45,6 +51,17 @@ public class InfoController {
     public void setBuildNumber(String buildNumber) {
         if (!buildNumber.equals("")) {
             this.buildNumber = buildNumber;
+        }
+    }
+
+    /**
+     * Setter for the build date.
+     * @param buildDate The build date.
+     */
+    @Value("${buildDate:}")
+    public void setBuildDate(String buildDate) {
+        if (!buildDate.equals("")) {
+            this.buildDate = buildDate;
         }
     }
 }
