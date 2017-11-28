@@ -31,7 +31,7 @@ public class SearchResult2HtmlConverter extends BaseHtmlConverter<SearchResult> 
         final List<SearchHit> entities = searchResult.getEntities();
         final List<SearchResultFacet> facets = searchResult.getFacets();
 
-        setExportMetaData("Search Result"); // todo transl8
+        initializeExport("Search Result"); // todo transl8
 
         writer = new OutputStreamWriter(httpOutputMessage.getBody());
         htmlHeader();

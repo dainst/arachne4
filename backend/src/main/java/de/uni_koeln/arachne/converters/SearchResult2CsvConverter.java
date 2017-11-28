@@ -30,10 +30,13 @@ public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
         final List<SearchResultFacet> facets = searchResult.getFacets();
         final List<SearchHit> entities = searchResult.getEntities();
 
-        exportTable.headers = getCsvHeaders(facets);
+
 
         writer = new OutputStreamWriter(httpOutputMessage.getBody());
         csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
+
+        initializeExport("");
+        exportTable.headers = getCsvHeaders(facets);
 
         setProcessors();
 

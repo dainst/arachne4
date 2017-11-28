@@ -5,7 +5,14 @@ import java.util.TreeSet;
 
 public class DataExportTable extends ArrayList<DataExportRow>  {
 
+    // table headers
     public TreeSet<String> headers;
+
+    //meta
+    public String title;
+    public String timestamp;
+    public String user;
+    public String author;
 
 
     public DataExportTable() {
@@ -18,6 +25,8 @@ public class DataExportTable extends ArrayList<DataExportRow>  {
         DataExportRow newRow = new DataExportRow(this);
         return newRow;
     }
+
+
 
 
 }

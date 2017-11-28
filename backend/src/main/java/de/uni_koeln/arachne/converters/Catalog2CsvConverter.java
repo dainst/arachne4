@@ -28,7 +28,7 @@ public class Catalog2CsvConverter extends BaseCsvConverter<Catalog> {
         writer = new OutputStreamWriter(httpOutputMessage.getBody());
         csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
 
-        csvColumns = new TreeSet<String>(){};
+        initializeExport(catalog);
 
         serialize(catalog);
 

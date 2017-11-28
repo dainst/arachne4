@@ -237,11 +237,11 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
         // serach results export front matter
         writer.append("<div class='doc-title'>");
-        writer.append(exportTitle);
-        if (exportAuthor != null) {
+        writer.append(exportTable.title);
+        if (exportTable.author != null) {
             writer.append("<span>");
             writer.append("by"); // TODO tranl8
-            writer.append(" " + exportAuthor);
+            writer.append(" " + exportTable.author);
             writer.append("</span>");
         }
         writer.append("</div>");
@@ -254,9 +254,9 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
         writer.append("<p>");
         writer.append("Acceced at"); // TODO tranl8
-        writer.append(" " + exportTimestamp + " ");
+        writer.append(" " + exportTable.timestamp + " ");
         writer.append("by"); // TODO tranl8
-        writer.append(" " + exportUser);
+        writer.append(" " + exportTable.user);
         writer.append("</p>");
         writer.append("<p><a href='" + url + "'>" + url + "</a></p>");
 
@@ -275,18 +275,18 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
         // html header & stuff
         HashMap<String, String> replacements = new HashMap<String, String>();
-        replacements.put("title", exportTitle);
-        replacements.put("author", exportAuthor != null ? exportAuthor : exportUser);
+        replacements.put("title", exportTable.title);
+        replacements.put("author", exportTable.author != null ? exportTable.author : exportTable.user);
         writer.append(readHtmlFile("dataexport_header.html", replacements));
 
         // printing layout footer
         writer.append("<div id='bottomLeftFooter'>");
-        writer.append(exportTitle);
+        writer.append(exportTable.title);
         writer.append(" | ");
         writer.append("Acceced at"); // TODO tranl8
-        writer.append(" " + exportTimestamp + " ");
+        writer.append(" " + exportTable.timestamp + " ");
         writer.append("by"); // TODO tranl8
-        writer.append(" " + exportUser);
+        writer.append(" " + exportTable.user);
         writer.append("</div>");
     }
 
@@ -378,7 +378,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
         // entity
         if (error != null) {
-            error = (Objects.equals(error, "403")) ? ("User " + exportUser + " is not allowed to access this Dataset.") : ("Unknown Error: " + error); // TODO transl8
+            error = (Objects.equals(error, "403")) ? ("User " + exportTable.user + " is not allowed to access this Dataset.") : ("Unknown Error: " + error); // TODO transl8
             writer.append("<p class='error'>" + error + "</p>");
         }
 

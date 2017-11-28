@@ -37,9 +37,6 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         super(mediaTypes);
     }
 
-    public TreeSet<String> csvColumns = new TreeSet<String>(){};
-
-
     @Override
     protected T readInternal(Class<? extends T> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
         throw new UnsupportedOperationException("Reading other file formats is not implemented yet and will most likely never be.");
@@ -75,13 +72,6 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     public Boolean handleOnlyFirstPlace = false;
     public Boolean sortFacets = true;
     public List<String> skipFacets = Arrays.asList("facet_land", "facet_ort", "facet_ortsangabe");
-
-    //meta
-    public String exportTitle;
-    public String exportTimestamp;
-    public String exportUser;
-    public String exportAuthor;
-
 
     public DataExportTable exportTable = new DataExportTable();
 
@@ -361,16 +351,18 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     abstract public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector);
 
 
-    public void setExportMetaData(String title) {
-        this.exportTitle = title;
-        this.exportUser = userRightsService.getCurrentUser().getUsername();
+    public void initializeExport(String title) {
+        exportTable = new DataExportTable();
+
+        this.exportTable.title = title;
+        this.exportTable.user = userRightsService.getCurrentUser().getUsername();
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); // @ TODO tansl8
-        this.exportTimestamp = dateFormat.format(new Date());
+        this.exportTable.timestamp = dateFormat.format(new Date());
     }
 
-    public void setExportMetaData(Catalog catalog) {
-        this.exportAuthor = catalog.getAuthor();
-        setExportMetaData(catalog.getRoot().getLabel());
+    public void initializeExport(Catalog catalog) {
+        initializeExport(catalog.getRoot().getLabel());
+        this.exportTable.author = catalog.getAuthor();
     }
 
 
