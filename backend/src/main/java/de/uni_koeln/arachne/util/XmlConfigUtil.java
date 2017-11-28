@@ -194,10 +194,11 @@ public class XmlConfigUtil implements ServletContextAware {
                             int index2 = o2.indexOf("Ortsangabe von: ") + 16;
                             Date d1 = f.parse(o1.substring(index1, index1 + 10));
                             Date d2 = f.parse(o2.substring(index2, index2 + 10));
-
                             return d1.compareTo(d2);
                         } catch (ParseException e) {
-//                            throw new IllegalArgumentException(e);
+                            LOGGER.debug("Places section could not be sorted.");
+                            return 0;
+                        } catch (StringIndexOutOfBoundsException e) {
                             LOGGER.debug("Places section could not be sorted.");
                             return 0;
                         }
