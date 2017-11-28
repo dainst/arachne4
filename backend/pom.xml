@@ -58,7 +58,9 @@
         <jsonassert-version>1.4.0</jsonassert-version>
         <!-- JSON path -->
         <jsonpath-version>2.2.0</jsonpath-version>
-        <openhtml.version>0.0.1-RC8</openhtml.version>
+		<!-- export -->
+        <openhtml-version>0.0.1-RC12</openhtml-version>
+		<jsoup-version>1.11.2</jsoup-version>
         <!-- Plugin Versions -->
 		<aspectj-maven-version>1.8</aspectj-maven-version>
 		<maven-failsafe-version>2.18.1</maven-failsafe-version>
@@ -396,21 +398,21 @@
         	<!-- ALWAYS required. -->
         	<groupId>com.openhtmltopdf</groupId>
         	<artifactId>openhtmltopdf-core</artifactId>
-        	<version>${openhtml.version}</version>
+        	<version>${openhtml-version}</version>
     	</dependency>
 
     	<dependency>
         	<!-- Required for PDF output. -->
         	<groupId>com.openhtmltopdf</groupId>
         	<artifactId>openhtmltopdf-pdfbox</artifactId>
-        	<version>${openhtml.version}</version>
+        	<version>${openhtml-version}</version>
     	</dependency>
 
 		<dependency>
 			<!-- also Required for PDF output. (paf) -->
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
-			<version>1.10.2</version>
+			<version>${jsoup-version}</version>
 		</dependency>
 
 
@@ -614,7 +616,7 @@
 				<version>${maven-tomcat-version}</version>
 				<configuration>
 					<uriEncoding>UTF-8</uriEncoding>
-                                        <path>/data</path>
+					<path>/data</path>
 				</configuration>
 			</plugin>
 		</plugins>
