@@ -4,7 +4,6 @@ import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
-import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvListWriter;
 import org.supercsv.prefs.CsvPreference;
 
@@ -30,13 +29,13 @@ public class Catalog2CsvConverter extends BaseCsvConverter<Catalog> {
         csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
 
         csvColumns = new TreeSet<String>(){};
-        final ArrayList<HashMap<String, DataExportSet>> csvTable = getCsvTable(catalog);
 
-        setProcessors(csvColumns);
-        csvHeaders(csvColumns);
-        csvBody(csvColumns, csvTable);
+        serialize(catalog);
 
+        setProcessors();
 
+        csvHeaders();
+        csvBody();
 
         csvWriter.close();
     }

@@ -83,6 +83,8 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     public String exportAuthor;
 
 
+    public DataExportTable exportTable = new DataExportTable();
+
     public String getCurrentUrl() {
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = sra.getRequest();
@@ -125,8 +127,8 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * @param row
      * @param box
      */
-    private void getSectionValueFromJson(HashMap<String, DataExportSet> row, JSONObject box) {
-       getSectionValueFromJson(row, box, "");
+    private void getSectionValueFromJson(DataExportRow row, JSONObject box) {
+       getSectionValueFromJson(row, box, "", 0);
     }
 
     /**
@@ -135,34 +137,38 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * @param box
      * @param topLabel
      */
-    private void getSectionValueFromJson(HashMap<String, DataExportSet> row, JSONObject box, String topLabel) {
+    private void getSectionValueFromJson(DataExportRow row, JSONObject box, String topLabel, Integer number) {
 
         String label = box.has("label") ? box.get("label").toString() : null;
         Object boxValue = box.has("value") ? box.get("value") : null;
 
         label = (Objects.equals(label, "null")) ? null : label;
 
-        if ((label != null) && (topLabel != null)) {
-            row.put(getColumnName("headline", row, false), new DataExportSet("", topLabel, true));
+        if ((label == null) && (topLabel == null)) {
+            return;
         }
 
-        if ((label == null) && (topLabel != null)) {
+        if (label == null) {
             label = topLabel;
         }
 
+        if ((!label.equals(topLabel)) && (topLabel != null) && (number == 0)) {
+            row.putHeadline(topLabel);
+        }
+
         if (boxValue instanceof JSONArray) {
-            handleFacetValues(label, label, box.getJSONArray("value"), row);
+            serializeFacetValues(label, label, box.getJSONArray("value"), row);
         } else if (boxValue != null) {
-            row.put(getColumnName(label, row), new DataExportSet(label, boxValue.toString()));
+            row.put(label, boxValue.toString());
         }
 
         Object boxContent = box.has("content") ? box.get("content") : null;
 
         if (boxContent instanceof JSONObject) {
-            getSectionValueFromJson(row, (JSONObject) boxContent, label);
+            getSectionValueFromJson(row, (JSONObject) boxContent, label, 0);
         } else if (boxContent instanceof JSONArray) {
             for (int ii = 0; ii < ((JSONArray) boxContent).length(); ii++) {
-                getSectionValueFromJson(row, ((JSONArray) boxContent).getJSONObject(ii), ii == 0 ? label : null);
+                getSectionValueFromJson(row, ((JSONArray) boxContent).getJSONObject(ii), label, ii);
             }
         }
     }
@@ -173,9 +179,9 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * @param fullEntity
      * @return
      */
-    public HashMap<String, DataExportSet> getDetails(JSONObject fullEntity) {
+    public DataExportRow getDetails(JSONObject fullEntity) {
 
-        final HashMap<String, DataExportSet> row = new HashMap<String, DataExportSet>() {};
+        final DataExportRow row = exportTable.newRow();
 
         if (fullEntity == null) {
             return row;
@@ -183,7 +189,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
         // subtitle
         if (fullEntity.has("subtitle")) {
-            row.put(getColumnName("subtitle", row), new DataExportSet("xxx", fullEntity.getString("subtitle"), true));
+            row.putHeadline("@subtitle", fullEntity.getString("subtitle"));
         }
 
         // sections
@@ -201,37 +207,16 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         return row;
     }
 
-    public String getColumnName(String col, final HashMap<String, DataExportSet> row) {
-        return getColumnName(col, row, true);
-    }
-
-    public String getColumnName(String col, final HashMap<String, DataExportSet> row, Boolean register) {
-        while (row.containsKey(col)) {
-            col = col + "x";
-        }
-
-        if (col == null) {
-            col = "";
-        }
-
-        if (register) {
-            csvColumns.add(col);
-        }
-
-
-        return col;
-    }
-
 
     /**
      *
      * @param entityId
      * @param facets
-     * @return List<DataExportSet>
+     * @return List<DataExportCell>
      */
-    public HashMap<String, DataExportSet> getDetails(long entityId, List<SearchResultFacet> facets) {
+    public DataExportRow getDetails(long entityId, List<SearchResultFacet> facets) {
 
-        final HashMap<String, DataExportSet> row = new HashMap<String, DataExportSet>() {};
+        final DataExportRow row = exportTable.newRow();
         final JSONObject fullEntity;
         try {
             fullEntity = getEntity(entityId);
@@ -270,31 +255,22 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
                 if (facetName.equals("facet_geo")) {
                     serializePlaces(fullEntity, row);
                 } else {
-                    handleFacetValues(facetName, facetFullName, (JSONArray) valueObj, row);
+                    serializeFacetValues(facetName, facetFullName, (JSONArray) valueObj, row);
                 }
 
             } else { // fallback
-                row.put(getColumnName(facetName, row), new DataExportSet( facetFullName, valueObj.toString()));
+                row.put(facetName, facetFullName, valueObj.toString());
             }
 
 
         }
 
-        // sort by index
-        /*if (sortFacets) {
-            Collections.sort(row, new Comparator<DataExportSet>() {
-                public int compare(final DataExportSet object1, final DataExportSet object2) {
-                    return object1.index.compareTo(object2.index);
-                }
-            });
-        }*/
-
         return row;
     }
 
-    void handleFacetValues(String facetName, String facetFullName, JSONArray facetValues, HashMap<String, DataExportSet> collector) {
+    void serializeFacetValues(String facetName, String facetFullName, JSONArray facetValues, DataExportRow collector) {
         for (int i = 0; i < facetValues.length(); i++) {
-            collector.put(getColumnName(facetName, collector), new DataExportSet(facetFullName, facetValues.get(i).toString()));
+            collector.put(facetName, facetFullName, facetValues.get(i).toString());
         }
     };
 
@@ -303,7 +279,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * @param fullEntity
      * @param collector
      */
-    public void serializePlaces(JSONObject fullEntity, HashMap<String, DataExportSet> collector) {
+    public void serializePlaces(JSONObject fullEntity, DataExportRow collector) {
         //row.putAll(unpackFacetGeo((JSONArray) valueObj));
         if (fullEntity.has("places")) {
             handlePlaces((JSONArray) fullEntity.get("places"), collector);
@@ -319,7 +295,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * @param places
      * @param collector
      */
-    private void handlePlaces(JSONArray places, HashMap<String, DataExportSet> collector) {
+    private void handlePlaces(JSONArray places, DataExportRow collector) {
 
         for (int i = 0; i < (handleOnlyFirstPlace ? 1 : places.length()); i++) {
 
@@ -382,7 +358,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * @param collector
      */
 
-    abstract public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, HashMap<String, DataExportSet> collector);
+    abstract public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector);
 
 
     public void setExportMetaData(String title) {

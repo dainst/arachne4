@@ -6,13 +6,11 @@ import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
-import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvListWriter;
 import org.supercsv.prefs.CsvPreference;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,13 +30,14 @@ public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
         final List<SearchResultFacet> facets = searchResult.getFacets();
         final List<SearchHit> entities = searchResult.getEntities();
 
-        final TreeSet<String> headers = getCsvHeaders(facets);
+        exportTable.headers = getCsvHeaders(facets);
 
         writer = new OutputStreamWriter(httpOutputMessage.getBody());
         csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
-        setProcessors(headers);
 
-        csvHeaders(headers);
+        setProcessors();
+
+        csvHeaders();
 
 
 
@@ -67,9 +66,9 @@ public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
             row.add(subtitle);
             row.add(String.valueOf(hit.getThumbnailId()));
 
-            final HashMap<String, DataExportSet> details = getDetails(hit.getEntityId(), facets);
+            final HashMap<String, DataExportCell> details = getDetails(hit.getEntityId(), facets);
             for (final String key : details.keySet()) {
-                DataExportSet detail = details.get(key);
+                DataExportCell detail = details.get(key);
                 row.add(detail.value);
             }
             csvWriter.write(row, csvProcessors);

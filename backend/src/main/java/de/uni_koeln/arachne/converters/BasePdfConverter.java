@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.List;
 
 
 /**
@@ -58,7 +57,7 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
 
 
     @Override
-    public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, HashMap<String, DataExportSet> collector) {
+    public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
 
     }
 

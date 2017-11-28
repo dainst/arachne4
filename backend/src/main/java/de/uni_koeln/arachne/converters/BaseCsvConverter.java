@@ -3,28 +3,17 @@ package de.uni_koeln.arachne.converters;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
-import de.uni_koeln.arachne.response.search.SearchHit;
-import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.service.Transl8Service;
 import org.json.JSONObject;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.cellprocessor.ift.StringCellProcessor;
 import org.supercsv.io.CsvListWriter;
-import org.supercsv.prefs.CsvPreference;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 
 
 /**
@@ -41,20 +30,20 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
     public CellProcessor[] csvProcessors;
 
 
-    public void csvHeaders(TreeSet<String> headers) throws IOException {
-        csvWriter.writeHeader(headers.toArray(new String[headers.size()]));
+    public void csvHeaders() throws IOException {
+        csvWriter.writeHeader(exportTable.headers.toArray(new String[exportTable.headers.size()]));
     }
 
-    public void csvBody(TreeSet<String> headers, ArrayList<HashMap<String, DataExportSet>> table) throws IOException {
+    public void csvBody() throws IOException {
 
-        DataExportSet cell;
+        DataExportCell cell;
         String value = "";
 
-        for (final HashMap<String, DataExportSet> row : table) {
+        for (final DataExportRow row : exportTable) {
 
             final ArrayList<String> fullRow = new ArrayList<String>(){};
 
-            for (String header : headers) {
+            for (String header : exportTable.headers) {
                 cell = row.get(header);
                 value = (cell == null) ? "" : cell.value;
                 fullRow.add(value);
@@ -106,7 +95,7 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
     }
 
 
-    private List<String> getCsvHeaders(ArrayList<HashMap<String, DataExportSet>> csvTable) {
+    private List<String> getCsvHeaders(ArrayList<HashMap<String, DataExportCell>> csvTable) {
         final ArrayList<String> headers = new ArrayList<String>();
 
 
@@ -121,20 +110,17 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
      * @return
      * @throws IOException
      */
-    public ArrayList<HashMap<String, DataExportSet>> getCsvTable(Catalog catalog) throws IOException {
-
-        final ArrayList<HashMap<String, DataExportSet>> csvTable = new ArrayList<HashMap<String, DataExportSet>>();
+    public void serialize(Catalog catalog) throws IOException {
 
         List<CatalogEntry> children = catalog.getRoot().getChildren();
 
         if (children != null) {
             Integer i = 1;
             for (CatalogEntry child : children) {
-                csvCatalogEntry(child, 0, i++ + "", csvTable);
+                serializeCatalogEntry(child, 0, i++ + "");
             }
         }
 
-        return csvTable;
 
     }
 
@@ -142,20 +128,19 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
 
     /**
      *
-     * @param headers
      */
-    public void setProcessors(TreeSet<String> headers) {
-        csvProcessors = new StringCellProcessor[headers.size()];
-        for(int i=0; i < headers.size(); i++){
+    public void setProcessors() {
+        csvProcessors = new StringCellProcessor[exportTable.headers.size()];
+        for(int i=0; i < exportTable.headers.size(); i++){
             csvProcessors[i] = new Optional();
         }
     }
 
 /*
-    public List<String> mapDetails(ArrayList<DataExportSet> details) {
+    public List<String> mapDetails(ArrayList<DataExportCell> details) {
         List<String> result = new ArrayList<String>();
 
-        for (DataExportSet set : details) {
+        for (DataExportCell set : details) {
             if (!set.isHeadline) {
                 result.add(set.name);
             }
@@ -169,8 +154,8 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
     public List<String> facetList;
 */
 
-    public void csvCatalogEntry(final CatalogEntry catalogEntry, final int level, final String order, final List<HashMap<String, DataExportSet>> table) throws IOException {
-        final HashMap<String, DataExportSet> row = new HashMap<String, DataExportSet>();
+    public void serializeCatalogEntry(final CatalogEntry catalogEntry, final int level, final String order) throws IOException {
+        final DataExportRow row = exportTable.newRow();
 
         final Long entityId = catalogEntry.getArachneEntityId();
 
@@ -189,34 +174,22 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
             error = e.getMessage();
         }
 
-
-
         // serialize
-        row.put("order",    new DataExportSet("order", order));
-        row.put("id",       new DataExportSet("id", entityId.toString())); // id
-        row.put("title",    new DataExportSet("title", catalogEntry.getLabel())); // title
+        row.put("@order",    order);
+        row.put("@id",       entityId.toString()); // id
+        row.put("@title",    catalogEntry.getLabel()); // title
         row.putAll(getDetails(fullEntity));
-
-        //row.addAll(details);
-        /**
-         * stand: wir müssen vorher die Zahl der Spalten kennen
-         * # wir müssen es so ändern dass in der row die indices der spalten name ist!
-         * - wir müssen erst alle Zeilen sammeln,
-         * - dann gucken welche spalten es gibt und erst dann pronto
-         *
-         */
-
 
         // children
         List<CatalogEntry> children = realGetChildren(catalogEntry);
         if (children != null) {
             Integer i = 1;
             for (CatalogEntry child : children) {
-                csvCatalogEntry(child, level + 1, order + "." + i++, table);
+                serializeCatalogEntry(child, level + 1, order + "." + i++);
             }
         }
 
-        table.add(row);
+        exportTable.add(row);
     }
 
 
@@ -237,9 +210,9 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
 
 
     @Override
-    public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, HashMap<String, DataExportSet> collector) {
-        collector.put(getColumnName("place", collector), new DataExportSet("", gazetteerId));
-        collector.put(getColumnName("lat", collector), new DataExportSet("", lat));
-        collector.put(getColumnName("lon", collector), new DataExportSet("", lon));
+    public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
+        collector.put("place", gazetteerId);
+        collector.put("lat", lat);
+        collector.put("lon", lon);
     }
 }

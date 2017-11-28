@@ -101,10 +101,10 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
     }
 
 
-    public void htmlDetailTable(HashMap<String, DataExportSet> details) throws IOException {
+    public void htmlDetailTable(HashMap<String, DataExportCell> details) throws IOException {
         writer.append("<table class='dataset'>");
         for (String key : details.keySet()) {
-            final DataExportSet detail = details.get(key);
+            final DataExportCell detail = details.get(key);
             if (detail.isHeadline) {
                 writer.append("<tr><td colspan='2' class='section'>" + detail.value + "</td></tr>");
             } else if (detail.value != null) {
@@ -119,10 +119,8 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
     }
 
 
-    public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, HashMap<String, DataExportSet> collector) {
-        final String fname = (rel.equals("")) ? "Place " + number.toString() : rel;
-        number += 1;
-        final String index = "place_" + number.toString();
+    public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
+
         String value;
 
         if (name.equals("") && !lat.equals("") && !lon.equals("")) {
@@ -137,10 +135,10 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             value = name;
         }
 
-        collector.put(getColumnName(index, collector), new DataExportSet(fname, value));
+        collector.put("place", value);
     }
 
-    void handleFacetValues(String facetName, String facetFullName, JSONArray facetValues, HashMap<String, DataExportSet> collector) {
+    void serializeFacetValues(String facetName, String facetFullName, JSONArray facetValues, DataExportRow collector) {
 
         ArrayList<String> values = new ArrayList<String>();
         Integer longest = 0;
@@ -154,7 +152,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             ? "<ul><li>" + String.join("</li><li>", values) + "</li></ul>"
             : String.join(", ", values);
 
-        collector.put(getColumnName(facetName, collector), new DataExportSet(facetFullName, facetString));
+        collector.put(facetName, facetFullName, facetString);
     }
 
 
@@ -329,7 +327,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         String error = null;
 
         // entity
-        HashMap<String, DataExportSet> details = null;
+        DataExportRow details = null;
         JSONObject fullEntity = new JSONObject();
 
         if (entityId != null) {
@@ -368,7 +366,6 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
                     htmlThumbnail(images.getJSONObject(0).getLong("imageId"));
                 }
             }
-
         }
 
         if (label != null) {
