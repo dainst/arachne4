@@ -613,16 +613,32 @@ public class SearchService {
 			facetFilter = QueryBuilders.matchAllQuery();
 		}
 
+		QueryBuilder placeFilter = QueryBuilders.matchAllQuery();
+
 		if (filters != null && !filters.isEmpty()) {
 			for (final Map.Entry<String, Collection<String>> filter: filters.asMap().entrySet()) {
 				// TODO find a way to unify this
 				if (filter.getKey().equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
 					final String filterValue = filter.getValue().iterator().next();
-					facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
-							QueryBuilders.geoHashCellQuery(GeoHashGridAggregation.GEO_HASH_GRID_FIELD, filterValue));
+					QueryBuilder geoFilter = QueryBuilders.geoHashCellQuery(GeoHashGridAggregation.GEO_HASH_GRID_FIELD, filterValue);
+					QueryBuilder nestedGeoFilter = QueryBuilders.nestedQuery("places", geoFilter);
+					facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(nestedGeoFilter);
 				} else {
-					facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
-							QueryBuilders.termsQuery(filter.getKey(), filter.getValue()));
+					if (filter.getKey().equals("facet_ortsangabe") && 
+						!filters.get("facet_ort").isEmpty() || !filters.get("facet_land").isEmpty()) {
+
+							placeFilter = QueryBuilders.boolQuery().must(
+											QueryBuilders.termsQuery("places.name", filters.get("facet_ort"))).must(
+											QueryBuilders.termsQuery("places.name", filters.get("facet_land"))).must(
+											QueryBuilders.termsQuery("places.relation", filters.get("facet_ortsangabe")));
+							
+							facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
+									QueryBuilders.termsQuery(filter.getKey(), filter.getValue())).must(
+											QueryBuilders.nestedQuery("places", placeFilter));
+					} else {
+						facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
+								QueryBuilders.termsQuery(filter.getKey(), filter.getValue()));
+					}
 				}
 			}
 		}
