@@ -71,7 +71,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     public Boolean includeEmptyFacets = false;
     public Boolean handleOnlyFirstPlace = false;
     public Boolean sortFacets = true;
-    public List<String> skipFacets = Arrays.asList("facet_land", "facet_ort", "facet_ortsangabe");
+    public List<String> skipFacets = Arrays.asList("facet_land", "facet_ort", "facet_ortsangabe", "facet_image", "facet_geo", "facet_literatur");
 
     public DataExportTable exportTable = new DataExportTable();
 
@@ -117,8 +117,8 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * @param row
      * @param box
      */
-    private void getSectionValueFromJson(DataExportRow row, JSONObject box) {
-       getSectionValueFromJson(row, box, "", 0);
+    private void serializeSection(DataExportRow row, JSONObject box) {
+       serializeSection(row, box, "", 0);
     }
 
     /**
@@ -127,7 +127,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * @param box
      * @param topLabel
      */
-    private void getSectionValueFromJson(DataExportRow row, JSONObject box, String topLabel, Integer number) {
+    private void serializeSection(DataExportRow row, JSONObject box, String topLabel, Integer number) {
 
         String label = box.has("label") ? box.get("label").toString() : null;
         Object boxValue = box.has("value") ? box.get("value") : null;
@@ -155,10 +155,10 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         Object boxContent = box.has("content") ? box.get("content") : null;
 
         if (boxContent instanceof JSONObject) {
-            getSectionValueFromJson(row, (JSONObject) boxContent, label, 0);
+            serializeSection(row, (JSONObject) boxContent, label, 0);
         } else if (boxContent instanceof JSONArray) {
             for (int ii = 0; ii < ((JSONArray) boxContent).length(); ii++) {
-                getSectionValueFromJson(row, ((JSONArray) boxContent).getJSONObject(ii), label, ii);
+                serializeSection(row, ((JSONArray) boxContent).getJSONObject(ii), label, ii);
             }
         }
     }
@@ -182,6 +182,8 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
             row.putHeadline("@subtitle", fullEntity.getString("subtitle"));
         }
 
+        serializeFacets(row, fullEntity);
+
         // sections
         if (!fullEntity.has("sections")) {
             return row;
@@ -191,10 +193,49 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
         for (int i = 0; i < sections.length(); i++) {
             JSONObject section = sections.getJSONObject(i);
-            getSectionValueFromJson(row, section);
+            serializeSection(row, section);
         }
 
         return row;
+    }
+
+    /**
+     * serlializes the facets of a given Fullentity (without knowing them beforehand)
+     * @param row
+     * @param fullEntity
+     */
+    private void serializeFacets(DataExportRow row, JSONObject fullEntity) {
+        String facet;
+        Object value;
+        String fullFacetName;
+        for (String key : fullEntity.keySet()) {
+            if (key.length() <= 6) {
+                continue;
+            }
+            if (!key.substring(0, 6).equals("facet_")) {
+                continue;
+            }
+
+            //facet = key.substring(6);
+
+            if (skipFacets.contains(key)) {
+                continue;
+            }
+
+            value = fullEntity.get(key);
+
+            if (!(value instanceof JSONArray)) {
+                continue;
+            }
+
+            try {
+                fullFacetName = transl8Service.transl8(key.substring(6), "DE"); // TODO correct language
+            } catch (Transl8Service.Transl8Exception e) {
+                fullFacetName = key;
+            }
+
+            row.put("@" + fullFacetName, (String) ((JSONArray) value).getString(0));
+        }
     }
 
 

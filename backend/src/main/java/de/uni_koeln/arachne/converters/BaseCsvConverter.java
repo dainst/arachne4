@@ -31,7 +31,8 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
 
 
     public void csvHeaders() throws IOException {
-        csvWriter.writeHeader(exportTable.headers.toArray(new String[exportTable.headers.size()]));
+        final ArrayList<String> tableHeaders = exportTable.getColumns();
+        csvWriter.writeHeader(tableHeaders.toArray(new String[tableHeaders.size()]));
     }
 
     public void csvBody() throws IOException {
@@ -85,25 +86,6 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
         return headers;
     }
 
-    public TreeSet<String> getCsvHeaders(Catalog catalog) {
-        final TreeSet<String> headers = new TreeSet<String>();
-        headers.add("order");
-        headers.add("entityId");
-        headers.add("title");
-
-        return headers;
-    }
-
-
-    private List<String> getCsvHeaders(ArrayList<HashMap<String, DataExportCell>> csvTable) {
-        final ArrayList<String> headers = new ArrayList<String>();
-
-
-
-        return headers;
-    }
-
-
     /**
      *
      * @param catalog
@@ -136,23 +118,6 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
         }
     }
 
-/*
-    public List<String> mapDetails(ArrayList<DataExportCell> details) {
-        List<String> result = new ArrayList<String>();
-
-        for (DataExportCell set : details) {
-            if (!set.isHeadline) {
-                result.add(set.name);
-            }
-        }
-
-        return result;
-
-    }
-
-
-    public List<String> facetList;
-*/
 
     public void serializeCatalogEntry(final CatalogEntry catalogEntry, final int level, final String order) throws IOException {
         final DataExportRow row = exportTable.newRow();
@@ -175,9 +140,9 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
         }
 
         // serialize
-        row.put("@order",    order);
-        row.put("@id",       entityId.toString()); // id
-        row.put("@title",    catalogEntry.getLabel()); // title
+        row.put("@@order",    order);
+        row.put("@@id",       entityId.toString()); // id
+        row.put("@@title",    catalogEntry.getLabel()); // title
         row.putAll(getDetails(fullEntity));
 
         // children

@@ -14,13 +14,17 @@ public class DataExportRow extends LinkedHashMap<String, DataExportCell> {
         return getColumnName("", false);
     }
 
-    public String getColumnName(String col) {
-        return getColumnName(col, true);
-    }
-
+    /**
+     * creates a unique columns name for a given row (this), so it can be used as key.
+     * also registers the usage of this name for this table if desired
+     *
+     * @param col
+     * @param register
+     * @return
+     */
     public String getColumnName(String col, Boolean register) {
         while (containsKey(col)) {
-            col = col + "x";
+            col = col + "$";
         }
 
         if (col == null) {
@@ -32,6 +36,11 @@ public class DataExportRow extends LinkedHashMap<String, DataExportCell> {
         }
 
         return col;
+    }
+
+
+    public String getColumnName(String col) {
+        return getColumnName(col, true);
     }
 
     public DataExportCell put(String key, String label, String value) {

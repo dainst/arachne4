@@ -32,14 +32,11 @@ public class Catalog2CsvConverter extends BaseCsvConverter<Catalog> {
 
         serialize(catalog);
 
-        setProcessors();
-
         csvHeaders();
         csvBody();
 
         csvWriter.close();
     }
-
 
 
 
