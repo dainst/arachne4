@@ -65,7 +65,9 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         for(HashMap.Entry<String, String> entry : replacements.entrySet()) {
             String code = entry.getKey();
             String repl = entry.getValue();
-            subject = subject.replace("%%%" + code + "%%%", repl);
+            if (repl != null) {
+                subject = subject.replace("%%%" + code + "%%%", repl);
+            }
         }
         return subject;
     }
