@@ -11,10 +11,7 @@ import org.supercsv.prefs.CsvPreference;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.TreeSet;
 
 public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
 
@@ -30,54 +27,16 @@ public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
         final List<SearchResultFacet> facets = searchResult.getFacets();
         final List<SearchHit> entities = searchResult.getEntities();
 
-
-
         writer = new OutputStreamWriter(httpOutputMessage.getBody());
         csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
 
-        initializeExport("");
-        exportTable.headers = getCsvHeaders(facets);
-
-        setProcessors();
-
+        initializeExport("Search Result"); // TODO transl8
+        //exportTable.headers = getCsvHeaders(facets);
+        serialize(entities);
         csvHeaders();
+        csvBody();
+        csvFooter();
 
-
-
-        //*/
-
-        handleOnlyFirstPlace = true;
-        includeEmptyFacets = true;
-        sortFacets = false;
-        skipFacets = new ArrayList<>();
-
-        if(entities == null) {
-            return;
-        }
-
-        for (final SearchHit hit : entities) {
-
-            final List<Object> row = new ArrayList<Object>();
-
-            // there are items wo subtitle and maybe wo title out there...
-            String title = (hit.getTitle() == null) ? "" : hit.getTitle().replace("\n", "").replace("\r", "");
-            String subtitle = (hit.getSubtitle() == null) ? "" : hit.getSubtitle().replace("\n", "").replace("\r", "");
-
-            row.add(String.valueOf(hit.getEntityId()) );
-            row.add(hit.getType());
-            row.add(title);
-            row.add(subtitle);
-            row.add(String.valueOf(hit.getThumbnailId()));
-
-            final HashMap<String, DataExportCell> details = getDetails(hit.getEntityId(), facets);
-            for (final String key : details.keySet()) {
-                DataExportCell detail = details.get(key);
-                row.add(detail.value);
-            }
-            csvWriter.write(row, csvProcessors);
-        }
-
-        writer.close();
         csvWriter.close();
 
     }

@@ -3,13 +3,12 @@ package de.uni_koeln.arachne.converters;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
+import de.uni_koeln.arachne.response.search.SearchHit;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.service.Transl8Service;
 import org.json.JSONObject;
 import org.springframework.http.MediaType;
-import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ift.CellProcessor;
-import org.supercsv.cellprocessor.ift.StringCellProcessor;
 import org.supercsv.io.CsvListWriter;
 
 import java.io.IOException;
@@ -102,7 +101,7 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
 
 
     /**
-     * tables headers for csv fpr SEARCH RESULTS
+     * table headers for csv fpr SEARCH RESULTS
      * @param facets
      * @return
      */
@@ -113,7 +112,6 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
         headers.add("type");
         headers.add("title");
         headers.add("subtitle");
-        headers.add("thumbnailId");
 
         for (final SearchResultFacet facet : facets) {
             if (facet.getName().equals("facet_geo")) {
@@ -144,35 +142,63 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
         if (children != null) {
             Integer i = 1;
             for (CatalogEntry child : children) {
-                serializeCatalogEntry(child, 0, i++ + "");
+                serialize(child, 0, i++ + "");
             }
         }
 
-
     }
-
-
 
     /**
      *
+     * @param searchHits
+     * @throws IOException
      */
-    public void setProcessors() {
-        csvProcessors = new StringCellProcessor[exportTable.headers.size()];
-        for(int i=0; i < exportTable.headers.size(); i++){
-            csvProcessors[i] = new Optional();
+    public void serialize(List<SearchHit> searchHits) throws IOException {
+
+        if(searchHits == null) {
+            return;
         }
+
+        for (final SearchHit hit : searchHits) {
+
+            final DataExportRow row = exportTable.newRow();
+
+            // there are items wo subtitle and maybe wo title out there...
+            String title = (hit.getTitle() == null) ? "" : hit.getTitle().replace("\n", "").replace("\r", "");
+            String subtitle = (hit.getSubtitle() == null) ? "" : hit.getSubtitle().replace("\n", "").replace("\r", "");
+
+            row.put("@@id", String.valueOf(hit.getEntityId()));
+            row.put("@@type", hit.getType());
+            row.put("@@title",title);
+            row.put("@@subtitle", subtitle);
+
+            try {
+                JSONObject fullEntity = getEntity(hit.getEntityId());
+                row.putAll(getDetails(fullEntity));
+                serializePlaces(fullEntity, row);
+            } catch (Exception e) {
+                String error = (Objects.equals(e.getMessage(), "403")) ? ("User " + exportTable.user + " is not allowed to access this Dataset.") : ("Unknown Error: " + e.getMessage()); // TODO transl8
+                row.put("error", error);
+            }
+
+            exportTable.add(row);
+
+        }
+
     }
 
-
-    public void serializeCatalogEntry(final CatalogEntry catalogEntry, final int level, final String order) throws IOException {
+    /**
+     *
+     * @param catalogEntry
+     * @param level
+     * @param order
+     * @throws IOException
+     */
+    public void serialize(final CatalogEntry catalogEntry, final int level, final String order) throws IOException {
         final DataExportRow row = exportTable.newRow();
 
         final Long entityId = catalogEntry.getArachneEntityId();
 
-        // only export catalogue entries with connected entity
-        /*if (entityId == null) {
-            return;
-        }*/
 
         String error = "";
         JSONObject fullEntity = null;
@@ -202,7 +228,7 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
         if (children != null) {
             Integer i = 1;
             for (CatalogEntry child : children) {
-                serializeCatalogEntry(child, level + 1, order + "." + i++);
+                serialize(child, level + 1, order + "." + i++);
             }
         }
 

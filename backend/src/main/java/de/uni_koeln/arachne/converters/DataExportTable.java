@@ -43,7 +43,7 @@ public class DataExportTable extends ArrayList<DataExportRow>  {
         final StringBuffer resultString = new StringBuffer();
 
         while (regexMatcher.find()) {
-            regexMatcher.appendReplacement(resultString, String.valueOf("_" + regexMatcher.group(1).length()));
+            regexMatcher.appendReplacement(resultString, "_" + String.valueOf(1 + regexMatcher.group(1).length()));
         }
         regexMatcher.appendTail(resultString);
 

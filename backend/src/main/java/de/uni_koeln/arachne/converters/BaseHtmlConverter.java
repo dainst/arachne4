@@ -91,7 +91,12 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             writer.append("<h2 class='title'>" + title + "</h2>");
             writer.append("<h3 class='subtitle'>" + subtitle + "</h3>");
 
-            htmlDetailTable(getDetails(hit.getEntityId(), facets));
+            try {
+                htmlDetailTable(getDetails(getEntity(hit.getEntityId())));
+            } catch (Exception e) {
+                String error = (Objects.equals(e.getMessage(), "403")) ? ("User " + exportTable.user + " is not allowed to access this Dataset.") : ("Unknown Error: " + e.getMessage()); // TODO transl8
+                writer.append("<p class='error'>" + error + "</p>");
+            }
 
             writer.append("</div>");
 
