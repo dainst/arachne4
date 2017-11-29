@@ -170,28 +170,32 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
         final Long entityId = catalogEntry.getArachneEntityId();
 
         // only export catalogue entries with connected entity
-        if (entityId == null) {
+        /*if (entityId == null) {
             return;
-        }
+        }*/
 
         String error = "";
-
-        JSONObject fullEntity = new JSONObject();
-
+        JSONObject fullEntity = null;
         try {
-            fullEntity = getEntity(entityId);
+            fullEntity = (entityId != null) ? getEntity(entityId) : null;
         } catch (Exception e) {
             error = e.getMessage();
         }
 
         // serialize
-        row.put("@@order",    order);
-        row.put("@@id",       entityId.toString()); // id
-        row.put("@@title",    catalogEntry.getLabel()); // title
-        row.putAll(getDetails(fullEntity));
-        serializePlaces(fullEntity, row);
+        row.put("@@order", order);
+        row.put("@@title", catalogEntry.getLabel());
 
+        if (fullEntity != null) {
+            row.put("@@id", entityId.toString());
+            row.putAll(getDetails(fullEntity));
+            serializePlaces(fullEntity, row);
+        }
+        if (!error.equals("")) {
+            row.put("error", error);
+        }
 
+        exportTable.add(row);
 
         // children
         List<CatalogEntry> children = realGetChildren(catalogEntry);
@@ -202,7 +206,7 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
             }
         }
 
-        exportTable.add(row);
+
     }
 
 
