@@ -286,7 +286,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
                 fullFacetName = key;
             }
 
-            row.put("@" + fullFacetName, (String) ((JSONArray) value).getString(0));
+            row.put("@" + fullFacetName, fullFacetName,(String) ((JSONArray) value).getString(0));
         }
     }
 

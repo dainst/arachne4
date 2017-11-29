@@ -83,13 +83,20 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
             writer.append("<div class='page'>");
 
-            writer.append("<div class='page-left category infobox'>" + hit.getType() + "</div>");
-            writer.append("<div class='page-right uri infobox'><a href='" + hit.getUri() + "' target='_blank'>" + hit.getUri() + "</a></div>");
+            writer.append("<table class='page-header'><tr>");
+            writer.append("<td class='page-header-left'>");
+            writer.append(hit.getType());
+            writer.append("</td>");
+            writer.append("<td class='page-header-right'>");
+            writer.append("<a href='" + hit.getUri() + "' target='_blank'>" + hit.getUri() + "</a>");
+            writer.append("</td>");
+            writer.append("</tr></table>"); // page-header
 
-            writer.append("<div class='row'>");
+            writer.append("<div class='page-body'>");
+
             htmlThumbnail(hit.getThumbnailId());
-            writer.append("<h2 class='title'>" + title + "</h2>");
-            writer.append("<h3 class='subtitle'>" + subtitle + "</h3>");
+
+            writer.append("<h1 class='title'>" + title + "</h1>");
 
             try {
                 htmlDetailTable(getDetails(getEntity(hit.getEntityId())));
@@ -98,9 +105,11 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
                 writer.append("<p class='error'>" + error + "</p>");
             }
 
-            writer.append("</div>");
 
-            writer.append("</div>");
+            writer.append("</div>"); // page-body
+            writer.append("<div class='page-footer'>");
+            writer.append("</div>"); // page-footer
+            writer.append("</div>"); // page
 
         }
     }
