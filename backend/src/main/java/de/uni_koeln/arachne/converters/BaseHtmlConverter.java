@@ -119,7 +119,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
     }
 
 
-    public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
+    public void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
 
         String value;
 
@@ -253,7 +253,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         }
 
         writer.append("<p>");
-        writer.append("Acceced at"); // TODO tranl8
+        writer.append("Accessed at"); // TODO tranl8
         writer.append(" " + exportTable.timestamp + " ");
         writer.append("by"); // TODO tranl8
         writer.append(" " + exportTable.user);

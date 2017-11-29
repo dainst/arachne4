@@ -55,6 +55,51 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
 
     }
 
+    public void csvFooter() throws IOException {
+        final ArrayList<String> row = new ArrayList<String>(){};
+        row.add("");
+        csvWriter.write(row);
+        csvWriter.write(row);
+        csvWriter.write(row);
+
+        row.clear();
+        row.add("Arachne Data Export");
+        row.add(exportTable.title);
+        csvWriter.write(row);
+
+        if (exportTable.author != null) {
+            row.clear();
+            row.add("by");
+            row.add(exportTable.author);
+            csvWriter.write(row);
+        }
+
+        row.clear();
+        row.add("Accessed at"); // TODO tranl8
+        row.add(exportTable.timestamp);
+        csvWriter.write(row);
+
+        row.clear();
+        row.add("by"); // TODO tranl8
+        row.add(exportTable.user);
+        csvWriter.write(row);
+
+        row.clear();
+        row.add("");
+        csvWriter.write(row);
+
+        row.clear();
+        row.add("Imprint");
+        row.add("https://arachne.dainst.org/info/imprint");
+        csvWriter.write(row);
+
+        row.clear();
+        row.add("License");
+        row.add("https://arachne.dainst.org/info/order");
+        csvWriter.write(row);
+
+    }
+
 
     /**
      * tables headers for csv fpr SEARCH RESULTS
@@ -144,6 +189,9 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
         row.put("@@id",       entityId.toString()); // id
         row.put("@@title",    catalogEntry.getLabel()); // title
         row.putAll(getDetails(fullEntity));
+        serializePlaces(fullEntity, row);
+
+
 
         // children
         List<CatalogEntry> children = realGetChildren(catalogEntry);
@@ -174,8 +222,10 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
 
 
 
+
+
     @Override
-    public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
+    public void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
         collector.put("place", gazetteerId);
         collector.put("lat", lat);
         collector.put("lon", lon);

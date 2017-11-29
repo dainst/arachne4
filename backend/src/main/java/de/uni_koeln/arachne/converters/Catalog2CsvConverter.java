@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
+import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
@@ -29,15 +30,18 @@ public class Catalog2CsvConverter extends BaseCsvConverter<Catalog> {
         csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
 
         initializeExport(catalog);
-
         serialize(catalog);
-
         csvHeaders();
         csvBody();
+        csvFooter();
 
         csvWriter.close();
     }
 
 
-
+    @Override
+    public void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
+        collector.put("lat", lat);
+        collector.put("lon", lon);
+    }
 }

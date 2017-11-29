@@ -306,17 +306,17 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     };
 
     /**
-     * extracts place information from fulLEntity and add it to collector - accorind to implementation if handlePlace function
+     * extracts place information from fulLEntity and add it to collector - accorind to implementation if serializePlaces function
      * @param fullEntity
      * @param collector
      */
     public void serializePlaces(JSONObject fullEntity, DataExportRow collector) {
         //row.putAll(unpackFacetGeo((JSONArray) valueObj));
         if (fullEntity.has("places")) {
-            handlePlaces((JSONArray) fullEntity.get("places"), collector);
+            serializePlacesArray((JSONArray) fullEntity.get("places"), collector);
         } else if (fullEntity.has("facet_geo")) {
             // some entities (iE http://bogusman02.dai-cloud.uni-koeln.de/data/entity/1179020) has a facet_geo, but no places
-            handlePlaces(unpackFacetGeo((JSONArray) fullEntity.get("facet_geo")), collector);
+            serializePlacesArray(unpackFacetGeo((JSONArray) fullEntity.get("facet_geo")), collector);
         }
     }
 
@@ -326,7 +326,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * @param places
      * @param collector
      */
-    private void handlePlaces(JSONArray places, DataExportRow collector) {
+    private void serializePlacesArray(JSONArray places, DataExportRow collector) {
 
         for (int i = 0; i < (handleOnlyFirstPlace ? 1 : places.length()); i++) {
 
@@ -356,7 +356,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
                 lon = location.get("lon").toString();
             }
 
-            handlePlace(i, name, gaz, lat, lon, rel, collector);
+            serializePlaces(i, name, gaz, lat, lon, rel, collector);
 
         }
 
@@ -389,7 +389,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * @param collector
      */
 
-    abstract public void handlePlace(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector);
+    abstract public void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector);
 
 
     public void initializeExport(String title) {
