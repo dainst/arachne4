@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.controller;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Multiset;
 import de.uni_koeln.arachne.response.search.IndexResult;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
@@ -24,8 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8_VALUE;
 
@@ -33,6 +33,7 @@ import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON
  * Handles HTTP search requests.
  *
  * @author Reimar Grabowski
+ * @author Finn Prox
  */
 @Controller
 public class SearchController {
@@ -293,7 +294,8 @@ public class SearchController {
 	 * '<' for all values with initial letters lower than numeric (actually lower than '0').<br>
 	 * '$' for all values with a numeric initial letter.<br>
 	 * 'a'..'z' for all values starting with the corresponding letter.<br>
-	 * '>' for all values with intial letter greater than alphabetic (actually greater than 'zzz').<br>   
+	 * '>' for all values with intial letter greater than alphabetic (actually greater than 'zzz').<br>
+	 * @param categoryName The name of the category which will be searched in
 	 * @param facetName The name of the facet to get the values for.
 	 * @param groupMarker A single char indicating which group to retrieve.
 	 * @return The ordered list of values as JSON array.
@@ -304,7 +306,6 @@ public class SearchController {
 	public @ResponseBody ResponseEntity<IndexResult> handleIndexRequest(@PathVariable("facetName") final String facetName, @PathVariable("categoryName") final String categoryName, @RequestParam(value = "group", required = false) Character groupMarker) throws Transl8Exception {
 		
 		if (facetName.startsWith("facet_") || facetName.startsWith("agg_")) {
-
             Multimap<String, String> filters = HashMultimap.create();
             final String filterValue = "facet_kategorie:\"" + categoryName + "\"";
             final int splitIndex = filterValue.indexOf(':');
@@ -313,32 +314,35 @@ public class SearchController {
             filters.put(name, value);
 
             final SearchRequestBuilder searchRequestBuilder = searchService.buildIndexSearchRequest(facetName, filters);
-
             final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, 0, 0, filters, 0);
-
-            if (searchResult.getStatus() == RestStatus.OK) {
-                if (searchResult.facetSize() != 1) {
-                    return new ResponseEntity<IndexResult>(HttpStatus.BAD_REQUEST);
-                }
-                IndexResult result = new IndexResult();
-
-                final SearchResultFacet facet = searchResult.getFacets().get(0);
-                final List<SearchResultFacetValue> values = facet.getValues();
-
-                for (SearchResultFacetValue searchResultFacetValue : values) {
-                    result.addValue(searchResultFacetValue.getValue());
-                }
-
-                if (groupMarker != null) {
-                    result.reduce(groupMarker);
-                }
-
-                return ResponseEntity.ok().body(result);
-            } else {
-                return new ResponseEntity<IndexResult>(HttpStatus.valueOf(searchResult.getStatus().getStatus()));
-            }
+            return putSearchResultToResponseEntitiy(searchResult, groupMarker);
         }
-        return new ResponseEntity<IndexResult>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Returns a list of all distinct values of the given facet which is ordered alphabetically. A sublist can be
+     * requested with the 'group' HTTP parameter. Supported values are:<br>
+     * '<' for all values with initial letters lower than numeric (actually lower than '0').<br>
+     * '$' for all values with a numeric initial letter.<br>
+     * 'a'..'z' for all values starting with the corresponding letter.<br>
+     * '>' for all values with intial letter greater than alphabetic (actually greater than 'zzz').<br>
+     * @param facetName The name of the facet to get the values for
+     * @param groupMarker A character indicating which group to retrieve
+     * @return The ordered list of values as JSON array.
+     */
+    @RequestMapping(value="/index/{facetName}",
+            method=RequestMethod.GET,
+            produces={APPLICATION_JSON_UTF8_VALUE})
+    public @ResponseBody ResponseEntity<IndexResult> handleIndexRequestNoCategory(@PathVariable("facetName") final String facetName, @RequestParam(value = "group", required = false) Character groupMarker) throws Transl8Exception {
+
+	    if (facetName.startsWith("facet_") || facetName.startsWith("agg_")) {
+            final Multimap<String, String> filters = HashMultimap.create();
+            final SearchRequestBuilder searchRequestBuilder = searchService.buildIndexSearchRequest(facetName, filters);
+            final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, 0, 0, filters, 0);
+            return putSearchResultToResponseEntitiy(searchResult, groupMarker);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value="/index",
@@ -363,5 +367,33 @@ public class SearchController {
         ResponseEntity<?> result = handleSearchRequest(queryString, limit, offset, filterValues, facetLimit, facetOffset, sortField, false, true, boundingBox, geoHashPrecision, facetsToSort, scrollMode, facet, editorFields, lang, headerLanguage);
         SearchResult searchResult = (SearchResult) result.getBody();
         return ResponseEntity.ok().body(searchResult.getFacets());
+    }
+
+    /**
+     * Builds a response entity from a search result. This response contains all the values that were found for a given facet (whether tied to a category or not)
+     * Usages: handleIndexRequest, handleIndexRequestNoCategory
+     * @param searchResult The search result that should be ported to a response entity
+     * @param groupMarker Passed down from the methods stated above. This character indicates the group that should be retrieved
+     * @return The ordered list of values as JSON array.
+     */
+    private ResponseEntity<IndexResult> putSearchResultToResponseEntitiy(SearchResult searchResult, Character groupMarker) {
+        if (searchResult.getStatus() == RestStatus.OK) {
+            if (searchResult.facetSize() != 1)
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            IndexResult result = new IndexResult();
+
+            final SearchResultFacet facet = searchResult.getFacets().get(0);
+            final List<SearchResultFacetValue> values = facet.getValues();
+
+            for (SearchResultFacetValue searchResultFacetValue : values)
+                result.addValue(searchResultFacetValue.getValue());
+
+            if (groupMarker != null)
+                result.reduce(groupMarker);
+
+            return ResponseEntity.ok().body(result);
+        } else {
+            return new ResponseEntity<>(HttpStatus.valueOf(searchResult.getStatus().getStatus()));
+        }
     }
 }
