@@ -7,16 +7,22 @@
 <div class="con10t-page teaserpage container">
     <div class="con10t-row">
         <div class="con10t-title">
-            <h1>
-                Werkstätten vormoderner Wirtschaftsräume
-            </h1>
+            <h1>Werkstätten vormoderner Wirtschaftsräume</h1>
         </div>
         <div class="con10t-sidebar">
             <con10t-toc toc-heading="Übersicht"></con10t-toc>
 
-            <h3>Suche in den Daten des Projekts</h3>
-            <a con10t-search-query>Alle Datensätze anzeigen</a>
-            <con10t-search></con10t-search>
+            <h3>Schnellsuche</h3>
+            <div class="well">
+                <con10t-search fq="facet_kategorie:Bauwerke"
+                               search-placeholder="Suche ...">
+                </con10t-search>
+                <br>
+                <a con10t-search-query
+                   class="btn btn-default btn-block">
+                    Alle Datensätze anzeigen
+                </a>
+            </div>
 
             <h3>Kartenansicht</h3>
 
@@ -40,7 +46,6 @@
                 <span class="glyphicon glyphicon-fullscreen"></span>
                 Werkstätten auf Karte durchsuchen
             </a></div>
-
             <div con10t-map
                  id="map"
                  limit="200"
@@ -57,8 +62,9 @@
             <con10t-image src="/con10t/img/grako/D-DAI-ATH-Olympia-0120Bearb_2107915,01-small.jpg"
                           align="right" width="300"
                           alt="Personengruppe, darunter Wilhelm Dörpfeld, in der byzantinischen Kirche auf dem Areal der Phidiaswerkstatt">
-                Personengruppe, darunter Wilhelm Dörpfeld,<br> in der byzantinischen Kirche<br>auf dem Areal der
-                Phidiaswerkstatt
+                Personengruppe, darunter Wilhelm Dörpfeld,<br>
+                in der byzantinischen Kirche<br>
+                auf dem Areal der Phidiaswerkstatt
             </con10t-image>
             <p>
                 Die handwerkliche Produktion bildete einen elementaren Bestandteil vormoderner Wirtschaftssysteme,
@@ -74,53 +80,60 @@
             <h2 class="con10t-toc-entry">Methodik</h2>
             <p>
                 Basierend auf den relevanten Publikationen werden in dem dafür eigens adaptierten Gerüst der
-                Objektdatenbank ARACHNE die wichtigsten Informationen zu den durch archäologische Funde und/oder Befunde
-                nachgewiesenen Werkstätten über ein standardisiertes Vokabular erfasst, um übergeordnete Suchen,
-                Vergleiche und Analysen zu ermöglichen. Durch die einheitliche Bereitstellung der ansonsten verstreuten,
-                heterogenen und häufig nur schwer zugänglichen Veröffentlichungen wird die Untersuchung von thematisch,
-                chronologisch oder geographisch übergreifenden Aspekten deutlich vereinfacht und beschleunigt.
+                Objektdatenbank ARACHNE die wichtigsten Informationen zu den durch archäologische Funde und/oder
+                Befunde nachgewiesenen Werkstätten über ein standardisiertes Vokabular erfasst, um übergeordnete
+                Suchen, Vergleiche und Analysen zu ermöglichen. Durch die einheitliche Bereitstellung der ansonsten
+                verstreuten, heterogenen und häufig nur schwer zugänglichen Veröffentlichungen wird die Untersuchung
+                von thematisch, chronologisch oder geographisch übergreifenden Aspekten deutlich vereinfacht und
+                beschleunigt.
             </p>
             <p>
                 Die Werkstätten werden im Rahmen der Datenerfassung und -verwaltung mit verschiedenen technischen
                 Ressourcen des Deutschen Archäologischen Instituts und des Cologne Digital Archaeology Laboratory
                 kontextualisiert, sodass weitere Informationen beispielsweise zu relevanten Orten, Literaturzitaten,
-                Rohstoffvorkommen oder Transportwegen bereitgestellt werden können. Das Projekt konzentriert sich auf
-                den Mittelmeerraum in der griechischen und römischen Antike, umfasst aber auch andere Kulturräume und
-                –epochen (von Mesoamerika bis ins China, vom Paläolithikum bis ins Mittelalter), weshalb auch der Titel
-                von "Datenbank antiker Werkstätten" zu "Werkstätten vormoderner Wirtschaftsräume" umgeändert wurde. Die
-                Datenbasis wird noch laufend um weitere Werkstätten – auch aus anderen Epochen und Regionen –
-                ergänzt.
+                Rohstoffvorkommen oder Transportwegen bereitgestellt werden können. Das Projekt konzentriert sich
+                auf den Mittelmeerraum in der griechischen und römischen Antike, umfasst aber auch andere
+                Kultur(räume)kreise und –epochen (von Mesoamerika bis ins China, vom Paläolithikum bis ins Mittelalter),
+                weshalb auch der Titel von "Datenbank antiker Werkstätten" zu "Werkstätten vormoderner
+                Wirtschaftsräume" umgeändert wurde. Die Datenbasis wird noch laufend um weitere Werkstätten – auch aus
+                anderen (Epochen)Kulturkreisen und Regionen – ergänzt.
             </p>
 
             <h2 class="con10t-toc-entry">Projektstruktur</h2>
             <p>
-                <con10t-catalog-tree catalog-id="294" style="width:80%; float:left"></con10t-catalog-tree>
-            </p>
-            <p>
-                <con10t-catalog-tree catalog-id="297" style="width:80%; float:left"></con10t-catalog-tree>
-            </p>
-
-
-            <h2 class="con10t-toc-entry">Hinweise zur Nutzung</h2>
-            <p>
                 Die Katalogeinträge wurden als Arachne-Objektdatensätze angelegt, die nach Art der verarbeiteten
-                Materialien zu einem Katalog geordnet wurden. Das Klicken auf ein Ordnersymbol zeigt etwaige Unterordner
-                oder aber Datensätze zu einzelnen Werkstätten an, wobei die ausführlichen Informationen zu diesen
-                Bauwerken direkt über den Link aufgerufen werden können. Zudem können Sie über das Lupensymbol rechts
-                stets alle diesem Ordner untergeordneten Datensätze anzeigen. In der Ergebnisansicht bieten Facetten die
-                Möglichkeit, die Datensätze nach bestimmten Kriterien (z.B. Abbildung(en) vorhanden, Ort, Literatur)
-                weiter zu filtern. Darüber hinaus können Sie nach bestimmten Begriffen in den Projektdatensätzen suchen,
-                alle Einträge des Projekts anzeigen oder die kartographische Suchmöglichkeit aller aufgenommenen und
-                georeferenzierten Werkstattfundstellen nutzen.
+                Materialgruppen sowie den Kulturkreisen zu Katalogen zugeordnet wurden. Das Klicken auf ein
+                Ordnersymbol zeigt etwaige Unterordner oder aber Datensätze zu den einzelnen Werkstätten an, wobei
+                die ausführlichen Informationen zu diesen Bauwerken direkt über den Link aufgerufen werden können.
+                Zudem können Sie über das Lupensymbol rechts stets alle diesem Ordner untergeordneten
+                Datensätze anzeigen.
+                <br>
+                In der Ergebnisansicht auf der zweiten Ebene (zu Erreichen unter dem Link oberhalb der Karte „Alle
+                Datensätze anzeigen“) bieten die unterschiedlichen Facetten die Möglichkeit, die Datensätze nach
+                bestimmten Kriterien (z.B. Abbildung(en) vorhanden, Ort, Literatur, genauere Datierung, etc.) weiter
+                zu filtern und miteinander zu kombinieren. Um von einem ausgewählten Datensatz wieder in die Kataloge
+                zurück zu gehen, klicken Sie auf die Verknüpfung mit dem entsprechenden Katalogeintrag.
+                <br>
+                Darüber hinaus können Sie nach bestimmten Begriffen in den Projektdatensätzen suchen, alle Einträge
+                des Projekts anzeigen oder die kartographische Suchmöglichkeit aller aufgenommenen und
+                georeferenzierten Werkstattfundstellen nutzen. Auch bei der Suchoption mit Hilfe der Karte stehen
+                Ihnen alle vorhandenen Filter zur Verfügung.
             </p>
+            <p>
+                <con10t-catalog-tree catalog-id="294" style="width:49%; float:left"></con10t-catalog-tree>
+            </p>
+            <p>
+                <con10t-catalog-tree catalog-id="297" style="width:49%; float:right"></con10t-catalog-tree>
+            </p>
+            <div class="clearfix"></div>
 
             <h2 class="con10t-toc-entry">Mitarbeiter</h2>
             <p>
                 Leitung: M. Bentz, M. Heinzelmann<br>
-                Administration &amp; technische Konzeption: U. Stockinger<br>
-                Technische Umsetzung: D. Neugebauer<br>
-                Datenerhebung/-eingabe: P. Biedermann, M.-H. Grunwald, T. Kerig, L. Kröger, A. Miß, C. Recko, E. R.
-                M. Schmidt, D. Schyle, R. Da Vela, C. Widow
+                Administration & technische Konzeption: U. Stockinger<br>
+                Technische Umsetzung: P. Jominet, D. Neugebauer<br>
+                Datenerhebung/-eingabe: P. Biedermann, M.-H. Grunwald, S. Hillmann-Müller, T. Kerig, L. Kreuzburg,
+                L. Kröger, A. Miß, C. Recko, R. Rütt, E. R. M. Schmidt, D. Schyle, L. Stein, R. Da Vela, C. Widow
             </p>
             <p>
                 <a href="http://www.cceh.uni-koeln.de/">

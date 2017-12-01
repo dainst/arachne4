@@ -7,16 +7,23 @@
 <div class="con10t-page teaserpage container">
     <div class="con10t-row">
         <div class="con10t-title">
-            <h1>
-                Craft production sites of pre-modern economies
-            </h1>
+            <h1>Craft production sites of pre-modern economies</h1>
         </div>
         <div class="con10t-sidebar">
-            <con10t-toc toc-heading="Übersicht"></con10t-toc>
-            <h3>Search within the project data</h3>
-            <a con10t-search-query="*&amp;fq=catalogIds:'92'">Show all datasets</a>
+            <con10t-toc toc-heading="Overview"></con10t-toc>
 
-            <con10t-search fq="catalogIds:92"></con10t-search>
+            <h3>Quicksearch</h3>
+            <div class="well">
+                <con10t-search fq="facet_kategorie:Bauwerke"
+                               search-placeholder="Search for...">
+                </con10t-search>
+                <br>
+                <a con10t-search-query
+                   class="btn btn-default btn-block">
+                    Show all datasets
+                </a>
+            </div>
+
             <h3>Map view</h3>
 
             <div ng-init="config = {
@@ -58,7 +65,8 @@
             <con10t-image src="/con10t/img/grako/D-DAI-ATH-Olympia-0120Bearb_2107915,01-small.jpg"
                           align="right" width="300"
                           alt="Personengruppe, darunter Wilhelm Dörpfeld, in der byzantinischen Kirche auf dem Areal der Phidiaswerkstatt">
-                Byzantinic church<br>at the Phidias production site
+                Byzantinic church<br>
+                at the Phidias production site
             </con10t-image>
 
             <p>
@@ -92,31 +100,37 @@
 
             <h2 class="con10t-toc-entry">Project Structure</h2>
             <p>
-                <con10t-catalog-tree catalog-id="294" style="width:80%; float:left"></con10t-catalog-tree>
+                The catalog entries were created as Arachne object datasets which were assigned to catalogs
+                according to the type of material groups and the culture groups. Clicking on a folder icon will
+                display any subfolders or records relating to the individual workshops, with detailed information on
+                these structures being accessible directly via the link. In addition, you can always use the magnifying
+                glass icon on the right to show all records that are subordinate to that folder.
+                <br>
+                In the results view on the second level (reachable by the link above the map "Show all datasets"), the
+                different facets offer the possibility to further filter and combine with each other of the records
+                according to certain criteria (eg, picture(s) available, location, literature, more accurate dating,
+                etc). To go back to the catalogs from a selected data record, click on the link with the corresponding
+                catalog entry.
+                <br>
+                In addition, you can search for specific terms in the project data records, display all entries of
+                the project or use the cartographic search option of all recorded and georeferenced workshop sites.
+                Furthermore the search option with the map has all available filters for you to use.
             </p>
             <p>
-                <con10t-catalog-tree catalog-id="297" style="width:80%; float:left"></con10t-catalog-tree>
+                <con10t-catalog-tree catalog-id="294" style="width:49%; float:left"></con10t-catalog-tree>
             </p>
-
-            <h2 class="con10t-toc-entry">Instructions for use</h2>
             <p>
-                The entries are created as object data sets in ARACHNE and arranged to a catalogue according to the
-                materials processed at the sites. Clicking on a folder symbol shows possible subfolders or data sets on
-                the individual workshops, which can be accessed directly to get detailed information on each site.
-                Besides, you can show all data sets within one folder by clicking on the magnifying glass on the right.
-                The search results can be further filtered according to various criteria (e.g. image(s) available or
-                not, location, publications). Furthermore, you may search for specific terms within the project’s data
-                sets, show all entries or use the cartographic search for all georeferenced records of craft production
-                sites.
+                <con10t-catalog-tree catalog-id="297" style="width:49%; float:right"></con10t-catalog-tree>
             </p>
+            <div class="clearfix"></div>
 
             <h2 class="con10t-toc-entry">Contributors</h2>
             <p>
-                Conception & direction: M. Bentz, M. Heinzelmann<br>
-                Coordination & technical design: U. Stockinger<br>
-                Technical implementation: D. Neugebauer<br>
-                Data acquisition/input: P. Biedermann, M.-H. Grunwald, T. Kerig, L. Kröger, A. Miß, C. Recko, E. R. M.
-                Schmidt, D. Schyle, R. Da Vela, C. Widow
+                Leitung: M. Bentz, M. Heinzelmann<br>
+                Administration & technische Konzeption: U. Stockinger<br>
+                Technische Umsetzung: P. Jominet, D. Neugebauer<br>
+                Datenerhebung/-eingabe: P. Biedermann, M.-H. Grunwald, S. Hillmann-Müller, T. Kerig, L. Kreuzburg,
+                L. Kröger, A. Miß, C. Recko, R. Rütt, E. R. M. Schmidt, D. Schyle, L. Stein, R. Da Vela, C. Widow
             </p>
 
             <p>
