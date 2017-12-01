@@ -49,6 +49,14 @@
                     },
                     "children": [
                         {
+                            "id": "fotoromcategories",
+                            "title": {
+                                "de": "Die Kategorien der Fotothek des DAI Rom",
+                                "en": "Categories of the DAI Rome photo archive"
+                            },
+                            "hidden": true
+                        },
+                        {
                             "id": "skulpturnegdairom",
                             "title": {
                                 "de": "Skulpturennegative DAI Rom",
