@@ -1,0 +1,108 @@
+<div class="con10t-page teaserpage container" style="margin-top: 20px;">
+
+    <div class="con10t-row">
+
+        <div class="con10t-title">
+            <h1>con10t-Widgets im Überblick</h1>
+        </div>
+
+        <div class="con10t-sidebar">
+            <con10t-toc toc-heading="Widgetübersicht"></con10t-toc>
+
+            <h3>Schnellsuche</h3>
+            <div class="well">
+                <con10t-search search-placeholder="Suche..."></con10t-search>
+                <br>
+                <a con10t-search-query
+                   class="btn btn-default btn-block">
+                    Alle Projekt Datensätze anzeigen
+                </a>
+                <br>
+                <a con10t-search-query="connectedEntities:5447718"
+                   class="btn btn-default btn-block">
+                    Verknüpfte Entities anzeigen
+                </a>
+            </div>
+
+            <h3>Katalogsuche</h3>
+            <div class="well">
+                <con10t-search search-placeholder="Suche im Katalog..."
+                               catalog-id="147">
+                </con10t-search>
+                <br>
+                <a con10t-search-catalog="147"
+                   class="btn btn-default btn-block">
+                    Alle Katalog Objekte anzeigen
+                </a>
+            </div>
+        </div>
+
+        <div class="con10t-content">
+            <h2 class="con10t-toc-entry">Zugriffsbeschränkung: con10t-show-if</h2>
+            <con10t-show-if dataset-group="SyrianHeritage">
+                <div style="height: 100px;">
+                    Lorem Arachne marshals reenter soldiers, pourpoint comous ecumenists overexerting hunchbacked,
+                    isosceles rhapsodize. Swimsuits nonwhites, buildups clothbound straightforwardnesses numismatist
+                    calyx canvaslike triforium limiest Evaporation sopping outspans picaresque ceders materially
+                    acephalous shelling, rodsman irreproducibilities! Polarizations elatives convenient leporids,
+                    unpredictables gage, richening murthered rimesters daringness! Faithlessly partridgeberries
+                    sensuous iller scurfy pericranium aboulia toadstool roofed, tritones.
+                </div>
+            </con10t-show-if>
+
+
+            <h2 class="con10t-toc-entry"  style="margin-top: .6em">Link zu Datensatz: con10t-item</h2>
+            <p><a con10t-item="5447718">Zu der Test Entity</a></p>
+
+
+            <h2 class="con10t-toc-entry" style="margin-top: .6em">Weltkarte</h2>
+            <div ng-init="config = {
+                    clustered: false,
+                    menuFacetsAllow: [
+                        'facet_bestandsname'
+                    ],
+                    facetsSelect: [
+                        {
+                            key: 'facet_bestandsname',
+                            value: 'Syrian-Heritage-Archive-Project'
+                        }
+                    ]
+                }"></div>
+            <div con10t-map
+                 id="map"
+                 limit="200"
+                 overlays="config.overlays"
+                 facets-select="config.facetsSelect"
+                 lat="35.514040"
+                 lng="38.972066"
+                 zoom="5"
+                 style="height: 500px">
+            </div>
+
+
+            <h2 class="con10t-toc-entry" style="margin-top: .6em">Katalogbaum: con10t-catalog-tree</h2>
+            <con10t-catalog-tree catalog-id="147"></con10t-catalog-tree>
+
+
+            <h2 class="con10t-toc-entry" style="margin-top: .6em">Bildwidget: con10t-image</h2>
+            <div style="float: left">
+                <p>Bildanzeige per Arachne-ID</p>
+                <con10t-image entity-id="1926835" width="250">Portrait of a<br>julio-claudian prince</con10t-image>
+            </div>
+            <div style="float: left; margin-left: 1em">
+                <p>Bildanzeige per URL</p>
+                <con10t-image src="/con10t/img/hinkel/hinkel-ams_01.png" width="250"></con10t-image>
+            </div>
+            <div class="clearfix"></div>
+
+
+            <h2 class="con10t-toc-entry" style="margin-top: .6em">Link zu anderem Projekt: con10t-page</h2>
+            <a con10t-page="widgetsdemo">Widgetsdemo</a>
+
+
+            <h2 class="con10t-toc-entry"  style="margin-top: .6em">Baumdarstellung: con10t-tree</h2>
+            <con10t-tree fq="facet_bestandsname:Archiv-Friedrich-W-Hinkel"
+                         wildcard-facet="facet_subkategorie"></con10t-tree>
+        </div>
+    </div>
+</div>
