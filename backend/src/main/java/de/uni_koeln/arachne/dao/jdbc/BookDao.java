@@ -1,15 +1,15 @@
 package de.uni_koeln.arachne.dao.jdbc;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.dao.DataAccessException;
+//import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import de.uni_koeln.arachne.service.SimpleSQLService;
+//import de.uni_koeln.arachne.service.SimpleSQLService;
 
-import javax.sql.DataSource;
+//import javax.sql.DataSource;
 
 // TODO JavaDoc class description.
 /**
@@ -21,10 +21,10 @@ import javax.sql.DataSource;
 @Repository("BookDao")
 public class BookDao extends SQLDao {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BookDao.class);
+//    private static final Logger LOGGER = LoggerFactory.getLogger(BookDao.class);
 
-    @Autowired
-    private transient SimpleSQLService simpleSQLService;
+//    @Autowired
+//    private transient SimpleSQLService simpleSQLService;
 
     /**
      * Gets the name of the folder where the TEI-document for an entity is stored.
