@@ -33,14 +33,25 @@ public class JSONUtil {
 		return MAPPER.getNodeFactory().objectNode();
 	}
 
+
 	/**
-	 * Function to 'repair' invalid JSON. It tries to fix unparsable JSON by escaping special chars in string values, adding 
-	 * missing curly braces and trying to at least get all the values before the value that caused the parse exception. It only 
-	 * meant for simple JSON of the form {"key1":"value1","key2":"value2",etc.}.  
+	 * because they cause trouble
+	 * @param string
+	 * @return
+	 */
+	public static String removeWindowsLinebreaks(final String string) {
+		return string.replaceAll("\\r\\n", "\n");
+	}
+
+	/**
+	 * Function to 'repair' invalid JSON. It tries to fix unparsable JSON by escaping special chars in string values, adding
+	 * missing curly braces and trying to at least get all the values before the value that caused the parse exception. It only
+	 * meant for simple JSON of the form {"key1":"value1","key2":"value2",etc.}.
 	 * @param invalidJSON The unparsable JSON.
 	 * @return The 'repaired' JSON.
 	 */
-	public static String fixJson(final String invalidJSON) {
+	public static String fixJson(String invalidJSON) {
+		invalidJSON = removeWindowsLinebreaks(invalidJSON);
 		StringBuilder result = new StringBuilder("{");
 		if (invalidJSON.startsWith(JSON_START)) {
 			final List<Integer> separators = new ArrayList<>();
