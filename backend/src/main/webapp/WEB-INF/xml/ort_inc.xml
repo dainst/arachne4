@@ -12,7 +12,7 @@
     <field datasource=".InvNr" prefix="Inv.-Nr. " />
     <field datasource=".AltInvNr" prefix="Alte Inv.-Nr. " />
     <field datasource=".ArtOrtsangabe" search="Aufbewahrung Automatisch erstellt" replace="Aufbewahrungsort" prefix="&lt;br/&gt;Art der Ortsangabe: " />
-    <field datasource=".AufbewahrungVon" prefix="&lt;br/&gt;Ortsangabe von: " trimEnd=" " />
-    <field datasource=".AufbewahrungBis" prefix=" bis: " trimEnd=" " />
+    <field datasource=".AufbewahrungVonJahr" prefix="&lt;br/&gt;Ortsangabe von: " trimEnd=" " />
+    <field datasource=".AufbewahrungBisJahr" prefix=" bis: " trimEnd=" " />
   </context>
 </includeSection>

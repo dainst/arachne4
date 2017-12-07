@@ -286,8 +286,12 @@ public class ResponseFactory {
 				final String latitude = link.getFieldFromFields("ort.Latitude");
 				final String longitude = link.getFieldFromFields("ort.Longitude");
 				final String gazetteerId = link.getFieldFromFields("ort.Gazetteerid");
-				final String storageFrom = link.getFieldFromFields("ort.AufbewahrungVon");
-				final String storageTo = link.getFieldFromFields("ort.AufbewahrungBis");
+				final String storageFromDay = link.getFieldFromFields("ort.AufbewahrungVonTag");
+				final String storageFromMonth = link.getFieldFromFields("ort.AufbewahrungVonMonat");
+				final String storageFromYear = link.getFieldFromFields("ort.AufbewahrungVonJahr");
+				final String storageToDay = link.getFieldFromFields("ort.AufbewahrungBisTag");
+				final String storageToMonth = link.getFieldFromFields("ort.AufbewahrungBisMonat");
+				final String storageToYear = link.getFieldFromFields("ort.AufbewahrungBisJahr");
 
 				if (!StrUtils.isEmptyOrNull(placeName)) {
 					final Place place = new Place(placeName);
@@ -300,11 +304,23 @@ public class ResponseFactory {
 					if (gazetteerId != null) {
 						place.setGazetteerId(Long.parseLong(gazetteerId));
 					}
-                    if(!StrUtils.isEmptyOrNull(storageFrom)) {
-						place.setStorageFrom(storageFrom);
+                    if(!StrUtils.isEmptyOrNull(storageFromDay)) {
+						place.setStorageFromDay(Integer.parseInt(storageFromDay));
 					}
-                    if(!StrUtils.isEmptyOrNull(storageTo)) {
-						place.setStorageTo(storageTo);
+                    if(!StrUtils.isEmptyOrNull(storageFromMonth)) {
+						place.setStorageFromMonth(Integer.parseInt(storageFromMonth));
+					}
+                    if(!StrUtils.isEmptyOrNull(storageFromYear)) {
+                        place.setStorageFromYear(Integer.parseInt(storageFromYear));
+					}
+                    if(!StrUtils.isEmptyOrNull(storageToDay)) {
+						place.setStorageToDay(Integer.parseInt(storageToDay));
+					}
+                    if(!StrUtils.isEmptyOrNull(storageToMonth)) {
+						place.setStorageToMonth(Integer.parseInt(storageToMonth));
+					}
+                    if(!StrUtils.isEmptyOrNull(storageToYear)) {
+						place.setStorageToYear(Integer.parseInt(storageToYear));
 					}
                     places.add(place);
 				}
@@ -313,7 +329,8 @@ public class ResponseFactory {
 			try {
     			Collections.sort(places, new Comparator<Place>() {
     			    public int compare(Place p1, Place p2) {
-    			        return p1.getStorageFrom().compareTo(p2.getStorageFrom());
+//    			        return p1.getStorageFromYear().compareTo(p2.getStorageFromYear());
+    			        return p1.getStorageFromYear() > p2.getStorageFromYear()? 1 : 0; //TODO
     			    }
     			});
 			} catch (NullPointerException e) {
