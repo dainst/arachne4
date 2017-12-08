@@ -79,7 +79,7 @@ public class CatalogEntryDao extends SQLDao {
 			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryFull);
 			if(result != null) {
                 setAllSuccessors(result);
-                result.setChildren(getChildrenByParentId(result.getId(), this::mapCatalogEntryDirectChildsOnly));
+                result.setChildren(getChildrenByParentId(result.getId(), this::mapCatalogEntryNoChilds));
             }
 			// TODO implement limiting at query time
 			if (offset > 0) {
