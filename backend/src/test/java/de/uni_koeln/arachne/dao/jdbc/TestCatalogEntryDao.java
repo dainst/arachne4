@@ -473,6 +473,7 @@ public class TestCatalogEntryDao {
 		catalogEntry.setLabel("some new label");
 		catalogEntry.setText("some text");
         catalogEntry.setTotalChildren(3);
+		catalogEntry.setAllSuccessors(3);
 
 		catalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
 
@@ -489,6 +490,7 @@ public class TestCatalogEntryDao {
 		catalogEntry.setLabel("updated root of catalog 1 test label");
 		catalogEntry.setText("some text");
         catalogEntry.setTotalChildren(3);
+        catalogEntry.setAllSuccessors(4);
 
 		catalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
 
@@ -622,6 +624,7 @@ public class TestCatalogEntryDao {
 		catalogEntry.setIndexParent(2);
 		catalogEntry.setLabel("child test label level 1 No. 2");
         catalogEntry.setTotalChildren(1);
+        catalogEntry.setAllSuccessors(1);
 
         CatalogEntry savedCatalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
 
@@ -657,6 +660,7 @@ public class TestCatalogEntryDao {
 		catalogEntry.setIndexParent(17);
 		catalogEntry.setLabel("child test label level 1 No. 2");
 		catalogEntry.setTotalChildren(1);
+        catalogEntry.setAllSuccessors(1);
 
         CatalogEntry savedCatalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
 
