@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
 
+import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -79,7 +80,8 @@ public class CatalogEntryDao extends SQLDao {
 			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryFull);
 			if(result != null) {
                 setAllSuccessors(result);
-                result.setChildren(getChildrenByParentId(result.getId(), this::mapCatalogEntryNoChilds));
+                for(CatalogEntry c : result.getChildren())
+                    c.setChildren(null);
             }
 			// TODO implement limiting at query time
 			if (offset > 0) {
