@@ -490,7 +490,7 @@ public class TestCatalogEntryDao {
 		catalogEntry.setLabel("updated root of catalog 1 test label");
 		catalogEntry.setText("some text");
         catalogEntry.setTotalChildren(3);
-        catalogEntry.setAllSuccessors(4);
+        catalogEntry.setAllSuccessors(5);
 
 		catalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
 
