@@ -307,7 +307,7 @@ public class CatalogController {
 	}
 
 	/**
-	 * Handles http POST request for <code>/catalog/create</code>.
+	 * Handles http POST request for <code>/catalog</code>.
 	 * Creates a catalog and persists it in the DB. 
 	 * Returns the catalog created and 200 if the action is permitted. Returns 403 if no user is signed in and 422 if 
 	 * the catalog could not be created. 
