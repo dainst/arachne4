@@ -521,10 +521,12 @@ public class TestCatalogDao {
 		root.setLabel("new root label");
 		root.setText("some new text");
         root.setTotalChildren(2);
+		root.setAllSuccessors(2);
 
 		CatalogEntry child1 = new CatalogEntry();
 		child1.setLabel("first child of root node");
 		child1.setTotalChildren(1);
+		child1.setAllSuccessors(1);
 
 		CatalogEntry subChild = new CatalogEntry();
 		subChild.setLabel("child of child1");

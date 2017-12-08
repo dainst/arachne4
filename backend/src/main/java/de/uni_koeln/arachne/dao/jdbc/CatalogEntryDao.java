@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
 
+import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -69,12 +70,19 @@ public class CatalogEntryDao extends SQLDao {
 		final String sqlQuery = "SELECT * from catalog_entry WHERE id = " + catalogEntryId;
 		if (full) {
 			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryFull);
+			if(result != null)
+			    setAllSuccessors(result);
 			return result;
 		} else {
 			if (limit == 0) {
 				return queryForObject(sqlQuery, this::mapCatalogEntryNoChilds);
 			}
-			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryDirectChildsOnly);
+			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryFull);
+			if(result != null) {
+                setAllSuccessors(result);
+                for(CatalogEntry c : result.getChildren())
+                    c.setChildren(null);
+            }
 			// TODO implement limiting at query time
 			if (offset > 0) {
 				final List<CatalogEntry> children = result.getChildren();
@@ -300,7 +308,6 @@ public class CatalogEntryDao extends SQLDao {
 			if (oldEntry != null) {
 				newCatalogEntry.setPath(oldEntry.getPath());
 				newCatalogEntry.setTotalChildren(oldEntry.getTotalChildren());
-				//newCatalogEntry.setAllSuccessors(oldEntry.getAllSuccessors());
 				update(con -> {
 					final String sql = "UPDATE catalog_entry SET "
 							+ "arachne_entity_id = ?, label = ?, text = ? "
@@ -388,7 +395,6 @@ public class CatalogEntryDao extends SQLDao {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
         final List<CatalogEntry> children = getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryNoChilds);
         setTotalChildren(catalogEntry, children);
-        //setAllSuccessors(catalogEntry);
 		return catalogEntry;
 	}
 	
@@ -403,7 +409,6 @@ public class CatalogEntryDao extends SQLDao {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
         final List<CatalogEntry> children = getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryFull);
         setTotalChildren(catalogEntry, children);
-        //setAllSuccessors(catalogEntry);
 		return catalogEntry;
 	}
 	
@@ -418,7 +423,6 @@ public class CatalogEntryDao extends SQLDao {
 	public CatalogEntry mapCatalogEntryNoChilds(ResultSet rs, int rowNum) throws SQLException {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
 		catalogEntry.setTotalChildren(getChildrenSizeByParentId(catalogEntry.getId()));
-		//catalogEntry.setAllSuccessors(setAllSuccessors(catalogEntry));
 		return catalogEntry;
 	}
 
@@ -443,16 +447,19 @@ public class CatalogEntryDao extends SQLDao {
     }
 
     private int setAllSuccessors(CatalogEntry catalogEntry) {
-        catalogEntry.setChildren(getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryDirectChildsOnly));
-        int successorCount = 0;
-        if (catalogEntry.hasChildren())
-            for (CatalogEntry i : catalogEntry.getChildren()) {
-                if (i.hasChildren())
-                    successorCount += setAllSuccessors(i);
-                else
-                    successorCount += 1;
-            }
-        catalogEntry.setAllSuccessors(successorCount);
-        return successorCount;
+		if(catalogEntry != null) {
+			int successorCount = 0;
+			if (catalogEntry.hasChildren())
+				for (CatalogEntry i : catalogEntry.getChildren()) {
+					if (i.hasChildren())
+						successorCount += setAllSuccessors(i);
+					else
+						successorCount += 1;
+				}
+			catalogEntry.setAllSuccessors(successorCount);
+			return successorCount;
+		}
+		else
+			return 0;
     }
 }
