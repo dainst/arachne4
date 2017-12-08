@@ -25,9 +25,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.network.ArachneRestTemplate;
-import sun.rmi.runtime.Log;
 
-import javax.xml.bind.annotation.XmlType;
 
 /**
  * Gets the translations lazily from transl8 and offers translation functionality.</br>

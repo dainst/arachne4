@@ -30,7 +30,6 @@ import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.testconfig.TestData;
 import de.uni_koeln.arachne.util.EntityId;
-import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 @RunWith(MockitoJUnitRunner.class)

@@ -71,7 +71,7 @@ public class XmlConfigUtil implements ServletContextAware {
 
     private transient final Map<String, Set<String>> facets = new HashMap<>();
 
-    private transient Map<String, Map<String, SearchResultFacet>> facetCache = new HashMap();
+    private transient Map<String, Map<String, SearchResultFacet>> facetCache = new HashMap<String, Map<String, SearchResultFacet>>();
 
     @Autowired
     private transient Transl8Service ts;
@@ -413,7 +413,7 @@ public class XmlConfigUtil implements ServletContextAware {
     public Set<String> getFacetsFromXMLFile(final String type) {
         Set<String> cachedFacets = facets.get(type);
         if (cachedFacets == null) {
-            final Map<String, SearchResultFacet> facetMap = new HashMap();
+            final Map<String, SearchResultFacet> facetMap = new HashMap<String, SearchResultFacet>();
             final Set<String> facetNameList = new HashSet<>();
 
             final Document document = getDocument(type);

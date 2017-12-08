@@ -107,7 +107,6 @@ public class ContextService {
 	 * @param parent The dataset to add the images to.
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
-	@SuppressWarnings("unchecked")
 	private void addContextImages(final Dataset parent, final String lang) throws Transl8Exception {
 		// add book cover image
 		if ("buch".equals(parent.getArachneId().getTableName())) {
