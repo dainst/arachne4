@@ -69,15 +69,18 @@ public class CatalogEntryDao extends SQLDao {
 		final String sqlQuery = "SELECT * from catalog_entry WHERE id = " + catalogEntryId;
 		if (full) {
 			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryFull);
-			setAllSuccessors(result);
+			if(result != null)
+			    setAllSuccessors(result);
 			return result;
 		} else {
 			if (limit == 0) {
 				return queryForObject(sqlQuery, this::mapCatalogEntryNoChilds);
 			}
 			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryFull);
-            setAllSuccessors(result);
-            result.setChildren(getChildrenByParentId(result.getId(), this::mapCatalogEntryDirectChildsOnly));
+			if(result != null) {
+                setAllSuccessors(result);
+                result.setChildren(getChildrenByParentId(result.getId(), this::mapCatalogEntryDirectChildsOnly));
+            }
 			// TODO implement limiting at query time
 			if (offset > 0) {
 				final List<CatalogEntry> children = result.getChildren();
@@ -442,15 +445,19 @@ public class CatalogEntryDao extends SQLDao {
     }
 
     private int setAllSuccessors(CatalogEntry catalogEntry) {
-        int successorCount = 0;
-        if (catalogEntry.hasChildren())
-            for (CatalogEntry i : catalogEntry.getChildren()) {
-                if (i.hasChildren())
-                    successorCount += setAllSuccessors(i);
-                else
-                    successorCount += 1;
-            }
-        catalogEntry.setAllSuccessors(successorCount);
-        return successorCount;
+		if(catalogEntry != null) {
+			int successorCount = 0;
+			if (catalogEntry.hasChildren())
+				for (CatalogEntry i : catalogEntry.getChildren()) {
+					if (i.hasChildren())
+						successorCount += setAllSuccessors(i);
+					else
+						successorCount += 1;
+				}
+			catalogEntry.setAllSuccessors(successorCount);
+			return successorCount;
+		}
+		else
+			return 0;
     }
 }
