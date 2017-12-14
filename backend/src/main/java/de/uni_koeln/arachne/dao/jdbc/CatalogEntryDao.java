@@ -173,8 +173,6 @@ public class CatalogEntryDao extends SQLDao {
 	public CatalogEntry[] saveCatalogEntries(final CatalogEntry[] newCatalogEntries) {
 		CatalogEntry[] retCatalogEntries = new CatalogEntry[newCatalogEntries.length];
 		for(int i = newCatalogEntries.length-1; i >= 0; i--) {
-		    LOGGER.info("5: "+i);
-		    LOGGER.info(""+newCatalogEntries[i].getLabel());
 			retCatalogEntries[i] = saveCatalogEntry(newCatalogEntries[i]);
 		}
 		return retCatalogEntries;

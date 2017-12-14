@@ -176,27 +176,21 @@ public class CatalogController {
 		final User user = userRightsService.getCurrentUser();
 		final CatalogEntry catalogEntryParent;
 		final Catalog catalog;
-		LOGGER.info("Test {}", (Object) catalogEntries);
+
 		if (userRightsService.isSignedInUser()) {
-		    LOGGER.info("0");
 			if (catalogEntries.length >= 1 && catalogEntries[0].getParentId() != null) {
-                LOGGER.info("1");
 				catalogEntryParent = catalogEntryDao.getById(catalogEntries[0].getParentId());
 				if (catalogEntryParent == null) {
-                    LOGGER.info("2");
 					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 				} else {
-                    LOGGER.info("3");
 					catalog = catalogDao.getById(catalogEntryParent.getCatalogId());
 					if (catalog.isCatalogOfUserWithId(user.getId())) {
-                        LOGGER.info("4");
 						for(int i = 0; i < catalogEntries.length; i++) {
 							catalogEntries[i].setId(null);
                             catalogEntries[i].setParentId(catalogEntryParent.getId());
                             catalogEntries[i].setCatalogId(catalog.getId());
 						}
 						try {
-                            LOGGER.info("5");
 							return ResponseEntity.ok(catalogEntryDao.saveCatalogEntries(catalogEntries));
 						} catch (Exception e) {
 							LOGGER.error("Failed to save/update catalog entry.", e);
@@ -207,10 +201,6 @@ public class CatalogController {
 					}
 				}
 			} else {
-			    LOGGER.info("Array: {}", catalogEntries);
-                LOGGER.info("Length: {}", catalogEntries.length);
-                if(catalogEntries.length > 0)
-                    LOGGER.info("{}", catalogEntries[0].getParentId());
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 		} else {
