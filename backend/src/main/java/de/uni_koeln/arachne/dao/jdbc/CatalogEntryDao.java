@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
 
+import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -31,9 +32,9 @@ public class CatalogEntryDao extends SQLDao {
 
 	@Autowired
 	private transient ArachneEntityDao arachneEntityDao;
-	
+
 	private transient UserRightsService userRightsService;
-	
+
 	/**
 	 * Injects the {@link UserRightsService}.
 	 * This is needed to inject a mock for testing. It should work without this setter but it does not (bug in Spring).
@@ -43,9 +44,9 @@ public class CatalogEntryDao extends SQLDao {
 	public void setUserRightsService(final UserRightsService userRightsService) {
 		this.userRightsService = userRightsService;
 	}
-	
+
 	/**
-	 * Convenience method to retrieve catalog entries by id. Retrieves only the direct children of the 
+	 * Convenience method to retrieve catalog entries by id. Retrieves only the direct children of the
 	 * {@link CatalogEntry}.
 	 * @param catalogEntryId The catalog entry id
 	 * @return The catalog entry.
@@ -53,14 +54,14 @@ public class CatalogEntryDao extends SQLDao {
 	public CatalogEntry getById(final long catalogEntryId) {
 		return getById(catalogEntryId, false, -1, 0);
 	}
-	
+
 	/**
 	 * Retrieves a {@link CatalogEntry} from the DB. The parameters are used to restrict the children.
 	 * @param catalogEntryId The entries id.
 	 * @param full If all children of the entry should be retrieved or only the direct children of the entry.
-	 * @param limit If <code>full = false</code> then limit restricts the number of direct children to the desired 
+	 * @param limit If <code>full = false</code> then limit restricts the number of direct children to the desired
 	 * value (-1 for no limit).
-	 * @param offset If <code>full = false</code> and <code>limit > 0</code> then offset gives an offset into the 
+	 * @param offset If <code>full = false</code> and <code>limit > 0</code> then offset gives an offset into the
 	 * direct children list.
 	 * @return The {@link CatalogEntry} with the given id.
 	 */
@@ -104,7 +105,7 @@ public class CatalogEntryDao extends SQLDao {
 			return result;
 		}
 	}
-	
+
 	/**
 	 * Retrieves all direct children of a {@link CatalogEntry}.
 	 * @param parentId The entry id.
@@ -120,7 +121,7 @@ public class CatalogEntryDao extends SQLDao {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Gets the number of children of a {@link CatalogEntry}.
 	 * @param parentId The entry id.
@@ -132,7 +133,7 @@ public class CatalogEntryDao extends SQLDao {
 		final Integer result = queryForInt(sqlQuery);
 		return result;
 	}
-	
+
 	/**
 	 * Retrieves a list of <code>CatalogEntries</code> that are connected to an Arachne entity.
 	 * @param entityId The arachne entity id of interest.
@@ -146,7 +147,7 @@ public class CatalogEntryDao extends SQLDao {
 	}
 
 	/**
-	 * Retrieves the extended catalog entries for a given entity id. 
+	 * Retrieves the extended catalog entries for a given entity id.
 	 * @param entityId The entity id.
 	 * @return A list of {@link CatalogEntryExtended}.
 	 */
@@ -162,7 +163,23 @@ public class CatalogEntryDao extends SQLDao {
 		List<CatalogEntryExtended> result = query(sqlQuery, this::mapCatalogEntryInfo);
 		return result;
 	}
-	
+
+    /**
+     * Persists a (@link CatalogEntry[]) to the DB.
+     * @param newCatalogEntries The
+     * @return
+     */
+	@Transactional
+	public CatalogEntry[] saveCatalogEntries(final CatalogEntry[] newCatalogEntries) {
+		CatalogEntry[] retCatalogEntries = new CatalogEntry[newCatalogEntries.length];
+		for(int i = newCatalogEntries.length-1; i >= 0; i--) {
+		    LOGGER.info("5: "+i);
+		    LOGGER.info(""+newCatalogEntries[i].getLabel());
+			retCatalogEntries[i] = saveCatalogEntry(newCatalogEntries[i]);
+		}
+		return retCatalogEntries;
+	}
+
 	/**
 	 * Persists a {@link CatalogEntry} to the DB.
 	 * @param newCatalogEntry The new catalog entry.

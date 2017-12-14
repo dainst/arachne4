@@ -160,49 +160,61 @@ public class CatalogController {
 
 	/**
 	 * Handles HTTP POST requests for <code>catalog/entry</code>.
-	 * Adds/updates the posted catalog entry to the corresponding catalog.
-	 * Returns an HTTP status code 403 if the user is not allowed to modify the catalog the entry belongs to or 400 if 
-	 * the posted catalog entry is not semantically correct.
-	 * @param catalogEntry The catalog entry.
-	 * @return A {@link ResponseEntity} containing the persisted entry or the corresponding error code on failure. 
+	 * Adds/updates the posted catalog entries to the corresponding catalog.
+	 * Returns an HTTP status code 403 if the user is not allowed to modify the catalog the entries belong to or 400 if
+	 * the posted catalog entries are not semantically correct.
+	 * @param catalogEntries The catalog entries.
+	 * @return A {@link ResponseEntity} containing the persisted entry or the corresponding error code on failure.
 	 */
-	@RequestMapping(value = "entry", 
+	@RequestMapping(value = "entry",
 			method = RequestMethod.POST,
 			consumes = CustomMediaType.APPLICATION_JSON_UTF8_VALUE,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
-	public @ResponseBody ResponseEntity<CatalogEntry> handleCatalogEntryCreateRequest(
-			@RequestBody final CatalogEntry catalogEntry) {
-		
+	public @ResponseBody ResponseEntity<CatalogEntry[]> handleCatalogEntriesCreateRequest(
+			@RequestBody final CatalogEntry[] catalogEntries) {
+
 		final User user = userRightsService.getCurrentUser();
 		final CatalogEntry catalogEntryParent;
 		final Catalog catalog;
-		
+		LOGGER.info("Test {}", (Object) catalogEntries);
 		if (userRightsService.isSignedInUser()) {
-			if (catalogEntry.getParentId() != null) {
-				catalogEntryParent = catalogEntryDao.getById(catalogEntry.getParentId());
+		    LOGGER.info("0");
+			if (catalogEntries.length >= 1 && catalogEntries[0].getParentId() != null) {
+                LOGGER.info("1");
+				catalogEntryParent = catalogEntryDao.getById(catalogEntries[0].getParentId());
 				if (catalogEntryParent == null) {
-					return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
+                    LOGGER.info("2");
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 				} else {
+                    LOGGER.info("3");
 					catalog = catalogDao.getById(catalogEntryParent.getCatalogId());
 					if (catalog.isCatalogOfUserWithId(user.getId())) {
-						catalogEntry.setId(null);
-						catalogEntry.setParentId(catalogEntryParent.getId());
-						catalogEntry.setCatalogId(catalog.getId());
+                        LOGGER.info("4");
+						for(int i = 0; i < catalogEntries.length; i++) {
+							catalogEntries[i].setId(null);
+                            catalogEntries[i].setParentId(catalogEntryParent.getId());
+                            catalogEntries[i].setCatalogId(catalog.getId());
+						}
 						try {
-							return ResponseEntity.ok(catalogEntryDao.saveCatalogEntry(catalogEntry));
+                            LOGGER.info("5");
+							return ResponseEntity.ok(catalogEntryDao.saveCatalogEntries(catalogEntries));
 						} catch (Exception e) {
 							LOGGER.error("Failed to save/update catalog entry.", e);
-							return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
+							return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 						}
 					} else {
-						return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
+						return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 					}
 				}
 			} else {
-				return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
+			    LOGGER.info("Array: {}", catalogEntries);
+                LOGGER.info("Length: {}", catalogEntries.length);
+                if(catalogEntries.length > 0)
+                    LOGGER.info("{}", catalogEntries[0].getParentId());
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 		} else {
-			return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 	}
 
