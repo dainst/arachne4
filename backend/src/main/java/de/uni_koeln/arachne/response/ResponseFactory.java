@@ -3,8 +3,6 @@ package de.uni_koeln.arachne.response;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -265,8 +263,6 @@ public class ResponseFactory {
 		// TODO make the place handling more consistent - needs changes to the db
 		Context placeContext = dataset.getContext("ort");
 
-		ArrayList<Place> places = new ArrayList<Place>();
-
 		if (placeContext != null) {
 			for (AbstractLink link: placeContext.getAllContexts()) {
 				final String city = link.getFieldFromFields("ort.Stadt");
@@ -286,8 +282,6 @@ public class ResponseFactory {
 				final String latitude = link.getFieldFromFields("ort.Latitude");
 				final String longitude = link.getFieldFromFields("ort.Longitude");
 				final String gazetteerId = link.getFieldFromFields("ort.Gazetteerid");
-				final String storageFrom = link.getFieldFromFields("ort.AufbewahrungVon");
-				final String storageTo = link.getFieldFromFields("ort.AufbewahrungBis");
 
 				if (!StrUtils.isEmptyOrNull(placeName)) {
 					final Place place = new Place(placeName);
@@ -300,27 +294,8 @@ public class ResponseFactory {
 					if (gazetteerId != null) {
 						place.setGazetteerId(Long.parseLong(gazetteerId));
 					}
-                    if(!StrUtils.isEmptyOrNull(storageFrom)) {
-						place.setStorageFrom(storageFrom);
-					}
-                    if(!StrUtils.isEmptyOrNull(storageTo)) {
-						place.setStorageTo(storageTo);
-					}
-                    places.add(place);
+					response.addPlace(place);
 				}
-			}
-			//Sort places by start date
-			try {
-    			Collections.sort(places, new Comparator<Place>() {
-    			    public int compare(Place p1, Place p2) {
-    			        return p1.getStorageFrom().compareTo(p2.getStorageFrom());
-    			    }
-    			});
-			} catch (NullPointerException e) {
-			    LOGGER.debug("Places object could not be sorted.");
-			}
-			for (Place place: places) {
-				response.addPlace(place);
 			}
 		}
 
@@ -362,8 +337,6 @@ public class ResponseFactory {
                 }
 			}
 		}
-
-
 
 		// add marbilder creation dates
 		if ("marbilder".equals(tableName)) {
