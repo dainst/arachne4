@@ -151,18 +151,18 @@ public class XmlConfigUtil implements ServletContextAware {
                 for (int index = 0; index < fieldList.size(); index++) {
                     final String field = fieldList.get(index);
                     int separatorIndex = field.indexOf(separator);
-                    if (field.startsWith(LINK_PREFIX) && separatorIndex > -1) {
-                        StringBuilder newValue = new StringBuilder(32).append("<a href=\"");
-                        newValue.append(link);
-                        newValue.append(field.substring(LINK_PREFIX.length(), separatorIndex));
-                        newValue.append("\" target=\"_blank\">");
-                        newValue.append(field.substring(separatorIndex + separator.length()));
-                        newValue.append("</a>");
-                        tempFieldList.add(newValue.toString());
-                    } else {
-                        tempFieldList.add(fieldList.get(index));
+	                    if (field.startsWith(LINK_PREFIX) && separatorIndex > -1) {
+	                        StringBuilder newValue = new StringBuilder(32).append("<a href=\"");
+	                        newValue.append(link);
+	                        newValue.append(field.substring(LINK_PREFIX.length(), separatorIndex));
+	                        newValue.append("\" target=\"_blank\">");
+	                        newValue.append(field.substring(separatorIndex + separator.length()));
+	                        newValue.append("</a>");
+	                        tempFieldList.add(newValue.toString());
+	                    } else {
+	                        tempFieldList.add(fieldList.get(index));
+	                    }
                     }
-                }
                 fieldList = tempFieldList;
             }
 
@@ -612,6 +612,7 @@ public class XmlConfigUtil implements ServletContextAware {
      */
     private String addContextFieldToFieldList(final Element element, final Namespace namespace, final FieldList fieldList, final int index
             ,final Dataset dataset, final String contextType, String separator, final String lang) {
+		
         final String initialValue = dataset.getFieldFromContext(contextType + element.getAttributeValue("datasource"), index);
 
         StringBuilder value = null;
@@ -944,6 +945,7 @@ public class XmlConfigUtil implements ServletContextAware {
             return document;
         } catch (JDOMException e) {
             LOGGER.error(e.getMessage());
+            LOGGER.error("JDOMException for file: " + filename);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         }

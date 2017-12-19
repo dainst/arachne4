@@ -282,8 +282,6 @@ public class ResponseFactory {
 				final String latitude = link.getFieldFromFields("ort.Latitude");
 				final String longitude = link.getFieldFromFields("ort.Longitude");
 				final String gazetteerId = link.getFieldFromFields("ort.Gazetteerid");
-				final String storageFrom = link.getFieldFromFields("ort.AufbewahrungVon");
-				final String storageTo = link.getFieldFromFields("ort.AufbewahrungBis");
 
 				if (!StrUtils.isEmptyOrNull(placeName)) {
 					final Place place = new Place(placeName);
@@ -295,12 +293,6 @@ public class ResponseFactory {
 					}
 					if (gazetteerId != null) {
 						place.setGazetteerId(Long.parseLong(gazetteerId));
-					}
-                    if(!StrUtils.isEmptyOrNull(storageFrom)) {
-						place.setStorageFrom(storageFrom);
-					}
-                    if(!StrUtils.isEmptyOrNull(storageTo)) {
-						place.setStorageTo(storageTo);
 					}
 					response.addPlace(place);
 				}
@@ -345,8 +337,6 @@ public class ResponseFactory {
                 }
 			}
 		}
-
-
 
 		// add marbilder creation dates
 		if ("marbilder".equals(tableName)) {

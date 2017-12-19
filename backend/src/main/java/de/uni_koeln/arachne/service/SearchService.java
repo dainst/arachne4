@@ -351,6 +351,9 @@ public class SearchService {
 			MultiBucketsAggregation aggregator = (MultiBucketsAggregation)aggregations.get(aggregationName);
 			// TODO find a better way to convert facet values
 
+
+
+
 			if (aggregationName.equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
 				for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
 					final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);

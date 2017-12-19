@@ -117,12 +117,6 @@
                     },
                     "gazetteerId":{
                         "type":"long"
-                    },
-                    "storageFrom":{
-                        "type":"date"
-                    },
-                    "storageTo":{
-                        "type":"date"
                     }
                 }
             },
