@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CeramEgypt Objects 2.0
+  a morphology
+-->
+<includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
+
+    <section>
+
+        <section labelKey="Functional Group">
+            <field datasource="morphology.Level1"/>
+        </section>
+
+        <section separator=" > " labelKey="Morphologiedetails">
+            <field datasource="morphology.Level2"/>
+            <field datasource="morphology.Level3"/>
+            <field datasource="morphology.Level4"/>
+            <field datasource="morphology.Level5"/>
+            <field datasource="morphology.Level6"/>
+        </section>
+
+        <section labelKey="Interne Typnummer" separator=", ">
+            <field datasource="mainabstract.GrabungsinterneTypennummer"/>
+            <field datasource="mainabstract.GrabungsinterneTypennummerSub"/>
+        </section>
+
+    </section>
+
+
+
+
+</includeSection>

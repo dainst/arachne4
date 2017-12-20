@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CeramEgypt Objects 2.0
+  a type of fabric
+-->
+<includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
+
+    <section>
+        <section labelKey="Name">
+            <field datasource="fabric.Name"/>
+        </section>
+
+        <section labelKey="AllgemeinerName">
+            <field datasource="fabric.CommonName"/>
+        </section>
+
+        <section labelKey="Kommentare">
+            <field datasource="fabric.Comments"/>
+        </section>
+
+        <section labelKey="Herkunft">
+            <field datasource="fabric.Origin"/>
+        </section>
+
+        <section labelKey="Machart">
+            <field datasource="fabricdescription.Manufacture"/>
+        </section>
+
+        <section labelKey="Härte">
+            <field datasource="fabricdescription.Hardness"/>
+        </section>
+
+        <section labelKey="Porösität">
+            <field datasource="fabricdescription.Porosity"/>
+        </section>
+
+        <section labelKey="Zoning">
+            <field datasource="fabricdescription.Zoning"/>
+        </section>
+
+        <section labelKey="Oberflächengefühl">
+            <field datasource="fabricdescription.SurfaceFeel"/>
+        </section>
+
+        <section labelKey="Freie Farbbeschreibung" separator=" ">
+            <field datasource="fabricdescription.ColourQualifierFreeVon"/>
+            <field datasource="fabricdescription.ColourFreeVon" postfix=" -"/>
+            <field datasource="fabricdescription.ColourQualifierFreeBis"/>
+            <field datasource="fabricdescription.ColourFreeBis"/>
+        </section>
+        <section labelKey="Farbe der Bruchstelle" separator=" ">
+            <field datasource="fabricdescription.ColourOfBreakQualifierVon"/>
+            <field datasource="fabricdescription.ColourOfBreakVon" postfix=" -"/>
+            <field datasource="fabricdescription.ColourOfBreakQualifierBis"/>
+            <field datasource="fabricdescription.ColourOfBreakBis"/>
+        </section>
+        <section labelKey="Farbe des Kerns" separator=" ">
+            <field datasource="fabricdescription.ColourOfCoreQualifierVon"/>
+            <field datasource="fabricdescription.ColourOfCoreVon" postfix=" - "/>
+            <field datasource="fabricdescription.ColourOfCoreQualifierBis"/>
+            <field datasource="fabricdescription.ColourOfCoreBis"/>
+        </section>
+        <section labelKey="Farbe der Oberfläche" separator=" ">
+            <field datasource="fabricdescription.ColourOfOutsideQualifierVon"/>
+            <field datasource="fabricdescription.ColourOfOutsideVon" postfix=" -"/>
+            <field datasource="fabricdescription.ColourOfOutsideQualifierBis"/>
+            <field datasource="fabricdescription.ColourOfOutsideBis"/>
+        </section>
+
+    </section>
+
+</includeSection>

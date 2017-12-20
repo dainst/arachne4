@@ -1,4 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CeramEgypt Objects 2.0
+  This represents a type of morphology
+  status: to be done
+-->
 <category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="morphology" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
   <display>
     <title>

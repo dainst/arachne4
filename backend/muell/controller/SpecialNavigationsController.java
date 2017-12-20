@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.uni_koeln.arachne.response.special_navigation.AbstractSpecialNavigationElement;
-import de.uni_koeln.arachne.response.special_navigation.CeramalexQuantifySpecialNavigationElement;
+//import de.uni_koeln.arachne.response.special_navigation.CeramalexQuantifySpecialNavigationElement;
 import de.uni_koeln.arachne.response.special_navigation.SpecialNavigationElementList;
 
 /**
@@ -29,7 +29,7 @@ import de.uni_koeln.arachne.response.special_navigation.SpecialNavigationElement
 public class SpecialNavigationsController {
 
 	//private static final Logger LOGGER = LoggerFactory.getLogger(SpecialNavigationsController.class);
-	
+
 	@Autowired
 	@Qualifier("ceramalexQuantifySpecialNavigationElement")
 	private transient CeramalexQuantifySpecialNavigationElement ceramalexQuantifySE;
