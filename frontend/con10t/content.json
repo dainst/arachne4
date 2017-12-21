@@ -708,6 +708,20 @@
             "de": "Tombrägel"
           },
           "hidden": true
+        },
+        {
+          "id": "ayamonte",
+          "title": {
+            "de": "Madrider Beiträge 37, Phönizische Nekropole von Ayamonte"
+          },
+          "hidden": true
+        },
+        {
+          "id": "databaseaksum1906",
+          "title": {
+            "de": "Die Deutsche Aksum-Expedition 1906"
+          },
+          "hidden": true
         }
       ]
     },
