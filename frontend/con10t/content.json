@@ -656,6 +656,20 @@
           "title": {
             "de": "S. Kielau, Terrakotten aus Pergamon. Tonfiguren und -objekte aus der Wohnstadt am Südhang der Akropolis und von weiteren Fundorten. Pergamenische Forschungen, Band 17. Erweiterter Online-Katalog (2017)"
           }
+        },
+        {
+          "id": "ayamonte",
+          "title": {
+            "de": "Madrider Beiträge 37, Phönizische Nekropole von Ayamonte"
+          },
+          "hidden": true
+        },
+        {
+          "id": "databaseaksum1906",
+          "title": {
+            "de": "Die Deutsche Aksum-Expedition 1906"
+          },
+          "hidden": true
         }
       ]
     },
@@ -706,20 +720,6 @@
           "id": "tombraegel",
           "title": {
             "de": "Tombrägel"
-          },
-          "hidden": true
-        },
-        {
-          "id": "ayamonte",
-          "title": {
-            "de": "Madrider Beiträge 37, Phönizische Nekropole von Ayamonte"
-          },
-          "hidden": true
-        },
-        {
-          "id": "databaseaksum1906",
-          "title": {
-            "de": "Die Deutsche Aksum-Expedition 1906"
           },
           "hidden": true
         }
