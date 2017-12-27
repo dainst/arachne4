@@ -7,13 +7,11 @@
 <category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="mainabstract" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
   <explicitContextualizers>fabricdescription</explicitContextualizers>
   <subtables>
-    <subtable connectFieldParent="bibid" connectFieldSubTable="001">quantities</subtable>
+    <!-- subtable connectFieldParent="bibid" connectFieldSubTable="001">quantities</subtable -->
     <subtable connectFieldParent="FS_FabricID" connectFieldSubTable="FS_FabricID">fabricdescription</subtable>
   </subtables>
   <display>
     <title>
-      <section><field datasource="isolatedsherd.SherdType" postfix="--" prefix="--" /></section>
-      <!--
       <section separator=" / ">
         <section separator=" - ">
           <field datasource="befund.Grabungsort"/>
@@ -32,23 +30,22 @@
         	<field datasource="quantities.TotalSherds" postfix=" sherds"/>
         </section>
       </section>
-      -->
+
     </title>
     <subtitle>
       <section labelKey="Unique Identifier">
-        <field datasource="isolatedsherd.SherdType" postfix="--" prefix="--" />
-        <!--<field datasource="Dataset.internalId"/>-->
+        <field datasource="Dataset.internalId"/>
       </section>
     </subtitle>
     <datasections>
 
+
       <!-- it will have this -->
       <section labelKey="Keramikfragment">
         <include type="isolatedsherd"></include>
-        <!-- TODO wo ist SherdType? -->
       </section>
 
-      <!-- OR this
+      <!-- OR this -->
       <section labelKey="Keramikkonvolut">
         <include type="quantities"></include>
       </section>
@@ -59,8 +56,8 @@
 
       <section labelKey="Fabrikat">
         <include type="fabric"></include>
-        < ! - - TODO einschlüsse - - >
-        < ! - - TODO munsel & andere Eigenschaften die fehlen - ->
+        <!-- TODO einschlüsse -->
+        <!-- TODO munsel & andere Eigenschaften die fehlen -->
       </section>
 
       <section labelKey="Befund">
@@ -68,12 +65,12 @@
       </section>
 
       <include type="datierung"/>
-      -->
+
     </datasections>
 
     <contextImages>
       <contextImage show="always">isolatedsherd</contextImage>
-      <!-- TODO better place for tose guys:
+      <!-- TODO better place for those guys:
       <contextImage show="always">fabricdescription</contextImage>
       contextImage show="always">morphology</contextImage>
       -->
@@ -84,6 +81,7 @@
 
 
   <facets>
+
     <include type="facet_kategorie"/>
     <include type="facet_datierung" />
     <!-- Context-Facets -->
@@ -142,5 +140,7 @@
         <field datasource=".Name"/>
       </context>
     </facet>
+
+
   </facets>
 </category>

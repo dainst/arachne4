@@ -6,7 +6,7 @@
       <field datasource="isolatedsherd.InventoryNumber"/>
     </section>
     <section labelKey="Typus">
-      <field datasource="isolatedsherd.SherdType" postfix="--" prefix="--" />
+      <field datasource="isolatedsherd.SherdType" />
     </section>
     <section labelKey="Durchmesser">
       <field datasource="isolatedsherd.Diameter" postfix="cm"/>
