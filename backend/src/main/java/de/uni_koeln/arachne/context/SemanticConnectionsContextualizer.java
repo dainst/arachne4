@@ -75,7 +75,15 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 		final Map<String, String> resultMap = new HashMap<String, String>();
 		for (final Map.Entry<String, String> entry: map.entrySet()) {
 			final String key = entry.getKey();
-			if (!(key.contains("PS_") && key.contains("ID")) && !(key.contains("Source")) && !(key.contains("Type"))) {
+			/**
+			 * TODO
+			 * paf: if auskommentiert. schadet es wirklich wenn diese Felder nachher im Dataset drin sind? vllt will man,
+			 * und sei es nur zu debug zwecken, die anzeigen?!
+			 * mindestens die type= abfrage müsste raus, type ist etwas das in vielen tabellennamen vorkommen kann
+			 *
+			 * 2. frage: on OSX? das dürfte jetzt auch egal sein, wo wir alle mit Linux entwicklen?
+			 */
+			//if (!(key.contains("PS_") && key.contains("ID")) && !(key.contains("Source")) && !(key.contains("Type"))) {
 				// get ArachneEntityID from context query result
 				// Workaround for shitty case insensitiv table names on OSX
 				if ("SemanticConnection.Target".equals(key) || "semanticconnection.Target".equals(key)) {
@@ -87,7 +95,7 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 				} 
 
 				resultMap.put(key, entry.getValue());
-			}
+			//}
 		}
 
 		final EntityId entityId = new EntityId(contextType, foreignKey, eId, false, 0L);
