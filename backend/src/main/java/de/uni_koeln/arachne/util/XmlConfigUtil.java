@@ -868,19 +868,21 @@ public class XmlConfigUtil implements ServletContextAware {
     private void addPlainTextToResult(final Element element, final Section result, final Dataset dataset, final String lang) {
         try {
             final Field field = new Field();
-            final String value;
-            if(ts != null)
-                value = ts.transl8(dataset.getField(element.getAttributeValue("text")), lang);
-            else
-                value = dataset.getField(element.getAttributeValue("text"));
+            String value = dataset.getField(element.getAttributeValue("text"));
+            if (ts != null) {
+                value = ts.transl8(value, lang);
+            }
             if(!StrUtils.isEmptyOrNull(value)) {
-                if (result.getContent().isEmpty())
-                    field.setValue(value);
+                //if (result.getContent().isEmpty()) {
+                   field.setValue(value);
+                //}
                 result.add(field);
             } else {
                 final int contentSize = result.getContent().size();
-                final Field previousContent = (Field)result.getContent().get(contentSize-1);
-                previousContent.setValue(previousContent.getValue() + value);
+                if (contentSize > 0) {
+                    final Field previousContent = (Field)result.getContent().get(contentSize-1);
+                    previousContent.setValue(previousContent.getValue() + value);
+                }
             }
         }
         catch (Transl8Exception e) {
