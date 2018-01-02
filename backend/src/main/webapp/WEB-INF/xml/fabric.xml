@@ -43,8 +43,11 @@
         <facet name="fabriccommonname" labelKey="Common Name">
             <field datasource="fabric.CommonName"/>
         </facet>
-        <facet name="fabricname" labelKey="Name">
-            <field datasource="fabric.Name"/>
+        <facet name="fabricname" labelKey="Origin">
+            <field datasource="fabric.Origin"/>
+        </facet>
+        <facet name="fabricname" labelKey="Origin">
+            <field datasource="fabricdescription.Manufacture"/>
         </facet>
     </facets>
 </category>
