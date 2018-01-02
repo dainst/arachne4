@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CeramEgypt Objects 2.0
+  This represents a piece of ceramic
+-->
 <category name="fabric" xmlns="http://arachne.uni-koeln.de/schemas/category"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
@@ -36,18 +40,7 @@
     </display>
     
     <facets>
-        <!-- Facet-Fabric -->
-        <facet name="kategorie" labelKey="Kategorie">
-            <field datasource="Dataset.TableName"/>
-        </facet>
-        <facet name="fabriccommonname" labelKey="Common Name">
-            <field datasource="fabric.CommonName"/>
-        </facet>
-        <facet name="fabricname" labelKey="Origin">
-            <field datasource="fabric.Origin"/>
-        </facet>
-        <facet name="fabricname" labelKey="Origin">
-            <field datasource="fabricdescription.Manufacture"/>
-        </facet>
+        <include type="facet_kategorie" />
+        <include type="face_fabric" />
     </facets>
 </category>

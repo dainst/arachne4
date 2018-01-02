@@ -1,4 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CeramEgypt Objects 2.0
+  a befund object (where a piece of ceramics was found)
+-->
 <category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="befund" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
   <display>
     <title>
@@ -27,15 +31,7 @@
 
     <include type="facet_ort"/>
 
-    <facet name="grabungsort" labelKey="Grabungsort" group="place">
-      <field datasource="befund.Grabungsort"/>
-    </facet>
-    <facet name="befund" labelKey="Stratigraphische Einheit" group="place"  dependsOn="areal">
-      <field datasource="befund.Befund"/>
-    </facet>
-    <facet name="areal" labelKey="Areal"  group="place">
-      <field datasource="befund.Areal"/>
-    </facet>
+    <include type="facet_befund" />
 
   </facets>
 </category>
