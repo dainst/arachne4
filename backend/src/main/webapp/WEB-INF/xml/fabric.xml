@@ -41,6 +41,6 @@
     
     <facets>
         <include type="facet_kategorie" />
-        <include type="face_fabric" />
+        <include type="facet_fabric" />
     </facets>
 </category>
