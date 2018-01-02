@@ -4,9 +4,7 @@
   This represents a piece of ceramic
 -->
 <category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="mainabstract" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-  <!-- not neccessary?!<explicitContextualizers>fabricdescription</explicitContextualizers>-->
   <subtables>
-    <!-- not neccessary?! subtable connectFieldParent="bibid" connectFieldSubTable="001">quantities</subtable -->
     <subtable connectFieldParent="FS_FabricID" connectFieldSubTable="FS_FabricID">fabricdescription</subtable>
   </subtables>
   <display>
@@ -40,27 +38,31 @@
 
       <!-- it will have this -->
       <section labelKey="Keramikfragment">
-        <include type="isolatedsherd"></include>
+        <include type="isolatedsherd" />
       </section>
 
       <!-- OR this -->
       <section labelKey="Keramikkonvolut">
-        <include type="quantities"></include>
+        <include type="quantities" />
       </section>
 
       <section labelKey="Morphologie">
-        <include type="morphology"></include>
+        <include type="morphology" />
       </section>
 
       <section labelKey="Fabrikat">
-        <include type="fabric"></include>
+        <include type="fabric" />
       </section>
 
       <section labelKey="Befund">
-        <include type="befund"></include>
+        <include type="befund" />
       </section>
 
-      <include type="datierung"/>
+      <section labelKey="Oberflächenbehandlung">
+        <include type="surfacetreatment" />
+      </section>
+
+      <include type="datierung" />
 
     </datasections>
 
@@ -70,7 +72,7 @@
 
   </display>
 
-  <!-- TODO connectedEntities ausblenden: isolated sherd; quantities -->
+  <!-- TODO connectedEntities ausblenden: isolated sherd; quantities, surfacetreatment -->
 
   <facets>
 
