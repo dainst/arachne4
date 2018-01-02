@@ -12,7 +12,7 @@
         <section labelKey="Areal">
             <field datasource="befund.Areal"/>
         </section>
-        <section labelKey="Befund">
+        <section labelKey="Stratigraphische Einheit">
             <field datasource="befund.Befund"/>
         </section>
         <section labelKey="Abhub">

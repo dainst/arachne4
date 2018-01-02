@@ -5,9 +5,9 @@
   status: to be done
 -->
 <category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="mainabstract" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-  <explicitContextualizers>fabricdescription</explicitContextualizers>
+  <!-- not neccessary?!<explicitContextualizers>fabricdescription</explicitContextualizers>-->
   <subtables>
-    <!-- subtable connectFieldParent="bibid" connectFieldSubTable="001">quantities</subtable -->
+    <!-- not neccessary?! subtable connectFieldParent="bibid" connectFieldSubTable="001">quantities</subtable -->
     <subtable connectFieldParent="FS_FabricID" connectFieldSubTable="FS_FabricID">fabricdescription</subtable>
   </subtables>
   <display>
@@ -39,7 +39,6 @@
     </subtitle>
     <datasections>
 
-
       <!-- it will have this -->
       <section labelKey="Keramikfragment">
         <include type="isolatedsherd"></include>
@@ -56,8 +55,6 @@
 
       <section labelKey="Fabrikat">
         <include type="fabric"></include>
-        <!-- TODO einschlüsse -->
-        <!-- TODO munsel & andere Eigenschaften die fehlen -->
       </section>
 
       <section labelKey="Befund">
@@ -78,7 +75,7 @@
 
   </display>
 
-
+  <!-- TODO connectedEntities ausblenden: isolated sherd; quantities -->
 
   <facets>
 

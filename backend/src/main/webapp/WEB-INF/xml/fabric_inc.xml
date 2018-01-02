@@ -5,7 +5,7 @@
 -->
 <includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
 
-    <section>
+    <section  labelKey="Bezeichner">
         <section labelKey="Name">
             <field datasource="fabric.Name"/>
         </section>
@@ -13,11 +13,9 @@
         <section labelKey="AllgemeinerName">
             <field datasource="fabric.CommonName"/>
         </section>
+    </section>
 
-        <section labelKey="Kommentare">
-            <field datasource="fabric.Comments"/>
-        </section>
-
+    <section labelKey="Struktur">
         <section labelKey="Herkunft">
             <field datasource="fabric.Origin"/>
         </section>
@@ -30,23 +28,34 @@
             <field datasource="fabricdescription.Hardness"/>
         </section>
 
+        <section labelKey="Bruch">
+            <field datasource="fabricdescription.Fracture"/>
+        </section>
+
         <section labelKey="Porösität">
             <field datasource="fabricdescription.Porosity"/>
         </section>
 
-        <section labelKey="Zoning">
-            <field datasource="fabricdescription.Zoning"/>
+        <section labelKey="Kommentar">
+            <field datasource="fabric.Comments"/>
         </section>
+    </section>
 
+    <section labelKey="Oberfläche">
         <section labelKey="Oberflächengefühl">
             <field datasource="fabricdescription.SurfaceFeel"/>
         </section>
+    </section>
 
-        <section labelKey="Freie Farbbeschreibung" separator=" ">
+    <section labelKey="Farbe">
+        <section labelKey="Allgemein" separator=" ">
             <field datasource="fabricdescription.ColourQualifierFreeVon"/>
             <field datasource="fabricdescription.ColourFreeVon" postfix=" -"/>
             <field datasource="fabricdescription.ColourQualifierFreeBis"/>
             <field datasource="fabricdescription.ColourFreeBis"/>
+        </section>
+        <section labelKey="Zoning">
+            <field datasource="fabricdescription.Zoning"/>
         </section>
         <section labelKey="Farbe der Bruchstelle" separator=" ">
             <field datasource="fabricdescription.ColourOfBreakQualifierVon"/>
@@ -66,7 +75,21 @@
             <field datasource="fabricdescription.ColourOfOutsideQualifierBis"/>
             <field datasource="fabricdescription.ColourOfOutsideBis"/>
         </section>
+    </section>
 
+    <section labelKey="Farbbeschreibung nach Munsell">
+        <section labelKey="Bruchstelle">
+            <field datasource="fabricdescription.ColourOfBreakMunsellVon" postfix=" - "/>
+            <field datasource="fabricdescription.ColourOfBreakMunsellBis"/>
+        </section>
+        <section labelKey="Außenhülle" separator=" - ">
+            <field datasource="fabricdescription.ColourOfOutsideMunsellVon"/>
+            <field datasource="fabricdescription.ColourOfOutsideMunsellBis"/>
+        </section>
+        <section labelKey="Kern" separator=" - ">
+            <field datasource="fabricdescription.ColourOfCoreMunsellVon"/>
+            <field datasource="fabricdescription.ColourOfCoreMunsellBis"/>
+        </section>
     </section>
 
 </includeSection>

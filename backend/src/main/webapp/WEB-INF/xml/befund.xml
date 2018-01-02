@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="befund" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section separator=" / ">
+        <field datasource="befund.Grabungsort"/>
+        <field datasource="befund.Areal" />
+        <field datasource="befund.Befund" />
+      </section>
+    </title>
+    <subtitle labelKey="">
+      <section labelKey="Unique Identifier">
+        <field datasource="Dataset.internalId"/>
+      </section>
+    </subtitle>
+    <datasections>
+      <include type="befund" />
+      <include type="datierung"/>
+    </datasections>
+    <contextImages>
+    </contextImages>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <include type="facet_ort"/>
+    <facet name="grabungsort" labelKey="Grabungsort">
+      <field datasource="befund.Grabungsort"/>
+    </facet>
+    <facet name="befund" labelKey="Stratigraphische Einheit">
+      <field datasource="befund.Befund"/>
+    </facet>
+    <facet name="areal" labelKey="Areal">
+      <field datasource="befund.Areal"/>
+    </facet>
+    <facet name="befundmainabstractmorphology" labelKey="Morphologie">
+      <context type="Entitymainabstractmorphology" separator=" / ">
+        <field datasource=".Level6">
+          <ifEmpty>
+            <field datasource=".Level5">
+              <ifEmpty>
+                <field datasource=".Level4">
+                  <ifEmpty>
+                    <field datasource=".Level3">
+                      <ifEmpty>
+                        <field datasource=".Level2">
+                          <ifEmpty>
+                            <field datasource=".Level1"/>
+                          </ifEmpty>
+                        </field>
+                      </ifEmpty>
+                    </field>
+                  </ifEmpty>
+                </field>
+              </ifEmpty>
+            </field>
+          </ifEmpty>
+        </field>
+      </context>
+    </facet>
+  </facets>
+</category>
