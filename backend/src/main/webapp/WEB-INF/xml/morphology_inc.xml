@@ -11,7 +11,7 @@
             <field datasource="morphology.Level1"/>
         </section>
 
-        <section separator=" > " labelKey="Morphologiedetails">
+        <section separator=", " labelKey="Morphologiedetails">
             <field datasource="morphology.Level2"/>
             <field datasource="morphology.Level3"/>
             <field datasource="morphology.Level4"/>
@@ -25,8 +25,5 @@
         </section>
 
     </section>
-
-
-
 
 </includeSection>
