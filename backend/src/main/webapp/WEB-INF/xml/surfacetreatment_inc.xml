@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   CeramEgypt Objects 2.0
-  a quantified set of ceramic objects
+  description of special treatments to the surface
 -->
 <includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
     <!-- TODO show 1 to many relation to surfacetreatmentaction -->
     <section labelKey="Informationen zur Oberflächenbehandlung">
         <context type="surfacetreatment">
-            <field datasource="surfacetreatment.Bezeichner" />
+            <field datasource=".Bezeichner" />
         </context>
         <section labelKey="Zeitpunkt der Oberflächenbehandlung">
             <field datasource="surfacetreatmentaction.MomentOfSurfaceTreatmentAction"/>

@@ -32,7 +32,7 @@
     <contextImages>
       <contextImage show="always">morphology</contextImage>
       <!-- Show images of all isolated sherds which are conntected with the current morphology -->
-      <contextImage show="always">Entitymainabstractisolatedsherd</contextImage>
+      <!--<contextImage show="always">Entitymainabstractisolatedsherd</contextImage>-->
     </contextImages>
   </display>
 
