@@ -994,9 +994,9 @@ public class XmlConfigUtil implements ServletContextAware {
             }
             return elements;
         } catch (JDOMException e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error(e.getMessage() + " (" + filename + ")");
         } catch (IOException e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error(e.getMessage() + " (" + filename + ")");
         }
 
         return null;
