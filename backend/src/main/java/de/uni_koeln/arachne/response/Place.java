@@ -42,16 +42,17 @@ public class Place {
 	/**
 	 * The beginning of the time period of the relation to its parent entity.
 	 */
-	private int storageFromDay = 0;
-	private int storageFromMonth = 0;
-	private int storageFromYear = 0;
+	private Integer storageFromDay = null;
+	private Integer storageFromMonth = null;
+	private Integer storageFromYear = null; //Needs to be null because empty date values have to be different from year 0
 
 	/**
 	 * The end of the time period of the relation to its parent entity.
 	 */
-	private int storageToDay = 0;
-	private int storageToMonth = 0;
-	private int storageToYear = 0;
+	private Integer storageToDay = null;
+	private Integer storageToMonth = null;
+	private Integer storageToYear = null; //Needs to be null because empty date values have to be different from year 0
+
 
 	public Place(final String name) {
 		this.name = name;
@@ -146,19 +147,19 @@ public class Place {
 	/**
 	 * @param start day of the relation to parent
 	 */
-	public int getStorageFromDay() {
+	public Integer getStorageFromDay() {
 	    return storageFromDay;
 	}
 	/**
 	 * @param start month of the relation to parent
 	 */
-	public int getStorageFromMonth() {
+	public Integer getStorageFromMonth() {
 	    return storageFromMonth;
 	}
 	/**
 	 * @param start year of the relation to parent
 	 */
-	public int getStorageFromYear() {
+	public Integer getStorageFromYear() {
 		return storageFromYear;
 	}
 
@@ -178,26 +179,25 @@ public class Place {
 	 * @param start year of the relation to parent to set
 	 */
 	public void setStorageFromYear(int storageFromYear) {
-	    System.out.println("Set storage from year");
 		this.storageFromYear = storageFromYear;
 	}
 
 	/**
 	 * @param end day of the relation to parent
 	 */
-	public int getStorageToDay() {
+	public Integer getStorageToDay() {
 	    return storageToDay;
 	}
 	/**
 	 * @param end month of the relation to parent
 	 */
-	public int getStorageToMonth() {
+	public Integer getStorageToMonth() {
 	    return storageToMonth;
 	}
 	/**
 	 * @param end year of the relation to parent
 	 */
-	public int getStorageToYear() {
+	public Integer getStorageToYear() {
 		return storageToYear;
 	}
 

@@ -329,19 +329,54 @@ public class ResponseFactory {
 			try {
     			Collections.sort(places, new Comparator<Place>() {
     			    public int compare(Place p1, Place p2) {
-//    			        return p1.getStorageFromYear().compareTo(p2.getStorageFromYear());
-    			        return p1.getStorageFromYear() > p2.getStorageFromYear()? 1 : 0; //TODO
-    			    }
+                        try {
+                            Integer datePart1 = p1.getStorageFromYear(); //holds year, month or day part of the date
+                            Integer datePart2 = p2.getStorageFromYear();
+
+                            if (datePart1 == null || datePart2 == null) {
+                                if (datePart1 != null) {
+                                    return -1;
+                                }
+                                if (datePart2 != null) {
+                                    return 1;
+                                }
+                                return 0;
+                            } else {
+                                if (datePart1 == datePart2) {
+                                    try {
+                                        datePart1 = p1.getStorageFromMonth();
+                                        datePart2 = p2.getStorageFromMonth();
+                                    } catch(IllegalArgumentException e) {
+                                        return 0;
+                                    }
+                                }
+
+                                if (datePart1 == datePart2) {
+                                    try {
+                                        datePart1 = p1.getStorageFromDay();
+                                        datePart2 = p2.getStorageFromDay();
+                                    } catch(IllegalArgumentException e) {
+                                        return 0;
+                                    }
+                                }
+
+                                return datePart1 > datePart2 ? 1 : -1;
+                            }
+                            
+                        } catch (Exception e) {
+//                            throw new IllegalArgumentException(e);
+                            LOGGER.debug("A problem occured sorting places. Most likely missing date data.");
+                            return 0;
+                        }
+                    }
     			});
 			} catch (NullPointerException e) {
-			    LOGGER.warn("Places object could not be sorted.");
+			    LOGGER.debug("A problem occured sorting places. Most likely missing date data.");
 			}
 			for (Place place: places) {
 				response.addPlace(place);
 			}
 		}
-
-		// set date information
 
 		// add dates from datierungen
 		// TODO set parsed date when available in database
@@ -379,7 +414,6 @@ public class ResponseFactory {
                 }
 			}
 		}
-
 
 
 		// add marbilder creation dates
