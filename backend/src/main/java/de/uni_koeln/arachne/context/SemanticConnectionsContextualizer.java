@@ -81,7 +81,6 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 			 * und sei es nur zu debug zwecken, die anzeigen?!
 			 * mindestens die type= abfrage müsste raus, type ist etwas das in vielen tabellennamen vorkommen kann
 			 *
-			 * 2. frage: on OSX? das dürfte jetzt auch egal sein, wo wir alle mit Linux entwicklen?
 			 */
 			//if (!(key.contains("PS_") && key.contains("ID")) && !(key.contains("Source")) && !(key.contains("Type"))) {
 				// get ArachneEntityID from context query result
