@@ -655,7 +655,8 @@
           "id": "pergamenischeforschungen17",
           "title": {
             "de": "S. Kielau, Terrakotten aus Pergamon. Tonfiguren und -objekte aus der Wohnstadt am Südhang der Akropolis und von weiteren Fundorten. Pergamenische Forschungen, Band 17. Erweiterter Online-Katalog (2017)"
-          }
+          },
+          "hidden": true
         },
         {
           "id": "ayamonte",
