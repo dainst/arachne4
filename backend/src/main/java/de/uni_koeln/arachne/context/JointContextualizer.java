@@ -66,9 +66,7 @@ public class JointContextualizer extends AbstractContextualizer {
         for (final String key : groups.keySet()) {
             final ArrayList<Dataset> group = groups.get(key);
 
-            final Dataset groupEntity = new Dataset();
-            groupEntity.appendFields(prefixFields(group.get(0).getFields()));
-            groupEntity.setAdditionalContent(new AdditionalContent());
+            final Dataset groupEntity = createGroupEntity(group.get(0), groupName);
 
             final Iterator<Dataset> groupIterator = group.iterator();
             final ArrayList<AbstractLink> slist = new ArrayList<AbstractLink>();
@@ -92,12 +90,18 @@ public class JointContextualizer extends AbstractContextualizer {
         return result;
     }
 
-    private Map<String, String> prefixFields(final Map<String, String> fields) {
+    private Dataset createGroupEntity(final Dataset mergedDataset, String groupName) {
+        final Dataset groupEntity = new Dataset();
+        groupEntity.setAdditionalContent(new AdditionalContent());
+
         Map<String, String> prefixed = new HashMap<String, String>();
-        for (final String key : fields.keySet()) {
-            prefixed.put(key, fields.get(key));
+        for (final String key : mergedDataset.getFields().keySet()) {
+            if ((groupName == null) || (!key.startsWith(groupName + "."))) {
+                prefixed.put(contextType + "." + key, mergedDataset.getField(key));
+            }
         }
-        return prefixed;
+        groupEntity.appendFields(prefixed);
+        return groupEntity;
     }
 
     /**
@@ -115,9 +119,7 @@ public class JointContextualizer extends AbstractContextualizer {
         final Map<String, String> resultMap = new HashMap<String, String>();
         for (final Map.Entry<String, String> entry: map.entrySet()) {
             final String key = entry.getKey();
-
             resultMap.put(key, entry.getValue());
-
         }
 
         final EntityId entityId = new EntityId(contextType, foreignKey, eId, false, 0L);

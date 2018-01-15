@@ -49,18 +49,17 @@
     <datasections>
 
 
-      <context type="surface" labelKey="Stronz">
+      <context type="surface" labelKey="Surface Treatments">
         <contextSection>
             <subtitle>
-              <field prefix="Strinzel:" datasource="surfacetreatment.Bezeichner" />
+              <field prefix="Puff: " datasource=".surfacetreatment.Bezeichner" />
             </subtitle>
-            <field prefix="STID:" datasource="surfacetreatment.PS_surfaceTreatmentID" />
-            <field prefix="STDG:" datasource="surfacetreatment.DatensatzGruppeSurfacetreatment" />
+            <field prefix="STID:" datasource=".surfacetreatment.PS_surfaceTreatmentID" />
+            <field prefix="STDG:" datasource=".surfacetreatment.DatensatzGruppeSurfacetreatment" />
             <subcontext type="surfacetreatmentaction">
-                <field prefix="STAID:" datasource=".PS_SurfaceTreatmentActionID" />
-                <field prefix="Action: " datasource=".TreatmentAction" />
-                <field prefix="Position: " datasource=".TreatmentPosition" />
-                <field prefix="FreeDescription: " datasource=".FreeDescription" />
+              <field prefix="Action: " datasource=".TreatmentAction" />
+              <field prefix="Position: " datasource=".TreatmentPosition" />
+              <field prefix="FreeDescription: " datasource=".FreeDescription" />
             </subcontext>
         </contextSection>
       </context>

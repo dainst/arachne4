@@ -215,10 +215,11 @@ public class XmlConfigUtil implements ServletContextAware {
                         }
                     }
 
-                    // add the sub context title at first
+                    // add the sub context title at first (overrides labelKey)
                     final Element subTitleSection = curSection.getChild("subtitle", namespace);
+
                     if (subTitleSection != null) {
-                        final AbstractContent newHeadline = getContentFromSections(subTitleSection, namespace, dataset.getContext(contextType).getContext(i).getEntity2(), lang);
+                        final AbstractContent newHeadline = getContentFromSections(subTitleSection, namespace, dataset.getContext(contextType).getContext(i).getEntity1(), lang);
                         if (newHeadline != null) {
                             localContext.setLabel(newHeadline.toString());
                         }
