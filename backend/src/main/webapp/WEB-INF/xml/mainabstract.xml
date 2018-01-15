@@ -4,6 +4,18 @@
   This represents a piece of ceramic
 -->
 <category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="mainabstract" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <contexts>
+
+    <context id="surface" connectFieldParent="PS_MainAbstractID">
+      <join type="xsurfacetreatmentx" connectFieldParent="PS_MainAbstractID" connectFieldChild="FS_MainAbstractID" />
+      <join type="surfacetreatment" connectFieldParent="FS_SurfaceTreatmentID" connectFieldChild="PS_SurfaceTreatmentID" />
+      <join type="surfacetreatmentaction" connectFieldParent="PS_SurfaceTreatmentID" connectFieldChild="FS_SurfaceTreatmentID" />
+      <where>1=1</where>
+      <description>dddd</description>
+      <StandardCIDOCConnectionType>jsdkjlsdf</StandardCIDOCConnectionType>
+    </context>
+  </contexts>
+
   <subtables>
     <subtable connectFieldParent="FS_FabricID" connectFieldSubTable="FS_FabricID">fabricdescription</subtable>
   </subtables>
@@ -36,6 +48,24 @@
     </subtitle>
     <datasections>
 
+
+      <context type="surface" labelKey="Stronz">
+        <contextSection>
+            <subtitle>
+              <field prefix="Strinzel:" datasource="surfacetreatment.Bezeichner" />
+            </subtitle>
+            <field prefix="STID:" datasource="surfacetreatment.PS_surfaceTreatmentID" />
+            <field prefix="STDG:" datasource="surfacetreatment.DatensatzGruppeSurfacetreatment" />
+            <subcontext type="surfacetreatmentaction">
+                <field prefix="STAID:" datasource=".PS_SurfaceTreatmentActionID" />
+                <field prefix="Action: " datasource=".TreatmentAction" />
+                <field prefix="Position: " datasource=".TreatmentPosition" />
+                <field prefix="FreeDescription: " datasource=".FreeDescription" />
+            </subcontext>
+        </contextSection>
+      </context>
+
+
       <!-- it will have this -->
       <section labelKey="Keramikfragment">
         <include type="isolatedsherd" />
@@ -58,11 +88,9 @@
         <include type="befund" />
       </section>
 
-      <section labelKey="Oberflächenbehandlung">
-        <include type="surfacetreatment" />
-      </section>
-
       <include type="datierung" />
+
+
 
     </datasections>
 
