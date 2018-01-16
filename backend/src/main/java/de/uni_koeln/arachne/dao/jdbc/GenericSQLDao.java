@@ -131,7 +131,8 @@ public class GenericSQLDao extends SQLDao {
 	}
 
 	/**
-	 * Gets a list of connected entities as key value pairs from a multijoin
+	 * Gets a list of connected entities as key value pairs from a "joint" contextualizer, as defined in an object
+     * category description xml
 	 * @param contextType The type of connected entity (a table name).
 	 * @param parent The entity id to get connected entities for.
 	 * @return The list of connected entities.
@@ -152,6 +153,10 @@ public class GenericSQLDao extends SQLDao {
 
 	private String buildMultiJoinQuery(final long entityId, final JointContextDefinition jointContextDefinition) {
 
+        List<String> wheres = jointContextDefinition.getWheres();
+        wheres.add("arachneentityidentification.ArachneEntityID = '" + entityId  + "'");
+        String where = "(" + String.join(") and (", wheres) + ")";
+
         String tables = "arachneentityidentification";
         final List<JoinDefinition> joins = jointContextDefinition.getJoins();
         joins.add(0, new JoinDefinition(
@@ -165,11 +170,10 @@ public class GenericSQLDao extends SQLDao {
 					+ parentTable + '.' + joinDefinition.getConnectFieldParent() + " = "
 					+ joinDefinition.getType() + '.' + joinDefinition.getConnectFieldChild() + ")";
             parentTable = joinDefinition.getType();
+            where += userRightsService.getSQL(parentTable);
 		}
 
-		List<String> wheres = jointContextDefinition.getWheres();
-		wheres.add("arachneentityidentification.ArachneEntityID = '" + entityId  + "'");
-		String where = "(" + String.join(") and (", wheres) + ")";
+
 
 		String orderby = jointContextDefinition.getOrderBy();
         orderby += jointContextDefinition.getOrderDescending() ? " desc " : "";
