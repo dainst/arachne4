@@ -50,23 +50,6 @@
     </subtitle>
     <datasections>
 
-
-      <context type="surface" labelKey="Surface Treatments">
-        <contextSection>
-            <subtitle>
-              <field prefix="Treatment: " datasource="surfacetreatment.Bezeichner" />
-            </subtitle>
-            <field prefix="STID:" datasource=".surfacetreatment.PS_SurfaceTreatmentID" />
-            <field prefix="STDG:" datasource=".surfacetreatment.DatensatzGruppeSurfacetreatment" />
-            <subcontext type="surfacetreatmentaction">
-              <field prefix="Action: " datasource=".TreatmentAction" />
-              <field prefix="Position: " datasource=".TreatmentPosition" />
-              <field prefix="FreeDescription: " datasource=".FreeDescription" />
-            </subcontext>
-        </contextSection>
-      </context>
-
-
       <!-- it will have this -->
       <section labelKey="Keramikfragment">
         <include type="isolatedsherd" />
@@ -91,6 +74,20 @@
 
       <include type="datierung" />
 
+      <context type="surface" labelKey="Surface Treatments">
+        <contextSection>
+          <subtitle>
+            <field prefix="Treatment: " datasource="surfacetreatment.Bezeichner" />
+          </subtitle>
+          <field prefix="STID:" datasource=".surfacetreatment.PS_SurfaceTreatmentID" />
+          <field prefix="STDG:" datasource=".surfacetreatment.DatensatzGruppeSurfacetreatment" />
+          <subcontext type="surfacetreatmentaction">
+            <field prefix="Action: " datasource=".TreatmentAction" />
+            <field prefix="Position: " datasource=".TreatmentPosition" />
+            <field prefix="FreeDescription: " datasource=".FreeDescription" />
+          </subcontext>
+        </contextSection>
+      </context>
 
 
     </datasections>
