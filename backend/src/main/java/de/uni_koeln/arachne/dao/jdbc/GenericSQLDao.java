@@ -142,7 +142,7 @@ public class GenericSQLDao extends SQLDao {
 			final String sql = buildMultiJoinQuery(entityId, jointContextDefinition);
 			PreparedStatement ps = con.prepareStatement(sql);
 			return ps;
-		}, new GenericEntitiesMapper("AdditionalInfosJSON"));
+		}, new GenericEntitiesMapper(""));
 
 		if (result != null && !result.isEmpty()) {
 			return result;
@@ -152,10 +152,8 @@ public class GenericSQLDao extends SQLDao {
 
 	private String buildMultiJoinQuery(final long entityId, final JointContextDefinition jointContextDefinition) {
 
-		String what = jointContextDefinition.getFields();
-
         String tables = "arachneentityidentification";
-        List<JoinDefinition> joins = jointContextDefinition.getJoins();
+        final List<JoinDefinition> joins = jointContextDefinition.getJoins();
         joins.add(0, new JoinDefinition(
                 jointContextDefinition.getType(),
                 "ForeignKey",
@@ -173,7 +171,10 @@ public class GenericSQLDao extends SQLDao {
 		wheres.add("arachneentityidentification.ArachneEntityID = '" + entityId  + "'");
 		String where = "(" + String.join(") and (", wheres) + ")";
 
-		return "select " + what + " from " + tables + " where " + where;
+		String orderby = jointContextDefinition.getOrderBy();
+        orderby += jointContextDefinition.getOrderDescending() ? " desc " : "";
+
+		return "select * from " + tables + " where " + where + (!orderby.equals("") ? " order by " + orderby : "");
 
 
 		// + userRightsService.getSQL(contextType)

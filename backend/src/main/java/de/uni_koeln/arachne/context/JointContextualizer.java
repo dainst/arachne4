@@ -48,8 +48,18 @@ public class JointContextualizer extends AbstractContextualizer {
 
         if ((jointContextDefinition.isGrouped())) {
             return retrieveGrouped(parent, contextContents);
+        } else {
+            return retrieveUngrouped(parent, contextContents);
         }
+    }
 
+    /**
+     * normal way, like semanticConnectionContextualizer
+     * @param parent
+     * @param contextContents
+     * @return
+     */
+    private List<AbstractLink> retrieveUngrouped(Dataset parent, List<Map<String, String>> contextContents) {
         final List<AbstractLink> result = new ArrayList<AbstractLink>();
 
         if (contextContents != null) {
@@ -64,9 +74,14 @@ public class JointContextualizer extends AbstractContextualizer {
             }
         }
         return result;
-
     }
 
+    /**
+     * when in the jointContext-Definition a group item is used we can create context-items wich has context-items itself
+     * @param parent
+     * @param contextContents
+     * @return
+     */
     private List<AbstractLink> retrieveGrouped(Dataset parent, List<Map<String, String>> contextContents) {
 
         final List<AbstractLink> result = new ArrayList<AbstractLink>();
@@ -86,6 +101,8 @@ public class JointContextualizer extends AbstractContextualizer {
                 groups.get(groupByKey).add(row);
             }
         }
+
+        final ArrayList<ArachneLink> linkList = new ArrayList<ArachneLink>();
 
         for (final String key : groups.keySet()) {
             final ArrayList<Dataset> group = groups.get(key);
@@ -107,8 +124,17 @@ public class JointContextualizer extends AbstractContextualizer {
             final ArachneLink link = new ArachneLink();
             link.setEntity1(parent);
             link.setEntity2(groupEntity);
-            result.add(link);
+            linkList.add(link);
         }
+
+        //results were sorted by sql BUT this got lost through grouping, so we have to sort again
+        if ((jointContextDefinition.getOrderBy() != null) && !jointContextDefinition.getOrderBy().equals("")) {
+            final Comparator comparator = jointContextDefinition.getOrderDescending() ?
+                    new SortArachneLinks(jointContextDefinition.getOrderBy()).reversed() :
+                    new SortArachneLinks(jointContextDefinition.getOrderBy());
+            Collections.sort(linkList, comparator);
+        }
+        result.addAll(linkList);
 
         parent.setAdditionalContent(new AdditionalContent());
         return result;
@@ -127,6 +153,24 @@ public class JointContextualizer extends AbstractContextualizer {
         groupEntity.appendFields(prefixed);
         return groupEntity;
     }
+
+
+    class SortArachneLinks implements Comparator<ArachneLink> {
+
+        public String orderBy;
+
+        public SortArachneLinks(String orderBy) {
+            super();
+            this.orderBy = orderBy;
+        }
+
+        @Override
+        public int compare(ArachneLink n1, ArachneLink n2){
+            return n1.getEntity2().getField(orderBy).compareToIgnoreCase(n2.getEntity2().getField(orderBy));
+        }
+
+    }
+
 
     /**
      * Creates a new dataset which is a context from the results of an SQL query.

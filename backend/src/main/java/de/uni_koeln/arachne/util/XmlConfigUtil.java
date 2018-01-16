@@ -219,7 +219,7 @@ public class XmlConfigUtil implements ServletContextAware {
                     final Element subTitleSection = curSection.getChild("subtitle", namespace);
 
                     if (subTitleSection != null) {
-                        final AbstractContent newHeadline = getContentFromSections(subTitleSection, namespace, dataset.getContext(contextType).getContext(i).getEntity1(), lang);
+                        final AbstractContent newHeadline = getContentFromSections(subTitleSection, namespace, dataset.getContext(contextType).getContext(i).getEntity2(), lang);
                         if (newHeadline != null) {
                             localContext.setLabel(newHeadline.toString());
                         }
@@ -1315,25 +1315,37 @@ public class XmlConfigUtil implements ServletContextAware {
                 defintion.setId(context.getAttributeValue("id"));
                 defintion.setConnectFieldParent(context.getAttributeValue("connectFieldParent"));
                 defintion.setDescription(context.getChildText("description", nameSpace));
-                defintion.setFields(context.getChildText("fields", nameSpace));
                 defintion.setStandardCIDOCConnectionType(context.getChildText("StandardCIDOCConnectionType", nameSpace));
 
+                // group
                 final Element groupByInfo = context.getChild("group", nameSpace);
                 if (groupByInfo != null) {
                     defintion.setGroupBy(groupByInfo.getAttributeValue("by"));
                     defintion.setGroupName(groupByInfo.getAttributeValue("type"));
                 }
 
+                // where
                 for (Element where : context.getChildren("where", nameSpace)) {
                     defintion.addWhere(where.getText());
                 }
 
+                // joins
                 for (Element join : context.getChildren("join", nameSpace)) {
                     defintion.addJoin(
                         join.getAttributeValue("type"),
                         join.getAttributeValue("connectFieldParent"),
                         join.getAttributeValue("connectFieldChild")
                     );
+                }
+
+                // order by
+                final Element orderByInfo = context.getChild("order", nameSpace);
+                if (orderByInfo != null) {
+                    defintion.setOrderBy(orderByInfo.getAttributeValue("by"));
+                    final String desc = orderByInfo.getAttributeValue("descending");
+                    if ((desc != null) && desc.equals("true")) {
+                        defintion.setOrderDescending(true);
+                    }
                 }
 
                 if (defintion.check()) {

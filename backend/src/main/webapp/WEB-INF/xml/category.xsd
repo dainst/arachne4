@@ -225,14 +225,14 @@
 	<!-- for xml (joint) semantic connection contextualizer -->
 	<xs:element name="context">
 		<xs:complexType>
-			<xs:sequence><!-- add todo sequence ersetzen -->
-				<xs:element maxOccurs="unbounded" ref="join" minOccurs="1"/>
-				<xs:element ref="where" maxOccurs="unbounded" minOccurs="0"/>
-				<xs:element ref="group" maxOccurs="1" minOccurs="0"/>
-				<xs:element ref="description" minOccurs="0"/>
-				<xs:element name="fields" type="xs:string" minOccurs="0"/>
-				<xs:element ref="StandardCIDOCConnectionType" minOccurs="0"/>
-			</xs:sequence>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element ref="join" minOccurs="1" maxOccurs="unbounded"/>
+				<xs:element ref="where" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="group" minOccurs="0"  maxOccurs="1"/>
+				<xs:element ref="order" minOccurs="0"  maxOccurs="1"/>
+				<xs:element ref="description" minOccurs="0"  maxOccurs="1"/>
+				<xs:element ref="StandardCIDOCConnectionType" minOccurs="0"  maxOccurs="1"/>
+			</xs:choice>
 			<xs:attribute name="id" use="required" type="xs:NCName"/>
 			<xs:attribute name="connectFieldParent" use="required" type="xs:NCName"/>
 		</xs:complexType>
@@ -251,7 +251,12 @@
 			<xs:attribute name="type" use="required" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="fields" type="xs:string"/>
+	<xs:element name="order">
+		<xs:complexType>
+			<xs:attribute name="by" use="required" type="xs:string"/>
+			<xs:attribute name="descending" use="optional" type="xs:boolean" />
+		</xs:complexType>
+	</xs:element>
 	<xs:element name="description" type="xs:string"/>
 	<xs:element name="StandardCIDOCConnectionType" type="xs:string"/>
 	<!-- // -->

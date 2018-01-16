@@ -8,10 +8,11 @@ public class JointContextDefinition {
     private String id = "";
     private String description = "";
     private String type = "";
+    private String orderBy = "";
+    private Boolean orderDescending = false;
     private String groupBy = "";
     private String groupName = "";
     private String StandardCIDOCConnectionType = "";
-    private String fields = "*";
     private String connectFieldParent = "";
     private ArrayList<String> wheres = new ArrayList<String>();
     private ArrayList<JoinDefinition> joins = new ArrayList<JoinDefinition>();
@@ -32,13 +33,6 @@ public class JointContextDefinition {
         if (standardCIDOCConnectionType != null) StandardCIDOCConnectionType = standardCIDOCConnectionType;
     }
 
-    public String getFields() {
-        return fields;
-    }
-
-    public void setFields(String fields) {
-        if (fields != null) this.fields = fields;
-    }
 
 
 
@@ -107,6 +101,21 @@ public class JointContextDefinition {
         return (!((groupName.equals("") || (groupName == null)) || ((groupBy.equals("") || (groupBy == null)))));
     }
 
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public Boolean getOrderDescending() {
+        return orderDescending;
+    }
+
+    public void setOrderDescending(Boolean orderDescending) {
+        this.orderDescending = orderDescending;
+    }
 }
 
 

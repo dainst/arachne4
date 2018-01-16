@@ -11,7 +11,8 @@
       <join type="surfacetreatment" connectFieldParent="FS_SurfaceTreatmentID" connectFieldChild="PS_SurfaceTreatmentID" />
       <join type="surfacetreatmentaction" connectFieldParent="PS_SurfaceTreatmentID" connectFieldChild="FS_SurfaceTreatmentID" />
       <where>1=1</where>
-
+      <order by="surfacetreatment.Bezeichner" />
+      <group type="surfacetreatmentaction" by="surfacetreatment.PS_SurfaceTreatmentID"  />
       <description>dddd</description>
       <StandardCIDOCConnectionType>jsdkjlsdf</StandardCIDOCConnectionType>
     </context>
@@ -55,7 +56,7 @@
             <subtitle>
               <field prefix="Treatment: " datasource="surfacetreatment.Bezeichner" />
             </subtitle>
-            <field prefix="STID:" datasource=".surfacetreatment.PS_surfaceTreatmentID" />
+            <field prefix="STID:" datasource=".surfacetreatment.PS_SurfaceTreatmentID" />
             <field prefix="STDG:" datasource=".surfacetreatment.DatensatzGruppeSurfacetreatment" />
             <subcontext type="surfacetreatmentaction">
               <field prefix="Action: " datasource=".TreatmentAction" />
