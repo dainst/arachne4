@@ -8,6 +8,8 @@ public class JointContextDefinition {
     private String id = "";
     private String description = "";
     private String type = "";
+    private String groupBy = "";
+    private String groupName = "";
     private String StandardCIDOCConnectionType = "";
     private String fields = "*";
     private String connectFieldParent = "";
@@ -85,6 +87,25 @@ public class JointContextDefinition {
     }
 
 
+    public String getGroupBy() {
+        return groupBy;
+    }
+
+    public void setGroupBy(String groupBy) {
+        this.groupBy = groupBy;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public boolean isGrouped() {
+        return (!((groupName.equals("") || (groupName == null)) || ((groupBy.equals("") || (groupBy == null)))));
+    }
 
 }
 

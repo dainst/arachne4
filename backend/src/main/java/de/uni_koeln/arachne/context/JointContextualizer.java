@@ -41,20 +41,44 @@ public class JointContextualizer extends AbstractContextualizer {
 
     @Override
     public List<AbstractLink> retrieve(final Dataset parent) {
-        final List<AbstractLink> result = new ArrayList<AbstractLink>();
-
-        String groupName = "surfacetreatmentaction";
-        String groupBy = "surfacetreatment.PS_SurfaceTreatmentID";
-        HashMap<String, ArrayList<Dataset>> groups = new HashMap<String, ArrayList<Dataset>>();
 
         final long queryTime = System.currentTimeMillis();
         final List<Map<String, String>> contextContents = genericSQLDao.getConnectedEntitiesJoint(contextType, parent, jointContextDefinition);
         LOGGER.debug("Query time: " + (System.currentTimeMillis() - queryTime) + " ms");
 
+        if ((jointContextDefinition.isGrouped())) {
+            return retrieveGrouped(parent, contextContents);
+        }
+
+        final List<AbstractLink> result = new ArrayList<AbstractLink>();
+
+        if (contextContents != null) {
+            final ListIterator<Map<String, String>> contextMap = contextContents.listIterator();
+
+            while (contextMap.hasNext()) {
+                final ArachneLink link = new ArachneLink();
+                link.setEntity2(createDatasetFromQueryResults(contextMap.next(), contextType + "." ));
+                link.setEntity1(parent);
+                link.setFields(link.getEntity2().getFields());
+                result.add(link);
+            }
+        }
+        return result;
+
+    }
+
+    private List<AbstractLink> retrieveGrouped(Dataset parent, List<Map<String, String>> contextContents) {
+
+        final List<AbstractLink> result = new ArrayList<AbstractLink>();
+
+        final String groupName = jointContextDefinition.getGroupName();
+        final String groupBy = jointContextDefinition.getGroupBy();
+        final HashMap<String, ArrayList<Dataset>> groups = new HashMap<String, ArrayList<Dataset>>();
+
         if (contextContents != null) {
             final ListIterator<Map<String, String>> contextMap = contextContents.listIterator();
             while (contextMap.hasNext()) {
-                final Dataset row = createDatasetFromQueryResults(contextMap.next());
+                final Dataset row = createDatasetFromQueryResults(contextMap.next(), "");
                 final String groupByKey = row.getField(groupBy);
                 if (!groups.containsKey(groupByKey)) {
                     groups.put(groupByKey, new ArrayList<Dataset>());
@@ -109,7 +133,7 @@ public class JointContextualizer extends AbstractContextualizer {
      * @param map The SQL query result.
      * @return The newly created dataset.
      */
-    private Dataset createDatasetFromQueryResults(final Map<String, String> map) {
+    private Dataset createDatasetFromQueryResults(final Map<String, String> map, final String prefix) {
 
         final Dataset result = new Dataset();
 
@@ -119,7 +143,7 @@ public class JointContextualizer extends AbstractContextualizer {
         final Map<String, String> resultMap = new HashMap<String, String>();
         for (final Map.Entry<String, String> entry: map.entrySet()) {
             final String key = entry.getKey();
-            resultMap.put(key, entry.getValue());
+            resultMap.put(prefix + key, entry.getValue());
         }
 
         final EntityId entityId = new EntityId(contextType, foreignKey, eId, false, 0L);

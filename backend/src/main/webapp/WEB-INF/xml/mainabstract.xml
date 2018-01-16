@@ -11,6 +11,7 @@
       <join type="surfacetreatment" connectFieldParent="FS_SurfaceTreatmentID" connectFieldChild="PS_SurfaceTreatmentID" />
       <join type="surfacetreatmentaction" connectFieldParent="PS_SurfaceTreatmentID" connectFieldChild="FS_SurfaceTreatmentID" />
       <where>1=1</where>
+
       <description>dddd</description>
       <StandardCIDOCConnectionType>jsdkjlsdf</StandardCIDOCConnectionType>
     </context>
@@ -52,7 +53,7 @@
       <context type="surface" labelKey="Surface Treatments">
         <contextSection>
             <subtitle>
-              <field prefix="Puff: " datasource=".surfacetreatment.Bezeichner" />
+              <field prefix="Treatment: " datasource="surfacetreatment.Bezeichner" />
             </subtitle>
             <field prefix="STID:" datasource=".surfacetreatment.PS_surfaceTreatmentID" />
             <field prefix="STDG:" datasource=".surfacetreatment.DatensatzGruppeSurfacetreatment" />

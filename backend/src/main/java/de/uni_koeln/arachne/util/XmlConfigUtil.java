@@ -243,7 +243,6 @@ public class XmlConfigUtil implements ServletContextAware {
                     result.add(localContext);
 
                 }
-                //result.add(curSectionContent);
             }
 
 
@@ -1318,6 +1317,12 @@ public class XmlConfigUtil implements ServletContextAware {
                 defintion.setDescription(context.getChildText("description", nameSpace));
                 defintion.setFields(context.getChildText("fields", nameSpace));
                 defintion.setStandardCIDOCConnectionType(context.getChildText("StandardCIDOCConnectionType", nameSpace));
+
+                final Element groupByInfo = context.getChild("group", nameSpace);
+                if (groupByInfo != null) {
+                    defintion.setGroupBy(groupByInfo.getAttributeValue("by"));
+                    defintion.setGroupName(groupByInfo.getAttributeValue("type"));
+                }
 
                 for (Element where : context.getChildren("where", nameSpace)) {
                     defintion.addWhere(where.getText());
