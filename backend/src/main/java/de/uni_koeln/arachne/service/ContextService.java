@@ -81,21 +81,26 @@ public class ContextService {
 			}
 		}
 
-		// implicit contextualizers
-		final List<String> mandatoryContextTypes = xmlConfigUtil.getMandatoryContextNames(parent.getArachneId().getTableName());
-		LOGGER.debug("Mandatory Contexts: " + mandatoryContextTypes);
-		for (final String contextType: mandatoryContextTypes) {
-			final Context context = new Context(contextType, parent, getLinks(parent, contextType));
+		// explicit defined db contextualizers
+		final List<JointContextDefinition> xmlDefinedContextualizersList = xmlConfigUtil.getJointContextualizers(parent.getArachneId().getTableName());
+		final List<String> jointContextNames = new ArrayList<String>();
+		for (JointContextDefinition jointContextDefinition: xmlDefinedContextualizersList) {
+			final JointContextualizer contextualizer = new JointContextualizer(jointContextDefinition, genericSQLDao);
+			final Context context = new Context(contextualizer.getContextType(), parent, contextualizer.retrieve(parent));
+			jointContextNames.add(contextualizer.getContextType());
 			if (context.getSize() > 0) {
 				parent.addContext(context);
 			}
 		}
 
-		// explicit defined db contextualizers
-		final List<JointContextDefinition> xmlDefinedContextualizersList = xmlConfigUtil.getJointContextualizers(parent.getArachneId().getTableName());
-		for (JointContextDefinition jointContextDefinition: xmlDefinedContextualizersList) {
-			final JointContextualizer contextualizer = new JointContextualizer(jointContextDefinition, genericSQLDao);
-			final Context context = new Context(contextualizer.getContextType(), parent, contextualizer.retrieve(parent));
+		// implicit contextualizers
+		final List<String> mandatoryContextTypes = xmlConfigUtil.getMandatoryContextNames(parent.getArachneId().getTableName());
+		LOGGER.debug("Mandatory Contexts: " + mandatoryContextTypes);
+		for (final String contextType: mandatoryContextTypes) {
+			if (jointContextNames.contains(contextType)) {
+				continue;
+			}
+			final Context context = new Context(contextType, parent, getLinks(parent, contextType));
 			if (context.getSize() > 0) {
 				parent.addContext(context);
 			}
