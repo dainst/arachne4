@@ -155,6 +155,7 @@ public class GenericSQLDao extends SQLDao {
 
         List<String> wheres = jointContextDefinition.getWheres();
         wheres.add("arachneentityidentification.ArachneEntityID = '" + entityId  + "'");
+        wheres.add("arachneentityidentification.isDeleted != 1");
         String where = "(" + String.join(") and (", wheres) + ")";
 
         String tables = "arachneentityidentification";
@@ -172,7 +173,6 @@ public class GenericSQLDao extends SQLDao {
             parentTable = joinDefinition.getType();
             where += userRightsService.getSQL(parentTable);
 		}
-
 
 
 		String orderby = jointContextDefinition.getOrderBy();
