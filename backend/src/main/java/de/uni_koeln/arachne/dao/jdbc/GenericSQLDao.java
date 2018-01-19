@@ -1,9 +1,13 @@
 package de.uni_koeln.arachne.dao.jdbc;
 
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import de.uni_koeln.arachne.context.JoinDefinition;
+import de.uni_koeln.arachne.context.JointContextDefinition;
+import de.uni_koeln.arachne.response.Dataset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,6 +129,61 @@ public class GenericSQLDao extends SQLDao {
 		}
 		return null;
 	}
+
+	/**
+	 * Gets a list of connected entities as key value pairs from a "joint" contextualizer, as defined in an object
+     * category description xml
+	 * @param contextType The type of connected entity (a table name).
+	 * @param parent The entity id to get connected entities for.
+	 * @return The list of connected entities.
+	 */
+	public List<Map<String, String>> getConnectedEntitiesJoint(final String contextType, final Dataset parent, final JointContextDefinition jointContextDefinition) {
+		final long entityId = parent.getArachneId().getArachneEntityID();
+		final List<Map<String, String>> result = query(con -> {
+			final String sql = buildMultiJoinQuery(entityId, jointContextDefinition);
+			PreparedStatement ps = con.prepareStatement(sql);
+			return ps;
+		}, new GenericEntitiesMapper(""));
+
+		if (result != null && !result.isEmpty()) {
+			return result;
+		}
+		return null;
+	}
+
+	private String buildMultiJoinQuery(final long entityId, final JointContextDefinition jointContextDefinition) {
+
+        List<String> wheres = jointContextDefinition.getWheres();
+        wheres.add("arachneentityidentification.ArachneEntityID = '" + entityId  + "'");
+        wheres.add("arachneentityidentification.isDeleted != 1");
+        String where = "(" + String.join(") and (", wheres) + ")";
+
+        String tables = "arachneentityidentification";
+        final List<JoinDefinition> joins = jointContextDefinition.getJoins();
+        joins.add(0, new JoinDefinition(
+                jointContextDefinition.getType(),
+                "ForeignKey",
+                jointContextDefinition.getConnectFieldParent())
+        );
+        String parentTable = "arachneentityidentification";
+		for (JoinDefinition joinDefinition : joins) {
+			tables += " left join " + joinDefinition.getType() + " on ("
+					+ parentTable + '.' + joinDefinition.getConnectFieldParent() + " = "
+					+ joinDefinition.getType() + '.' + joinDefinition.getConnectFieldChild() + ")";
+            parentTable = joinDefinition.getType();
+            where += userRightsService.getSQL(parentTable);
+		}
+
+
+		String orderby = jointContextDefinition.getOrderBy();
+        orderby += jointContextDefinition.getOrderDescending() ? " desc " : "";
+
+		return "select * from " + tables + " where " + where + (!orderby.equals("") ? " order by " + orderby : "");
+
+
+		// + userRightsService.getSQL(contextType)
+	}
+
 	
 	/**
 	 * Gets a list of connected entities as ids (images excluded).
