@@ -75,19 +75,26 @@ public class SemanticConnectionsContextualizer implements IContextualizer {
 		final Map<String, String> resultMap = new HashMap<String, String>();
 		for (final Map.Entry<String, String> entry: map.entrySet()) {
 			final String key = entry.getKey();
+			/**
+			 * TODO
+			 * paf: if auskommentiert. schadet es wirklich wenn diese Felder nachher im Dataset drin sind? vllt will man,
+			 * und sei es nur zu debug zwecken, die anzeigen?!
+			 * mindestens die type= abfrage müsste raus, type ist etwas das in vielen tabellennamen vorkommen kann
+			 *
+			 */
+			//if (!(key.contains("PS_") && key.contains("ID")) && !(key.contains("Source")) && !(key.contains("Type"))) {
+				// get ArachneEntityID from context query result
+				// Workaround for shitty case insensitiv table names on OSX
+				if ("SemanticConnection.Target".equals(key) || "semanticconnection.Target".equals(key)) {
+					eId = Long.parseLong(entry.getValue()); 
+					continue;
+				} else if ("SemanticConnection.ForeignKeyTarget".equals(key) || "semanticconnection.ForeignKeyTarget".equals(key)) {
+					foreignKey = Long.parseLong(entry.getValue());
+					continue;
+				} 
 
-			// get ArachneEntityID from context query result
-			// Workaround for shitty case insensitiv table names on OSX
-			if ("SemanticConnection.Target".equals(key) || "semanticconnection.Target".equals(key)) {
-				eId = Long.parseLong(entry.getValue());
-				continue;
-			} else if ("SemanticConnection.ForeignKeyTarget".equals(key) || "semanticconnection.ForeignKeyTarget".equals(key)) {
-				foreignKey = Long.parseLong(entry.getValue());
-				continue;
-			}
-
-			resultMap.put(key, entry.getValue());
-
+				resultMap.put(key, entry.getValue());
+			//}
 		}
 
 		final EntityId entityId = new EntityId(contextType, foreignKey, eId, false, 0L);

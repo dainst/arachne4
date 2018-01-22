@@ -6,12 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.uni_koeln.arachne.context.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import de.uni_koeln.arachne.context.AbstractContextualizer;
+import de.uni_koeln.arachne.context.AbstractLink;
+import de.uni_koeln.arachne.context.AbstractSemanticConnectionPathContextualizer;
+import de.uni_koeln.arachne.context.Context;
+import de.uni_koeln.arachne.context.ContextImageDescriptor;
+import de.uni_koeln.arachne.context.ContextPath;
+import de.uni_koeln.arachne.context.IContextualizer;
+import de.uni_koeln.arachne.context.SemanticConnectionsContextualizer;
 import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Image;
@@ -80,32 +87,15 @@ public class ContextService {
 				parent.addContext(context);
 			}
 		}
-
-		// explicit defined db contextualizers
-		final List<JointContextDefinition> xmlDefinedContextualizersList = xmlConfigUtil.getJointContextualizers(parent.getArachneId().getTableName());
-		final List<String> jointContextNames = new ArrayList<String>();
-		for (JointContextDefinition jointContextDefinition: xmlDefinedContextualizersList) {
-			final JointContextualizer contextualizer = new JointContextualizer(jointContextDefinition, genericSQLDao);
-			final Context context = new Context(contextualizer.getContextType(), parent, contextualizer.retrieve(parent));
-			jointContextNames.add(contextualizer.getContextType());
-			if (context.getSize() > 0) {
-				parent.addContext(context);
-			}
-		}
-
 		// implicit contextualizers
 		final List<String> mandatoryContextTypes = xmlConfigUtil.getMandatoryContextNames(parent.getArachneId().getTableName());
 		LOGGER.debug("Mandatory Contexts: " + mandatoryContextTypes);
 		for (final String contextType: mandatoryContextTypes) {
-			if (jointContextNames.contains(contextType)) {
-				continue;
-			}
 			final Context context = new Context(contextType, parent, getLinks(parent, contextType));
 			if (context.getSize() > 0) {
 				parent.addContext(context);
 			}
 		}
-
 		// context images
 		addContextImages(parent, lang);
 	}
@@ -231,7 +221,7 @@ public class ContextService {
 	 * @return an appropriate contextualizer serving the specific context indicated by the given <code>contextType</code>
 	 */
 	@SuppressWarnings("rawtypes")
-	private IContextualizer getContextualizerByContextType(String contextType) {
+	private IContextualizer getContextualizerByContextType(final String contextType) {
 		IContextualizer result = contextualizers.get(contextType); 
 		if (result == null) {
 			final String upperCaseContextType = contextType.substring(0, 1).toUpperCase() + contextType.substring(1).toLowerCase();

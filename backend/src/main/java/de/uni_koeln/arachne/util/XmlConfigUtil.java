@@ -7,8 +7,6 @@ import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 
-import de.uni_koeln.arachne.context.JointContextDefinition;
-import de.uni_koeln.arachne.response.*;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -23,6 +21,13 @@ import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import de.uni_koeln.arachne.context.ContextImageDescriptor;
+import de.uni_koeln.arachne.response.AbstractContent;
+import de.uni_koeln.arachne.response.ContextEntity;
+import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.response.Field;
+import de.uni_koeln.arachne.response.FieldList;
+import de.uni_koeln.arachne.response.LinkField;
+import de.uni_koeln.arachne.response.Section;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.util.sql.TableConnectionDescription;
 import de.uni_koeln.arachne.service.Transl8Service;
@@ -57,8 +62,6 @@ public class XmlConfigUtil implements ServletContextAware {
 
     private transient final Map<String, List<String>> explicitContextualizers = new HashMap<>();
 
-    private transient final Map<String, List<JointContextDefinition>> jointContextualizers = new HashMap<>();
-
     private transient final Map<String, List<ContextImageDescriptor>> contextImageDescriptors = new HashMap<>();
 
     private transient final Map<String, List<TableConnectionDescription>> subCategories = new HashMap<>();
@@ -83,9 +86,6 @@ public class XmlConfigUtil implements ServletContextAware {
         facets.clear();
     }
 
-
-
-
     /**
      * This function handles context elements in the xml config files. It extracts the content from the dataset
      * following the definitions in the xml files and returns it as <code>Content</code>.
@@ -96,8 +96,7 @@ public class XmlConfigUtil implements ServletContextAware {
      * @param dataset The dataset that contains the SQL query results.
      * @return A <code>Section</code> object containing the context sections content or <code>null</code> if access is denied.
      */
-    public Section getContentFromContext(final Element context, final Namespace namespace, final Dataset dataset,
-                                              final String lang) {
+    public Section getContentFromContext(final Element context, final Namespace namespace, final Dataset dataset, final String lang) {
 
         final Section result = new Section();
         final String contextType = context.getAttributeValue("type");
@@ -143,7 +142,6 @@ public class XmlConfigUtil implements ServletContextAware {
             }
 
             FieldList fieldList = new FieldList();
-
             for (int i = 0; i < dataset.getContextSize(contextType); i++) {
                 addFieldsToFieldList(children, context.getNamespace(), fieldList, i, dataset, contextType, separator, lang);
             }
@@ -168,7 +166,6 @@ public class XmlConfigUtil implements ServletContextAware {
                 fieldList = tempFieldList;
             }
 
-
             if (fieldList.size() > 1) {
                 result.add(fieldList);
             } else {
@@ -177,11 +174,6 @@ public class XmlConfigUtil implements ServletContextAware {
                     field.setValue(fieldList.get(0));
                     result.add(field);
                 }
-            }
-
-            final List<Element> subContexts = context.getChildren("subcontext", namespace);
-            for (int i = 0; i < subContexts.size(); i++) {
-                addSubContext(result, contextType, subContexts.get(i), namespace, dataset.getContext(contextType).getContext(i).getEntity2(), lang);
             }
 
             if (result.getContent().isEmpty()) {
@@ -205,71 +197,34 @@ public class XmlConfigUtil implements ServletContextAware {
                     }
                     localContext.setSeparator(separator);
 
-                    // label key
-                    final String labelKey = curSection.getAttributeValue("labelKey");
-                    if (labelKey != null) {
-                        try {
-                            localContext.setLabel(ts.transl8(labelKey, lang));
-                        } catch (Transl8Exception e) {
-                            LOGGER.error("Failed to contact transl8. Cause: ", e);
-                        }
+                    // store the section label of the current context
+                    final List<Element> childFields = curSection.getChildren();
+
+                    try {
+                        localContext.setLabel(ts.transl8(curSection.getAttributeValue("labelKey"), lang));
                     }
-
-                    // add the sub context title at first (overrides labelKey)
-                    final Element subTitleSection = curSection.getChild("subtitle", namespace);
-
-                    if (subTitleSection != null) {
-                        final AbstractContent newHeadline = getContentFromSections(subTitleSection, namespace, dataset.getContext(contextType).getContext(i).getEntity2(), lang);
-                        if (newHeadline != null) {
-                            localContext.setLabel(newHeadline.toString());
-                        }
+                    catch (Transl8Exception e) {
+                        LOGGER.error("Failed to contact transl8. Cause: ", e);
                     }
 
                     // add all child-fields of the current contextSection and retrieve their values
-                    for (final Element childField: curSection.getChildren("field", namespace)) {
+                    for (final Element childField: childFields) {
                         addContextFieldToFieldList(childField, context.getNamespace(), fieldList, i, dataset, contextType, separator, lang);
                     }
 
                     // only add to list if fields contain content
                     if (fieldList.size() != 0) {
                         localContext.add(fieldList);
+                        curSectionContent.add(localContext);
                     }
-
-                    // add the sub contexts afterwards
-                    for (final Element childField: curSection.getChildren("subcontext", namespace)) {
-                        addSubContext(localContext, contextType, childField, namespace, dataset.getContext(contextType).getContext(i).getEntity2(), lang);
-                    }
-
-                    result.add(localContext);
-
                 }
+                result.add(curSectionContent);
             }
-
-
-
             if (result.getContent().isEmpty()) {
                 return null;
             }
         }
         return result;
-    }
-
-
-
-    /**
-     * renders a context within a context. contextception.
-     * @param parent
-     * @param parentContext
-     * @param subContext
-     * @param namespace
-     * @param dataset
-     * @param lang
-     */
-    public void addSubContext(Section parent, String parentContext, Element subContext, Namespace namespace, Dataset dataset, String lang) {
-        final Section contextSection = getContentFromContext(subContext, namespace, dataset, lang);
-        if (contextSection != null) {
-            parent.getContent().addAll(contextSection.getContent());
-        }
     }
 
     /**
@@ -657,14 +612,8 @@ public class XmlConfigUtil implements ServletContextAware {
      */
     private String addContextFieldToFieldList(final Element element, final Namespace namespace, final FieldList fieldList, final int index
             ,final Dataset dataset, final String contextType, String separator, final String lang) {
-
-        final String fullFieldName = contextType + element.getAttributeValue("datasource");
-
-        // correct separator
-        final String overrideSeparator = element.getAttributeValue("overrideSeparator");
-        separator = (overrideSeparator == null) ? separator : overrideSeparator ;
-
-        final String initialValue = dataset.getFieldFromContext(fullFieldName, index);
+		
+        final String initialValue = dataset.getFieldFromContext(contextType + element.getAttributeValue("datasource"), index);
 
         StringBuilder value = null;
         if (initialValue == null) {
@@ -677,7 +626,8 @@ public class XmlConfigUtil implements ServletContextAware {
 
         final String postfix = element.getAttributeValue("postfix");
         final String prefix = element.getAttributeValue("prefix");
-
+        final String overrideSeparator = element.getAttributeValue("overrideSeparator");
+        separator = (overrideSeparator == null) ? separator : overrideSeparator ;
 
         if (value != null) {
             try {
@@ -792,14 +742,12 @@ public class XmlConfigUtil implements ServletContextAware {
     private void addFieldsToFieldList(final List<Element> children, final Namespace namespace, final FieldList fieldList, final int index
             , final Dataset dataset, final String contextType, final String separator, final String lang) {
 
-        LOGGER.debug(separator);
         String nextSeparator = separator;
         for (final Element element: children) {
-            if (element.getName().equals("field") || element.getName().equals("linkField")) {
+            if (element.getName().equals("field") || element.getName().equals("linkField"))
                 nextSeparator = addContextFieldToFieldList(element, namespace, fieldList, index, dataset, contextType, nextSeparator, lang);
-            } else if(element.getName().equals("plain")) {
+            else if(element.getName().equals("plain"))
                 nextSeparator = addContextPlainToFieldList(element, fieldList, index, dataset, contextType, nextSeparator, lang);
-            }
             nextSeparator = (nextSeparator != null) ? nextSeparator : separator;
         }
     }
@@ -1289,78 +1237,5 @@ public class XmlConfigUtil implements ServletContextAware {
         replaceInclude(display);
         final Element facets = rootElement.getChild("facets", nameSpace);
         replaceInclude(facets);
-    }
-
-    public List<JointContextDefinition> getJointContextualizers(String type) {
-        final List<JointContextDefinition> cachedContextualizers = jointContextualizers.get(type);
-        if (cachedContextualizers == null) {
-            final Document document = getDocument(type);
-            if (document == null) {
-                return new ArrayList<JointContextDefinition>();
-            }
-
-            final Element rootElement = document.getRootElement();
-            final Namespace nameSpace = rootElement.getNamespace();
-            final Element contexts = rootElement.getChild("contexts", nameSpace);
-            if (contexts == null) {
-                return new ArrayList<JointContextDefinition>();
-            }
-
-            final List<JointContextDefinition> definitions = new ArrayList<JointContextDefinition>();
-
-            for (Element context : contexts.getChildren("context", nameSpace)) {
-                final JointContextDefinition defintion = new JointContextDefinition();
-
-                defintion.setType(type);
-                defintion.setId(context.getAttributeValue("id"));
-                defintion.setConnectFieldParent(context.getAttributeValue("connectFieldParent"));
-                defintion.setDescription(context.getChildText("description", nameSpace));
-                defintion.setStandardCIDOCConnectionType(context.getChildText("StandardCIDOCConnectionType", nameSpace));
-
-                // group
-                final Element groupByInfo = context.getChild("group", nameSpace);
-                if (groupByInfo != null) {
-                    defintion.setGroupBy(groupByInfo.getAttributeValue("by"));
-                    defintion.setGroupName(groupByInfo.getAttributeValue("type"));
-                }
-
-                // where
-                for (Element where : context.getChildren("where", nameSpace)) {
-                    defintion.addWhere(where.getText());
-                }
-
-                // joins
-                for (Element join : context.getChildren("join", nameSpace)) {
-                    defintion.addJoin(
-                        join.getAttributeValue("type"),
-                        join.getAttributeValue("connectFieldParent"),
-                        join.getAttributeValue("connectFieldChild")
-                    );
-                }
-
-                // order by
-                final Element orderByInfo = context.getChild("order", nameSpace);
-                if (orderByInfo != null) {
-                    defintion.setOrderBy(orderByInfo.getAttributeValue("by"));
-                    final String desc = orderByInfo.getAttributeValue("descending");
-                    if ((desc != null) && desc.equals("true")) {
-                        defintion.setOrderDescending(true);
-                    }
-                }
-
-                if (defintion.check()) {
-                    definitions.add(defintion);
-                } else {
-                    LOGGER.warn("could not create Joint context: " + type);
-                }
-
-            }
-
-            jointContextualizers.put(type, definitions);
-            return definitions;
-
-        }
-        return cachedContextualizers;
-
     }
 }

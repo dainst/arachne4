@@ -1,9 +1,6 @@
 package de.uni_koeln.arachne.service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
@@ -197,35 +194,11 @@ public class DataImportService { // NOPMD
 			long startId = 0; 
 			long lastDocuments = 0;
 			List<ArachneEntity> entityIds;
-
-			Set<Long> dataImportWhitlist = new HashSet<Long>();
-			dataImportWhitlist.add((long) 3531422); // a mainabstract
-			dataImportWhitlist.add((long) 3528783); // a fabric
-			dataImportWhitlist.add((long) 3541275); // a morphology
-			dataImportWhitlist.add((long) 3527752); // a befund
-			//dataImportWhitlist.add((long) 3531432); // a befund
-
-
-
-
-			ArrayList<ArachneEntity> dataImportWhitlistEntityIds = new ArrayList<ArachneEntity>();
-			for (long dataImportWhitlistItem : dataImportWhitlist) {
-				dataImportWhitlistEntityIds.addAll(entityIdentificationService.getByLimitedEntityIdRange(dataImportWhitlistItem, 100));
-			}
-
-
-
 			dataimport:
 			do {
-
-				if (!dataImportWhitlistEntityIds.isEmpty()) {
-					LOGGER.debug("Fetching entityID whitelist ...");
-					entityIds = dataImportWhitlistEntityIds;
-				} else {
-					LOGGER.debug("Fetching " + ID_LIMIT + " EntityIds [" + startId + "] ...");
-					entityIds = entityIdentificationService.getByLimitedEntityIdRange(startId, ID_LIMIT);
-				}
-
+				LOGGER.debug("Fetching " + ID_LIMIT + " EntityIds [" + startId + "] ...");
+				entityIds = entityIdentificationService.getByLimitedEntityIdRange(startId, ID_LIMIT);
+				
 				LOGGER.debug("Starting FOR loop...");
 				for (final ArachneEntity currentEntityId: entityIds) {
 										
@@ -237,7 +210,6 @@ public class DataImportService { // NOPMD
 					}
 					
 					LOGGER.debug("Get ID: " + currentEntityId.getEntityId());
-
 					//final EntityId entityId = entityIdentificationService.getId(currentEntityId);
 					final EntityId entityId = new EntityId(currentEntityId);
 					dbgEntityId = entityId.getArachneEntityID();
@@ -274,7 +246,6 @@ public class DataImportService { // NOPMD
 						calculateAverageDPSAndETR();
 					}
 				}
-				entityIds.clear();
 			} while (!entityIds.isEmpty());
 			bulkProcessor.close();
 			if (running) {
@@ -295,19 +266,19 @@ public class DataImportService { // NOPMD
 						+ index/((float)elapsedTime/1000) + " documents per second)." + System.lineSeparator()
 						+ System.lineSeparator() + dataIntegrityLogService.getSummary();
 				LOGGER.info(success);
-				//mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - success", success);
+				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - success", success);
 				contextService.clearCache();
 			} else {
 				LOGGER.info("Dataimport aborted.");
 				esService.deleteIndex(indexName);
-				//mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - abort", "Dataimport was manually aborted.");
+				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - abort", "Dataimport was manually aborted.");
 			}
 		} catch (Exception e) {
 			final String failure = "Dataimport failed at [" + dbgEntityId + "] with: ";
 			LOGGER.error(failure, e);
 			final String stacktrace = Throwables.getStackTraceAsString(e);
-			//mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - failure"
-					//, failure + e.toString() + System.getProperty("line.separator") + "StackTrace: " + stacktrace);
+			mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - failure"
+					, failure + e.toString() + System.getProperty("line.separator") + "StackTrace: " + stacktrace);
 			esService.deleteIndex(indexName);
 		}
 		// disable request scope hack

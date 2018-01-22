@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ContextEntity extends AbstractContent {
 	
-	protected transient final List<AbstractContent> content = new ArrayList<AbstractContent>();
+	protected transient final List<AbstractContent> contextEntities = new ArrayList<AbstractContent>();
 
 	/**
 	 * Convenient function that adds a content object to the list of <code>Content</code>.
@@ -20,7 +20,7 @@ public class ContextEntity extends AbstractContent {
 	 * @return a <code>boolean</code> indicating success.
 	 */
 	public boolean add(final AbstractContent content) {
-		return this.content.add(content);
+		return this.contextEntities.add(content);
 	}
 	
 	/**
@@ -28,8 +28,8 @@ public class ContextEntity extends AbstractContent {
 	 * @return The list of context entities. 
 	 */
 	@XmlElementWrapper
-	public List<AbstractContent> getContent() {
-		return this.content;
+	public List<AbstractContent> getContextEntities() {
+		return this.contextEntities;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class ContextEntity extends AbstractContent {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result
-				+ ((content == null) ? 0 : content.hashCode());
+				+ ((contextEntities == null) ? 0 : contextEntities.hashCode());
 		return result;
 	}
 
@@ -53,12 +53,12 @@ public class ContextEntity extends AbstractContent {
 			return false;
 		}
 		final ContextEntity other = (ContextEntity) obj;
-		if (content == null) {
-			if (other.content != null) {
+		if (contextEntities == null) {
+			if (other.contextEntities != null) {
 				return false;
 			}
 		} else {
-			if (!content.equals(other.content)) {
+			if (!contextEntities.equals(other.contextEntities)) {
 				return false;
 			}
 		}

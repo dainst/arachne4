@@ -4,20 +4,6 @@
   This represents a piece of ceramic
 -->
 <category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="mainabstract" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
-  <contexts>
-
-    <context id="surface" connectFieldParent="PS_MainAbstractID">
-      <join type="xsurfacetreatmentx" connectFieldParent="PS_MainAbstractID" connectFieldChild="FS_MainAbstractID" />
-      <join type="surfacetreatment" connectFieldParent="FS_SurfaceTreatmentID" connectFieldChild="PS_SurfaceTreatmentID" />
-      <join type="surfacetreatmentaction" connectFieldParent="PS_SurfaceTreatmentID" connectFieldChild="FS_SurfaceTreatmentID" />
-      <where>1=1</where>
-      <order by="surfacetreatment.Bezeichner" />
-      <group type="surfacetreatmentaction" by="surfacetreatment.PS_SurfaceTreatmentID"  />
-      <description>dddd</description>
-      <StandardCIDOCConnectionType>jsdkjlsdf</StandardCIDOCConnectionType>
-    </context>
-  </contexts>
-
   <subtables>
     <subtable connectFieldParent="FS_FabricID" connectFieldSubTable="FS_FabricID">fabricdescription</subtable>
   </subtables>
@@ -72,23 +58,11 @@
         <include type="befund" />
       </section>
 
+      <section labelKey="Oberflächenbehandlung">
+        <include type="surfacetreatment" />
+      </section>
+
       <include type="datierung" />
-
-      <context type="surface" labelKey="Surface Treatments">
-        <contextSection>
-          <subtitle>
-            <field prefix="Treatment: " datasource="surfacetreatment.Bezeichner" />
-          </subtitle>
-          <field prefix="STID:" datasource=".surfacetreatment.PS_SurfaceTreatmentID" />
-          <field prefix="STDG:" datasource=".surfacetreatment.DatensatzGruppeSurfacetreatment" />
-          <subcontext type="surfacetreatmentaction">
-            <field prefix="Action: " datasource=".TreatmentAction" />
-            <field prefix="Position: " datasource=".TreatmentPosition" />
-            <field prefix="FreeDescription: " datasource=".FreeDescription" />
-          </subcontext>
-        </contextSection>
-      </context>
-
 
     </datasections>
 

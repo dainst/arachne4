@@ -36,21 +36,21 @@ public class Context {
 	/**
 	 * This list of {@link AbstractLink} contains the data of the context.
 	 */
-	protected transient final List<AbstractLink> content;
+	protected transient final List<AbstractLink> contextEntities;
 	
 	/**
 	 * Constructor setting up all needed fields.
 	 * @param contextType The type of context this class manages.
 	 * @param parent The {@link Dataset} this context belongs to.
-	 * @param content A list of context entities (instances of classes derived from {@link AbstractLink}).
+	 * @param contextEntities A list of context entities (instances of classes derived from {@link AbstractLink}).
 	 */
-	public Context(final String contextType, final Dataset parent, final List<AbstractLink> content) {
+	public Context(final String contextType, final Dataset parent, final List<AbstractLink> contextEntities) {
 		this.contextType = contextType;
 		this.parent = parent;
-		if (content == null) {
-			this.content = new ArrayList<AbstractLink>();
+		if (contextEntities == null) {
+			this.contextEntities = new ArrayList<AbstractLink>();
 		} else {
-			this.content = content;
+			this.contextEntities = contextEntities;
 		}
 		
 	}
@@ -62,10 +62,10 @@ public class Context {
 	 * @return The complete list of contexts.
 	 */
 	public List<AbstractLink> getAllContexts() {
-		if (content.isEmpty()) {
+		if (contextEntities.isEmpty()) {
 			return null;
 		} else {
-			return content;
+			return contextEntities;
 		}
 	}
 
@@ -74,10 +74,10 @@ public class Context {
 	 * @return The First <code>Link</code> of the context.
 	 */
 	public AbstractLink getFirstContext() {
-		if (content.isEmpty()) {
+		if (contextEntities.isEmpty()) {
 			return null; 
 		} else {
-			return content.get(0);
+			return contextEntities.get(0);
 		}
 	}
 	
@@ -87,8 +87,8 @@ public class Context {
 	 * @return The chosen <code>Link</code> of the context.
 	 */
 	public AbstractLink getContext(final int index) {
-		if (!content.isEmpty() && index < content.size()) {
-			return content.get(index); 
+		if (!contextEntities.isEmpty() && index < contextEntities.size()) {
+			return contextEntities.get(index); 
 		} else {
 			return null;
 		}
@@ -100,7 +100,7 @@ public class Context {
 	 * @return The number of context entities.
 	 */
 	public int getSize() {
-		return content.size();
+		return contextEntities.size();
 	}
 	
 	/**
@@ -112,7 +112,7 @@ public class Context {
 	}
 	
 	public String toString() {
-		return content.toString();
+		return contextEntities.toString();
 	}
 		
 }
