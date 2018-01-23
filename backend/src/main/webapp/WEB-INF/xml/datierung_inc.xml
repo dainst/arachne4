@@ -24,7 +24,8 @@
         <field datasource=".EndDatvn" separator="" />
         <field datasource=".EndPraezise" prefix=" (" postfix=")" />
         <field datasource=".EndTerminus" prefix=", " postfix=". "/>
+        <field datasource=".DatVorschlagZeit" prefix=" " />
         <field datasource=".Argument" prefix="&lt;br/&gt;- Argument: "/>
-        <field datasource=".DatVorschlagAutor" prefix="/ nach: " postfix=" - &lt;br/&gt;&lt;br/&gt;" />
+        <field datasource=".DatVorschlagAutor" prefix="/ nach: "  />
     </context>
 </includeSection>
