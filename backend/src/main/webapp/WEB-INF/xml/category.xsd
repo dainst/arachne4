@@ -9,7 +9,7 @@
 				<xs:element name="subtables" type="SubTablesContent" minOccurs="0" maxOccurs="1" />
 
 				<!-- for xml semantic connection contextualizer -->
-				<xs:element name="contexts">
+				<xs:element name="contexts" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element ref="context"/>
