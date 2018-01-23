@@ -5,10 +5,20 @@
 	<xs:element name="category">
 		<xs:complexType>
 			<xs:all>
-				<xs:element name="explicitContextualizers" type="xs:string"
-					minOccurs="0" maxOccurs="1" />
-				<xs:element name="subtables" type="SubTablesContent"
-					minOccurs="0" maxOccurs="1" />
+				<xs:element name="explicitContextualizers" type="xs:string" minOccurs="0" maxOccurs="1" />
+				<xs:element name="subtables" type="SubTablesContent" minOccurs="0" maxOccurs="1" />
+
+				<!-- for xml semantic connection contextualizer -->
+				<xs:element name="contexts">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="context"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<!-- / -->
+
+
 				<xs:element name="search" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
 						<xs:sequence>
@@ -23,16 +33,11 @@
 					<xs:complexType>
 						<xs:sequence>
 							<!-- shouldn't title and subtitle may be only of a single field? -->
-							<xs:element name="title" type="SectionContent"
-								minOccurs="1" maxOccurs="1" />
-							<xs:element name="subtitle" type="SectionContent"
-								minOccurs="1" maxOccurs="1" />
-							<xs:element name="datasections" type="SectionContent"
-								minOccurs="1" maxOccurs="1" />
-							<xs:element name="editorsection" type="EditorSectionContent"
-								minOccurs="0" maxOccurs="1" />
-							<xs:element name="contextImages" type="contextImages"
-								minOccurs="0" maxOccurs="1" />
+							<xs:element name="title" type="SectionContent" minOccurs="1" maxOccurs="1" />
+							<xs:element name="subtitle" type="SectionContent" minOccurs="1" maxOccurs="1" />
+							<xs:element name="datasections" type="SectionContent" minOccurs="1" maxOccurs="1" />
+							<xs:element name="editorsection" type="EditorSectionContent" minOccurs="0" maxOccurs="1" />
+							<xs:element name="contextImages" type="contextImages" minOccurs="0" maxOccurs="1" />
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
@@ -103,6 +108,8 @@
 			<xs:element name="linkField" type="LinkFieldContent" />
             <xs:element name="plain" type="PlainTextContent" />
 			<xs:element name="contextSection" type="ContextSection" />
+			<xs:element name="subcontext" type="ContextContent"/>
+
 		</xs:choice>
 		<xs:attribute name="type" type="xs:string" use="required" />
 		<xs:attribute name="labelKey" type="xs:string" />
@@ -116,6 +123,8 @@
 		<xs:choice maxOccurs="unbounded">
 			<xs:element name="field" type="FieldContent" />
             <xs:element name="plain" type="PlainTextContent" />
+			<xs:element name="subcontext" type="ContextContent"/>
+			<xs:element name="subtitle" type="SectionContent"/>
 		</xs:choice>
 		<xs:attribute name="labelKey" type="xs:string" />
 		<xs:attribute name="separator" type="xs:string" />
@@ -209,7 +218,47 @@
 	</xs:simpleType>
 	<xs:simpleType name="datasourceString">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="[A-Za-z0-9\-_]*\.[A-Za-z0-9\-_]+" />
+			<xs:pattern value="[A-Za-z0-9\-_]*\.[A-Za-z0-9\-_]+(\.[A-Za-z0-9\-_]+)?" />
 		</xs:restriction>
 	</xs:simpleType>
+
+	<!-- for xml (joint) semantic connection contextualizer -->
+	<xs:element name="context">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element ref="join" minOccurs="1" maxOccurs="unbounded"/>
+				<xs:element ref="where" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="group" minOccurs="0"  maxOccurs="1"/>
+				<xs:element ref="order" minOccurs="0"  maxOccurs="1"/>
+				<xs:element ref="description" minOccurs="0"  maxOccurs="1"/>
+				<xs:element ref="StandardCIDOCConnectionType" minOccurs="0"  maxOccurs="1"/>
+			</xs:choice>
+			<xs:attribute name="id" use="required" type="xs:NCName"/>
+			<xs:attribute name="connectFieldParent" use="required" type="xs:NCName"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="join">
+		<xs:complexType>
+			<xs:attribute name="connectFieldChild" use="required" type="xs:NCName"/>
+			<xs:attribute name="connectFieldParent" use="required" type="xs:NCName"/>
+			<xs:attribute name="type" use="required" type="xs:NCName"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="where" type="xs:string"/>
+	<xs:element name="group">
+		<xs:complexType>
+			<xs:attribute name="by" use="required" type="xs:string"/>
+			<xs:attribute name="type" use="required" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="order">
+		<xs:complexType>
+			<xs:attribute name="by" use="required" type="xs:string"/>
+			<xs:attribute name="descending" use="optional" type="xs:boolean" />
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="description" type="xs:string"/>
+	<xs:element name="StandardCIDOCConnectionType" type="xs:string"/>
+	<!-- // -->
+
 </xs:schema>
