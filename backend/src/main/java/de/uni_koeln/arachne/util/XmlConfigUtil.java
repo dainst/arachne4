@@ -250,10 +250,12 @@ public class XmlConfigUtil implements ServletContextAware {
 
             final List<Element> children = section.getChildren();
 
-            final String defaultSeparator = DEFAULT_SECTION_SEPARATOR;
             String separator = section.getAttributeValue("separator");
-            if (section.getAttributeValue("separator") == null) {
-                separator = defaultSeparator;
+            if (separator == null) {
+                separator = section.getParentElement().getAttributeValue("separator");
+            }
+            if (separator == null) {
+                separator = DEFAULT_SECTION_SEPARATOR;
             }
             result.setSeparator(separator);
 
