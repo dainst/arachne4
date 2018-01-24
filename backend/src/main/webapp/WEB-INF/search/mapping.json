@@ -118,11 +118,23 @@
                     "gazetteerId":{
                         "type":"long"
                     },
-                    "storageFrom":{
-                        "type":"date"
+                    "storageFromDay":{
+                        "type":"long"
                     },
-                    "storageTo":{
-                        "type":"date"
+                    "storageFromMonth":{
+                        "type":"long"
+                    },
+                    "storageFromYear":{
+                        "type":"long"
+                    },
+                    "storageToDay":{
+                        "type":"long"
+                    },
+                    "storageToMonth":{
+                        "type":"long"
+                    },
+                    "storageToYear":{
+                        "type":"long"
                     }
                 }
             },
