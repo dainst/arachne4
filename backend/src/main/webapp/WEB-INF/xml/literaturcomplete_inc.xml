@@ -33,7 +33,7 @@
     <field datasource=".Supplement" prefix="Supplement: " />
     <!-- AdditionalInfosJSON -->
     <field datasource=".arachneLinkEnd" overrideSeparator="" separator=" " />
-    <linkField labelKey="Online verfügbar" datasource=".Onlinequelle" separator=" " />
+    <linkField labelKey="Online verfügbar" datasource=".Onlinequelle" overrideSeparator=" "/>
     <linkField labelKey="Zenon" datasource=".ZenonID" prefix="http://zenon.dainst.org/Record/" overrideSeparator=" " />
   </context>
 </includeSection>
