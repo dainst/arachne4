@@ -439,7 +439,7 @@ public class UserManagementController {
         final Calendar calender = Calendar.getInstance();
         final long now = calender.getTime().getTime();
         calender.setTimeInMillis(now);
-        calender.add(Calendar.HOUR_OF_DAY, 12);
+        calender.add(Calendar.HOUR_OF_DAY, 25);
         final Timestamp expirationDate = new Timestamp(calender.getTime().getTime());
 
         ResetPasswordRequest request = new ResetPasswordRequest();
