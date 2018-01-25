@@ -119,7 +119,7 @@ public class XmlConfigUtil implements ServletContextAware {
         }
 
         // Are there any contextSection-Tags within the current context?
-        final List<Element> contextSections = context.getChildren("contextSection", namespace);
+        final List<Element> contextSections = context.getChildren("contextSection", context.getNamespace());
         if (contextSections == null || contextSections.isEmpty()) {
             final List<Element> children = context.getChildren();
 
@@ -143,7 +143,6 @@ public class XmlConfigUtil implements ServletContextAware {
             }
 
             FieldList fieldList = new FieldList();
-
             for (int i = 0; i < dataset.getContextSize(contextType); i++) {
                 addFieldsToFieldList(children, context.getNamespace(), fieldList, i, dataset, contextType, separator, lang);
             }
@@ -153,21 +152,20 @@ public class XmlConfigUtil implements ServletContextAware {
                 for (int index = 0; index < fieldList.size(); index++) {
                     final String field = fieldList.get(index);
                     int separatorIndex = field.indexOf(separator);
-	                    if (field.startsWith(LINK_PREFIX) && separatorIndex > -1) {
-	                        StringBuilder newValue = new StringBuilder(32).append("<a href=\"");
-	                        newValue.append(link);
-	                        newValue.append(field.substring(LINK_PREFIX.length(), separatorIndex));
-	                        newValue.append("\" target=\"_blank\">");
-	                        newValue.append(field.substring(separatorIndex + separator.length()));
-	                        newValue.append("</a>");
-	                        tempFieldList.add(newValue.toString());
-	                    } else {
-	                        tempFieldList.add(fieldList.get(index));
-	                    }
+                    if (field.startsWith(LINK_PREFIX) && separatorIndex > -1) {
+                        StringBuilder newValue = new StringBuilder(32).append("<a href=\"");
+                        newValue.append(link);
+                        newValue.append(field.substring(LINK_PREFIX.length(), separatorIndex));
+                        newValue.append("\" target=\"_blank\">");
+                        newValue.append(field.substring(separatorIndex + separator.length()));
+                        newValue.append("</a>");
+                        tempFieldList.add(newValue.toString());
+                    } else {
+                        tempFieldList.add(fieldList.get(index));
                     }
+                }
                 fieldList = tempFieldList;
             }
-
 
             if (fieldList.size() > 1) {
                 result.add(fieldList);
@@ -177,11 +175,6 @@ public class XmlConfigUtil implements ServletContextAware {
                     field.setValue(fieldList.get(0));
                     result.add(field);
                 }
-            }
-
-            final List<Element> subContexts = context.getChildren("subcontext", namespace);
-            for (int i = 0; i < subContexts.size(); i++) {
-                addSubContext(result, contextType, subContexts.get(i), namespace, dataset.getContext(contextType).getContext(i).getEntity2(), lang);
             }
 
             if (result.getContent().isEmpty()) {
@@ -216,17 +209,17 @@ public class XmlConfigUtil implements ServletContextAware {
                     }
 
                     // add the sub context title at first (overrides labelKey)
-                    final Element subTitleSection = curSection.getChild("subtitle", namespace);
+                    final Element subTitleSection = curSection.getChild("subtitle", context.getNamespace());
 
                     if (subTitleSection != null) {
-                        final AbstractContent newHeadline = getContentFromSections(subTitleSection, namespace, dataset.getContext(contextType).getContext(i).getEntity2(), lang);
+                        final AbstractContent newHeadline = getContentFromSections(subTitleSection, context.getNamespace(), dataset.getContext(contextType).getContext(i).getEntity2(), lang);
                         if (newHeadline != null) {
                             localContext.setLabel(newHeadline.toString());
                         }
                     }
 
                     // add all child-fields of the current contextSection and retrieve their values
-                    for (final Element childField: curSection.getChildren("field", namespace)) {
+                    for (final Element childField: curSection.getChildren("field", context.getNamespace())) {
                         addContextFieldToFieldList(childField, context.getNamespace(), fieldList, i, dataset, contextType, separator, lang);
                     }
 
@@ -236,8 +229,10 @@ public class XmlConfigUtil implements ServletContextAware {
                     }
 
                     // add the sub contexts afterwards
-                    for (final Element childField: curSection.getChildren("subcontext", namespace)) {
-                        addSubContext(localContext, contextType, childField, namespace, dataset.getContext(contextType).getContext(i).getEntity2(), lang);
+                    final Element subContext = curSection.getChild("subcontext", context.getNamespace());
+                    if (subContext != null) {
+                        addSubContext(localContext, contextType, subContext, subContext.getNamespace(), dataset.getContext(contextType).getContext(i).getEntity2(), lang);
+                        //addSubContext(localContext, contextType, childField, namespace                , dataset.getContext(contextType).getContext(i).getEntity2(), lang);
                     }
 
                     result.add(localContext);
