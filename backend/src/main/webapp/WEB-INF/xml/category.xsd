@@ -108,8 +108,6 @@
 			<xs:element name="linkField" type="LinkFieldContent" />
             <xs:element name="plain" type="PlainTextContent" />
 			<xs:element name="contextSection" type="ContextSection" />
-			<xs:element name="subcontext" type="ContextContent"/>
-
 		</xs:choice>
 		<xs:attribute name="type" type="xs:string" use="required" />
 		<xs:attribute name="labelKey" type="xs:string" />
