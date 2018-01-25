@@ -22,6 +22,13 @@
       <include type="datierung"/>
     </datasections>
 
+    <editorsection>
+      <section labelKey="Für Bearbeiter">
+        <field datasource="befund.Editor" prefix="Bearbeiter (befund): " />
+        <field datasource="befund.lastModified" prefix="Zuletzt Geändert (befund): " />
+      </section>
+    </editorsection>
+
     <contextImages>
     </contextImages>
   </display>

@@ -73,8 +73,14 @@
 
       <include type="surface" />
 
-
     </datasections>
+
+    <editorsection>
+      <section labelKey="Für Bearbeiter">
+        <field datasource="mainabstract.Editor" prefix="Bearbeiter (mainabstract): " />
+        <field datasource="mainabstract.lastModified" prefix="Zuletzt Geändert (mainabstract): " />
+      </section>
+    </editorsection>
 
     <contextImages>
       <contextImage show="always">isolatedsherd</contextImage>

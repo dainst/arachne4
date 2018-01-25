@@ -33,7 +33,18 @@
                 <include type="einschluss"></include>
             </section>
         </datasections>
-        
+
+        <editorsection>
+            <section labelKey="Für Bearbeiter">
+                <field datasource="fabric.Editor" prefix="Bearbeiter (fabric): " />
+                <field datasource="fabric.lastModified" prefix="Zuletzt Geändert (fabric): " />
+            </section>
+            <section labelKey="Für Bearbeiter">
+                <field datasource="fabricdescription.Editor" prefix="Bearbeiter (fabricdescription): " />
+                <field datasource="fabricdescription.lastModified" prefix="Zuletzt Geändert (fabricdescription): " />
+            </section>
+        </editorsection>
+
         <contextImages>
             <contextImage show="always">fabricdescription</contextImage>
         </contextImages>
