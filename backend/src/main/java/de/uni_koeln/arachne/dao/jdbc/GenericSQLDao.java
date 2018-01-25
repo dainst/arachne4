@@ -171,9 +171,8 @@ public class GenericSQLDao extends SQLDao {
 					+ parentTable + '.' + joinDefinition.getConnectFieldParent() + " = "
 					+ joinDefinition.getType() + '.' + joinDefinition.getConnectFieldChild() + ")";
             parentTable = joinDefinition.getType();
-            where += userRightsService.getSQL(parentTable);
 		}
-
+		where += userRightsService.getSQL(parentTable);
 
 		String orderby = jointContextDefinition.getOrderBy();
         orderby += jointContextDefinition.getOrderDescending() ? " desc " : "";
