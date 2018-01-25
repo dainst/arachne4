@@ -2,70 +2,57 @@
 <!--
   CeramEgypt Objects 2.0
   description of special treatments to the surface
+
+  <context type="surface" labelKey="Surface Treatments">
+        <contextSection>
+            <subtitle separator="|||">
+              <field prefix="Treatment: " datasource=".surfacetreatment.Bezeichner" />
+              <field prefix="Puff: " datasource="surfacetreatment.Bezeichner" />
+            </subtitle>
+            <field prefix="STID:" datasource=".surfacetreatment.PS_surfaceTreatmentID" />
+            <field prefix="STDG:" datasource=".surfacetreatment.DatensatzGruppeSurfacetreatment" />
+            <subcontext type="surfacetreatmentaction">
+              <field prefix="Action: " datasource=".TreatmentAction" />
+              <field prefix="Position: " datasource=".TreatmentPosition" />
+              <field prefix="FreeDescription: " datasource=".FreeDescription" />
+            </subcontext>
+        </contextSection>
+      </context>
+
 -->
 <includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
-    <!-- TODO show 1 to many relation to surfacetreatmentaction -->
-    <section labelKey="Informationen zur Oberflächenbehandlung">
-        <context type="surfacetreatment">
-            <field datasource=".Bezeichner" />
-        </context>
-        <section labelKey="Zeitpunkt der Oberflächenbehandlung">
-            <field datasource="surfacetreatmentaction.MomentOfSurfaceTreatmentAction"/>
-        </section>
-        <section labelKey="Position der Oberflächenbehandlung">
-            <field datasource="surfacetreatmentaction.TreatmentPosition"/>
-        </section>
-        <section labelKey="Behandelter Teil der Oberfläche">
-            <field datasource="surfacetreatmentaction.PartOfSurfaceTreated"/>
-        </section>
-        <section labelKey="Zustand">
-            <field datasource="surfacetreatmentaction.Condition"/>
-        </section>
-        <section labelKey="Anzahl vorhandener Fragmente mit dieser Oberflächenbehandlung">
-            <field datasource="surfacetreatmentaction.NumberOfSherds"/>
-        </section>
-    </section>
-    <section labelKey="Informationen zur Behandlungstechnik">
-        <section labelKey="Behandlungstechnik">
-            <field datasource="surfacetreatmentaction.TreatmentAction"/>
-        </section>
-        <section labelKey="Spezielle Überzugstechnik">
-            <field datasource="surfacetreatmentaction.TreatmentActionSubCoating"/>
-        </section>
-        <section labelKey="Beschreibung der Einkerbung">
-            <field datasource="surfacetreatmentaction.IncisionDescription"/>
-        </section>
-        <section labelKey="Stempel">
-            <field datasource="surfacetreatmentaction.StampedStamp"/>
-        </section>
-        <section labelKey="Art des hinzugefügten Materials">
-            <field datasource="surfacetreatmentaction.AddedMaterialType"/>
-        </section>
-    </section>
-    <section labelKey="Beschreibung der Oberflächenbehandlung">
-        <section labelKey="Dicke">
-            <field datasource="surfacetreatmentaction.Thickness"/>
-        </section>
-        <section labelKey="Glanz">
-            <field datasource="surfacetreatmentaction.Glossiness"/>
-        </section>
-        <section labelKey="Erhaltung">
-            <field datasource="surfacetreatmentaction.Conservation"/>
-        </section>
-        <section labelKey="Qualität">
-            <field datasource="surfacetreatmentaction.Quality"/>
-        </section>
-        <section labelKey="Homogenität">
-            <field datasource="surfacetreatmentaction.Homogenity"/>
-        </section>
-        <section labelKey="Anhaftung">
-            <field datasource="surfacetreatmentaction.Adherence"/>
-        </section>
-        <section labelKey="Ausrichtung">
-            <field datasource="surfacetreatmentaction.Alignment"/>
-        </section>
-        <section labelKey="Freie Beschreibung">
-            <field datasource="surfacetreatmentaction.FreeDescription"/>
-        </section>
-    </section>
+
+    <context type="surface" labelKey="Oberflächenbehandlungen">
+        <contextSection>
+            <subtitle>
+                <field datasource="surfacetreatment.Bezeichner" />
+            </subtitle>
+
+            <subcontext type="surfacetreatmentaction">
+
+                <field prefix="[" postfix="]" datasource=".TreatmentAction"/>
+
+                <field prefix="Spezielle Überzugstechnik: " datasource=".TreatmentActionSubCoating" />
+                <field prefix="Beschreibung der Einkerbung: " datasource=".IncisionDescription" />
+                <field prefix="Stempel: " datasource=".StampedStamp" />
+                <field prefix="Art des hinzugefügten Materials: " datasource=".AddedMaterialType" />
+
+                <field prefix="Zeitpunkt der Oberflächenbehandlung: " datasource=".MomentOfSurfaceTreatmentAction" />
+                <field prefix="Position der Oberflächenbehandlung: " datasource=".TreatmentPosition" />
+                <field prefix="Behandelter Teil der Oberfläche: " datasource=".PartOfSurfaceTreated" />
+                <field prefix="Zustand: " datasource=".Condition" />
+                <field prefix="Anzahl vorhandener Fragmente mit dieser Oberflächenbehandlung: " datasource=".NumberOfSherds" />
+
+                <field prefix="Dicke: " datasource=".Thickness" />
+                <field prefix="Glanz: " datasource=".Glossiness" />
+                <field prefix="Erhaltung: " datasource=".Conservation" />
+                <field prefix="Qualität: " datasource=".Quality" />
+                <field prefix="Homogenität: " datasource=".Homogenity" />
+                <field prefix="Anhaftung: " datasource=".Adherence" />
+                <field prefix="Ausrichtung: " datasource=".Alignment" />
+                <field prefix="Freie Beschreibung: " datasource=".FreeDescription" />
+            </subcontext>
+        </contextSection>
+    </context>
+
 </includeSection>
