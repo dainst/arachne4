@@ -37,10 +37,10 @@
             </div>
         </div>
 
-        <div class="con10t-content">
+        <div class="con10t-content" id="restrictedContent">
             <h2 class="con10t-toc-entry">Zugriffsbeschränkung: con10t-show-if</h2>
-            <con10t-show-if dataset-group="SyrianHeritage">
-                <div style="height: 100px;">
+            <con10t-show-if dataset-group="Oppenheim">
+                <div style="height: 100px;" >
                     Lorem Arachne marshals reenter soldiers, pourpoint comous ecumenists overexerting hunchbacked,
                     isosceles rhapsodize. Swimsuits nonwhites, buildups clothbound straightforwardnesses numismatist
                     calyx canvaslike triforium limiest Evaporation sopping outspans picaresque ceders materially
@@ -52,7 +52,7 @@
 
 
             <h2 class="con10t-toc-entry"  style="margin-top: .6em">Link zu Datensatz: con10t-item</h2>
-            <p><a con10t-item="5447718">Zu der Test Entity</a></p>
+            <p><a con10t-item="5447718" id="con10tLink">Zu der Test Entity</a></p>
 
 
             <h2 class="con10t-toc-entry" style="margin-top: .6em">Weltkarte</h2>
@@ -81,7 +81,9 @@
 
 
             <h2 class="con10t-toc-entry" style="margin-top: .6em">Katalogbaum: con10t-catalog-tree</h2>
-            <con10t-catalog-tree catalog-id="147"></con10t-catalog-tree>
+            <div id="catalogWidget">
+                <con10t-catalog-tree catalog-id="5"></con10t-catalog-tree>
+            </div>
 
 
             <h2 class="con10t-toc-entry" style="margin-top: .6em">Bildwidget: con10t-image</h2>
@@ -101,8 +103,10 @@
 
 
             <h2 class="con10t-toc-entry"  style="margin-top: .6em">Baumdarstellung: con10t-tree</h2>
-            <con10t-tree fq="facet_bestandsname:Archiv-Friedrich-W-Hinkel"
+            <div id="treeWidget">
+                <con10t-tree fq="facet_bestandsname:dai-fotothek-athen"
                          wildcard-facet="facet_subkategorie"></con10t-tree>
+            </div>
         </div>
     </div>
 </div>
