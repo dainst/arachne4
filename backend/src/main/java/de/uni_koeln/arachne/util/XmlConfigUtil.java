@@ -199,9 +199,15 @@ public class XmlConfigUtil implements ServletContextAware {
                             return 0;
                         } else {
                         // trys parsing the date values, which can be empty
-                            String date1 = o1.substring(index1+16, o1.indexOf(" ", index1+21)); //until first space
-                            String date2 = o2.substring(index2+16, o2.indexOf(" ", index2+21));
-
+                            String date1;
+                            String date2;
+                            try {
+                                date1 = o1.substring(index1+16, o1.indexOf(" ", index1+21)); //until first space
+                                date2 = o2.substring(index2+16, o2.indexOf(" ", index2+21));
+                            } catch(StringIndexOutOfBoundsException e) {
+                                LOGGER.warn("Problem parsing date data: \n" + o1 + "\n" + o2);
+                                return 0;
+                            }
                             String[] dateParts1 = date1.split("\\."); //split days, months and year at the dot
                             String[] dateParts2 = date2.split("\\.");
                             
@@ -693,21 +699,21 @@ public class XmlConfigUtil implements ServletContextAware {
     private String addContextFieldToFieldList(final Element element, final Namespace namespace, final FieldList fieldList, final int index
             ,final Dataset dataset, final String contextType, String separator, final String lang) {
         final String initialValue = dataset.getFieldFromContext(contextType + element.getAttributeValue("datasource"), index);
-        
+
         StringBuilder value = null;
         if (initialValue == null) {
             value = getIfEmptyContext(element, namespace, dataset, contextType, index);
         } else {
             value = new StringBuilder(16).append(initialValue);
         }
-        
+
         value = processValueEdits(element, value);
-        
+
         final String postfix = element.getAttributeValue("postfix");
         final String prefix = element.getAttributeValue("prefix");
         final String overrideSeparator = element.getAttributeValue("overrideSeparator");
         separator = (overrideSeparator == null) ? separator : overrideSeparator ;
-        
+
         if (value != null) {
             try {
                 if (prefix != null) {
@@ -720,7 +726,7 @@ public class XmlConfigUtil implements ServletContextAware {
             catch (Transl8Exception e) {
                 LOGGER.error("Failed to contact transl8. Cause: ", e);
             }
-            
+
             // handle linkFields
             if (element.getName().contentEquals("linkField")) {
                 try {
@@ -740,7 +746,7 @@ public class XmlConfigUtil implements ServletContextAware {
                     LOGGER.error("Failed to contact transl8. Cause: ", e);
                 }
             }
-            
+
             String nextSeparator = element.getAttributeValue("separator");
             String currentListValue = null;
             if (!fieldList.getValue().isEmpty() && index < fieldList.size()) {
@@ -760,12 +766,12 @@ public class XmlConfigUtil implements ServletContextAware {
 
     private String addContextCompoundDateFieldToFieldList(final Element element, final Namespace namespace, final FieldList fieldList, final int index
             ,final Dataset dataset, final String contextType, String separator, final String lang) {
-        
+
         StringBuilder value = new StringBuilder(16);
 
         for (final Element child: element.getChildren()) {
             StringBuilder toAppend = new StringBuilder("");
-            
+
             if (dataset.getFieldFromContext(contextType + child.getAttributeValue("datasource"), index) != null) {
                 toAppend.append(dataset.getFieldFromContext(contextType + child.getAttributeValue("datasource"), index));
             }
@@ -789,11 +795,11 @@ public class XmlConfigUtil implements ServletContextAware {
             }
                 value = value.append(toAppend);
         }
-        
+
         if (value.toString().equals("??.??.??")) {
             return separator;
         }
-        
+
         final String overrideSeparator = element.getAttributeValue("overrideSeparator");
         separator = (overrideSeparator == null) ? separator : overrideSeparator ;
         final String postfix = element.getAttributeValue("postfix");
@@ -810,8 +816,8 @@ public class XmlConfigUtil implements ServletContextAware {
         catch (Transl8Exception e) {
             LOGGER.error("Failed to contact transl8. Cause: ", e);
         }
-        
-        
+
+
         String nextSeparator = element.getAttributeValue("separator");
         String currentListValue = null;
         if (!fieldList.getValue().isEmpty() && index < fieldList.size()) {
