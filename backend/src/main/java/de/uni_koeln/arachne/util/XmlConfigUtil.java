@@ -1,6 +1,9 @@
 package de.uni_koeln.arachne.util;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,6 +26,13 @@ import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import de.uni_koeln.arachne.context.ContextImageDescriptor;
+import de.uni_koeln.arachne.response.AbstractContent;
+import de.uni_koeln.arachne.response.ContextEntity;
+import de.uni_koeln.arachne.response.Dataset;
+import de.uni_koeln.arachne.response.Field;
+import de.uni_koeln.arachne.response.FieldList;
+import de.uni_koeln.arachne.response.LinkField;
+import de.uni_koeln.arachne.response.Section;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.util.sql.TableConnectionDescription;
 import de.uni_koeln.arachne.service.Transl8Service;
@@ -83,9 +93,6 @@ public class XmlConfigUtil implements ServletContextAware {
         facets.clear();
     }
 
-
-
-
     /**
      * This function handles context elements in the xml config files. It extracts the content from the dataset
      * following the definitions in the xml files and returns it as <code>Content</code>.
@@ -96,8 +103,7 @@ public class XmlConfigUtil implements ServletContextAware {
      * @param dataset The dataset that contains the SQL query results.
      * @return A <code>Section</code> object containing the context sections content or <code>null</code> if access is denied.
      */
-    public Section getContentFromContext(final Element context, final Namespace namespace, final Dataset dataset,
-                                              final String lang) {
+    public Section getContentFromContext(final Element context, final Namespace namespace, final Dataset dataset, final String lang) {
 
         final Section result = new Section();
         final String contextType = context.getAttributeValue("type");
@@ -149,19 +155,105 @@ public class XmlConfigUtil implements ServletContextAware {
 
             if (link != null) {
                 final FieldList tempFieldList = new FieldList();
+                ArrayList<String> tempPlaceList = new ArrayList<String>();
+
                 for (int index = 0; index < fieldList.size(); index++) {
                     final String field = fieldList.get(index);
                     int separatorIndex = field.indexOf(separator);
-                    if (field.startsWith(LINK_PREFIX) && separatorIndex > -1) {
-                        StringBuilder newValue = new StringBuilder(32).append("<a href=\"");
-                        newValue.append(link);
-                        newValue.append(field.substring(LINK_PREFIX.length(), separatorIndex));
-                        newValue.append("\" target=\"_blank\">");
-                        newValue.append(field.substring(separatorIndex + separator.length()));
-                        newValue.append("</a>");
-                        tempFieldList.add(newValue.toString());
+
+                    // Special case for places, which shall be sorted
+                    if (contextType.equals("ort")) {
+                        if (field.startsWith(LINK_PREFIX) && separatorIndex > -1) {
+	                        StringBuilder newValue = new StringBuilder(32).append("<a href=\"");
+	                        newValue.append(link);
+	                        newValue.append(field.substring(LINK_PREFIX.length(), separatorIndex));
+	                        newValue.append("\" target=\"_blank\">");
+	                        newValue.append(field.substring(separatorIndex + separator.length()));
+	                        newValue.append("</a>");
+	                        tempPlaceList.add(newValue.toString());
+	                    } else {
+	                        tempPlaceList.add(fieldList.get(index).toString());
+	                    }
                     } else {
-                        tempFieldList.add(fieldList.get(index));
+	                    if (field.startsWith(LINK_PREFIX) && separatorIndex > -1) {
+	                        StringBuilder newValue = new StringBuilder(32).append("<a href=\"");
+	                        newValue.append(link);
+	                        newValue.append(field.substring(LINK_PREFIX.length(), separatorIndex));
+	                        newValue.append("\" target=\"_blank\">");
+	                        newValue.append(field.substring(separatorIndex + separator.length()));
+	                        newValue.append("</a>");
+	                        tempFieldList.add(newValue.toString());
+	                    } else {
+	                        tempFieldList.add(fieldList.get(index));
+	                    }
+                    }
+                }
+                // Sort function for places
+                // first extracts the start date timestamp and then uses that for comparison
+                Collections.sort(tempPlaceList, new Comparator<String>() {
+                    public int compare(String o1, String o2) {
+                        int index1 = o1.indexOf("Ortsangabe von: ");
+                        int index2 = o2.indexOf("Ortsangabe von: ");
+
+                        // Shuffles entries with date values (indicated by "Ortsangabe von") to the top
+                        if (index1 == -1 || index2 == -1) {
+                            if (index1 != -1) {
+                                return -1;
+                            }
+                            if (index2 != -1) {
+                                return 1;
+                            }
+                            return 0;
+                        } else {
+                        // trys parsing the date values, which can be empty
+                            String date1;
+                            String date2;
+                            try {
+                                date1 = o1.substring(index1+16, o1.indexOf(" ", index1+21)); //until first space
+                                date2 = o2.substring(index2+16, o2.indexOf(" ", index2+21));
+                            } catch(StringIndexOutOfBoundsException e) {
+                                LOGGER.warn("Problem parsing date data: \n" + o1 + "\n" + o2);
+                                return 0;
+                            }
+                            String[] dateParts1 = date1.split("\\."); //split days, months and year at the dot
+                            String[] dateParts2 = date2.split("\\.");
+                            
+                            int datePart1;
+                            int datePart2;
+
+                            try {
+                                datePart1 = Integer.parseInt(dateParts1[2]);
+                                datePart2 = Integer.parseInt(dateParts2[2]);
+                            } catch(IllegalArgumentException e) {
+                                return 0;
+                            }
+
+                            if (datePart1 == datePart2) {
+                                try {
+                                    datePart1 = Integer.parseInt(dateParts1[1]);
+                                    datePart2 = Integer.parseInt(dateParts2[1]);
+                                } catch(IllegalArgumentException e) {
+                                    return 0;
+                                }
+                            }
+
+                            if (datePart1 == datePart2) {
+                                try {
+                                    datePart1 = Integer.parseInt(dateParts1[0]);
+                                    datePart2 = Integer.parseInt(dateParts2[0]);
+                                } catch(IllegalArgumentException e) {
+                                    return 0;
+                                }
+                            }
+
+                            return datePart1 > datePart2 ? 1 : -1;
+                        }
+                    }
+                });
+
+                if (contextType.equals("ort")) {
+                    for (String s: tempPlaceList) {
+                        tempFieldList.add(s);
                     }
                 }
                 fieldList = tempFieldList;
@@ -198,14 +290,13 @@ public class XmlConfigUtil implements ServletContextAware {
                     }
                     localContext.setSeparator(separator);
 
-                    // label key
                     final String labelKey = curSection.getAttributeValue("labelKey");
                     if (labelKey != null) {
-                        try {
+                    try {
                             localContext.setLabel(ts.transl8(labelKey, lang));
                         } catch (Transl8Exception e) {
-                            LOGGER.error("Failed to contact transl8. Cause: ", e);
-                        }
+                        LOGGER.error("Failed to contact transl8. Cause: ", e);
+                    }
                     }
 
                     // add the sub context title at first (overrides labelKey)
@@ -726,6 +817,77 @@ public class XmlConfigUtil implements ServletContextAware {
         return separator;
     }
 
+    private String addContextCompoundDateFieldToFieldList(final Element element, final Namespace namespace, final FieldList fieldList, final int index
+            ,final Dataset dataset, final String contextType, String separator, final String lang) {
+
+        StringBuilder value = new StringBuilder(16);
+
+        for (final Element child: element.getChildren()) {
+            StringBuilder toAppend = new StringBuilder("");
+
+            if (dataset.getFieldFromContext(contextType + child.getAttributeValue("datasource"), index) != null) {
+                toAppend.append(dataset.getFieldFromContext(contextType + child.getAttributeValue("datasource"), index));
+            }
+
+            if (toAppend.toString().equals("")) {
+                toAppend.append("??");
+            }
+
+            String prefixInner = child.getAttributeValue("prefix");
+            String postfixInner = child.getAttributeValue("postfix");
+            try {
+                if (prefixInner != null) {
+                    toAppend.insert(0, ts.transl8(prefixInner, lang));
+                }
+                if (postfixInner != null) {
+                    toAppend.append(ts.transl8(postfixInner, lang));
+                }
+            }
+            catch (Transl8Exception e) {
+                LOGGER.error("Failed to contact transl8. Cause: ", e);
+            }
+                value = value.append(toAppend);
+        }
+
+        if (value.toString().equals("??.??.??")) {
+            return separator;
+        }
+
+        final String overrideSeparator = element.getAttributeValue("overrideSeparator");
+        separator = (overrideSeparator == null) ? separator : overrideSeparator ;
+        final String postfix = element.getAttributeValue("postfix");
+        final String prefix = element.getAttributeValue("prefix");
+
+        try {
+            if (prefix != null) {
+                value.insert(0, ts.transl8(prefix, lang));
+            }
+            if (postfix != null) {
+                value.append(ts.transl8(postfix, lang));
+            }
+        }
+        catch (Transl8Exception e) {
+            LOGGER.error("Failed to contact transl8. Cause: ", e);
+        }
+
+
+        String nextSeparator = element.getAttributeValue("separator");
+        String currentListValue = null;
+        if (!fieldList.getValue().isEmpty() && index < fieldList.size()) {
+            currentListValue = fieldList.get(index);
+        }
+        if (currentListValue == null) {
+            fieldList.add(value.toString());
+            nextSeparator = (nextSeparator != null) ? nextSeparator : separator;
+            return nextSeparator;
+        } else {
+            fieldList.modify(index, currentListValue + separator + value);
+            return nextSeparator;
+        }
+
+//        return separator;
+    }
+
     /**
      * Internal function adds the passed field to the passed result
      * @param field Field, whose datasource is added
@@ -789,7 +951,6 @@ public class XmlConfigUtil implements ServletContextAware {
     private void addFieldsToFieldList(final List<Element> children, final Namespace namespace, final FieldList fieldList, final int index
             , final Dataset dataset, final String contextType, final String separator, final String lang) {
 
-        LOGGER.debug(separator);
         String nextSeparator = separator;
         for (final Element element: children) {
             if (element.getName().equals("field") || element.getName().equals("linkField")) {
@@ -923,16 +1084,16 @@ public class XmlConfigUtil implements ServletContextAware {
             }
             if(!StrUtils.isEmptyOrNull(value)) {
                 //if (result.getContent().isEmpty()) {
-                   field.setValue(value);
+                    field.setValue(value);
                 //}
                 result.add(field);
             } else {
                 final int contentSize = result.getContent().size();
                 if (contentSize > 0) {
-                    final Field previousContent = (Field)result.getContent().get(contentSize-1);
-                    previousContent.setValue(previousContent.getValue() + value);
-                }
+                final Field previousContent = (Field)result.getContent().get(contentSize-1);
+                previousContent.setValue(previousContent.getValue() + value);
             }
+        }
         }
         catch (Transl8Exception e) {
             LOGGER.error("Failed to contact transl8. Cause: ", e);

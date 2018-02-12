@@ -3,6 +3,8 @@ package de.uni_koeln.arachne.response;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -263,6 +265,8 @@ public class ResponseFactory {
 		// TODO make the place handling more consistent - needs changes to the db
 		Context placeContext = dataset.getContext("ort");
 
+		ArrayList<Place> places = new ArrayList<Place>();
+
 		if (placeContext != null) {
 			for (AbstractLink link: placeContext.getAllContexts()) {
 				final String city = link.getFieldFromFields("ort.Stadt");
@@ -282,6 +286,12 @@ public class ResponseFactory {
 				final String latitude = link.getFieldFromFields("ort.Latitude");
 				final String longitude = link.getFieldFromFields("ort.Longitude");
 				final String gazetteerId = link.getFieldFromFields("ort.Gazetteerid");
+				final String storageFromDay = link.getFieldFromFields("ort.AufbewahrungVonTag");
+				final String storageFromMonth = link.getFieldFromFields("ort.AufbewahrungVonMonat");
+				final String storageFromYear = link.getFieldFromFields("ort.AufbewahrungVonJahr");
+				final String storageToDay = link.getFieldFromFields("ort.AufbewahrungBisTag");
+				final String storageToMonth = link.getFieldFromFields("ort.AufbewahrungBisMonat");
+				final String storageToYear = link.getFieldFromFields("ort.AufbewahrungBisJahr");
 
 				if (!StrUtils.isEmptyOrNull(placeName)) {
 					final Place place = new Place(placeName);
@@ -294,12 +304,79 @@ public class ResponseFactory {
 					if (gazetteerId != null) {
 						place.setGazetteerId(Long.parseLong(gazetteerId));
 					}
-					response.addPlace(place);
+                    if(!StrUtils.isEmptyOrNull(storageFromDay)) {
+						place.setStorageFromDay(Integer.parseInt(storageFromDay));
+					}
+                    if(!StrUtils.isEmptyOrNull(storageFromMonth)) {
+						place.setStorageFromMonth(Integer.parseInt(storageFromMonth));
+					}
+                    if(!StrUtils.isEmptyOrNull(storageFromYear)) {
+                        place.setStorageFromYear(Integer.parseInt(storageFromYear));
+		}
+                    if(!StrUtils.isEmptyOrNull(storageToDay)) {
+						place.setStorageToDay(Integer.parseInt(storageToDay));
+					}
+                    if(!StrUtils.isEmptyOrNull(storageToMonth)) {
+						place.setStorageToMonth(Integer.parseInt(storageToMonth));
+					}
+                    if(!StrUtils.isEmptyOrNull(storageToYear)) {
+						place.setStorageToYear(Integer.parseInt(storageToYear));
+					}
+                    places.add(place);
 				}
 			}
-		}
+			//Sort places by start date
+			try {
+    			Collections.sort(places, new Comparator<Place>() {
+    			    public int compare(Place p1, Place p2) {
+                        try {
+                            Integer datePart1 = p1.getStorageFromYear(); //holds year, month or day part of the date
+                            Integer datePart2 = p2.getStorageFromYear();
 
-		// set date information
+                            if (datePart1 == null || datePart2 == null) {
+                                if (datePart1 != null) {
+                                    return -1;
+                                }
+                                if (datePart2 != null) {
+                                    return 1;
+                                }
+                                return 0;
+                            } else {
+                                if (datePart1 == datePart2) {
+                                    try {
+                                        datePart1 = p1.getStorageFromMonth();
+                                        datePart2 = p2.getStorageFromMonth();
+                                    } catch(IllegalArgumentException e) {
+                                        return 0;
+                                    }
+                                }
+
+                                if (datePart1 == datePart2) {
+                                    try {
+                                        datePart1 = p1.getStorageFromDay();
+                                        datePart2 = p2.getStorageFromDay();
+                                    } catch(IllegalArgumentException e) {
+                                        return 0;
+                                    }
+                                }
+
+                                return datePart1 > datePart2 ? 1 : -1;
+                            }
+                            
+                        } catch (Exception e) {
+//                            throw new IllegalArgumentException(e);
+                            LOGGER.debug("A problem occured sorting places. Most likely missing date data.");
+                            return 0;
+                        }
+                    }
+    			});
+			} catch (NullPointerException e) {
+			    LOGGER.debug("A problem occured sorting places. Most likely missing date data.");
+			}
+			for (Place place: places) {
+				response.addPlace(place);
+			}
+		}
 
 		// add dates from datierungen
 		// TODO set parsed date when available in database
