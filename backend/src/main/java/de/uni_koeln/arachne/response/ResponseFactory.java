@@ -312,7 +312,7 @@ public class ResponseFactory {
 					}
                     if(!StrUtils.isEmptyOrNull(storageFromYear)) {
                         place.setStorageFromYear(Integer.parseInt(storageFromYear));
-		}
+                    }
                     if(!StrUtils.isEmptyOrNull(storageToDay)) {
 						place.setStorageToDay(Integer.parseInt(storageToDay));
 					}
@@ -330,6 +330,12 @@ public class ResponseFactory {
     			Collections.sort(places, new Comparator<Place>() {
     			    public int compare(Place p1, Place p2) {
                         try {
+                            // shuffle Fundorte to the top
+                            if (p1.getRelation().equals("Fundort")) {
+                                return -1;
+                            } else if (p2.getRelation().equals("Fundort")) {
+                                return 1;
+                            }
                             Integer datePart1 = p1.getStorageFromYear(); //holds year, month or day part of the date
                             Integer datePart2 = p2.getStorageFromYear();
 
