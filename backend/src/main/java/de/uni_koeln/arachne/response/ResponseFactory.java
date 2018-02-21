@@ -690,29 +690,25 @@ public class ResponseFactory {
 			final String relation = place.getRelation();
 			if (relation != null) {
 				relations.add(relation);
-				if (!StrUtils.isEmptyOrNull(location)) {
-					switch (relation) {
+
+				switch (relation) {
 					case "Fundort":
-						json.set("facet_fundort", json.arrayNode().add(place.getName()
-								+ location));
+						json.set("facet_fundort", json.arrayNode().add(place.getName()));
 						break;
 
 					case "Aufbewahrungsort":
-						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName()
-								+ location));
+						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName()));
 						break;
 
 					case "In situ":
-						json.set("facet_fundort", json.arrayNode().add(place.getName()
-								+ location));
-						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName()
-								+ location));
+						json.set("facet_fundort", json.arrayNode().add(place.getName()));
+						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName()));
 						break;
 
 					default:
 						break;
-					}
 				}
+
 			}
 		}
 
