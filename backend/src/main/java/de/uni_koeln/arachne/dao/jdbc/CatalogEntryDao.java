@@ -167,7 +167,7 @@ public class CatalogEntryDao extends SQLDao {
     /**
      * Persists a (@link CatalogEntry[]) to the DB.
      * @param newCatalogEntries The
-     * @return
+     * @return The persisted array of entries
      */
 	@Transactional
 	public CatalogEntry[] saveCatalogEntries(final CatalogEntry[] newCatalogEntries) {
