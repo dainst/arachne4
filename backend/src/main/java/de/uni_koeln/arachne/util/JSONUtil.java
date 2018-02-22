@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 /**
  * Class that provides an object mapper instance and JSON related constants and functions.
+ * 
  * @author Reimar Grabowski
  *
  */
@@ -35,9 +36,10 @@ public class JSONUtil {
 
 
 	/**
-	 * because they cause trouble
-	 * @param string
-	 * @return
+	 * Removes Windows line breaks from a {@code String}.</br>
+	 * Because they cause trouble.
+	 * @param string The input {@code String} (potentially containing Windows line breaks).
+	 * @return The 'cleaned' {@code String}. 
 	 */
 	public static String removeWindowsLinebreaks(final String string) {
 		return string.replaceAll("\\r\\n", "\n");
@@ -45,8 +47,8 @@ public class JSONUtil {
 
 	/**
 	 * Function to 'repair' invalid JSON. It tries to fix unparsable JSON by escaping special chars in string values, adding
-	 * missing curly braces and trying to at least get all the values before the value that caused the parse exception. It only
-	 * meant for simple JSON of the form {"key1":"value1","key2":"value2",etc.}.
+	 * missing curly braces and trying to at least get all the values before the value that caused the parse exception. It is 
+	 * only meant for simple JSON of the form {"key1":"value1","key2":"value2",etc.}.
 	 * @param invalidJSON The unparsable JSON.
 	 * @return The 'repaired' JSON.
 	 */
