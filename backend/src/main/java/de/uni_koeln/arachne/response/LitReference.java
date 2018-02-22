@@ -5,24 +5,29 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import de.uni_koeln.arachne.util.StrUtils;
 
 /**
- * Class to hold date information for entities.
+ * Class to hold literature references.
  * @author pfranck
+ * @author Reimar Grabowski
  */
 @JsonInclude(Include.NON_EMPTY)
 public class LitReference {
 
     /**
-     * the reference of the publication, according to arachne
+     * The reference of the publication, according to arachne.
      */
     private String reference;
 
     /**
-     * all you need is
+     * The unique identifier in iDAI.bibliography.
      */
     private String zenonId;
 
+    
     /**
-     * constructors
+     * Constructor setting {@code zenonId} and {@code reference}.
+     * 
+     * @param zenonId The unique identifier in iDAI.bibliography.
+     * @param reference The reference of the publication.
      */
     public LitReference(String zenonId, String reference) {
         if (!StrUtils.isEmptyOrNull(zenonId)) {
@@ -35,29 +40,39 @@ public class LitReference {
     }
 
     /**
-     * @param reference
-     */
+	 * Sets the reference of the publication (according to arachne).
+	 *
+	 * @param reference
+	 *            the new reference of the publication (according to arachne).
+	 */
     public void setReference(String reference) {
         this.reference = reference;
     }
 
     /**
-     * @return String
-     */
+	 * Gets the reference of the publication (according to arachne).
+	 *
+	 * @return the reference of the publication (according to arachne).
+	 */
     public String getReference() {
         return this.reference;
     }
 
     /**
-     * @param zenonId
-     */
+	 * Sets the iDAI.bibliography unique identifier.
+	 *
+	 * @param zenonId
+	 *            the new iDAI.bibliography unique identifier.
+	 */
     public void setZenonId(String zenonId) {
         this.zenonId = zenonId;
     }
 
     /**
-     * @return String
-     */
+	 * Gets the unique iDAI.bibliography identifier.
+	 *
+	 * @return the unique iDAI.bibliography identifier.
+	 */
     public String getZenonId() {
         return this.zenonId;
     }
