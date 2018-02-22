@@ -113,7 +113,9 @@ public class SearchController {
 	 * (optional)
 	 * @param facet If set only the values for this facet will be returned instead of a full search result. (optional)
 	 * @param editorFields Whether the editor-only fields should be searched and highlighted (optional, 
-	 * default is <code>true</code>).
+	 * default is <code>true</code>)
+	 * @param lang the language as HTTP request parameter
+	 * @param headerLanguage the value of the 'Accept-Language' HTTP header
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
 	@RequestMapping(value="/search",
@@ -239,6 +241,8 @@ public class SearchController {
 	 * @param sortField The field to sort results on.
 	 * @param orderDesc Whether the result should be in descending (<code>true</code>) or ascending (<code>false</code>) 
 	 * order.
+	 * @param lang the language as HTTP request parameter
+	 * @param headerLanguage the value of the 'Accept-Language' HTTP header
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
 	 */
 	@RequestMapping(value="/contexts/{entityId}",
@@ -299,11 +303,14 @@ public class SearchController {
 	 * @param facetName The name of the facet to get the values for.
 	 * @param groupMarker A single char indicating which group to retrieve.
 	 * @return The ordered list of values as JSON array.
+	 * @throws Transl8Exception if transl8 cannot be reached
 	 */
 	@RequestMapping(value="/index/{categoryName}/{facetName}",
 			method=RequestMethod.GET, 
 			produces={APPLICATION_JSON_UTF8_VALUE})
-	public @ResponseBody ResponseEntity<IndexResult> handleIndexRequest(@PathVariable("facetName") final String facetName, @PathVariable("categoryName") final String categoryName, @RequestParam(value = "group", required = false) Character groupMarker) throws Transl8Exception {
+	public @ResponseBody ResponseEntity<IndexResult> handleIndexRequest(
+			@PathVariable("facetName") final String facetName, @PathVariable("categoryName") final String categoryName,
+			@RequestParam(value = "group", required = false) Character groupMarker) throws Transl8Exception {
 		
 		if (facetName.startsWith("facet_") || facetName.startsWith("agg_")) {
             Multimap<String, String> filters = HashMultimap.create();
@@ -330,11 +337,14 @@ public class SearchController {
      * @param facetName The name of the facet to get the values for
      * @param groupMarker A character indicating which group to retrieve
      * @return The ordered list of values as JSON array.
+     * @throws Transl8Exception if transl8 cannot be reached
      */
     @RequestMapping(value="/index/{facetName}",
             method=RequestMethod.GET,
             produces={APPLICATION_JSON_UTF8_VALUE})
-    public @ResponseBody ResponseEntity<IndexResult> handleIndexRequestNoCategory(@PathVariable("facetName") final String facetName, @RequestParam(value = "group", required = false) Character groupMarker) throws Transl8Exception {
+	public @ResponseBody ResponseEntity<IndexResult> handleIndexRequestNoCategory(
+			@PathVariable("facetName") final String facetName,
+			@RequestParam(value = "group", required = false) Character groupMarker) throws Transl8Exception {
 
 	    if (facetName.startsWith("facet_") || facetName.startsWith("agg_")) {
             final Multimap<String, String> filters = HashMultimap.create();
