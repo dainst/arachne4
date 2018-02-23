@@ -483,6 +483,13 @@
           "title": {
             "en": "CeramEgypt – Pottery production and consumption in Ptolemaic-Roman Egypt"
           }
+        },
+        {
+          "id": "siracusa_citta_e_mura",
+          "title": {
+            "de": "Siracusa - La città e le sue mura"
+          },
+          "hidden": true
         }
       ]
     },
