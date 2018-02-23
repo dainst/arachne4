@@ -193,7 +193,9 @@ public class ImageController {
 	 * @param y Zoomify row. (mandatory)
 	 * @return The requested jpeg image.
 	 */
-	@RequestMapping(value = "zoomify/{entityId}/{z}-{x}-{y}.jpg", method = RequestMethod.GET)
+	@RequestMapping(value = "zoomify/{entityId}/{z}-{x}-{y}.jpg",
+			method = RequestMethod.GET,
+			produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> getImageForZoomifyViewer(@PathVariable("entityId") final long entityId,
 			@PathVariable("z") final int z, @PathVariable("x") final int x, @PathVariable("y") final int y) {
 		
