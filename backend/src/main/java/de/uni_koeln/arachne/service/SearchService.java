@@ -124,6 +124,7 @@ public class SearchService {
 	 * <code>buildQuery</code> method.
 	 * @param searchParameters The search parameter object.
 	 * @param filters The filters of the HTTP 'fq' parameter as Map.
+	 * @param lang The language.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
@@ -199,6 +200,7 @@ public class SearchService {
 	 * @param entityId The entityId to find the contexts for..
 	 * @param searchParameters The search parameter object.
 	 * @param filters The filters of the HTTP 'fq' parameter as Map.
+	 * @param lang The language.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
@@ -221,6 +223,7 @@ public class SearchService {
 	/**
 	 * Builds a search request with a single facet and "*" as search param to retrieve all values of the given facet.
 	 * @param facetName The name of the facet of interest.
+	 * @param filters The filters to build a filter query from.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 */
 	public SearchRequestBuilder buildIndexSearchRequest(final String facetName, final Multimap<String, String> filters) {
@@ -242,6 +245,7 @@ public class SearchService {
 	 * @param facetList A string list containing the facet names to add.
 	 * @param facetsToSort A list of facet names. Facets in this list are sorted lexically.
 	 * @param searchRequestBuilder The outgoing search request that gets the facets added.
+	 * @param lexically A boolean indicating if the {@code facetsToSort} should be sorted lexically.
 	 */
 	public void addFacets(final Set<Aggregation> facetList, final List<String> facetsToSort
 			, final SearchRequestBuilder searchRequestBuilder, final Boolean lexically) {
@@ -285,6 +289,7 @@ public class SearchService {
 	 * @param filters A <code>String</code> containing the filter values used in the query.
 	 * @param facetOffset An offset into the facet lists.
 	 * @return The search result.
+	 * @throws Transl8Exception if transl8 cannot be reached
 	 */
 	@SuppressWarnings("unchecked")
 	public SearchResult executeSearchRequest(final SearchRequestBuilder searchRequestBuilder, final int size,
@@ -507,6 +512,7 @@ public class SearchService {
 	 * @param limit The maximum number of distinct facet values returned.
 	 * @param geoHashPrecision The length of the geohash used in the geo grid aggregation.
 	 * @param facet A single facet. If not null only an aggregation for this facet will be added.
+	 * @param lang The language.
 	 * @return A set of <code>Aggregations</code>.
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
@@ -590,7 +596,7 @@ public class SearchService {
 	 * performed against the text fields.<br>
 	 * If the user is an editor the editorSection and datasetGroup fields are searched, too.
 	 * @param searchParam The query string.
-	 * @param filters The filter from the HTTP 'fq' parameter as map to create a filter query from.
+	 * @param filters The filters to create a filter query from.
 	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)
 	 * @param disableAccessControl If the access control query shall be replaced with a match all query
 	 * @param searchEditorFields Whether the editor-only fields should be searched.

@@ -43,7 +43,8 @@ public class JointContextualizer extends AbstractContextualizer {
     public List<AbstractLink> retrieve(final Dataset parent) {
 
         final long queryTime = System.currentTimeMillis();
-        final List<Map<String, String>> contextContents = genericSQLDao.getConnectedEntitiesJoint(contextType, parent, jointContextDefinition);
+		final List<Map<String, String>> contextContents = genericSQLDao.getConnectedEntitiesJoint(contextType, parent,
+				jointContextDefinition);
         LOGGER.debug("Query time: " + (System.currentTimeMillis() - queryTime) + " ms");
 
         if ((jointContextDefinition.isGrouped())) {

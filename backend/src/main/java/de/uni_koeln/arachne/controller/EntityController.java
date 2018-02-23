@@ -63,6 +63,8 @@ public class EntityController {
 	 * Requests for /entity/* return formatted data as JSON.
 	 * @param entityId The unique entity id of the item to fetch.
 	 * @param isLive If the entity shall be fetched from DB (<code>true</code>) or ES (<code>false</code>)
+	 * @param lang The language HTTP request paramter.
+	 * @param headerLanguage The value of the 'Accept-Language' HTTP header.
      * @return A response object containing the data (this is serialized to JSON).
 	 * @throws Transl8Exception if transl8 cannot be reached. 
      */
@@ -95,6 +97,8 @@ public class EntityController {
      * @param category The database table to fetch the item from.
      * @param categoryId The internal id of the item to fetch.
      * @param isLive If the entity shall be fetched from DB (<code>true</code>) or ES (<code>false</code>)
+     * @param lang The language as HTTP parameter.
+     * @param headerLanguage The value of the 'Accept-Language' HTTP header.
      * @return A response object containing the data (this is serialized to JSON).
      */
     @RequestMapping(value="/entity/{category}/{categoryId}", 
