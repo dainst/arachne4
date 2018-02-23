@@ -32,6 +32,7 @@ import de.uni_koeln.arachne.testconfig.TestData;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 
+@SuppressWarnings("javadoc")
 @RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(locations={"classpath:test-context.xml"}) 
 public class TestResponseFactory { // NOPMD
@@ -89,7 +90,7 @@ public class TestResponseFactory { // NOPMD
 		}
 		when(catalogDao.getPublicCatalogIdsAndPathsByEntityId(0)).thenReturn(mockCatalogDataList);
 		
-		when(ts.transl8(anyString(), anyString())).thenReturn("type_test");
+		when(ts.transl8(anyString(), anyString())).then(AdditionalAnswers.returnsFirstArg());
 		when(ts.transl8Facet(anyString(), anyString(), anyString())).then(AdditionalAnswers.returnsSecondArg());
 		
 		when(userRightsService.userHasAtLeastGroupID(anyInt())).thenReturn(true, false);
@@ -150,41 +151,41 @@ public class TestResponseFactory { // NOPMD
 	@Test
 	public void testDatasectionLabel() throws Transl8Exception {
 		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
-		assertTrue(response.contains("\"label\":\"type_test\""));
+		assertTrue(response.contains("\"label\":\"Testdata\""));
 	}
 	
 	@Test
 	public void testFieldPrefixPostfix() throws Transl8Exception {
 		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
-		assertTrue(response.contains("\"label\":\"type_test\""));
+		assertTrue(response.contains("\"label\":\"Testdata prefix/postfix\""));
 		assertTrue(response.contains("\"content\":[{\"value\":\"PrefixTest=success<hr>PostfixTest=success\"}]"));
 	}
 	
 	@Test
 	public void testFieldSeparator() throws Transl8Exception {
 		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
-		assertTrue(response.contains("\"label\":\"type_test\""));
+		assertTrue(response.contains("\"label\":\"Testdata separator\""));
 		assertTrue(response.contains("\"content\":[{\"value\":\"first-second\"}]"));
 	}
 	
 	@Test
 	public void testLinkField() throws Transl8Exception {
 		final String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
-		assertTrue(response.contains("\"label\":\"type_test\""));
+		assertTrue(response.contains("\"label\":\"Testdata linkField\""));
 		assertTrue(response.contains("\"content\":[{\"value\":\"Start<hr>"
-				+ "<a href=\\\"http://testserver.com/link1.html\\\" target=\\\"_blank\\\">type_test</a>-TestLinkOverride-"
-				+ "<a href=\\\"http://testserver.com/link2.html\\\" target=\\\"_blank\\\">type_test</a><hr>End\"}]"));
+				+ "<a href=\\\"http://testserver.com/link1.html\\\" target=\\\"_blank\\\">TestLink1</a>-TestLinkOverride-"
+				+ "<a href=\\\"http://testserver.com/link2.html\\\" target=\\\"_blank\\\">TestLink2</a><hr>End\"}]"));
 	}
 	
 	@Test
 	public void testEditorSection() throws Transl8Exception {
 		String response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
 		// user is an editor
-		assertTrue(response.contains("\"editorSection\":{\"label\":\"type_test\",\"content\":"
+		assertTrue(response.contains("\"editorSection\":{\"label\":\"Testdata Editor Section\",\"content\":"
 				+ "[{\"value\":\"for editors only\"}]}"));
 		// user is not an editor
 		response = responseFactory.createFormattedArachneEntityAsJsonString(dataset, LANG);
-		assertFalse(response.contains("\"editorSection\":{\"label\":\"type_test\",\"content\":"
+		assertFalse(response.contains("\"editorSection\":{\"label\":\"Testdata Editor Section\",\"content\":"
 				+ "[{\"value\":\"for editors only\"}]}"));
 	}
 	
