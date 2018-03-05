@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +23,6 @@ import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
-import de.uni_koeln.arachne.service.CatalogService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.network.CustomMediaType;
 
@@ -50,10 +48,8 @@ public class CatalogController {
 	private transient CatalogEntryDao catalogEntryDao;
 
 	@Autowired
+	
 	private transient CatalogDao catalogDao;
-
-	@Autowired
-	private transient CatalogService pdfService;
 	
 	/**
 	 * Handles HTTP GET requests for <code>/catalog/entry/{catalogEntryId}</code>.
@@ -164,49 +160,51 @@ public class CatalogController {
 
 	/**
 	 * Handles HTTP POST requests for <code>catalog/entry</code>.
-	 * Adds/updates the posted catalog entry to the corresponding catalog.
-	 * Returns an HTTP status code 403 if the user is not allowed to modify the catalog the entry belongs to or 400 if 
-	 * the posted catalog entry is not semantically correct.
-	 * @param catalogEntry The catalog entry.
-	 * @return A {@link ResponseEntity} containing the persisted entry or the corresponding error code on failure. 
+	 * Adds/updates the posted catalog entries to the corresponding catalog.
+	 * Returns an HTTP status code 403 if the user is not allowed to modify the catalog the entries belong to or 400 if
+	 * the posted catalog entries are not semantically correct.
+	 * @param catalogEntries The catalog entries.
+	 * @return A {@link ResponseEntity} containing the persisted entry or the corresponding error code on failure.
 	 */
-	@RequestMapping(value = "entry", 
+	@RequestMapping(value = "entry",
 			method = RequestMethod.POST,
 			consumes = CustomMediaType.APPLICATION_JSON_UTF8_VALUE,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
-	public @ResponseBody ResponseEntity<CatalogEntry> handleCatalogEntryCreateRequest(
-			@RequestBody final CatalogEntry catalogEntry) {
-		
+	public @ResponseBody ResponseEntity<CatalogEntry[]> handleCatalogEntriesCreateRequest(
+			@RequestBody final CatalogEntry[] catalogEntries) {
+
 		final User user = userRightsService.getCurrentUser();
 		final CatalogEntry catalogEntryParent;
 		final Catalog catalog;
-		
+
 		if (userRightsService.isSignedInUser()) {
-			if (catalogEntry.getParentId() != null) {
-				catalogEntryParent = catalogEntryDao.getById(catalogEntry.getParentId());
+			if (catalogEntries.length >= 1 && catalogEntries[0].getParentId() != null) {
+				catalogEntryParent = catalogEntryDao.getById(catalogEntries[0].getParentId());
 				if (catalogEntryParent == null) {
-					return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 				} else {
 					catalog = catalogDao.getById(catalogEntryParent.getCatalogId());
 					if (catalog.isCatalogOfUserWithId(user.getId())) {
-						catalogEntry.setId(null);
-						catalogEntry.setParentId(catalogEntryParent.getId());
-						catalogEntry.setCatalogId(catalog.getId());
+						for(int i = 0; i < catalogEntries.length; i++) {
+							catalogEntries[i].setId(null);
+                            catalogEntries[i].setParentId(catalogEntryParent.getId());
+                            catalogEntries[i].setCatalogId(catalog.getId());
+						}
 						try {
-							return ResponseEntity.ok(catalogEntryDao.saveCatalogEntry(catalogEntry));
+							return ResponseEntity.ok(catalogEntryDao.saveCatalogEntries(catalogEntries));
 						} catch (Exception e) {
 							LOGGER.error("Failed to save/update catalog entry.", e);
-							return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
+							return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 						}
 					} else {
-						return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
+						return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 					}
 				}
 			} else {
-				return new ResponseEntity<CatalogEntry>(HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 		} else {
-			return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 	}
 
@@ -280,44 +278,6 @@ public class CatalogController {
 		
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
-	
-	// disabled since the corresponding service class is unfinished
-	/*
-	@RequestMapping(value = "{catalogId}", 
-	method = RequestMethod.GET,
-	produces = MediaType.APPLICATION_PDF_VALUE)
-	public @ResponseBody ResponseEntity<byte[]> handleGetCatalogRequestPdf(@PathVariable("catalogId") final Long catalogId) {
-		byte[] result = null;
-		final User user = userRightsService.getCurrentUser();
-		Catalog catalog = catalogDao.getById(catalogId, true, 0, 0);
-		if (catalog == null) {
-			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
-		} else if (!catalog.isCatalogOfUserWithId(user.getId()) && !catalog.isPublic()) {
-			catalog = null;
-			return new ResponseEntity<byte[]>(HttpStatus.FORBIDDEN);
-		}
-		result = pdfService.getCatalogAsPdf(catalog);
-		
-		return ResponseEntity.status(HttpStatus.OK).body(result);
-	}
-	
-	@RequestMapping(value = "{catalogId}", 
-			method = RequestMethod.GET,
-			produces = MediaType.TEXT_HTML_VALUE)
-	public @ResponseBody ResponseEntity<String> handleGetCatalogRequestHtml(@PathVariable("catalogId") final Long catalogId) {
-		String result = null;
-		final User user = userRightsService.getCurrentUser();
-		Catalog catalog = catalogDao.getById(catalogId, true, 0, 0);
-		if (catalog == null) {
-			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
-		} else if (!catalog.isCatalogOfUserWithId(user.getId()) && !catalog.isPublic()) {
-			catalog = null;
-			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-		}
-		result = pdfService.getCatalogAsHtml(catalog);
-
-		return ResponseEntity.status(HttpStatus.OK).body(result);
-	}*/
 
 	/**
 	 * Handles http PUT request for <code>/catalog/{catalogId}</code>. 
@@ -349,7 +309,7 @@ public class CatalogController {
 	}
 
 	/**
-	 * Handles http POST request for <code>/catalog/create</code>.
+	 * Handles http POST request for <code>/catalog</code>.
 	 * Creates a catalog and persists it in the DB. 
 	 * Returns the catalog created and 200 if the action is permitted. Returns 403 if no user is signed in and 422 if 
 	 * the catalog could not be created. 

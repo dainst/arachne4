@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * Class to hold one facet of a search result with ordered facet values.
+ * 
+ * @author Reimar Grabowski
  */
 public class SearchResultFacet {
 
@@ -19,12 +21,12 @@ public class SearchResultFacet {
 	private String label;
 
 	/**
-	 * The filter group
+	 * The filter group.
 	 */
 	private String group;
 
 	/**
-	 * The filter dependency
+	 * The filter dependency.
 	 */
 	private String dependsOn;
 
@@ -41,6 +43,12 @@ public class SearchResultFacet {
 		this.name = name;
 	}
 
+	/**
+	 * Convenience constructor to create an instance with name, group and dependsOn set.
+	 * @param name The facet name.
+	 * @param group The filter group.
+	 * @param dependsOn The filter dependency.
+	 */
 	public SearchResultFacet(final String name, final String group, final String dependsOn) {
 		this.name = name;
 		this.group = group;
@@ -48,64 +56,76 @@ public class SearchResultFacet {
 	}
 
 	/**
-	 * Getter for the facet name.
-	 * @return The facet name.
+	 * Gets the facet internal name.
+	 *
+	 * @return the facet internal name
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * Setter for the facet name.
-	 * @param name The facet name.
+	 * Sets the facet internal name.
+	 *
+	 * @param name
+	 *            the new facet internal name
 	 */
 	public void setName(final String name) {
 		this.name = name;
 	}
 
 	/**
-	 * Getter for the facet label.
-	 * @return The facet label.
+	 * Gets the translated facet name to show in the frontend.
+	 *
+	 * @return the translated facet name to show in the frontend
 	 */
 	public String getLabel() {
 		return label;
 	}
 
 	/**
-	 * Setter for the facet label.
-	 * @param label The facet label.
+	 * Sets the translated facet name to show in the frontend.
+	 *
+	 * @param label
+	 *            the new translated facet name to show in the frontend
 	 */
 	public void setLabel(final String label) {
 		this.label = label;
 	}
 
 	/**
+	 * Gets the filter group.
 	 *
-	 * @return string
+	 * @return the filter group
 	 */
 	public String getGroup() {
 		return group;
 	}
 
 	/**
+	 * Sets the filter group.
 	 *
 	 * @param group
+	 *            the new filter group
 	 */
 	public void setGroup(String group) {
 		this.group = group;
 	}
 
 	/**
+	 * Gets the filter dependency.
 	 *
-	 * @return string
+	 * @return the filter dependency
 	 */
 	public String getDependsOn() {
 		return dependsOn;
 	}
 
 	/**
+	 * Sets the filter dependency.
 	 *
 	 * @param dependsOn
+	 *            the new filter dependency
 	 */
 	public void setDependsOn(String dependsOn) {
 		this.dependsOn = dependsOn;

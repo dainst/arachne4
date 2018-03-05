@@ -26,6 +26,7 @@ import de.uni_koeln.arachne.util.sql.SQLToolbox;
  * @author satan
  *
  */
+
 @Configurable(preConstruction=true)
 public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntitiesMapper.class);

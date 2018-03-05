@@ -42,12 +42,17 @@ public class Place {
 	/**
 	 * The beginning of the time period of the relation to its parent entity.
 	 */
-	private String storageFrom = null;
-	
+	private Integer storageFromDay = null;
+	private Integer storageFromMonth = null;
+	private Integer storageFromYear = null; //Needs to be null because empty date values have to be different from year 0
+
 	/**
 	 * The end of the time period of the relation to its parent entity.
 	 */
-	private String storageTo = null;
+	private Integer storageToDay = null;
+	private Integer storageToMonth = null;
+	private Integer storageToYear = null; //Needs to be null because empty date values have to be different from year 0
+
 	
 	public Place(final String name) {
 		this.name = name;
@@ -140,30 +145,79 @@ public class Place {
 	}
 
 	/**
-	 * @param start date of the relation to parent
+	 * @param start day of the relation to parent
 	 */
-	public String getStorageFrom() {
-		return storageFrom;
+	public Integer getStorageFromDay() {
+	    return storageFromDay;
+	}
+	/**
+	 * @param start month of the relation to parent
+	 */
+	public Integer getStorageFromMonth() {
+	    return storageFromMonth;
+	}
+	/**
+	 * @param start year of the relation to parent
+	 */
+	public Integer getStorageFromYear() {
+		return storageFromYear;
 	}
 
 	/**
-	 * @param start date of the relation to parent to set
+	 * @param start day of the relation to parent to set
 	 */
-	public void setStorageFrom(String storageFrom) {
-		this.storageFrom = storageFrom;
+	public void setStorageFromDay(int storageFromDay) {
+		this.storageFromDay = storageFromDay;
+	}
+	/**
+	 * @param start month of the relation to parent to set
+	 */
+	public void setStorageFromMonth(int storageFromMonth) {
+		this.storageFromMonth = storageFromMonth;
+	}
+	/**
+	 * @param start year of the relation to parent to set
+	 */
+	public void setStorageFromYear(int storageFromYear) {
+		this.storageFromYear = storageFromYear;
 	}
 
 	/**
-	 * @param end date of the relation to parent
+	 * @param end day of the relation to parent
 	 */
-	public String getStorageTo() {
-		return storageTo;
+	public Integer getStorageToDay() {
+	    return storageToDay;
+	}
+	/**
+	 * @param end month of the relation to parent
+	 */
+	public Integer getStorageToMonth() {
+	    return storageToMonth;
+	}
+	/**
+	 * @param end year of the relation to parent
+	 */
+	public Integer getStorageToYear() {
+		return storageToYear;
 	}
 
 	/**
-	 * @param end date of the relation to parent to set
+	 * @param end day of the relation to parent to set
 	 */
-	public void setStorageTo(String storageTo) {
-		this.storageTo = storageTo;
+	public void setStorageToDay(int storageToDay) {
+		this.storageToDay = storageToDay;
 	}
+	/**
+	 * @param end month of the relation to parent to set
+	 */
+	public void setStorageToMonth(int storageToMonth) {
+		this.storageToMonth = storageToMonth;
+	}
+	/**
+	 * @param end year of the relation to parent to set
+	 */
+	public void setStorageToYear(int storageToYear) {
+		this.storageToYear = storageToYear;
+	}
+
 }

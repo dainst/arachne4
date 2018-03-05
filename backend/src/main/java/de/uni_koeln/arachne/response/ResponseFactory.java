@@ -286,8 +286,12 @@ public class ResponseFactory {
 				final String latitude = link.getFieldFromFields("ort.Latitude");
 				final String longitude = link.getFieldFromFields("ort.Longitude");
 				final String gazetteerId = link.getFieldFromFields("ort.Gazetteerid");
-				final String storageFrom = link.getFieldFromFields("ort.AufbewahrungVon");
-				final String storageTo = link.getFieldFromFields("ort.AufbewahrungBis");
+				final String storageFromDay = link.getFieldFromFields("ort.AufbewahrungVonTag");
+				final String storageFromMonth = link.getFieldFromFields("ort.AufbewahrungVonMonat");
+				final String storageFromYear = link.getFieldFromFields("ort.AufbewahrungVonJahr");
+				final String storageToDay = link.getFieldFromFields("ort.AufbewahrungBisTag");
+				final String storageToMonth = link.getFieldFromFields("ort.AufbewahrungBisMonat");
+				final String storageToYear = link.getFieldFromFields("ort.AufbewahrungBisJahr");
 
 				if (!StrUtils.isEmptyOrNull(placeName)) {
 					final Place place = new Place(placeName);
@@ -300,11 +304,23 @@ public class ResponseFactory {
 					if (gazetteerId != null) {
 						place.setGazetteerId(Long.parseLong(gazetteerId));
 					}
-                    if(!StrUtils.isEmptyOrNull(storageFrom)) {
-						place.setStorageFrom(storageFrom);
+                    if(!StrUtils.isEmptyOrNull(storageFromDay)) {
+						place.setStorageFromDay(Integer.parseInt(storageFromDay));
 					}
-                    if(!StrUtils.isEmptyOrNull(storageTo)) {
-						place.setStorageTo(storageTo);
+                    if(!StrUtils.isEmptyOrNull(storageFromMonth)) {
+						place.setStorageFromMonth(Integer.parseInt(storageFromMonth));
+					}
+                    if(!StrUtils.isEmptyOrNull(storageFromYear)) {
+                        place.setStorageFromYear(Integer.parseInt(storageFromYear));
+                    }
+                    if(!StrUtils.isEmptyOrNull(storageToDay)) {
+						place.setStorageToDay(Integer.parseInt(storageToDay));
+					}
+                    if(!StrUtils.isEmptyOrNull(storageToMonth)) {
+						place.setStorageToMonth(Integer.parseInt(storageToMonth));
+					}
+                    if(!StrUtils.isEmptyOrNull(storageToYear)) {
+						place.setStorageToYear(Integer.parseInt(storageToYear));
 					}
                     places.add(place);
 				}
@@ -313,18 +329,60 @@ public class ResponseFactory {
 			try {
     			Collections.sort(places, new Comparator<Place>() {
     			    public int compare(Place p1, Place p2) {
-    			        return p1.getStorageFrom().compareTo(p2.getStorageFrom());
-    			    }
+                        try {
+                            // shuffle Fundorte to the top
+                            if (p1.getRelation().equals("Fundort")) {
+                                return -1;
+                            } else if (p2.getRelation().equals("Fundort")) {
+                                return 1;
+                            }
+                            Integer datePart1 = p1.getStorageFromYear(); //holds year, month or day part of the date
+                            Integer datePart2 = p2.getStorageFromYear();
+
+                            if (datePart1 == null || datePart2 == null) {
+                                if (datePart1 != null) {
+                                    return -1;
+                                }
+                                if (datePart2 != null) {
+                                    return 1;
+                                }
+                                return 0;
+                            } else {
+                                if (datePart1 == datePart2) {
+                                    try {
+                                        datePart1 = p1.getStorageFromMonth();
+                                        datePart2 = p2.getStorageFromMonth();
+                                    } catch(IllegalArgumentException e) {
+                                        return 0;
+                                    }
+                                }
+
+                                if (datePart1 == datePart2) {
+                                    try {
+                                        datePart1 = p1.getStorageFromDay();
+                                        datePart2 = p2.getStorageFromDay();
+                                    } catch(IllegalArgumentException e) {
+                                        return 0;
+                                    }
+                                }
+
+                                return datePart1 > datePart2 ? 1 : -1;
+                            }
+                            
+                        } catch (Exception e) {
+//                            throw new IllegalArgumentException(e);
+                            LOGGER.debug("A problem occured sorting places. Most likely missing date data.");
+                            return 0;
+                        }
+                    }
     			});
 			} catch (NullPointerException e) {
-			    LOGGER.warn("Places object could not be sorted.");
+			    LOGGER.debug("A problem occured sorting places. Most likely missing date data.");
 			}
 			for (Place place: places) {
 				response.addPlace(place);
 			}
 		}
-
-		// set date information
 
 		// add dates from datierungen
 		// TODO set parsed date when available in database
@@ -362,8 +420,6 @@ public class ResponseFactory {
                 }
 			}
 		}
-
-
 
 		// add marbilder creation dates
 		if ("marbilder".equals(tableName)) {
@@ -634,29 +690,25 @@ public class ResponseFactory {
 			final String relation = place.getRelation();
 			if (relation != null) {
 				relations.add(relation);
-				if (!StrUtils.isEmptyOrNull(location)) {
-					switch (relation) {
+
+				switch (relation) {
 					case "Fundort":
-						json.set("facet_fundort", json.arrayNode().add(place.getName()
-								+ location));
+						json.set("facet_fundort", json.arrayNode().add(place.getName()));
 						break;
 
 					case "Aufbewahrungsort":
-						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName()
-								+ location));
+						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName()));
 						break;
 
 					case "In situ":
-						json.set("facet_fundort", json.arrayNode().add(place.getName()
-								+ location));
-						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName()
-								+ location));
+						json.set("facet_fundort", json.arrayNode().add(place.getName()));
+						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName()));
 						break;
 
 					default:
 						break;
-					}
 				}
+
 			}
 		}
 

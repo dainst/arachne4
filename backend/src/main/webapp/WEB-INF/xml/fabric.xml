@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CeramEgypt Objects 2.0
+  This represents a piece of ceramic
+-->
 <category name="fabric" xmlns="http://arachne.uni-koeln.de/schemas/category"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+    <subtables>
+        <subtable connectFieldParent="PS_FabricID" connectFieldSubTable="FS_FabricID">fabricdescription</subtable>
+        <subtable connectFieldParent="fabricdescription.PS_FabricDescriptionID" connectFieldSubTable="FS_FabricDescriptionID">einschluss</subtable>
+    </subtables>
     <display>
         <title>
             <section separator=" / ">
@@ -18,144 +26,32 @@
         </subtitle>
         
         <datasections>
-            <section labelKey="Fabricbeschreibungen">
-                <context type="fabricdescription" labelKey="Description" separator=", ">
-                    <contextSection labelKey="Freie Farbbeschreibung" separator=" ">
-                        <field datasource=".ColourQualifierFreeVon"/>
-                        <field datasource=".ColourFreeVon" postfix=" -"/>
-                        <field datasource=".ColourQualifierFreeBis"/>
-                        <field datasource=".ColourFreeBis"/>
-                    </contextSection>
-                    <contextSection labelKey="Farbe der Bruchstelle" separator=" ">
-                        <field datasource=".ColourOfBreakQualifierVon"/>
-                        <field datasource=".ColourOfBreakVon" postfix=" -"/>
-                        <field datasource=".ColourOfBreakQualifierBis"/>
-                        <field datasource=".ColourOfBreakBis"/>
-                    </contextSection>
-                    <contextSection labelKey="Zoning">
-                        <field datasource=".Zoning"/>
-                    </contextSection>
-                    <contextSection labelKey="Farbe des Kerns" separator=" ">
-                        <field datasource=".ColourOfCoreQualifierVon"/>
-                        <field datasource=".ColourOfCoreVon" postfix=" -"/>
-                        <field datasource=".ColourOfCoreQualifierBis"/>
-                        <field datasource=".ColourOfCoreBis"/>
-                    </contextSection>
-                    <contextSection labelKey="Farbe der Oberfläche" separator=" ">
-                        <field datasource=".ColourOfOutsideQualifierVon"/>
-                        <field datasource=".ColourOfOutsideVon" postfix=" -"/>
-                        <field datasource=".ColourOfOutsideQualifierBis"/>
-                        <field datasource=".ColourOfOutsideBis"/>
-                    </contextSection>
-                    <contextSection labelKey="Machart">
-                        <field datasource=".Manufacture"/>
-                    </contextSection>
-                    <contextSection labelKey="Härte">
-                        <field datasource=".Hardness"/>
-                    </contextSection>
-                    <contextSection labelKey="Härte">
-                        <field datasource=".Porosity"/>
-                    </contextSection>
-                    <contextSection labelKey="Oberflächengefühl">
-                        <field datasource=".SurfaceFeel"/>
-                    </contextSection>
-                </context>
+            <section labelKey="Fabrikat">
+                <include type="fabric"></include>
             </section>
-            
-            <context type="Entitymainabstractbefund" labelKey="Befund">
-                <contextSection labelKey="Grabungsort">
-                    <field datasource=".Grabungsort"/>
-                </contextSection>
-                <contextSection labelKey="Befund">
-                    <field datasource=".Befund"/>
-                </contextSection>
-                <contextSection labelKey="Areal">
-                    <field datasource=".Areal"/>
-                </contextSection>
-            </context>
-            
-            <context type="Entitymainabstractmorphology" labelKey="Morphologie">
-                <contextSection labelKey="Functional Group">
-                    <field datasource=".Level1"/>
-                </contextSection>
-                <contextSection labelKey="Level 2">
-                    <field datasource=".Level2"/>
-                </contextSection>
-                <contextSection labelKey="Level 3">
-                    <field datasource=".Level3"/>
-                </contextSection>
-                <contextSection labelKey="Level 4">
-                    <field datasource=".Level4"/>
-                </contextSection>
-                <contextSection labelKey="Level 5">
-                    <field datasource=".Level5"/>
-                </contextSection>
-                <contextSection labelKey="Level 6">
-                    <field datasource=".Level6"/>
-                </contextSection>
-            </context>
+            <section labelKey="Einschluss">
+                <include type="einschluss"></include>
+            </section>
         </datasections>
-        
+
+        <editorsection>
+            <section labelKey="Für Bearbeiter">
+                <field datasource="fabric.Editor" prefix="Bearbeiter (fabric): " />
+                <field datasource="fabric.lastModified" prefix="Zuletzt Geändert (fabric): " />
+            </section>
+            <section labelKey="Für Bearbeiter">
+                <field datasource="fabricdescription.Editor" prefix="Bearbeiter (fabricdescription): " />
+                <field datasource="fabricdescription.lastModified" prefix="Zuletzt Geändert (fabricdescription): " />
+            </section>
+        </editorsection>
+
         <contextImages>
-            <!-- Show images of connected sherds -->
             <contextImage show="always">fabricdescription</contextImage>
         </contextImages>
     </display>
     
     <facets>
-        <!-- Facet-Context -->
-        <facet name="befund" labelKey="Fabric-Context">
-            <context type="Entitymainabstractbefund" separator=" / ">
-                <field datasource=".Grabungsort"/>
-            </context>
-        </facet>
-        <facet name="stratum" labelKey="Fabric-Stratum">
-            <context type="Entitymainabstractbefund" separator=" / ">
-                <field datasource=".Befund"/>
-            </context>
-        </facet>
-        <facet name="areal" labelKey="Fabric-Areal">
-            <context type="Entitymainabstractbefund" separator=" / ">
-                <field datasource=".Areal"/>
-            </context>
-        </facet>
-        
-        <!-- Facet-Morphology --> 
-        <facet name="morphology_functionalgroup" labelKey="Functional Group">
-            <context type="Entitymainabstractmorphology">
-                <field datasource=".Level1"/>
-            </context>
-        </facet>
-        <facet name="morphology_2ndLevel" labelKey="2nd Level">
-            <context type="Entitymainabstractmorphology">
-                <field datasource=".Level2"/>
-            </context>
-        </facet>    
-        <facet name="morphology_3rdLevel" labelKey="3rd Level">
-            <context type="Entitymainabstractmorphology">
-                <field datasource=".Level3"/>
-            </context>
-        </facet>    
-        <facet name="morphology_4thLevel" labelKey="4th Level">
-            <context type="Entitymainabstractmorphology">
-                <field datasource=".Level4"/>
-            </context>
-        </facet>    
-        <facet name="morphology_5thLevel" labelKey="5th Level">
-            <context type="Entitymainabstractmorphology">
-                <field datasource=".Level5"/>
-            </context>
-        </facet>    
-        
-        <!-- Facet-Fabric -->
-        <facet name="kategorie" labelKey="Kategorie">
-            <field datasource="Dataset.TableName"/>
-        </facet>
-        <facet name="fabriccommonname" labelKey="Common Name">
-            <field datasource="fabric.CommonName"/>
-        </facet>
-        <facet name="fabricname" labelKey="Name">
-            <field datasource="fabric.Name"/>
-        </facet>
+        <include type="facet_kategorie" />
+        <include type="facet_fabric" />
     </facets>
 </category>

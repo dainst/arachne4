@@ -308,24 +308,24 @@ public class TestCatalogController {
 		mockMvc.perform(
 				post("/catalog/entry")
 					.contentType(APPLICATION_JSON_UTF8)
-					.content("{\"id\": 599, \""
+					.content("[{\"id\": 599, \""
 							+ "label\": \"Test Label\",\""
 							+ "text\": \"Test Text.\",\""
 							+ "parentId\": 598,\""
 							+ "indexParent\": 0,\""
-							+ "catalogId\": 83}"))
+							+ "catalogId\": 83}]"))
 				.andExpect(status().isOk());
 		
 		// forbidden
 		mockMvc.perform(
 				post("/catalog/entry")
 					.contentType(APPLICATION_JSON_UTF8)
-					.content("{\"id\": 599, \""
+					.content("[{\"id\": 599, \""
 							+ "label\": \"Test Label\",\""
 							+ "text\": \"Test Text.\",\""
 							+ "parentId\": 598,\""
 							+ "indexParent\": 0,\""
-							+ "catalogId\": 83}"))
+							+ "catalogId\": 83}]"))
 				.andExpect(status().isForbidden());
 	}
 	
@@ -334,12 +334,12 @@ public class TestCatalogController {
 		mockMvc.perform(
 				post("/catalog/entry")
 					.contentType(APPLICATION_JSON_UTF8)
-					.content("{\"id\": 599, \""
+					.content("[{\"id\": 599, \""
 							+ "label\": \"Test Label\",\""
 							+ "text\": \"Test Text.\",\""
 							+ "parentId\": 600,\""
 							+ "indexParent\": 0,\""
-							+ "catalogId\": 83}"))
+							+ "catalogId\": 83}]"))
 				.andExpect(status().isBadRequest());
 	}
 	
@@ -348,11 +348,11 @@ public class TestCatalogController {
 		mockMvc.perform(
 				post("/catalog/entry")
 					.contentType(APPLICATION_JSON_UTF8)
-					.content("{\"id\": 599, \""
+					.content("[{\"id\": 599, \""
 							+ "label\": \"Test Label\",\""
 							+ "text\": \"Test Text.\",\""
 							+ "indexParent\": 0,\""
-							+ "catalogId\": 83}"))
+							+ "catalogId\": 83}]"))
 				.andExpect(status().isBadRequest());
 	}
 	

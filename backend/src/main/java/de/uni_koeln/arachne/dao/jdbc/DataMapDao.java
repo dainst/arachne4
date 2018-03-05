@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.dao.jdbc;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,12 +37,12 @@ public class DataMapDao extends SQLDao {
 	public Map<String, String> getById(final EntityId arachneId) {			
 
 		final String sql = getSingleEntityQuery(arachneId);
-		
+
 		LOGGER.debug(sql);
-		
+
 		final List<Map<String,String>> temp = (List<Map<String, String>>) this.query(sql, new DatasetMapper());
 		if (temp != null && !temp.isEmpty()) {
-			return temp.get(0);
+			return filterEmptyStringValues(temp.get(0));
 		}
 		return null;
 	}
@@ -81,14 +82,12 @@ public class DataMapDao extends SQLDao {
 		final String sql = queryBuilder.getSQL();
 		LOGGER.debug(sql);
 		final List<Map<String,String>> temp = (List<Map<String, String>>) this.query(sql, new DatasetMapper());
-		
-		Map<String,String> map;  
+
 		if (temp == null || temp.isEmpty()) {
-			map = new HashMap<String,String>();
+			return new HashMap<String,String>();
 		} else {
-			map = temp.get(0);
-		}
-		return map;	
+			return filterEmptyStringValues(temp.get(0));
+		}	
 	}
 	
 	private String getSingleEntityQuery(final EntityId entityId) {
@@ -104,5 +103,21 @@ public class DataMapDao extends SQLDao {
 			.append(userRightsService.getSQL(tableName))
 			.append(" LIMIT 1;");
 		return result.toString();
+	}
+	
+    /**
+     * Filters out empty values. In the database there are some columns with one whitespace instead of NULL.
+     * Those are removed from the query result.
+     */
+	private Map<String, String> filterEmptyStringValues(Map<String, String> resultMap) {
+	    
+	    for (Iterator<Map.Entry<String, String>> it = resultMap.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<String, String> entry = it.next();
+            if(entry.getValue().trim().equals("")) {
+                it.remove();
+            }
+        }
+	    
+	    return resultMap;
 	}
 }

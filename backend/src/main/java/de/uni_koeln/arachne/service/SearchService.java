@@ -34,9 +34,7 @@ import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.bucket.InternalSingleBucketAggregation;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
-import org.elasticsearch.search.aggregations.bucket.geogrid.InternalGeoHashGrid;
 import org.elasticsearch.search.highlight.HighlightBuilder.Field;
 import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
@@ -61,7 +59,6 @@ import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.search.Aggregation;
 import de.uni_koeln.arachne.util.search.GeoHashGridAggregation;
-import de.uni_koeln.arachne.util.search.NestedGeoHashGridAggregation;
 import de.uni_koeln.arachne.util.search.SearchFieldList;
 import de.uni_koeln.arachne.util.search.SearchParameters;
 import de.uni_koeln.arachne.util.search.TermsAggregation;
@@ -127,6 +124,7 @@ public class SearchService {
 	 * <code>buildQuery</code> method.
 	 * @param searchParameters The search parameter object.
 	 * @param filters The filters of the HTTP 'fq' parameter as Map.
+	 * @param lang The language.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
@@ -202,6 +200,7 @@ public class SearchService {
 	 * @param entityId The entityId to find the contexts for..
 	 * @param searchParameters The search parameter object.
 	 * @param filters The filters of the HTTP 'fq' parameter as Map.
+	 * @param lang The language.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
@@ -224,6 +223,7 @@ public class SearchService {
 	/**
 	 * Builds a search request with a single facet and "*" as search param to retrieve all values of the given facet.
 	 * @param facetName The name of the facet of interest.
+	 * @param filters The filters to build a filter query from.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 */
 	public SearchRequestBuilder buildIndexSearchRequest(final String facetName, final Multimap<String, String> filters) {
@@ -245,6 +245,7 @@ public class SearchService {
 	 * @param facetList A string list containing the facet names to add.
 	 * @param facetsToSort A list of facet names. Facets in this list are sorted lexically.
 	 * @param searchRequestBuilder The outgoing search request that gets the facets added.
+	 * @param lexically A boolean indicating if the {@code facetsToSort} should be sorted lexically.
 	 */
 	public void addFacets(final Set<Aggregation> facetList, final List<String> facetsToSort
 			, final SearchRequestBuilder searchRequestBuilder, final Boolean lexically) {
@@ -288,6 +289,7 @@ public class SearchService {
 	 * @param filters A <code>String</code> containing the filter values used in the query.
 	 * @param facetOffset An offset into the facet lists.
 	 * @return The search result.
+	 * @throws Transl8Exception if transl8 cannot be reached
 	 */
 	@SuppressWarnings("unchecked")
 	public SearchResult executeSearchRequest(final SearchRequestBuilder searchRequestBuilder, final int size,
@@ -351,23 +353,23 @@ public class SearchService {
 
 		for (final String aggregationName : aggregations.keySet()) {
 			final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
+			MultiBucketsAggregation aggregator = (MultiBucketsAggregation)aggregations.get(aggregationName);
+			// TODO find a better way to convert facet values
 
-			if (aggregations.get(aggregationName) instanceof InternalSingleBucketAggregation) {
-			    InternalSingleBucketAggregation nestedAggregator = (InternalSingleBucketAggregation) aggregations.get(aggregationName);
-			    InternalGeoHashGrid aggregator = (InternalGeoHashGrid) nestedAggregator.getAggregations().asList().get(0);
 
-	             for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
-                    final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
-                    final LatLong coord = GeoHash.decodeHash(bucket.getKeyAsString());
-                    facetMap.put("[" + coord.getLat() + ',' + coord.getLon() + ']', bucket.getDocCount());
-                }
+
+
+			if (aggregationName.equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
+				for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
+					final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
+					final LatLong coord = GeoHash.decodeHash(bucket.getKeyAsString());
+					facetMap.put("[" + coord.getLat() + ',' + coord.getLon() + ']', bucket.getDocCount());
+				}
 			} else {
-			    MultiBucketsAggregation aggregator = (MultiBucketsAggregation)aggregations.get(aggregationName);
-
-			    for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
-                    final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
-                    facetMap.put(bucket.getKeyAsString(), bucket.getDocCount());
-                }
+				for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
+					final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
+					facetMap.put(bucket.getKeyAsString(), bucket.getDocCount());
+				}
 			}
 			if (!facetMap.isEmpty() && !filters.containsKey(aggregationName)) {
 				facets.add(getSearchResultFacet(aggregationName, facetMap, category));
@@ -510,6 +512,7 @@ public class SearchService {
 	 * @param limit The maximum number of distinct facet values returned.
 	 * @param geoHashPrecision The length of the geohash used in the geo grid aggregation.
 	 * @param facet A single facet. If not null only an aggregation for this facet will be added.
+	 * @param lang The language.
 	 * @return A set of <code>Aggregations</code>.
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
@@ -549,8 +552,8 @@ public class SearchService {
 
 			// geo grid
 			if (geoHashPrecision > 0) {
-				result.add(new NestedGeoHashGridAggregation(GeoHashGridAggregation.GEO_HASH_GRID_NAME
-                        , GeoHashGridAggregation.GEO_HASH_GRID_FIELD, geoHashPrecision, 0));
+				result.add(new GeoHashGridAggregation(GeoHashGridAggregation.GEO_HASH_GRID_NAME
+						, GeoHashGridAggregation.GEO_HASH_GRID_FIELD, geoHashPrecision, 0));
 			}
 		} else {
 			result.add(new TermsAggregation(facet, limit));
@@ -593,7 +596,7 @@ public class SearchService {
 	 * performed against the text fields.<br>
 	 * If the user is an editor the editorSection and datasetGroup fields are searched, too.
 	 * @param searchParam The query string.
-	 * @param filters The filter from the HTTP 'fq' parameter as map to create a filter query from.
+	 * @param filters The filters to create a filter query from.
 	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)
 	 * @param disableAccessControl If the access control query shall be replaced with a match all query
 	 * @param searchEditorFields Whether the editor-only fields should be searched.
@@ -664,12 +667,9 @@ public class SearchService {
 
 		final QueryBuilder filteredQuery;
 		if (bbCoords != null && bbCoords.length == 4) {
-		    GeoBoundingBoxQueryBuilder bBoxFilter = QueryBuilders.geoBoundingBoxQuery("places.location")
+			GeoBoundingBoxQueryBuilder bBoxFilter = QueryBuilders.geoBoundingBoxQuery("places.location")
 					.topLeft(bbCoords[0], bbCoords[1]).bottomRight(bbCoords[2], bbCoords[3]);
-
-		    QueryBuilder nestedbBoxFilter = QueryBuilders.nestedQuery("places", bBoxFilter);
-		    BoolQueryBuilder andFilter = QueryBuilders.boolQuery().must(facetFilter).must(nestedbBoxFilter);
-
+			BoolQueryBuilder andFilter = QueryBuilders.boolQuery().must(facetFilter).must(bBoxFilter);
 			filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(andFilter);
 		} else {
 			filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(facetFilter);

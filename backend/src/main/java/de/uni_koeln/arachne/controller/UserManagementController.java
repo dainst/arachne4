@@ -93,6 +93,7 @@ public class UserManagementController {
 			method=RequestMethod.GET, 
 			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<MappingJacksonValue> getUserInfo(@PathVariable("username") String username) {
+		LOGGER.info("username: {}", username);
 		if (userRightsService.isSignedInUser()) {
 			if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID)) {
 				User user = userDao.findByName(username);
@@ -146,7 +147,7 @@ public class UserManagementController {
 	 * @return The JSON serialization of a success message.
 	 * @throws FormDataException if the email address is invalid or already taken or the username is already taken.
 	 */
-	@RequestMapping(value="/userinfo/{username}", 
+	@RequestMapping(value="/userinfo/{username:.+}",
 			method=RequestMethod.PUT, 
 			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<Map<String,String>> updateUserInfo(@PathVariable("username") String username, 
@@ -323,7 +324,7 @@ public class UserManagementController {
 	 */
 
 	@ResponseBody
-	@RequestMapping(value="/userinfo/{username}",
+	@RequestMapping(value="/userinfo/{username:.+}",
 			method=RequestMethod.DELETE,
 			produces= {CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public Map<String,String> delete(@PathVariable("username") String username, HttpServletResponse response) {
@@ -439,7 +440,7 @@ public class UserManagementController {
         final Calendar calender = Calendar.getInstance();
         final long now = calender.getTime().getTime();
         calender.setTimeInMillis(now);
-        calender.add(Calendar.HOUR_OF_DAY, 12);
+        calender.add(Calendar.HOUR_OF_DAY, 25);
         final Timestamp expirationDate = new Timestamp(calender.getTime().getTime());
 
         ResetPasswordRequest request = new ResetPasswordRequest();

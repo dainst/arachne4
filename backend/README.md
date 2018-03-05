@@ -58,5 +58,5 @@ Run the server with
 mvn tomcat7:run
 ```
 
-You then should be able to access the backend under `localhost:8080/arachne/entity/1`.
+You then should be able to access the backend under `localhost:8080/data/entity/1`.
 Alternatively you can use the Servlet container provided by your IDE in order to have a more seamless developing experience.
