@@ -177,6 +177,9 @@ public class SearchService {
 		addFacets(getFacetList(filters, searchParameters.getFacetLimit() + searchParameters.getFacetOffset()
 				, searchParameters.getGeoHashPrecision(), searchParameters.getFacet(), lang)
 				, searchParameters.getFacetsToSort(), result, searchParameters.isLexical());
+
+		LOGGER.debug("Complete Elasticsearch search request: " + result.toString());
+
 		return result;
 	}
 
@@ -679,7 +682,7 @@ public class SearchService {
 				.scriptFunction(new Script("doc['boost'].value", ScriptService.ScriptType.INLINE, "expression", null));
 		final QueryBuilder query = QueryBuilders.functionScoreQuery(filteredQuery, scoreFunction).boostMode("multiply");
 
-		LOGGER.debug("Elastic search query: " + query.toString());
+		LOGGER.debug("Elastic search query part: " + query.toString());
 		return query;
 	}
 
@@ -694,7 +697,7 @@ public class SearchService {
 		final TermQueryBuilder innerQuery = QueryBuilders.termQuery("connectedEntities", entityId);
 		final QueryBuilder query = QueryBuilders.boolQuery().must(innerQuery).filter(accessFilter);
 
-		LOGGER.debug("Elastic search query: " + query.toString());
+		LOGGER.debug("Elastic search query context: " + query.toString());
 		return query;
 	}
 
