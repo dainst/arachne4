@@ -670,9 +670,12 @@ public class SearchService {
 
 		final QueryBuilder filteredQuery;
 		if (bbCoords != null && bbCoords.length == 4) {
-			GeoBoundingBoxQueryBuilder bBoxFilter = QueryBuilders.geoBoundingBoxQuery("places.location")
-					.topLeft(bbCoords[0], bbCoords[1]).bottomRight(bbCoords[2], bbCoords[3]);
-			BoolQueryBuilder andFilter = QueryBuilders.boolQuery().must(facetFilter).must(bBoxFilter);
+            GeoBoundingBoxQueryBuilder bBoxFilter = 
+		            QueryBuilders.geoBoundingBoxQuery("places.location")
+                        .topLeft(bbCoords[0], bbCoords[1])
+                        .bottomRight(bbCoords[2], bbCoords[3]);
+		    QueryBuilder nestedFilter = QueryBuilders.nestedQuery("places", bBoxFilter);
+			BoolQueryBuilder andFilter = QueryBuilders.boolQuery().must(facetFilter).must(nestedFilter);
 			filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(andFilter);
 		} else {
 			filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(facetFilter);
