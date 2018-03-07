@@ -1684,7 +1684,7 @@ public class XmlConfigUtil implements ServletContextAware {
 					}
 				}
 
-				if (defintion.check()) {
+				if (defintion.isValid()) {
 					definitions.add(defintion);
 				} else {
 					LOGGER.warn("could not create Joint context: " + type);

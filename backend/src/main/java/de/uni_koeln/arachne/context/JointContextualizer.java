@@ -17,7 +17,7 @@ import javax.xml.crypto.Data;
 
 /**
  * This contextualizer retrieves internal contexts (tables in the arachne database).
- * but NOT based on waht you find in the semConnectionsTable in the db but by Information from the XMLs
+ * but NOT based on the SemanticConnections table in the DB but by Information from the XML files.
  *
  */
 public class JointContextualizer extends AbstractContextualizer {

@@ -131,13 +131,15 @@ public class GenericSQLDao extends SQLDao {
 	}
 
 	/**
-	 * Gets a list of connected entities as key value pairs from a "joint" contextualizer, as defined in an object
-     * category description xml
+	 * Gets a list of connected entities as key value pairs from a "joint contextualizer", as defined in an object
+     * category description XML file.
 	 * @param contextType The type of connected entity (a table name).
 	 * @param parent The entity id to get connected entities for.
+	 * @param jointContextDefinition The {@link JointContextDefinition} as retrieved from the XML file.
 	 * @return The list of connected entities.
 	 */
-	public List<Map<String, String>> getConnectedEntitiesJoint(final String contextType, final Dataset parent, final JointContextDefinition jointContextDefinition) {
+	public List<Map<String, String>> getConnectedEntitiesJoint(final String contextType, final Dataset parent,
+			final JointContextDefinition jointContextDefinition) {
 		final long entityId = parent.getArachneId().getArachneEntityID();
 		final List<Map<String, String>> result = query(con -> {
 			final String sql = buildMultiJoinQuery(entityId, jointContextDefinition);
