@@ -60,7 +60,7 @@ public class TestTransl8Service {
 	public void tearDown() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		mockServer = null;
 				
-		Field lang = Transl8Service.class.getDeclaredField("languages");
+		Field lang = Transl8Service.class.getDeclaredField("supportedLanguages");
 		lang.setAccessible(true);
 				
 		Field field = Transl8Service.class.getDeclaredField("translationsAvailable");
