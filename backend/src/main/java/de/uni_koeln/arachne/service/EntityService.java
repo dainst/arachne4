@@ -87,6 +87,7 @@ public class EntityService {
      * If the user does not have permission to see an entity a HTTP 403 status message is returned.
      * @param id The unique entity ID if no category is given else the internal ID.
      * @param category The category to query or <code>null</code>.
+	 * @param lang The language.
      * @return The response body as <code>String</code>.
 	 * @throws Transl8Exception if tranl8 cannot be reached. 
      */
@@ -185,6 +186,7 @@ public class EntityService {
 	 * IMPORTANT: Do no use the raw byte representation for the live retrieval of entities. It is only meant to be used 
 	 * by the dataimport. Use the <code>String</code> version instead.
 	 * @param entityId The corresponding EntityId object.
+	 * @param lang The language.
 	 * @return The requested formatted entity object as JSON raw <code>byte</code> array or <code>null</code> to 
 	 * indicate that the user is not allowed to see this entity or any error occurs.
 	 * @throws Transl8Exception if transl8 cannot be reached. 

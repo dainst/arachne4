@@ -68,6 +68,7 @@ public class ContextService {
 	 * This methods adds all contexts to the dataset that are found in the XML description. It also runs all contextualizers 
 	 * that are marked as explicit in the corresponding xml config file and adds contextImages if neccessary.
 	 * @param parent The dataset to add the contexts to.
+	 * @param lang The language.
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
 	public void addMandatoryContexts(final Dataset parent, final String lang) throws Transl8Exception {

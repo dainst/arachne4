@@ -85,7 +85,7 @@ public class Catalog {
 
 	/**
 	 * Setter for the projectId field.
-	 * @param author An projectId.
+	 * @param projectId An projectId.
 	 */
 	public void setProjectId(String projectId) {
 		this.projectId = projectId;

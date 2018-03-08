@@ -25,6 +25,7 @@ public class CatalogEntryExtended {
 	 * @param entry The {@link CatalogEntry}.
 	 * @param catalogTitle The title of the catalog the entry is part of.
 	 * @param catalogAuthor The author of the catalog the entry is part of.
+	 * @param projectId The project identifier.
 	 * @param isPublic If the catalog the entry is part of is public.
 	 */
 	public CatalogEntryExtended(CatalogEntry entry, String catalogTitle, String catalogAuthor, String projectId, Boolean isPublic) {

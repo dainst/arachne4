@@ -145,76 +145,76 @@ public class Place {
 	}
 
 	/**
-	 * @param start day of the relation to parent
+	 * @return start day of the relation to parent 
 	 */
 	public Integer getStorageFromDay() {
 	    return storageFromDay;
 	}
 	/**
-	 * @param start month of the relation to parent
+	 * @return start month of the relation to parent
 	 */
 	public Integer getStorageFromMonth() {
 	    return storageFromMonth;
 	}
 	/**
-	 * @param start year of the relation to parent
+	 * @return start year of the relation to parent
 	 */
 	public Integer getStorageFromYear() {
 		return storageFromYear;
 	}
 
 	/**
-	 * @param start day of the relation to parent to set
+	 * @param storageFromDay day of the relation to parent to set
 	 */
 	public void setStorageFromDay(int storageFromDay) {
 		this.storageFromDay = storageFromDay;
 	}
 	/**
-	 * @param start month of the relation to parent to set
+	 * @param storageFromMonth month of the relation to parent to set 
 	 */
 	public void setStorageFromMonth(int storageFromMonth) {
 		this.storageFromMonth = storageFromMonth;
 	}
 	/**
-	 * @param start year of the relation to parent to set
+	 * @param storageFromYear year of the relation to parent to set 
 	 */
 	public void setStorageFromYear(int storageFromYear) {
 		this.storageFromYear = storageFromYear;
 	}
 
 	/**
-	 * @param end day of the relation to parent
+	 * @return day of the relation to parent
 	 */
 	public Integer getStorageToDay() {
 	    return storageToDay;
 	}
 	/**
-	 * @param end month of the relation to parent
+	 * @return month of the relation to parent
 	 */
 	public Integer getStorageToMonth() {
 	    return storageToMonth;
 	}
 	/**
-	 * @param end year of the relation to parent
+	 * @return year of the relation to parent 
 	 */
 	public Integer getStorageToYear() {
 		return storageToYear;
 	}
 
 	/**
-	 * @param end day of the relation to parent to set
+	 * @param storageToDay day of the relation to parent to set
 	 */
 	public void setStorageToDay(int storageToDay) {
 		this.storageToDay = storageToDay;
 	}
 	/**
-	 * @param end month of the relation to parent to set
+	 * @param storageToMonth month of the relation to parent to set
 	 */
 	public void setStorageToMonth(int storageToMonth) {
 		this.storageToMonth = storageToMonth;
 	}
 	/**
-	 * @param end year of the relation to parent to set
+	 * @param storageToYear year of the relation to parent to set
 	 */
 	public void setStorageToYear(int storageToYear) {
 		this.storageToYear = storageToYear;

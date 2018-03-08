@@ -351,14 +351,18 @@ public class UserManagementController {
 	}
 
 	/**
+	 * Endpoint to change a users password.
+	 * 
+	 * @param userCredentials The old, new and new confirmed passwords.
+	 * @param response The HTTP servlet response.
+	 * @return The JSON serialization of a success message.
 	 *
 	 */
-
 	@ResponseBody
 	@RequestMapping(value="/user/change",
 		method=RequestMethod.POST,
 		produces= {CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
-	public Map<String, String> change(@RequestBody Map<String, String> userCredentials, HttpServletResponse response) {
+	public Map<String, String> changePassword(@RequestBody Map<String, String> userCredentials, HttpServletResponse response) {
 		Map<String, String> result = new HashMap<>();
 
 		if(!userRightsService.isSignedInUser()) {

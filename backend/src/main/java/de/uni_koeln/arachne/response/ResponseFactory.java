@@ -143,6 +143,7 @@ public class ResponseFactory {
 	 * <br>
 	 * The validity of the xml file is not checked as this is covered by 'category.xsd'.
 	 * @param dataset The dataset which encapsulates the SQL query results.
+	 * @param lang The language.
 	 * @return A <code>FormattedArachneEntity</code> as JSON (<code>raw bytes</code>).
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
