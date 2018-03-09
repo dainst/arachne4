@@ -22,7 +22,7 @@ public class GeoHashGridAggregation extends Aggregation {
 	/**
 	 * The geohash precision of a aggregation of type 'GEOHASH'.
 	 */
-	private int precision = 5;
+	protected int precision = 5;
 		
 	/**
 	 * Constructor to set all fields except 'precision'.
