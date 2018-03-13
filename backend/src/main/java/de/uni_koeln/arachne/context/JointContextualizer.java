@@ -130,9 +130,9 @@ public class JointContextualizer extends AbstractContextualizer {
 
         //results were sorted by sql BUT this got lost through grouping, so we have to sort again
         if ((jointContextDefinition.getOrderBy() != null) && !jointContextDefinition.getOrderBy().equals("")) {
-            final Comparator comparator = jointContextDefinition.getOrderDescending() ?
-                    new SortArachneLinks(jointContextDefinition.getOrderBy()).reversed() :
-                    new SortArachneLinks(jointContextDefinition.getOrderBy());
+            final Comparator<ArachneLink> comparator = jointContextDefinition.getOrderDescending() ?
+                    new ArachneLinkComparator(jointContextDefinition.getOrderBy()).reversed() :
+                    new ArachneLinkComparator(jointContextDefinition.getOrderBy());
             Collections.sort(linkList, comparator);
         }
         result.addAll(linkList);
@@ -156,11 +156,11 @@ public class JointContextualizer extends AbstractContextualizer {
     }
 
 
-    class SortArachneLinks implements Comparator<ArachneLink> {
+    class ArachneLinkComparator implements Comparator<ArachneLink> {
 
         public String orderBy;
 
-        public SortArachneLinks(String orderBy) {
+        public ArachneLinkComparator(String orderBy) {
             super();
             this.orderBy = orderBy;
         }
