@@ -175,6 +175,7 @@ public class DataImportService { // NOPMD
 			if ("NoIndex".equals(indexName)) {
 				LOGGER.error("Dataimport failed. No index found.");
 				running = false;
+				bulkProcessor.close();
 				return;
 			}
 
@@ -188,6 +189,7 @@ public class DataImportService { // NOPMD
 				count = entityCount;
 			} else {
 				LOGGER.error("'select count(*) `ArachneEntityID` from `arachneentityidentification` where `isDeleted` = 0' returned 0 - Dataimport aborted.");
+				bulkProcessor.close();
 				throw new Exception("'select count(*) `ArachneEntityID` from `arachneentityidentification` where `isDeleted` = 0' returned 0");
 			}
 
@@ -220,6 +222,7 @@ public class DataImportService { // NOPMD
 						jsonEntity = entityService.getFormattedEntityByIdAsJson(entityId, "de");
 						if (jsonEntity == null) {
 							LOGGER.error("Entity " + dbgEntityId + " is null! This should never happen. Check the database immediately.");
+							bulkProcessor.close();
 							throw new RuntimeException("Entity " + dbgEntityId + " is null!");
 						} else {
 							if (checkIndexOnDataImport) {
