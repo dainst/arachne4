@@ -2,7 +2,6 @@ package de.uni_koeln.arachne.controller;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multiset;
 import de.uni_koeln.arachne.response.search.IndexResult;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;

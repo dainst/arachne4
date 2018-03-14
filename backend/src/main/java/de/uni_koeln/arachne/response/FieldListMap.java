@@ -1,6 +1,5 @@
 package de.uni_koeln.arachne.response;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FieldListMap extends HashMap<String, FieldList> {

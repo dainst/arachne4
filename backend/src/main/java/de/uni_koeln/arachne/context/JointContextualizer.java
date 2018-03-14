@@ -2,18 +2,13 @@ package de.uni_koeln.arachne.context;
 
 import java.util.*;
 
-import de.uni_koeln.arachne.mapping.hibernate.ArachneEntity;
 import de.uni_koeln.arachne.response.AdditionalContent;
-import de.uni_koeln.arachne.service.EntityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.util.EntityId;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.xml.crypto.Data;
 
 /**
  * This contextualizer retrieves internal contexts (tables in the arachne database).
