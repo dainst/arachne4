@@ -147,7 +147,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 		
 		filename = queryResults.get("marbilder.DateinameMarbilder");
 
-		if (filename!=null && project!=null) {
+		if (filename!=null) {
 			image.setImageFields(imageId, filename, project);
 		}
 	}

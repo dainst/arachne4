@@ -29,7 +29,7 @@ public class ImageUtils { // NOPMD
 			LOGGER.warn("Data integrity warning. Missing subtitle on image '" + thumbnail.getImageId() + "'.");
 			return null;
 		}
-		if (imageList.size()>1 && thumbnail != null && subtitle.contains(",")) {
+		if (imageList.size() > 1 && subtitle.contains(",")) {
 			Integer lowestNumber = extractNumberFromImageFilename(subtitle);
 			for (final Image potentialThumbnail: imageList) {
 				if (potentialThumbnail.getImageSubtitle().contains(",")) {
