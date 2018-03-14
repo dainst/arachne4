@@ -33,8 +33,12 @@ import de.uni_koeln.arachne.util.EntityId;
  * 
  * @author Reimar Grabowski
  */
-public class TestData {
+public final class TestData {
 
+	private TestData() {
+		// disallow instantiation
+	}
+	
 	public static final String jsonString = "{"
 			+ "\"entityId\":1,"
 			+ "\"type\":\"type_test\","
