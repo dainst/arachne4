@@ -66,7 +66,7 @@ public class XmlConfigUtil implements ServletContextAware {
 
 	private transient final Map<String, List<String>> explicitContextualizers = new HashMap<>();
 
-	private transient final Map<String, List<JointContextDefinition>> jointContextualizers = new HashMap<>();
+	private transient final Map<String, List<JointContextDefinition>> jointContextDefinitions = new HashMap<>();
 
 	private transient final Map<String, List<ContextImageDescriptor>> contextImageDescriptors = new HashMap<>();
 
@@ -1630,8 +1630,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	}
 
 	public List<JointContextDefinition> getJointContextualizers(String type) {
-		final List<JointContextDefinition> cachedContextualizers = jointContextualizers.get(type);
-		if (cachedContextualizers == null) {
+		final List<JointContextDefinition> cachedDefinitions = jointContextDefinitions.get(type);
+		if (cachedDefinitions == null) {
 			final Document document = getDocument(type);
 			if (document == null) {
 				return new ArrayList<JointContextDefinition>();
@@ -1687,16 +1687,16 @@ public class XmlConfigUtil implements ServletContextAware {
 				if (defintion.isValid()) {
 					definitions.add(defintion);
 				} else {
-					LOGGER.warn("could not create Joint context: " + type);
+					LOGGER.warn("Invalid definition! Could not create Joint context: " + type);
 				}
 
 			}
 
-			jointContextualizers.put(type, definitions);
+			jointContextDefinitions.put(type, definitions);
 			return definitions;
 
 		}
-		return cachedContextualizers;
+		return cachedDefinitions;
 
 	}
 }
