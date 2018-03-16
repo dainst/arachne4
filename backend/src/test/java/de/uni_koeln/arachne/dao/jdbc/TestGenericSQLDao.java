@@ -47,15 +47,15 @@ public class TestGenericSQLDao {
 	
 	private TestUserData testUserData;
 
-    private final String TEST_TABLE_NAME;
+    private final String testTableName;
 
 	public TestGenericSQLDao() {
 		boolean MixedCaseTableNamesSupported = System.getProperty("myMachineDoesNotSupportMixedCaseSQLTableNames") == null;
 		if (MixedCaseTableNamesSupported) {
-			TEST_TABLE_NAME =  "Test_Table";
+			testTableName =  "Test_Table";
 		} else {
 			// contains only lower case letters since there were problems on a dev machine when containing uppercase letters
-			TEST_TABLE_NAME =  "test_table";
+			testTableName =  "test_table";
 		}
 		
 	}
@@ -67,7 +67,7 @@ public class TestGenericSQLDao {
 		when(userRightsService.getCurrentUser()).thenReturn(TestUserData.getUser());
 		when(userRightsService.getSQL("marbilder")).thenReturn(" AND (DatensatzGruppeMarbilder = 'userTestGroup' "
 				+ "OR DatensatzGruppeMarbilder = 'anotherTestGroup')");
-		when(userRightsService.getSQL(TEST_TABLE_NAME)).thenReturn(" AND (DatensatzGruppeTestTable = 'userTestGroup' "
+		when(userRightsService.getSQL(testTableName)).thenReturn(" AND (DatensatzGruppeTestTable = 'userTestGroup' "
 				+ "OR DatensatzGruppeTestTable = 'anotherTestGroup')");
 		
 		jdbcTemplate = new JdbcTemplate(datasource);
@@ -85,7 +85,7 @@ public class TestGenericSQLDao {
         jdbcTemplate.execute("DROP TABLE IF EXISTS arachneentityidentification;");
         jdbcTemplate.execute("DROP TABLE IF EXISTS buchseite;");
         jdbcTemplate.execute("DROP table IF EXISTS SemanticConnection");
-        jdbcTemplate.execute("DROP table IF EXISTS "+TEST_TABLE_NAME+";");
+        jdbcTemplate.execute("DROP table IF EXISTS "+testTableName+";");
         jdbcTemplate.execute("DROP table IF EXISTS SemanticConnection");
     }
 	
@@ -118,16 +118,16 @@ public class TestGenericSQLDao {
 	
 	public boolean setUpTestGetStringField() {
 		try {
-			jdbcTemplate.execute("CREATE TABLE "+TEST_TABLE_NAME+"("
+			jdbcTemplate.execute("CREATE TABLE "+testTableName+"("
 					+ "id INT NOT NULL,"
 					+ "data VARCHAR(32) NOT NULL,"
 					+ "DatensatzGruppeTestTable VARCHAR(255) NOT NULL);");
 			
-			jdbcTemplate.execute("INSERT INTO "+TEST_TABLE_NAME+"("
+			jdbcTemplate.execute("INSERT INTO "+testTableName+"("
 					+ "id, data, DatensatzGruppeTestTable)"
 					+ "VALUES"
 					+ "(1,'some data','userTestGroup');");
-			jdbcTemplate.execute("INSERT INTO "+TEST_TABLE_NAME+"("
+			jdbcTemplate.execute("INSERT INTO "+testTableName+"("
 					+ "id, data, DatensatzGruppeTestTable)"
 					+ "VALUES"
 					+ "(2,'wrong group','wrongGroup');");
@@ -145,14 +145,14 @@ public class TestGenericSQLDao {
 		if (!setUpTestGetStringField()) fail("could not set up string field");
 
         // no authorization
-        String value = genericSQLDao.getStringField(TEST_TABLE_NAME, "id", 1, "data", true);
+        String value = genericSQLDao.getStringField(testTableName, "id", 1, "data", true);
         assertNotNull(value);
         assertEquals("some data", value);
         // authorization
-        value = genericSQLDao.getStringField(TEST_TABLE_NAME, "id", 1, "data", false);
+        value = genericSQLDao.getStringField(testTableName, "id", 1, "data", false);
         assertNotNull(value);
         assertEquals("some data", value);
-        value = genericSQLDao.getStringField(TEST_TABLE_NAME, "id", 2, "data", false);
+        value = genericSQLDao.getStringField(testTableName, "id", 2, "data", false);
         assertNull(value);
 	}
 	
@@ -166,7 +166,7 @@ public class TestGenericSQLDao {
 			jdbcTemplate.execute("INSERT INTO SemanticConnection("
 					+ "Source, Target, ForeignKeyTarget, TypeTarget)"
 					+ "VALUES"
-					+ "(1,1,1,'"+TEST_TABLE_NAME+"');");
+					+ "(1,1,1,'"+testTableName+"');");
 			jdbcTemplate.execute("INSERT INTO SemanticConnection("
 					+ "Source, Target, ForeignKeyTarget, TypeTarget)"
 					+ "VALUES"
@@ -174,18 +174,18 @@ public class TestGenericSQLDao {
 			jdbcTemplate.execute("INSERT INTO SemanticConnection("
 					+ "Source, Target, ForeignKeyTarget, TypeTarget)"
 					+ "VALUES"
-					+ "(1,3,2,'"+TEST_TABLE_NAME+"');");
+					+ "(1,3,2,'"+testTableName+"');");
 			
-			jdbcTemplate.execute("CREATE TABLE "+TEST_TABLE_NAME+"("
-					+ "PS_"+TEST_TABLE_NAME+"ID INT NOT NULL,"
+			jdbcTemplate.execute("CREATE TABLE "+testTableName+"("
+					+ "PS_"+testTableName+"ID INT NOT NULL,"
 					+ "Data VARCHAR(255) NOT NULL,"
 					+ "DatensatzGruppeTestTable VARCHAR(255) NOT NULL);");
-			jdbcTemplate.execute("INSERT INTO "+TEST_TABLE_NAME+"("
-					+ "PS_"+TEST_TABLE_NAME+"ID, Data, DatensatzGruppeTestTable)"
+			jdbcTemplate.execute("INSERT INTO "+testTableName+"("
+					+ "PS_"+testTableName+"ID, Data, DatensatzGruppeTestTable)"
 					+ "VALUES"
 					+ "(1,'data1','userTestGroup');");
-			jdbcTemplate.execute("INSERT INTO "+TEST_TABLE_NAME+"("
-					+ "PS_"+TEST_TABLE_NAME+"ID, Data, DatensatzGruppeTestTable)"
+			jdbcTemplate.execute("INSERT INTO "+testTableName+"("
+					+ "PS_"+testTableName+"ID, Data, DatensatzGruppeTestTable)"
 					+ "VALUES"
 					+ "(2,'data2','userTestGroup');");
 		} catch (DataAccessException e) {
@@ -200,16 +200,16 @@ public class TestGenericSQLDao {
 	public void testGetConnectedEntities() {
 		if (!setUpTestGetConnectedEntities()) fail("could not set up connected entities");
 
-        final List<Map<String, String>> entities = genericSQLDao.getConnectedEntities(TEST_TABLE_NAME, 1);
+        final List<Map<String, String>> entities = genericSQLDao.getConnectedEntities(testTableName, 1);
         assertNotNull(entities);
         assertEquals(2, entities.size());
 
         final Map<String, String> entity = entities.get(0);
-        if (entity.get(TEST_TABLE_NAME+".Data").equals("data1")) {
-            assertEquals("data2", entities.get(1).get(TEST_TABLE_NAME+".Data"));
+        if (entity.get(testTableName+".Data").equals("data1")) {
+            assertEquals("data2", entities.get(1).get(testTableName+".Data"));
         } else {
-            assertEquals("data1", entities.get(1).get(TEST_TABLE_NAME+".Data"));
-            assertEquals("data2", entity.get(TEST_TABLE_NAME+".Data"));
+            assertEquals("data1", entities.get(1).get(testTableName+".Data"));
+            assertEquals("data2", entity.get(testTableName+".Data"));
         }
 	}
 	
@@ -222,7 +222,7 @@ public class TestGenericSQLDao {
 			jdbcTemplate.execute("INSERT INTO SemanticConnection("
 					+ "Source, Target, TypeSource)"
 					+ "VALUES"
-					+ "(1,1,'"+TEST_TABLE_NAME+"');");
+					+ "(1,1,'"+testTableName+"');");
 			jdbcTemplate.execute("INSERT INTO SemanticConnection("
 					+ "Source, Target, TypeSource)"
 					+ "VALUES"
@@ -234,7 +234,7 @@ public class TestGenericSQLDao {
 			jdbcTemplate.execute("INSERT INTO SemanticConnection("
 					+ "Source, Target, TypeSource)"
 					+ "VALUES"
-					+ "(2,1,'"+TEST_TABLE_NAME+"');");
+					+ "(2,1,'"+testTableName+"');");
 		} catch (DataAccessException e) {
 			return false;
 		}
@@ -314,14 +314,14 @@ public class TestGenericSQLDao {
 			jdbcTemplate.execute("CREATE TABLE literaturzitat("
 					+ "PS_literaturzitatID INT NOT NULL,"
 					+ "FS_LiteraturID INT NOT NULL,"
-					+ "FS_"+TEST_TABLE_NAME+"ID INT NOT NULL,"
+					+ "FS_"+testTableName+"ID INT NOT NULL,"
 					+ "lzdata VARCHAR(32) NOT NULL);");
 			jdbcTemplate.execute("INSERT INTO literaturzitat("
-					+ "PS_literaturzitatID, FS_LiteraturID, FS_"+TEST_TABLE_NAME+"ID, lzdata)"
+					+ "PS_literaturzitatID, FS_LiteraturID, FS_"+testTableName+"ID, lzdata)"
 					+ "VALUES"
 					+ "(1,2,5,'some literaturzitat data');");
 			jdbcTemplate.execute("INSERT INTO literaturzitat("
-					+ "PS_literaturzitatID, FS_LiteraturID, FS_"+TEST_TABLE_NAME+"ID, lzdata)"
+					+ "PS_literaturzitatID, FS_LiteraturID, FS_"+testTableName+"ID, lzdata)"
 					+ "VALUES"
 					+ "(2,4,5,'some more literaturzitat data');");
 			
@@ -367,7 +367,7 @@ public class TestGenericSQLDao {
 	public void testGetLiteratureValid() {
 		if (!setUpTestGetLiterature()) fail("could not set up literature");
 
-        final List<Map<String, String>> literature = genericSQLDao.getLiterature(TEST_TABLE_NAME, 5L);
+        final List<Map<String, String>> literature = genericSQLDao.getLiterature(testTableName, 5L);
         assertNotNull(literature);
         assertFalse(literature.isEmpty());
         for (Map<String, String> literaturMap : literature) {
