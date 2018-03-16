@@ -47,10 +47,18 @@ public class TestGenericSQLDao {
 	
 	private TestUserData testUserData;
 
+    private final String TEST_TABLE_NAME;
 
-    // contains only lower case letters since there were problems on a dev machine when containing uppercase letters
-    private static String TEST_TABLE_NAME = "test_table";
-
+	public TestGenericSQLDao() {
+		boolean MixedCaseTableNamesSupported = System.getProperty("myMachineDoesNotSupportMixedCaseSQLTableNames") == null;
+		if (MixedCaseTableNamesSupported) {
+			TEST_TABLE_NAME =  "Test_Table";
+		} else {
+			// contains only lower case letters since there were problems on a dev machine when containing uppercase letters
+			TEST_TABLE_NAME =  "test_table";
+		}
+		
+	}
 	
 	@Before
 	public void setUp() throws Exception {

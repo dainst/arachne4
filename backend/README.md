@@ -46,11 +46,27 @@ mvn clean test
 
 ## Development
 
+### MySQL mixed-case table names not supported by OS
+
+Some operating systems do not support mixed case MySQL table names properly but Arachne does contain such tables and therefor the unit tests need to account for that.
+The backend should not be deployed on such an OS but you can use it for development if you define the Java system property `myMachineDoesNotSupportMixedCaseSQLTableNames`.
+
+For example:
+```
+mvn -DmyMachineDoesNotSupportMixedCaseSQLTableNames test
+```
+
+Remember to also add this system property to the run- an debug-configurations of your IDE of choice.
+
+### Logging
+
 You need to create the folder `/var/log/arachne/arachnedataservice/` and make it writable
 before you can run the server.
 
 If you have to change the `log4j2.xml`, because you don't develop on Linux, the original content is still available in
 `log4j2.xml.org`. Copy and paste its contents back in `log4j2.xml` in case needed.
+
+### Running
 
 Run the server with
 
