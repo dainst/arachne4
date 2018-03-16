@@ -54,10 +54,12 @@ public class JointContextDefinition {
 	 *
 	 * @param description
 	 *            the new description
+	 * @return {@code this}
 	 */
-	public void setDescription(String description) {
+	public JointContextDefinition setDescription(String description) {
 		if (description != null)
 			this.description = description;
+		return this;
 	}
 
 	/**
@@ -74,10 +76,12 @@ public class JointContextDefinition {
 	 *
 	 * @param standardCIDOCConnectionType
 	 *            the new standard CIDOC connection type
+	 * @return {@code this}
 	 */
-	public void setStandardCIDOCConnectionType(String standardCIDOCConnectionType) {
+	public JointContextDefinition setStandardCIDOCConnectionType(String standardCIDOCConnectionType) {
 		if (standardCIDOCConnectionType != null)
 			StandardCIDOCConnectionType = standardCIDOCConnectionType;
+		return this;
 	}
 
 	/**
@@ -94,10 +98,12 @@ public class JointContextDefinition {
 	 *
 	 * @param type
 	 *            the new 'child table' of the used SQL join
+	 * @return {@code this}
 	 */
-	public void setType(String type) {
+	public JointContextDefinition setType(String type) {
 		if (type != null)
 			this.type = type;
+		return this;
 	}
 
 	/**
@@ -114,10 +120,12 @@ public class JointContextDefinition {
 	 *
 	 * @param connectFieldParent
 	 *            the new field of the parent entry that is used as 'link'
+	 * @return {@code this}   
 	 */
-	public void setConnectFieldParent(String connectFieldParent) {
+	public JointContextDefinition setConnectFieldParent(String connectFieldParent) {
 		if (connectFieldParent != null)
 			this.connectFieldParent = connectFieldParent;
+		return this;
 	}
 
 	/**
@@ -143,9 +151,11 @@ public class JointContextDefinition {
 	 *
 	 * @param id
 	 *            the new context type
+	 * @return {@code this}
 	 */
-	public void setId(String id) {
+	public JointContextDefinition setId(String id) {
 		this.id = id;
+		return this;
 	}
 
 	/**
@@ -204,9 +214,11 @@ public class JointContextDefinition {
 	 *
 	 * @param groupBy
 	 *            the new criteria to group by
+	 * @return {@code this}
 	 */
-	public void setGroupBy(String groupBy) {
+	public JointContextDefinition setGroupBy(String groupBy) {
 		this.groupBy = groupBy;
+		return this;
 	}
 
 	/**
@@ -223,9 +235,11 @@ public class JointContextDefinition {
 	 *
 	 * @param groupName
 	 *            the new group name
+	 * @return {@code this}
 	 */
-	public void setGroupName(String groupName) {
+	public JointContextDefinition setGroupName(String groupName) {
 		this.groupName = groupName;
+		return this;
 	}
 
 	/**
@@ -251,9 +265,11 @@ public class JointContextDefinition {
 	 *
 	 * @param orderBy
 	 *            the new column that defines the order of the records
+	 * @return {@code this}
 	 */
-	public void setOrderBy(String orderBy) {
+	public JointContextDefinition setOrderBy(String orderBy) {
 		this.orderBy = orderBy;
+		return this;
 	}
 
 	/**
@@ -270,8 +286,10 @@ public class JointContextDefinition {
 	 *
 	 * @param orderDescending
 	 *            the new if the order should be descending
+	 * @return {@code this}
 	 */
-	public void setOrderDescending(Boolean orderDescending) {
+	public JointContextDefinition setOrderDescending(Boolean orderDescending) {
 		this.orderDescending = orderDescending;
+		return this;
 	}
 }
