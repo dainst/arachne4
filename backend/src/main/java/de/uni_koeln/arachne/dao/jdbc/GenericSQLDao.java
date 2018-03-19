@@ -6,7 +6,6 @@ import java.util.Map;
 
 import de.uni_koeln.arachne.context.JoinDefinition;
 import de.uni_koeln.arachne.context.JointContextDefinition;
-import de.uni_koeln.arachne.response.Dataset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -183,7 +182,8 @@ public class GenericSQLDao extends SQLDao {
 		String orderby = jointContextDefinition.getOrderBy();
 		orderby += jointContextDefinition.getOrderDescending() ? " desc " : "";
 
-		return "select * from " + tables + " where " + where + (!orderby.equals("") ? " order by " + orderby : "");
+		String sql = "select * from " + tables + " where " + where + (!orderby.equals("") ? " order by " + orderby : "");
+		return sql;
 
 		// + userRightsService.getSQL(contextType)
 	}
