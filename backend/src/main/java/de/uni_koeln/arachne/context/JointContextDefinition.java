@@ -195,9 +195,11 @@ public class JointContextDefinition {
 	 *            the connect field parent
 	 * @param connectFieldChild
 	 *            the connect field child
+	 * @return {@code this}
 	 */
-	public void addJoin(String type, String connectFieldParent, String connectFieldChild) {
+	public JointContextDefinition addJoin(String type, String connectFieldParent, String connectFieldChild) {
 		joins.add(new JoinDefinition(type, connectFieldParent, connectFieldChild));
+		return this;
 	}
 
 	/**
