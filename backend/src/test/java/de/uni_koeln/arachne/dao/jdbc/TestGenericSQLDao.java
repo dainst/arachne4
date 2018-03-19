@@ -1,9 +1,12 @@
 package de.uni_koeln.arachne.dao.jdbc;
 
+import de.uni_koeln.arachne.context.JointContextDefinition;
 import de.uni_koeln.arachne.response.Image;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.testconfig.EmbeddedDataSourceConfig;
 import de.uni_koeln.arachne.testconfig.TestUserData;
+
+import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @WebAppConfiguration
@@ -65,10 +69,10 @@ public class TestGenericSQLDao {
 		MockitoAnnotations.initMocks(this);
 		when(userRightsService.isSignedInUser()).thenReturn(true);
 		when(userRightsService.getCurrentUser()).thenReturn(TestUserData.getUser());
-		when(userRightsService.getSQL("marbilder")).thenReturn(" AND (DatensatzGruppeMarbilder = 'userTestGroup' "
-				+ "OR DatensatzGruppeMarbilder = 'anotherTestGroup')");
-		when(userRightsService.getSQL(testTableName)).thenReturn(" AND (DatensatzGruppeTestTable = 'userTestGroup' "
-				+ "OR DatensatzGruppeTestTable = 'anotherTestGroup')");
+		when(userRightsService.getSQL(anyString())).thenAnswer(invocation -> " AND (DatensatzGruppe"
+				+ StringUtils.capitalize(invocation.getArgumentAt(0, String.class)) + " = 'userTestGroup' "
+				+ "OR DatensatzGruppe" + StringUtils.capitalize(invocation.getArgumentAt(0, String.class))
+				+ " = 'anotherTestGroup')");
 		
 		jdbcTemplate = new JdbcTemplate(datasource);
 		testUserData = new TestUserData(jdbcTemplate);
@@ -85,7 +89,7 @@ public class TestGenericSQLDao {
         jdbcTemplate.execute("DROP TABLE IF EXISTS arachneentityidentification;");
         jdbcTemplate.execute("DROP TABLE IF EXISTS buchseite;");
         jdbcTemplate.execute("DROP table IF EXISTS SemanticConnection");
-        jdbcTemplate.execute("DROP table IF EXISTS "+testTableName+";");
+        jdbcTemplate.execute("DROP table IF EXISTS " + testTableName + ";");
         jdbcTemplate.execute("DROP table IF EXISTS SemanticConnection");
     }
 	
@@ -116,29 +120,63 @@ public class TestGenericSQLDao {
 	}
 */
 	
-	public boolean setUpTestGetStringField() {
+	public boolean setUpTestGetStringFieldKeyEqualsTablename() {
 		try {
-			jdbcTemplate.execute("CREATE TABLE "+testTableName+"("
-					+ "id INT NOT NULL,"
+			jdbcTemplate.execute("CREATE TABLE " + testTableName + "("
+					+ "PS_" + testTableName + "ID INT NOT NULL,"
 					+ "data VARCHAR(32) NOT NULL,"
-					+ "DatensatzGruppeTestTable VARCHAR(255) NOT NULL);");
+					+ "DatensatzGruppe"+ StringUtils.capitalize(testTableName) +" VARCHAR(255) NOT NULL);");
 			
-			jdbcTemplate.execute("INSERT INTO "+testTableName+"("
-					+ "id, data, DatensatzGruppeTestTable)"
+			jdbcTemplate.execute("INSERT INTO " + testTableName + "("
+					+ "PS_" + testTableName + "ID, data, DatensatzGruppe" + StringUtils.capitalize(testTableName) + ")"
 					+ "VALUES"
 					+ "(1,'some data','userTestGroup');");
-			jdbcTemplate.execute("INSERT INTO "+testTableName+"("
-					+ "id, data, DatensatzGruppeTestTable)"
+			jdbcTemplate.execute("INSERT INTO " + testTableName + "("
+					+ "PS_" + testTableName + "ID, data, DatensatzGruppe" + StringUtils.capitalize(testTableName) + ")"
 					+ "VALUES"
 					+ "(2,'wrong group','wrongGroup');");
 		} catch (DataAccessException e) {
-            System.out.println("h"+e.getMessage());
-			return false;
+            return false;
 		}
 		return true;
 	}
 	
+	@Test
+	public void testGetStringFieldKeyEqualsTablename() {
+		if (!setUpTestGetStringFieldKeyEqualsTablename()) fail("could not set up string field");
 
+        // no authorization
+        String value = genericSQLDao.getStringField(testTableName, testTableName, 1, "data", true);
+        assertNotNull(value);
+        assertEquals("some data", value);
+        // authorization
+        value = genericSQLDao.getStringField(testTableName, testTableName, 1, "data", false);
+        assertNotNull(value);
+        assertEquals("some data", value);
+        value = genericSQLDao.getStringField(testTableName, testTableName, 2, "data", false);
+        assertNull(value);
+	}
+	
+	public boolean setUpTestGetStringField() {
+		try {
+			jdbcTemplate.execute("CREATE TABLE " + testTableName + "("
+					+ "id INT NOT NULL,"
+					+ "data VARCHAR(32) NOT NULL,"
+					+ "DatensatzGruppe" + StringUtils.capitalize(testTableName) + " VARCHAR(255) NOT NULL);");
+			
+			jdbcTemplate.execute("INSERT INTO " + testTableName + "("
+					+ "id, data, DatensatzGruppe" + StringUtils.capitalize(testTableName) + ")"
+					+ "VALUES"
+					+ "(1,'some data','userTestGroup');");
+			jdbcTemplate.execute("INSERT INTO " + testTableName + "("
+					+ "id, data, DatensatzGruppe" + StringUtils.capitalize(testTableName) + ")"
+					+ "VALUES"
+					+ "(2,'wrong group','wrongGroup');");
+		} catch (DataAccessException e) {
+            return false;
+		}
+		return true;
+	}
 	
 	@Test
 	public void testGetStringField() {
@@ -154,6 +192,16 @@ public class TestGenericSQLDao {
         assertEquals("some data", value);
         value = genericSQLDao.getStringField(testTableName, "id", 2, "data", false);
         assertNull(value);
+	}
+	
+	@Test
+	public void testGetStringFieldNoAuth() {
+		if (!setUpTestGetStringField()) fail("could not set up string field");
+
+        // no authorization
+        String value = genericSQLDao.getStringField(testTableName, "id", 1, "data");
+        assertNotNull(value);
+        assertEquals("some data", value);
 	}
 	
 	public boolean setUpTestGetConnectedEntities() {
@@ -179,13 +227,13 @@ public class TestGenericSQLDao {
 			jdbcTemplate.execute("CREATE TABLE "+testTableName+"("
 					+ "PS_"+testTableName+"ID INT NOT NULL,"
 					+ "Data VARCHAR(255) NOT NULL,"
-					+ "DatensatzGruppeTestTable VARCHAR(255) NOT NULL);");
+					+ "DatensatzGruppe" + StringUtils.capitalize(testTableName) + " VARCHAR(255) NOT NULL);");
 			jdbcTemplate.execute("INSERT INTO "+testTableName+"("
-					+ "PS_"+testTableName+"ID, Data, DatensatzGruppeTestTable)"
+					+ "PS_"+testTableName+"ID, Data, DatensatzGruppe" + StringUtils.capitalize(testTableName) + ")"
 					+ "VALUES"
 					+ "(1,'data1','userTestGroup');");
 			jdbcTemplate.execute("INSERT INTO "+testTableName+"("
-					+ "PS_"+testTableName+"ID, Data, DatensatzGruppeTestTable)"
+					+ "PS_"+testTableName+"ID, Data, DatensatzGruppe" + StringUtils.capitalize(testTableName) + ")"
 					+ "VALUES"
 					+ "(2,'data2','userTestGroup');");
 		} catch (DataAccessException e) {
@@ -211,6 +259,77 @@ public class TestGenericSQLDao {
             assertEquals("data1", entities.get(1).get(testTableName+".Data"));
             assertEquals("data2", entity.get(testTableName+".Data"));
         }
+	}
+	
+	public boolean setUpTestGetConnectedEntitiesJoint() {
+		try {
+			jdbcTemplate.execute("CREATE TABLE " + testTableName + "("
+					+ "PS_" + testTableName + "ID INT NOT NULL,"
+					+ "Data VARCHAR(255) NOT NULL,"
+					+ "FS_jointTable1ID INT NOT NULL,"
+					+ "DatensatzGruppe" + StringUtils.capitalize(testTableName) + " VARCHAR(255) NOT NULL);");
+			jdbcTemplate.execute("INSERT INTO " + testTableName + "("
+					+ "PS_" + testTableName + "ID, Data, FS_jointTable1ID, DatensatzGruppe" + StringUtils.capitalize(testTableName) + ")"
+					+ "VALUES"
+					+ "(4,'data1','13','userTestGroup');");
+						
+			jdbcTemplate.execute("CREATE TABLE jointTable1 ("
+					+ "PS_jointTable1ID INT NOT NULL,"
+					+ "Data VARCHAR(255) NOT NULL,"
+					+ "FS_jointTable2ID INT NOT NULL,"
+					+ "DatensatzGruppeJointTable1 VARCHAR(255) NOT NULL);");
+			jdbcTemplate.execute("INSERT INTO jointTable1 ("
+					+ "PS_jointTable1ID, Data, FS_jointTable2ID, DatensatzGruppeJointTable1)"
+					+ "VALUES"
+					+ "(13,'jointData1','17','userTestGroup');");
+			
+			jdbcTemplate.execute("CREATE TABLE jointTable2 ("
+					+ "PS_jointTable2ID INT NOT NULL,"
+					+ "Data VARCHAR(255) NOT NULL,"
+					+ "DatensatzGruppeJointTable2 VARCHAR(255) NOT NULL);");
+			jdbcTemplate.execute("INSERT INTO jointTable2 ("
+					+ "PS_jointTable2ID, Data, DatensatzGruppeJointTable2)"
+					+ "VALUES"
+					+ "(17,'jointData2','userTestGroup');");
+			
+			
+			jdbcTemplate.execute("CREATE TABLE arachneentityidentification("
+					+ "TableName VARCHAR(16) NOT NULL,"
+					+ "ForeignKey INT NOT NULL,"
+					+ "ArachneEntityID INT NOT NULL,"
+					+ "isDeleted INT NOT NULL);");
+			jdbcTemplate.execute("INSERT INTO arachneentityidentification("
+					+ "TableName, ForeignKey, ArachneEntityID, isDeleted)"
+					+ "VALUES"
+					+ "('" + testTableName + "',4,1,0);");
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+			System.exit(0);
+			return false;
+		}
+		return true;
+	}
+	
+	// TODO add more tests as correct grouping and ordering should be tested also
+	@Test
+	public void testGetConnectedEntitiesJoint() {
+		if (!setUpTestGetConnectedEntitiesJoint()) fail("could not set up connected joint entities");
+		
+		JointContextDefinition testDefinition = new JointContextDefinition()
+				.setType(testTableName)
+				.setConnectFieldParent("PS_" + testTableName + "ID")
+				.setGroupBy("unused_groupBy")
+				.setGroupName("unused_groupName")
+				.setId("unused_id")
+				//.setOrderBy("Data")
+				.setOrderDescending(false)
+				.setDescription("some description")
+				.setStandardCIDOCConnectionType("some CIDOC connection type");
+				//.addJoin("jointTable1", "FS_jointTable1ID", "PS_jointTable1ID");
+		final List<Map<String, String>> entities = genericSQLDao.getConnectedEntitiesJoint(testTableName, 1, testDefinition);
+		assertNotNull(entities);
+		assertFalse(entities.isEmpty());
+		System.out.println(entities);
 	}
 	
 	public boolean setUpTestGetConnectedEntityIds() {
