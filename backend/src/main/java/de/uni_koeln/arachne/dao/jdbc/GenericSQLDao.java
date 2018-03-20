@@ -147,7 +147,7 @@ public class GenericSQLDao extends SQLDao {
 	 */
 	public List<Map<String, String>> getConnectedEntitiesJoint(final String contextType, final long entityId,
 			final JointContextDefinition jointContextDefinition) {
-		
+
 		final List<Map<String, String>> result = query(con -> {
 			final String sql = buildMultiJoinQuery(entityId, jointContextDefinition);
 			PreparedStatement ps = con.prepareStatement(sql);
@@ -167,23 +167,23 @@ public class GenericSQLDao extends SQLDao {
 		wheres.add("arachneentityidentification.isDeleted != 1");
 		String where = "(" + String.join(") and (", wheres) + ")";
 
-		String tables = "arachneentityidentification";
+		StringBuilder tables = new StringBuilder("arachneentityidentification");
 		final List<JoinDefinition> joins = new ArrayList<>(jointContextDefinition.getJoins());
 		joins.add(0, new JoinDefinition(jointContextDefinition.getType(), "ForeignKey",
 				jointContextDefinition.getConnectFieldParent()));
 		String parentTable = "arachneentityidentification";
 		for (JoinDefinition joinDefinition : joins) {
-			tables += " left join " + joinDefinition.getType() + " on (" + parentTable + '.'
-					+ joinDefinition.getConnectFieldParent() + " = " + joinDefinition.getType() + '.'
-					+ joinDefinition.getConnectFieldChild() + ")";
+			tables.append(" LEFT JOIN ").append(joinDefinition.getType()).append(" ON (").append(parentTable ).append('.')
+					.append(joinDefinition.getConnectFieldParent()).append(" = ").append(joinDefinition.getType()).append('.')
+					.append(joinDefinition.getConnectFieldChild()).append(")");
 			parentTable = joinDefinition.getType();
 		}
 		where += userRightsService.getSQL(parentTable);
 
 		String orderby = jointContextDefinition.getOrderBy();
-		orderby += jointContextDefinition.getOrderDescending() ? " desc " : "";
+		orderby += jointContextDefinition.getOrderDescending() ? " DESC " : "";
 
-		String sql = "select * from " + tables + " where " + where + (!orderby.equals("") ? " order by " + orderby : "");
+		String sql = "SELECT * FROM " + tables + " WHERE " + where + (!orderby.equals("") ? " ORDER BY " + orderby : "");
 		return sql;
 
 		// + userRightsService.getSQL(contextType)
