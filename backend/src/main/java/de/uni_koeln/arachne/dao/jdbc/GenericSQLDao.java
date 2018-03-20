@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.dao.jdbc;
 
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -151,7 +152,7 @@ public class GenericSQLDao extends SQLDao {
 			final String sql = buildMultiJoinQuery(entityId, jointContextDefinition);
 			PreparedStatement ps = con.prepareStatement(sql);
 			return ps;
-		}, new GenericEntitiesMapper(""));
+		}, new GenericEntitiesMapper());
 
 		if (result != null && !result.isEmpty()) {
 			return result;
@@ -161,13 +162,13 @@ public class GenericSQLDao extends SQLDao {
 
 	private String buildMultiJoinQuery(final long entityId, final JointContextDefinition jointContextDefinition) {
 
-		List<String> wheres = jointContextDefinition.getWheres();
+		List<String> wheres = new ArrayList<>(jointContextDefinition.getWheres());
 		wheres.add("arachneentityidentification.ArachneEntityID = '" + entityId + "'");
 		wheres.add("arachneentityidentification.isDeleted != 1");
 		String where = "(" + String.join(") and (", wheres) + ")";
 
 		String tables = "arachneentityidentification";
-		final List<JoinDefinition> joins = jointContextDefinition.getJoins();
+		final List<JoinDefinition> joins = new ArrayList<>(jointContextDefinition.getJoins());
 		joins.add(0, new JoinDefinition(jointContextDefinition.getType(), "ForeignKey",
 				jointContextDefinition.getConnectFieldParent()));
 		String parentTable = "arachneentityidentification";

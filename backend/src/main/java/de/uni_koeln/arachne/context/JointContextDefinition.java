@@ -164,7 +164,7 @@ public class JointContextDefinition {
 	 * @return the SQL WHERE clauses used to retrieve the records
 	 */
 	public ArrayList<String> getWheres() {
-		return (ArrayList<String>) wheres.clone(); // TODO check if clone is really needed
+		return wheres;
 	}
 
 	/**
@@ -183,7 +183,7 @@ public class JointContextDefinition {
 	 * @return the list of SQL joins
 	 */
 	public ArrayList<JoinDefinition> getJoins() {
-		return (ArrayList<JoinDefinition>) joins.clone(); // TODO check if clone is really needed
+		return joins;
 	}
 
 	/**
