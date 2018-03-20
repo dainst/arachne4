@@ -76,7 +76,7 @@ public class JointContextualizer extends AbstractContextualizer {
 
 	/**
 	 * when in the jointContext-Definition a group item is used we can create
-	 * context-items wich has context-items itself
+	 * context-items which has context-items itself
 	 * 
 	 * @param parent
 	 * @param contextContents
