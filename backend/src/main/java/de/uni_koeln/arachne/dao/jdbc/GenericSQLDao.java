@@ -173,20 +173,19 @@ public class GenericSQLDao extends SQLDao {
 				jointContextDefinition.getConnectFieldParent()));
 		String parentTable = "arachneentityidentification";
 		for (JoinDefinition joinDefinition : joins) {
-			tables.append(" LEFT JOIN ").append(joinDefinition.getType()).append(" ON (").append(parentTable ).append('.')
-					.append(joinDefinition.getConnectFieldParent()).append(" = ").append(joinDefinition.getType()).append('.')
-					.append(joinDefinition.getConnectFieldChild()).append(")");
+			tables.append(" LEFT JOIN ").append(joinDefinition.getType()).append(" ON (").append(parentTable)
+					.append('.').append(joinDefinition.getConnectFieldParent()).append(" = ")
+					.append(joinDefinition.getType()).append('.').append(joinDefinition.getConnectFieldChild())
+					.append("").append(userRightsService.getSQL(joinDefinition.getType())).append(")");
 			parentTable = joinDefinition.getType();
 		}
-		where += userRightsService.getSQL(parentTable);
-
+		
 		String orderby = jointContextDefinition.getOrderBy();
 		orderby += jointContextDefinition.getOrderDescending() ? " DESC " : "";
 
-		String sql = "SELECT * FROM " + tables + " WHERE " + where + (!orderby.equals("") ? " ORDER BY " + orderby : "");
+		String sql = "SELECT * FROM " + tables + " WHERE " + where
+				+ (!orderby.equals("") ? " ORDER BY " + orderby : "");
 		return sql;
-
-		// + userRightsService.getSQL(contextType)
 	}
 
 	/**
