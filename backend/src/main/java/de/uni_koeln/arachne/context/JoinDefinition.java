@@ -105,4 +105,56 @@ public class JoinDefinition {
 		if (connectFieldChild != null)
 			this.connectFieldChild = connectFieldChild;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((connectFieldChild == null) ? 0 : connectFieldChild.hashCode());
+		result = prime * result + ((connectFieldParent == null) ? 0 : connectFieldParent.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof JoinDefinition)) {
+			return false;
+		}
+		JoinDefinition other = (JoinDefinition) obj;
+		if (connectFieldChild == null) {
+			if (other.connectFieldChild != null) {
+				return false;
+			}
+		} else if (!connectFieldChild.equals(other.connectFieldChild)) {
+			return false;
+		}
+		if (connectFieldParent == null) {
+			if (other.connectFieldParent != null) {
+				return false;
+			}
+		} else if (!connectFieldParent.equals(other.connectFieldParent)) {
+			return false;
+		}
+		if (type == null) {
+			if (other.type != null) {
+				return false;
+			}
+		} else if (!type.equals(other.type)) {
+			return false;
+		}
+		return true;
+	}
 }
