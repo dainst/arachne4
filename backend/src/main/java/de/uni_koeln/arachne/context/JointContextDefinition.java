@@ -294,4 +294,137 @@ public class JointContextDefinition {
 		this.orderDescending = orderDescending;
 		return this;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((StandardCIDOCConnectionType == null) ? 0 : StandardCIDOCConnectionType.hashCode());
+		result = prime * result + ((connectFieldParent == null) ? 0 : connectFieldParent.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((groupBy == null) ? 0 : groupBy.hashCode());
+		result = prime * result + ((groupName == null) ? 0 : groupName.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((joins == null) ? 0 : joins.hashCode());
+		result = prime * result + ((orderBy == null) ? 0 : orderBy.hashCode());
+		result = prime * result + ((orderDescending == null) ? 0 : orderDescending.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + ((wheres == null) ? 0 : wheres.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof JointContextDefinition)) {
+			return false;
+		}
+		JointContextDefinition other = (JointContextDefinition) obj;
+		if (StandardCIDOCConnectionType == null) {
+			if (other.StandardCIDOCConnectionType != null) {
+				return false;
+			}
+		} else if (!StandardCIDOCConnectionType.equals(other.StandardCIDOCConnectionType)) {
+			return false;
+		}
+		if (connectFieldParent == null) {
+			if (other.connectFieldParent != null) {
+				return false;
+			}
+		} else if (!connectFieldParent.equals(other.connectFieldParent)) {
+			return false;
+		}
+		if (description == null) {
+			if (other.description != null) {
+				return false;
+			}
+		} else if (!description.equals(other.description)) {
+			return false;
+		}
+		if (groupBy == null) {
+			if (other.groupBy != null) {
+				return false;
+			}
+		} else if (!groupBy.equals(other.groupBy)) {
+			return false;
+		}
+		if (groupName == null) {
+			if (other.groupName != null) {
+				return false;
+			}
+		} else if (!groupName.equals(other.groupName)) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (joins == null) {
+			if (other.joins != null) {
+				return false;
+			}
+		} else if (!joins.equals(other.joins)) {
+			return false;
+		}
+		if (orderBy == null) {
+			if (other.orderBy != null) {
+				return false;
+			}
+		} else if (!orderBy.equals(other.orderBy)) {
+			return false;
+		}
+		if (orderDescending == null) {
+			if (other.orderDescending != null) {
+				return false;
+			}
+		} else if (!orderDescending.equals(other.orderDescending)) {
+			return false;
+		}
+		if (type == null) {
+			if (other.type != null) {
+				return false;
+			}
+		} else if (!type.equals(other.type)) {
+			return false;
+		}
+		if (wheres == null) {
+			if (other.wheres != null) {
+				return false;
+			}
+		} else if (!wheres.equals(other.wheres)) {
+			return false;
+		}
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "JointContextDefinition [" + (id != null ? "id=" + id + ", " : "")
+				+ (description != null ? "description=" + description + ", " : "")
+				+ (type != null ? "type=" + type + ", " : "") + (orderBy != null ? "orderBy=" + orderBy + ", " : "")
+				+ (orderDescending != null ? "orderDescending=" + orderDescending + ", " : "")
+				+ (groupBy != null ? "groupBy=" + groupBy + ", " : "")
+				+ (groupName != null ? "groupName=" + groupName + ", " : "")
+				+ (StandardCIDOCConnectionType != null
+						? "StandardCIDOCConnectionType=" + StandardCIDOCConnectionType + ", " : "")
+				+ (connectFieldParent != null ? "connectFieldParent=" + connectFieldParent + ", " : "")
+				+ (wheres != null ? "wheres=" + wheres + ", " : "") + (joins != null ? "joins=" + joins : "") + "]";
+	}
 }
