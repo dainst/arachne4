@@ -4,7 +4,8 @@ import java.util.HashMap;
 
 public class FieldListMap extends HashMap<String, FieldList> {
 
-    private FieldList mainList;
+    private static final long serialVersionUID = 1L;
+	private FieldList mainList;
     private HashMap<String, String> labels = new HashMap<String, String>();
 
     public FieldListMap(FieldList mainList) {
