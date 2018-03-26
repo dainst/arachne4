@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import de.uni_koeln.arachne.context.ContextImageDescriptor;
 import de.uni_koeln.arachne.response.AbstractContent;
-import de.uni_koeln.arachne.response.ContextEntity;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Field;
 import de.uni_koeln.arachne.response.FieldList;
@@ -299,8 +298,6 @@ public class XmlConfigUtil implements ServletContextAware {
 		} else {
 			// Iterate over all contexts of the current type
 			for (int i = 0; i < dataset.getContextSize(contextType); i++) {
-
-				final ContextEntity curSectionContent = new ContextEntity();
 
 				// Iterate over all contextSections within the current processed
 				// context
