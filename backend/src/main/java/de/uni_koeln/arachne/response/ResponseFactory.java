@@ -687,7 +687,6 @@ public class ResponseFactory {
 		// add the geo facets
 		ArrayNode relations = json.arrayNode();
 		for (final Place place : response.places) {
-			final String location = place.getLocationAsString();
 			final String relation = place.getRelation();
 			if (relation != null) {
 				relations.add(relation);
