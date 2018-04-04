@@ -1,5 +1,7 @@
 package de.uni_koeln.arachne.service;
 
+import static de.uni_koeln.arachne.service.UserRightsService.*;
+
 import java.util.HashSet;
 
 import org.slf4j.Logger;
@@ -24,11 +26,6 @@ public class ArachneUserDetailsService implements UserDetailsService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ArachneUserDetailsService.class);
 	
-	/**
-	 * Minimum administrator group id.
-	 */
-	public static final int MIN_ADMIN_ID = 800;
-	
 	@Autowired
 	private transient UserDao userDao;
 
@@ -46,6 +43,9 @@ public class ArachneUserDetailsService implements UserDetailsService {
 		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 		if (user.getGroupID() >= MIN_ADMIN_ID) {
 			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		}
+		if (user.getGroupID() >= MIN_EDITOR_ID) {
+			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_EDITOR"));
 		}
 		user.setAuthorities(grantedAuthorities);
 		
