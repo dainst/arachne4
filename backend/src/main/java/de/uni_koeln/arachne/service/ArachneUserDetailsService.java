@@ -1,6 +1,6 @@
 package de.uni_koeln.arachne.service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,11 +42,12 @@ public class ArachneUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException("Username not found.");
 		}
 		
-		final ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+		final HashSet<GrantedAuthority> grantedAuthorities = new HashSet<>();
 		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 		if (user.getGroupID() >= MIN_ADMIN_ID) {
 			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		}
+		user.setAuthorities(grantedAuthorities);
 		
 		UserDetails userDetails = new org.springframework.security.core.userdetails.User(username, user.getPassword() 
 				, grantedAuthorities);
