@@ -1,6 +1,8 @@
 package de.uni_koeln.arachne.mapping.hibernate;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -18,6 +20,9 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -30,7 +35,12 @@ import de.uni_koeln.arachne.util.security.UserAccess;
 @JsonInclude(Include.NON_EMPTY)
 @Entity
 @Table(name = "verwaltung_benutzer")
-public class User extends ProtectedObject {
+public class User extends ProtectedObject implements UserDetails {
+
+	/**
+	 * Default serial version.
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public enum BOOLEAN {
 		TRUE, FALSE
@@ -135,6 +145,8 @@ public class User extends ProtectedObject {
 	@JsonView(JSONView.Admin.class)
 	@Column(name = "LastLogin")
 	Date lastLogin;
+
+	private HashSet<GrantedAuthority> authorities = new HashSet<>();
 
 	/**
 	 * @return the id
@@ -355,9 +367,7 @@ public class User extends ProtectedObject {
 	 * @return the all_groups
 	 */
 	public boolean isAll_groups() {
-		// return all_groups;
-		// if all_groups == BOOLEAN.TRUE ? return true : return false;
-		return (all_groups == BOOLEAN.TRUE) ? true : false;
+		return enumToBoolean(all_groups);
 	}
 
 	/**
@@ -373,8 +383,7 @@ public class User extends ProtectedObject {
 	 * @return the login_permission
 	 */
 	public boolean isLogin_permission() {
-		// return login_permission;
-		return (login_permission == BOOLEAN.TRUE) ? true : false;
+		return enumToBoolean(login_permission);
 	}
 
 	/**
@@ -445,7 +454,36 @@ public class User extends ProtectedObject {
 	public void setEmailAuth(String emailAuth) {
 		this.emailAuth = emailAuth;
 	}
+	
+	public void setAuthorities(final HashSet<GrantedAuthority> authorities) {
+		this.authorities = authorities;
+	}
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return authorities ;
+	}
 
+	@Override
+	public boolean isAccountNonExpired() {
+		return enumToBoolean(login_permission);
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return enumToBoolean(login_permission);
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return enumToBoolean(login_permission);
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return enumToBoolean(login_permission);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -616,5 +654,13 @@ public class User extends ProtectedObject {
 			return false;
 		}
 		return true;
+	}
+	
+	private boolean enumToBoolean(final BOOLEAN value) {
+		return value == BOOLEAN.TRUE ? true : false;
+	}
+
+	private BOOLEAN booleanToEnum(final boolean value) {
+		return value == true ? BOOLEAN.TRUE : BOOLEAN.FALSE;
 	}
 }
