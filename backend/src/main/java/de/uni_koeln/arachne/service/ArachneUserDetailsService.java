@@ -1,7 +1,5 @@
 package de.uni_koeln.arachne.service;
 
-import static de.uni_koeln.arachne.service.UserRightsService.*;
-
 import java.util.HashSet;
 
 import org.slf4j.Logger;
@@ -25,6 +23,19 @@ import de.uni_koeln.arachne.mapping.hibernate.User;
 public class ArachneUserDetailsService implements UserDetailsService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ArachneUserDetailsService.class);
+
+	/**
+	 * Minimum administrator group id.
+	 */
+	public static final int MIN_ADMIN_ID = 800;
+	/**
+	 * Minimum editor group id.
+	 */
+	public static final int MIN_EDITOR_ID = 600;
+	/**
+	 * Minimum user group id.
+	 */
+	public static final int MIN_USER_ID = 400;
 	
 	@Autowired
 	private transient UserDao userDao;

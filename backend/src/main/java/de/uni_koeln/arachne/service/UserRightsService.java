@@ -63,19 +63,7 @@ public class UserRightsService {
 	 * Username used for anonymous users.
 	 */
 	public static final String ANONYMOUS_USER_NAME = "Anonymous";
-	/**
-	 * Minimum administrator group id.
-	 */
-	public static final int MIN_ADMIN_ID = 800;
-	/**
-	 * Minimum editor group id.
-	 */
-	public static final int MIN_EDITOR_ID = 600;
-	/**
-	 * Minimum user group id.
-	 */
-	public static final int MIN_USER_ID = 400;
-	
+		
 	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserRightsService.class);
 	
