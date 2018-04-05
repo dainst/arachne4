@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.testconfig;
 
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.service.ArachneUserDetailsService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -30,7 +31,7 @@ public class TestUserData {
 		user.setLastname("admin");
 		user.setLogin_permission(true);
 		user.setAll_groups(true);
-		user.setGroupID(UserRightsService.MIN_ADMIN_ID);
+		user.setGroupID(ArachneUserDetailsService.MIN_ADMIN_ID);
 		return user;
 	}
 	
@@ -45,7 +46,7 @@ public class TestUserData {
 		Set<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
 		datasetGroups.add(new DatasetGroup("editorTestGroup"));
 		user.setDatasetGroups(datasetGroups);
-		user.setGroupID(UserRightsService.MIN_EDITOR_ID);
+		user.setGroupID(ArachneUserDetailsService.MIN_EDITOR_ID);
 		return user;
 	}
 	
@@ -61,7 +62,7 @@ public class TestUserData {
 		datasetGroups.add(new DatasetGroup("userTestGroup"));
 		datasetGroups.add(new DatasetGroup("anotherTestGroup"));
 		user.setDatasetGroups(datasetGroups);
-		user.setGroupID(UserRightsService.MIN_USER_ID);
+		user.setGroupID(ArachneUserDetailsService.MIN_USER_ID);
 		return user;
 	}
 	
@@ -76,7 +77,7 @@ public class TestUserData {
 		Set<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
 		datasetGroups.add(new DatasetGroup("userTestGroup"));
 		user.setDatasetGroups(datasetGroups);
-		user.setGroupID(UserRightsService.MIN_USER_ID);
+		user.setGroupID(ArachneUserDetailsService.MIN_USER_ID);
 		return user;
 	}
 	
@@ -92,7 +93,7 @@ public class TestUserData {
 	public static Authentication getAuthentication(final User user) {
 		final ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
 		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-		if (user.getGroupID() >= UserRightsService.MIN_ADMIN_ID) {
+		if (user.getGroupID() >= ArachneUserDetailsService.MIN_ADMIN_ID) {
 			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		}
 		return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), grantedAuthorities);

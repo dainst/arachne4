@@ -1,5 +1,7 @@
 package de.uni_koeln.arachne.response;
 
+import static de.uni_koeln.arachne.service.UserRightsService.*;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -649,7 +651,7 @@ public class ResponseFactory {
 	private void setEditorSection(Dataset dataset, Namespace namespace,	Element display
 			, FormattedArachneEntity response, final String lang) {
 
-		if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID)
+		if (userRightsService.userHasRole(EDITOR)
 				|| userRightsService.isDataimporter()) {
 			final Element editorSectionElement = display.getChild("editorsection", namespace);
 			if (editorSectionElement != null) {

@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.service;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +57,18 @@ public class UserRightsService {
 		}
 	}
 
+	/**
+	 * Minimum administrator group id.
+	 */
+	public static final String ADMIN = "ROLE_ADMIN";
+	/**
+	 * Minimum editor group id.
+	 */
+	public static final String EDITOR = "ROLE_EDITOR";
+	/**
+	 * Minimum user group id.
+	 */
+	public static final String USER =  "ROLE_USER";
 	/**
 	 * Indexing operation (meaning data import).
 	 */
@@ -159,6 +173,21 @@ public class UserRightsService {
 		boolean result = isSet && groupId <= arachneUser.getGroupID() && arachneUser.isLogin_permission();   
 		return result;
 	};
+	
+	/**
+	 * If the current user has the specified role.
+	 * @param role The role to check.
+	 * @return <code>true</code> if the given role is in the users granted authorities collection
+	 */
+	public boolean userHasRole(final String role) {
+		boolean hasRole = false;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null) {
+			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+			hasRole = authorities.stream().anyMatch(a -> role.equals(a.getAuthority()));
+		}
+		return hasRole;
+	}
 	
 	/**
 	 * Get the current arachne user.
@@ -278,7 +307,7 @@ public class UserRightsService {
 					JsonView jsonView = field.getAnnotation(JsonView.class);
 					Class<?> viewClass = jsonView.value()[0];
 					boolean acccessGranted = false;
-					if (userHasAtLeastGroupID(MIN_ADMIN_ID)) {
+					if (userHasRole(ADMIN)) {
 						acccessGranted = viewClass.equals(JSONView.User.class) || viewClass.equals(JSONView.Admin.class);
 					} else {
 						if (userHasAtLeastGroupID(minGid)) {
@@ -311,6 +340,6 @@ public class UserRightsService {
 	 */
 	public void setPropertyOnProtectedObject(final String fieldName, final Object value
 			, final ProtectedObject object) throws ObjectAccessException {
-		setPropertyOnProtectedObject(fieldName, value, object, MIN_EDITOR_ID);
+		setPropertyOnProtectedObject(fieldName, value, object, ArachneUserDetailsService.MIN_EDITOR_ID);
 	}
 }

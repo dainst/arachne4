@@ -5,6 +5,7 @@ import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.ResetPasswordRequest;
 import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.service.ArachneUserDetailsService;
 import de.uni_koeln.arachne.service.MailService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.security.ProtectedObject;
@@ -83,7 +84,7 @@ public class TestUserManagementController {
 				
 		final User testUser = new User();
 		testUser.setUsername("testuser");
-		testUser.setGroupID(UserRightsService.MIN_ADMIN_ID);
+		testUser.setGroupID(ArachneUserDetailsService.MIN_ADMIN_ID);
 		testUser.setFirstname("test");
 		testUser.setLastname("user");
 		testUser.setZip("12345");
@@ -93,7 +94,7 @@ public class TestUserManagementController {
 		// access pattern admin, user and last anonymous
 		when(userRightsService.isSignedInUser()).thenReturn(true, true, false);
 		when(userRightsService.getCurrentUser()).thenReturn(testUser, testUser, null);
-		when(userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID)).thenReturn(true, false);
+		when(userRightsService.userHasRole(UserRightsService.ADMIN)).thenReturn(true, false);
 		
 		// simulate write-protected field
 		doThrow(new UserRightsService.ObjectAccessException("Field id is write-protected.")).when(userRightsService)
@@ -166,7 +167,7 @@ public class TestUserManagementController {
 
 		final User testUserWithDot = new User();
 		testUserWithDot.setUsername("test.user");
-		testUserWithDot.setGroupID(UserRightsService.MIN_ADMIN_ID);
+		testUserWithDot.setGroupID(ArachneUserDetailsService.MIN_ADMIN_ID);
 		testUserWithDot.setFirstname("test");
 		testUserWithDot.setLastname("user");
 		testUserWithDot.setZip("12345");
@@ -192,7 +193,7 @@ public class TestUserManagementController {
 
 		final User testUserWithUmlaut = new User();
 		testUserWithUmlaut.setUsername("täst");
-		testUserWithUmlaut.setGroupID(UserRightsService.MIN_ADMIN_ID);
+		testUserWithUmlaut.setGroupID(ArachneUserDetailsService.MIN_ADMIN_ID);
 		testUserWithUmlaut.setFirstname("test");
 		testUserWithUmlaut.setLastname("user");
 		testUserWithUmlaut.setZip("12345");

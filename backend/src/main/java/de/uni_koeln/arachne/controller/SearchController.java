@@ -1,5 +1,7 @@
 package de.uni_koeln.arachne.controller;
 
+import static de.uni_koeln.arachne.service.UserRightsService.*;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import de.uni_koeln.arachne.response.search.IndexResult;
@@ -158,7 +160,7 @@ public class SearchController {
 				.setFacet(facet)
 				.setScrollMode(scrollMode)
 				.setSearchEditorFields(editorFields && 
-						userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID));
+						userRightsService.userHasRole(ADMIN));
 		
 		if (!searchParameters.isValid()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

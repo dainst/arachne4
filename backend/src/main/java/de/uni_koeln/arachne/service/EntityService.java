@@ -1,5 +1,7 @@
 package de.uni_koeln.arachne.service;
 
+import static de.uni_koeln.arachne.service.UserRightsService.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +60,7 @@ public class EntityService {
 	public TypeWithHTTPStatus<String> getEntityFromIndex(final Long id, final String category, final String lang) throws Transl8Exception {
 		
 		String[] excludedFields;
-		if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID)) {
+		if (userRightsService.userHasRole(EDITOR)) {
 			excludedFields = internalFields;
 		} else {
 			excludedFields = new String[internalFields.length + 1];

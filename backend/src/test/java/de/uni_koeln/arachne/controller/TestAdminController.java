@@ -17,7 +17,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.DataImportService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
@@ -45,10 +44,6 @@ public class TestAdminController {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 		
-		final User testUser = new User();
-		testUser.setGroupID(UserRightsService.MIN_ADMIN_ID);
-		when(userRightsService.getCurrentUser()).thenReturn(testUser);
-		
 		final List<String> testDocs = Arrays.asList("testDoc1", "testDoc2", "testDoc3");
 		when(xmlConfigUtil.getXMLConfigDocumentList()).thenReturn(testDocs);
 		
@@ -64,7 +59,9 @@ public class TestAdminController {
 	}
 
 	@Test
-	public void testCacheGet() throws Exception {
+	public void testCacheGet_Admin() throws Exception {
+		when(userRightsService.userHasRole(UserRightsService.ADMIN)).thenReturn(true);
+		
 		mockMvc.perform(
 			get("/admin/cache")
 				.contentType(APPLICATION_JSON_UTF8))
@@ -76,6 +73,8 @@ public class TestAdminController {
 	
 	@Test
 	public void testCacheDelete() throws Exception {
+		when(userRightsService.userHasRole(UserRightsService.ADMIN)).thenReturn(true);
+		
 		mockMvc.perform(
 				delete("/admin/cache")
 					.contentType(APPLICATION_JSON_UTF8))

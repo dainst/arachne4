@@ -93,7 +93,7 @@ public class TestResponseFactory { // NOPMD
 		when(ts.transl8(anyString(), anyString())).then(AdditionalAnswers.returnsFirstArg());
 		when(ts.transl8Facet(anyString(), anyString(), anyString())).then(AdditionalAnswers.returnsSecondArg());
 		
-		when(userRightsService.userHasAtLeastGroupID(anyInt())).thenReturn(true, false);
+		when(userRightsService.userHasRole(anyString())).thenReturn(true, false);
 		
 		when(customBooster.getCategoryBoost(anyString())).thenReturn(1.0D);
 		when(customBooster.getSingleEntityBoosts(anyLong())).thenReturn(1.0D);
