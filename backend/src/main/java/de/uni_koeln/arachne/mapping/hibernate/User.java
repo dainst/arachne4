@@ -148,7 +148,7 @@ public class User extends ProtectedObject implements UserDetails {
 	Date lastLogin;
 
 	@Transient
-	private HashSet<GrantedAuthority> authorities = new HashSet<>();
+	private Collection<? extends GrantedAuthority> authorities = new HashSet<>();
 
 	/**
 	 * @return the id
@@ -455,7 +455,7 @@ public class User extends ProtectedObject implements UserDetails {
 		this.emailAuth = emailAuth;
 	}
 	
-	public void setAuthorities(final HashSet<GrantedAuthority> authorities) {
+	public void setAuthorities(final Collection<? extends GrantedAuthority> authorities) {
 		this.authorities = authorities;
 	}
 	
