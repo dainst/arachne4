@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -146,7 +147,8 @@ public class User extends ProtectedObject implements UserDetails {
 	@Column(name = "LastLogin")
 	Date lastLogin;
 
-	private HashSet<GrantedAuthority> authorities = new HashSet<>();
+	@Transient
+	private Collection<? extends GrantedAuthority> authorities = new HashSet<>();
 
 	/**
 	 * @return the id
@@ -375,8 +377,7 @@ public class User extends ProtectedObject implements UserDetails {
 	 *            the all_groups to set
 	 */
 	public void setAll_groups(final boolean all_groups) {
-		// this.all_groups = all_groups;
-		this.all_groups = (all_groups) ? BOOLEAN.TRUE : BOOLEAN.FALSE;
+		this.all_groups = booleanToEnum(all_groups);
 	}
 
 	/**
@@ -391,8 +392,7 @@ public class User extends ProtectedObject implements UserDetails {
 	 *            the login_permission to set
 	 */
 	public void setLogin_permission(final boolean login_permission) {
-		// this.login_permission = login_permission;
-		this.login_permission = (login_permission) ? BOOLEAN.TRUE : BOOLEAN.FALSE;
+		this.login_permission = booleanToEnum(login_permission);
 	}
 
 	/**
@@ -454,14 +454,14 @@ public class User extends ProtectedObject implements UserDetails {
 	public void setEmailAuth(String emailAuth) {
 		this.emailAuth = emailAuth;
 	}
-	
-	public void setAuthorities(final HashSet<GrantedAuthority> authorities) {
+
+	public void setAuthorities(final Collection<? extends GrantedAuthority> authorities) {
 		this.authorities = authorities;
 	}
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return authorities ;
+		return authorities;
 	}
 
 	@Override
@@ -483,7 +483,44 @@ public class User extends ProtectedObject implements UserDetails {
 	public boolean isEnabled() {
 		return enumToBoolean(login_permission);
 	}
-	
+
+	private boolean enumToBoolean(final BOOLEAN value) {
+		return value == BOOLEAN.TRUE ? true : false;
+	}
+
+	private BOOLEAN booleanToEnum(final boolean value) {
+		return value == true ? BOOLEAN.TRUE : BOOLEAN.FALSE;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "User [" + (username != null ? "Username: " + username + "; " : "")
+				+ (password != null ? "Password: [PROTECTED]; " : "") + "Enabled: " + isEnabled() + "; "
+				+ "AccountNonExpired: " + isAccountNonExpired() + "; " + "CredentialsNonExpired: "
+				+ isCredentialsNonExpired() + "; " + "AccountNonLocked: " + isAccountNonLocked() + "; "
+				+ (authorities != null ? "Granted Authorities: " + authorities + ", " : "")
+				+ (all_groups != null ? "all_groups=" + all_groups + ", " : "")
+				+ (login_permission != null ? "login_permission=" + login_permission + ", " : "")
+				+ (datasetGroups != null ? "datasetGroups=" + datasetGroups + ", " : "")
+				+ ("id=" + id + ", " + (groupID != null ? "groupID=" + groupID + ", " : "")
+						+ (institution != null ? "institution=" + institution + ", " : "")
+						+ (firstname != null ? "firstname=" + firstname + ", " : "")
+						+ (lastname != null ? "lastname=" + lastname + ", " : "")
+						+ (email != null ? "email=" + email + ", " : "")
+						+ (street != null ? "street=" + street + ", " : "") + (zip != null ? "zip=" + zip + ", " : "")
+						+ (place != null ? "place=" + place + ", " : "")
+						+ (homepage != null ? "homepage=" + homepage + ", " : "")
+						+ (country != null ? "country=" + country + ", " : "")
+						+ (telephone != null ? "telephone=" + telephone + ", " : "")
+						+ (emailAuth != null ? "emailAuth=" + emailAuth + ", " : "")
+						+ (lastLogin != null ? "lastLogin=" + lastLogin : "") + "]");
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -494,6 +531,7 @@ public class User extends ProtectedObject implements UserDetails {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((all_groups == null) ? 0 : all_groups.hashCode());
+		result = prime * result + ((authorities == null) ? 0 : authorities.hashCode());
 		result = prime * result + ((country == null) ? 0 : country.hashCode());
 		result = prime * result + ((datasetGroups == null) ? 0 : datasetGroups.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
@@ -501,6 +539,7 @@ public class User extends ProtectedObject implements UserDetails {
 		result = prime * result + ((firstname == null) ? 0 : firstname.hashCode());
 		result = prime * result + ((groupID == null) ? 0 : groupID.hashCode());
 		result = prime * result + ((homepage == null) ? 0 : homepage.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((institution == null) ? 0 : institution.hashCode());
 		result = prime * result + ((lastLogin == null) ? 0 : lastLogin.hashCode());
 		result = prime * result + ((lastname == null) ? 0 : lastname.hashCode());
@@ -509,7 +548,6 @@ public class User extends ProtectedObject implements UserDetails {
 		result = prime * result + ((place == null) ? 0 : place.hashCode());
 		result = prime * result + ((street == null) ? 0 : street.hashCode());
 		result = prime * result + ((telephone == null) ? 0 : telephone.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		result = prime * result + ((zip == null) ? 0 : zip.hashCode());
 		return result;
@@ -533,6 +571,13 @@ public class User extends ProtectedObject implements UserDetails {
 		}
 		User other = (User) obj;
 		if (all_groups != other.all_groups) {
+			return false;
+		}
+		if (authorities == null) {
+			if (other.authorities != null) {
+				return false;
+			}
+		} else if (!authorities.equals(other.authorities)) {
 			return false;
 		}
 		if (country == null) {
@@ -582,6 +627,9 @@ public class User extends ProtectedObject implements UserDetails {
 				return false;
 			}
 		} else if (!homepage.equals(other.homepage)) {
+			return false;
+		}
+		if (id != other.id) {
 			return false;
 		}
 		if (institution == null) {
@@ -636,9 +684,6 @@ public class User extends ProtectedObject implements UserDetails {
 		} else if (!telephone.equals(other.telephone)) {
 			return false;
 		}
-		if (id != other.id) {
-			return false;
-		}
 		if (username == null) {
 			if (other.username != null) {
 				return false;
@@ -654,13 +699,5 @@ public class User extends ProtectedObject implements UserDetails {
 			return false;
 		}
 		return true;
-	}
-	
-	private boolean enumToBoolean(final BOOLEAN value) {
-		return value == BOOLEAN.TRUE ? true : false;
-	}
-
-	private BOOLEAN booleanToEnum(final boolean value) {
-		return value == true ? BOOLEAN.TRUE : BOOLEAN.FALSE;
 	}
 }

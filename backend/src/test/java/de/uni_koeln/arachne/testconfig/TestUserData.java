@@ -83,7 +83,7 @@ public class TestUserData {
 	public static User getAnonymous() {
 		final User user = new User();
 		user.setUsername(UserRightsService.ANONYMOUS_USER_NAME);
-		user.setLogin_permission(false);
+		user.setLogin_permission(true);
 		user.setAll_groups(false);
 		user.setGroupID(0);
 		return user;
