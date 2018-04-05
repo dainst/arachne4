@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -146,6 +147,7 @@ public class User extends ProtectedObject implements UserDetails {
 	@Column(name = "LastLogin")
 	Date lastLogin;
 
+	@Transient
 	private HashSet<GrantedAuthority> authorities = new HashSet<>();
 
 	/**
