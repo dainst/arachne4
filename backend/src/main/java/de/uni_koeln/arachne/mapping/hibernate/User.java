@@ -377,8 +377,7 @@ public class User extends ProtectedObject implements UserDetails {
 	 *            the all_groups to set
 	 */
 	public void setAll_groups(final boolean all_groups) {
-		// this.all_groups = all_groups;
-		this.all_groups = (all_groups) ? BOOLEAN.TRUE : BOOLEAN.FALSE;
+		this.all_groups = booleanToEnum(all_groups);
 	}
 
 	/**
@@ -393,8 +392,7 @@ public class User extends ProtectedObject implements UserDetails {
 	 *            the login_permission to set
 	 */
 	public void setLogin_permission(final boolean login_permission) {
-		// this.login_permission = login_permission;
-		this.login_permission = (login_permission) ? BOOLEAN.TRUE : BOOLEAN.FALSE;
+		this.login_permission = booleanToEnum(login_permission);
 	}
 
 	/**
