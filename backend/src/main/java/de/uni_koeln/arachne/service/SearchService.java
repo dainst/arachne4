@@ -610,7 +610,7 @@ public class SearchService {
 	 * @param searchEditorFields Whether the editor-only fields should be searched.
 	 * @return An elasticsearch <code>QueryBuilder</code> which in essence is a complete elasticsearch query.
 	 */
-	private QueryBuilder buildQuery(final String searchParam
+	private QueryBuilder buildQuery(String searchParam
 			, final Multimap<String, String> filters
 			, final Double[] bbCoords
 			, final boolean disableAccessControl
@@ -635,33 +635,51 @@ public class SearchService {
 					QueryBuilder nestedGeoFilter = QueryBuilders.nestedQuery("places", geoFilter);
 					facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(nestedGeoFilter);
                 } else {
-                        if (filter.getKey().equals("facet_ortsangabe") && 
-                                !filters.get("facet_ort").isEmpty() || !filters.get("facet_land").isEmpty()) {
-                            
-                                    String place = filters.get("facet_ort").toArray()[0].toString();
-                                    String city = place.split(",")[0].toLowerCase();
-                                    String country = place.split(", ")[1].toLowerCase();
-                                    String relation = filters.get("facet_ortsangabe").toArray()[0].toString().toLowerCase();
+                    if (filter.getKey().equals("facet_ortsangabe") && 
+                            !filters.get("facet_ort").isEmpty() || !filters.get("facet_land").isEmpty()) {
+                        
+                                //TODO facet_land
+                                String place = filters.get("facet_ort").toArray()[0].toString();
+                                String relation = filters.get("facet_ortsangabe").toArray()[0].toString().toLowerCase();
 
-                                    placeFilter = QueryBuilders.boolQuery().must(
-                                            QueryBuilders.termsQuery("places.name", city)).must(
-                                            QueryBuilders.termsQuery("places.name", country)).must(
-                                            QueryBuilders.termsQuery("places.relation", relation));
-                                    
-                                    facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
-                                            QueryBuilders.termsQuery(filter.getKey(), filter.getValue())).must(
-                                                    QueryBuilders.nestedQuery("places", placeFilter));
-                        } else {
-                            facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
-                                    QueryBuilders.termsQuery(filter.getKey(), filter.getValue()));
-                        }
+                                placeFilter = QueryBuilders.boolQuery()
+                                    .must(
+                                            QueryBuilders.matchPhraseQuery("places.name", place))
+                                    .must(
+                                            QueryBuilders.matchPhraseQuery("places.relation", relation));
+                                
+                                facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
+                                        QueryBuilders.termsQuery(filter.getKey(), filter.getValue())).must(
+                                                QueryBuilders.nestedQuery("places", placeFilter));
+                    } else {
+                        facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
+                                QueryBuilders.termsQuery(filter.getKey(), filter.getValue()));
+                    }
                 }
             }
         }
 
-		final QueryStringQueryBuilder innerQuery = QueryBuilders.queryStringQuery(searchParam)
-				.defaultOperator(Operator.AND)
-				.analyzeWildcard(true);
+		final QueryStringQueryBuilder innerQuery;
+		QueryBuilder nestedQuery = null;
+
+		if (searchParam.contains("places.gazetteerId")) {
+		    String newSearchParam = "";
+		    String gazetteerID = searchParam.substring(searchParam.indexOf(":")+1);
+		    if (searchParam.contains("AND places.gazetteerId")) {
+		        newSearchParam = searchParam.substring(0, searchParam.indexOf(" AND places.gazetteerId"));
+		    }
+		    searchParam = newSearchParam;
+		    if (searchParam.equals("")) {
+		        searchParam = "*";
+		    }
+
+		    QueryBuilder matchQuery = QueryBuilders.matchQuery("places.gazetteerId", gazetteerID);
+		    nestedQuery = QueryBuilders.nestedQuery("places", QueryBuilders.boolQuery().must(matchQuery));
+		}
+		
+        innerQuery = QueryBuilders.queryStringQuery(searchParam)
+                .defaultOperator(Operator.AND)
+                .analyzeWildcard(true);
 
 		if (searchEditorFields) {
 			innerQuery.field("searchableEditorContent^0.5");
@@ -686,7 +704,11 @@ public class SearchService {
                         .bottomRight(bbCoords[2], bbCoords[3]);
 		    QueryBuilder nestedFilter = QueryBuilders.nestedQuery("places", bBoxFilter);
 			BoolQueryBuilder andFilter = QueryBuilders.boolQuery().must(facetFilter).must(nestedFilter);
-			filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(andFilter);
+			if (nestedQuery != null) {
+			    filteredQuery = QueryBuilders.boolQuery().must(innerQuery).must(nestedQuery).filter(andFilter);
+			} else {
+			    filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(andFilter);
+			}
 		} else {
 			filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(facetFilter);
 		}
