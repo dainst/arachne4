@@ -34,7 +34,9 @@ import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.bucket.InternalSingleBucketAggregation;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
+import org.elasticsearch.search.aggregations.bucket.geogrid.InternalGeoHashGrid;
 import org.elasticsearch.search.highlight.HighlightBuilder.Field;
 import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
@@ -59,6 +61,7 @@ import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.search.Aggregation;
 import de.uni_koeln.arachne.util.search.GeoHashGridAggregation;
+import de.uni_koeln.arachne.util.search.NestedGeoHashGridAggregation;
 import de.uni_koeln.arachne.util.search.SearchFieldList;
 import de.uni_koeln.arachne.util.search.SearchParameters;
 import de.uni_koeln.arachne.util.search.TermsAggregation;
@@ -177,6 +180,9 @@ public class SearchService {
 		addFacets(getFacetList(filters, searchParameters.getFacetLimit() + searchParameters.getFacetOffset()
 				, searchParameters.getGeoHashPrecision(), searchParameters.getFacet(), lang)
 				, searchParameters.getFacetsToSort(), result, searchParameters.isLexical());
+
+		LOGGER.debug("Complete Elasticsearch search request: " + result.toString());
+
 		return result;
 	}
 
@@ -353,19 +359,21 @@ public class SearchService {
 
 		for (final String aggregationName : aggregations.keySet()) {
 			final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
-			MultiBucketsAggregation aggregator = (MultiBucketsAggregation)aggregations.get(aggregationName);
-			// TODO find a better way to convert facet values
+//			 TODO find a better way to convert facet values
+
+			if (aggregations.get(aggregationName) instanceof InternalSingleBucketAggregation) {
+			    InternalSingleBucketAggregation nestedAggregator = (InternalSingleBucketAggregation) aggregations.get(aggregationName);
+			    InternalGeoHashGrid aggregator = (InternalGeoHashGrid) nestedAggregator.getAggregations().asList().get(0);
 
 
 
-
-			if (aggregationName.equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
 				for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
 					final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
 					final LatLong coord = GeoHash.decodeHash(bucket.getKeyAsString());
 					facetMap.put("[" + coord.getLat() + ',' + coord.getLon() + ']', bucket.getDocCount());
 				}
 			} else {
+			    MultiBucketsAggregation aggregator = (MultiBucketsAggregation)aggregations.get(aggregationName);
 				for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
 					final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
 					facetMap.put(bucket.getKeyAsString(), bucket.getDocCount());
@@ -552,8 +560,8 @@ public class SearchService {
 
 			// geo grid
 			if (geoHashPrecision > 0) {
-				result.add(new GeoHashGridAggregation(GeoHashGridAggregation.GEO_HASH_GRID_NAME
-						, GeoHashGridAggregation.GEO_HASH_GRID_FIELD, geoHashPrecision, 0));
+			    result.add(new NestedGeoHashGridAggregation(GeoHashGridAggregation.GEO_HASH_GRID_NAME
+			            , GeoHashGridAggregation.GEO_HASH_GRID_FIELD, geoHashPrecision, 0));
 			}
 		} else {
 			result.add(new TermsAggregation(facet, limit));
@@ -602,7 +610,7 @@ public class SearchService {
 	 * @param searchEditorFields Whether the editor-only fields should be searched.
 	 * @return An elasticsearch <code>QueryBuilder</code> which in essence is a complete elasticsearch query.
 	 */
-	private QueryBuilder buildQuery(final String searchParam
+	private QueryBuilder buildQuery(String searchParam
 			, final Multimap<String, String> filters
 			, final Double[] bbCoords
 			, final boolean disableAccessControl
@@ -615,40 +623,63 @@ public class SearchService {
 		} else {
 			facetFilter = QueryBuilders.matchAllQuery();
 		}
-
+		
 		QueryBuilder placeFilter = QueryBuilders.matchAllQuery();
 
 		if (filters != null && !filters.isEmpty()) {
-			for (final Map.Entry<String, Collection<String>> filter: filters.asMap().entrySet()) {
-				// TODO find a way to unify this
-				if (filter.getKey().equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
-					final String filterValue = filter.getValue().iterator().next();
+            for (final Map.Entry<String, Collection<String>> filter: filters.asMap().entrySet()) {
+                // TODO find a way to unify this
+                if (filter.getKey().equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
+                    final String filterValue = filter.getValue().iterator().next();
 					QueryBuilder geoFilter = QueryBuilders.geoHashCellQuery(GeoHashGridAggregation.GEO_HASH_GRID_FIELD, filterValue);
 					QueryBuilder nestedGeoFilter = QueryBuilders.nestedQuery("places", geoFilter);
 					facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(nestedGeoFilter);
-				} else {
-					if (filter.getKey().equals("facet_ortsangabe") && 
-						!filters.get("facet_ort").isEmpty() || !filters.get("facet_land").isEmpty()) {
+                } else {
+                    if (filter.getKey().equals("facet_ortsangabe") && 
+                            !filters.get("facet_ort").isEmpty() || !filters.get("facet_land").isEmpty()) {
+                        
+                                //TODO facet_land
+                                String place = filters.get("facet_ort").toArray()[0].toString();
+                                String relation = filters.get("facet_ortsangabe").toArray()[0].toString().toLowerCase();
 
-							placeFilter = QueryBuilders.boolQuery().must(
-											QueryBuilders.termsQuery("places.name", filters.get("facet_ort"))).must(
-											QueryBuilders.termsQuery("places.name", filters.get("facet_land"))).must(
-											QueryBuilders.termsQuery("places.relation", filters.get("facet_ortsangabe")));
-							
-							facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
-									QueryBuilders.termsQuery(filter.getKey(), filter.getValue())).must(
-											QueryBuilders.nestedQuery("places", placeFilter));
-					} else {
-						facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
-								QueryBuilders.termsQuery(filter.getKey(), filter.getValue()));
-					}
-				}
-			}
+                                placeFilter = QueryBuilders.boolQuery()
+                                    .must(
+                                            QueryBuilders.matchPhraseQuery("places.name", place))
+                                    .must(
+                                            QueryBuilders.matchPhraseQuery("places.relation", relation));
+                                
+                                facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
+                                        QueryBuilders.termsQuery(filter.getKey(), filter.getValue())).must(
+                                                QueryBuilders.nestedQuery("places", placeFilter));
+                    } else {
+                        facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
+                                QueryBuilders.termsQuery(filter.getKey(), filter.getValue()));
+                    }
+                }
+            }
+        }
+
+		final QueryStringQueryBuilder innerQuery;
+		QueryBuilder nestedQuery = null;
+
+		if (searchParam.contains("places.gazetteerId")) {
+		    String newSearchParam = "";
+		    String gazetteerID = searchParam.substring(searchParam.indexOf(":")+1);
+		    if (searchParam.contains("AND places.gazetteerId")) {
+		        newSearchParam = searchParam.substring(0, searchParam.indexOf(" AND places.gazetteerId"));
+		    }
+		    searchParam = newSearchParam;
+		    if (searchParam.equals("")) {
+		        searchParam = "*";
+		    }
+
+		    QueryBuilder matchQuery = QueryBuilders.matchQuery("places.gazetteerId", gazetteerID);
+		    nestedQuery = QueryBuilders.nestedQuery("places", QueryBuilders.boolQuery().must(matchQuery));
 		}
-
-		final QueryStringQueryBuilder innerQuery = QueryBuilders.queryStringQuery(searchParam)
-				.defaultOperator(Operator.AND)
-				.analyzeWildcard(true);
+		
+        innerQuery = QueryBuilders.queryStringQuery(searchParam)
+                .defaultOperator(Operator.AND)
+                .analyzeWildcard(true);
 
 		if (searchEditorFields) {
 			innerQuery.field("searchableEditorContent^0.5");
@@ -667,10 +698,17 @@ public class SearchService {
 
 		final QueryBuilder filteredQuery;
 		if (bbCoords != null && bbCoords.length == 4) {
-			GeoBoundingBoxQueryBuilder bBoxFilter = QueryBuilders.geoBoundingBoxQuery("places.location")
-					.topLeft(bbCoords[0], bbCoords[1]).bottomRight(bbCoords[2], bbCoords[3]);
-			BoolQueryBuilder andFilter = QueryBuilders.boolQuery().must(facetFilter).must(bBoxFilter);
-			filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(andFilter);
+            GeoBoundingBoxQueryBuilder bBoxFilter = 
+		            QueryBuilders.geoBoundingBoxQuery("places.location")
+                        .topLeft(bbCoords[0], bbCoords[1])
+                        .bottomRight(bbCoords[2], bbCoords[3]);
+		    QueryBuilder nestedFilter = QueryBuilders.nestedQuery("places", bBoxFilter);
+			BoolQueryBuilder andFilter = QueryBuilders.boolQuery().must(facetFilter).must(nestedFilter);
+			if (nestedQuery != null) {
+			    filteredQuery = QueryBuilders.boolQuery().must(innerQuery).must(nestedQuery).filter(andFilter);
+			} else {
+			    filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(andFilter);
+			}
 		} else {
 			filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(facetFilter);
 		}
@@ -679,7 +717,7 @@ public class SearchService {
 				.scriptFunction(new Script("doc['boost'].value", ScriptService.ScriptType.INLINE, "expression", null));
 		final QueryBuilder query = QueryBuilders.functionScoreQuery(filteredQuery, scoreFunction).boostMode("multiply");
 
-		LOGGER.debug("Elastic search query: " + query.toString());
+		LOGGER.debug("Elastic search query part: " + query.toString());
 		return query;
 	}
 
@@ -694,7 +732,7 @@ public class SearchService {
 		final TermQueryBuilder innerQuery = QueryBuilders.termQuery("connectedEntities", entityId);
 		final QueryBuilder query = QueryBuilders.boolQuery().must(innerQuery).filter(accessFilter);
 
-		LOGGER.debug("Elastic search query: " + query.toString());
+		LOGGER.debug("Elastic search query context: " + query.toString());
 		return query;
 	}
 
