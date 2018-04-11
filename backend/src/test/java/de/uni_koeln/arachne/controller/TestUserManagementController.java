@@ -2,16 +2,17 @@ package de.uni_koeln.arachne.controller;
 
 import de.uni_koeln.arachne.dao.hibernate.ResetPasswordRequestDao;
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
-import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.ResetPasswordRequest;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.MailService;
 import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.testconfig.TestUserData;
 import de.uni_koeln.arachne.util.security.ProtectedObject;
 import de.uni_koeln.arachne.util.security.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -80,36 +81,21 @@ public class TestUserManagementController {
 		defaultDatasetGroups.set(controller, defaultDatasetGroupList);
 		
 		when(userRightsService.isSignedInUser()).thenReturn(true, true, false);
-				
-		final User testUser = new User();
-		testUser.setUsername("testuser");
-		testUser.setFirstname("test");
-		testUser.setLastname("user");
-		testUser.setZip("12345");
-		testUser.setPassword("testpass");
-		testUser.setAll_groups(true);
 		
+		final User testAdmin = TestUserData.getAdmin();
+		final User testUser = TestUserData.getUser();
+				
 		// access pattern admin, user and last anonymous
 		when(userRightsService.isSignedInUser()).thenReturn(true, true, false);
-		when(userRightsService.getCurrentUser()).thenReturn(testUser, testUser, null);
+		when(userRightsService.getCurrentUser()).thenReturn(testAdmin, testUser, null);
 		when(userRightsService.userHasRole(UserRightsService.ADMIN)).thenReturn(true, false);
 		
-		// simulate write-protected field
-		doThrow(new UserRightsService.ObjectAccessException("Field id is write-protected.")).when(userRightsService)
-				.setPropertyOnProtectedObject(eq("id"), any(), any(ProtectedObject.class), anyString());
-		
-		when(userDao.findByName("testuser")).thenReturn(testUser, testUser, null);
-		when(userDao.findByName("existinguser")).thenReturn(new User());
+		when(userDao.findByName("testadmin")).thenReturn(testAdmin);
+		when(userDao.findByName("testuser")).thenReturn(testUser);
 		when(userDao.findByEMailAddress("someaddress@somedomain.com")).thenReturn(testUser);
-		when(userDao.findByEMailAddress("existingaddress@somedomain.com")).thenReturn(new User());
-		when(userDao.findById(0)).thenReturn(testUser);
-		when(userDao.findDatasetGroupByName("testGroup1")).thenReturn(new DatasetGroup("testGroup1"));
-		when(userDao.findDatasetGroupByName("testGroup2")).thenReturn(new DatasetGroup("testGroup2"));
-		
+				
 		when(mailService.isValidEmailAddress(anyString())).thenCallRealMethod();
 		when(mailService.sendMail(anyString(), anyString(), anyString())).thenReturn(true);
-		
-		when(random.getNewToken()).thenReturn(TOKEN);
 		
 		final Calendar calender = Calendar.getInstance();
 		final long now = calender.getTime().getTime();
@@ -127,15 +113,17 @@ public class TestUserManagementController {
 	
 	@Test
 	public void testGetUserInfo() throws Exception {
+		when(userRightsService.getCurrentUser()).thenReturn(TestUserData.getUser());
+		
 		// admin
 		mockMvc.perform(
-				get("/userinfo/testuser")
+				get("/userinfo/testadmin")
 				.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
-				.andExpect(content().json("{username:\"testuser\","
+				.andExpect(content().json("{username:\"testadmin\","
 						+ "firstname:\"test\","
-						+ "lastname:\"user\","
+						+ "lastname:\"admin\","
 						+ "all_groups:true"
 						+ "}"));
 		
@@ -163,13 +151,9 @@ public class TestUserManagementController {
 	@Test
 	public void testGetUserInfoWithDot() throws Exception {
 
-		final User testUserWithDot = new User();
+		final User testUserWithDot = TestUserData.getUser();
 		testUserWithDot.setUsername("test.user");
-		testUserWithDot.setFirstname("test");
-		testUserWithDot.setLastname("user");
-		testUserWithDot.setZip("12345");
-		testUserWithDot.setAll_groups(true);
-
+		
 		when(userDao.findByName("test.user")).thenReturn(testUserWithDot, testUserWithDot, null);
 		when(userRightsService.getCurrentUser()).thenReturn(testUserWithDot, testUserWithDot, null);
 
@@ -180,21 +164,16 @@ public class TestUserManagementController {
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 				.andExpect(content().json("{username:\"test.user\","
 						+ "firstname:\"test\","
-						+ "lastname:\"user\","
-						+ "all_groups:true"
+						+ "lastname:\"user\""
 						+ "}"));
 	}
 
 	@Test
 	public void testGetUserInfoWithUmlaut() throws Exception {
 
-		final User testUserWithUmlaut = new User();
+		final User testUserWithUmlaut = TestUserData.getUser();
 		testUserWithUmlaut.setUsername("täst");
-		testUserWithUmlaut.setFirstname("test");
-		testUserWithUmlaut.setLastname("user");
-		testUserWithUmlaut.setZip("12345");
-		testUserWithUmlaut.setAll_groups(true);
-
+		
 		when(userDao.findByName("täst")).thenReturn(testUserWithUmlaut, testUserWithUmlaut, null);
 		when(userRightsService.getCurrentUser()).thenReturn(testUserWithUmlaut, testUserWithUmlaut, null);
 
@@ -205,8 +184,7 @@ public class TestUserManagementController {
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
 				.andExpect(content().json("{username:\"täst\","
 						+ "firstname:\"test\","
-						+ "lastname:\"user\","
-						+ "all_groups:true"
+						+ "lastname:\"user\""
 						+ "}"));
 	}
 		
@@ -257,6 +235,10 @@ public class TestUserManagementController {
 	
 	@Test
 	public void testUpdateUserInfoInvalidWriteProtectedFieldId() throws Exception {
+		// simulate write-protected field
+		doThrow(new UserRightsService.ObjectAccessException("Field id is write-protected.")).when(userRightsService)
+				.setPropertyOnProtectedObject(eq("id"), any(), any(ProtectedObject.class), anyString());
+		
 		final String json = "{\"firstname\":\"some name\","
 				+ "\"id\":\"7\","
 				+ "\"iAmHuman\":\"humanIAm\"}";
@@ -272,6 +254,8 @@ public class TestUserManagementController {
 	
 	@Test
 	public void testUpdateUserInfoInvalidUsernameTaken() throws Exception {
+		when(userDao.findByName("existinguser")).thenReturn(new User());
+		
 		final String json = "{\"firstname\":\"some name\","
 				+ "\"username\":\"existinguser\","
 				+ "\"iAmHuman\":\"humanIAm\"}";
@@ -302,6 +286,8 @@ public class TestUserManagementController {
 	
 	@Test
 	public void testUpdateUserInfoInvalidEmailTaken() throws Exception {
+		when(userDao.findByEMailAddress("existingaddress@somedomain.com")).thenReturn(new User());
+		
 		final String json = "{\"firstname\":\"some name\","
 				+ "\"email\":\"existingaddress@somedomain.com\","
 				+ "\"iAmHuman\":\"humanIAm\"}";
@@ -682,8 +668,10 @@ public class TestUserManagementController {
 				.andExpect(status().isOk())
 				.andExpect(content().json("{success:\"true\"}"));
 
-		final String password = userRightsService.getCurrentUser().getPassword();
-
+		ArgumentCaptor<User> argCaptor = ArgumentCaptor.forClass(User.class);
+		verify(userDao).updateUser(argCaptor.capture());
+		String password = argCaptor.getValue().getPassword();
+		
 		assertTrue(password.compareTo("testpass") != 0);
 		assertTrue(password.compareTo("somenewpass") == 0);
 	}
@@ -1003,6 +991,8 @@ public class TestUserManagementController {
 	
 	@Test
 	public void testChangePasswordAfterResetRequestValid() throws Exception {
+		when(userDao.findById(0)).thenReturn(TestUserData.getUser());
+		
 		final String json = "{\"password\":\"newpass\","
 				+ "\"passwordConfirm\":\"newpass\","
 				+ "\"iAmHuman\":\"humanIAm\"}";
