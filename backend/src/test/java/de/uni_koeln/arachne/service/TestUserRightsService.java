@@ -119,7 +119,7 @@ public class TestUserRightsService {
 		assertEquals("testadmin", user.getUsername());
 		assertEquals("test", user.getFirstname());
 		assertEquals("admin", user.getLastname());
-		assertEquals(ArachneUserDetailsService.MIN_ADMIN_ID, user.getGroupID());
+		assertEquals(800, user.getGroupID());
 	}
 	
 	@Test

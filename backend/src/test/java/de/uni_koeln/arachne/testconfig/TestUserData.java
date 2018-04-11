@@ -2,7 +2,6 @@ package de.uni_koeln.arachne.testconfig;
 
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.User;
-import de.uni_koeln.arachne.service.ArachneUserDetailsService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,6 +16,19 @@ import java.util.Set;
 
 public class TestUserData {
 
+	/**
+	 * Minimum administrator group id.
+	 */
+	private static final int MIN_ADMIN_ID = 800;
+	/**
+	 * Minimum editor group id.
+	 */
+	private static final int MIN_EDITOR_ID = 600;
+	/**
+	 * Minimum user group id.
+	 */
+	private static final int MIN_USER_ID = 400;
+	
 	private JdbcTemplate jdbcTemplate;
 	
 	public TestUserData(final JdbcTemplate jdbcTemplate) {
@@ -29,9 +41,10 @@ public class TestUserData {
 		user.setUsername("testadmin");
 		user.setFirstname("test");
 		user.setLastname("admin");
+		user.setPassword("testpass");
 		user.setLogin_permission(true);
 		user.setAll_groups(true);
-		user.setGroupID(ArachneUserDetailsService.MIN_ADMIN_ID);
+		user.setGroupID(MIN_ADMIN_ID);
 		return user;
 	}
 	
@@ -41,12 +54,13 @@ public class TestUserData {
 		user.setUsername("testeditor");
 		user.setFirstname("test");
 		user.setLastname("editor");
+		user.setPassword("testpass");
 		user.setLogin_permission(true);
 		user.setAll_groups(false);
 		Set<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
 		datasetGroups.add(new DatasetGroup("editorTestGroup"));
 		user.setDatasetGroups(datasetGroups);
-		user.setGroupID(ArachneUserDetailsService.MIN_EDITOR_ID);
+		user.setGroupID(MIN_EDITOR_ID);
 		return user;
 	}
 	
@@ -56,19 +70,20 @@ public class TestUserData {
 		user.setUsername("testuser");
 		user.setFirstname("test");
 		user.setLastname("user");
+		user.setPassword("testpass");
 		user.setLogin_permission(true);
 		user.setAll_groups(false);
 		Set<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
 		datasetGroups.add(new DatasetGroup("userTestGroup"));
 		datasetGroups.add(new DatasetGroup("anotherTestGroup"));
 		user.setDatasetGroups(datasetGroups);
-		user.setGroupID(ArachneUserDetailsService.MIN_USER_ID);
+		user.setGroupID(MIN_USER_ID);
 		return user;
 	}
 	
 	public static User getUserNoLogin() {
 		final User user = new User();
-		user.setId(3);
+		user.setId(4);
 		user.setUsername("testuser_noLogin");
 		user.setFirstname("test");
 		user.setLastname("user");
@@ -77,7 +92,7 @@ public class TestUserData {
 		Set<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
 		datasetGroups.add(new DatasetGroup("userTestGroup"));
 		user.setDatasetGroups(datasetGroups);
-		user.setGroupID(ArachneUserDetailsService.MIN_USER_ID);
+		user.setGroupID(MIN_USER_ID);
 		return user;
 	}
 	
@@ -93,10 +108,10 @@ public class TestUserData {
 	public static Authentication getAuthentication(final User user) {
 		final ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
 		grantedAuthorities.add(new SimpleGrantedAuthority(UserRightsService.USER));
-		if (user.getGroupID() >= ArachneUserDetailsService.MIN_EDITOR_ID) {
+		if (user.getGroupID() >= MIN_EDITOR_ID) {
 			grantedAuthorities.add(new SimpleGrantedAuthority(UserRightsService.EDITOR));
 		}
-		if (user.getGroupID() >= ArachneUserDetailsService.MIN_ADMIN_ID) {
+		if (user.getGroupID() >= MIN_ADMIN_ID) {
 			grantedAuthorities.add(new SimpleGrantedAuthority(UserRightsService.ADMIN));
 		}
 		return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), grantedAuthorities);

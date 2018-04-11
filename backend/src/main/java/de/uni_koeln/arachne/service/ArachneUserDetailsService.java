@@ -27,16 +27,12 @@ public class ArachneUserDetailsService implements UserDetailsService {
 	/**
 	 * Minimum administrator group id.
 	 */
-	public static final int MIN_ADMIN_ID = 800;
+	private static final int MIN_ADMIN_ID = 800;
 	/**
 	 * Minimum editor group id.
 	 */
-	public static final int MIN_EDITOR_ID = 600;
-	/**
-	 * Minimum user group id.
-	 */
-	public static final int MIN_USER_ID = 400;
-	
+	private static final int MIN_EDITOR_ID = 600;
+		
 	@Autowired
 	private transient UserDao userDao;
 
