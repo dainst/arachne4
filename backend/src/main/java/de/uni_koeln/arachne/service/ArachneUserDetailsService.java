@@ -55,11 +55,8 @@ public class ArachneUserDetailsService implements UserDetailsService {
 			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_EDITOR"));
 		}
 		user.setAuthorities(grantedAuthorities);
-		
-		UserDetails userDetails = new org.springframework.security.core.userdetails.User(username, user.getPassword() 
-				, grantedAuthorities);
-		
-		return userDetails;
+				
+		return user;
 	}
 
 }

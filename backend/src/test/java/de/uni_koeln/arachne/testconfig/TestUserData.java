@@ -5,7 +5,7 @@ import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.UserRightsService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -114,7 +114,7 @@ public class TestUserData {
 		if (user.getGroupID() >= MIN_ADMIN_ID) {
 			grantedAuthorities.add(new SimpleGrantedAuthority(UserRightsService.ADMIN));
 		}
-		return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), grantedAuthorities);
+		return new TestingAuthenticationToken(user, user.getPassword(), grantedAuthorities);
 	}
 	
 	public TestUserData createUserTable() throws DataAccessException {
