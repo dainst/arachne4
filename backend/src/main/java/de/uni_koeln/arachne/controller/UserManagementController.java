@@ -10,7 +10,6 @@ import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.ResetPasswordRequest;
 import de.uni_koeln.arachne.mapping.hibernate.User;
-import de.uni_koeln.arachne.service.ArachneUserDetailsService;
 import de.uni_koeln.arachne.service.MailService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.StrUtils;
@@ -189,7 +188,7 @@ public class UserManagementController {
 				try {
 					for (Map.Entry<String, String> entry : formData.entrySet()) {
 						userRightsService.setPropertyOnProtectedObject(entry.getKey(), entry.getValue(), user
-								, ArachneUserDetailsService.MIN_USER_ID);
+								, UserRightsService.USER);
 					}
 					userDao.updateUser(user);
 				} catch (de.uni_koeln.arachne.service.UserRightsService.ObjectAccessException e) {

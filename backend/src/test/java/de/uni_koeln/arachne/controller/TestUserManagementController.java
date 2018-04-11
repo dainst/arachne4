@@ -98,7 +98,7 @@ public class TestUserManagementController {
 		
 		// simulate write-protected field
 		doThrow(new UserRightsService.ObjectAccessException("Field id is write-protected.")).when(userRightsService)
-				.setPropertyOnProtectedObject(eq("id"), any(), any(ProtectedObject.class), anyInt());
+				.setPropertyOnProtectedObject(eq("id"), any(), any(ProtectedObject.class), anyString());
 		
 		when(userDao.findByName("testuser")).thenReturn(testUser, testUser, null);
 		when(userDao.findByName("existinguser")).thenReturn(new User());

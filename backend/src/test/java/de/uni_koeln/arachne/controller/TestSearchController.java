@@ -218,7 +218,7 @@ public class TestSearchController {
 
         when(searchService.getFilters(anyList(), anyInt())).thenCallRealMethod();
 
-        when(userRightsService.userHasAtLeastGroupID(anyInt())).thenReturn(false);
+        when(userRightsService.userHasRole(anyString())).thenReturn(false);
     }
 
     // TODO: add test(s) for editorfields for user with editor rights

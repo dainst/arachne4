@@ -163,18 +163,6 @@ public class UserRightsService {
 	}
 	
 	/**
-	 * If the current user has at least the given groupId and has login permission.
-	 * @param groupId A groupId to check against the users groupId.
-	 * @return <code>true</code> if the given groupId is equal or less than the users groupId and the user has 
-	 * login permission.
-	 */
-	public boolean userHasAtLeastGroupID(int groupId) {
-		initializeUserData();
-		boolean result = isSet && groupId <= arachneUser.getGroupID() && arachneUser.isLogin_permission();   
-		return result;
-	};
-	
-	/**
 	 * If the current user has the specified role.
 	 * @param role The role to check.
 	 * @return <code>true</code> if the given role is in the users granted authorities collection
@@ -288,11 +276,11 @@ public class UserRightsService {
 	 * @param fieldName The name of the property to set.
 	 * @param value The value to set.
 	 * @param object The <code>ProtectedObject</code> to set the property on.
-	 * @param minGid The minimum group Id you need to edit a value; 
+	 * @param role The 'minimum' role you need to edit a value; 
 	 * @throws ObjectAccessException if the current user is not allowed to access the property.
 	 */
 	public void setPropertyOnProtectedObject(final String fieldName, final Object value
-			, final ProtectedObject object, final int minGid) throws ObjectAccessException {
+			, final ProtectedObject object, final String role) throws ObjectAccessException {
 		if (isSignedInUser()) {
 			try {
 				Field field = object.getClass().getDeclaredField(fieldName);
@@ -310,7 +298,7 @@ public class UserRightsService {
 					if (userHasRole(ADMIN)) {
 						acccessGranted = viewClass.equals(JSONView.User.class) || viewClass.equals(JSONView.Admin.class);
 					} else {
-						if (userHasAtLeastGroupID(minGid)) {
+						if (userHasRole(role)) {
 							acccessGranted = viewClass.equals(JSONView.User.class);
 						}
 					}
@@ -340,6 +328,6 @@ public class UserRightsService {
 	 */
 	public void setPropertyOnProtectedObject(final String fieldName, final Object value
 			, final ProtectedObject object) throws ObjectAccessException {
-		setPropertyOnProtectedObject(fieldName, value, object, ArachneUserDetailsService.MIN_EDITOR_ID);
+		setPropertyOnProtectedObject(fieldName, value, object, EDITOR);
 	}
 }

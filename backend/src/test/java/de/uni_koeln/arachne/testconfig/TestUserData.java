@@ -92,9 +92,12 @@ public class TestUserData {
 	
 	public static Authentication getAuthentication(final User user) {
 		final ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+		grantedAuthorities.add(new SimpleGrantedAuthority(UserRightsService.USER));
+		if (user.getGroupID() >= ArachneUserDetailsService.MIN_EDITOR_ID) {
+			grantedAuthorities.add(new SimpleGrantedAuthority(UserRightsService.EDITOR));
+		}
 		if (user.getGroupID() >= ArachneUserDetailsService.MIN_ADMIN_ID) {
-			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+			grantedAuthorities.add(new SimpleGrantedAuthority(UserRightsService.ADMIN));
 		}
 		return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), grantedAuthorities);
 	}

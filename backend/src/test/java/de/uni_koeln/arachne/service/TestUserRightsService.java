@@ -70,7 +70,7 @@ public class TestUserRightsService {
 	@Test
 	public void testUserHasAtLeastGroupIDAnonymous() {
 		SecurityContextHolder.getContext().setAuthentication(null);
-		assertFalse(userRightsService.userHasAtLeastGroupID(ArachneUserDetailsService.MIN_ADMIN_ID));
+		assertFalse(userRightsService.userHasRole(UserRightsService.ADMIN));
 	}
 	
 	@Test
@@ -78,7 +78,7 @@ public class TestUserRightsService {
 		final User user = TestUserData.getUser();
 		final Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-		assertFalse(userRightsService.userHasAtLeastGroupID(ArachneUserDetailsService.MIN_ADMIN_ID));
+		assertFalse(userRightsService.userHasRole(UserRightsService.ADMIN));
 	}
 	
 	@Test
@@ -86,7 +86,7 @@ public class TestUserRightsService {
 		final User user = TestUserData.getAdmin();
 		final Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-		assertTrue(userRightsService.userHasAtLeastGroupID(ArachneUserDetailsService.MIN_ADMIN_ID));
+		assertTrue(userRightsService.userHasRole(UserRightsService.ADMIN));
 	}
 
 	@Test
@@ -226,7 +226,7 @@ public class TestUserRightsService {
 	public void testSetPropertyOnProtectedObjectCustomMinGidAnonymous() {
 		ProtectedTestObject testObject = new ProtectedTestObject();
 		SecurityContextHolder.getContext().setAuthentication(null);
-		userRightsService.setPropertyOnProtectedObject("userStringValue", "anonymous changed it", testObject, ArachneUserDetailsService.MIN_USER_ID);
+		userRightsService.setPropertyOnProtectedObject("userStringValue", "anonymous changed it", testObject, UserRightsService.USER);
 	}
 	
 	@Test
@@ -235,7 +235,7 @@ public class TestUserRightsService {
 		final User user = TestUserData.getUser();
 		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-		userRightsService.setPropertyOnProtectedObject("userStringValue", "user changed it", testObject, ArachneUserDetailsService.MIN_USER_ID);
+		userRightsService.setPropertyOnProtectedObject("userStringValue", "user changed it", testObject, UserRightsService.USER);
 		assertEquals("user changed it", testObject.getUserStringValue());
 	}
 	
@@ -245,7 +245,7 @@ public class TestUserRightsService {
 		final User user = TestUserData.getEditor();
 		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-		userRightsService.setPropertyOnProtectedObject("userStringValue", "editor changed it", testObject, ArachneUserDetailsService.MIN_USER_ID);
+		userRightsService.setPropertyOnProtectedObject("userStringValue", "editor changed it", testObject, UserRightsService.USER);
 		assertEquals("editor changed it", testObject.getUserStringValue());
 	}
 	
@@ -255,7 +255,7 @@ public class TestUserRightsService {
 		final User user = TestUserData.getAdmin();
 		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-		userRightsService.setPropertyOnProtectedObject("userStringValue", "admin changed it", testObject, ArachneUserDetailsService.MIN_USER_ID);
+		userRightsService.setPropertyOnProtectedObject("userStringValue", "admin changed it", testObject, UserRightsService.USER);
 		assertEquals("admin changed it", testObject.getUserStringValue());
 	}
 	
