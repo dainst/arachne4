@@ -160,9 +160,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param uid
 	 *            the id to set
+	 * @return {@code this}
 	 */
-	public void setId(final long uid) {
+	public User setId(final long uid) {
 		this.id = uid;
+		return this;
 	}
 
 	/**
@@ -179,9 +181,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param groupID
 	 *            the groupID to set
+	 * @return {@code this}
 	 */
-	public void setGroupID(final int groupID) {
+	public User setGroupID(final int groupID) {
 		this.groupID = String.valueOf(groupID);
+		return this;
 	}
 
 	/**
@@ -194,9 +198,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param username
 	 *            the username to set
+	 * @return {@code this}
 	 */
-	public void setUsername(final String username) {
+	public User setUsername(final String username) {
 		this.username = username;
+		return this;
 	}
 
 	/**
@@ -210,9 +216,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param password
 	 *            the password to set
+	 * @return {@code this}
 	 */
-	public void setPassword(final String password) {
+	public User setPassword(final String password) {
 		this.password = password;
+		return this;
 	}
 
 	/**
@@ -225,9 +233,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param institution
 	 *            the institution to set
+	 * @return {@code this}
 	 */
-	public void setInstitution(final String institution) {
+	public User setInstitution(final String institution) {
 		this.institution = institution;
+		return this;
 	}
 
 	/**
@@ -240,9 +250,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param firstname
 	 *            the firstname to set
+	 * @return {@code this}
 	 */
-	public void setFirstname(final String firstname) {
+	public User setFirstname(final String firstname) {
 		this.firstname = firstname;
+		return this;
 	}
 
 	/**
@@ -255,9 +267,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param lastname
 	 *            the lastname to set
+	 * @return {@code this}
 	 */
-	public void setLastname(final String lastname) {
+	public User setLastname(final String lastname) {
 		this.lastname = lastname;
+		return this;
 	}
 
 	/**
@@ -270,9 +284,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param email
 	 *            the email to set
+	 * @return {@code this}
 	 */
-	public void setEmail(final String email) {
+	public User setEmail(final String email) {
 		this.email = email;
+		return this;
 	}
 
 	/**
@@ -285,9 +301,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param street
 	 *            the street to set
+	 * @return {@code this}
 	 */
-	public void setStreet(final String street) {
+	public User setStreet(final String street) {
 		this.street = street;
+		return this;
 	}
 
 	/**
@@ -300,9 +318,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param zip
 	 *            the zip to set
+	 * @return {@code this}
 	 */
-	public void setZip(final String zip) {
+	public User setZip(final String zip) {
 		this.zip = zip;
+		return this;
 	}
 
 	/**
@@ -315,9 +335,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param place
 	 *            the place to set
+	 * @return {@code this}
 	 */
-	public void setPlace(final String place) {
+	public User setPlace(final String place) {
 		this.place = place;
+		return this;
 	}
 
 	/**
@@ -330,9 +352,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param homepage
 	 *            the homepage to set
+	 * @return {@code this}
 	 */
-	public void setHomepage(final String homepage) {
+	public User setHomepage(final String homepage) {
 		this.homepage = homepage;
+		return this;
 	}
 
 	/**
@@ -345,9 +369,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param country
 	 *            the country to set
+	 * @return {@code this}
 	 */
-	public void setCountry(final String country) {
+	public User setCountry(final String country) {
 		this.country = country;
+		return this;
 	}
 
 	/**
@@ -360,9 +386,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param telephone
 	 *            the telephone to set
+	 * @return {@code this}
 	 */
-	public void setTelephone(final String telephone) {
+	public User setTelephone(final String telephone) {
 		this.telephone = telephone;
+		return this;
 	}
 
 	/**
@@ -375,9 +403,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param all_groups
 	 *            the all_groups to set
+	 * @return {@code this}
 	 */
-	public void setAll_groups(final boolean all_groups) {
+	public User setAll_groups(final boolean all_groups) {
 		this.all_groups = booleanToEnum(all_groups);
+		return this;
 	}
 
 	/**
@@ -390,9 +420,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param login_permission
 	 *            the login_permission to set
+	 * @return {@code this}
 	 */
-	public void setLogin_permission(final boolean login_permission) {
+	public User setLogin_permission(final boolean login_permission) {
 		this.login_permission = booleanToEnum(login_permission);
+		return this;
 	}
 
 	/**
@@ -405,9 +437,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param lastLogin
 	 *            the lastLogin to set
+	 * @return {@code this}
 	 */
-	public void setLastLogin(final Date lastLogin) {
+	public User setLastLogin(final Date lastLogin) {
 		this.lastLogin = lastLogin;
+		return this;
 	}
 
 	/**
@@ -420,9 +454,11 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param datasetGroups
 	 *            the datasetGroups to set
+	 * @return {@code this}
 	 */
-	public void setDatasetGroups(final Set<DatasetGroup> datasetGroups) {
+	public User setDatasetGroups(final Set<DatasetGroup> datasetGroups) {
 		this.datasetGroups = datasetGroups;
+		return this;
 	}
 
 	public boolean hasGroup(final String group) {
@@ -450,13 +486,16 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @param emailAuth
 	 *            the emailAuth to set
+	 * @return {@code this}
 	 */
-	public void setEmailAuth(String emailAuth) {
+	public User setEmailAuth(String emailAuth) {
 		this.emailAuth = emailAuth;
+		return this;
 	}
 
-	public void setAuthorities(final Collection<? extends GrantedAuthority> authorities) {
+	public User setAuthorities(final Collection<? extends GrantedAuthority> authorities) {
 		this.authorities = authorities;
+		return this;
 	}
 
 	@Override
@@ -521,9 +560,7 @@ public class User extends ProtectedObject implements UserDetails {
 						+ (lastLogin != null ? "lastLogin=" + lastLogin : "") + "]");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -553,9 +590,7 @@ public class User extends ProtectedObject implements UserDetails {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -700,4 +735,5 @@ public class User extends ProtectedObject implements UserDetails {
 		}
 		return true;
 	}
+
 }
