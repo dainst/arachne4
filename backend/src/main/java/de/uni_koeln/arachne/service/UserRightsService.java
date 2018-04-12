@@ -26,6 +26,7 @@ import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.util.security.JSONView;
 import de.uni_koeln.arachne.util.security.ProtectedObject;
+import de.uni_koeln.arachne.util.security.SecurityUtils;
 import de.uni_koeln.arachne.util.security.UserAccess;
 import de.uni_koeln.arachne.util.security.UserAccess.Restrictions;
 import de.uni_koeln.arachne.util.sql.Condition;
@@ -170,17 +171,14 @@ public class UserRightsService {
 	 *         authorities collection
 	 */
 	public boolean userHasRole(final String role) {
-		boolean hasRole = false;
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication != null) {
-			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-			hasRole = authorities.stream().anyMatch(a -> role.equals(a.getAuthority()));
-		}
-		return hasRole;
+		return SecurityUtils.authoritiesHaveRole(SecurityContextHolder.getContext().getAuthentication().getAuthorities(),
+				role);
 	}
 
 	/**
-	 * Get the current arachne user.
+	 * Get the current arachne user.</br>
+	 * Should only be used if the actual user data is needed.
+	 * For permissions better use {@link #userHasRole(String)}.
 	 * 
 	 * @return User the user object or the "anonymous" user if no user is logged
 	 *         in or the user has no login permission.
