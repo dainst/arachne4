@@ -1,7 +1,5 @@
 package de.uni_koeln.arachne.service;
 
-import static de.uni_koeln.arachne.service.UserRightsService.*;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +13,7 @@ import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
+import de.uni_koeln.arachne.util.security.SecurityUtils;
 
 /**
  * Service to retrieve entities either from the elasticsearch index or the db.
@@ -60,7 +59,7 @@ public class EntityService {
 	public TypeWithHTTPStatus<String> getEntityFromIndex(final Long id, final String category, final String lang) throws Transl8Exception {
 		
 		String[] excludedFields;
-		if (userRightsService.userHasRole(EDITOR)) {
+		if (userRightsService.userHasRole(SecurityUtils.EDITOR)) {
 			excludedFields = internalFields;
 		} else {
 			excludedFields = new String[internalFields.length + 1];

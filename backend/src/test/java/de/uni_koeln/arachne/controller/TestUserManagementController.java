@@ -9,6 +9,8 @@ import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.testconfig.TestUserData;
 import de.uni_koeln.arachne.util.security.ProtectedObject;
 import de.uni_koeln.arachne.util.security.Random;
+import de.uni_koeln.arachne.util.security.SecurityUtils;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -88,7 +90,7 @@ public class TestUserManagementController {
 		// access pattern admin, user and last anonymous
 		when(userRightsService.isSignedInUser()).thenReturn(true, true, false);
 		when(userRightsService.getCurrentUser()).thenReturn(testAdmin, testUser, null);
-		when(userRightsService.userHasRole(UserRightsService.ADMIN)).thenReturn(true, false);
+		when(userRightsService.userHasRole(SecurityUtils.ADMIN)).thenReturn(true, false);
 		
 		when(userDao.findByName("testadmin")).thenReturn(testAdmin);
 		when(userDao.findByName("testuser")).thenReturn(testUser);

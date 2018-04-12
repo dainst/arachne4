@@ -1,7 +1,7 @@
 package de.uni_koeln.arachne.controller;
 
 import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8_VALUE;
-import static de.uni_koeln.arachne.service.UserRightsService.*;
+import static de.uni_koeln.arachne.util.security.SecurityUtils.*;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,7 +1,5 @@
 package de.uni_koeln.arachne.response;
 
-import static de.uni_koeln.arachne.service.UserRightsService.*;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +41,7 @@ import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.search.TermsAggregation;
+import de.uni_koeln.arachne.util.security.SecurityUtils;
 
 /**
  * Factory class to create the different kinds of responses from a dataset.
@@ -651,7 +650,7 @@ public class ResponseFactory {
 	private void setEditorSection(Dataset dataset, Namespace namespace,	Element display
 			, FormattedArachneEntity response, final String lang) {
 
-		if (userRightsService.userHasRole(EDITOR)
+		if (userRightsService.userHasRole(SecurityUtils.EDITOR)
 				|| userRightsService.isDataimporter()) {
 			final Element editorSectionElement = display.getChild("editorsection", namespace);
 			if (editorSectionElement != null) {

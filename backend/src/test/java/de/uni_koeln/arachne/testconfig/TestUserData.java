@@ -1,8 +1,9 @@
 package de.uni_koeln.arachne.testconfig;
 
+import static de.uni_koeln.arachne.util.security.SecurityUtils.*;
+
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.User;
-import de.uni_koeln.arachne.service.UserRightsService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.TestingAuthenticationToken;
@@ -98,7 +99,7 @@ public class TestUserData {
 	
 	public static User getAnonymous() {
 		final User user = new User();
-		user.setUsername(UserRightsService.ANONYMOUS_USER_NAME);
+		user.setUsername(ANONYMOUS_USER_NAME);
 		user.setLogin_permission(true);
 		user.setAll_groups(false);
 		user.setGroupID(0);
@@ -107,12 +108,12 @@ public class TestUserData {
 	
 	public static Authentication getAuthentication(final User user) {
 		final ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-		grantedAuthorities.add(new SimpleGrantedAuthority(UserRightsService.USER));
+		grantedAuthorities.add(new SimpleGrantedAuthority(USER));
 		if (user.getGroupID() >= MIN_EDITOR_ID) {
-			grantedAuthorities.add(new SimpleGrantedAuthority(UserRightsService.EDITOR));
+			grantedAuthorities.add(new SimpleGrantedAuthority(EDITOR));
 		}
 		if (user.getGroupID() >= MIN_ADMIN_ID) {
-			grantedAuthorities.add(new SimpleGrantedAuthority(UserRightsService.ADMIN));
+			grantedAuthorities.add(new SimpleGrantedAuthority(ADMIN));
 		}
 		return new TestingAuthenticationToken(user, user.getPassword(), grantedAuthorities);
 	}

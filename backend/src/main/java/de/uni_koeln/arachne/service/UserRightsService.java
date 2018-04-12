@@ -1,8 +1,9 @@
 package de.uni_koeln.arachne.service;
 
+import static de.uni_koeln.arachne.util.security.SecurityUtils.*;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -59,27 +59,6 @@ public class UserRightsService {
 			super(message);
 		}
 	}
-
-	/**
-	 * Minimum administrator group id.
-	 */
-	public static final String ADMIN = "ROLE_ADMIN";
-	/**
-	 * Minimum editor group id.
-	 */
-	public static final String EDITOR = "ROLE_EDITOR";
-	/**
-	 * Minimum user group id.
-	 */
-	public static final String USER = "ROLE_USER";
-	/**
-	 * Indexing operation (meaning data import).
-	 */
-	public static final String INDEXING = "Indexing";
-	/**
-	 * Username used for anonymous users.
-	 */
-	public static final String ANONYMOUS_USER_NAME = "Anonymous";
 
 	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserRightsService.class);
@@ -171,14 +150,18 @@ public class UserRightsService {
 	 *         authorities collection
 	 */
 	public boolean userHasRole(final String role) {
-		return SecurityUtils.authoritiesHaveRole(SecurityContextHolder.getContext().getAuthentication().getAuthorities(),
-				role);
+		boolean hasRole = false;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null) {
+			hasRole = SecurityUtils.authoritiesHaveRole(authentication.getAuthorities(), role);
+		}
+		return hasRole;
 	}
 
 	/**
 	 * Get the current arachne user.</br>
-	 * Should only be used if the actual user data is needed.
-	 * For permissions better use {@link #userHasRole(String)}.
+	 * Should only be used if the actual user data is needed. For permissions
+	 * better use {@link #userHasRole(String)}.
 	 * 
 	 * @return User the user object or the "anonymous" user if no user is logged
 	 *         in or the user has no login permission.

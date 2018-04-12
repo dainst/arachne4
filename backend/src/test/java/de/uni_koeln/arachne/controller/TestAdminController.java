@@ -4,6 +4,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.Mockito.*;
 
+import static de.uni_koeln.arachne.util.security.SecurityUtils.*;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -60,7 +62,7 @@ public class TestAdminController {
 
 	@Test
 	public void testCacheGet_Admin() throws Exception {
-		when(userRightsService.userHasRole(UserRightsService.ADMIN)).thenReturn(true);
+		when(userRightsService.userHasRole(ADMIN)).thenReturn(true);
 		
 		mockMvc.perform(
 			get("/admin/cache")
@@ -73,7 +75,7 @@ public class TestAdminController {
 	
 	@Test
 	public void testCacheDelete() throws Exception {
-		when(userRightsService.userHasRole(UserRightsService.ADMIN)).thenReturn(true);
+		when(userRightsService.userHasRole(ADMIN)).thenReturn(true);
 		
 		mockMvc.perform(
 				delete("/admin/cache")

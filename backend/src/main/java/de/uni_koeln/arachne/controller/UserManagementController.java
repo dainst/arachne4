@@ -3,7 +3,7 @@
  */
 package de.uni_koeln.arachne.controller;
 
-import static de.uni_koeln.arachne.service.UserRightsService.*;
+import static de.uni_koeln.arachne.util.security.SecurityUtils.*;
 
 import de.uni_koeln.arachne.dao.hibernate.ResetPasswordRequestDao;
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
@@ -16,6 +16,8 @@ import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.network.CustomMediaType;
 import de.uni_koeln.arachne.util.security.JSONView;
 import de.uni_koeln.arachne.util.security.Random;
+import de.uni_koeln.arachne.util.security.SecurityUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -188,7 +190,7 @@ public class UserManagementController {
 				try {
 					for (Map.Entry<String, String> entry : formData.entrySet()) {
 						userRightsService.setPropertyOnProtectedObject(entry.getKey(), entry.getValue(), user
-								, UserRightsService.USER);
+								, SecurityUtils.USER);
 					}
 					userDao.updateUser(user);
 				} catch (de.uni_koeln.arachne.service.UserRightsService.ObjectAccessException e) {
