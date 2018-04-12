@@ -75,7 +75,7 @@ public class User extends ProtectedObject implements UserDetails {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "verwaltung_benutzer_datensatzgruppen", joinColumns = {
 			@JoinColumn(name = "uid") }, inverseJoinColumns = { @JoinColumn(name = "dgid") })
-	private Set<DatasetGroup> datasetGroups;
+	private Set<DatasetGroup> datasetGroups = new HashSet<>();
 
 	/**
 	 * In Which Table the Connection is Stored
