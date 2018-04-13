@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import static de.uni_koeln.arachne.util.security.SecurityUtils.*;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +41,10 @@ public class TestUserRightsService {
 		when(userDao.findByName(TestUserData.getUserNoLogin().getUsername())).thenReturn(TestUserData.getUserNoLogin());
 	}
 	
+	@After
+	public void tearDown() {
+		SecurityContextHolder.clearContext();
+	}
 	
 	@Test
 	public void testSet_Is_Dataimporter() {
@@ -72,7 +77,10 @@ public class TestUserRightsService {
 	@Test
 	public void testUserHasRoleAnonymous() {
 		SecurityContextHolder.getContext().setAuthentication(null);
+		
 		assertFalse(userRightsService.userHasRole(ADMIN));
+		assertFalse(userRightsService.userHasRole(EDITOR));
+		assertFalse(userRightsService.userHasRole(USER));
 	}
 	
 	@Test
@@ -80,6 +88,22 @@ public class TestUserRightsService {
 		final User user = TestUserData.getUser();
 		final Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
+		
+		assertTrue(userRightsService.userHasRole(USER));
+		
+		assertFalse(userRightsService.userHasRole(ADMIN));
+		assertFalse(userRightsService.userHasRole(EDITOR));
+	}
+	
+	@Test
+	public void testUserHasRoleEditor() {
+		final User user = TestUserData.getEditor();
+		final Authentication authToken = TestUserData.getAuthentication(user);
+		SecurityContextHolder.getContext().setAuthentication(authToken);
+		
+		assertTrue(userRightsService.userHasRole(USER));
+		assertTrue(userRightsService.userHasRole(EDITOR));
+		
 		assertFalse(userRightsService.userHasRole(ADMIN));
 	}
 	
@@ -88,7 +112,10 @@ public class TestUserRightsService {
 		final User user = TestUserData.getAdmin();
 		final Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
+		
 		assertTrue(userRightsService.userHasRole(ADMIN));
+		assertTrue(userRightsService.userHasRole(EDITOR));
+		assertTrue(userRightsService.userHasRole(USER));		
 	}
 
 	@Test
@@ -186,6 +213,12 @@ public class TestUserRightsService {
 		assertTrue(sql.contains(" OR "));
 		assertTrue(sql.contains("`testTable`.`DatensatzGruppeTestTable` = \"anotherTestGroup\""));
 		assertTrue(sql.endsWith(")"));
+	}
+	
+	@Test
+	public void testGetSQLDataimporter() {
+		SecurityContextHolder.getContext().setAuthentication(getDataimportAuthentication());
+		assertEquals("", userRightsService.getSQL("testTable"));
 	}
 	
 	@Test(expected=ObjectAccessException.class)

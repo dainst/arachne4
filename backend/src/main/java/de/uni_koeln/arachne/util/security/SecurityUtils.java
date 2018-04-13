@@ -1,9 +1,15 @@
 package de.uni_koeln.arachne.util.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.StringUtils;
+
+import de.uni_koeln.arachne.mapping.hibernate.User;
 
 /**
  * Security related utility functions.
@@ -56,5 +62,27 @@ public class SecurityUtils {
 			hasRole = authorities.stream().anyMatch(a -> role.equals(a.getAuthority()));
 		}
 		return hasRole;
+	}
+	
+	/**
+	 * Returns the 'dataimport user' {@link Authentication}.</br>
+	 * The granted roles are: ADMIN, EDITOR, USER and ALL_GROUPS
+	 * 
+	 * @return the authentication instance
+	 */
+	public static Authentication getDataimportAuthentication() {
+		final ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+		grantedAuthorities.add(new SimpleGrantedAuthority(ADMIN));
+		grantedAuthorities.add(new SimpleGrantedAuthority(EDITOR));
+		grantedAuthorities.add(new SimpleGrantedAuthority(USER));
+		grantedAuthorities.add(new SimpleGrantedAuthority(ALL_GROUPS));
+
+		User user = new User();
+		user.setUsername(INDEXING);
+		user.setLogin_permission(true);
+		user.setAll_groups(true);
+		user.setAuthorities(grantedAuthorities);
+
+		return new UsernamePasswordAuthenticationToken(user, user.getPassword(), grantedAuthorities);
 	}
 }

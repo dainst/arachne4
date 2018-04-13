@@ -15,7 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +64,6 @@ public class UserRightsService {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserRightsService.class);
 
 	/**
@@ -100,10 +103,11 @@ public class UserRightsService {
 	 */
 	private void initializeUserData() {
 		if (!isSet) {
-			arachneUser = userDao.findByName(ANONYMOUS_USER_NAME);
 			final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			if (authentication != null && authentication.getPrincipal() instanceof User) {
 				arachneUser = (User) authentication.getPrincipal();
+			} else {
+				arachneUser = userDao.findByName(ANONYMOUS_USER_NAME);
 			}
 			isSet = true;
 		}
@@ -111,13 +115,25 @@ public class UserRightsService {
 
 	/**
 	 * Set the 'dataimport user'.
+	 * </br>
+	 * The 'dataimport user' cannot be set if there is already an authenticated user.
+	 * Since the dataimport is running in its own thread and each SecurityContext is bound 
+	 * to exactly one thread, this method cannot be abused to elevate a users privileges. 
+	 * 
+	 * @return if the 'dataimport user' could be set
 	 */
-	public void setDataimporter() {
-		arachneUser = new User();
-		arachneUser.setUsername(INDEXING);
-		arachneUser.setLogin_permission(true);
-		arachneUser.setAll_groups(true);
+	public boolean setDataimporter() {
+		SecurityContext context = SecurityContextHolder.getContext();
+		Authentication auth = context.getAuthentication();
+		if (auth != null) {
+			LOGGER.warn("Could not set user " + INDEXING + " as there is already a user set: " + auth.getName());
+			return false;
+		}
+
+		context.setAuthentication(getDataimportAuthentication());
+
 		this.isSet = true;
+		return true;
 	}
 
 	/**
@@ -126,7 +142,12 @@ public class UserRightsService {
 	 * @return <code>true</code> if the current user is the data importer.
 	 */
 	public boolean isDataimporter() {
-		return isSet && INDEXING.equals(arachneUser.getUsername());
+		boolean isDataimporter = false;
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			isDataimporter = INDEXING.equals(auth.getName());
+		}
+		return isSet && isDataimporter;
 	}
 
 	/**
@@ -210,7 +231,7 @@ public class UserRightsService {
 	 */
 	public String getSQL(final String tableName) {
 		initializeUserData();
-		if (INDEXING.equals(arachneUser.getUsername())) {
+		if (INDEXING.equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
 			return "";
 		} else {
 			// in This case The User is Authorized to see Everything
