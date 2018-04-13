@@ -532,7 +532,11 @@ public class SearchService {
 			result.addAll(getCategorySpecificFacets(filters, limit, lang));
 
 			for (final String facetName : getDefaultFacetList()) {
-				result.add(new TermsAggregation(facetName, limit));
+			    if (facetName.equals("facet_geo")) {
+			        result.add(new TermsAggregation(facetName, 1000));
+			    } else {
+			        result.add(new TermsAggregation(facetName, limit));
+			    }
 			}
 
 			// TODO look for a more general way to handle dynamic facets
