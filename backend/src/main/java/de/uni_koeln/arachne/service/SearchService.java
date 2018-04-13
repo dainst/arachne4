@@ -635,22 +635,36 @@ public class SearchService {
 					QueryBuilder nestedGeoFilter = QueryBuilders.nestedQuery("places", geoFilter);
 					facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(nestedGeoFilter);
                 } else {
-                    if (filter.getKey().equals("facet_ortsangabe") && 
-                            !filters.get("facet_ort").isEmpty() || !filters.get("facet_land").isEmpty()) {
-                        
-                                //TODO facet_land
-                                String place = filters.get("facet_ort").toArray()[0].toString();
-                                String relation = filters.get("facet_ortsangabe").toArray()[0].toString().toLowerCase();
+                    if (filter.getKey().equals("facet_ortsangabe") &&
+                            !filters.get("facet_ort").isEmpty() ||
+                            !filters.get("facet_land").isEmpty() ||
+                            !filters.get("facet_antikeroemprovinz").isEmpty() ||
+                            !filters.get("facet_antikegriechlandschaft").isEmpty()) {
 
-                                placeFilter = QueryBuilders.boolQuery()
-                                    .must(
-                                            QueryBuilders.matchPhraseQuery("places.name", place))
-                                    .must(
-                                            QueryBuilders.matchPhraseQuery("places.relation", relation));
-                                
-                                facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
-                                        QueryBuilders.termsQuery(filter.getKey(), filter.getValue())).must(
-                                                QueryBuilders.nestedQuery("places", placeFilter));
+                        String searchTerm = "";
+                        try {
+                            searchTerm = filters.get("facet_ort").toArray()[0].toString();
+                        } catch (java.lang.ArrayIndexOutOfBoundsException e) {
+                            try {
+                                searchTerm = filters.get("facet_antikeroemprovinz").toArray()[0].toString();
+                            } catch (java.lang.ArrayIndexOutOfBoundsException e2) {}
+                            try {
+                                searchTerm = filters.get("facet_antikegriechlandschaft").toArray()[0].toString();
+                            } catch (java.lang.ArrayIndexOutOfBoundsException e2) {}
+                            try {
+                                searchTerm = filters.get("facet_land").toArray()[0].toString();
+                            } catch (java.lang.ArrayIndexOutOfBoundsException e2) {}
+                        }
+
+                        String relation = filters.get("facet_ortsangabe").toArray()[0].toString().toLowerCase();
+
+                        placeFilter = QueryBuilders.boolQuery()
+                                .must(QueryBuilders.matchPhraseQuery("places.name", searchTerm))
+                                .must(QueryBuilders.matchPhraseQuery("places.relation", relation));
+
+                        facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
+                                QueryBuilders.termsQuery(filter.getKey(), filter.getValue())).must(
+                                        QueryBuilders.nestedQuery("places", placeFilter));
                     } else {
                         facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
                                 QueryBuilders.termsQuery(filter.getKey(), filter.getValue()));
