@@ -22,6 +22,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.service.ArachneUserDetailsService.NoLoginPermissionException;
 import de.uni_koeln.arachne.testconfig.TestUserData;
 import de.uni_koeln.arachne.util.security.SecurityUtils;
 
@@ -75,6 +76,14 @@ public class TestArachneUserDetailsService {
 		userDetailsService.loadUserByUsername("NoUser");
 	}
 
+	@Test(expected = NoLoginPermissionException.class)
+	public void testLoadUserByUsername_NoLoginPermission() {
+		User user = TestUserData.getUserNoLogin();
+		when(userDao.findByName(user.getUsername())).thenReturn(user);
+		
+		userDetailsService.loadUserByUsername(user.getUsername());
+	}
+	
 	private void testUser(User expectedUser) {
 		User user = new User();
 		BeanUtils.copyProperties(expectedUser, user);
@@ -89,4 +98,5 @@ public class TestArachneUserDetailsService {
 				"ROLE_" + actualUser.getLastname().toUpperCase(Locale.ROOT)));
 	}
 
+	
 }
