@@ -631,6 +631,7 @@ public class SearchService {
 		QueryBuilder placeFilter = QueryBuilders.matchAllQuery();
 
 		if (filters != null && !filters.isEmpty()) {
+		    boolean nestedFilterInserted = false;
             for (final Map.Entry<String, Collection<String>> filter: filters.asMap().entrySet()) {
                 // TODO find a way to unify this
                 if (filter.getKey().equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
@@ -640,11 +641,12 @@ public class SearchService {
 					facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(nestedGeoFilter);
                 } else {
                     if (filter.getKey().equals("facet_ortsangabe") &&
-                            !filters.get("facet_ort").isEmpty() ||
+                            (!filters.get("facet_ort").isEmpty() ||
                             !filters.get("facet_land").isEmpty() ||
                             !filters.get("facet_antikeroemprovinz").isEmpty() ||
-                            !filters.get("facet_antikegriechlandschaft").isEmpty()) {
-
+                            !filters.get("facet_antikegriechlandschaft").isEmpty()) &&
+                            !nestedFilterInserted
+                    ) {
                         String searchTerm = "";
                         try {
                             searchTerm = filters.get("facet_ort").toArray()[0].toString();
@@ -669,6 +671,7 @@ public class SearchService {
                         facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
                                 QueryBuilders.termsQuery(filter.getKey(), filter.getValue())).must(
                                         QueryBuilders.nestedQuery("places", placeFilter));
+                        nestedFilterInserted = true;
                     } else {
                         facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
                                 QueryBuilders.termsQuery(filter.getKey(), filter.getValue()));
