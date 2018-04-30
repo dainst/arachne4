@@ -63,8 +63,8 @@ public class ExternalLinkResolvers {
 		result.setLabel("TEI-Viewer");
 		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "buch");
 		result.setCriteria(criteria);
-		result.setLinkPattern("http://arachne.uni-koeln.de/Tei-Viewer/cgi-bin/teiviewer.php?manifest=%s");
-		result.setValidationPattern("http://arachne.uni-koeln.de/TeiDocuments/%s/structure.xml");
+		result.setLinkPattern("https://arachne.uni-koeln.de/Tei-Viewer/cgi-bin/teiviewer.php?manifest=%s");
+		result.setValidationPattern("https://arachne.uni-koeln.de/TeiDocuments/%s/structure.xml");
 		result.setPatternFields(Arrays.asList("buch.Verzeichnis"));
 		return result;
 	}
@@ -80,7 +80,7 @@ public class ExternalLinkResolvers {
 		result.setLabel("TEI-Viewer");
 		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "buchseite");
 		result.setCriteria(criteria);
-		result.setLinkPattern("http://arachne.uni-koeln.de/Tei-Viewer/cgi-bin/teiviewer.php?scan=%s");
+		result.setLinkPattern("https://arachne.uni-koeln.de/Tei-Viewer/cgi-bin/teiviewer.php?scan=%s");
 		result.setPatternFields(Arrays.asList("Thumbnail.Subtitle"));
 		return result;
 	}
@@ -117,7 +117,7 @@ public class ExternalLinkResolvers {
 				"objekt.GattungAllgemein", "Sarkophag",
 				"gruppen.ArtDerGruppe", "Sarkophaggruppe");
 		result.setCriteria(criteria);
-		result.setLinkPattern("http://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item"
+		result.setLinkPattern("https://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item"
 				+ "&sarkophag[jump_to_project]=%s&sarkophag[jump_to_project_id]=%s");
 		result.setPatternFields(Arrays.asList("Dataset.TableName", "Dataset.internalId"));
 		result.setExactMatch(false);
@@ -140,7 +140,7 @@ public class ExternalLinkResolvers {
 				"relief.FS_ObjektID", "34644,40763",
 				"realien.FS_ObjektID", "34644,40763");
 		result.setCriteria(criteria);
-		result.setLinkPattern("http://arachne.uni-koeln.de/browser/index.php?view[layout]=pergamonaltar&"
+		result.setLinkPattern("https://arachne.uni-koeln.de/browser/index.php?view[layout]=pergamonaltar&"
 				+ "jump_to_id=%s&category=%s");
 		result.setPatternFields(Arrays.asList("Dataset.internalId", "Dataset.TableName"));
 		return result;
@@ -157,7 +157,7 @@ public class ExternalLinkResolvers {
 		result.setLabel("Siegelbrowser");
 		final Map<String, String> criteria = ImmutableMap.of("objektsiegel.CMSNR", "");
 		result.setCriteria(criteria);
-		result.setLinkPattern("http://arachne.uni-koeln.de/browser/index.php?view[layout]=siegel_item&"
+		result.setLinkPattern("https://arachne.uni-koeln.de/browser/index.php?view[layout]=siegel_item&"
 				+ "objektsiegel[jump_to_id]=%s");
 		result.setPatternFields(Arrays.asList("Dataset.internalId"));
 		return result;
@@ -179,7 +179,7 @@ public class ExternalLinkResolvers {
 				"relief.FS_ObjektID", "30014,29837,130902");
 		result.setCriteria(criteria);
 		// TODO find mechanism for retrieving correct value for parameter 'relief_nr'
-		result.setLinkPattern("http://arachne.uni-koeln.de/browser/?view[layout]=Trajan_item&relief_nr=01");
+		result.setLinkPattern("https://arachne.uni-koeln.de/browser/?view[layout]=Trajan_item&relief_nr=01");
 		return result;
 	}
 	
@@ -197,7 +197,7 @@ public class ExternalLinkResolvers {
 				"objekt.HerkFundKommentar", "Mercator",
 				"reproduktion.KuenstlerReproduktion", "Mercator");
 		result.setCriteria(criteria);
-		result.setLinkPattern("http://arachne.uni-koeln.de/browser/index.php?view[layout]=mercator");
+		result.setLinkPattern("https://arachne.uni-koeln.de/browser/index.php?view[layout]=mercator");
 		result.setExactMatch(false);
 		return result;
 	}
@@ -216,7 +216,7 @@ public class ExternalLinkResolvers {
 				"literatur.PS_LiteraturID", "69",
 				"literaturzitat.FS_WebseiteID", "");
 		result.setCriteria(criteria);
-		result.setLinkPattern("http://arachne.uni-koeln.de/browser/maffeiano_index.php?view[layout]=Maffeiano_page&"
+		result.setLinkPattern("https://arachne.uni-koeln.de/browser/maffeiano_index.php?view[layout]=Maffeiano_page&"
 				+ "Maffeiano[search][PS_WebseiteID]=%s");
 		result.setPatternFields(Arrays.asList("literaturzitat.FS_WebseiteID"));
 		result.setMatchAllCriteria(true);
