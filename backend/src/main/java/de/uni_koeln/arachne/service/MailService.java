@@ -72,7 +72,7 @@ public class MailService {
 			}
 			try {
 				mailSender.send(mailMessage);
-				LOGGER.debug("Sending email to '" + recipient + "' with subject '" + subject + "' suceeded");
+				LOGGER.debug("Sending email to '" + recipient + "' with subject '" + subject + "' succeeded");
 			} catch(MailException e) {
 				LOGGER.error("Sending email to '" + recipient + "' with subject '" + subject + "' failed with ", e);
 				return false;

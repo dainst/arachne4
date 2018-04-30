@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.controller;
 
 import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8_VALUE;
+import static de.uni_koeln.arachne.util.security.SecurityUtils.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,7 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
+	//private static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
 		
 	@Autowired
 	private transient UserRightsService userRightsService;
@@ -50,8 +51,7 @@ public class AdminController {
 			, produces = {APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody StatusResponse getCacheStatus(final HttpServletResponse response) {
 		
-		LOGGER.debug("User GroupID: " + userRightsService.getCurrentUser().getGroupID());
-		if (userRightsService.getCurrentUser().getGroupID() >= UserRightsService.MIN_ADMIN_ID) {
+		if (userRightsService.userHasRole(ADMIN)) {
 			final StatusResponse result = new StatusResponse();
 			final List<String> cachedDocuments = xmlConfigUtil.getXMLConfigDocumentList();
 			if (cachedDocuments.isEmpty()) {
@@ -83,8 +83,7 @@ public class AdminController {
 			, produces = {APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody StatusResponse handleCache(final HttpServletResponse response) {
 				
-		LOGGER.debug("User GroupID: " + userRightsService.getCurrentUser().getGroupID());
-		if (userRightsService.getCurrentUser().getGroupID() >= UserRightsService.MIN_ADMIN_ID) {
+		if (userRightsService.userHasRole(ADMIN)) {
 			xmlConfigUtil.clearCache();
 			return new StatusResponse("Cache", "cleared");
 		}

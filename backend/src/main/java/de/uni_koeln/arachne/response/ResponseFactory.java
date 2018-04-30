@@ -41,6 +41,7 @@ import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.search.TermsAggregation;
+import de.uni_koeln.arachne.util.security.SecurityUtils;
 
 /**
  * Factory class to create the different kinds of responses from a dataset.
@@ -649,7 +650,7 @@ public class ResponseFactory {
 	private void setEditorSection(Dataset dataset, Namespace namespace,	Element display
 			, FormattedArachneEntity response, final String lang) {
 
-		if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID)
+		if (userRightsService.userHasRole(SecurityUtils.EDITOR)
 				|| userRightsService.isDataimporter()) {
 			final Element editorSectionElement = display.getChild("editorsection", namespace);
 			if (editorSectionElement != null) {

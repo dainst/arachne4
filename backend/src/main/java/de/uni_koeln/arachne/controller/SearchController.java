@@ -10,6 +10,8 @@ import de.uni_koeln.arachne.service.SearchService;
 import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.search.SearchParameters;
+import de.uni_koeln.arachne.util.security.SecurityUtils;
+
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.rest.RestStatus;
 import org.slf4j.Logger;
@@ -158,7 +160,7 @@ public class SearchController {
 				.setFacet(facet)
 				.setScrollMode(scrollMode)
 				.setSearchEditorFields(editorFields && 
-						userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID));
+						userRightsService.userHasRole(SecurityUtils.ADMIN));
 		
 		if (!searchParameters.isValid()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

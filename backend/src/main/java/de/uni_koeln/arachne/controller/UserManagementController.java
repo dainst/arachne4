@@ -3,6 +3,8 @@
  */
 package de.uni_koeln.arachne.controller;
 
+import static de.uni_koeln.arachne.util.security.SecurityUtils.*;
+
 import de.uni_koeln.arachne.dao.hibernate.ResetPasswordRequestDao;
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
@@ -14,6 +16,8 @@ import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.network.CustomMediaType;
 import de.uni_koeln.arachne.util.security.JSONView;
 import de.uni_koeln.arachne.util.security.Random;
+import de.uni_koeln.arachne.util.security.SecurityUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +99,7 @@ public class UserManagementController {
 	public ResponseEntity<MappingJacksonValue> getUserInfo(@PathVariable("username") String username) {
 		LOGGER.info("username: {}", username);
 		if (userRightsService.isSignedInUser()) {
-			if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID)) {
+			if (userRightsService.userHasRole(ADMIN)) {
 				User user = userDao.findByName(username);
 				MappingJacksonValue wrapper = new MappingJacksonValue(user);
 				wrapper.setSerializationView(JSONView.Admin.class);
@@ -122,7 +126,7 @@ public class UserManagementController {
 			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<MappingJacksonValue> getUserInfo(@PathVariable("uid") long uid) {
 		if (userRightsService.isSignedInUser()) {
-			if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID)) {
+			if (userRightsService.userHasRole(ADMIN)) {
 				User user = userDao.findById(uid);
 				MappingJacksonValue wrapper = new MappingJacksonValue(user);
 				wrapper.setSerializationView(JSONView.Admin.class);
@@ -180,13 +184,13 @@ public class UserManagementController {
 				}
 			}
 			
-			if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID) ||
+			if (userRightsService.userHasRole(ADMIN) ||
 					userRightsService.getCurrentUser().equals(user)) {
 				
 				try {
 					for (Map.Entry<String, String> entry : formData.entrySet()) {
 						userRightsService.setPropertyOnProtectedObject(entry.getKey(), entry.getValue(), user
-								, UserRightsService.MIN_USER_ID);
+								, SecurityUtils.USER);
 					}
 					userDao.updateUser(user);
 				} catch (de.uni_koeln.arachne.service.UserRightsService.ObjectAccessException e) {
@@ -337,7 +341,7 @@ public class UserManagementController {
 		}
 
 		if(username.compareTo(userRightsService.getCurrentUser().getUsername()) != 0
-				&& !userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID)) {
+				&& !userRightsService.userHasRole(ADMIN)) {
 			result.put("success", "false");
 			response.setStatus(403);
 			return result;

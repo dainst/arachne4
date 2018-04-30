@@ -58,6 +58,14 @@ mvn -DmyMachineDoesNotSupportMixedCaseSQLTableNames test
 
 Remember to also add this system property to the run- an debug-configurations of your IDE of choice.
 
+### Developing without transl8 access
+
+Add the property
+```
+transl8enabled=false
+```
+to your local *application.properties* file.
+(It is not needed to set this property in production as it defaults to true).
 ### Logging
 
 You need to create the folder `/var/log/arachne/arachnedataservice/` and make it writable

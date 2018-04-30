@@ -34,9 +34,6 @@ import de.uni_koeln.arachne.util.network.ArachneRestTemplate;
  */
 @Service
 public class Transl8Service {
-	// set to false when developing without access to transl8
-	private static final boolean throwException = true;
-	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Transl8Service.class);
 
 	private static final String DEFAULT_LANG = "en";
@@ -52,15 +49,22 @@ public class Transl8Service {
 
 	private transient List<String> supportedLanguages = new ArrayList<String>(2);
 	
+	/**
+	 * The URL for Transl8.
+	 */
+	@Value("${transl8Url}")
 	private transient String transl8Url;
 	
 	/**
-	 * Constructor setting the Transl8 URL.
-	 * @param transl8Url The Transl8 URL.
+	 * Transl8 exception throwing. Set to false when you have no access to Transl8 (for development).
 	 */
-	@Autowired
-	public Transl8Service(final @Value("${transl8Url}") String transl8Url) {
-		this.transl8Url = transl8Url;
+	@Value("${transl8enabled:true}")
+	private transient boolean throwException;
+	
+	/**
+	 * Default constructor setting the supported languages. 
+	 */
+	public Transl8Service() {
 		supportedLanguages.add("de");
         supportedLanguages.add("en");
         translationsAvailable.put(supportedLanguages.get(0), false);

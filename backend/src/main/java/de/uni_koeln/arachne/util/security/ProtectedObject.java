@@ -7,5 +7,5 @@ package de.uni_koeln.arachne.util.security;
  * @author Reimar Grabowski
  *
  */
-public class ProtectedObject {
+public abstract class ProtectedObject {
 }
