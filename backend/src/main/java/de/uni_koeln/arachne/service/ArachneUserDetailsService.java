@@ -68,10 +68,12 @@ public class ArachneUserDetailsService implements UserDetailsService {
 		final User user = userDao.findByName(username);
 
 		if (user == null) {
+			LOGGER.debug("User " + username + " found!");
 			throw new UsernameNotFoundException("Username not found.");
 		}
 
 		if (!user.isLogin_permission()) {
+			LOGGER.debug("User " + username + " has no login permission.");
 			throw new NoLoginPermissionException("No login permission.");
 		}
 
@@ -95,7 +97,7 @@ public class ArachneUserDetailsService implements UserDetailsService {
 				.forEach(g -> grantedAuthorities.add(new SimpleGrantedAuthority(GROUP_PREFIX + g.getName())));
 
 		user.setAuthorities(grantedAuthorities);
-
+		LOGGER.debug("Authorities: " + user.getAuthorities());
 		return user;
 	}
 
