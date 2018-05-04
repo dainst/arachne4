@@ -82,6 +82,21 @@ public class TestUserData {
 		return user;
 	}
 	
+	public static User getUserDB() {
+		final User user = new User();
+		user.setId(3);
+		user.setUsername("testuser");
+		user.setFirstname("test");
+		user.setLastname("user");
+		user.setPassword("testpass");
+		user.setLogin_permission(true);
+		user.setAll_groups(false);
+		Set<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
+		user.setDatasetGroups(datasetGroups);
+		user.setGroupID(MIN_USER_ID);
+		return user;
+	}
+	
 	public static User getUserNoLogin() {
 		final User user = new User();
 		user.setId(4);

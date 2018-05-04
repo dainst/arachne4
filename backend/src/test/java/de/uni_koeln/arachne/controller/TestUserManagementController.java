@@ -82,10 +82,9 @@ public class TestUserManagementController {
 		defaultDatasetGroups.setAccessible(true);
 		defaultDatasetGroups.set(controller, defaultDatasetGroupList);
 		
-		when(userRightsService.isSignedInUser()).thenReturn(true, true, false);
-		
 		final User testAdmin = TestUserData.getAdmin();
 		final User testUser = TestUserData.getUser();
+		final User testUserDB = TestUserData.getUserDB();
 				
 		// access pattern admin, user and last anonymous
 		when(userRightsService.isSignedInUser()).thenReturn(true, true, false);
@@ -93,9 +92,9 @@ public class TestUserManagementController {
 		when(userRightsService.userHasRole(SecurityUtils.ADMIN)).thenReturn(true, false);
 		
 		when(userDao.findByName("testadmin")).thenReturn(testAdmin);
-		when(userDao.findByName("testuser")).thenReturn(testUser);
-		when(userDao.findByEMailAddress("someaddress@somedomain.com")).thenReturn(testUser);
-				
+		when(userDao.findByName("testuser")).thenReturn(testUserDB);
+		when(userDao.findByEMailAddress("someaddress@somedomain.com")).thenReturn(testUserDB);
+						
 		when(mailService.isValidEmailAddress(anyString())).thenCallRealMethod();
 		when(mailService.sendMail(anyString(), anyString(), anyString())).thenReturn(true);
 		
@@ -951,6 +950,8 @@ public class TestUserManagementController {
 	
 	@Test
 	public void testResetInvalidRequestPending() throws Exception {
+		when(userRightsService.isSignedInUser()).thenReturn(true, true, false, false);
+		
 		final String json = "{\"username\":\"testuser\","
 				+ "\"email\":\"someaddress@somedomain.com\","
 				+ "\"firstname\":\"test\","
