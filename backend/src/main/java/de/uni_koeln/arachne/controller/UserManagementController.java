@@ -106,7 +106,7 @@ public class UserManagementController {
 				return ResponseEntity.ok(wrapper);
 			} else {
 				User currentUser = userRightsService.getCurrentUser();
-				if (currentUser.equals(userDao.findByName(username))) {
+				if (currentUser.getUsername().equals(username)) {
 					MappingJacksonValue wrapper = new MappingJacksonValue(currentUser);
 					wrapper.setSerializationView(JSONView.User.class);
 					return ResponseEntity.ok(wrapper);
