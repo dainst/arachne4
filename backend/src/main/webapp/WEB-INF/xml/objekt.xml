@@ -982,10 +982,10 @@
 		<facet name="technik" labelKey="Technik">
 			<field datasource="objekt.Technik" />
 		</facet>
-		<facet name="antikegriechlandschaft" labelKey="Antike Landschaft" group="place">
+		<facet name="antikegriechlandschaft" labelKey="Antike Landschaft">
 			<field datasource="objekt.antikeGriechLandschaft" />
 		</facet>
-		<facet name="antikeroemprovinz" labelKey="Römische Provinz"  group="place">
+		<facet name="antikeroemprovinz" labelKey="Römische Provinz">
 			<field datasource="objekt.antikeRoemProvinz" />
 		</facet>
 		<facet name="schmuckspezifizierung" labelKey="Schmuck Spezifizierung">
