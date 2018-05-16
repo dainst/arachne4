@@ -271,7 +271,9 @@ public class ResponseFactory {
 
 		if (placeContext != null) {
 			for (AbstractLink link: placeContext.getAllContexts()) {
-				final String city = link.getFieldFromFields("ort.Stadt");
+			    final String city = link.getFieldFromFields("ort.Stadt");
+			    final String region = link.getFieldFromFields("ort.Region");
+				final String subregion = link.getFieldFromFields("ort.Subregion");
 				final String country = link.getFieldFromFields("ort.Land");
 				final String additionalInfo = link.getFieldFromFields("ort.Aufbewahrungsort");
 				String placeName = null;
@@ -323,6 +325,18 @@ public class ResponseFactory {
 					}
                     if(!StrUtils.isEmptyOrNull(storageToYear)) {
 						place.setStorageToYear(Integer.parseInt(storageToYear));
+					}
+                    if(!StrUtils.isEmptyOrNull(country)) {
+                        place.setCountry(country);
+                    }
+                    if(!StrUtils.isEmptyOrNull(city)) {
+                        place.setCity(city);
+                    }
+                    if(!StrUtils.isEmptyOrNull(region)) {
+                        place.setRegion(region);
+                    }
+                    if(!StrUtils.isEmptyOrNull(subregion)) {
+						place.setSubregion(subregion);
 					}
                     places.add(place);
 				}

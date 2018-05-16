@@ -53,6 +53,10 @@ public class Place {
 	private Integer storageToMonth = null;
 	private Integer storageToYear = null; //Needs to be null because empty date values have to be different from year 0
 
+	private String country;
+	private String city;
+	private String region;
+	private String subregion;
 	
 	public Place(final String name) {
 		this.name = name;
@@ -163,6 +167,22 @@ public class Place {
 		return storageFromYear;
 	}
 
+	public String getCountry() {
+	    return country;
+	}
+
+	public String getRegion() {
+	    return region;
+	}
+
+	public String getSubregion() {
+	    return subregion;
+	}
+
+	public String getCity() {
+	    return city;
+	}
+
 	/**
 	 * @param storageFromDay day of the relation to parent to set
 	 */
@@ -220,4 +240,19 @@ public class Place {
 		this.storageToYear = storageToYear;
 	}
 
+	public void setCountry(String country) {
+	    this.country = country;
+	}
+
+	public void setCity(String city) {
+	    this.city = city;
+	}
+
+	public void setRegion(String region) {
+	    this.region = region;
+	}
+
+	public void setSubregion(String subregion) {
+	    this.subregion = subregion;
+	}
 }
