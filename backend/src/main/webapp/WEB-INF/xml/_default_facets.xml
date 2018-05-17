@@ -19,6 +19,18 @@
             <default/>
         </facet>
 
+        <facet name="facet_city" labelKey="facet_city" group="place">
+            <default/>
+        </facet>
+
+        <facet name="facet_region" labelKey="facet_region" group="place">
+            <default/>
+        </facet>
+
+        <facet name="facet_subregion" labelKey="facet_subregion" group="place">
+            <default/>
+        </facet>
+
         <facet name="facet_ort" labelKey="facet_ort" group="place">
             <default/>
         </facet>
