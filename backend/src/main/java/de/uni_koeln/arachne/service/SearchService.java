@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -36,6 +37,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.InternalSingleBucketAggregation;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
+import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
 import org.elasticsearch.search.aggregations.bucket.geogrid.InternalGeoHashGrid;
 import org.elasticsearch.search.highlight.HighlightBuilder.Field;
 import org.elasticsearch.search.sort.SortOrder;
@@ -62,6 +64,7 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.search.Aggregation;
 import de.uni_koeln.arachne.util.search.GeoHashGridAggregation;
 import de.uni_koeln.arachne.util.search.NestedGeoHashGridAggregation;
+import de.uni_koeln.arachne.util.search.NestedTermsAggregation;
 import de.uni_koeln.arachne.util.search.SearchFieldList;
 import de.uni_koeln.arachne.util.search.SearchParameters;
 import de.uni_koeln.arachne.util.search.TermsAggregation;
@@ -95,6 +98,9 @@ public class SearchService {
 	private transient final SearchFieldList searchFields;
 
 	private transient final List<String> sortFields;
+
+    private static final String[] placeFacets = new String[] {"facet_ortsangabe", "facet_land", "facet_ort", "facet_region",
+            "facet_subregion", "facet_aufbewahrungsort"}; // TODO not sure if here is the best place for this...
 
 	/**
 	 * Simple constructor which sets the fields to be queried.
@@ -357,23 +363,36 @@ public class SearchService {
 		final Collection<String> categories = filters.get(TermsAggregation.CATEGORY_FACET);
 		final String category = categories.size() > 0 ? ts.categoryLookUp(categories.iterator().next(), "de") : "_default_facets";
 
+		boolean placeFacetSelected = false;
+		for (String facetName : placeFacets) {
+		    placeFacetSelected = filters.containsKey(facetName) | placeFacetSelected;
+		}
+
 		for (final String aggregationName : aggregations.keySet()) {
 			final Map<String, Long> facetMap = new LinkedHashMap<String, Long>();
 //			 TODO find a better way to convert facet values
 
-			if (aggregations.get(aggregationName) instanceof InternalSingleBucketAggregation) {
+		    if (aggregationName.equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
 			    InternalSingleBucketAggregation nestedAggregator = (InternalSingleBucketAggregation) aggregations.get(aggregationName);
 			    InternalGeoHashGrid aggregator = (InternalGeoHashGrid) nestedAggregator.getAggregations().asList().get(0);
-
-
 
 				for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
 					final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
 					final LatLong coord = GeoHash.decodeHash(bucket.getKeyAsString());
 					facetMap.put("[" + coord.getLat() + ',' + coord.getLon() + ']', bucket.getDocCount());
 				}
+			} else if (placeFacetSelected && Arrays.asList(placeFacets).contains(aggregationName)) {
+			    InternalSingleBucketAggregation internalAggregator = (InternalSingleBucketAggregation) aggregations.get(aggregationName);
+			    InternalFilter aggregationFilter = (InternalFilter) internalAggregator.getAggregations().asList().get(0);
+			    MultiBucketsAggregation aggregator = (MultiBucketsAggregation) aggregationFilter.getAggregations().asList().get(0);
+
+	            for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
+	                final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
+	                facetMap.put(bucket.getKeyAsString(), bucket.getDocCount());
+	            }
 			} else {
-			    MultiBucketsAggregation aggregator = (MultiBucketsAggregation)aggregations.get(aggregationName);
+			    MultiBucketsAggregation aggregator = (MultiBucketsAggregation) aggregations.get(aggregationName);
+
 				for (int i = facetOffset; i < aggregator.getBuckets().size(); i++) {
 					final MultiBucketsAggregation.Bucket bucket = aggregator.getBuckets().get(i);
 					facetMap.put(bucket.getKeyAsString(), bucket.getDocCount());
@@ -531,10 +550,21 @@ public class SearchService {
 		if (facet == null || facet.isEmpty()) {
 			result.addAll(getCategorySpecificFacets(filters, limit, lang));
 
+			boolean placeFacetSelected = false;
+		    for (String facetName : placeFacets) {
+		        placeFacetSelected = filters.containsKey(facetName) | placeFacetSelected;
+		    }
+
 			for (final String facetName : getDefaultFacetList()) {
 			    if (facetName.equals("facet_geo")) {
 			        result.add(new TermsAggregation(facetName, 1000));
-			    } else {
+			    } else if (placeFacetSelected && Arrays.asList(placeFacets).contains(facetName)) {
+		            Map<String, String> selectedPlaceFacets = new HashMap<String, String>();
+		            for (String filter : filters.keySet()) {
+		                selectedPlaceFacets.put(filter, (String) filters.get(filter).toArray()[0]);
+		            }
+		            result.add(new NestedTermsAggregation(facetName, limit, selectedPlaceFacets));
+                } else {
 			        result.add(new TermsAggregation(facetName, limit));
 			    }
 			}
