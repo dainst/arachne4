@@ -40,7 +40,6 @@ import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
-import de.uni_koeln.arachne.util.search.TermsAggregation;
 import de.uni_koeln.arachne.util.security.SecurityUtils;
 
 /**
@@ -384,7 +383,7 @@ public class ResponseFactory {
 
                                 return datePart1 > datePart2 ? 1 : -1;
                             }
-                            
+
                         } catch (Exception e) {
 //                            throw new IllegalArgumentException(e);
                             LOGGER.debug("A problem occured sorting places. Most likely missing date data.");
@@ -697,38 +696,6 @@ public class ResponseFactory {
 			json.set("facet_image", json.arrayNode().add("nein"));
 		} else {
 			json.set("facet_image", json.arrayNode().add("ja"));
-		}
-
-		// add the geo facets
-		ArrayNode relations = json.arrayNode();
-		for (final Place place : response.places) {
-			final String relation = place.getRelation();
-			if (relation != null) {
-				relations.add(relation);
-
-				switch (relation) {
-					case "Fundort":
-						json.set("facet_fundort", json.arrayNode().add(place.getName()));
-						break;
-
-					case "Aufbewahrungsort":
-						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName()));
-						break;
-
-					case "In situ":
-						json.set("facet_fundort", json.arrayNode().add(place.getName()));
-						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName()));
-						break;
-
-					default:
-						break;
-				}
-
-			}
-		}
-
-		if (relations.size() > 0) {
-			json.set(TermsAggregation.RELATION_FACET, relations);
 		}
 
 		// add all places with location information as "facet_geo"
