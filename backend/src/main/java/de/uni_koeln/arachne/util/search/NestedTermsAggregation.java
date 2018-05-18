@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.util.search;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -18,24 +19,22 @@ import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuil
  */
 public class NestedTermsAggregation extends TermsAggregation {
 
-    private Map<String, String> selectedPlaceFacets;
+    private Map<String, String> selectedPlaceFacets = new HashMap<String, String>();
 
     public NestedTermsAggregation(String name, int limit, Map<String, String> selectedFacets) {
         super(name, limit);
         
         for (String key : selectedFacets.keySet()) {
             if (key.equals("facet_ortsangabe")) {
-                selectedFacets.put("facet_relation", selectedFacets.get(key));
-                selectedFacets.remove(key);
+                this.selectedPlaceFacets.put("facet_relation", selectedFacets.get(key));
             } else if (key.equals("facet_land")) {
-                selectedFacets.put("facet_country", selectedFacets.get(key));
-                selectedFacets.remove(key);
+                this.selectedPlaceFacets.put("facet_country", selectedFacets.get(key));
             } else if (key.equals("facet_ort")) {
-                selectedFacets.put("facet_city", selectedFacets.get(key));
-                selectedFacets.remove(key);
+                this.selectedPlaceFacets.put("facet_city", selectedFacets.get(key));
+            } else {
+                this.selectedPlaceFacets.put(key, selectedFacets.get(key));
             }
         }
-        selectedPlaceFacets = selectedFacets;
     }
     
     private BoolQueryBuilder buildQueryFilters() {

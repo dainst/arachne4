@@ -692,7 +692,7 @@ public class SearchService {
                             } catch (java.lang.ArrayIndexOutOfBoundsException e2) {}
                         }
 
-                        String relation = filters.get("facet_ortsangabe").toArray()[0].toString().toLowerCase();
+                        String relation = filters.get("facet_ortsangabe").toArray()[0].toString();
 
                         placeFilter = QueryBuilders.boolQuery()
                                 .must(QueryBuilders.matchPhraseQuery("places.name", searchTerm))
