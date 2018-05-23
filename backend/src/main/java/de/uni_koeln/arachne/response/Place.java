@@ -57,6 +57,7 @@ public class Place {
 	private String city;
 	private String region;
 	private String subregion;
+	private String locality;
 	
 	public Place(final String name) {
 		this.name = name;
@@ -179,6 +180,10 @@ public class Place {
 	    return subregion;
 	}
 
+	public String getLocality() {
+	    return locality;
+	}
+
 	public String getCity() {
 	    return city;
 	}
@@ -254,5 +259,9 @@ public class Place {
 
 	public void setSubregion(String subregion) {
 	    this.subregion = subregion;
+	}
+
+	public void setLocality(String locality) {
+	    this.locality = locality;
 	}
 }

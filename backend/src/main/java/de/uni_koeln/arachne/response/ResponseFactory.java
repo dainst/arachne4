@@ -335,7 +335,10 @@ public class ResponseFactory {
                         place.setRegion(region);
                     }
                     if(!StrUtils.isEmptyOrNull(subregion)) {
-						place.setSubregion(subregion);
+                        place.setSubregion(subregion);
+                    }
+                    if(!StrUtils.isEmptyOrNull(additionalInfo)) {
+						place.setLocality(additionalInfo);
 					}
                     places.add(place);
 				}
