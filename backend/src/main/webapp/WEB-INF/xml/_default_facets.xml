@@ -39,10 +39,6 @@
             <default/>
         </facet>
 
-        <facet name="facet_aufbewahrungsort" labelKey="facet_aufbewahrungsort" group="place">
-            <default/>
-        </facet>
-
         <facet name="facet_geo" labelKey="facet_geo" group="place">
             <default/>
         </facet>
