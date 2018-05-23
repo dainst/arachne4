@@ -99,8 +99,6 @@ public class SearchService {
 
 	private transient final List<String> sortFields;
 
-    private static final String[] placeFacets = new String[] {"facet_ortsangabe", "facet_land", "facet_ort", "facet_region",
-            "facet_subregion", "facet_aufbewahrungsort"}; // TODO not sure if here is the best place for this...
 
 	/**
 	 * Simple constructor which sets the fields to be queried.
@@ -364,6 +362,7 @@ public class SearchService {
 		final String category = categories.size() > 0 ? ts.categoryLookUp(categories.iterator().next(), "de") : "_default_facets";
 
 		boolean placeFacetSelected = false;
+		String[] placeFacets = NestedTermsAggregation.PLACE_FACETS;
 		for (String facetName : placeFacets) {
 		    placeFacetSelected = filters.containsKey(facetName) | placeFacetSelected;
 		}
@@ -551,6 +550,7 @@ public class SearchService {
 			result.addAll(getCategorySpecificFacets(filters, limit, lang));
 
 			boolean placeFacetSelected = false;
+			String[] placeFacets = NestedTermsAggregation.PLACE_FACETS;
 		    for (String facetName : placeFacets) {
 		        placeFacetSelected = filters.containsKey(facetName) | placeFacetSelected;
 		    }
@@ -561,7 +561,10 @@ public class SearchService {
 			    } else if (placeFacetSelected && Arrays.asList(placeFacets).contains(facetName)) {
 		            Map<String, String> selectedPlaceFacets = new HashMap<String, String>();
 		            for (String filter : filters.keySet()) {
-		                selectedPlaceFacets.put(filter, (String) filters.get(filter).toArray()[0]);
+
+		                if (Arrays.asList(placeFacets).contains(filter)) {
+		                    selectedPlaceFacets.put(filter, (String) filters.get(filter).toArray()[0]); //TODO
+		                }
 		            }
 		            result.add(new NestedTermsAggregation(facetName, limit, selectedPlaceFacets));
                 } else {
@@ -621,8 +624,18 @@ public class SearchService {
 			final String category = ts.categoryLookUp(categories.iterator().next(), lang);
 			final Set<String> facets = xmlConfigUtil.getFacetsFromXMLFile(category);
 			for (String facet : facets) {
-				facet = "facet_" + facet;
-				result.add(new TermsAggregation(facet, limit));
+			    facet = "facet_" + facet;
+			    //Skip place facets, they will be added later because they may have to be nested
+	            boolean placeFacetSelected = false;
+	            String[] placeFacets = NestedTermsAggregation.PLACE_FACETS;
+	            for (String facetName : placeFacets) {
+	                placeFacetSelected = filters.containsKey(facetName) | placeFacetSelected;
+	            }
+			    if (placeFacetSelected && Arrays.asList(placeFacets).contains(facet)) {
+			        continue;
+			    } else {
+			        result.add(new TermsAggregation(facet, limit));
+			    }
 			}
 		}
 
