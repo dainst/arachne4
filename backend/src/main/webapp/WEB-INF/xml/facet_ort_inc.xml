@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
-    <!-- <facet name="ort" labelKey="Lokalisierung" group="place">
+    <facet name="ort" labelKey="Lokalisierung" group="place">
         <context type="ort" separator=", ">
             <field datasource=".Stadt"/>
             <field datasource=".Land"/>
         </context>
-    </facet> -->
+    </facet>
     <facet name="land" labelKey="Land" group="place">
         <context type="ort">
             <field datasource=".Land"/>
@@ -30,6 +30,11 @@
     <facet name="locality" labelKey="Locality" group="place">
         <context type="ort">
             <field datasource=".Aufbewahrungsort"/>
+        </context>
+    </facet>
+    <facet name="ortsangabe" labelKey="Ortsangabe" group="place">
+        <context type="ort">
+            <field datasource=".ArtOrtsangabe"/>
         </context>
     </facet>
 </includeSection>
