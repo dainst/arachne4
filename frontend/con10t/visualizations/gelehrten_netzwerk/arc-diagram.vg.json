@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v4.json",
-  "width": 770,
+  "height": 3000,
   "padding": 5,
 
   "data": [
@@ -54,7 +54,7 @@
       "name": "position",
       "type": "band",
       "domain": {"data": "nodes", "field": "order", "sort": true},
-      "range": "width"
+      "range": "height"
     }
   ],
 
@@ -69,8 +69,8 @@
           "opacity": {"value": 0}
         },
         "update": {
-          "x": {"scale": "position", "field": "order"},
-          "y": {"value": 0},
+          "x": {"value": 0},
+          "y": {"scale": "position", "field": "order"},
           "size": {"field": "degree", "mult": 5, "offset": 10}
         }
       }
@@ -93,10 +93,10 @@
         },
         {
           "type": "linkpath",
-          "sourceX": {"expr": "min(datum.sourceNode.x, datum.targetNode.x)"},
-          "targetX": {"expr": "max(datum.sourceNode.x, datum.targetNode.x)"},
-          "sourceY": {"expr": "0"},
-          "targetY": {"expr": "0"},
+          "sourceX": {"expr": "0"},
+          "targetX": {"expr": "0"},
+          "sourceY": {"expr": "min(datum.sourceNode.y, datum.targetNode.y)"},
+          "targetY": {"expr": "max(datum.sourceNode.y, datum.targetNode.y)"},
           "shape": "arc"
         }
       ]
@@ -118,12 +118,12 @@
       "from": {"data": "nodes"},
       "encode": {
         "update": {
-          "x": {"scale": "position", "field": "order"},
-          "y": {"value": 7},
+          "x": {"value": 0},
+          "y": {"scale": "position", "field": "order"},
           "fontSize": {"value": 9},
           "align": {"value": "right"},
           "baseline": {"value": "middle"},
-          "angle": {"value": -90},
+          "angle": {"value": 0},
           "text": {"field": "Name"}
         }
       }
