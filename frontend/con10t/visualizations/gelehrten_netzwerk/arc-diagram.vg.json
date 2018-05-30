@@ -124,7 +124,7 @@
           "align": {"value": "right"},
           "baseline": {"value": "middle"},
           "angle": {"value": 0},
-          "text": {"field": "Name"}
+          "text": {"field": "name"}
         }
       }
     }
