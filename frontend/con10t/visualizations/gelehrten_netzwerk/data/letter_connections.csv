@@ -1,0 +1,216 @@
+Author name,source,Recipient name,target,value
+"""Gerhard, Eduard""",240838,"""Henzen, Wilhelm""",240783,578
+"""Braun, Emil""",243616,"""Gerhard, Eduard""",240838,537
+"""Gerhard, Eduard""",240838,"""Braun, Emil""",243616,460
+"""Brunn, Enrico""",239434,"""Henzen, Wilhelm""",240783,242
+"""Bunsen, Christian Karl Josias""",239579,"""Braun, Emil""",243616,100
+"""Brunn, Enrico""",239434,"""Gerhard, Eduard""",240838,78
+"""Gerhard, Eduard""",240838,"""Panofka, Theodor Sigismund""",239742,74
+"""Gerhard, Eduard""",240838,"""Kellermann, Olaus Christian""",239564,63
+"""Gerhard, Eduard""",240838,"""Bunsen, Christian Karl Josias""",239579,59
+"""Bunsen, Christian Karl Josias""",239579,"""Gerhard, Eduard""",240838,57
+"""Canina, Luigi""",239551,"""Braun, Emil""",243616,53
+"""Canina, Luigi""",239551,"""Henzen, Wilhelm""",240783,49
+"""Abeken, Wilhelm""",239336,"""Braun, Emil""",243616,44
+"""Bucci, Donato""",239823,"""Henzen, Wilhelm""",240783,40
+"""Gerhard, Eduard""",240838,"""Lepsius, Richard""",239408,33
+"""Braun, Emil""",243616,"""Lepsius, Richard""",239408,31
+"""Braun, Emil""",243616,"""Henzen, Wilhelm""",240783,31
+"""Gerhard, Eduard""",240838,"""Helbig, Wolfgang""",239702,28
+"""Bunsen, Christian Karl Josias""",239579,"""Lepsius, Richard""",239408,23
+"""Bunsen, Christian Karl Josias""",239579,"""Unbekannt""",239398,21
+"""Brunn, Enrico""",239434,"""Helbig, Wolfgang""",239702,19
+"""Bunsen, Christian Karl Josias""",239579,"""Kellermann, Olaus Christian""",239564,18
+"""Canina, Luigi""",239551,"""Gerhard, Eduard""",240838,17
+"""Bucci, Donato""",239823,"""Braun, Emil""",243616,16
+"""Henzen, Wilhelm""",240783,"""Gerhard, Eduard""",240838,15
+"""Gerhard, Eduard""",240838,"""Abeken, Wilhelm""",239336,15
+"""Abeken, Wilhelm""",239336,"""Gerhard, Eduard""",240838,15
+"""Gerhard, Eduard""",240838,"""Witte, Jean Joseph Antoine Marie de""",239759,14
+"""Gregorovius, Ferdinand""",239811,"""Henzen, Wilhelm""",240783,12
+"""Canina, Luigi""",239551,"""Abeken, Wilhelm""",239336,10
+"""Bunsen, Christian Karl Josias""",239579,"""Henzen, Wilhelm""",240783,10
+"""Braun, Emil""",243616,"""Abeken, Wilhelm""",239336,9
+"""Bunsen, Christian Karl Josias""",239579,"""Panofka, Theodor Sigismund""",239742,9
+"""Braun, Leopold""",239802,"""Henzen, Wilhelm""",240783,9
+"""Gerhard, Eduard""",240838,"""Metternich, Klemens Wenzel Nepomuk Lothar von""",239738,9
+"""Bucci, Donato""",239823,"""Brunn, Enrico""",239434,9
+"""Aloe, Stanislas d'""",239540,"""Braun, Emil""",243616,8
+"""Brunn, Enrico""",239434,"""Braun, Emil""",243616,8
+"""Gerhard, Eduard""",240838,"""Lanci, Fortunato""",239566,7
+"""Braun, Emil""",243616,"""Lanci, Fortunato""",239566,6
+"""Gerhard, Eduard""",240838,"""Unbekannt""",239398,6
+"""Bunsen, Christian Karl Josias""",239579,"""Luynes, Honoré Théodore Paul Joseph d'Albert de""",239730,6
+"""Burckhardt, Jacob""",239852,"""Henzen, Wilhelm""",240783,6
+"""Braun, Emil""",243616,"""Witte, Jean Joseph Antoine Marie de""",239759,5
+"""Gerhard, Eduard""",240838,"""Inghirami, Francesco""",239706,5
+"""Gerhard, Eduard""",240838,"""Lajard, Felix""",239716,5
+"""Bucci, Costantino""",239820,"""Henzen, Wilhelm""",240783,5
+"""Gerhard, Eduard""",240838,"""Fča, Carlo""",239680,4
+"""Bonaparte, Lucien""",239543,"""Gerhard, Eduard""",240838,4
+"""Braun, Georg Christian""",239809,"""Gerhard, Eduard""",240838,3
+"""Albicini, Cesare""",239538,"""Henzen, Wilhelm""",240783,3
+"""Gerhard, Eduard""",240838,"""Blacas D'Aulps, Pierre Louis de""",239573,3
+"""Gerhard, Eduard""",240838,"""Rosellini, Ippolito""",239753,3
+"""Adilardi, Francesco""",239535,"""Henzen, Wilhelm""",240783,3
+"""Gerhard, Eduard""",240838,"""Rochette, Raoul-""",239755,3
+"""Gerhard, Eduard""",240838,"""Borghesi, Bartolomeo""",239567,3
+"""Gerhard, Eduard""",240838,"""Bonucci, Carlo""",239569,2
+"""Canina, Luigi""",239551,"""Lanci, Fortunato""",239566,2
+"""Gerhard, Eduard""",240838,"""Alcántara Téllez Girón y Alfonso Pimentel, Pedro de""",239576,2
+"""Bucci, Giuseppe""",239826,"""Unbekannt""",239398,2
+"""Braun, Emil""",239713,"""Abeken, Wilhelm""",239788,2
+"""Gerhard, Eduard""",240838,"""Feoli, Agostino""",239682,2
+"""Brunn, Enrico""",239434,"""Hinck, Hugo""",239851,2
+"""Bunsen, Christian Karl Josias""",239579,"""Franz, Johannes""",239840,2
+"""Gerhard, Eduard""",240838,"""Lenormant, Charles""",239724,2
+"""Gerhard, Eduard""",240838,"""Boeckh, August""",239571,2
+"""Gerhard, Eduard""",240838,"""Rossetti, Domenico""",239751,2
+"""Bucci, Donato""",239823,"""Kellermann, Olaus Christian""",239564,2
+"""Alessi, Giuseppe""",239530,"""Braun, Emil""",243616,2
+"""Canina, Luigi""",239551,"""Lepsius, Richard""",239408,2
+"""Gerhard, Eduard""",240838,"""Kestner, August""",239720,2
+"""Abeken, Heinrich""",239326,"""Braun, Emil""",243616,2
+"""Canina, Luigi""",239551,"""Brunn, Enrico""",239562,2
+"""Burgess, Richard""",239844,"""Unbekannt""",239398,2
+"""Abeken, Heinrich""",239326,"""Unbekannt""",239398,2
+"""Gerhard, Eduard""",240838,"""Westphal, Johann Heinrich""",239761,2
+"""Abeken, Wilhelm""",239336,"""Unbekannt""",239398,2
+"""Alessi, Giuseppe""",239530,"""Gerhard, Eduard""",240838,2
+"""Bunsen, Christian Karl Josias""",239579,"""Blacas D'Aulps, Pierre Louis de""",239573,2
+"""Gerhard, Eduard""",240838,"""Hamilton, William""",239696,2
+"""Abeken, Heinrich""",239326,"""Abeken, Wilhelm""",239336,2
+"""Gerhard, Eduard""",240838,"""Brunn, Enrico""",239434,2
+"""Gerhard, Eduard""",240838,"""Dragonetti, Luigi""",239675,2
+"""Bunsen, Christian Karl Josias""",239579,"""Brunn, Enrico""",239434,2
+"""Bucci, Donato""",239823,"""Gerhard, Eduard""",240838,2
+"""Canina, Luigi""",239551,"""Unbekannt""",239398,2
+"""Canina, Luigi""",239551,"""Kellermann, Olaus Christian""",239564,2
+"""Ainsley, Samuel James""",239430,"""Braun, Emil""",243616,2
+"""Gerhard, Eduard""",240838,"""Welcker, Friedrich Gottlieb""",239763,2
+"""Gerhard, Eduard""",240838,"""Canina, Luigi""",239542,2
+"""Bonaparte, Lucien""",239543,"""Unbekannt""",239398,2
+"""Acerbi, Giuseppe""",239424,"""Bunsen, Carl von""",239427,2
+"""Braun, Emil""",243616,"""Gargallo-Grimaldi, Filippo""",239798,1
+"""Gerhard, Eduard""",240838,"""Visconti, P. E.""",239766,1
+"""Gerhard, Eduard""",240838,"""Campanari, Secondiano""",239660,1
+"""Braun, Emil""",243616,"""Thomson, Anne""",239830,1
+"""Gerhard, Eduard""",240838,"""Spaur, Karl von""",239783,1
+"""Gerhard, Eduard""",240838,"""Ammendola, P. S.""",239577,1
+"""Abeken, Wilhelm""",239336,"""Tessieri, Pietro""",239415,1
+"""Gerhard, Eduard""",240838,"""Kölle, Christoph Friedrich Karl""",239722,1
+"""Gerhard, Eduard""",240838,"""Judica, Gabriele""",239710,1
+"""Bunsen, Christian Karl Josias""",239579,"""Brassier de Saint-Simon Vallade, Joseph Maria Anton von""",239828,1
+"""Brunn, Enrico""",239434,"""Schmidt, Leopold""",239855,1
+"""Braun, Anne""",239805,"""Unbekannt""",239398,1
+"""Acerbi, Giuseppe""",239424,"""Unbekannt""",239398,1
+"""Abeken, Wilhelm""",239336,"""Mai, Angelo""",239416,1
+"""Adilardi, Francesco""",239535,"""Braun, Emil""",243616,1
+"""Braun, Emil""",243616,"""Cadčs, Alessandro""",239829,1
+"""Gerhard, Eduard""",240838,"""Manzi, Pietro""",239748,1
+"""Braun, Emil""",243616,"""Bucci, Donato""",239794,1
+"""Gerhard, Eduard""",240838,"""Hammer-Purgstall, Joseph""",239698,1
+"""Gerhard, Eduard""",240838,"""Capei, Pietro""",239666,1
+"""Gerhard, Eduard""",240838,"""Brockhaus, Heinrich""",239704,1
+"""Gerhard, Eduard""",240838,"""Cades, Tommaso""",239658,1
+"""Gerhard, Eduard""",240838,"""Schiassi, Giuseppe Maffeo""",239781,1
+"""Abeken, Heinrich""",239326,"""Istituto di Corrispondenza Archeologica """,239335,1
+"""Adam, Frederick""",239532,"""Braun, Emil""",243616,1
+"""Gerhard, Eduard""",240838,"""Tomassini""",239770,1
+"""Gerhard, Eduard""",240838,"""Maggiore, Niccolň""",239728,1
+"""Bunsen, Christian Karl Josias""",239579,"""Campanari, Domenico""",239838,1
+"""Gerhard, Eduard""",240838,"""de Chabert""",239673,1
+"""Gerhard, Eduard""",240838,"""Psyllas, Georgios""",239784,1
+"""Braun, Emil""",243616,"""Brandis, Julius""",239796,1
+"""Gerhard, Eduard""",240838,"""Zannoni, Gio. Batista""",239790,1
+"""Gerhard, Eduard""",240838,"""Capecelatro, Giuseppe""",239664,1
+"""Canina, Luigi""",239542,"""Abeken, Wilhelm""",239336,1
+"""Braun, Emil""",243616,"""Prokesch von Osten, Anton""",239785,1
+"""Gerhard, Eduard""",240838,"""Graberg af Hemso, Jacob""",239690,1
+"""Bunsen, Christian Karl Josias""",239579,"""Biondi, Luigi""",239827,1
+"""Gerhard, Eduard""",240838,"""Malaspina di Sannazaro, Luigi""",239749,1
+"""Gerhard, Eduard""",240838,"""Acerbi, Giuseppe""",239424,1
+"""Braun, Emil""",243616,"""Lanza, Francesco""",239835,1
+"""Bunsen, Christian Karl Josias""",239579,"""Ruffo, Giuseppe Marchese de""",239841,1
+"""Bucci, Donato""",239823,"""Freudenrich""",239824,1
+"""Gerhard, Eduard""",240838,"""Sestini, Domenico""",239777,1
+"""Gerhard, Eduard""",240838,"""Gropius, George""",239694,1
+"""Braun, Emil""",243616,"""Ingram, Richard""",239834,1
+"""Gerhard, Eduard""",240838,"""Furlanetto, Giuseppe""",239684,1
+"""Gerhard, Eduard""",240838,"""Humboldt, Alexander von""",239708,1
+"""Ackner, Johann Michael""",239420,"""Henzen, Wilhelm""",239422,1
+"""Gerhard, Eduard""",240838,"""Lützow, Rudolf von""",239740,1
+"""Adam, Frederick""",239532,"""Abeken, Wilhelm""",239336,1
+"""Bunsen, Christian Karl Josias""",239579,"""Istituto di Corrispondenza Archeologica""",239817,1
+"""Acquacotta, Placido""",239432,"""Brunn, Enrico""",239434,1
+"""Adilardi, Francesco""",239535,"""Brunn, Enrico""",239434,1
+"""Braun, Emil""",243616,"""Depoletti""",239800,1
+"""Gerhard, Eduard""",240838,"""Carelli, Francesco""",239668,1
+"""Bunsen, Christian Karl Josias""",239579,"""Galleffi, Pietro Francesco""",239839,1
+"""Gerhard, Eduard""",240838,"""Dureau de La Malle""",239677,1
+"""Unbekannt""",239398,"""Canina, Luigi""",239542,1
+"""Burgon, Thomas""",239848,"""Bunsen, Christian Karl Josias""",239525,1
+"""Gerhard, Eduard""",240838,"""Fauvel, Louis François Sébastien""",239678,1
+"""Gerhard, Eduard""",240838,"""Peyron, Amedeo""",239734,1
+"""Gerhard, Eduard""",240838,"""Cavedoni, Celestino""",239670,1
+"""Bonaparte, Charles Lucian""",239550,"""Braun, Emil""",243616,1
+"""Gerhard, Eduard""",240838,"""Nibby, A.""",239744,1
+"""Gerhard, Eduard""",240838,"""Sainte-Aulaire, Louis Clair Beaupoil de""",239574,1
+"""Gerhard, Eduard""",240838,"""Borrello""",239568,1
+"""Braun, Anne""",239805,"""Henzen, Wilhelm""",240783,1
+"""Aloe, Stanislas d'""",239540,"""Unbekannt""",239398,1
+"""Braun, Emil""",243616,"""Purgold, Alfred""",239833,1
+"""Buttaoni, Domenico""",239850,"""Lanci, Fortunato""",239566,1
+"""Gerhard, Eduard""",240838,"""Pittakys, K. S.""",239786,1
+"""Bunsen, Christian Karl Josias""",239579,"""Lenormant, Charles""",239724,1
+"""Braun, Emil""",243616,"""Ritschl, Friedrich""",239837,1
+"""Gerhard, Eduard""",240838,"""Harvey, George C.""",239700,1
+"""Abeken, Heinrich""",239326,"""Kestner, August""",239411,1
+"""Gerhard, Eduard""",240838,"""Creuzer, Friedrich""",239672,1
+"""Brunn, Enrico""",239434,"""Kühtmann, J.""",239856,1
+"""Gerhard, Eduard""",240838,"""Lopez, Michele""",239732,1
+"""Gerhard, Eduard""",240838,"""Strauss-Dürckheim""",239772,1
+"""Gerhard, Eduard""",240838,"""Braun, Emil""",239713,1
+"""Gerhard, Eduard""",240838,"""Goethe, Johann Wolfgang von""",239686,1
+"""Gerhard, Eduard""",240838,"""Stempliowski""",239773,1
+"""Gerhard, Eduard""",240838,"""Levezow, Konrad""",239736,1
+"""Gerhard, Eduard""",240838,"""Luynes, Honoré Théodore Paul Joseph d'Albert de""",239730,1
+"""Gerhard, Eduard""",240838,"""Ernst <Sachsen-Coburg-Gotha, Herzog, II.>""",239688,1
+"""Bunsen, Christian Karl Josias""",239579,"""Reuvens, Kaspar Jakob Christian""",239842,1
+"""Braun, Emil""",243616,"""Maler, Friedrich""",239836,1
+"""Gerhard, Eduard""",240838,"""Bonghi, Onofrio""",239570,1
+"""Bubeck, Wilhelm""",239815,"""Henzen, Wilhelm""",240783,1
+"""Bunsen, Christian Karl Josias""",239579,"""Abeken, Wilhelm""",239788,1
+"""Gerhard, Eduard""",240838,"""Quaranta, Bernardo""",239757,1
+"""Bunsen, Christian Karl Josias""",239579,"""Lanci, Fortunato""",239566,1
+"""Brunn, Enrico""",239434,"""Unbekannt""",239398,1
+"""Gerhard, Eduard""",240838,"""Arditi, Michele""",239575,1
+"""Gerhard, Eduard""",240838,"""Prokesch von Osten, Anton""",239785,1
+"""Gerhard, Eduard""",240838,"""Steinbüchel, Anton von""",239775,1
+"""Bunsen, Christian Karl Josias""",239579,"""Witte, Jean Joseph Antoine Marie de""",239759,1
+"""Abeken, Heinrich""",239413,"""Unbekannt""",239398,1
+"""Abeken, Wilhelm""",239336,"""Braun, Louise""",239417,1
+"""Braun, Emil""",243616,"""Gourieff, Nicolas""",239832,1
+"""Braun, Emil""",243616,"""Gerhard, Emilie""",239831,1
+"""Aloe, Stanislas d'""",239540,"""Abeken, Wilhelm""",239336,1
+"""Bubeck, Wilhelm""",239815,"""Istituto di Corrispondenza Archeologica""",239817,1
+"""Gerhard, Eduard""",240838,"""Trivulzio, Giovanni Giacomo""",239768,1
+"""Gerhard, Eduard""",240838,"""Labus, Giovanni""",239718,1
+"""Abeken, Heinrich""",239326,"""Henzen, Wilhelm""",240783,1
+"""Gerhard, Eduard""",240838,"""Bianconi, Girolamo""",239572,1
+"""Aloe, Stanislas d'""",239540,"""Gerhard, Eduard""",240838,1
+"""Gerhard, Eduard""",240838,"""Schorn, Ludwig""",239779,1
+"""Abeken, Heinrich""",239326,"""Lepsius, Richard""",239408,1
+"""Ackner, Johann Michael""",239527,"""Henzen, Wilhelm""",240783,1
+"""Braun, Emil""",243616,"""Cades, Tommaso""",239658,1
+"""Braun, Emil""",243616,"""Panofka, Theodor Sigismund""",239742,1
+"""Gerhard, Eduard""",240838,"""Lebzeltern, Ludwig von""",239726,1
+"""Gerhard, Eduard""",240838,"""Wallenberg""",239764,1
+"""Gerhard, Eduard""",240838,"""Böttiger, Karl August""",239578,1
+"""Aldini, Pier Vittorio""",239523,"""Bunsen, Christian Karl Josias""",239525,1
+"""Aloe, Stanislas d'""",239540,"""Henzen, Wilhelm""",240783,1
+"""Gerhard, Eduard""",240838,"""Roma, Giorgio Candiano di.""",239662,1
+"""Gerhard, Eduard""",240838,"""Grifi, Luigi""",239692,1
+"""Gerhard, Eduard""",240838,"""Müller, Karl Otfried""",239746,1
+"""Brunn, Enrico""",239434,"""Mommsen, Theodor""",239857,1
+"""Braun, Emil""",243616,"""Carosi, Giovanni""",239792,1
