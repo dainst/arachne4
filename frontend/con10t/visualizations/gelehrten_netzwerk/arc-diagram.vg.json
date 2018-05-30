@@ -33,12 +33,12 @@
         { "type": "window", "ops": ["rank"], "as": ["order"] },
         {
           "type": "lookup", "from": "sourceDegree", "key": "source",
-          "fields": ["index"], "as": ["sourceDegree"],
+          "fields": ["neo4j_id"], "as": ["sourceDegree"],
           "default": {"count": 0}
         },
         {
           "type": "lookup", "from": "targetDegree", "key": "target",
-          "fields": ["index"], "as": ["targetDegree"],
+          "fields": ["neo4j_id"], "as": ["targetDegree"],
           "default": {"count": 0}
         },
         {
@@ -87,7 +87,7 @@
       },
       "transform": [
         {
-          "type": "lookup", "from": "layout", "key": "datum.source",
+          "type": "lookup", "from": "layout", "key": "datum.neo4j_id",
           "fields": ["datum.source", "datum.target"],
           "as": ["sourceNode", "targetNode"]
         },
