@@ -55,6 +55,11 @@
       "type": "band",
       "domain": {"data": "nodes", "field": "order", "sort": true},
       "range": "height"
+    },
+    {
+      "name": "scaled_value",
+      "type": "log",
+      "domain": {"data": "edges", "field": "value"}
     }
   ],
 
@@ -82,7 +87,7 @@
         "update": {
           "stroke": {"value": "#000"},
           "strokeOpacity": {"value": 0.2},
-          "strokeWidth": {"field": "value"}
+          "strokeWidth": {"field": "scaled_value"}
         }
       },
       "transform": [
