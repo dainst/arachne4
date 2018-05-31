@@ -123,7 +123,7 @@
       "from": {"data": "nodes"},
       "encode": {
         "update": {
-          "x": {"value": 0},
+          "x": {"value": -15},
           "y": {"scale": "position", "field": "order"},
           "fontSize": {"value": 9},
           "align": {"value": "right"},
