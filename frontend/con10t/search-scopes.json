@@ -265,6 +265,9 @@
   "wohnkulturOstia": {
     "q": "catalogPaths:102"
   },
+  "test_project": {
+    "q": "spirit"
+  },
   "_testscope": {
     "q": "you",
     "facets": [
