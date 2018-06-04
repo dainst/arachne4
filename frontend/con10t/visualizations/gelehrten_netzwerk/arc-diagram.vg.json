@@ -1,0 +1,137 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "height": 3000,
+  "padding": 5,
+
+  "data": [
+    {
+      "name": "edges",
+      "url": "con10t/visualizations/gelehrten_netzwerk/data/letter_connections.csv",
+      "format": {
+        "type": "csv"
+      }
+    },
+    {
+      "name": "sourceDegree",
+      "source": "edges",
+      "transform": [
+        {"type": "aggregate", "groupby": ["source"]}
+      ]
+    },
+    {
+      "name": "targetDegree",
+      "source": "edges",
+      "transform": [
+        {"type": "aggregate", "groupby": ["target"]}
+      ]
+    },
+    {
+      "name": "nodes",
+      "url": "con10t/visualizations/gelehrten_netzwerk/data/person_list.csv",
+      "format": {"type": "csv" },
+      "transform": [
+        { "type": "window", "ops": ["rank"], "as": ["order"] },
+        {
+          "type": "lookup", "from": "sourceDegree", "key": "source",
+          "fields": ["neo4j_id"], "as": ["sourceDegree"],
+          "default": {"count": 0}
+        },
+        {
+          "type": "lookup", "from": "targetDegree", "key": "target",
+          "fields": ["neo4j_id"], "as": ["targetDegree"],
+          "default": {"count": 0}
+        },
+        {
+          "type": "formula", "as": "degree",
+          "expr": "datum.sourceDegree.count + datum.targetDegree.count"
+        }
+      ]
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "position",
+      "type": "band",
+      "domain": {"data": "nodes", "field": "order", "sort": true},
+      "range": "height"
+    },
+    {
+      "name": "scaled_value",
+      "type": "log",
+      "domain": {"data": "edges", "field": "value"}
+    }
+  ],
+
+  "marks": [
+    {
+      "type": "symbol",
+      "name": "layout",
+      "interactive": false,
+      "from": {"data": "nodes"},
+      "encode": {
+        "enter": {
+          "opacity": {"value": 0}
+        },
+        "update": {
+          "x": {"value": 0},
+          "y": {"scale": "position", "field": "order"},
+          "size": {"field": "degree", "mult": 5, "offset": 10}
+        }
+      }
+    },
+    {
+      "type": "path",
+      "from": {"data": "edges"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#000"},
+          "strokeOpacity": {"value": 0.2},
+          "strokeWidth": {"field": "scaled_value"}
+        }
+      },
+      "transform": [
+        {
+          "type": "lookup", "from": "layout", "key": "datum.neo4j_id",
+          "fields": ["datum.source", "datum.target"],
+          "as": ["sourceNode", "targetNode"]
+        },
+        {
+          "type": "linkpath",
+          "sourceX": {"expr": "0"},
+          "targetX": {"expr": "0"},
+          "sourceY": {"expr": "min(datum.sourceNode.y, datum.targetNode.y)"},
+          "targetY": {"expr": "max(datum.sourceNode.y, datum.targetNode.y)"},
+          "shape": "arc"
+        }
+      ]
+    },
+    {
+      "type": "symbol",
+      "from": {"data": "layout"},
+      "encode": {
+        "update": {
+          "x": {"field": "x"},
+          "y": {"field": "y"},
+          "fill": {"field": "fill"},
+          "size": {"field": "size"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "nodes"},
+      "encode": {
+        "update": {
+          "x": {"value": -15},
+          "y": {"scale": "position", "field": "order"},
+          "fontSize": {"value": 9},
+          "align": {"value": "right"},
+          "baseline": {"value": "middle"},
+          "angle": {"value": 0},
+          "text": {"field": "name"}
+        }
+      }
+    }
+  ]
+}
