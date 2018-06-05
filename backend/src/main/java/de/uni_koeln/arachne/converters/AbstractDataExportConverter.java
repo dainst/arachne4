@@ -86,9 +86,12 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         return userRightsService.getCurrentUser().getUsername();
     }
 
-    // unpacks JSON and get all the objects datails against a list of facets
-
-
+    /**
+     * Unpacks JSON and get all the objects datails against a list of facets
+     * @param entityId
+     * @return
+     * @throws Exception
+     */
     public JSONObject getEntity(long entityId) throws Exception {
 
         TypeWithHTTPStatus entity = null;
@@ -162,7 +165,6 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         }
     }
 
-
     /**
      * serialized a complete Entity to
      * @param fullEntity
@@ -197,62 +199,6 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
         return row;
     }
-
-
-    /**
-     *
-     * serializes an entity by a given entityId by a given columnlist
-     *
-     * @param fullEntity
-     * @param facets
-     * @return List<DataExportCell>
-     *//*
-    public DataExportRow getDetails(JSONObject fullEntity, List<SearchResultFacet> facets) {
-
-        final DataExportRow row = exportTable.newRow();
-
-        if (fullEntity == null) {
-            return row;
-        }
-
-        for (final SearchResultFacet facet : facets) {
-
-            final String facetName = facet.getName();
-
-            if (skipFacets.contains(facetName)) {
-                continue;
-            }
-
-            String facetFullName = null;
-            try {
-                facetFullName = transl8Service.transl8(facet.getName(), "en");
-            } catch (Transl8Service.Transl8Exception e) {
-                e.printStackTrace();
-            }
-
-            if (!includeEmptyFacets && (!fullEntity.has(facet.getName()))) {
-                continue;
-            }
-
-            final Object valueObj = (fullEntity.has(facet.getName())) ? fullEntity.get(facet.getName()) : "";
-
-            if (valueObj instanceof JSONArray) {
-                if (facetName.equals("facet_geo")) {
-                    serializePlaces(fullEntity, row);
-                } else {
-                    serializeFacetValues(facetName, facetFullName, (JSONArray) valueObj, row);
-                }
-
-            } else { // fallback
-                row.put(facetName, facetFullName, valueObj.toString());
-            }
-
-
-        }
-
-        return row;
-    }
-*/
 
     /**
      * serlializes the facets of a given Fullentity (without knowing them beforehand)
@@ -380,7 +326,6 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * @param rel
      * @param collector
      */
-
     abstract public void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector);
 
 
