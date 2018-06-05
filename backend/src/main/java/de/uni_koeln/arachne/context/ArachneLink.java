@@ -68,4 +68,8 @@ public class ArachneLink extends AbstractLink {
 			return getEntity2().getField(fieldName);
 		}
 	}
+
+	public String toString() {
+		return "[link: " + entity1.getArachneId() + "|" + entity2.getArachneId() + "]";
+	}
 }

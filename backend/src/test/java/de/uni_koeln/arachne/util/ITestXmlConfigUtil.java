@@ -19,20 +19,16 @@ public class ITestXmlConfigUtil {
 	public void testForDocumentCompleteness() {
 		xmlConfigUtil = new XmlConfigUtil();
 		xmlConfigUtil.setServletContext(new MockServletContext("file:src/main/webapp"));
-		
-		assertNotNull(xmlConfigUtil.getDocument("bauwerk"));
+
 		assertNotNull(xmlConfigUtil.getDocument("bauwerksteil"));
+		assertNotNull(xmlConfigUtil.getDocument("bauwerk"));
 		assertNotNull(xmlConfigUtil.getDocument("befund"));
-		assertNotNull(xmlConfigUtil.getDocument("buch"));
 		assertNotNull(xmlConfigUtil.getDocument("buchseite"));
-		assertNotNull(xmlConfigUtil.getDocument("einschluss"));
+		assertNotNull(xmlConfigUtil.getDocument("buch"));
 		assertNotNull(xmlConfigUtil.getDocument("fabric"));
-		assertNotNull(xmlConfigUtil.getDocument("fabricdescription"));
 		assertNotNull(xmlConfigUtil.getDocument("gruppen"));
 		assertNotNull(xmlConfigUtil.getDocument("gruppierung"));
-		assertNotNull(xmlConfigUtil.getDocument("individualvessel"));
 		assertNotNull(xmlConfigUtil.getDocument("inschrift"));
-		assertNotNull(xmlConfigUtil.getDocument("isolatedsherd"));
 		assertNotNull(xmlConfigUtil.getDocument("literatur"));
 		assertNotNull(xmlConfigUtil.getDocument("mainabstract"));
 		assertNotNull(xmlConfigUtil.getDocument("marbilder"));
@@ -42,15 +38,12 @@ public class ITestXmlConfigUtil {
 		assertNotNull(xmlConfigUtil.getDocument("objekt"));
 		assertNotNull(xmlConfigUtil.getDocument("ort"));
 		assertNotNull(xmlConfigUtil.getDocument("person"));
-		assertNotNull(xmlConfigUtil.getDocument("quantities"));
 		assertNotNull(xmlConfigUtil.getDocument("realien"));
 		assertNotNull(xmlConfigUtil.getDocument("relief"));
 		assertNotNull(xmlConfigUtil.getDocument("reproduktion"));
 		assertNotNull(xmlConfigUtil.getDocument("rezeption"));
 		assertNotNull(xmlConfigUtil.getDocument("sammlungen"));
 		assertNotNull(xmlConfigUtil.getDocument("sarkophag"));
-		assertNotNull(xmlConfigUtil.getDocument("surfacetreatment"));
-		assertNotNull(xmlConfigUtil.getDocument("surfacetreatmentaction"));
 		assertNotNull(xmlConfigUtil.getDocument("topographie"));
 		assertNotNull(xmlConfigUtil.getDocument("typus"));
 				

@@ -26,6 +26,7 @@ import de.uni_koeln.arachne.util.sql.SQLToolbox;
  * @author satan
  *
  */
+
 @Configurable(preConstruction=true)
 public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntitiesMapper.class);
@@ -35,6 +36,13 @@ public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 	
 	private final transient String jsonField;
 
+	/**
+	 * Default constructor. Setting the {@code jsonField} to the empty string. 
+	 */
+	public GenericEntitiesMapper() {
+		jsonField = "";
+	}
+	
 	/**
 	 * Constructor setting the name of the JSON field.
 	 * @param jsonField The name of the field.

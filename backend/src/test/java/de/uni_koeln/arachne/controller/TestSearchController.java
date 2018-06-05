@@ -55,8 +55,7 @@ public class TestSearchController {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
-        final TestData testData = new TestData();
-        final SearchResult searchResult = testData.getDefaultSearchResult();
+        final SearchResult searchResult = TestData.getDefaultSearchResult();
         // this is a neat trick to get a final, mutable boolean value which I can reference in the overriden answer
         // methods
         final AtomicBoolean isIndexSearch = new AtomicBoolean(false);
@@ -219,7 +218,7 @@ public class TestSearchController {
 
         when(searchService.getFilters(anyList(), anyInt())).thenCallRealMethod();
 
-        when(userRightsService.userHasAtLeastGroupID(anyInt())).thenReturn(false);
+        when(userRightsService.userHasRole(anyString())).thenReturn(false);
     }
 
     // TODO: add test(s) for editorfields for user with editor rights

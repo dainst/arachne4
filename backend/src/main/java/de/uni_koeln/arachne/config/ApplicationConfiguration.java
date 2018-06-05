@@ -122,12 +122,16 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer
-            .favorPathExtension(true)
-            .favorParameter(false)
-            .ignoreAcceptHeader(true)
-
-            .defaultContentType(MediaType.APPLICATION_JSON_UTF8);
-            //.useJaf(false) -> dann kommt nur noch JSON
+                .favorPathExtension(false)
+                .favorParameter(true)
+                .parameterName("mediaType")
+                .ignoreAcceptHeader(true)
+                .useJaf(false)
+                .defaultContentType(MediaType.APPLICATION_JSON_UTF8)
+                .mediaType("json", MediaType.APPLICATION_JSON_UTF8)
+                .mediaType("pdf", MediaType.APPLICATION_PDF)
+                .mediaType("html", MediaType.TEXT_HTML)
+                .mediaType("csv", new MediaType("text", "csv"));
     }
 
     /**

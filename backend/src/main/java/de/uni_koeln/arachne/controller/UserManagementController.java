@@ -3,6 +3,8 @@
  */
 package de.uni_koeln.arachne.controller;
 
+import static de.uni_koeln.arachne.util.security.SecurityUtils.*;
+
 import de.uni_koeln.arachne.dao.hibernate.ResetPasswordRequestDao;
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
@@ -14,6 +16,8 @@ import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.network.CustomMediaType;
 import de.uni_koeln.arachne.util.security.JSONView;
 import de.uni_koeln.arachne.util.security.Random;
+import de.uni_koeln.arachne.util.security.SecurityUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,15 +97,16 @@ public class UserManagementController {
 			method=RequestMethod.GET, 
 			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<MappingJacksonValue> getUserInfo(@PathVariable("username") String username) {
+		LOGGER.info("username: {}", username);
 		if (userRightsService.isSignedInUser()) {
-			if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID)) {
+			if (userRightsService.userHasRole(ADMIN)) {
 				User user = userDao.findByName(username);
 				MappingJacksonValue wrapper = new MappingJacksonValue(user);
 				wrapper.setSerializationView(JSONView.Admin.class);
 				return ResponseEntity.ok(wrapper);
 			} else {
 				User currentUser = userRightsService.getCurrentUser();
-				if (currentUser.equals(userDao.findByName(username))) {
+				if (currentUser.getUsername().equals(username)) {
 					MappingJacksonValue wrapper = new MappingJacksonValue(currentUser);
 					wrapper.setSerializationView(JSONView.User.class);
 					return ResponseEntity.ok(wrapper);
@@ -121,7 +126,7 @@ public class UserManagementController {
 			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<MappingJacksonValue> getUserInfo(@PathVariable("uid") long uid) {
 		if (userRightsService.isSignedInUser()) {
-			if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID)) {
+			if (userRightsService.userHasRole(ADMIN)) {
 				User user = userDao.findById(uid);
 				MappingJacksonValue wrapper = new MappingJacksonValue(user);
 				wrapper.setSerializationView(JSONView.Admin.class);
@@ -146,7 +151,7 @@ public class UserManagementController {
 	 * @return The JSON serialization of a success message.
 	 * @throws FormDataException if the email address is invalid or already taken or the username is already taken.
 	 */
-	@RequestMapping(value="/userinfo/{username}", 
+	@RequestMapping(value="/userinfo/{username:.+}",
 			method=RequestMethod.PUT, 
 			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<Map<String,String>> updateUserInfo(@PathVariable("username") String username, 
@@ -179,13 +184,13 @@ public class UserManagementController {
 				}
 			}
 			
-			if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID) ||
+			if (userRightsService.userHasRole(ADMIN) ||
 					userRightsService.getCurrentUser().equals(user)) {
 				
 				try {
 					for (Map.Entry<String, String> entry : formData.entrySet()) {
 						userRightsService.setPropertyOnProtectedObject(entry.getKey(), entry.getValue(), user
-								, UserRightsService.MIN_USER_ID);
+								, SecurityUtils.USER);
 					}
 					userDao.updateUser(user);
 				} catch (de.uni_koeln.arachne.service.UserRightsService.ObjectAccessException e) {
@@ -323,7 +328,7 @@ public class UserManagementController {
 	 */
 
 	@ResponseBody
-	@RequestMapping(value="/userinfo/{username}",
+	@RequestMapping(value="/userinfo/{username:.+}",
 			method=RequestMethod.DELETE,
 			produces= {CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public Map<String,String> delete(@PathVariable("username") String username, HttpServletResponse response) {
@@ -336,7 +341,7 @@ public class UserManagementController {
 		}
 
 		if(username.compareTo(userRightsService.getCurrentUser().getUsername()) != 0
-				&& !userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID)) {
+				&& !userRightsService.userHasRole(ADMIN)) {
 			result.put("success", "false");
 			response.setStatus(403);
 			return result;
@@ -350,14 +355,18 @@ public class UserManagementController {
 	}
 
 	/**
+	 * Endpoint to change a users password.
+	 * 
+	 * @param userCredentials The old, new and new confirmed passwords.
+	 * @param response The HTTP servlet response.
+	 * @return The JSON serialization of a success message.
 	 *
 	 */
-
 	@ResponseBody
 	@RequestMapping(value="/user/change",
 		method=RequestMethod.POST,
 		produces= {CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
-	public Map<String, String> change(@RequestBody Map<String, String> userCredentials, HttpServletResponse response) {
+	public Map<String, String> changePassword(@RequestBody Map<String, String> userCredentials, HttpServletResponse response) {
 		Map<String, String> result = new HashMap<>();
 
 		if(!userRightsService.isSignedInUser()) {
@@ -439,7 +448,7 @@ public class UserManagementController {
         final Calendar calender = Calendar.getInstance();
         final long now = calender.getTime().getTime();
         calender.setTimeInMillis(now);
-        calender.add(Calendar.HOUR_OF_DAY, 12);
+        calender.add(Calendar.HOUR_OF_DAY, 25);
         final Timestamp expirationDate = new Timestamp(calender.getTime().getTime());
 
         ResetPasswordRequest request = new ResetPasswordRequest();

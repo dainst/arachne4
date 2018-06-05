@@ -3,6 +3,9 @@ package de.uni_koeln.arachne.service;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import static de.uni_koeln.arachne.util.security.SecurityUtils.*;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,13 +34,17 @@ public class TestUserRightsService {
 	@Before
 	public void setUp() throws Exception {
 		userRightsService.reset();
-		when(userDao.findByName(UserRightsService.ANONYMOUS_USER_NAME)).thenReturn(TestUserData.getAnonymous());
+		when(userDao.findByName(ANONYMOUS_USER_NAME)).thenReturn(TestUserData.getAnonymous());
 		when(userDao.findByName(TestUserData.getUser().getUsername())).thenReturn(TestUserData.getUser());
 		when(userDao.findByName(TestUserData.getEditor().getUsername())).thenReturn(TestUserData.getEditor());
 		when(userDao.findByName(TestUserData.getAdmin().getUsername())).thenReturn(TestUserData.getAdmin());
 		when(userDao.findByName(TestUserData.getUserNoLogin().getUsername())).thenReturn(TestUserData.getUserNoLogin());
 	}
 	
+	@After
+	public void tearDown() {
+		SecurityContextHolder.clearContext();
+	}
 	
 	@Test
 	public void testSet_Is_Dataimporter() {
@@ -68,32 +75,54 @@ public class TestUserRightsService {
 	}
 	
 	@Test
-	public void testUserHasAtLeastGroupIDAnonymous() {
+	public void testUserHasRoleAnonymous() {
 		SecurityContextHolder.getContext().setAuthentication(null);
-		assertFalse(userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID));
+		
+		assertFalse(userRightsService.userHasRole(ADMIN));
+		assertFalse(userRightsService.userHasRole(EDITOR));
+		assertFalse(userRightsService.userHasRole(USER));
 	}
 	
 	@Test
-	public void testUserHasAtLeastGroupIDUser() {
+	public void testUserHasRoleUser() {
 		final User user = TestUserData.getUser();
 		final Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-		assertFalse(userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID));
+		
+		assertTrue(userRightsService.userHasRole(USER));
+		
+		assertFalse(userRightsService.userHasRole(ADMIN));
+		assertFalse(userRightsService.userHasRole(EDITOR));
 	}
 	
 	@Test
-	public void testUserHasAtLeastGroupIDAdmin() {
+	public void testUserHasRoleEditor() {
+		final User user = TestUserData.getEditor();
+		final Authentication authToken = TestUserData.getAuthentication(user);
+		SecurityContextHolder.getContext().setAuthentication(authToken);
+		
+		assertTrue(userRightsService.userHasRole(USER));
+		assertTrue(userRightsService.userHasRole(EDITOR));
+		
+		assertFalse(userRightsService.userHasRole(ADMIN));
+	}
+	
+	@Test
+	public void testUserHasRoleAdmin() {
 		final User user = TestUserData.getAdmin();
 		final Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-		assertTrue(userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_ADMIN_ID));
+		
+		assertTrue(userRightsService.userHasRole(ADMIN));
+		assertTrue(userRightsService.userHasRole(EDITOR));
+		assertTrue(userRightsService.userHasRole(USER));		
 	}
 
 	@Test
 	public void testGetCurrentUserAnonymous() {
 		final User user =  userRightsService.getCurrentUser();
 		SecurityContextHolder.getContext().setAuthentication(null);
-		assertEquals(UserRightsService.ANONYMOUS_USER_NAME, user.getUsername());
+		assertEquals(ANONYMOUS_USER_NAME, user.getUsername());
 		assertEquals(null, user.getFirstname());
 		assertEquals(null, user.getLastname());
 		assertEquals(0, user.getGroupID());
@@ -119,7 +148,7 @@ public class TestUserRightsService {
 		assertEquals("testadmin", user.getUsername());
 		assertEquals("test", user.getFirstname());
 		assertEquals("admin", user.getLastname());
-		assertEquals(UserRightsService.MIN_ADMIN_ID, user.getGroupID());
+		assertEquals(800, user.getGroupID());
 	}
 	
 	@Test
@@ -186,6 +215,12 @@ public class TestUserRightsService {
 		assertTrue(sql.endsWith(")"));
 	}
 	
+	@Test
+	public void testGetSQLDataimporter() {
+		SecurityContextHolder.getContext().setAuthentication(getDataimportAuthentication());
+		assertEquals("", userRightsService.getSQL("testTable"));
+	}
+	
 	@Test(expected=ObjectAccessException.class)
 	public void testSetPropertyOnProtectedObjectAnonymous() {
 		ProtectedTestObject testObject = new ProtectedTestObject();
@@ -226,7 +261,7 @@ public class TestUserRightsService {
 	public void testSetPropertyOnProtectedObjectCustomMinGidAnonymous() {
 		ProtectedTestObject testObject = new ProtectedTestObject();
 		SecurityContextHolder.getContext().setAuthentication(null);
-		userRightsService.setPropertyOnProtectedObject("userStringValue", "anonymous changed it", testObject, UserRightsService.MIN_USER_ID);
+		userRightsService.setPropertyOnProtectedObject("userStringValue", "anonymous changed it", testObject, USER);
 	}
 	
 	@Test
@@ -235,7 +270,7 @@ public class TestUserRightsService {
 		final User user = TestUserData.getUser();
 		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-		userRightsService.setPropertyOnProtectedObject("userStringValue", "user changed it", testObject, UserRightsService.MIN_USER_ID);
+		userRightsService.setPropertyOnProtectedObject("userStringValue", "user changed it", testObject, USER);
 		assertEquals("user changed it", testObject.getUserStringValue());
 	}
 	
@@ -245,7 +280,7 @@ public class TestUserRightsService {
 		final User user = TestUserData.getEditor();
 		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-		userRightsService.setPropertyOnProtectedObject("userStringValue", "editor changed it", testObject, UserRightsService.MIN_USER_ID);
+		userRightsService.setPropertyOnProtectedObject("userStringValue", "editor changed it", testObject, USER);
 		assertEquals("editor changed it", testObject.getUserStringValue());
 	}
 	
@@ -255,7 +290,7 @@ public class TestUserRightsService {
 		final User user = TestUserData.getAdmin();
 		Authentication authToken = TestUserData.getAuthentication(user);
 		SecurityContextHolder.getContext().setAuthentication(authToken);
-		userRightsService.setPropertyOnProtectedObject("userStringValue", "admin changed it", testObject, UserRightsService.MIN_USER_ID);
+		userRightsService.setPropertyOnProtectedObject("userStringValue", "admin changed it", testObject, USER);
 		assertEquals("admin changed it", testObject.getUserStringValue());
 	}
 	

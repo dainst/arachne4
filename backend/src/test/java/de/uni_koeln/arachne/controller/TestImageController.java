@@ -134,8 +134,15 @@ public class TestImageController {
 				.andReturn();
 
 		BufferedImage resultImage = ImageIO.read(new ByteArrayInputStream(result.getResponse().getContentAsByteArray()));
-		assertEquals(240, resultImage.getWidth());
-		assertEquals(236, resultImage.getHeight());
+		assertEquals(256, resultImage.getWidth());
+		assertEquals(256, resultImage.getHeight());
+		// not really sure why there are small differences to the expected color values  
+		assertEquals(0xFF010200, resultImage.getRGB(0, 0));
+		assertEquals(0xFF01FF00, resultImage.getRGB(255, 0));
+		assertEquals(0xFFFD0001, resultImage.getRGB(0, 255));
+		assertEquals(0xFFFEFEFC, resultImage.getRGB(255, 255));
+		assertEquals(0xFFFDFC01, resultImage.getRGB(127, 127));
+		
 	}
 	
 	@Test

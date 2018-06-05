@@ -3,6 +3,8 @@ package de.uni_koeln.arachne.response;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -38,7 +40,7 @@ import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
-import de.uni_koeln.arachne.util.search.TermsAggregation;
+import de.uni_koeln.arachne.util.security.SecurityUtils;
 
 /**
  * Factory class to create the different kinds of responses from a dataset.
@@ -141,6 +143,7 @@ public class ResponseFactory {
 	 * <br>
 	 * The validity of the xml file is not checked as this is covered by 'category.xsd'.
 	 * @param dataset The dataset which encapsulates the SQL query results.
+	 * @param lang The language.
 	 * @return A <code>FormattedArachneEntity</code> as JSON (<code>raw bytes</code>).
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
@@ -263,9 +266,13 @@ public class ResponseFactory {
 		// TODO make the place handling more consistent - needs changes to the db
 		Context placeContext = dataset.getContext("ort");
 
+		ArrayList<Place> places = new ArrayList<Place>();
+
 		if (placeContext != null) {
 			for (AbstractLink link: placeContext.getAllContexts()) {
-				final String city = link.getFieldFromFields("ort.Stadt");
+			    final String city = link.getFieldFromFields("ort.Stadt");
+			    final String region = link.getFieldFromFields("ort.Region");
+				final String subregion = link.getFieldFromFields("ort.Subregion");
 				final String country = link.getFieldFromFields("ort.Land");
 				final String additionalInfo = link.getFieldFromFields("ort.Aufbewahrungsort");
 				String placeName = null;
@@ -282,6 +289,12 @@ public class ResponseFactory {
 				final String latitude = link.getFieldFromFields("ort.Latitude");
 				final String longitude = link.getFieldFromFields("ort.Longitude");
 				final String gazetteerId = link.getFieldFromFields("ort.Gazetteerid");
+				final String storageFromDay = link.getFieldFromFields("ort.AufbewahrungVonTag");
+				final String storageFromMonth = link.getFieldFromFields("ort.AufbewahrungVonMonat");
+				final String storageFromYear = link.getFieldFromFields("ort.AufbewahrungVonJahr");
+				final String storageToDay = link.getFieldFromFields("ort.AufbewahrungBisTag");
+				final String storageToMonth = link.getFieldFromFields("ort.AufbewahrungBisMonat");
+				final String storageToYear = link.getFieldFromFields("ort.AufbewahrungBisJahr");
 
 				if (!StrUtils.isEmptyOrNull(placeName)) {
 					final Place place = new Place(placeName);
@@ -294,12 +307,100 @@ public class ResponseFactory {
 					if (gazetteerId != null) {
 						place.setGazetteerId(Long.parseLong(gazetteerId));
 					}
-					response.addPlace(place);
+                    if(!StrUtils.isEmptyOrNull(storageFromDay)) {
+						place.setStorageFromDay(Integer.parseInt(storageFromDay));
+					}
+                    if(!StrUtils.isEmptyOrNull(storageFromMonth)) {
+						place.setStorageFromMonth(Integer.parseInt(storageFromMonth));
+					}
+                    if(!StrUtils.isEmptyOrNull(storageFromYear)) {
+                        place.setStorageFromYear(Integer.parseInt(storageFromYear));
+                    }
+                    if(!StrUtils.isEmptyOrNull(storageToDay)) {
+						place.setStorageToDay(Integer.parseInt(storageToDay));
+					}
+                    if(!StrUtils.isEmptyOrNull(storageToMonth)) {
+						place.setStorageToMonth(Integer.parseInt(storageToMonth));
+					}
+                    if(!StrUtils.isEmptyOrNull(storageToYear)) {
+						place.setStorageToYear(Integer.parseInt(storageToYear));
+					}
+                    if(!StrUtils.isEmptyOrNull(country)) {
+                        place.setCountry(country);
+                    }
+                    if(!StrUtils.isEmptyOrNull(city)) {
+                        place.setCity(city);
+                    }
+                    if(!StrUtils.isEmptyOrNull(region)) {
+                        place.setRegion(region);
+                    }
+                    if(!StrUtils.isEmptyOrNull(subregion)) {
+                        place.setSubregion(subregion);
+                    }
+                    if(!StrUtils.isEmptyOrNull(additionalInfo)) {
+						place.setLocality(additionalInfo);
+					}
+                    places.add(place);
 				}
 			}
-		}
+			//Sort places by start date
+			try {
+    			Collections.sort(places, new Comparator<Place>() {
+    			    public int compare(Place p1, Place p2) {
+                        try {
+                            // shuffle Fundorte to the top
+                            if (p1.getRelation().equals("Fundort")) {
+                                return -1;
+                            } else if (p2.getRelation().equals("Fundort")) {
+                                return 1;
+                            }
+                            Integer datePart1 = p1.getStorageFromYear(); //holds year, month or day part of the date
+                            Integer datePart2 = p2.getStorageFromYear();
 
-		// set date information
+                            if (datePart1 == null || datePart2 == null) {
+                                if (datePart1 != null) {
+                                    return -1;
+                                }
+                                if (datePart2 != null) {
+                                    return 1;
+                                }
+                                return 0;
+                            } else {
+                                if (datePart1 == datePart2) {
+                                    try {
+                                        datePart1 = p1.getStorageFromMonth();
+                                        datePart2 = p2.getStorageFromMonth();
+                                    } catch(IllegalArgumentException e) {
+                                        return 0;
+                                    }
+                                }
+
+                                if (datePart1 == datePart2) {
+                                    try {
+                                        datePart1 = p1.getStorageFromDay();
+                                        datePart2 = p2.getStorageFromDay();
+                                    } catch(IllegalArgumentException e) {
+                                        return 0;
+                                    }
+                                }
+
+                                return datePart1 > datePart2 ? 1 : -1;
+                            }
+
+                        } catch (Exception e) {
+//                            throw new IllegalArgumentException(e);
+                            LOGGER.debug("A problem occured sorting places. Most likely missing date data.");
+                            return 0;
+                        }
+                    }
+    			});
+			} catch (NullPointerException e) {
+			    LOGGER.debug("A problem occured sorting places. Most likely missing date data.");
+			}
+			for (Place place: places) {
+				response.addPlace(place);
+			}
+		}
 
 		// add dates from datierungen
 		// TODO set parsed date when available in database
@@ -337,8 +438,6 @@ public class ResponseFactory {
                 }
 			}
 		}
-
-
 
 		// add marbilder creation dates
 		if ("marbilder".equals(tableName)) {
@@ -567,7 +666,7 @@ public class ResponseFactory {
 	private void setEditorSection(Dataset dataset, Namespace namespace,	Element display
 			, FormattedArachneEntity response, final String lang) {
 
-		if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID)
+		if (userRightsService.userHasRole(SecurityUtils.EDITOR)
 				|| userRightsService.isDataimporter()) {
 			final Element editorSectionElement = display.getChild("editorsection", namespace);
 			if (editorSectionElement != null) {
@@ -600,43 +699,6 @@ public class ResponseFactory {
 			json.set("facet_image", json.arrayNode().add("nein"));
 		} else {
 			json.set("facet_image", json.arrayNode().add("ja"));
-		}
-
-		// add the geo facets
-		ArrayNode relations = json.arrayNode();
-		for (final Place place : response.places) {
-			final String location = place.getLocationAsString();
-			final String relation = place.getRelation();
-			if (relation != null) {
-				relations.add(relation);
-				if (!StrUtils.isEmptyOrNull(location)) {
-					switch (relation) {
-					case "Fundort":
-						json.set("facet_fundort", json.arrayNode().add(place.getName()
-								+ location));
-						break;
-
-					case "Aufbewahrungsort":
-						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName()
-								+ location));
-						break;
-
-					case "In situ":
-						json.set("facet_fundort", json.arrayNode().add(place.getName()
-								+ location));
-						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName()
-								+ location));
-						break;
-
-					default:
-						break;
-					}
-				}
-			}
-		}
-
-		if (relations.size() > 0) {
-			json.set(TermsAggregation.RELATION_FACET, relations);
 		}
 
 		// add all places with location information as "facet_geo"

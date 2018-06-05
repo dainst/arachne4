@@ -25,9 +25,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.network.ArachneRestTemplate;
-import sun.rmi.runtime.Log;
 
-import javax.xml.bind.annotation.XmlType;
 
 /**
  * Gets the translations lazily from transl8 and offers translation functionality.</br>
@@ -36,9 +34,6 @@ import javax.xml.bind.annotation.XmlType;
  */
 @Service
 public class Transl8Service {
-	// set to false when developing without access to transl8
-	private static final boolean throwException = true;
-	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Transl8Service.class);
 
 	private static final String DEFAULT_LANG = "en";
@@ -52,21 +47,28 @@ public class Transl8Service {
 
 	private transient Map<String, String> categoryMap = new HashMap<String, String>();
 
-	private transient List<String> languages = new ArrayList<String>(2);
+	private transient List<String> supportedLanguages = new ArrayList<String>(2);
 	
+	/**
+	 * The URL for Transl8.
+	 */
+	@Value("${transl8Url}")
 	private transient String transl8Url;
 	
 	/**
-	 * Constructor setting the Transl8 URL.
-	 * @param transl8Url The Transl8 URL.
+	 * Transl8 exception throwing. Set to false when you have no access to Transl8 (for development).
 	 */
-	@Autowired
-	public Transl8Service(final @Value("${transl8Url}") String transl8Url) {
-		this.transl8Url = transl8Url;
-		languages.add("de");
-        languages.add("en");
-        translationsAvailable.put(languages.get(0), false);
-		translationsAvailable.put(languages.get(1), false);
+	@Value("${transl8enabled:true}")
+	private transient boolean throwException;
+	
+	/**
+	 * Default constructor setting the supported languages. 
+	 */
+	public Transl8Service() {
+		supportedLanguages.add("de");
+        supportedLanguages.add("en");
+        translationsAvailable.put(supportedLanguages.get(0), false);
+		translationsAvailable.put(supportedLanguages.get(1), false);
 	}
 
 	/**
@@ -102,8 +104,8 @@ public class Transl8Service {
 							categoryMap.put(entry.getValue(), key.substring(16));
 						}
 					}
-					for (int i = 0; i < languages.size(); i++) //Set other langs to false again
-                        translationsAvailable.put(languages.get(i), false);
+					for (int i = 0; i < supportedLanguages.size(); i++) //Set other langs to false again
+                        translationsAvailable.put(supportedLanguages.get(i), false);
                     translationsAvailable.put(lang, true);
 				} else {
 					LOGGER.error("Translation map is empty. Translations are not available.");
@@ -121,6 +123,7 @@ public class Transl8Service {
 	/**
 	 * Looks up a key in the translations map and returns the corresponding value if found or the key else.
 	 * @param key Key to look up translation for.
+	 * @param lang The language.
 	 * @return Either a translation or the key.
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
@@ -143,6 +146,7 @@ public class Transl8Service {
 	 * For facet translations the key prefix is generated from the facet name.
 	 * @param facetName of the facet.
 	 * @param key Key to look up translation for.
+	 * @param lang The language.
 	 * @return Either a translation or the key.
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
@@ -165,6 +169,7 @@ public class Transl8Service {
 	/**
 	 * Looks up a a category key in the reverse LUT.
 	 * @param key The translated category value.
+	 * @param lang The language.
 	 * @return The category key if found else the unchanged key parameter.
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */
@@ -185,12 +190,15 @@ public class Transl8Service {
 	}
 
     /**
-     * Extracts the language key from the accept-language header to prevent server errors
+     * Checks if any of the supported languages is contained in or equal to the provided language.</br>
+     * Extracts the language key from the accept-language header to prevent server errors.
+     * @param lang The language.
+     * @return The provided language if it is found in the supported languages, else the default language.
      */
 	public String extractLanguage(String lang) {
 	    boolean found = false;
 	    String retLang = lang;
-	    for(String l: languages)
+	    for(String l: supportedLanguages)
             if (retLang.contains(l) || retLang.equals(l)) {
                 retLang = l;
                 found = true;

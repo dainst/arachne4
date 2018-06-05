@@ -41,7 +41,7 @@ public class TestSimpleExternalLinkResolver {
 		
 		resolver = new SimpleExternalLinkResolver();
 		resolver.setLabel("Sarkophagbrowser");
-		resolver.setLinkPattern("http://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=%s");		
+		resolver.setLinkPattern("https://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=%s");		
 		Map<String,String> criteria = new HashMap<String,String>();
 		resolver.setCriteria(criteria);
 		List<String> patternFields = new ArrayList<String>();
@@ -62,11 +62,11 @@ public class TestSimpleExternalLinkResolver {
 		
 		assertNotNull(link1);
 		assertEquals("Sarkophagbrowser", link1.getLabel());
-		assertEquals("http://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=23", link1.getUrl());
+		assertEquals("https://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=23", link1.getUrl());
 		
 		assertNotNull(link2);
 		assertEquals("Sarkophagbrowser", link2.getLabel());
-		assertEquals("http://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=42", link2.getUrl());
+		assertEquals("https://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=42", link2.getUrl());
 		
 		assertNull(link3);
 		
@@ -87,15 +87,15 @@ public class TestSimpleExternalLinkResolver {
 		
 		assertNotNull(link1);
 		assertEquals("Sarkophagbrowser", link1.getLabel());
-		assertEquals("http://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=23", link1.getUrl());
+		assertEquals("https://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=23", link1.getUrl());
 		
 		assertNotNull(link2);
 		assertEquals("Sarkophagbrowser", link2.getLabel());
-		assertEquals("http://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=42", link2.getUrl());
+		assertEquals("https://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=42", link2.getUrl());
 		
 		assertNotNull(link3);
 		assertEquals("Sarkophagbrowser", link3.getLabel());
-		assertEquals("http://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=7", link3.getUrl());
+		assertEquals("https://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=7", link3.getUrl());
 		
 		assertNull(link4);
 		
@@ -115,7 +115,7 @@ public class TestSimpleExternalLinkResolver {
 		
 		assertNotNull(link1);
 		assertEquals("Sarkophagbrowser", link1.getLabel());
-		assertEquals("http://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=23", link1.getUrl());
+		assertEquals("https://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=23", link1.getUrl());
 		
 		assertNull(link2);
 		
@@ -137,7 +137,7 @@ public class TestSimpleExternalLinkResolver {
 		
 		assertNotNull(link1);
 		assertEquals("Sarkophagbrowser", link1.getLabel());
-		assertEquals("http://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=23", link1.getUrl());
+		assertEquals("https://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=23", link1.getUrl());
 		
 		assertNull(link2);
 		
@@ -145,7 +145,7 @@ public class TestSimpleExternalLinkResolver {
 		
 		assertNotNull(link4);
 		assertEquals("Sarkophagbrowser", link4.getLabel());
-		assertEquals("http://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=56", link4.getUrl());
+		assertEquals("https://arachne.uni-koeln.de/browser/index.php?view[layout]=sarkophag_item&sarkophag[jump_to_id]=56", link4.getUrl());
 		
 	}
 

@@ -13,6 +13,7 @@ import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
+import de.uni_koeln.arachne.util.security.SecurityUtils;
 
 /**
  * Service to retrieve entities either from the elasticsearch index or the db.
@@ -58,7 +59,7 @@ public class EntityService {
 	public TypeWithHTTPStatus<String> getEntityFromIndex(final Long id, final String category, final String lang) throws Transl8Exception {
 		
 		String[] excludedFields;
-		if (userRightsService.userHasAtLeastGroupID(UserRightsService.MIN_EDITOR_ID)) {
+		if (userRightsService.userHasRole(SecurityUtils.EDITOR)) {
 			excludedFields = internalFields;
 		} else {
 			excludedFields = new String[internalFields.length + 1];
@@ -87,6 +88,7 @@ public class EntityService {
      * If the user does not have permission to see an entity a HTTP 403 status message is returned.
      * @param id The unique entity ID if no category is given else the internal ID.
      * @param category The category to query or <code>null</code>.
+	 * @param lang The language.
      * @return The response body as <code>String</code>.
 	 * @throws Transl8Exception if tranl8 cannot be reached. 
      */
@@ -185,6 +187,7 @@ public class EntityService {
 	 * IMPORTANT: Do no use the raw byte representation for the live retrieval of entities. It is only meant to be used 
 	 * by the dataimport. Use the <code>String</code> version instead.
 	 * @param entityId The corresponding EntityId object.
+	 * @param lang The language.
 	 * @return The requested formatted entity object as JSON raw <code>byte</code> array or <code>null</code> to 
 	 * indicate that the user is not allowed to see this entity or any error occurs.
 	 * @throws Transl8Exception if transl8 cannot be reached. 

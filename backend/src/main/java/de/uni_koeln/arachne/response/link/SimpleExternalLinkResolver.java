@@ -3,7 +3,6 @@ package de.uni_koeln.arachne.response.link;
 import java.util.List;
 import java.util.Map;
 import java.net.*;
-import java.io.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

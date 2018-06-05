@@ -28,8 +28,6 @@ import de.uni_koeln.arachne.testconfig.TestData;
 @ContextConfiguration(locations={"classpath:test-context.xml"}) 
 public class TestXmlConfigUtil {
 	
-	private transient TestData testData;
-
 	private final String LANG = "de";
 	
 	private transient XmlConfigUtil xmlConfigUtil;
@@ -38,14 +36,11 @@ public class TestXmlConfigUtil {
 	public void initXMLConfig() {
 		xmlConfigUtil = new XmlConfigUtil();
 		xmlConfigUtil.setServletContext(new MockServletContext("file:src/test/resources"));
-		
-		testData = new TestData();
 	}
 	
 	@After
 	public void releaseXMLConfig() {
 		xmlConfigUtil = null;
-		testData = null;
 	}
 	
 	@Test
@@ -72,7 +67,7 @@ public class TestXmlConfigUtil {
 		final Namespace namespace = testDocument.getRootElement().getNamespace();
 		final Element context = testDocument.getRootElement().getChild("display", namespace)
 				.getChild("datasections", namespace).getChild("section", namespace).getChild("context", namespace);
-		final Section section = xmlConfigUtil.getContentFromContext(context, namespace, testData.getTestDataset(), LANG);
+		final Section section = xmlConfigUtil.getContentFromContext(context, namespace, TestData.getTestDataset(), LANG);
 		
 		assertNotNull(section);
 		assertFalse(section.getContent().isEmpty());
@@ -89,7 +84,7 @@ public class TestXmlConfigUtil {
 		final List<Element> sections = testDocument.getRootElement().getChild("display", namespace)
 				.getChild("datasections", namespace).getChild("section", namespace).getChildren("section", namespace);
 		
-		final Dataset dataset = testData.getTestDataset();
+		final Dataset dataset = TestData.getTestDataset();
 		
 		final List<String> expected = new ArrayList<String>(3);
 		expected.add("Testdata prefix/postfix: PrefixTest=success<hr>PostfixTest=success");
@@ -217,7 +212,7 @@ public class TestXmlConfigUtil {
 		final Element section = testDocument.getRootElement().getChild("display", namespace)
 				.getChild("title", namespace).getChild("section", namespace);
 				
-		final Dataset dataset = testData.getTestDataset();
+		final Dataset dataset = TestData.getTestDataset();
 		
 		StringBuilder ifEmptySB = xmlConfigUtil.getIfEmptyFromField(section, namespace, dataset);
 		assertNull(ifEmptySB);

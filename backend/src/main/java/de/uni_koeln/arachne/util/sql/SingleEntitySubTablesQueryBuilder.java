@@ -29,13 +29,17 @@ public class SingleEntitySubTablesQueryBuilder extends AbstractSQLBuilder {
 			sourceTable = tableConnectionDescription.getTable2();
 			sourceField = tableConnectionDescription.getField2();
 		}
+
+		if (!sourceField.contains(".")) {
+			sourceField = sourceTable + "." + sourceField;
+		}
 		
 		table = targetTable;
 		String info;
 		if ("PrimaryKey".equals(sourceField)) {
 			info = dataset.getArachneId().getInternalKey().toString();
 		} else {
-			info = dataset.getField(sourceTable+"."+sourceField);
+			info = dataset.getField(sourceField);
 		}
 				
 		//Limits the Result count to 1

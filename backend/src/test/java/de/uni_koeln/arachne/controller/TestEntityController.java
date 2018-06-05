@@ -72,7 +72,7 @@ public class TestEntityController {
 		when(entityService.getEntityFromDB(1l, null, LANG)).thenReturn(new TypeWithHTTPStatus<String>("{test:value}"));
 		when(entityService.getEntityFromDB(1l, "test", LANG)).thenReturn(new TypeWithHTTPStatus<String>("{test:value}"));
 		// instance of Transl8Serive to be able to throw its exception 
-		Transl8Service dummyTransl8Service = new Transl8Service("test.server.com");
+		Transl8Service dummyTransl8Service = new Transl8Service();
 		when(entityService.getEntityFromIndex(2l, null, LANG)).thenThrow(dummyTransl8Service.new Transl8Exception("test Exception"));
 		when(entityService.getEntityFromIndex(2l, "test", LANG)).thenThrow(dummyTransl8Service.new Transl8Exception("test Exception"));
 		

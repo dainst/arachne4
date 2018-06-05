@@ -107,14 +107,24 @@ public class ITestESService {
 	
 	private boolean isValidJson(final String json) {
 		boolean result = false;
-		JsonParser parser;
+		JsonParser parser = null;
 		try {
 			parser = new ObjectMapper().getFactory().createParser(json);
 			while (parser.nextToken() != null) {}
 		    result = true;
 		} catch (IOException e) {
+			System.out.println("Exception while parsing '" + json + "'");
 			e.printStackTrace();
-		}	
+		} finally {
+			if (parser != null && !parser.isClosed()) {
+				try {
+					parser.close();
+				} catch (IOException e) {
+					System.out.println("Jackson parser could not be closed: ");
+					e.printStackTrace();
+				}
+			}
+		}
 		
 		// check for duplicate keys
 		if (result) {

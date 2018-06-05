@@ -39,6 +39,26 @@ public class Place {
 	 */
 	private Long gazetteerId = null;
 	
+	/**
+	 * The beginning of the time period of the relation to its parent entity.
+	 */
+	private Integer storageFromDay = null;
+	private Integer storageFromMonth = null;
+	private Integer storageFromYear = null; //Needs to be null because empty date values have to be different from year 0
+
+	/**
+	 * The end of the time period of the relation to its parent entity.
+	 */
+	private Integer storageToDay = null;
+	private Integer storageToMonth = null;
+	private Integer storageToYear = null; //Needs to be null because empty date values have to be different from year 0
+
+	private String country;
+	private String city;
+	private String region;
+	private String subregion;
+	private String locality;
+	
 	public Place(final String name) {
 		this.name = name;
 	}
@@ -127,5 +147,121 @@ public class Place {
 	 */
 	public void setGazetteerId(Long gazetteerId) {
 		this.gazetteerId = gazetteerId;
+	}
+
+	/**
+	 * @return start day of the relation to parent 
+	 */
+	public Integer getStorageFromDay() {
+	    return storageFromDay;
+	}
+	/**
+	 * @return start month of the relation to parent
+	 */
+	public Integer getStorageFromMonth() {
+	    return storageFromMonth;
+	}
+	/**
+	 * @return start year of the relation to parent
+	 */
+	public Integer getStorageFromYear() {
+		return storageFromYear;
+	}
+
+	public String getCountry() {
+	    return country;
+	}
+
+	public String getRegion() {
+	    return region;
+	}
+
+	public String getSubregion() {
+	    return subregion;
+	}
+
+	public String getLocality() {
+	    return locality;
+	}
+
+	public String getCity() {
+	    return city;
+	}
+
+	/**
+	 * @param storageFromDay day of the relation to parent to set
+	 */
+	public void setStorageFromDay(int storageFromDay) {
+		this.storageFromDay = storageFromDay;
+	}
+	/**
+	 * @param storageFromMonth month of the relation to parent to set 
+	 */
+	public void setStorageFromMonth(int storageFromMonth) {
+		this.storageFromMonth = storageFromMonth;
+	}
+	/**
+	 * @param storageFromYear year of the relation to parent to set 
+	 */
+	public void setStorageFromYear(int storageFromYear) {
+		this.storageFromYear = storageFromYear;
+	}
+
+	/**
+	 * @return day of the relation to parent
+	 */
+	public Integer getStorageToDay() {
+	    return storageToDay;
+	}
+	/**
+	 * @return month of the relation to parent
+	 */
+	public Integer getStorageToMonth() {
+	    return storageToMonth;
+	}
+	/**
+	 * @return year of the relation to parent 
+	 */
+	public Integer getStorageToYear() {
+		return storageToYear;
+	}
+
+	/**
+	 * @param storageToDay day of the relation to parent to set
+	 */
+	public void setStorageToDay(int storageToDay) {
+		this.storageToDay = storageToDay;
+	}
+	/**
+	 * @param storageToMonth month of the relation to parent to set
+	 */
+	public void setStorageToMonth(int storageToMonth) {
+		this.storageToMonth = storageToMonth;
+	}
+	/**
+	 * @param storageToYear year of the relation to parent to set
+	 */
+	public void setStorageToYear(int storageToYear) {
+		this.storageToYear = storageToYear;
+	}
+
+	public void setCountry(String country) {
+	    this.country = country;
+	}
+
+	public void setCity(String city) {
+	    this.city = city;
+	}
+
+	public void setRegion(String region) {
+	    this.region = region;
+	}
+
+	public void setSubregion(String subregion) {
+	    this.subregion = subregion;
+	}
+
+	public void setLocality(String locality) {
+	    this.locality = locality;
 	}
 }

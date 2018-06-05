@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CeramEgypt Objects 2.0
+  facets of fabric
+-->
+<includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
+    <facet name="kategorie" labelKey="Kategorie">
+        <field datasource="Dataset.TableName"/>
+    </facet>
+    <facet name="fabriccommonname" labelKey="Allgemeiner Name">
+    <field datasource="fabric.CommonName"/>
+    </facet>
+    <facet name="fabricname" labelKey="Herkunft">
+    <field datasource="fabric.Origin"/>
+    </facet>
+    <facet name="fabricname" labelKey="Machart">
+    <field datasource="fabricdescription.Manufacture"/>
+    </facet>
+</includeSection>

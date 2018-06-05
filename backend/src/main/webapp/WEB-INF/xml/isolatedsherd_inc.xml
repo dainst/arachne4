@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
+  <!-- Direkte Informationen ueber die gespeicherte Scherbe -->
+  <section>
+    <section labelKey="Inventarnummer">
+      <field datasource="isolatedsherd.InventoryNumber"/>
+    </section>
+    <section labelKey="Typus">
+      <field datasource="isolatedsherd.SherdType" />
+    </section>
+    <section labelKey="Durchmesser">
+      <field datasource="isolatedsherd.Diameter" postfix="cm"/>
+    </section>
+    <section labelKey="Höhe">
+      <field datasource="isolatedsherd.Height" postfix="cm"/>
+    </section>
+    <section labelKey="Breite">
+      <field datasource="isolatedsherd.Width" postfix="cm"/>
+    </section>
+    <section labelKey="Länge">
+      <field datasource="isolatedsherd.LengthSize" postfix="cm"/>
+    </section>
+    <section labelKey="Dicke">
+      <field datasource="isolatedsherd.Thickness" postfix="cm"/>
+    </section>
+    <section labelKey="Gewicht">
+      <field datasource="isolatedsherd.Weight" postfix="g"/>
+    </section>
+    <section labelKey="Prozentualer Randanteil">
+      <field datasource="isolatedsherd.RimPercentage" postfix="%"/>
+    </section>
+  </section>
+
+
+
+</includeSection>

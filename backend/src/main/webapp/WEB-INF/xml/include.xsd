@@ -31,11 +31,24 @@
             <xs:element name="field" type="FieldContent"/>
             <xs:element name="linkField" type="LinkFieldContent"/>
             <xs:element name="plain" type="PlainTextContent" />
+            <xs:element name="section" type="SectionContent"/>
+            <xs:element name="contextSection" type="ContextSection"/>
+            <xs:element name="compoundDateField" type="compoundDateField" />
         </xs:choice>
         <xs:attribute name="type" type="xs:string" use="required"/>
         <xs:attribute name="labelKey" type="xs:string"/>
         <xs:attribute name="separator" type="xs:string"/>
         <xs:attribute name="link" type="xs:string"/>
+    </xs:complexType>
+    <xs:complexType name="ContextSection">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="field" type="FieldContent" />
+            <xs:element name="plain" type="PlainTextContent" />
+            <xs:element name="subcontext" type="ContextContent" />
+            <xs:element name="subtitle" type="SectionContent" />
+        </xs:choice>
+        <xs:attribute name="labelKey" type="xs:string" />
+        <xs:attribute name="separator" type="xs:string" />
     </xs:complexType>
     <xs:complexType name="FacetContent">
         <xs:choice>
@@ -68,6 +81,12 @@
         <xs:attribute name="separator" type="xs:string"/>
         <xs:attribute name="overrideSeparator" type="xs:string"/>
     </xs:complexType>
+    <xs:complexType name="compoundDateField">
+        <xs:choice maxOccurs="3">
+            <xs:element name="field" type="FieldContent"/>
+        </xs:choice>
+        <xs:attribute name="prefix" type="xs:string"/>
+    </xs:complexType>
     <xs:complexType name="LinkFieldContent">
         <xs:all minOccurs="0">
             <xs:element name="ifEmpty">
@@ -90,7 +109,7 @@
     </xs:complexType>
     <xs:simpleType name="datasourceString">
         <xs:restriction base="xs:string">
-            <xs:pattern value="[A-Za-z\-_]*\.[A-Za-z0-9\-_]+"/>
+            <xs:pattern value="[A-Za-z0-9\-_]*\.[A-Za-z0-9\-_]+(\.[A-Za-z0-9\-_]+)?" />
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>

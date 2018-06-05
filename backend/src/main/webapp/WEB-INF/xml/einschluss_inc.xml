@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CeramEgypt Objects 2.0
+  a type of fabric
+-->
+<includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
+
+    <section>
+
+        <section labelKey="Einschlussart">
+            <field datasource="einschluss.Einschlussart" />
+        </section>
+
+        <section labelKey="Häufigkeit">
+            <field datasource="einschluss.Haeufigkeit" />
+        </section>
+
+        <section labelKey="Durchschnittliche Größe">
+            <field datasource="einschluss.DurchschnittlicheGroesse" />
+        </section>
+
+        <section labelKey="Verteilung">
+            <field datasource="einschluss.Verteilung" />
+        </section>
+
+        <section labelKey="Form">
+            <field datasource="einschluss.Form" />
+        </section>
+
+        <section labelKey="Deckkraft">
+            <field datasource="einschluss.Opacity" />
+        </section>
+
+        <section labelKey="Freie Farbbeschreibung" separator=" ">
+            <field datasource="einschluss.ColourQualifierFreeVon"/>
+            <field datasource="einschluss.ColourFreeVon" postfix=" -"/>
+            <field datasource="einschluss.ColourQualifierFreeBis"/>
+            <field datasource="einschluss.ColourFreeBis"/>
+        </section>
+
+    </section>
+
+
+
+</includeSection>

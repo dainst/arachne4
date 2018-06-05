@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE silenceValidationWarnings>
 <TEI xmlns="http://www.tei-c.org/ns/1.0" version="5.0" xml:id="TEI.1793467229">
     <facsimile xml:base="http://arachne.uni-koeln.de/images/stichwerke/antiquities_of_ionia_1" xml:id="facsimile.543723153">
         <surface xml:id="surface.841720804">

@@ -277,7 +277,7 @@ public class Dataset {
 							return link.getUri2();
 						}
 						result = link.getFieldFromFields(fieldName);
-						if (!StrUtils.isEmptyOrNullOrZero(result)) {
+						if (!StrUtils.isEmptyOrNullOrZero(result) && !result.trim().equals("")) {
 							return result;
 						}
 					}

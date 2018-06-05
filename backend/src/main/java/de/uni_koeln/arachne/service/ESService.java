@@ -400,6 +400,7 @@ public class ESService implements ServletContextAware {
 	 * @param id The entityId of the document or the internal ID of the entity if a category is given.
 	 * @param category The category of the entity (may be <code>null</code>).
 	 * @param internalFields Fields that must not be included in the response.
+	 * @param lang The language.
 	 * @return The entity or <code>null</code> and an HTTP status code.
 	 * @throws Transl8Exception if transl8 cannot be reached. 
 	 */

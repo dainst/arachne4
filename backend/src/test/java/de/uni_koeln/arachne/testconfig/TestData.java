@@ -33,8 +33,12 @@ import de.uni_koeln.arachne.util.EntityId;
  * 
  * @author Reimar Grabowski
  */
-public class TestData {
+public final class TestData {
 
+	private TestData() {
+		// disallow instantiation
+	}
+	
 	public static final String jsonString = "{"
 			+ "\"entityId\":1,"
 			+ "\"type\":\"type_test\","
@@ -153,7 +157,7 @@ public class TestData {
 	}
 	
 	public static BufferedImage getTestImageJPEG() throws IOException {
-		final URL resource = TestData.class.getResource("/WEB-INF/images/greif.jpeg");
+		final URL resource = TestData.class.getResource("/WEB-INF/images/testimage.jpeg");
 		final InputStream stream = Resources.asByteSource(resource).openStream();
 		final BufferedImage result = ImageIO.read(stream);
 		stream.close();
@@ -169,7 +173,7 @@ public class TestData {
 			height = origImage.getHeight();
 		}
 		final Image image = origImage.getScaledInstance(width, height, Image.SCALE_FAST);
-		final BufferedImage resultImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		final BufferedImage resultImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		resultImage.getGraphics().drawImage(image, 0, 0, null);
 		
 		ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();

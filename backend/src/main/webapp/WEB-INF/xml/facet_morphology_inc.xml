@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CeramEgypt Objects 2.0
+  facets of morpholy
+-->
+<includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
+    <facet name="morphology_functionalgroup" labelKey="Funktionelle Gruppe">
+        <field datasource="morphology.Level1"/>
+    </facet>
+    <facet name="morphology_2ndLevel" labelKey="2nd Level"><!-- yes, it's intentional, that level 2 does not depends on 1 -->
+    <field datasource="morphology.Level2"/>
+    </facet>
+    <facet name="morphology_3thLevel" labelKey="3rd Level" dependsOn="morphology_2ndLevel">
+    <field datasource="morphology.Level3"/>
+    </facet>
+    <facet name="morphology_4thLevel" labelKey="4th Level" dependsOn="morphology_3thLevel">
+    <field datasource="morphology.Level4"/>
+    </facet>
+    <facet name="morphology_5thLevel" labelKey="5th Level" dependsOn="morphology_4thLevel">
+    <field datasource="morphology.Level5"/>
+    </facet>
+
+    <facet name="grabungsinternetypnummer" labelKey="Grabungsinterne Typnummer">
+    <context type="mainabstract" separator="">
+        <field datasource=".GrabungsinterneTypennummer"/>
+        <field datasource=".GrabungsinterneTypennummerSub"/>
+    </context>
+    </facet>
+</includeSection>
