@@ -2,17 +2,21 @@ package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
+import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.service.*;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
+import org.springframework.http.HttpStatus;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpInputMessage;
+import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.AbstractHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.ServletContext;
@@ -236,7 +240,6 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         }
     }
 
-
     void serializeFacetValues(String facetName, String facetFullName, JSONArray facetValues, DataExportRow collector) {
         for (int i = 0; i < facetValues.length(); i++) {
             collector.put(facetName, facetFullName, facetValues.get(i).toString());
@@ -304,7 +307,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
      * helper function to extract useful information about place from facet_geo
      *
      * @param facetGeo
-     * @return
+     * @return JSONArray
      */
     private JSONArray unpackFacetGeo(JSONArray facetGeo) {
         for (int i = 0; i < (handleOnlyFirstPlace ? 1 : facetGeo.length()); i++) {
@@ -343,5 +346,26 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         this.exportTable.author = catalog.getAuthor();
     }
 
+    private void _abortIfHuge(Long size, Integer limit) {
+        if (size < limit) {
+            return;
+        }
+
+        if (!userRightsService.isSignedInUser()) {
+            throw new dataExportException("too_huge_and_not_logged_in", HttpStatus.UNAUTHORIZED, "DE"); // TODO correct language
+        }
+
+        // to implement next: register job
+
+        throw new dataExportException("too_huge_and_will_be_sent_by_mail", HttpStatus.ACCEPTED, "DE"); // TODO correct language
+    }
+
+    public void abortIfHuge(SearchResult searchResult, Integer limit) {
+        _abortIfHuge(searchResult.getSize(), limit);
+    }
+
+    public void abortIfHuge(Catalog catalog, Integer limit) {
+        _abortIfHuge(Long.valueOf(catalog.getRoot().getAllSuccessors()), limit);
+    }
 
 }

@@ -17,6 +17,7 @@ public class Catalog2HtmlConverter extends BaseHtmlConverter<Catalog> {
 
     @Override
     protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
+        abortIfHuge(catalog, 150);
         initializeExport(catalog);
         writer = new OutputStreamWriter(httpOutputMessage.getBody());
         htmlHeader();
@@ -25,10 +26,5 @@ public class Catalog2HtmlConverter extends BaseHtmlConverter<Catalog> {
         htmlFooter();
         writer.close();
     }
-
-
-
-
-
 
 }

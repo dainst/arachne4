@@ -20,6 +20,9 @@ public class SearchResult2PdfConverter extends BasePdfConverter<SearchResult> {
 
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) {
         try {
+
+            abortIfHuge(searchResult, 50);
+
             httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/pdf");
             //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.pdf\""); // @ todo reactivate
             final List<SearchHit> entities = searchResult.getEntities();
