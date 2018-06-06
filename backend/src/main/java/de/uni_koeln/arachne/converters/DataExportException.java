@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.annotation.PostConstruct;
 
-public class dataExportException extends RuntimeException {
+public class DataExportException extends RuntimeException {
 
     @Autowired
     private transient Transl8Service ts;
