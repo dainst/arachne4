@@ -738,4 +738,9 @@
       "hidden": true
     }
   ]
+   "id": "gelehretenbriefe",
+          "title": {
+            "de": "gelehrtenbriefe",
+          },
+    "hidden": false
 }
