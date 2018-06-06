@@ -17,7 +17,7 @@ public class DataExportException extends RuntimeException {
     private String type = "";
     private HttpStatus status;
 
-    public dataExportException(String type, HttpStatus status, String lang) {
+    public DataExportException(String type, HttpStatus status, String lang) {
         this.lang = lang;
         this.type = type;
         this.status = status;
