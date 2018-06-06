@@ -737,11 +737,11 @@
       "id": "_testscope",
       "hidden": true
     },
- {
-   "id": "gelehrtenbriefe",
-          "title": {
-            "de": "Gelehrte, Ausgräber und Kunsthändler",
+    {
+      "id": "gelehrtenbriefe",
+      "title": {
+        "de": "Gelehrte, Ausgräber und Kunsthändler: Die Korrespondenz des Instituto di Corrispondenza Archeologica als Wissensquelle und Netzwerkindikator",
           },
-    "hidden": false
+    "hidden": true
   }
-     ]
+]
