@@ -40,7 +40,6 @@ import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
-import de.uni_koeln.arachne.util.search.TermsAggregation;
 import de.uni_koeln.arachne.util.security.SecurityUtils;
 
 /**
@@ -271,7 +270,9 @@ public class ResponseFactory {
 
 		if (placeContext != null) {
 			for (AbstractLink link: placeContext.getAllContexts()) {
-				final String city = link.getFieldFromFields("ort.Stadt");
+			    final String city = link.getFieldFromFields("ort.Stadt");
+			    final String region = link.getFieldFromFields("ort.Region");
+				final String subregion = link.getFieldFromFields("ort.Subregion");
 				final String country = link.getFieldFromFields("ort.Land");
 				final String additionalInfo = link.getFieldFromFields("ort.Aufbewahrungsort");
 				String placeName = null;
@@ -324,6 +325,21 @@ public class ResponseFactory {
                     if(!StrUtils.isEmptyOrNull(storageToYear)) {
 						place.setStorageToYear(Integer.parseInt(storageToYear));
 					}
+                    if(!StrUtils.isEmptyOrNull(country)) {
+                        place.setCountry(country);
+                    }
+                    if(!StrUtils.isEmptyOrNull(city)) {
+                        place.setCity(city);
+                    }
+                    if(!StrUtils.isEmptyOrNull(region)) {
+                        place.setRegion(region);
+                    }
+                    if(!StrUtils.isEmptyOrNull(subregion)) {
+                        place.setSubregion(subregion);
+                    }
+                    if(!StrUtils.isEmptyOrNull(additionalInfo)) {
+						place.setLocality(additionalInfo);
+					}
                     places.add(place);
 				}
 			}
@@ -370,7 +386,7 @@ public class ResponseFactory {
 
                                 return datePart1 > datePart2 ? 1 : -1;
                             }
-                            
+
                         } catch (Exception e) {
 //                            throw new IllegalArgumentException(e);
                             LOGGER.debug("A problem occured sorting places. Most likely missing date data.");
@@ -683,38 +699,6 @@ public class ResponseFactory {
 			json.set("facet_image", json.arrayNode().add("nein"));
 		} else {
 			json.set("facet_image", json.arrayNode().add("ja"));
-		}
-
-		// add the geo facets
-		ArrayNode relations = json.arrayNode();
-		for (final Place place : response.places) {
-			final String relation = place.getRelation();
-			if (relation != null) {
-				relations.add(relation);
-
-				switch (relation) {
-					case "Fundort":
-						json.set("facet_fundort", json.arrayNode().add(place.getName()));
-						break;
-
-					case "Aufbewahrungsort":
-						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName()));
-						break;
-
-					case "In situ":
-						json.set("facet_fundort", json.arrayNode().add(place.getName()));
-						json.set("facet_aufbewahrungsort", json.arrayNode().add(place.getName()));
-						break;
-
-					default:
-						break;
-				}
-
-			}
-		}
-
-		if (relations.size() > 0) {
-			json.set(TermsAggregation.RELATION_FACET, relations);
 		}
 
 		// add all places with location information as "facet_geo"
