@@ -45,7 +45,6 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "width/{entityId}", 
 			method = RequestMethod.GET,
-			headers = {"accept=*/*"},
 			produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> getWidth(
 			@RequestParam(value = "width", required = true) final int requestedWidth, 
@@ -65,7 +64,6 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "height/{entityId}",
 			method = RequestMethod.GET,
-			headers = {"accept=*/*"},
 			produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> getHeight(
 			@RequestParam(value = "height", required = true) final int requestedHeight, 
@@ -84,7 +82,6 @@ public class ImageController {
 	 */
 	@RequestMapping(value = "{entityId}",
 			method = RequestMethod.GET,
-			headers = {"accept=*/*"},
 			produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> getImage(@PathVariable("entityId") final long entityId) {
 		
@@ -103,7 +100,6 @@ public class ImageController {
 	@Deprecated
 	@RequestMapping(value = "preview/{entityId}",
 			method = RequestMethod.GET,
-			headers = {"accept=*/*"},
 			produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> getPreview(@PathVariable("entityId") final long entityId) {
 		
@@ -122,7 +118,6 @@ public class ImageController {
 	@Deprecated
 	@RequestMapping(value = "thumbnail/{entityId}",
 			method = RequestMethod.GET,
-			headers = {"accept=*/*"},
 			produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> getThumbnail(@PathVariable("entityId") final long entityId) {
 		
@@ -141,7 +136,6 @@ public class ImageController {
 	@Deprecated
 	@RequestMapping(value = "icon/{entityId}",
 			method = RequestMethod.GET,
-			headers = {"accept=*/*"},
 			produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> getIcon(@PathVariable("entityId") final long entityId) {
 		

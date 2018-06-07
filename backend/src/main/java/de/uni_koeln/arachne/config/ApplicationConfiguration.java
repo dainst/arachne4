@@ -70,7 +70,6 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-        configurer.defaultContentType(MediaType.APPLICATION_JSON_UTF8);
         configurer.favorPathExtension(false);
     }
 
