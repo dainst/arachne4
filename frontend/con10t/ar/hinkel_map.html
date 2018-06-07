@@ -64,7 +64,7 @@ baselayers: {
     osm: {
         'name': 'OpenStreetMap',
         'type': 'xyz',
-        'url': 'http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png',
+        'url': 'http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=b47a3cf895b94aedad41e5cfb5222b87',
         'yayerOptions': {
             'subdomains': ['a', 'b', 'c'],
             'attribution': '&copy; <a href=\'http://www.opencyclemap.org\'>OpenCycleMap</a>, &copy; <a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
@@ -89,9 +89,8 @@ baselayers: {
 
     <div id="menu" class="col-sm-2 fullscreencol">
         <a href="project/hinkel?lang=ar" class="btn btn-xs btn-primary">
-            <div class="glyphicon glyphicon-arrow-left">
-                {{'catalog_help_previous'|transl8}}
-            </div>
+            <span class="glyphicon glyphicon-arrow-left"></span>
+            {{'catalog_help_previous'|transl8}}
         </a>
 
         <h3 class="text-muted uppercase">
