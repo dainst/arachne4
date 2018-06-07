@@ -6,6 +6,7 @@ import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.service.*;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
@@ -41,6 +42,8 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         super(mediaTypes);
     }
 
+
+
     @Override
     protected T readInternal(Class<? extends T> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
         throw new UnsupportedOperationException("Reading other file formats is not implemented yet and will most likely never be.");
@@ -59,6 +62,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     public transient CatalogEntryDao catalogEntryDao;
     public transient SingleEntityDataService singleEntityDataService;
     public transient EntityIdentificationService entityIdentificationService;
+    public transient DataExportStack dataExportStack;
 
     public void injectService(EntityService entityService) { this.entityService = entityService; }
     public void injectService(Transl8Service transl8Service) {
@@ -70,6 +74,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     public void injectService(CatalogEntryDao catalogEntryDao) { this.catalogEntryDao = catalogEntryDao; }
     public void injectService(SingleEntityDataService singleEntityDataService) { this.singleEntityDataService = singleEntityDataService; }
     public void injectService(EntityIdentificationService entityIdentificationService) { this.entityIdentificationService = entityIdentificationService; }
+    public void injectService(DataExportStack dataExportStack) { this.dataExportStack = dataExportStack; }
 
     // settings; overwrite em
     public Boolean includeEmptyFacets = false;
@@ -83,7 +88,6 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         HttpServletRequest request = sra.getRequest();
         URIBuilder ub = null;
         return request.getRequestURL().toString() + "?" + request.getQueryString();
-
     }
 
     public String getCurrentUser() {
@@ -346,26 +350,28 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         this.exportTable.author = catalog.getAuthor();
     }
 
-    private void _abortIfHuge(Long size, Integer limit) {
-        if (size < limit) {
-            return;
-        }
+    private void checkForHugeAndEnqueue(Long size, Integer limit, Object conversionObject) {
 
-        if (!userRightsService.isSignedInUser()) {
-            throw new dataExportException("too_huge_and_not_logged_in", HttpStatus.UNAUTHORIZED, "DE"); // TODO correct language
-        }
+//        if (size < limit) {
+//            return;
+//        }
+//
+//        if (!userRightsService.isSignedInUser()) {
+//            throw new DataExportException("too_huge_and_not_logged_in", HttpStatus.UNAUTHORIZED, "DE"); // TODO correct language
+//        }
 
-        // to implement next: register job
+        dataExportStack.push(new DataExportTask( "conversion_" + getCurrentUrl(), this.getClass(), conversionObject));
 
-        throw new dataExportException("too_huge_and_will_be_sent_by_mail", HttpStatus.ACCEPTED, "DE"); // TODO correct language
+        throw new DataExportException("too_huge_and_will_be_sent_by_mail", HttpStatus.ACCEPTED, "DE"); // TODO correct language
     }
 
     public void abortIfHuge(SearchResult searchResult, Integer limit) {
-        _abortIfHuge(searchResult.getSize(), limit);
+        checkForHugeAndEnqueue(searchResult.getSize(), limit, searchResult);
     }
 
     public void abortIfHuge(Catalog catalog, Integer limit) {
-        _abortIfHuge(Long.valueOf(catalog.getRoot().getAllSuccessors()), limit);
+        checkForHugeAndEnqueue(Long.valueOf(catalog.getRoot().getAllSuccessors()), limit, catalog);
     }
+
 
 }

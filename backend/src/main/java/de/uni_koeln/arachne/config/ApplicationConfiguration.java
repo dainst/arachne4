@@ -74,8 +74,12 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 
     @Autowired
     public transient SingleEntityDataService singleEntityDataService;
+
     @Autowired
     public transient EntityIdentificationService entityIdentificationService;
+
+    @Autowired
+    public transient DataExportStack dataExportStack;
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -104,6 +108,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
             converter.injectService(catalogEntryDao);
             converter.injectService(singleEntityDataService);
             converter.injectService(entityIdentificationService);
+            converter.injectService(dataExportStack);
         }
         converters.addAll(aConverters);
 
