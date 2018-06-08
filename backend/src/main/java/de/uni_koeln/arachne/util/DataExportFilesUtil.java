@@ -59,7 +59,7 @@ public class DataExportFilesUtil {
         PrintWriter writer = null;
         try {
             writer = new PrintWriter(getFileName(task), "UTF-8");
-            writer.println("Write DataExport " + task.name);
+            writer.println("Write DataExport " + task.uuid.toString());
             writer.close();
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             e.printStackTrace();

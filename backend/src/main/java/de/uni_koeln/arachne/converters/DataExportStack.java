@@ -102,9 +102,9 @@ public class DataExportStack {
             taskList.put(task.uuid.toString(), info);
         }
         for (HashMap.Entry<String, DataExportTask> taskItem: finished.entrySet()) {
-            final JSONObject info = task.getInfoAsJSON();
+            final JSONObject info = taskItem.getValue().getInfoAsJSON();
             info.put("status", "finished");
-            taskList.put(task.uuid.toString(), info);
+            taskList.put(taskItem.getValue().uuid.toString(), info);
         }
         status.put("tasks", taskList);
         return status;

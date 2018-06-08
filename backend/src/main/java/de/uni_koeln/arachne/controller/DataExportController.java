@@ -53,7 +53,9 @@ public class DataExportController {
 
         final DataExportTask task = dataExportStack.getFinishedTaskById(exportId);
 
-        // check if user is right
+        if (task.getOwner().getId() != userRightsService.getCurrentUser().getId()) {
+            throw new DataExportException("wrong_user", HttpStatus.FORBIDDEN, "DE"); // @ TODO right language
+        }
 
         final InputStream fileStream = dataExportFilesUtil.getFile(task);
         final HttpHeaders headers = new HttpHeaders();
