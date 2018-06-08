@@ -242,7 +242,7 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
             return storedChildren;
         }
 
-        final User user = userRightsService.getCurrentUser();
+        final User user = getCurrentUser();
         final CatalogEntry catalogEntry2 = catalogEntryDao.getById(catalogEntry.getId(), true, 5, 0);
 
         return catalogEntry2.getChildren();

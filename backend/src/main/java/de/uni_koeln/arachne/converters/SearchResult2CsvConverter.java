@@ -9,8 +9,7 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.supercsv.io.CsvListWriter;
 import org.supercsv.prefs.CsvPreference;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.List;
 
 public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
@@ -21,27 +20,24 @@ public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
     }
 
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-
         abortIfHuge(searchResult, 200);
-
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/csv");
-        httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.csv\"");
+        //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.csv\"");
+        convert(new DataExportConversionObject(searchResult), httpOutputMessage.getBody());
+    }
 
-        final List<SearchResultFacet> facets = searchResult.getFacets();
+    @Override
+    public void convert(DataExportConversionObject conversionObject, OutputStream outputStream) throws IOException {
+        final SearchResult searchResult = conversionObject.getSearchResult();
+        this.writer = new OutputStreamWriter(outputStream);
         final List<SearchHit> entities = searchResult.getEntities();
-
-        writer = new OutputStreamWriter(httpOutputMessage.getBody());
         csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
-
         initializeExport("Search Result"); // TODO transl8
-        //exportTable.headers = getCsvHeaders(facets);
         serialize(entities);
         csvHeaders();
         csvBody();
         csvFooter();
-
         csvWriter.close();
-
     }
 }
 

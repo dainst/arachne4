@@ -1,24 +1,14 @@
 package de.uni_koeln.arachne.util;
 
-
-import de.uni_koeln.arachne.converters.DataExportException;
-import de.uni_koeln.arachne.converters.DataExportStack;
 import de.uni_koeln.arachne.converters.DataExportTask;
-import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
+import de.uni_koeln.arachne.converters.DataExportException;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-@Service
-public class DataExportFilesUtil {
-
-    @Autowired
-    public transient DataExportStack dataExportStack;
+public class DataExportFileManager {
 
     public InputStream getFile(DataExportTask task) {
 
@@ -55,6 +45,20 @@ public class DataExportFilesUtil {
     }
 
     public void writeToFile(DataExportTask task) throws Exception {
+        try {
+            final File file = new File(getFileName(task));
+            final FileOutputStream fileOutputStream = new FileOutputStream(file);
+            file.createNewFile();
+            task.perform(fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        } catch (FileNotFoundException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+            throw new Exception("FileIO Error: " + getFileName(task) + "\n" + e.getMessage());
+        }
+    }
+
+    public void writeToFileSimpleTest(DataExportTask task) throws Exception {
         //provisional instead of rendering export, just write a file
         PrintWriter writer = null;
         try {

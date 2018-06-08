@@ -7,7 +7,9 @@ import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.List;
 
 /**
@@ -25,18 +27,19 @@ public class SearchResult2HtmlConverter extends BaseHtmlConverter<SearchResult> 
     }
 
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-
         abortIfHuge(searchResult, 100);
-
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/html");
         //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.html\"");
+        convert(new DataExportConversionObject(searchResult), httpOutputMessage.getBody());
+    }
 
+    @Override
+    public void convert(DataExportConversionObject conversionObject, OutputStream outputStream) throws IOException {
+        final SearchResult searchResult = conversionObject.getSearchResult();
+        this.writer = new OutputStreamWriter(outputStream);
         final List<SearchHit> entities = searchResult.getEntities();
         final List<SearchResultFacet> facets = searchResult.getFacets();
-
         initializeExport("Search Result"); // todo transl8
-
-        writer = new OutputStreamWriter(httpOutputMessage.getBody());
         htmlHeader();
         htmlFrontmatter(facetList2String(facets));
         htmlResults(entities, facets);

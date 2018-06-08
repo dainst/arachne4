@@ -23,14 +23,15 @@ public class Catalog2PdfConverter extends BasePdfConverter<Catalog> {
 
     @Override
     protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException {
-
         abortIfHuge(catalog, 50);
-
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/pdf");
         //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.pdf\"");
+        convert(new DataExportConversionObject(catalog), httpOutputMessage.getBody());
+    }
 
-        OutputStream outStream = httpOutputMessage.getBody();
-
+    @Override
+    public void convert(DataExportConversionObject conversionObject, OutputStream outputStream) throws IOException {
+        final Catalog catalog = conversionObject.getCatalog();
         SearchResult2HtmlConverter htmlConverter = getHtmlConverter();
         htmlConverter.initializeExport(catalog);
         htmlConverter.writer = new StringWriter();
@@ -38,11 +39,7 @@ public class Catalog2PdfConverter extends BasePdfConverter<Catalog> {
         htmlConverter.htmlFrontmatter();
         htmlConverter.htmlCatalog(catalog);
         htmlConverter.htmlFooter();
-        writePdf((StringWriter) htmlConverter.writer, outStream);
+        writePdf((StringWriter) htmlConverter.writer, outputStream);
         htmlConverter.writer.close();
-
     }
-
-
-
 }

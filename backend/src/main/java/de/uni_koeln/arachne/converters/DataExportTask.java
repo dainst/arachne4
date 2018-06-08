@@ -4,6 +4,8 @@ import de.uni_koeln.arachne.mapping.hibernate.User;
 import org.json.JSONObject;
 import org.springframework.http.MediaType;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
@@ -11,8 +13,8 @@ import java.util.UUID;
 public class DataExportTask {
 
     public UUID uuid = UUID.randomUUID();
-    private Object conversionObject;
-    private Class converterClass;
+    private DataExportConversionObject conversionObject;
+    public AbstractDataExportConverter converter;
     private Timestamp tsCreated;
     private Timestamp tsStarted;
     private Timestamp tsStopped;
@@ -21,28 +23,28 @@ public class DataExportTask {
     private String url = "";
 
 
-    public DataExportTask(String url, User user, Class<? extends AbstractDataExportConverter> converterClass, Object conversionObject) {
-        this.converterClass = converterClass;
-        this.conversionObject = conversionObject;
-        this.owner = user;
+    public DataExportTask(String url, User user,
+                          AbstractDataExportConverter converter,
+                          DataExportConversionObject conversionObject) {
         this.url = url;
+        this.owner = user;
+        this.converter = converter;
+        this.conversionObject = conversionObject;
         this.tsCreated = new Timestamp(System.currentTimeMillis());
         setMediaType();
     }
 
-    private void setMediaType() {
-        try {
-            final AbstractDataExportConverter converterInstance  = (AbstractDataExportConverter) converterClass.newInstance();
-            final List<MediaType> mediaTypes = converterInstance.getSupportedMediaTypes();
-            mediaType = mediaTypes.get(0);
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
+    public DataExportConversionObject getConversionObject() {
+        return conversionObject;
     }
 
-    public String getConverterClassName() {
-        return converterClass.getName();
+    public MediaType getMediaType() {
+        return mediaType;
+    }
+
+    private void setMediaType() {
+        final List<MediaType> mediaTypes = converter.getSupportedMediaTypes();
+        mediaType = mediaTypes.get(0);
     }
 
     public long getLifeTime() {
@@ -74,10 +76,6 @@ public class DataExportTask {
         this.tsStopped = new Timestamp(System.currentTimeMillis());
     }
 
-    public MediaType getMediaType() {
-        return mediaType;
-    }
-
     public User getOwner() {
         return owner;
     }
@@ -104,6 +102,10 @@ public class DataExportTask {
             info.put("stopped_at", tsStopped.toString());
         }
         return info;
+    }
+
+    public void perform(OutputStream outputStream) throws IOException {
+        converter.convert(conversionObject, outputStream);
     }
 
 

@@ -54,11 +54,15 @@ public class DataExportStack {
 
     }
 
+    public void removeFinishedTask(DataExportTask task) {
+        finished.remove(task.uuid.toString());
+    }
+
     private DataExportThread startThread(DataExportTask task) {
         final DataExportThread runnable = new DataExportThread(task);
         runnable.registerListener(this);
         final Thread t = new Thread(runnable);
-        t.setUncaughtExceptionHandler((th, ex) -> System.out.println("Uncaught exception: " + ex));
+        t.setUncaughtExceptionHandler((th, ex) -> ex.printStackTrace());
         t.start();
         return runnable;
     }

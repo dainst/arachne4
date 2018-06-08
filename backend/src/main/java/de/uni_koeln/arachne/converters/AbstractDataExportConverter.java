@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
+import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
@@ -23,6 +24,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,7 +45,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         super(mediaTypes);
     }
 
-
+    public abstract void convert(DataExportConversionObject conversionObject, OutputStream outputStream) throws IOException;
 
     @Override
     protected T readInternal(Class<? extends T> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
@@ -58,11 +61,11 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     public transient Transl8Service transl8Service;
     public transient ServletContext servletContext;
     public transient IIPService iipService;
-    public transient UserRightsService userRightsService;
     public transient CatalogEntryDao catalogEntryDao;
     public transient SingleEntityDataService singleEntityDataService;
     public transient EntityIdentificationService entityIdentificationService;
     public transient DataExportStack dataExportStack;
+    private User user;
 
     public void injectService(EntityService entityService) { this.entityService = entityService; }
     public void injectService(Transl8Service transl8Service) {
@@ -70,14 +73,18 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     }
     public void injectService(ServletContext servletContext) { this.servletContext = servletContext; }
     public void injectService(IIPService iipService) { this.iipService = iipService; }
-    public void injectService(UserRightsService userRightsService) { this.userRightsService = userRightsService; }
     public void injectService(CatalogEntryDao catalogEntryDao) { this.catalogEntryDao = catalogEntryDao; }
     public void injectService(SingleEntityDataService singleEntityDataService) { this.singleEntityDataService = singleEntityDataService; }
     public void injectService(EntityIdentificationService entityIdentificationService) { this.entityIdentificationService = entityIdentificationService; }
     public void injectService(DataExportStack dataExportStack) { this.dataExportStack = dataExportStack; }
+    public void injectService(UserRightsService userRightsService) {
+        // because this class has to work from different threads as well
+        // we don't keep this scoped service, but kepp the User-Object we need from it itself
+        setCurrentUser(userRightsService.getCurrentUser());
+    }
+
 
     // settings; overwrite em
-    public Boolean includeEmptyFacets = false;
     public Boolean handleOnlyFirstPlace = false;
     public List<String> skipFacets = Arrays.asList("facet_land", "facet_ort", "facet_ortsangabe", "facet_image", "facet_geo", "facet_literatur");
 
@@ -90,8 +97,12 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         return request.getRequestURL().toString() + "?" + request.getQueryString();
     }
 
-    public String getCurrentUser() {
-        return userRightsService.getCurrentUser().getUsername();
+    public User getCurrentUser() {
+        return user;
+    }
+
+    public void setCurrentUser(User user) {
+        this.user = user;
     }
 
     /**
@@ -340,7 +351,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         exportTable = new DataExportTable();
 
         this.exportTable.title = title;
-        this.exportTable.user = userRightsService.getCurrentUser().getUsername();
+        this.exportTable.user = getCurrentUser().getUsername();
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); // @ TODO tansl8
         this.exportTable.timestamp = dateFormat.format(new Date());
     }
@@ -350,7 +361,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         this.exportTable.author = catalog.getAuthor();
     }
 
-    private void checkForHugeAndEnqueue(Long size, Integer limit, Object conversionObject) {
+    private void checkForHugeAndEnqueue(Long size, Integer limit, DataExportConversionObject conversionObject) {
 
 //        if (size < limit) {
 //            return;
@@ -360,23 +371,29 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 //            throw new DataExportException("too_huge_and_not_logged_in", HttpStatus.UNAUTHORIZED, "DE"); // TODO correct language
 //        }
 
+        /**
+         * current problem:
+         * - because userRightsService is scoped, we get problems when running this class in separate thread
+         * - strange enough, since userRightsService is not bound to this class or any other.
+         */
+
         dataExportStack.push(new DataExportTask(
                 getCurrentUrl(),
-                userRightsService.getCurrentUser(),
-                this.getClass(),
+                getCurrentUser(),
+                this,
                 conversionObject)
         );
+
 
         throw new DataExportException("too_huge_and_will_be_sent_by_mail", HttpStatus.ACCEPTED, "DE"); // TODO correct language
     }
 
     public void abortIfHuge(SearchResult searchResult, Integer limit) {
-        checkForHugeAndEnqueue(searchResult.getSize(), limit, searchResult);
+        checkForHugeAndEnqueue(searchResult.getSize(), limit, new DataExportConversionObject(searchResult));
     }
 
     public void abortIfHuge(Catalog catalog, Integer limit) {
-        checkForHugeAndEnqueue(Long.valueOf(catalog.getRoot().getAllSuccessors()), limit, catalog);
+        checkForHugeAndEnqueue(Long.valueOf(catalog.getRoot().getAllSuccessors()), limit, new DataExportConversionObject(catalog));
     }
-
 
 }

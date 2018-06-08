@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
+import de.uni_koeln.arachne.response.search.SearchResult;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpOutputMessage;
@@ -9,7 +10,9 @@ import org.supercsv.io.CsvListWriter;
 import org.supercsv.prefs.CsvPreference;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.*;
 
 
@@ -22,24 +25,24 @@ public class Catalog2CsvConverter extends BaseCsvConverter<Catalog> {
 
     @Override
     protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-
         abortIfHuge(catalog, 200);
-
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/csv");
         //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.csv\"");
+        convert(new DataExportConversionObject(catalog), httpOutputMessage.getBody());
+    }
 
-        writer = new OutputStreamWriter(httpOutputMessage.getBody());
+    @Override
+    public void convert(DataExportConversionObject conversionObject, OutputStream outputStream) throws IOException {
+        final Catalog catalog = conversionObject.getCatalog();
+        this.writer = new OutputStreamWriter(outputStream);
         csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
-
         initializeExport(catalog);
         serialize(catalog);
         csvHeaders();
         csvBody();
         csvFooter();
-
         csvWriter.close();
     }
-
 
     @Override
     public void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {

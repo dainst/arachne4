@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.converters;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 
 
+import de.uni_koeln.arachne.response.search.SearchResult;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.W3CDom;
 import org.springframework.http.MediaType;
@@ -11,6 +12,7 @@ import org.w3c.dom.Document;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.io.Writer;
 
 
 /**
@@ -29,7 +31,6 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
         htmlConverter.injectService(transl8Service);
         htmlConverter.injectService(servletContext);
         htmlConverter.injectService(iipService);
-        htmlConverter.injectService(userRightsService);
         htmlConverter.injectService(catalogEntryDao);
 
         return htmlConverter;
@@ -57,4 +58,5 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
     public void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
         // dont't care about this baby
     }
+
 }

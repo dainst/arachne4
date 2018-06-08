@@ -4,15 +4,13 @@ import de.uni_koeln.arachne.converters.DataExportException;
 import de.uni_koeln.arachne.converters.DataExportStack;
 import de.uni_koeln.arachne.converters.DataExportTask;
 import de.uni_koeln.arachne.service.UserRightsService;
-import de.uni_koeln.arachne.util.DataExportFilesUtil;
+import de.uni_koeln.arachne.util.DataExportFileManager;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +38,7 @@ public class DataExportController {
     private transient DataExportStack dataExportStack;
 
     @Autowired
-    private transient DataExportFilesUtil dataExportFilesUtil;
+    private transient DataExportFileManager dataExportFileManager;
 
     @RequestMapping(value = "/file/{exportId}", method = RequestMethod.GET)
     public void handleGetExportFile(
@@ -57,24 +55,21 @@ public class DataExportController {
             throw new DataExportException("wrong_user", HttpStatus.FORBIDDEN, "DE"); // @ TODO right language
         }
 
-        final InputStream fileStream = dataExportFilesUtil.getFile(task);
+        final InputStream fileStream = dataExportFileManager.getFile(task);
         final HttpHeaders headers = new HttpHeaders();
         response.setHeader("Content-Type", task.getMediaType().toString()+ "; charset=utf-8");
-        response.setHeader("Content-Length", Long.toString(dataExportFilesUtil.getFileSize(task)));
+        response.setHeader("Content-Length", Long.toString(dataExportFileManager.getFileSize(task)));
         //response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
 
         response.setStatus(HttpStatus.OK.value());
         try {
             IOUtils.copy(fileStream, response.getOutputStream());
             response.flushBuffer();
+            dataExportStack.removeFinishedTask(task);
         } catch (IOException e) {
             e.printStackTrace();
             throw new DataExportException("io_error", HttpStatus.INTERNAL_SERVER_ERROR, "DE"); // @ TODO right language
         }
-
-
-        //return ResponseEntity.status(HttpStatus.OK).headers(headers).body(fileStream);
-
     }
 
 
