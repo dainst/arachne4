@@ -21,7 +21,7 @@ public class DataExportStack {
 
     public void push(DataExportTask task) {
 
-        System.out.println("Push task " + task.name);
+        System.out.println("Push task " + task.uuid.toString());
         System.out.println(stack.size() + " tasks in stack");
 
         if (stack.size() >= MAX_STACK_SIZE) {
@@ -30,7 +30,7 @@ public class DataExportStack {
 
         if(running.size() >= MAX_THREADS) {
             stack.add(task);
-            System.out.println("added task " + task.name + " to stack (" + stack.size() + ")");
+            System.out.println("added task " + task.uuid.toString() + " to stack (" + stack.size() + ")");
         } else {
             runTask(task);
         }
@@ -38,7 +38,8 @@ public class DataExportStack {
     }
 
     public void runTask(DataExportTask task) {
-        System.out.println("Run task: " + task.name);
+        System.out.println("Run task: " + task.uuid.toString());
+        task.startTimer();
         running.add(task);
         startThread(task);
     }
@@ -63,6 +64,7 @@ public class DataExportStack {
     }
 
     public void taskIsFinishedListener(DataExportTask task) {
+        task.stopTimer();
         running.remove(task);
         finished.put(task.uuid.toString(), task);
         System.out.println("Finished task:" + task.uuid.toString() + " " + running.size() + " tasks in stack");
@@ -80,6 +82,8 @@ public class DataExportStack {
         return stack.size();
     }
 
+
+
     public JSONObject getStatus() {
         final JSONObject status = new JSONObject();
         status.put("max_stack_size", MAX_STACK_SIZE);
@@ -88,23 +92,19 @@ public class DataExportStack {
         status.put("tasks_enqueued", stack.size());
         final JSONObject taskList = new JSONObject();
         for (DataExportTask task: stack) {
-            final JSONObject taskListItem = new JSONObject();
-            taskListItem.put("name", task.name);
-            taskListItem.put("status", "enqueued");
-            taskList.put(task.uuid.toString(), taskListItem);
+            final JSONObject info = task.getInfoAsJSON();
+            info.put("status", "enqueued");
+            taskList.put(task.uuid.toString(), info);
         }
         for (DataExportTask task: running) {
-            final JSONObject taskListItem = new JSONObject();
-            taskListItem.put("name", task.name);
-            taskListItem.put("status", "running");
-            taskList.put(task.uuid.toString(), taskListItem);
+            final JSONObject info = task.getInfoAsJSON();
+            info.put("status", "running");
+            taskList.put(task.uuid.toString(), info);
         }
-        for (HashMap.Entry<String, DataExportTask> taskItem: finished.entrySet()) {//! TODO
-            final JSONObject taskListItem = new JSONObject();
-            final DataExportTask task = taskItem.getValue();
-            taskListItem.put("name", task.name);
-            taskListItem.put("status", "finished");
-            taskList.put(task.uuid.toString(), taskListItem);
+        for (HashMap.Entry<String, DataExportTask> taskItem: finished.entrySet()) {
+            final JSONObject info = task.getInfoAsJSON();
+            info.put("status", "finished");
+            taskList.put(task.uuid.toString(), info);
         }
         status.put("tasks", taskList);
         return status;

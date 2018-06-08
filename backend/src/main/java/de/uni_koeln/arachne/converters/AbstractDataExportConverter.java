@@ -360,7 +360,12 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 //            throw new DataExportException("too_huge_and_not_logged_in", HttpStatus.UNAUTHORIZED, "DE"); // TODO correct language
 //        }
 
-        dataExportStack.push(new DataExportTask( "conversion_" + getCurrentUrl(), this.getClass(), conversionObject));
+        dataExportStack.push(new DataExportTask(
+                getCurrentUrl(),
+                userRightsService.getCurrentUser(),
+                this.getClass(),
+                conversionObject)
+        );
 
         throw new DataExportException("too_huge_and_will_be_sent_by_mail", HttpStatus.ACCEPTED, "DE"); // TODO correct language
     }
