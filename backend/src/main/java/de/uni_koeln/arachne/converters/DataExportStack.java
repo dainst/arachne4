@@ -65,8 +65,7 @@ public class DataExportStack {
     public void taskIsFinishedListener(DataExportTask task) {
         running.remove(task);
         finished.put(task.uuid.toString(), task);
-        System.out.println("Finshed task:" + task.name);
-        System.out.println(running.size() + " tasks in stack");
+        System.out.println("Finished task:" + task.uuid.toString() + " " + running.size() + " tasks in stack");
         nextTask();
     }
 
@@ -100,8 +99,9 @@ public class DataExportStack {
             taskListItem.put("status", "running");
             taskList.put(task.uuid.toString(), taskListItem);
         }
-        for (DataExportTask task: finished) {//! TODO
+        for (HashMap.Entry<String, DataExportTask> taskItem: finished.entrySet()) {//! TODO
             final JSONObject taskListItem = new JSONObject();
+            final DataExportTask task = taskItem.getValue();
             taskListItem.put("name", task.name);
             taskListItem.put("status", "finished");
             taskList.put(task.uuid.toString(), taskListItem);

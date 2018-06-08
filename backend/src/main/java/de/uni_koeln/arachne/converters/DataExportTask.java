@@ -2,7 +2,6 @@ package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.response.search.SearchResult;
-import org.jsoup.select.Evaluator;
 import org.springframework.http.MediaType;
 
 import java.sql.Timestamp;
@@ -32,9 +31,7 @@ public class DataExportTask {
             final AbstractDataExportConverter converterInstance  = (AbstractDataExportConverter) converterClass.newInstance();
             final List<MediaType> mediaTypes = converterInstance.getSupportedMediaTypes();
             mediaType = mediaTypes.get(0);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
@@ -42,5 +39,9 @@ public class DataExportTask {
 
     private void setName(String suffix) {
         name = converterClass.getName() + "_" + timeStamp.toString() + "_" + suffix;
+    }
+
+    public MediaType getMediaType() {
+        return mediaType;
     }
 }

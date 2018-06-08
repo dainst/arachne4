@@ -3,16 +3,14 @@ package de.uni_koeln.arachne.controller;
 import de.uni_koeln.arachne.converters.DataExportException;
 import de.uni_koeln.arachne.converters.DataExportStack;
 import de.uni_koeln.arachne.converters.DataExportTask;
-import de.uni_koeln.arachne.mapping.hibernate.User;
-import de.uni_koeln.arachne.mapping.jdbc.Catalog;
-import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.DataExportFilesUtil;
-import de.uni_koeln.arachne.util.network.CustomMediaType;
-import org.json.JSONObject;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import static de.uni_koeln.arachne.util.security.SecurityUtils.ADMIN;
 
@@ -45,19 +44,35 @@ public class DataExportController {
 
     @RequestMapping(value = "/file/{exportId}", method = RequestMethod.GET)
     public void handleGetExportFile(
-            HttpServletResponse response,
             @PathVariable("exportId") final String exportId,
-            @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage
+            @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage,
+            HttpServletResponse response
     ) {
-
 
         System.out.println("get file named " + exportId);
 
+        final DataExportTask task = dataExportStack.getFinishedTaskById(exportId);
+
+        // check if user is right
+
+        final InputStream fileStream = dataExportFilesUtil.getFile(task);
+        final HttpHeaders headers = new HttpHeaders();
+        response.setHeader("Content-Type", task.getMediaType().toString()+ "; charset=utf-8");
+        response.setHeader("Content-Length", Long.toString(dataExportFilesUtil.getFileSize(task)));
+        //response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
+
+        response.setStatus(HttpStatus.OK.value());
         try {
-            dataExportFilesUtil.getFile(response, exportId);
+            IOUtils.copy(fileStream, response.getOutputStream());
+            response.flushBuffer();
         } catch (IOException e) {
-            throw new DataExportException("io_error:" + e.getMessage(), HttpStatus.FORBIDDEN, headerLanguage);
+            e.printStackTrace();
+            throw new DataExportException("io_error", HttpStatus.INTERNAL_SERVER_ERROR, "DE"); // @ TODO right language
         }
+
+
+        //return ResponseEntity.status(HttpStatus.OK).headers(headers).body(fileStream);
+
     }
 
 

@@ -1,6 +1,8 @@
 package de.uni_koeln.arachne.converters;
 
+import de.uni_koeln.arachne.util.DataExportFilesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -15,29 +17,25 @@ public class DataExportThread implements Runnable {
 
     private DataExportTask dataExportTask;
 
-    @Autowired
     private DataExportStack dataExportStack;
+
+    private DataExportFilesUtil dataExportFilesUtil = new DataExportFilesUtil();
 
     public DataExportThread(DataExportTask dataExportTask) {
         this.dataExportTask = dataExportTask;
     }
 
     public void run() {
-        System.out.println("Thread running! Task=" + dataExportTask.name);
+        System.out.println("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: RUNNING");
 
         try {
             Thread.sleep(3000);
-            //provisional instead of rendering export, just write a file
-            final String ts = new Timestamp(System.currentTimeMillis()).toString();
-            PrintWriter writer = new PrintWriter("/tmp/export-" + dataExportTask.uuid + ".txt", "UTF-8");
-            writer.println("This would be a data export named " + dataExportTask.name);
-            writer.close();
+            dataExportFilesUtil.writeToFile(dataExportTask);
         } catch (Exception e) {
-            System.out.println("Thread error! Task="  + dataExportTask.name);
-            System.out.println(e.getStackTrace());
-            throw new RuntimeException("FILEIO ERROR: " + e.getMessage());
+            System.out.println("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: ERROR:\n" + e.getMessage());
+            //throw new RuntimeException(e);
         } finally {
-            System.out.println("Thread finished! Task="  + dataExportTask.name );
+            System.out.println("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: FINISHED");
             dataExportStack.taskIsFinishedListener(dataExportTask);
         }
     }
