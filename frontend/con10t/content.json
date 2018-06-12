@@ -135,6 +135,12 @@
             "en": "The Antiquity in Drawing, big map"
           },
           "hidden": true
+        },
+        {
+          "id": "gelehrtenbriefe",
+          "title": {
+            "de": "Gelehrte, Ausgräber und Kunsthändler"
+         }
         }
       ]
     },
