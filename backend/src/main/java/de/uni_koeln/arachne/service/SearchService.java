@@ -774,7 +774,11 @@ public class SearchService {
 			    filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(andFilter);
 			}
 		} else {
-			filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(facetFilter);
+		    if (nestedQuery != null) {
+		        filteredQuery = QueryBuilders.boolQuery().must(innerQuery).must(nestedQuery).filter(facetFilter);
+		    } else {
+		        filteredQuery = QueryBuilders.boolQuery().must(innerQuery).filter(facetFilter);
+		    }
 		}
 
 		final ScriptScoreFunctionBuilder scoreFunction = ScoreFunctionBuilders
