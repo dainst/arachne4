@@ -1,0 +1,120 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+  "data": [
+    {
+      "name": "unemp",
+      "url": "https://vega.github.io/editor/data/unemployment.tsv",
+      "format": { "type": "tsv", "parse": "auto" }
+    },
+    {
+      "name": "counties",
+      "url": "https://vega.github.io/editor/data/us-10m.json",
+      "format": { "type": "topojson", "feature": "counties" },
+      "transform": [
+        { "type": "lookup", "from": "unemp", "key": "id", "fields": ["id"], "as": ["unemp"] },
+        { "type": "filter", "expr": "datum.unemp != null" }
+      ]
+    },
+    {
+      "name": "world",
+      "url": "https://vega.github.io/editor/data/world-110m.json",
+      "format": {
+        "type": "topojson",
+        "feature": "countries"
+      }
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "color",
+      "type": "quantize",
+      "domain": [0, 0.15],
+      "range": { "scheme": "blues-9" }
+    }
+  ],
+
+  "marks": [
+    {
+      "name": "region",
+      "type": "shape",
+      "from": { "data": "counties" },
+      "encode": {
+        "enter": { "opacity": { "value": 0.4 } },
+        "update": {
+          "fill": { "scale": "color", "field": "unemp.rate" },
+          "tooltip": { "signal": "'Unemployment ' + format(datum.unemp.rate, ',.1%')" }
+        },
+        "hover": { "fill": { "value": "red" } }
+      },
+      "transform": [
+        { "type": "geoshape", "projection": "projection" }
+      ]
+    },
+    {
+      "type": "text",
+      "encode": {
+        "update": {
+          "text": { "value": "Click - centers, Ctrl+Click - center and zoom" },
+          "align": { "value": "center" },
+          "fontSize": { "value": 25 },
+          "xc": { "signal": "width/2" },
+          "y": { "value": 25 }
+        }
+      }
+    }
+  ],
+
+  "signals": [
+    {
+      "name": "on_region_click",
+      "on": [{
+        "events": "@region:click[!event.ctrlKey]",
+        "update": "setMapView(geoCentroid(null,datum))"
+      }]
+    },
+    {
+      "name": "on_region_ctrlclick",
+      "on": [{
+        "events": "@region:click[event.ctrlKey]",
+        "update": "setMapView(geoBounds(null, datum))"
+      }]
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "orient": "top-right",
+      "title": "Unemployment",
+      "titlePadding": 10,
+      "padding": 12,
+      "offset": 20,
+      "format": "0%",
+      "encode": {
+        "labels": {
+          "interactive": true,
+          "enter": {
+            "text": { "signal": "replace(datum.label,'–',' – ')" },
+            "fontSize": { "value": 12 }
+          },
+          "update": {
+            "fill": { "value": "black" }
+          },
+          "hover": {
+            "fill": { "value": "firebrick" }
+          }
+        },
+        "title": { "update": { "fontSize": { "value": 14 } } },
+        "legend": {
+          "enter": {
+            "stroke": { "value": "#000" },
+            "fill": { "value": "#fff" },
+            "fillOpacity": { "value": 0.6 },
+            "strokeOpacity": { "value": 0.2 },
+            "strokeWidth": { "value": 1.5 }
+          }
+        }
+      }
+    }
+  ]
+}
