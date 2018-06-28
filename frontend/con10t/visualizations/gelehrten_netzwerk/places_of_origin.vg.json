@@ -1,0 +1,74 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+  "signals": [
+    {
+      "name": "selected", "value": null,
+      "on": [
+        {"events": "symbol:mouseover", "update": "datum"},
+        {"events": "symbol:mouseout", "update": "null"}
+      ]
+    }
+  ],
+  "data": [
+    {
+      "name": "places",
+      "url": "con10t/visualizations/gelehrten_netzwerk/data/places_of_origin.csv",
+      "format": {
+        "type": "csv"
+      },
+      "transform": [
+        {
+          "type": "geopoint",
+          "projection": "projection",
+          "fields": ["lng", "lat"]
+        }
+      ]
+    },
+    {
+      "name": "selected",
+      "source": "places",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum === selected"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "name": "city",
+      "from": { "data": "places" },
+      "encode": {
+        "enter": {
+        "fill": {"value": "#F00"},
+        "stroke": {"value": "#000"}
+      },
+        "update": {
+          "x": {"field": "x"},
+          "y": {"field": "y"},
+          "size": {"field": "letter_count", "mult": 1.5}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "from": {"data": "selected"},
+      "encode": {
+        "enter": {
+          "fill": {"value": "#000"},
+          "fontSize": {"value": 12},
+          "align": {"value": "center"},
+          "baseline": {"value": "bottom"},
+          "text": {"field": "letter_count"}
+        },
+        "update": {
+          "x": {"field": "x"},
+          "y": {"field": "y", "offset": -10}
+        }
+      }
+    }
+  ]
+}
