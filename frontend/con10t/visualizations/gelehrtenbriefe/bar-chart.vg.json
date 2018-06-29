@@ -78,7 +78,7 @@
         "enter": {
           "align": {"value": "center"},
           "baseline": {"value": "bottom"},
-          "fill": {"value": "#333"}
+          "fill": {"value": "#933"}
         },
         "update": {
           "x": {"scale": "xscale", "signal": "tooltip.category", "band": 0.5},

@@ -24,7 +24,7 @@
   "data": [
     {
       "name": "places",
-      "url": "con10t/visualizations/gelehrten_netzwerk/data/places_of_origin_and_reception.csv",
+      "url": "con10t/visualizations/gelehrtenbriefe/data/places_of_origin_and_reception.csv",
       "format": {
         "type": "csv"
       },
