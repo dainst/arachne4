@@ -1,0 +1,135 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+  "signals": [
+    {
+      "name": "selected", "value": null,
+      "on": [
+        {"events": "symbol:mouseover", "update": "datum"},
+        {"events": "symbol:mouseout", "update": "null"}
+      ]
+    },
+    {
+      "name": "width",
+      "on": [
+        {
+          "events": {
+            "source": "window",
+            "type": "resize"
+          },
+          "update": "containerSize()[0]"
+        }
+      ]
+    }
+  ],
+  "data": [
+    {
+      "name": "coordinates",
+      "url": "con10t/visualizations/gelehrtenbriefe/data/place_coordinates.csv",
+      "format": {
+        "type": "csv"
+      },
+      "transform": [
+        {
+          "type": "geopoint",
+          "projection": "projection",
+          "fields": ["lng", "lat"],
+          "as": ["x", "y"]
+        }
+      ]
+    },
+    {
+      "name": "connections",
+      "url": "con10t/visualizations/gelehrtenbriefe/data/connection_origin_reception_count.csv",
+      "format": {
+        "type": "csv", "parse": {}
+      },
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "log(datum.letter_count) + 1",
+          "as": "squashed_letter_count"
+        },
+        {
+          "type": "lookup", "from": "coordinates", "key": "id",
+          "fields": ["origin_id", "reception_id"],
+          "as": ["originNode", "receptionNode"]
+        }
+      ]
+    },
+    {
+      "name": "letters_sent_count",
+      "source": "connections",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["origin_id"],
+          "ops": ["count"],
+          "as": ["counted"]
+        },
+        {
+          "type": "lookup", "from": "coordinates", "key": "id",
+          "fields": ["origin_id" ],
+          "as": ["originNode"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum.originNode.lng != 'null' && datum.originNode.lat != 'null'"
+        }
+      ]
+    },
+    {
+      "name": "selected",
+      "source": "coordinates",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum === selected"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "type": "path",
+      "from": {
+        "data": "connections"
+      },
+      "encode": {
+        "update": {
+          "stroke": {"value": "#000"},
+          "strokeOpacity": {"value": 0.2},
+          "width": 1,
+          "height": 1,
+          "strokeWidth": { "field" : "squashed_letter_count"}
+        }
+      },
+      "transform":
+      [
+        {
+          "type": "linkpath",
+          "sourceX": "datum.originNode.x",
+          "targetX": "datum.receptionNode.x",
+          "sourceY": "datum.originNode.y",
+          "targetY": "datum.receptionNode.y",
+          "shape": "curve"
+        }
+      ]
+    },
+    {
+      "type": "symbol",
+      "from": {"data": "letters_sent_count"},
+      "encode": {
+        "update": {
+          "x": {"field": "originNode.x"},
+          "y": {"field": "originNode.y"},
+          "stroke": { "value": "#000"},
+          "strokeWidth":  {"value": 1},
+          "fill": { "value": "#F00"},
+          "fillOpacity": {"value": 0.5},
+          "size": {"field": "counted", "mult": 100, "offset": 10},
+          "zindex": 100
+        }
+      }
+    }
+  ]
+}
