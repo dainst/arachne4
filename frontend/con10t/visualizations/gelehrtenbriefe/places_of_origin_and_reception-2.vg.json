@@ -79,7 +79,7 @@
     },
     {
       "name": "selected",
-      "source": "coordinates",
+      "source": "letters_sent_count",
       "transform": [
         {
           "type": "filter",
@@ -128,6 +128,26 @@
           "fillOpacity": {"value": 0.5},
           "size": {"field": "counted", "mult": 100, "offset": 10},
           "zindex": 100
+        }
+      }
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "from": {
+        "data": "selected"
+      },
+      "encode": {
+        "enter": {
+          "fill": {"value": "#000"},
+          "fontSize": {"value": 12},
+          "align": {"value": "right"},
+          "baseline": {"value": "bottom"},
+          "text": {"field": "counted"}
+        },
+        "update": {
+          "x": {"signal": "width"},
+          "y": {"offset": 20}
         }
       }
     }
