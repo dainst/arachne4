@@ -24,7 +24,7 @@
   "data": [
     {
       "name": "coordinates",
-      "url": "con10t/visualizations/gelehrtenbriefe/data/place_coordinates.csv",
+      "url": "con10t/visualizations/gelehrtenbriefe/place_connections/places.csv",
       "format": {
         "type": "csv"
       },
@@ -39,7 +39,7 @@
     },
     {
       "name": "connections",
-      "url": "con10t/visualizations/gelehrtenbriefe/data/connection_origin_reception_count.csv",
+      "url": "con10t/visualizations/gelehrtenbriefe/place_connections/connections.csv",
       "format": {
         "type": "csv", "parse": {}
       },
@@ -57,29 +57,29 @@
       ]
     },
     {
-      "name": "letters_sent_count",
+      "name": "place_marks",
       "source": "connections",
       "transform": [
         {
           "type": "aggregate",
           "groupby": ["origin_id"],
           "ops": ["count"],
-          "as": ["counted"]
+          "as": ["outgoing_contacts_count"]
         },
         {
           "type": "lookup", "from": "coordinates", "key": "id",
           "fields": ["origin_id" ],
-          "as": ["originNode"]
+          "as": ["place_node"]
         },
         {
           "type": "filter",
-          "expr": "datum.originNode.lng != 'null' && datum.originNode.lat != 'null'"
+          "expr": "datum.place_node.lng != 'null' && datum.place_node.lat != 'null'"
         }
       ]
     },
     {
       "name": "selected",
-      "source": "letters_sent_count",
+      "source": "place_marks",
       "transform": [
         {
           "type": "filter",
@@ -117,16 +117,16 @@
     },
     {
       "type": "symbol",
-      "from": {"data": "letters_sent_count"},
+      "from": {"data": "place_marks"},
       "encode": {
         "update": {
-          "x": {"field": "originNode.x"},
-          "y": {"field": "originNode.y"},
+          "x": {"field": "place_node.x"},
+          "y": {"field": "place_node.y"},
           "stroke": { "value": "#000"},
           "strokeWidth":  {"value": 1},
           "fill": { "value": "#F00"},
-          "fillOpacity": {"value": 0.5},
-          "size": {"field": "counted", "mult": 100, "offset": 10},
+          "fillOpacity": {"value": 0.25 },
+          "size": {"field": "outgoing_contacts_count", "mult": 100, "offset": 10},
           "zindex": 100
         }
       }
@@ -140,10 +140,11 @@
       "encode": {
         "enter": {
           "fill": {"value": "#000"},
+          "fillOpacity": {"value": 1},
           "fontSize": {"value": 12},
           "align": {"value": "right"},
           "baseline": {"value": "bottom"},
-          "text": {"field": "counted"}
+          "text": {"field": "place_node.label"}
         },
         "update": {
           "x": {"signal": "width"},

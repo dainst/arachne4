@@ -24,7 +24,7 @@
   "data": [
     {
       "name": "places",
-      "url": "con10t/visualizations/gelehrtenbriefe/data/places_of_origin.csv",
+      "url": "con10t/visualizations/gelehrtenbriefe/places_of_origin/data.csv",
       "format": {
         "type": "csv"
       },
@@ -55,6 +55,7 @@
       "encode": {
         "enter": {
         "fill": {"value": "#F00"},
+        "fillOpacity": {"value": 0.5 },
         "stroke": {"value": "#000"}
       },
         "update": {
