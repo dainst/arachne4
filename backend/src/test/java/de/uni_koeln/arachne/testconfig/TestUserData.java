@@ -89,6 +89,7 @@ public class TestUserData {
 		user.setFirstname("test");
 		user.setLastname("user");
 		user.setPassword("testpass");
+		user.setEmail("someaddress@somedomain.com");
 		user.setLogin_permission(true);
 		user.setAll_groups(false);
 		Set<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
