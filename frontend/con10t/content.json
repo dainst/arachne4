@@ -684,6 +684,13 @@
             "de": "Die Deutsche Aksum-Expedition 1906"
           },
           "hidden": true
+        },
+        {
+          "id": "naher",
+          "title": {
+            "de": "North Africa Heritage Archive"
+          },
+          "hidden": true
         }
       ]
     },
