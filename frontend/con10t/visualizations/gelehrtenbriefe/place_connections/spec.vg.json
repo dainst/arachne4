@@ -122,33 +122,13 @@
         "update": {
           "x": {"field": "place_node.x"},
           "y": {"field": "place_node.y"},
+          "tooltip": {"field": "place_node.label"},
           "stroke": { "value": "#000"},
           "strokeWidth":  {"value": 1},
           "fill": { "value": "#F00"},
           "fillOpacity": {"value": 0.25 },
           "size": {"field": "outgoing_contacts_count", "mult": 100, "offset": 10},
           "zindex": 100
-        }
-      }
-    },
-    {
-      "type": "text",
-      "interactive": false,
-      "from": {
-        "data": "selected"
-      },
-      "encode": {
-        "enter": {
-          "fill": {"value": "#000"},
-          "fillOpacity": {"value": 1},
-          "fontSize": {"value": 12},
-          "align": {"value": "right"},
-          "baseline": {"value": "bottom"},
-          "text": {"field": "place_node.label"}
-        },
-        "update": {
-          "x": {"signal": "width"},
-          "y": {"offset": 20}
         }
       }
     }
