@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.context;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.uni_koeln.arachne.response.Dataset;
 
 /**
@@ -28,6 +29,7 @@ public class ArachneLink extends AbstractLink {
 		return entity2.getUri();
 	}
 
+	@JsonIgnore
 	public Dataset getEntity1() {
 		return entity1;
 	}

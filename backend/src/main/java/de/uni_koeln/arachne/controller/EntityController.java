@@ -75,14 +75,14 @@ public class EntityController {
 	@RequestMapping(value="/entity/{entityId}", 
 			method=RequestMethod.GET, 
 			produces={APPLICATION_JSON_UTF8_VALUE})
-	public @ResponseBody ResponseEntity<String> handleGetEntityIdRequest(
+	public @ResponseBody ResponseEntity<String> handleGetFormattedEntityByIdRequest(
 			@PathVariable("entityId") final Long entityId,
-			@RequestParam(value = "live", required = false) final Boolean isLive,
+			@RequestParam(value = "live", required = false, defaultValue = "false") final Boolean isLive,
 			@RequestParam(value = "lang", required = false) final String paramLang,
 			@RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLang) throws Transl8Exception {
 
 		final String lang = (paramLang == null) ? headerLang : paramLang;
-		return getFormattedEntity(entityId, null, lang, isLive);
+		return getFormattedEntityResponse(entityId, null, lang, isLive);
 	}
 
     /**
@@ -98,7 +98,7 @@ public class EntityController {
     @RequestMapping(value="/entity/{category}/{categoryId}", 
     		method=RequestMethod.GET, 
     		produces={APPLICATION_JSON_UTF8_VALUE})
-    public @ResponseBody ResponseEntity<String> handleGetCategoryIdRequest(
+    public @ResponseBody ResponseEntity<String> handleGetFormattedEntityByCategoryIdRequest(
     		@PathVariable("category") final String category,
     		@PathVariable("categoryId") final Long categoryId,
     		@RequestParam(value = "live", required = false, defaultValue = "false") final boolean isLive,
@@ -107,7 +107,7 @@ public class EntityController {
     	
     	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
 		final String lang = (paramLang == null) ? headerLang : paramLang;
-		return getFormattedEntity(categoryId, category, lang, isLive);
+		return getFormattedEntityResponse(categoryId, category, lang, isLive);
     }
     
     /**
@@ -147,10 +147,13 @@ public class EntityController {
      * @param response The outgoing HTTP response.
      * @return The <code>Dataset</code> of the requested entity.
      */
-    /*@RequestMapping(value="/data/{entityId}", method=RequestMethod.GET)
-    public @ResponseBody Dataset handleGetDataEntityRequest(@PathVariable("entityId") final Long entityId, final HttpServletResponse response) {
-    	return getDataRequestResponse(entityId, null, response);
-    }*/
+    @RequestMapping(value="/data/{entityId}",
+			method=RequestMethod.GET,
+			produces={APPLICATION_JSON_UTF8_VALUE})
+    public @ResponseBody ResponseEntity<String> handleGetRawEntityByIdRequest(
+    		@PathVariable("entityId") final Long entityId) {
+    	return getRawEntityResponse(entityId, null);
+    }
 
     /**
      * Handles http request for /data/{category}/{id}.
@@ -161,13 +164,16 @@ public class EntityController {
      * @param response The outgoing HTTP response.
      * @return The <code>Dataset</code> of the requested entity
      */
-    /*@RequestMapping(value="data/{category}/{categoryId}", method=RequestMethod.GET)
-    public @ResponseBody Dataset handleGetDataCategoryIdRequest(@PathVariable("category") final String category
-    		, @PathVariable("categoryId") final Long categoryId, final HttpServletResponse response) {
-    	return getDataRequestResponse(categoryId, category, response);
-    }*/
+    @RequestMapping(value="/data/{category}/{categoryId}",
+			method=RequestMethod.GET,
+			produces={APPLICATION_JSON_UTF8_VALUE})
+    public @ResponseBody ResponseEntity<String> handleGetRawEntityByCategoryIdRequest(
+    		@PathVariable("category") final String category,
+			@PathVariable("categoryId") final Long categoryId) {
+    	return getRawEntityResponse(categoryId, category);
+    }
 
-    private ResponseEntity<String> getFormattedEntity(
+    private ResponseEntity<String> getFormattedEntityResponse(
     		final long id,
 			final String category,
 			final String lang,
@@ -186,6 +192,20 @@ public class EntityController {
 		}
 		return ResponseEntity.status(result.getStatus()).body(result.getValue());
 
+	}
+
+	private ResponseEntity<String> getRawEntityResponse(
+			final long id,
+			final String category) {
+
+		TypeWithHTTPStatus<String> result;
+		try {
+			result = entityService.getDataset(id, category);
+		} catch (Transl8Exception e) {
+			LOGGER.error("Failed to contact transl8. Cause: ", e);
+			result = new TypeWithHTTPStatus<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return ResponseEntity.status(result.getStatus()).body(result.getValue());
 	}
 
 }
