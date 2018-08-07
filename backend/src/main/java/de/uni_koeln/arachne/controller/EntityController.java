@@ -144,7 +144,6 @@ public class EntityController {
      * Requests for /data/* return the raw data.
      * Depending on content negotiation either JSON or XML is returned.
      * @param entityId The unique entityID.
-     * @param response The outgoing HTTP response.
      * @return The <code>Dataset</code> of the requested entity.
      */
     @RequestMapping(value="/data/{entityId}",
@@ -161,7 +160,6 @@ public class EntityController {
      * Depending on content negotiation either JSON or XML is returned.
      * @param categoryId The internal ID of the requested entity.
      * @param category The category to query.
-     * @param response The outgoing HTTP response.
      * @return The <code>Dataset</code> of the requested entity
      */
     @RequestMapping(value="/data/{category}/{categoryId}",

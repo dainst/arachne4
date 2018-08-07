@@ -258,6 +258,21 @@ public class EntityService {
     	return result;
 	}
 
+	/**
+	 * Retrieve a <code>Dataset</code> as JSON <code>String</code>.
+	 *
+	 * Adds mandatory contexts to the dataset retrieved from the database and
+	 * serializes the result to JSON.
+	 *
+	 * If the entity is not found a HTTP 404 error message is returned.
+	 *
+	 * If the user does not have permission to see an entity a HTTP 403 status message is returned.
+	 *
+	 * @param id The unique entity ID if no category is given else the internal ID.
+	 * @param category The category to query or <code>null</code>.
+	 * @return The response body as <code>String</code>.
+	 * @throws Transl8Exception if tranl8 cannot be reached.
+	 */
 	public TypeWithHTTPStatus<String> getDataset(final long id, final String category) throws Transl8Exception  {
 
 		final EntityId entityId = getEntityId(id, category);

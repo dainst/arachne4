@@ -913,6 +913,12 @@ public class ResponseFactory {
 		}
 	}
 
+	/**
+	 * Create a raw JSON representation of a dataset.
+	 *
+	 * @param dataset The dataset which encapsulates the SQL query results.
+	 * @return A <code>Dataset</code> as JSON (<code>String</code>).
+	 */
 	public String createRawArachneEntityAsJson(Dataset dataset) {
 		return JSONUtil.MAPPER.valueToTree(dataset).toString();
 	}
