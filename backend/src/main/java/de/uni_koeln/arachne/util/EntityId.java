@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.util;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.uni_koeln.arachne.mapping.hibernate.ArachneEntity;
 
 @XmlRootElement
@@ -92,6 +93,7 @@ public class EntityId {
 	}
 
 	@XmlElement
+	@JsonIgnore
 	public Long getDegree() {
 		return degree;
 	}

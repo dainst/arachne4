@@ -1,12 +1,15 @@
 package de.uni_koeln.arachne.context;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import de.uni_koeln.arachne.response.Dataset;
 
 /**
  * This class is a specialized <code>Link</code> to hold internal links. This means that both sides of the link
  * are entities fetched from the database. As such they a represented as <code>ArachneDatasets</code>. 
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ArachneLink extends AbstractLink {
 
 	/**
@@ -20,11 +23,13 @@ public class ArachneLink extends AbstractLink {
 	private Dataset entity2;
 	
 	@Override
+	@JsonIgnore
 	public String getUri1() {
 		return entity1.getUri();
 	}
 
 	@Override
+	@JsonIgnore
 	public String getUri2() {
 		return entity2.getUri();
 	}
@@ -42,6 +47,7 @@ public class ArachneLink extends AbstractLink {
 		this.entity1 = entity1;
 	}
 
+	@JsonUnwrapped
 	public Dataset getEntity2() {
 		return entity2;
 	}

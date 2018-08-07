@@ -9,6 +9,9 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import de.uni_koeln.arachne.context.AbstractLink;
 import de.uni_koeln.arachne.context.Context;
 import de.uni_koeln.arachne.util.EntityId;
@@ -20,6 +23,7 @@ import de.uni_koeln.arachne.util.StrUtils;
  *
  */
 @XmlRootElement
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Dataset {
 
 	// TODO change implementation to something more portable
@@ -114,6 +118,7 @@ public class Dataset {
 	 * Returns the unique Uri of the dataset.
 	 * @return The unique Uri idenifying the dataset
 	 */
+	@JsonIgnore
 	public String getUri() {
 		if (arachneId.getArachneEntityID() == null) {
 			return "Invalid Uri! Ask later!";
@@ -126,7 +131,7 @@ public class Dataset {
 	public EntityId getArachneId() {
 		return arachneId;
 	}
-	
+
 	public List<Context> getContexts() {
 		return contexts;
 	}
@@ -156,7 +161,8 @@ public class Dataset {
 	public AdditionalContent getAdditionalContent() {
 		return additionalContent;
 	}
-	
+
+	@JsonIgnore
 	public double getDegree() {
 		return degree;
 	}

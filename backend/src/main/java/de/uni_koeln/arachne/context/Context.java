@@ -3,6 +3,9 @@ package de.uni_koeln.arachne.context;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.uni_koeln.arachne.response.Dataset;
 
 
@@ -14,6 +17,7 @@ import de.uni_koeln.arachne.response.Dataset;
  * retrieved completely anyways. And the fact that a context needs a reference to the <code>ContextService</code> shows 
  * that the service can do the retrieval and fill the contexts. 
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Context {
 	
 	/**
@@ -61,6 +65,7 @@ public class Context {
 	 * Return every <code>Link</code> in this context.
 	 * @return The complete list of contexts.
 	 */
+	@JsonProperty("entities")
 	public List<AbstractLink> getAllContexts() {
 		if (content.isEmpty()) {
 			return null;
@@ -73,6 +78,7 @@ public class Context {
 	 * Returns the first link element of the context.
 	 * @return The First <code>Link</code> of the context.
 	 */
+	@JsonIgnore
 	public AbstractLink getFirstContext() {
 		if (content.isEmpty()) {
 			return null; 
@@ -99,6 +105,7 @@ public class Context {
 	 * it retrieves them.
 	 * @return The number of context entities.
 	 */
+	@JsonIgnore
 	public int getSize() {
 		return content.size();
 	}
@@ -107,6 +114,7 @@ public class Context {
 	 * Getter for the context type.
 	 * @return The context type.
 	 */
+	@JsonProperty("type")
 	public String getContextType() {
 		return this.contextType;
 	}
