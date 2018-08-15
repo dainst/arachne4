@@ -4,33 +4,19 @@
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
 	<explicitContextualizers>custompathobjektzenontitle</explicitContextualizers>
 	<subtables>
-		<subtable connectFieldParent="PrimaryKey"
-			connectFieldSubTable="PrimaryKey">objektbauornamentik</subtable>
-		<subtable connectFieldParent="PrimaryKey"
-			connectFieldSubTable="PrimaryKey">objektgemaelde</subtable>
-		<subtable connectFieldParent="PrimaryKey"
-			connectFieldSubTable="PrimaryKey">objektkeramik</subtable>
-		<subtable connectFieldParent="PrimaryKey"
-			connectFieldSubTable="PrimaryKey">objektlebewesen</subtable>
-		<subtable connectFieldParent="PrimaryKey"
-			connectFieldSubTable="PrimaryKey">objektmosaik</subtable>
-		<subtable connectFieldParent="PrimaryKey"
-			connectFieldSubTable="PrimaryKey">objektmuenzen</subtable>
-		<subtable connectFieldParent="PrimaryKey"
-			connectFieldSubTable="PrimaryKey">objektplastik</subtable>
-		<subtable connectFieldParent="PrimaryKey"
-			connectFieldSubTable="PrimaryKey">objektplomben</subtable>
-		<subtable connectFieldParent="PrimaryKey"
-			connectFieldSubTable="PrimaryKey">objektsiegel</subtable>
-		<subtable connectFieldParent="PrimaryKey"
-			connectFieldSubTable="PrimaryKey">objektterrakotten</subtable>
-		<subtable connectFieldParent="PrimaryKey"
-			connectFieldSubTable="FS_ObjektID">datenblattberlin</subtable>
-		<subtable connectFieldParent="PrimaryKey"
-				  connectFieldSubTable="FS_ObjektID">fotoabzug</subtable>
-
-		<!-- <subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">datenblattberlin_inschrift</subtable> -->
-</subtables>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektbauornamentik</subtable>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektgemaelde</subtable>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektkeramik</subtable>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektlebewesen</subtable>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektmosaik</subtable>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektmuenzen</subtable>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektplastik</subtable>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektplomben</subtable>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektsiegel</subtable>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektterrakotten</subtable>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">datenblattberlin</subtable>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">fotoabzug</subtable>
+	</subtables>
 	<display>
 		<title>
 			<section>
@@ -76,26 +62,6 @@
 				</section>
 				<section labelKey="Inschrift">
 					<field datasource="datenblattberlin.Inschrift" />
-					<!-- <<field datasource="datenblattberlin_inschrift.Inschrift_Anbringungsort"
-						prefix="Anbringugsort: " />-->
-					<!-- <<field datasource="datenblattberlin_inschrift.Inschrift_Besonderheiten"
-						prefix="Besonderheiten: " />-->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Buchstabenhoehe"
-						prefix="Buchstabenhöhe: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Zeilenabstand"
-						prefix="Zeilenabstand: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Interpunktion"
-						prefix="Interpunktion: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Wortlaut"
-						prefix="Wortlaut: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_kritApparat"
-						prefix="krit. Apparat: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Uebersetzung"
-						prefix="Übersetzung: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Literatur"
-						prefix="Literatur: " /> -->
-					<!-- <field datasource="datenblattberlin_inschrift.Inschrift_Kommentar"
-						prefix="Kommentar: " /> -->
 				</section>
 				<section labelKey="Inventare/Archivalien">
 					<field datasource="datenblattberlin.InventareArchivalien" />
@@ -169,14 +135,10 @@
 					<field datasource="objekt.BearbeitungenModern" prefix="Moderne Bearbeitungen: " />
 				</section>
 				<section labelKey="Maße">
-					<field datasource="objekt.BreiteGesamt" prefix="Breite: "
-						postfix=" cm" />
-					<field datasource="objekt.HoeheGesamt" prefix="Höhe: "
-						postfix=" cm" />
-					<field datasource="objekt.TiefeGesamt" prefix="Tiefe: "
-						postfix=" cm" />
-					<field datasource="objekt.DurchmesserGesamt" prefix="Durchmesser: "
-						postfix=" cm" />
+					<field datasource="objekt.BreiteGesamt" prefix="Breite: " postfix=" cm" />
+					<field datasource="objekt.HoeheGesamt" prefix="Höhe: " postfix=" cm" />
+					<field datasource="objekt.TiefeGesamt" prefix="Tiefe: " postfix=" cm" />
+					<field datasource="objekt.DurchmesserGesamt" prefix="Durchmesser: " postfix=" cm" />
 					<field datasource="objekt.GewichtGesamt" prefix="Gewicht: " />
 					<field datasource="objekt.ObjektMaszeBemerk" prefix="Bemerkung: " />
 				</section>
@@ -184,25 +146,18 @@
 					<field datasource="objekt.RekoObjekt" />
 					<field datasource="objekt.ObjektRestauroRestaurier" />
 					<field datasource="objekt.ObjektRestauroBeschreibung" />
-					<field datasource="objekt.ObjektRestauroBeschreibungVorzustand"
-						prefix="Vorzustand: " />
+					<field datasource="objekt.ObjektRestauroBeschreibungVorzustand" prefix="Vorzustand: " />
 					<field datasource="objekt.ObjektRestauroMasznahmen" prefix="Maßnahmen: " />
 					<field datasource="objekt.ObjektRestauroZeitraum" prefix="Zeitraum: " />
-					<field datasource="objekt.ObjektRestauroDurchgefuehrtVon"
-						prefix="Restaurator: " />
-					<field datasource="objekt.ObjektRestauroMasznahmenFruehere"
-						prefix="Frühere Maßnahmen: " />
+					<field datasource="objekt.ObjektRestauroDurchgefuehrtVon" prefix="Restaurator: " />
+					<field datasource="objekt.ObjektRestauroMasznahmenFruehere" prefix="Frühere Maßnahmen: " />
 					<field datasource="objekt.ObjektRestauroMaterialBemerk" />
 					<field datasource="objekt.ObjektRestauroHerstell" />
 					<field datasource="objekt.ObjektRestauroAnalyseZiel" prefix="Analyseziel: " />
-					<field datasource="objekt.ObjektRestauroAnalyseMasznahmenMethoden"
-						prefix="Maßnahmen und Methoden: " />
-					<field datasource="objekt.ObjektRestauroAnalyseDurchgefuehrtVon"
-						prefix="Analyse durchgeführt von: " />
-					<field datasource="objekt.ObjektRestauroAnalyseZeitraum"
-						prefix="Zeitraum: " />
-					<field datasource="objekt.ObjektRestauroAnalyseErgebnis"
-						prefix="Ergebnis: " />
+					<field datasource="objekt.ObjektRestauroAnalyseMasznahmenMethoden" prefix="Maßnahmen und Methoden: " />
+					<field datasource="objekt.ObjektRestauroAnalyseDurchgefuehrtVon" prefix="Analyse durchgeführt von: " />
+					<field datasource="objekt.ObjektRestauroAnalyseZeitraum" prefix="Zeitraum: " />
+					<field datasource="objekt.ObjektRestauroAnalyseErgebnis" prefix="Ergebnis: " />
 				</section>
 				<section labelKey="Katalog (deutsch)">
 					<field datasource="objekt.Katalogbearbeitung" prefix="Bearbeiter: " />
@@ -676,39 +631,26 @@
 			<section labelKey="Information zum Gemälde">
 				<section labelKey="Kerndaten - neuzeitliche Gemälde">
 					<field datasource="objektgemaelde.KuenstlerGemaelde" prefix="Künstler: " />
-					<field datasource="objektgemaelde.KuenstlerVorbildGemaelde"
-						prefix="Künstler Vorbild: " />
-					<field datasource="objektgemaelde.BeschreibungGemaelde"
-						prefix="Beschreibung: " />
-					<field datasource="objektgemaelde.TechnikGemaeldeCheck"
-						prefix="Technik: " />
+					<field datasource="objektgemaelde.KuenstlerVorbildGemaelde" prefix="Künstler Vorbild: " />
+					<field datasource="objektgemaelde.BeschreibungGemaelde" prefix="Beschreibung: " />
+					<field datasource="objektgemaelde.TechnikGemaeldeCheck" prefix="Technik: " />
 					<field datasource="objektgemaelde.TechnikGemaelde" prefix="Spezifikiation Technik: " />
 					<field datasource="objektgemaelde.GemaeldeMatTraeger" prefix="Material Träger: " />
-					<field datasource="objektgemaelde.SpezGemaeldeMatTraeger"
-						prefix="Spezifikation Material Träger: " />
+					<field datasource="objektgemaelde.SpezGemaeldeMatTraeger" prefix="Spezifikation Material Träger: " />
 					<field datasource="objektgemaelde.GemaeldeMatMalerei" prefix="Material Malerei: " />
-					<field datasource="objektgemaelde.SpezGemaeldeMatMalerei"
-						prefix="Spezifikation Material Malerei: " />
+					<field datasource="objektgemaelde.SpezGemaeldeMatMalerei" prefix="Spezifikation Material Malerei: " />
 					<field datasource="objektgemaelde.Beschreibung" prefix="Beschreibung: " />
 					<field datasource="objektgemaelde.ZustandGemaelde" prefix="Zustand: " />
-					<field datasource="objektgemaelde.RestaurierungGemaelde"
-						prefix="Restaurierungen: " />
+					<field datasource="objektgemaelde.RestaurierungGemaelde" prefix="Restaurierungen: " />
 				</section>
 				<section labelKey="Kerndaten - Antike Flächenkunst">
-					<field datasource="objektgemaelde.KuenstlerFlaechenkunst"
-						prefix="Künstler: " />
-					<field datasource="objektgemaelde.BeschreibungFlaechenkunst"
-						prefix="Beschreibung: " />
-					<field datasource="objektgemaelde.RestaurierungenFlaechenkunst"
-						prefix="Restaurierungen: " />
-					<field datasource="objektgemaelde.DekorationsartObjektgemaelde"
-						prefix="Dekorationsart: " />
-					<field datasource="objektgemaelde.MalereistilObjektgemaelde"
-						prefix="Malereistil: " />
-					<field datasource="objektgemaelde.MarmorsorteObjektgemaelde"
-						prefix="Marmorsorte: " />
-					<field datasource="objektgeamelde.MarmorinkrustationenStilObjektgemaelde"
-						prefix="Stil der Marmorinkrustationen: " />
+					<field datasource="objektgemaelde.KuenstlerFlaechenkunst" prefix="Künstler: " />
+					<field datasource="objektgemaelde.BeschreibungFlaechenkunst" prefix="Beschreibung: " />
+					<field datasource="objektgemaelde.RestaurierungenFlaechenkunst" prefix="Restaurierungen: " />
+					<field datasource="objektgemaelde.DekorationsartObjektgemaelde" prefix="Dekorationsart: " />
+					<field datasource="objektgemaelde.MalereistilObjektgemaelde" prefix="Malereistil: " />
+					<field datasource="objektgemaelde.MarmorsorteObjektgemaelde" prefix="Marmorsorte: " />
+					<field datasource="objektgeamelde.MarmorinkrustationenStilObjektgemaelde" prefix="Stil der Marmorinkrustationen: " />
 				</section>
 				<section labelKey="Bezeichnung">
 					<field datasource="objektgemaelde.Bezeichnet" prefix="Bezeichnet: " />
@@ -759,9 +701,7 @@
 					</section>
 				</section>
 			</section>
-
 			<section labelKey="Informationen zur Münze">
-
 				<section labelKey="Erhaltungszustand">
 					<field datasource="objektmuenzen.Muenze_Abnutzung" prefix = "Abnutzung: "/>
 					<field datasource="objektmuenzen.Muenze_Korrosion" prefix = "Korrosion: "/>
@@ -806,7 +746,6 @@
 					<field datasource="objektmuenzen.Muenze_ReferenzTyp"/>
 				</section>
 			</section>
-
 			<section labelKey="Informationen zum Objekt: Träger von Siegelabdrücken">
 				<section labelKey="Identifikation">
 					<field datasource="objektplomben.pINVNR" prefix="Inventarnummer: " />
@@ -923,8 +862,7 @@
 	                <field datasource="objekt.ObjektAusleiheZweck" prefix="Zweck: " />
 	                <field datasource="objekt.ObjektAusleiheDauerVon" prefix="Von: " />
 	                <field datasource="objekt.ObjektAusleiheDauerBis" prefix="Bis: " />
-	                <field datasource="objekt.ObjektAusleiheDauenahmeEigentuemer"
-	                    prefix="Dauernahme Eigentümer: " />
+	                <field datasource="objekt.ObjektAusleiheDauenahmeEigentuemer" prefix="Dauernahme Eigentümer: " />
 	            </section>
 	            <section>
 	                <field datasource="objekt.ArtErwerb" />
