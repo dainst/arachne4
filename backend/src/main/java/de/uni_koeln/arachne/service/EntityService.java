@@ -93,36 +93,51 @@ public class EntityService {
 	 * @throws Transl8Exception if tranl8 cannot be reached. 
      */
     public TypeWithHTTPStatus<String> getEntityFromDB(final Long id, final String category, final String lang) throws Transl8Exception {
-    	final EntityId entityId;
-    	if (category == null) {
-    		entityId = entityIdentificationService.getId(id);
-    	} else {
-    		entityId = entityIdentificationService.getId(category, id);
-    	}
-    	
-    	if (entityId == null) {
-    		return new TypeWithHTTPStatus<String>(HttpStatus.NOT_FOUND);
-    	}
-    	
-    	LOGGER.debug("Request for entity: " + entityId.getArachneEntityID() + " - type: " + entityId.getTableName());
-    	
-    	if (entityId.isDeleted()) {
-    		return new TypeWithHTTPStatus<String>(responseFactory.createResponseForDeletedEntityAsJsonString(entityId));
-    	}
+
+    	final EntityId entityId = getEntityId(id, category);
+
+    	TypeWithHTTPStatus<String> checkResult = checkEntityId(entityId);
+    	if (checkResult != null) return checkResult;
     	
     	final String result = getFormattedEntityByIdAsJsonString(entityId, lang);
     	
     	if ("forbidden".equals(result)) {
-    		return new TypeWithHTTPStatus<String>(HttpStatus.FORBIDDEN);
+    		return new TypeWithHTTPStatus<>(HttpStatus.FORBIDDEN);
     	}
     	
     	if (result != null) {
-    		return new TypeWithHTTPStatus<String>(result);
+    		return new TypeWithHTTPStatus<>(result);
     	}
     	
-    	return new TypeWithHTTPStatus<String>(HttpStatus.NOT_FOUND);
+    	return new TypeWithHTTPStatus<>(HttpStatus.NOT_FOUND);
     }
-	
+
+	private TypeWithHTTPStatus<String> checkEntityId(EntityId entityId) {
+
+		if (entityId == null) {
+			return new TypeWithHTTPStatus<>(HttpStatus.NOT_FOUND);
+		}
+
+		LOGGER.debug("Request for entity: " + entityId.getArachneEntityID() + " - type: " + entityId.getTableName());
+
+		if (entityId.isDeleted()) {
+			return new TypeWithHTTPStatus<>(responseFactory.createResponseForDeletedEntityAsJsonString(entityId));
+		}
+
+		return null;
+
+	}
+
+	private EntityId getEntityId(Long id, String category) {
+		EntityId entityId;
+		if (category == null) {
+			entityId = entityIdentificationService.getId(id);
+		} else {
+			entityId = entityIdentificationService.getId(category, id);
+		}
+		return entityId;
+	}
+
 	/**
 	 * This functions retrieves a <code>FromattedArachneEntity</code> as JSON <code>String</code>.
 	 * @param entityId The corresponding EntityId object.
@@ -241,5 +256,47 @@ public class EntityService {
     		result = responseFactory.createFormattedArachneEntityAsJson(arachneDataset, lang);
     	}
     	return result;
+	}
+
+	/**
+	 * Retrieve a <code>Dataset</code> as JSON <code>String</code>.
+	 *
+	 * Adds mandatory contexts to the dataset retrieved from the database and
+	 * serializes the result to JSON.
+	 *
+	 * If the entity is not found a HTTP 404 error message is returned.
+	 *
+	 * If the user does not have permission to see an entity a HTTP 403 status message is returned.
+	 *
+	 * @param id The unique entity ID if no category is given else the internal ID.
+	 * @param category The category to query or <code>null</code>.
+	 * @return The response body as <code>String</code>.
+	 * @throws Transl8Exception if tranl8 cannot be reached.
+	 */
+	public TypeWithHTTPStatus<String> getDataset(final long id, final String category) throws Transl8Exception  {
+
+		final EntityId entityId = getEntityId(id, category);
+
+		TypeWithHTTPStatus<String> checkResult = checkEntityId(entityId);
+		if (checkResult != null) return checkResult;
+
+		final String datasetGroupName = singleEntityDataService.getDatasetGroup(entityId);
+		final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
+
+		if (!userRightsService.isDataimporter() && !userRightsService.userHasDatasetGroup(datasetGroup)) {
+			new TypeWithHTTPStatus<>(HttpStatus.FORBIDDEN);
+		}
+
+		final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(entityId);
+		contextService.addMandatoryContexts(arachneDataset, "en");
+
+		String result = responseFactory.createRawArachneEntityAsJson(arachneDataset);
+
+		if (result != null) {
+			return new TypeWithHTTPStatus<>(result);
+		}
+
+		return new TypeWithHTTPStatus<>(HttpStatus.NOT_FOUND);
+
 	}
 }

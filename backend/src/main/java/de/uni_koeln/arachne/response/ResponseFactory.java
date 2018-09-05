@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import de.uni_koeln.arachne.util.*;
 import de.uni_koeln.arachne.util.sql.CatalogEntryInfo;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -35,11 +36,6 @@ import de.uni_koeln.arachne.response.link.ExternalLinkResolver;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
-import de.uni_koeln.arachne.util.DateUtils;
-import de.uni_koeln.arachne.util.EntityId;
-import de.uni_koeln.arachne.util.JSONUtil;
-import de.uni_koeln.arachne.util.StrUtils;
-import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.security.SecurityUtils;
 
 /**
@@ -915,5 +911,15 @@ public class ResponseFactory {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Create a raw JSON representation of a dataset.
+	 *
+	 * @param dataset The dataset which encapsulates the SQL query results.
+	 * @return A <code>Dataset</code> as JSON (<code>String</code>).
+	 */
+	public String createRawArachneEntityAsJson(Dataset dataset) {
+		return JSONUtil.MAPPER.valueToTree(dataset).toString();
 	}
 }
