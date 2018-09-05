@@ -113,8 +113,6 @@ public class SearchController {
 	 * @param scrollMode If the ES scroll API should be used for the query (user must be logged in to allow this) 
 	 * (optional)
 	 * @param facet If set only the values for this facet will be returned instead of a full search result. (optional)
-	 * @param editorFields Whether the editor-only fields should be searched and highlighted (optional, 
-	 * default is <code>true</code>)
 	 * @param lang the language as HTTP request parameter
 	 * @param headerLanguage the value of the 'Accept-Language' HTTP header
 	 * @return A response object containing the data or a status response (this is serialized to JSON; XML is not supported).
@@ -135,7 +133,6 @@ public class SearchController {
 			@RequestParam(value = "sf", required = false) final String[] facetsToSort,
 			@RequestParam(value = "scroll", required = false) final Boolean scrollMode,
 			@RequestParam(value = "facet", required = false) final String facet,
-			@RequestParam(value = "editorfields", required = false) Boolean editorFields,
 			@RequestParam(value = "lang", required = false) final String lang,
             @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage) {
 		
@@ -143,7 +140,6 @@ public class SearchController {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 		
-		editorFields = (editorFields == null) ? true : editorFields;
 		
 		final SearchParameters searchParameters = new SearchParameters(defaultLimit, defaultFacetLimit) 
 				.setQuery(queryString)
@@ -158,10 +154,7 @@ public class SearchController {
 				.setGeoHashPrecision(geoHashPrecision)
 				.setFacetsToSort(facetsToSort)
 				.setFacet(facet)
-				.setScrollMode(scrollMode)
-				.setSearchEditorFields(editorFields && 
-						userRightsService.userHasRole(SecurityUtils.ADMIN));
-		
+				.setScrollMode(scrollMode);
 		if (!searchParameters.isValid()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -371,11 +364,10 @@ public class SearchController {
                                                                @RequestParam(value = "sf", required = false) final String[] facetsToSort,
                                                                @RequestParam(value = "scroll", required = false) final Boolean scrollMode,
                                                                @RequestParam(value = "facet", required = false) final String facet,
-                                                               @RequestParam(value = "editorfields", required = false) Boolean editorFields,
                                                                @RequestParam(value = "lang", required = false) final String lang,
                                                                @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage) {
 
-        ResponseEntity<?> result = handleSearchRequest(queryString, limit, offset, filterValues, facetLimit, facetOffset, sortField, false, true, boundingBox, geoHashPrecision, facetsToSort, scrollMode, facet, editorFields, lang, headerLanguage);
+        ResponseEntity<?> result = handleSearchRequest(queryString, limit, offset, filterValues, facetLimit, facetOffset, sortField, false, true, boundingBox, geoHashPrecision, facetsToSort, scrollMode, facet, lang, headerLanguage);
         SearchResult searchResult = (SearchResult) result.getBody();
         return ResponseEntity.ok().body(searchResult.getFacets());
     }
