@@ -139,16 +139,14 @@ public class SearchService {
 			, final Multimap<String, String> filters, final String lang) throws Transl8Exception {
 
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
-				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox(), false
-						, searchParameters.isSearchEditorFields()))
+				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox(), false))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setSize(searchParameters.getLimit())
 				.setFrom(searchParameters.getOffset());
 
 		if (!searchParameters.isFacetMode()) {
 			result
-				.setHighlighterQuery(buildQuery(searchParameters.getQuery(), filters, null, true
-						, searchParameters.isSearchEditorFields()))
+				.setHighlighterQuery(buildQuery(searchParameters.getQuery(), filters, null, true))
 				.setHighlighterOrder("score");
 			if (searchParameters.isScrollMode()
 					&& userRightsService.isSignedInUser()
@@ -168,15 +166,13 @@ public class SearchService {
 				field.numOfFragments(5);
 				result.addHighlightedField(field);
 
-				if (searchParameters.isSearchEditorFields()) {
-					field = new Field("datasetGroup");
-					field.numOfFragments(0);
-					result.addHighlightedField(field);
+				field = new Field("datasetGroup");
+				field.numOfFragments(0);
+				result.addHighlightedField(field);
 
-					field = new Field("searchableEditorContent");
-					field.numOfFragments(0);
-					result.addHighlightedField(field);
-				}
+				field = new Field("searchableEditorContent");
+				field.numOfFragments(0);
+				result.addHighlightedField(field);
 			}
 		}
 
@@ -239,7 +235,7 @@ public class SearchService {
 	public SearchRequestBuilder buildIndexSearchRequest(final String facetName, final Multimap<String, String> filters) {
 
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
-				.setQuery(buildQuery("*", filters, null, false, false))
+				.setQuery(buildQuery("*", filters, null, false))
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setSize(0);
 
@@ -654,15 +650,12 @@ public class SearchService {
 	 * @param filters The filters to create a filter query from.
 	 * @param bbCoords An array representing the top left and bottom right coordinates of a bounding box (order: lat, long)
 	 * @param disableAccessControl If the access control query shall be replaced with a match all query
-	 * @param searchEditorFields Whether the editor-only fields should be searched.
 	 * @return An elasticsearch <code>QueryBuilder</code> which in essence is a complete elasticsearch query.
 	 */
 	private QueryBuilder buildQuery(String searchParam
 			, final Multimap<String, String> filters
 			, final Double[] bbCoords
-			, final boolean disableAccessControl
-			, final boolean searchEditorFields) {
-
+			, final boolean disableAccessControl) {
 
 		QueryBuilder facetFilter;
 		if (!disableAccessControl) {
@@ -670,7 +663,7 @@ public class SearchService {
 		} else {
 			facetFilter = QueryBuilders.matchAllQuery();
 		}
-		
+
 		QueryBuilder placeFilter = QueryBuilders.matchAllQuery();
 
 		if (filters != null && !filters.isEmpty()) {
@@ -740,15 +733,13 @@ public class SearchService {
 		    QueryBuilder matchQuery = QueryBuilders.matchQuery("places.gazetteerId", gazetteerID);
 		    nestedQuery = QueryBuilders.nestedQuery("places", QueryBuilders.boolQuery().must(matchQuery));
 		}
-		
+
         innerQuery = QueryBuilders.queryStringQuery(searchParam)
                 .defaultOperator(Operator.AND)
                 .analyzeWildcard(true);
 
-		if (searchEditorFields) {
-			innerQuery.field("searchableEditorContent^0.5");
-			innerQuery.field("datasetGroup^0.5");
-		}
+		innerQuery.field("searchableEditorContent^0.5");
+		innerQuery.field("datasetGroup^0.5");
 
 		for (String textField: searchFields.text()) {
 			innerQuery.field(textField);
