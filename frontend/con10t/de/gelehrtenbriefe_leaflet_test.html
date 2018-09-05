@@ -11,15 +11,22 @@
                         letter-data-path="/con10t/visualizations/gelehrtenbriefe/place_connections_leaflet/letters.csv"
                         places-data-path="/con10t/visualizations/gelehrtenbriefe/place_connections_leaflet/places.csv"
                         zoom="7" lat="49.794444" lng="9.929444">
-                    <div style="height: 800px; width: 100%;" class="map-container"></div>
+                    <div style="height: 400px; width: 100%;" class="map-container"></div>
                 </con10t-leaflet-network>
             </div>
             <div class="col-lg-2">
-                Test
+                Showing data between dates:
+                <div id="date-range-display"></div>
             </div>
         </div>
-        <div class="row">
 
+        <div class="row">
+          <fieldset>
+              <label for="min-date-picker">Select daterange minimum</label>
+              <input type="range" id="min-date-picker" name="min date" />
+              <label for="max-date-picker">Select daterange maximum</label>
+              <input type="range" id="max-date-picker" name="max date"/>
+          </fieldset>
         </div>
     </div>
 </div>
