@@ -3,8 +3,47 @@
         Leaflet Test
         <small>Bitte ignorieren</small>
     </h1>
+    <style>
 
+        body {
+            font: 10px sans-serif;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+
+        .x.axis path {
+            display: none;
+        }
+
+        .line {
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 1.5px;
+        }
+
+        .overlay {
+            fill: none;
+            pointer-events: all;
+        }
+
+        .focus circle {
+            fill: none;
+            stroke: steelblue;
+        }
+
+    </style>
     <div class="container">
+        <div class="row">
+            <con10t-line-chart
+                letter-data-path="/con10t/visualizations/gelehrtenbriefe/place_connections_leaflet/letters.csv">
+            <svg></svg>
+            </con10t-line-chart>
+        </div>
         <div class="row">
             <div class="col-md-10">
                 <con10t-leaflet-network
@@ -29,12 +68,6 @@
           </fieldset>
         </div>
 
-        <div class="row">
-            <con10t-histogram
-                letter-data-path="/con10t/visualizations/gelehrtenbriefe/place_connections_leaflet/letters.csv">
-            </con10t-histogram>
 
-            <svg width="960" height="500"></svg>
-        </div>
     </div>
 </div>
