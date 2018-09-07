@@ -72,6 +72,9 @@
       }
     ]
   },
+  "gelehrtenbriefe": {
+    "q": "searchableEditorContent:Gelehrtenbriefe"
+  },
   "gipsleipzigsamml": {
     "q": "connectedEntities:1241594",
     "facets": [
