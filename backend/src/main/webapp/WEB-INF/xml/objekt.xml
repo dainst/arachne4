@@ -513,7 +513,6 @@
 				</section>
 				<section labelKey="Bearbeitung" separator="; ">
 					<field datasource="objektterrakotten.depotfremdeRepliken" />
-					<field datasource="objektterrakotten.Aufnahmedesiderate" />
 					<field datasource="objektterrakotten.KatalogtextNoelke" />
 					<field datasource="objektterrakotten.persNotizen" />
 					<field datasource="objektterrakotten.KomplexDatierung" />
