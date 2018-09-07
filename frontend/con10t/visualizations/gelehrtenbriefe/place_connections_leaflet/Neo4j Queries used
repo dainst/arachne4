@@ -2,4 +2,4 @@ MATCH (p:Place) RETURN id(p) as id, p.name as name, p.auth_id as auth_id, p.auth
 
 MATCH (author:Person)-[:IS_AUTHOR]->(l:Letter)<-[:IS_RECIPIENT]-(recipient:Person)
 MATCH (origin:Place)<-[:SEND_FROM]-(l)-[:SEND_TO]->(destination:Place)
-RETURN id(l) as id, l.kalliope_id as auth_id, l.title as title, l.origin_date_presumed as date_presumed, l.origin_date_from as origin_date_from, l.origin_date_till as origin_date_to, l.summary_paragraphs as summary, l.language_codes as language_codes, id(author) as author_id, id(recipient) as recipient_id, id(origin) as origin_id, id(destination) as destination_id
+RETURN id(l) as id, l.kalliope_id as auth_id, l.title as title, l.origin_date_presumed as date_presumed, l.origin_date_from as timespanFrom, l.origin_date_till as timespanTo, l.summary_paragraphs as summary, l.language_codes as language_codes, id(author) as author_id, id(recipient) as recipient_id, id(origin) as originPlaceId, id(destination) as destinationPlaceId
