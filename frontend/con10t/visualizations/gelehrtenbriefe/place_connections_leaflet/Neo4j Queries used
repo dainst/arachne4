@@ -1,4 +1,4 @@
-MATCH (p:Place) RETURN id(p) as id, p.auth_name as name, p.auth_id as auth_id, p.auth_source as auth_source, p.auth_lat as lat, p.auth_lng as lng
+MATCH (p:Place) RETURN id(p) as id, p.auth_name as name, p.auth_id as authId, p.auth_source as authSource, p.auth_lat as lat, p.auth_lng as lng
 
 MATCH (author:Person)-[:IS_AUTHOR]->(l:Letter)<-[:IS_RECIPIENT]-(recipient:Person)
 MATCH (origin:Place)<-[:SEND_FROM]-(l)-[:SEND_TO]->(destination:Place)

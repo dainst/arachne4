@@ -1,4 +1,4 @@
-id	name	auth_id	auth_source	lat	lng
+id	name	authId	authSource	lat	lng
 563006	Gießen	2176820	GAZ	50.581984	8.670218
 563007	Erfurt	2116134	GAZ	50.9787	11.03283
 563008	Dessau	4011536-7	GND	51.838639	12.245549
