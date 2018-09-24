@@ -433,15 +433,28 @@ public class UserManagementController {
         final String firstName = getFormData(userCredentials, "firstname", true, "ui.passwordreset.");
         final String lastName = getFormData(userCredentials, "lastname", true, "ui.passwordreset.");
 
-        User userByEMailAddress = userDao.findByEMailAddress(eMailAddress);
         User userByName = userDao.findByName(userName);
-        if (!(userByName != null && userByName.equals(userByEMailAddress))) return result;
+        if (userByName == null) {
+        	LOGGER.info("User not found: {}", userName);
+        	return result;
+		}
+        if (!userByName.getEmail().equals(eMailAddress)) {
+        	LOGGER.info("Wrong eMail provided for user '{}': {}", userName, eMailAddress);
+        	return result;
+		}
         if (!userByName.getFirstname().equals(firstName) ||
-                !userByName.getLastname().equals(lastName)) return result;
+                !userByName.getLastname().equals(lastName)) {
+			LOGGER.info("Wrong first or last name provided for user '{}': {}, {}", userName, firstName, lastName);
+        	return result;
+		}
 
         resetPasswordRequestDao.deleteExpiredRequests(); // get rid of all expired requests
         // if there is already a request pending do not allow to add a new one
-        if (resetPasswordRequestDao.getByUserId(userByName.getId()) != null) return result;
+        if (resetPasswordRequestDao.getByUserId(userByName.getId()) != null) {
+        	result.put("message", "ui.passwordreset.already_present");
+			LOGGER.info("A non-expired password request is already present in the database for user: {}", userName);
+        	return result;
+		}
 
 
         final String token = random.getNewToken();
