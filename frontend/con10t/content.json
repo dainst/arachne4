@@ -280,6 +280,14 @@
             "de": "Nachlass Georg Kossack",
             "en": "Bequests of Georg Kossack"
           }
+        },  
+        {
+          "id": "VillaWolkonsky",
+          "title": {
+            "de": "Die Antikensammlung der Villa Wolkonsky (Rom)",
+            "en": "The Antiquities Collection of Villa Wolkonsky (Rome)",
+            "it": "La collezione di antichità della Villa Wolkonsky (Roma)"
+          }
         },
         {
           "id": "antikeplastik",
