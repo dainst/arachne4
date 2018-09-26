@@ -25,7 +25,7 @@ public class Catalog2CsvConverter extends BaseCsvConverter<Catalog> {
 
     @Override
     protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-        abortIfHuge(catalog, 200);
+        enqueIfHuge(catalog, 200);
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/csv");
         //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.csv\"");
         convert(new DataExportConversionObject(catalog), httpOutputMessage.getBody());

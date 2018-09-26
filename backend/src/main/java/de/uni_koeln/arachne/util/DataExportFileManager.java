@@ -3,11 +3,13 @@ package de.uni_koeln.arachne.util;
 import de.uni_koeln.arachne.converters.DataExportTask;
 import de.uni_koeln.arachne.converters.DataExportException;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+@Service
 public class DataExportFileManager {
 
     public InputStream getFile(DataExportTask task) {

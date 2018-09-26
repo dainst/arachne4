@@ -233,11 +233,10 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
     public void htmlFrontmatter(String content) throws IOException {
 
         // search url
-        final String url = getCurrentUrl()
+        final String url = task.getUrl()
             .replace(".pdf", "")
             .replace("?null", "")
             .replace(".html", "");
-
 
         // create replacements map
         HashMap<String, String> replacements = new HashMap<String, String>();
@@ -428,7 +427,6 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             return storedChildren;
         }
 
-        final User user = getCurrentUser();
         final CatalogEntry catalogEntry2 = catalogEntryDao.getById(catalogEntry.getId(), true, 5, 0);
 
         return catalogEntry2.getChildren();

@@ -27,7 +27,7 @@ public class SearchResult2HtmlConverter extends BaseHtmlConverter<SearchResult> 
     }
 
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-        abortIfHuge(searchResult, 100);
+        enqueIfHuge(searchResult, 100);
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/html");
         //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.html\"");
         convert(new DataExportConversionObject(searchResult), httpOutputMessage.getBody());

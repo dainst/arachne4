@@ -91,6 +91,7 @@ public class DataMapDao extends SQLDao {
 	}
 	
 	private String getSingleEntityQuery(final EntityId entityId) {
+
 		final String tableName = entityId.getTableName();
 		final StringBuilder result = new StringBuilder(256)
 			.append("SELECT * FROM `")
@@ -120,4 +121,5 @@ public class DataMapDao extends SQLDao {
 	    
 	    return resultMap;
 	}
+
 }

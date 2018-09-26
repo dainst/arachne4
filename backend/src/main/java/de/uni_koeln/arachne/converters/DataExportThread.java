@@ -1,9 +1,14 @@
 package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.util.DataExportFileManager;
+import org.apache.logging.log4j.ThreadContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import de.uni_koeln.arachne.mapping.hibernate.User;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
+import java.util.Map;
 
 /**
  * @author Paf
@@ -17,11 +22,23 @@ public class DataExportThread implements Runnable {
 
     private DataExportFileManager dataExportFileManager = new DataExportFileManager();
 
-    public DataExportThread(DataExportTask dataExportTask) {
+    private User user;
+
+    //private RequestAttributes context;
+    private final Map context = ThreadContext.getContext();
+
+    public DataExportThread(DataExportTask dataExportTask, RequestAttributes context) {
+        //this.context = context;
         this.dataExportTask = dataExportTask;
     }
 
     public void run() {
+        //RequestContextHolder.setRequestAttributes(context);
+
+        if (context != null) {
+            ThreadContext.putAll(context);
+        }
+
         System.out.println("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: RUNNING");
 
         try {
@@ -35,6 +52,7 @@ public class DataExportThread implements Runnable {
         } finally {
             System.out.println("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: FINISHED");
             dataExportStack.taskIsFinishedListener(dataExportTask);
+            ThreadContext.clearAll();
         }
     }
 

@@ -17,6 +17,7 @@ import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.AbstractHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -36,6 +37,7 @@ import org.json.*;
 /**
  * @author Paf
  */
+
 public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessageConverter<T> {
 
     public AbstractDataExportConverter(MediaType mediaType) {
@@ -77,12 +79,6 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     public void injectService(SingleEntityDataService singleEntityDataService) { this.singleEntityDataService = singleEntityDataService; }
     public void injectService(EntityIdentificationService entityIdentificationService) { this.entityIdentificationService = entityIdentificationService; }
     public void injectService(DataExportStack dataExportStack) { this.dataExportStack = dataExportStack; }
-    public void injectService(UserRightsService userRightsService) {
-        // because this class has to work from different threads as well
-        // we don't keep this scoped service, but kepp the User-Object we need from it itself
-        setCurrentUser(userRightsService.getCurrentUser());
-    }
-
 
     // settings; overwrite em
     public Boolean handleOnlyFirstPlace = false;
@@ -90,20 +86,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
     public DataExportTable exportTable = new DataExportTable();
 
-    public String getCurrentUrl() {
-        ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = sra.getRequest();
-        URIBuilder ub = null;
-        return request.getRequestURL().toString() + "?" + request.getQueryString();
-    }
-
-    public User getCurrentUser() {
-        return user;
-    }
-
-    public void setCurrentUser(User user) {
-        this.user = user;
-    }
+    public DataExportTask task;
 
     /**
      * Unpacks JSON and get all the objects datails against a list of facets
@@ -334,7 +317,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
     /**
      *
-     * implement this to define  how places shall get serilized!
+     * implement this to define  how places shall get serialized!
      *
      * @param number
      * @param name
@@ -351,7 +334,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         exportTable = new DataExportTable();
 
         this.exportTable.title = title;
-        this.exportTable.user = getCurrentUser().getUsername();
+        this.exportTable.user = task.getOwner().getUsername();
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); // @ TODO tansl8
         this.exportTable.timestamp = dateFormat.format(new Date());
     }
@@ -363,37 +346,23 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
     private void checkForHugeAndEnqueue(Long size, Integer limit, DataExportConversionObject conversionObject) {
 
-//        if (size < limit) {
-//            return;
-//        }
-//
-//        if (!userRightsService.isSignedInUser()) {
-//            throw new DataExportException("too_huge_and_not_logged_in", HttpStatus.UNAUTHORIZED, "DE"); // TODO correct language
-//        }
+        task = dataExportStack.newTask(this, conversionObject);
 
-        /**
-         * current problem:
-         * - because userRightsService is scoped, we get problems when running this class in separate thread
-         * - strange enough, since userRightsService is not bound to this class or any other.
-         */
+        if (size < limit) {
+            return;
+        }
 
-        dataExportStack.push(new DataExportTask(
-                getCurrentUrl(),
-                getCurrentUser(),
-                this,
-                conversionObject)
-        );
-
+        dataExportStack.push(task);
 
         throw new DataExportException("too_huge_and_will_be_sent_by_mail", HttpStatus.ACCEPTED, "DE"); // TODO correct language
     }
 
-    public void abortIfHuge(SearchResult searchResult, Integer limit) {
+    public void enqueIfHuge(SearchResult searchResult, Integer limit) {
         checkForHugeAndEnqueue(searchResult.getSize(), limit, new DataExportConversionObject(searchResult));
     }
 
-    public void abortIfHuge(Catalog catalog, Integer limit) {
-        checkForHugeAndEnqueue(Long.valueOf(catalog.getRoot().getAllSuccessors()), limit, new DataExportConversionObject(catalog));
+    public void enqueIfHuge(Catalog catalog, Integer limit) {
+        checkForHugeAndEnqueue((long) catalog.getRoot().getAllSuccessors(), limit, new DataExportConversionObject(catalog));
     }
 
 }

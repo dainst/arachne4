@@ -104,7 +104,6 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
             converter.injectService(transl8Service);
             converter.injectService(servletContext);
             converter.injectService(iipService);
-            converter.injectService(userRightsService);
             converter.injectService(catalogEntryDao);
             converter.injectService(singleEntityDataService);
             converter.injectService(entityIdentificationService);

@@ -23,7 +23,7 @@ public class Catalog2PdfConverter extends BasePdfConverter<Catalog> {
 
     @Override
     protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException {
-        abortIfHuge(catalog, 50);
+        enqueIfHuge(catalog, 50);
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/pdf");
         //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.pdf\"");
         convert(new DataExportConversionObject(catalog), httpOutputMessage.getBody());

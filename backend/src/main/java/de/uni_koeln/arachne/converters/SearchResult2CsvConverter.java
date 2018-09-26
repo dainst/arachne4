@@ -20,7 +20,7 @@ public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
     }
 
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-        abortIfHuge(searchResult, 200);
+        enqueIfHuge(searchResult, 200);
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/csv");
         //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.csv\"");
         convert(new DataExportConversionObject(searchResult), httpOutputMessage.getBody());

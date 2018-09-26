@@ -21,13 +21,10 @@ public class DataExportTask {
     private MediaType mediaType;
     private User owner;
     private String url = "";
+    public Boolean error = false;
 
-
-    public DataExportTask(String url, User user,
-                          AbstractDataExportConverter converter,
+    public DataExportTask(AbstractDataExportConverter converter,
                           DataExportConversionObject conversionObject) {
-        this.url = url;
-        this.owner = user;
         this.converter = converter;
         this.conversionObject = conversionObject;
         this.tsCreated = new Timestamp(System.currentTimeMillis());
@@ -80,19 +77,23 @@ public class DataExportTask {
         return owner;
     }
 
-    public String getOwnerName() {
-        return owner.getUsername();
+    public void setOwner(User user) {
+        this.owner = user;
     }
 
     public String getUrl() {
         return url;
     }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public JSONObject getInfoAsJSON() {
         final JSONObject info = new JSONObject();
         info.put("url", getUrl());
         info.put("mediaType", getMediaType().toString());
-        info.put("owner", getOwnerName());
+        info.put("owner", getOwner().getUsername());
         info.put("created_at", tsCreated.toString());
         if (tsStarted != null) {
             info.put("started_at", tsStarted.toString());
@@ -105,6 +106,7 @@ public class DataExportTask {
     }
 
     public void perform(OutputStream outputStream) throws IOException {
+        converter.task = this;
         converter.convert(conversionObject, outputStream);
     }
 

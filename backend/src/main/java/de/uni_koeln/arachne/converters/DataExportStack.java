@@ -1,16 +1,25 @@
 package de.uni_koeln.arachne.converters;
 
+import de.uni_koeln.arachne.service.UserRightsService;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Stack;
 
+
 @Service
 public class DataExportStack {
+
+    @Autowired
+    private transient UserRightsService userRightsService;
 
     private Stack<DataExportTask> stack = new Stack<DataExportTask>();
     private ArrayList<DataExportTask> running = new ArrayList<DataExportTask>();
@@ -19,7 +28,20 @@ public class DataExportStack {
     public Integer MAX_STACK_SIZE = 10;
     public Integer MAX_THREADS = 1;
 
+    public DataExportTask newTask(AbstractDataExportConverter converter,
+                          DataExportConversionObject conversionObject) {
+        DataExportTask task = new DataExportTask(converter, conversionObject);
+        task.setOwner(userRightsService.getCurrentUser());
+        task.setUrl(getRequestUrl());
+        return task;
+    }
+
     public void push(DataExportTask task) {
+
+        if (!userRightsService.isSignedInUser()) {
+            System.out.println("Not logged in");
+            throw new DataExportException("too_huge_and_not_logged_in", HttpStatus.UNAUTHORIZED, "DE"); // TODO correct language
+        }
 
         System.out.println("Push task " + task.uuid.toString());
         System.out.println(stack.size() + " tasks in stack");
@@ -59,12 +81,17 @@ public class DataExportStack {
     }
 
     private DataExportThread startThread(DataExportTask task) {
-        final DataExportThread runnable = new DataExportThread(task);
-        runnable.registerListener(this);
-        final Thread t = new Thread(runnable);
-        t.setUncaughtExceptionHandler((th, ex) -> ex.printStackTrace());
-        t.start();
-        return runnable;
+        final DataExportThread dataExportThread = new DataExportThread(task, RequestContextHolder.currentRequestAttributes());
+
+        dataExportThread.registerListener(this);
+        final Thread thread = new Thread(dataExportThread);
+        thread.setUncaughtExceptionHandler((t, e) -> {
+            task.error = true;
+            System.out.println("Error in task:" + task.uuid.toString() + ": " + e);
+            e.printStackTrace();
+        });
+        thread.start();
+        return dataExportThread;
     }
 
     public void taskIsFinishedListener(DataExportTask task) {
@@ -86,8 +113,6 @@ public class DataExportStack {
         return stack.size();
     }
 
-
-
     public JSONObject getStatus() {
         final JSONObject status = new JSONObject();
         status.put("max_stack_size", MAX_STACK_SIZE);
@@ -107,10 +132,18 @@ public class DataExportStack {
         }
         for (HashMap.Entry<String, DataExportTask> taskItem: finished.entrySet()) {
             final JSONObject info = taskItem.getValue().getInfoAsJSON();
-            info.put("status", "finished");
+            info.put("status", taskItem.getValue().error ? "error" : "finished");
             taskList.put(taskItem.getValue().uuid.toString(), info);
         }
         status.put("tasks", taskList);
         return status;
     }
+
+    private String getRequestUrl() {
+        ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = sra.getRequest();
+        return request.getRequestURL().toString() + "?" + request.getQueryString();
+    }
+
+
 }
