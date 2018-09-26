@@ -6,6 +6,8 @@ import de.uni_koeln.arachne.converters.DataExportTask;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.DataExportFileManager;
 import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import static de.uni_koeln.arachne.util.security.SecurityUtils.ADMIN;
 
@@ -83,6 +86,24 @@ public class DataExportController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(dataExportStack.getStatus().toString());
+    }
+
+
+    @RequestMapping(value = "/types", method = RequestMethod.GET)
+    ResponseEntity<String> handleGetMediaTypes(
+            @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage
+    ) {
+
+        final JSONArray mediaTypes = new JSONArray();
+        mediaTypes.put("csv");
+        mediaTypes.put("html");
+        mediaTypes.put("pdf");
+
+        final JSONObject response = new JSONObject();
+        response.put("catalog", mediaTypes);
+        response.put("searchresults", mediaTypes);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response.toString());
     }
 
 }
