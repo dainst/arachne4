@@ -1,44 +1,37 @@
 package de.uni_koeln.arachne.converters;
 
 
-import de.uni_koeln.arachne.service.Transl8Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.annotation.PostConstruct;
 
 
 public class DataExportException extends RuntimeException {
 
-    @Autowired
-    private transient Transl8Service ts;
 
-    private String _lang = "de";
-    private String _type = "";
-    private HttpStatus _status;
+    public String lang = "de";
+    public String type = "";
+    public HttpStatus status;
+    public String untranslatableContent = "";
 
     public DataExportException(String type, HttpStatus status, String lang) {
-        _type = type;
-        _status = status;
-        _lang = lang;
+        this.type = type;
+        this.status = status;
+        this.lang = lang;
+    }
+
+    public DataExportException(String type, String untranslatableContent, HttpStatus status, String lang) {
+        this.type = type;
+        this.status = status;
+        this.untranslatableContent = untranslatableContent;
+        this.lang = lang;
     }
 
     @Override
     public String getMessage() {
-
-        return "error_data_export_" + _type;
-
-//        try { @ TODO make this work
-//            return ts.transl8("error_data_export_" + _type, _lang);
-//        } catch (Transl8Service.Transl8Exception e) {
-//            return "error_data_export_" + _type;
-//        }
+        return "error_data_export_" + type;
     }
 
     public HttpStatus getHttpStatus() {
-        return _status;
+        return status;
     }
 
 
