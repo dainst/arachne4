@@ -3,10 +3,12 @@ package de.uni_koeln.arachne.converters;
 import de.uni_koeln.arachne.service.UserRightsService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -25,8 +27,11 @@ public class DataExportStack {
     private ArrayList<DataExportTask> running = new ArrayList<DataExportTask>();
     private HashMap<String, DataExportTask> finished = new HashMap<String, DataExportTask>();
 
-    public Integer MAX_STACK_SIZE = 10;
-    public Integer MAX_THREADS = 1;
+    @Value("${dataExportMaxStackSize:10}")
+    private Integer dataExportMaxStackSize;
+
+    @Value("${dataExportMaxThreads:4}")
+    private Integer dataExportMaxThreads;
 
     public DataExportTask newTask(AbstractDataExportConverter converter,
                           DataExportConversionObject conversionObject) {
@@ -46,11 +51,11 @@ public class DataExportStack {
         System.out.println("Push task " + task.uuid.toString());
         System.out.println(stack.size() + " tasks in stack");
 
-        if (stack.size() >= MAX_STACK_SIZE) {
+        if (stack.size() >= dataExportMaxStackSize) {
             throw new DataExportException("stack_full", HttpStatus.SERVICE_UNAVAILABLE, "DE"); // @TODO correct language
         }
 
-        if(running.size() >= MAX_THREADS) {
+        if(running.size() >= dataExportMaxThreads) {
             stack.add(task);
             System.out.println("added task " + task.uuid.toString() + " to stack (" + stack.size() + ")");
         } else {
@@ -115,8 +120,8 @@ public class DataExportStack {
 
     public JSONObject getStatus() {
         final JSONObject status = new JSONObject();
-        status.put("max_stack_size", MAX_STACK_SIZE);
-        status.put("max_threads", MAX_THREADS);
+        status.put("max_stack_size", dataExportMaxStackSize);
+        status.put("max_threads", dataExportMaxThreads);
         status.put("tasks_running", running.size());
         status.put("tasks_enqueued", stack.size());
         final JSONObject taskList = new JSONObject();
