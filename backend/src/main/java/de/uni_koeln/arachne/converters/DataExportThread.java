@@ -24,20 +24,16 @@ public class DataExportThread implements Runnable {
 
     private User user;
 
-    //private RequestAttributes context;
-    private final Map context = ThreadContext.getContext();
+    private RequestAttributes context;
+    //private final Map context = ThreadContext.getContext();
 
     public DataExportThread(DataExportTask dataExportTask, RequestAttributes context) {
-        //this.context = context;
+        this.context = context;
         this.dataExportTask = dataExportTask;
     }
 
     public void run() {
-        //RequestContextHolder.setRequestAttributes(context);
-
-        if (context != null) {
-            ThreadContext.putAll(context);
-        }
+        RequestContextHolder.setRequestAttributes(context);
 
         System.out.println("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: RUNNING");
 

@@ -1,6 +1,8 @@
 package de.uni_koeln.arachne.converters;
 
+import de.uni_koeln.arachne.service.MailService;
 import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.util.DataExportFileManager;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +25,9 @@ public class DataExportStack {
 
     @Autowired
     private transient UserRightsService userRightsService;
+
+    @Autowired
+    private transient MailService mailService;
 
     private Stack<DataExportTask> stack = new Stack<DataExportTask>();
     private ArrayList<DataExportTask> running = new ArrayList<DataExportTask>();
@@ -107,6 +112,14 @@ public class DataExportStack {
         task.stopTimer();
         running.remove(task);
         finished.put(task.uuid.toString(), task);
+//        if (!task.error) { // @ TODO context problem has to be solved first
+//            mailService.sendMail(
+//                task.getOwner().getEmail(),
+//                "Arachne Data Export",
+//                "task_finished: " + getFileUrl(task)
+//            );
+//        }
+
         System.out.println("Finished task:" + task.uuid.toString() + " " + running.size() + " tasks in stack");
         nextTask();
     }
@@ -162,6 +175,13 @@ public class DataExportStack {
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = sra.getRequest();
         return request.getRequestURL().toString() + "?" + request.getQueryString();
+    }
+
+    private String getFileUrl(DataExportTask task) {
+        ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = sra.getRequest();
+        final StringBuffer baseUrl = request.getRequestURL();
+        return baseUrl.toString() + "/file/" + task.uuid.toString();
     }
 
 }
