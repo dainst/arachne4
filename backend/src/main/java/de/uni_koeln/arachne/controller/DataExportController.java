@@ -15,6 +15,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.accept.ContentNegotiationManager;
+import org.springframework.web.accept.ParameterContentNegotiationStrategy;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
 
 import static de.uni_koeln.arachne.util.security.SecurityUtils.ADMIN;
 
@@ -42,6 +47,9 @@ public class DataExportController {
 
     @Autowired
     private transient DataExportFileManager dataExportFileManager;
+
+    @Autowired
+    private ContentNegotiationManager contentNegotiationManager;
 
     @RequestMapping(value = "/file/{exportId}", method = RequestMethod.GET)
     public void handleGetExportFile(
@@ -94,16 +102,12 @@ public class DataExportController {
             @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage
     ) {
 
-        final JSONArray mediaTypes = new JSONArray();
-        mediaTypes.put("csv");
-        mediaTypes.put("html");
-        mediaTypes.put("pdf");
+        final Set<String> mediaTypeList = Optional.of(contentNegotiationManager)
+                .map(m -> m.getStrategy(ParameterContentNegotiationStrategy.class))
+                .map(s -> s.getMediaTypes().keySet())
+                .orElse(Collections.emptySet());
 
-        final JSONObject response = new JSONObject();
-        response.put("catalog", mediaTypes);
-        response.put("searchresults", mediaTypes);
-
-        return ResponseEntity.status(HttpStatus.OK).body(response.toString());
+        return ResponseEntity.status(HttpStatus.OK).body(new JSONArray(mediaTypeList.toArray()).toString());
     }
 
 }
