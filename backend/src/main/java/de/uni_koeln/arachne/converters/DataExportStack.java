@@ -1,9 +1,12 @@
 package de.uni_koeln.arachne.converters;
 
+import de.uni_koeln.arachne.controller.BookController;
 import de.uni_koeln.arachne.service.MailService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.DataExportFileManager;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -29,6 +32,8 @@ public class DataExportStack {
     @Autowired
     private transient MailService mailService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger("DataExportLogger");
+
     private Stack<DataExportTask> stack = new Stack<DataExportTask>();
     private ArrayList<DataExportTask> running = new ArrayList<DataExportTask>();
     private HashMap<String, DataExportTask> finished = new HashMap<String, DataExportTask>();
@@ -53,12 +58,12 @@ public class DataExportStack {
     public void push(DataExportTask task) {
 
         if (!userRightsService.isSignedInUser()) {
-            System.out.println("Not logged in");
+            LOGGER.info("Not logged in");
             throw new DataExportException("too_huge_and_not_logged_in", HttpStatus.UNAUTHORIZED, "DE"); // TODO correct language
         }
 
-        System.out.println("Push task " + task.uuid.toString());
-        System.out.println(stack.size() + " tasks in stack");
+        LOGGER.info("Push task " + task.uuid.toString());
+        LOGGER.info(stack.size() + " tasks in stack");
 
         if (stack.size() >= dataExportMaxStackSize) {
             throw new DataExportException("stack_full", HttpStatus.SERVICE_UNAVAILABLE, "DE"); // @TODO correct language
@@ -66,7 +71,7 @@ public class DataExportStack {
 
         if(running.size() >= dataExportMaxThreads) {
             stack.add(task);
-            System.out.println("added task " + task.uuid.toString() + " to stack (" + stack.size() + ")");
+            LOGGER.info("added task " + task.uuid.toString() + " to stack (" + stack.size() + ")");
         } else {
             runTask(task);
         }
@@ -74,18 +79,19 @@ public class DataExportStack {
     }
 
     public void runTask(DataExportTask task) {
-        System.out.println("Run task: " + task.uuid.toString());
+        LOGGER.info("Run task: " + task.uuid.toString());
         task.startTimer();
         running.add(task);
         startThread(task);
     }
 
     public void nextTask() {
-        System.out.println("Next task");
+        LOGGER.info("Next task");
         try {
             runTask(stack.pop());
         } catch (EmptyStackException exception) {
-            System.out.println("All tasks finished");
+            LOGGER.info("All tasks finished");
+
         }
 
     }
@@ -101,8 +107,7 @@ public class DataExportStack {
         final Thread thread = new Thread(dataExportThread);
         thread.setUncaughtExceptionHandler((t, e) -> {
             task.error = true;
-            System.out.println("Error in task:" + task.uuid.toString() + ": " + e);
-            e.printStackTrace();
+            LOGGER.error("Error in task:" + task.uuid.toString(), e);
         });
         thread.start();
         return dataExportThread;
@@ -120,7 +125,7 @@ public class DataExportStack {
 //            );
 //        }
 
-        System.out.println("Finished task:" + task.uuid.toString() + " " + running.size() + " tasks in stack");
+        LOGGER.info("Finished task:" + task.uuid.toString() + " " + running.size() + " tasks in stack");
         nextTask();
     }
 

@@ -203,7 +203,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             return filecontent;
         } catch (IOException e) {
             e.getMessage();
-            //e.printStackTrace();
+            LOGGER.error("Could not get image", e);
             return new byte[0];
         }
 
@@ -218,6 +218,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             try {
                 facetNames.add(transl8Service.transl8(facetName,"de"));
             } catch (Transl8Service.Transl8Exception e) {
+                LOGGER.warn("could not transl:" + facet.getName());
                 facetNames.add(facet.getName());
             }
         }

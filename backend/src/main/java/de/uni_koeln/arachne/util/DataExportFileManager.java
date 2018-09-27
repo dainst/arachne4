@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.util;
 
+import de.uni_koeln.arachne.controller.CatalogController;
 import de.uni_koeln.arachne.converters.DataExportTask;
 import de.uni_koeln.arachne.converters.DataExportException;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,36 +26,38 @@ public class DataExportFileManager {
         byte[] fileContent = null;
 
         if(!file.exists()){
-            throw new DataExportException("not_found", HttpStatus.NOT_FOUND, "DE"); // @ TODO right language
+            throw new DataExportException("not_found", file.toString(), HttpStatus.NOT_FOUND, "DE"); // @ TODO right language
         }
 
         try {
             return new FileInputStream(file);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new DataExportException("io_error", HttpStatus.INTERNAL_SERVER_ERROR, "DE"); // @ TODO right language
+            throw new DataExportException("io_error", file.toString(), HttpStatus.INTERNAL_SERVER_ERROR, "DE"); // @ TODO right language
         }
 
     }
 
     public void deleteFile(DataExportTask task) {
         final Path path = Paths.get(getFileName(task));
+
         try {
             Files.delete(path);
         } catch (NoSuchFileException x) {
-            throw new DataExportException("io_error_missing", HttpStatus.INTERNAL_SERVER_ERROR, "DE");
+            throw new DataExportException("io_error_missing", path.toString(), HttpStatus.INTERNAL_SERVER_ERROR, "DE");
         } catch (IOException x) {
-            throw new DataExportException("io_error_access", HttpStatus.INTERNAL_SERVER_ERROR, "DE");
+            throw new DataExportException("io_error_access", path.toString(), HttpStatus.INTERNAL_SERVER_ERROR, "DE");
         }
 
     }
 
     public long getFileSize(DataExportTask task) {
+        final String fileName = getFileName(task);
         try {
-            return Files.size(Paths.get(getFileName(task)));
+            return Files.size(Paths.get(fileName));
         } catch (IOException e) {
             e.printStackTrace();
-            throw new DataExportException("io_error", HttpStatus.INTERNAL_SERVER_ERROR, "DE"); // @ TODO right language
+            throw new DataExportException("io_error", fileName, HttpStatus.INTERNAL_SERVER_ERROR, "DE"); // @ TODO right language
         }
     }
 
@@ -73,7 +76,7 @@ public class DataExportFileManager {
             fileOutputStream.close();
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             e.printStackTrace();
-            throw new DataExportException("FileIO Error: " + getFileName(task) + "\n" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, "DE"); // @ TODO right language
+            throw new DataExportException("io_error", getFileName(task), HttpStatus.INTERNAL_SERVER_ERROR, "DE"); // @ TODO right language
         }
     }
 }

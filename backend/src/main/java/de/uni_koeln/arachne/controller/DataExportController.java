@@ -34,7 +34,8 @@ import static de.uni_koeln.arachne.util.security.SecurityUtils.ADMIN;
 @Controller
 @RequestMapping("/export")
 public class DataExportController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CatalogController.class);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger("DataExportLogger");
 
     @Autowired
     private transient UserRightsService userRightsService;
@@ -55,7 +56,7 @@ public class DataExportController {
             HttpServletResponse response
     ) {
 
-        System.out.println("get file named " + exportId);
+        LOGGER.debug("get file named " + exportId);
 
         final DataExportTask task = dataExportStack.getFinishedTaskById(exportId);
 
@@ -123,6 +124,7 @@ public class DataExportController {
         for (DataExportTask task : outdatedTasks) {
             dataExportFileManager.deleteFile(task);
             dataExportStack.removeFinishedTask(task);
+            LOGGER.info("Deleted outdated task: " + task.uuid.toString());
             report.put(task.uuid.toString());
         }
 

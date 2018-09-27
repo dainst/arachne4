@@ -48,7 +48,7 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
             pdfBuilder.toStream(outStream);
             pdfBuilder.run();
         } catch (Exception e) {
-            LOGGER.error("PDF could not be created.");
+            LOGGER.error("PDF could not be created.", e);
             throw (IOException) e;
         }
 

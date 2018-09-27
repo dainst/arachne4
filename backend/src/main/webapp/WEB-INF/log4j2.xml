@@ -34,6 +34,15 @@
             </Policies>
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
+        <RollingFile name="DataExport"
+                     fileName="/var/log/arachne/arachnedataservice/data_export.log"
+                     filePattern="/var/log/arachne/arachnedataservice/data_export-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10240KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
     </Appenders>
 
     <!--
@@ -74,9 +83,16 @@
             <AppenderRef ref="DataIntegrity" />
         </Logger>
 
-        <Root  level="info">
+        <Root level="info">
             <AppenderRef ref="ROLLING" />
             <!-- <AppenderRef ref="CONSOLE" /> -->
         </Root>
+
+        <!-- data export logging -->
+        <logger name="DataExportLogger" level="info">
+            <level value="info" />
+            <AppenderRef ref="DataExport" />
+        </logger>
+
     </Loggers>
 </Configuration>

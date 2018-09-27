@@ -41,7 +41,7 @@ public class SearchResult2PdfConverter extends BasePdfConverter<SearchResult> {
             writePdf((StringWriter) htmlConverter.writer, outputStream);
             htmlConverter.writer.close();
         } catch (Exception e) {
-            e.printStackTrace(); // @ Todo
+            LOGGER.error("Could not convert to PDF", e);
         }
     }
 

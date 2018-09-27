@@ -56,7 +56,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
     public Writer writer;
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(AbstractDataExportConverter.class);
+    final Logger LOGGER = LoggerFactory.getLogger("DataExportLogger");
 
     // because we can not use @Autowired (by any reason) here, we have this fuck shit dependency injection here. plz don't hate me.
     public transient EntityService entityService;
@@ -101,7 +101,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         try {
             entity = entityService.getEntityFromIndex(entityId, null, "en");
         } catch (Exception e) {
-            //e.printStackTrace();  // LOG error
+            LOGGER.error("Could not get Entity", e);
             return null;
         }
         if (!entity.getStatus().is2xxSuccessful()) {
