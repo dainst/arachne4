@@ -68,7 +68,7 @@ public class DataExportController {
 
         final InputStream fileStream = dataExportFileManager.getFile(task);
         final HttpHeaders headers = new HttpHeaders();
-        response.setHeader("Content-Type", task.getMediaType().toString()+ "; charset=utf-8");
+        response.setHeader("Content-Type", task.getMediaType().toString() + "; charset=utf-8");
         response.setHeader("Content-Length", Long.toString(dataExportFileManager.getFileSize(task)));
         //response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
 
