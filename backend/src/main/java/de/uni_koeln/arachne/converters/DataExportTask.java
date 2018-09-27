@@ -44,12 +44,16 @@ public class DataExportTask {
         mediaType = mediaTypes.get(0);
     }
 
-    public long getLifeTime() {
+    public long getDuration() {
         if (tsStopped == null) {
             return new Timestamp(System.currentTimeMillis()).getTime() - tsStarted.getTime();
         } else {
             return tsStopped.getTime() - tsStarted.getTime();
         }
+    }
+
+    public long getAge() {
+        return new Timestamp(System.currentTimeMillis()).getTime() - tsStarted.getTime();
     }
 
     public Timestamp getStartedTimeStamp() {
@@ -97,7 +101,7 @@ public class DataExportTask {
         info.put("created_at", tsCreated.toString());
         if (tsStarted != null) {
             info.put("started_at", tsStarted.toString());
-            info.put("duration", getLifeTime());
+            info.put("duration", getDuration());
         }
         if (tsStopped != null) {
             info.put("stopped_at", tsStopped.toString());

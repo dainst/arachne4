@@ -11,6 +11,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.HashMap;
@@ -32,6 +33,9 @@ public class DataExportStack {
 
     @Value("${dataExportMaxThreads:4}")
     private Integer dataExportMaxThreads;
+
+    @Value("${dataExportMaxTaskLifeTime:86400000}")
+    private Integer dataExportMaxTaskLifeTime;
 
     public DataExportTask newTask(AbstractDataExportConverter converter,
                           DataExportConversionObject conversionObject) {
@@ -144,11 +148,20 @@ public class DataExportStack {
         return status;
     }
 
+    public ArrayList<DataExportTask> getOutdatedTasks() {
+        final ArrayList<DataExportTask> outdatedTasks = new ArrayList<DataExportTask>();
+        for (HashMap.Entry<String, DataExportTask> taskItem: finished.entrySet()) {
+            if (taskItem.getValue().getAge() > dataExportMaxTaskLifeTime) {
+                outdatedTasks.add(taskItem.getValue());
+            }
+        }
+        return outdatedTasks;
+    }
+
     private String getRequestUrl() {
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = sra.getRequest();
         return request.getRequestURL().toString() + "?" + request.getQueryString();
     }
-
 
 }

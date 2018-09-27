@@ -23,10 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static de.uni_koeln.arachne.util.security.SecurityUtils.ADMIN;
 
@@ -108,6 +105,29 @@ public class DataExportController {
                 .orElse(Collections.emptySet());
 
         return ResponseEntity.status(HttpStatus.OK).body(new JSONArray(mediaTypeList.toArray()).toString());
+    }
+
+    @RequestMapping(value = "/clean", method = RequestMethod.GET)
+    ResponseEntity<String> handleClean(
+            @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage
+    ) {
+
+        if (!userRightsService.userHasRole(ADMIN)) {
+            throw new DataExportException("no_admin", HttpStatus.FORBIDDEN, headerLanguage);
+        }
+
+        final ArrayList<DataExportTask> outdatedTasks = dataExportStack.getOutdatedTasks();
+
+        final JSONArray report = new JSONArray();
+
+        for (DataExportTask task : outdatedTasks) {
+            dataExportFileManager.deleteFile(task);
+            dataExportStack.removeFinishedTask(task);
+            report.put(task.uuid.toString());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(report.toString());
+
     }
 
 }

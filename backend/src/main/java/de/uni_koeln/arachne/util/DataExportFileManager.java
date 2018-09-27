@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
@@ -31,6 +33,18 @@ public class DataExportFileManager {
         } catch (IOException e) {
             e.printStackTrace();
             throw new DataExportException("io_error", HttpStatus.INTERNAL_SERVER_ERROR, "DE"); // @ TODO right language
+        }
+
+    }
+
+    public void deleteFile(DataExportTask task) {
+        final Path path = Paths.get(getFileName(task));
+        try {
+            Files.delete(path);
+        } catch (NoSuchFileException x) {
+            throw new DataExportException("io_error_missing", HttpStatus.INTERNAL_SERVER_ERROR, "DE");
+        } catch (IOException x) {
+            throw new DataExportException("io_error_access", HttpStatus.INTERNAL_SERVER_ERROR, "DE");
         }
 
     }
@@ -59,7 +73,7 @@ public class DataExportFileManager {
             fileOutputStream.close();
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             e.printStackTrace();
-            throw new Exception("FileIO Error: " + getFileName(task) + "\n" + e.getMessage());
+            throw new DataExportException("FileIO Error: " + getFileName(task) + "\n" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, "DE"); // @ TODO right language
         }
     }
 }
