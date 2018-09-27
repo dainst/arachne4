@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.util;
 
 import de.uni_koeln.arachne.converters.DataExportTask;
 import de.uni_koeln.arachne.converters.DataExportException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,9 @@ import java.nio.file.Paths;
 
 @Service
 public class DataExportFileManager {
+
+    //@Value("${dataExportPath:'/tmp'}")
+    private String dataExportPath = "/tmp";
 
     public InputStream getFile(DataExportTask task) {
 
@@ -23,9 +27,7 @@ public class DataExportFileManager {
         }
 
         try {
-            InputStream inputStream = new FileInputStream(file);
-            //InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            return inputStream;
+            return new FileInputStream(file);
         } catch (IOException e) {
             e.printStackTrace();
             throw new DataExportException("io_error", HttpStatus.INTERNAL_SERVER_ERROR, "DE"); // @ TODO right language
@@ -43,7 +45,8 @@ public class DataExportFileManager {
     }
 
     public String getFileName(DataExportTask task) {
-        return "/tmp/export-" + task.uuid.toString() + ".txt";
+        final String extension = task.getMediaType().getSubtype().toString();
+        return dataExportPath + "/export-" + task.uuid.toString() + "." + extension;
     }
 
     public void writeToFile(DataExportTask task) throws Exception {
@@ -54,19 +57,6 @@ public class DataExportFileManager {
             task.perform(fileOutputStream);
             fileOutputStream.flush();
             fileOutputStream.close();
-        } catch (FileNotFoundException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-            throw new Exception("FileIO Error: " + getFileName(task) + "\n" + e.getMessage());
-        }
-    }
-
-    public void writeToFileSimpleTest(DataExportTask task) throws Exception {
-        //provisional instead of rendering export, just write a file
-        PrintWriter writer = null;
-        try {
-            writer = new PrintWriter(getFileName(task), "UTF-8");
-            writer.println("Write DataExport " + task.uuid.toString());
-            writer.close();
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             e.printStackTrace();
             throw new Exception("FileIO Error: " + getFileName(task) + "\n" + e.getMessage());
