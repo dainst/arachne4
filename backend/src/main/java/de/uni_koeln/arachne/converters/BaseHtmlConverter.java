@@ -51,8 +51,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             fileContents.append(reader.readLine());
         }
 
-
-        //htmlFileCache.put(file, fileContents.toString());
+        htmlFileCache.put(file, fileContents.toString());
 
         return replaceList(fileContents.toString(), replacements);
     }
