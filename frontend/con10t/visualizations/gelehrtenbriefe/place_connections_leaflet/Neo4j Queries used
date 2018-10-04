@@ -2,5 +2,7 @@ MATCH (p:Place) WHERE p.auth_id is not null RETURN DISTINCT p.auth_source + '-' 
 
 
 MATCH (author:Person)-[:IS_AUTHOR]->(l:Letter)<-[:IS_RECIPIENT]-(recipient:Person)
-MATCH (origin:Place)<-[:SEND_FROM]-(l)-[:SEND_TO]->(destination:Place)
-RETURN id(l) as id, l.kalliope_id as auth_id, l.title as title, l.origin_date_presumed as date_presumed, l.origin_date_from as timespanFrom, l.origin_date_till as timespanTo, l.summary_paragraphs as summary, l.language_codes as language_codes, id(author) as author_id, id(recipient) as recipient_id, origin.auth_source + '-' + origin.auth_id as originPlaceId, destination.auth_source + '-' + destination.auth_id as destinationPlaceId
+OPTIONAL MATCH (origin:Place)<-[:SEND_FROM]-(l)-[:SEND_TO]->(destination:Place)
+RETURN id(l) as id, l.kalliope_id as authId, l.title as title, l.origin_date_presumed as datePresumed, l.origin_date_from as timespanFrom, l.origin_date_till as timespanTo, l.summary_paragraphs as summary, l.language_codes as languageCodes, author.auth_source + '-' + author.auth_id as authorId, recipient.auth_source + '-' + recipient.auth_id as recipientId, origin.auth_source + '-' + origin.auth_id as originPlaceId, destination.auth_source + '-' + destination.auth_id as destinationPlaceId
+
+MATCH (p:Person) RETURN DISTINCT p.auth_source + '-' + p.auth_id as id, p.auth_id as authId, p.auth_source as authSource, p.auth_name as name
