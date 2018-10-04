@@ -25,6 +25,7 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
 import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8_VALUE;
 
@@ -62,16 +63,22 @@ public class BookController {
      * Returns the EntityID for a given alias (to realise permalinks)
      *
      * @param alias the alternative name of the book
+     * @param prefix optional prefix to allow aliases with slashes (e.g. "archive/...")
      * @return the arachne entity id if book is present. null if not
      */
-    @RequestMapping(value="/books/{alias}",
+    @RequestMapping(value={"/books/{alias}", "/books/{prefix}/{alias}"},
             method=RequestMethod.GET,
             produces = {APPLICATION_JSON_UTF8_VALUE})
     public @ResponseBody ResponseEntity<String> handleGetAliasRequest(
-            @PathVariable("alias") final String alias) {
+            @PathVariable("alias") String alias,
+            @PathVariable("prefix") Optional<String> prefix) {
 
         if (booksPath==null) throw new IllegalStateException("bookPath must not be null");
         if (bookDao==null)   throw new IllegalStateException("bookDao must not be null");
+
+        if (prefix.isPresent()) {
+            alias = prefix.get() + "/" + alias;
+        }
 
         final Long arachneEntityID = bookDao.getEntityIDFromAlias(alias);
 
