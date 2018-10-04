@@ -1,9 +1,7 @@
 package de.uni_koeln.arachne.util;
 
-import de.uni_koeln.arachne.controller.CatalogController;
-import de.uni_koeln.arachne.converters.DataExportTask;
 import de.uni_koeln.arachne.converters.DataExportException;
-import org.springframework.beans.factory.annotation.Value;
+import de.uni_koeln.arachne.converters.DataExportTask;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 

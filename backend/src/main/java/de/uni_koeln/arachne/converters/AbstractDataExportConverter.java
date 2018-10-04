@@ -8,6 +8,8 @@ import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.service.*;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
@@ -38,6 +40,8 @@ import org.json.*;
  * @author Paf
  */
 
+@Service("userRightsService")
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessageConverter<T> {
 
     public AbstractDataExportConverter(MediaType mediaType) {

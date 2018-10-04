@@ -1,20 +1,23 @@
 package de.uni_koeln.arachne.converters;
 
+import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.util.DataExportFileManager;
 import org.apache.logging.log4j.ThreadContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import de.uni_koeln.arachne.mapping.hibernate.User;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextListener;
 
-import java.util.Map;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Paf
  */
+@Component
 @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class DataExportThread implements Runnable {
 
@@ -28,16 +31,18 @@ public class DataExportThread implements Runnable {
 
     private User user;
 
-    private RequestAttributes context;
-    //private final Map context = ThreadContext.getContext();
+    private HttpServletRequest request;
 
-    public DataExportThread(DataExportTask dataExportTask, RequestAttributes context) {
-        this.context = context;
+    public DataExportThread(DataExportTask dataExportTask, HttpServletRequest request) {
+        this.request = request;
         this.dataExportTask = dataExportTask;
     }
 
     public void run() {
-        RequestContextHolder.setRequestAttributes(context);
+
+        final RequestContextListener rcl = new RequestContextListener();
+        final ServletContext sc = request.getServletContext();
+        rcl.requestInitialized(new ServletRequestEvent(sc, request));
 
         LOGGER.info("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: RUNNING");
 

@@ -1,9 +1,7 @@
 package de.uni_koeln.arachne.converters;
 
-import de.uni_koeln.arachne.controller.BookController;
 import de.uni_koeln.arachne.service.MailService;
 import de.uni_koeln.arachne.service.UserRightsService;
-import de.uni_koeln.arachne.util.DataExportFileManager;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.HashMap;
@@ -52,6 +48,7 @@ public class DataExportStack {
         DataExportTask task = new DataExportTask(converter, conversionObject);
         task.setOwner(userRightsService.getCurrentUser());
         task.setUrl(getRequestUrl());
+        task.setUserRightsService(userRightsService);
         return task;
     }
 
@@ -101,7 +98,7 @@ public class DataExportStack {
     }
 
     private DataExportThread startThread(DataExportTask task) {
-        final DataExportThread dataExportThread = new DataExportThread(task, RequestContextHolder.currentRequestAttributes());
+        final DataExportThread dataExportThread = new DataExportThread(task, getRequest());
 
         dataExportThread.registerListener(this);
         final Thread thread = new Thread(dataExportThread);
@@ -187,6 +184,11 @@ public class DataExportStack {
         HttpServletRequest request = sra.getRequest();
         final StringBuffer baseUrl = request.getRequestURL();
         return baseUrl.toString() + "/file/" + task.uuid.toString();
+    }
+
+    private HttpServletRequest getRequest() {
+        ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        return sra.getRequest();
     }
 
 }

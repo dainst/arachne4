@@ -1,14 +1,5 @@
 package de.uni_koeln.arachne.service;
 
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import de.uni_koeln.arachne.dao.jdbc.DataMapDao;
 import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
 import de.uni_koeln.arachne.response.Dataset;
@@ -17,6 +8,14 @@ import de.uni_koeln.arachne.util.StrUtils;
 import de.uni_koeln.arachne.util.XmlConfigUtil;
 import de.uni_koeln.arachne.util.sql.SQLToolbox;
 import de.uni_koeln.arachne.util.sql.TableConnectionDescription;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Service to retrieve single datasets from the database.

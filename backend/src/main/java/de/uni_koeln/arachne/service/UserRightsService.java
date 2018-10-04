@@ -1,30 +1,6 @@
 package de.uni_koeln.arachne.service;
 
-import static de.uni_koeln.arachne.util.security.SecurityUtils.*;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.PropertyAccessor;
-import org.springframework.beans.PropertyAccessorFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.annotation.JsonView;
-
 import de.uni_koeln.arachne.dao.hibernate.UserDao;
 import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
 import de.uni_koeln.arachne.mapping.hibernate.User;
@@ -35,6 +11,25 @@ import de.uni_koeln.arachne.util.security.UserAccess;
 import de.uni_koeln.arachne.util.security.UserAccess.Restrictions;
 import de.uni_koeln.arachne.util.sql.Condition;
 import de.uni_koeln.arachne.util.sql.SQLToolbox;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.PropertyAccessor;
+import org.springframework.beans.PropertyAccessorFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import static de.uni_koeln.arachne.util.security.SecurityUtils.*;
 
 /**
  * This class allows to query the current users rights. It looks up the session,
@@ -136,6 +131,18 @@ public class UserRightsService {
 		return true;
 	}
 
+
+	public boolean setDataExporter(User exportingUser) {
+		this.arachneUser = exportingUser;
+		SecurityContext context = SecurityContextHolder.getContext();
+		Authentication auth = context.getAuthentication();
+
+		context.setAuthentication(getDataExportAuthentication(exportingUser));
+
+		this.isSet = true;
+		return true;
+	}
+
 	/**
 	 * Is the current user the 'dataimport user'.
 	 * 
@@ -231,7 +238,8 @@ public class UserRightsService {
 	 */
 	public String getSQL(final String tableName) {
 		initializeUserData();
-		if (INDEXING.equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
+		final Authentication sca = SecurityContextHolder.getContext().getAuthentication();
+		if ((sca != null) && INDEXING.equals(sca.getName())) {
 			return "";
 		} else {
 			// in This case The User is Authorized to see Everything

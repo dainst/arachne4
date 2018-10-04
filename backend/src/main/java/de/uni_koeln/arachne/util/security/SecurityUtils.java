@@ -85,4 +85,9 @@ public class SecurityUtils {
 
 		return new UsernamePasswordAuthenticationToken(user, user.getPassword(), grantedAuthorities);
 	}
+
+	public static Authentication getDataExportAuthentication(User user) {
+		return new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+	}
+
 }
