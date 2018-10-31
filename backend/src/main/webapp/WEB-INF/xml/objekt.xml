@@ -105,7 +105,7 @@
 					<field datasource="objekt.zuMonument" prefix="zu Monument gehörig: " />
 					<field datasource="objekt.SchmuckBeschreibung" prefix="Schmuck Beschreibung: " />
 					<field datasource="objekt.SchmuckSpezifizierung" prefix="Schmuck Spezifizierung: " />
-					<field datasource="objekt.Auftraggeber" prefix="Auftraggaber: " />
+					<field datasource="objekt.Auftraggeber" prefix="Auftraggeber: " />
 					<field datasource="objekt.Adressat" prefix="Adressat: " />
 					<field datasource="objekt.Kulturkreis" prefix="Kulturepoche: " />
 					<field datasource="objekt.AntikerAufstellungsort" prefix="Antiker Aufstellungsort: " />
