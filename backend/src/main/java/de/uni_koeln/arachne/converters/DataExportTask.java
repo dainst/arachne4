@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.converters;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.UserRightsService;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.MediaType;
@@ -14,8 +15,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
-@Component
-@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class DataExportTask {
 
     public UUID uuid = UUID.randomUUID();
@@ -41,6 +40,10 @@ public class DataExportTask {
 
     public void setUserRightsService(UserRightsService userRightsService) {
         this.userRightsService = userRightsService;
+    }
+
+    public UserRightsService getUserRightsService() {
+        return userRightsService;
     }
 
     public DataExportConversionObject getConversionObject() {

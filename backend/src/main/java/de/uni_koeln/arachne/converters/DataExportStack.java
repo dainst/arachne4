@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -24,6 +25,9 @@ public class DataExportStack {
 
     @Autowired
     private transient UserRightsService userRightsService;
+
+    @Autowired
+    private TaskExecutor taskExecutor;
 
     @Autowired
     private transient MailService mailService;
@@ -45,10 +49,13 @@ public class DataExportStack {
 
     public DataExportTask newTask(AbstractDataExportConverter converter,
                           DataExportConversionObject conversionObject) {
+
         DataExportTask task = new DataExportTask(converter, conversionObject);
+
         task.setOwner(userRightsService.getCurrentUser());
         task.setUrl(getRequestUrl());
         task.setUserRightsService(userRightsService);
+
         return task;
     }
 
@@ -97,17 +104,18 @@ public class DataExportStack {
         finished.remove(task.uuid.toString());
     }
 
-    private DataExportThread startThread(DataExportTask task) {
+    private void startThread(DataExportTask task) {
         final DataExportThread dataExportThread = new DataExportThread(task, getRequest());
 
+        taskExecutor.execute(dataExportThread);
+
         dataExportThread.registerListener(this);
-        final Thread thread = new Thread(dataExportThread);
-        thread.setUncaughtExceptionHandler((t, e) -> {
-            task.error = true;
-            LOGGER.error("Error in task:" + task.uuid.toString(), e);
-        });
-        thread.start();
-        return dataExportThread;
+        //final Thread thread = new Thread(dataExportThread);
+        //thread.setUncaughtExceptionHandler((t, e) -> {
+//            task.error = true;
+//            LOGGER.error("Error in task:" + task.uuid.toString(), e);
+//        });
+        //thread.start();
     }
 
     public void taskIsFinishedListener(DataExportTask task) {
