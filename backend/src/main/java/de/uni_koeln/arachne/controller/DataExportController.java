@@ -60,15 +60,11 @@ public class DataExportController {
 
         final DataExportTask task = dataExportStack.getFinishedTaskById(exportId);
 
-        if (task.getOwner().getId() != userRightsService.getCurrentUser().getId()) {
-            throw new DataExportException("wrong_user", HttpStatus.FORBIDDEN, "DE"); // @ TODO right language
-        }
-
         final InputStream fileStream = dataExportFileManager.getFile(task);
         final HttpHeaders headers = new HttpHeaders();
         response.setHeader("Content-Type", task.getMediaType().toString() + "; charset=utf-8");
         response.setHeader("Content-Length", Long.toString(dataExportFileManager.getFileSize(task)));
-        //response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
+        response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", dataExportFileManager.getFileName(task)));
 
         response.setStatus(HttpStatus.OK.value());
         try {
