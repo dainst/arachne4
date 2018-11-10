@@ -53,6 +53,7 @@ public class DataExportThread implements Runnable {
             dataExportFileManager.writeToFile(dataExportTask);
         } catch (Exception e) {
             LOGGER.error("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: ERROR: " + e.getClass(), e);
+            dataExportTask.error = true;
             throw new RuntimeException(e);
         } finally {
             LOGGER.info("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: FINISHED");
