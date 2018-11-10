@@ -63,14 +63,14 @@ public class DataExportStack {
 
         if (!userRightsService.isSignedInUser()) {
             LOGGER.info("Not logged in");
-            throw new DataExportException("too_huge_and_not_logged_in", HttpStatus.UNAUTHORIZED, "DE"); // TODO correct language
+            throw new DataExportException("too_huge_and_not_logged_in", HttpStatus.UNAUTHORIZED);
         }
 
         LOGGER.info("Push task " + task.uuid.toString());
         LOGGER.info(stack.size() + " tasks in stack");
 
         if (stack.size() >= dataExportMaxStackSize) {
-            throw new DataExportException("stack_full", HttpStatus.SERVICE_UNAVAILABLE, "DE"); // @TODO correct language
+            throw new DataExportException("stack_full", HttpStatus.SERVICE_UNAVAILABLE);
         }
 
         if(running.size() >= dataExportMaxThreads) {
@@ -136,7 +136,7 @@ public class DataExportStack {
 
     public DataExportTask getFinishedTaskById(String taskId) {
         if (!finished.containsKey(taskId)) {
-            throw new DataExportException("task_not_found", HttpStatus.NOT_FOUND, "DE"); // TODO language
+            throw new DataExportException("task_not_found", HttpStatus.NOT_FOUND);
         }
         return finished.get(taskId);
     }

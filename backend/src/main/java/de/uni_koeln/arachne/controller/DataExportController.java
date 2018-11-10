@@ -73,18 +73,16 @@ public class DataExportController {
             dataExportStack.removeFinishedTask(task);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new DataExportException("io_error", HttpStatus.INTERNAL_SERVER_ERROR, "DE"); // @ TODO right language
+            throw new DataExportException("io_error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
-    ResponseEntity<String> handleGetExportStatus(
-            @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage
-    ) {
+    ResponseEntity<String> handleGetExportStatus() {
 
         if (!userRightsService.userHasRole(ADMIN)) {
-            throw new DataExportException("no_admin", HttpStatus.FORBIDDEN, headerLanguage);
+            throw new DataExportException("no_admin", HttpStatus.FORBIDDEN);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(dataExportStack.getStatus().toString());
@@ -92,9 +90,7 @@ public class DataExportController {
 
 
     @RequestMapping(value = "/types", method = RequestMethod.GET)
-    ResponseEntity<String> handleGetMediaTypes(
-            @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage
-    ) {
+    ResponseEntity<String> handleGetMediaTypes() {
 
         final Set<String> mediaTypeList = Optional.of(contentNegotiationManager)
                 .map(m -> m.getStrategy(ParameterContentNegotiationStrategy.class))
@@ -105,12 +101,10 @@ public class DataExportController {
     }
 
     @RequestMapping(value = "/clean", method = RequestMethod.GET)
-    ResponseEntity<String> handleClean(
-            @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage
-    ) {
+    ResponseEntity<String> handleClean() {
 
         if (!userRightsService.userHasRole(ADMIN)) {
-            throw new DataExportException("no_admin", HttpStatus.FORBIDDEN, headerLanguage);
+            throw new DataExportException("no_admin", HttpStatus.FORBIDDEN);
         }
 
         final ArrayList<DataExportTask> outdatedTasks = dataExportStack.getOutdatedTasks();
