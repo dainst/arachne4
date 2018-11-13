@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.service.MailService;
 import de.uni_koeln.arachne.service.UserRightsService;
+import de.uni_koeln.arachne.util.DataExportFileManager;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,9 @@ public class DataExportStack {
     @Autowired
     private transient MailService mailService;
 
+    @Autowired
+    private DataExportFileManager dataExportFileManager;
+
     private static final Logger LOGGER = LoggerFactory.getLogger("DataExportLogger");
 
     private Stack<DataExportTask> stack = new Stack<DataExportTask>();
@@ -47,11 +51,9 @@ public class DataExportStack {
     @Value("${dataExportMaxTaskLifeTime:86400000}")
     private Integer dataExportMaxTaskLifeTime;
 
-    public DataExportTask newTask(AbstractDataExportConverter converter,
-                          DataExportConversionObject conversionObject) {
+    public DataExportTask newTask(AbstractDataExportConverter converter, DataExportConversionObject conversionObject) {
 
         DataExportTask task = new DataExportTask(converter, conversionObject);
-
         task.setOwner(userRightsService.getCurrentUser());
         task.setUrl(getRequestUrl());
         task.setUserRightsService(userRightsService);
@@ -108,7 +110,7 @@ public class DataExportStack {
         final DataExportThread dataExportThread = new DataExportThread(task, getRequest());
 
         taskExecutor.execute(dataExportThread);
-
+        dataExportThread.setFileManager(dataExportFileManager);
         dataExportThread.registerListener(this);
         //final Thread thread = new Thread(dataExportThread);
         //thread.setUncaughtExceptionHandler((t, e) -> {

@@ -5,6 +5,7 @@ import de.uni_koeln.arachne.util.DataExportFileManager;
 import org.apache.logging.log4j.ThreadContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -32,7 +33,7 @@ public class DataExportThread implements Runnable {
 
     private DataExportStack dataExportStack;
 
-    private DataExportFileManager dataExportFileManager = new DataExportFileManager();
+    private DataExportFileManager dataExportFileManager;
 
     private User user;
 
@@ -49,12 +50,21 @@ public class DataExportThread implements Runnable {
         try {
             // request scope hack (enabling session scope) - needed so the UserRightsService can be used
             RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(new MockHttpServletRequest()));
+
             LOGGER.info("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: RUNNING");
             dataExportFileManager.writeToFile(dataExportTask);
-        } catch (Exception e) {
-            LOGGER.error("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: ERROR: " + e.getClass(), e);
+
+        } catch (DataExportException e) {
+            LOGGER.error("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: ERROR: "
+                    + e.getMessage() + " - " + e.untranslatableContent, e);
             dataExportTask.error = true;
             throw new RuntimeException(e);
+
+        } catch (Exception e) {
+            LOGGER.error("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: ERROR: " + e.getMessage(), e);
+            dataExportTask.error = true;
+            throw new RuntimeException(e);
+
         } finally {
             LOGGER.info("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: FINISHED");
             dataExportStack.taskIsFinishedListener(dataExportTask);
@@ -70,4 +80,7 @@ public class DataExportThread implements Runnable {
         this.dataExportStack = stack;
     }
 
+    public void setFileManager(DataExportFileManager dataExportFileManager) {
+        this.dataExportFileManager = dataExportFileManager;
+    }
 }

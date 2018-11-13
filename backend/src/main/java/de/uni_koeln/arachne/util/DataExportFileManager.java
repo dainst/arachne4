@@ -2,9 +2,14 @@ package de.uni_koeln.arachne.util;
 
 import de.uni_koeln.arachne.converters.DataExportException;
 import de.uni_koeln.arachne.converters.DataExportTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -14,8 +19,15 @@ import java.nio.file.Paths;
 @Service
 public class DataExportFileManager {
 
-    //@Value("${dataExportPath:'/tmp'}")
-    private String dataExportPath = "/tmp";
+    private static final Logger LOGGER = LoggerFactory.getLogger("DataExportLogger");
+
+    @Value("${dataExportPath:'/tmp'}")
+    private String dataExportPath;
+
+    @PostConstruct
+    public void init() {
+        LOGGER.info("Tmp file path for data exports: " + dataExportPath);
+    }
 
     public InputStream getFile(DataExportTask task) {
 
@@ -42,9 +54,9 @@ public class DataExportFileManager {
         try {
             Files.delete(path);
         } catch (NoSuchFileException x) {
-            throw new DataExportException("io_error_missing", path.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new DataExportException("not_found", path.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (IOException x) {
-            throw new DataExportException("io_error_access", path.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new DataExportException("io_error", path.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -54,7 +66,6 @@ public class DataExportFileManager {
         try {
             return Files.size(Paths.get(fileName));
         } catch (IOException e) {
-            e.printStackTrace();
             throw new DataExportException("io_error", fileName, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -73,7 +84,6 @@ public class DataExportFileManager {
             fileOutputStream.flush();
             fileOutputStream.close();
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
-            e.printStackTrace();
             throw new DataExportException("io_error", getFileName(task), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
