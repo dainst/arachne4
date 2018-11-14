@@ -342,7 +342,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         final String idAsString = (entityId != null) ? entityId.toString() : "";
         final String uri = "https://arachne.dainst.org/entity/" + idAsString;
         final String label = catalogEntry.getLabel();
-        final String text = markdown2html(catalogEntry.getText()); // !erscheint nicht!
+        final String text = markdown2html(catalogEntry.getText());
         final String headlineTag = "h" + Math.min(6, (level + 1));
         final String headClass = "level-" + level;
         final String count = catalogEntry.getTotalChildren() + "";
