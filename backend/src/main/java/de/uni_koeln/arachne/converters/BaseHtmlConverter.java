@@ -102,7 +102,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
             try {
                 htmlDetailTable(getDetails(getEntity(hit.getEntityId())));
             } catch (Exception e) {
-                String error = (Objects.equals(e.getMessage(), "403")) ? ("User " + exportTable.user + " is not allowed to access this Dataset.") : ("Unknown Error: " + e.getMessage()); // TODO transl8
+                String error = (Objects.equals(e.getMessage(), "403")) ? ("User " + exportTable.user + " is not allowed to access this Dataset.") : ("Unknown Error: " + e.getMessage());
                 writer.append("<p class='error'>" + error + "</p>");
             }
 
@@ -255,7 +255,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         writer.append(exportTable.title);
         if (exportTable.author != null) {
             writer.append("<span>");
-            writer.append("by"); // TODO tranl8
+            writer.append(transl8("by"));
             writer.append(" " + exportTable.author);
             writer.append("</span>");
         }
@@ -268,9 +268,9 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         }
 
         writer.append("<p>");
-        writer.append("Accessed at"); // TODO tranl8
+        writer.append(transl8("accessed_at"));
         writer.append(" " + exportTable.timestamp + " ");
-        writer.append("by"); // TODO tranl8
+        writer.append(transl8("by"));
         writer.append(" " + exportTable.user);
         writer.append("</p>");
         writer.append("<p><a href='" + url + "'>" + url + "</a></p>");
@@ -298,9 +298,9 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         writer.append("<div id='bottomLeftFooter'>");
         writer.append(exportTable.title);
         writer.append(" | ");
-        writer.append("Acceced at"); // TODO tranl8
+        writer.append(transl8("acceced_at"));
         writer.append(" " + exportTable.timestamp + " ");
-        writer.append("by"); // TODO tranl8
+        writer.append(transl8("by"));
         writer.append(" " + exportTable.user);
         writer.append("</div>");
     }
@@ -393,7 +393,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
         // entity
         if (error != null) {
-            error = (Objects.equals(error, "403")) ? ("User " + exportTable.user + " is not allowed to access this Dataset.") : ("Unknown Error: " + error); // TODO transl8
+            error = (Objects.equals(error, "403")) ? ("User " + exportTable.user + " is not allowed to access this Dataset.") : ("Unknown Error: " + error);
             writer.append("<p class='error'>" + error + "</p>");
         }
 

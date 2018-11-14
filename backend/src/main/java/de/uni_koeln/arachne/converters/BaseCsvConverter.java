@@ -68,18 +68,18 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
 
         if (exportTable.author != null) {
             row.clear();
-            row.add("by");
+            row.add(transl8("by"));
             row.add(exportTable.author);
             csvWriter.write(row);
         }
 
         row.clear();
-        row.add("Accessed at"); // TODO tranl8
+        row.add(transl8("accessed_at"));
         row.add(exportTable.timestamp);
         csvWriter.write(row);
 
         row.clear();
-        row.add("by"); // TODO tranl8
+        row.add(transl8("by"));
         row.add(exportTable.user);
         csvWriter.write(row);
 
@@ -88,12 +88,12 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
         csvWriter.write(row);
 
         row.clear();
-        row.add("Imprint");
+        row.add(transl8("imprint"));
         row.add("https://arachne.dainst.org/info/imprint");
         csvWriter.write(row);
 
         row.clear();
-        row.add("License");
+        row.add(transl8("license"));
         row.add("https://arachne.dainst.org/info/order");
         csvWriter.write(row);
 
@@ -108,22 +108,18 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
     public TreeSet<String> getCsvHeaders(List<SearchResultFacet> facets) {
 
         final TreeSet<String> headers = new TreeSet<String>();
-        headers.add("entityId");
-        headers.add("type");
-        headers.add("title");
-        headers.add("subtitle");
+        headers.add(transl8("entityId"));
+        headers.add(transl8("type"));
+        headers.add(transl8("title"));
+        headers.add(transl8("subtitle"));
 
         for (final SearchResultFacet facet : facets) {
             if (facet.getName().equals("facet_geo")) {
-                headers.add("gazetteerId");
-                headers.add("latitude");
-                headers.add("longitude");
+                headers.add(transl8("gazetteerId"));
+                headers.add(transl8("latitude"));
+                headers.add(transl8("longitude"));
             } else {
-                try {
-                    headers.add(transl8Service.transl8(facet.getName(),"en")); // @ TODO set language
-                } catch (Transl8Service.Transl8Exception e) {
-                    headers.add(facet.getName());
-                }
+                headers.add(transl8(facet.getName()));
             }
         }
         return headers;
@@ -177,7 +173,8 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
                 row.putAll(getDetails(fullEntity));
                 serializePlaces(fullEntity, row);
             } catch (Exception e) {
-                String error = (Objects.equals(e.getMessage(), "403")) ? ("User " + exportTable.user + " is not allowed to access this Dataset.") : ("Unknown Error: " + e.getMessage()); // TODO transl8
+                String error = (Objects.equals(e.getMessage(), "403"))
+                        ? ("User " + exportTable.user + " is not allowed to access this Dataset.") : ("Unknown Error: " + e.getMessage());
                 row.put("error", error);
             }
 

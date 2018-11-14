@@ -32,7 +32,7 @@ public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
         this.writer = new OutputStreamWriter(outputStream);
         final List<SearchHit> entities = searchResult.getEntities();
         csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
-        initializeExport("Search Result"); // TODO transl8
+        initializeExport(transl8("search_result"));
         serialize(entities);
         csvHeaders();
         csvBody();

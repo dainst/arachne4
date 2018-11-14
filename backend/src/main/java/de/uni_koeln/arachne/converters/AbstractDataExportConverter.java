@@ -237,13 +237,9 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
                 continue;
             }
 
-            try {
-                fullFacetName = transl8Service.transl8(key.substring(6), "DE"); // TODO correct language
-            } catch (Transl8Service.Transl8Exception e) {
-                fullFacetName = key;
-            }
+            fullFacetName = transl8(key.substring(6));
 
-            row.put("@" + fullFacetName, fullFacetName,(String) ((JSONArray) value).getString(0));
+            row.put("@" + fullFacetName, fullFacetName, (String) ((JSONArray) value).getString(0));
         }
     }
 
@@ -344,7 +340,8 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
         this.exportTable.title = title;
         this.exportTable.user = task.getOwner().getUsername();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); // @ TODO tansl8
+        String dateFormatString = transl8("date_format");
+        DateFormat dateFormat = new SimpleDateFormat(dateFormatString);
         this.exportTable.timestamp = dateFormat.format(new Date());
     }
 
@@ -381,7 +378,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     public String getConversionName(SearchResult searchResult) {
         try {
 
-            final String delimiter = " and ";
+            final String delimiter = " " + transl8("and") + " ";
             final String regex = "facet_(\\w+):\\\"(.*)\\\"";
             final Pattern pattern = Pattern.compile(regex);
             final List<NameValuePair> params = URLEncodedUtils.parse(new URI(task.getUrl()), "UTF-8");
@@ -398,10 +395,19 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
                 }
             }
 
-            return String.join(delimiter, queryFilers); //transl8
+            return String.join(delimiter, queryFilers);
 
         } catch (Exception e) {
             return "";
+        }
+    }
+
+    String transl8(String key) {
+        try {
+            return transl8Service.transl8(key, task.getLanguage());
+        } catch (Exception e) {
+            LOGGER.warn("could not transl8: " + key);
+            return '#' + key;
         }
     }
 

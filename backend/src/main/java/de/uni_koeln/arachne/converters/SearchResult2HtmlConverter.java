@@ -32,7 +32,7 @@ public class SearchResult2HtmlConverter extends BaseHtmlConverter<SearchResult> 
         this.writer = new OutputStreamWriter(outputStream);
         final List<SearchHit> entities = searchResult.getEntities();
         final List<SearchResultFacet> facets = searchResult.getFacets();
-        initializeExport("Search Result for " + task.getConversionName()); // todo transl8
+        initializeExport(transl8("search_result_for") + " " + task.getConversionName());
         htmlHeader();
         htmlFrontmatter();
         htmlResults(entities, facets);
