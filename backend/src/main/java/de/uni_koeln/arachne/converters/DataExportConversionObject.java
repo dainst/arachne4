@@ -3,6 +3,10 @@ package de.uni_koeln.arachne.converters;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.response.search.SearchResult;
 
+/**
+ * a container class for both types of conversion objects (searchResult and catalog). if there would be more types,
+ * we would prefer inheriting classes, but they are only two.
+ */
 public class DataExportConversionObject {
     private SearchResult searchResult;
     private Catalog catalog;
@@ -42,4 +46,5 @@ public class DataExportConversionObject {
         }
         return null;
     }
+
 }
