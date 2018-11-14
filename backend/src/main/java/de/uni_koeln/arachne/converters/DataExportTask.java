@@ -38,6 +38,7 @@ public class DataExportTask {
     public Boolean error = false;
 
     private transient UserRightsService userRightsService;
+    private String language;
 
     public DataExportTask(AbstractDataExportConverter converter,
                           DataExportConversionObject conversionObject) {
@@ -152,6 +153,11 @@ public class DataExportTask {
         converter.convert(conversionObject, outputStream);
     }
 
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
-
+    public String getLanguage() {
+        return language;
+    }
 }

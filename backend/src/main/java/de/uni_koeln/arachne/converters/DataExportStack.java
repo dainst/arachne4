@@ -57,6 +57,7 @@ public class DataExportStack {
         task.setOwner(userRightsService.getCurrentUser());
         task.setUrl(getRequestUrl());
         task.setUserRightsService(userRightsService);
+        task.setLanguage(getRequestLanguage());
 
         return task;
     }
@@ -183,16 +184,19 @@ public class DataExportStack {
         return outdatedTasks;
     }
 
+
+    private String getRequestLanguage() {
+        final String langParameter = getRequest().getParameter("lang");
+        final String langHeader = getRequest().getHeader("Accept-Language");
+        return (langParameter == null) ? langHeader: langParameter;
+    }
+
     private String getRequestUrl() {
-        ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = sra.getRequest();
-        return request.getRequestURL().toString() + "?" + request.getQueryString();
+        return getRequest().getRequestURL().toString() + "?" + getRequest().getQueryString();
     }
 
     private String getFileUrl(DataExportTask task) {
-        ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = sra.getRequest();
-        final StringBuffer baseUrl = request.getRequestURL();
+        final StringBuffer baseUrl = getRequest().getRequestURL();
         return baseUrl.toString() + "/file/" + task.uuid.toString();
     }
 
