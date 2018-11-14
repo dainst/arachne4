@@ -16,7 +16,9 @@ import de.uni_koeln.arachne.service.Transl8Service;
 import java.io.*;
 import java.util.*;
 
-
+import org.commonmark.node.*;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 
 /**
  * @author Paf
@@ -33,8 +35,6 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
     final String GAZETTEER_URL = "https://gazetteer.dainst.org/app/#!/show/%%%GAZID%%%";
     final String ALTERNATE_GEO_URL = "https://www.openstreetmap.org/?mlat=%%%LAT%%%&mlon=%%%LON%%%&zoom=15";
-
-
 
     private HashMap<String, String> htmlFileCache = new HashMap<String, String>();
 
@@ -320,7 +320,15 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         }
     }
 
-
+    String markdown2html(String markdown) {
+        if (markdown == null) {
+            return "";
+        }
+        Parser parser = Parser.builder().build();
+        Node document = parser.parse(markdown);
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        return renderer.render(document);
+    }
 
     /**
      * Creates a HTML representation of a {@link CatalogEntry} and all its children.
@@ -334,7 +342,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         final String idAsString = (entityId != null) ? entityId.toString() : "";
         final String uri = "https://arachne.dainst.org/entity/" + idAsString;
         final String label = catalogEntry.getLabel();
-        final String text = catalogEntry.getText();
+        final String text = markdown2html(catalogEntry.getText()); // !erscheint nicht!
         final String headlineTag = "h" + Math.min(6, (level + 1));
         final String headClass = "level-" + level;
         final String count = catalogEntry.getTotalChildren() + "";
@@ -354,6 +362,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
             details = getDetails(fullEntity);
         }
+
 
 
         writer.append("<div class='page " + headClass + "'>");

@@ -403,19 +403,25 @@
     	</dependency>
 
     	<dependency>
-        	<!-- Required for PDF output. -->
+        	<!-- Required for PDF export. -->
         	<groupId>com.openhtmltopdf</groupId>
         	<artifactId>openhtmltopdf-pdfbox</artifactId>
         	<version>${openhtml-version}</version>
     	</dependency>
 
 		<dependency>
-			<!-- also Required for PDF output. (paf) -->
+			<!-- also Required for PDF export. -->
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 			<version>${jsoup-version}</version>
 		</dependency>
 
+		<dependency>
+			<!-- Required for HTML/PDF export. -->
+			<groupId>com.atlassian.commonmark</groupId>
+			<artifactId>commonmark-ext-gfm-tables</artifactId>
+			<version>0.9.0</version>
+		</dependency>
 
 		<!-- Apache HTTP Components (needed to support SSL with RestTemplate) -->
 		<dependency>

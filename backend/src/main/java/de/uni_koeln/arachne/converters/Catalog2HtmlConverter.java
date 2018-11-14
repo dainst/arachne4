@@ -32,7 +32,8 @@ public class Catalog2HtmlConverter extends BaseHtmlConverter<Catalog> {
         this.writer = new OutputStreamWriter(outputStream);
         initializeExport(catalog);
         htmlHeader();
-        htmlFrontmatter();
+        String text = catalog.getRoot().getText();
+        htmlFrontmatter(markdown2html(catalog.getRoot().getText()));
         htmlCatalog(catalog);
         htmlFooter();
         writer.close();
