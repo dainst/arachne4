@@ -12,13 +12,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.List;
 
-/**
- * I really tried hard to have only one converter for different endpoint,
- * but this is java and it's inherently desperately craving for class madness
- * so I write new classes on and on.
- * I wish it would be only an island.
- */
-
 public class SearchResult2HtmlConverter extends BaseHtmlConverter<SearchResult> {
 
     @Override
@@ -39,9 +32,9 @@ public class SearchResult2HtmlConverter extends BaseHtmlConverter<SearchResult> 
         this.writer = new OutputStreamWriter(outputStream);
         final List<SearchHit> entities = searchResult.getEntities();
         final List<SearchResultFacet> facets = searchResult.getFacets();
-        initializeExport("Search Result"); // todo transl8
+        initializeExport("Search Result for " + task.getConversionName()); // todo transl8
         htmlHeader();
-        htmlFrontmatter(facetList2String(facets));
+        htmlFrontmatter();
         htmlResults(entities, facets);
         htmlFooter();
         writer.close();
