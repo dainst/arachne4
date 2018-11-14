@@ -7,6 +7,8 @@ import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.service.*;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -30,9 +32,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.*;
 
@@ -321,7 +326,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
     /**
      *
-     * implement this to define  how places shall get serialized!
+     * implement this to define how places shall get serialized!
      *
      * @param number
      * @param name
@@ -367,6 +372,37 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
     public void enqueIfHuge(Catalog catalog, Integer limit) {
         checkForHugeAndEnqueue((long) catalog.getRoot().getAllSuccessors(), limit, new DataExportConversionObject(catalog));
+    }
+
+    public String getConversionName(Catalog catalog) {
+        return catalog.getRoot().getLabel();
+    }
+
+    public String getConversionName(SearchResult searchResult) {
+        try {
+
+            final String delimiter = " and ";
+            final String regex = "facet_(\\w+):\\\"(.*)\\\"";
+            final Pattern pattern = Pattern.compile(regex);
+            final List<NameValuePair> params = URLEncodedUtils.parse(new URI(task.getUrl()), "UTF-8");
+            final ArrayList<String> queryFilers = new ArrayList<String>(){};
+            for (NameValuePair param : params) {
+                if (param.getName().equals("q")) {
+                    queryFilers.add(0, "'" + param.getValue() + "'");
+                }
+                if (param.getName().equals("fq")) {
+                    final Matcher matcher = pattern.matcher(param.getValue());
+                    while (matcher.find()) {
+                        queryFilers.add(matcher.group(1) + " = '" + matcher.group(2) + "'");
+                    }
+                }
+            }
+
+            return String.join(delimiter, queryFilers); //transl8
+
+        } catch (Exception e) {
+            return "";
+        }
     }
 
 }

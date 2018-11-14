@@ -2,6 +2,8 @@ package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.UserRightsService;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -11,9 +13,16 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DataExportTask {
 
@@ -110,8 +119,10 @@ public class DataExportTask {
 
     public JSONObject getInfoAsJSON() {
         final JSONObject info = new JSONObject();
+        info.put("name", getConversionName());
         info.put("url", getUrl());
         info.put("mediaType", getMediaType().toString());
+        info.put("conversionType", conversionObject.getType());
         info.put("owner", getOwner().getUsername());
         info.put("created_at", tsCreated.toString());
         if (tsStarted != null) {
@@ -124,11 +135,23 @@ public class DataExportTask {
         return info;
     }
 
+    public String getConversionName() {
+       if (conversionObject.getType().equals("catalog")) {
+            return converter.getConversionName(conversionObject.getCatalog());
+
+       }
+       if (conversionObject.getType().equals("searchResult")) {
+            return converter.getConversionName(conversionObject.getSearchResult());
+       }
+       return "";
+    }
+
     public void perform(OutputStream outputStream) throws IOException {
         userRightsService.setDataExporter(owner);
         converter.task = this;
         converter.convert(conversionObject, outputStream);
     }
+
 
 
 }
