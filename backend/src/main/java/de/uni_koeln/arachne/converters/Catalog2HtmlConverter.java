@@ -22,7 +22,7 @@ public class Catalog2HtmlConverter extends BaseHtmlConverter<Catalog> {
     protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
         enqueIfHuge(catalog, 150);
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/html");
-        //httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.html\"");
+        httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"catalog.html\"");
         convert(new DataExportConversionObject(catalog), httpOutputMessage.getBody());
     }
 

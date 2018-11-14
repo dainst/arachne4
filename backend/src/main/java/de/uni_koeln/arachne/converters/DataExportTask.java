@@ -123,7 +123,7 @@ public class DataExportTask {
         info.put("name", getConversionName());
         info.put("url", getUrl());
         info.put("mediaType", getMediaType().toString());
-        info.put("conversionType", conversionObject.getType());
+        info.put("conversionType", getConversionType());
         info.put("owner", getOwner().getUsername());
         info.put("created_at", tsCreated.toString());
         if (tsStarted != null) {
@@ -145,6 +145,10 @@ public class DataExportTask {
             return converter.getConversionName(conversionObject.getSearchResult());
        }
        return "";
+    }
+
+    public String getConversionType() {
+        return conversionObject.getType();
     }
 
     public void perform(OutputStream outputStream) throws IOException {
