@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.accept.ContentNegotiationManager;
@@ -92,12 +93,18 @@ public class DataExportController {
     @RequestMapping(value = "/types", method = RequestMethod.GET)
     ResponseEntity<String> handleGetMediaTypes() {
 
-        final Set<String> mediaTypeList = Optional.of(contentNegotiationManager)
-                .map(m -> m.getStrategy(ParameterContentNegotiationStrategy.class))
-                .map(s -> s.getMediaTypes().keySet())
-                .orElse(Collections.emptySet());
+        final Map<String, MediaType> mediaTypeList =
+                contentNegotiationManager
+                        .getStrategy(ParameterContentNegotiationStrategy.class)
+                        .getMediaTypes();
 
-        return ResponseEntity.status(HttpStatus.OK).body(new JSONArray(mediaTypeList.toArray()).toString());
+        final HashMap<String, String> collectedTypes = new HashMap<String, String>();
+        for (String mKey : mediaTypeList.keySet()) {
+            if (!mKey.equals("xml") && !mKey.equals("json")) {
+                collectedTypes.put(mKey, mediaTypeList.get(mKey).toString());
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(new JSONObject(collectedTypes).toString());
     }
 
     @RequestMapping(value = "/clean", method = RequestMethod.GET)
