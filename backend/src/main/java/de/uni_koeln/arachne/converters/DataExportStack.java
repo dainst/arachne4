@@ -188,7 +188,7 @@ public class DataExportStack {
     private String getRequestLanguage() {
         final String langParameter = getRequest().getParameter("lang");
         final String langHeader = getRequest().getHeader("Accept-Language");
-        return (langParameter == null) ? langHeader: langParameter;
+        return (langParameter == null) ? ((langHeader == null) ? "de" : langHeader) : langParameter;
     }
 
     private String getRequestUrl() {
