@@ -1,6 +1,5 @@
 package de.uni_koeln.arachne.converters;
 
-import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
@@ -233,7 +232,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
     public void htmlFrontmatter(String content) throws IOException {
 
         // search url
-        final String url = task.getUrl()
+        final String url = task.getRequestUrl()
             .replace(".pdf", "")
             .replace("?null", "")
             .replace(".html", "");

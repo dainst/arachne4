@@ -4,33 +4,24 @@ import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.response.search.SearchResult;
-import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import de.uni_koeln.arachne.service.*;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
-import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpInputMessage;
-import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.AbstractHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URI;
 import java.text.DateFormat;
@@ -381,7 +372,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
             final String delimiter = " " + transl8("and") + " ";
             final String regex = "facet_(\\w+):\\\"(.*)\\\"";
             final Pattern pattern = Pattern.compile(regex);
-            final List<NameValuePair> params = URLEncodedUtils.parse(new URI(task.getUrl()), "UTF-8");
+            final List<NameValuePair> params = URLEncodedUtils.parse(new URI(task.getRequestUrl()), "UTF-8");
             final ArrayList<String> queryFilers = new ArrayList<String>(){};
             for (NameValuePair param : params) {
                 if (param.getName().equals("q")) {

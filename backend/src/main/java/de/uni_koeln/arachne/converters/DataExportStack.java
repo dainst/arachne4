@@ -1,6 +1,7 @@
 package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.service.MailService;
+import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.DataExportFileManager;
 import org.json.JSONObject;
@@ -36,6 +37,9 @@ public class DataExportStack {
     @Autowired
     private DataExportFileManager dataExportFileManager;
 
+    @Autowired
+    public transient Transl8Service transl8Service;
+
     private static final Logger LOGGER = LoggerFactory.getLogger("DataExportLogger");
 
     private Stack<DataExportTask> stack = new Stack<DataExportTask>();
@@ -55,7 +59,8 @@ public class DataExportStack {
 
         DataExportTask task = new DataExportTask(converter, conversionObject);
         task.setOwner(userRightsService.getCurrentUser());
-        task.setUrl(getRequestUrl());
+        task.setRequestUrl(getRequestUrl());
+        task.setBackendUrl(getBackendUrl());
         task.setUserRightsService(userRightsService);
         task.setLanguage(getRequestLanguage());
 
@@ -125,13 +130,29 @@ public class DataExportStack {
         task.stopTimer();
         running.remove(task);
         finished.put(task.uuid.toString(), task);
-//        if (!task.error) { // @ TODO context problem has to be solved first
-//            mailService.sendMail(
-//                task.getOwner().getEmail(),
-//                "Arachne Data Export",
-//                "task_finished: " + getFileUrl(task)
-//            );
-//        }
+
+
+        if (!task.error) {
+            String subject = "Arachne Data Export";
+            String text = "%USER% | %URL% | %NAME%";
+            final String user = (!task.getOwner().getLastname().equals("") && (task.getOwner().getLastname() != null))
+                    ? task.getOwner().getFirstname() + " " + task.getOwner().getLastname()
+                    : task.getOwner().getUsername();
+            final String url = dataExportFileManager.getFileUrl(task);
+            final String mail = "paflow@o2online.de";//task.getOwner().getEmail(),
+            try {
+                subject = transl8Service.transl8("data_export_ready", task.getLanguage());
+                text = transl8Service.transl8("data_export_success_mail", task.getLanguage());
+            } catch (Transl8Service.Transl8Exception e) {
+                // tranls8 is not available.. normal, we don't panic...
+            }
+            text = text
+                    .replace("%URL%", url)
+                    .replace("%USER%", user)
+                    .replace("%NAME%", task.getConversionName());
+
+            mailService.sendMailHtml(mail, null, subject, text);
+        }
 
         LOGGER.info("Finished task:" + task.uuid.toString() + " " + running.size() + " tasks in stack");
         nextTask();
@@ -195,9 +216,9 @@ public class DataExportStack {
         return getRequest().getRequestURL().toString() + "?" + getRequest().getQueryString();
     }
 
-    private String getFileUrl(DataExportTask task) {
-        final StringBuffer baseUrl = getRequest().getRequestURL();
-        return baseUrl.toString() + "/file/" + task.uuid.toString();
+    private String getBackendUrl() {
+        final String url = getRequest().getRequestURL().toString();
+        return url.substring(0, url.lastIndexOf('/'));
     }
 
     private HttpServletRequest getRequest() {

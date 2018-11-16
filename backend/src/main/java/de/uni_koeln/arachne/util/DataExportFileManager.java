@@ -5,7 +5,6 @@ import de.uni_koeln.arachne.converters.DataExportTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -73,6 +72,11 @@ public class DataExportFileManager {
     public String getFileName(DataExportTask task) {
         final String extension = task.getMediaType().getSubtype().toString();
         return dataExportPath + "/export-" + task.uuid.toString() + "." + extension;
+    }
+
+    public String getFileUrl(DataExportTask task) {
+        final String baseUrl = task.getBackendUrl();
+        return baseUrl.toString() + "/export/file/" + task.uuid.toString();
     }
 
     public void writeToFile(DataExportTask task) throws Exception {

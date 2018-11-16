@@ -2,27 +2,14 @@ package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.UserRightsService;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class DataExportTask {
 
@@ -34,7 +21,8 @@ public class DataExportTask {
     private Timestamp tsStopped;
     private MediaType mediaType;
     private User owner;
-    private String url = "";
+    private String requestUrl = "";
+    private String backendUrl = "";
     public Boolean error = false;
 
     private transient UserRightsService userRightsService;
@@ -110,18 +98,26 @@ public class DataExportTask {
         this.owner = user;
     }
 
-    public String getUrl() {
-        return url;
+    public String getRequestUrl() {
+        return requestUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setRequestUrl(String requestUrl) {
+        this.requestUrl = requestUrl;
+    }
+
+    public String getBackendUrl() {
+        return backendUrl;
+    }
+
+    public void setBackendUrl(String backendUrl) {
+        this.backendUrl = backendUrl;
     }
 
     public JSONObject getInfoAsJSON() {
         final JSONObject info = new JSONObject();
         info.put("name", getConversionName());
-        info.put("url", getUrl());
+        info.put("requestUrl", getRequestUrl());
         info.put("mediaType", getMediaType().toString());
         info.put("conversionType", getConversionType());
         info.put("owner", getOwner().getUsername());
