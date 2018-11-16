@@ -1,7 +1,9 @@
 package de.uni_koeln.arachne.service;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.util.StrUtils;
@@ -83,6 +86,35 @@ public class MailService {
 			return false;
 		}
 	}
+
+	public boolean sendMailHtml(final String recipient, final String replyTo, final String subject,
+							final String messageBody) {
+
+		if (!isValidEmailAddress(recipient)) {
+			LOGGER.error("Invalid recipient AddressException.");
+			return false;
+		}
+
+		try {
+			final MimeMessage message = mailSender.createMimeMessage();
+			final MimeMessageHelper mailMessage = new MimeMessageHelper(message, true);
+			mailMessage.setFrom(sender);
+			mailMessage.setTo(recipient);
+			mailMessage.setSubject(subject);
+			mailMessage.setText(messageBody, true);
+			if (!StrUtils.isEmptyOrNull(replyTo)) {
+				mailMessage.setReplyTo(replyTo);
+			}
+			mailSender.send(message);
+			LOGGER.debug("Sending HTML email to '" + recipient + "' with subject '" + subject + "' succeeded");
+			return true;
+		} catch (Exception e) {
+			LOGGER.error("Sending HTML email to '" + recipient + "' with subject '" + subject + "' failed with ", e);
+			return false;
+		}
+
+	}
+
 	
 	public boolean isValidEmailAddress(final String address) {
 	    
