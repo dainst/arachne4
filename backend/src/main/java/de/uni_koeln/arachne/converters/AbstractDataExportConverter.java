@@ -88,6 +88,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
     public DataExportTask task;
 
+    public int totalMaximumForExport = 1000000;
     /**
      * Unpacks JSON and get all the objects datails against a list of facets
      * @param entityId
@@ -349,6 +350,9 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
             return;
         }
 
+        if (size > totalMaximumForExport) {
+            throw new DataExportException("to_huge", HttpStatus.BAD_REQUEST);
+        }
         dataExportStack.push(task);
 
         throw new DataExportException("too_huge_and_will_be_sent_by_mail", HttpStatus.ACCEPTED);
