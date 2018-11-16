@@ -80,7 +80,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     public void injectService(EntityIdentificationService entityIdentificationService) { this.entityIdentificationService = entityIdentificationService; }
     public void injectService(DataExportStack dataExportStack) { this.dataExportStack = dataExportStack; }
 
-    // settings; overwrite em
+    // settings; overwrite em in implementation
     public Boolean handleOnlyFirstPlace = false;
     public List<String> skipFacets = Arrays.asList("facet_land", "facet_ort", "facet_ortsangabe", "facet_image", "facet_geo", "facet_literatur");
 
@@ -89,6 +89,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     public DataExportTask task;
 
     public int totalMaximumForExport = 1000000;
+
     /**
      * Unpacks JSON and get all the objects datails against a list of facets
      * @param entityId
@@ -353,9 +354,10 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         if (size > totalMaximumForExport) {
             throw new DataExportException("to_huge", HttpStatus.BAD_REQUEST);
         }
+
         dataExportStack.push(task);
 
-        throw new DataExportException("too_huge_and_will_be_sent_by_mail", HttpStatus.ACCEPTED);
+        throw new DataExportException("to_huge_and_will_be_sent_by_mail", HttpStatus.ACCEPTED);
     }
 
     public void enqueIfHuge(SearchResult searchResult, Integer limit) {

@@ -71,7 +71,7 @@ public class DataExportStack {
 
         if (!userRightsService.isSignedInUser()) {
             LOGGER.info("Not logged in");
-            throw new DataExportException("too_huge_and_not_logged_in", HttpStatus.UNAUTHORIZED);
+            throw new DataExportException("to_huge_and_not_logged_in", HttpStatus.UNAUTHORIZED);
         }
 
         LOGGER.info("Push task " + task.uuid.toString());
