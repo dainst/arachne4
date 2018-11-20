@@ -109,7 +109,8 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 		final List<String> typeStepRestrictions = this.contextPath.getTypeStepRestrictions();
 		final StringBuilder out = new StringBuilder(32); 
 		for(int i =0;  i< typeStepRestrictions.size()-1;i++ ){ 
-			out.append( " e"+i+".Target = e"+(i+1)+".Source AND ");
+			out.append( " e"+i+".ForeignKeyTarget = e"+(i+1)+".ForeignKeySource AND ");
+			out.append( " e"+i+".TypeTarget = e"+(i+1)+".TypeSource AND ");
 		}
 		return out;
 	}
