@@ -9,6 +9,7 @@ import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import java.io.*;
+import java.util.Base64;
 import java.util.List;
 
 public class SearchResult2PdfConverter extends BasePdfConverter<SearchResult> {
@@ -20,10 +21,12 @@ public class SearchResult2PdfConverter extends BasePdfConverter<SearchResult> {
 
     @Override
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException {
-        enqueIfHuge(searchResult, 50);
+        enqueIfHuge(searchResult, 0);
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/pdf");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.pdf\"");
-        convert(new DataExportConversionObject(searchResult), httpOutputMessage.getBody());
+        httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_ENCODING, "base64");
+
+        convert(new DataExportConversionObject(searchResult), Base64.getEncoder().wrap(httpOutputMessage.getBody()));
     }
 
     @Override

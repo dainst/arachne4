@@ -9,6 +9,7 @@ import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import java.io.*;
+import java.util.Base64;
 import java.util.List;
 
 public class Catalog2PdfConverter extends BasePdfConverter<Catalog> {
@@ -23,7 +24,8 @@ public class Catalog2PdfConverter extends BasePdfConverter<Catalog> {
         enqueIfHuge(catalog, 50);
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/pdf");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"catalog.pdf\"");
-        convert(new DataExportConversionObject(catalog), httpOutputMessage.getBody());
+        httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_ENCODING, "base64");
+        convert(new DataExportConversionObject(catalog), Base64.getEncoder().wrap(httpOutputMessage.getBody()));
     }
 
     @Override
