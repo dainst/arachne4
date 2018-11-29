@@ -99,13 +99,13 @@
 					<field datasource="objekt.HerkFundKommentar" />
 				</section>
 				<section labelKey="Gattung/Funktion/Kulturepoche">
-					<field datasource="objekt.GattungAllgemein" />
+					<field datasource="objekt.GattungAllgemein" search=";" replace="; "/>
 					<field datasource="objekt.Funktion" />
 					<field datasource="objekt.funktionaleVerwendung" />
 					<field datasource="objekt.zuMonument" prefix="zu Monument gehörig: " />
 					<field datasource="objekt.SchmuckBeschreibung" prefix="Schmuck Beschreibung: " />
 					<field datasource="objekt.SchmuckSpezifizierung" prefix="Schmuck Spezifizierung: " />
-					<field datasource="objekt.Auftraggeber" prefix="Auftraggaber: " />
+					<field datasource="objekt.Auftraggeber" prefix="Auftraggeber: " />
 					<field datasource="objekt.Adressat" prefix="Adressat: " />
 					<field datasource="objekt.Kulturkreis" prefix="Kulturepoche: " />
 					<field datasource="objekt.AntikerAufstellungsort" prefix="Antiker Aufstellungsort: " />
@@ -118,7 +118,8 @@
 				<section labelKey="Technik">
 					<field datasource="objekt.Technik" />
 					<field datasource="objekt.TechnikDetails" />
-					<field datasource="objekt.ApplizierteElemente" prefix="Applikationen: " />
+					<field datasource="objekt.ApplizierteElemente" prefix="Applikationen: "
+						search=";" replace="; " />
 				</section>
 				<section labelKey="Material">
 					<field datasource="objekt.Material" />
@@ -487,17 +488,17 @@
 						<field datasource="objektterrakotten.Terrakottentyp" />
 						<field datasource="objektterrakotten.Beschreibung" prefix="Beschreibung: " />
 					</section>
-					<section labelKey="Serie Kopf: " separator=", ">
+					<section labelKey="Serie Kopf" separator=", ">
 						<field datasource="objektterrakotten.MatrserKopf" />
 						<field datasource="objektterrakotten.GenerationKopf" />
 						<field datasource="objektterrakotten.VariationKopf" />
 					</section>
-					<section labelKey="Serie Körper: " separator=", ">
+					<section labelKey="Serie Körper" separator=", ">
 						<field datasource="objektterrakotten.MatrserKoerper" />
 						<field datasource="objektterrakotten.GenerationKoerper" />
 						<field datasource="objektterrakotten.VariationKoerper" />
 					</section>
-					<section labelKey="Kombinationsfolge: ">
+					<section labelKey="Kombinationsfolge">
 						<field datasource="objektterrakotten.MatrserKopfKoerper" />
 						<field datasource="objektterrakotten.GenerationKopfKoerper" />
 						<field datasource="objektterrakotten.VariationKopfKoerper" />
@@ -506,13 +507,12 @@
 					</section>
 					<section>
 						<field datasource="objektterrakotten.PatrizenqualitaetPur"
-							prefix="Qualität der Abformung: " />
+							prefix="Qualität der Abformung" />
 						<field datasource="objektterrakotten.Anbringung" prefix="Anbringung: " />
 					</section>
 				</section>
 				<section labelKey="Bearbeitung" separator="; ">
 					<field datasource="objektterrakotten.depotfremdeRepliken" />
-					<field datasource="objektterrakotten.Aufnahmedesiderate" />
 					<field datasource="objektterrakotten.KatalogtextNoelke" />
 					<field datasource="objektterrakotten.persNotizen" />
 					<field datasource="objektterrakotten.KomplexDatierung" />
