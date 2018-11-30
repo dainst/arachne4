@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.controller;
 import de.uni_koeln.arachne.converters.DataExportException;
 import de.uni_koeln.arachne.converters.DataExportStack;
 import de.uni_koeln.arachne.converters.DataExportTask;
+import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.DataExportFileManager;
 import org.apache.commons.io.IOUtils;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8_VALUE;
 import static de.uni_koeln.arachne.util.security.SecurityUtils.ADMIN;
 
 /**
@@ -120,7 +122,11 @@ public class DataExportController {
         final JSONArray report = new JSONArray();
 
         for (DataExportTask task : outdatedTasks) {
-            dataExportFileManager.deleteFile(task);
+            try {
+                dataExportFileManager.deleteFile(task);
+            } catch (DataExportException exception) {
+                LOGGER.warn(exception.getMessage());
+            }
             dataExportStack.removeFinishedTask(task);
             LOGGER.info("Deleted outdated task: " + task.uuid.toString());
             report.put(task.uuid.toString());
