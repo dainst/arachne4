@@ -1,16 +1,13 @@
 package de.uni_koeln.arachne.converters;
 
-import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
-import de.uni_koeln.arachne.response.search.SearchHit;
-import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpOutputMessage;
-import org.springframework.http.converter.HttpMessageNotWritableException;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
 import java.util.Base64;
-import java.util.List;
 
 public class Catalog2PdfConverter extends BasePdfConverter<Catalog> {
 

@@ -1,20 +1,14 @@
 package de.uni_koeln.arachne.converters;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
-
-
-import de.uni_koeln.arachne.response.search.SearchResult;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.W3CDom;
-import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.w3c.dom.Document;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
-import java.io.Writer;
 
 
 /**

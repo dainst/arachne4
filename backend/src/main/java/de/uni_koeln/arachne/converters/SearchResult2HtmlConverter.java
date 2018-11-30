@@ -1,4 +1,5 @@
 package de.uni_koeln.arachne.converters;
+
 import de.uni_koeln.arachne.response.search.SearchHit;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
@@ -9,7 +10,6 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.List;
 
 public class SearchResult2HtmlConverter extends BaseHtmlConverter<SearchResult> {

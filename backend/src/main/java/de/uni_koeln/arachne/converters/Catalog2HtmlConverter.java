@@ -1,7 +1,6 @@
 package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
-import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
@@ -9,7 +8,6 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 
 public class Catalog2HtmlConverter extends BaseHtmlConverter<Catalog> {
 

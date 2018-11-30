@@ -1,8 +1,6 @@
 package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
-import de.uni_koeln.arachne.response.search.SearchResult;
-import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
@@ -12,8 +10,6 @@ import org.supercsv.prefs.CsvPreference;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.*;
 
 
 public class Catalog2CsvConverter extends BaseCsvConverter<Catalog> {

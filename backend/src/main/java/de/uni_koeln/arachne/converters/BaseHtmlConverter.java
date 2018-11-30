@@ -2,22 +2,23 @@ package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
+import de.uni_koeln.arachne.response.search.SearchHit;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
+import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 import org.apache.xerces.impl.dv.util.Base64;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.http.*;
-
-import de.uni_koeln.arachne.response.search.SearchHit;
-import de.uni_koeln.arachne.service.Transl8Service;
-
-import java.io.*;
-import java.util.*;
-
-import org.commonmark.node.*;
+import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.http.MediaType;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.*;
 
 /**
  * @author Paf

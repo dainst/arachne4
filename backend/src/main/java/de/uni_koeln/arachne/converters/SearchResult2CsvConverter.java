@@ -2,14 +2,15 @@ package de.uni_koeln.arachne.converters;
 
 import de.uni_koeln.arachne.response.search.SearchHit;
 import de.uni_koeln.arachne.response.search.SearchResult;
-import de.uni_koeln.arachne.response.search.SearchResultFacet;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.supercsv.io.CsvListWriter;
 import org.supercsv.prefs.CsvPreference;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.List;
 
 public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {

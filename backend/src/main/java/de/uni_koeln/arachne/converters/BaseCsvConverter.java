@@ -1,18 +1,19 @@
 package de.uni_koeln.arachne.converters;
 
-import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.response.search.SearchHit;
 import de.uni_koeln.arachne.response.search.SearchResultFacet;
-import de.uni_koeln.arachne.service.Transl8Service;
 import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvListWriter;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.TreeSet;
 
 
 /**
