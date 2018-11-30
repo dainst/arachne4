@@ -131,7 +131,6 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
                 .parameterName("mediaType")
                 .ignoreAcceptHeader(true)
                 .useJaf(false)
-                .defaultContentType(MediaType.APPLICATION_JSON_UTF8)
                 .mediaType("json", MediaType.APPLICATION_JSON_UTF8)
                 .mediaType("pdf", MediaType.APPLICATION_PDF)
                 .mediaType("html", MediaType.TEXT_HTML)
