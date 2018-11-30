@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.converters;
+package de.uni_koeln.arachne.export;
 
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.response.search.SearchResult;

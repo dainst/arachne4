@@ -1,7 +1,7 @@
 package de.uni_koeln.arachne.config;
 
 import com.zaxxer.hikari.HikariDataSource;
-import de.uni_koeln.arachne.converters.*;
+import de.uni_koeln.arachne.export.*;
 import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
 import de.uni_koeln.arachne.service.*;
 import org.springframework.beans.factory.annotation.Autowired;

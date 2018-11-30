@@ -1,7 +1,6 @@
-package de.uni_koeln.arachne.converters;
+package de.uni_koeln.arachne.export;
 
 import de.uni_koeln.arachne.mapping.hibernate.User;
-import de.uni_koeln.arachne.util.DataExportFileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;

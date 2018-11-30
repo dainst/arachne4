@@ -1,9 +1,8 @@
-package de.uni_koeln.arachne.converters;
+package de.uni_koeln.arachne.export;
 
 import de.uni_koeln.arachne.service.MailService;
 import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.service.UserRightsService;
-import de.uni_koeln.arachne.util.DataExportFileManager;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

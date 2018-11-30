@@ -1,4 +1,4 @@
-package de.uni_koeln.arachne.converters;
+package de.uni_koeln.arachne.export;
 
 import java.util.ArrayList;
 import java.util.TreeSet;
