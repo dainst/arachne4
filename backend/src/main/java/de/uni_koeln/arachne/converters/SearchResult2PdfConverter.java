@@ -21,7 +21,7 @@ public class SearchResult2PdfConverter extends BasePdfConverter<SearchResult> {
 
     @Override
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException {
-        enqueIfHuge(searchResult, 0);
+        enqueIfHuge(searchResult, 50);
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/pdf");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.pdf\"");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_ENCODING, "base64");
