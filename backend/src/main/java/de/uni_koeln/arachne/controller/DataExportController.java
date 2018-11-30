@@ -72,6 +72,7 @@ public class DataExportController {
             IOUtils.copy(fileStream, response.getOutputStream());
             response.flushBuffer();
             dataExportStack.removeFinishedTask(task);
+
         } catch (IOException e) {
             e.printStackTrace();
             throw new DataExportException("io_error", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -79,7 +80,7 @@ public class DataExportController {
     }
 
 
-    @RequestMapping(value = "/status", method = RequestMethod.GET)
+    @RequestMapping(value = "/status", method = RequestMethod.GET, produces={APPLICATION_JSON_UTF8_VALUE})
     ResponseEntity<String> handleGetExportStatus() {
 
         if (!userRightsService.userHasRole(ADMIN)) {
@@ -90,7 +91,7 @@ public class DataExportController {
     }
 
 
-    @RequestMapping(value = "/types", method = RequestMethod.GET)
+    @RequestMapping(value = "/types", method = RequestMethod.GET, produces={APPLICATION_JSON_UTF8_VALUE})
     ResponseEntity<String> handleGetMediaTypes() {
 
         final Map<String, MediaType> mediaTypeList =
