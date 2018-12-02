@@ -10,17 +10,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 
-
 /**
  * @author Paf
  */
+
 public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T> {
 
-    public BasePdfConverter() { super(MediaType.APPLICATION_PDF); }
+    public BasePdfConverter() {
+        super(MediaType.APPLICATION_PDF);
+    }
 
-
-
-    public BaseHtmlConverter getHtmlConverter() {
+    protected BaseHtmlConverter getHtmlConverter() {
         BaseHtmlConverter htmlConverter;
         if (task.getConversionType().equals("searchResult")) {
             htmlConverter = new SearchResult2HtmlConverter();
@@ -39,7 +39,7 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
         return htmlConverter;
     }
 
-    public void writePdf(StringWriter inStream, OutputStream outStream) throws IOException {
+    protected void writePdf(StringWriter inStream, OutputStream outStream) throws IOException {
         PdfRendererBuilder pdfBuilder = new PdfRendererBuilder();
         try {
             W3CDom w3cDom = new W3CDom();
@@ -55,9 +55,5 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
 
     }
 
-    @Override
-    public void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
-        // dont't care about this baby
-    }
 
 }

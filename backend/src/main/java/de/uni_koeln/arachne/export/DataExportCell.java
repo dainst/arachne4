@@ -1,5 +1,9 @@
 package de.uni_koeln.arachne.export;
 
+/**
+ * @author Paf
+ */
+
 public class DataExportCell {
 
     public DataExportCell() {};

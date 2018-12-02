@@ -9,6 +9,10 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.Base64;
 
+/**
+ * @author Paf
+ */
+
 public class Catalog2PdfConverter extends BasePdfConverter<Catalog> {
 
     @Override
@@ -18,7 +22,7 @@ public class Catalog2PdfConverter extends BasePdfConverter<Catalog> {
 
     @Override
     protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException {
-        enqueIfHuge(catalog, 50);
+        enqueueIfHuge(catalog, 50);
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/pdf");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"catalog.pdf\"");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_ENCODING, "base64");

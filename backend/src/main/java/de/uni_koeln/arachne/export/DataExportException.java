@@ -2,6 +2,10 @@ package de.uni_koeln.arachne.export;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * @author Paf
+ */
+
 public class DataExportException extends RuntimeException {
 
     public String type = "";
@@ -28,6 +32,5 @@ public class DataExportException extends RuntimeException {
     public HttpStatus getHttpStatus() {
         return status;
     }
-
 
 }

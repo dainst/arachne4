@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.export;
 import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
 import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
+import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.service.*;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
@@ -34,71 +35,143 @@ import java.util.regex.Pattern;
 
 /**
  * @author Paf
+ *
+ * Basic class for all converters to inherent
+ *
  */
 
-@Service("userRightsService")
+@Service
 @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessageConverter<T> {
+
+    Writer writer;
+
+    final Logger LOGGER = LoggerFactory.getLogger("DataExportLogger");
+
+    transient EntityService entityService;
+    transient Transl8Service transl8Service;
+    transient ServletContext servletContext;
+    transient IIPService iipService;
+    transient CatalogEntryDao catalogEntryDao;
+    private transient SingleEntityDataService singleEntityDataService;
+    public transient EntityIdentificationService entityIdentificationService;
+    private transient DataExportStack dataExportStack;
+
+    User user;
+    DataExportTable exportTable = new DataExportTable();
+    DataExportTask task;
+
+    // config
+
+    final int totalMaximumForExport = 1000000;
+
+    // settings; to overwrite in implementation if wanted
+
+    final Boolean handleOnlyFirstPlace = false;
+    final List<String> skipFacets = Arrays.asList("facet_land", "facet_ort", "facet_ortsangabe", "facet_image", "facet_geo", "facet_literatur");
+
+
+    // constructors
 
     public AbstractDataExportConverter(MediaType mediaType) {
         super(mediaType);
     }
+
     public AbstractDataExportConverter(MediaType... mediaTypes) {
         super(mediaTypes);
     }
 
-    public abstract void convert(DataExportConversionObject conversionObject, OutputStream outputStream) throws IOException;
+    // because we can not use @Autowired (by any reason) here, we have to use these shitty injection function here. plz don't hate me.
 
-    @Override
-    protected T readInternal(Class<? extends T> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
-        throw new UnsupportedOperationException("Reading other file formats is not implemented yet and will most likely never be.");
+    public void injectService(EntityService entityService) {
+        this.entityService = entityService;
     }
 
-    public Writer writer;
-
-    final Logger LOGGER = LoggerFactory.getLogger("DataExportLogger");
-
-    // because we can not use @Autowired (by any reason) here, we have this fuck shit dependency injection here. plz don't hate me.
-    public transient EntityService entityService;
-    public transient Transl8Service transl8Service;
-    public transient ServletContext servletContext;
-    public transient IIPService iipService;
-    public transient CatalogEntryDao catalogEntryDao;
-    public transient SingleEntityDataService singleEntityDataService;
-    public transient EntityIdentificationService entityIdentificationService;
-    public transient DataExportStack dataExportStack;
-    private User user;
-
-    public void injectService(EntityService entityService) { this.entityService = entityService; }
     public void injectService(Transl8Service transl8Service) {
         this.transl8Service = transl8Service;
     }
-    public void injectService(ServletContext servletContext) { this.servletContext = servletContext; }
-    public void injectService(IIPService iipService) { this.iipService = iipService; }
-    public void injectService(CatalogEntryDao catalogEntryDao) { this.catalogEntryDao = catalogEntryDao; }
-    public void injectService(SingleEntityDataService singleEntityDataService) { this.singleEntityDataService = singleEntityDataService; }
-    public void injectService(EntityIdentificationService entityIdentificationService) { this.entityIdentificationService = entityIdentificationService; }
-    public void injectService(DataExportStack dataExportStack) { this.dataExportStack = dataExportStack; }
 
-    // settings; overwrite em in implementation
-    public Boolean handleOnlyFirstPlace = false;
-    public List<String> skipFacets = Arrays.asList("facet_land", "facet_ort", "facet_ortsangabe", "facet_image", "facet_geo", "facet_literatur");
+    public void injectService(ServletContext servletContext) {
+        this.servletContext = servletContext;
+    }
 
-    public DataExportTable exportTable = new DataExportTable();
+    public void injectService(IIPService iipService) {
+        this.iipService = iipService;
+    }
 
-    public DataExportTask task;
+    public void injectService(CatalogEntryDao catalogEntryDao) {
+        this.catalogEntryDao = catalogEntryDao;
+    }
 
-    public int totalMaximumForExport = 1000000;
+    public void injectService(SingleEntityDataService singleEntityDataService) {
+        this.singleEntityDataService = singleEntityDataService;
+    }
 
-    /**
-     * Unpacks JSON and get all the objects datails against a list of facets
-     * @param entityId
-     * @return
-     * @throws Exception
-     */
-    public JSONObject getEntity(long entityId) throws Exception {
+    public void injectService(EntityIdentificationService entityIdentificationService) {
+        this.entityIdentificationService = entityIdentificationService;
+    }
 
-        TypeWithHTTPStatus entity = null;
+    public void injectService(DataExportStack dataExportStack) {
+        this.dataExportStack = dataExportStack;
+    }
+
+    protected T readInternal(Class<? extends T> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
+        throw new UnsupportedOperationException("Reading other file formats is not implemented.");
+    }
+
+
+    // functions to be implemented
+
+    abstract void convert(DataExportConversionObject conversionObject, OutputStream outputStream) throws IOException;
+
+
+    // conversion control functions
+
+    void initializeExport(String title) {
+        exportTable = new DataExportTable();
+        this.exportTable.title = title;
+        this.exportTable.user = task.getOwner().getUsername();
+        String dateFormatString = transl8("date_format");
+        DateFormat dateFormat = new SimpleDateFormat(dateFormatString);
+        this.exportTable.timestamp = dateFormat.format(new Date());
+    }
+
+    void initializeExport(Catalog catalog) {
+        initializeExport(catalog.getRoot().getLabel());
+        this.exportTable.author = catalog.getAuthor();
+    }
+
+    private void checkForHugeAndEnqueue(Long size, Integer limit, DataExportConversionObject conversionObject) {
+
+        task = dataExportStack.newTask(this, conversionObject);
+
+        if (size < limit) {
+            return;
+        }
+
+        if (size > totalMaximumForExport) {
+            throw new DataExportException("to_huge", HttpStatus.BAD_REQUEST);
+        }
+
+        dataExportStack.push(task);
+
+        throw new DataExportException("to_huge_and_will_be_sent_by_mail", HttpStatus.ACCEPTED);
+    }
+
+    void enqueueIfHuge(SearchResult searchResult, Integer limit) {
+        checkForHugeAndEnqueue(searchResult.getSize(), limit, new DataExportConversionObject(searchResult));
+    }
+
+    void enqueueIfHuge(Catalog catalog, Integer limit) {
+        checkForHugeAndEnqueue((long) catalog.getRoot().getAllSuccessors(), limit, new DataExportConversionObject(catalog));
+    }
+
+    // helping functions, most converters would use
+
+    // Unpacks JSON and get all the objects details against a list of facets
+    protected JSONObject getEntity(long entityId) throws Exception {
+
+        TypeWithHTTPStatus entity;
 
         try {
             entity = entityService.getEntityFromIndex(entityId, null, "en");
@@ -113,26 +186,14 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
             return null;
         }
 
-        final JSONObject fullEntity = new JSONObject(entity.getValue().toString());
-
-        return fullEntity;
+        return new JSONObject(entity.getValue().toString());
     }
 
-    /**
-     * serialisation of section object
-     * @param row
-     * @param box
-     */
+    // serialisation of section object
     private void serializeSection(DataExportRow row, JSONObject box) {
-       serializeSection(row, box, "", 0);
+        serializeSection(row, box, "", 0);
     }
 
-    /**
-     * serialisation of section object
-     * @param row
-     * @param box
-     * @param topLabel
-     */
     private void serializeSection(DataExportRow row, JSONObject box, String topLabel, Integer number) {
 
         String label = box.has("label") ? box.get("label").toString() : null;
@@ -169,11 +230,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         }
     }
 
-    /**
-     * serialized a complete Entity to
-     * @param fullEntity
-     * @return
-     */
+    //serialized a complete Entity to
     public DataExportRow getDetails(JSONObject fullEntity) {
 
         final DataExportRow row = exportTable.newRow();
@@ -204,11 +261,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         return row;
     }
 
-    /**
-     * serlializes the facets of a given Fullentity (without knowing them beforehand)
-     * @param row
-     * @param fullEntity
-     */
+    // serlializes the facets of a given Fullentity (without knowing them beforehand)
     private void serializeFacets(DataExportRow row, JSONObject fullEntity) {
         Object value;
         String fullFacetName;
@@ -236,19 +289,14 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         }
     }
 
-    void serializeFacetValues(String facetName, String facetFullName, JSONArray facetValues, DataExportRow collector) {
+    protected void serializeFacetValues(String facetName, String facetFullName, JSONArray facetValues, DataExportRow collector) {
         for (int i = 0; i < facetValues.length(); i++) {
             collector.put(facetName, facetFullName, facetValues.get(i).toString());
         }
     };
 
-    /**
-     * extracts place information from fulLEntity and add it to collector - accorind to implementation if serializePlaces function
-     * @param fullEntity
-     * @param collector
-     */
-    public void serializePlaces(JSONObject fullEntity, DataExportRow collector) {
-        //row.putAll(unpackFacetGeo((JSONArray) valueObj));
+    // extracts place information from fulLEntity and add it to collector - accorind to implementation if serializePlaces function
+    protected void serializePlaces(JSONObject fullEntity, DataExportRow collector) {
         if (fullEntity.has("places")) {
             serializePlacesArray((JSONArray) fullEntity.get("places"), collector);
         } else if (fullEntity.has("facet_geo")) {
@@ -257,13 +305,8 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         }
     }
 
-    /**
-     * helper function to extract useful information about place
-     *
-     * @param places
-     * @param collector
-     */
-    private void serializePlacesArray(JSONArray places, DataExportRow collector) {
+    // helper function to extract useful information about place
+    protected void serializePlacesArray(JSONArray places, DataExportRow collector) {
 
         for (int i = 0; i < (handleOnlyFirstPlace ? 1 : places.length()); i++) {
 
@@ -299,73 +342,17 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
     }
 
-    /**
-     * helper function to extract useful information about place from facet_geo
-     *
-     * @param facetGeo
-     * @return JSONArray
-     */
+    // implement this to define how places shall get serialized!
+    void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
+    };
+
+    // helper function to extract useful information about place from facet_geo
     private JSONArray unpackFacetGeo(JSONArray facetGeo) {
         for (int i = 0; i < (handleOnlyFirstPlace ? 1 : facetGeo.length()); i++) {
             Object entryBox = facetGeo.get(i);
             facetGeo.put(i, new JSONObject("" + entryBox)); // don't you remove the "" + -, it won't work then and I have no idea
         }
         return facetGeo;
-    }
-
-    /**
-     *
-     * implement this to define how places shall get serialized!
-     *
-     * @param number
-     * @param name
-     * @param gazetteerId
-     * @param lat
-     * @param lon
-     * @param rel
-     * @param collector
-     */
-    abstract public void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector);
-
-
-    public void initializeExport(String title) {
-        exportTable = new DataExportTable();
-
-        this.exportTable.title = title;
-        this.exportTable.user = task.getOwner().getUsername();
-        String dateFormatString = transl8("date_format");
-        DateFormat dateFormat = new SimpleDateFormat(dateFormatString);
-        this.exportTable.timestamp = dateFormat.format(new Date());
-    }
-
-    public void initializeExport(Catalog catalog) {
-        initializeExport(catalog.getRoot().getLabel());
-        this.exportTable.author = catalog.getAuthor();
-    }
-
-    private void checkForHugeAndEnqueue(Long size, Integer limit, DataExportConversionObject conversionObject) {
-
-        task = dataExportStack.newTask(this, conversionObject);
-
-        if (size < limit) {
-            return;
-        }
-
-        if (size > totalMaximumForExport) {
-            throw new DataExportException("to_huge", HttpStatus.BAD_REQUEST);
-        }
-
-        dataExportStack.push(task);
-
-        throw new DataExportException("to_huge_and_will_be_sent_by_mail", HttpStatus.ACCEPTED);
-    }
-
-    public void enqueIfHuge(SearchResult searchResult, Integer limit) {
-        checkForHugeAndEnqueue(searchResult.getSize(), limit, new DataExportConversionObject(searchResult));
-    }
-
-    public void enqueIfHuge(Catalog catalog, Integer limit) {
-        checkForHugeAndEnqueue((long) catalog.getRoot().getAllSuccessors(), limit, new DataExportConversionObject(catalog));
     }
 
     public String getConversionName(Catalog catalog) {
@@ -406,6 +393,18 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
             LOGGER.warn("could not transl8: " + key);
             return '#' + key;
         }
+    }
+
+    // because catalog endpoint is not necessarily called with full-parameter, children might be missing
+    List<CatalogEntry> realGetChildren(CatalogEntry catalogEntry) {
+        final List<CatalogEntry> storedChildren = catalogEntry.getChildren();
+        if (storedChildren != null) {
+            return storedChildren;
+        }
+
+        final CatalogEntry catalogEntry2 = catalogEntryDao.getById(catalogEntry.getId(), true, 5, 0);
+
+        return catalogEntry2.getChildren();
     }
 
 }

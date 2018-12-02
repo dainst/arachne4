@@ -11,6 +11,10 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * @author Paf
+ */
+
 public class DataExportTask {
 
     public UUID uuid = UUID.randomUUID();

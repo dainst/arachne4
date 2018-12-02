@@ -21,7 +21,7 @@ public class Catalog2CsvConverter extends BaseCsvConverter<Catalog> {
 
     @Override
     protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-        enqueIfHuge(catalog, 200);
+        enqueueIfHuge(catalog, 200);
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/csv");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"catalog.csv\"");
         convert(new DataExportConversionObject(catalog), httpOutputMessage.getBody());
@@ -41,7 +41,7 @@ public class Catalog2CsvConverter extends BaseCsvConverter<Catalog> {
     }
 
     @Override
-    public void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
+    protected void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
         collector.put("lat", lat);
         collector.put("lon", lon);
     }

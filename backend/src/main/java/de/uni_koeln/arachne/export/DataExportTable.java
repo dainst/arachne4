@@ -5,6 +5,10 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author Paf
+ */
+
 public class DataExportTable extends ArrayList<DataExportRow>  {
 
     // table headers

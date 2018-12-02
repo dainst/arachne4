@@ -17,25 +17,25 @@ import java.util.TreeSet;
 
 
 /**
- *
- * @param <T>
+ * @author Paf
  */
+
 public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T> {
 
     public BaseCsvConverter() {
         super(new MediaType("text", "csv"));
     }
 
-    public CsvListWriter csvWriter;
-    public CellProcessor[] csvProcessors;
+    protected CsvListWriter csvWriter;
+    protected CellProcessor[] csvProcessors;
 
 
-    public void csvHeaders() throws IOException {
+    protected void csvHeaders() throws IOException {
         final ArrayList<String> tableHeaders = exportTable.getColumns();
         csvWriter.writeHeader(tableHeaders.toArray(new String[tableHeaders.size()]));
     }
 
-    public void csvBody() throws IOException {
+    protected void csvBody() throws IOException {
 
         DataExportCell cell;
         String value = "";
@@ -55,7 +55,7 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
 
     }
 
-    public void csvFooter() throws IOException {
+    protected void csvFooter() throws IOException {
         final ArrayList<String> row = new ArrayList<String>(){};
         row.add("");
         csvWriter.write(row);
@@ -101,14 +101,10 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
     }
 
 
-    /**
-     * table headers for csv fpr SEARCH RESULTS
-     * @param facets
-     * @return
-     */
-    public TreeSet<String> getCsvHeaders(List<SearchResultFacet> facets) {
+    // table headers for csv for SEARCH RESULTS
+    protected TreeSet<String> getCsvHeaders(List<SearchResultFacet> facets) {
 
-        final TreeSet<String> headers = new TreeSet<String>();
+        final TreeSet<String> headers = new TreeSet<>();
         headers.add(transl8("entityId"));
         headers.add(transl8("type"));
         headers.add(transl8("title"));
@@ -126,13 +122,7 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
         return headers;
     }
 
-    /**
-     *
-     * @param catalog
-     * @return
-     * @throws IOException
-     */
-    public void serialize(Catalog catalog) throws IOException {
+    protected void serialize(Catalog catalog) throws IOException {
 
         List<CatalogEntry> children = catalog.getRoot().getChildren();
 
@@ -145,12 +135,7 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
 
     }
 
-    /**
-     *
-     * @param searchHits
-     * @throws IOException
-     */
-    public void serialize(List<SearchHit> searchHits) throws IOException {
+    protected void serialize(List<SearchHit> searchHits) throws IOException {
 
         if(searchHits == null) {
             return;
@@ -185,14 +170,7 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
 
     }
 
-    /**
-     *
-     * @param catalogEntry
-     * @param level
-     * @param order
-     * @throws IOException
-     */
-    public void serialize(final CatalogEntry catalogEntry, final int level, final String order) throws IOException {
+    protected void serialize(final CatalogEntry catalogEntry, final int level, final String order) throws IOException {
         final DataExportRow row = exportTable.newRow();
 
         final Long entityId = catalogEntry.getArachneEntityId();
@@ -233,22 +211,8 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
 
     }
 
-
-    private List<CatalogEntry> realGetChildren(CatalogEntry catalogEntry) { // @ TODO analyze why this is neccessary
-        final List<CatalogEntry> storedChildren = catalogEntry.getChildren();
-        if (storedChildren != null) {
-            return storedChildren;
-        }
-
-        final CatalogEntry catalogEntry2 = catalogEntryDao.getById(catalogEntry.getId(), true, 5, 0);
-
-        return catalogEntry2.getChildren();
-
-    }
-
-
     @Override
-    public void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
+    protected void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
         collector.put("place", gazetteerId);
         collector.put("lat", lat);
         collector.put("lon", lon);

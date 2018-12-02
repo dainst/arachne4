@@ -12,6 +12,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
+/**
+ * @author Paf
+ */
+
 public class SearchResult2HtmlConverter extends BaseHtmlConverter<SearchResult> {
 
     @Override
@@ -19,8 +23,9 @@ public class SearchResult2HtmlConverter extends BaseHtmlConverter<SearchResult> 
         return aClass == SearchResult.class;
     }
 
+    @Override
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-        enqueIfHuge(searchResult, 50);
+        enqueueIfHuge(searchResult, 50);
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/html");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.html\"");
         convert(new DataExportConversionObject(searchResult), httpOutputMessage.getBody());

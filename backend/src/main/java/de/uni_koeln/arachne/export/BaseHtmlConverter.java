@@ -23,6 +23,7 @@ import java.util.*;
 /**
  * @author Paf
  */
+
 public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T> {
 
     public BaseHtmlConverter() {
@@ -31,7 +32,6 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
     public Integer maxCatalogDepth = 3;
     public Boolean getImages = true;
-    //public Boolean validXml = true;
 
     final String GAZETTEER_URL = "https://gazetteer.dainst.org/app/#!/show/%%%GAZID%%%";
     final String ALTERNATE_GEO_URL = "https://www.openstreetmap.org/?mlat=%%%LAT%%%&mlon=%%%LON%%%&zoom=15";
@@ -46,7 +46,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
         InputStream initFileStream = servletContext.getResourceAsStream("WEB-INF/dataexport/" + file);
         BufferedReader reader = new BufferedReader(new InputStreamReader(initFileStream));
-        StringBuffer fileContents = new StringBuffer();
+        StringBuilder fileContents = new StringBuilder();
         while(reader.ready()){
             fileContents.append(reader.readLine());
         }
@@ -134,7 +134,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
     }
 
 
-    public void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
+    protected void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
 
         String value;
 
@@ -153,7 +153,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         collector.put("place", value);
     }
 
-    void serializeFacetValues(String facetName, String facetFullName, JSONArray facetValues, DataExportRow collector) {
+    protected void serializeFacetValues(String facetName, String facetFullName, JSONArray facetValues, DataExportRow collector) {
 
         ArrayList<String> values = new ArrayList<String>();
         Integer longest = 0;
@@ -429,21 +429,5 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         }
 
     }
-
-    private List<CatalogEntry> realGetChildren(CatalogEntry catalogEntry) { // @ TODO analyze why this is neccessary
-        final List<CatalogEntry> storedChildren = catalogEntry.getChildren();
-        if (storedChildren != null) {
-            return storedChildren;
-        }
-
-        final CatalogEntry catalogEntry2 = catalogEntryDao.getById(catalogEntry.getId(), true, 5, 0);
-
-        return catalogEntry2.getChildren();
-
-
-    }
-
-
-
 
 }

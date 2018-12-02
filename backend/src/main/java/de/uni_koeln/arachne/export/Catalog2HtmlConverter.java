@@ -9,6 +9,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+/**
+ * @author Paf
+ */
+
 public class Catalog2HtmlConverter extends BaseHtmlConverter<Catalog> {
 
     @Override
@@ -18,7 +22,7 @@ public class Catalog2HtmlConverter extends BaseHtmlConverter<Catalog> {
 
     @Override
     protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-        enqueIfHuge(catalog, 150);
+        enqueueIfHuge(catalog, 150);
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "text/html");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"catalog.html\"");
         convert(new DataExportConversionObject(catalog), httpOutputMessage.getBody());

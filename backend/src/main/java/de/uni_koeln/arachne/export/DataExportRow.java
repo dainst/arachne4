@@ -2,6 +2,10 @@ package de.uni_koeln.arachne.export;
 
 import java.util.LinkedHashMap;
 
+/**
+ * @author Paf
+ */
+
 public class DataExportRow extends LinkedHashMap<String, DataExportCell> {
 
     private DataExportTable _table;

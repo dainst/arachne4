@@ -20,6 +20,9 @@ import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Stack;
 
+/**
+ * @author Paf
+ */
 
 @Service
 public class DataExportStack {
@@ -113,16 +116,9 @@ public class DataExportStack {
 
     private void startThread(DataExportTask task) {
         final DataExportThread dataExportThread = new DataExportThread(task, getRequest());
-
         taskExecutor.execute(dataExportThread);
         dataExportThread.setFileManager(dataExportFileManager);
         dataExportThread.registerListener(this);
-        //final Thread thread = new Thread(dataExportThread);
-        //thread.setUncaughtExceptionHandler((t, e) -> {
-//            task.error = true;
-//            LOGGER.error("Error in task:" + task.uuid.toString(), e);
-//        });
-        //thread.start();
     }
 
     public void taskIsFinishedListener(DataExportTask task) {
@@ -138,7 +134,7 @@ public class DataExportStack {
                     ? task.getOwner().getFirstname() + " " + task.getOwner().getLastname()
                     : task.getOwner().getUsername();
             final String url = dataExportFileManager.getFileUrl(task);
-            final String mail = "paflow@o2online.de";//task.getOwner().getEmail(),
+            final String mail = task.getOwner().getEmail();
             try {
                 subject = transl8Service.transl8("data_export_ready", task.getLanguage());
                 text = transl8Service.transl8("data_export_success_mail", task.getLanguage());
