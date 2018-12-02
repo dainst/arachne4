@@ -67,8 +67,8 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
     // settings; to overwrite in implementation if wanted
 
-    final Boolean handleOnlyFirstPlace = false;
-    final List<String> skipFacets = Arrays.asList("facet_land", "facet_ort", "facet_ortsangabe", "facet_image", "facet_geo", "facet_literatur");
+    protected Boolean handleOnlyFirstPlace = false;
+    protected List<String> skipFacets = Arrays.asList("facet_land", "facet_ort", "facet_ortsangabe", "facet_image", "facet_geo", "facet_literatur");
 
 
     // constructors
