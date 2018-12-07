@@ -87,11 +87,6 @@ public class DataExportController {
 
     @RequestMapping(value = "/status", method = RequestMethod.GET, produces={APPLICATION_JSON_UTF8_VALUE})
     ResponseEntity<String> handleGetExportStatus() {
-
-        if (!userRightsService.userHasRole(ADMIN)) {
-            throw new DataExportException("no_admin", HttpStatus.FORBIDDEN);
-        }
-
         return ResponseEntity.status(HttpStatus.OK).body(dataExportStack.getStatus().toString());
     }
 
