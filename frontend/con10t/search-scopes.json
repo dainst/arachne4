@@ -75,6 +75,16 @@
   "gelehrtenbriefe": {
     "q": "searchableEditorContent:Gelehrtenbriefe"
   },
+  "athenDigital": {
+    "q": "athenDigital",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bücher"
+      }
+    ]
+  },
+
   "gipsleipzigsamml": {
     "q": "connectedEntities:1241594",
     "facets": [
