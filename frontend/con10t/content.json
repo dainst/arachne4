@@ -141,6 +141,12 @@
           "title": {
             "de": "Gelehrte, Ausgräber und Kunsthändler"
          }
+         },
+         {
+           "id": "athenDigital",
+           "title": {
+             "de": "AthenDigital: Das Nachlassarchiv"
+          }
         }
       ]
     },
@@ -280,7 +286,7 @@
             "de": "Nachlass Georg Kossack",
             "en": "Bequests of Georg Kossack"
           }
-        },  
+        },
         {
           "id": "villaWolkonsky",
           "title": {
