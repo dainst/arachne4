@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.export;
 
+import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.MailService;
 import de.uni_koeln.arachne.service.Transl8Service;
 import de.uni_koeln.arachne.service.UserRightsService;
@@ -109,10 +110,21 @@ public class DataExportStack {
         }
 
     }
+    public void dequeueTask(DataExportTask task) {
+        stack.remove(task);
+        task.error = "aborted";
+        finished.put(task.uuid.toString(), task);
+        LOGGER.info("Task " + task.uuid.toString() + " dequeued");
+    }
+
+    public void abortTask(DataExportTask task) {
+        //@TODO
+    }
 
     public void removeFinishedTask(DataExportTask task) {
         finished.remove(task.uuid.toString());
     }
+
 
     private void startThread(DataExportTask task) {
         final DataExportThread dataExportThread = new DataExportThread(task, getRequest());
@@ -127,7 +139,7 @@ public class DataExportStack {
         finished.put(task.uuid.toString(), task);
 
 
-        if (!task.error) {
+        if (task.error != null) {
             String subject = "Arachne Data Export";
             String text = "%USER% | %URL% | %NAME%";
             final String user = (!task.getOwner().getLastname().equals("") && (task.getOwner().getLastname() != null))
@@ -160,10 +172,6 @@ public class DataExportStack {
         return finished.get(taskId);
     }
 
-    public Integer getTasksRunning() {
-        return stack.size();
-    }
-
     public JSONObject getStatus() {
         final JSONObject status = new JSONObject();
         status.put("max_stack_size", dataExportMaxStackSize);
@@ -183,21 +191,44 @@ public class DataExportStack {
         }
         for (HashMap.Entry<String, DataExportTask> taskItem: finished.entrySet()) {
             final JSONObject info = taskItem.getValue().getInfoAsJSON();
-            info.put("status", taskItem.getValue().error ? "error" : "finished");
+            info.put("status", (taskItem.getValue().error != null) ? taskItem.getValue().error : "finished");
             taskList.put(taskItem.getValue().uuid.toString(), info);
         }
         status.put("tasks", taskList);
         return status;
     }
 
-    public ArrayList<DataExportTask> getOutdatedTasks() {
-        final ArrayList<DataExportTask> outdatedTasks = new ArrayList<DataExportTask>();
-        for (HashMap.Entry<String, DataExportTask> taskItem: finished.entrySet()) {
-            if (taskItem.getValue().getAge() > dataExportMaxTaskLifeTime) {
-                outdatedTasks.add(taskItem.getValue());
+
+    public ArrayList<DataExportTask> getRunningTasks(User owner) {
+        final ArrayList<DataExportTask> taskList = new ArrayList<DataExportTask>();
+        for (DataExportTask task: running) {
+            if (owner == null || (owner.getId() == task.getOwner().getId())) {
+                taskList.add(task);
             }
         }
-        return outdatedTasks;
+        return taskList;
+    }
+
+    public ArrayList<DataExportTask> getEnqueuedTasks(User owner) {
+        final ArrayList<DataExportTask> taskList = new ArrayList<DataExportTask>();
+        for (DataExportTask task: stack) {
+            if (owner == null || (owner.getId() == task.getOwner().getId())) {
+                taskList.add(task);
+            }
+        }
+        return taskList;
+    }
+
+    public ArrayList<DataExportTask> getFinishedTasks(User owner, Boolean outdated) {
+        final ArrayList<DataExportTask> taskList = new ArrayList<DataExportTask>();
+        for (HashMap.Entry<String, DataExportTask> taskItem: finished.entrySet()) {
+            if (!outdated || taskItem.getValue().getAge() > dataExportMaxTaskLifeTime) {
+                if (owner == null || (owner.getId() == taskItem.getValue().getOwner().getId())) {
+                    taskList.add(taskItem.getValue());
+                }
+            }
+        }
+        return taskList;
     }
 
 
@@ -220,5 +251,6 @@ public class DataExportStack {
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         return sra.getRequest();
     }
+
 
 }

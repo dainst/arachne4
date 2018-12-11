@@ -50,12 +50,12 @@ public class DataExportThread implements Runnable {
         } catch (DataExportException e) {
             LOGGER.error("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: ERROR: "
                     + e.getMessage() + " - " + e.untranslatableContent, e);
-            dataExportTask.error = true;
+            dataExportTask.error = "error";
             throw new RuntimeException(e);
 
         } catch (Exception e) {
             LOGGER.error("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: ERROR: " + e.getMessage(), e);
-            dataExportTask.error = true;
+            dataExportTask.error = "error";
             throw new RuntimeException(e);
 
         } finally {
