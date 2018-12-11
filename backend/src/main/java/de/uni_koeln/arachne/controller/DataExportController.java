@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.controller;
 import de.uni_koeln.arachne.export.DataExportException;
 import de.uni_koeln.arachne.export.DataExportStack;
 import de.uni_koeln.arachne.export.DataExportTask;
+import de.uni_koeln.arachne.mapping.hibernate.User;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.export.DataExportFileManager;
 import org.apache.commons.io.IOUtils;
@@ -18,10 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.accept.ParameterContentNegotiationStrategy;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -109,13 +107,33 @@ public class DataExportController {
     }
 
     @RequestMapping(value = "/clean", method = RequestMethod.GET)
-    ResponseEntity<String> handleClean() {
+    ResponseEntity<String> handleClean(
+            @RequestParam(value = "outdated", required = false) Boolean outdated,
+            @RequestParam(value = "everyones", required = false) Boolean everyones,
+            @RequestParam(value = "finished", required = false) Boolean finished
+    ) {
 
-        if (!userRightsService.userHasRole(ADMIN)) {
+        outdated = (outdated == null) ? true : outdated;
+        everyones = (everyones == null) ? false : everyones;
+        finished = (everyones == null) ? false : finished;
+
+        if (everyones && !userRightsService.userHasRole(ADMIN)) {
             throw new DataExportException("no_admin", HttpStatus.FORBIDDEN);
         }
 
-        final ArrayList<DataExportTask> outdatedTasks = dataExportStack.getOutdatedTasks();
+        final User user = everyones ? null : userRightsService.getCurrentUser();
+
+        if (!finished) {
+            for (DataExportTask task : dataExportStack.getEnqueuedTasks(user)) {
+                dataExportStack.dequeueTask(task);
+            }
+
+            for (DataExportTask task : dataExportStack.getRunningTasks(user)) {
+                dataExportStack.abortTask(task);
+            }
+        }
+
+        final ArrayList<DataExportTask> outdatedTasks = dataExportStack.getFinishedTasks(user, outdated);
 
         final JSONArray report = new JSONArray();
 
