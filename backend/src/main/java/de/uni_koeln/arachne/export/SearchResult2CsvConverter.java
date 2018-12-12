@@ -35,7 +35,12 @@ public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
     @Override
     public void convert(DataExportConversionObject conversionObject, OutputStream outputStream) throws IOException {
         final SearchResult searchResult = conversionObject.getSearchResult();
-        this.writer = new OutputStreamWriter(outputStream);
+        this.writer = new DataExportWriter(task, new OutputStreamWriter(outputStream));
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         final List<SearchHit> entities = searchResult.getEntities();
         csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
         initializeExport(transl8("search_result"));

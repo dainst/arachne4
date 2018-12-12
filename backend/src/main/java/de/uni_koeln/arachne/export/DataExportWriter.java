@@ -1,0 +1,39 @@
+package de.uni_koeln.arachne.export;
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
+
+public class DataExportWriter extends FilterWriter {
+
+    private DataExportTask task;
+
+    public DataExportWriter(DataExportTask task, Writer out) throws UnsupportedEncodingException {
+        super(out);
+        this.task = task;
+    }
+
+    public void write(int c) throws IOException {
+        if (task.aborted) {
+            super.close();
+            throw new DataExportAbortionException();
+        }
+        super.write(c);
+    }
+
+    public void write(char cbuf[], int off, int len) throws IOException {
+        if (task.aborted) {
+            super.close();
+            throw new DataExportAbortionException();
+        }
+        super.write(cbuf, off, len);
+    }
+
+    public void write(String str, int off, int len) throws IOException {
+        if (task.aborted) {
+            super.close();
+            throw new DataExportAbortionException();
+        }
+        super.write(str, off, len);
+    }
+}

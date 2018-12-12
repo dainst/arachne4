@@ -47,6 +47,11 @@ public class DataExportThread implements Runnable {
             LOGGER.info("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: RUNNING");
             dataExportFileManager.writeToFile(dataExportTask);
 
+        } catch (DataExportAbortionException e) {
+            LOGGER.error("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: ABORTED");
+            dataExportTask.error = "aborted";
+            //throw new RuntimeException(e);
+
         } catch (DataExportException e) {
             LOGGER.error("DataExport-Thread [" + dataExportTask.uuid.toString() + "]: ERROR: "
                     + e.getMessage() + " - " + e.untranslatableContent, e);

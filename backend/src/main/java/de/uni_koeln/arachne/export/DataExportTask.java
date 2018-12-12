@@ -28,6 +28,7 @@ public class DataExportTask {
     private String requestUrl = "";
     private String backendUrl = "";
     public String error = null;
+    public boolean aborted = false;
 
     private transient UserRightsService userRightsService;
     private String language;
@@ -71,7 +72,7 @@ public class DataExportTask {
 
     public long getAge() {
         if (tsStarted == null) {
-            return 0;
+            return -1 * (new Timestamp(System.currentTimeMillis()).getTime() - tsCreated.getTime());
         }
         return new Timestamp(System.currentTimeMillis()).getTime() - tsStarted.getTime();
     }
@@ -166,6 +167,11 @@ public class DataExportTask {
 
     public String getLanguage() {
         return language;
+    }
+
+    public void cancel() {
+        aborted = true;
+        stopTimer();
     }
 
 }

@@ -40,7 +40,7 @@ public class SearchResult2PdfConverter extends BasePdfConverter<SearchResult> {
         final List<SearchResultFacet> facets = searchResult.getFacets();
         BaseHtmlConverter htmlConverter = getHtmlConverter();
         htmlConverter.initializeExport(transl8("search_result_for") + " " + task.getConversionName());
-        htmlConverter.writer = new StringWriter();
+        htmlConverter.writer = new DataExportWriter(task, new StringWriter());
         htmlConverter.htmlHeader();
         htmlConverter.htmlFrontmatter();
         htmlConverter.htmlResults(entities, facets);

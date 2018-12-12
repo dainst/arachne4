@@ -24,12 +24,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8_VALUE;
 import static de.uni_koeln.arachne.util.security.SecurityUtils.ADMIN;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * @author Paf
@@ -63,6 +62,9 @@ public class DataExportController {
         LOGGER.debug("get file named " + exportId);
 
         final DataExportTask task = dataExportStack.getFinishedTaskById(exportId);
+        if (task == null) {
+            throw new DataExportException("task_not_found", HttpStatus.NOT_FOUND);
+        }
 
         final InputStream fileStream = dataExportFileManager.getFile(task);
         final HttpHeaders headers = new HttpHeaders();
@@ -85,6 +87,7 @@ public class DataExportController {
 
     @RequestMapping(value = "/status", method = RequestMethod.GET, produces={APPLICATION_JSON_UTF8_VALUE})
     ResponseEntity<String> handleGetExportStatus() {
+
         return ResponseEntity.status(HttpStatus.OK).body(dataExportStack.getStatus().toString());
     }
 
@@ -106,16 +109,50 @@ public class DataExportController {
         return ResponseEntity.status(HttpStatus.OK).body(new JSONObject(collectedTypes).toString());
     }
 
-    @RequestMapping(value = "/clean", method = RequestMethod.GET)
-    ResponseEntity<String> handleClean(
-            @RequestParam(value = "outdated", required = false) Boolean outdated,
-            @RequestParam(value = "everyones", required = false) Boolean everyones,
-            @RequestParam(value = "finished", required = false) Boolean finished
+    @RequestMapping(value = "/cancel/{exportId}", method = RequestMethod.POST, produces={APPLICATION_JSON_UTF8_VALUE})
+    ResponseEntity<String> handleAbortTask(
+            @PathVariable("exportId") final String exportId
     ) {
 
-        outdated = (outdated == null) ? true : outdated;
-        everyones = (everyones == null) ? false : everyones;
-        finished = (everyones == null) ? false : finished;
+        DataExportTask task = dataExportStack.getEnqueuedTaskById(exportId);
+
+        if (task != null) {
+            if (!userRightsService.userHasRole(ADMIN) && (userRightsService.getCurrentUser().getId() != task.getOwner().getId())) {
+                throw new DataExportException("not_allowed", HttpStatus.FORBIDDEN);
+            }
+
+            dataExportStack.dequeueTask(task);
+
+            return ResponseEntity.status(HttpStatus.OK).body("[\"" + exportId + "\"]");
+        }
+
+
+        task = dataExportStack.getRunningTaskById(exportId);
+
+        if (task != null) {
+            if (!userRightsService.userHasRole(ADMIN) && (userRightsService.getCurrentUser().getId() != task.getOwner().getId())) {
+                throw new DataExportException("not_allowed", HttpStatus.FORBIDDEN);
+            }
+
+            dataExportStack.abortTask(task);
+
+            return ResponseEntity.status(HttpStatus.OK).body("[\"" + exportId + "\"]");
+        }
+
+        throw new DataExportException("task_not_found", HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(value = "/clean", method = RequestMethod.POST)
+    ResponseEntity<String> handleClean(
+            @RequestBody Map<String, Boolean> settings
+    ) throws InterruptedException {
+
+
+        final Boolean outdated = (settings.get("outdated") == null) ? true : settings.get("outdated");
+        final Boolean everyones = (settings.get("everyones") == null) ? false : settings.get("everyones");
+        final Boolean finished = (settings.get("finished") == null) ? true : settings.get("finished");
+
+        final Set<String> report = new LinkedHashSet<String>();
 
         if (everyones && !userRightsService.userHasRole(ADMIN)) {
             throw new DataExportException("no_admin", HttpStatus.FORBIDDEN);
@@ -126,18 +163,29 @@ public class DataExportController {
         if (!finished) {
             for (DataExportTask task : dataExportStack.getEnqueuedTasks(user)) {
                 dataExportStack.dequeueTask(task);
+                report.add(task.uuid.toString());
             }
 
             for (DataExportTask task : dataExportStack.getRunningTasks(user)) {
                 dataExportStack.abortTask(task);
+                report.add(task.uuid.toString());
             }
+
+            // since threads may take a moment to close
+            Integer i = 0;
+            while (dataExportStack.getRunningTasks(user).size() != 0) {
+                if (i > 25) {
+                    throw new DataExportException("unknown", HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+                Thread.sleep(1000);
+            }
+
         }
 
-        final ArrayList<DataExportTask> outdatedTasks = dataExportStack.getFinishedTasks(user, outdated);
 
-        final JSONArray report = new JSONArray();
+        final ArrayList<DataExportTask> finishedTasks = dataExportStack.getFinishedTasks(user, outdated);
 
-        for (DataExportTask task : outdatedTasks) {
+        for (DataExportTask task : finishedTasks) {
             try {
                 dataExportFileManager.deleteFile(task);
             } catch (DataExportException exception) {
@@ -145,10 +193,10 @@ public class DataExportController {
             }
             dataExportStack.removeFinishedTask(task);
             LOGGER.info("Deleted outdated task: " + task.uuid.toString());
-            report.put(task.uuid.toString());
+            report.add(task.uuid.toString());
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(report.toString());
+        return ResponseEntity.status(HttpStatus.OK).body(new JSONArray(report.toArray()).toString());
 
     }
 

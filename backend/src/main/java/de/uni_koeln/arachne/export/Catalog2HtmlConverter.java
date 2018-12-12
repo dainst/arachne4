@@ -31,7 +31,7 @@ public class Catalog2HtmlConverter extends BaseHtmlConverter<Catalog> {
     @Override
     public void convert(DataExportConversionObject conversionObject, OutputStream outputStream) throws IOException {
         final Catalog catalog = conversionObject.getCatalog();
-        this.writer = new OutputStreamWriter(outputStream);
+        this.writer = new DataExportWriter(task, new OutputStreamWriter(outputStream));
         initializeExport(catalog);
         htmlHeader();
         String text = catalog.getRoot().getText();

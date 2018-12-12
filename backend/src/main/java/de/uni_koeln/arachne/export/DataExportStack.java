@@ -46,7 +46,7 @@ public class DataExportStack {
     private static final Logger LOGGER = LoggerFactory.getLogger("DataExportLogger");
 
     private Stack<DataExportTask> stack = new Stack<DataExportTask>();
-    private ArrayList<DataExportTask> running = new ArrayList<DataExportTask>();
+    private HashMap<String, DataExportTask> running = new HashMap<String, DataExportTask>();
     private HashMap<String, DataExportTask> finished = new HashMap<String, DataExportTask>();
 
     @Value("${dataExportMaxStackSize:10}")
@@ -96,7 +96,7 @@ public class DataExportStack {
     public void runTask(DataExportTask task) {
         LOGGER.info("Run task: " + task.uuid.toString());
         task.startTimer();
-        running.add(task);
+        running.put(task.uuid.toString(), task);
         startThread(task);
     }
 
@@ -110,7 +110,11 @@ public class DataExportStack {
         }
 
     }
+
     public void dequeueTask(DataExportTask task) {
+        if (!stack.contains(task)) {
+            throw new DataExportException("task_not_found", HttpStatus.NOT_FOUND);
+        }
         stack.remove(task);
         task.error = "aborted";
         finished.put(task.uuid.toString(), task);
@@ -118,13 +122,21 @@ public class DataExportStack {
     }
 
     public void abortTask(DataExportTask task) {
-        //@TODO
+        if (!running.containsKey(task.uuid.toString())) {
+            throw new DataExportException("task_not_found", HttpStatus.NOT_FOUND);
+        }
+        task.cancel();
+        // moving to finished is done by taskIsFinishedListener
+        dataExportFileManager.deleteFile(task);
     }
 
     public void removeFinishedTask(DataExportTask task) {
+        if (!finished.containsKey(task.uuid.toString())) {
+            throw new DataExportException("task_not_found", HttpStatus.NOT_FOUND);
+        }
         finished.remove(task.uuid.toString());
+        LOGGER.info("Task " + task.uuid.toString() + " removed");
     }
-
 
     private void startThread(DataExportTask task) {
         final DataExportThread dataExportThread = new DataExportThread(task, getRequest());
@@ -135,9 +147,8 @@ public class DataExportStack {
 
     public void taskIsFinishedListener(DataExportTask task) {
         task.stopTimer();
-        running.remove(task);
+        running.remove(task.uuid.toString());
         finished.put(task.uuid.toString(), task);
-
 
         if (task.error != null) {
             String subject = "Arachne Data Export";
@@ -151,7 +162,7 @@ public class DataExportStack {
                 subject = transl8Service.transl8("data_export_ready", task.getLanguage());
                 text = transl8Service.transl8("data_export_success_mail", task.getLanguage());
             } catch (Transl8Service.Transl8Exception e) {
-                // tranls8 is not available.. normal, we don't panic...
+                // transl8 is not available.. normal, we don't panic...
             }
             text = text
                     .replace("%URL%", url)
@@ -165,9 +176,25 @@ public class DataExportStack {
         nextTask();
     }
 
+    public DataExportTask getEnqueuedTaskById(String taskId) {
+        for (DataExportTask task: stack) {
+            if (task.uuid.toString().equals(taskId)) {
+                return task;
+            }
+        }
+        return null;
+    }
+
+    public DataExportTask getRunningTaskById(String taskId) {
+        if (!running.containsKey(taskId)) {
+            return null;
+        }
+        return running.get(taskId);
+    }
+
     public DataExportTask getFinishedTaskById(String taskId) {
         if (!finished.containsKey(taskId)) {
-            throw new DataExportException("task_not_found", HttpStatus.NOT_FOUND);
+            return null;
         }
         return finished.get(taskId);
     }
@@ -184,10 +211,10 @@ public class DataExportStack {
             info.put("status", "enqueued");
             taskList.put(task.uuid.toString(), info);
         }
-        for (DataExportTask task: running) {
-            final JSONObject info = task.getInfoAsJSON();
+        for (HashMap.Entry<String, DataExportTask> taskItem: running.entrySet()) {
+            final JSONObject info = taskItem.getValue().getInfoAsJSON();
             info.put("status", "running");
-            taskList.put(task.uuid.toString(), info);
+            taskList.put(taskItem.getValue().uuid.toString(), info);
         }
         for (HashMap.Entry<String, DataExportTask> taskItem: finished.entrySet()) {
             final JSONObject info = taskItem.getValue().getInfoAsJSON();
@@ -196,17 +223,6 @@ public class DataExportStack {
         }
         status.put("tasks", taskList);
         return status;
-    }
-
-
-    public ArrayList<DataExportTask> getRunningTasks(User owner) {
-        final ArrayList<DataExportTask> taskList = new ArrayList<DataExportTask>();
-        for (DataExportTask task: running) {
-            if (owner == null || (owner.getId() == task.getOwner().getId())) {
-                taskList.add(task);
-            }
-        }
-        return taskList;
     }
 
     public ArrayList<DataExportTask> getEnqueuedTasks(User owner) {
@@ -219,11 +235,21 @@ public class DataExportStack {
         return taskList;
     }
 
+    public ArrayList<DataExportTask> getRunningTasks(User owner) {
+        final ArrayList<DataExportTask> taskList = new ArrayList<DataExportTask>();
+        for (HashMap.Entry<String, DataExportTask> taskItem: running.entrySet()) {
+            if (owner == null || (owner.getId() == taskItem.getValue().getOwner().getId())) {
+                taskList.add(taskItem.getValue());
+            }
+        }
+        return taskList;
+    }
+
     public ArrayList<DataExportTask> getFinishedTasks(User owner, Boolean outdated) {
         final ArrayList<DataExportTask> taskList = new ArrayList<DataExportTask>();
         for (HashMap.Entry<String, DataExportTask> taskItem: finished.entrySet()) {
-            if (!outdated || taskItem.getValue().getAge() > dataExportMaxTaskLifeTime) {
-                if (owner == null || (owner.getId() == taskItem.getValue().getOwner().getId())) {
+            if (owner == null || (owner.getId() == taskItem.getValue().getOwner().getId())) {
+                if (!outdated || isTaskOutdated(taskItem.getValue())) {
                     taskList.add(taskItem.getValue());
                 }
             }
@@ -231,6 +257,9 @@ public class DataExportStack {
         return taskList;
     }
 
+    private boolean isTaskOutdated(DataExportTask task) {
+        return (task.getAge() > dataExportMaxTaskLifeTime) || (task.getAge() < 0);
+    }
 
     private String getRequestLanguage() {
         final String langParameter = getRequest().getParameter("lang");
@@ -251,6 +280,7 @@ public class DataExportStack {
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         return sra.getRequest();
     }
+
 
 
 }
