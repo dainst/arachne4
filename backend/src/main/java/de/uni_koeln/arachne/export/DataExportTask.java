@@ -125,6 +125,7 @@ public class DataExportTask {
     public JSONObject getInfoAsJSON() {
         final JSONObject info = new JSONObject();
         info.put("name", getConversionName());
+        info.put("id", uuid.toString());
         info.put("requestUrl", getRequestUrl());
         info.put("mediaType", getMediaType().toString());
         info.put("conversionType", getConversionType());
