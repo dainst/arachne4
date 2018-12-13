@@ -199,27 +199,28 @@ public class DataExportStack {
         return finished.get(taskId);
     }
 
-    public JSONObject getStatus() {
+    public JSONObject getStatus(User owner) {
         final JSONObject status = new JSONObject();
         status.put("max_stack_size", dataExportMaxStackSize);
         status.put("max_threads", dataExportMaxThreads);
         status.put("tasks_running", running.size());
         status.put("tasks_enqueued", stack.size());
         final JSONObject taskList = new JSONObject();
-        for (DataExportTask task: stack) {
+
+        for (DataExportTask task: getEnqueuedTasks(owner)) {
             final JSONObject info = task.getInfoAsJSON();
             info.put("status", "enqueued");
             taskList.put(task.uuid.toString(), info);
         }
-        for (HashMap.Entry<String, DataExportTask> taskItem: running.entrySet()) {
-            final JSONObject info = taskItem.getValue().getInfoAsJSON();
+        for (DataExportTask task: getRunningTasks(owner)) {
+            final JSONObject info = task.getInfoAsJSON();
             info.put("status", "running");
-            taskList.put(taskItem.getValue().uuid.toString(), info);
+            taskList.put(task.uuid.toString(), info);
         }
-        for (HashMap.Entry<String, DataExportTask> taskItem: finished.entrySet()) {
-            final JSONObject info = taskItem.getValue().getInfoAsJSON();
-            info.put("status", (taskItem.getValue().error != null) ? taskItem.getValue().error : "finished");
-            taskList.put(taskItem.getValue().uuid.toString(), info);
+        for (DataExportTask task: getFinishedTasks(owner, false)) {
+            final JSONObject info = task.getInfoAsJSON();
+            info.put("status", (task.error != null) ? task.error : "finished");
+            taskList.put(task.uuid.toString(), info);
         }
         status.put("tasks", taskList);
         return status;
@@ -228,7 +229,7 @@ public class DataExportStack {
     public ArrayList<DataExportTask> getEnqueuedTasks(User owner) {
         final ArrayList<DataExportTask> taskList = new ArrayList<DataExportTask>();
         for (DataExportTask task: stack) {
-            if (owner == null || (owner.getId() == task.getOwner().getId())) {
+            if (isTaskOwnedBy(owner, task)) {
                 taskList.add(task);
             }
         }
@@ -238,7 +239,7 @@ public class DataExportStack {
     public ArrayList<DataExportTask> getRunningTasks(User owner) {
         final ArrayList<DataExportTask> taskList = new ArrayList<DataExportTask>();
         for (HashMap.Entry<String, DataExportTask> taskItem: running.entrySet()) {
-            if (owner == null || (owner.getId() == taskItem.getValue().getOwner().getId())) {
+            if (isTaskOwnedBy(owner, taskItem.getValue())) {
                 taskList.add(taskItem.getValue());
             }
         }
@@ -248,13 +249,17 @@ public class DataExportStack {
     public ArrayList<DataExportTask> getFinishedTasks(User owner, Boolean outdated) {
         final ArrayList<DataExportTask> taskList = new ArrayList<DataExportTask>();
         for (HashMap.Entry<String, DataExportTask> taskItem: finished.entrySet()) {
-            if (owner == null || (owner.getId() == taskItem.getValue().getOwner().getId())) {
+            if (isTaskOwnedBy(owner, taskItem.getValue())) {
                 if (!outdated || isTaskOutdated(taskItem.getValue())) {
                     taskList.add(taskItem.getValue());
                 }
             }
         }
         return taskList;
+    }
+
+    private boolean isTaskOwnedBy(User owner, DataExportTask task) {
+        return owner == null || (owner.getId() == task.getOwner().getId());
     }
 
     private boolean isTaskOutdated(DataExportTask task) {

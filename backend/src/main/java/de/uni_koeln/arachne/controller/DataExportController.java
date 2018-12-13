@@ -88,7 +88,8 @@ public class DataExportController {
     @RequestMapping(value = "/status", method = RequestMethod.GET, produces={APPLICATION_JSON_UTF8_VALUE})
     ResponseEntity<String> handleGetExportStatus() {
 
-        return ResponseEntity.status(HttpStatus.OK).body(dataExportStack.getStatus().toString());
+        final User user = userRightsService.userHasRole(ADMIN) ? null : userRightsService.getCurrentUser();
+        return ResponseEntity.status(HttpStatus.OK).body(dataExportStack.getStatus(user).toString());
     }
 
 
@@ -142,6 +143,33 @@ public class DataExportController {
         throw new DataExportException("task_not_found", HttpStatus.NOT_FOUND);
     }
 
+
+    @RequestMapping(value = "/clean/{exportId}", method = RequestMethod.POST, produces={APPLICATION_JSON_UTF8_VALUE})
+    ResponseEntity<String> handleCleanTask(
+            @PathVariable("exportId") final String exportId
+    ) {
+
+        final DataExportTask task = dataExportStack.getFinishedTaskById(exportId);
+
+        if (task == null) {
+            throw new DataExportException("task_not_found", HttpStatus.NOT_FOUND);
+        }
+
+        if (!userRightsService.userHasRole(ADMIN) && (userRightsService.getCurrentUser().getId() != task.getOwner().getId())) {
+            throw new DataExportException("not_allowed", HttpStatus.FORBIDDEN);
+        }
+
+        try {
+            dataExportFileManager.deleteFile(task);
+        } catch (DataExportException exception) {
+            LOGGER.warn(exception.getMessage());
+        }
+        dataExportStack.removeFinishedTask(task);
+        LOGGER.info("Deleted outdated task: " + task.uuid.toString());
+        return ResponseEntity.status(HttpStatus.OK).body("[\"" + exportId + "\"]");
+    }
+
+
     @RequestMapping(value = "/clean", method = RequestMethod.POST)
     ResponseEntity<String> handleClean(
             @RequestBody Map<String, Boolean> settings
@@ -155,7 +183,7 @@ public class DataExportController {
         final Set<String> report = new LinkedHashSet<String>();
 
         if (everyones && !userRightsService.userHasRole(ADMIN)) {
-            throw new DataExportException("no_admin", HttpStatus.FORBIDDEN);
+            throw new DataExportException("not_allowed", HttpStatus.FORBIDDEN);
         }
 
         final User user = everyones ? null : userRightsService.getCurrentUser();
@@ -181,7 +209,6 @@ public class DataExportController {
             }
 
         }
-
 
         final ArrayList<DataExportTask> finishedTasks = dataExportStack.getFinishedTasks(user, outdated);
 
