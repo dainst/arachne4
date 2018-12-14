@@ -34,7 +34,7 @@ public class Catalog2PdfConverter extends BasePdfConverter<Catalog> {
         final Catalog catalog = conversionObject.getCatalog();
         BaseHtmlConverter htmlConverter = getHtmlConverter();
         htmlConverter.initializeExport(catalog);
-        htmlConverter.writer = new DataExportWriter(task, new StringWriter());
+        htmlConverter.writer = new StringWriter(); //new DataExportWriter(task, );
         htmlConverter.htmlHeader();
         htmlConverter.htmlFrontmatter(htmlConverter.markdown2html(catalog.getRoot().getText()));
         htmlConverter.htmlCatalog(catalog);

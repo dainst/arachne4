@@ -25,7 +25,7 @@ public class SearchResult2PdfConverter extends BasePdfConverter<SearchResult> {
 
     @Override
     protected void writeInternal(SearchResult searchResult, HttpOutputMessage httpOutputMessage) throws IOException {
-        enqueueIfHuge(searchResult, 50);
+        enqueueIfHuge(searchResult, 0);
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/pdf");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"currentSearch.pdf\"");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_ENCODING, "base64");
@@ -40,7 +40,8 @@ public class SearchResult2PdfConverter extends BasePdfConverter<SearchResult> {
         final List<SearchResultFacet> facets = searchResult.getFacets();
         BaseHtmlConverter htmlConverter = getHtmlConverter();
         htmlConverter.initializeExport(transl8("search_result_for") + " " + task.getConversionName());
-        htmlConverter.writer = new DataExportWriter(task, new StringWriter());
+        //final StringWriter internalWriter =
+        htmlConverter.writer = new StringWriter();
         htmlConverter.htmlHeader();
         htmlConverter.htmlFrontmatter();
         htmlConverter.htmlResults(entities, facets);
