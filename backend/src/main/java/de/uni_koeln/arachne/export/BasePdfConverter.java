@@ -3,12 +3,14 @@ package de.uni_koeln.arachne.export;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.W3CDom;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.w3c.dom.Document;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.io.Writer;
 
 /**
  * @author Paf
@@ -39,7 +41,7 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
         return htmlConverter;
     }
 
-    protected void writePdf(StringWriter inStream, OutputStream outStream) throws IOException {
+    protected void writePdf(StringWriter inStream, OutputStream outStream) {
         PdfRendererBuilder pdfBuilder = new PdfRendererBuilder();
         try {
             W3CDom w3cDom = new W3CDom();
@@ -50,7 +52,7 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
             pdfBuilder.run();
         } catch (Exception e) {
             LOGGER.error("PDF could not be created.", e);
-            throw (IOException) e;
+            throw new DataExportException("data_export_io_error", e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
