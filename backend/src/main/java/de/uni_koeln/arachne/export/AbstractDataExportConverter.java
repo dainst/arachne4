@@ -174,7 +174,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         TypeWithHTTPStatus entity;
 
         try {
-            entity = entityService.getEntityFromIndex(entityId, null, "en");
+            entity = entityService.getEntityFromDB(entityId, null, "en");
         } catch (Exception e) {
             LOGGER.error("Could not get Entity", e);
             return null;
