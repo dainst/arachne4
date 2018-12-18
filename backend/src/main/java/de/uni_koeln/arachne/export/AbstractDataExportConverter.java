@@ -355,11 +355,11 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         return facetGeo;
     }
 
-    public String getConversionName(Catalog catalog) {
+    public String getConversionName(Catalog catalog, DataExportTask task) {
         return catalog.getRoot().getLabel();
     }
 
-    public String getConversionName(SearchResult searchResult) {
+    public String getConversionName(SearchResult searchResult, DataExportTask task) {
         try {
 
             final String delimiter = " " + transl8("and") + " ";

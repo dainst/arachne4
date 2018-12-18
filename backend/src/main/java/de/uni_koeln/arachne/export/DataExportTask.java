@@ -143,11 +143,11 @@ public class DataExportTask {
 
     public String getConversionName() {
        if (conversionObject.getType().equals("catalog")) {
-            return converter.getConversionName(conversionObject.getCatalog());
+            return converter.getConversionName(conversionObject.getCatalog(), this);
 
        }
        if (conversionObject.getType().equals("searchResult")) {
-            return converter.getConversionName(conversionObject.getSearchResult());
+            return converter.getConversionName(conversionObject.getSearchResult(), this);
        }
        return "";
     }
