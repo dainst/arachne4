@@ -22,7 +22,7 @@ public class Catalog2PdfConverter extends BasePdfConverter<Catalog> {
 
     @Override
     protected void writeInternal(Catalog catalog, HttpOutputMessage httpOutputMessage) throws IOException {
-        enqueueIfHuge(catalog, 50);
+        enqueueIfHuge(catalog, 30);
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/pdf");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"catalog.pdf\"");
         httpOutputMessage.getHeaders().add(HttpHeaders.CONTENT_ENCODING, "base64");
@@ -34,12 +34,12 @@ public class Catalog2PdfConverter extends BasePdfConverter<Catalog> {
         final Catalog catalog = conversionObject.getCatalog();
         BaseHtmlConverter htmlConverter = getHtmlConverter();
         htmlConverter.initializeExport(catalog);
-        htmlConverter.writer = new StringWriter(); //new DataExportWriter(task, );
+        htmlConverter.writer = new DataExportWriter(task, new StringWriter());
         htmlConverter.htmlHeader();
         htmlConverter.htmlFrontmatter(htmlConverter.markdown2html(catalog.getRoot().getText()));
         htmlConverter.htmlCatalog(catalog);
         htmlConverter.htmlFooter();
-        writePdf((StringWriter) htmlConverter.writer, outputStream);
+        writePdf(htmlConverter.writer, outputStream);
         htmlConverter.writer.close();
     }
 }

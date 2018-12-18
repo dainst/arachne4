@@ -42,10 +42,12 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
         return htmlConverter;
     }
 
-    protected void writePdf(StringWriter inStream, OutputStream outStream) {
-        PdfRendererBuilder pdfBuilder = new PdfRendererBuilder();
+    protected void writePdf(Writer inStream, OutputStream outStream) {
+
+        final Document w3cDoc = convertStringToDocument(inStream.toString());
+
         try {
-            Document w3cDoc = convertStringToDocument(inStream.toString());
+            final PdfRendererBuilder pdfBuilder = new PdfRendererBuilder();
             pdfBuilder.withW3cDocument(w3cDoc, "/");
             pdfBuilder.toStream(outStream);
             pdfBuilder.run();
@@ -57,7 +59,7 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
     }
 
     private Document convertStringToDocument(String content) {
-        W3CDom w3cDom = new W3CDom();
+        final W3CDom w3cDom = new W3CDom();
         try {
             return w3cDom.fromJsoup(Jsoup.parse(content));
 
@@ -71,7 +73,8 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
                 content = content.replaceAll("<([\\w\\d]+:)","< $1");
                 return w3cDom.fromJsoup(Jsoup.parse(content));
             }
-            throw e;
+            LOGGER.error("PDF could not be created. (JSOUP)", e);
+            throw new DataExportException("data_export_io_error", e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
