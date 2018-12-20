@@ -66,7 +66,14 @@ public final class TestData {
 			+ "\"facet_test\":[\"test facet value\"],"
 			+ "\"facet_multivaluetest\":[\"value 1\",\"value 2\",\"value 3\"],"
 			+ "\"facet_includetest\":[\"include value 1\",\"include value 2\"]}";
-	
+
+	public static final String exportCsvLine1 =
+			"id,subtitle,title,type,null,null_2,null_3,null_4,subtitle,Testdata linkField,Testdata prefix/postfix,Testdata separator";
+	public static final String exportCsvLine2 =
+			"1,Test subtitle,Test title,test,test facet value,test,include value 1,value 1,Subtitle of the Test,\"Start<hr><a href=\"\"http://testserver.com/link1.html\"\" target=\"\"_blank\"\">TestLink1</a><hr><a href=\"\"http://testserver.com/link2.html\"\" target=\"\"_blank\"\">TestLink2</a><hr>End\",PrefixTest=success<hr>PostfixTest=success,first-second";
+	public static final String exportCsvLine3 =
+			"2,Test subtitle 1,Test title 1,test,test facet value,test,include value 1,value 1,Subtitle of the Test,\"Start<hr><a href=\"\"http://testserver.com/link1.html\"\" target=\"\"_blank\"\">TestLink1</a><hr><a href=\"\"http://testserver.com/link2.html\"\" target=\"\"_blank\"\">TestLink2</a><hr>End\",PrefixTest=success<hr>PostfixTest=success,first-second";
+
 	public static final String zoomifyImageProperties 
 			= "<IMAGE_PROPERTIES WIDTH=\"1600\" HEIGHT=\"1000\" NUMTILES=\"28\" NUMIMAGES=\"1\" VERSION=\"1.8\" TILESIZE=\"256\" />";
 	
