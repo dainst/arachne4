@@ -55,7 +55,7 @@
         <!-- mockito -->
         <org.mockito-version>1.10.19</org.mockito-version>
         <!-- JSONassert -->
-        <jsonassert-version>1.4.0</jsonassert-version>
+        <jsonassert-version>1.5.0</jsonassert-version>
         <!-- JSON path -->
         <jsonpath-version>2.2.0</jsonpath-version>
 		<!-- export -->
@@ -70,6 +70,7 @@
 		<maven-war-version>2.6</maven-war-version>
 		<maven-compiler-version>3.3</maven-compiler-version>
 	</properties>
+
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
@@ -250,6 +251,20 @@
             <artifactId>mysql-connector-mxj</artifactId>
             <version>5.0.12</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- JSONassert -->
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>${jsonassert-version}</version>
+            <scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>com.vaadin.external.google</groupId>
+					<artifactId>android-json</artifactId>
+				</exclusion>
+			</exclusions>
         </dependency>
 
 		<!-- Mockito -->
@@ -434,6 +449,8 @@
 
 		
 	</dependencies>
+
+
 	<repositories>
 
         <!-- maven central repo -->
