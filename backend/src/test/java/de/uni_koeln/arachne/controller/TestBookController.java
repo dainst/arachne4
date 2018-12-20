@@ -1,6 +1,6 @@
 package de.uni_koeln.arachne.controller;
 
-import static junit.framework.TestCase.fail;
+import static junit.framework.TestCase.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.Mockito.*;
@@ -8,12 +8,13 @@ import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON
 
 import de.uni_koeln.arachne.dao.jdbc.BookDao;
 import de.uni_koeln.arachne.controller.BookController;
+import de.uni_koeln.arachne.util.TestJSONUtil;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -107,9 +108,11 @@ public class TestBookController {
 
         String content = result.getResponse().getContentAsString();
 
-        JSONAssert.assertEquals("{pages:["
-                + "{img_file:\"http://arachne.uni-koeln.de/images/stichwerke/antiquities_of_ionia_1/BOOK-antiquitiesofionia01-0001_196.jpg\"}" +
-                ",{img_file:\"http://arachne.uni-koeln.de/images/stichwerke/antiquities_of_ionia_1/BOOK-antiquitiesofionia01-0002_197.jpg\"}]}"
-                , content, false);
+        final String toBe = "{pages:["
+                + "{img_file: \"http://arachne.uni-koeln.de/images/stichwerke/antiquities_of_ionia_1/BOOK-antiquitiesofionia01-0001_196.jpg\"}" +
+                ",{img_file:\"http://arachne.uni-koeln.de/images/stichwerke/antiquities_of_ionia_1/BOOK-antiquitiesofionia01-0002_197.jpg\"}]}";
+
+        assertTrue(TestJSONUtil.areEqual(new JSONObject(content), new JSONObject(toBe)));
+
     }
 }
