@@ -63,7 +63,7 @@ public class TestEntityService {
 		when(responseFactory.createFormattedArachneEntityAsJsonString(testDataset, LANG))
 			.thenReturn(TestData.jsonString);
 		when(responseFactory.createFormattedArachneEntityAsJson(testDataset, LANG))
-		.thenReturn(TestData.getTestJson());
+			.thenReturn(TestData.getTestJson());
 		
 		when(entityIdentificationService.getId(anyLong())).thenReturn(null);
 		when(entityIdentificationService.getId(anyString(), anyLong())).thenReturn(null);
