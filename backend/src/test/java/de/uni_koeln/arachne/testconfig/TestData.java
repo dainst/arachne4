@@ -19,6 +19,9 @@ import com.google.common.io.Resources;
 import de.uni_koeln.arachne.context.AbstractLink;
 import de.uni_koeln.arachne.context.ArachneLink;
 import de.uni_koeln.arachne.context.Context;
+import de.uni_koeln.arachne.mapping.hibernate.ArachneEntity;
+import de.uni_koeln.arachne.mapping.jdbc.Catalog;
+import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.response.Dataset;
 import de.uni_koeln.arachne.response.Place;
 import de.uni_koeln.arachne.response.search.SearchHit;
@@ -67,12 +70,17 @@ public final class TestData {
 			+ "\"facet_multivaluetest\":[\"value 1\",\"value 2\",\"value 3\"],"
 			+ "\"facet_includetest\":[\"include value 1\",\"include value 2\"]}";
 
-	public static final String exportCsvLine1 =
-			"id,subtitle,title,type,null,null_2,null_3,null_4,subtitle,Testdata linkField,Testdata prefix/postfix,Testdata separator";
-	public static final String exportCsvLine2 =
-			"1,Test subtitle,Test title,test,test facet value,test,include value 1,value 1,Subtitle of the Test,\"Start<hr><a href=\"\"http://testserver.com/link1.html\"\" target=\"\"_blank\"\">TestLink1</a><hr><a href=\"\"http://testserver.com/link2.html\"\" target=\"\"_blank\"\">TestLink2</a><hr>End\",PrefixTest=success<hr>PostfixTest=success,first-second";
-	public static final String exportCsvLine3 =
-			"2,Test subtitle 1,Test title 1,test,test facet value,test,include value 1,value 1,Subtitle of the Test,\"Start<hr><a href=\"\"http://testserver.com/link1.html\"\" target=\"\"_blank\"\">TestLink1</a><hr><a href=\"\"http://testserver.com/link2.html\"\" target=\"\"_blank\"\">TestLink2</a><hr>End\",PrefixTest=success<hr>PostfixTest=success,first-second";
+	public static final String exportSearchResult2CsvLine1 =
+			"id,subtitle,title,type,subtitle,transl8ed: includetest,transl8ed: kategorie,transl8ed: multivaluetest,transl8ed: test,Testdata linkField,Testdata prefix/postfix,Testdata separator";
+	public static final String exportSearchResult2CsvLine2 =
+			"1,Test subtitle,Test title,test,Subtitle of the Test,include value 1,test,value 1,test facet value,\"Start<hr><a href=\"\"http://testserver.com/link1.html\"\" target=\"\"_blank\"\">TestLink1</a><hr><a href=\"\"http://testserver.com/link2.html\"\" target=\"\"_blank\"\">TestLink2</a><hr>End\",PrefixTest=success<hr>PostfixTest=success,first-second";
+	public static final String exportSearchResult2CsvLine3 =
+			"2,Test subtitle 1,Test title 1,test,Subtitle of the Test,include value 1,test,value 1,test facet value,\"Start<hr><a href=\"\"http://testserver.com/link1.html\"\" target=\"\"_blank\"\">TestLink1</a><hr><a href=\"\"http://testserver.com/link2.html\"\" target=\"\"_blank\"\">TestLink2</a><hr>End\",PrefixTest=success<hr>PostfixTest=success,first-second";
+
+	public static final String exportCatalog2CsvLine1 =
+			"id,order,title,subtitle,transl8ed: includetest,transl8ed: kategorie,transl8ed: multivaluetest,transl8ed: test,Testdata linkField,Testdata prefix/postfix,Testdata separator";
+	public static final String exportCatalog2CsvLine2 =
+			"0,1,*label*: text entry nr: 1,Subtitle of the Test,include value 1,test,value 1,test facet value,\"Start<hr><a href=\"\"http://testserver.com/link1.html\"\" target=\"\"_blank\"\">TestLink1</a><hr><a href=\"\"http://testserver.com/link2.html\"\" target=\"\"_blank\"\">TestLink2</a><hr>End\",PrefixTest=success<hr>PostfixTest=success,first-second";
 
 	public static final String zoomifyImageProperties 
 			= "<IMAGE_PROPERTIES WIDTH=\"1600\" HEIGHT=\"1000\" NUMTILES=\"28\" NUMIMAGES=\"1\" VERSION=\"1.8\" TILESIZE=\"256\" />";
@@ -215,4 +223,39 @@ public final class TestData {
 		result.setFacets(facets);
 		return result;
 	}
+
+
+	public static Catalog getFinishedTestCatalog() {
+		final Catalog c = new Catalog();
+		c.setAuthor("test");
+		c.setDatasetGroup("testDatasetGroup");
+		c.setId(1L);
+		c.setProjectId("testproject");
+		c.setPublic(true);
+
+		CatalogEntry root = new CatalogEntry();
+		root.setLabel("label: root");
+		root.setPath("1");
+		ArachneEntity rootEntity = new ArachneEntity();
+		root.setArachneEntityId(0L);
+
+		final List<CatalogEntry> children = new ArrayList<CatalogEntry>();
+		for (int i = 1; i < 4; i++) {
+			CatalogEntry entry = new CatalogEntry();
+			entry.setId((long) i * 10);
+			entry.setIndexParent(i);
+			entry.setLabel("*label*: text entry nr: " + i);
+			entry.setParentId(1L);
+			entry.setPath("1/" + i);
+			entry.setChildren(new ArrayList<CatalogEntry>());
+			entry.setArachneEntityId(0L);
+
+			root.addToChildren(entry);
+		}
+		c.setRoot(root);
+
+		return c;
+
+	}
+
 }

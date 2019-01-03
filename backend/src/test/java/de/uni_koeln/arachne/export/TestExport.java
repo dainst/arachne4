@@ -2,6 +2,7 @@ package de.uni_koeln.arachne.export;
 
 import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
 import de.uni_koeln.arachne.mapping.hibernate.User;
+import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.response.ResponseFactory;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.service.*;
@@ -144,6 +145,49 @@ public class TestExport {
         return converter.task;
     }
 
+    private HashMap<String, Integer> analyzeStatus(JSONObject fullStatus) {
+
+        final JSONObject tasks = fullStatus.getJSONObject("tasks");
+        final Iterator<String> taskIds = tasks.keys();
+        final HashMap<String, Integer> taskStatusCounter = new HashMap<String, Integer>();
+
+        while (taskIds.hasNext()) {
+            String taskId = taskIds.next();
+            String thisStatus = tasks.getJSONObject(taskId).getString("status");
+            if (!taskStatusCounter.containsKey(thisStatus)) {
+                taskStatusCounter.put(thisStatus, 1);
+            } else {
+                taskStatusCounter.replace(thisStatus, taskStatusCounter.get(thisStatus) + 1);
+            }
+
+        }
+
+        // System.out.println("----- status -----");
+        // taskStatusCounter.forEach((key, value) -> {System.out.println(key + " : " + value);});
+
+        return taskStatusCounter;
+    }
+
+    private String convert(AbstractDataExportConverter converter, DataExportConversionObject conversion) throws IOException {
+
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        prepareConverter(converter, conversion);
+        converter.convert(conversion, out);
+
+        return out.toString();
+    }
+
+    private String[] parseCsvOutput(String csv) {
+
+        final String[] lines = csv.split(System.lineSeparator());
+
+        for (int i = 0; i < lines.length; i++) {
+            lines[i] = lines[i].replaceAll("\\p{C}", "");
+        }
+
+        return lines;
+    }
+
     @Before
     public void setUp() throws Transl8Service.Transl8Exception, IOException {
 
@@ -155,10 +199,10 @@ public class TestExport {
         final String json = new String(TestData.getTestJson(), StandardCharsets.UTF_8);
 
         // mocked services
-        when(transl8Service.transl8(eq("date_format"), anyString()))
-                .thenReturn("dd.MM.yyyy HH:mm:ss");
         when(transl8Service.transl8(anyString(), anyString()))
                 .thenAnswer((Answer<String>) invocation -> "transl8ed: " + invocation.getArguments()[0]);
+        when(transl8Service.transl8(eq("date_format"), anyString()))
+                .thenReturn("dd.MM.yyyy HH:mm:ss");
 
         when(entityService.getEntityFromIndex(anyLong(), anyString(), anyString()))
                 .thenReturn(new TypeWithHTTPStatus<String>(json));
@@ -195,51 +239,33 @@ public class TestExport {
         final SearchResult2CsvConverter converter = new SearchResult2CsvConverter();
         final SearchResult searchResult = TestData.getDefaultSearchResult();
         final DataExportConversionObject conversion = new DataExportConversionObject(searchResult);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        prepareConverter(converter, conversion);
-        converter.convert(conversion, out);
+        final String[] lines = parseCsvOutput(convert(converter, conversion));
 
-        final String[] lines = out.toString().split(System.lineSeparator());
-
-        assertEquals(lines[0].replaceAll("\\p{C}", ""), TestData.exportCsvLine1);
-        assertEquals(lines[1].replaceAll("\\p{C}", ""), TestData.exportCsvLine2);
-        assertEquals(lines[2].replaceAll("\\p{C}", ""), TestData.exportCsvLine3);
+        assertEquals(lines[0], TestData.exportSearchResult2CsvLine1);
+        assertEquals(lines[1], TestData.exportSearchResult2CsvLine2);
+        assertEquals(lines[2], TestData.exportSearchResult2CsvLine3);
     }
 
-    private HashMap<String, Integer> analyzeStatus(JSONObject fullStatus) {
+    @Test
+    public void testCatalogToCsvExport() throws Exception {
 
-        final JSONObject tasks = fullStatus.getJSONObject("tasks");
-        final Iterator<String> taskIds = tasks.keys();
-        final HashMap<String, Integer> taskStatusCounter = new HashMap<String, Integer>();
+        final Catalog2CsvConverter converter = new Catalog2CsvConverter();
+        final Catalog catalog = TestData.getFinishedTestCatalog();
+        final DataExportConversionObject conversion = new DataExportConversionObject(catalog);
 
-        while (taskIds.hasNext()) {
-            String taskId = taskIds.next();
-            String thisStatus = tasks.getJSONObject(taskId).getString("status");
-            if (!taskStatusCounter.containsKey(thisStatus)) {
-                taskStatusCounter.put(thisStatus, 1);
-            } else {
-                taskStatusCounter.replace(thisStatus, taskStatusCounter.get(thisStatus) + 1);
-            }
+        final String[] lines = parseCsvOutput(convert(converter, conversion));
 
-        }
+        assertEquals(lines[0], TestData.exportCatalog2CsvLine1);
+        assertEquals(lines[1], TestData.exportCatalog2CsvLine2);
 
-        // System.out.println("----- status -----");
-        // taskStatusCounter.forEach((key, value) -> {System.out.println(key + " : " + value);});
-
-        return taskStatusCounter;
     }
+
+
 
 
     @Test
     public void testStack() throws Exception {
-
-        // 1 fill stack until full and reject if full
-        // user jedöns
-        // 2 test enqueue and dequeue
-        // 3 set stack to one at a time and see how task come one after each other
-        // test abort
-        // 4 see tasks in parallel
 
         HashMap<String, Integer> stackStatus;
 
