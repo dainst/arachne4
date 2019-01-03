@@ -48,6 +48,9 @@ public class TestExport {
     @InjectMocks
     private transient DataExportStack duoStack = new DataExportStack(2, 2, 100);
 
+    @InjectMocks
+    private transient DataExportFileManager fileManager = new DataExportFileManager("/tmp");
+
     @Mock
     private IIPService iipService;
 
@@ -262,8 +265,6 @@ public class TestExport {
     }
 
 
-
-
     @Test
     public void testStack() throws Exception {
 
@@ -343,9 +344,19 @@ public class TestExport {
         stackStatus = analyzeStatus(duoStack.getStatus(user));
         assertFalse(stackStatus.containsKey("enqueued"));
         assertEquals((int) stackStatus.get("aborted"), 2);
-
-
     }
 
+    @Test
+    public void testFileManager() throws Exception {
 
+        final DataExportTask task = createGenericTask();
+        final String taskId = task.uuid.toString();
+        final String name = fileManager.getFileName(task);
+
+        // write testfile
+
+
+        System.out.println("n:" + name);
+
+    }
 }
