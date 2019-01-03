@@ -45,7 +45,7 @@ public class TestExport {
     private transient DataExportStack monoStack = new DataExportStack(2, 1, 100);
 
     @InjectMocks
-    private transient DataExportStack duoStack = new DataExportStack(4, 2, 100);
+    private transient DataExportStack duoStack = new DataExportStack(2, 2, 100);
 
     @Mock
     private IIPService iipService;
@@ -224,10 +224,8 @@ public class TestExport {
 
         }
 
-        System.out.println("----- status -----");
-        taskStatusCounter.forEach((key, value) -> {
-            System.out.println(key + " : " + value);
-        });
+        // System.out.println("----- status -----");
+        // taskStatusCounter.forEach((key, value) -> {System.out.println(key + " : " + value);});
 
         return taskStatusCounter;
     }
@@ -284,12 +282,41 @@ public class TestExport {
         assertEquals((int) stackStatus.get("finished"), 1);
         assertEquals((int) stackStatus.get("error"), 1);
 
-        // 5. only see owned tasks
+        // 5. clean up
+        monoStack.removeFinishedTask(task1);
+        monoStack.removeFinishedTask(task3);
+        stackStatus = analyzeStatus(monoStack.getStatus(user));
+        assertFalse(stackStatus.containsKey("enqueued"));
+        assertEquals((int) stackStatus.get("running"), 1);
+        assertFalse(stackStatus.containsKey("finished"));
+        assertFalse(stackStatus.containsKey("error"));
+
+        // 6. only see owned tasks
         stackStatus = analyzeStatus(monoStack.getStatus(otherUser));
         assertFalse(stackStatus.containsKey("enqueued"));
         assertFalse(stackStatus.containsKey("running"));
         assertFalse(stackStatus.containsKey("finished"));
         assertFalse(stackStatus.containsKey("error"));
+
+        // 7. work parallel
+        final DataExportTask task1b = createGenericTask();
+        final DataExportTask task2b = createGenericTask();
+        final DataExportTask task3b = createGenericTask();
+        duoStack.push(task1b);
+        duoStack.push(task2b);
+        duoStack.push(task3b);
+        stackStatus = analyzeStatus(duoStack.getStatus(user));
+        assertEquals((int) stackStatus.get("enqueued"), 1);
+        assertEquals((int) stackStatus.get("running"), 2);
+
+        // 8. dequeue tasks
+        duoStack.dequeueTask(task3b);
+        duoStack.abortTask(task2b);
+        task2b.error = "aborted"; // we have to do it manually, since we do not use real DataExportThreads
+        duoStack.taskIsFinishedListener(task2b);
+        stackStatus = analyzeStatus(duoStack.getStatus(user));
+        assertFalse(stackStatus.containsKey("enqueued"));
+        assertEquals((int) stackStatus.get("aborted"), 2);
 
 
     }
