@@ -22,8 +22,11 @@ public class DataExportFileManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("DataExportLogger");
 
-    @Value("${dataExportPath:'/tmp'}")
     private String dataExportPath;
+
+    public DataExportFileManager(@Value("${dataExportPath:'/tmp'}") String dataExportPath) {
+        this.dataExportPath = dataExportPath;
+    }
 
     @PostConstruct
     public void init() {
@@ -33,8 +36,6 @@ public class DataExportFileManager {
     public InputStream getFile(DataExportTask task) {
 
         final File file = new File(getFileName(task));
-
-        byte[] fileContent = null;
 
         if(!file.exists()){
             throw new DataExportException("not_found", file.toString(), HttpStatus.NOT_FOUND);
