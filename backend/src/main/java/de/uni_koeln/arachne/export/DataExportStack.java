@@ -154,7 +154,7 @@ public class DataExportStack {
         task.stopTimer();
         running.remove(task.uuid.toString());
         finished.put(task.uuid.toString(), task);
-        if (task.error != null) {
+        if (task.error == null) {
             String subject = "Arachne Data Export";
             String text = "%USER% | %URL% | %NAME%";
             final String user = (!task.getOwner().getLastname().equals("") && (task.getOwner().getLastname() != null))
