@@ -49,14 +49,19 @@ public class DataExportStack {
     private HashMap<String, DataExportTask> running = new HashMap<String, DataExportTask>();
     private HashMap<String, DataExportTask> finished = new HashMap<String, DataExportTask>();
 
-    @Value("${dataExportMaxStackSize:10}")
+
     private Integer dataExportMaxStackSize;
-
-    @Value("${dataExportMaxThreads:4}")
     private Integer dataExportMaxThreads;
-
-    @Value("${dataExportMaxTaskLifeTime:86400000}")
     private Integer dataExportMaxTaskLifeTime;
+
+    public DataExportStack(
+            @Value("${dataExportMaxStackSize:10}")Integer maxStackSize,
+            @Value("${dataExportMaxThreads:4}") Integer maxThreads,
+            @Value("${dataExportMaxTaskLifeTime:86400000}") Integer maxLifeTime) {
+        dataExportMaxStackSize = maxStackSize;
+        dataExportMaxThreads = maxThreads;
+        dataExportMaxTaskLifeTime = maxLifeTime;
+    }
 
     public DataExportTask newTask(AbstractDataExportConverter converter, DataExportConversionObject conversionObject) {
 
@@ -149,7 +154,6 @@ public class DataExportStack {
         task.stopTimer();
         running.remove(task.uuid.toString());
         finished.put(task.uuid.toString(), task);
-
         if (task.error != null) {
             String subject = "Arachne Data Export";
             String text = "%USER% | %URL% | %NAME%";
