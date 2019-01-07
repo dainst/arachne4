@@ -7,10 +7,12 @@ import java.nio.charset.CharsetEncoder;
 public class DataExportWriter extends FilterWriter {
 
     private DataExportTask task;
+    private Writer innerWriter;
 
     public DataExportWriter(DataExportTask task, Writer out) throws UnsupportedEncodingException {
         super(out);
         this.task = task;
+        this.innerWriter = out;
     }
 
     public void write(int c) throws IOException {
@@ -19,6 +21,10 @@ public class DataExportWriter extends FilterWriter {
             throw new DataExportAbortionException();
         }
         super.write(c);
+    }
+
+    public String toString() {
+        return innerWriter.toString();
     }
 
     public void write(char cbuf[], int off, int len) throws IOException {
