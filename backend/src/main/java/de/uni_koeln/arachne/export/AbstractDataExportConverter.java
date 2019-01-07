@@ -366,20 +366,20 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
             final String regex = "facet_(\\w+):\\\"(.*)\\\"";
             final Pattern pattern = Pattern.compile(regex);
             final List<NameValuePair> params = URLEncodedUtils.parse(new URI(task.getRequestUrl()), "UTF-8");
-            final ArrayList<String> queryFilers = new ArrayList<String>(){};
+            final ArrayList<String> queryFilters = new ArrayList<String>(){};
             for (NameValuePair param : params) {
                 if (param.getName().equals("q")) {
-                    queryFilers.add(0, "'" + param.getValue() + "'");
+                    queryFilters.add(0, "'" + param.getValue() + "'");
                 }
                 if (param.getName().equals("fq")) {
                     final Matcher matcher = pattern.matcher(param.getValue());
                     while (matcher.find()) {
-                        queryFilers.add(matcher.group(1) + " = '" + matcher.group(2) + "'");
+                        queryFilters.add(matcher.group(1) + " = '" + matcher.group(2) + "'");
                     }
                 }
             }
 
-            return String.join(delimiter, queryFilers);
+            return String.join(delimiter, queryFilters);
 
         } catch (Exception e) {
             return "";
