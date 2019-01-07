@@ -8,9 +8,7 @@ import org.springframework.http.MediaType;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 
-import java.io.IOException;
 import java.io.OutputStream;
-import java.io.StringWriter;
 import java.io.Writer;
 
 /**
