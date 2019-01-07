@@ -8,6 +8,7 @@ import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.service.*;
 import de.uni_koeln.arachne.testconfig.TestData;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,9 +28,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.ServletContext;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -111,7 +111,7 @@ public class TestExport {
 
         @Override
         void convert(DataExportConversionObject conversionObject, OutputStream outputStream) throws IOException {
-
+            outputStream.write("test-conversion-result".getBytes());
         }
 
         @Override
@@ -353,10 +353,27 @@ public class TestExport {
         final String taskId = task.uuid.toString();
         final String name = fileManager.getFileName(task);
 
+        final String fileContent = "testdata";
+
         // write testfile
+        final FileOutputStream outputStream = new FileOutputStream(name);
+        outputStream.write(fileContent.getBytes());
+        outputStream.close();
 
+        // get file
+        final String content = IOUtils.toString(fileManager.getFile(task), Charset.defaultCharset());
+        assertEquals(fileContent, content);
 
-        System.out.println("n:" + name);
+        // delete file
+        fileManager.deleteFile(task);
+        assertFalse(new File(name).exists());
+
+        // write file with fileManager
+        fileManager.writeToFile(task);
+        assertTrue(new File(name).exists());
+        final String content2 = IOUtils.toString(fileManager.getFile(task), Charset.defaultCharset());
+        assertEquals("test-conversion-result", content2);
+        fileManager.deleteFile(task);
 
     }
 }
