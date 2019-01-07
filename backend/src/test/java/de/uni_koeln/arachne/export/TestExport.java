@@ -10,6 +10,8 @@ import de.uni_koeln.arachne.testconfig.TestData;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -135,7 +137,7 @@ public class TestExport {
 
         final DataExportTask task = new DataExportTask(converter, conversion);
         task.setOwner(user);
-        task.setRequestUrl("http://arachne.dainst.mock-request");
+        task.setRequestUrl("http://arachne.dainst.mock-request?q=test");
         task.setBackendUrl("http://arachne.dainst.org/data");
         task.setUserRightsService(userRightsService);
         task.setLanguage("DE");
@@ -152,7 +154,7 @@ public class TestExport {
 
         final JSONObject tasks = fullStatus.getJSONObject("tasks");
         final Iterator<String> taskIds = tasks.keys();
-        final HashMap<String, Integer> taskStatusCounter = new HashMap<String, Integer>();
+        final HashMap<String, Integer> taskStatusCounter = new HashMap<>();
 
         while (taskIds.hasNext()) {
             String taskId = taskIds.next();
@@ -208,9 +210,9 @@ public class TestExport {
                 .thenReturn("dd.MM.yyyy HH:mm:ss");
 
         when(entityService.getEntityFromIndex(anyLong(), anyString(), anyString()))
-                .thenReturn(new TypeWithHTTPStatus<String>(json));
+                .thenReturn(new TypeWithHTTPStatus<>(json));
         when(entityService.getEntityFromDB(anyLong(), anyString(), anyString()))
-                .thenReturn(new TypeWithHTTPStatus<String>(json));
+                .thenReturn(new TypeWithHTTPStatus<>(json));
 
         when(userRightsService.isSignedInUser())
                 .thenAnswer((Answer<Boolean>) invocationOnMock -> switchIsLoggedIn);
@@ -262,6 +264,75 @@ public class TestExport {
         assertEquals(lines[0], TestData.exportCatalog2CsvLine1);
         assertEquals(lines[1], TestData.exportCatalog2CsvLine2);
 
+    }
+
+    @Test
+    public void testSearchResultToHtmlExport() throws Exception {
+
+        final SearchResult2HtmlConverter converter = new SearchResult2HtmlConverter();
+        final SearchResult searchResult = TestData.getDefaultSearchResult();
+        final DataExportConversionObject conversion = new DataExportConversionObject(searchResult);
+
+
+        final Document doc = Jsoup.parse(convert(converter, conversion));
+
+        final FileOutputStream outputStream = new FileOutputStream("/tmp/test.html");
+        outputStream.write(doc.toString().getBytes());
+        outputStream.close();
+
+        assertEquals(4, doc.select(".page").size());
+
+        assertEquals(
+                "transl8ed: search_result_for 'test'",
+                doc.select(".doc-title").first().textNodes().get(0).text()
+        );
+        assertEquals(
+                "Test title",
+                doc.select("h1.title").first().text()
+        );
+        assertEquals(
+                10,
+                doc.select(".page:nth-child(3) .dataset > tbody > tr").size()
+        );
+        assertEquals(
+                "Subtitle of the Test",
+                doc.select(".page:nth-child(3) .dataset > tbody > tr > td").first().text()
+        );
+        assertEquals(
+                "section",
+                doc.select(".page:nth-child(3) .dataset > tbody > tr > td").first().attr("class")
+        );
+        assertEquals(
+                "data:image/png;base64,iVBORw",
+                doc.select("img.logo-img").first().attr("src").substring(0, 28)
+        );
+    }
+
+
+    @Test
+    public void testCatalogToHtmlExport() throws Exception {
+
+        final Catalog2HtmlConverter converter = new Catalog2HtmlConverter();
+        final Catalog catalog = TestData.getFinishedTestCatalog();
+        final DataExportConversionObject conversion = new DataExportConversionObject(catalog);
+
+
+        final Document doc = Jsoup.parse(convert(converter, conversion));
+
+        assertEquals(5, doc.select(".page").size());
+
+        assertEquals(
+                "label: root",
+                doc.select(".doc-title").first().textNodes().get(0).text()
+        );
+        assertEquals(
+                "*label*: text entry nr: 1",
+                doc.select("h1.title").first().text()
+        );
+        assertEquals(
+                "data:image/png;base64,iVBORw",
+                doc.select("img.logo-img").first().attr("src").substring(0, 28)
+        );
     }
 
 
