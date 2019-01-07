@@ -182,9 +182,9 @@ public class TestExport {
         return out.toString();
     }
 
-    private String[] parseCsvOutput(String csv) {
+    private String[] parseLines(String str) {
 
-        final String[] lines = csv.split(System.lineSeparator());
+        final String[] lines = str.split(System.lineSeparator());
 
         for (int i = 0; i < lines.length; i++) {
             lines[i] = lines[i].replaceAll("\\p{C}", "");
@@ -245,7 +245,7 @@ public class TestExport {
         final SearchResult searchResult = TestData.getDefaultSearchResult();
         final DataExportConversionObject conversion = new DataExportConversionObject(searchResult);
 
-        final String[] lines = parseCsvOutput(convert(converter, conversion));
+        final String[] lines = parseLines(convert(converter, conversion));
 
         assertEquals(lines[0], TestData.exportSearchResult2CsvLine1);
         assertEquals(lines[1], TestData.exportSearchResult2CsvLine2);
@@ -259,7 +259,7 @@ public class TestExport {
         final Catalog catalog = TestData.getFinishedTestCatalog();
         final DataExportConversionObject conversion = new DataExportConversionObject(catalog);
 
-        final String[] lines = parseCsvOutput(convert(converter, conversion));
+        final String[] lines = parseLines(convert(converter, conversion));
 
         assertEquals(lines[0], TestData.exportCatalog2CsvLine1);
         assertEquals(lines[1], TestData.exportCatalog2CsvLine2);
@@ -273,12 +273,7 @@ public class TestExport {
         final SearchResult searchResult = TestData.getDefaultSearchResult();
         final DataExportConversionObject conversion = new DataExportConversionObject(searchResult);
 
-
         final Document doc = Jsoup.parse(convert(converter, conversion));
-
-        final FileOutputStream outputStream = new FileOutputStream("/tmp/test.html");
-        outputStream.write(doc.toString().getBytes());
-        outputStream.close();
 
         assertEquals(4, doc.select(".page").size());
 
@@ -316,7 +311,6 @@ public class TestExport {
         final Catalog catalog = TestData.getFinishedTestCatalog();
         final DataExportConversionObject conversion = new DataExportConversionObject(catalog);
 
-
         final Document doc = Jsoup.parse(convert(converter, conversion));
 
         assertEquals(5, doc.select(".page").size());
@@ -333,6 +327,57 @@ public class TestExport {
                 "data:image/png;base64,iVBORw",
                 doc.select("img.logo-img").first().attr("src").substring(0, 28)
         );
+    }
+
+
+    @Test
+    public void testSearchResultToPdfExport() throws Exception {
+
+        final SearchResult2PdfConverter converter = new SearchResult2PdfConverter();
+        final SearchResult searchResult = TestData.getDefaultSearchResult();
+        final DataExportConversionObject conversion = new DataExportConversionObject(searchResult);
+
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        prepareConverter(converter, conversion);
+        converter.convert(conversion, out);
+        final byte[] pdf = out.toByteArray();
+
+        assertEquals(3L, (long) pdfHelper.countPages(pdf));
+
+        final String[] page1 = parseLines(pdfHelper.stripText(pdf, 1));
+        final String[] page2 = parseLines(pdfHelper.stripText(pdf, 2));
+
+        assertEquals("ARACHNE", page1[2]);
+        assertEquals("http://arachne.dainst.mock-request?q=test", page1[5]);
+        assertEquals("Test title", page2[1]);
+        assertEquals("Subtitle of the Test", page2[2]);
+        assertEquals("transl8ed: test test facet value", page2[3]);
+    }
+
+
+    @Test
+    public void testCatalogToPdfExport() throws Exception {
+
+        final Catalog2PdfConverter converter = new Catalog2PdfConverter();
+        final Catalog catalog = TestData.getFinishedTestCatalog();
+        final DataExportConversionObject conversion = new DataExportConversionObject(catalog);
+
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        prepareConverter(converter, conversion);
+        converter.convert(conversion, out);
+        final byte[] pdf = out.toByteArray();
+
+        assertEquals(4L, (long) pdfHelper.countPages(pdf));
+
+        final String[] page1 = parseLines(pdfHelper.stripText(pdf, 1));
+        final String[] page2 = parseLines(pdfHelper.stripText(pdf, 2));
+
+        assertEquals("ARACHNE", page1[2]);
+        assertEquals("label: root", page1[3]);
+
+        assertEquals("*label*: text entry nr: 1", page2[1]);
+        assertEquals("Subtitle of the Test", page2[2]);
     }
 
 
