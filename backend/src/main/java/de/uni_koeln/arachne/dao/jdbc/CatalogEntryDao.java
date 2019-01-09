@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,42 +81,86 @@ public class CatalogEntryDao extends SQLDao {
 	 */
 	@Transactional(readOnly = true)
 	public CatalogEntry getById(final long catalogEntryId, final boolean full, final int limit, final int offset) {
-		final String sqlQuery = "SELECT * from catalog_entry WHERE id = " + catalogEntryId;
-		if (full) {
-			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryFull);
-			if (result != null)
-				setAllSuccessors(result);
-			return result;
-		} else {
-			if (limit == 0) {
-				return queryForObject(sqlQuery, this::mapCatalogEntryNoChilds);
-			}
-			final CatalogEntry result = queryForObject(sqlQuery, this::mapCatalogEntryFull);
-			if (result != null) {
-				setAllSuccessors(result);
-				if (result.getChildren() != null && !result.getChildren().isEmpty())
-					for (CatalogEntry c : result.getChildren())
-						if (c != null)
-							c.setChildren(null);
 
-				// TODO implement limiting at query time
-				final List<CatalogEntry> children = result.getChildren();
-				if (children != null) {
-					int childCount = children.size();
-					if (offset > 0 && offset < childCount) {
-							children.subList(0, offset).clear();
-					}
-					
-					if (limit > 0) {
-						childCount = children.size();
-						if (childCount > limit) {
-							children.subList(limit, childCount).clear();
-						}
-					}
-				}
-			}
+		final String sqlQuery =
+				"SELECT " +
+					"catalog_entry.*, " +
+					"count(c2.parent_id) as direct_children " +
+				"FROM " +
+					"catalog_entry " +
+					"left join catalog_entry as c2 on (catalog_entry.id = c2.parent_id) " +
+				"WHERE " +
+					"catalog_entry.id = " + catalogEntryId + " " +
+				"GROUP BY " +
+					"catalog_entry.id";
+
+		if (!full && (limit == 0)) {
+			return queryForObject(sqlQuery, this::mapCatalogEntryNoChilds);
+		}
+
+		final HashMap<Long, List<CatalogEntry>> entriesCache = getSuccessorsCache(catalogEntryId);
+
+		final CatalogEntry result =
+				queryForObject(sqlQuery, (ResultSet rs, int num) -> mapCatalogEntryFullWithCache(rs, num, entriesCache));
+
+		if (result == null) {
+			return null;
+		}
+
+		setAllSuccessors(result);
+
+		if (full) {
 			return result;
 		}
+
+		final List<CatalogEntry> children = result.getChildren();
+		if (children != null) {
+			int childCount = children.size();
+			if (offset > 0 && offset < childCount) {
+				children.subList(0, offset).clear();
+			}
+
+			if (limit > 0) {
+				childCount = children.size();
+				if (childCount > limit) {
+					children.subList(limit, childCount).clear();
+				}
+			}
+		}
+
+		return result;
+	}
+
+	@Transactional(readOnly = true)
+	HashMap<Long, List<CatalogEntry>> getSuccessorsCache(long catalogEntryId) {
+
+		final String sqlQuery =
+				"SELECT " +
+					"catalog_entry.*, " +
+					"count(c2.parent_id) as direct_children " +
+				"FROM " +
+					" catalog_entry " +
+					" left join catalog_entry as c2 on (catalog_entry.id = c2.parent_id) " +
+				"WHERE " +
+					" catalog_entry.parent_id = " + catalogEntryId + " " +
+				"GROUP BY " +
+					"catalog_entry.id " +
+				"ORDER BY " +
+					"catalog_entry.index_parent ";
+
+		//final String sqlQuery = "SELECT * from catalog_entry WHERE path like '%" + catalogEntryId + "%'  ORDER BY index_parent";
+		final List<CatalogEntry> result = query(sqlQuery, this::mapCatalogEntryNoChilds);
+		if (result != null && result.isEmpty()) {
+			return null;
+		}
+		final HashMap<Long, List<CatalogEntry>> returner = new HashMap<Long, List<CatalogEntry>>();
+		for (CatalogEntry entry : result) {
+			if (!returner.containsKey(entry.getParentId())) {
+				returner.put(entry.getParentId(), new ArrayList<CatalogEntry>());
+			}
+			returner.get(entry.getParentId()).add(entry);
+		}
+		return returner;
 	}
 
 	/**
@@ -128,7 +174,7 @@ public class CatalogEntryDao extends SQLDao {
 	 */
 	@Transactional(readOnly = true)
 	public List<CatalogEntry> getChildrenByParentId(final long parentId, final RowMapper<CatalogEntry> rowMapper) {
-		final String sqlQuery = "SELECT * from catalog_entry WHERE parent_id = " + parentId + " ORDER BY index_parent";
+		final String sqlQuery = "SELECT * from catalog_entry WHERE parent_id = " + parentId + " ORDER BY parent_id, index_parent";
 		List<CatalogEntry> result = query(sqlQuery, rowMapper);
 		if (result != null && result.isEmpty()) {
 			result = null;
@@ -421,6 +467,7 @@ public class CatalogEntryDao extends SQLDao {
 		catalogEntry.setPath(rs.getString("path"));
 		catalogEntry.setLabel(rs.getString("label"));
 		catalogEntry.setText(rs.getString("text"));
+		catalogEntry.setTotalChildren(rs.getInt("direct_children"));
 		return catalogEntry;
 	}
 
@@ -450,14 +497,18 @@ public class CatalogEntryDao extends SQLDao {
 	 *            The SQL result set.
 	 * @param rowNum
 	 *            The row number.
+	 * @param entryCache
+	 * 			The children: HashMap<Long, List<CatalogEntry>> entryCache
 	 * @return The mapped <code>CatalogEntry</code>.
 	 * @throws SQLException
 	 *             if a database access error occurs or this method is called on
 	 *             a closed result set.
 	 */
-	public CatalogEntry mapCatalogEntryFull(ResultSet rs, int rowNum) throws SQLException {
+
+
+	public CatalogEntry mapCatalogEntryFullWithCache(ResultSet rs, int rowNum, HashMap<Long, List<CatalogEntry>> entryCache) throws SQLException {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
-		final List<CatalogEntry> children = getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryFull);
+		final List<CatalogEntry> children = entryCache.getOrDefault(catalogEntry.getId(), null);
 		setTotalChildren(catalogEntry, children);
 		return catalogEntry;
 	}
@@ -476,9 +527,7 @@ public class CatalogEntryDao extends SQLDao {
 	 *             a closed result set.
 	 */
 	public CatalogEntry mapCatalogEntryNoChilds(ResultSet rs, int rowNum) throws SQLException {
-		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
-		catalogEntry.setTotalChildren(getChildrenSizeByParentId(catalogEntry.getId()));
-		return catalogEntry;
+		return mapBaseCatalogEntry(rs, rowNum);
 	}
 
 	/**
@@ -502,23 +551,20 @@ public class CatalogEntryDao extends SQLDao {
 
 	private void setTotalChildren(CatalogEntry catalogEntry, List<CatalogEntry> children) {
 		catalogEntry.setChildren(children);
-		final int childCount = (children != null) ? children.size() : 0;
-		catalogEntry.setTotalChildren(childCount);
+		if (children.size() > 0) {
+			for (CatalogEntry child : children) {
+				setAllSuccessors(child);
+			}
+		}
 	}
 
-	private int setAllSuccessors(CatalogEntry catalogEntry) {
-		if (catalogEntry != null) {
-			int successorCount = 0;
-			if (catalogEntry.hasChildren())
-				for (CatalogEntry i : catalogEntry.getChildren()) {
-					if (i.hasChildren())
-						successorCount += setAllSuccessors(i);
-					else
-						successorCount += 1;
-				}
-			catalogEntry.setAllSuccessors(successorCount);
-			return successorCount;
-		} else
-			return 0;
+	@Transactional(readOnly = true)
+	void setAllSuccessors(CatalogEntry catalogEntry) {
+		if (!catalogEntry.hasChildren()) {
+			return;
+		}
+		final String sql = "select count(id) as total_children from catalog_entry where path like concat('%/" + catalogEntry.getId() + "/%')";
+		int tmp = queryForInt(sql);
+		catalogEntry.setAllSuccessors(tmp);
 	}
 }

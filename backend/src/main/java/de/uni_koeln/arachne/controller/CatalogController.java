@@ -83,7 +83,7 @@ public class CatalogController {
 		if (result == null) {
 			return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
 		} else {
-			final Catalog catalog = catalogDao.getById(result.getCatalogId());
+			final Catalog catalog = catalogDao.getById(result.getCatalogId(), false, 0, 0);
 			if (!catalog.isCatalogOfUserWithId(user.getId()) && !catalog.isPublic()) {
 				return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
 			}
