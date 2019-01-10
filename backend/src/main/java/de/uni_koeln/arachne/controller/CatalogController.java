@@ -355,7 +355,9 @@ public class CatalogController {
 			} else {
 				catalogDao.deleteCatalog(catalog.getId());
 			}
-		}
+		} else {
+            return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+        }
 		
 		return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
 	}
