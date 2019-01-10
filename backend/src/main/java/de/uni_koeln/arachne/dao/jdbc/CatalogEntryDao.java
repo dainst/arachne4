@@ -1,9 +1,6 @@
 package de.uni_koeln.arachne.dao.jdbc;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -467,28 +464,25 @@ public class CatalogEntryDao extends SQLDao {
 		catalogEntry.setPath(rs.getString("path"));
 		catalogEntry.setLabel(rs.getString("label"));
 		catalogEntry.setText(rs.getString("text"));
-		catalogEntry.setTotalChildren(rs.getInt("direct_children"));
+
+        if (hasColumn(rs, "direct_children")) {
+            catalogEntry.setTotalChildren(rs.getInt("direct_children"));
+        }
+
 		return catalogEntry;
 	}
 
-	/**
-	 * Maps a SQL result set to a catalog entry. Direct children are included.
-	 * 
-	 * @param rs
-	 *            The SQL result set.
-	 * @param rowNum
-	 *            The row number.
-	 * @return The mapped <code>CatalogEntry</code>.
-	 * @throws SQLException
-	 *             if a database access error occurs or this method is called on
-	 *             a closed result set.
-	 */
-	public CatalogEntry mapCatalogEntryDirectChildsOnly(ResultSet rs, int rowNum) throws SQLException {
-		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
-		final List<CatalogEntry> children = getChildrenByParentId(catalogEntry.getId(), this::mapCatalogEntryNoChilds);
-		setTotalChildren(catalogEntry, children);
-		return catalogEntry;
-	}
+    private boolean hasColumn(ResultSet rs, String columnName) throws SQLException {
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int columns = rsmd.getColumnCount();
+        for (int x = 1; x <= columns; x++) {
+            if (columnName.equals(rsmd.getColumnName(x))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 	/**
 	 * Maps a SQL result set to a catalog entry. All children are included.
@@ -504,11 +498,11 @@ public class CatalogEntryDao extends SQLDao {
 	 *             if a database access error occurs or this method is called on
 	 *             a closed result set.
 	 */
-
-
 	public CatalogEntry mapCatalogEntryFullWithCache(ResultSet rs, int rowNum, HashMap<Long, List<CatalogEntry>> entryCache) throws SQLException {
 		final CatalogEntry catalogEntry = mapBaseCatalogEntry(rs, rowNum);
-		final List<CatalogEntry> children = entryCache.getOrDefault(catalogEntry.getId(), null);
+		final List<CatalogEntry> children = (entryCache == null)
+                ? new ArrayList<CatalogEntry>()
+                : entryCache.getOrDefault(catalogEntry.getId(), null);
 		setTotalChildren(catalogEntry, children);
 		return catalogEntry;
 	}
