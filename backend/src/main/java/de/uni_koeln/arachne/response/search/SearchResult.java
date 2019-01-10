@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.google.common.collect.Multimap;
+import de.uni_koeln.arachne.util.search.SearchParameters;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.rest.RestStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -32,7 +35,11 @@ public class SearchResult {
 	private List<SearchHit> entities;
 	
 	private RestStatus status;
-	
+
+	private Multimap<String,String> filters;
+
+	private SearchParameters searchParameters;
+
 	public SearchResult() {
 		status = RestStatus.OK;
 	}
@@ -121,4 +128,19 @@ public class SearchResult {
 		this.status = status;
 	}
 
+    public void setFilters(Multimap<String, String> filters) {
+		this.filters = filters;
+    }
+
+	public void setSearchParameters(SearchParameters searchParameters) {
+		this.searchParameters = searchParameters;
+	}
+
+	public Multimap<String, String> getFilters() {
+		return filters;
+	}
+
+	public SearchParameters getSearchParameters() {
+		return searchParameters;
+	}
 }

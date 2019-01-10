@@ -73,7 +73,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     public transient CatalogEntryDao catalogEntryDao;
 
     @Autowired
-    public transient SingleEntityDataService singleEntityDataService;
+    public transient SearchService searchService;
 
     @Autowired
     public transient EntityIdentificationService entityIdentificationService;
@@ -105,7 +105,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
             converter.injectService(servletContext);
             converter.injectService(iipService);
             converter.injectService(catalogEntryDao);
-            converter.injectService(singleEntityDataService);
+            converter.injectService(searchService);
             converter.injectService(entityIdentificationService);
             converter.injectService(dataExportStack);
         }

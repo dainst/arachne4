@@ -177,8 +177,8 @@ public class SearchController {
 		SearchRequestBuilder searchRequestBuilder;
 		try {
 			searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters, filters, "de");
-			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
-					, searchParameters.getLimit(), searchParameters.getOffset(), filters, searchParameters.getFacetOffset());
+			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, searchParameters.getLimit(),
+					searchParameters.getOffset(), filters, searchParameters.getFacetOffset(), searchParameters);
 			if (searchResult.getStatus() != RestStatus.OK) {
 				return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
 			} else {
@@ -275,7 +275,7 @@ public class SearchController {
 		try {
 			searchRequestBuilder = searchService.buildContextSearchRequest(entityId, searchParameters, filters, (lang==null) ? headerLanguage : lang);
 			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
-					, searchParameters.getLimit(), searchParameters.getOffset(), filters, 0);
+					, searchParameters.getLimit(), searchParameters.getOffset(), filters, 0, searchParameters);
 			
 			if (searchResult == null) {
 				LOGGER.error("Search result is null!");
@@ -320,7 +320,7 @@ public class SearchController {
             filters.put(name, value);
 
             final SearchRequestBuilder searchRequestBuilder = searchService.buildIndexSearchRequest(facetName, filters);
-            final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, 0, 0, filters, 0);
+            final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, 0, 0, filters, 0, null);
             return putSearchResultToResponseEntitiy(searchResult, groupMarker);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -348,7 +348,7 @@ public class SearchController {
 	    if (facetName.startsWith("facet_") || facetName.startsWith("agg_")) {
             final Multimap<String, String> filters = HashMultimap.create();
             final SearchRequestBuilder searchRequestBuilder = searchService.buildIndexSearchRequest(facetName, filters);
-            final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, 0, 0, filters, 0);
+            final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, 0, 0, filters, 0, null);
             return putSearchResultToResponseEntitiy(searchResult, groupMarker);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

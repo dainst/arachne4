@@ -299,7 +299,8 @@ public class SearchService {
 	 */
 	@SuppressWarnings("unchecked")
 	public SearchResult executeSearchRequest(final SearchRequestBuilder searchRequestBuilder, final int size,
-			final int offset, final Multimap<String, String> filters, final int facetOffset) throws Transl8Exception {
+			final int offset, final Multimap<String, String> filters, final int facetOffset,
+                                             final SearchParameters searchParameters) throws Transl8Exception {
 
 		SearchResponse searchResponse = null;
 
@@ -324,6 +325,8 @@ public class SearchService {
 		searchResult.setOffset(offset);
 		searchResult.setSize(hits.totalHits());
 		searchResult.setScrollId(searchResponse.getScrollId());
+        searchResult.setSearchParameters(searchParameters);
+        searchResult.setFilters(filters);
 
 		for (final SearchHit currenthit: hits) {
 			Map<String, Object> source = currenthit.getSource();

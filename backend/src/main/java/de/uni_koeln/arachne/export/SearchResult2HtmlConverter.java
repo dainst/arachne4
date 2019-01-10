@@ -33,7 +33,7 @@ public class SearchResult2HtmlConverter extends BaseHtmlConverter<SearchResult> 
 
     @Override
     public void convert(DataExportConversionObject conversionObject, OutputStream outputStream) throws IOException {
-        final SearchResult searchResult = conversionObject.getSearchResult();
+        final SearchResult searchResult = getFullResult(conversionObject.getSearchResult());
         this.writer = new DataExportWriter(task, new OutputStreamWriter(outputStream));
         final List<SearchHit> entities = searchResult.getEntities();
         final List<SearchResultFacet> facets = searchResult.getFacets();

@@ -7,8 +7,10 @@ import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.service.*;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
+import de.uni_koeln.arachne.util.search.SearchParameters;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -53,7 +55,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     transient ServletContext servletContext;
     transient IIPService iipService;
     transient CatalogEntryDao catalogEntryDao;
-    private transient SingleEntityDataService singleEntityDataService;
+    private transient SearchService searchService;
     public transient EntityIdentificationService entityIdentificationService;
     private transient DataExportStack dataExportStack;
 
@@ -103,8 +105,8 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         this.catalogEntryDao = catalogEntryDao;
     }
 
-    public void injectService(SingleEntityDataService singleEntityDataService) {
-        this.singleEntityDataService = singleEntityDataService;
+    public void injectService(SearchService searchService) {
+        this.searchService = searchService;
     }
 
     public void injectService(EntityIdentificationService entityIdentificationService) {
@@ -159,7 +161,9 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     }
 
     void enqueueIfHuge(SearchResult searchResult, Integer limit) {
-        checkForHugeAndEnqueue(searchResult.getSize(), limit, new DataExportConversionObject(searchResult));
+        // if searchResult is not complete, we enqueue in any case!
+        final Integer currentLimit = (searchResult.getSize() > searchResult.getLimit()) ? 0 : limit;
+        checkForHugeAndEnqueue(searchResult.getSize(), currentLimit, new DataExportConversionObject(searchResult));
     }
 
     void enqueueIfHuge(Catalog catalog, Integer limit) {
@@ -405,6 +409,27 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         final CatalogEntry catalogEntry2 = catalogEntryDao.getById(catalogEntry.getId(), true, 5, 0);
 
         return catalogEntry2.getChildren();
+    }
+
+    SearchResult getFullResult(SearchResult result) {
+
+        if (result.getLimit() <= result.getSize()) {
+            return result;
+        }
+
+        final SearchParameters searchParameters = result.getSearchParameters();
+        searchParameters.setFacetLimit(1);
+        searchParameters.setLimit(totalMaximumForExport);
+        final SearchRequestBuilder searchRequestBuilder;
+        try {
+            searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters, result.getFilters(), task.getLanguage());
+            final SearchResult fullResult = searchService.executeSearchRequest(searchRequestBuilder, -1, 0,
+                    result.getFilters(), 0, searchParameters);
+            return fullResult;
+        } catch (Transl8Service.Transl8Exception e) {
+            throw new DataExportException("full_search_failed", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 }

@@ -185,7 +185,7 @@ public class TestSearchController {
                 });
 
         when(searchService.executeSearchRequest(eq((SearchRequestBuilder) null), anyInt(), anyInt(), any(Multimap.class)
-                , anyInt()))
+                , anyInt(), any(SearchParameters.class)))
                 .then(new Answer<SearchResult>() {
                     @Override
                     public SearchResult answer(InvocationOnMock invocation) throws Throwable {

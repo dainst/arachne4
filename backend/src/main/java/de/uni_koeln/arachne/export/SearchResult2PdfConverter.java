@@ -35,7 +35,7 @@ public class SearchResult2PdfConverter extends BasePdfConverter<SearchResult> {
 
     @Override
     public void convert(DataExportConversionObject conversionObject, OutputStream outputStream) throws IOException {
-        final SearchResult searchResult = conversionObject.getSearchResult();
+        final SearchResult searchResult = getFullResult(conversionObject.getSearchResult());
         final List<SearchHit> entities = searchResult.getEntities();
         final List<SearchResultFacet> facets = searchResult.getFacets();
         final BaseHtmlConverter htmlConverter = getHtmlConverter();

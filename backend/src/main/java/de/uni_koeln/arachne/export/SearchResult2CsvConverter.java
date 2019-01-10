@@ -34,7 +34,7 @@ public class SearchResult2CsvConverter extends BaseCsvConverter<SearchResult> {
 
     @Override
     public void convert(DataExportConversionObject conversionObject, OutputStream outputStream) throws IOException {
-        final SearchResult searchResult = conversionObject.getSearchResult();
+        final SearchResult searchResult = getFullResult(conversionObject.getSearchResult());
         this.writer = new DataExportWriter(task, new OutputStreamWriter(outputStream));
         final List<SearchHit> entities = searchResult.getEntities();
         csvWriter = new CsvListWriter(writer, CsvPreference.STANDARD_PREFERENCE);
