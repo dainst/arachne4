@@ -24,7 +24,7 @@ public class DataExportFileManager {
 
     private String dataExportPath;
 
-    public DataExportFileManager(@Value("${dataExportPath:'/tmp'}") String dataExportPath) {
+    public DataExportFileManager(@Value("${dataExportPath:/tmp}") String dataExportPath) {
         this.dataExportPath = dataExportPath;
     }
 
