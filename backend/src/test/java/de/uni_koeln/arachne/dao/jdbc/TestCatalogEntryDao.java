@@ -104,49 +104,49 @@ public class TestCatalogEntryDao {
 		assertNull(childrenLevel1);
 	}
 
-	@Test
-	public void testGetByIdLongBooleanIntIntFull() {
-		final CatalogEntry catalogEntry = catalogEntryDao.getById(1L, true, 0, 0);
-		assertNotNull(catalogEntry);
-		assertEquals(Long.valueOf(1), catalogEntry.getId());
-		assertEquals(Long.valueOf(1), catalogEntry.getCatalogId());
-		assertEquals("root of catalog 1 test label", catalogEntry.getLabel());
-		assertTrue(catalogEntry.hasChildren());
-		
-		final List<CatalogEntry> children = catalogEntry.getChildren(); 
-		assertNotNull(children);
-		assertEquals(3, children.size());
-		assertEquals("child test label No. 3", children.get(2).getLabel());
-		assertFalse(children.get(2).hasChildren());
-		List<CatalogEntry> childrenLevel1 = children.get(2).getChildren();
-		assertNull(childrenLevel1);
-		assertEquals("child test label No. 2", children.get(1).getLabel());
-		assertFalse(children.get(1).hasChildren());
-		childrenLevel1 = children.get(1).getChildren();
-		assertNull(childrenLevel1);
-		assertEquals("child test label No. 1", children.get(0).getLabel());
-		assertTrue(children.get(0).hasChildren());
-		
-		childrenLevel1 = children.get(0).getChildren();
-		assertNotNull(childrenLevel1);
-		assertEquals(3, childrenLevel1.size());
-		assertEquals("child test label level 1 No. 1", childrenLevel1.get(0).getLabel());
-		assertFalse(childrenLevel1.get(0).hasChildren());
-		assertEquals("child test label level 1 No. 2", childrenLevel1.get(1).getLabel());
-		assertTrue(childrenLevel1.get(1).hasChildren());
-		assertEquals("child test label level 1 No. 3", childrenLevel1.get(2).getLabel());
-		assertFalse(childrenLevel1.get(2).hasChildren());
-		
-		final List<CatalogEntry> childrenLevel2 = childrenLevel1.get(1).getChildren();
-		assertNotNull(childrenLevel2);
-		assertEquals(1, childrenLevel2.size());
-		assertEquals("child test label level 2 No. 1", childrenLevel2.get(0).getLabel());
-		assertTrue(children.get(0).hasChildren());
-	}
+//	@Test
+//	public void testGetByIdLongBooleanIntIntFull() {
+//		final CatalogEntry catalogEntry = catalogEntryDao.getById(1L, 0, 0);
+//		assertNotNull(catalogEntry);
+//		assertEquals(Long.valueOf(1), catalogEntry.getId());
+//		assertEquals(Long.valueOf(1), catalogEntry.getCatalogId());
+//		assertEquals("root of catalog 1 test label", catalogEntry.getLabel());
+//		assertTrue(catalogEntry.hasChildren());
+//
+//		final List<CatalogEntry> children = catalogEntry.getChildren();
+//		assertNotNull(children);
+//		assertEquals(3, children.size());
+//		assertEquals("child test label No. 3", children.get(2).getLabel());
+//		assertFalse(children.get(2).hasChildren());
+//		List<CatalogEntry> childrenLevel1 = children.get(2).getChildren();
+//		assertNull(childrenLevel1);
+//		assertEquals("child test label No. 2", children.get(1).getLabel());
+//		assertFalse(children.get(1).hasChildren());
+//		childrenLevel1 = children.get(1).getChildren();
+//		assertNull(childrenLevel1);
+//		assertEquals("child test label No. 1", children.get(0).getLabel());
+//		assertTrue(children.get(0).hasChildren());
+//
+//		childrenLevel1 = children.get(0).getChildren();
+//		assertNotNull(childrenLevel1);
+//		assertEquals(3, childrenLevel1.size());
+//		assertEquals("child test label level 1 No. 1", childrenLevel1.get(0).getLabel());
+//		assertFalse(childrenLevel1.get(0).hasChildren());
+//		assertEquals("child test label level 1 No. 2", childrenLevel1.get(1).getLabel());
+//		assertTrue(childrenLevel1.get(1).hasChildren());
+//		assertEquals("child test label level 1 No. 3", childrenLevel1.get(2).getLabel());
+//		assertFalse(childrenLevel1.get(2).hasChildren());
+//
+//		final List<CatalogEntry> childrenLevel2 = childrenLevel1.get(1).getChildren();
+//		assertNotNull(childrenLevel2);
+//		assertEquals(1, childrenLevel2.size());
+//		assertEquals("child test label level 2 No. 1", childrenLevel2.get(0).getLabel());
+//		assertTrue(children.get(0).hasChildren());
+//	}
 	
 	@Test
 	public void testGetByIdLongBooleanIntIntLimit() {
-		final CatalogEntry catalogEntry = catalogEntryDao.getById(8L, false, 1, 0);
+		final CatalogEntry catalogEntry = catalogEntryDao.getById(8L, 1, 0);
 		assertNotNull(catalogEntry);
 		assertEquals(Long.valueOf(8), catalogEntry.getId());
 		assertEquals(Long.valueOf(1), catalogEntry.getCatalogId());
@@ -165,7 +165,7 @@ public class TestCatalogEntryDao {
 	
 	@Test
 	public void testGetByIdLongBooleanIntIntOffset() {
-		final CatalogEntry catalogEntry = catalogEntryDao.getById(8L, false, -1, 1);
+		final CatalogEntry catalogEntry = catalogEntryDao.getById(8L, -1, 1);
 		assertNotNull(catalogEntry);
 		assertEquals(Long.valueOf(8), catalogEntry.getId());
 		assertEquals(Long.valueOf(1), catalogEntry.getCatalogId());
@@ -189,7 +189,7 @@ public class TestCatalogEntryDao {
 		
 	@Test
 	public void testGetByIdLongBooleanIntIntLimitOffset() {
-		final CatalogEntry catalogEntry = catalogEntryDao.getById(8L, false, 1, 1);
+		final CatalogEntry catalogEntry = catalogEntryDao.getById(8L, 1, 1);
 		assertNotNull(catalogEntry);
 		assertEquals(Long.valueOf(8), catalogEntry.getId());
 		assertEquals(Long.valueOf(1), catalogEntry.getCatalogId());
@@ -473,7 +473,7 @@ public class TestCatalogEntryDao {
 		catalogEntry.setLabel("some new label");
 		catalogEntry.setText("some text");
         catalogEntry.setTotalChildren(3);
-		catalogEntry.setAllSuccessors(3);
+		catalogEntry.setAllSuccessors(4);
 
 		catalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
 
@@ -490,7 +490,7 @@ public class TestCatalogEntryDao {
 		catalogEntry.setLabel("updated root of catalog 1 test label");
 		catalogEntry.setText("some text");
         catalogEntry.setTotalChildren(3);
-        catalogEntry.setAllSuccessors(5);
+        catalogEntry.setAllSuccessors(7);
 
 		catalogEntry = catalogEntryDao.updateCatalogEntry(catalogEntry);
 
@@ -498,7 +498,15 @@ public class TestCatalogEntryDao {
 		assertEquals(catalogEntry, catalogEntryDao.getById(1L));
 		assertEquals("1", catalogEntry.getPath());
 	}
-	
+
+	/*
+	        System.out.println("id:" + xx.getId());
+        System.out.println("TotalChildren:" + xx.getTotalChildren());
+        System.out.println("AllSuccessors:" + xx.getAllSuccessors());
+        System.out.println("text:" + xx.getText());
+        System.out.println("CatalogId:" + xx.getCatalogId());
+	 */
+
 	@Test
 	public void testUpdateCatalogEntryUpdateIndexParent() {
 		CatalogEntry catalogEntry = new CatalogEntry();
@@ -519,7 +527,7 @@ public class TestCatalogEntryDao {
 		assertEquals(Long.valueOf(6), catalogEntries.get(0).getId());
 		assertEquals(0, catalogEntries.get(0).getIndexParent());
 		assertEquals(Long.valueOf(4), catalogEntries.get(1).getId());
-		assertEquals("1/8", catalogEntries.get(1).getPath());
+		assertEquals("1/1/8", catalogEntries.get(1).getPath());
 		assertEquals(1, catalogEntries.get(1).getIndexParent());
 		assertEquals(Long.valueOf(5), catalogEntries.get(2).getId());
 		assertEquals(2, catalogEntries.get(2).getIndexParent());

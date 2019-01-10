@@ -406,7 +406,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
             return storedChildren;
         }
 
-        final CatalogEntry catalogEntry2 = catalogEntryDao.getById(catalogEntry.getId(), true, 5, 0);
+        final CatalogEntry catalogEntry2 = catalogEntryDao.getById(catalogEntry.getId(), -1, 0);
 
         return catalogEntry2.getChildren();
     }

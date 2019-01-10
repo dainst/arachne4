@@ -56,7 +56,7 @@ public class CatalogEntryDao extends SQLDao {
 	 * @return The catalog entry.
 	 */
 	public CatalogEntry getById(final long catalogEntryId) {
-		return getById(catalogEntryId, false, -1, 0);
+		return getById(catalogEntryId, -1, 0);
 	}
 
 	/**
@@ -65,9 +65,6 @@ public class CatalogEntryDao extends SQLDao {
 	 * 
 	 * @param catalogEntryId
 	 *            The entries id.
-	 * @param full
-	 *            If all children of the entry should be retrieved or only the
-	 *            direct children of the entry.
 	 * @param limit
 	 *            If <code>full = false</code> then limit restricts the number
 	 *            of direct children to the desired value (-1 for no limit).
@@ -77,7 +74,7 @@ public class CatalogEntryDao extends SQLDao {
 	 * @return The {@link CatalogEntry} with the given id.
 	 */
 	@Transactional(readOnly = true)
-	public CatalogEntry getById(final long catalogEntryId, final boolean full, final int limit, final int offset) {
+	public CatalogEntry getById(final long catalogEntryId, final int limit, final int offset) {
 
 		final String sqlQuery =
 				"SELECT " +
@@ -91,7 +88,7 @@ public class CatalogEntryDao extends SQLDao {
 				"GROUP BY " +
 					"catalog_entry.id";
 
-		if (!full && (limit == 0)) {
+		if (limit == 0) {
 			return queryForObject(sqlQuery, this::mapCatalogEntryNoChilds);
 		}
 
@@ -106,7 +103,7 @@ public class CatalogEntryDao extends SQLDao {
 
 		setAllSuccessors(result);
 
-		if (full) {
+		if (limit < 0 && offset <= 0) {
 			return result;
 		}
 
@@ -557,7 +554,8 @@ public class CatalogEntryDao extends SQLDao {
 		if (!catalogEntry.hasChildren()) {
 			return;
 		}
-		final String sql = "select count(id) as total_children from catalog_entry where path like concat('%/" + catalogEntry.getId() + "/%')";
+		final String sql = "select count(id) as total_children from catalog_entry where " +
+                "parent_id = " + catalogEntry.getId() + " or path like concat('%/" + catalogEntry.getId() + "/%')";
 		int tmp = queryForInt(sql);
 		catalogEntry.setAllSuccessors(tmp);
 	}

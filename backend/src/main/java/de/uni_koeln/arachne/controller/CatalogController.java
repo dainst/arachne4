@@ -58,8 +58,7 @@ public class CatalogController {
 	 * not owned by the current user or no user is signed in, a 403 error code
 	 * is returned.
 	 * @param catalogEntryId The id of the catalog entry.
-	 * @param full If all children or only direct children shall be included.
-	 * @param limit If full = false then limit restricts the number of direct children to the desired value 
+	 * @param limit If full = false then limit restricts the number of direct children to the desired value
 	 * (-1 for no limit).
 	 * @param offset If full = false and limit > 0 then offset gives an offset into the direct children list.
 	 * @return A {@link ResponseEntity} containing the catalog entry or the error code on failures.
@@ -69,21 +68,21 @@ public class CatalogController {
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<CatalogEntry> handleGetCatalogEntryRequest(
 			@PathVariable("catalogEntryId") final Long catalogEntryId,
-			@RequestParam(value = "full", required = false) Boolean full,
 			@RequestParam(value = "limit", required = false) Integer limit,
 			@RequestParam(value = "offset", required = false) Integer offset) {
 		
-		full = (full == null) ? false : full;
 		limit = (limit == null) ? -1 : limit;
 		offset = (offset == null) ? 0 : offset;
 		CatalogEntry result = null;
 		final User user = userRightsService.getCurrentUser();
-		result = catalogEntryDao.getById(catalogEntryId, full, limit, offset);
+		result = catalogEntryDao.getById(catalogEntryId, limit, offset);
 				
 		if (result == null) {
 			return new ResponseEntity<CatalogEntry>(HttpStatus.NOT_FOUND);
 		} else {
-			final Catalog catalog = catalogDao.getById(result.getCatalogId(), false, 0, 0);
+			final Catalog catalog = catalogDao.getById(result.getCatalogId(), 0, 0);
+			System.out.println("c:" + result.getCatalogId());
+			System.out.println("c:" + catalog);
 			if (!catalog.isCatalogOfUserWithId(user.getId()) && !catalog.isPublic()) {
 				return new ResponseEntity<CatalogEntry>(HttpStatus.FORBIDDEN);
 			}
@@ -212,8 +211,6 @@ public class CatalogController {
 	 * Handles http GET request for <code>/catalog</code>. Returns all catalogs belonging to the user 
 	 * that is signed in, serialized to JSON. If the current user does not own any catalogs an empty List is returned. 
 	 * If no user is signed in, a 403 error code is returned.
-	 * @param full Indicates if the full catalog (including all entries) or only the 'first level' of the catalog shall 
-	 * be retrieved. Defaults to false.
 	 * @param limit If full == false then this parameter limits the children of the root entry (-1 for no limit).
 	 * @param offset If full == false then this parameter is an offset into the children of the root entry.
 	 * @return A {@link ResponseEntity} 
@@ -222,18 +219,16 @@ public class CatalogController {
 			method = RequestMethod.GET,
 			produces = CustomMediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<List<Catalog>> handleGetCatalogsRequest(
-			@RequestParam(value = "full", required = false) Boolean full,
 			@RequestParam(value = "limit", required = false) Integer limit,
 			@RequestParam(value = "offset", required = false) Integer offset) {
 		
-		full = (full == null) ? false : full;
 		limit = (limit == null) ? -1 : limit;
 		offset = (offset == null) ? 0 : offset;
 		List<Catalog> result = null;
 		final User user = userRightsService.getCurrentUser();
 		
 		if (userRightsService.isSignedInUser()) {
-			result = catalogDao.getByUserId(user.getId(), full, limit, offset);
+			result = catalogDao.getByUserId(user.getId(), limit, offset);
 			if (result == null || result.isEmpty()) {
 				result = new ArrayList<Catalog>();
 			}
@@ -250,7 +245,6 @@ public class CatalogController {
 	 * error code is returned. if the catalog is not owned by the current user
 	 * or no user is signed in, a 403 error code is returned.
 	 * @param catalogId The catalog id of interest.
-	 * @param full If the full catalog shall be retrieved (with all entries) or only root and it's direct children.
 	 * @param limit If full == false then this parameter limits the children of the root entry (-1 for no limit).
 	 * @param offset If full == false then this parameter is an offset into the children of the root entry.
 	 * @return The catalog.
@@ -258,15 +252,13 @@ public class CatalogController {
 	@RequestMapping(value = "{catalogId}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<?> handleGetCatalogRequest(
 			@PathVariable("catalogId") final Long catalogId,
-			@RequestParam(value = "full", required = false) Boolean full,
 			@RequestParam(value = "limit", required = false) Integer limit,
 			@RequestParam(value = "offset", required = false) Integer offset) {
 		
-		full = (full == null) ? false : full;
 		limit = (limit == null) ? -1 : limit;
 		offset = (offset == null) ? 0 : offset;
 		final User user = userRightsService.getCurrentUser();
-		Catalog result = catalogDao.getById(catalogId, full, limit, offset);
+		Catalog result = catalogDao.getById(catalogId, limit, offset);
 		if (result == null) {
 			return new ResponseEntity<Catalog>(HttpStatus.NOT_FOUND);
 		} else if (!result.isCatalogOfUserWithId(user.getId()) && !result.isPublic()) {

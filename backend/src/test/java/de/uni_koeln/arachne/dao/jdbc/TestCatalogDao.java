@@ -117,63 +117,63 @@ public class TestCatalogDao {
 		assertNull(childrenLevel1);
 	}
 	
-	@Test
-	public void testGetByIdLongBooleanIntIntFull() {
-		final Catalog catalog = catalogDao.getById(1, true, -1, 0);
-		assertNotNull(catalog);
-		assertEquals(Long.valueOf(1), catalog.getId());
-		assertTrue(catalog.isPublic());
-		assertEquals("testuser", catalog.getAuthor());
-		assertEquals("userTestGroup", catalog.getDatasetGroup());
-		final Set<Long> userIds = catalog.getUserIds();
-		assertNotNull(userIds);
-		assertFalse(userIds.isEmpty());
-		
-		final CatalogEntry rootEntry = catalog.getRoot();
-		assertNotNull(rootEntry);
-		assertEquals("root of catalog 1 test label", rootEntry.getLabel());
-		assertTrue(rootEntry.hasChildren());
-		assertEquals(3, rootEntry.getTotalChildren());
-		
-		final List<CatalogEntry> children = rootEntry.getChildren(); 
-		assertNotNull(children);
-		assertEquals(3, children.size());
-		assertEquals("child test label No. 3", children.get(2).getLabel());
-		assertFalse(children.get(2).hasChildren());
-		assertEquals(0, children.get(2).getTotalChildren());
-		assertEquals("child test label No. 2", children.get(1).getLabel());
-		assertFalse(children.get(1).hasChildren());
-		assertEquals(0, children.get(1).getTotalChildren());
-		List<CatalogEntry> childrenLevel1 = children.get(1).getChildren();
-		assertNull(childrenLevel1);
-		assertEquals("child test label No. 1", children.get(0).getLabel());
-		assertTrue(children.get(0).hasChildren());
-		assertEquals(3, children.get(0).getTotalChildren());
-		
-		childrenLevel1 = children.get(0).getChildren();
-		assertNotNull(childrenLevel1);
-		assertEquals(3, childrenLevel1.size());
-		assertEquals("child test label level 1 No. 1", childrenLevel1.get(0).getLabel());
-		assertFalse(childrenLevel1.get(0).hasChildren());
-		assertEquals(0, childrenLevel1.get(0).getTotalChildren());
-		assertEquals("child test label level 1 No. 2", childrenLevel1.get(1).getLabel());
-		assertTrue(childrenLevel1.get(1).hasChildren());
-		assertEquals(1, childrenLevel1.get(1).getTotalChildren());
-		assertEquals("child test label level 1 No. 3", childrenLevel1.get(2).getLabel());
-		assertFalse(childrenLevel1.get(2).hasChildren());
-		assertEquals(0, childrenLevel1.get(2).getTotalChildren());
-		
-		final List<CatalogEntry> childrenLevel2 = childrenLevel1.get(1).getChildren();
-		assertNotNull(childrenLevel2);
-		assertEquals(1, childrenLevel2.size());
-		assertEquals("child test label level 2 No. 1", childrenLevel2.get(0).getLabel());
-		assertTrue(children.get(0).hasChildren());
-		assertEquals(3, children.get(0).getTotalChildren());
-	}
+//	@Test
+//	public void testGetByIdLongBooleanIntIntFull() {
+//		final Catalog catalog = catalogDao.getById(1, true, -1, 0);
+//		assertNotNull(catalog);
+//		assertEquals(Long.valueOf(1), catalog.getId());
+//		assertTrue(catalog.isPublic());
+//		assertEquals("testuser", catalog.getAuthor());
+//		assertEquals("userTestGroup", catalog.getDatasetGroup());
+//		final Set<Long> userIds = catalog.getUserIds();
+//		assertNotNull(userIds);
+//		assertFalse(userIds.isEmpty());
+//
+//		final CatalogEntry rootEntry = catalog.getRoot();
+//		assertNotNull(rootEntry);
+//		assertEquals("root of catalog 1 test label", rootEntry.getLabel());
+//		assertTrue(rootEntry.hasChildren());
+//		assertEquals(3, rootEntry.getTotalChildren());
+//
+//		final List<CatalogEntry> children = rootEntry.getChildren();
+//		assertNotNull(children);
+//		assertEquals(3, children.size());
+//		assertEquals("child test label No. 3", children.get(2).getLabel());
+//		assertFalse(children.get(2).hasChildren());
+//		assertEquals(0, children.get(2).getTotalChildren());
+//		assertEquals("child test label No. 2", children.get(1).getLabel());
+//		assertFalse(children.get(1).hasChildren());
+//		assertEquals(0, children.get(1).getTotalChildren());
+//		List<CatalogEntry> childrenLevel1 = children.get(1).getChildren();
+//		assertNull(childrenLevel1);
+//		assertEquals("child test label No. 1", children.get(0).getLabel());
+//		assertTrue(children.get(0).hasChildren());
+//		assertEquals(3, children.get(0).getTotalChildren());
+//
+//		childrenLevel1 = children.get(0).getChildren();
+//		assertNotNull(childrenLevel1);
+//		assertEquals(3, childrenLevel1.size());
+//		assertEquals("child test label level 1 No. 1", childrenLevel1.get(0).getLabel());
+//		assertFalse(childrenLevel1.get(0).hasChildren());
+//		assertEquals(0, childrenLevel1.get(0).getTotalChildren());
+//		assertEquals("child test label level 1 No. 2", childrenLevel1.get(1).getLabel());
+//		assertTrue(childrenLevel1.get(1).hasChildren());
+//		assertEquals(1, childrenLevel1.get(1).getTotalChildren());
+//		assertEquals("child test label level 1 No. 3", childrenLevel1.get(2).getLabel());
+//		assertFalse(childrenLevel1.get(2).hasChildren());
+//		assertEquals(0, childrenLevel1.get(2).getTotalChildren());
+//
+//		final List<CatalogEntry> childrenLevel2 = childrenLevel1.get(1).getChildren();
+//		assertNotNull(childrenLevel2);
+//		assertEquals(1, childrenLevel2.size());
+//		assertEquals("child test label level 2 No. 1", childrenLevel2.get(0).getLabel());
+//		assertTrue(children.get(0).hasChildren());
+//		assertEquals(3, children.get(0).getTotalChildren());
+//	}
 	
 	@Test
 	public void testGetByIdLongBooleanIntIntLimit() {
-		final Catalog catalog = catalogDao.getById(1, false, 1, 0);
+		final Catalog catalog = catalogDao.getById(1, 1, 0);
 		assertNotNull(catalog);
 		assertEquals(Long.valueOf(1), catalog.getId());
 		assertTrue(catalog.isPublic());
@@ -198,7 +198,7 @@ public class TestCatalogDao {
 	
 	@Test
 	public void testGetByIdLongBooleanIntIntOffset() {
-		final Catalog catalog = catalogDao.getById(1, false, -1, 1);
+		final Catalog catalog = catalogDao.getById(1, -1, 1);
 		assertNotNull(catalog);
 		assertEquals(Long.valueOf(1), catalog.getId());
 		assertTrue(catalog.isPublic());
@@ -226,7 +226,7 @@ public class TestCatalogDao {
 	
 	@Test
 	public void testGetByIdLongBooleanIntIntLimitAndOffset() {
-		final Catalog catalog = catalogDao.getById(1, false, 1, 1);
+		final Catalog catalog = catalogDao.getById(1, 1, 1);
 		assertNotNull(catalog);
 		assertEquals(Long.valueOf(1), catalog.getId());
 		assertTrue(catalog.isPublic());
@@ -251,7 +251,7 @@ public class TestCatalogDao {
 	
 	@Test
 	public void testGetByUserIdLong() {
-		final List<Catalog> catalogs = catalogDao.getByUserId(3, false, -1, 0);
+		final List<Catalog> catalogs = catalogDao.getByUserId(3, -1, 0);
 		assertNotNull(catalogs);
 		assertEquals(2, catalogs.size());
 		
@@ -300,72 +300,72 @@ public class TestCatalogDao {
 		assertFalse(rootEntry.hasChildren());
 	}
 	
-	@Test
-	public void testGetByUserIdLongBooleanIntIntFull() {
-		final List<Catalog> catalogs = catalogDao.getByUserId(3, true, -1, 0);
-		assertNotNull(catalogs);
-		assertEquals(2, catalogs.size());
-		
-		Catalog catalog = catalogs.get(0);
-		assertEquals(Long.valueOf(1), catalog.getId());
-		assertTrue(catalog.isPublic());
-		assertEquals("testuser", catalog.getAuthor());
-		assertEquals("userTestGroup", catalog.getDatasetGroup());
-		Set<Long> userIds = catalog.getUserIds();
-		assertNotNull(userIds);
-		assertFalse(userIds.isEmpty());
-		
-		CatalogEntry rootEntry = catalog.getRoot();
-		assertNotNull(rootEntry);
-		assertEquals("root of catalog 1 test label", rootEntry.getLabel());
-		assertTrue(rootEntry.hasChildren());
-		
-		final List<CatalogEntry> children = rootEntry.getChildren(); 
-		assertNotNull(children);
-		assertEquals(3, children.size());
-		assertEquals("child test label No. 3", children.get(2).getLabel());
-		assertFalse(children.get(2).hasChildren());
-		assertEquals("child test label No. 2", children.get(1).getLabel());
-		assertFalse(children.get(1).hasChildren());
-		List<CatalogEntry> childrenLevel1 = children.get(1).getChildren();
-		assertNull(childrenLevel1);
-		assertEquals("child test label No. 1", children.get(0).getLabel());
-		assertTrue(children.get(0).hasChildren());
-		
-		childrenLevel1 = children.get(0).getChildren();
-		assertNotNull(childrenLevel1);
-		assertEquals(3, childrenLevel1.size());
-		assertEquals("child test label level 1 No. 1", childrenLevel1.get(0).getLabel());
-		assertFalse(childrenLevel1.get(0).hasChildren());
-		assertEquals("child test label level 1 No. 2", childrenLevel1.get(1).getLabel());
-		assertTrue(childrenLevel1.get(1).hasChildren());
-		assertEquals("child test label level 1 No. 3", childrenLevel1.get(2).getLabel());
-		assertFalse(childrenLevel1.get(2).hasChildren());
-		
-		final List<CatalogEntry> childrenLevel2 = childrenLevel1.get(1).getChildren();
-		assertNotNull(childrenLevel2);
-		assertEquals(1, childrenLevel2.size());
-		assertEquals("child test label level 2 No. 1", childrenLevel2.get(0).getLabel());
-		assertTrue(children.get(0).hasChildren());
-		
-		catalog = catalogs.get(1);
-		assertEquals(Long.valueOf(2), catalog.getId());
-		assertFalse(catalog.isPublic());
-		assertEquals("testuser", catalog.getAuthor());
-		assertEquals("userTestGroup", catalog.getDatasetGroup());
-		userIds = catalog.getUserIds();
-		assertNotNull(userIds);
-		assertFalse(userIds.isEmpty());
-		
-		rootEntry = catalog.getRoot();
-		assertNotNull(rootEntry);
-		assertEquals("root of catalog 2 test label", rootEntry.getLabel());
-		assertFalse(rootEntry.hasChildren());
-	}
+//	@Test
+//	public void testGetByUserIdLongBooleanIntIntFull() {
+//		final List<Catalog> catalogs = catalogDao.getByUserId(3, true, -1, 0);
+//		assertNotNull(catalogs);
+//		assertEquals(2, catalogs.size());
+//
+//		Catalog catalog = catalogs.get(0);
+//		assertEquals(Long.valueOf(1), catalog.getId());
+//		assertTrue(catalog.isPublic());
+//		assertEquals("testuser", catalog.getAuthor());
+//		assertEquals("userTestGroup", catalog.getDatasetGroup());
+//		Set<Long> userIds = catalog.getUserIds();
+//		assertNotNull(userIds);
+//		assertFalse(userIds.isEmpty());
+//
+//		CatalogEntry rootEntry = catalog.getRoot();
+//		assertNotNull(rootEntry);
+//		assertEquals("root of catalog 1 test label", rootEntry.getLabel());
+//		assertTrue(rootEntry.hasChildren());
+//
+//		final List<CatalogEntry> children = rootEntry.getChildren();
+//		assertNotNull(children);
+//		assertEquals(3, children.size());
+//		assertEquals("child test label No. 3", children.get(2).getLabel());
+//		assertFalse(children.get(2).hasChildren());
+//		assertEquals("child test label No. 2", children.get(1).getLabel());
+//		assertFalse(children.get(1).hasChildren());
+//		List<CatalogEntry> childrenLevel1 = children.get(1).getChildren();
+//		assertNull(childrenLevel1);
+//		assertEquals("child test label No. 1", children.get(0).getLabel());
+//		assertTrue(children.get(0).hasChildren());
+//
+//		childrenLevel1 = children.get(0).getChildren();
+//		assertNotNull(childrenLevel1);
+//		assertEquals(3, childrenLevel1.size());
+//		assertEquals("child test label level 1 No. 1", childrenLevel1.get(0).getLabel());
+//		assertFalse(childrenLevel1.get(0).hasChildren());
+//		assertEquals("child test label level 1 No. 2", childrenLevel1.get(1).getLabel());
+//		assertTrue(childrenLevel1.get(1).hasChildren());
+//		assertEquals("child test label level 1 No. 3", childrenLevel1.get(2).getLabel());
+//		assertFalse(childrenLevel1.get(2).hasChildren());
+//
+//		final List<CatalogEntry> childrenLevel2 = childrenLevel1.get(1).getChildren();
+//		assertNotNull(childrenLevel2);
+//		assertEquals(1, childrenLevel2.size());
+//		assertEquals("child test label level 2 No. 1", childrenLevel2.get(0).getLabel());
+//		assertTrue(children.get(0).hasChildren());
+//
+//		catalog = catalogs.get(1);
+//		assertEquals(Long.valueOf(2), catalog.getId());
+//		assertFalse(catalog.isPublic());
+//		assertEquals("testuser", catalog.getAuthor());
+//		assertEquals("userTestGroup", catalog.getDatasetGroup());
+//		userIds = catalog.getUserIds();
+//		assertNotNull(userIds);
+//		assertFalse(userIds.isEmpty());
+//
+//		rootEntry = catalog.getRoot();
+//		assertNotNull(rootEntry);
+//		assertEquals("root of catalog 2 test label", rootEntry.getLabel());
+//		assertFalse(rootEntry.hasChildren());
+//	}
 	
 	@Test
 	public void testGetByUserIdLongBooleanIntIntLimit() {
-		final List<Catalog> catalogs = catalogDao.getByUserId(3, false, 1, 0);
+		final List<Catalog> catalogs = catalogDao.getByUserId(3, 1, 0);
 		assertNotNull(catalogs);
 		assertEquals(2, catalogs.size());
 		
@@ -408,7 +408,7 @@ public class TestCatalogDao {
 	
 	@Test
 	public void testGetByUserIdLongBooleanIntIntOffset() {
-		final List<Catalog> catalogs = catalogDao.getByUserId(3, false, -1, 1);
+		final List<Catalog> catalogs = catalogDao.getByUserId(3, -1, 1);
 		assertNotNull(catalogs);
 		assertEquals(2, catalogs.size());
 		
@@ -455,7 +455,7 @@ public class TestCatalogDao {
 	
 	@Test
 	public void testGetByUserIdLongBooleanIntIntLimitAndOffset() {
-		final List<Catalog> catalogs = catalogDao.getByUserId(3, false, 1, 1);
+		final List<Catalog> catalogs = catalogDao.getByUserId(3, 1, 1);
 		assertNotNull(catalogs);
 		assertEquals(2, catalogs.size());
 		
@@ -521,7 +521,7 @@ public class TestCatalogDao {
 		root.setLabel("new root label");
 		root.setText("some new text");
         root.setTotalChildren(2);
-		root.setAllSuccessors(2);
+		root.setAllSuccessors(3);
 
 		CatalogEntry child1 = new CatalogEntry();
 		child1.setLabel("first child of root node");
@@ -750,14 +750,14 @@ public class TestCatalogDao {
         catalog.setProjectId("testProjectId");
 		catalog.setUserIds(new HashSet<Long>(Arrays.asList(3L, 2L)));
 				
-		assertTrue(catalogDao.getByUserId(2L, false, -1, 0).isEmpty());
+		assertTrue(catalogDao.getByUserId(2L, -1, 0).isEmpty());
 		
 		catalog = catalogDao.updateCatalog(catalog);
 		assertNotNull(catalog);
 		assertEquals(catalog, catalogDao.getById(catalog.getId()));
 				
-		assertEquals(2, catalogDao.getByUserId(3L, false, -1, 0).size());
-		assertEquals(1, catalogDao.getByUserId(2L, false, -1, 0).size());
+		assertEquals(2, catalogDao.getByUserId(3L, -1, 0).size());
+		assertEquals(1, catalogDao.getByUserId(2L, -1, 0).size());
 	}
 	
 	@Test

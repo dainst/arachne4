@@ -60,22 +60,20 @@ public class CatalogDao extends SQLDao {
      * @return The catalog.
      */
     public Catalog getById(final long catalogId) {
-        return getById(catalogId, false, -1, 0);
+        return getById(catalogId, -1, 0);
     }
 
     /**
      * Retrieves a catalog by Id.
      *
      * @param catalogId The id of the catalog.
-     * @param full      Indicates if the full catalog (including all entries) or only the 'first level' of the catalog shall
-     *                  be retrieved. Defaults to <code>false</code>.
      * @param limit     If <code>full == false</code> then this parameter limits the children of the root entry (-1 for
      *                  no limit).
      * @param offset    If <code>full == false</code> then this parameter is an offset into the children of the root entry.
      * @return The catalog with the given id.
      */
     @Transactional(readOnly = true)
-    public Catalog getById(final long catalogId, final boolean full, final int limit, final int offset) {
+    public Catalog getById(final long catalogId, final int limit, final int offset) {
         final String sql = "SELECT * "
                 + "FROM catalog "
                 + "WHERE id = "
@@ -84,7 +82,7 @@ public class CatalogDao extends SQLDao {
         return queryForObject(sql, (rs, rowNum) -> {
             final Catalog catalog = new Catalog();
             catalog.setId(rs.getLong("id"));
-            catalog.setRoot(catalogEntryDao.getById(rs.getLong("root_id"), full, limit, offset));
+            catalog.setRoot(catalogEntryDao.getById(rs.getLong("root_id"), limit, offset));
             catalog.setAuthor(rs.getString("author"));
             catalog.setPublic(rs.getBoolean("public"));
             catalog.setDatasetGroup(rs.getString("DatensatzGruppeCatalog"));
@@ -105,15 +103,13 @@ public class CatalogDao extends SQLDao {
      * Retrieves catalogs by user Id.
      *
      * @param uid       The user id.
-     * @param full      Indicates if the full catalog (including all entries) or only the 'first level' of the catalog shall
-     *                  be retrieved. Defaults to <code>false</code>.
      * @param limit     If <code>full == false</code> then this parameter limits the children of the root entry (-1 for
      *                  no limit).
      * @param offset    If <code>full == false</code> then this parameter is an offset into the children of the root entry.
      * @return A list of catalogs belonging to the given user id.
      */
     @Transactional(readOnly = true)
-    public List<Catalog> getByUserId(final long uid, final boolean full, final int limit, final int offset) {
+    public List<Catalog> getByUserId(final long uid, final int limit, final int offset) {
         List<Catalog> result = query(con -> {
             final String sql = "SELECT catalog.*, uid "
                     + "FROM catalog "
@@ -128,7 +124,7 @@ public class CatalogDao extends SQLDao {
         }, (rs, rowNum) -> {
             final Catalog catalog = new Catalog();
             catalog.setId(rs.getLong("id"));
-            catalog.setRoot(catalogEntryDao.getById(rs.getLong("root_id"), full, limit, offset));
+            catalog.setRoot(catalogEntryDao.getById(rs.getLong("root_id"), limit, offset));
             catalog.setAuthor(rs.getString("author"));
             catalog.setPublic(rs.getBoolean("public"));
             catalog.setDatasetGroup(rs.getString("DatensatzGruppeCatalog"));

@@ -113,8 +113,7 @@ public class TestCatalogController {
 		parent.setCatalogId(catalog.getId());
 		entryLeaf.setCatalogId(catalog.getId());
 		
-		when(catalogEntryDao.getById(1, false, -1, 0)).thenReturn(entry);
-		when(catalogEntryDao.getById(1, true, -1, 0)).thenReturn(entryFull);
+		when(catalogEntryDao.getById(1, -1, 0)).thenReturn(entry);
 		when(catalogEntryDao.getById(598)).thenReturn(parent);
 		when(catalogEntryDao.getById(599)).thenReturn(entryLeaf);
 		when(catalogEntryDao.getById(600)).thenReturn(null);
@@ -127,9 +126,9 @@ public class TestCatalogController {
 			}
 		});
 
-		when(catalogDao.getByUserId(3, true, -1, 0)).thenReturn(Arrays.asList(catalog));
+		when(catalogDao.getByUserId(3, -1, 0)).thenReturn(Arrays.asList(catalog));
 		when(catalogDao.getById(83)).thenReturn(catalog);
-		when(catalogDao.getById(83, true, -1, 0)).thenReturn(catalog);
+		when(catalogDao.getById(83, 0, 0)).thenReturn(catalog);
 		when(catalogDao.updateCatalog(any(Catalog.class))).thenAnswer(new Answer<Catalog>() {
 
 			@Override
@@ -160,8 +159,8 @@ public class TestCatalogController {
 			catalogEntry.setChildren(null);
 		}
 		
-		when(catalogDao.getByUserId(3, false, -1, 0)).thenReturn(Arrays.asList(catalogNoChilds));
-		when(catalogDao.getById(83, false, -1, 0)).thenReturn(catalogNoChilds);
+		when(catalogDao.getByUserId(3, -1, 0)).thenReturn(Arrays.asList(catalogNoChilds));
+		when(catalogDao.getById(83, -1, 0)).thenReturn(catalogNoChilds);
 
 		final CatalogEntryExtended info = new CatalogEntryExtended(
 				entryLeaf,
@@ -203,32 +202,6 @@ public class TestCatalogController {
 				get("/catalog/entry/1")
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isForbidden());
-	}
-	
-	@Test
-	public void testHandleGetCatalogEntryRequestValidFull() throws Exception {
-		mockMvc.perform(
-				get("/catalog/entry/1?full=true")
-					.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
-				.andExpect(content().json("{\"id\":597,\"children\":[{\"id\":594,\""
-						+ "label\":\"Vorbebauung\",\"parentId\":597,\"indexParent\":0,\"catalogId\":83,\""
-						+ "totalChildren\":0},{\"id\":593,\"children\":[{\"id\":595,\""
-						+ "children\":[{\"id\":596,\"children\":[{\"id\":598,\""
-						+ "children\":[{\"id\":599,\"arachneEntityId\":1184191,\""
-						+ "label\":\"Fundamente der Innensäulen\",\"text\":\"Die Fundamente der Innensäulen.\",\""
-						+ "parentId\":598,\"indexParent\":0,\"catalogId\":83,\"totalChildren\":0}],\""
-						+ "label\":\"Fundamente\",\"parentId\":596,\"indexParent\":0,\"catalogId\":83,\""
-						+ "totalChildren\":1}],\"label\":\"Republikanische Zeit\",\"parentId\":595,\""
-						+ "indexParent\":0,\"catalogId\":83,\"totalChildren\":1}],\"label\":\"Aula\",\""
-						+ "parentId\":593,\"indexParent\":0,\"catalogId\":83,\"totalChildren\":1}],\""
-						+ "label\":\"Basilica Aemilia\",\"parentId\":597,\"indexParent\":1,\"catalogId\":83,\""
-						+ "totalChildren\":1}],\"label\":\"Die Basilica Aemilia auf dem Forum Romanum in Rom: "
-						+ "Brennpunkt des öffentlichen Lebens\",\"text\":\"Nach der Errichtung in den 60er Jahren "
-						+ "des 2. Jhs. v. Chr. durch die beiden Konsuln M. Aemilius Lepidus und M. Fulvius "
-						+ "Nobilior wurde die Basilica mehrmals zerstört [...]\",\"catalogId\":83,\""
-						+ "totalChildren\":2}"));
 	}
 	
 	@Test
@@ -373,18 +346,6 @@ public class TestCatalogController {
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isForbidden());
 	}
-
-	@Test
-	public void testHandleGetCatalogsRequestValidFull() throws Exception {
-		final String expectedResult = '[' + getCatalogAsJSONString() + ']'; 
-		
-		mockMvc.perform(
-				get("/catalog?full=true")
-					.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
-				.andExpect(content().json(expectedResult));
-	}
 	
 	@Test
 	public void testHandleGetCatalogRequestValid() throws Exception {				
@@ -400,18 +361,6 @@ public class TestCatalogController {
 				get("/catalog/83")
 					.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().isForbidden());
-	}
-	
-	@Test
-	public void testHandleGetCatalogRequestValidFull() throws Exception {
-		final String expectedCatalogString = getCatalogAsJSONString();
-		
-		mockMvc.perform(
-				get("/catalog/83?full=true")
-					.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(APPLICATION_JSON_UTF8))
-				.andExpect(content().json(expectedCatalogString));
 	}
 
 	@Test
@@ -501,7 +450,7 @@ public class TestCatalogController {
 		mockMvc.perform(
 				delete("/catalog/84")
 					.contentType(APPLICATION_JSON_UTF8))
-				.andExpect(status().isNoContent());
+				.andExpect(status().isNotFound());
 	}
 
 	@Test
