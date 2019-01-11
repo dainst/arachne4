@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -125,6 +126,17 @@ public class SQLDao {
 	protected Long queryForLong(final String sqlQuery) {
 		try {
 			return jdbcTemplate.queryForObject(sqlQuery, Long.class);
+		} catch (DataAccessException e) {
+			LOGGER.error("Failed to execute query '" + sqlQuery + "'. Cause: ", e);
+		}
+		return null;
+	}
+
+	protected Long queryForLongAllowNull(final String sqlQuery) {
+		try {
+			return jdbcTemplate.queryForObject(sqlQuery, Long.class);
+		} catch (EmptyResultDataAccessException e) {
+			return null;
 		} catch (DataAccessException e) {
 			LOGGER.error("Failed to execute query '" + sqlQuery + "'. Cause: ", e);
 		}

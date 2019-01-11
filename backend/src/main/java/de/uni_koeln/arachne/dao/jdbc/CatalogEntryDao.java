@@ -275,7 +275,7 @@ public class CatalogEntryDao extends SQLDao {
 				newCatalogEntry.setPath(String.valueOf(newCatalogEntry.getCatalogId()));
 				final String sql = "SELECT id FROM catalog_entry WHERE (catalog_id = " + newCatalogEntry.getCatalogId()
 						+ " AND parent_id IS NULL)";
-				final Long catalogRootEntryId = queryForLong(sql);
+				final Long catalogRootEntryId = queryForLongAllowNull(sql);
 				if (catalogRootEntryId != null) {
 					delete(catalogRootEntryId);
 				}
