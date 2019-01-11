@@ -36,8 +36,8 @@
 		<!-- geo -->
         <geo-version>0.7.1</geo-version>
 		<!-- Guava -->
-        <guava-version>20.0</guava-version> 		
-	    <!-- Javaassist -->		
+        <guava-version>20.0</guava-version>
+	    <!-- Javaassist -->
 		<org.javassist-version>3.21.0-GA</org.javassist-version>
 		<!-- Javax mail -->
 		<javax.mail-version>1.4.7</javax.mail-version>
@@ -61,6 +61,7 @@
 		<!-- export -->
         <openhtml-version>0.0.1-RC12</openhtml-version>
 		<jsoup-version>1.11.2</jsoup-version>
+		<pdfbox-version>2.0.8</pdfbox-version>
         <!-- Plugin Versions -->
 		<aspectj-maven-version>1.8</aspectj-maven-version>
 		<maven-failsafe-version>2.18.1</maven-failsafe-version>
@@ -238,14 +239,14 @@
 			<version>${junit-version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
             <version>1.4</version>
             <scope>test</scope>
         </dependency>
- 
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-mxj</artifactId>
@@ -274,7 +275,7 @@
 			<version>${org.mockito-version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- jsonpath -->
 		<dependency>
             <groupId>com.jayway.jsonpath</groupId>
@@ -364,21 +365,21 @@
 			<artifactId>snappy-java</artifactId>
 			<version>${snappy-version}</version>
 		</dependency>
-		
+
 		<!-- geo -->
 		<dependency>
             <groupId>com.github.davidmoten</groupId>
             <artifactId>geo</artifactId>
             <version>${geo-version}</version>
         </dependency>
-		
+
 		<!-- Google Guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava-version}</version>
         </dependency>
-        
+
         <dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
@@ -419,6 +420,18 @@
     	</dependency>
 
 		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>${pdfbox-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
 			<!-- also Required for PDF export. -->
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
@@ -426,7 +439,7 @@
 		</dependency>
 
 		<dependency>
-			<!-- Required for HTML/PDF export. -->
+			<!-- Required for HTML/PDF export. NOT NEEDED?! -->
 			<groupId>com.atlassian.commonmark</groupId>
 			<artifactId>commonmark-ext-gfm-tables</artifactId>
 			<version>0.9.0</version>
