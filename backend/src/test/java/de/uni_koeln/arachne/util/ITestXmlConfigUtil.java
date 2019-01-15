@@ -9,12 +9,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class) 
 @ContextConfiguration(locations={"classpath:test-context.xml"})
 @WebAppConfiguration
 public class ITestXmlConfigUtil {
 	private transient XmlConfigUtil xmlConfigUtil;
-
+	
 	@Test
 	public void testForDocumentCompleteness() {
 		xmlConfigUtil = new XmlConfigUtil();
@@ -23,6 +23,7 @@ public class ITestXmlConfigUtil {
 		assertNotNull(xmlConfigUtil.getDocument("bauwerksteil"));
 		assertNotNull(xmlConfigUtil.getDocument("bauwerk"));
 		assertNotNull(xmlConfigUtil.getDocument("befund"));
+		assertNotNull(xmlConfigUtil.getDocument("buchseite"));
 		assertNotNull(xmlConfigUtil.getDocument("buch"));
 		assertNotNull(xmlConfigUtil.getDocument("fabric"));
 		assertNotNull(xmlConfigUtil.getDocument("gruppen"));
@@ -45,7 +46,7 @@ public class ITestXmlConfigUtil {
 		assertNotNull(xmlConfigUtil.getDocument("sarkophag"));
 		assertNotNull(xmlConfigUtil.getDocument("topographie"));
 		assertNotNull(xmlConfigUtil.getDocument("typus"));
-
+				
 		xmlConfigUtil = null;
 	}
 }
