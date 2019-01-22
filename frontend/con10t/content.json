@@ -510,6 +510,13 @@
             "de": "Siracusa - La città e le sue mura"
           },
           "hidden": true
+        },
+        {
+          "id": "casadelfauno",
+          "title": {
+            "de": "Casa del Fauno"
+          },
+          "hidden": true
         }
       ]
     },
