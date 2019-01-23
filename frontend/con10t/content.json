@@ -421,6 +421,24 @@
           }
         },
         {
+          "id": "naha",
+          "title": {
+            "de": "North African Heritage Archive (NAHA)",
+            "en": "North African Heritage Archive (NAHA)",
+            "fr": "North African Heritage Archive (NAHA)"
+          },
+          "hidden": true
+         },
+         {
+          "id": "rakob",
+          "title": {
+            "de": "Nachlass von Friedrich Rakob",
+            "en": "Friedrich Rakob’s Bequest",
+            "fr": "Fonds Friedrich Rakob"
+          },
+          "hidden": true
+          }, 
+        {
           "id": "analysearachne",
           "title": {
             "de": "Analyse zur Arachne-Nutzung",
