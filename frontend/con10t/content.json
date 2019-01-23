@@ -141,6 +141,12 @@
           "title": {
             "de": "Gelehrte, Ausgräber und Kunsthändler"
          }
+         },
+         {
+           "id": "athenDigital",
+           "title": {
+             "de": "AthenDigital: Das Nachlassarchiv"
+          }
         }
       ]
     },
@@ -280,7 +286,7 @@
             "de": "Nachlass Georg Kossack",
             "en": "Bequests of Georg Kossack"
           }
-        },  
+        },
         {
           "id": "villaWolkonsky",
           "title": {
@@ -502,6 +508,13 @@
           "id": "siracusa_citta_e_mura",
           "title": {
             "de": "Siracusa - La città e le sue mura"
+          },
+          "hidden": true
+        },
+        {
+          "id": "casadelfauno",
+          "title": {
+            "de": "Casa del Fauno"
           },
           "hidden": true
         }
@@ -750,6 +763,12 @@
             "de": "Tombrägel"
           },
           "hidden": true
+        },
+        {
+          "id": "schulzmeer",
+          "title": {
+            "de": "J. Schulz, Meerwesen auf römischen Sarkophagen. Ikonographie und Bedeutung"
+          }
         }
       ]
     },

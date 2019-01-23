@@ -26,7 +26,7 @@
     "facets": [
       {
         "key": "facet_kategorie",
-        "value": "mainabstract"
+        "value": "Keramik"
       }
     ]
   },
@@ -75,6 +75,16 @@
   "gelehrtenbriefe": {
     "q": "searchableEditorContent:Gelehrtenbriefe"
   },
+  "athenDigital": {
+    "q": "athenDigital",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bücher"
+      }
+    ]
+  },
+
   "gipsleipzigsamml": {
     "q": "connectedEntities:1241594",
     "facets": [
@@ -226,6 +236,9 @@
         "value": "Einzelobjekte"
       }
     ]
+  },
+  "schulzmeer": {
+    "q": "catalogPaths:200"
   },
   "skulpturnegdairom": {
     "q": "catalogPaths:106"
