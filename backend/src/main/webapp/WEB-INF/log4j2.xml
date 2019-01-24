@@ -66,17 +66,17 @@
         <!-- Hikari logger -->
         <logger name="com.zaxxer.hikari" level="info" />
 
-        <Logger name="Profiling" additivity="false">
+        <!-- <Logger name="Profiling" additivity="false">
             <AppenderRef ref="Profile" />
         </Logger>
 
         <Logger name="DataIntegrityLogger" additivity="false">
             <AppenderRef ref="DataIntegrity" />
-        </Logger>
+        </Logger> -->
 
         <Root  level="info">
-            <AppenderRef ref="ROLLING" />
-            <!-- <AppenderRef ref="CONSOLE" /> -->
+            <!-- <AppenderRef ref="ROLLING" />-->
+            <AppenderRef ref="CONSOLE" />
         </Root>
     </Loggers>
 </Configuration>

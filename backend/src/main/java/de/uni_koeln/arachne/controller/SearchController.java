@@ -40,17 +40,17 @@ import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON
 public class SearchController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
-	
+
 	@Autowired
 	private transient SearchService searchService;
-	
+
 	@Autowired
 	private transient UserRightsService userRightsService;
-	
+
 	private transient final int defaultFacetLimit;
-	
+
 	private transient final int defaultLimit;
-	
+
 	/**
 	 * Constructor setting the default limit and facet limit values.
 	 * @param defaultLimit The default search limit.
@@ -59,13 +59,13 @@ public class SearchController {
 	@Autowired
 	public SearchController(final @Value("${esDefaultLimit}") int defaultLimit,
 			final @Value("${esDefaultFacetLimit}") int defaultFacetLimit) {
-		
+
 		this.defaultLimit = defaultLimit;
 		this.defaultFacetLimit = defaultFacetLimit;
 	}
-	
+
 	/**
-	 * Fix for a Spring problem to bind the correct array values to a String array if only one array assignment is 
+	 * Fix for a Spring problem to bind the correct array values to a String array if only one array assignment is
 	 * present in the URL and the value includes commas.
 	 * <br>
 	 * For example:
@@ -80,14 +80,14 @@ public class SearchController {
 	 * instead of the correct way
 	 * <br>
 	 * filterValues[0] = facet_aufbewahrungsort:"Westgriechenland, Griechendland"
-	 *   
+	 *
 	 * @param binder A Spring <code>WebDataBinder</code> to register a custom editor on.
 	 */
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 	    binder.registerCustomEditor(String[].class, new StringArrayPropertyEditor(null));
 	}
-	
+
 	/**
 	 * Handles the http request by querying the Elasticsearch index and returning the search result.
 	 * The "title" field is boosted by 2 so that documents containing the search keyword in the title are higher ranked than
@@ -102,15 +102,15 @@ public class SearchController {
 	 * @param offset The offset into the list of entities (used for paging). (optional)
 	 * @param filterValues The values of the elasticsearch filter query. (optional)
 	 * @param facetLimit The maximum number of returned facets. (optional)
-	 * @param facetOffset An offset for the returned facets. (optional) 
+	 * @param facetOffset An offset for the returned facets. (optional)
 	 * @param sortField The field to sort on. Must be one listed in esSortFields in application.properties. (optional)
 	 * @param orderDesc If the sort order should be descending. The default order is ascending. (optional)
      * @param lexical If the sort order should be in lexicographical order. (optional)
-	 * @param boundingBox A String with comma separated coordinates representing the top left and bottom right 
+	 * @param boundingBox A String with comma separated coordinates representing the top left and bottom right
 	 * coordinates of a bounding box; order: lat, lon (optional)
 	 * @param geoHashPrecision The geoHash precision; a value between 1 and 12. (optional)
 	 * @param facetsToSort The names of the facets that should be sorted alphabetically. (optional)
-	 * @param scrollMode If the ES scroll API should be used for the query (user must be logged in to allow this) 
+	 * @param scrollMode If the ES scroll API should be used for the query (user must be logged in to allow this)
 	 * (optional)
 	 * @param facet If set only the values for this facet will be returned instead of a full search result. (optional)
 	 * @param lang the language as HTTP request parameter
@@ -135,13 +135,13 @@ public class SearchController {
 			@RequestParam(value = "facet", required = false) final String facet,
 			@RequestParam(value = "lang", required = false) final String lang,
             @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage) {
-		
+
 		if (scrollMode != null && scrollMode && !userRightsService.isSignedInUser()) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
-		
-		
-		final SearchParameters searchParameters = new SearchParameters(defaultLimit, defaultFacetLimit) 
+
+
+		final SearchParameters searchParameters = new SearchParameters(defaultLimit, defaultFacetLimit)
 				.setQuery(queryString)
 				.setLimit(limit)
 				.setOffset(offset)
@@ -158,17 +158,17 @@ public class SearchController {
 		if (!searchParameters.isValid()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
+
 		Multimap<String, String> filters = HashMultimap.create();
 		if (filterValues != null) {
 			filters = searchService.getFilters(Arrays.asList(filterValues), searchParameters.getGeoHashPrecision());
 		}
-		
+
 		int bbLength = searchParameters.getBoundingBox().length;
 		if (boundingBox != null && bbLength != 4) {
 			return ResponseEntity.badRequest().body("{ \"message\": \"Invalid bounding box coordinates.\"");
 		}
-				
+
 		SearchRequestBuilder searchRequestBuilder;
 		try {
 			searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters, filters, "de");
@@ -190,9 +190,9 @@ public class SearchController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-	
+
 	/**
-	 * Handles the HTTP request by executing a scroll search request with the given <code>scrollId</code>. This means it 
+	 * Handles the HTTP request by executing a scroll search request with the given <code>scrollId</code>. This means it
 	 * pages the results of the original scroll search requests.
 	 * @param scrollId The scroll id of the original search.
 	 * @return The next search result of the scroll search.
@@ -202,7 +202,7 @@ public class SearchController {
 			produces={APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody ResponseEntity<?> handleSearchScrollRequest(@PathVariable("scrollId") final String scrollId) {
 		final SearchResult searchResult = searchService.executeSearchScrollRequest(scrollId);
-		
+
 		if (searchResult.getStatus() != RestStatus.OK) {
 			return ResponseEntity.status(searchResult.getStatus().getStatus()).build();
 		} else {
@@ -211,7 +211,7 @@ public class SearchController {
 	}
 
 	/**
-	 * Handles the HTTP request by executing a completion suggest request on the elasticsearch index. 
+	 * Handles the HTTP request by executing a completion suggest request on the elasticsearch index.
 	 * @param queryString The prefix to find suggestions for.
 	 * @return A list of suggestions.
 	 */
@@ -221,10 +221,10 @@ public class SearchController {
 	public @ResponseBody ResponseEntity<?> handleSuggestRequest(@RequestParam("q") final String queryString) {
 		return ResponseEntity.ok().body(searchService.executeSuggestRequest(queryString));
 	}
-	
+
 	/**
 	 * Handles the HTTP request by querying the elasticsearch index for contexts of a given entity and returning the result.
-	 * <br> 
+	 * <br>
 	 * <br>
 	 * The search result can only be serialized to JSON as JAXB cannot handle Maps.
 	 * @param entityId The entity id to retrieve contexts for. (mandatory)
@@ -233,7 +233,7 @@ public class SearchController {
 	 * @param filterValues The values of the elasticsearch filter query. (optional)
 	 * @param facetLimit The maximum number of returned facets. (optional)
 	 * @param sortField The field to sort results on.
-	 * @param orderDesc Whether the result should be in descending (<code>true</code>) or ascending (<code>false</code>) 
+	 * @param orderDesc Whether the result should be in descending (<code>true</code>) or ascending (<code>false</code>)
 	 * order.
 	 * @param lang the language as HTTP request parameter
 	 * @param headerLanguage the value of the 'Accept-Language' HTTP header
@@ -253,8 +253,8 @@ public class SearchController {
             @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage) {
 
 		final int resultFacetLimit = facetLimit == null ? defaultFacetLimit : facetLimit;
-		
-		final SearchParameters searchParameters = new SearchParameters(defaultLimit, defaultFacetLimit) 
+
+		final SearchParameters searchParameters = new SearchParameters(defaultLimit, defaultFacetLimit)
 				.setLimit(limit)
 				.setOffset(offset)
 				.setFacetLimit(resultFacetLimit)
@@ -265,13 +265,13 @@ public class SearchController {
 		if (filterValues != null) {
 			filters = searchService.getFilters(Arrays.asList(filterValues), 0);
 		}
-		
+
 		SearchRequestBuilder searchRequestBuilder;
 		try {
 			searchRequestBuilder = searchService.buildContextSearchRequest(entityId, searchParameters, filters, (lang==null) ? headerLanguage : lang);
 			final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder
 					, searchParameters.getLimit(), searchParameters.getOffset(), filters, 0);
-			
+
 			if (searchResult == null) {
 				LOGGER.error("Search result is null!");
 				return new ResponseEntity<String>(HttpStatus.SERVICE_UNAVAILABLE);
@@ -282,44 +282,9 @@ public class SearchController {
 			LOGGER.error("Could not reach transl8. Cause: ");
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-				
-		
-	}
-	
-	/**
-	 * Returns a list of all distinct values of the given facet. The list is ordered alphabetically. A sublist can be 
-	 * requested with the 'group' HTTP parameter. Supported values are:<br>
-	 * '<' for all values with initial letters lower than numeric (actually lower than '0').<br>
-	 * '$' for all values with a numeric initial letter.<br>
-	 * 'a'..'z' for all values starting with the corresponding letter.<br>
-	 * '>' for all values with intial letter greater than alphabetic (actually greater than 'zzz').<br>
-	 * @param categoryName The name of the category which will be searched in
-	 * @param facetName The name of the facet to get the values for.
-	 * @param groupMarker A single char indicating which group to retrieve.
-	 * @return The ordered list of values as JSON array.
-	 * @throws Transl8Exception if transl8 cannot be reached
-	 */
-	@RequestMapping(value="/index/{categoryName}/{facetName}",
-			method=RequestMethod.GET, 
-			produces={APPLICATION_JSON_UTF8_VALUE})
-	public @ResponseBody ResponseEntity<IndexResult> handleIndexRequest(
-			@PathVariable("facetName") final String facetName, @PathVariable("categoryName") final String categoryName,
-			@RequestParam(value = "group", required = false) Character groupMarker) throws Transl8Exception {
-		
-		if (facetName.startsWith("facet_") || facetName.startsWith("agg_")) {
-            Multimap<String, String> filters = HashMultimap.create();
-            final String filterValue = "facet_kategorie:\"" + categoryName + "\"";
-            final int splitIndex = filterValue.indexOf(':');
-            final String name = filterValue.substring(0, splitIndex);
-            final String value = filterValue.substring(splitIndex + 1).replace("\"", "");
-            filters.put(name, value);
 
-            final SearchRequestBuilder searchRequestBuilder = searchService.buildIndexSearchRequest(facetName, filters);
-            final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, 0, 0, filters, 0);
-            return putSearchResultToResponseEntitiy(searchResult, groupMarker);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
+
+	}
 
     /**
      * Returns a list of all distinct values of the given facet which is ordered alphabetically. A sublist can be
@@ -330,6 +295,7 @@ public class SearchController {
      * '>' for all values with intial letter greater than alphabetic (actually greater than 'zzz').<br>
      * @param facetName The name of the facet to get the values for
      * @param groupMarker A character indicating which group to retrieve
+	 * @param filterValues Optional filter queries to be applied to the result
      * @return The ordered list of values as JSON array.
      * @throws Transl8Exception if transl8 cannot be reached
      */
@@ -338,11 +304,16 @@ public class SearchController {
             produces={APPLICATION_JSON_UTF8_VALUE})
 	public @ResponseBody ResponseEntity<IndexResult> handleIndexRequestNoCategory(
 			@PathVariable("facetName") final String facetName,
-			@RequestParam(value = "group", required = false) Character groupMarker) throws Transl8Exception {
+			@RequestParam(value = "group", required = false) Character groupMarker,
+			@RequestParam(value = "q") String query,
+			@RequestParam(value = "fq", required = false) final String[] filterValues) throws Transl8Exception {
 
 	    if (facetName.startsWith("facet_") || facetName.startsWith("agg_")) {
-            final Multimap<String, String> filters = HashMultimap.create();
-            final SearchRequestBuilder searchRequestBuilder = searchService.buildIndexSearchRequest(facetName, filters);
+			Multimap<String, String> filters = HashMultimap.create();
+			if (filterValues != null) {
+            	filters = searchService.getFilters(Arrays.asList(filterValues), 0);
+			}
+            final SearchRequestBuilder searchRequestBuilder = searchService.buildIndexSearchRequest(query, facetName, filters);
             final SearchResult searchResult = searchService.executeSearchRequest(searchRequestBuilder, 0, 0, filters, 0);
             return putSearchResultToResponseEntitiy(searchResult, groupMarker);
         }

@@ -228,14 +228,15 @@ public class SearchService {
 
 	/**
 	 * Builds a search request with a single facet and "*" as search param to retrieve all values of the given facet.
+	 * @param query The query string.
 	 * @param facetName The name of the facet of interest.
 	 * @param filters The filters to build a filter query from.
 	 * @return A <code>SearchRequestBuilder</code> that can be passed directly to <code>executeSearchRequest</code>.
 	 */
-	public SearchRequestBuilder buildIndexSearchRequest(final String facetName, final Multimap<String, String> filters) {
+	public SearchRequestBuilder buildIndexSearchRequest(final String query, final String facetName, final Multimap<String, String> filters) {
 
 		SearchRequestBuilder result = esService.getClient().prepareSearch(esService.getSearchIndexAlias())
-				.setQuery(buildQuery("*", filters, null, false))
+				.setQuery(buildQuery(query, filters, null, false))
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setSize(0);
 
@@ -376,7 +377,9 @@ public class SearchService {
 					final LatLong coord = GeoHash.decodeHash(bucket.getKeyAsString());
 					facetMap.put("[" + coord.getLat() + ',' + coord.getLon() + ']', bucket.getDocCount());
 				}
-			} else if (placeFacetSelected && Arrays.asList(placeFacets).contains(aggregationName)) {
+			} else if (placeFacetSelected && Arrays.asList(placeFacets).contains(aggregationName)
+					&& aggregations.get(aggregationName) instanceof InternalSingleBucketAggregation) {
+
 			    InternalSingleBucketAggregation internalAggregator = (InternalSingleBucketAggregation) aggregations.get(aggregationName);
 			    InternalFilter aggregationFilter = (InternalFilter) internalAggregator.getAggregations().asList().get(0);
 			    MultiBucketsAggregation aggregator = (MultiBucketsAggregation) aggregationFilter.getAggregations().asList().get(0);
@@ -493,11 +496,11 @@ public class SearchService {
 	}
 
 	/**
-	 * Creates a Map of filter name value pairs from the filterValues list. Since a Mulitmap is used multiple values can
+	 * Creates a Map of filter name value pairs from the filterValues list. Since a Multimap is used multiple values can
 	 * be used for one filter.
 	 * @param filterValues String of filter values
 	 * @param geoHashPrecision The precision used to convert latlon-values to geohashes.
-	 * @return filter values as list.
+	 * @return filter values as multimap.
 	 */
 	public Multimap<String, String> getFilters(List<String> filterValues, int geoHashPrecision) {
 
@@ -753,7 +756,7 @@ public class SearchService {
 
 		final QueryBuilder filteredQuery;
 		if (bbCoords != null && bbCoords.length == 4) {
-            GeoBoundingBoxQueryBuilder bBoxFilter = 
+            GeoBoundingBoxQueryBuilder bBoxFilter =
 		            QueryBuilders.geoBoundingBoxQuery("places.location")
                         .topLeft(bbCoords[0], bbCoords[1])
                         .bottomRight(bbCoords[2], bbCoords[3]);
