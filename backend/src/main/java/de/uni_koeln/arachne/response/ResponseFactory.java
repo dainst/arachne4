@@ -208,6 +208,10 @@ public class ResponseFactory {
 		// set degree
 		if (connectedEntities != null && !connectedEntities.isEmpty()) {
 			double degree = connectedEntities.size();
+			// do not count connected book pages in degree for books
+			if ("buch".equals(tableName)) {
+				degree -= Double.parseDouble(dataset.getField("buch.BuchSeiten"));
+			}
 			response.setDegree(degree);
 		}
 

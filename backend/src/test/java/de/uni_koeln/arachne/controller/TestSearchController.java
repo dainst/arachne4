@@ -168,11 +168,11 @@ public class TestSearchController {
                     }
                 });
 
-        when(searchService.buildIndexSearchRequest(anyString(), any(Multimap.class)))
+        when(searchService.buildIndexSearchRequest(anyString(), anyString(), any(Multimap.class)))
                 .then(new Answer<SearchResult>() {
                     @Override
                     public SearchResult answer(InvocationOnMock invocation) throws Throwable {
-                        final String facetName = invocation.getArgumentAt(0, String.class);
+                        final String facetName = invocation.getArgumentAt(1, String.class);
                         ListIterator<SearchResultFacet> iterator = searchResult.getFacets().listIterator();
                         while (iterator.hasNext()) {
                             SearchResultFacet facet = (SearchResultFacet) iterator.next();
@@ -1314,9 +1314,9 @@ public class TestSearchController {
     }
 
     @Test
-    public void testIndexSearchNoParameter() throws Exception {
+    public void testIndexSearch() throws Exception {
         mockMvc.perform(
-                get("/index/key1/facet_test1")
+                get("/index/facet_test1?q=*")
                         .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -1324,17 +1324,17 @@ public class TestSearchController {
     }
 
     @Test
-    public void testIndexSearchNoParameterUnknownFacet() throws Exception {
+    public void testIndexSearcUnknownFacet() throws Exception {
         mockMvc.perform(
-                get("/contexts/facet_unknown")
+                get("/contexts/facet_unknown?q=*")
                         .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void testIndexSearchNoParameterInvalidFacet() throws Exception {
+    public void testIndexSearchInvalidFacet() throws Exception {
         mockMvc.perform(
-                get("/index/key1/f,a:c,e+t")
+                get("/index/f,a:c,e+t?q=*")
                         .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isBadRequest());
     }
