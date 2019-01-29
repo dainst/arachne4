@@ -298,7 +298,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         writer.append("<div id='bottomLeftFooter'>");
         writer.append(exportTable.title);
         writer.append(" | ");
-        writer.append(transl8("acceced_at"));
+        writer.append(transl8("accessed_at"));
         writer.append(" " + exportTable.timestamp + " ");
         writer.append(transl8("by"));
         writer.append(" " + exportTable.user);
