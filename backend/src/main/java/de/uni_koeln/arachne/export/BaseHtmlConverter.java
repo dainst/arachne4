@@ -30,7 +30,6 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         super(MediaType.TEXT_HTML);
     }
 
-    public Integer maxCatalogDepth = 3;
     public Boolean getImages = true;
 
     final String GAZETTEER_URL = "https://gazetteer.dainst.org/app/#!/show/%%%GAZID%%%";
@@ -210,7 +209,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
     public String facetList2String(List<SearchResultFacet> facets) {
         // facets
-        String facetName = new String();
+        String facetName;
         ArrayList<String> facetNames = new ArrayList<String>();
         for (final SearchResultFacet facet : facets) {
             facetName = facet.getName();
@@ -281,10 +280,10 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
         writer.append("</div>"); //page
     }
+
     public void htmlFrontmatter() throws IOException {
         htmlFrontmatter(null);
     }
-
 
     public void htmlHeader() throws IOException {
 
@@ -334,13 +333,12 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
      * Creates a HTML representation of a {@link CatalogEntry} and all its children.
      * @param catalogEntry The catalog entry.
      * @param level The recursion (indentation) level.
-     * @return The entries as HTML.
      */
     private void htmlCatalogEntry(final CatalogEntry catalogEntry, final int level, final String headline) throws IOException {
 
         final Long entityId = catalogEntry.getArachneEntityId();
         final String idAsString = (entityId != null) ? entityId.toString() : "";
-        final String uri = "https://arachne.dainst.org/entity/" + idAsString;
+        final String uri = task.getBackendUrl() + "/entity/" + idAsString;
         final String label = catalogEntry.getLabel();
         final String text = markdown2html(catalogEntry.getText());
         final String headlineTag = "h" + Math.min(6, (level + 1));
@@ -362,9 +360,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
             details = getDetails(fullEntity);
         }
-
-
-
+        
         writer.append("<div class='page " + headClass + "'>");
 
         writer.append("<table class='page-header'><tr>");
