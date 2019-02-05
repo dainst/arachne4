@@ -55,10 +55,10 @@ public class DataExportStack {
     private Integer dataExportMaxTaskLifeTime;
 
     public DataExportStack(
-            @Value("${dataExportMaxStackSize:10}")Integer maxStackSize,
-            @Value("${dataExportMaxThreads:4}") Integer maxThreads,
-            @Value("${dataExportMaxTaskLifeTime:86400000}") Integer maxLifeTime,
-            @Value("${serverAddress:arachne.dainst.org") String serverAddress
+            final @Value("${dataExportMaxStackSize:10}") Integer maxStackSize,
+            final @Value("${dataExportMaxThreads:4}") Integer maxThreads,
+            final @Value("${dataExportMaxTaskLifeTime:86400000}") Integer maxLifeTime,
+            final @Value("${serverAddress}") String serverAddress
     ) {
         dataExportMaxStackSize = maxStackSize;
         dataExportMaxThreads = maxThreads;

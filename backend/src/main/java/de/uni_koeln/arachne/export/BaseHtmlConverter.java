@@ -226,21 +226,24 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
     /**
      * creates the first title page of the export
-     * @param content
-     * @throws IOException
+     * @param content - string fpr the FM-Text
+     * @throws IOException - IOexception
      */
     public void htmlFrontmatter(String content) throws IOException {
 
         // search url
         final String url = task.getRequestUrl()
-            .replace(".pdf", "")
+            .replace("http://arachnedataservice", task.getBackendUrl())
+            .replace("mediaType=pdf", "")
+            .replace("mediaType=html", "")
             .replace("?null", "")
-            .replace(".html", "");
+            .replace("?&", "?")
+            .replace("&&", "&");
 
         // create replacements map
         HashMap<String, String> replacements = new HashMap<String, String>();
 
-        // logo svg
+        // logo
         replacements.put("LOGOIMAGEDATA", "data:image/png;base64," + Base64.encode(readImage("dailogo.png")));
 
         writer.append("<div class='page frontmatter'>");
@@ -249,7 +252,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
         writer.append("<div>");
 
-        // serach results export front matter
+        // search results export front matter
         writer.append("<div class='doc-title'>");
         writer.append(exportTable.title);
         if (exportTable.author != null) {
