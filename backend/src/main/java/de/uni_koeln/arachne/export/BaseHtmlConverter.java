@@ -360,7 +360,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
             details = getDetails(fullEntity);
         }
-        
+
         writer.append("<div class='page " + headClass + "'>");
 
         writer.append("<table class='page-header'><tr>");
