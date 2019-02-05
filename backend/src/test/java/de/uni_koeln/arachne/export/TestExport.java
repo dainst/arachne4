@@ -45,10 +45,10 @@ import static org.mockito.Mockito.when;
 public class TestExport {
 
     @InjectMocks
-    private transient DataExportStack monoStack = new DataExportStack(2, 1, 100);
+    private transient DataExportStack monoStack = new DataExportStack(2, 1, 100, "arachne.dainst.mock");
 
     @InjectMocks
-    private transient DataExportStack duoStack = new DataExportStack(2, 2, 100);
+    private transient DataExportStack duoStack = new DataExportStack(2, 2, 100, "arachne.dainst.mock");
 
     @InjectMocks
     private transient DataExportFileManager fileManager = new DataExportFileManager("/tmp");
