@@ -49,7 +49,7 @@ public class DataExportStack {
     private HashMap<String, DataExportTask> running = new HashMap<String, DataExportTask>();
     private HashMap<String, DataExportTask> finished = new HashMap<String, DataExportTask>();
 
-
+    private String serverAddress;
     private Integer dataExportMaxStackSize;
     private Integer dataExportMaxThreads;
     private Integer dataExportMaxTaskLifeTime;
@@ -57,10 +57,13 @@ public class DataExportStack {
     public DataExportStack(
             @Value("${dataExportMaxStackSize:10}")Integer maxStackSize,
             @Value("${dataExportMaxThreads:4}") Integer maxThreads,
-            @Value("${dataExportMaxTaskLifeTime:86400000}") Integer maxLifeTime) {
+            @Value("${dataExportMaxTaskLifeTime:86400000}") Integer maxLifeTime,
+            @Value("${serverAddress:arachne.dainst.org") String serverAddress
+    ) {
         dataExportMaxStackSize = maxStackSize;
         dataExportMaxThreads = maxThreads;
         dataExportMaxTaskLifeTime = maxLifeTime;
+        this.serverAddress = serverAddress;
     }
 
     public DataExportTask newTask(AbstractDataExportConverter converter, DataExportConversionObject conversionObject) {
@@ -281,8 +284,7 @@ public class DataExportStack {
     }
 
     private String getBackendUrl() {
-        final String url = getRequest().getRequestURL().toString();
-        return url.substring(0, url.lastIndexOf('/'));
+        return "https://" + serverAddress;
     }
 
     private HttpServletRequest getRequest() {
