@@ -1,7 +1,5 @@
 package de.uni_koeln.arachne.controller;
 
-import de.uni_koeln.arachne.mapping.hibernate.DatasetGroup;
-import de.uni_koeln.arachne.response.Dataset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +21,6 @@ import de.uni_koeln.arachne.service.ImageService;
 import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Handles http requests (currently only get) for <code>/entity<code> and <code>/data</code>.

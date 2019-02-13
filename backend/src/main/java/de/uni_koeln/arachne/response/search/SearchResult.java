@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.google.common.collect.Multimap;
 import de.uni_koeln.arachne.util.search.SearchParameters;
-import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.rest.RestStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -1,6 +1,5 @@
 package de.uni_koeln.arachne.service;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;

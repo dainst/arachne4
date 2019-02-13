@@ -1,8 +1,6 @@
 package de.uni_koeln.arachne.export;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
 
 public class DataExportWriter extends FilterWriter {
 

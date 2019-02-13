@@ -10,7 +10,6 @@ import de.uni_koeln.arachne.service.SearchService;
 import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.search.SearchParameters;
-import de.uni_koeln.arachne.util.security.SecurityUtils;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.rest.RestStatus;

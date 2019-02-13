@@ -28,7 +28,6 @@ import java.util.*;
 
 import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8_VALUE;
 import static de.uni_koeln.arachne.util.security.SecurityUtils.ADMIN;
-import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * @author Paf
