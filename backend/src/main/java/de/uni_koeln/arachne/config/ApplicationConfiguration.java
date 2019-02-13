@@ -64,9 +64,6 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     private transient Transl8Service transl8Service;
 
     @Autowired
-    private transient UserRightsService userRightsService;
-
-    @Autowired
     private transient IIPService iipService;
 
     @Autowired

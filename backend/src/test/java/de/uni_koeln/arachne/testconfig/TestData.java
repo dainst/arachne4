@@ -19,7 +19,6 @@ import com.google.common.io.Resources;
 import de.uni_koeln.arachne.context.AbstractLink;
 import de.uni_koeln.arachne.context.ArachneLink;
 import de.uni_koeln.arachne.context.Context;
-import de.uni_koeln.arachne.mapping.hibernate.ArachneEntity;
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 import de.uni_koeln.arachne.mapping.jdbc.CatalogEntry;
 import de.uni_koeln.arachne.response.Dataset;
@@ -236,10 +235,8 @@ public final class TestData {
 		CatalogEntry root = new CatalogEntry();
 		root.setLabel("label: root");
 		root.setPath("1");
-		ArachneEntity rootEntity = new ArachneEntity();
 		root.setArachneEntityId(0L);
 
-		final List<CatalogEntry> children = new ArrayList<CatalogEntry>();
 		for (int i = 1; i < 4; i++) {
 			CatalogEntry entry = new CatalogEntry();
 			entry.setId((long) i * 10);

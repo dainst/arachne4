@@ -135,8 +135,6 @@ public class UserRightsService {
 	public boolean setDataExporter(User exportingUser) {
 		this.arachneUser = exportingUser;
 		SecurityContext context = SecurityContextHolder.getContext();
-		Authentication auth = context.getAuthentication();
-
 		context.setAuthentication(getDataExportAuthentication(exportingUser));
 
 		this.isSet = true;
