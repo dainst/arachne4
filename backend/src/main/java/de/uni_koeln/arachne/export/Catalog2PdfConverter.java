@@ -32,7 +32,7 @@ public class Catalog2PdfConverter extends BasePdfConverter<Catalog> {
     @Override
     public void convert(DataExportConversionObject conversionObject, OutputStream outputStream) throws IOException {
         final Catalog catalog = conversionObject.getCatalog();
-        final BaseHtmlConverter htmlConverter = getHtmlConverter();
+        final BaseHtmlConverter<?> htmlConverter = getHtmlConverter();
         htmlConverter.initializeExport(catalog);
         htmlConverter.writer = new DataExportWriter(task, new StringWriter());
         htmlConverter.htmlHeader();

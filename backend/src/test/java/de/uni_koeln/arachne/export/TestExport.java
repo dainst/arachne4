@@ -105,7 +105,7 @@ public class TestExport {
 
     private boolean switchIsLoggedIn = true;
 
-    private class genericExportConverter extends AbstractDataExportConverter {
+    private class genericExportConverter extends AbstractDataExportConverter<Object> {
 
         genericExportConverter() {
             super(MediaType.TEXT_PLAIN);
@@ -117,7 +117,7 @@ public class TestExport {
         }
 
         @Override
-        protected boolean supports(Class aClass) {
+        protected boolean supports(Class<?> aClass) {
             return true;
         }
 
@@ -127,7 +127,7 @@ public class TestExport {
         }
     }
 
-    private void prepareConverter(AbstractDataExportConverter converter, DataExportConversionObject conversion) {
+    private void prepareConverter(AbstractDataExportConverter<?> converter, DataExportConversionObject conversion) {
 
         converter.injectService(transl8Service);
         converter.injectService(servletContext);
@@ -173,7 +173,7 @@ public class TestExport {
         return taskStatusCounter;
     }
 
-    private String convert(AbstractDataExportConverter converter, DataExportConversionObject conversion) throws IOException {
+    private String convert(AbstractDataExportConverter<?> converter, DataExportConversionObject conversion) throws IOException {
 
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         prepareConverter(converter, conversion);

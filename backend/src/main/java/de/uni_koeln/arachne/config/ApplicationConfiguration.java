@@ -96,7 +96,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
         aConverters.add(new SearchResult2CsvConverter());
         aConverters.add(new Catalog2CsvConverter());
 
-        for (AbstractDataExportConverter converter : aConverters) {
+        for (AbstractDataExportConverter<?> converter : aConverters) {
             converter.injectService(entityService);
             converter.injectService(transl8Service);
             converter.injectService(servletContext);

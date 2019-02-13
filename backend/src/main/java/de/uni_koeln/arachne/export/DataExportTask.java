@@ -19,7 +19,7 @@ public class DataExportTask {
 
     public UUID uuid = UUID.randomUUID();
     private DataExportConversionObject conversionObject;
-    public AbstractDataExportConverter converter;
+    public AbstractDataExportConverter<?> converter;
     private Timestamp tsCreated;
     private Timestamp tsStarted;
     private Timestamp tsStopped;
@@ -33,7 +33,7 @@ public class DataExportTask {
     private transient UserRightsService userRightsService;
     private String language;
 
-    public DataExportTask(AbstractDataExportConverter converter,
+    public DataExportTask(AbstractDataExportConverter<?> converter,
                           DataExportConversionObject conversionObject) {
         this.converter = converter;
         this.conversionObject = conversionObject;

@@ -21,8 +21,8 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
         super(MediaType.APPLICATION_PDF);
     }
 
-    protected BaseHtmlConverter getHtmlConverter() {
-        BaseHtmlConverter htmlConverter;
+    protected BaseHtmlConverter<?> getHtmlConverter() {
+        BaseHtmlConverter<?> htmlConverter;
         if (task.getConversionType().equals("searchResult")) {
             htmlConverter = new SearchResult2HtmlConverter();
         } else { // only two types exist

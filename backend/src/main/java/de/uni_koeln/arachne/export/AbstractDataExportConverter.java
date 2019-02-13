@@ -175,7 +175,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     // Unpacks JSON and get all the objects details against a list of facets
     protected JSONObject getEntity(long entityId) throws Exception {
 
-        TypeWithHTTPStatus entity;
+        TypeWithHTTPStatus<String> entity;
 
         try {
             entity = entityService.getEntityFromDB(entityId, null, "en");

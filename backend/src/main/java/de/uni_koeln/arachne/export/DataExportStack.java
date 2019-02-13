@@ -66,7 +66,7 @@ public class DataExportStack {
         this.serverAddress = serverAddress;
     }
 
-    public DataExportTask newTask(AbstractDataExportConverter converter, DataExportConversionObject conversionObject) {
+    public DataExportTask newTask(AbstractDataExportConverter<?> converter, DataExportConversionObject conversionObject) {
 
         DataExportTask task = new DataExportTask(converter, conversionObject);
         task.setOwner(userRightsService.getCurrentUser());
