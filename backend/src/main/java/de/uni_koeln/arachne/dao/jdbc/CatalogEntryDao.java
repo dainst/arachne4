@@ -143,18 +143,18 @@ public class CatalogEntryDao extends SQLDao {
 					"catalog_entry.index_parent ";
 
 		//final String sqlQuery = "SELECT * from catalog_entry WHERE path like '%" + catalogEntryId + "%'  ORDER BY index_parent";
-		final List<CatalogEntry> result = query(sqlQuery, this::mapCatalogEntryNoChilds);
-		if (result != null && result.isEmpty()) {
+		final List<CatalogEntry> queryResult = query(sqlQuery, this::mapCatalogEntryNoChilds);
+		if (queryResult == null || queryResult.isEmpty()) {
 			return null;
 		}
-		final HashMap<Long, List<CatalogEntry>> returner = new HashMap<Long, List<CatalogEntry>>();
-		for (CatalogEntry entry : result) {
-			if (!returner.containsKey(entry.getParentId())) {
-				returner.put(entry.getParentId(), new ArrayList<CatalogEntry>());
+		final HashMap<Long, List<CatalogEntry>> result = new HashMap<Long, List<CatalogEntry>>();
+		for (CatalogEntry entry : queryResult) {
+			if (!result.containsKey(entry.getParentId())) {
+				result.put(entry.getParentId(), new ArrayList<CatalogEntry>());
 			}
-			returner.get(entry.getParentId()).add(entry);
+			result.get(entry.getParentId()).add(entry);
 		}
-		return returner;
+		return result;
 	}
 
 	/**
