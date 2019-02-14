@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -66,7 +65,6 @@ public class DataExportController {
         }
 
         final InputStream fileStream = dataExportFileManager.getFile(task);
-        final HttpHeaders headers = new HttpHeaders();
         response.setHeader("Content-Type", task.getMediaType().toString() + "; charset=utf-8");
         response.setHeader("Content-Length", Long.toString(dataExportFileManager.getFileSize(task)));
         response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", dataExportFileManager.getFileName(task)));

@@ -466,7 +466,6 @@ public class TestExport {
     public void testFileManager() throws Exception {
 
         final DataExportTask task = createGenericTask();
-        final String taskId = task.uuid.toString();
         final String name = fileManager.getFileName(task);
 
         final String fileContent = "testdata";

@@ -1,6 +1,5 @@
 package de.uni_koeln.arachne.export;
 
-import de.uni_koeln.arachne.mapping.hibernate.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -9,8 +8,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Paf
@@ -28,12 +25,7 @@ public class DataExportThread implements Runnable {
 
     private DataExportFileManager dataExportFileManager;
 
-    private User user;
-
-    private HttpServletRequest request;
-
-    public DataExportThread(DataExportTask dataExportTask, HttpServletRequest request) {
-        this.request = request;
+    public DataExportThread(DataExportTask dataExportTask) {
         this.dataExportTask = dataExportTask;
     }
 

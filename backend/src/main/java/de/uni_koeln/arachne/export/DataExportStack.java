@@ -147,7 +147,7 @@ public class DataExportStack {
     }
 
     private void startThread(DataExportTask task) {
-        final DataExportThread dataExportThread = new DataExportThread(task, getRequest());
+        final DataExportThread dataExportThread = new DataExportThread(task);
         taskExecutor.execute(dataExportThread);
         dataExportThread.setFileManager(dataExportFileManager);
         dataExportThread.registerListener(this);

@@ -81,8 +81,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
 
             // there are items wo subtitle and maybe wo title out there...
             String title = (hit.getTitle() == null) ? "" : hit.getTitle();
-            String subtitle = (hit.getSubtitle() == null) ? "" : hit.getSubtitle();
-
+            
             writer.append("<div class='page'>");
 
             writer.append("<table class='page-header'><tr>");
