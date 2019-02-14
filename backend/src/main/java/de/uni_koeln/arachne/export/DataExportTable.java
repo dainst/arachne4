@@ -50,8 +50,8 @@ public class DataExportTable extends ArrayList<DataExportRow>  {
         regexMatcher.appendTail(resultString);
 
         String result = resultString.toString();
-
-        if ((result.startsWith("@"))) {
+        
+        while (result.startsWith("@")) {
             result = result.substring(1);
         }
         
