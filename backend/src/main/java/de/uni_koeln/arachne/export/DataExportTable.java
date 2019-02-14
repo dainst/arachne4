@@ -51,14 +51,10 @@ public class DataExportTable extends ArrayList<DataExportRow>  {
 
         String result = resultString.toString();
 
-        if ((result.substring(0, 1).equals("@"))) {
+        if ((result.startsWith("@"))) {
             result = result.substring(1);
         }
-
-        if ((result.substring(0, 1).equals("@"))) {
-            result = result.substring(1);
-        }
-
+        
         return result;
     }
 
