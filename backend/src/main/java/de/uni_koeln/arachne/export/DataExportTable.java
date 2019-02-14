@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 
 public class DataExportTable extends ArrayList<DataExportRow>  {
 
+	private static final long serialVersionUID = 1L;
+	
     // table headers
     public TreeSet<String> headers;
 
@@ -69,7 +71,7 @@ public class DataExportTable extends ArrayList<DataExportRow>  {
      * @return the list of column names
      */
     public ArrayList<String> getColumns() {
-        final ArrayList<String> tableHeaders = new ArrayList<String>(){};
+        final ArrayList<String> tableHeaders = new ArrayList<String>(){private static final long serialVersionUID = 1L;};
 
         for (String header : headers) {
             tableHeaders.add(_sanitizeColumnName(header));

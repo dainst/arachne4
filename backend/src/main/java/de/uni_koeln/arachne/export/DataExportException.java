@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 
 public class DataExportException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
+	
     public String type = "";
     public HttpStatus status;
     public String untranslatableContent = "";

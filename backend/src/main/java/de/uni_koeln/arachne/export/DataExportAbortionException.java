@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 
 public class DataExportAbortionException extends DataExportException {
 
-    public DataExportAbortionException() {
+    private static final long serialVersionUID = 1L;
+
+	public DataExportAbortionException() {
         super("aborted", HttpStatus.BAD_REQUEST);
     }
 

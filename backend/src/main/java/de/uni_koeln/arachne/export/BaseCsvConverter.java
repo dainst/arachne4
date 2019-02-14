@@ -44,7 +44,7 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
 
         for (final DataExportRow row : exportTable) {
 
-            final ArrayList<String> fullRow = new ArrayList<String>(){};
+            final ArrayList<String> fullRow = new ArrayList<String>(){private static final long serialVersionUID = 1L;};
 
             for (String header : exportTable.headers) {
                 cell = row.get(header);
@@ -58,7 +58,7 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
     }
 
     protected void csvFooter() throws IOException {
-        final ArrayList<String> row = new ArrayList<String>(){};
+        final ArrayList<String> row = new ArrayList<String>(){private static final long serialVersionUID = 1L;};
         row.add("");
         csvWriter.write(row);
         csvWriter.write(row);

@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 
 public class DataExportRow extends LinkedHashMap<String, DataExportCell> {
 
+	private static final long serialVersionUID = 1L;
+	
     private DataExportTable _table;
 
     public DataExportRow(DataExportTable table) {
