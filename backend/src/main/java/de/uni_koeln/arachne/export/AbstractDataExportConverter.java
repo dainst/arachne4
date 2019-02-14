@@ -192,7 +192,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         return new JSONObject(entity.getValue().toString());
     }
 
-    // serialisation of section object
+    // serialization of section object
     private void serializeSection(DataExportRow row, JSONObject box) {
         serializeSection(row, box, "", 0);
     }
