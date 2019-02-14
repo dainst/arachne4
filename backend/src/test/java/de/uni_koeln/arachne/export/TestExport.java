@@ -247,9 +247,9 @@ public class TestExport {
 
         final String[] lines = parseLines(convert(converter, conversion));
 
-        assertEquals(lines[0], TestData.exportSearchResult2CsvLine1);
-        assertEquals(lines[1], TestData.exportSearchResult2CsvLine2);
-        assertEquals(lines[2], TestData.exportSearchResult2CsvLine3);
+        assertEquals(TestData.exportSearchResult2CsvLine1, lines[0]);
+        assertEquals(TestData.exportSearchResult2CsvLine2, lines[1]);
+        assertEquals(TestData.exportSearchResult2CsvLine3, lines[2]);
     }
 
     @Test
@@ -261,8 +261,8 @@ public class TestExport {
 
         final String[] lines = parseLines(convert(converter, conversion));
 
-        assertEquals(lines[0], TestData.exportCatalog2CsvLine1);
-        assertEquals(lines[1], TestData.exportCatalog2CsvLine2);
+        assertEquals(TestData.exportCatalog2CsvLine1, lines[0]);
+        assertEquals(TestData.exportCatalog2CsvLine2, lines[1]);
 
     }
 
