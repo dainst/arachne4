@@ -188,9 +188,6 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         if (!entity.getStatus().is2xxSuccessful()) {
             throw new Exception(entity.getStatus().toString());
         }
-        if ((entity == null) || (!entity.getStatus().is2xxSuccessful())) {
-            return null;
-        }
 
         return new JSONObject(entity.getValue().toString());
     }
