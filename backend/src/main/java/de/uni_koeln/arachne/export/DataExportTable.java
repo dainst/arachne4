@@ -16,18 +16,16 @@ public class DataExportTable extends ArrayList<DataExportRow>  {
     // table headers
     public TreeSet<String> headers;
 
-    //meta
+    // meta
     public String title;
     public String timestamp;
     public String user;
     public String author;
 
-
     public DataExportTable() {
         super();
         headers = new TreeSet<String>();
     }
-
 
     public DataExportRow newRow() {
         DataExportRow newRow = new DataExportRow(this);
@@ -35,14 +33,12 @@ public class DataExportTable extends ArrayList<DataExportRow>  {
     }
 
     /**
-     * this transforms intermediate colnames like fuckyou$$$ into better names like fuckyou_3
-     * also removes trailing @-symbols wich where used to keep important columns at the beginning
-     * we don't name them directliy like this to avoid massive regexing when when calling
-     * DataExportRow.getColumnName
+     * This transforms intermediate column names like fuckyou$$$ into better names like fuckyou_3.
+     * It also removes trailing @-symbols which where used to keep important columns at the beginning.
+     * We don't name them directly like this to avoid massive regexing when when calling DataExportRow.getColumnName
      *
-     *
-     * @param colName
-     * @return
+     * @param colName the column name
+     * @return a 'sanitized' column name
      */
     private String _sanitizeColumnName(String colName) {
         final Matcher regexMatcher = Pattern.compile("(\\$+)$").matcher(colName);
@@ -67,7 +63,8 @@ public class DataExportTable extends ArrayList<DataExportRow>  {
     }
 
     /**
-     * resturn sanitezed columns names
+     * Returns a 'sanitized' copy of the {@link #headers} field as list.
+     *   
      * @return the list of column names
      */
     public ArrayList<String> getColumns() {
