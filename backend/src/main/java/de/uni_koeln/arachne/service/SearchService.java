@@ -295,6 +295,7 @@ public class SearchService {
 	 * @param offset An offset into the resultset.
 	 * @param filters A <code>String</code> containing the filter values used in the query.
 	 * @param facetOffset An offset into the facet lists.
+	 * @param searchParameters The search parameters.
 	 * @return The search result.
 	 * @throws Transl8Exception if transl8 cannot be reached
 	 */

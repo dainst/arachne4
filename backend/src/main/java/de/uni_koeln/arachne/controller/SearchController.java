@@ -300,6 +300,7 @@ public class SearchController {
 	 * '>' for all values with intial letter greater than alphabetic (actually greater than 'zzz').<br>
 	 * @param facetName The name of the facet to get the values for
 	 * @param groupMarker A character indicating which group to retrieve
+	 * @param query A search query string
 	 * @param filterValues Optional filter queries to be applied to the result
 	 * @return The ordered list of values as JSON array.
 	 * @throws Transl8Exception if transl8 cannot be reached

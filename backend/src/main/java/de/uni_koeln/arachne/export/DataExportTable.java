@@ -66,7 +66,7 @@ public class DataExportTable extends ArrayList<DataExportRow>  {
 
     /**
      * resturn sanitezed columns names
-     * @return
+     * @return the list of column names
      */
     public ArrayList<String> getColumns() {
         final ArrayList<String> tableHeaders = new ArrayList<String>(){};

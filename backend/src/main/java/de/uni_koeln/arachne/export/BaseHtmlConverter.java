@@ -22,6 +22,8 @@ import java.util.*;
 
 /**
  * @author Paf
+ * 
+ * @param <T> The type the converter handles.
  */
 
 public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T> {

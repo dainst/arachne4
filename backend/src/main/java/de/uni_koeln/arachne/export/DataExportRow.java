@@ -22,9 +22,9 @@ public class DataExportRow extends LinkedHashMap<String, DataExportCell> {
      * creates a unique columns name for a given row (this), so it can be used as key.
      * also registers the usage of this name for this table if desired
      *
-     * @param col
-     * @param register
-     * @return
+     * @param col the column
+     * @param register if the column should be added to the list of table headers
+     * @return the column name
      */
     public String getColumnName(String col, Boolean register) {
         while (containsKey(col)) {

@@ -38,7 +38,9 @@ import java.util.regex.Pattern;
 /**
  * @author Paf
  *
- * Basic class for all converters to inherent
+ * Base class for all converters.
+ * 
+ * @param <T> The type the converter handles.
  *
  */
 

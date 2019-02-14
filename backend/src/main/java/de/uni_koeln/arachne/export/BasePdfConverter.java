@@ -13,6 +13,8 @@ import java.io.Writer;
 
 /**
  * @author Paf
+ * 
+ * @param <T> The type the converter handles.
  */
 
 public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T> {

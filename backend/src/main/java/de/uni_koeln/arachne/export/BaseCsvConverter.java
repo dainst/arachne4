@@ -18,6 +18,8 @@ import java.util.TreeSet;
 
 /**
  * @author Paf
+ * 
+ * @param <T> The type the converter handles.
  */
 
 public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T> {
