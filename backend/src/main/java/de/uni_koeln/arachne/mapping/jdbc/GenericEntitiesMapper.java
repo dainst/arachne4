@@ -72,7 +72,6 @@ public class GenericEntitiesMapper implements RowMapper<Map<String,String>> {
 					boolean fixed = false;
 					while (!done) {
 						try {
-							@SuppressWarnings("unchecked")
 							final Map<String,String> result = JSONUtil.MAPPER.readValue(columnValue, Map.class);
 							LOGGER.debug(result.toString());
 							dataset.putAll(result);

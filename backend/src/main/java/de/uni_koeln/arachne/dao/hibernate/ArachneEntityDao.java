@@ -66,7 +66,6 @@ public class ArachneEntityDao {
 		criteria.addOrder(Order.asc("entityId"));
 		criteria.setMaxResults(limit);
 				
-		@SuppressWarnings("unchecked")
 		final List<ArachneEntity> list = (List<ArachneEntity>) criteria.list();
 				
 		if (list.isEmpty()) {

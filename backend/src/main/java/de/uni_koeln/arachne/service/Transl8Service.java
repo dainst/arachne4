@@ -76,7 +76,6 @@ public class Transl8Service {
 	 * @param lang the language in which the key should be retrieved
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
-	@SuppressWarnings("unchecked")
 	private void updateTranslations(String lang) throws Transl8Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));

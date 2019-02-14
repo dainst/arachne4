@@ -23,7 +23,6 @@ public class ImageRightsDao {
 		Query query = session.createQuery("from ImageRightsGroup where name like :name")
 				.setString("name", name);
 		
-		@SuppressWarnings("unchecked")
 		final List<ImageRightsGroup> result = (List<ImageRightsGroup>) query.list();
 		if (result.isEmpty()) {
 			return null;

@@ -43,7 +43,6 @@ public class ConnectionDao {
 		Query query = session.createQuery("from ArachneConnection where Teil1 = :type")
 				.setString("type", type);
 		
-		@SuppressWarnings("unchecked")
 		final List<Connection> queryResult = (List<Connection>) query.list();
 		final List<String> result = new ArrayList<String>();
 		for (int i=0; i<queryResult.size(); i++) {
@@ -66,7 +65,6 @@ public class ConnectionDao {
 				.setString("table1", table1)
 				.setString("table2", table2);
 		
-		@SuppressWarnings("unchecked")
 		final List<Connection> queryResult = (List<Connection>) query.list();
 				
 		if (queryResult.size() > 0) {

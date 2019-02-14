@@ -33,7 +33,6 @@ public class ResetPasswordRequestDao {
 		final Session session = sessionFactory.getCurrentSession();
 		final Criteria criteria = session.createCriteria(ResetPasswordRequest.class);
 		criteria.add(Restrictions.eq("token", token));
-		@SuppressWarnings("unchecked")
 		final List<ResetPasswordRequest> queryResult = criteria.list();
 		if (!queryResult.isEmpty()) {
 			return queryResult.get(0);
@@ -46,7 +45,6 @@ public class ResetPasswordRequestDao {
 		final Session session = sessionFactory.getCurrentSession();
 		final Criteria criteria = session.createCriteria(ResetPasswordRequest.class);
 		criteria.add(Restrictions.eq("userId", userId));
-		@SuppressWarnings("unchecked")
 		final List<ResetPasswordRequest> queryResult = criteria.list();
 		if (!queryResult.isEmpty()) {
 			return queryResult.get(0);
@@ -74,7 +72,6 @@ public class ResetPasswordRequestDao {
 		final Timestamp now = new Timestamp(calender.getTime().getTime());
 		final Criteria criteria = session.createCriteria(ResetPasswordRequest.class);
 		criteria.add(Restrictions.lt("expirationDate", now));
-		@SuppressWarnings("unchecked")
 		final List<ResetPasswordRequest> queryResult = criteria.list();
 		for (final ResetPasswordRequest resetPasswordRequest : queryResult) {
 			session.delete(resetPasswordRequest);
