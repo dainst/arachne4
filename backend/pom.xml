@@ -14,21 +14,21 @@
 		<java-version>1.8</java-version>
 		<org.springframework-version>4.3.22.RELEASE</org.springframework-version>
 		<org.springframework.security-version>4.2.11.RELEASE</org.springframework.security-version>
-		<org.aspectj-version>1.8.9</org.aspectj-version>
+		<org.aspectj-version>1.9.2</org.aspectj-version>
 		<org.slf4j-version>1.7.21</org.slf4j-version>
 		<!-- External lib versions -->
 		<!-- MySQL-Connector -->
         <mysql-connector-java-version>5.1.40</mysql-connector-java-version>
         <!-- Hibernate -->
-        <org.hibernate-version>5.1.3.Final</org.hibernate-version>
+        <org.hibernate-version>5.1.17.Final</org.hibernate-version>
         <!-- HikariCP -->
-        <hikariCP-version>2.5.1</hikariCP-version>
+        <hikariCP-version>3.3.1</hikariCP-version>
 		<!-- elasticsearch -->
 		<elasticsearch-version>2.3.1</elasticsearch-version>
 		<!-- Snappy -->
         <snappy-version>1.1.2.6</snappy-version>
 		<!-- Jackson -->
-		<jackson-version>2.7.8</jackson-version>
+		<jackson-version>2.9.8</jackson-version>
 		<!-- JDom -->
 		<org.jdom-version>2.0.6</org.jdom-version>
 		<!-- Xerces -->
@@ -63,13 +63,13 @@
 		<jsoup-version>1.11.2</jsoup-version>
 		<pdfbox-version>2.0.8</pdfbox-version>
         <!-- Plugin Versions -->
-		<aspectj-maven-version>1.8</aspectj-maven-version>
-		<maven-failsafe-version>2.18.1</maven-failsafe-version>
-		<maven-javadoc-version>2.10.3</maven-javadoc-version>
+		<aspectj-maven-version>1.11</aspectj-maven-version>
+		<maven-failsafe-version>2.22.1</maven-failsafe-version>
+		<maven-javadoc-version>2.10.4</maven-javadoc-version>
 		<maven-tomcat-version>2.2</maven-tomcat-version>
-		<maven-dependency-version>2.10</maven-dependency-version>
-		<maven-war-version>2.6</maven-war-version>
-		<maven-compiler-version>3.3</maven-compiler-version>
+		<maven-dependency-version>3.1.1</maven-dependency-version>
+		<maven-war-version>3.2.2</maven-war-version>
+		<maven-compiler-version>3.8.0</maven-compiler-version>
 	</properties>
 
 	<dependencies>
