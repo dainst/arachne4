@@ -190,7 +190,7 @@ public abstract class BaseCsvConverter<T> extends AbstractDataExportConverter<T>
         row.put("@@order", order);
         row.put("@@title", catalogEntry.getLabel());
 
-        if (fullEntity != null) {
+        if (fullEntity != null && entityId != null) {
             row.put("@@id", entityId.toString());
             row.putAll(getDetails(fullEntity));
             serializePlaces(fullEntity, row);
