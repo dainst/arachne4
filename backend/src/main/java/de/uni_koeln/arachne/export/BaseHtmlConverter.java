@@ -133,7 +133,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         writer.append("</table>");
     }
 
-
+    @Override
     protected void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
 
         String value;
@@ -153,6 +153,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         collector.put("place", value);
     }
 
+    @Override
     protected void serializeFacetValues(String facetName, String facetFullName, JSONArray facetValues, DataExportRow collector) {
 
         ArrayList<String> values = new ArrayList<String>();

@@ -191,6 +191,7 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * @return the username
 	 */
+	@Override
 	public String getUsername() {
 		return username;
 	}
@@ -209,6 +210,7 @@ public class User extends ProtectedObject implements UserDetails {
 	 * @return the password
 	 */
 	@XmlTransient
+	@Override
 	public String getPassword() {
 		return password;
 	}

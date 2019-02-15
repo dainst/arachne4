@@ -342,6 +342,7 @@ public class ResponseFactory {
 			//Sort places by start date
 			try {
     			Collections.sort(places, new Comparator<Place>() {
+    				@Override
     			    public int compare(Place p1, Place p2) {
                         try {
                             // shuffle Fundorte to the top

@@ -197,6 +197,7 @@ public class XmlConfigUtil implements ServletContextAware {
 				// first extracts the start date timestamp and then uses that
 				// for comparison
 				Collections.sort(tempPlaceList, new Comparator<String>() {
+					@Override
 					public int compare(String o1, String o2) {
 						// shuffle Fundorte to the top
 						if (o1.indexOf("Ortsangabe: Fundort") != -1) {
@@ -807,6 +808,7 @@ public class XmlConfigUtil implements ServletContextAware {
 		return xmlParser;
 	}
 
+	@Override
 	public void setServletContext(final ServletContext servletContext) {
 		this.servletContext = servletContext;
 	}

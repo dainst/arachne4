@@ -17,6 +17,7 @@ public class NestedGeoHashGridAggregation extends GeoHashGridAggregation {
         super(name, field, precision, size);
     }
 
+    @Override
     public AbstractAggregationBuilder build() { 
         if (StrUtils.isEmptyOrNull(name) || StrUtils.isEmptyOrNull(field)) {
             return null;

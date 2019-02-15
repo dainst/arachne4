@@ -17,6 +17,7 @@ public class MarbilderbestandortContextualizer extends AbstractContextualizer {
 		return "ort";
 	}
 	
+	@Override
 	public List<AbstractLink> retrieve(Dataset parent) {
 		
 		final List<AbstractLink> result = new ArrayList<AbstractLink>();

@@ -46,6 +46,7 @@ public class GeoHashGridAggregation extends Aggregation {
 		this.precision = precision;
 	}
 		
+	@Override
 	public AbstractAggregationBuilder build() { 
 		if (StrUtils.isEmptyOrNull(name) || StrUtils.isEmptyOrNull(field)) {
 			return null;

@@ -53,6 +53,7 @@ public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 	 * 			adding a custom field to <code>Dataset</code> parent.
 	 * @param parent the dataset of the buchseite, that the pages text will be added to.
 	 */
+	@Override
 	public List<AbstractLink> retrieve(final Dataset parent) {
 		if (rightsService.isDataimporter()) {
 			final List<Map<String, String>> bookDataList = genericSQLDao.getConnectedEntities("buch", parent.getArachneId().getArachneEntityID());
@@ -136,6 +137,7 @@ public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 	/**
 	 * @return the contextType
 	 */
+	@Override
 	public String getContextType() {
 		return CONTEXT_TYPE;
 	}

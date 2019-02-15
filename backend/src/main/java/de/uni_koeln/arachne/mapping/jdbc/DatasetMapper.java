@@ -24,6 +24,7 @@ public class DatasetMapper implements RowMapper<Map<String,String>> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatasetMapper.class);
 	
+	@Override
 	public Map<String,String> mapRow(final ResultSet resultSet, final int rownum) throws SQLException {
 		final Map<String,String> dataset = new Hashtable<String,String>();
 

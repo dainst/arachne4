@@ -34,6 +34,7 @@ public class ArachneLink extends AbstractLink {
 		return entity2.getUri();
 	}
 
+	@Override
 	@JsonIgnore
 	public Dataset getEntity1() {
 		return entity1;
@@ -47,6 +48,7 @@ public class ArachneLink extends AbstractLink {
 		this.entity1 = entity1;
 	}
 
+	@Override
 	@JsonUnwrapped
 	public Dataset getEntity2() {
 		return entity2;
@@ -77,6 +79,7 @@ public class ArachneLink extends AbstractLink {
 		}
 	}
 
+	@Override
 	public String toString() {
 		return "[link: " + entity1.getArachneId() + "|" + entity2.getArachneId() + "]";
 	}

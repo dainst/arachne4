@@ -54,6 +54,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 	 * @return	always null, because instead of building actual contexts we only want to add a custom field to 
 	 * <code>Dataset</code> parent.
 	 */
+	@Override
 	public List<AbstractLink> retrieve(final Dataset parent) {
 		
 		for (final String contextType : PRIMARY_CONTEXT_TYPES) {
@@ -152,6 +153,7 @@ public class SarcophagusimagesContextualizer extends AbstractContextualizer {
 		}
 	}
 	
+	@Override
 	public String getContextType() {
 		return CONTEXT_TYPE;
 	}

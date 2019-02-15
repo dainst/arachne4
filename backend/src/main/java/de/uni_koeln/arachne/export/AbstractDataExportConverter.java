@@ -119,6 +119,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         this.dataExportStack = dataExportStack;
     }
 
+    @Override
     protected T readInternal(Class<? extends T> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
         throw new UnsupportedOperationException("Reading other file formats is not implemented.");
     }
