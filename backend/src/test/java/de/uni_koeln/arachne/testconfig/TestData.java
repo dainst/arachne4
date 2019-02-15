@@ -172,6 +172,7 @@ public final class TestData {
 	
 	public static BufferedImage getTestImageJPEG() throws IOException {
 		final URL resource = TestData.class.getResource("/WEB-INF/images/testimage.jpeg");
+		@SuppressWarnings("resource")
 		final InputStream stream = Resources.asByteSource(resource).openStream();
 		final BufferedImage result = ImageIO.read(stream);
 		stream.close();
@@ -190,6 +191,7 @@ public final class TestData {
 		final BufferedImage resultImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		resultImage.getGraphics().drawImage(image, 0, 0, null);
 		
+		@SuppressWarnings("resource")
 		ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();
 		ImageIO.write(resultImage, "jpeg", byteOutStream);
 		byteOutStream.flush();

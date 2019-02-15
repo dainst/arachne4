@@ -85,7 +85,8 @@ public class DataExportFileManager {
     public void writeToFile(DataExportTask task) throws Exception {
         try {
             final File file = new File(getFileName(task));
-            final FileOutputStream fileOutputStream = new FileOutputStream(file);
+            @SuppressWarnings("resource")
+			final FileOutputStream fileOutputStream = new FileOutputStream(file);
             file.createNewFile();
             task.perform(fileOutputStream);
             fileOutputStream.flush();

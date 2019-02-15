@@ -167,6 +167,8 @@ public class DataImportService { // NOPMD
 				}
 			}
 			final BulkProcessorListener listener = new BulkProcessorListener();
+			
+			@SuppressWarnings("resource")
 			final BulkProcessor bulkProcessor = BulkProcessor.builder(client, listener)
 					.setBulkActions(esService.getBulkActions())
 					.setBulkSize(new ByteSizeValue(esService.getBulkSize(), ByteSizeUnit.MB))

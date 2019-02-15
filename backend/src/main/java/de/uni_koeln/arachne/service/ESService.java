@@ -502,6 +502,7 @@ public class ESService implements ServletContextAware {
 	 */
 	private String getJsonFromFile(final String filename) {
 		StringBuilder result = new StringBuilder(64);
+		@SuppressWarnings("resource")
 		InputStream inputStream = null;
 		try {
 			inputStream = servletContext.getResourceAsStream(filename);

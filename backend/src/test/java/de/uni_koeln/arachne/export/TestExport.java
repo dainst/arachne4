@@ -471,7 +471,8 @@ public class TestExport {
         final String fileContent = "testdata";
 
         // write testfile
-        final FileOutputStream outputStream = new FileOutputStream(name);
+        @SuppressWarnings("resource")
+		final FileOutputStream outputStream = new FileOutputStream(name);
         outputStream.write(fileContent.getBytes());
         outputStream.close();
 

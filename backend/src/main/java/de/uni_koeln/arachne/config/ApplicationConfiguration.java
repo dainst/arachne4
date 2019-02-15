@@ -165,7 +165,8 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
         return new LazyConnectionDataSourceProxy(hikariDataSource) {
             @SuppressWarnings("unused")
             public void close() throws SQLException {
-                HikariDataSource datasource = (HikariDataSource) super.getTargetDataSource();
+                @SuppressWarnings("resource")
+				HikariDataSource datasource = (HikariDataSource) super.getTargetDataSource();
                 datasource.close();
             }
         };

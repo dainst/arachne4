@@ -166,8 +166,10 @@ public class BookController {
     private String convertSurfaceElementsToJson(List<?> listOfSurfaceElements, String img_filePrefix)
             throws IOException {
 
-        StringWriter sw = new StringWriter();
-        JsonGenerator jsonGenerator = new JsonFactory().createGenerator(sw);
+        @SuppressWarnings("resource")
+		StringWriter sw = new StringWriter();
+        @SuppressWarnings("resource")
+		JsonGenerator jsonGenerator = new JsonFactory().createGenerator(sw);
 
         jsonGenerator.writeStartObject();
         jsonGenerator.writeFieldName("pages");
