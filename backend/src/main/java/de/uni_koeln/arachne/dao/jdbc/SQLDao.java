@@ -29,7 +29,7 @@ import org.springframework.stereotype.Repository;
 @Repository("sqlDao")
 public class SQLDao {
 
-	static final Logger LOGGER = LoggerFactory.getLogger(SQLDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SQLDao.class);
 	
 	protected transient JdbcTemplate jdbcTemplate;
 	

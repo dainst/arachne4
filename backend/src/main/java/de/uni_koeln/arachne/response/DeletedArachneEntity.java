@@ -14,7 +14,7 @@ public class DeletedArachneEntity extends BaseArachneEntity {
 	private String message = "This entity has been deleted."; //NOPMD
 			
 	// little hack to remove the datasetGroup from the response. 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "hiding" })
 	private transient String datasetGroup; 
 	
 	@JsonIgnore

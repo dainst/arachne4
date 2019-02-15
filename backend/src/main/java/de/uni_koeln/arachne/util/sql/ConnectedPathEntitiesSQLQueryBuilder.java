@@ -26,8 +26,6 @@ public class ConnectedPathEntitiesSQLQueryBuilder extends AbstractSQLBuilder {
 	transient protected Long entityStart; 
 	
 	//TODO Implement Version with Key Table Solution
-	transient protected String table;
-	
 	transient protected boolean getFullDataset = false;
 	
 	transient protected Long foreignKey;

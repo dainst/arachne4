@@ -10,7 +10,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import com.mysql.management.MysqldResource;
 
 public class EmbeddedMysqlDatabase extends DriverManagerDataSource {
-    private final Logger logger = LoggerFactory.getLogger(EmbeddedMysqlDatabase.class);
+    @SuppressWarnings("hiding")
+	private final Logger logger = LoggerFactory.getLogger(EmbeddedMysqlDatabase.class);
     private final MysqldResource mysqldResource;
 
     public EmbeddedMysqlDatabase(MysqldResource mysqldResource) {
