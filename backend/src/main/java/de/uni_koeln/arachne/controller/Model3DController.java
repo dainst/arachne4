@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.controller;
 
+import java.util.Arrays;
 import java.io.File;
 import java.io.IOException;
 
@@ -39,18 +40,20 @@ import de.uni_koeln.arachne.util.image.ImageMimeUtil;
 @Controller
 public class Model3DController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Model3DController.class);
-	
+
+	private static final String[] BINARY_FORMATS = {"ply", "nxs", "nxz"};
+
 	@Autowired
 	private transient EntityIdentificationService entityIdentificationService;
-	
+
 	@Autowired
 	private transient UserRightsService userRightsService;
-	
+
 	@Autowired
 	private transient SingleEntityDataService singleEntityDataService;
-	
+
 	private transient final String basePath;
-	
+
 	/**
 	 * Constructor setting the path to the 3D models directory.
 	 * @param basePath The path.
@@ -59,7 +62,7 @@ public class Model3DController {
 	public Model3DController(final @Value("${model3dBasePath}") String basePath) {
 		this.basePath = basePath;
 	}
-	
+
 	/**
 	 * Sends either model data or meta data if requested. Supported formats for model data are '.obj' and '.stl' ASCII or binary encoded.
 	 * @param modelId The internal ID of the 3D model.
@@ -71,13 +74,13 @@ public class Model3DController {
 	public @ResponseBody ResponseEntity<?> handleModelRequest(@PathVariable("modelId") final Long modelId
 			, @RequestParam(value = "meta", required = false) final Boolean isMeta
 			, final HttpServletResponse response) {
-		
+
 		final Dataset dataset = getDataset(modelId, response);
-    	
+
 		if (dataset == null) {
 			return null;
 		}
-		
+
     	if (isMeta != null && isMeta) {
     		final HttpHeaders responseHeaders = new HttpHeaders();
     	    responseHeaders.add("Content-Type", "application/json; charset=utf-8");
@@ -86,7 +89,7 @@ public class Model3DController {
 			final HttpHeaders responseHeaders = new HttpHeaders();
 			final byte[] modelData = getModelData(dataset);
 			if (modelData != null) {
-				if (isBinaryStl(modelData)) {
+				if (isBinary(dataset, modelData)) {
 					responseHeaders.add("Content-Type", "application/octet-stream");
 					return new ResponseEntity<byte[]>(modelData, responseHeaders, HttpStatus.OK);
 				} else {
@@ -98,9 +101,9 @@ public class Model3DController {
 			}
 		}
 	}
-	
+
 	/**
-	 * Request handler for material data. The only supported format is '.mtl'. 
+	 * Request handler for material data. The only supported format is '.mtl'.
 	 * @param modelId The ID of the 3D model.
 	 * @param response The <code>HTTPServletResponse</code>
 	 * @return The '.mtl'-file.
@@ -108,9 +111,9 @@ public class Model3DController {
 	@RequestMapping(value = "/model/material/{modelId}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<String> handleMaterialRequest(@PathVariable("modelId") final Long modelId
 			, final HttpServletResponse response) {
-		
+
 		final Dataset dataset = getDataset(modelId, response);
-    	
+
 		if (dataset == null) {
 			return null;
 		}
@@ -119,7 +122,7 @@ public class Model3DController {
 	    responseHeaders.add("Content-Type", "text/plain; charset=utf-8");
 	    return new ResponseEntity<String>(materialData, responseHeaders, HttpStatus.OK);
 	}
-	
+
 	/**
 	 * Request handler for texture requests.
 	 * @param modelId The internal ID of the 3D Model.
@@ -134,19 +137,19 @@ public class Model3DController {
 	public @ResponseBody ResponseEntity<byte[]> handleModelRequest(@PathVariable("modelId") final Long modelId
 			, @PathVariable("textureName") final String textureName
 			, final HttpServletResponse response) {
-		
+
 		final Dataset dataset = getDataset(modelId, response);
-    	
+
 		if (dataset == null) {
 			return null;
 		}
-		
+
 		final byte[] textureData = getTextureData(dataset, textureName);
 		String mimeType = ImageMimeUtil.getImageType(textureData);
 		if (mimeType == null) {
 			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
 		}
-		
+
 		final HttpHeaders responseHeaders = new HttpHeaders();
 	    responseHeaders.add("Content-Type", mimeType + "; charset=utf-8");
 		return new ResponseEntity<byte[]>(textureData, responseHeaders, HttpStatus.OK);
@@ -160,26 +163,26 @@ public class Model3DController {
 	 */
 	private Dataset getDataset(final long modelId, final HttpServletResponse response) {
 		final EntityId arachneId = entityIdentificationService.getId("modell3d", modelId);
-    	
+
     	if (arachneId == null || arachneId.isDeleted()) {
     		response.setStatus(404);
     		return null;
     	}
-    	
+
     	final String datasetGroupName = singleEntityDataService.getDatasetGroup(arachneId);
     	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
     	if (!userRightsService.userHasDatasetGroup(datasetGroup)) {
     		response.setStatus(403);
     		return null;
     	}
-    	
+
     	return singleEntityDataService.getSingleEntityByArachneId(arachneId);
 	}
-	
+
 	/**
 	 * Retrieves the information needed by the Javascript 3D-Viewer from the dataset.
 	 * @param dataset The dataset of interest.
-	 * @return The meta data as JSON. 
+	 * @return The meta data as JSON.
 	 */
 	private String getMetaData(final Dataset dataset) {
 		final ObjectNode result = JSONUtil.getObjectNode();
@@ -191,21 +194,21 @@ public class Model3DController {
 	}
 
 	/**
-	 * Reads model data from disk (binary or text). 
+	 * Reads model data from disk (binary or text).
 	 * @param dataset The dataset describing the model.
 	 * @return The model data as <code>byte</code> array or <code>null</code> on failure.
 	 */
 	private byte[] getModelData(final Dataset dataset) {
 		String modelPath = dataset.getFieldFromFields("modell3d.Pfad");
 		if (!modelPath.endsWith("/")) {
-			modelPath += "/"; 
+			modelPath += "/";
 		}
 		final String filename = dataset.getFieldFromFields("modell3d.Dateiname");
-				
+
 		final String pathname = basePath + modelPath + filename;
-		
-		final File modelFile = new File(pathname);  
-		
+
+		final File modelFile = new File(pathname);
+
 		if (modelFile.isFile() && modelFile.canRead()) {
 			try {
 				return Files.toByteArray(modelFile);
@@ -217,26 +220,34 @@ public class Model3DController {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Determines if a .stl file is binary or ASCII encoded by looking at the number of triangles in the file and calculating
 	 * an expected binary size. If the size does not match it is a text file.
 	 * @return <code>true</code> if the file is binary.
 	 */
-	private boolean isBinaryStl(final byte[] data) {
-		// Get the first four bytes after the 80 character header of a binary stl file as an unsigned 32 bit integer value.
-		// This is the number of triangles in the file.
-		final long triangles =
-				((data[80] & 0xFF) <<  0) |
-				((data[81] & 0xFF) <<  8) |
-				((data[82] & 0xFF) << 16) |
-				((data[83] & 0xFF) << 24);
-		
-		final long face_size = 32 / 8 * 3 + 32 / 8 * 3 * 3 + 16 / 8;
-		final long expectedSize = 80 + 32 / 8 + triangles * face_size;
-		return expectedSize == data.length;
+	private boolean isBinary(final Dataset dataset, final byte[] data) {
+		String format = dataset.getFieldFromFields("modell3d.Dateiformat");
+		if (format.equals("stl")) {
+			// Get the first four bytes after the 80 character header of a binary stl file as an unsigned 32 bit integer value.
+			// This is the number of triangles in the file.
+			final long triangles =
+					((data[80] & 0xFF) <<  0) |
+					((data[81] & 0xFF) <<  8) |
+					((data[82] & 0xFF) << 16) |
+					((data[83] & 0xFF) << 24);
+
+			final long face_size = 32 / 8 * 3 + 32 / 8 * 3 * 3 + 16 / 8;
+			final long expectedSize = 80 + 32 / 8 + triangles * face_size;
+			return expectedSize == data.length;
+
+		} else if (Arrays.asList(this.BINARY_FORMATS).contains(format)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
-		
+
 	/**
 	 * Reads a mtl-file from disk.
 	 * @param dataset The dataset of interest.
@@ -245,17 +256,17 @@ public class Model3DController {
 	private String getMaterialData(final Dataset dataset) {
 		String modelPath = dataset.getFieldFromFields("modell3d.Pfad");
 		if (!modelPath.endsWith("/")) {
-			modelPath += "/"; 
+			modelPath += "/";
 		}
-		
+
 		String filename = dataset.getFieldFromFields("modell3d.Dateiname");
 		final int dotIndex=filename.lastIndexOf('.');
 		if (dotIndex >= 0) { // prevent exception if there is no dot
 		  filename = filename.substring(0, dotIndex) + ".mtl";
 		}
-		final String pathname = basePath + modelPath + filename; 
+		final String pathname = basePath + modelPath + filename;
 		final File materialFile = new File(pathname);
-		
+
 		if (materialFile.isFile() && materialFile.canRead()) {
 			try {
 				return Files.toString(materialFile, Charsets.UTF_8);
@@ -267,7 +278,7 @@ public class Model3DController {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Reads an image file from disc.
 	 * @param dataset The dataset of interest.
@@ -277,12 +288,12 @@ public class Model3DController {
 	private byte[] getTextureData(final Dataset dataset, final String textureName) {
 		String modelPath = dataset.getFieldFromFields("modell3d.Pfad");
 		if (!modelPath.endsWith("/")) {
-			modelPath += "/"; 
+			modelPath += "/";
 		}
-		
+
 		final String pathname = basePath + modelPath + "texture/" + textureName;
 		final File textureFile = new File(pathname);
-		
+
 		if (textureFile.isFile() && textureFile.canRead()) {
 			try {
 				return Files.toByteArray(textureFile);
