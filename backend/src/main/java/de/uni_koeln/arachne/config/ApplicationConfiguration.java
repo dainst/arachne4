@@ -13,6 +13,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.ResourceRegionHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
@@ -83,6 +84,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 
         // default converters
         converters.add(new ByteArrayHttpMessageConverter());
+        converters.add(new ResourceRegionHttpMessageConverter());
         converters.add(new StringHttpMessageConverter());
         converters.add(new MappingJackson2HttpMessageConverter());
 
