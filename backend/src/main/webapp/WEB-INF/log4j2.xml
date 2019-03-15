@@ -61,13 +61,10 @@
     <!-- Root Logger -->
     <Loggers>
         <!-- Spring Web Logger -->
-        <logger name="org.springframework.web" level="info" />
+        <logger name="org.springframework.http.converter" level="debug" />
 
         <!-- Application Logger -->
-        <logger name="de.uni_koeln.arachne" level="info" />
-        <logger name="de.uni_koeln.arachne.controller" level="info" />
-        <logger name="de.uni_koeln.arachne.service" level="info" />
-        <logger name="de.uni_koeln.arachne.dao" level="info" />
+        <logger name="de.uni_koeln.arachne" level="debug" />
 
         <!-- elasticsearch logger -->
         <logger name="org.elasticsearch" level="info" />

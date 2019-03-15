@@ -82,9 +82,9 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 
         // default converters
+        converters.add(new ByteArrayHttpMessageConverter());
         converters.add(new StringHttpMessageConverter());
         converters.add(new MappingJackson2HttpMessageConverter());
-        converters.add(new ByteArrayHttpMessageConverter());
 
         // arachne converters, implementing injectService
         List<AbstractDataExportConverter<?>> aConverters = new ArrayList<AbstractDataExportConverter<?>>();
@@ -107,8 +107,6 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
             converter.injectService(dataExportStack);
         }
         converters.addAll(aConverters);
-
-
 
     }
 
