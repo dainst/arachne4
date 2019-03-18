@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.Response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +67,7 @@ public class Model3DController {
 	 * @return Either the meta data as JSON or model data in one of the supported formats.
 	 */
 	@RequestMapping(value = "/model/{modelId}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<?> handleModelRequest(@PathVariable("modelId") final Long modelId
+	public String handleModelRequest(@PathVariable("modelId") final Long modelId
 			, @RequestParam(value = "meta", required = false) final Boolean isMeta
 			, final HttpServletResponse response
 			, @RequestHeader final HttpHeaders headers) {
@@ -79,16 +78,57 @@ public class Model3DController {
 			return null;
 		}
 
-    	if (isMeta != null && isMeta) {
-    		return buildMetadataResponse(dataset);
+		if (isMeta != null && isMeta) {
+			return "forward:/model/meta/" + modelId;
 		} else {
 			List<HttpRange> range = headers.getRange();
 			if (range != null && range.size() > 0) {
-				return buildPartialModelResponse(dataset, range.get(0));
+				return "forward:/model/partial/" + modelId;
 			} else {
-				return buildFullModelResponse(dataset);
+				return "forward:/model/full/" + modelId;
 			}
 		}
+	}
+
+	@RequestMapping(value = "/model/full/{modelId}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<byte[]> handleFullModelRequest(@PathVariable("modelId") final Long modelId
+			, final HttpServletResponse response) {
+
+		final Dataset dataset = getDataset(modelId, response);
+		if (dataset == null) {
+			return null;
+		}
+		return buildFullModelResponse(dataset);
+	}
+
+	@RequestMapping(value = "/model/partial/{modelId}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<ResourceRegion> handlePartialModelRequest(@PathVariable("modelId") final Long modelId
+			, final HttpServletResponse response
+			, @RequestHeader final HttpHeaders headers) {
+
+		final Dataset dataset = getDataset(modelId, response);
+		if (dataset == null) {
+			return null;
+		}
+		List<HttpRange> range = headers.getRange();
+		if (range != null && range.size() > 0) {
+			return buildPartialModelResponse(dataset, range.get(0));
+		} else {
+			HttpHeaders reponseHeaders = new HttpHeaders();
+			reponseHeaders.add("Location", "/model/full/" + modelId);
+			return new ResponseEntity<>(reponseHeaders, HttpStatus.FOUND);
+		}
+	}
+
+	@RequestMapping(value = "/model/meta/{modelId}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<String> handleMetadataRequest(@PathVariable("modelId") final Long modelId
+			, final HttpServletResponse response) {
+
+		final Dataset dataset = getDataset(modelId, response);
+		if (dataset == null) {
+			return null;
+		}
+		return buildMetadataResponse(dataset);
 	}
 
 	/**
@@ -150,23 +190,25 @@ public class Model3DController {
 		return new ResponseEntity<>(getMetaData(dataset), responseHeaders, HttpStatus.OK);
 	}
 
-	private ResponseEntity<?> buildPartialModelResponse(Dataset dataset, HttpRange range) {
+	private ResponseEntity<ResourceRegion> buildPartialModelResponse(Dataset dataset, HttpRange range) {
 		ResourceRegion region = range.toResourceRegion(new FileSystemResource(getModelFile(dataset)));
 		final HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "application/octet-stream");
 		return new ResponseEntity<>(region, responseHeaders, HttpStatus.PARTIAL_CONTENT);
 	}
 
-	private ResponseEntity<?> buildFullModelResponse(Dataset dataset) {
+	private ResponseEntity<byte[]> buildFullModelResponse(Dataset dataset) {
 		final byte[] modelData = getModelData(dataset);
 		if (modelData != null) {
 			if (isBinary(dataset, modelData)) {
+				LOGGER.debug("building binary response");
 				return buildBinaryModelResponse(dataset, modelData);
 			} else {
-				return buildStringModelResponse(dataset, modelData);
+				LOGGER.debug("building text response");
+				return buildTextModelResponse(dataset, modelData);
 			}
 		} else {
-			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
@@ -176,10 +218,10 @@ public class Model3DController {
 		return new ResponseEntity<byte[]>(modelData, responseHeaders, HttpStatus.OK);
 	}
 
-	private ResponseEntity<String> buildStringModelResponse(Dataset dataset, byte[] modelData) {
+	private ResponseEntity<byte[]> buildTextModelResponse(Dataset dataset, byte[] modelData) {
 		final HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.add("Content-Type", "text/plain; charset=utf-8");
-		return new ResponseEntity<String>(new String(modelData, Charsets.UTF_8), responseHeaders, HttpStatus.OK);
+		return new ResponseEntity<byte[]>(modelData, responseHeaders, HttpStatus.OK);
 	}
 
 	/**
