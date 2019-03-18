@@ -60,11 +60,21 @@ public class Model3DController {
 	}
 
 	/**
-	 * Sends either model data or meta data if requested. Supported formats for model data are '.obj' and '.stl' ASCII or binary encoded.
+	 * Sends either model data or metadata if requested. Supported formats for
+	 * model data are '.obj', '.stl' (ASCII or binary encoded), '.svg', '.ply'
+	 * and '.nxz'.
+	 *
+	 * Model data is either transferred as a whole (standard) or partially
+	 * (when a Range-Header is present).
+	 *
+	 * This method acts as a facade and forwards to more specific endpoints that
+	 * can also be used directly in order to avoid getting the dataset twice.
+	 *
 	 * @param modelId The internal ID of the 3D model.
 	 * @param isMeta Flag to indicate wether meta data or the actual model should be served.
-	 * @param response <code>The HTTPServeletResponse</code>
-	 * @return Either the meta data as JSON or model data in one of the supported formats.
+	 * @param response The <code>HTTPServeletResponse</code>
+	 * @param headers The request's <code>HttpHeaders</code>
+	 * @return Either the metadata as JSON or model data in one of the supported formats.
 	 */
 	@RequestMapping(value = "/model/{modelId}", method = RequestMethod.GET)
 	public String handleModelRequest(@PathVariable("modelId") final Long modelId
@@ -90,6 +100,12 @@ public class Model3DController {
 		}
 	}
 
+	/**
+	 * Sends full model data.
+	 * @param modelId The internal ID of the 3D model.
+	 * @param response <code>The HTTPServeletResponse</code>
+	 * @return The model data
+	 */
 	@RequestMapping(value = "/model/full/{modelId}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<byte[]> handleFullModelRequest(@PathVariable("modelId") final Long modelId
 			, final HttpServletResponse response) {
@@ -101,6 +117,13 @@ public class Model3DController {
 		return buildFullModelResponse(dataset);
 	}
 
+	/**
+	 * Sends partial model data as given in the Range header.
+	 * @param modelId The internal ID of the 3D model.
+	 * @param response <code>The HTTPServeletResponse</code>
+	 * @param headers The request's <code>HttpHeaders</code>
+	 * @return The partial model data
+	 */
 	@RequestMapping(value = "/model/partial/{modelId}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<ResourceRegion> handlePartialModelRequest(@PathVariable("modelId") final Long modelId
 			, final HttpServletResponse response
@@ -120,6 +143,12 @@ public class Model3DController {
 		}
 	}
 
+	/**
+	 * Sends model metadata.
+	 * @param modelId The internal ID of the 3D model.
+	 * @param response <code>The HTTPServeletResponse</code>
+	 * @return Model metadata as JSON
+	 */
 	@RequestMapping(value = "/model/meta/{modelId}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<String> handleMetadataRequest(@PathVariable("modelId") final Long modelId
 			, final HttpServletResponse response) {
