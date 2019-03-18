@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.controller;
 import java.util.Arrays;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,16 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.support.ResourceRegion;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Charsets;
@@ -64,16 +60,27 @@ public class Model3DController {
 	}
 
 	/**
-	 * Sends either model data or meta data if requested. Supported formats for model data are '.obj' and '.stl' ASCII or binary encoded.
+	 * Sends either model data or metadata if requested. Supported formats for
+	 * model data are '.obj', '.stl' (ASCII or binary encoded), '.svg', '.ply'
+	 * and '.nxz'.
+	 *
+	 * Model data is either transferred as a whole (standard) or partially
+	 * (when a Range-Header is present).
+	 *
+	 * This method acts as a facade and forwards to more specific endpoints that
+	 * can also be used directly in order to avoid getting the dataset twice.
+	 *
 	 * @param modelId The internal ID of the 3D model.
 	 * @param isMeta Flag to indicate wether meta data or the actual model should be served.
-	 * @param response <code>The HTTPServeletResponse</code>
-	 * @return Either the meta data as JSON or model data in one of the supported formats.
+	 * @param response The <code>HTTPServeletResponse</code>
+	 * @param headers The request's <code>HttpHeaders</code>
+	 * @return Either the metadata as JSON or model data in one of the supported formats.
 	 */
 	@RequestMapping(value = "/model/{modelId}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<?> handleModelRequest(@PathVariable("modelId") final Long modelId
+	public String handleModelRequest(@PathVariable("modelId") final Long modelId
 			, @RequestParam(value = "meta", required = false) final Boolean isMeta
-			, final HttpServletResponse response) {
+			, final HttpServletResponse response
+			, @RequestHeader final HttpHeaders headers) {
 
 		final Dataset dataset = getDataset(modelId, response);
 
@@ -81,25 +88,76 @@ public class Model3DController {
 			return null;
 		}
 
-    	if (isMeta != null && isMeta) {
-    		final HttpHeaders responseHeaders = new HttpHeaders();
-    	    responseHeaders.add("Content-Type", "application/json; charset=utf-8");
-			return new ResponseEntity<String>(getMetaData(dataset), responseHeaders, HttpStatus.OK);
+		if (isMeta != null && isMeta) {
+			return "forward:/model/meta/" + modelId;
 		} else {
-			final HttpHeaders responseHeaders = new HttpHeaders();
-			final byte[] modelData = getModelData(dataset);
-			if (modelData != null) {
-				if (isBinary(dataset, modelData)) {
-					responseHeaders.add("Content-Type", "application/octet-stream");
-					return new ResponseEntity<byte[]>(modelData, responseHeaders, HttpStatus.OK);
-				} else {
-					responseHeaders.add("Content-Type", "text/plain; charset=utf-8");
-					return new ResponseEntity<String>(new String(modelData, Charsets.UTF_8), responseHeaders, HttpStatus.OK);
-				}
+			List<HttpRange> range = headers.getRange();
+			if (range != null && range.size() > 0) {
+				return "forward:/model/partial/" + modelId;
 			} else {
-				return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+				return "forward:/model/full/" + modelId;
 			}
 		}
+	}
+
+	/**
+	 * Sends full model data.
+	 * @param modelId The internal ID of the 3D model.
+	 * @param response <code>The HTTPServeletResponse</code>
+	 * @return The model data
+	 */
+	@RequestMapping(value = "/model/full/{modelId}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<byte[]> handleFullModelRequest(@PathVariable("modelId") final Long modelId
+			, final HttpServletResponse response) {
+
+		final Dataset dataset = getDataset(modelId, response);
+		if (dataset == null) {
+			return null;
+		}
+		return buildFullModelResponse(dataset);
+	}
+
+	/**
+	 * Sends partial model data as given in the Range header.
+	 * @param modelId The internal ID of the 3D model.
+	 * @param response <code>The HTTPServeletResponse</code>
+	 * @param headers The request's <code>HttpHeaders</code>
+	 * @return The partial model data
+	 */
+	@RequestMapping(value = "/model/partial/{modelId}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<ResourceRegion> handlePartialModelRequest(@PathVariable("modelId") final Long modelId
+			, final HttpServletResponse response
+			, @RequestHeader final HttpHeaders headers) {
+
+		final Dataset dataset = getDataset(modelId, response);
+		if (dataset == null) {
+			return null;
+		}
+		List<HttpRange> range = headers.getRange();
+		if (range != null && range.size() > 0) {
+			return buildPartialModelResponse(dataset, range.get(0));
+		} else {
+			HttpHeaders reponseHeaders = new HttpHeaders();
+			reponseHeaders.add("Location", "/model/full/" + modelId);
+			return new ResponseEntity<>(reponseHeaders, HttpStatus.FOUND);
+		}
+	}
+
+	/**
+	 * Sends model metadata.
+	 * @param modelId The internal ID of the 3D model.
+	 * @param response <code>The HTTPServeletResponse</code>
+	 * @return Model metadata as JSON
+	 */
+	@RequestMapping(value = "/model/meta/{modelId}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<String> handleMetadataRequest(@PathVariable("modelId") final Long modelId
+			, final HttpServletResponse response) {
+
+		final Dataset dataset = getDataset(modelId, response);
+		if (dataset == null) {
+			return null;
+		}
+		return buildMetadataResponse(dataset);
 	}
 
 	/**
@@ -155,6 +213,46 @@ public class Model3DController {
 		return new ResponseEntity<byte[]>(textureData, responseHeaders, HttpStatus.OK);
 	}
 
+	private ResponseEntity<String> buildMetadataResponse(Dataset dataset) {
+		final HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "application/json; charset=utf-8");
+		return new ResponseEntity<>(getMetaData(dataset), responseHeaders, HttpStatus.OK);
+	}
+
+	private ResponseEntity<ResourceRegion> buildPartialModelResponse(Dataset dataset, HttpRange range) {
+		ResourceRegion region = range.toResourceRegion(new FileSystemResource(getModelFile(dataset)));
+		final HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "application/octet-stream");
+		return new ResponseEntity<>(region, responseHeaders, HttpStatus.PARTIAL_CONTENT);
+	}
+
+	private ResponseEntity<byte[]> buildFullModelResponse(Dataset dataset) {
+		final byte[] modelData = getModelData(dataset);
+		if (modelData != null) {
+			if (isBinary(dataset, modelData)) {
+				LOGGER.debug("building binary response");
+				return buildBinaryModelResponse(dataset, modelData);
+			} else {
+				LOGGER.debug("building text response");
+				return buildTextModelResponse(dataset, modelData);
+			}
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	private ResponseEntity<byte[]> buildBinaryModelResponse(Dataset dataset, byte[] modelData) {
+		final HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "application/octet-stream");
+		return new ResponseEntity<byte[]>(modelData, responseHeaders, HttpStatus.OK);
+	}
+
+	private ResponseEntity<byte[]> buildTextModelResponse(Dataset dataset, byte[] modelData) {
+		final HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/plain; charset=utf-8");
+		return new ResponseEntity<byte[]>(modelData, responseHeaders, HttpStatus.OK);
+	}
+
 	/**
 	 * Retrieves the dataset for the give entity id.
 	 * @param modelId The internal ID of the 3D model.
@@ -199,16 +297,7 @@ public class Model3DController {
 	 * @return The model data as <code>byte</code> array or <code>null</code> on failure.
 	 */
 	private byte[] getModelData(final Dataset dataset) {
-		String modelPath = dataset.getFieldFromFields("modell3d.Pfad");
-		if (!modelPath.endsWith("/")) {
-			modelPath += "/";
-		}
-		final String filename = dataset.getFieldFromFields("modell3d.Dateiname");
-
-		final String pathname = basePath + modelPath + filename;
-
-		final File modelFile = new File(pathname);
-
+		final File modelFile = getModelFile(dataset);
 		if (modelFile.isFile() && modelFile.canRead()) {
 			try {
 				return Files.toByteArray(modelFile);
@@ -216,9 +305,19 @@ public class Model3DController {
 				LOGGER.error("Problem reading model file. Cause: ", e);
 			}
 		} else {
-			LOGGER.error("Could not read 3D model file: " + pathname);
+			LOGGER.error("Could not read 3D model file: " + modelFile.getAbsolutePath());
 		}
 		return null;
+	}
+
+	private File getModelFile(final Dataset dataset) {
+		String modelPath = dataset.getFieldFromFields("modell3d.Pfad");
+		if (!modelPath.endsWith("/")) {
+			modelPath += "/";
+		}
+		final String filename = dataset.getFieldFromFields("modell3d.Dateiname");
+		final String pathname = basePath + modelPath + filename;
+		return new File(pathname);
 	}
 
 	/**
