@@ -236,6 +236,7 @@ public abstract class BaseHtmlConverter<T> extends AbstractDataExportConverter<T
         // search url
         final String url = task.getRequestUrl()
             .replace("http://arachnedataservice/data", task.getBackendUrl())
+            .replace("/data", "")
             .replace("mediaType=pdf", "")
             .replace("mediaType=html", "")
             .replace("?null", "")

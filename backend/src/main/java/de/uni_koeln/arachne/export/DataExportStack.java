@@ -63,7 +63,7 @@ public class DataExportStack {
         dataExportMaxStackSize = maxStackSize;
         dataExportMaxThreads = maxThreads;
         dataExportMaxTaskLifeTime = maxLifeTime;
-        this.serverAddress = serverAddress;
+        this.serverAddress = serverAddress + "/data";
     }
 
     public DataExportTask newTask(AbstractDataExportConverter<?> converter, DataExportConversionObject conversionObject) {
