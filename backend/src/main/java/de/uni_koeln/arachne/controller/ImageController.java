@@ -158,12 +158,12 @@ public class ImageController {
 			method = RequestMethod.GET,
 			produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.TEXT_PLAIN_VALUE})
 	@Deprecated
-	public ResponseEntity<?> getDataForIIPViewer(@RequestParam(value = "FIF", required = true) final long entityId,
+	public ResponseEntity<byte[]> getDataForIIPViewer(@RequestParam(value = "FIF", required = true) final long entityId,
 			final HttpServletRequest request, final HttpServletResponse response) {
 		
 		LOGGER.debug("Received Request: " + request.getQueryString());
 				
-		TypeWithHTTPStatus<?> imageServerResponse = iipService.getIIPViewerDataFromImageServer(entityId, request.getQueryString());
+		TypeWithHTTPStatus<byte[]> imageServerResponse = iipService.getIIPViewerDataFromImageServer(entityId, request.getQueryString());
 		return ResponseEntity.status(imageServerResponse.getStatus()).body(imageServerResponse.getValue());
 	}
 

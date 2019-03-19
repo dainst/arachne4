@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -252,16 +253,16 @@ public class IIPService {
 	 * @return Either the meta data of an image wrapped in a <code>ResponseEntity</code> or <code>null</code>.
 	 */
 	@Deprecated
-	public TypeWithHTTPStatus<?> getIIPViewerDataFromImageServer(final long entityId, final String queryString) {
+	public TypeWithHTTPStatus<byte[]> getIIPViewerDataFromImageServer(final long entityId, final String queryString) {
 		
 		final ImageProperties imageProperties = getImageProperties(entityId, resolution_HIGH());
 		
 		if (imageProperties.httpStatus != HttpStatus.OK) {
-			return new TypeWithHTTPStatus<Object>(imageProperties.httpStatus);
+			return new TypeWithHTTPStatus<>(imageProperties.httpStatus);
 		}
 		
 		if (imageProperties.resolution != resolution_HIGH()) {
-			return new TypeWithHTTPStatus<Object>(HttpStatus.FORBIDDEN);
+			return new TypeWithHTTPStatus<>(HttpStatus.FORBIDDEN);
 		}
 
 		final String imageName = imageProperties.name;
@@ -292,15 +293,15 @@ public class IIPService {
 			
 			if (fullQueryString.contains("obj=IIP")) {
 				final String metaData = restTemplate.getForObject(serverUrl.toURI(), String.class);
-				return new TypeWithHTTPStatus<String>(metaData);
+				return new TypeWithHTTPStatus<>(metaData.getBytes(StandardCharsets.UTF_8));
 			}
 			
 			final byte[] image = restTemplate.getForObject(serverUrl.toURI(), byte[].class);
-			return new TypeWithHTTPStatus<byte[]>(image);
+			return new TypeWithHTTPStatus<>(image);
 		} catch (RestClientException | URISyntaxException | IOException e) {
 			LOGGER.error(e.getMessage());
 		}
-		return new TypeWithHTTPStatus<byte[]>(HttpStatus.NOT_FOUND);		
+		return new TypeWithHTTPStatus<>(HttpStatus.NOT_FOUND);
 	}
 	
 	/**

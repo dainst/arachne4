@@ -2,10 +2,7 @@ package de.uni_koeln.arachne.controller;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import de.uni_koeln.arachne.response.search.IndexResult;
-import de.uni_koeln.arachne.response.search.SearchResult;
-import de.uni_koeln.arachne.response.search.SearchResultFacet;
-import de.uni_koeln.arachne.response.search.SearchResultFacetValue;
+import de.uni_koeln.arachne.response.search.*;
 import de.uni_koeln.arachne.service.SearchService;
 import de.uni_koeln.arachne.service.Transl8Service.Transl8Exception;
 import de.uni_koeln.arachne.service.UserRightsService;
@@ -123,7 +120,7 @@ public class SearchController {
 			produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_PDF_VALUE, MediaType.TEXT_HTML_VALUE, "text/csv"},
 			headers = "content-type=*/*"
 	)
-	public @ResponseBody ResponseEntity<?> handleSearchRequest(@RequestParam("q") final String queryString,
+	public @ResponseBody ResponseEntity<SearchResult> handleSearchRequest(@RequestParam("q") final String queryString,
 															   @RequestParam(value = "limit", required = false) final Integer limit,
 															   @RequestParam(value = "offset", required = false) final Integer offset,
 															   @RequestParam(value = "fq", required = false) final String[] filterValues,
@@ -170,7 +167,9 @@ public class SearchController {
 
 		int bbLength = searchParameters.getBoundingBox().length;
 		if (boundingBox != null && bbLength != 4) {
-			return ResponseEntity.badRequest().body("{ \"message\": \"Invalid bounding box coordinates.\"");
+			return ResponseEntity.badRequest()
+					.header("Warning", "199", "arachnedataservice", "Invalid bounding box coordinates.")
+					.body(null);
 		}
 
 		SearchRequestBuilder searchRequestBuilder;
@@ -185,7 +184,7 @@ public class SearchController {
 				if (searchParameters.isScrollMode() && searchResult.getScrollId() == null) {
 					HttpHeaders headers = new HttpHeaders();
 					headers.set("Retry-after", "60");
-					return new ResponseEntity<>("", headers, HttpStatus.TOO_MANY_REQUESTS);
+					return new ResponseEntity<>(null, headers, HttpStatus.TOO_MANY_REQUESTS);
 				}
 				return ResponseEntity.ok().body(searchResult);
 			}
@@ -204,7 +203,7 @@ public class SearchController {
 	@RequestMapping(value="/search/scroll/{scrollId}",
 			method=RequestMethod.GET,
 			produces={APPLICATION_JSON_UTF8_VALUE})
-	public @ResponseBody ResponseEntity<?> handleSearchScrollRequest(@PathVariable("scrollId") final String scrollId) {
+	public @ResponseBody ResponseEntity<SearchResult> handleSearchScrollRequest(@PathVariable("scrollId") final String scrollId) {
 		final SearchResult searchResult = searchService.executeSearchScrollRequest(scrollId);
 
 		if (searchResult.getStatus() != RestStatus.OK) {
@@ -222,7 +221,7 @@ public class SearchController {
 	@RequestMapping(value="/suggest",
 			method=RequestMethod.GET,
 			produces={APPLICATION_JSON_UTF8_VALUE})
-	public @ResponseBody ResponseEntity<?> handleSuggestRequest(@RequestParam("q") final String queryString) {
+	public @ResponseBody ResponseEntity<SuggestResult> handleSuggestRequest(@RequestParam("q") final String queryString) {
 		return ResponseEntity.ok().body(searchService.executeSuggestRequest(queryString));
 	}
 
@@ -331,7 +330,7 @@ public class SearchController {
 	@RequestMapping(value="/index",
 			method=RequestMethod.GET,
 			produces={APPLICATION_JSON_UTF8_VALUE})
-	public @ResponseBody ResponseEntity<?> handleFacetIndexRequest(@RequestParam("q") final String queryString,
+	public @ResponseBody ResponseEntity<List<SearchResultFacet>> handleFacetIndexRequest(@RequestParam("q") final String queryString,
 																   @RequestParam(value = "limit", required = false) final Integer limit,
 																   @RequestParam(value = "offset", required = false) final Integer offset,
 																   @RequestParam(value = "fq", required = false) final String[] filterValues,
@@ -346,9 +345,8 @@ public class SearchController {
 																   @RequestParam(value = "lang", required = false) final String lang,
 																   @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage) {
 
-		ResponseEntity<?> result = handleSearchRequest(queryString, limit, offset, filterValues, facetLimit, facetOffset, sortField, false, true, boundingBox, geoHashPrecision, facetsToSort, scrollMode, facet, lang, headerLanguage);
-		SearchResult searchResult = (SearchResult) result.getBody();
-		return ResponseEntity.ok().body(searchResult.getFacets());
+		ResponseEntity<SearchResult> result = handleSearchRequest(queryString, limit, offset, filterValues, facetLimit, facetOffset, sortField, false, true, boundingBox, geoHashPrecision, facetsToSort, scrollMode, facet, lang, headerLanguage);
+		return ResponseEntity.ok().body(result.getBody().getFacets());
 	}
 
 	/**

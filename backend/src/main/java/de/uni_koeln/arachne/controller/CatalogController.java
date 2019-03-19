@@ -248,7 +248,7 @@ public class CatalogController {
 	 * @return The catalog.
 	 */
 	@RequestMapping(value = "{catalogId}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<?> handleGetCatalogRequest(
+	public @ResponseBody ResponseEntity<Catalog> handleGetCatalogRequest(
 			@PathVariable("catalogId") final Long catalogId,
 			@RequestParam(value = "limit", required = false) Integer limit,
 			@RequestParam(value = "offset", required = false) Integer offset) {
@@ -258,10 +258,9 @@ public class CatalogController {
 		final User user = userRightsService.getCurrentUser();
 		Catalog result = catalogDao.getById(catalogId, limit, offset);
 		if (result == null) {
-			return new ResponseEntity<Catalog>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else if (!result.isCatalogOfUserWithId(user.getId()) && !result.isPublic()) {
-			result = null;
-			return new ResponseEntity<Catalog>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 
 		return ResponseEntity.status(HttpStatus.OK).body(result);
