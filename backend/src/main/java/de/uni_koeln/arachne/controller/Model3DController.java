@@ -358,7 +358,7 @@ public class Model3DController {
 			modelPath += "/";
 		}
 
-		String filename = dataset.getFieldFromFields("modell3d.Dateiname");
+		String filename = dataset.getFieldFromFields("modell3d.DateinameMTL");
 		final int dotIndex=filename.lastIndexOf('.');
 		if (dotIndex >= 0) { // prevent exception if there is no dot
 		  filename = filename.substring(0, dotIndex) + ".mtl";
