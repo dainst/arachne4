@@ -154,6 +154,7 @@
 						</ifEmpty>
 					</field>
 					<field datasource="marbilderinventar.13_Dateityp" prefix="Dateityp: " />
+					<field datasource="marbilderinventar.Copyright" prefix="Copyright: "/>
 				</section>
 				
 				<section labelKey="Allgemein">
