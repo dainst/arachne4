@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -184,16 +185,15 @@ public class Model3DController {
 	/**
 	 * Request handler for texture requests.
 	 * @param modelId The internal ID of the 3D Model.
-	 * @param textureName The filename of the texture.
+	 * @param request The <code>HTTPServletRequest</code>
 	 * @param response The <code>HTTPServletResponse</code>
 	 * @return The image file.
 	 */
-	// use regexp workaround for spring truncating at dots in parameters
-	@RequestMapping(value = "/model/material/{modelId}/texture/{textureName:.+}",
+	@RequestMapping(value = "/model/material/{modelId}/**",
 			method = RequestMethod.GET,
 			produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
 	public @ResponseBody ResponseEntity<byte[]> handleModelRequest(@PathVariable("modelId") final Long modelId
-			, @PathVariable("textureName") final String textureName
+			, final HttpServletRequest request
 			, final HttpServletResponse response) {
 
 		final Dataset dataset = getDataset(modelId, response);
@@ -202,7 +202,10 @@ public class Model3DController {
 			return null;
 		}
 
-		final byte[] textureData = getTextureData(dataset, textureName);
+		String requestURL = request.getRequestURL().toString();
+		String texturePath = requestURL.split("/model/material/\\d+/")[1];
+
+		final byte[] textureData = getTextureData(dataset, texturePath);
 		String mimeType = ImageMimeUtil.getImageType(textureData);
 		if (mimeType == null) {
 			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
@@ -358,11 +361,7 @@ public class Model3DController {
 			modelPath += "/";
 		}
 
-		String filename = dataset.getFieldFromFields("modell3d.Dateiname");
-		final int dotIndex=filename.lastIndexOf('.');
-		if (dotIndex >= 0) { // prevent exception if there is no dot
-		  filename = filename.substring(0, dotIndex) + ".mtl";
-		}
+		String filename = dataset.getFieldFromFields("modell3d.DateinameMTL");
 		final String pathname = basePath + modelPath + filename;
 		final File materialFile = new File(pathname);
 
@@ -381,17 +380,17 @@ public class Model3DController {
 	/**
 	 * Reads an image file from disc.
 	 * @param dataset The dataset of interest.
-	 * @param textureName The filename of the image file.
+	 * @param texturePath The path of the image file.
 	 * @return The image data as <code>byte</code> array or <code>null</code> on failure.
 	 */
-	private byte[] getTextureData(final Dataset dataset, final String textureName) {
+	private byte[] getTextureData(final Dataset dataset, final String texturePath) {
 		String modelPath = dataset.getFieldFromFields("modell3d.Pfad");
 		if (!modelPath.endsWith("/")) {
 			modelPath += "/";
 		}
 
-		final String pathname = basePath + modelPath + "texture/" + textureName;
-		final File textureFile = new File(pathname);
+		final String fullPath = basePath + modelPath + texturePath;
+		final File textureFile = new File(fullPath);
 
 		if (textureFile.isFile() && textureFile.canRead()) {
 			try {
@@ -400,7 +399,7 @@ public class Model3DController {
 				LOGGER.error("Problem reading material file. Caused by: ", e);
 			}
 		} else {
-			LOGGER.error("Could not read material file: " + pathname);
+			LOGGER.error("Could not read material file: " + fullPath);
 		}
 		return null;
 	}
