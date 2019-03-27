@@ -1,5 +1,7 @@
 package de.uni_koeln.arachne.export;
 
+import com.openhtmltopdf.extend.FSSupplier;
+import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.W3CDom;
@@ -8,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 
@@ -42,13 +45,21 @@ public abstract class BasePdfConverter<T> extends AbstractDataExportConverter<T>
         return htmlConverter;
     }
 
+
     protected void writePdf(Writer inStream, OutputStream outStream) {
 
         final Document w3cDoc = convertStringToDocument(inStream.toString());
 
         try {
             final PdfRendererBuilder pdfBuilder = new PdfRendererBuilder();
-            pdfBuilder.withW3cDocument(w3cDoc, "/");
+            final String baseUrl = "file:" + servletContext.getRealPath("/WEB-INF/dataexport");
+            pdfBuilder.withW3cDocument(w3cDoc, baseUrl);
+            pdfBuilder.useFont(new FSSupplier<InputStream>() {
+                @Override
+                public InputStream supply() {
+                    return this.getClass().getResourceAsStream("/WEB-INF/dataexport/SourceSansPro-Regular.ttf");
+                }
+            }, "source-sans", 700, BaseRendererBuilder.FontStyle.NORMAL, false);
             pdfBuilder.toStream(outStream);
             pdfBuilder.run();
         } catch (Exception e) {

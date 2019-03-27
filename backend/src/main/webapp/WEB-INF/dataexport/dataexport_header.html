@@ -7,14 +7,15 @@
     <style>
 
         @font-face {
-            font-family: 'Source Sans Pro';
+            font-family: 'source-sans';
             font-style: normal;
             font-weight: 400;
-            src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular');
+            src: url(dataexport/SourceSansPro-Regular.ttf);
+            -fs-font-subset: complete-font;
         }
 
         body {
-            font-family: 'Source Sans Pro',Arial,Helvetica, sans-serif;
+            font-family: 'source-sans', Arial, Helvetica, sans-serif;
             background: silver;
         }
 
@@ -369,7 +370,7 @@
             }
 
             .page-header {
-                border-radius: 0
+                border-radius: 0;
                 page-break-after: avoid;
             }
 

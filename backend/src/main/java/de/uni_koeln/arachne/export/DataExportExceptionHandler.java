@@ -18,7 +18,7 @@ public class DataExportExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
         String msg = "data_export_" + ex.type;
-        msg += (!ex.untranslatableContent.equals("")) ? "|" + ex.untranslatableContent : "";
+        msg += ((ex.untranslatableContent != null) && !ex.untranslatableContent.equals("")) ? "|" + ex.untranslatableContent : "";
         return new ResponseEntity<>(msg, headers, ex.getHttpStatus());
     }
 
