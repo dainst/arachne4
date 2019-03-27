@@ -368,7 +368,7 @@ public class TestExport {
         converter.convert(conversion, out);
         final byte[] pdf = out.toByteArray();
 
-        assertEquals(4L, (long) pdfHelper.countPages(pdf));
+        assertEquals(5L, (long) pdfHelper.countPages(pdf));
 
         final String[] page1 = parseLines(pdfHelper.stripText(pdf, 1));
         final String[] page2 = parseLines(pdfHelper.stripText(pdf, 2));
