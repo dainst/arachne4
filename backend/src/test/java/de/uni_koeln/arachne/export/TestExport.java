@@ -187,10 +187,17 @@ public class TestExport {
         final String[] lines = str.split(System.lineSeparator());
 
         for (int i = 0; i < lines.length; i++) {
-            lines[i] = lines[i].replaceAll("\\p{C}", "");
+            lines[i] = cleanString(lines[i]);
         }
 
         return lines;
+    }
+
+    private String cleanString(String s) {
+        return s
+                .replaceAll("\\p{C}", "") // removes non-printable characters
+                .replaceAll("[\u202F\u00A0]", " ") // replaces narrow white spaces by normal
+                .replaceAll("\\p{Pd}", "-"); // normalize dashes
     }
 
     @Before
