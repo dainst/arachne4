@@ -12,7 +12,7 @@ import de.uni_koeln.arachne.response.link.SimpleExternalLinkResolver;
 
 /**
  * Configuration for the <code>ExternalLinkResolver</code> beans.
- * 
+ *
  * @author Reimar Grabowski
  */
 @Configuration
@@ -37,7 +37,7 @@ public class ExternalLinkResolvers {
 
 	/**
 	 * Resolver for 3D model viewer links.
-	 * 
+	 *
 	 * @return The link resolver.
 	 */
 	@Bean
@@ -54,7 +54,7 @@ public class ExternalLinkResolvers {
 
 	/**
 	 * Resolver for TEI-viewer links (books).
-	 * 
+	 *
 	 * @return The link resolver.
 	 */
 	@Bean
@@ -68,26 +68,10 @@ public class ExternalLinkResolvers {
 		result.setPatternFields(Arrays.asList("buch.Verzeichnis"));
 		return result;
 	}
-	
-	/**
-	 * Resolver for TEI-viewer links (books).
-	 * 
-	 * @return The link resolver.
-	 */
-	@Bean
-	public SimpleExternalLinkResolver teiViewerPage() {
-		final SimpleExternalLinkResolver result = new SimpleExternalLinkResolver();
-		result.setLabel("TEI-Viewer");
-		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "buchseite");
-		result.setCriteria(criteria);
-		result.setLinkPattern("https://arachne.uni-koeln.de/Tei-Viewer/cgi-bin/teiviewer.php?scan=%s");
-		result.setPatternFields(Arrays.asList("Thumbnail.Subtitle"));
-		return result;
-	}
-	
+
 	/**
 	 * Resolver for DFG-viewer links.
-	 * 
+	 *
 	 * @return The link resolver.
 	 */
 	@Bean
@@ -103,10 +87,10 @@ public class ExternalLinkResolvers {
 		result.setPatternFields(Arrays.asList("Dataset.internalId"));
 		return result;
 	}
-	
+
 	/**
 	 * Resolver for Sarkophagbrowser links.
-	 * 
+	 *
 	 * @return The link resolver.
 	 */
 	@Bean
@@ -123,10 +107,10 @@ public class ExternalLinkResolvers {
 		result.setExactMatch(false);
 		return result;
 	}
-	
+
 	/**
 	 * Resolver for Pergamon Altar browser links.
-	 * 
+	 *
 	 * @return The link resolver.
 	 */
 	@Bean
@@ -145,10 +129,10 @@ public class ExternalLinkResolvers {
 		result.setPatternFields(Arrays.asList("Dataset.internalId", "Dataset.TableName"));
 		return result;
 	}
-	
+
 	/**
 	 * Resolver for Siegel browser links.
-	 * 
+	 *
 	 * @return The link resolver.
 	 */
 	@Bean
@@ -162,10 +146,10 @@ public class ExternalLinkResolvers {
 		result.setPatternFields(Arrays.asList("Dataset.internalId"));
 		return result;
 	}
-	
+
 	/**
 	 * Resolver for trajan column browser links.
-	 * 
+	 *
 	 * @return The link resolver.
 	 */
 	@Bean
@@ -182,10 +166,10 @@ public class ExternalLinkResolvers {
 		result.setLinkPattern("https://arachne.uni-koeln.de/browser/?view[layout]=Trajan_item&relief_nr=01");
 		return result;
 	}
-	
+
 	/**
 	 * Resolver for Mercator browser links.
-	 * 
+	 *
 	 * @return The link resolver.
 	 */
 	@Bean
@@ -201,10 +185,10 @@ public class ExternalLinkResolvers {
 		result.setExactMatch(false);
 		return result;
 	}
-	
+
 	/**
 	 * Resolver for Maffeiano browser links.
-	 * 
+	 *
 	 * @return The link resolver.
 	 */
 	// TODO: not working since criteria cannot be found in the context
@@ -222,7 +206,7 @@ public class ExternalLinkResolvers {
 		result.setMatchAllCriteria(true);
 		return result;
 	}
-	
+
 	// TODO implement Clarac browser link resolver
 	// is the link pattern correct?
 	/*<!-- resolver for links to the clarac browser -->
@@ -237,7 +221,7 @@ public class ExternalLinkResolvers {
 		<property name="linkPattern" value="http://arachne.uni-koeln.de/browser/maffeiano_index.php?view[layout]=Maffeiano_page&Maffeiano[search][PS_WebseiteID]=%s" />
 		<property name="patternFields">
 			<list>
-				<value>literaturzitat.FS_WebseiteID</value>	
+				<value>literaturzitat.FS_WebseiteID</value>
 			</list>
 		</property>
 	</bean>*/
