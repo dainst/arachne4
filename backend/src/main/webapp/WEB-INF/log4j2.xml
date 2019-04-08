@@ -65,7 +65,7 @@
 
         <!-- Application Logger -->
         <logger name="de.uni_koeln.arachne" level="info" />
-        <logger name="de.uni_koeln.arachne.controller" level="debug" />
+        <logger name="de.uni_koeln.arachne.controller" level="info" />
         <logger name="de.uni_koeln.arachne.service" level="info" />
         <logger name="de.uni_koeln.arachne.dao" level="info" />
 
@@ -83,8 +83,8 @@
             <AppenderRef ref="DataIntegrity" />
         </Logger> -->
 
-        <Root  level="info">
-            <AppenderRef ref="CONSOLE" />
+        <Root level="info">
+            <AppenderRef ref="ROLLING" />
 
         </Root>
 
