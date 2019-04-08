@@ -14,7 +14,12 @@
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
             </Policies>
-            <DefaultRolloverStrategy max="5" />
+            <DefaultRolloverStrategy>
+                <Delete basePath="/var/log/arachne/arachnedataservice/">
+                    <IfFileName glob="dataservice-*.log" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
         </RollingFile>
         <RollingFile name="Profile"
                      fileName="/var/log/arachne/arachnedataservice/profile.log"
@@ -23,7 +28,12 @@
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
             </Policies>
-            <DefaultRolloverStrategy max="5" />
+            <DefaultRolloverStrategy>
+                <Delete basePath="/var/log/arachne/arachnedataservice/">
+                    <IfFileName glob="profile-*.log" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
         </RollingFile>
         <RollingFile name="DataIntegrity"
                      fileName="/var/log/arachne/arachnedataservice/data_integrity.log"
@@ -41,7 +51,12 @@
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
             </Policies>
-            <DefaultRolloverStrategy max="5" />
+            <DefaultRolloverStrategy>
+                <Delete basePath="/var/log/arachne/arachnedataservice/">
+                    <IfFileName glob="data_export-*.log" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
         </RollingFile>
     </Appenders>
 
