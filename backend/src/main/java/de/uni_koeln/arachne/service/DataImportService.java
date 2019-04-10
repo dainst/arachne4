@@ -167,7 +167,7 @@ public class DataImportService { // NOPMD
 				}
 			}
 			final BulkProcessorListener listener = new BulkProcessorListener();
-			
+
 			@SuppressWarnings("resource")
 			final BulkProcessor bulkProcessor = BulkProcessor.builder(client, listener)
 					.setBulkActions(esService.getBulkActions())
@@ -195,7 +195,7 @@ public class DataImportService { // NOPMD
 				throw new Exception("'select count(*) `ArachneEntityID` from `arachneentityidentification` where `isDeleted` = 0' returned 0");
 			}
 
-			long startId = 0;
+			long startId = 838;
 			long lastDocuments = 0;
 			List<ArachneEntity> entityIds;
 			dataimport:
