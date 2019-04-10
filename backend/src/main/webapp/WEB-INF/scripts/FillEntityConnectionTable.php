@@ -190,21 +190,6 @@ fclose($GLOBALS["InserCSVhandle"]);
 
 echo "successfully imported csv file";
 
-// save number of connections per entity in arachneentitydegrees
-$sql = "DROP TABLE IF EXISTS arachneentitydegrees";
-mysql_query($sql) or die ('Error: '.mysql_error ());
-$sql = "CREATE TABLE arachneentitydegrees (
-  ArachneEntityID bigint(20) NOT NULL,
-  Degree int(11) NOT NULL,
-  PRIMARY KEY (ArachneEntityID),
-  KEY Degree (Degree)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores the number of connections for each entity';";
-mysql_query($sql) or die ('Error: '.mysql_error ());
-$sql = "INSERT INTO arachneentitydegrees SELECT Source, COUNT(*) FROM SemanticConnection GROUP BY Source";
-mysql_query($sql) or die ('Error: '.mysql_error ());
-
-echo  "END : ".date("D M j G:i:s T Y"). "  \n";
-
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!END MAIN FUNCTION!!!!!!!!!!!!!!!!!!!!
 

@@ -12,7 +12,6 @@ public class TestSQLToolbox {
 		// test build in exceptions
 		assertEquals("PS_MARBilderID", SQLToolbox.generatePrimaryKeyName("marbilder"));
 		assertEquals("zenonid", SQLToolbox.generatePrimaryKeyName("zenon"));
-		assertEquals("ArachneEntityID", SQLToolbox.generatePrimaryKeyName("arachneentitydegrees"));
 		// test standard
 		assertEquals("PS_TestID", SQLToolbox.generatePrimaryKeyName("test"));
 		// Test standard (from cache)

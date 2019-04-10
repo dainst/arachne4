@@ -13,7 +13,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="arachneentityidentification")
-@SecondaryTables({@SecondaryTable(name="arachneentitydegrees")})
 public class ArachneEntity {
 	
 	/**

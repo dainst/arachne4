@@ -144,24 +144,11 @@ public class TestCatalogData {
 				+ "ArachneEntityID, TableName, ForeignKey, isDeleted)"
 				+ "VALUES"
 				+ "(667,'TestTable',2,0);");
-		
-		jdbcTemplate.execute("CREATE TABLE arachneentitydegrees("
-				+ "ArachneEntityID BIGINT(20) NOT NULL,"
-				+ "Degree INT(11) NOT NULL)");
-		jdbcTemplate.execute("INSERT INTO arachneentitydegrees("
-				+ "ArachneEntityID, Degree)"
-				+ "VALUES"
-				+ "(666,4);");
-		jdbcTemplate.execute("INSERT INTO arachneentitydegrees("
-				+ "ArachneEntityID, Degree)"
-				+ "VALUES"
-				+ "(667,5);");
 		return this;
 	}
 	
 	public TestCatalogData tearDownArachneEntityIdentification() throws DataAccessException {
 		jdbcTemplate.execute("DROP TABLE arachneentityidentification;");
-		jdbcTemplate.execute("DROP TABLE arachneentitydegrees;");
 		return this;
 	}
 }
