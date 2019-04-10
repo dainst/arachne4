@@ -62,7 +62,6 @@ public class EntityId {
 		this.tableName = entity.getTableName();
 		this.internalKey = entity.getForeignKey();
 		this.deleted = entity.isDeleted();
-		this.degree = entity.getDegree();
 	}
 	
 	/**
@@ -90,12 +89,6 @@ public class EntityId {
 	@XmlElement
 	public boolean isDeleted() {
 		return deleted;
-	}
-
-	@XmlElement
-	@JsonIgnore
-	public Long getDegree() {
-		return degree;
 	}
 	
 	@Override

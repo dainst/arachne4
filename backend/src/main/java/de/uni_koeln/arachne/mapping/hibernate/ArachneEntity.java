@@ -41,14 +41,7 @@ public class ArachneEntity {
 	 * This is used to keep URLs persistent even if the corresponding data record has been deleted.  
 	 */
 	@Column(name="isDeleted")
-	boolean isDeleted; 
-	
-	/**
-	 * This field is joined from the table "aracheentitydegrees". It is a measure for how many entities this entity is 
-	 * connected to.
-	 */
-	@Column(table="arachneentitydegrees", name="Degree")
-	Long degree = null;
+	boolean isDeleted;
 	
 	/**
 	 * The returns the Unique Arachne Identifier.
@@ -80,13 +73,5 @@ public class ArachneEntity {
 	 */
 	public boolean isDeleted() {
 		return isDeleted;
-	}
-	
-	/**
-	 * Check if the Dataset is Deleted.
-	 * @return true or False
-	 */
-	public Long getDegree() {
-		return degree;
 	}
 }
