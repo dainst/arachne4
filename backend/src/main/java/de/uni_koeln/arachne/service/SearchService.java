@@ -780,7 +780,7 @@ public class SearchService {
 		}
 
 		final ScriptScoreFunctionBuilder scoreFunction = ScoreFunctionBuilders
-				.scriptFunction(new Script("doc['boost'].value", ScriptService.ScriptType.INLINE, "expression", null));
+				.scriptFunction(new Script("doc['boost'].value || 1", ScriptService.ScriptType.INLINE, "expression", null));
 		final QueryBuilder query = QueryBuilders.functionScoreQuery(filteredQuery, scoreFunction).boostMode("multiply");
 
 		LOGGER.debug("Elastic search query part: " + query.toString());
