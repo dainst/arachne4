@@ -195,7 +195,7 @@ public class DataImportService { // NOPMD
 				throw new Exception("'select count(*) `ArachneEntityID` from `arachneentityidentification` where `isDeleted` = 0' returned 0");
 			}
 
-			long startId = 838;
+			long startId = 0;
 			long lastDocuments = 0;
 			List<ArachneEntity> entityIds;
 			dataimport:
