@@ -29,6 +29,7 @@ import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
+import org.elasticsearch.index.query.functionscore.fieldvaluefactor.FieldValueFactorFunctionBuilder;
 import org.elasticsearch.index.query.functionscore.script.ScriptScoreFunctionBuilder;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.script.Script;
@@ -779,8 +780,9 @@ public class SearchService {
 		    }
 		}
 
-		final ScriptScoreFunctionBuilder scoreFunction = ScoreFunctionBuilders
-				.scriptFunction(new Script("doc['boost'].value || 1", ScriptService.ScriptType.INLINE, "expression", null));
+		final FieldValueFactorFunctionBuilder scoreFunction = ScoreFunctionBuilders
+				.fieldValueFactorFunction("boost")
+				.missing(1);
 		final QueryBuilder query = QueryBuilders.functionScoreQuery(filteredQuery, scoreFunction).boostMode("multiply");
 
 		LOGGER.debug("Elastic search query part: " + query.toString());
