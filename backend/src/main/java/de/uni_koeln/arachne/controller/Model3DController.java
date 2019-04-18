@@ -192,7 +192,7 @@ public class Model3DController {
 	@RequestMapping(value = "/model/material/{modelId}/**",
 			method = RequestMethod.GET,
 			produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
-	public @ResponseBody ResponseEntity<byte[]> handleModelRequest(@PathVariable("modelId") final Long modelId
+	public @ResponseBody ResponseEntity<byte[]> handleTextureRequest(@PathVariable("modelId") final Long modelId
 			, final HttpServletRequest request
 			, final HttpServletResponse response) {
 
@@ -214,6 +214,20 @@ public class Model3DController {
 		final HttpHeaders responseHeaders = new HttpHeaders();
 	    responseHeaders.add("Content-Type", mimeType + "; charset=utf-8");
 		return new ResponseEntity<byte[]>(textureData, responseHeaders, HttpStatus.OK);
+	}
+
+	@RequestMapping(value="/model/file/**", method=RequestMethod.GET)
+	public @ResponseBody ResponseEntity<byte[]> handleModelFileRequest(
+			final HttpServletRequest request,
+			final HttpServletResponse response) {
+
+		String requestURL = request.getRequestURL().toString();
+		final HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "application/octet-stream");
+		String filePath = requestURL.split("/model/file/")[1];
+
+		final byte[] fileData = getFileData(filePath);
+		return new ResponseEntity<>(fileData, HttpStatus.OK);
 	}
 
 	private ResponseEntity<String> buildMetadataResponse(Dataset dataset) {
@@ -291,6 +305,8 @@ public class Model3DController {
 		result.put("format", dataset.getFieldFromFields("modell3d.Dateiformat"));
 		result.put("modeller", dataset.getFieldFromFields("modell3d.Modellierer"));
 		result.put("license", dataset.getFieldFromFields("modell3d.Lizenz"));
+		result.put("path", dataset.getFieldFromFields("modell3d.Pfad"));
+		result.put("fileName", dataset.getFieldFromFields("modell3d.Dateiname"));
 		return result.toString();
 	}
 
@@ -388,18 +404,22 @@ public class Model3DController {
 		if (!modelPath.endsWith("/")) {
 			modelPath += "/";
 		}
+		return getFileData(modelPath + texturePath);
+	}
 
-		final String fullPath = basePath + modelPath + texturePath;
-		final File textureFile = new File(fullPath);
+	private byte[] getFileData(final String filePath) {
 
-		if (textureFile.isFile() && textureFile.canRead()) {
+		final String fullPath = basePath + '/' + filePath;
+		final File file = new File(fullPath);
+
+		if (file.isFile() && file.canRead()) {
 			try {
-				return Files.toByteArray(textureFile);
+				return Files.toByteArray(file);
 			} catch (IOException e) {
-				LOGGER.error("Problem reading material file. Caused by: ", e);
+				LOGGER.error("Problem reading file. Caused by: ", e);
 			}
 		} else {
-			LOGGER.error("Could not read material file: " + fullPath);
+			LOGGER.error("Could not read file: " + fullPath);
 		}
 		return null;
 	}
