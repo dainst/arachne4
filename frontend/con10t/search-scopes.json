@@ -276,7 +276,7 @@
     "alias": "syrher"
   },
   "teheran_digital": {
-    "q": "Teheran Digital"
+    "q": "(\"Teheran Digital\" OR images.imageSubtitle:D-DAI-EUR-TEH*)"
   },
   "widgetsdemo": {
     "q": "spirit"
