@@ -541,6 +541,13 @@
             "de": "Casa del Fauno"
           },
           "hidden": true
+        },
+        {
+          "id": "palmyragis",
+          "title": {
+            "de": "Palmyra GIS - Digitaler Kulturerhalt in Syrien"
+          },
+          "hidden": true
         }
       ]
     },
