@@ -312,11 +312,10 @@
         {
           "id": "hinkel",
           "title": {
-            "de": "Hinkel",
-            "en": "Hinkel",
+            "de": "Das Archiv von Friedrich W. Hinkel",
+            "en": "The Archive of Friedrich W. Hinkel",
             "ar": "أرشيف فريدريخ ڤ. هِنكل بشكلٍ رقمي"
-          },
-          "hidden": true
+          }
         },
         {
           "id": "hinkel_ams",
@@ -387,6 +386,13 @@
             "de": "Münchener Abguss Sammlung",
             "en": "Plaster Cast Collection Munich"
           }
+        },
+        {
+            "id": "teheran_digital",
+            "title": {
+              "de": "Das Archiv der Außenstelle Teheran des Deutschen Archäologischen Instituts",
+              "en": "The Archive of the Tehran branch of the German Archaeological Institute"
+            }
         }
       ]
     },
@@ -437,7 +443,7 @@
             "fr": "Fonds Friedrich Rakob"
           },
           "hidden": true
-          }, 
+          },
         {
           "id": "analysearachne",
           "title": {
@@ -533,6 +539,13 @@
           "id": "casadelfauno",
           "title": {
             "de": "Casa del Fauno"
+          },
+          "hidden": true
+        },
+        {
+          "id": "palmyra-gis",
+          "title": {
+            "de": "Palmyra GIS - Digitaler Kulturerhalt in Syrien"
           },
           "hidden": true
         }
