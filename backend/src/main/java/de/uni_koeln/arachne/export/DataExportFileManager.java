@@ -87,6 +87,7 @@ public class DataExportFileManager {
             final File file = new File(getFileName(task));
             @SuppressWarnings("resource")
 			final FileOutputStream fileOutputStream = new FileOutputStream(file);
+            file.getParentFile().mkdirs();
             file.createNewFile();
             task.perform(fileOutputStream);
             fileOutputStream.flush();
