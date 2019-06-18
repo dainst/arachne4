@@ -198,7 +198,7 @@ public class IIPService {
 		try {
 			image = Files.readAllBytes(path);
 		} catch (IOException e) {
-			LOGGER.warn("Failed to load image '" + path.toString() + "' from cache. Cause: " + e.getMessage());
+			LOGGER.debug("Failed to load image '" + path.toString() + "' from cache. Cause: " + e.getMessage());
 		}
 		return image;
 	}
