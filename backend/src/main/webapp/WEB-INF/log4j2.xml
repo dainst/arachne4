@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
 <Configuration>
-    <!-- Appenders -->
     <Appenders>
         <Console name="CONSOLE" target="SYSTEM_OUT">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
@@ -58,55 +57,50 @@
                 </Delete>
             </DefaultRolloverStrategy>
         </RollingFile>
+        <RollingFile name="IIPService"
+                     fileName="/var/log/arachne/arachnedataservice/iip_service.log"
+                     filePattern="/var/log/arachne/arachnedataservice/iip_service-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10240KB" />
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="/var/log/arachne/arachnedataservice/">
+                    <IfFileName glob="iip_service-*.log" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
     </Appenders>
 
-    <!--
-    <!- 3rdparty Loggers ->
-    <logger name="org.springframework.core">
-        <level value="info" />
-    </logger>
-    <logger name="org.springframework.beans">
-        <level value="info" />
-    </logger>
-    <logger name="org.springframework.context">
-        <level value="info" />
-    </logger>
-    -->
-
-    <!-- Root Logger -->
     <Loggers>
-        <!-- Spring Web Logger -->
+
         <logger name="org.springframework.web" level="info" />
 
-        <!-- Application Logger -->
         <logger name="de.uni_koeln.arachne" level="info" />
         <logger name="de.uni_koeln.arachne.controller" level="info" />
         <logger name="de.uni_koeln.arachne.service" level="info" />
         <logger name="de.uni_koeln.arachne.dao" level="info" />
 
-        <!-- elasticsearch logger -->
         <logger name="org.elasticsearch" level="info" />
-
-        <!-- Hikari logger -->
         <logger name="com.zaxxer.hikari" level="info" />
 
-        <!-- <Logger name="Profiling" additivity="false">
-            <AppenderRef ref="Profile" />
-        </Logger>
-
-        <Logger name="DataIntegrityLogger" additivity="false">
-            <AppenderRef ref="DataIntegrity" />
-        </Logger> -->
-
         <Root level="info">
-            <AppenderRef ref="CONSOLE" />
-
+	        <AppenderRef ref="ROLLING" />
         </Root>
 
-        <!-- data export logging -->
+        <Logger name="Profiling" additivity="false">
+            <AppenderRef ref="Profile" />
+        </Logger>
+        <Logger name="DataIntegrityLogger" additivity="false">
+            <AppenderRef ref="DataIntegrity" />
+        </Logger>
         <logger name="DataExportLogger" level="info">
-            <level value="info" />
             <AppenderRef ref="DataExport" />
+        </logger>
+
+        <logger name="de.uni_koeln.arachne.service.IIPService" level="info">
+            <AppenderRef ref="IIPService" />
         </logger>
 
     </Loggers>
