@@ -126,6 +126,9 @@
 					<field datasource="objekt.Materialbeschreibung" />
 					<field datasource="objekt.MaterialBemerkung" prefix="Bemerkung: " />
 				</section>
+				<section labelKey="Typ">
+					<field datasource="objekt.TypSpeziell" />
+				</section>
 				<section labelKey="Erhaltung">
 					<field datasource="objekt.Erhaltung" />
 					<field datasource="objekt.Erhaltungszustand" />
@@ -901,6 +904,9 @@
 		</facet>
 		<facet name="erhaltung" labelKey="Erhaltung">
 			<field datasource="objekt.Erhaltung" />
+		</facet>
+		<facet name="funktion" labelKey="Typ">
+			<field datasource="objekt.TypSpeziell" />
 		</facet>
 		<facet name="funktion" labelKey="Allgemeine Funktion" group="funktion">
 			<field datasource="objekt.Funktion" />
