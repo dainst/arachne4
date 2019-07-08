@@ -462,7 +462,8 @@
           "id": "preussdenk",
           "title": {
             "de": "Die preußische Denkmalpflege in der Provinz Brandenburg/Berlin"
-          }
+          },
+          "hidden": true
         },
         {
           "id": "carare",
