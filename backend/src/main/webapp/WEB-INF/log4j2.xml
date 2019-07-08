@@ -71,6 +71,20 @@
                 </Delete>
             </DefaultRolloverStrategy>
         </RollingFile>
+        <RollingFile name="UserManagement"
+		             fileName="/var/log/arachne/arachnedataservice/user_management.log"
+                     filePattern="/var/log/arachne/arachnedataservice/user_management-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10240KB" />
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="/var/log/arachne/arachnedataservice/">
+                    <IfFileName glob="user_management-*.log" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
     </Appenders>
 
     <Loggers>
@@ -101,6 +115,10 @@
 
         <logger name="de.uni_koeln.arachne.service.IIPService" level="info" additivity="false">
             <AppenderRef ref="IIPService" />
+        </logger>
+
+        <logger name="de.uni_koeln.arachne.controller.UserManagementController" level="info" additivity="false">
+            <AppenderRef ref="UserManagement" />
         </logger>
 
     </Loggers>
