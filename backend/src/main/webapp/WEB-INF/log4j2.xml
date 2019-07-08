@@ -95,11 +95,11 @@
         <Logger name="DataIntegrityLogger" additivity="false">
             <AppenderRef ref="DataIntegrity" />
         </Logger>
-        <logger name="DataExportLogger" level="info">
+        <logger name="DataExportLogger" level="info" additivity="false">
             <AppenderRef ref="DataExport" />
         </logger>
 
-        <logger name="de.uni_koeln.arachne.service.IIPService" level="info">
+        <logger name="de.uni_koeln.arachne.service.IIPService" level="info" additivity="false">
             <AppenderRef ref="IIPService" />
         </logger>
 
