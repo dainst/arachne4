@@ -218,7 +218,15 @@ public class DataImportService { // NOPMD
 					LOGGER.debug("Get EntityID: " + entityId.toString());
 					byte[] jsonEntity;
 					if (!entityId.isDeleted()) {
-						jsonEntity = entityService.getFormattedEntityByIdAsJson(entityId, "de");
+						int i = 0;
+						int maxRetries = 3;
+						do {
+							if (i > 0) {
+								LOGGER.warn("Retrying to fetch formatted Entity...");
+							}
+							jsonEntity = entityService.getFormattedEntityByIdAsJson(entityId, "de");
+							i++;
+						} while (jsonEntity == null && i < maxRetries);
 						if (jsonEntity == null) {
 							LOGGER.error("Entity " + dbgEntityId + " is null! This should never happen. Check the database immediately.");
 							bulkProcessor.close();
