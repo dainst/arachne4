@@ -200,12 +200,10 @@ public class DataImportService { // NOPMD
 			List<ArachneEntity> entityIds;
 			dataimport:
 			do {
-				LOGGER.debug("Fetching " + ID_LIMIT + " EntityIds [" + startId + "] ...");
+				LOGGER.info("Fetching " + ID_LIMIT + " EntityIds [" + startId + "] ...");
 				entityIds = entityIdentificationService.getByLimitedEntityIdRange(startId, ID_LIMIT);
 
-				LOGGER.debug("Starting FOR loop...");
 				for (final ArachneEntity currentEntityId: entityIds) {
-
 					startId = currentEntityId.getEntityId();
 
 					if (terminate) {
@@ -213,12 +211,11 @@ public class DataImportService { // NOPMD
 						break dataimport;
 					}
 
-					LOGGER.debug("Get ID: " + currentEntityId.getEntityId());
 					//final EntityId entityId = entityIdentificationService.getId(currentEntityId);
 					final EntityId entityId = new EntityId(currentEntityId);
 					dbgEntityId = entityId.getArachneEntityID();
 
-					LOGGER.debug("Creating response");
+					LOGGER.debug("Get EntityID: " + entityId.toString());
 					byte[] jsonEntity;
 					if (!entityId.isDeleted()) {
 						jsonEntity = entityService.getFormattedEntityByIdAsJson(entityId, "de");
@@ -238,7 +235,6 @@ public class DataImportService { // NOPMD
 						}
 					}
 
-					LOGGER.debug("Update elapsed time");
 					// update elapsed time every second
 					final long now = System.currentTimeMillis();
 					final long lastStep = now - deltaT;
