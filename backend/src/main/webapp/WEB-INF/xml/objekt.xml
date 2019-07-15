@@ -145,6 +145,7 @@
 					<field datasource="objekt.DurchmesserGesamt" prefix="Durchmesser: " postfix=" cm" />
 					<field datasource="objekt.GewichtGesamt" prefix="Gewicht: " />
 					<field datasource="objekt.ObjektMaszeBemerk" prefix="Bemerkung: " />
+					<field datasource="objekt.ZusaetzlicheMasze" prefix="Weitere Maßangaben: " />
 				</section>
 				<section labelKey="Restauration und Analyse">
 					<field datasource="objekt.RekoObjekt" />
