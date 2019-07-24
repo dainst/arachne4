@@ -741,7 +741,14 @@
             "de": "North Africa Heritage Archive"
           },
           "hidden": true
-        }
+        },
+        {
+          "id": "kaak16",
+          "title": {
+            "de": "FAAK 16: Christian Mader, SEA SHELLS IN THE MOUNTAINS AND LLAMAS ON THE COAST"
+          },
+          "hidden": true
+        },
       ]
     },
     {
