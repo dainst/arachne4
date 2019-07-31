@@ -27,6 +27,7 @@
 				<section labelKey="Angaben zum Modell">
 					<field datasource="modell3d.Modellierer" prefix="Modellierer: " />
 					<field datasource="modell3d.Lizenz" prefix="Lizenz: " />
+					<field datasource="modell3d.Modelltyp" prefix="Modelltyp: " />
 				</section>
 			</section>
 		</datasections>

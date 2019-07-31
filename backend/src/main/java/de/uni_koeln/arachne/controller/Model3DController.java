@@ -307,6 +307,7 @@ public class Model3DController {
 		result.put("license", dataset.getFieldFromFields("modell3d.Lizenz"));
 		result.put("path", dataset.getFieldFromFields("modell3d.Pfad"));
 		result.put("fileName", dataset.getFieldFromFields("modell3d.Dateiname"));
+		result.put("modelType", dataset.getFieldFromFields("modell3d.Modelltyp"));
 		return result.toString();
 	}
 
