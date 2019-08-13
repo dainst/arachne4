@@ -93,7 +93,8 @@
         {
           "id": "daiorient",
           "title": {
-            "de": "Fotothek DAI Orientabteilung"
+            "de": "Fotothek DAI Orientabteilung",
+            "en":"Photo archive of the Orient Department"
           }
         }
       ]
@@ -145,7 +146,8 @@
          {
            "id": "athenDigital",
            "title": {
-             "de": "AthenDigital: Das Nachlassarchiv"
+             "de": "AthenDigital: Das Nachlassarchiv",
+             "en": "AthensDigital: Archive of bequests"
           }
         }
       ]
@@ -298,7 +300,8 @@
         {
           "id": "antikeplastik",
           "title": {
-            "de": "Antike Plastik 5.0://"
+            "de": "Antike Plastik 5.0://",
+            "en": "Antike Plastik 5.0://"
           }
         },
         {
@@ -561,7 +564,8 @@
         {
           "id": "wohnkulturOstia",
           "title": {
-            "de": "Wohnkultur im spätantiken Ostia"
+            "de": "Wohnkultur im spätantiken Ostia",
+            "en": "The culture of living in Late Antique Ostia"
           }
         },
         {
