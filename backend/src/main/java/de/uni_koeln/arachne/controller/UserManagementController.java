@@ -98,22 +98,21 @@ public class UserManagementController {
 			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<MappingJacksonValue> getUserInfo(@PathVariable("username") String username) {
 		LOGGER.info("username: {}", username);
-		if (userRightsService.isSignedInUser()) {
-			if (userRightsService.userHasRole(ADMIN)) {
-				User user = userDao.findByName(username);
-				MappingJacksonValue wrapper = new MappingJacksonValue(user);
-				wrapper.setSerializationView(JSONView.Admin.class);
-				return ResponseEntity.ok(wrapper);
+		if (!userRightsService.isSignedInUser())
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		
+		User user = userDao.findByName(username);
+		MappingJacksonValue wrapper = new MappingJacksonValue(user);
+		if (userRightsService.userHasRole(ADMIN)) {
+			wrapper.setSerializationView(JSONView.Admin.class);
+		} else {
+			if (user.getUsername().equals(userRightsService.getCurrentUser().getUsername())) {
+				wrapper.setSerializationView(JSONView.User.class);
 			} else {
-				User currentUser = userRightsService.getCurrentUser();
-				if (currentUser.getUsername().equals(username)) {
-					MappingJacksonValue wrapper = new MappingJacksonValue(currentUser);
-					wrapper.setSerializationView(JSONView.User.class);
-					return ResponseEntity.ok(wrapper);
-				}
+				wrapper.setSerializationView(JSONView.UnprivilegedUser.class);
 			}
 		}
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		return ResponseEntity.ok(wrapper);
 	}
 
 	/**
@@ -125,22 +124,22 @@ public class UserManagementController {
 			method=RequestMethod.GET,
 			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<MappingJacksonValue> getUserInfo(@PathVariable("uid") long uid) {
-		if (userRightsService.isSignedInUser()) {
-			if (userRightsService.userHasRole(ADMIN)) {
-				User user = userDao.findById(uid);
-				MappingJacksonValue wrapper = new MappingJacksonValue(user);
-				wrapper.setSerializationView(JSONView.Admin.class);
-				return ResponseEntity.ok(wrapper);
+		if (!userRightsService.isSignedInUser())
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+
+		User user = userDao.findById(uid);
+		MappingJacksonValue wrapper = new MappingJacksonValue(user);
+
+		if (userRightsService.userHasRole(ADMIN)) {
+			wrapper.setSerializationView(JSONView.Admin.class);
+		} else {
+			if (user.equals(userRightsService.getCurrentUser())) {
+				wrapper.setSerializationView(JSONView.User.class);
 			} else {
-				User currentUser = userRightsService.getCurrentUser();
-				if (currentUser.equals(userDao.findById(uid))) {
-					MappingJacksonValue wrapper = new MappingJacksonValue(currentUser);
-					wrapper.setSerializationView(JSONView.User.class);
-					return ResponseEntity.ok(wrapper);
-				}
+				wrapper.setSerializationView(JSONView.UnprivilegedUser.class);
 			}
 		}
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		return ResponseEntity.ok(wrapper);
 	}
 
 	/**

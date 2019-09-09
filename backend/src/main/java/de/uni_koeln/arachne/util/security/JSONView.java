@@ -7,6 +7,7 @@ package de.uni_koeln.arachne.util.security;
  *
  */
 public class JSONView {
-	public static class User{}
+	public static class UnprivilegedUser {}
+	public static class User extends UnprivilegedUser{}
 	public static class Admin extends User{}
 }

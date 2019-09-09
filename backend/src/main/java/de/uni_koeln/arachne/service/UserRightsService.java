@@ -324,11 +324,13 @@ public class UserRightsService {
 					Class<?> viewClass = jsonView.value()[0];
 					boolean acccessGranted = false;
 					if (userHasRole(ADMIN)) {
-						acccessGranted = viewClass.equals(JSONView.User.class)
-								|| viewClass.equals(JSONView.Admin.class);
+						acccessGranted = viewClass.equals(JSONView.User.class) || 
+										 viewClass.equals(JSONView.Admin.class) ||
+										 viewClass.equals(JSONView.UnprivilegedUser.class);
 					} else {
 						if (userHasRole(role)) {
-							acccessGranted = viewClass.equals(JSONView.User.class);
+							acccessGranted = viewClass.equals(JSONView.UnprivilegedUser.class) ||
+											 viewClass.equals(JSONView.User.class);
 						}
 					}
 					if (acccessGranted) {

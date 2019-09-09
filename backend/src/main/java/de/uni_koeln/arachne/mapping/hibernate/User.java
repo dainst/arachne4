@@ -54,7 +54,7 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * This is the Primary key
 	 */
-	@JsonView(JSONView.User.class)
+	@JsonView(JSONView.UnprivilegedUser.class)
 	@UserAccess(UserAccess.Restrictions.writeprotected)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,7 +64,7 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * GroupID
 	 */
-	@JsonView(JSONView.User.class)
+	@JsonView(JSONView.UnprivilegedUser.class)
 	@Column(name = "gid")
 	private String groupID;
 
@@ -80,7 +80,7 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * In Which Table the Connection is Stored
 	 */
-	@JsonView(JSONView.User.class)
+	@JsonView(JSONView.UnprivilegedUser.class)
 	@Column(name = "username")
 	private String username;
 
