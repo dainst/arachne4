@@ -50,7 +50,8 @@
             {
               "id": "fotoromcategories",
               "title": {
-                "de": "Die Kategorien der Fotothek des DAI Rom"
+                "de": "Die Kategorien der Fotothek des DAI Rom",
+                "en": "Categories of the DAI Rome's photo archive"
               }
             },
             {
@@ -93,7 +94,8 @@
         {
           "id": "daiorient",
           "title": {
-            "de": "Fotothek DAI Orientabteilung"
+            "de": "Fotothek DAI Orientabteilung",
+            "en":"Photo archive of the Orient Department"
           }
         }
       ]
@@ -139,13 +141,15 @@
         {
           "id": "gelehrtenbriefe",
           "title": {
-            "de": "Gelehrte, Ausgräber und Kunsthändler"
+            "de": "Gelehrte, Ausgräber und Kunsthändler",
+            "en": "Scholars, Excavators and Art Dealers"
          }
          },
          {
            "id": "athenDigital",
            "title": {
-             "de": "AthenDigital: Das Nachlassarchiv"
+             "de": "AthenDigital: Das Nachlassarchiv",
+             "en": "AthensDigital: Archive of bequests"
           }
         }
       ]
@@ -298,7 +302,8 @@
         {
           "id": "antikeplastik",
           "title": {
-            "de": "Antike Plastik 5.0://"
+            "de": "Antike Plastik 5.0://",
+            "en": "Antike Plastik 5.0://"
           }
         },
         {
@@ -483,7 +488,7 @@
           "id": "rwwa",
           "title": {
             "de": "Rheinisch-Westfälisches Wirtschaftsarchiv",
-            "en": "Foundation of Rhine-Westphalia Economy Archive"
+            "en": "Foundation of the Rhine-Westphalian Economy Archive"
           }
         },
         {
@@ -530,7 +535,9 @@
         {
           "id": "siracusa_citta_e_mura",
           "title": {
-            "de": "Siracusa - La città e le sue mura"
+            "de": "Siracusa - La città e le sue mura",
+            "en": "Siracusa - La città e le sue mura",
+            "it": "Siracusa - La città e le sue mura"
           },
           "hidden": true
         },
@@ -561,7 +568,8 @@
         {
           "id": "wohnkulturOstia",
           "title": {
-            "de": "Wohnkultur im spätantiken Ostia"
+            "de": "Wohnkultur im spätantiken Ostia",
+            "en": "The culture of living in Late Antique Ostia"
           }
         },
         {
@@ -575,7 +583,8 @@
         {
           "id": "kanatha",
           "title": {
-            "de": "Die Heiligtümer in Kanatha"
+            "de": "Die Heiligtümer in Kanatha",
+            "en": "Sanctuaries in Kanatha"
           }
         },
         {
@@ -610,7 +619,8 @@
         {
           "id": "langwiss",
           "title": {
-            "de": "Jörn Lang, “Mit Wissen geschmückt?”. Zur bildlichen Rezeption griechischer Dichter und Denker in der römischen Lebenswelt (Wiesbaden 2012)"
+            "de": "Jörn Lang, “Mit Wissen geschmückt?”. Zur bildlichen Rezeption griechischer Dichter und Denker in der römischen Lebenswelt (Wiesbaden 2012)",
+            "en": "Jörn Lang,Figurative Reception of Greek Poets and Philosophers"
           }
         },
         {
@@ -630,7 +640,8 @@
         {
           "id": "hafen",
           "title": {
-            "de": "Torsten Bendschus – Stefan Feuser, Bilder und Vorstellungen römischer Hafenanlagen. Gattungsübergreifende Dokumentation und kontextualisierte Analyse römischer Hafendarstellungen"
+            "de": "Torsten Bendschus – Stefan Feuser, Bilder und Vorstellungen römischer Hafenanlagen. Gattungsübergreifende Dokumentation und kontextualisierte Analyse römischer Hafendarstellungen",
+            "en": "Torsten Bendschus – Stefan Feuser, Images and Imaginations of Roman Harbors. Documentation and contextualized analysis of Roman harbor depictions"
           }
         },
         {
@@ -643,7 +654,8 @@
         {
           "id": "spornsiegel",
           "title": {
-            "de": "K. Sporn (Hrsg.), Spiegel Europas. Die Antikensammlung im Suermondt-Ludwig-Museum"
+            "de": "K. Sporn (Hrsg.), Spiegel Europas. Die Antikensammlung im Suermondt-Ludwig-Museum",
+            "en": "K. Sporn (ed.), Spiegel Europas. Die Antikensammlung im Suermondt-Ludwig-Museum"
           }
         }
       ]
@@ -676,7 +688,7 @@
               "id": "lippsbasilica",
               "title": {
                 "de": "Palilia 24: Johannes Lipps, Die Basilica Aemilia am Forum Romanum. Der kaiserzeitliche Bau und seine Ornamentik (Diss. Köln 2008)",
-                "en": "Palilia 24: Johannes Lipps, The Basilica Aemilia on the Forum Romanum. The building and its ornamentation in imperial times (Dissertation, Cologne 2008)"
+                "en": "Palilia 24: Johannes Lipps, The Basilica Aemilia on the Forum Romanum. The building and its ornamentation in Imperial times (Dissertation, Cologne 2008)"
               }
             },
             {
@@ -718,7 +730,8 @@
         {
           "id": "pergamenischeforschungen17",
           "title": {
-            "de": "S. Kielau, Terrakotten aus Pergamon. Tonfiguren und -objekte aus der Wohnstadt am Südhang der Akropolis und von weiteren Fundorten, PF 17 (Berlin 2018). Erweiterter Online-Katalog"
+            "de": "S. Kielau, Terrakotten aus Pergamon. Tonfiguren und -objekte aus der Wohnstadt am Südhang der Akropolis und von weiteren Fundorten, PF 17 (Berlin 2018). Erweiterter Online-Katalog",
+            "en":"S. Kielau, Terrakotten aus Pergamon. Tonfiguren und -objekte aus der Wohnstadt am Südhang der Akropolis und von weiteren Fundorten, PF 17 (Berlin 2018). Erweiterter Online-Katalog"
           }
         },
         {
@@ -739,6 +752,13 @@
           "id": "naher",
           "title": {
             "de": "North Africa Heritage Archive"
+          },
+          "hidden": true
+        },
+        {
+          "id": "faak16",
+          "title": {
+            "de": "FAAK 16: Christian Mader, SEA SHELLS IN THE MOUNTAINS AND LLAMAS ON THE COAST"
           },
           "hidden": true
         }
@@ -797,7 +817,8 @@
         {
           "id": "schulzmeer",
           "title": {
-            "de": "J. Schulz, Meerwesen auf römischen Sarkophagen. Ikonographie und Bedeutung"
+            "de": "J. Schulz, Meerwesen auf römischen Sarkophagen. Ikonographie und Bedeutung",
+            "en": "J. Schulz, Sea Creatures on Roman Sarkophagi. Iconography and Meaning"
           }
         }
       ]
