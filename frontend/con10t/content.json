@@ -731,6 +731,14 @@
             "en":"S. Kielau, Terrakotten aus Pergamon. Tonfiguren und -objekte aus der Wohnstadt am Südhang der Akropolis und von weiteren Fundorten, PF 17 (Berlin 2018). Erweiterter Online-Katalog"
           }
         },
+         {
+          "id": "AA_2019_1",
+          "title": {
+            "de" "A. Schachner, Die Ausgrabungen in Boğazköy-Ḫattuša 2018, AA 2019/1, § 1–147. Supplement"
+          },
+          "hidden": true
+
+         },
         {
           "id": "ayamonte",
           "title": {
