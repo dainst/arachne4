@@ -141,7 +141,8 @@
         {
           "id": "gelehrtenbriefe",
           "title": {
-            "de": "Gelehrte, Ausgräber und Kunsthändler"
+            "de": "Gelehrte, Ausgräber und Kunsthändler",
+            "en": "Scholars, Excavators and Art Dealers"
          }
          },
          {
@@ -534,7 +535,9 @@
         {
           "id": "siracusa_citta_e_mura",
           "title": {
-            "de": "Siracusa - La città e le sue mura"
+            "de": "Siracusa - La città e le sue mura",
+            "en": "Siracusa - La città e le sue mura",
+            "it": "Siracusa - La città e le sue mura"
           },
           "hidden": true
         },
