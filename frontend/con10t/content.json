@@ -523,7 +523,7 @@
           "id": "jtfourplace",
           "title": {
             "de": "Our Place: Our Place in the World",
-            "en": "Our Place: Our Place in the Wolrd"
+            "en": "Our Place: Our Place in the World"
           }
         },
         {
@@ -759,6 +759,13 @@
           "id": "faak16",
           "title": {
             "de": "FAAK 16: Christian Mader, SEA SHELLS IN THE MOUNTAINS AND LLAMAS ON THE COAST"
+          },
+          "hidden": true
+        },
+        {
+          "id": "AA_2019_1",
+          "title": {
+            "de": "A. Schachner, Die Ausgrabungen in Boğazköy-Ḫattuša 2018, AA 2019/1, § 1–147. Supplement"
           },
           "hidden": true
         }
