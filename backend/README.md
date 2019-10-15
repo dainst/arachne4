@@ -13,6 +13,8 @@ It should be placed at
 src/main/resources/config/application.properties
 ``` 
 
+Note: The path src/main/resources/config/ does not exist by default. You have to create resources/config as empty folders in src/main first.
+
 Before building or running the backend, 
 make sure you have a `Java 8 SDK` and `maven` installed on your machine.
 
