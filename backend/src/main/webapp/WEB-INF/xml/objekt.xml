@@ -143,7 +143,7 @@
 					<field datasource="objekt.HoeheGesamt" prefix="Höhe: " postfix=" cm" />
 					<field datasource="objekt.TiefeGesamt" prefix="Tiefe: " postfix=" cm" />
 					<field datasource="objekt.DurchmesserGesamt" prefix="Durchmesser: " postfix=" cm" />
-					<field datasource="objekt.GewichtGesamt" prefix="Gewicht: " />
+					<field datasource="objekt.GewichtGesamt" prefix="Gewicht: " postfix= " g"/>
 					<field datasource="objekt.ObjektMaszeBemerk" prefix="Bemerkung: " />
 					<field datasource="objekt.ZusaetzlicheMasze" prefix="Weitere Maßangaben: " />
 				</section>
