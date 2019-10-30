@@ -1,8 +1,7 @@
 <!-- Kopfbereich der Projektseite -->
-<idai-header
-        image="/con10t/headerimages/hoch-aufgeloestes-bild.jpg"
-        description="Kurze Beschreibung des Bildes"
-        link="http://verweis-auf-ressource.de">
+<idai-header image="/con10t/headerimages/grabungsfoto_inden.jpg"
+             description="Inden, Rolle 38a (Schnittplan)"
+             link="http://verweis-auf-ressource.de">
 </idai-header>
 
 <!-- Hauptbereich der Projektseite -->
@@ -11,16 +10,52 @@
     <div class="con10t-row">
 
         <div class="con10t-title">
-            <!-- Haupttitel des Projektes: Überschrift der Größe <h1> oder Logo / Bild -->
+            <h1>R. Kuper, Inden 1. Eine Siedlung der Rössener Kultur im Rheinland. Felddokumentation 1965-67 (Digitale Supplemente)</h1>
         </div>
 
         <div class="con10t-sidebar">
-            <!-- Rechte Seitenleiste -->
+
+            <con10t-toc toc-heading="Übersicht"></con10t-toc>
+
         </div>
 
         <div class="con10t-content">
-            <!-- Inhalt der Projektseite -->
+
+            <h2 class="con10t-toc-entry">Erläuterungen zur Dokumentation</h2>
+
+            <p>Die Feldbefunde der Grabung Inden 1 wurden von 1965 bis 1967 durchgehend farbig auf Millimeterpapier dokumentiert, und zwar
+            -       Plana auf 1 m breiten Rollen im Maßstab 1:20 (s. Abb.18 im Band),
+            -      Profile und Planum-Details auf DIN A3 Bögen, meist im Maßstab 1:10 (s. Abb.4).
+            Verwendet wurde hierfür eine Auswahl von 12 SFarbstiften der Firma Staedtler und zwar die STABILO-Nummern  8748 rot, 8754 orange, 8734 dunkel-gelb,
+            8744 hell-gelb, 8739 hell-braun, 8735 mittel-braun, 8738 rot-braun, 8745 dunkel-braun, 8746 schwarz, 8749 grau, 8741 blau, 8743 grün.</p>
+
+            <p>Ausgeführt wurden die Zeichnungen von insgesamt 44 meist freiwilligen Helfern, größtenteils Studenten des Kölner Instituts für Ur- und Frühgeschichte,
+            aber auch von Nicht-Archäologen. Die Zeichnungen spiegeln den unterschiedlichen Erfahrungsstand und persönliche Sichtweisen ebenso wie Wetter und Zeitdruck wider,
+            werden aber – zunehmend mit dem Fortschritt der Grabung – durchgehend den Ansprüchen der Dokumentationstreue gerecht.</p>
+
+            <p>Die Zeichnungen der Grabungsflächen, insbesondere der Hausgrundrisse,  sowie der einzelnen Befunde („Stellen“) erschließen sich über eine Excel-Tabelle der
+            Stellen-Nummern. Unter diesen finden sich Angaben zur Befundart, Zugehörigkeit zu Groß-Befunden (Bauten, Zäune), Lage auf dem Gesamtplan („Quadrat“ / „Rolle“) die Blatt-Nummern
+            der A3-Zeichnungen mit den betreffenden Positionen sowie nach den Namen der Zeichner(innen) auch die Inventarnummern der zugehörigen Funde. Hier sind gewiss weiterhin einzelne Unstimmigkeiten
+            zu entdecken, die – wie z.B. doppelt oder gar nicht vergebene Stellen-Nummern –  durch Zeitdruck auf der Grabung ebenso wie durch Kommunikationsprobleme innerhalb der ausgedehnten Grabungsflächen
+            zu erklären sind, sich aber auch – wie einzelne Befund-Ansprachen – nach mehr als 50 Jahren einer Überprüfbarkeit entzogen haben. Nicht eingescannt wurden einige Rollen ohne Baubefunde und die
+            zu Beginn der Grabung vor allem im Westen angelegten Flächen außerhalb der Rössener Siedlung sowie die Profilzeichnungen der dort zumeist
+            angetroffenen eisenzeitlichen Befunde.</p>
+
+            <h2 class="con10t-toc-entry">Scans der Originalzeichnungen von Plana und Profilen</h2>
+
+            <p><a con10t-search-query="connectedEntities:6677460">Zu den Rollen</a></p>
+            <p><a con10t-search-query="connectedEntities:6677493">Zu den Blättern</a></p>
+
+            <h2 class="con10t-toc-entry">Gesamtplan?</h2>
+
+            <h2 class="con10t-toc-entry">Stellenliste</h2>
+
         </div>
 
+        <con10t-table
+                path-to-data = "/con10t/visualizations/inden1/stellenliste_inden_data.json"
+                path-to-table-template = "/con10t/visualizations/inden1/con10t-table_inden.html"
+                rows-per-page = 10>
+        </con10t-table>
     </div>
 </div>
