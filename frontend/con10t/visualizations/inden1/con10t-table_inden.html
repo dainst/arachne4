@@ -1,19 +1,23 @@
-<!--- hide: ng-if="$column.hide(this)" ---->
-<!--- highlight field? --->
-
 <table ng-table="tableParams" class="table" show-filter="true">
     <tr ng-repeat="entry in tableParams.data" class = "table">
-        <td title ="'ID'" sortable="'ID'" filter="{ID: 'number'}" placeholder = "Suche...">{{entry.ID}}</td>
-        <td title="'Stelle'" sortable="'Stelle'" filter ="{Stelle: 'number'}">{{entry.Stelle}}</td>
+        <td title ="'ID'" sortable="'ID'" filter="{ID: 'text'}">{{entry.ID}}</td>
+        <td title="'Stelle'" sortable="'Stelle'" filter ="{Stelle: 'text'}">{{entry.Stelle}}</td>
         <td title="'Befund'" sortable="'Befund'" filter ="{Befund: 'text'}">{{entry.Befund}}</td>
         <td title ="'BauZaun'" sortable="'BauZaun'" filter ="{BauZaun: 'text'}">{{entry.BauZaun}}</td>
         <td title="'Quadrat'" sortable="'Quadrat'" filter ="{Quadrat: 'text'}">{{entry.Quadrat}}</td>
-        <td title="'Rolle'" sortable="'Rolle_Sort'" filter ="{Rolle: 'text'}"><a target='_blank' ng-href='{{entry.RolleRef}}'>{{entry.Rolle}}</a></td>
+        <td title="'Rolle'" sortable="'Rolle_Sort'" filter ="{Rolle: 'text'}">
+            <div ng-if="entry.RolleRef != ''"><a class = "inden-a" target='_blank' ng-href='{{entry.RolleRef}}'>{{entry.Rolle}}</a></div>
+            <div ng-if="entry.RolleRef == ''">{{entry.Rolle}}</div>
+        </td>
         <td title="'Rolle_Sort'" sortable="'Rolle_Sort'" ng-if="$column.hide(this)">{{entry.Rolle_Sort}}</td>
-        <td title ="'Blatt'" sortable="'Blatt_Sort'" filter ="{Blatt: 'text'}"><a target='_blank' ng-href='{{entry.BlattRef}}'>{{entry.Blatt}}</a></td>
+        <td title ="'Blatt'" sortable="'Blatt_Sort'" filter ="{Blatt: 'text'}">
+            <div ng-if="entry.BlattRef != ''"><a class = "inden-a" target='_blank' ng-href='{{entry.BlattRef}}'>{{entry.Blatt}}</a></div>
+            <div ng-if="entry.BlattRef == ''">{{entry.Blatt}}</div>
+        </td>
         <td title="'Blatt_Sort'" sortable="'Blatt_Sort'" ng-if="$column.hide(this)">{{entry.Blatt_Sort}}</td>
         <td title="'Doku'" sortable="'Doku'" filter="{Doku: 'text'}">{{entry.Doku}}</td>
-        <td title ="'Datum'" sortable="'Datum'" filter ="{Datum: 'text'}">{{entry.Datum}}</td>
+        <td title ="'Datum'" sortable="'Datum_Sort'" filter ="{Datum: 'text'}">{{entry.Datum}}</td>
+        <td title="'Datum_Sort'" sortable="'Datum_Sort'" ng-if="$column.hide(this)">{{entry.Datum_Sort}}</td>
         <td title="'gez.'" sortable="'gez'" filter ="{gez: 'text'}">{{entry.gez}}</td>
         <td title ="'Inv.-Nr.'" sortable="'InventarNr'" filter = "{InventarNr: 'text'}">{{entry.InventarNr}}</td>
     </tr>
