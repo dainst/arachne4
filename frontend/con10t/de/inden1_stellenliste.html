@@ -1,7 +1,7 @@
 <style>
 
     .con10t-title {
-        background-color: #505050;
+        background-color: #505050 !important;
         color: #6492b1;
         padding: 2vw;
         padding-top: 2w;
@@ -47,6 +47,29 @@
         padding: 0.5vh;
     }
 
+    table#legende-table td {
+        padding-right: 1vw;
+    }
+    table#legende-table tr {
+        padding: 0.5vh;
+    }
+
+    tbody tr:hover td {
+        background-color: #fffeee;
+    }
+
+    .ng-table-sort-header {
+        background-color: white;
+    }
+
+    a.inden-a {
+        font-weight: 600;
+    }
+
+    .inden-abbrev {
+        font-weight: 600;
+    }
+
 </style>
 
 <div>
@@ -61,7 +84,7 @@
 
         <div id = "stellenliste-header">
             <h2>Stellenliste</h2>
-            <p>Herunterladen als <a>XLS</a> <a>CSV</a> <a>JSON</a></p>
+            <p>Herunterladen als: <a>CSV</a> <a>JSON</a></p>
         </div>
 
         <con10t-table
@@ -72,20 +95,22 @@
     </div>
 
     <div id = "legende-container">
-        <h2>Abkürzungen (Spalte „Befund“)</h2>
+        <h3>Abkürzungen (Spalte „Befund“)</h3>
 
-        <p>
-        BAU-ELEMENTE: P = Pfosten,  Wgr. = Wandgraben, kl. Graben oder Palisade
-        GRUBEN, Rössen:  A1 = Kesselgrube, A2 = schmale Grube (Schlitzgrube u.ä.) A3 = Grubenkomplex, A4 = sonst. Grube, A5 = Sonderform.
-        Eisenzeit: EZ
-        Natürlich: B1 = Baumwurf, B2 = sonst. natürl. Befund
-        SONSTIGES: o.B. = ohne Befund, u = unbestimmbar, ng = nicht gezeichnet, ns   = nicht gescannt, Lu = Lage unbekannt
-        aPl  = außerhalb des Siedlungsplans.</p>
+        <table id = "legende-table">
+            <tr><td>Bauelemente:</td><td><span class = "inden-abbrev">P</span> = Pfosten, <span class = "inden-abbrev">Wgr.</span> = Wandgraben, kl. Graben oder Palisade</td></tr>
+            <tr><td>Gruben, Rössen:</td><td><span class = "inden-abbrev">A1</span> = Kesselgrube, <span class = "inden-abbrev">A2</span>  = schmale Grube (Schlitzgrube u.ä.), <span class = "inden-abbrev">A3</span> = Grubenkomplex,
+                <span class = "inden-abbrev">A4</span> = sonst. Grube, <span class = "inden-abbrev">A5</span> = Sonderform</td></tr>
+            <tr><td>Gruben, Eisenzeit:</td><td><span class = "inden-abbrev">EZ</span></td></tr>
+            <tr><td>Gruben, natürlich:</td><td><span class = "inden-abbrev">B1</span> = Baumwurf, <span class = "inden-abbrev">B2</span> = sonst. natürl. Befund</td></tr>
+            <tr><td>Sonstiges:</td><td><span class = "inden-abbrev">o.B.</span> = ohne Befund, <span class = "inden-abbrev">u</span> = unbestimmbar, <span class = "inden-abbrev">ng</span> = nicht gezeichnet,
+                <span class = "inden-abbrev">ns</span> = nicht gescannt, <span class = "inden-abbrev">Lu</span> = Lage unbekannt, <span class = "inden-abbrev">aPl</span> = außerhalb des Siedlungsplans.</td></tr>
+        </table>
     </div>
 
     <div id = "errata-container">
 
-        <h2>Korrekturverzeichnis</h2>
+        <h3>Korrekturverzeichnis</h3>
 
         <table id = "inden-errata">
             <tr><td>St. 10</td><td>in H/11 identisch mit St. 312</td><td>St. 909</td><td>in R/3 identisch mit Wgr 894</td></tr>
