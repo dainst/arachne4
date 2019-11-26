@@ -473,8 +473,7 @@
           "id": "preussdenk",
           "title": {
             "de": "Die preußische Denkmalpflege in der Provinz Brandenburg/Berlin"
-          },
-          "hidden": true
+          }
         },
         {
           "id": "carare",
@@ -786,7 +785,7 @@
           "title": {
             "de": "A. Schachner, Die Ausgrabungen in Boğazköy-Ḫattuša 2018, AA 2019/1, § 1–147. Supplement"
           },
-          "hidden": true
+          "hidden": false
         }
       ]
     },
