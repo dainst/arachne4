@@ -464,6 +464,12 @@
           }
         },
         {
+          "id": "afrarchcolognecategories",
+          "title": {
+            "de": "Kategorien des AAArC"
+          }
+        },
+        {
           "id": "preussdenk",
           "title": {
             "de": "Die preußische Denkmalpflege in der Provinz Brandenburg/Berlin"

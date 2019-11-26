@@ -1,0 +1,547 @@
+<idai-header
+        image="/con10t/headerimages/afrarchcologne_bgr.jpg">
+</idai-header>
+<div class="con10t-page teaserpage container">
+    <div class="con10t-row">
+        <div class="con10t-title">
+            <h1>African Archaeology Archive Cologne - Handbuch</h1>
+        </div>
+        <div class="con10t-sidebar">
+            <p>
+                <a href="/project/afrarchcologne" target="_self">Zurück zur Projektseite</a>
+            </p>
+            <con10t-toc toc-heading="Inhaltsverzeichnis"></con10t-toc>
+        </div>
+        <div class="con10t-content">
+            <h1 class="con10t-toc-entry">1 Das Scanprotokoll</h1>
+
+
+            	<p>Das Scan-Protokoll ist eine Microsoft Excel Tabellen- und Makro-Sammlung, die einerseits zur „Buchführung“ des Digitalisierungs- und Archivierungsprozesses, andererseits zur Sammlung und weiteren Verarbeitung jedweder Metadaten (sensu lato) dient. In seiner Haupttabelle werden sämtliche Informationen zu jedem einzelnen Digitalisat (und originär digitalen Archivale) erfasst, wobei pro Zeile und Digitalisat bis zu 25 Felder (Spalten) zur Verfügung stehen. Neben Freitextfeldern enthalten zehn Spalten (teilw. dynamisch angepasste) Dropdown-Listen, die ein vorgegebenes Vokabular aus weiteren Tabellenblättern bereitstellen. Während fünf Spalten der Haupttabelle Angaben enthalten, die lediglich der internen Archivierungs-Organisation dienen, werden die übrigen 20 Informationen dem Digitalisat entweder im <strong>Dateinamen</strong>, in den <strong>Metadaten</strong> (IPTC/XMP) und/oder dem <strong>Ablagepfad</strong> (teilweise redundant) als Kürzel oder Klartext mitgegeben.</p>
+
+
+            	<p>Zur Verwaltung der Dateien werden sämtliche digitalisierte Archivalien per Makro in die Haupttabelle eingelesen und entsprechend den Scans zentral über das Protokoll weiterverarbeitet werden können. Aus den Informationen <em>Zugangsberechtigung, Projekt, Teilprojekt, Fundplatz, Grabungsfläche, Art des Digitalisats _und _Urdatum/Film- und Bild-Nr./ursprünglicher Dateiname</em> sowie aus der fortlaufenden <em>ID</em> wird vom Protokoll ein neuer <strong>Dateiname</strong> (siehe <a href="#Appendix_1" class="wiki-page">Appendix 1</a>: Zusammensetzung des Dateinamens) generiert. Dieser ersetzt per Makro den bestehenden Dateinamen sämtlicher Scans (bzw. originär digitaler Archivalien). Darüber hinaus stellt das Protokoll aus den eingetragenen Informationen 15 <strong>Metadaten</strong>-Felder (<em>Projekt und Teilprojekt, Land, Region, Arbeitsgebiet, Fundplatz und Grabungsfläche, Art des Digitalisats, Beschreibung, Bildinhalt [3 Felder], Materialkategorie, Erstellungsdatum des Archivals, Autor des Archivals, Favoritenkennzeichnung, Bemerkung</em>) nach Maßgabe des Metadaten-Editors EXIFcell/Exifutils bereit. Zur endgültigen Ablage der Dateien werden diese als Kopie für den Fall eines Metadatenverlusts einerseits in einen der Chronologie der Bearbeitung entsprechenden <strong>Pfad</strong> (<em>Kalenderwoche, Projekt, Art des Digitalisats</em>) verschoben und darüber hinaus in einem geographisch hierarchischen Pfad (Land, Region, Arbeitsgebiet, Fundplatz, Grabungsfläche, Art des Digitalisats) abgelegt. Während eine Grundstruktur dieses geographischen Pfads bis zur Ebene des Arbeitsgebiets als Vorlage existiert, werden sowohl die unterhalb dieser Ebene verorteten Ordner als auch die des chronologischen Pfads erst auf Bedarf aus den eingetragenen Informationen per Makro erstellt. Schließlich dient das Protokoll dazu, sämtliche Dateien per Makro an die neu generierten Ablageorte zu verschieben bzw. zu kopieren.</p>
+
+
+            	<a name="1_Das_Scanprotokoll_Systemanforderung"></a>
+            <h3 class="con10t-toc-entry">Systemanforderung</h3>
+
+
+            	<p>Für die Arbeit mit dem Scanprotokoll wird ein Windows-Rechner mit den gängigen Office-Programmen (vor allem Excel) benötigt sowie das Programm EXIFcell/Exifutils (in der Forschungsstelle Afrika auf diversen Rechnern installiert). Hier allerdings Vorsicht: EXIFcell/Exifutils läuft optimal unter Windows 7 und Windows 8.1, momentan allerdings nicht unter Windows 10. <br />Zahlreiche Dateien und Ordner, die für die Arbeit mit dem Scanprotokoll relevant sind, liegen auf dem lokalen Server der Forschungsstelle Afrika, NAS-Server. Administratoren und damit Ansprechpartner sind aktuell Oliver Vogels und Eymard Fäder.</p>
+
+
+            	<a name="1_Das_Scanprotokoll_Arbeitsablauf"></a>
+            <h3 class="con10t-toc-entry">Arbeitsablauf</h3>
+
+
+            	<p>Originär digitale Archivalien können direkt in das Scanprotokoll eingelesen werden, analoge Vorlagen müssen zunächst digitalisiert werden. In der Forschungsstelle Afrika stehen hierfür diverse Scanner zur Verfügung, unter anderem ein Nikon Super Coolscan 5000 zum Scannen von Dias (siehe <a href="#Arbeiten_mit_dem_Nikon_Coolscan" class="wiki-page">Arbeiten mit dem Nikon Coolscan</a>). Bei größeren Konvoluten von Papierdokumenten (z.B. Grabungsdokumentation) hat sich das Abfotografieren als zeitsparende Lösung gegenüber der Arbeit mit einem Flachbettscanner durchaus bewährt (siehe<a href="#_Anleitung_Camscan" class="wiki-page"> Anleitung Camscan</a>). <br />SW-Zeichnungen sollten mit einer Auflösung von mind. 600 dpi vorliegen. Zur Langzeitarchivierung müssen Bilddateien im tiff-Format vorliegen. Tiff-Formate sind somit Grundlage für die Archivierung von Bildern in AAArC. Liegen Digitalisate nicht im tiff-Format vor, so können diese mit Hilfe einer Batch-Verarbeitung „getifft“ (also in Tiff-Format umgewandelt) werden (z.B. in Irfanview: File / Batch Conversion). Diese Umwandlung muss allerdings nicht zwingend schon vor Beginn der Arbeit mit dem Scanprotokoll erfolgen. Da beim Umwandeln Informationen (z.B. Aufnahmedatum) verloren gehen können, empfiehlt es sich, eine Kopie der Originaldaten zu behalten.</p>
+
+
+            	<p>Vor dem Einlesen in das Scanprotokoll sollten alle relevanten Dateien in einem „Rohdaten“-Ordner zusammengestellt werden. Beim Arbeiten in der Forschungsstelle Afrika kann der lokale Server genutzt werden [NAS-Server der Forschungsstelle Afrika, Jennerstraße: Abteilung Archiv/AAArC/aaarc_prozess/scans/scans_naming]. Wenn kein Zugriff auf das NAS möglich ist, erfolgt die Ablage in einem „Rohdaten“-Ordner auf dem lokalen Rechner.</p>
+
+
+            	<p>Um mit der eigentlichen Arbeit zu beginnen, öffnen Sie nun das Scanprotokoll „Digi-Protokoll_Master33“ (zu finden auf dem lokalen Server [NAS-Server Jennerstr., Abteilung Archiv/AAArC/aaarc_prozess/protokolle/scan_protocoll_master])</p>
+
+
+            	<p>Nach dem Starten sehen Sie eine kleine Infobox, die Ihnen den Ablauf erklärt:</p>
+
+
+            	<p><img src="/attachments/download/1702/Abbildung10klein.png" alt="" /></p>
+
+
+            	<p>Wie Sie diese Schritte ausführen, wird Ihnen auf den nachfolgenden Seiten erklärt:</p>
+
+
+            	<p><a href="#1_Einlesen" class="wiki-page">1. Einlesen</a><br /><a href="#2_Eigene_Kennung_in_‚ID‘_einfügen" class="wiki-page">2. Eigene Kennung in ‚ID‘ einfügen.</a><br /><a href="#3_Felder_ausfüllen" class="wiki-page">3. Felder ausfüllen</a><br /><a href="#4_Aktualisieren" class="wiki-page">4. Aktualisieren</a><br /><a href="#5_Dateien_umbenennen" class="wiki-page">5. Dateien umbenennen</a><br /><a href="#6_Schreiben_der_Metadaten_" class="wiki-page">6. Schreiben der Metadaten </a> <br /><a href="#7_Ordner_anlegen_und_verteilen" class="wiki-page">7. Ordner anlegen und verteilen</a><br /><a href="#8_Import_in_Arachne" class="wiki-page">8. Import in Arachne</a></p>
+            <hr />
+
+            <h2 class="con10t-toc-entry">1 Einlesen</h2>
+
+
+            	<p>Klicken Sie den Knopf mit der Aufschrift ‚einlesen‘. Es folgt ein Fenster, welches Sie bittet, einen Pfad anzugeben.</p>
+
+
+            	<p><img src="/attachments/download/1732/Abbildung12klein.png" alt="" /></p>
+
+
+            	<p>Es empfiehlt sich, im Hintergrund den Ordner mit den Digitalisaten bereits geöffnet zu haben, sodass Sie nur noch den Pfad des Ordners kopieren müssen. Kopieren Sie den Pfadnamen in das Textfeld hinein und klicken Sie auf ‚Ok‘. Es öffnet sich ein neues Fenster, welches Ihnen mitteilt, wie viele Dateien gefunden wurden.</p>
+
+
+            	<p><img src="/attachments/download/1732/Abbildung12klein.png" alt="" /></p>
+
+
+            	<p>Merken Sie sich diese Zahl oder schreiben Sie sie auf, Sie werden sie noch brauchen können. Klicken Sie nun auf ‚Ok‘. Nun wird ein Eingabefenster geöffnet, welches Sie bittet, anzugeben, ab welcher Zeile die im Ordner gefundenen Dateien in die Tabelle eingefügt werden sollen.</p>
+
+
+            	<p><img src="/attachments/download/1734/Abbildung13klein.png" alt="" /></p>
+
+
+            	<p>Falls Ihre Eingabe kleiner 3 sein sollte, 3 nicht inbegriffen, bricht die Eingabe ab. Geben Sie also wie aufgefordert eine Zahl ein, die größer gleich 3 ist und bestätigen Sie Ihre Eingabe über den Knopf mit der Aufschrift ‚Ok‘.<br />Wie Sie sehen können, sind die Zeilen mit den Dateinamen nun gefüllt.</p>
+
+
+            	<p><img src="/attachments/download/1736/Abbildung14klein.png" alt="" /></p>
+
+
+            	<p>Nach dem Einlesen kontrollieren, ob zu jedem Dateinamen ein Digitalisat vorhanden ist. Beim Einlesen können Probleme in der Sortierung auftreten (im Vergleich zur Sortierung der Bilddateien im entsprechenden Ordner) bei Dateien, die nicht numerisch benannt sind (also 01, 02, 03 etc), dies spielt allerdings für die Funktionalität des Scanprotokolls keine Rolle. Eine einheitliche Sortierung der Bilddateien im Ausgangsordner und im Scanprotokoll erleichtert nur das weitere Arbeiten, besonders das Ausfüllen des Scanprotokolls.</p>
+
+
+            	<p>-> <a href="#1_Einlesen" class="wiki-page">1. Einlesen</a><br /><a href="#2_Eigene_Kennung_in_‚ID‘_einfügen" class="wiki-page">2. Eigene Kennung in ‚ID‘ einfügen.</a><br /><a href="#3_Felder_ausfüllen" class="wiki-page">3. Felder ausfüllen</a><br /><a href="#4_Aktualisieren" class="wiki-page">4. Aktualisieren</a><br /><a href="#5_Dateien_umbenennen" class="wiki-page">5. Dateien umbenennen</a><br /><a href="#6_Schreiben_der_Metadaten_" class="wiki-page">6. Schreiben der Metadaten </a> <br /><a href="#7_Ordner_anlegen_und_verteilen" class="wiki-page">7. Ordner anlegen und verteilen</a><br /><a href="#8_Import_in_Arachne" class="wiki-page">8. Import in Arachne</a></p>
+            <hr />
+
+            <h2 class="con10t-toc-entry">2 Eigene Kennung in ‚ID‘ einfügen</h2>
+
+
+            	<p>Fahren Sie nun fort, indem Sie Ihre Kennung einfügen. Klicken Sie dazu auf den Knopf mit der Aufschrift ‚ID‘. Es öffnet sich ein Fenster, in dem Sie Ihre ID erstellen können.</p>
+
+
+            	<p><img src="/attachments/download/1738/Abbildung15klein.png" alt="" /></p>
+
+
+            	<p>In das Textfeld oben links geben Sie dafür Ihr Kürzel ein, in das Feld oben rechts die Zahl, mit der die Nummerierung beginnen soll. Das Textfeld links von dem Knopf mit der Aufschrift ‚OK‘ dient zur Überprüfung der Startidentifikationsnummer und füllt sich von alleine. Wenn Sie Ihre ID erstellt haben, klicken Sie auf ‚OK‘. Es öffnet sich nun ein Fenster, welches Sie bittet anzugeben, wie viele IDs Sie erstellen möchten. Wenn Sie sich die Zahl an Digitalisaten gemerkt haben, können Sie diese nun hier eingeben. Zur Sicherheit sollten Sie noch 20 bis 50 auf diese Zahl aufaddieren, das Programm wird dadurch nicht in seiner Funktionalität beeinflusst, aber Sie müssen dann nicht die genaue Zahl im Hinterkopf behalten. Bestätigen Sie Ihre Eingabe.</p>
+
+
+            	<p><img src="/attachments/download/1740/Abbildung16klein.png" alt="" /></p>
+
+
+            	<p>Es folgt ein Fenster, welches Ihnen mitteilt, dass Ihre Kennung eingefügt wurde. Wenn Sie auf Nummer sicher gehen, werden Sie erkennen, dass die DIA-ID, die zu Beginn eingetragen ist, durch Ihre eigene ausgetauscht wurde.</p>
+
+
+            	<p><img src="/attachments/download/1742/Abbildung17klein.png" alt="" /></p>
+
+
+            	<p><a href="#1_Einlesen" class="wiki-page">1. Einlesen</a><br />-> <a href="#2_Eigene_Kennung_in_‚ID‘_einfügen" class="wiki-page">2. Eigene Kennung in ‚ID‘ einfügen.</a><br /><a href="#3_Felder_ausfüllen" class="wiki-page">3. Felder ausfüllen</a><br /><a href="#4_Aktualisieren" class="wiki-page">4. Aktualisieren</a><br /><a href="#5_Dateien_umbenennen" class="wiki-page">5. Dateien umbenennen</a><br /><a href="#6_Schreiben_der_Metadaten_" class="wiki-page">6. Schreiben der Metadaten </a> <br /><a href="#7_Ordner_anlegen_und_verteilen" class="wiki-page">7. Ordner anlegen und verteilen</a><br /><a href="#8_Import_in_Arachne" class="wiki-page">8. Import in Arachne</a></p>
+            <hr />
+
+            <h2 class="con10t-toc-entry">3 Felder ausfüllen</h2>
+
+
+            	<p>Nun müssen Sie die Felder ausfüllen (siehe auch <a href="#Appendix_2" class="wiki-page">Appendix 2</a> „Scan-Protokoll“). Sie können dies per Hand machen, oder, wenn sich Inhalte einiger Zellen auch für andere Zellen übertragen lassen, diese per Knopfdruck kopieren. Füllen Sie dafür mindestens eine Zeile vollständig aus.</p>
+
+
+            	<p><img src="/attachments/download/1744/Abbildung18klein.png" alt="" /></p>
+
+
+            	<p>Klicken Sie nun auf den Knopf mit der Aufschrift ‚Einstellungen übernehmen‘. Es öffnet sich nun ein Fenster mit einem Drop-Down Menü, in dem Sie auswählen können, welche Inhalte Sie kopieren wollen.</p>
+
+
+            	<p><img src="/attachments/download/1746/Abbildung19klein.png" alt="" /></p>
+
+
+            	<p>Alternativ können Sie alle Inhalte einer Zeile, abgesehen vom Namen und der ID, in andere Zeilen kopieren. Bestätigen Sie Ihre Auswahl per Klick auf den ‚Ok‘-Knopf. Es öffnet sich ein neues Fenster, in dem Sie wählen können, welcher Zeileninhalt übernommen werden soll.</p>
+
+
+            	<p><img src="/attachments/download/1748/Abbildung20klein.png" alt="" /></p>
+
+
+            	<p>Geben Sie hier nun die Nummer der Zeile ein, deren Inhalt Sie (ggf. teilweise) kopieren wollen und bestätigen Sie Ihre Eingabe. Es öffnet sich nun erneut ein Fenster, welches Sie bittet, den Anfang des Bereiches auszuwählen, in welchen die kopierten Inhalte eingefügt werden sollen. Nachdem Sie Ihre Eingabe bestätigt haben, folgt ein ähnliches Fenster, nur werden Sie hier gebeten, das Ende des Bereiches anzugeben. Wenn Sie dies bestätigt haben, öffnet sich nach kurzer Zeit, in der das Programm arbeitet, ein Fenster, welches Ihnen mitteilt, dass die Einstellungen übernommen worden sind.</p>
+
+
+            	<p><img src="/attachments/download/1750/Abbildung21klein.png" alt="" /></p>
+
+
+            	<p>Wenn Sie auf ‚Ok‘ klicken, können Sie sich vergewissern, dass alle ausgewählten Einstellungen übernommen wurden.</p>
+
+
+            	<p><img src="/attachments/download/1752/Abbildung22klein.png" alt="" /></p>
+
+
+            	<p>Sie können Einstellungen beliebig oft kopieren. Wenn alle ausfüllbaren Felder ausgefüllt wurden, fahren Sie mit Schritt 4 fort.</p>
+
+
+            	<p>Einige Bedienungshinweise zum Ausfüllen des Scanprotokolls (siehe dazu auch <a href="#Appendix_1" class="wiki-page">Appendix 1</a> und <a href="#Appendix_2" class="wiki-page">Appendix 2</a>): Es ist wichtig, dass die Spalten ‚Fundplatz‘ und ‚Fläche‘ das Format ‚Text‘ besitzen, da ansonsten beim Anlegen der Ordner später Probleme auftreten. Von Beginn an ist dieses Format allerdings als Standard eingestellt. Sollten Sie händisch eine „0“ als Fundplatz oder Fläche eingeben, wird der Fundplatz- oder Flächenordner „0“ auch angelegt. Falls Sie dies nicht beabsichtigen, ändern Sie zuerst das Format dieses Feldes auf ‚Zahl‘ und direkt danach wieder auf ‚Text‘.<br />Der Eintrag im Feld ‚Dat.Arch.‘ muss, wenn hier ausgefüllt wird, immer achtstellig sein.<br />Grundsätzlich sollten keine Umlaute (Ä, Ö, ä, ö,…) verwendet werden, da dies zu Problemen mit dem XMP-Importer in Arachne führt. Auch Abkürzungen (besonders in den Feldern ‚Information‘ und ‚Bemerkungen‘) sollten vermieden werden. Die Spalte ‚Information‘ sollte so umfassend und sorgfältig wie möglich ausgefüllt werden, ebenso die Spalten ‚ZMaterial‘ und ‚Bildinhalte‘, da nach diesen Kategorien später gesucht werden kann.<br />Die Drop-Down-Menüs ‚Land‘, ‚Region‘, ‚Arbeitsgebiet‘, ‚ZMaterial‘ und ‚Autor Arch.‘ können ergänzt werden, beziehungsweise es kann hier auch Freitext eingegeben werden. Bei Ergänzungen in den Feldern ‚Land‘, ‚Region‘, ‚Arbeitsgebiet‘ ist nur wichtig, darauf zu achten, dass diese dann auch im entsprechend im AAArC-Ordnerbaum (aaarc_path) als Ordner angelegt werden.</p>
+
+
+            	<p><a href="#1_Einlesen" class="wiki-page">1. Einlesen</a><br /><a href="#2_Eigene_Kennung_in_‚ID‘_einfügen" class="wiki-page">2. Eigene Kennung in ‚ID‘ einfügen.</a><br />-> <a href="#3_Felder_ausfüllen" class="wiki-page">3. Felder ausfüllen</a><br /><a href="#4_Aktualisieren" class="wiki-page">4. Aktualisieren</a><br /><a href="#5_Dateien_umbenennen" class="wiki-page">5. Dateien umbenennen</a><br /><a href="#6_Schreiben_der_Metadaten_" class="wiki-page">6. Schreiben der Metadaten </a> <br /><a href="#7_Ordner_anlegen_und_verteilen" class="wiki-page">7. Ordner anlegen und verteilen</a><br /><a href="#8_Import_in_Arachne" class="wiki-page">8. Import in Arachne</a></p>
+            <hr />
+
+            <h2 class="con10t-toc-entry">4 Aktualisieren</h2>
+
+
+            	<p>Klicken Sie auf den Knopf mit der Aufschrift ‚aktualisieren‘. Das Programm arbeitet nun kurz, während es Ihre Änderungen verarbeitet, in dieser Zeit können Sie keine weiteren Eingaben machen. Eine kleine Nachrichtenbox wird Ihnen mitteilen, dass alles aktualisiert ist.</p>
+
+
+            	<p><a href="#1_Einlesen" class="wiki-page">1. Einlesen</a><br /><a href="#2_Eigene_Kennung_in_‚ID‘_einfügen" class="wiki-page">2. Eigene Kennung in ‚ID‘ einfügen.</a><br /><a href="#3_Felder_ausfüllen" class="wiki-page">3. Felder ausfüllen</a><br />-> <a href="#4_Aktualisieren" class="wiki-page">4. Aktualisieren</a><br /><a href="#5_Dateien_umbenennen" class="wiki-page">5. Dateien umbenennen</a><br /><a href="#6_Schreiben_der_Metadaten_" class="wiki-page">6. Schreiben der Metadaten </a> <br /><a href="#7_Ordner_anlegen_und_verteilen" class="wiki-page">7. Ordner anlegen und verteilen</a><br /><a href="#8_Import_in_Arachne" class="wiki-page">8. Import in Arachne</a></p>
+            <hr />
+
+            <h2 class="con10t-toc-entry">5 Dateien umbenennen</h2>
+
+
+            	<p>Vor diesem Prozessschritt ist eine detaillierte inhaltliche Kontrolle der erfassten Projektdaten notwendig. Wenn auf einem lokalen Rechner und nicht über das NAS gearbeitet wird: Für das Umbenennen sollte ein Ordner angelegt werden. Die Benennung ist Ihnen überlassen, allerdings wird der Name ,digi_naming‘ aus Standardisierungsgründen empfohlen.<br />Nachdem sie den Knopf ‚Dateien umbenennen &#38; kopieren‘ geklickt haben, aktualisiert sich das Programm erneut. Unterbrechen Sie es dabei nicht, sondern warten Sie, bis Ihnen die Box mit der Aufschrift ‚Aktualisiert!‘ die Erlaubnis erteilt, wieder weiter im Ablauf fortzuschreiten.</p>
+
+
+            	<p><img src="/attachments/download/1754/Abbildung23klein.png" alt="" /></p>
+
+
+            	<p>Es öffnet sich nun ein Fenster, welches Sie bittet, einen Zielpfad anzugeben.</p>
+
+
+            	<p><img src="/attachments/download/1756/Abbildung24klein.png" alt="" /></p>
+
+
+            	<p>Es empfiehlt sich, ähnlich wie bei der Eingabe den Zielordner offen zu haben, um den Pfad einfach kopieren zu können. Wenn Sie dies erledigt haben, beginnt das Programm zu arbeiten. Sie sollten es tunlichst vermeiden, irgendwo in den Tabellen etwas auszuwählen, da das Programm so in seiner Funktionalität stark beeinträchtigt werden kann, bis hin zu einem Absturz. Es empfiehlt sich, sich die Gesamtzahl der Elemente zu merken/notieren und nachzugucken, wie viele bereits im Zielordner sind. Nachdem Sie alle Digitalisate im Zielordner wiedergefunden haben, ist dieser Schritt abgeschlossen.</p>
+
+
+            	<p><a href="#1_Einlesen" class="wiki-page">1. Einlesen</a><br /><a href="#2_Eigene_Kennung_in_‚ID‘_einfügen" class="wiki-page">2. Eigene Kennung in ‚ID‘ einfügen.</a><br /><a href="#3_Felder_ausfüllen" class="wiki-page">3. Felder ausfüllen</a><br /><a href="#4_Aktualisieren" class="wiki-page">4. Aktualisieren</a><br />-> <a href="#5_Dateien_umbenennen" class="wiki-page">5. Dateien umbenennen</a><br /><a href="#6_Schreiben_der_Metadaten_" class="wiki-page">6. Schreiben der Metadaten </a> <br /><a href="#7_Ordner_anlegen_und_verteilen" class="wiki-page">7. Ordner anlegen und verteilen</a><br /><a href="#8_Import_in_Arachne" class="wiki-page">8. Import in Arachne</a></p>
+            <hr />
+
+            <h2 class="con10t-toc-entry">6 Schreiben der Metadaten</h2>
+                <p>(hierfür ist neben dem Scanprotokoll auch EXIFcells/Exifutils nötig sowie Adobe Photoshop)</p>
+
+            	<p>Die Dateien haben nun den AAArC-Dateinamen (siehe <a href="#Appendix_1" class="wiki-page">Appendix 1</a>). Somit können nun die Metadaten geschrieben werden. Falls noch nicht geschehen, sollte spätestens vor diesem Schritt die Umwandlung der Bilddateien in das tiff-Format erfolgen. Dies kann mit Hilfe einer Batch-Verarbeitung (z.B. in Irfanview: File / Batch Conversion) durchgeführt werden. Dann ist es allerdings notwendig, im Scanprotokoll händisch in der Spalte ‚alter Dateinamen‘ den Dateiformatzusatz „jpg“ in „tif“ ändern (z.B. mit der Excell-Funktion „Suchen und Ersetzen“) und danach nochmals Button „aktualisieren“ zu drücken, da sonst die Änderung nicht registriert wird.<br />Die integrierten Metadaten werden mit EXIFcell/Exifutils in IPTC Format geschrieben. Dazu öffnet man EXIFcell (liegt angeheftet unter Microsoft Excel auf diversen Rechnern in der Jennerstraße; verwendete Version ist EXIFcell_V1.31 (090526)) und geht dann folgendermaßen vor: <br />- Bilddateien einlesen: Drücken Sie dazu die Tastenkombination „Strg/ctrl + shift + L“, geben dann den einzulesenden Bilddateien-Ordner an und klicken ein Bild an. Achtung: Der Einlesevorgang kann einige Zeit dauern;<br />- Reihenfolge der eingelesenen Bilddateien anhand „file name“ sortieren: Dies geschieht durch Drücken der Tastenkombination „Strg/ctrl + shift + R“<br />- IPTC-Felder aus Scan-Protokoll einkopieren. Hier geht man folgendermaßen vor: Im Scanprotokoll sind die Metadaten über den Knopf ‚Metadaten öffnen‘ aufrufbar. Auf Knopfdruck öffnet sich das Fenster mit den Metadaten. Bis es sich öffnet, kann je nach Datengröße durchaus etwas Zeit vergehen, da die Daten generiert und überprüft werden müssen. Aus den Feldern kopieren Sie einfach die Daten heraus und fügen diese in EXIFcell ein.</p>
+
+
+            	<p><img src="/attachments/download/1758/Abbildung25klein.png" alt="" /></p>
+
+
+            	<p>Um zurück zur Eingabe zu gelangen, klicken Sie den gleichnamigen Knopf rechts von den Metadaten.</p>
+
+
+            	<p>- Die in EXIFcell eingelesenen Daten prüfen und dann die Dateien zurückschreiben: Drücken Sie dazu die Tastenkombination „Strg/ctrl + shift + S“. Auch dieser Vorgang kann einige Zeit in Anspruch nehmen.<br />Durch nochmaliges Einlesen der Bilddateien in ExcifCell überprüfen, ob alle Daten korrekt geschrieben wurden. Diese Datei kann als Excel-Tabelle gespeichert werden, diese erleichtert zum einen den Überblick der jeweiligen Bildmetadaten und kann gegebenenfalls auch für den Bild-Import in Arachne nützlich sein.</p>
+
+
+            	<p>Kurzer Hinweis: Es ist auch möglich, Metadaten in einer Baumstruktur zu schreiben: Hierfür bei EXIFcell „Unterordner einbeziehen“ anklicken. In der Baumstruktur muss dann auf oberster Ebene eine Bilddatei als „Dummy“ liegen, die dann in EXIFcell angeklickt werden kann, wenn der einzulesende Ordner gewählt wird. Danach möglich, Bilder aus Ordner und Unterordnern in EXIFcell einzulesen und Metadaten zu schreiben. Das „Dummy“-Bild auf oberster Ebene der Baumstruktur muss natürlich ganz am Ende des Vorgangs gelöscht werden.</p>
+
+
+            	<p>Die integrierten Metadaten werden nun mit Photoshop in XML-Format übertragen. Dafür wird die Stapelverarbeitung „opensaveclose“ oder „OSC“ in Photoshop verwendet. Diese ist auf diversen Rechnern in der Jennerstraße zu finden unter Datei – Automatisierung – Stapelverarbeitung. Unter Fenster - Aktion lassen sich die einzelnen Schritte von „opensaveclose“ oder „OSC“ [1) Ebene erstellen, 2) Aktuelle Ebene löschen, 3) Speichern, 4) Schließen] nachvollziehen, beziehungsweise eine entsprechende Aktion zusammenstellen, falls die Stapelverarbeitung nicht vorhanden sein sollte. <br />Nach erfolgreichem Abschluss dieses Prozesses sind die Bilddateien nun zur Verteilung in den AAArC-Ordnerbaum bereit. Hierzu geht man zurück in das Scanprotokoll.</p>
+
+
+            	<p><a href="#1_Einlesen" class="wiki-page">1. Einlesen</a><br /><a href="#2_Eigene_Kennung_in_‚ID‘_einfügen" class="wiki-page">2. Eigene Kennung in ‚ID‘ einfügen.</a><br /><a href="#3_Felder_ausfüllen" class="wiki-page">3. Felder ausfüllen</a><br /><a href="#4_Aktualisieren" class="wiki-page">4. Aktualisieren</a><br /><a href="#5_Dateien_umbenennen" class="wiki-page">5. Dateien umbenennen</a><br />-> <a href="#6_Schreiben_der_Metadaten_" class="wiki-page">6. Schreiben der Metadaten </a> <br /><a href="#7_Ordner_anlegen_und_verteilen" class="wiki-page">7. Ordner anlegen und verteilen</a><br /><a href="#8_Import_in_Arachne" class="wiki-page">8. Import in Arachne</a></p>
+            <hr />
+
+            <h2 class="con10t-toc-entry">7 Ordner anlegen und verteilen</h2>
+
+
+            	<p>Durch Anklicken des Buttons „Ordner anlegen“ im Scanprotokoll werden die Fundplatzordner maschinell erzeugt. Eine Kontrolle der im Scanprotokoll eingetragenen Regionen und Arbeitsgebiete und deren Schreibweise im Vergleich mit dem Master-Ordnerbaum von AAArC ist vor diesem Prozessschritt unbedingt notwendig. <br />Nach der Meldung, dass die Ordner angelegt wurden, kann nur der letzte Schritt gestartet werden, dass Verteilen der Digitalisate in die AAArC-Ordner-Ablagehierarchie. Dies erfolgt mit Hilfe des Button „Dateien verschieben und kopieren“ im Scanprotokoll. Bei diesem Vorgang wird gleichzeitig eine Sicherungskopie in TIFF-Format erzeugt, die in den Kalenderwochenordnern abgelegt wird. <br />Zum Verteilen in Ordner ist wichtig, dass die Bilddateien in dem in Spalte BG des Scanprotokolls genannten Pfad liegen. Das heißt (Voreinstellung im aktuellen Scanprotokoll), die Bilder müssen im Ordner aaarc_prozess\digi\metadaten [NAS-Server Archiv / AAArC] liegen. Ferner muss im Ordner aaarc_prozess\digi\complete [NAS-Server Archiv / AAArC] der „aaarc_path-Masterbaum“ liegen. Dieser ist zu finden im Ordner aaarc_status [NAS-Server Archiv / AAArC] und kann einfach kopiert werden (Masterbaum immer aktuell halten, in den Rubriken Land, Region und Arbeitsgebiet). Erst dann kann der Button „Dateien verschieben und kopieren“ aktiviert werden. Auch dieser Prozess kann dauern.</p>
+
+
+            	<p>Die Sicherungskopie der fertig kuratierten Digitalisate (Kalenderwochenordner) sollten an einem separatem Ort abgespeichert werden; dies ist aktuell der Ordner AAArC in der Archaeocloud des DAI.</p>
+
+
+            	<p>Vor dem Transfer zu Arachne sollte (zumindest stichprobenartig) eine letzte Qualitätskontrolle der fertig kuratierten Digitalisate erfolgen, so dass mögliche Fehler (z.B. falsche Orientierung von Digitalisaten, Fehler in den Metadatenfeldern, Fehler in der Dateibenennung) direkt korrigiert werden können. Nach dem Import in Arachne ist dies komplizierter. [Bei Korrekturen der Metadaten mit Hilfe von z.B. Adobe Bridge muss abschließend unbedingt der Schritt „open-save-close“ wiederholt werden.]</p>
+
+
+            	<p>Nun erfolgt der Transfer der Digitalisate und Import in das Online Archiv (Arachne).</p>
+
+
+            	<p><a href="#1_Einlesen" class="wiki-page">1. Einlesen</a><br /><a href="#2_Eigene_Kennung_in_‚ID‘_einfügen" class="wiki-page">2. Eigene Kennung in ‚ID‘ einfügen.</a><br /><a href="#3_Felder_ausfüllen" class="wiki-page">3. Felder ausfüllen</a><br /><a href="#4_Aktualisieren" class="wiki-page">4. Aktualisieren</a><br /><a href="#5_Dateien_umbenennen" class="wiki-page">5. Dateien umbenennen</a><br /><a href="#6_Schreiben_der_Metadaten_" class="wiki-page">6. Schreiben der Metadaten </a> <br />-> <a href="#7_Ordner_anlegen_und_verteilen" class="wiki-page">7. Ordner anlegen und verteilen</a><br /><a href="#8_Import_in_Arachne" class="wiki-page">8. Import in Arachne</a></p>
+            <hr />
+
+            <h2 class="con10t-toc-entry">8 Import in Arachne</h2>
+
+
+            	<p>Vor dem Import in Arachne ist darauf zu achten, dass die Digitalisats-Ordner „zz_additional_data“  benannt sind. In älteren Protokollen waren diese noch „zz_Digitalisate“ benannt. Ist dies der Fall, müssen diese Ordner mit Hilfe einer batch-Umbenennungs Software entsprechend bearbeitet werden.<br />Unterschiedliche Arbeitspakete sollten vor dem Import alle in einem Verzeichnis-Baum integriert sein.<br />Die Tiff-Digitalisate in ihrem Verzeichnis-Baum werden dann in den „einzulesen“ Ordner auf der Archaeocloud, innerhalb des entsprechenden AAArC Verzeichnisses kopiert. Daraus müssen nun die Bilder alle in das Darstellungsformat .JPG migriert werden und dann die „.jpg-Dateien“ alle in einem Importordner abgelegt.<br />Die .jpg werden dann in die Arachne-Cloud importiert und entsprechend für das CMS indiziert, nach dem jeweils gültigen Arachne Import Protokoll.</p>
+
+
+            	<p><a href="#2_Metadatenimport" class="wiki-page">2. Metadatenimport</a></p>
+
+
+            	<p>Zum Import der Metadaten siehe unten die entsprechende Anleitung (bzw. auch in Datei „Metadaten_Import“)</p>
+
+
+            	<p>Nachdem die .jpg Formate und die XMP-Metadaten extrahiert und importiert sind, kann der .Tiff Verzeichnisbaum in den entsprechenden AAArC-Archivordner integriert werden.<br />Danach können alle temporären Digitalisate gelöscht werden.</p>
+
+
+            	<p><a href="#1_Einlesen" class="wiki-page">1. Einlesen</a><br /><a href="#2_Eigene_Kennung_in_‚ID‘_einfügen" class="wiki-page">2. Eigene Kennung in ‚ID‘ einfügen.</a><br /><a href="#3_Felder_ausfüllen" class="wiki-page">3. Felder ausfüllen</a><br /><a href="#4_Aktualisieren" class="wiki-page">4. Aktualisieren</a><br /><a href="#5_Dateien_umbenennen" class="wiki-page">5. Dateien umbenennen</a><br /><a href="#6_Schreiben_der_Metadaten_" class="wiki-page">6. Schreiben der Metadaten </a> <br /><a href="#7_Ordner_anlegen_und_verteilen" class="wiki-page">7. Ordner anlegen und verteilen</a><br />-> <a href="#8_Import_in_Arachne" class="wiki-page">8. Import in Arachne</a></p>
+
+
+            	<p>Zurück zur Übersicht <a href="#Wiki" class="wiki-page">Wiki</a></p>
+            <hr />
+
+            <h1 class="con10t-toc-entry">2 Metadatenimport</h1>
+
+
+            	<a name="2_Metadatenimport_Extraktion-per-XMP-Import-XmpImporter"></a>
+            <h2 class="con10t-toc-entry">Extraktion per XMP-Import (<a href="/projects/xmp-importer" class="project">XmpImporter</a>)</h2>
+
+
+            	<p>Nachdem die Bilder vom Codarchlab in Arachne importiert wurden müssen die nun leeren Datensätze in der Datenbank mit Metadaten ausgefüllt werden. Um eine Konsistenz der Datenbasis zu gewährleisten benutzt man nicht ein Excel Tabelle in der die Metadaten stehen sondern extrahiert diese, mit dem XMP-Import/Exporter, aus den TIFFs. Um dies zu tun muss der XMPImporter geöffnet werden. Dieser findet sich bei der Projektsoftware unter dem Namen XMPImporter.exe. Die Sicherheitswarnung zum Ersteller des Programms kann ignoriert werden. Nach Öffnen des Programms muss über die Funktion <em>Add folder</em> der Ordner mit den TIFFs ausgewählt werden. Diese liegen auf der Archaeocloud und sind auffindbar unter der Netzwerkadresse:</p>
+
+
+            	<p><em>\\nas10.rrz.uni-koeln.de\archaeocloud\codarchlab\forschungsprojekte</em></p>
+
+
+            	<p>Falls Sie dafür noch nicht freigeschaltet sind, wenden Sie sich an den Techsupport der Arachne unter Angabe des Projektes AAArC und ihres Mitarbeiternamens.</p>
+
+
+            	<p>Die TIFFs sind auf diesem Server in den topographisch hierarchisierten AAArC Baum eingeteilt und so einfach zu navigieren. Die Entscheidung welche Pakete man nun in den Importer liest sollte nun nach der Größe des Paketes entschieden werden. Jeder Ordner sollte daher zuerst auf seine Eigenschaften überprüft werden. Zu empfehlen ist es, keine größeren Ordner als höchstens 10 GB zu nehmen, da die Verarbeitungszeit sonst sehr lange ist und sich bei der Menge der Ausgelesenen Metadaten ein Fehler ergeben könnte. Es können auch gerne Ordner zu auslesezwecken, als Kopien(!), in einen neuen Ordner gespeichert werden, um sinnvolle Pakete mit angemessener Größe zu haben. Wenn nun der Ordner im XMP-Importer geöffnet wurde, wird die Funktion <em>Generate SQL</em> gestartet. Hierbei wird man aufgefordert einen Ort anzugeben, an dem  die zu erstellende Datei gespeichert wird. Dieser ist frei zu wählen, allerdings ist empfehlenswert auf Sofs2 den Ordner <em>Import</em> zu verwenden und dort einen Ordner mit Nennung des Monats und Jahres anzulegen.</p>
+
+
+            	<p>Wenn der Import abgeschlossen ist findet sich die nun erstellte SQL Datei in dem ggf. neu erstellten Ordner. Da es einen Bug im XMP-Importer gibt, werden die Umlaute und Sonderzeichen nicht richtig kodiert. Sie müssen nachträglich korrigiert werden. Nach Anleitung sollten in den Daten keine Sonderzeichen vorhanden sein, dies sollte aber nochmals überprüft werden, Hierzu empfiehlt sich die SQL Datei mit Notepad++ (Wieder bei Standard Software zu finden) zu öffnen und dann damit die Umlaute zu korrigieren. Das Ausmaß der jeweilig  durchzuführenden Korrekturen hängt von den Daten ab die an den Bildern hängen. In neueren Auszeichnungen der Bilder wurden Umlaute weitestgehend vermieden, hier muss sich nur um Sonderzeichen gekümmert werden. Wie welche Sonderzeichen durch den XMPImporter kodiert werden, findet sich in dem Dokument <em>Umlaute.rtf</em> im gleichen Ordner wie dieser Anleitung.</p>
+
+
+            	<p>Nun kann man mit der Suchen und Ersetzten Funktion von Notepad++ die Sonderzeichen ersetzten. Der Vorteil an diesem Programm ist dass es eine am Baum orientierte Batchverarbeitung gibt, das heißt sie können den Vorgang des Suchen und Ersetzens auf einen ganzen Ordner ausweiten und alle Dateien die sich darin befinden gleichzeitig bearbeiten. Hierfür wählen sich im Menüpunkt <em>Suchen</em> die Registerkarte <em>In Dateien suchen</em>. Hier können Sie die zu suchende Phrase angeben, die Phrase mit der Sie diese ersetzen möchten und das Verzeichnis, welches nach der Phrase durchsucht werden soll. Wenn nun die Umlaute/Sonderzeichen ersetzt wurden, kann zum nächsten Schritt, dem Importieren, übergegangen werden.</p>
+
+
+            	<p>Das Importieren an sich ist ein kein aufwändiger Prozess da man die Oberfläche von phpMyAdmin, dem Datenbankverwaltungssystem, benutzt. Um dieses zu erreichen, muss man die Adresse <em>arachne.uni-koeln.de/phpMyAdmin</em> besuchen. Die Groß- und Kleinschreibung ist in diesem Fall wichtig. Dann wird man zu einem Login aufgefordert, dieser ist: Benutzer – arachne; Passwort – 'StrahlenZAHL-Philosoph' (genauere Daten müssen bei Arachne angefragt werden).</p>
+
+
+            	<p>Nun muss die Datenbank <em>arachne</em> ausgewählt werden und dann die Registerkarte <em>Importieren</em>. Hier können nun die einzelnen SQL-Dateien Importiert werden. Wenn die Datei zu groß sein sollte gibt das Programm dies an und man muss die Dateien in eine ZIP-Datei umwandeln und dann importieren. Wenn alle Dateien importiert wurden, muss noch die Freigabe für die einzelnen Bilder gesetzt werden. Dafür gibt es einfache SQL-Befehle die in der Datei <em>Freigaben_Setzen_SQL-Befehle.sql</em> stehen. Hierfür wählt man auf der gleichen Seite auf der importiert wurde die Registerkarte SQL und kopiert jeweils eine Zeile in das Feld. Nun muss der Befehl nur abgeschickt werden und die Freigaben sollten gesetzt sein.</p>
+
+
+            	<a name="2_Metadatenimport_Import-per-php-Script"></a>
+            <h2 class="con10t-toc-entry">Import per .php Script</h2>
+
+
+            	<p>Wenn die Metadaten in einer Tabelle vorliegen und sichergestellt ist dass die Metadaten der Bilder und die Tabelle übereinstimmen, können die Metadaten auch mit dem angehängten Importscript importiert werden. Die Schritte hierzu finden sich unter <a href="#7_Topographieimport" class="wiki-page">7 Topographieimport</a>. Es muss lediglich der Name des Scripts angepasst werden.</p>
+
+
+            	<p>Zurück zur Übersicht <a href="#Wiki" class="wiki-page">Wiki</a></p>
+            <hr />
+
+            <h1 class="con10t-toc-entry">3 iDAIgazetteer</h1>
+
+
+            	<p>Zahlreiche Länder Afrikas sowie deren Regionen und Arbeitsgebiete sind bereits importiert und verfügen somit über eine iDAI.gazetteer-ID. Auch zahlreiche Fundplätze (B.O.S.-Projekt, Brandberg-Projekt, sowie weitere aus Namibia und dem Sudan) sind bereits im iDAI.gazetteer eingetragen (siehe Datei „BOS-IDs_Gazetteer und Arachne_Stand 15-11-2016“).</p>
+
+
+            	<p>Beim Import von Fundplätzen ist zu beachten, dass Koordinaten in der Anzeige im iDAI.gazetteer nur auf eine Nachkommastelle genau angegeben werden (also z.B.: N 17.5° und E 28.3°). Die exakten Koordinaten werden also für den Import verwendet und dann bei der Darstellung im Gazetteer nur unscharf (mit einer Nachkommastelle) angezeigt; dafür muss der Fundplatz als „nicht öffentlich“ markiert sein. Der Fundplatz wird der AAArC-Datensatzgruppe zugewiesen. Die exakten Koordinaten sind nur nach Freigabe durch AAArC sichtbar; hierfür kann eine entsprechende Anfrage direkt an <a class="email" href="mailto:aaarc-online@uni-koeln.de">aaarc-online@uni-koeln.de</a> oder über  die Seite des iDAI.gazetteer gestellt werden.</p>
+
+
+            	<p>Beim Import von mehreren neuen Fundplätzen sollte die Tabelle „AAArC Importtabelle_blanko_mit tags“ genutzt werden. <br />„Prefered Name Title“ ist die Fundplatzbezeichnung (also: 83/36, 85/1, S95/2, N95/4,..)<br />Der AAArC-FP-Namen (also S95002, N95004) wird in der Spalte „Additional Name 1“ eingetragen, gegebenenfalls weitere Bezeichnungen dann in die Spalten „Addition Name 2 und 3“. Die Tabelle sieht Felder für drei Alternativnamen vor, der iDAI.gazetteer erlaubt aber beliebig viele. Im seltenen Fall von mehr als drei unterschiedlichen Fundplatzbezeichnungen müssten diese dann händisch im iDAI.gazetteer ergänzt werden.</p>
+
+
+            	<p>Die Koordinatenangabe erfolgt in Dezimalkoordinaten, diese sollten mit einem Punkt getrennt sein, also: 17.853741°<br />In der Spalte „public site“ wird „no“ eingetragen, damit sind diese als „nicht öffentlich“ markiert und es ist somit sichergestellt, dass ohne weitere Anmeldung die Fundplätze im iDAI.gazetteer nur mit unscharfen Koordinaten sichtbar sind.</p>
+
+
+            	<p>Die im Gazetteer eingelesenen Fundplätze erhalten automatisch den Provenienz-Tag „AAArC“. Weitere Tags können zur Charakterisierung der Fundplätze vergeben werden, hierfür sind folgende Kategorien vorhanden (diese werden in die dafür vorgesehene Spalte eingefügt; werden mehrere Tags eingetragen, müssen diese durch Komma getrennt sein). Folgende Kategorien sind hier vorgesehen:  <br />open air site<br />geological section<br />rock shelter/cave<br />stone structure<br />Steinplatz<br />burial place<br />stray find (Anmerkung: steht auch für Einzelfunde)<br />natural mineral deposit (Anmerkung: dazu gehören z.B. Rohmaterialvorkommen)<br />geological outcrop<br />artifact scatter<br />archaeological horizon<br />Ferner gibt es den Tag „rock art“.</p>
+
+
+            	<p>Nach dem sorgfältigen Ausfüllen der Tabelle geht diese an den Import und wird gemäß der Anweisung in der Datei <a href="#4_Gazetteer_Import" class="wiki-page">4. Gazetteer Import</a> „BeschreibungGazetteerImport“ in den iDAI.gazetteer importiert.</p>
+
+
+            	<p>Zenon – iDAI.gazetteer<br />Um eine direkte Verbindung zwischen iDAI.gazetteer-Einträgen und in Zenon verfügbarer Literatur zu schaffen, ist eine Tabelle nötig, die folgende Informationen enthält: <br />Fundplatzname wie im iDAI.gazetteer verwendet, iDAI.gazetteer-ID, die relevanten Zenon-IDs sowie den Zenon-Thesaurus (oder falls dieser nicht bekannt ist, den Link zum iDAI.gazetteer-Eintrag).<br />Die ausgefüllte Tabelle geht dann an Zenon und wird dort weiter verarbeitet.</p>
+
+
+            	<p>Zurück zu Übersicht <a href="#Wiki" class="wiki-page">Wiki</a></p>
+            <hr />
+
+
+            <h1 class="con10t-toc-entry">4 Gazetteer Import</h1>
+
+
+            	<p>In den folgenden Zeilen wird der Ablauf eines Tabellenimportes in den iDAI-Gazetteer schrittweise erläutert, sodass auch Personen mit Grundlagen-Kenntnissen in der Lage sind, diese durchzuführen. Man beachte dabei, dass diese Schritte derzeit nur auf einem Mac-PC ausgeführt werden können</p>
+
+
+            	<a name="4_Gazetteer_Import_Tabelle-in-CSV-konvertieren"></a>
+            <h2 class="con10t-toc-entry">Tabelle in CSV konvertieren</h2>
+
+
+            	<p>Zu Beginn liegt eine Tabelle vor, meistens im XLSX-Format. (Excel Spreadsheet) Da der Import allerdings nur mit CSV-Tabellen funktioniert, muss die vorliegende konvertiert werden. Dazu wird sie in einem Tabellenbearbeitungsprogramm geöffnet, vor allem Libre Office bzw. Open Office eignet sich gut dafür, da das Spaltentrennzeichen (anders als bei Excel) frei wählbar ist. Wenn die Tabelle nun als CSV abgespeichert werden soll, wird der Benutzer zur Eingabe eines oder mehrerer Trennzeichen(s) aufgefordert.  Es können alle Trennzeichen ignoriert werden, bis auf das Spaltentrennzeichen. Dieses sollte % sein, da dieses Zeichen für gewöhnlich nicht in den zu importierenden Tabellen Verwendung findet und da die bereits vorhandenen Skripte dieses Zeichen verwenden. Die nun als CSV vorhandene Tabelle wird letzten Endes weiterverarbeitet und in den Gazetteer einlesen. Wichtig hierbei ist, dass die CSV-Datei in demselben Ordner wie die Dateien_ import.rb, template_aaarc.json_ <em>und template_aaarc_record_group.json</em></p>
+
+
+            	<a name="4_Gazetteer_Import_Terminalnavigation-Grundlegend"></a>
+            <h2 class="con10t-toc-entry">Terminalnavigation (Grundlegend)</h2>
+
+
+            	<p>Da das Skript über das Terminal bzw die Konsole ausgeführt wird, folgen nun die grundlegendsten Befehle, um Sie mit der Navigation vertraut zu machen. Bestätigen Sie Ihre Eingaben über die Enter-Taste.</p>
+
+
+            	<p><code>dir</code> – Dieser Befehl gibt Ihnen alle Dateien und Ordner aus, die sich im aktuellen Verzeichnis befinden.</p>
+
+
+            	<p><code>ls</code> – Das Äquivalent zu dir, wenn Sie Linux oder Mac OS verwenden. Dies ist beim Gazetteer-Import der Fall.</p>
+
+
+            	<p><code>cd X</code> – Wechselt das Verzeichnis. Statt X würde der Name des Subordners angegeben werden, in den gewechselt werden soll. Falls man eine Ebene weiter nach oben möchte, würde man cd .. eingeben.</p>
+
+
+            	<p><code>X:</code> - Wechselt das Laufwerk. Sie können statt X jeden beliebigen Laufwerkbuchstaben angeben, vorausgesetzt, es existiert.<br />Hinweis: Sie können mit der Tab-Taste bereits angefangene Datei- und Ordnernamen auto-vervollständigen um Aufwand zu sparen.</p>
+
+
+            	<a name="4_Gazetteer_Import_Script-ausführen"></a>
+            <h2 class="con10t-toc-entry">Script ausführen</h2>
+
+
+            	<p>Bevor Sie fortfahren, sollten Sie sicher gehen, dass Ruby installiert ist und die richtige Version verwendet. Dies sollte die Version 2.2.1 sein. Überprüfen Sie dies, indem Sie in die Konsole</p>
+
+
+            	<p><code>rvm list</code></p>
+
+
+            	<p>eingeben. Dies listet Ihnen alle installierten Versionen von Ruby auf. Falls Sie die benötigte Version nicht finden, geben Sie</p>
+
+
+            	<p><code>rvm install 2.2.1</code></p>
+
+
+            	<p>ein. Auf diese Weise wird die richtige Version auf diesem Gerät installiert. Ungeachtet ob diese Version bereits installiert ist oder nicht, gibt man im Anschluss</p>
+
+
+            	<p><code>rvm use ruby -2.2.1</code></p>
+
+
+            	<p>ein, um die richtige Version zu verwenden. Nun sind Sie bereit, fortzufahren. Wenn man sich mit dem Terminal nun bis in den Ordner in dem sich das Script und die CSV-Tabelle befinden, navigiert hat, gibt man folgenden Befehl ein:</p>
+
+
+            	<p><code>ruby import.rb -P "TAGS" -u "BENUTZER" –p "PASSWORT" -s "TRENNZEICHEN" -H –t "template_aaarc_record_group.json" -C "FERTIGNAME.csv" -v ROHNAME.csv –c</code></p>
+
+
+            	<p>Anstelle von BENUTZER wird der eigene Gazetteer-Benutzername eingegeben, anstelle von  PASSWORT, das zu dem Benutzernamen gehörende Passwort. Anstatt ROHNAME setzt man hier den Namen der zu importierenden Tabelle ein und für FERTIGNAME wählt man den Namen, unter dem die bearbeitete Tabelle gespeichert werden soll. Als TRENNZEICHEN gibt man das ein, welches man bei der Konvertierung in CSV gewählt hatte, bei TAGS werden die Schlagwörter für die Gazetteer-Einträge angegeben. Mehrere Tags werden mit Kommas getrennt. Die Anführungszeichen werden so belassen. Anstelle von <em>template_aaarc_record_group.json</em>, welches das Template mit automatischer Gruppenzuweisung in die AAArC-Gruppe aufruft, kann auch <em>template_aaarc.json</em> verwendet werden.</p>
+
+
+            	<p>Zurück zur Übersicht <a href="#Wiki" class="wiki-page">Wiki</a></p>
+            <hr />
+
+            <h1 class="con10t-toc-entry">5 iDAIbibliography  Zenon</h1>
+
+
+            	<p>Literatur zu den Fundplätzen etc. kann – falls nicht schon geschehen – in iDAI.bibliography / Zenon erfasst werden und dann nicht nur darüber recherchiert werden, sondern auch mit im iDAI.gazetteer oder in iDAI.objects vorhandenen Einträgen verknüpft werden.</p>
+
+
+            	<p>Ein Zenon-Eintrag ist auch notwendig, wenn Bücher oder Buchseiten über Arachne sichtbar gemacht werden sollen.</p>
+
+
+            	<p>Hierfür müssen die entsprechenden bibliographischen Angaben, am besten in Tabellenform mit Angaben zu Autor/in, Titel, Erscheinungsort und Jahr bei Zenon eingereicht werden.</p>
+
+
+            	<p>Für Fragen etc: <br /><a class="email" href="mailto:zenondai@dainst.de">zenondai@dainst.de</a><br /><a class="email" href="mailto:idai.bibliography@dainst.de">idai.bibliography@dainst.de</a></p>
+
+
+            	<a name="5_iDAIbibliography__Zenon_Bücher-und-Buchseiten-in-Arachne"></a>
+            <h2 class="con10t-toc-entry">Bücher und Buchseiten in Arachne</h2>
+
+
+            	<p>Über den Bookbrowser gibt es die Möglichkeit, Bücher und Buchseiten in Arachne online lesbar zu machen und auch als pdf-Download bereitzustellen. <br />Hierfür ist eine Zenon-ID nötig (siehe oben).</p>
+
+
+            	<p>Die Buchseiten müssen einzeln sowohl im Tiff-Format als auch als „jpg“ vorliegen, als Dateibezeichnung dient jeweils die Zenonnummer und eine fortlaufende Nummer. Diese werden dann für den Import in den Buchordner [Ordner „BOOK-ZIDzenon-AraIDarachne] abgelegt. Pro Buch ist ein solcher Buchordner nötig.<br />Die Buchordner bestehen aus drei Unterordnern: "datenbankfertig"; "druckfertig" und „Rohscans" <br />Der Ordner "datenbankfertig" besitzt den Unterordner "max", der jedoch leer bleibt; <br />Unter "druckfertig" kommen die jpgs und werden nach Zenonnummer und laufender Nummer sortiert<br />Der "Rohscans" - Ordner besitzt ebenfalls zwei Unterordner: "Originale" und "tiffs". Der Ordner "Originale" bleibt leer; der Ordner "tiffs" wird mit den tiffs bestückt, die auch nach Zenonnummer + laufender Nummer sortiert werden.</p>
+
+
+            	<p>Zum Buchimport siehe die folgenden Anweisungen <em>Wiki Artikel Buchimport.pdf</em>.<br />Um die Bücher suchbar zu machen in Arachne müssen die Metadaten nach der Anleitung <em>Metadatenimport Für Buchverzeichnis.pdf</em> hinzugefügt werden.</p>
+
+
+            	<p>Zurück zur Übersicht <a href="#Wiki" class="wiki-page">Wiki</a></p>
+            <hr />
+            <a name="6_Der_Fundplatzkatalog" />
+            <a name="6_Der_Fundplatzkatalog_6-Der-Fundplatzkatalog"></a>
+            <h1 class="con10t-toc-entry">6 Der Fundplatzkatalog</h1>
+
+
+            	<p>Der Fundplatzkatalog dient dazu, alle für einen Fundplatz relevanten Informationen in Tabellenform zu sammeln. Diese Tabelle (im Excel-Format) dient zugleich als Basis, um in Arachne Topographieobjekte anzulegen. Einem Topographieobjekt, im Fall von AAArC ist dies ein Fundplatz, können Bilder zugeordnet und entsprechend verknüpft werden. Zudem lassen sich über das Topographieobjekt Verknüpfungen mit anderen Komponenten der iDAI.world (z.B. iDAI.gazetteer und i.DAI.bibliography) herstellen. Topographieobjekte dienen somit einer Strukturierung des Bildbestandes.</p>
+
+
+            	<p>Die Fundplatzkatalogtabelle (Ordner „Fundplatzkatalog – Topographie“, Datei „Fundplatzkatalog_AAArC_Master“) beinhaltet neben allgemeinen Angaben zur geographischen Lage (Land, Region, Arbeitsgebiet, Fundplatzbezeichnung, Koordinaten) auch Angaben zur chronologischen Einordnung sowie den durchgeführten Aktivitäten (z.B. Survey, Ausgrabung), zum Fundmaterial, dessen Verbleib und Literatur. Das Freitextfeld „description“ erlaubt eine umfassende Beschreibung des Fundplatzes. Das Ausfüllen erfolgt teils mit Hilfe von Drop-down-Menüs, teils in Freitexteingabe. Bei den Angaben zur chronologischen Einordnung wurde bewusst unterschieden zwischen „period“ und „regional chronology“. Im Feld „period“ wird eine grobe zeitliche Einordnung über geowissenschaftliche Epochenbezeichnungen (Pleistozän, Holozän) vorgenommen, im Feld „regional chronology“ ist dann die differenziertere zeitliche Ansprache, die regional ja sehr unterschiedlich sein kann, möglich.</p>
+
+
+            	<p>Momentan ist allerdings nur ein Teil der in der Fundplatzkatalogtabelle erfassten Informationen im Bereich Topographieobjekt darstellbar, dies sind die in der Fundplatzkatalogtabelle farbig markierten Felder. Ziel ist aber, dies auf alle Felder der Fundplatzkatalogtabelle auszuweiten, um damit weitreichendere Recherchemöglichkeiten über die Topographieobjekte zu bieten.</p>
+
+
+            	<p>Topographieobjekte können nach dem Anlegen in Arachne händisch befüllt werden, dafür sind allerdings Editorenrechte in Arachne nötig, bei größeren Datenmengen empfiehlt sich der Import aller relevanten Informationen mit Hilfe einer entsprechenden Importtabelle. Diese Datei „TopographieImportTemplate“ findet sich ebenfalls im Ordner „Fundplatzkatalog – Topographie“. Ein Hinweis zum Ausfüllen: In der Spalte „scientific dating“ wird die Art der Datierung, z.B. „14C“ im Falle von Radiokarbondaten, eingetragen. In die Spalte „Parent ID Arachne!“ das dem Fundplatz übergeordnete Arbeitsgebiet bzw. dessen Arachne ID. Zum weiteren Verfahren siehe die folgenden Ausführungen <a href="#7_Topographieimport" class="wiki-page">7. Topographieimport</a>.</p>
+
+
+            	<p>Zurück zu Übersicht <a href="#Wiki" class="wiki-page">Wiki</a></p>
+            <hr />
+
+            <h1 class="con10t-toc-entry">7 Topographieimport</h1>
+
+
+            	<a name="7_Topographieimport_Topographie-Import-Ablauf"></a>
+            <h2 class="con10t-toc-entry">Topographie Import Ablauf</h2>
+
+
+            	<p>Um den Topographie Import ausführen zu können benötigen sie auf einem Windows Computer eine funktionierende Installation von Php sowie die schon vorhandene Anwendung „Windows PowerShell ISE“. Falls kein PHP auf dem Computer installiert sein sollte, wäre die Empfehlung das PHP Arbeitsumgebungs Paket XAMPP zu installieren welches automatisch nach der Installation PHP Scripts im Power Shell lauffähig macht.</p>
+
+
+            	<a name="7_Topographieimport_Vorbereitung-der-Tabellen"></a>
+            <h2 class="con10t-toc-entry">Vorbereitung der Tabellen</h2>
+
+
+            	<p>Die zu importierenden Informationen müssen in das gegebene Template <em>TopographieImportTemplate.xslx</em> gefüllt werden. Zunächst in das erste Tabellenblatt, betitelt <em>All</em>. Von dort aus können über copy-paste Befehle die verbleibenden Tabellenblätter ausgefüllt werden. Das Feld Topo ID muss in diesem Schritt noch frei bleiben, da die hierfür vorgesehene TopographieID aus Arachne erst bei dem ersten Import Schritt erstellt wird. Das letzte Tabellenblatt wird auch fürs Erste außen vor gelassen.</p>
+
+
+            	<p>Als nächster Schritt muss die Konvertierung in das CSV Format vorgenommen werden. Hierzu muss die vollständig ausgefüllte Excel Datei nun mit einem Open Source Editor geöffnet werden. Zu empfehlen ist hier Libre Office.  Beim Speichern in einer CSV Datei ist es nicht möglich mehrere Tabellenblätter gleichzeitig ab zu speichern. So muss jedes einzeln verarbeitet werden. Das Speichern der Tabellenbätter in CSV muss, durch die Reihenfolge die der Import vorgibt, in mehreren Schritten erfolgen. Zunächst kann nur das Tabellenblatt <em>Topographie</em> exportiert werden, da den anderen noch die Angabe der Topographie ID fehlt. Diese werden erst nach dem ersten Import Schritt fertig ausgefüllt und dann exportiert. Das allererste Blatt <em>All</em> wird allerdings außer Acht gelassen.</p>
+
+
+            	<p>Um nun eine CSV Datei zu erzeugen  empfiehlt sich die Funktion eine Kopie speichern zu verwenden. Dies findet sich im Menü <em>Datei</em> unterhalb der Option <em>Speichern unter</em>. Wichtig ist, dass vor dem Abspeichern die erste Zeile, in der die Spaltenbezeichnungen stehen, zu entfernen ist. Nach dem Speichervorgang kann dies wieder Rückgängig gemacht werden. Nach dem Anklicken der Aktion erscheint ein pop-up Fenster in dem man den Speicherort auswählt, dieser sollte der gleiche Ordner sein in dem die zu benutzenden Scripts liegen. Bei diesem Schritt muss auch das Format des zu speichernden Dokuments von „Microsoft Excel 2007 (.xlsx)“ auf „Text CSV (.csv)“ geändert werden. Nach der Bestätigung des Speicherns wird ein neues Fenster angezeigt das den Titel „Textexport“ trägt. Hier muss der Feldtrenner geändert werden. Beim Umspeichern des Tabellenblattes <em>Topographie</em> zu einem Et-Zeichen (&#38;), bei allen andere  Blättern zu einem Prozentzeichen (%). Die restlichen Einstellungen sollten nicht verändert werden. Die nach der Bestätigung erscheinende Warnung kann ignoriert werden.</p>
+
+
+            	<a name="7_Topographieimport_Bedienung-der-Konsole-und-der-Importscripte"></a>
+            <h2 class="con10t-toc-entry">Bedienung der Konsole und der Importscripte</h2>
+
+
+            	<p>Benutzt wird das Windows PowerShell dessen Bedienung im Folgenden kurz erläutert wird. Es wird von dem normalen AAArC-Ablagepfad ausgegangen. Beim Start der Anwendung befindet man sich im Heimverzeichnis, zumeist C:/, und muss von dort in den Ordner in dem die Scripts und die vorbereitete CSV-Datei liegt navigieren. Dies ist in Windows PowerShell nicht kompliziert. Es genügt das zu erreichende Volume anzugeben. Dafür muss man zuerst feststellen unter welchem Verzeichnisnamen das zu erreichende Volume angeschlossen ist. Dies lässt sich durch das Öffnen des „Computer“ Menüs herausfinden. Hier lassen sich unter dem Punkt <em>Netzwerkadressen</em> die an das Volume vergeben Buchstaben ablesen. Um nun in der Shell dorthin zu manövrieren, muss lediglich der korrespondierende Buchstabe mit Doppelpunkt dahinter eigegeben werde. (Bsp: Z:). Um nun zu überprüfen an welcher Stelle im Baum man sich befindet gibt man den Befehl <code>ls</code> ein der einem alle Dateien und Ordner, die sich in die gerade offenen Verzeichnis befinden, anzeigt. Um in eines der unteren Verzeichnisse zu gelangen verwendet man den Befehl <code>cd (Ordnername)</code>. Um die Eingabe zu erleichtern kann, nach dem ersten Buchstaben des Ordnernamens, der Tabulator gedrückt werden um den Namen automatisch zu vervollständigen. Bei mehrmaligem drücken werden alle Möglichkeiten die Eingabe zu vervollständigen durch gegangen. Um einen Schritt im Baum zurück zu gehen, also den Ordner in dem Man sich befindet zu verlassen, wird der Befehl „cd ..“ verwendet.</p>
+
+
+            	<p>Nach Erreichen des Ordners in dem die Script und die CSV Dateien liegen muss nun das PHP Script ausgeführt werden. Wie schon vorher beschrieben muss zuerst die Tabelle mit dem Namen Topographie Importiert werden. Der passende Befehl dazu ist:</p>
+
+
+            	<p><code>php TopographieImport(Tabellenblattname).php ‚NameDerCSV.csv‘</code></p>
+
+
+            	<p>Das Shell zeigt nun welche Informationen in die Datenbank geschrieben wurden und ob die einzelnen Befehle erfolgreich waren.</p>
+
+
+            	<p>Nach dem erfolgreichen Durchlauf des Scripts findet sich im Ursprungsordner eine neue CSV-Datei <em>TopoIDs.csv</em> in dem sich die IDs zu den neue erstellten Topographie Objekten finden.  Diese sind, dem Script geschuldet, horizontal angeordnet. Um dies zu ändern und sie somit für einen copy-paste Vorgang brauchbar zu machen, muss der Inhalt vertikal ausgerichtet werden. Hierfür öffnet man die Tabelle in Excel und markiert die Ergebnisse. Danach muss der markierte Inhalt über den Kopieren Befehl und die Zwischenablage gelegt werden. Um nun die Ausrichtung zu ändern Wählt man ein freies Feld, vorzugsweise A2 aus, führt einen Rechtsklick aus und wählt die Einfügeoption <em>Transponieren</em> aus. Damit wird der kopierte Inhalt vertikal abgelegt. Dieser kann nun in die teilweise ausgefüllten Blätter des Templates eingefügt werden. <br />Mit allen Datenblättern wird nun so verfahren wie mit dem <em>Topographie</em> Blatt. Der Name des jeweils zu verwendenden Scripts korrespondiert direkt mit dem Name des Tabellenblattes.</p>
+
+
+            	<a name="7_Topographieimport_Lokalisieren-der-Topographien"></a>
+            <h2 class="con10t-toc-entry">Lokalisieren der Topographien</h2>
+
+
+            	<p>Als letzter Schritt des Imports der Topographien sind die nun vorhandenen Arachne Objekte mit dem Gazetteer Objekt zu verknüpfen. Hierzu muss zunächst die Arachne-Ortsverzeichnis-ID die zu dem schon vorhandenen Gazetteerobjekt gehört herausgefunden werden. Hierzu gibt es die Exceltabelle <em>Gaz_ID_Mapping.ods</em> die alle in Arachne befindlichen Gazetteer IDs, die korrespondierende Arachne-Ortsverzeichnis-ID sowie eine Formel zur automatischen Zuordnung dieser beiden. <strong>[Diese Mapping Tabelle muß nach jedem Gazeteerimport upgedatet werden - Beschreibung]</strong> Um die IDs zuzuordnen werden nun die zwei Zeilen Name und <em>GazetteerID</em> in die gleichnamigen Zellen der Zuordnungstabelle kopiert. Die erste, schon ausgefüllte Zeile muss stehen bleiben. Um nun mit der Formel die fehlenden IDs zuzuordnen muss diese nur auf die freien Felder übertragen werden. Hierzu klickt man das Feld mit der Formel an und zieht den schwarzen Punkt in der unteren rechten Ecke nach unten. Damit wird die Formel auch auf die unteren Zeilen übertragen und die IDs werden zugeordnet. Um das Kopieren in die Template Datei nun zu erleichtern sollte man eine Kopie der Formelergebnisse in die Spalte daneben übertragen. Hierzu markiert man die Ergebnisse der Formel, kopiert diese und fügt sie in der Spalte daneben mit dem Befehl <em>Nur einfügen -> Zahl</em> ein (vorausgesetzt die Tabelle wurde in Libre office geöffnet, was allerdings automatisch passieren sollte da es eine .ods Datei ist. Die Funktion ‚Einfügeoptionen nur Zahl‘ gibt es in jedem Tabellenprogramm). Nun müssen diese Arachne-Ortsverzeichnis-IDs die jetzt in der Kopie Spalte stehen, an die gleichnamige Stelle im Template kopiert werden.</p>
+
+
+            	<p>Mit den nun ganz ausgefüllten Template kann man nun mit dem händischen Zuordnen beginnen. Das muss über die Arachne 3 Oberfläche erledigt werden und um das auszuführen benötigt man Bearbeiter-Rechte in der Arachne. <br />Um nun die Topographien zu lokalisieren, muss man diese über die Suchmaske anwählen. Wenn man dies direkt nach dem maschinellen Import tun möchte kann man die Orte noch nicht über ihren Namen oder ID suchen sondern muss anhand des Kontextbrowsers der übergeordneten Topographie auf den Ort zugreifen. Nach Aufrufen des Ortes wählt man in der Bearbeitungsleiste am oberen Bildschirmrand Bearbeiten: <em>Topographie -> Lokalisierung; Beschreibung</em> füllt man das oberste Eingabefeld mit dem Arachne-Ortsverzeichnis-ID und klickt danach auf Änderung speichern. Unter Lokalisierung wird nun die Informationen die Arachne aus dem Gazetteer zieht angezeigt und die Lokalisierung ist damit abgeschlossen.</p>
+
+
+            	<p>Zurück zur Übersicht <a href="#Wiki" class="wiki-page">Wiki</a></p>
+            <hr />
+            <a name="8_Literatur_in_Arachne" />
+            <a name="8_Literatur_in_Arachne_8-Literatur-in-Arachne"></a>
+            <h1 class="con10t-toc-entry">8 Literatur in Arachne</h1>
+
+
+            	<p>Für jedes Topographieobjekt kann auf zugehörige Literatur verwiesen werden, wenn diese in der Zenon-Datenbank vorhanden ist, wird ein entsprechender Link gesetzt. Auch diese Eingabe kann händisch erfolgen, bei größeren Mengen aber auch mit Hilfe einer entsprechenden Importtabelle durchgeführt werden. Hierbei sind zwei Schritte nötig. Zunächst muss die Tabelle „AAArc Arachne Literatur Import“  ausgefüllt werden. Wenn vorhanden wird die Zenonnummer (immer 9-stellig, gegebenenfalls um führende Nullen ergänzen) eingetragen, danach der Literaturtitel gemäß den Zitierrichtlinien des DAI. Nach erfolgtem Literaturimport in Arachne (siehe <a href="#Literaturimport" class="wiki-page">Literaturimport</a>) verfügt man über die Arachne-ID des jeweiligen Literaturzitats.</p>
+
+
+            	<p>Dies ist nötig, um mit Hilfe einer weiteren Tabelle (Datei „AAArC Arachne Zitat Import“) nun die Zuordnung der Literaturzitate zu den jeweiligen Topographieobjekten vornehmen zu können. Beim Ausfüllen der Tabelle ist darauf zu achten, dass für jedes Literaturzitat eine eigene Zeile erforderlich ist. Wenn einem Fundplatz (Topographieobjekt) also mehrere Literaturzitate zugehören, müssen entsprechend viele Zeilen ausgefüllt werden.</p>
+
+
+            	<p>Danach wird wie in der Anleitung <a href="#Literaturimport" class="wiki-page">Literaturimport</a> beschrieben verfahren.</p>
+
+
+            	<p>Zurück zu Übersicht <a href="#Wiki" class="wiki-page">Wiki</a></p>
+            <hr />
+
+            <h1 class="con10t-toc-entry">Appendix 1</h1>
+
+
+            	<a name="Appendix_1_Zusammensetzung-des-Dateinamens"></a>
+            <h2 class="con10t-toc-entry">Zusammensetzung des Dateinamens</h2>
+
+
+            	<p>(wird vom Scan-Protokoll laut Eingaben im Scan-Protokoll automatisch generiert! Nicht besetzte Attribute werden mit „0“ belegt)</p>
+
+
+            	<p>o    AAArC<br />o    ID - fortlaufend, mit Angabe des Scanwerkzeuges <br />z.B. DIA, DIGI oder Namenskürzel (z.B. LM für Lieschen Müller)<br />Mit 6-stelliger Nummer<br />o    Öffentliche Daten [1],    eingeschränkter Zugang [2],     nur für AAArC Mitarbeiter zugelassen [3] (Erläuterung siehe unten)<br />o    Projekt <br />o    Kampagne / Teilprojekt, Teilprojekt evtl. mit Jahr der Kampagne und „a/b“-Kennzeichnung, wenn in einem Jahr mehrere Kampagnen gefahren wurden<br />o    Fundplatz (fortlaufende Fundplatznummer, muss dreistellig angegeben werden; gilt auch für Surveyplätze) <br />o    Fläche (muss zweistellig angegeben werden, bei Buchstaben reicht einstellig)<br />o    Art des Digitalisats [A=Auswertung; Z=Zeichnung; F=Foto; D=Dokumentation; T=Text] <br />o    Standort mit Film und Bildnr.; beziehungsweise Kamera, Film und Bild-Nr. [Zeichentrennung mit x – also z.B. KameraxFilmxBild-Nr.]<br />o    .tif</p>
+
+
+            	<p><em>AAArC-ID -123-Projekt-Teilprojekt-Fundplatz-Fläche-AFDTZ-Standortkennung.tif<br />Beispiel: AAArC-DIGI000001-1-SFB389-A6-T97001-04-F-T97x4x18.tif<br /></em></p>
+
+
+            	<a name="Appendix_1_Erläuterung-der-Zugangscodes-1-2-3"></a>
+            <h2 class="con10t-toc-entry">Erläuterung der Zugangscodes 1, 2, 3:</h2>
+
+
+            1    Öffentliche Daten, reich an projektrelevanten Informationen
+            	<ul>
+            	<li>     Zu 1 zählen: alle Fotos ohne Personen; projektbezogene Fotos, wie z.B. Arbeitsfotos mit und ohne Personen; archäologisch / geowissenschaftlich / ethnologisch relevante  Fotos; Gruppenfotos; Flora, Fauna, z.T. Auswertungen (z.B. Fundplatzbeschreibungen), alle Zeichnungen, z.T. Texte</li>
+            	</ul>
+
+
+            2    eingeschränkter Zugang, weniger projektrelevant und redundant
+            	<ul>
+            	<li>Zu 2 zählen: Fotos mit „stark unbekleideten“ Personen (sehr kurze Hosen z.B.); Freizeitaktivitäten (Lagerfeuer, Fußball…); archäologisch / geowissenschaftlich/ ethnologisch nicht relevante Fotos; Überfluss an projektbezogenen Serienfotos (Fahrtbilder etc.), Dokumentationen; z.T. Auswertungen, Tagebücher, Manuskripte, Fahrtenbücher, z.T. Texte</li>
+            	</ul>
+
+
+            3    Giftschrank, nur für AAArC Mitarbeiter zugelassen
+            	<ul>
+            	<li>Zu 3 zählen: „kompromittierende“ Bilder, „ Spaßbilder“ (z.B. „Sandblech-Surfen“), Portraits (Person ist Hauptmotiv); stark fehlbelichtete oder unscharfe Fotos, diese gegebenenfalls auch löschen; GPS Daten; z.T. Auswertungen</li>
+            	</ul>
+
+
+            <hr />
+
+        </div>
+    </div>
+</div>
