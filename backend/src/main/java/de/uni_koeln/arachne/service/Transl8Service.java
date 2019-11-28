@@ -9,6 +9,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -25,6 +27,8 @@ import de.uni_koeln.arachne.util.JSONUtil;
 @Service
 public class Transl8Service {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Transl8Service.class);
+
+	private static final String JSONfilePath = "/src/main/resources/config/";
 
 	private static final String DEFAULT_LANG = "en";
 
@@ -66,21 +70,14 @@ public class Transl8Service {
 
 	private void updateTranslations(String lang) {
 
-		String filePath = "./src/main/resources/config/_transl8." + lang + ".json";
-
-		// get and read _transl8.json:
+		// get and read transl8.json:
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(filePath));
-			String inputLine;
-			StringBuilder result = new StringBuilder(64);
-
-			while ((inputLine = reader.readLine()) != null) {
-				result.append(inputLine);
-			}
+			Resource resource = new ClassPathResource("config/_transl8." + lang + ".json");
+			InputStream result = resource.getInputStream();
 
 		// build translation and CategoryMap:
 		try {
-			translationMap = JSONUtil.MAPPER.readValue(result.toString(), HashMap.class);
+			translationMap = JSONUtil.MAPPER.readValue(result, HashMap.class);
 
 			if (translationMap != null && !translationMap.isEmpty()) {
 				categoryMap = new HashMap<String, String>();
@@ -106,10 +103,10 @@ public class Transl8Service {
 			}
 
 		} catch (FileNotFoundException e) {
-			LOGGER.error("Could not find '" + filePath + "'. " + e.getMessage());
+			LOGGER.error("Could not find '" + JSONfilePath + "_transl8." + lang + ".json"+ "'. " + e.getMessage());
 		}
 		catch (IOException e) {
-			LOGGER.error("Could not read '" + filePath + "'. " + e.getMessage());
+			LOGGER.error("Could not read '" + JSONfilePath + "_transl8." + lang + ".json" + "'. " + e.getMessage());
 		}
 	}
 
