@@ -1,30 +1,20 @@
 package de.uni_koeln.arachne.service;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import de.uni_koeln.arachne.util.JSONUtil;
-import de.uni_koeln.arachne.util.network.ArachneRestTemplate;
 
 
 /**
@@ -38,9 +28,6 @@ public class Transl8Service {
 
 	private static final String DEFAULT_LANG = "en";
 
-	@Autowired
-	private transient ArachneRestTemplate restTemplate;
-	
 	private transient Map<String, Boolean> translationsAvailable = new HashMap<String, Boolean>();
 	
 	private transient Map<String, String> translationMap = new HashMap<String, String>();
@@ -72,61 +59,69 @@ public class Transl8Service {
 	}
 
 	/**
-	 * Contacts transl8 via rest call and updates the internal translation map.
+	 * Reads transl8 from static json files in resources/config and updates the internal translation map.
 	 * @param lang the language in which the key should be retrieved
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
-	private void updateTranslations(String lang) throws Transl8Exception {
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		headers.set("Accept-Language", lang);
-		HttpEntity<String> entity = new HttpEntity<String>("", headers);
-		try {
-			final ResponseEntity<String> response = restTemplate.exchange(transl8Url , HttpMethod.GET, entity, String.class);
-			if (response.getStatusCode() == HttpStatus.OK) {
-				final String doc = response.getBody();
-				try {
-					translationMap = JSONUtil.MAPPER.readValue(doc, HashMap.class);
-				} catch (JsonParseException e) {
-					LOGGER.error("Could not parse transl8 response.", e);
-				} catch (JsonMappingException e) {
-					LOGGER.error("Could not map transl8 response.", e);
-				} catch (IOException e) {
-					LOGGER.error("Could not create translation map.", e);
-				}
 
-				if (translationMap != null && !translationMap.isEmpty()) {
-					categoryMap = new HashMap<String, String>();
-					for (final Map.Entry<String, String> entry: translationMap.entrySet()) {
-						String key = entry.getKey();
-						if (key.startsWith("facet_kategorie_")) {
-							categoryMap.put(entry.getValue(), key.substring(16));
-						}
-					}
-					for (int i = 0; i < supportedLanguages.size(); i++) //Set other langs to false again
-                        translationsAvailable.put(supportedLanguages.get(i), false);
-                    translationsAvailable.put(lang, true);
-				} else {
-					LOGGER.error("Translation map is empty. Translations are not available.");
-				}
-			} else {
-				LOGGER.warn("There was a problem contacting transl8. Translations are not available. Http status code: " + response.getStatusCode());
-			}	
-		} catch (RestClientException e) {
-			if (throwException) {
-				throw new Transl8Exception("There was a problem contacting transl8. Translations are not available.", e);
+	private void updateTranslations(String lang) {
+
+		String filePath = "./src/main/resources/config/_transl8." + lang + ".json";
+
+		// get and read _transl8.json:
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(filePath));
+			String inputLine;
+			StringBuilder result = new StringBuilder(64);
+
+			while ((inputLine = reader.readLine()) != null) {
+				result.append(inputLine);
 			}
+
+		// build translation and CategoryMap:
+		try {
+			translationMap = JSONUtil.MAPPER.readValue(result.toString(), HashMap.class);
+
+			if (translationMap != null && !translationMap.isEmpty()) {
+				categoryMap = new HashMap<String, String>();
+				for (final Map.Entry<String, String> entry: translationMap.entrySet()) {
+					String key = entry.getKey();
+					if (key.startsWith("facet_kategorie_")) {
+						categoryMap.put(entry.getValue(), key.substring(16));
+					}
+				}
+				for (int i = 0; i < supportedLanguages.size(); i++) 	// Set other langs to false again
+					translationsAvailable.put(supportedLanguages.get(i), false);
+					translationsAvailable.put(lang, true);
+			} else {
+				LOGGER.error("Translation map is empty. Translations are not available.");
+			};
+
+			} catch (JsonParseException e) {
+				LOGGER.error("Could not parse transl8.json", e);
+			} catch (JsonMappingException e) {
+				LOGGER.error("Could not map transl8.json.", e);
+			} catch (IOException e) {
+				LOGGER.error("Could not create translation map.", e);
+			}
+
+		} catch (FileNotFoundException e) {
+			LOGGER.error("Could not find '" + filePath + "'. " + e.getMessage());
+		}
+		catch (IOException e) {
+			LOGGER.error("Could not read '" + filePath + "'. " + e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Looks up a key in the translations map and returns the corresponding value if found or the key else.
 	 * @param key Key to look up translation for.
 	 * @param lang The language.
 	 * @return Either a translation or the key.
-	 * @throws Transl8Exception if transl8 cannot be reached. 
+	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
 	public String transl8(String key, String lang) throws Transl8Exception {
+
         if(key != null && lang != null) {
             lang = extractLanguage(lang);
 			if (!translationsAvailable.get(lang))
@@ -147,7 +142,7 @@ public class Transl8Service {
 	 * @param key Key to look up translation for.
 	 * @param lang The language.
 	 * @return Either a translation or the key.
-	 * @throws Transl8Exception if transl8 cannot be reached. 
+	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
 	public String transl8Facet(String facetName, String key, String lang) throws Transl8Exception {
 	    if(facetName != null && key != null && lang != null) {
@@ -170,7 +165,7 @@ public class Transl8Service {
 	 * @param key The translated category value.
 	 * @param lang The language.
 	 * @return The category key if found else the unchanged key parameter.
-	 * @throws Transl8Exception if transl8 cannot be reached. 
+	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
 	public String categoryLookUp(String key, String lang) throws Transl8Exception {
 		if(key != null && lang != null) {
@@ -204,12 +199,12 @@ public class Transl8Service {
             }
 	    return (found) ? retLang : DEFAULT_LANG;
     }
-	
+
 	/**
 	 * Exception thrown if transl8 cannot be reached.
 	 */
 	public class Transl8Exception extends Exception {
-		
+
 		private static final long serialVersionUID = 1L;
 
 		/**
@@ -219,7 +214,7 @@ public class Transl8Service {
 		public Transl8Exception(final String message) {
 			super(message);
 		}
-		
+
 		/**
 		 * Constructor taking a message and a cause argument.
 		 * @param message The exception message.
