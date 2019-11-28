@@ -39,13 +39,7 @@ public class Transl8Service {
 	private transient Map<String, String> categoryMap = new HashMap<String, String>();
 
 	private transient List<String> supportedLanguages = new ArrayList<String>(2);
-	
-	/**
-	 * The URL for Transl8.
-	 */
-	@Value("${transl8Url}")
-	private transient String transl8Url;
-	
+
 	/**
 	 * Transl8 exception throwing. Set to false when you have no access to Transl8 (for development).
 	 */
@@ -73,11 +67,11 @@ public class Transl8Service {
 		// get and read transl8.json:
 		try {
 			Resource resource = new ClassPathResource("config/_transl8." + lang + ".json");
-			InputStream result = resource.getInputStream();
+			InputStream input = resource.getInputStream();
 
 		// build translation and CategoryMap:
 		try {
-			translationMap = JSONUtil.MAPPER.readValue(result, HashMap.class);
+			translationMap = JSONUtil.MAPPER.readValue(input, HashMap.class);
 
 			if (translationMap != null && !translationMap.isEmpty()) {
 				categoryMap = new HashMap<String, String>();
@@ -142,7 +136,8 @@ public class Transl8Service {
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
 	public String transl8Facet(String facetName, String key, String lang) throws Transl8Exception {
-	    if(facetName != null && key != null && lang != null) {
+
+		if(facetName != null && key != null && lang != null) {
             lang = extractLanguage(lang);
             if (!translationsAvailable.get(lang)) {
                 updateTranslations(lang);
