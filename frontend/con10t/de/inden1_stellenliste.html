@@ -1,14 +1,16 @@
 <style>
 
     .con10t-title {
-        background-color: #505050 !important;
+        background-image: url("/con10t/headerimages/inden1.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
         color: #6492b1;
-        padding: 2vw;
-        padding-top: 2w;
+        padding: 5vw;
+        padding-right: 2vw;
         text-align: right;
-        webkit-box-shadow: inset 20px 11px 0px 12px rgba(248, 245, 245, 0.23);
-        -moz-box-shadow: inset 20px 11px 0px 12px rgba(248, 245, 245, 0.23);
-        box-shadow: inset 20px 11px 0px 12px rgba(248, 245, 245, 0.23);
+        webkit-box-shadow: inset 0px 13px 0px 6px rgba(248, 245, 245, 0.23);
+        -moz-box-shadow: inset 0px 13px 0px 6px rgba(248, 245, 245, 0.23);
+        box-shadow: inset 0px 13px 0px 6px rgba(248, 245, 245, 0.23);
     }
 
     #inden-title-span {
@@ -16,9 +18,7 @@
     }
 
     #stellenliste-container {
-        border: 1px solid #d2d1d1;
-        padding: 0.5vw;
-        background-color: #f7f7f7;
+        margin: 0 1vw;
     }
 
     #stellenliste-header {
@@ -26,18 +26,23 @@
     }
 
     #legende-container {
-        padding: 0.5vw;
-        border: 1px solid #d2d1d1;
-        border-top: none;
-        background-color: #f7f7f7;
+        border-top: 1px solid #e4e8f0;
+        margin: 0 1vw;
     }
 
     #errata-container {
-        padding: 0.5vw;
-        border: 1px solid #d2d1d1;
-        border-top: none;
-        background-color: #f7f7f7;
+        border-top: 1px solid #e4e8f0;
+        margin: 0 1vw;
     }
+
+    ul#download-source {
+        padding-left: 0;
+    }
+
+     ul#download-source > li {
+         display: inline-flex;
+         list-style-type: none;
+     }
 
     table#inden-errata td {
         padding-right: 1vw;
@@ -54,8 +59,12 @@
         padding: 0.5vh;
     }
 
-    tbody tr:hover td {
+    con10t-table tbody tr:hover td {
         background-color: #fffeee;
+    }
+
+    .inden-abbrev {
+        font-weight: 600;
     }
 
     .ng-table-sort-header {
@@ -66,77 +75,90 @@
         font-weight: 600;
     }
 
-    .inden-abbrev {
-        font-weight: 600;
+    .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .con10t-row {
+        background-color:rgba(237, 237, 237, 0.6);
     }
 
 </style>
 
 <div>
+
+    <!----  description="Arbeiten am Bau 26 beim Bagger-Durchschnitt am 21.7.1966" --->
     <div class="con10t-title">
-        <h1>Rudolph Kuper<br>
+        <h1 style = "text-shadow: 1px 1px 1px #000;">Rudolph Kuper<br>
             <span id = "inden-title-span">INDEN 1</span><br>
             Eine Siedlung der Rössener Kultur im Rheinland<br>
             Felddokumentation 1965-67<br></h1>
     </div>
 
-    <div id = "stellenliste-container">
+    <div class="con10t-row">
 
-        <div id = "stellenliste-header">
-            <h2>Stellenliste</h2>
-            <p>Herunterladen als: <a>CSV</a> <a>JSON</a></p>
+        <div id = "stellenliste-container">
+            <a href = "project/inden1" target = "_blank">Zur Projektseite</a>
+            <div id = "stellenliste-header">
+                <h2>Stellenliste</h2>
+                <ul id = "download-source">Herunterladen als:
+                    <li><a target = "_blank" href = "/con10t/visualizations/inden1/stellenliste_inden1_original.xlsx" download="stellenliste_inden1_original.xlsx">XLS (Original)</a></li>
+                    <li><a target = "_blank" href = "/con10t/visualizations/inden1/stellenliste_inden_data.json" download="stellenliste_inden_data.json">JSON</a></li>
+                </ul>
+            </div>
+
+            <con10t-table
+                    path-to-data = "/con10t/visualizations/inden1/stellenliste_inden_data.json"
+                    path-to-table-template = "/con10t/visualizations/inden1/con10t-table_inden.html"
+                    rows-per-page = 10>
+            </con10t-table>
         </div>
 
-        <con10t-table
-                path-to-data = "/con10t/visualizations/inden1/stellenliste_inden_data.json"
-                path-to-table-template = "/con10t/visualizations/inden1/con10t-table_inden.html"
-                rows-per-page = 10>
-        </con10t-table>
-    </div>
+        <div id = "legende-container">
+            <h3>Abkürzungen (Spalte „Befund“)</h3>
 
-    <div id = "legende-container">
-        <h3>Abkürzungen (Spalte „Befund“)</h3>
+            <table id = "legende-table">
+                <tr><td>Bauelemente:</td><td><span class = "inden-abbrev">P</span> = Pfosten, <span class = "inden-abbrev">Wgr.</span> = Wandgraben, kl. Graben oder Palisade</td></tr>
+                <tr><td>Gruben, Rössen:</td><td><span class = "inden-abbrev">A1</span> = Kesselgrube, <span class = "inden-abbrev">A2</span>  = schmale Grube (Schlitzgrube u.ä.), <span class = "inden-abbrev">A3</span> = Grubenkomplex,
+                    <span class = "inden-abbrev">A4</span> = sonst. Grube, <span class = "inden-abbrev">A5</span> = Sonderform</td></tr>
+                <tr><td>Gruben, Eisenzeit:</td><td><span class = "inden-abbrev">EZ</span></td></tr>
+                <tr><td>Gruben, natürlich:</td><td><span class = "inden-abbrev">B1</span> = Baumwurf, <span class = "inden-abbrev">B2</span> = sonst. natürl. Befund</td></tr>
+                <tr><td>Sonstiges:</td><td><span class = "inden-abbrev">o.B.</span> = ohne Befund, <span class = "inden-abbrev">u</span> = unbestimmbar, <span class = "inden-abbrev">ng</span> = nicht gezeichnet,
+                    <span class = "inden-abbrev">ns</span> = nicht gescannt, <span class = "inden-abbrev">Lu</span> = Lage unbekannt, <span class = "inden-abbrev">aPl</span> = außerhalb des Siedlungsplans.</td></tr>
+            </table>
+        </div>
 
-        <table id = "legende-table">
-            <tr><td>Bauelemente:</td><td><span class = "inden-abbrev">P</span> = Pfosten, <span class = "inden-abbrev">Wgr.</span> = Wandgraben, kl. Graben oder Palisade</td></tr>
-            <tr><td>Gruben, Rössen:</td><td><span class = "inden-abbrev">A1</span> = Kesselgrube, <span class = "inden-abbrev">A2</span>  = schmale Grube (Schlitzgrube u.ä.), <span class = "inden-abbrev">A3</span> = Grubenkomplex,
-                <span class = "inden-abbrev">A4</span> = sonst. Grube, <span class = "inden-abbrev">A5</span> = Sonderform</td></tr>
-            <tr><td>Gruben, Eisenzeit:</td><td><span class = "inden-abbrev">EZ</span></td></tr>
-            <tr><td>Gruben, natürlich:</td><td><span class = "inden-abbrev">B1</span> = Baumwurf, <span class = "inden-abbrev">B2</span> = sonst. natürl. Befund</td></tr>
-            <tr><td>Sonstiges:</td><td><span class = "inden-abbrev">o.B.</span> = ohne Befund, <span class = "inden-abbrev">u</span> = unbestimmbar, <span class = "inden-abbrev">ng</span> = nicht gezeichnet,
-                <span class = "inden-abbrev">ns</span> = nicht gescannt, <span class = "inden-abbrev">Lu</span> = Lage unbekannt, <span class = "inden-abbrev">aPl</span> = außerhalb des Siedlungsplans.</td></tr>
-        </table>
-    </div>
+        <div id = "errata-container">
 
-    <div id = "errata-container">
+            <h3>Korrekturverzeichnis</h3>
 
-        <h3>Korrekturverzeichnis</h3>
-
-        <table id = "inden-errata">
-            <tr><td>St. 10</td><td>in H/11 identisch mit St. 312</td><td>St. 909</td><td>in R/3 identisch mit Wgr 894</td></tr>
-            <tr><td>St. 165 u.166</td><td>in Bau 6 nicht auf Plan</td><td>St. 921 </td><td>in Q/3 bei 922 nicht auf Plan</td></tr>
-            <tr><td>St. 344</td><td>in F/11 auf Plan falsch „334“</td><td>St. 965</td><td>in T/9 bei 966 in T/9 nicht auf Plan</td></tr>
-            <tr><td>St. 394</td><td>in F/17 auf Plan falsch „349“</td><td>St. 979</td><td>in S/7 s. Wgr.869 nicht auf Plan</td></tr>
-            <tr><td>St. 397</td><td>in F/17 auf Plan falsch „379“</td><td>St. 996</td><td>doppelt im Quadrat M/10</td></tr>
-            <tr><td>St. 512</td><td>Wgr. Bau 12, auf Plan falsch „312“</td><td>St. 1007</td><td>auf Blatt 187 falsch „564“</td></tr>
-            <tr><td>St. 564</td><td>auf Blatt 187 falsch für St. 1007</td><td>St. 1027</td><td>auf Plan ohne Nr. bei St.1028</td></tr>
-            <tr><td>St. 599</td><td>auf Plan  P1 an Wgr.600 (Bau 19)</td><td>St. 1131</td><td>in R-S/0 identisch St.936 auf Plan</td></tr>
-            <tr><td>St. 646 </td><td>auf Plan ohne Nr. neben St. 613 </td><td>St. 1166</td><td>zw.1163 u.1166 nicht auf Plan</td></tr>
-            <tr><td>St. 655</td><td>Apf.17 von Wgr. 603 </td><td>St. 1168</td><td>in U/3 bei 1170 nicht auf Plan</td></tr>
-            <tr><td>St. 662</td><td>in L/7 auf Plan falsch „562“</td><td>St. 1171</td><td>zw.1169 u.1170 nicht auf Plan</td></tr>
-            <tr><td>St. 706</td><td>identisch mit St. 713 auf Plan</td><td>St. 1178</td><td>in U/1 bei 1176 nicht auf Plan</td></tr>
-            <tr><td>St. 713</td><td>identisch mit St.706 auf Rolle 27</td><td>St. 1179</td><td>in U/1 bei 1176 nicht auf Plan</td></tr>
-            <tr><td>St. 726</td><td>in M/1 auf Plan falsch „725“</td><td>St. 1182</td><td>in U/1 bei 1180 nicht auf Plan</td></tr>
-            <tr><td>St. 742</td><td>in O/6 Mittelteil von Wgr. 744</td><td>St. 1186 </td><td>in U/2 bei 1176 nicht auf Plan</td></tr>
-            <tr><td>St. 795</td><td>in P/11 nicht auf Plan</td><td>St. 1190</td><td>in U/1 bei 1176 nicht auf Plan</td></tr>
-            <tr><td>St. 805</td><td>in P/11 auf Plan falsch „1312“</td><td>St. 1191</td><td>in U/1 bei 1176 nicht auf Plan</td></tr>
-            <tr><td>St. 809</td><td>in O/5 Ostteil von Wgr. 744</td><td>St. 1227</td><td>in V/14 auf Plan falsch „1224“</td></tr>
-            <tr><td>St. 810</td><td>in Suchschnitt Ost nicht auf Plan</td><td>St. 1236</td><td>in U/7 bei 971 nicht auf Plan</td></tr>
-            <tr><td>St. 813</td><td>in P/6-7 Westteil von Wgr. 814</td><td>St. 1237</td><td>in U/7 bei 971 nicht auf Plan</td></tr>
-            <tr><td>St. 834</td><td>in R/8 auf Plan falsch „843“</td><td>St. 1259-1265</td><td>in W/4-5 nicht auf Plan</td></tr>
-            <tr><td>St. 843</td><td>in S/8 nicht auf Plan</td><td>St. 1269</td><td>in W/4 bei 1268 nicht auf Plan</td></tr>
-            <tr><td>St. 862 u. 865</td><td>in T/15 nicht auf Plan</td><td>St. 1288</td><td>in R/3 u. U/3 doppelt vergeben</td></tr>
-        </table>
+            <table id = "inden-errata">
+                <tr><td>St. 10</td><td>in H/11 identisch mit St. 312</td><td>St. 909</td><td>in R/3 identisch mit Wgr 894</td></tr>
+                <tr><td>St. 165 u.166</td><td>in Bau 6 nicht auf Plan</td><td>St. 921 </td><td>in Q/3 bei 922 nicht auf Plan</td></tr>
+                <tr><td>St. 344</td><td>in F/11 auf Plan falsch „334“</td><td>St. 965</td><td>in T/9 bei 966 in T/9 nicht auf Plan</td></tr>
+                <tr><td>St. 394</td><td>in F/17 auf Plan falsch „349“</td><td>St. 979</td><td>in S/7 s. Wgr.869 nicht auf Plan</td></tr>
+                <tr><td>St. 397</td><td>in F/17 auf Plan falsch „379“</td><td>St. 996</td><td>doppelt im Quadrat M/10</td></tr>
+                <tr><td>St. 512</td><td>Wgr. Bau 12, auf Plan falsch „312“</td><td>St. 1007</td><td>auf Blatt 187 falsch „564“</td></tr>
+                <tr><td>St. 564</td><td>auf Blatt 187 falsch für St. 1007</td><td>St. 1027</td><td>auf Plan ohne Nr. bei St.1028</td></tr>
+                <tr><td>St. 599</td><td>auf Plan  P1 an Wgr.600 (Bau 19)</td><td>St. 1131</td><td>in R-S/0 identisch St.936 auf Plan</td></tr>
+                <tr><td>St. 646 </td><td>auf Plan ohne Nr. neben St. 613 </td><td>St. 1166</td><td>zw.1163 u.1166 nicht auf Plan</td></tr>
+                <tr><td>St. 655</td><td>Apf.17 von Wgr. 603 </td><td>St. 1168</td><td>in U/3 bei 1170 nicht auf Plan</td></tr>
+                <tr><td>St. 662</td><td>in L/7 auf Plan falsch „562“</td><td>St. 1171</td><td>zw.1169 u.1170 nicht auf Plan</td></tr>
+                <tr><td>St. 706</td><td>identisch mit St. 713 auf Plan</td><td>St. 1178</td><td>in U/1 bei 1176 nicht auf Plan</td></tr>
+                <tr><td>St. 713</td><td>identisch mit St.706 auf Rolle 27</td><td>St. 1179</td><td>in U/1 bei 1176 nicht auf Plan</td></tr>
+                <tr><td>St. 726</td><td>in M/1 auf Plan falsch „725“</td><td>St. 1182</td><td>in U/1 bei 1180 nicht auf Plan</td></tr>
+                <tr><td>St. 742</td><td>in O/6 Mittelteil von Wgr. 744</td><td>St. 1186 </td><td>in U/2 bei 1176 nicht auf Plan</td></tr>
+                <tr><td>St. 795</td><td>in P/11 nicht auf Plan</td><td>St. 1190</td><td>in U/1 bei 1176 nicht auf Plan</td></tr>
+                <tr><td>St. 805</td><td>in P/11 auf Plan falsch „1312“</td><td>St. 1191</td><td>in U/1 bei 1176 nicht auf Plan</td></tr>
+                <tr><td>St. 809</td><td>in O/5 Ostteil von Wgr. 744</td><td>St. 1227</td><td>in V/14 auf Plan falsch „1224“</td></tr>
+                <tr><td>St. 810</td><td>in Suchschnitt Ost nicht auf Plan</td><td>St. 1236</td><td>in U/7 bei 971 nicht auf Plan</td></tr>
+                <tr><td>St. 813</td><td>in P/6-7 Westteil von Wgr. 814</td><td>St. 1237</td><td>in U/7 bei 971 nicht auf Plan</td></tr>
+                <tr><td>St. 834</td><td>in R/8 auf Plan falsch „843“</td><td>St. 1259-1265</td><td>in W/4-5 nicht auf Plan</td></tr>
+                <tr><td>St. 843</td><td>in S/8 nicht auf Plan</td><td>St. 1269</td><td>in W/4 bei 1268 nicht auf Plan</td></tr>
+                <tr><td>St. 862 u. 865</td><td>in T/15 nicht auf Plan</td><td>St. 1288</td><td>in R/3 u. U/3 doppelt vergeben</td></tr>
+            </table>
+        </div>
     </div>
 </div>
 
