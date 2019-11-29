@@ -74,23 +74,16 @@ public class TestTransl8Service {
 	@Test
 	public void testCategoryLookUp() throws Transl8Exception {
 
-		// reverse value -> category_key test for de and en:
+		// reverse: value -> category_key test for de and en:
 		assertEquals("bauwerk", transl8Service.categoryLookUp("Bauwerke", "de"));
 		assertEquals("bauwerk", transl8Service.categoryLookUp("Building", "en"));
 	}
 
-	/*
-
 	@Test
-	??? extractLanguage ???
+	public void extractLanguage() {
 
-	not necessary?
-
-	@Test(expected = Transl8Service.Transl8Exception.class)
-	public void exceptionsEnabled() throws Transl8Exception {
-
-		transl8Service.transl8("foobar", LANG);
-
+		assertEquals("de", transl8Service.extractLanguage(LANG));
+		assertEquals("en", transl8Service.extractLanguage("en"));
+		assertEquals("en", transl8Service.extractLanguage("xyz"));		// returns DEFAULT_LANG (en)
 	}
-	*/
 }
