@@ -23,7 +23,7 @@
   "facet_kategorie_niton": "Niton Daten",
   "facet_kategorie_objekt": "Einzelobjekte",
   "facet_kategorie_ort": "Orte",
-  "facet_kategorie_person": "Personen"
+  "facet_kategorie_person": "Personen",
   "facet_kategorie_realien": "Einzelmotive",
   "facet_kategorie_relief": "Szenen",
   "facet_kategorie_reproduktion": "Reproduktionen",
@@ -56,7 +56,7 @@
   "type_isolatedsherd": "Scherben",
   "type_literatur": "Literatur",
   "type_mainabstract": "Keramik",
-  "type_marbilder": "Bilder"
+  "type_marbilder": "Bilder",
   "type_marbilderbestand": "Unstrukturierte Fotobestände",
   "type_marbilderoppenheim": "Fotosammlung Max von Oppenheim",
   "type_modell3d": "3D-Modelle",
