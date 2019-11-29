@@ -1,15 +1,9 @@
 package de.uni_koeln.arachne.service;
 
 import static org.junit.Assert.*;
-
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
@@ -29,31 +23,6 @@ public class TestTransl8Service {
 
 	@Autowired
 	private Transl8Service transl8Service;
-
-	// Clear translations after every test
-	@After
-	public void tearDown() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-
-		Field lang = Transl8Service.class.getDeclaredField("supportedLanguages");
-		lang.setAccessible(true);
-
-		Field field = Transl8Service.class.getDeclaredField("translationsAvailable");
-		field.setAccessible(true);
-		final Map<String, Boolean> map = new HashMap<String, Boolean>();
-		@SuppressWarnings("unchecked")
-		final String key = ((List<String>) lang.get(transl8Service)).get(0);
-		map.put(key, false);
-
-		field.set(transl8Service, map);
-
-		field = Transl8Service.class.getDeclaredField("translationMap");
-		field.setAccessible(true);
-		field.set(transl8Service, new HashMap<String, String>());
-
-		field = Transl8Service.class.getDeclaredField("categoryMap");
-		field.setAccessible(true);
-		field.set(transl8Service, new HashMap<String, String>());
-	}
 
 	@Test
 	public void testTransl8() throws Transl8Exception {
@@ -84,6 +53,6 @@ public class TestTransl8Service {
 
 		assertEquals("de", transl8Service.extractLanguage(LANG));
 		assertEquals("en", transl8Service.extractLanguage("en"));
-		assertEquals("en", transl8Service.extractLanguage("xyz"));		// returns DEFAULT_LANG (en)
+		assertEquals("en", transl8Service.extractLanguage("xyz"));		// expected: returns DEFAULT_LANG (en)
 	}
 }
