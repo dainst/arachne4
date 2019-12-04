@@ -1,0 +1,52 @@
+<div tiny-footer class="row map-fullscreen">
+
+    <div ng-init="config = {
+menuTitle: 'Teheran Digital'    
+menuFacetsAllow: [
+    'facet_subkategoriebestand_level2'
+    'facet_kategorie: Bücher'
+    'facet_ort'
+    'facet_locality'
+    'facet_city'
+    'facet_land'
+    'facet_ortsangabe'
+
+],
+facetsSelect: [
+    {   
+    key: 'facet_subkategoriebestand_level2',
+        value: 'dai-eurasienabteilung-teheran-archiv'
+
+    key: 'facet_kategorie: Bücher' 
+        value: 'teheran digital'   
+    }
+],
+}"></div>
+    <div id="menu" class="col-sm-2 fullscreencol">
+
+        <h2 class="text-muted uppercase" style="font-variant:small-caps;cursor:pointer"
+            ng-click="rightMenuToggled = !rightMenuToggled">
+            Das Archiv der Außenstelle Teheran
+        </h2>
+
+        <div con10t-map-menu-search-info type="places"></div>
+        <div con10t-map-menu-search-field heading="Suche in Projektdatens&auml;tzen"></div>
+        <div con10t-map-menu-facet-search facets-append="config.menuFacetsAppend"
+             facets-allow="config.menuFacetsAllow"
+             facets-selected="config.facetsSelect">
+        </div>
+
+    </div>
+
+    <div con10t-map
+         class="col-sm-10"
+         id="map"
+         limit="200"
+         overlays="config.overlays"
+         facets-select="config.facetsSelect"
+         lat="32.116470"
+         lng="52.54035615"
+         zoom="6">
+    </div>
+
+</div>
