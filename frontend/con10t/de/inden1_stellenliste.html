@@ -5,7 +5,7 @@
         background-repeat: no-repeat;
         background-size: cover;
         color: #6492b1;
-        padding: 5vw;
+        padding: 3vw 2vw 11vw 2vw;
         padding-right: 2vw;
         text-align: right;
         webkit-box-shadow: inset 0px 13px 0px 6px rgba(248, 245, 245, 0.23);
@@ -33,6 +33,7 @@
     #errata-container {
         border-top: 1px solid #e4e8f0;
         margin: 0 1vw;
+        margin-top: 1vw;
     }
 
     ul#download-source {
@@ -46,6 +47,10 @@
 
     table#inden-errata td {
         padding-right: 1vw;
+    }
+
+    table#inden-errata td:nth-child(3) {
+        padding-left: 5vw;
     }
 
     table#inden-errata tr {
@@ -63,12 +68,12 @@
         background-color: #fffeee;
     }
 
-    .inden-abbrev {
-        font-weight: 600;
+    .ng-table-sort-header {
+        background-color:rgba(237, 237, 237, 0.6);
     }
 
-    .ng-table-sort-header {
-        background-color: white;
+    .inden-abbrev {
+        font-weight: 600;
     }
 
     a.inden-a {
@@ -78,10 +83,6 @@
     .container-fluid {
         padding-left: 0;
         padding-right: 0;
-    }
-
-    .con10t-row {
-        background-color:rgba(237, 237, 237, 0.6);
     }
 
 </style>
@@ -113,6 +114,7 @@
                     path-to-table-template = "/con10t/visualizations/inden1/con10t-table_inden.html"
                     rows-per-page = 10>
             </con10t-table>
+
         </div>
 
         <div id = "legende-container">
