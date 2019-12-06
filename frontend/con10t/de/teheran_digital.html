@@ -24,8 +24,10 @@
 
             <h3>Weiterführende Links</h3>
 
+	    <p><a href="project/teheran_digital/map?q=*&view=map" target="_blank">Zur Kartenansicht</p>
+		
             <p><a con10t-search-query>Alle Projektdaten anzeigen</a></p>
-
+	
             <p><a con10t-search-query="facet_kategorie:Bücher">Archivkonvolute anzeigen</a></p>
             <p>
                 <a href="https://gazetteer.dainst.org/search?q=TehranDigital" target="_blank">
@@ -37,27 +39,7 @@
             <div class="well">
                 <con10t-search search-placeholder="Projektdaten durchsuchen"></con10t-search>
             </div>
-
-            <!--- map content config ---->
-            <div ng-init="config = {
-				facetsSelect: [
-					{
-						key: 'facet_bestandsname',
-						value: 'dai-fotothek-eurasienabteilung'
-					}
-				]
-			}"></div>
-
-            <!--- map view ---->
-            <div con10t-map
-                 id="map"
-                 limit="200"
-                 facets-select="config.facetsSelect"
-                 lat="35.514040"
-                 lng="50.972066"
-                 zoom="5">
-            </div>
-
+		
         </div>
         <div class="con10t-content">
 
