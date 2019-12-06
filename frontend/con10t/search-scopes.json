@@ -276,7 +276,10 @@
     "alias": "syrher"
   },
   "teheran_digital": {
-    "q": "(\"Teheran Digital\" OR images.imageSubtitle:D-DAI-EUR-TEH*)"
+     "q": "(\"Teheran Digital\" OR \"D-DAI-EUR-TEH*\")"
+  },
+  "teheran_digital_map": {
+    "alias": "teheran_digital"
   },
   "widgetsdemo": {
     "q": "spirit"
