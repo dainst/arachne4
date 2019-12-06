@@ -269,18 +269,21 @@ public class ResponseFactory {
 			    final String city = link.getFieldFromFields("ort.Stadt");
 			    final String region = link.getFieldFromFields("ort.Region");
 				final String subregion = link.getFieldFromFields("ort.Subregion");
-				final String country = link.getFieldFromFields("ort.Land");
+                final String country = link.getFieldFromFields("ort.Land");
 				final String additionalInfo = link.getFieldFromFields("ort.Aufbewahrungsort");
-				String placeName = null;
+
+				final List<String> placeNameArray = new ArrayList<String>();
 				if (!StrUtils.isEmptyOrNull(city)) {
-					placeName = city;
-					if (!StrUtils.isEmptyOrNull(country)) {
-						placeName += ", " + country;
-						if (!StrUtils.isEmptyOrNull(additionalInfo)) {
-							placeName += ", " + additionalInfo;
-						}
-					}
+					placeNameArray.add(city);
 				}
+				if (!StrUtils.isEmptyOrNull(country)) {
+					placeNameArray.add(country);
+				}
+				if (!StrUtils.isEmptyOrNull(additionalInfo)) {
+					placeNameArray.add(additionalInfo);
+				}
+				String placeName = String.join(", ", placeNameArray);
+
 				final String relation = link.getFieldFromFields("ort.ArtOrtsangabe");
 				final String latitude = link.getFieldFromFields("ort.Latitude");
 				final String longitude = link.getFieldFromFields("ort.Longitude");
