@@ -41,6 +41,12 @@
           }
         },
         {
+          "id": "kaakarchiv",
+          "title": {
+            "de": "Die Archive der KAAK"
+          }
+        },
+        {
           "id": "fotorom",
           "title": {
             "de": "Fotothek DAI Rom",
