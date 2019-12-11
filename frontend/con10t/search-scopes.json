@@ -141,6 +141,14 @@
       }
     ]
   },
+  "kaakarchiv": {
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "fotothek-dai-kaak"
+      }
+    ]
+  },
   "kanatha": {
     "q": "catalogPaths:109"
   },
