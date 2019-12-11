@@ -41,11 +41,12 @@
           }
         },
         {
-          "id": "kaakarchiv",
+          "id": "kaak",
           "title": {
             "de": "Die Archive der KAAK",
             "en":"Archives of the KAAK"
-          }
+          },
+          "hidden": true
         },
         {
           "id": "fotorom",
