@@ -33,6 +33,9 @@
   "cilopac": {
     "q": "catalogPaths:41"
   },
+  "daiorient": {
+    "q": "searchableEditorContent:D-DAI-ORI"
+  }, 
   "databasepausanias": {
     "q": "(catalogPaths:111 OR catalogPaths:110)"
   },
