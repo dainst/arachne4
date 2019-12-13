@@ -555,7 +555,7 @@ public class CatalogEntryDao extends SQLDao {
 			return;
 		}
 		final String sql = "select count(id) as total_children from catalog_entry where " +
-                "parent_id = " + catalogEntry.getId() + " or path like concat('%/" + catalogEntry.getId() + "/%')";
+                "parent_id = " + catalogEntry.getId();
 		int tmp = queryForInt(sql);
 		catalogEntry.setAllSuccessors(tmp);
 	}
