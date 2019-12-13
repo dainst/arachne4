@@ -135,6 +135,9 @@
       }
     ]
   },
+  "inden1": {
+    "q": "Inden1"
+  },
   "invbuecherrom": {
     "q": "Inventarbuch",
     "facets": [
