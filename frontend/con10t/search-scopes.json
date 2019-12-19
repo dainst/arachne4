@@ -54,7 +54,15 @@
       {
         "key": "facet_kategorie",
         "value": "Bilder"
-      }
+      }, 
+      {
+        "key": "facet_subkategorie_bilder",
+        "value": "unstrukturiert"
+},
+{
+        "key": "facet_bestandsname",
+        "value": "dai-istanbul-fotothek"
+}
     ]
   },
   "fotokairo": {
