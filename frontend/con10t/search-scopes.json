@@ -39,6 +39,9 @@
   "databasepausanias": {
     "q": "(catalogPaths:111 OR catalogPaths:110)"
   },
+   "faak16": {
+    "q": "catalogPaths:566"
+  },
   "fotoarchivdaiberlin": {
     "q": "D-DAI-Z",
     "facets": [
