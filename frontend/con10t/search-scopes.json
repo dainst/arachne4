@@ -61,11 +61,11 @@
       {
         "key": "facet_subkategorie_bilder",
         "value": "unstrukturiert"
-},
-{
+      },
+      {
         "key": "facet_bestandsname",
         "value": "dai-istanbul-fotothek"
-}
+      }
     ]
   },
   "fotokairo": {
@@ -205,6 +205,9 @@
   },
   "palilia26": {
     "q": "catalogPaths:34"
+  },
+  "rakob": {
+    "q": "D-DAI-NA-RAK"
   },
   "rezeptionantike": {
     "q": "(catalogPaths:107 OR catalogPaths:108)"
