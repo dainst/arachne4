@@ -1,123 +1,110 @@
+<style>
+
+    #sticky-sidebar {
+        padding-top: 3vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    @media (max-width: 992px) {
+        #sticky-sidebar {
+            position: relative;
+        }
+    }
+
+    h2.con10t-toc-entry {
+        color: #336699;
+    }
+
+</style>
+
 <!-- Kopfbereich der Projektseite -->
 <idai-header
         image="/con10t/headerimages/Rakob_D-DAI-ROM-RAK-32731.jpg"
         description="Chimtou, Ergastulum-Fabrica | D-DAI-ROM-RAK-32731"
-        link="https://arachne.dainst.org/entity/10913">
+        link= "https://arachne.dainst.org/entity/10913">
 </idai-header>
-            <p>&nbsp;</p>
-            <p>&nbsp;</p>
 
 <!-- Hauptbereich der Projektseite -->
 <div class="con10t-page teaserpage container">
 
     <div class="con10t-row">
 
-        <div class="con10t-title">
-            <p>&nbsp;</p>
+        <!-- Titel -->
+        <div class="con10t-title" style = "background-color: #ffffff6b;">
             <h1>Friedrich Rakob’s Bequest</h1>
         </div>
 
-        <div class="con10t-sidebar">
-            <div dir="rtl">
-                <p>
-                    <a href="project/rakob?lang=de" target="_self">Deutsch</a>
-                </p>
-                <p>  
-                    <a href="project/rakob?lang=fr" target="_self">Française</a>
-                </p>
+        <!-- Rechte Seitenleiste -->
+        <con10t-include src="/con10t/en/rakob_sidebar.html"></con10t-include>
 
-              </div>
-              <p>&nbsp;</p>
-            <con10t-include src="/con10t/en/rakob_toc.html"></con10t-include>
-
-             <div id="treeWidget">
-                        <con10t-tree fq="facet_subkategoriebestand_level2:Nachlass-Friedrich-Rakob"
-                             wildcard-facet="facet_subkategorie"></con10t-tree>
-                </div>
-
-                 <p>&nbsp;</p>
-                 <h4>Contact</h4>
-                 <a href="mailto: fotothek.rom@dainst.de" target="_blank">Dr. Ralf Bockmann</a><br>
-                <a href="mailto: christoph.lehnert@dainst.de" target="_blank">Christoph Lehnert</a>
-
-            <h4 class="con10t-toc-entry" id="Links">Links</h4>
-
-
-            <a href ="https://www.dainst.org/projekt/-/project-display/3929488" target="_blank">Rakob’s bequest project<a/><br>
-
-            <a href ="http://www.nahanweb.org" target="_blank">NAHAN project<a><br>
-
-            <a href ="https://www.dainst.org/dai/presse/nachricht/-/asset_publisher/XV2P83pNHjQz/content/karthago-ist-um-eine-archaologische-attraktion-reicher-einweihung-des-quartier-didon" target="_blank">Inauguration of Quartier Didon<a/><br>
-
-            <a href ="https://arachne.dainst.org/project/handzeichnungen" target="_blank">Architektenarchiv (Architect’s Archive)<a/><br>
-            <p>&nbsp;</p>
-            <p>&nbsp;</p>
-
-            <!-- Rechte Seitenleiste -->
-        </div>
-
+        <!-- Inhalt -->
         <div class="con10t-content">
 
-            
-            <p><con10t-image src="/con10t/img/rakob/D-DAI-ROM-RAK-03201.jpg"
-            align="left" width="240" hight="170"
-            alt="D-DAI-ROM-RAK-03201">
-            Friedrich Rakob at a private celebration<br> 
-            Chimtou 1986<br>
-            Detail, edited, Film_0814<br>  
+            <!-- Einführung -->
+            <h2 class="con10t-toc-entry">About the project</h2>
+
+            <con10t-image src="/con10t/img/rakob/D-DAI-ROM-RAK-03201.jpg" align="left" width="210" alt="D-DAI-ROM-RAK-03201">
+            F. Rakob at a private celebration<br>
+            Chimtou 1986, edited, Film_0814<br>
             (D-DAI-ROM-RAK-03201)
             </con10t-image>
             
-            <P class="left">Friedrich Rakob (1931-2007) was an architectural historian from North Rhine-Westphalia. He worked at the German Archaeological Institute (DAI) in Rome from 1962 to 1996 and specialised in the architectural history of towns and cities in Northern Tunisia. He led the major excavations in Simitthus/Chimtou from 1968 onwards and the excavations in Carthage from 1974 onwards. These excavations were a collaboration between the DAI Rome and what was then the National Institute for Art and Archaeology (INAA) – now <a href="http://www.inp.fr/" target="_blank">Institut National du Patrimoine </a>(INP) – in Tunis.</p>
+            <p>Friedrich Rakob (1931-2007) was an architectural historian from North Rhine-Westphalia. He worked at the German Archaeological Institute (DAI) in Rome from 1962 to 1996 and specialised in the architectural history of towns and cities in Northern Tunisia. He led the major excavations in Simitthus/Chimtou from 1968 onwards and the excavations in Carthage from 1974 onwards. These excavations were a collaboration between the DAI Rome and what was then the National Institute for Art and Archaeology (INAA) – now <a href="http://www.inp.fr/" target="_blank">Institut National du Patrimoine </a>(INP) – in Tunis.</p>
+            <p style = "padding-bottom: 2.5vw;"> Friedrich Rakob’s bequest includes a total of more than 63,000 photographic negatives, slides and contact prints as well as around 190 crates and folders containing excavation diaries, drawings, plans, VHS cassettes and other documents, such as preliminary reports, texts of speeches and letters from his 35 years of research work. Some of these materials were presented to the DAI during Rakob’s research activities, while others were bequeathed to the institute after his death in 2007. The most extensive part of the holding is the documentation of the excavations and finds from Chimtou and Carthage. The bequest is an opportunity to gain more detailed information on the excavation works and find contexts, expanding by the previously published results.</p>
+            <p>Thanks to generous funding from the Federal Foreign Office, it was possible to draw up an inventory of the extensive holding. The majority of the drawings and excavation photographs (negatives and slides) have been digitised and roughly indexed (work in progress). The project now aims to systematise and contextualise the digitised photographs and documents within the newly planned North African Heritage Archive. Once this subproject has been completed, all the digitised copies from Rakob’s bequest will be brought together for a large-scale project and made available to <a href ="http://www.nahanweb.org" target="_blank">NAHAN</a>, an international, multi-institutional platform for archaeological archival materials from North Africa.</p>
 
- 
-            <P class="left"> Friedrich Rakob’s bequest includes a total of more than 63,000 photographic negatives, slides and contact prints as well as around 190 crates and folders containing excavation diaries, drawings, plans, VHS cassettes and other documents, such as preliminary reports, texts of speeches and letters from his 35 years of research work. Some of these materials were presented to the DAI during Rakob’s research activities, while others were bequeathed to the institute after his death in 2007. The most extensive part of the holding is the documentation of the excavations and finds from Chimtou and Carthage. The bequest is an opportunity to gain more detailed information on the excavation works and find contexts, expanding by the previously published results.</p>
-            <p>&nbsp;</p>
+            <!-- Erschließung des Bestandes -->
+            <h2 class="con10t-toc-entry" id = "Nachlass">Indexing the Bequest</h2>
 
-            <p class="left">Thanks to generous funding from the Federal Foreign Office, it was possible to draw up an inventory of the extensive holding. The majority of the drawings and excavation photographs (negatives and slides) have been digitised and roughly indexed (work in progress). The project now aims to systematise and contextualise the digitised photographs and documents within the newly planned North African Heritage Archive. Once this subproject has been completed, all the digitised copies from Rakob’s bequest will be brought together for a large-scale project and made available to <a href ="http://www.nahanweb.org" target="_blank">NAHAN</a>, an international, multi-institutional platform for archaeological archival materials from North Africa.</p>
+            <div>
+                <p>With Friedrich Rakob’s bequest, the DAI is indexing one of the most important and most extensive holdings produced within the framework of the DAI Rome’s excavation projects. The materials from more than 35 years of research are housed in the DAI’s photo department in Rome. Work began in 2015 by drawing up a systematic inventory, based on Rakob’s original notes.</p>
 
-            <font color=#336699><h3 class="con10t-toc-entry" id="Personen">Participants</h3></font> 
+                <con10t-image src="/con10t/img/rakob/D-DAI-ROM-RAK-04277.jpg" align="right" width="410" alt="D-DAI-ROM-RAK-04277">
+                    Reproduction Plan of Carthage, 1974<br>
+                    edited, Film_0418, (D-DAI-ROM-RAK-04277)
+                </con10t-image>
 
-                Dr. Ralf Bockmann, Director of the photo archive <a href="mailto:ralf.bockmann@dainst.de" target="_blank">(ralf.bockmann@dainst.de)</a></p>
+                <p>All the materials relating to Rakob’s projects are being gradually digitised and made accessible. The main focus of the project to digitise, systematise and index the bequest is on the content of the photographic material and the excavation diaries from Rakob’s projects in Tunisia.
+                    The majority of the photographic material and the excavation diaries have already been digitised. An initial selection of the useful photographs was made, and preliminary work undertaken. The indexing of the photographic material began with the black and white negatives that were easily identifiable from a topography folder produced by Rakob himself.</p>
+                <p>These photographs can already be viewed in <a href ="https://arachne.dainst.org/" target="_blank">iDAI.objects/Arachne</a>. Some of the remaining film negatives, slides and a small number of contact prints have been digitised, while work is still ongoing. Each of the datasets stored in the iDAI.objects/Arachne object database is linked with the datasets in the <a href ="https://gazetteer.dainst.org/app/#!/home" target="_blank">iDAI.gazetteer</a> topography browser. The aim is to make the excavation diaries viewable via <a href ="https://arachne.uni-koeln.de/drupal/?q=node/98" target="_blank">iDAI.bookbrowser</a>
+                    According to the archive’s standard, the drawings (find drawings, plans, etc.) are part of the DAI’s so-called ‘Architektenarchiv’ (Architect’s Archive), which has a different digitisation and archiving system than the photographic archive. These holdings will also be indexed in iDAI.objects/Arachne. All the digitised copies and datasets from Rakob’s bequest (including the drawings from the ‘Architektenarchiv’ (Architects’ Archive) shall therefore be brought together in a complete archival collection. Ultimately, the aim is to create a Friedrich Rakob Portal, which will make the materials from Rakob’s bequest publicly accessible and easily usable for further research.</p>
+            </div>
 
-                <p>Julia Boensch, Research assistant <a href="mailto:
-                julia.boensch@dainst.de" target="_blank">(julia.boensch@dainst.de)</a></p>
+            <!-- Fotografien -->
+            <div>
+                <con10t-image src="/con10t/img/rakob/D-DAI-ROM-RAK-04367.jpg" align="left" width="300" alt="D-DAI-ROM-RAK-04367">
+                Terracotta fragment 1974<br>
+                Detail, edited, Film_0422<br>
+                (D-DAI-ROM-RAK-04367)
+                </con10t-image>
 
-                <p>Christoph Lehnert, Research assistant <a href="mailto:christoph.lehnert@dainst.de" target="_blank">(christoph.lehnert@dainst.de)</a></p>
+                <h3>Photographs</h3>
+                <p>The photographic material in Rakob’s bequest includes more than 63,000 negatives, slides and contact prints. The majority of these have already been digitised. The early photographic negatives from the 1950s and 1960s were produced using nitrate films, although a small number of partially large-scale glass plates were also made. Most of these materials were produced during Rakob’s studies. From the excavation campaigns in Chimtou in the early 1960s onwards, the highly combustible nitrate films and fragile glass plates were replaced with standard ‘safety film’. Slides were used to take photographs where colour was useful or effective.</p>
+            </div>
 
-                <p>Daniela Gauss, Photographic laboratory technician <a href="mailto:daniela.gauss@dainst.de" target="_blank">(daniela.gauss@dainst.de)</a></p>
-                <p>&nbsp;</p>
+            <!-- Zeichnungen -->
+            <div style = "clear: both;">
+                <con10t-image src="/con10t/img/rakob/BOOK-1464380-0041_1150132.png" align="left" width="300" alt="BOOK-1464380-0041_1150132">
+                Inv.-Nr. B-41-404-040<br>
+                Excavation plan of Carthage. Areal G-K/7-8 [1979-1982]<br>
+                </con10t-image>
 
-            
-                <font color=#336699><h3 class="con10t-toc-entry">Funding and Collaborations</h3></font> 
-                <p>&nbsp;</p>
-                <table border="0" cellspacing="5" cellpadding="2">
-                <tbody>
-                <tr>
-                  <th>Funded by</th>
-                  <th>In collaborations with</th>
-                </tr>
-                    <td>
-                      <a href="https://www.auswaertiges-amt.de/de/newsroom/muentefering-dai/2081700" target="_blank">
-                      <img src="/con10t/img/nara/Auswaertiges_Amt_Logo-01.jpg" align="left" width="130" hight="130"></a>
-                    </td>
-                    <td>
-                      <a href="https://www.dainst.org/standort/-/organization-display/ZI9STUj61zKB/14443" target="_blank">
-                      <img src="/con10t/img/nara/logo_dai.png" align="left" width="130" hight="130"></a>
-                    </td>
-                    <td>
-                      <a href="https://archaeologie.uni-koeln.de/31254.html" target="_blank">
-                      <img src="/con10t/img/nara/logo_unikoeln.png" align="left" width="180" hight="180"></a>
-                    </td>
-                  </tr>
-                </tbody>
-                </table>
+                <h3>Drawings (plans, sketches and similar)</h3>
+                <p>To date, Rakob’s plans, sketches, drawings and tracings produced between 1953 and 2000 as part of the ‘Architektenarchiv’ (Architects’ Archive) as <a href="https://arachne.dainst.org/catalog/215/552915" target="_blank">“Drawings by the Division of Building Archaeology“</a> of the DAI Rome have been digitised and indexed in an archive. They document the ground plans of buildings and plans of towns or districts; there are also drawings, tracings or sketches of excavation finds and horizontal and vertical strata of the major excavations in Simitthus and Carthage. The bequest also includes further drawings; an accurate estimate of these cannot yet be provided. Although the drawings themselves and their digitised copies belong to the ‘Architektenarchiv’ (Architects’ Archive), they will ultimately be presented as a complete collection together with the other materials.</p>
+            </div
 
+            <!-- Grabungstagebücher -->
+            <div style = "clear: both;">
+                <h3 id="Tagebücher">Excavation diaries and other documents</h3>
+                <p>The indexing of the written materials in Rakob’s bequest focuses on the excavation diaries (around 14 crates and folders, some containing several diaries). They provide useful information on the excavation works and find contexts, and in some cases are more detailed than the publications. Rakob’s bequest includes his excavation diaries from 1968 to 1984 on Simitthus, Carthage (and Siga) and from 1987 to 1997 on Carthage and Simitthus. The documentation of the excavations also includes preliminary reports (which were not published in this detailed form), letters, inventory lists, invoices (provided they provide insights into how work proceeded, such as exhibitions, personnel, etc.) and other documents on Rakob’s projects, such as the texts of speeches, commented manuscripts and similar documents.</p>
+            </div>
 
+            <!--- Mitwirkende und Förderer/Kooperation -->
+            <con10t-include src="/con10t/en/rakob_footer.html"></con10t-include>
 
-
-            <!-- Inhalt der Projektseite -->
         </div>
-
     </div>
 </div>

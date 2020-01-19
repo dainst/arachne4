@@ -1,120 +1,110 @@
+<style>
+
+    #sticky-sidebar {
+        padding-top: 3vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    @media (max-width: 992px) {
+        #sticky-sidebar {
+            position: relative;
+        }
+    }
+
+    h2.con10t-toc-entry {
+        color: #336699;
+    }
+
+</style>
+
 <!-- Kopfbereich der Projektseite -->
 <idai-header
         image="/con10t/headerimages/Rakob_D-DAI-ROM-RAK-32731.jpg"
         description="Chimtou, Ergastulum-Fabrica | D-DAI-ROM-RAK-32731"
-        link="https://arachne.dainst.org/entity/10913">
+        link= "https://arachne.dainst.org/entity/10913">
 </idai-header>
-            <p>&nbsp;</p>
-            <p>&nbsp;</p>
 
 <!-- Hauptbereich der Projektseite -->
 <div class="con10t-page teaserpage container">
 
     <div class="con10t-row">
 
-        <div class="con10t-title">
-            <p>&nbsp;</p>
+        <!-- Titel -->
+        <div class="con10t-title" style = "background-color: #ffffff6b;">
             <h1>Fonds Friedrich Rakob</h1>
         </div>
 
-        <div class="con10t-sidebar">
-            <div dir="rtl">
-                <p>
-                    <a href="project/rakob?lang=de" target="_self">Deutsch</a>
-                </p>
-                <p>  
-                    <a href="project/rakob?lang=en" target="_self">English</a>
-                </p>
+        <!-- Rechte Seitenleiste -->
+        <con10t-include src="/con10t/fr/rakob_sidebar.html"></con10t-include>
 
-              </div>
-              <p>&nbsp;</p>
-            <con10t-include src="/con10t/fr/rakob_toc.html"></con10t-include>
-
-             <div id="treeWidget">
-                        <con10t-tree fq="facet_subkategoriebestand_level2:Nachlass-Friedrich-Rakob"
-                             wildcard-facet="facet_subkategorie"></con10t-tree>
-                </div>
-
-                 <p>&nbsp;</p>
-                 <h4>Interlocuteurs</h4>
-                 <a href="mailto: fotothek.rom@dainst.de" target="_blank">Dr. Ralf Bockmann</a><br>
-                <a href="mailto: christoph.lehnert@dainst.de" target="_blank">Christoph Lehnert</a>
-
-            <h4 class="con10t-toc-entry" id="Liens">Liens</h4>
-
-
-            <a href ="https://www.dainst.org/projekt/-/project-display/3929488" target="_blank">Projet des fonds Rakob<a/><br>
-
-            <a href ="http://www.nahanweb.org" target="_blank">Projet NAHAN<a><br>
-
-            <a href ="https://www.dainst.org/dai/presse/nachricht/-/asset_publisher/XV2P83pNHjQz/content/karthago-ist-um-eine-archaologische-attraktion-reicher-einweihung-des-quartier-didon" target="_blank">Inauguration du Quartier Didon<a/><br>
-
-            <a href ="https://arachne.dainst.org/project/handzeichnungen" target="_blank">Architektenarchiv (Archive d'architectes)<a/><br>
-            <p>&nbsp;</p>
-            <p>&nbsp;</p>
-
-            <!-- Rechte Seitenleiste -->
-        </div>
-
+        <!-- Inhalt -->
         <div class="con10t-content">
 
-            
-            <p><con10t-image src="/con10t/img/rakob/D-DAI-ROM-RAK-03201.jpg"
-            align="left" width="250" hight="180"
-            alt="D-DAI-ROM-RAK-03201">
-            Friedrich Rakob lors d'une réception privée, <br>
-            Extrait, édité, Film_0814<br>
-            (D-DAI-ROM-RAK-03201)
+            <!-- Einführung -->
+            <h2 class="con10t-toc-entry">À propos du projet</h2>
+
+            <con10t-image src="/con10t/img/rakob/D-DAI-ROM-RAK-03201.jpg" align="left" width="210" alt="D-DAI-ROM-RAK-03201">
+            F. Rakob lors d'une réception privée<br>
+            Chimtou 1986, Extrait, édité<br>
+            Film_0814 (D-DAI-ROM-RAK-03201)
             </con10t-image>
             
-            <P class="left">Friedrich Rakob (1931-2007), chercheur en architecture originaire de Rhénanie-du-Nord-Westphalie, était chargé de recherche en architecture romaine à l’institut archéologique allemand (Deutsches Archäologisches Institut, DAI) à Rome de 1962 à 1996 et s’est à ce titre spécialisé dans l’étude de l’histoire architecturale des villes du nord de la Tunisie. En 1968, il a pris la direction des vastes fouilles de Simitthus/Chimtou, puis de celles de Carthage à partir de 1974. Les fouilles ont été réalisées dans le cadre de la coopération de l’Institut archéologique allemand (DAI) à Rome avec l'ancien Institut National d'Art et d'Archéologie (INAA) à Tunis, aujourd’hui <a href="http://www.inp.fr/" target="_blank">Institut National du Patrimoine</a> (INP).</p>
- 
-            <P class="left">Le fonds Friedrich Rakob comprend un total de plus de 63 000 négatifs, diapositives et planches-contacts, ainsi que 190 caisses et dossiers contenant des journaux de fouilles, des dessins, des plans, des cassettes VHS et d'autres documents, tels que des rapports préliminaires, des textes d'exposés et des lettres, résultant de plus de 35 ans de recherches. L'Institut archéologique allemand (DAI) a reçu une partie des matériaux alors que Rakob était encore en activité et l'autre partie, ses fonds privés, en 2007, après sa mort. La documentation des fouilles et découvertes faites à Chimtou et Carthage constitue l'essentiel du fonds. Il donne accès à des informations détaillées sur les fouilles et les circonstances des découvertes réalisées, complétant ainsi les résultats déjà partiellement publiés.</p>
+            <p>Friedrich Rakob (1931-2007), chercheur en architecture originaire de Rhénanie-du-Nord-Westphalie, était chargé de recherche en architecture romaine à l’institut archéologique allemand (Deutsches Archäologisches Institut, DAI) à Rome de 1962 à 1996 et s’est à ce titre spécialisé dans l’étude de l’histoire architecturale des villes du nord de la Tunisie. En 1968, il a pris la direction des vastes fouilles de Simitthus/Chimtou, puis de celles de Carthage à partir de 1974. Les fouilles ont été réalisées dans le cadre de la coopération de l’Institut archéologique allemand (DAI) à Rome avec l'ancien Institut National d'Art et d'Archéologie (INAA) à Tunis, aujourd’hui <a href="http://www.inp.fr/" target="_blank">Institut National du Patrimoine</a> (INP).</p>
+            <p style = "padding-bottom: 2vw;">Le fonds Friedrich Rakob comprend un total de plus de 63 000 négatifs, diapositives et planches-contacts, ainsi que 190 caisses et dossiers contenant des journaux de fouilles, des dessins, des plans, des cassettes VHS et d'autres documents, tels que des rapports préliminaires, des textes d'exposés et des lettres, résultant de plus de 35 ans de recherches. L'Institut archéologique allemand (DAI) a reçu une partie des matériaux alors que Rakob était encore en activité et l'autre partie, ses fonds privés, en 2007, après sa mort. La documentation des fouilles et découvertes faites à Chimtou et Carthage constitue l'essentiel du fonds. Il donne accès à des informations détaillées sur les fouilles et les circonstances des découvertes réalisées, complétant ainsi les résultats déjà partiellement publiés.</p>
+            <p>L’appui généreux du Ministère allemand des affaires étrangères a tout d’abord permis de dresser l’inventaire du vaste fonds, puis de numériser une grande partie des dessins et des documents de fouilles (négatifs et diapositives) et de les mettre en valeur (travaux en cours). L’objectif du projet est désormais de systématiser et de contextualiser les images et contenus numérisés au sein des archives sur l’Afrique du Nord (North African Heritage Archive) prévues et nouvellement créées. Au terme de ce sous-projet, l’ensemble des documents numérisés du fonds Rakob doivent être regroupés au sein d’un large projet et mis à disposition du projet <a href ="http://www.nahanweb.org" target="_blank">NAHAN</a>, une plateforme internationale et interinstitutionnelle consacrée aux archives archéologiques de l'espace nord-africain.</p>
 
-            <p class="left">L’appui généreux du Ministère allemand des affaires étrangères a tout d’abord permis de dresser l’inventaire du vaste fonds, puis de numériser une grande partie des dessins et des documents de fouilles (négatifs et diapositives) et de les mettre en valeur (travaux en cours). L’objectif du projet est désormais de systématiser et de contextualiser les images et contenus numérisés au sein des archives sur l’Afrique du Nord (North African Heritage Archive) prévues et nouvellement créées. Au terme de ce sous-projet, l’ensemble des documents numérisés du fonds Rakob doivent être regroupés au sein d’un large projet et mis à disposition du projet <a href ="http://www.nahanweb.org" target="_blank">NAHAN</a>, une plateforme internationale et interinstitutionnelle consacrée aux archives archéologiques de l'espace nord-africain.</p>
+            <!-- Erschließung des Bestandes -->
+            <h2 class="con10t-toc-entry" id = "Nachlass">Mise en valeur du fonds</h2>
 
+            <div>
+                <p>Parmi les collections créées dans le cadre des projets de fouilles archéologiques du DAI à Rome, le fonds Friedrich Rakob (1931-2007) représente l’un des plus vastes et des plus importants jamais mis en valeur. Les matériaux résultant de plus de 35 années de recherche sont conservés dans les archives photographiques du DAI à Rome. Le fonds a fait tout d’abord l’objet d’un inventaire systématique en 2015, avant d’être classé par des enregistrements de Rakob. Le fonds d'archives se compose principalement de photographies – environ 63 000 négatifs et diapositives – ainsi que de quelque 190 dossiers et boîtes contenant des journaux de fouilles, des dessins, des plans et d’autres documents (par exemple des correspondances, des rapports préliminaires et des textes d'exposés). Le fonds comprend également du matériel vidéo (notamment des cassettes VHS, des disquettes et des CD).</p>
 
-            <font color=#336699><h3 class="con10t-toc-entry" id="Personen">Participants</h3></font> 
+                <con10t-image src="/con10t/img/rakob/D-DAI-ROM-RAK-04277.jpg" align="right" width="410" alt="D-DAI-ROM-RAK-04277">
+                    Reproduction photographique d'un plan de Carthage, 1974<br>
+                    Repro, édité, Film_0418 (D-DAI-ROM-RAK-04277)
+                </con10t-image>
 
-                <p>Dr. Ralf Bockmann, Directeur de la photothèque <a href="mailto:ralf.bockmann@dainst.de" target="_blank">(ralf.bockmann@dainst.de)</a></p>
-                
-                <p>Julia Boensch, Assistante de recherche <a href="mailto:
-                julia.boensch@dainst.de" target="_blank">(julia.boensch@dainst.de)</a></p>
+                <p>Il est successivement procédé à la numérisation et à la mise en valeur de tous ces matériaux en lien avec les travaux de Rakob. Dans un premier temps, le projet met principalement l'accent sur la numérisation, la systématisation et la mise en valeur documentaire du matériel photographique et des journaux de fouilles établis dans le cadre des travaux de Rakob en Tunisie.
+                    Une grande partie du matériel photographique et des journaux de fouilles a déjà été numérisée, opération qui s'est accompagnée d’une présélection et d’un premier traitement des documents en mesure d’être exploités. La mise en valeur du matériel photographique a tout d’abord porté sur les négatifs en noir et blanc, dont l’identification avait été facilitée par un dossier de topographie créé par Rakob lui-même de son vivant.</p>
+                <p>Ces images sont d’ores et déjà disponibles dans la base iDAI.objects/Arachne. La numérisation des autres négatifs et diapositives et de quelques planches-contacts se poursuit progressivement. Les données enregistrées dans la base de données des objets iDAI.objects/Arachne sont respectivement reliées à celles de la base topographique <a href ="https://gazetteer.dainst.org/app/#!/home" target="_blank">iDAI.gazetteer</a>. À l'avenir, la consultation des journaux de fouilles se fera via la base <a href ="https://arachne.uni-koeln.de/drupal/?q=node/98" target="_blank">iDAI.bookbrowser</a>.
+                    Il est ensuite prévu la création d'un fonds d'archives fermé regroupant les données et documents numérisés (y compris les dessins du «Architektenarchiv» (Archive d'architectes) du fonds Rakob. L’objectif final étant de créer un «portail Friedrich Rakob» offrant un accès libre aux matériaux du fonds Rakob et facilitant leur utilisation pour des travaux de recherche complémentaires.</p>
+            </div>
 
-                <p>Christoph Lehnert, Assistante de recherche <a href="mailto:christoph.lehnert@dainst.de" target="_blank">(christoph.lehnert@dainst.de)</a></p>
-                
-                <p>Daniela Gauss, Laborantine photographique <a href="mailto:daniela.gauss@dainst.de" target="_blank">(daniela.gauss@dainst.de)</a></p>
-                <p>&nbsp;</p>
+            <!-- Fotografien -->
+            <div>
+                <con10t-image src="/con10t/img/rakob/D-DAI-ROM-RAK-04367.jpg" align="left" width="300" alt="D-DAI-ROM-RAK-04367">
+                Fragment de terre-cuite, Carthage 1974<br>
+                Extrait, édité, Film_0422<br>
+                (D-DAI-ROM-RAK-04367)
+                </con10t-image>
 
-                            <font color=#336699><h3 class="con10t-toc-entry">Soutien et coopérations</h3></font> 
-                <p>&nbsp;</p>
-                <table border="0" cellspacing="5" cellpadding="2">
-                <tbody>
-                <tr>
-                  <th>Promu par</th>
-                  <th>En coopération avec</th>
-                </tr>
-                    <td>
-                      <a href="https://www.auswaertiges-amt.de/de/newsroom/muentefering-dai/2081700" target="_blank">
-                      <img src="/con10t/img/nara/Auswaertiges_Amt_Logo-01.jpg" align="left" width="130" hight="130"></a>
-                    </td>
-                    <td>
-                      <a href="https://www.dainst.org/standort/-/organization-display/ZI9STUj61zKB/14443" target="_blank">
-                      <img src="/con10t/img/nara/logo_dai.png" align="left" width="130" hight="130"></a>
-                    </td>
-                    <td>
-                      <a href="https://archaeologie.uni-koeln.de/31254.html" target="_blank">
-                      <img src="/con10t/img/nara/logo_unikoeln.png" align="left" width="180" hight="180"></a>
-                    </td>
-                  </tr>
-                </tbody>
-                </table>
+                <h3>Photographies</h3>
+                <p>Le matériel photographique du fonds Rakob comprend plus de 63 000 négatifs, diapositives et planches-contacts, dont la plupart a déjà été numérisée. Les premiers négatifs datant des années 1950 et 1960 ont été produits sur des films nitrate ou sur des plaques de verre (peu nombreuses mais en partie de très grandes dimensions). Rakob a réalisé la plupart d'entre eux au cours de ses études. Au plus tard à partir des campagnes de fouilles à Chimtou au début des années 1960, les films en acétate de cellulose (films de sécurité) remplacent les films nitrate facilement inflammables et les fragiles plaques de verre. Les diapositives étaient réservées aux images pour lesquelles les couleurs avaient une importance ou étaient susceptibles d'offrir un bon rendu.</p>
+            </div>
 
+            <!-- Zeichnungen -->
+            <div style = "clear: both;">
+                <con10t-image src="/con10t/img/rakob/BOOK-1464380-0041_1150132.png" align="left" width="300" alt="BOOK-1464380-0041_1150132">
+                Inv.-Nr. B-41-404-040<br>
+                (Plan de Carthage. Areal G-K/7-8 [1979-1982])<br>
+                </con10t-image>
 
+                <h3>Dessins (plans, esquisses, etc.)</h3>
+                <p>Les plans, esquisses et dessins de Rakob, réalisés entre 1953 et 2000 dans le cadre du « Architektenarchiv » (Archive d'architectes) en tant que <a href="https://arachne.dainst.org/catalog/215/552915" target="_blank">«plans du Bureau d’architecture»</a> du DAI à Rome, ont déjà fait l’objet d’une numérisation et d’une mise en valeur archivistique. Il s'agit de plans de bâtiments et de plans de localités/quartiers, ainsi que de dessins/esquisses d’objets de fouilles et de strates horizontales et verticales des vastes fouilles de Simitthus et de Carthage. À ceux-ci s'ajoutent d'autres dessins du fonds, dont la quantité n'a pas encore pu être estimée. Bien que les dessins et leur version numérisée relèvent du « Architektenarchiv » (Archive d'architectes) sur le plan archivistique, ils sont à terme destinés à être présentés avec les autres matériaux au sein d’un fonds fermé.</p>
+            </div
 
+            <!-- Grabungstagebücher -->
+            <div style = "clear: both;">
+                <h3 id="Tagebücher">Journaux de fouilles et autres documents</h3>
+                <p>La mise en valeur des documents écrits porte en priorité sur les journaux de fouilles (environ 14 caisses et dossiers, dont une partie contient plusieurs journaux de fouilles) qui fournissent des informations précieuses sur les fouilles et les circonstances des découvertes réalisées et dont une partie offre davantage de détails que les publications elles-mêmes. Le fonds Rakob contient les journaux de fouilles de Simitthus, Carthage (et Siga) établis entre 1968 et 1984, et ceux de Carthage et Simitthus établis entre 1987 et 1997. Des rapports préliminaires (non publiés dans leur intégralité), des lettres, des listes d’inventaire, des factures (pour autant qu’elles livrent des informations sur le déroulement des travaux, à savoir des expositions, la main d'œuvre employée, etc.) et d'autres documents liés aux travaux de Rakob, tels que des textes d'exposés, des manuscrit commentés, etc. complètent le fonds.</p>
+            </div>
 
-            <!-- Inhalt der Projektseite -->
+            <!--- Mitwirkende und Förderer/Kooperation -->
+            <con10t-include src="/con10t/fr/rakob_footer.html"></con10t-include>
+
         </div>
-
     </div>
 </div>
