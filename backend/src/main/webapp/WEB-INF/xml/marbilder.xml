@@ -267,6 +267,7 @@
 					<field datasource="marbilderinventar.DepotNr" prefix="Depotnummer: " />
 					<field datasource="marbilderinventar.Hinweise" prefix="Hinweise: " />
 					<field datasource="marbilderinventar.Bildunterschrift" prefix="Bildunterschrift: " />
+					<field datasource="marbilderinventar.MiscMetadata" prefix="Sonstige Metadaten: " />
 				</section>
 				<section labelKey="Arachne Felder">
 					<field datasource="marbilderbestand.Zusatz" prefix="Zusatz: " />
