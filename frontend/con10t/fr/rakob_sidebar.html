@@ -42,7 +42,34 @@
 
     <p><a href="/project/rakob/search?q=*" target="_blank">Afficher toutes les données du projet</a></p>
 
-    <p><a href="project/rakob/map?q=*&view=map" target="_blank">Carte</a></p>
+    <!--- Map --->
+    <div>
+        <a href="/project/rakob_map" title="carte" style="cursor:pointer">
+            <span class="glyphicon glyphicon-fullscreen"></span>
+            Agrandir la carte</a>
+    </div>
+
+    <div ng-init="config = {
+				facetsSelect: [
+					{
+						key: 'facet_kategorie',
+                        value: 'Bilder'
+					},
+					{
+					    key: 'facet_bestandsname',
+                        value: 'dai-rom-nara'
+                    }
+				]
+    }"></div>
+
+    <div con10t-map style = "margin-bottom: 1vw;"
+         id="map"
+         limit="200"
+         facets-select="config.facetsSelect"
+         lat="36.85"
+         lng="10.33"
+         zoom="5">
+    </div>
 
     <con10t-tree fq="facet_subkategoriebestand_level2:Nachlass-Friedrich-Rakob" wildcard-facet="facet_subkategorie"></con10t-tree>
 

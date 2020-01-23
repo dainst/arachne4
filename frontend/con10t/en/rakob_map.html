@@ -1,0 +1,41 @@
+<div tiny-footer class="row map-fullscreen">
+    <div ng-init="config = {
+        facetsSelect: [
+
+            {
+                key: 'facet_kategorie',
+                value: 'Bilder'
+            },
+            {
+                key: 'facet_bestandsname',
+                value: 'dai-rom-nara'
+            }
+        ]
+    }"></div>
+
+    <div id="menu" class="col-sm-2">
+        <h3 class="text-muted uppercase">
+            <a href = "/project/rakob?lang=en">Friedrich Rakob’s Bequest</a>
+        </h3>
+
+        <div con10t-map-menu-search-info type="grid" search-scope="rakob"></div>
+        <div con10t-map-menu-search-field heading="{{'ui_current_search'|transl8}}"></div>
+        <div con10t-map-menu-legend></div>
+        <div con10t-map-menu-facet-search
+             facets-allow="config.menuFacetsAllow"
+             facets-selected="config.facetsSelect">
+        </div>
+    </div>
+
+    <div con10t-map
+         class="col-sm-10"
+         id="map"
+         limit="200"
+         overlays="config.overlays"
+         facets-select="config.facetsSelect"
+         lat="36.85"
+         lng="10.33"
+         zoom="5">
+    </div>
+
+</div>
