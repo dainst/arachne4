@@ -42,9 +42,37 @@
 
     <p><a con10t-search-query target = "_blank">Alle Projektdaten anzeigen</a></p>
 
-    <p><a href="project/rakob/map?q=*&view=map" target="_blank">Zur Kartenansicht</a></p>
+    <!--- Map --->
+    <div>
+        <a href="/project/rakob_map" title="Zur Karte" style="cursor:pointer">
+        <span class="glyphicon glyphicon-fullscreen"></span>
+        Größere Karte</a>
+    </div>
+
+    <div ng-init="config = {
+				facetsSelect: [
+					{
+						key: 'facet_kategorie',
+                        value: 'Bilder'
+					},
+					{
+					    key: 'facet_bestandsname',
+                        value: 'dai-rom-nara'
+                    }
+				]
+    }"></div>
+
+    <div con10t-map style = "margin-bottom: 1vw;"
+         id="map"
+         limit="200"
+         facets-select="config.facetsSelect"
+         lat="36.85"
+         lng="10.33"
+         zoom="5">
+    </div>
 
     <con10t-tree fq="facet_subkategoriebestand_level2:Nachlass-Friedrich-Rakob" wildcard-facet="facet_subkategorie"></con10t-tree>
+    <!---  <con10t-catalog-tree catalog-id="502"></con10t-catalog-tree> -->
 
     <!--- Ansprechpartner und Links--->
     <h4>Ansprechpartner</h4>
@@ -52,10 +80,8 @@
         <a href="mailto: christoph.lehnert@dainst.de" target="_blank">Christoph Lehnert</a>
 
     <h4>Weiterführende Links</h4>
-
         <a href ="https://www.dainst.org/projekt/-/project-display/3929488" target="_blank">Projekt Nachlass Rakob<a/><br>
         <a href ="http://www.nahanweb.org" target="_blank">Projekt NAHAN<a><br>
         <a href ="https://www.dainst.org/dai/presse/nachricht/-/asset_publisher/XV2P83pNHjQz/content/karthago-ist-um-eine-archaologische-attraktion-reicher-einweihung-des-quartier-didon" target="_blank">Einweihung des Quartier Didon<a/><br>
         <a href ="https://arachne.dainst.org/project/handzeichnungen" target="_blank">Architektenarchiv<a/>
-
 </div>

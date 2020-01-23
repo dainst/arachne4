@@ -209,6 +209,9 @@
   "rakob": {
     "q": "D-DAI-NA-RAK"
   },
+  "rakob_map": {
+    "alias": "rakob"
+  },
   "rezeptionantike": {
     "q": "(catalogPaths:107 OR catalogPaths:108)"
   },
