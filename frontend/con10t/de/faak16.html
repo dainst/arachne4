@@ -9,24 +9,48 @@
 
     <div class="con10t-row">
 
+		<!-- Haupttitel des Projektes: Überschrift der Größe <h1> oder Logo / Bild -->
         <div class="con10t-title">
-            <!-- Haupttitel des Projektes: Überschrift der Größe <h1> oder Logo / Bild -->
 			<h1>Catalog of Paracas Archaeological Materials</h1>
 		</div>
 
-        <div class="con10t-sidebar">
-            <!-- Rechte Seitenleiste -->
+		<!-- Rechte Seitenleiste -->
+        <div class="con10t-sidebar" style = "padding-top: 2vw;">
+
 			<con10t-toc toc-heading="Übersicht"></con10t-toc>
 
 			<h3>Suche in den Daten des Projekts</h3>
-
-			<p><a href="project/faak16/map?q=*&view=map" target="_blank">Zur Kartenansicht</a></p>
 
 			<p><a con10t-search-query target = "_blank">Alle Projektdaten anzeigen</a></p>
 
 			<con10t-search catalog-id="566"></con10t-search>
 
 			<br>
+
+			<!--- Map --->
+			<div>
+				<a href="/project/faak16_map" target = "_blank" title="Zur Karte" style="cursor:pointer">
+					<span class="glyphicon glyphicon-fullscreen"></span>
+					Größere Karte</a>
+			</div>
+
+			<div ng-init="config = {
+				facetsSelect: [
+					{
+						key: 'facet_kategorie',
+						value: 'Einzelobjekte'
+					}
+				]
+			}"></div>
+
+			<div con10t-map style = "margin-bottom: 1vw;"
+				 id="map"
+				 limit="200"
+				 facets-select="config.facetsSelect"
+				 lat="-14.5"
+				 lng="-75.2"
+				 zoom="5">
+			</div>
 
 			<h3>Katalog</h3>
 
@@ -41,14 +65,13 @@
 
         </div>
 
+		<!-- Inhalt der Projektseite -->
         <div class="con10t-content">
-		
-            <!-- Inhalt der Projektseite -->
 			
 			<h2 class="con10t-toc-entry">Introduction</h2>
 			
-				<p>This online catalog accompanies the book Sea Shells in the Mountains and Llamas on the Coast:
-					The Economy of the Paracas Culture (800 to 200 BC) in Southern Peru (Mader 2019), published as part
+				<p>This online catalog accompanies the book <span style = "font-style:italic;">Sea Shells in the Mountains and Llamas on the Coast:
+					The Economy of the Paracas Culture (800 to 200 BC) in Southern Peru</span> (Mader 2019), published as part
 					of the series “Research into the Archaeology of Non-European Cultures” by the German Archaeological
 					Institute (DAI). The catalog provides data and images of archaeological finds and contexts which
 					have been excavated since 1996 by the Nasca-Palpa Project of the DAI’s Commission for Archaeology of
@@ -153,21 +176,21 @@
 
 			<p>Reindel, M., Isla, J., Gorbahn, H., Otten, H., 2015. Paracas en Palpa: los fundamentos del poder de la cultura Nasca. Peruvian Archaeology 2, 37–64.</p>
 
-			<h3 class="con10t-toc-entry">Kontakt</h3>
+			<div>
+				<h3 class="con10t-toc-entry">Kontakt</h3>
 
-				<img src="/con10t/img/faak16/LOGO-UNI Bonn.png" align="right" alt="map reconstruction economy" height="100">
-
-				<img src="/con10t/img/faak16/archaeologie-vormoderner-wirtschaftsraeume1.jpg" align="right" alt="map reconstruction economy" height="100">
-
-			<p>Redaktion KAAK<br>
+				<p>Redaktion KAAK<br>
 				Dürenstraße 35-37<br>
 				53173 Bonn<br>
 				+49 (0)228 997712-0<br>
 				redaktion.kaak@dainst.de
-			</p>
+				</p>
+			</div>
 
-
-
+			<div style = "margin-top: 4vh;">
+				<img style = "padding: 0;" src="/con10t/img/faak16/archaeologie-vormoderner-wirtschaftsraeume1.jpg" alt="logo_grako" height="80">
+				<img style = "padding: 0;" src="/con10t/img/faak16/LOGO-UNI Bonn.png" alt="logo_uni-bonn" height="80">
+			</div>
 		</div>
 
     </div>
