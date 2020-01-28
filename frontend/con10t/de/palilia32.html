@@ -1,0 +1,363 @@
+<style>
+
+    .teaserpage {
+        margin-top: -9vw !important;
+    }
+
+    #sticky-sidebar {
+        padding-top: 4vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    @media (max-width: 992px) {
+        #sticky-sidebar {
+            position: relative;
+        }
+    }
+
+    table#abkuerzungen  td {
+        padding-right: 1vw;
+    }
+
+    table#bibliographie td:nth-child(odd) {
+        width: 10vw;
+        padding: 0.5vw;
+        padding-right: 2vw;
+    }
+</style>
+
+<!-- Kopfbereich der Projektseite -->
+<idai-header
+        image="/con10t/headerimages/palilia32_header.jpg"
+        description="">
+</idai-header>
+
+<!-- Hauptbereich der Projektseite -->
+<div class="con10t-page teaserpage container">
+
+    <div class="con10t-row">
+
+        <div class="con10t-title" style = "background-color: #f7f7f7f5; padding-bottom: 20px;">
+            <h1>Daphni Doepner, ›Große Statuetten‹ in Medma (Kalabrien)<br>
+            <span style = "font-size: 0.8em;">
+                Zur Produktion und sakralen Verwendung von Terrakotten aus dem ›Calderazzo-Depot‹ (basierend auf den Vorarbeiten von Peter Noelke) (Wiesbaden 2020).<br>
+                Erweiterter Online-Katalog der ‚Kombinationsfolgen‘
+            </span>
+            </h1>
+        </div>
+
+        <div id = "sticky-sidebar" class="con10t-sidebar">
+
+            <con10t-toc toc-heading="Übersicht"></con10t-toc>
+
+            <h3 style = "margin-top: 2vw;">Suche in den Daten des Projektes</h3>
+
+            <a con10t-search-query = "*&amp;fq=catalogIds:'62'" target = "_blank">Alle Datensätze anzeigen</a>
+
+            <con10t-search catalog-id="62"></con10t-search>
+
+            <div style = "margin-top: 1vw;">
+                <a href="/project/palilia32_map" title="Zur Karte" style="cursor:pointer" target = "_blank">
+                    <span class="glyphicon glyphicon-fullscreen"></span>
+                    Größere Karte</a>
+            </div>
+
+            <!-- Map -->
+            <div ng-init="config = {
+                     facetsSelect: [
+                {
+                    key: 'facet_kategorie',
+                    value: 'Einzelobjekte'
+                }
+            ]
+            }"></div>
+
+            <div con10t-map style = "margin-bottom: 1vw;"
+                 id="map"
+                 limit="200"
+                 facets-select="config.facetsSelect"
+                 lat="38.11"
+                 lng="15.66"
+                 zoom="5">
+            </div>
+
+            <!-- Katalog -->
+            <h3>Katalog</h3>
+
+            <a href = "/catalog/62" target = "_blank">Zur Katalogansicht</a>
+
+        </div>
+
+        <div class="con10t-content">
+
+            <h2 class="con10t-toc-entry">Einleitung für die Online-Publikation des Katalogs</h2>
+
+            <con10t-image src="/con10t/img/palilia32/Abb_111_(Inv_2902)_2.jpg" align="left" width="215" alt="Abb_111_(Inv_2902)_2">
+                <span class="ng-scope">
+                    <a href = "https://arachne.dainst.org/entity/1110964" target = "_blank">
+                        Sitzende auf Hocker<br>
+                        in Chiton ohne Mantel</a>
+                </span>
+            </con10t-image>
+
+            <p>Dieser Katalog in Arachne behandelt fast alle Relikte der ursprünglich 40 bis 60 cm hohen Figuren aus Terrakotta, die 1912/1913 von Paolo Orsi und Rosario Carta in einem großen Votivdepot der ‚Località Calderazzo‘ im heutigen Rosarno (Kalabrien) gefunden wurden, wo sich in der Antike die griechische Kolonie Medma befand.
+            Sie stammen so aus einem ‚geschlossenen Fundkontext‘, entstanden in der Zeit von ca. 550 bis 450 v. Chr. in demselben Werkstattkreis wie die ‚Lokrischen Pinakes‘ und wurden jeweils aus mehreren von Hand oder aus einer Matrize geformten Teilen zusammengefügt.
+            Durch alles dies, ihre Größe und ihre plastische Qualität informieren sie auf außergewöhnliche Weise über die Entwicklung des Stils am Übergang von der Archaik zur Klassik, die Vorgänge in den Werkstätten der Votive und ihre Verwendungsweise im Heiligtum.
+            Während der Band 32 der Reihe Palilia des Deutschen Archäologischen Instituts die Untersuchung der Entwicklung und Funktion dieser Terrakotten schildert, soll der Katalog durch seine hierarchische Struktur und die Zuordnung der Daten, die aktuell über das Material bekannt sind und teils erst durch die Untersuchung gewonnen werden konnten,
+            parallel zur Buchlektüre oder auch unabhängig von ihr:</p>
+
+                <ul style = "margin-top: 1vw;">
+                    <li>einen gezielten Zugriff auf Informationen ermöglichen;</li>
+                    <li>den Herstellungsprozess und den Variationsreichtum der „Kombinationsfolgen“ eines jeden Gesichts- oder Körpermodells offenbaren,</li>
+                    <li>auch die Position, die jede Votivfigur des Depots innerhalb dieser Folgen einnimmt,</li>
+                    <li> und auf diese Weise überdies das komplizierte matrizentechnische Beziehungsgeflecht, das unter vielen Votiven des Depots besteht, erkennbar machen.</li>
+                </ul>
+            </p>
+
+            <con10t-image src="/con10t/img/palilia32/Inv_1292_(G73a).jpg" align="right" width="215" alt="Inv_1292_(G73a).jpg">
+                <span class="ng-scope">
+                    <a href = "https://arachne.dainst.org/entity/1111067" target = "_blank">
+                        Kopf einer Statuette<br>
+                        aus Terrakotta</a>
+                </span>
+            </con10t-image>
+
+            <p>So wird etwa in Bezug auf die Kombinationsfolge eines Gesichtsmodells aufgezeigt, welche ikonographischen Elemente (d. h. welche Haupthaar-, welche Körpermodelle, welche Typen der Kopfbedeckung usw.) in welcher Form (wie häufig, in welcher Technik, in wie vielen Generationen), zu welcher Zeit und in welchen Werkstätten mit ebendiesem Gesichtsmodell an welchen Statuetten des Depots verbunden wurden.
+            Dabei wird der Begriff „Modell“ unabhängig von der Herstellungsweise für jeden neuen Entwurf verwendet, also etwa auch für ein Gesicht, das mit neuen zeit- bzw. werkstattstilistischen Zügen durch die Umgestaltung eines bereits existierenden Positivs oder Negativs entstanden ist.
+            Zum besseren Verständnis der Vorgänge werden nach Möglichkeit auch Repliken aus anderen Fundkontexten in internationalen Museen und Sammlungen mit berücksichtigt (s. das beigefügte Register).
+            Damit die Materialbasis überprüft und die Kenntnisse vertieft werden können, sind die Datensätze der einzelnen Votive auf unterster Ebene in die Katalogstruktur eingebunden.
+            Sie informieren detailliert über jede große Statuette des Depots - nach Möglichkeit auch mithilfe von Abbildungen - und können sowohl aus dem übergeordneten Katalog heraus als auch unabhängig von ihm direkt aufgerufen werden.
+            Letzteres gilt ebenfalls für Datensätze einer bestimmten Folge (etwa durch die Suche von „Doepner G24a“).</p>
+
+            <p>Überdies besteht die Möglichkeit, die Datensätze in Zukunft zu ergänzen oder zu korrigieren. Ruft der Nutzer den Katalog im Internet mehrfach parallel auf und verschiedene Datensätze anbei, kann er Informationen zu mehreren Materialgruppen und Objekten gleichzeitig einsehen und miteinander vergleichen.
+            (Zur Internet-Publikation von Katalog und Datenbank s. bereits Doepner u. a. 2015.)</p>
+
+            <p>D. Doepner</p>
+
+            <p style = "border-top: 0.1vw solid #e0e0e0; padding-top: 0.5vw;"><span style = "font-weight:bold;">Hinweis: </span>Die Datensätze, von denen einige bereits aus den späten 90er Jahren stammen, andere erst nach Abschluss der Untersuchung in Arachne erstellt wurden, konnten nicht gleichermaßen vereinheitlicht und an die Ergebnisse der Arbeit angepasst werden. Auch kann in ihnen nur ein Teil der Abbildungen gezeigt werden, die zur Verfügung standen.
+            Sie illustrieren aber nach Möglichkeit technische Details und jede bekannte der vielen Erscheinungsformen des Materials, also auch der ‚Kombinationsfolgen‘ im Katalog.</p>
+
+            <h2 class="con10t-toc-entry">Katalog der ‚Kombinationsfolgen‘</h2>
+
+            <con10t-catalog-tree catalog-id="62"></con10t-catalog-tree>
+
+            <h2 class="con10t-toc-entry">Hinweise zur Nutzung des erweiterten Online-Kataloges</h2>
+
+            <p>Sie haben von dieser Startseite aus vier Möglichkeiten, um zu den katalogisierten Objekten und Bildern zu gelangen.
+
+            <ul>
+                <li>Wenn Sie rechts oben unter <strong>"Suche in den Daten des Projekts"</strong> auf "Alle Datensätze anzeigen" klicken, gelangen Sie zu einer Ergebnisansicht, in der alle projektspezifischen Objekte angezeigt werden. In dieser Ergebnisansicht können Sie die Objekte nach bestimmten Kriterien (z.B. Abbildung(en) vorhanden) weiter filtern und das Ergebnis in Form einer Kachel-, Listen-, oder Kartenansicht darstellen. Sie können die Ergebnisse auch schon direkt über das Suchfeld "Projekt durchsuchen"
+                    filtern.</li>
+                <br>
+
+                <li>Über die eingeblendete Karte (rechts) gelangen Sie zu den Orten, die mit den katalogisierten Objekten verknüpft sind. Die farbig hervorgehobenen Punkt in der Kartenansicht dienen zugleich als Navigationselemente zu den verknüpften
+                Objekten. Sie können die Karte mit einem Klick auf "<strong>"Größere Karte"</strong> vergrößern. In der vergrößerten Kartenansicht lassen sich die Projektdaten weiter filtern.</li>
+                <br>
+
+                <li>Sie können außerdem über die <strong>oben eingeblendete Katalogansicht </strong> gezielt innerhalb des ikonographisch strukturierten Kataloges navigieren. Durch Klicken auf ein Ordnersymbol werden die untergeordneten Katalogdatensätze dargestellt. Zudem können Sie über das Lupensymbol rechts stets alle diesem Ordner untergeordneten Datensätze in der Ergebnisansicht anzeigen lassen.</li>
+                <br>
+
+                <li>Über den oben aufgeführten Link "Zur Katalogansicht" gelangen Sie zu einer <strong>Gesamtansicht des Kataloges</strong>. Dort können Sie auf der linken Seite durch die Katalogstruktur navigieren. Wenn Sie dort einen Katalogeintrag anklicken, wird rechts davon der Katalogtext, der zugehörige Arachne-Datensatz sowie das Bildmaterial eingeblendet.
+            </ul>
+
+            <h2 class="con10t-toc-entry">Abkürzungen</h2>
+
+            <table id = "abkuerzungen">
+                <tr><td>Dm</td><td>Durchmesser</td></tr>
+                <tr><td>erh.</td><td>erhalten(e)</td></tr>
+                <tr><td>Ex.</td><td>Exemplar(e)</td></tr>
+                <tr><td>Gen.</td><td>Generation(en)</td></tr>
+                <tr><td>H</td><td>Höhe</td></tr>
+                <tr><td>Inv.</td><td>Inventarnummer</td></tr>
+                <tr><td>MN</td><td>Messung Noelke</td></tr>
+                <tr><td>Pr.</td><td>Produktion</td></tr>
+                <tr><td>Slg.</td><td>Sammlung</td></tr>
+                <tr><td>Tacc.</td><td>Taccuino</td></tr>
+            </table>
+
+            <h2 class="con10t-toc-entry">Register der Repliken aus anderen Fundkontexten in internationalen Museen und Sammlungen</h2>
+
+            <p>Im Folgenden sind sämtliche Repliken gelistet, die nicht aus dem großen, von Orsi gefundenen Calderazzo-Depot stammen, aber im Katalog mit berücksichtigt wurden. Dabei wird auf zweierlei Weise verfahren: Im ersten Teil (a) wird – getrennt nach dem jeweiligen Aufbewahrungsort – auf die Kombinationsfolgen verwiesen, unter denen die Repliken mit zugehörigen Informationen zu finden sind.
+            Über den zweiten Teil (b) ist zu erschließen, zu welchen Kombinationsfolgen Repliken bekannt und im Katalog erwähnt sind, wobei auch hier nur der Aufbewahrungsort ohne weitere Angaben genannt wird. Sofern in beiden Fällen nicht ausdrücklich mehr als ein Exemplar aufgeführt wird, ist jeweils nur eine einzige zugehörige Replik bekannt. Ist die Zuweisung eines Objektes an eine Kombinationsfolge unsicher, macht ein Sternchen (*) darauf aufmerksam.</p>
+
+            <p>Die Informationen zu den Repliken stammen in der Regel von Peter Noelke aus den 1960er und frühen 1970er Jahren. Sie konnten nur sehr eingeschränkt um später publiziertes Material bereichert und aktualisiert werden. Daher erhebt die Zusammenstellung keinen Anspruch auf Vollständigkeit. Auch ist oft nicht bekannt, ob sich der Aufbewahrungsort zwischenzeitlich geändert hat. Der Verbleib vieler Exemplare, die Noelke in der Sammlung von Tom Virzi in New York hat sehen können, ist ebenfalls ungewiss.
+            Sie wurden aber dennoch mit im Katalog berücksichtigt.</p>
+
+            <h3>a. Repliken nach Aufbewahrungsort</h3>
+
+            <ul style = "list-style: square;">
+                <li>Basel: G42b + K18a (2 Ex.); G43a; G51; G51a (2 Ex.); G61a (2 Ex.)</li>
+                <li>Bergen: G39a</li>
+                <li>Bochum: G24b + K16a; G38a</li>
+                <li>Boston: G23a; G24a (2 Ex.); G24e</li>
+                <li>Budapest: G55a</li>
+                <li>Catania: G24d</li>
+                <li>Dresden: G07a</li>
+                <li>Frankfurt/Main: G24e</li>
+                <li>Heidelberg: G07a; G51; G55a</li>
+                <li>Karlsruhe: G51a</li>
+                <li>Köln: Kunsthandel 1999: G03a</li>
+                <li>Locri: G21a*; G24c*; G33a*</li>
+                <li>London: G50b</li>
+                <li>Neapel: G07a; G22a; G24d (2 Ex.); G37b; G73a; mit Einschränkung K42a</li>
+                <li>New York: G43a + K13b; G45a; ehemals Slg. T. Virzi: G19a; G22a; G23b; G24d (2 Ex.); G24e; G36a (2 Ex.); G37e (2 Ex.); G38a; (G43a, jetzt in Basel); G45a (4 Ex.); G46a; G46b (2 Ex.); G46c; G51a; (G59b, jetzt in Basel); G61a</li>
+                <li>Oxford: G24e; G26a; G55a (4 Ex.); G62a (2 Ex.); G66a</li>
+                <li>Palermo: G38a + K19a; G60b; K16a</li>
+                <li>Paris: Privatslg.: G46b; Slg. V. Bérard: G22a; G55a</li>
+                <li>Reggio Calabria: G20a (2 Ex.); G22a (2 Ex.); G24b; G24c; G24d; G26a; G37b* (4 Ex.); G38 + K19; G38a (3 Ex.); G38a + K19a (2 Ex.); G39a; G44a (2 Ex.); G45a; G46a (3 Ex.); G46c; G50a (2 Ex.); G50b (2 Ex.); G51a; G51a + K37a; G55a (5 Ex.); G58a; G61a (2 Ex.); G62a (2 Ex.); G63a; G64; G66b; K13b; K19; K26a*; mit Einschränkung K42a</li>
+                <li>Rhode Island: G46b</li>
+                <li>Rosarno: G66a</li>
+                <li>Rovereto: G24a; G24e; G25b; G42b; G46; G46b; G46c; G53b; G59b; G61a; G62a; G67a; G73a</li>
+                <li>Sydney: G26b</li>
+                <li>Syrakus: G24d</li>
+                <li>Vibo Valencia: G01a + K01 (2 Ex.); G03a (3 Ex.); G04a + K04; G11d; K33</li>
+                <li>Wuppertal, Privatslg.: G38a</li>
+            </ul>
+
+            <h3>b. Repliken nach Kombinationsfolgen</h3>
+
+            <ul style = "list-style: square;">
+                <li>G01aI: Vibo Valentia (2 Ex.)</li>
+                <li>G03a: Köln, Kunsthandel 1999; Vibo Valentia (3 Ex.)</li>
+                <li>G04aI: Vibo Valentia</li>
+                <li>G07a: Dresden; Heidelberg; Neapel</li>
+                <li>G11d: Vibo Valentia</li>
+                <li>G19a: ehemals New York, Slg. T. Virzi</li>
+                <li>G20a: Reggio Calabria (2 Ex.)</li>
+                <li>G21a; Locri*</li>
+                <li>G22a: Neapel; ehemals New York, Slg. T. Virzi; Paris, Slg. V. Bérard; Reggio Calabria (2 Ex.)</li>
+                <li>G23b: ehemals New York, Slg. T. Virzi; Boston</li>
+                <li>G24a: Boston (2 Ex.); Rovereto</li>
+                <li>G24b: Reggio Calabria</li>
+                <li>G24bI: Bochum</li>
+                <li>G24c: Locri*; Reggio Calabria</li>
+                <li>G24d: Catania; Neapel (2 Ex.); ehemals New York, Slg. T. Virzi (2 Ex.); Reggio Calabria; Syrakus</li>
+                <li>G24e: Boston; Frankfurt/Main*; ehemals New York, Slg. T. Virzi; Oxford; Rovereto</li>
+                <li>G25b: Rovereto</li>
+                <li>G26a: Oxford; Reggio Calabria</li>
+                <li>G26b: Sydney</li>
+                <li>G33a: Locri*</li>
+                <li>G36a: ehemals New York, Slg. T. Virzi (2 Ex.)</li>
+                <li>G37b: Neapel; Reggio Calabria* (4 Ex.)</li>
+                <li>G37e: ehemals New York, Slg. T. Virzi (2 Ex.)</li>
+                <li>G38: Reggio Calabria</li>
+                <li>G38a: Bochum; ehemals New York, Slg. T. Virzi; Reggio Calabria (3 Ex.); Wuppertal, Privatslg.</li>
+                <li>G38aI: Reggi Calabria (2 Ex. an einer Arula); Palermo</li>
+                <li>G39a: Bergen; Reggio Calabria</li>
+                <li>G42b: Rovereto</li>
+                <li>G42bI: Basel (2 Ex.)</li>
+                <li>G43a: Basel (ehemals New York, Slg. T. Virzi)</li>
+                <li>G43aI: New York</li>
+                <li>G44a: Reggio Calabria (2 Ex.)</li>
+                <li>G45a: New York; ehemals New York, Slg. T. Virzi (4 Ex.); Reggio Calabria</li>
+                <li>G46: Rovereto</li>
+                <li>G46a: ehemals New York, Slg. T. Virzi; Reggio Calabria (3 Ex.)</li>
+                <li>G46b: ehemals New York, Slg. T. Virzi (2 Ex.); Paris, Privatslg.; Rhode Island; Rovereto</li>
+                <li>G46c: ehemals New York, Slg. T. Virzi; Reggio Calabria (2 Ex.); Rovereto</li>
+                <li>G50a: Reggio Calabria (2 Ex.)</li>
+                <li>G50b: London; Reggio Calabria (2 Ex.)</li>
+                <li>G51: Basel</li>
+                <li>G51a: Basel (2 Ex.); Karlsruhe; ehemals New York, Slg. T. Virzi; Reggio Calabria</li>
+                <li>G51aI: Reggio Calabria</li>
+                <li>G53b: Rovereto</li>
+                <li>G55a: Budapest; Heidelberg; Oxford (4 Ex.); Paris, Slg. V. Bérard; Reggio Calabria (5 Ex.)</li>
+                <li>G58a: Reggio Calabria</li>
+                <li>G59b: Basel (ehemals New York, Slg. T. Virzi); Heidelberg; Rovereto</li>
+                <li>G60b: Palermo</li>
+                <li>G61a: Basel (2 Ex.); ehemals New York, Slg. T. Virzi; Reggio Calabria (2 Ex.); Rovereto</li>
+                <li>G62a: Oxford (2 Ex.); Reggio Calabria (2 Ex.); Rovereto</li>
+                <li>G63a: Reggio Calabria</li>
+                <li>G64: Reggio Calabria</li>
+                <li>G66a: Oxford; Rosarno</li>
+                <li>G66b: Reggio Calabria</li>
+                <li>G67a: Rovereto</li>
+                <li>G73a: Neapel; Rovereto</li>
+                <li>K01: Vibo Valentia (2 Ex.)</li>
+                <li>K04a: Vibo Valentia</li>
+                <li>K13b: New York; Reggio Calabria</li>
+                <li>K16a: Bochum; Palermo</li>
+                <li>K18a: Basel (2 Ex.)</li>
+                <li>K19: Reggio Calabria (2 Ex.)</li>
+                <li>K19a: Reggio Calabria (2 Ex. an einer Arula); Palermo</li>
+                <li>K26a: Reggio Calabria*</li>
+                <li>K33: Vibo Valencia</li>
+                <li>K37a: Reggio Calabria</li>
+                <li>K42a: mit Einschränkung Neapel; mit Einschränkung Reggio Calabria</li>
+            </ul>
+
+            <h2 class="con10t-toc-entry">Bibliographie</h2>
+
+            <table id = "bibliographie">
+                <tr><td>Albert 1979</td><td>W.-D. Albert, Darstellung des Eros in Unteritalien (Amsterdam 1979).</td></tr>
+                <tr><td>Allegro 1990</td><td>N. Allegro, Le terrecotte figurate, in: Lo stile severo 1990, 123–131.</td></tr>
+                <tr><td>Arias 1941</td><td> P. E. Arias, Problemi della scultura arcaica italiota, La Critica d’Arte 6, 1941, 49–51 Taf. 15–31.</td></tr>
+                <tr><td>Ashmole 1934 </td><td>B. Ashmole, Late Archaic and Early Classical Greek Sculpture in Sicily and South Italy (London 1934).</td></tr>
+                <tr><td>Aspects of Ancient Greece 1979</td><td>Aspects of Ancient Greece. Ausstellungskatalog Allentown  (Allentown 1979).</td></tr>
+                <tr><td>Bennett – Paul 2002 </td><td>M. Bennett – A. J. Paul (Hrsg.), Magna Graecia. Greek Art from South Italy and Sicily. Ausstellungskatalog Cleveland (New York 2002).</td></tr>
+                <tr><td>Bencze 1998</td><td>A. Bencze, Terres cuites de Medma, BMusHongr 88, 1998, 25-36</td></tr>
+                <tr><td>Bérard 1948</td><td>J. Bérard, Trois terres cuites de Sicile et de Grande Grèce, RA 29/30, 1948, 76–88.</td></tr>
+                <tr><td>Berger 1982</td><td>E. Berger (Hrsg.), Antike Kunstwerke aus der Sammlung Ludwig II. Terrakotten und Bronzen (Mainz 1982).</td></tr>
+                <tr><td>Bol 1986 </td><td>P. C. Bol, Liebighaus – Museum Alter Plastik. Antike Bildwerke III. Bildwerke aus Terrakotta aus mykenischer bis römischer Zeit (Melsungen 1986).</td></tr>
+                <tr><td>Coombs 1922</td><td>M. E. Coombs, Classical Accessions, BMetrMus 17, 1922, 113–115.</td></tr>
+                <tr><td>Costamagna – Sabbione 1990</td><td>L. Costamagna – C. Sabbione, Una città in Magna Grecia: Locri Epizefiri (Reggio Calabria 1990).</td></tr>
+                <tr><td>De Franciscis 1958</td><td>A. De Franciscis, Un frammento di arula da Locri, AttiMemMagnaGr 2, 1958, 37–49 Taf. 11–13.</td></tr>
+                <tr><td>De Franciscis 1960</td><td>A. De Franciscis, Agalmata. Sculture antiche nel Museo Nazionale di Reggio Calabria (Neapel 1960).</td></tr>
+                <tr><td>Doepner 2007</td><td>D. Doepner, Zur medialen Funktion von Terrakottastatuetten in griechischen Heiligtümern: ein Befund in Medma (Rosarno), in: Ch. Frevel – H. von Hesberg (Hrsg.), Medien in Heiligtümern der Antike, ZAKMIRA 4 (Wiesbaden 2007) 311–347.</td></tr>
+                <tr><td>Doepner u. a. 2015</td><td>D. Doepner – J. Schulz – A. Skolik, Terrakottafiguren aus Medma (Rosarno) und ihre digitale Präsentation in ARACHNE, KuBA 5, 2015, 259-268.</td></tr>
+                <tr><td>Doepner 2020</td><td>D. Doepner, ›Große Statuetten‹ in Medma (Kalabrien). Zur Produktion und sakralen Verwendung von Terrakotten aus dem ›Calderazzo-Depot‹ (basierend auf den Vorarbeiten von Peter Noelke). Palilia 32 (Wiesbaden 2020)</td></tr>
+                <tr><td>Doeringer u. a. 1970</td><td>S. Doeringer – D. G. Mitten – A. Steinberg (Hrsg.), Art and Technology. A Symposium on Classical Bronzes, Cambridge, December 2nd and 4th, 1967 (London 1970).</td></tr>
+                <tr><td>von Duhn 1913</td><td>F. von Duhn, Cenni sull’arte reggino-locrese, Ausonia 8, 1913 (1915) 35–43.</td></tr>
+                <tr><td>von Duhn 1921</td><td>F. von Duhn, Funde und Forschungen. Italien 1914–1920, AA 1921, 34–230.</td></tr>
+                <tr><td>Ferri 1940</td><td>S. Ferri, Teste fittili di Medma. Osservazioni su alcuni tipi principali, Le Arti 2, 1940, 162–171 Taf. 61–68.</td></tr>
+                <tr><td>Ferri 1963</td><td>S. Ferri, Busti fittili in Magna Grecia e l’origine dell’erma, RendLinc 18, 1963, 29–42 Taf. 1–8.</td></tr>
+                <tr><td>Foti 1972 </td><td>G. Foti, Il Museo Nazionale di Reggio Calabria (Neapel 1972).</td></tr>
+                <tr><td>Hadzisteliou-Price 1969</td><td>Th. Hadzisteliou-Price, „To the Groves of Persephoneia …“. A Group of ‚Medma‘ Figurines, AntK 12, 1969, 51–55 Taf. 29. 30.</td></tr>
+                <tr><td>Hellenkemper 1998</td><td>H. Hellenkemper (Hrsg.), Die neue Welt der Griechen. Ausstellungskatalog Köln (Mainz 1998).</td></tr>
+                <tr><td>Herdejürgen 1968 </td><td>H. Herdejürgen, Untersuchungen zur thronenden Göttin aus Tarent in Berlin und zur archaischen und archaistischen Schrägmanteltracht (Waldsassen 1968).</td></tr>
+                <tr><td>Herdejürgen 1978</td><td>H. Herdejürgen, Götter, Menschen und Dämonen. Terrakotten aus Unteritalien. Ausstellungskatalog Basel (Basel 1978).</td></tr>
+                <tr><td>Higgins 1967</td><td>R. A. Higgins, Greek Terrakottas (London 1967).</td></tr>
+                <tr><td>Higgins 1969-1970 </td><td>R. A. Higgins, Catalogue of the Terracottas in the Department of Greek and Roman Antiquities, British Museum I. Greek 730–330 B.C. 2(Oxford 1969-1970).</td></tr>
+                <tr><td>Holloway 1975</td><td>R. Ross Holloway, Influences and Styles in the Late Archaic and Early Greek Sculpture of Sicily and Magna Graecia (Louvain 1975).</td></tr>
+                <tr><td>Iannelli – Ammendolia 2000</td><td>M. T. Iannelli – V. Ammendolia (Hrsg.), I volti di Hipponion. Vibo Valentia: Museo Archeologico „Vito Capialbi“ (Catanzaro 2000).</td></tr>
+                <tr><td>Kyrieleis 1969</td><td>H. Kyrieleis, Throne und Klinen. Studien zur Formgeschichte altorientalischer und griechischer Sitz- und Liegemöbel vorhellenistischer Zeit, JdI Ergh. 24 (Berlin 1969).</td></tr>
+                <tr><td>Langlotz 1951</td><td>E. Langlotz, Das Porträt Friedrichs II. vom Brückentor in Capua, in: G. Swarzenski – O. Goetz (Hrsg.), Beiträge für Georg Swarzenski zum 11. Januar 1951 (Berlin 1951) 45–50.</td></tr>
+                <tr><td>Langlotz 1963</td><td>E. Langlotz, Die Kunst der Westgriechen in Sizilien und Unteritalien (München 1963).</td></tr>
+                <tr><td>Lattanzi 1987</td><td>E. Lattanzi (Hrsg.), Il Museo Nazionale di Reggio Calabria (Rom 1987).</td></tr>
+                <tr><td>Lattanzi u. a. 1996</td><td>E. Lattanzi – M. T. Iannelli – S. Luppino – C. Sabbione – R. Spadea (Hrsg.), I Greci in Occidente: Santuari della Magna Grecia in Calabria. Ausstellungskatalog Kalabrien (Neapel 1996).</td></tr>
+                <tr><td>Levi 1926</td><td>A. Levi, Le terrecotte figurate del Museo Nazionale di Napoli (Florenz 1926).</td></tr>
+                <tr><td>Libertini 1930</td><td>G. Libertini, Il Museo Biscari (Mailand 1930).</td></tr>
+                <tr><td>Lo stile severo 1990</td><td>Lo stile severo in Sicilia dall’apogeo della tirannide alle prima democrazia. Ausstellungskatalog Palermo (Palermo 1990).</td></tr>
+                <tr><td>von Matt – Zanotti-Bianco 1961 </td><td>L. von Matt – U. Zanotti-Bianco, Großgriechenland (Würzburg 1961).</td></tr>
+                <tr><td>Mertens-Horn 2005/2006</td><td>M. Mertens-Horn, Initiation und Mädchenraub am Fest der lokrischen Persephone, RM 112, 2005/2006, 7–75 Taf. 1. 2.</td></tr>
+                <tr><td>Miller 1983</td><td>R. L. Miller, The Terracotta Votives from Medma: Cult and Coroplastic Craft in Magna Graecia I–II (Ann Arbor 1983).</td></tr>
+                <tr><td>Miller Ammerman 1985</td><td>R. Miller Ammerman, Medma and the Exchange of Votive Terracottas, in: Classical and Medieval Archaeology, Papers in Italian Archaeology 4, 4 (Oxford 1985) 5–19.</td></tr>
+                <tr><td>Napoli 1969</td><td>M. Napoli, Civiltà della Magna Grecia (Rom 1969).</td></tr>
+                <tr><td>Ochner 1983 </td><td>O. Ochner, Terrecotte della Magna Grecia nella collezione ‚Paolo Orsi‘ (Rovereto 1983).</td></tr>
+                <tr><td>Orlandini 1983 </td><td>P. Orlandini, Le arti figurati, in: G. Pugliese Carratelli (Hrsg.), ‚Megale Hellas‘. Storia e civiltà della Magna Grecia (Mailand 1983) 329–554.</td></tr>
+                <tr><td>Orsi 1913a</td><td>P. Orsi, Rosarno (Medma). Esplorazione di un grande deposito di terrecotte ieratiche, NSc 1913 Suppl., 55–144.</td></tr>
+                <tr><td>Paoletti 1981</td><td>M. Paoletti, Contributo al corpus delle terrecotte medmee e carta archeologica di Rosarno, in: M. Paoletti – S. Settis (Hrsg.), Medma e il suo territorio. Materiali per una carta archeologica (Bari 1981) 47–92.</td></tr>
+                <tr><td>Paoletti 1996a</td><td>M. Paoletti, Medma: il deposito votivo in località Calderazzo (Scavi Orsi 1912–1913), in: Lattanzi u. a. 1996, 99–104.</td></tr>
+                <tr><td>Polacco 1959</td><td>L. Polacco, Testa femminile diademata di stile severo, in: C. Anti (Hrsg.), Sculture Greche e Romane di Cirene (Padua 1959).</td></tr>
+                <tr><td>Pugliese Carratelli 1996</td><td>G. Pugliese Carratelli (Hrsg.), I Greci in Occidente. Ausstellungskatalog Venedig (Mailand 1996).</td></tr>
+                <tr><td>Putortì 1925</td><td>N. Putortì, Terrecotte di Medma, MOUSEION 2, 3, 1925, 1-11 Taf. 1-4.</td></tr>
+                <tr><td>Putortì 1929–1938</td><td>N. Putortì, L’Italia Antichissima 4 (Reggio Calabria 1929–1938).</td></tr>
+                <tr><td>Quarles van Ufford 1941</td><td>L. Quarles van Ufford, Les terres-cuites siciliennes. Une étude sur l’art sicilien entre 550 et 450 (Assen 1941).</td></tr>
+                <tr><td>Byvanck-Quarles van Ufford 1956</td><td>L. Byvanck-Quarles van Ufford, Deux figurines en terre cuite conservées à Bâle, BABesch 31, 1956, 49–53.</td></tr>
+                <tr><td>Byvanck-Quarles van Ufford 1957</td><td> L. Byvanck-Quarles van Ufford, L’Aurige de Delphes, BABesch 32, 1957, 40–47.</td></tr>
+                <tr><td>Reggio Calabria 1956</td><td>Museo Nazionale di Reggio Calabria. Campagna internazionale dei Musei, 6–14 ottobre 1956 (Reggio Calabria 1956).</td></tr>
+                <tr><td>Richter 1949</td><td>G. M. A. Richter, Archaic Greek Art (Oxford 1949).</td></tr>
+                <tr><td>Richter 1953 </td><td>G. M. A. Richter, Handbook of the Greek Collection (Cambridge 1953).</td></tr>
+                <tr><td>Schefold 1958 </td><td>K. Schefold, Basler Antiken im Bild (Basel 1958).</td></tr>
+                <tr><td>Settis 1972</td><td>S. Stettis, Medma. An Ancient Greek City of Southern Italy, Archaeology 25, 1972, 26–43.</td></tr>
+                <tr><td>Settis 1987</td><td>S. Settis, Archeologia in Calabria. Figure e temi (Rom 1987).</td></tr>
+                <tr><td>Settis – Parra 2005</td><td>S. Settis – M. C. Parra (Hrsg.), Magna Graecia. Archeologia di un sapere. Ausstellungskatalog Catanzaro (Mailand 2005).</td></tr>
+                <tr><td>Tinè Bertocchi 1963</td><td>F. T. Tinè Bertocchi, Considerazioni sui criofori di Medma, Klearchos 5, 1963, 7–17.</td></tr>
+                <tr><td>Vermeule 1963</td><td>C. C. Vermeule (Hrsg.), Greek, Etruscan and Roman Art. The Classical Collections of the Museum of Fine Arts (Boston 1963).</td></tr>
+                <tr><td>Zuntz 1971</td><td>G. Zuntz, Persephone (Oxford 1971).</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
