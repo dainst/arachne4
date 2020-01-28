@@ -209,6 +209,12 @@
   "palilia26": {
     "q": "catalogPaths:34"
   },
+  "palilia32": {
+    "q": "catalogPaths:62"
+  },
+  "palilia32_map": {
+    "alias": "palilia32"
+  },
   "rakob": {
     "q": "D-DAI-NA-RAK"
   },
