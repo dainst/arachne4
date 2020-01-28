@@ -9,37 +9,60 @@
 
     <div class="con10t-row">
 
+		<!-- Haupttitel des Projektes: Überschrift der Größe <h1> oder Logo / Bild -->
         <div class="con10t-title">
-            <!-- Haupttitel des Projektes: Überschrift der Größe <h1> oder Logo / Bild -->
 			<h1>Catalog of Paracas Archaeological Materials</h1>
 		</div>
 
-        <div class="con10t-sidebar">
-            <!-- Rechte Seitenleiste -->
-			<con10t-toc toc-heading="Overview"></con10t-toc>
+		<!-- Rechte Seitenleiste -->
+		<div class="con10t-sidebar" style = "padding-top: 2vw;">
 
-			<h3>Browse project data</h3>
+			<con10t-toc toc-heading="Übersicht"></con10t-toc>
 
-			<p><a href="project/faak16/map?q=*&view=map" target="_blank">Map view</a></p>
+			<h3>Project data</h3>
 
-			<p><a con10t-search-query target = "_blank">Show all datasets</a></p>
+			<p><a con10t-search-query target = "_blank">Show project data</a></p>
 
 			<con10t-search catalog-id="566"></con10t-search>
 
 			<br>
 
+			<!--- Map --->
+			<div>
+				<a href="/project/faak16_map" target = "_blank" title="to map view" style="cursor:pointer">
+					<span class="glyphicon glyphicon-fullscreen"></span>
+					View a larger map</a>
+			</div>
+
+			<div ng-init="config = {
+				facetsSelect: [
+					{
+						key: 'facet_kategorie',
+						value: 'Einzelobjekte'
+					}
+				]
+			}"></div>
+
+			<div con10t-map style = "margin-bottom: 1vw;"
+				 id="map"
+				 limit="200"
+				 facets-select="config.facetsSelect"
+				 lat="-14.5"
+				 lng="-75.2"
+				 zoom="5">
+			</div>
+
 			<h3>Catalog</h3>
 
-			<a href = "https://arachne.dainst.org/catalog/566" target = "_blank">To browser view</a>
+			<a href = "https://arachne.dainst.org/catalog/566" target = "_blank">To catalog view</a>
 
-			<h3 style="margin-top: 5%">Information on the print publication</h3>
+			<h3 style="margin-top: 5%">Note on the print edition</h3>
 
-			<con10t-image src = "/con10t/img/faak16/Mader_Cover.png" alt = "Cover-Printausgabe" width = "390"></con10t-image>
+			<con10t-image src = "/con10t/img/faak16/Mader_Cover.png" alt = "print edition" width = "390"></con10t-image>
 
-			<p>The book »C. Mader, Sea Shells in the Mountains and Llamas on the Coast«
-				is available from <a href = "https://www.harrassowitz-verlag.de/titel_6480.ahtml" target = "_blank">Harrassowitz</a>.</p>
+			<p>The book »C. Mader, Sea Shells in the Mountains and Llamas on the Coast« is available from <a href = "https://www.harrassowitz-verlag.de/titel_6480.ahtml" target = "_blank">Harrassowitz</a>.</p>
 
-        </div>
+		</div>
 
         <div class="con10t-content">
 		
@@ -153,20 +176,21 @@
 
 			<p>Reindel, M., Isla, J., Gorbahn, H., Otten, H., 2015. Paracas en Palpa: los fundamentos del poder de la cultura Nasca. Peruvian Archaeology 2, 37–64.</p>
 
-			<h3 class="con10t-toc-entry">Contact</h3>
+			<div>
+				<h3 class="con10t-toc-entry">Contact</h3>
 
-				<img src="/con10t/img/faak16/LOGO-UNI Bonn.png" align="right" alt="map reconstruction economy" height="100">
+				<p>Redaktion KAAK<br>
+					Dürenstraße 35-37<br>
+					53173 Bonn<br>
+					+49 (0)228 997712-0<br>
+					redaktion.kaak@dainst.de
+				</p>
+			</div>
 
-				<img src="/con10t/img/faak16/archaeologie-vormoderner-wirtschaftsraeume1.jpg" align="right" alt="map reconstruction economy" height="100">
-
-			<p>Redaktion KAAK<br>
-				Dürenstraße 35-37<br>
-				53173 Bonn<br>
-				+49 (0)228 997712-0<br>
-				redaktion.kaak@dainst.de
-			</p>
-
-
+			<div style = "margin-top: 4vh;">
+				<img style = "padding: 0;" src="/con10t/img/faak16/archaeologie-vormoderner-wirtschaftsraeume1.jpg" alt="logo_grako" height="80">
+				<img style = "padding: 0;" src="/con10t/img/faak16/LOGO-UNI Bonn.png" alt="logo_uni-bonn" height="80">
+			</div>
 
 		</div>
 
