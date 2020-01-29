@@ -11,7 +11,7 @@
     }
 
     .con10t-row {
-        padding-left: 5vw;
+        padding-left: 7vw;
     }
 
     .con10t-title {
@@ -59,11 +59,12 @@
 
 </style>
 
-<div class="con10t-title">
+<div class="con10t-title" style = "position:relative;">
     <h1 style = "text-shadow: 1px 1px 1px #000;">Rudolph Kuper<br>
         <span id = "inden-title-span">INDEN 1</span><br>
         Eine Siedlung der Rössener Kultur im Rheinland<br>
         Felddokumentation 1965-67<br></h1>
+    <span style = "position: absolute; right: 1.7vw; bottom: 0.5vw; color: #ffffffc9;">Grabung Inden 1, Arbeiten an »Bau 26« beim Bagger-Durchschnitt am 21.07.1966</span>
 </div>
 
 <!-- Hauptbereich der Projektseite -->
@@ -88,6 +89,14 @@
             </div>
         </div>
         <p><a con10t-search-query target = "_blank">Alle Projektdaten anzeigen</a></p>
+
+        <div con10t-map style = "margin-bottom: 1vw;"
+             id="map"
+             limit="200"
+             lat="50.8667"
+             lng="6.36667"
+             zoom="12">
+        </div>
     </div>
 
     <div id = "content-inden" class="con10t-content">
