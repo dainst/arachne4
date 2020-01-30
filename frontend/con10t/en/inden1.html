@@ -1,52 +1,144 @@
-<!-- Kopfbereich der Projektseite -->
-<idai-header image="/con10t/headerimages/grabungsfoto_inden.jpg"
-             description="Inden, Rolle 38a (Schnittplan)"
-             link="http://verweis-auf-ressource.de">
-</idai-header>
+<style>
+
+    .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .teaserpage {
+        position: relative;
+        margin-top: 0;
+    }
+
+    .con10t-row {
+        padding-left: 5vw;
+    }
+
+    .con10t-title {
+        background-image: url("/con10t/headerimages/inden1.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: #6492b1;
+        padding: 3vw 2vw 11vw 2vw;
+        padding-right: 2vw;
+        text-align: right;
+        webkit-box-shadow: inset 0px 13px 0px 6px rgba(248, 245, 245, 0.23);
+        -moz-box-shadow: inset 0px 13px 0px 6px rgba(248, 245, 245, 0.23);
+        box-shadow: inset 0px 13px 0px 6px rgba(248, 245, 245, 0.23);
+    }
+
+    #inden-title-span {
+        color: #ce2828;
+    }
+
+    span.image_description {
+        position: absolute;
+        right: 1.7vw;
+        bottom: 0.5vw;
+        color: #ffffffc9;
+        text-shadow: 1px 1px 1px #131111;
+    }
+
+    .con10t-content {
+        padding-right: 5vw;
+    }
+
+    #content-inden p {
+        padding-right: 1.5vw;
+    }
+
+    #sticky-sidebar {
+        padding-top: 4vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    @media (max-width: 992px) {
+        #sticky-sidebar {
+            position: relative;
+        }
+    }
+
+    img#gesamtplan {
+        padding: 0;
+        width: 100%;
+    }
+
+</style>
+
+<div class="con10t-title" style = "position:relative;">
+    <h1 style = "text-shadow: 1px 1px 1px #000;">Rudolph Kuper<br>
+        <span id = "inden-title-span">INDEN 1</span><br>
+        A settlement of the Rössener Kultur in the Rhineland<br>
+        Field documentation 1965-67<br></h1>
+    <span class = "image_description">Inden 1, Excavations at »Bau 26« in front of a mining excavator, July 21, 1966</span>
+</div>
 
 <!-- Hauptbereich der Projektseite -->
-<div class="con10t-page teaserpage container">
+<div class="con10t-page teaserpage">
 
     <div class="con10t-row">
 
-        <div class="con10t-title">
-            <h1>R. Kuper, Inden 1. A settlement of the Rössener Kultur in the Rhineland. Field documentation 1965-67 (digital supplements)</h1>
+        <div id = "sticky-sidebar" class="con10t-sidebar">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Content</h2>
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        <li><a target = "_blank" href="entity/6677461">General plan of Inden 1</a></li>
+                        <li><a target = "_blank" href="search?fq=facet_kategorie:%22Buchseiten%22&fl=20&label=Mit%206677460%20verkn%C3%BCpfte%20Objekte&q=connectedEntities:6677460&sort=subtitle">Rolls with drawings of plana</a></li>
+                        <li><a target = "_blank" href="search?fq=facet_kategorie:%22Buchseiten%22&fl=20&label=Mit%206677493%20verknüpfte%20Objekte&q=connectedEntities:6677493&sort=subtitle">Sheets with drawings of profiles</a></li>
+                        <li><a target = "_blank" href="project/inden1_stellenliste">"Stellen"-list with errata</a></li>
+                        <li><a target = "_blank" href="https://zenon.dainst.org/Record/001562471">Print edition</a></li>
+                    </ul>
+                </div>
+            </div>
+            <p><a con10t-search-query target = "_blank">Show all project data</a></p>
+
+            <div con10t-map style = "margin-bottom: 1vw;"
+                 id="map"
+                 limit="200"
+                 lat="50.8667"
+                 lng="6.36667"
+                 zoom="12">
+            </div>
         </div>
 
-        <div class="con10t-sidebar">
+        <div id = "content-inden" class="con10t-content">
 
-            <con10t-toc toc-heading="Übersicht"></con10t-toc>
+            <h2>Remarks on the documentation</h2>
+
+            <p>The find sites of the excavation Inden 1 have been documented on graph paper and in color from 1965 to 1967, namely:</p>
+            <ul>
+                <li>Plana on 1 m broad rolls / scrolls with a scale of 1:20 (see Fig. 18 in the volume),</li>
+                <li>details of profiles and plana on DIN A3 sheets, mostly in a scale of 1:20 (see Fig. 4).</li>
+            </ul>
+
+            <p>A selection of 12 colored pencils of the company Staedtler were used, the STABILO-numbers being 8748 red, 8754 orange, 8734 dark-yellow,
+            8744 light-yellow, 8739 light-brown, 8735 medium-brown, 8738 red-brown, 8745 dark-brown, 8746 black, 8749 gray, 8741 blue, 8743 green.</p>
+
+            <p>The drawings were produced by 44 volunteers, mainly students of the Cologne Institute of Prehistory but also by volunteers that are not archaeologists.
+            The drawings show the different states of experience of the drawers, their varying perception, as well as weather conditions and lack of time.
+            During the progress of the excavation, the produced drawings continuously become more adapt to the documentation standard.</p>
+
+            <p>The drawings of the excavation surfaces, especially the house's floor plans, as well as single sites ("Stellen"), can be inferred from Excel-tables of the Stellen-numbers.
+            In these tables, information on the kind of site, association to larger sites (buildings, fences), location within the general excavation ("square" / "role"),
+            sheet numbers of the A3 drawings with respective positions and the name of the drawer(s), as well as inventory numbers of the finds.
+            Surely, some inconsistencies can be found, such as twice or never used numbers, that can be explained by the lack of time and problems in communication within
+            a large excavation but could also have become hard to identify after 50 years - as seen for some find descriptions.</p>
+
+            <p>Some scrolls without built find sites, drawings from trenches in the west outside of the Rössener settlement and profile drawings from these trenches that mostly contained
+            Bronze Age sites were not scanned.</p>
+
+            <div>
+                <h2>General plan with roll grid</h2>
+
+                <img id = "gesamtplan" src = "/con10t/visualizations/inden1/Rasternavigation_Gesamtplan.jpg">
+            </div>
 
         </div>
-
-        <div class="con10t-content">
-
-            <h2 class="con10t-toc-entry">Remarks on the documentation</h2>
-
-            <p>The find sites of the excavation Inden 1 have been documented on graph paper and in color from 1965 to 1967. 
-            -     Plana on 1 m broad scrolls with a scale of 1:20 (see Fig. 18 in the volume),
-            -     details of profiles and plana on DIN A3 sheets, mostly in a scale of 1:20 (see Fig. 4)
-            A selection of 12 colored pencils of the company Staedtler were used, the STABILO-numbers being 8748 red, 8754 orange, 8734 dark-yellow, 8744 light-yellow, 8739 light-brown, 8735 medium-brown, 8738 red-brown, 8745 dark-brown, 8746 black, 8749 gray, 8741 blue, 8743 green.</p>
-
-            <p>The drawings were produced by 44 volunteers, mainly students of the Colonge Institute of Prehistory but also by volunteers that are not archaeologists. The drawings show the different states of experience of the drawers, their varying perception, as well as weather conditions and lack of time. During the progress of the excavation, the produced drawings continuously become more adapt to the documentation standard.</p>
-
-            <p>The drawings of the excavation surfaces, especially the house's floor plans, as well as single sites ("Stellen"), can be inferred from Excel-tables of the Stellen-numbers. In these tables, information on the kind of site, association to larger sites (buildings, fences), location within the general excavation ("square" / "role"), sheet numbers of the A3 drawings with respective positions and the name of the drawer(s), as well as inventory numbers of the finds. Surely, some inconsistencies can be found, such as twice or never used numbers, that can be explained by the lack of time and problems in communication within a large excavation but could also have become hard to identify after 50 years - as seen for some find descriptions. Some scrolls without built find sites, drawings from trenches in the west outside of the Rössener settlement and profile drawings from these trenches that mostly contained Bronze Age sites were not scanned.</p>
-
-            <h2 class="con10t-toc-entry">Scans of the original drawings of plana and profiles</h2>
-
-            <p><a con10t-search-query="connectedEntities:6677460">To the scrolls</a></p>
-            <p><a con10t-search-query="connectedEntities:6677493">To the sheets</a></p>
-
-            <h2 class="con10t-toc-entry">General plan</h2>
-
-            <h2 class="con10t-toc-entry">Stellen-list</h2>
-
-        </div>
-
-        <con10t-table
-                path-to-data = "/con10t/visualizations/inden1/stellenliste_inden_data.json"
-                path-to-table-template = "/con10t/visualizations/inden1/con10t-table_inden.html"
-                rows-per-page = 10>
-        </con10t-table>
     </div>
 </div>
