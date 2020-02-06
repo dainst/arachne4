@@ -1,42 +1,119 @@
+<style>
+
+    .video_box {
+        padding-top: 1vw;
+    }
+
+</style>
+
 <idai-header
         image="/con10t/headerimages/Resafa_9,1.jpg"
-        description="Resafa 9,1"
+        description="C. Hof, Die Stadtmauer, Resafa 9, 1, Resafa – Sergiupolis/Rusafat Hisham (Wiesbaden 2020). Digitale Supplemente"
         link="http://arachne.dainst.org/entity/3889527">
 </idai-header>
 
 <div class="con10t-page teaserpage container">
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
+
     <div class="con10t-row">
 	
-        <div class="con10t-title">
+        <div class="con10t-title" style = "background-color: #ffffff5c;">
 
-            <h1>C. Hof, Die Stadtmauer, Resafa 9, 1, Resafa – Sergiupolis/Rusafat Hisham (Wiesbaden 2020).<br> <font color="#7D8F7F">Digitale Supplemente</font></h1>
+            <h1>Catherine Hof, Die Stadtmauer, Resafa 9, 1, Resafa – Sergiupolis/Rusafat Hisham (Wiesbaden 2020)<br>
+            Digitale Supplemente
+            </h1>
 
         </div>
         
         <div class="con10t-sidebar">
 
             <con10t-toc toc-heading="Übersicht"></con10t-toc>
-            
-			
+
+            <h3 style = "margin-top: 2vw;">Suche in den Daten des Projektes</h3>
+
+            <a con10t-search-query = "*&amp;fq=catalogIds:'427'" target = "_blank">Alle Datensätze anzeigen</a>
+
+            <con10t-search catalog-id="427"></con10t-search>
+
+            <div style = "margin-top: 1vw;">
+                <a href="/project/resafa" title="Zur Karte" style="cursor:pointer" target = "_blank">
+                    <span class="glyphicon glyphicon-fullscreen"></span>
+                    Größere Karte</a>
+            </div>
+
+            <!-- Map -->
+            <div con10t-map style = "margin-bottom: 1vw;"
+                 id="map"
+                 limit="200"
+                 facets-select="config.facetsSelect"
+                 lat="35.62883"
+                 lng="38.75806"
+                 zoom="12">
+            </div>
+
+
+            <h3>Publikation</h3>
+
+            <con10t-image src = "/con10t/img/resafa/Publikation_Resafa.jpg" alt = "Cover-Printausgabe" width = "390"></con10t-image>
+
+            <p> Das Buch "C. Hof, Die Stadtmauer, Resafa – Sergiupolis/Rusafat Hisham 9, 1" ist bei
+                <a href = "https://www.harrassowitz-verlag.de/Die_Stadtmauer/titel_6486.ahtml" target = "_blank">Harrassowitz</a>
+                erhältlich.
+            </p>
+
         </div>
 
         <div class="con10t-content">
 
-
-                <h2 class="con10t-toc-entry">Einleitung für die Online-Publikation</h2>
+            <h2 class="con10t-toc-entry">Einleitung für die Online-Publikation</h2>
 				
-				<p>Kann eine spätantike Stadtmauer, die schon einmal eingehend untersucht wurde, noch historisch relevante Geheimnisse preisgeben?
-                
-                <p>Sie kann, und das im Fall der Stadtmauer von Resafa (Syrien) gleich mehrfach. Untersucht werden die Entstehung und Entwicklung der monumentalen Anlage sowie das sie umgebende Graben-Wall-System. Von beiden werden erstmals präzise topografische Pläne sowohl im Druck als auch digital bereitgestellt. Darüber hinaus dienen drei Maueranlagen dem Vergleich: Dara, Zēnobia sowie die ›Lange Mauer‹ in Thrakien. In der Gesamtschau ergibt sich Erstaunliches: Die Stadtmauer von Resafa verkörpert nicht ein Ideal spätantiker Fortifikationsbaukunst und entstand nicht im Rahmen eines Bedrohungsszenarios. Stattdessen wurde sie in ›fetten Zeiten‹ begonnen und ihre opulente Erscheinung ist Ausdruck zivilen Repräsentationswillens. Als ›Bauanleitung‹ für die auch von fern angeworbenen Baumannschaften wurde zu Beginn des Großprojekts ein Musterbau errichtet. Zeitgleich entstand ein gänzlich getrennter Bauabschnitt im Zusammenhang mit den wasserbautechnischen Anlagen. Danach musste alles zusammenwachsen, was ablesbar ein Prozess der Abstriche, aber auch der Experimentierfreude war. Die späteren Entwicklungsjahre waren geprägt von Krieg und Pest. Aus einer prunkvollen, in gewissen fortifikatorischen Details jedoch geradezu sträflich naiv gestalteten Schaumauer wurde nach 10–20 Jahren Bauzeit und nachträglich durchgeführten Ertüchtigungen schlussendlich eine den zeitgemäßen Militärhandbüchern halbwegs entsprechende Verteidigungsanlage. In Richtung Nachrüstung weisen auch die Spuren am Wall-System. Dieses ist geteilt in die ursprüngliche Deichdammanlage und ein wehrtechnisches Vorwerk. Indem Letzteres funktional verflochten ist mit den Korrekturen am Stadtmauerentwurf, wird selbst die baulich anspruchslose Erdformation zum Geschichtsschreiber.
-                
-                <p>Als besondere Beigabe zum Buch dienen die hier verfügbaren digitalen Supplemente: ein Animationsfilm, in dem die Bauabfolge der Stadtmauer anschaulich dargestellt wird, ein dreidimensionales Modell sowie der vektorisierte Grundriss der Stadtmauer und eine als Download verfügbare Datenbank, welche die Reparaturstellen der Stadtmauer zusammenträgt.</p>
+            <p>Kann eine spätantike Stadtmauer, die schon einmal eingehend untersucht wurde, noch historisch relevante Geheimnisse preisgeben?</p>
+
+            <con10t-image src="/con10t/img/resafa/T27-Nordtor.jpg" align="left" width="400" alt="Resafa, Nordtor (T27), Taf.62">
+                <span class="ng-scope">
+                Resafa, Nordtor (T27), Taf.62</a>
+                </span>
+            </con10t-image>
+
+            <p>Sie kann, und das im Fall der Stadtmauer von Resafa (Syrien) gleich mehrfach. Untersucht werden die Entstehung und Entwicklung der monumentalen Anlage sowie das sie umgebende Graben-Wall-System.
+            Von beiden werden erstmals präzise topografische Pläne sowohl im Druck als auch digital bereitgestellt. Darüber hinaus dienen drei Maueranlagen dem Vergleich: Dara, Zēnobia sowie die ›Lange Mauer‹ in Thrakien.
+            In der Gesamtschau ergibt sich Erstaunliches: Die Stadtmauer von Resafa verkörpert nicht ein Ideal spätantiker Fortifikationsbaukunst und entstand nicht im Rahmen eines Bedrohungsszenarios.
+            Stattdessen wurde sie in ›fetten Zeiten‹ begonnen und ihre opulente Erscheinung ist Ausdruck zivilen Repräsentationswillens. Als ›Bauanleitung‹ für die auch von fern angeworbenen Baumannschaften wurde zu Beginn des Großprojekts ein Musterbau errichtet.
+            Zeitgleich entstand ein gänzlich getrennter Bauabschnitt im Zusammenhang mit den wasserbautechnischen Anlagen. Danach musste alles zusammenwachsen, was ablesbar ein Prozess der Abstriche, aber auch der Experimentierfreude war.
+            Die späteren Entwicklungsjahre waren geprägt von Krieg und Pest. Aus einer prunkvollen, in gewissen fortifikatorischen Details jedoch geradezu sträflich naiv gestalteten Schaumauer wurde nach 10–20 Jahren Bauzeit und nachträglich durchgeführten Ertüchtigungen
+            schlussendlich eine den zeitgemäßen Militärhandbüchern halbwegs entsprechende Verteidigungsanlage. In Richtung Nachrüstung weisen auch die Spuren am Wall-System. Dieses ist geteilt in die ursprüngliche Deichdammanlage und ein wehrtechnisches Vorwerk.
+            Indem Letzteres funktional verflochten ist mit den Korrekturen am Stadtmauerentwurf, wird selbst die baulich anspruchslose Erdformation zum Geschichtsschreiber.</p>
 
 
+            <h2 class="con10t-toc-entry">Digitale Supplemente</h2>
 
+            <p>Als besondere Beigabe zum Buch dienen die hier verfügbaren digitalen Supplemente: ein Animationsfilm, in dem die Bauabfolge der Stadtmauer anschaulich dargestellt wird, ein dreidimensionales Modell sowie der vektorisierte Grundriss der Stadtmauer und eine
+            als Download verfügbare Datenbank, welche die Reparaturstellen der Stadtmauer zusammenträgt.</p>
+
+            <h3 class="con10t-toc-entry">Vektorplan und 3-D-Modell</h3>
+
+                <con10t-catalog-tree catalog-id="427"></con10t-catalog-tree>
+
+            <h3 class="con10t-toc-entry">Datenbank der Reparaturstellen</h3>
+                <p><a target = "_blank">Quelle</a></p>
+
+            <h3 class="con10t-toc-entry">Animationsfilme</h3>
+
+            <div class = "video_box">
+
+                <p>Bauabfolge-Beginn-SW-Wasserdurchlass (<a target = "_blank">Quelle</a>)</p>
+
+                <p>Video folgt in Kürze.</p>
+
+            </div>
+
+            <div class = "video_box">
+
+                <p>Bauabfolge-Beginn-NO-Musterbau (<a target = "_blank">Quelle</a>)</p>
+
+                <p>Video folgt in Kürze.</p>
+
+            </div>
 
          </div>
-
     </div>
 </div>

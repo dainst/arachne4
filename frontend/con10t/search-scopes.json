@@ -221,6 +221,9 @@
   "rakob_map": {
     "alias": "rakob"
   },
+  "resafa": {
+    "q": "catalogPaths:427"
+  },
   "rezeptionantike": {
     "q": "(catalogPaths:107 OR catalogPaths:108)"
   },
