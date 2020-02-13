@@ -38,12 +38,11 @@
     </div>
 
     <!--- Zum Bestand --->
-    <h4>Project data</h4>
-
-    <p><a href="/project/rakob/search?q=*" target="_blank">Show project data</a></p>
+    <h4>Catalog</h4>
+    <a href = "/catalog/502" target = "_blank">Location-based catalog</a>
 
     <!--- Map --->
-    <div>
+    <div style = "margin-top: 1vw;">
         <a href="/project/rakob_map" title="map view" style="cursor:pointer">
             <span class="glyphicon glyphicon-fullscreen"></span>
             View a larger map</a>
@@ -71,7 +70,11 @@
          zoom="5">
     </div>
 
-    <con10t-tree fq="facet_subkategoriebestand_level2:Nachlass-Friedrich-Rakob" wildcard-facet="facet_subkategorie"></con10t-tree>
+    <p><a href="/project/rakob/search?q=*" target="_blank">Show project data</a></p>
+
+    <div class="well">
+        <con10t-search search-placeholder="Search..."></con10t-search>
+    </div>
 
     <!--- Ansprechpartner und Links--->
     <h4>Contact</h4>
