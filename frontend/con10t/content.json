@@ -686,8 +686,8 @@
             {
               "id": "palilia20",
               "title": {
-                "de": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild",
-                "en": "Palilia 20: Alexandra W. Busch, Military in Rome. Military and paramilitary units in the imperial cityscape",
+                "de": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild (2012)",
+                "en": "Palilia 20: Alexandra W. Busch, Military in Rome. Military and paramilitary units in the imperial cityscape (2012)",
                 "it": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild (2012)"
               }
             },
@@ -701,9 +701,9 @@
             {
               "id": "palilia25",
               "title": {
-                "de": "Palilia 25: M. Tombrägel, Die republikanischen Otiumvillen von Tivoli. Palilia 25",
-                "en": "Palilia 25: Martin Tombrägel, The Republican otium-villas at Tivoli",
-                "it": "Palilia 25: M. Tombrägel, Die republikanischen Otiumvillen von Tivoli. Palilia 25 (Wiesbaden 2012)"
+                "de": "Palilia 25: M. Tombrägel, Die republikanischen Otiumvillen von Tivoli (Wiesbaden 2012) ",
+                "en": "Palilia 25: M. Tombrägel, The Republican otium-villas at Tivoli (Wiesbaden 2012)",
+                "it": "Palilia 25: M. Tombrägel, Die republikanischen Otiumvillen von Tivoli (Wiesbaden 2012)"
               }
             },
             {
@@ -717,7 +717,7 @@
             {
               "id": "palilia32",
               "title": {
-                "de": "Palilia 32: Daphni Doepner, ›Große Statuetten‹ in Medma (Kalabrien) (Wiesbaden 2020). Erweiterter Online-Katalog"
+                "de": "Palilia 32: D. Doepner, ›Große Statuetten‹ in Medma (Kalabrien) (Wiesbaden 2020). Erweiterter Online-Katalog"
               }
             }
           ]
@@ -758,7 +758,7 @@
           "id": "pergamenischeforschungen17",
           "title": {
             "de": "S. Kielau, Terrakotten aus Pergamon. Tonfiguren und -objekte aus der Wohnstadt am Südhang der Akropolis und von weiteren Fundorten, PF 17 (Berlin 2018). Erweiterter Online-Katalog",
-            "en":"S. Kielau, Terrakotten aus Pergamon. Tonfiguren und -objekte aus der Wohnstadt am Südhang der Akropolis und von weiteren Fundorten, PF 17 (Berlin 2018). Erweiterter Online-Katalog"
+            "en": "S. Kielau, Terrakotten aus Pergamon. Tonfiguren und -objekte aus der Wohnstadt am Südhang der Akropolis und von weiteren Fundorten, PF 17 (Berlin 2018). Erweiterter Online-Katalog"
           }
         },
         {
@@ -803,6 +803,13 @@
             "de": "R. Kuper, Inden 1. Eine Siedlung der Rössener Kultur im Rheinland. Felddokumentation 1965-67"
           },
          "hidden": false
+        },
+        {
+          "id": "mar41",
+          "title": {
+            "de": "MAR 41: A. Reinhardt, Reproduktion und Bild. Zur Wiederholung und Vervielfältigung von Reliefs in römischer Zeit, MAR XLI (Wiesbaden 2019). Online-Katalog"
+          },
+          "hidden": false
         }
       ]
     },

@@ -191,6 +191,9 @@
   "lippsbasilica": {
     "q": "catalogPaths:27"
   },
+  "mar41": {
+    "q": "catalogPaths:388"
+  },
   "oppenheim": {
     "q": "(catalogPaths:54 OR catalogPaths:28)",
     "facets": [
@@ -212,8 +215,8 @@
   "palilia32": {
     "q": "catalogPaths:62"
   },
-  "palilia32_map": {
-    "alias": "palilia32"
+  "pergamenischeforschungen17": {
+    "q": "catalogPaths:132"
   },
   "rakob": {
     "q": "D-DAI-NA-RAK"
