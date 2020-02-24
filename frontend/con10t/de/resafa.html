@@ -4,6 +4,23 @@
         padding-top: 1vw;
     }
 
+    #sticky-sidebar {
+        padding-top: 4vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    @media (max-width: 992px) {
+        #sticky-sidebar {
+            position: relative;
+        }
+        .con10t-title {
+            background-color: white !important;
+        }
+    }
+
 </style>
 
 <idai-header
@@ -24,7 +41,7 @@
 
         </div>
         
-        <div class="con10t-sidebar">
+        <div class="con10t-sidebar" id = "sticky-sidebar">
 
             <con10t-toc toc-heading="Übersicht"></con10t-toc>
 
@@ -34,14 +51,8 @@
 
             <con10t-search catalog-id="427"></con10t-search>
 
-            <div style = "margin-top: 1vw;">
-                <a href="/project/resafa" title="Zur Karte" style="cursor:pointer" target = "_blank">
-                    <span class="glyphicon glyphicon-fullscreen"></span>
-                    Größere Karte</a>
-            </div>
-
             <!-- Map -->
-            <div con10t-map style = "margin-bottom: 1vw;"
+            <div con10t-map style = "margin-top: 1vw; margin-bottom: 1vw;"
                  id="map"
                  limit="200"
                  facets-select="config.facetsSelect"
@@ -49,7 +60,6 @@
                  lng="38.75806"
                  zoom="12">
             </div>
-
 
             <h3>Publikation</h3>
 
@@ -83,35 +93,48 @@
             schlussendlich eine den zeitgemäßen Militärhandbüchern halbwegs entsprechende Verteidigungsanlage. In Richtung Nachrüstung weisen auch die Spuren am Wall-System. Dieses ist geteilt in die ursprüngliche Deichdammanlage und ein wehrtechnisches Vorwerk.
             Indem Letzteres funktional verflochten ist mit den Korrekturen am Stadtmauerentwurf, wird selbst die baulich anspruchslose Erdformation zum Geschichtsschreiber.</p>
 
+            <p>Als besondere Beigabe zum Buch dienen die hier verfügbaren digitalen Supplemente: ein Animationsfilm, in dem die Bauabfolge der Stadtmauer anschaulich dargestellt wird, ein dreidimensionales Modell sowie der vektorisierte Grundriss
+            der Stadtmauer und eine Datenbank, welche die Reparaturstellen der Stadtmauer zusammenträgt.</p>
+
+            <p>C. Hof</p>
 
             <h2 class="con10t-toc-entry">Digitale Supplemente</h2>
-
-            <p>Als besondere Beigabe zum Buch dienen die hier verfügbaren digitalen Supplemente: ein Animationsfilm, in dem die Bauabfolge der Stadtmauer anschaulich dargestellt wird, ein dreidimensionales Modell sowie der vektorisierte Grundriss der Stadtmauer und eine
-            als Download verfügbare Datenbank, welche die Reparaturstellen der Stadtmauer zusammenträgt.</p>
 
             <h3 class="con10t-toc-entry">Vektorplan und 3-D-Modell</h3>
 
                 <con10t-catalog-tree catalog-id="427"></con10t-catalog-tree>
 
-            <h3 class="con10t-toc-entry">Datenbank der Reparaturstellen</h3>
-                <p><a target = "_blank">Quelle</a></p>
-
             <h3 class="con10t-toc-entry">Animationsfilme</h3>
 
             <div class = "video_box">
 
-                <p>Bauabfolge-Beginn-SW-Wasserdurchlass (<a target = "_blank">Quelle</a>)</p>
+                <p>Video 1</p>
 
-                <p>Video folgt in Kürze.</p>
+                <div class="embed-responsive embed-responsive-16by9 img-thumbnail">
+                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/89jc2ylECxA?rel=0;modestbranding=1" frameborder="0" allowfullscreen="" ></iframe>
+                </div>
 
             </div>
 
             <div class = "video_box">
 
-                <p>Bauabfolge-Beginn-NO-Musterbau (<a target = "_blank">Quelle</a>)</p>
+                <p>Video 2</p>
 
-                <p>Video folgt in Kürze.</p>
+                <div class="embed-responsive embed-responsive-16by9 img-thumbnail">
+                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/9l2twcVLDJY?rel=0;modestbranding=1" frameborder="0" allowfullscreen=""></iframe>
+                </div>
 
+            </div>
+
+            <h3 class="con10t-toc-entry">Datenbank</h3>
+
+            <div class="alert alert-warning">
+                <p>Hinweis: Das Einpflegen der Daten in die iDAI.welt-Systeme ist noch nicht vollständig abgeschlossen.
+                Dazu gehören die Überführung der Daten aus der Ausgangsdatenbank (Datenbank der Reparaturstellen) in die
+                Struktur von iDAI.objects sowie die langfristige Archivierung und Bereitstellung aller Projektsupplemente.</p>
+                <p style = "border-top: 0.1vw solid #e0e0e0; padding-top: 0.5vw;">
+                Bis zum Abschluss der Digitalisierung können Sie daher alle digitalen Supplemente (im Original)
+                über die Redaktion der Zentrale anfordern (Kontakt: redaktion.zentrale@dainst.de).</p>
             </div>
 
          </div>
