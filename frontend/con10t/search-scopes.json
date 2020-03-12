@@ -162,7 +162,14 @@
     ]
   },
   "kaak": {
-    "q": "searchableEditorContent:d-dai-kaak"
+    "q": "searchableEditorContent:D-DAI-KAAK"
+    ,
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "dai-kaak-archiv"
+      }
+    ]
   },
   "kanatha": {
     "q": "catalogPaths:109"
