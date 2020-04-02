@@ -201,6 +201,16 @@
   "mar41": {
     "q": "catalogPaths:388"
   },
+  "nara": {
+    "q": "searchableEditorContent:D-DAI-ROM-NA"
+    ,
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "dai-rom-nara"
+      }
+    ]
+  },
   "oppenheim": {
     "q": "(catalogPaths:54 OR catalogPaths:28)",
     "facets": [
