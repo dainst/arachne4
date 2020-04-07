@@ -394,6 +394,13 @@
           "hidden": true
         },
         {
+          "id": "koester",
+          "title": {
+            "de": "Das Milet Archiv von Reinhard Köster",
+            "en": "The Milet Archive of Reinhard Köster"
+          }
+        },
+        {
           "id": "abguesseMuenchen",
           "title": {
             "de": "Münchener Abguss Sammlung",
