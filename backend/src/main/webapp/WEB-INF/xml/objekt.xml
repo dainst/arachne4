@@ -15,6 +15,7 @@
 		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektsiegel</subtable>
 		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="PrimaryKey">objektterrakotten</subtable>
 		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">datenblattberlin</subtable>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">datenblattberlin_inschrift</subtable>
 		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">fotoabzug</subtable>
 	</subtables>
 	<display>
@@ -35,7 +36,7 @@
 			</section>
 		</subtitle>
 		<datasections>
-			<section labelKey="Datenblatt Berlin">
+			<section labelKey="Datenblatt der Antikensammlung Berlin">
 				<section labelKey="Name">
 					<field datasource="datenblattberlin.Name" />
 				</section>
@@ -88,6 +89,39 @@
 					<field datasource="datenblattberlin.Standort" />
 				</section>
 			</section>
+			<section labelKey="Datenblatt Inschrift der Antikensammlung Berlin">
+				<section labelKey="Anbringunsort">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Anbringungsort" />
+				</section>
+				<section labelKey="Besonderheiten">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Besonderheiten" />
+				</section>
+				<section labelKey="Buchstabenhöhe">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Buchstabenhoehe" />
+				</section>
+				<section labelKey="Zeilabstand">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Zeilenabstand" />
+				</section>
+				<section labelKey="Interpunktion">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Interpunktion" />
+				</section>
+				<section labelKey="Wortlaut">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Wortlaut" />
+				</section>
+				<section labelKey="Kritischer Apparat">
+					<field datasource="datenblattberlin_inschrift.Inschrift_kritApparat" />
+				</section>
+				<section labelKey="Übersetzung">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Uebersetzung" />
+				</section>
+				<section labelKey="Literatur">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Literatur" />
+				</section>
+				<section labelKey="Kommentar">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Kommentar" />
+				</section>
+			</section>
+
 			<section labelKey="Informationen zum Objekt">
 				<include type="ort" />
 				<section labelKey="Herkunft" separator=", ">
