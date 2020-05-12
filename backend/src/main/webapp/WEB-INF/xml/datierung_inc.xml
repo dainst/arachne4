@@ -5,8 +5,8 @@
         <field datasource=".nachantik" />
         <field datasource=".FestDat" prefix="(fest datiert: " postfix=")" />
         <field datasource=".AnfEpoche" />
-        <linkField datasource=".AnfEpoche" labelKey="(Chronontology)" separator=" "
-                   prefix="http://chronontology.dainst.org/search?fq=provenance:Arachne&amp;q="/>
+        <linkField datasource=".AnfEpocheChronId" labelKey="(Chronontology)" separator=" "
+                   prefix="http://chronontology.dainst.org/period/" />
         <field datasource=".AnfKultur" postfix="," />
         <field datasource=".AnfDatZeitraum" postfix=","/>
         <field datasource=".AnfDatJt" postfix=". Jt." />
@@ -15,8 +15,8 @@
         <field datasource=".AnfPraezise" prefix=" (" postfix=")" />
         <field datasource=".AnfTerminus" prefix=", " postfix=". " />
         <field datasource=".EndEpoche" prefix=" - " />
-        <linkField datasource=".EndEpoche" labelKey="(Chronontology)" separator=" "
-                   prefix="http://chronontology.dainst.org/search?fq=provenance:Arachne&amp;q="/>
+        <linkField datasource=".EndEpocheChronId" labelKey="(Chronontology)" separator=" "
+                   prefix="http://chronontology.dainst.org/period/" />
         <field datasource=".EndKultur" postfix="," />
         <field datasource=".EndDatZeitraum" postfix="," />
         <field datasource=".EndDatJt" postfix=". Jt." />
