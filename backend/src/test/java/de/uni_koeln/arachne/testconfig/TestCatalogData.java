@@ -135,7 +135,8 @@ public class TestCatalogData {
 				+ "ArachneEntityID BIGINT(20) NOT NULL,"
 				+ "TableName VARCHAR(255) NOT NULL,"
 				+ "ForeignKey BIGINT(20) NOT NULL,"
-				+ "isDeleted TINYINT(4) NOT NULL)");
+				+ "isDeleted TINYINT(4) NOT NULL,"
+				+ "DateinameMarbilder VARCHAR(255) NULL)");
 		jdbcTemplate.execute("INSERT INTO arachneentityidentification("
 				+ "ArachneEntityID, TableName, ForeignKey, isDeleted)"
 				+ "VALUES"
