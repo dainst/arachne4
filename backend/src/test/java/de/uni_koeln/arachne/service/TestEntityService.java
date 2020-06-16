@@ -109,7 +109,7 @@ public class TestEntityService {
 				
 		// entity is deleted (get by entityId)
 		result = entityService.getEntityFromIndex(2l, null, LANG);
-		assertEquals(HttpStatus.OK, result.getStatus());
+		assertEquals(HttpStatus.GONE, result.getStatus());
 		assertNull(result.getValue());
 	}
 	
@@ -142,7 +142,7 @@ public class TestEntityService {
 		
 		// entity is deleted (get by entityId)
 		result = entityService.getEntityFromDB(2l, null, LANG);
-		assertEquals(HttpStatus.OK, result.getStatus());
+		assertEquals(HttpStatus.GONE, result.getStatus());
 		assertNull(result.getValue());
 	}
 
