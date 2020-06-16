@@ -107,7 +107,7 @@ public class TestResponseFactory { // NOPMD
 	
 	@Test
 	public void testCreateResponseForDeletedEntity() throws JsonParseException, JsonMappingException, IOException {
-		final EntityId deletedEntityId = new EntityId("test", 0L, 0L, true, 0L);
+		final EntityId deletedEntityId = new EntityId("test", 0L, 0L, true, null, 0L);
 		final String response = responseFactory.createResponseForDeletedEntityAsJsonString(deletedEntityId);
 		final ObjectMapper objectMapper = new ObjectMapper();
 		DeletedArachneEntity deletedEntity = objectMapper.readValue(response, DeletedArachneEntity.class);

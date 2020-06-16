@@ -84,12 +84,12 @@ public final class TestData {
 	public static final String zoomifyImageProperties 
 			= "<IMAGE_PROPERTIES WIDTH=\"1600\" HEIGHT=\"1000\" NUMTILES=\"28\" NUMIMAGES=\"1\" VERSION=\"1.8\" TILESIZE=\"256\" />";
 	
-	public static final EntityId deletedEntity = new EntityId("test", 432L, 32L, true, 0L);
+	public static final EntityId deletedEntity = new EntityId("test", 432L, 32L, true, null, 0L);
 
 	public static Dataset getTestDataset() {
 		final Dataset testDataset = new Dataset();
 		
-		testDataset.setArachneId(new EntityId("test", 123L, 1L, false, 1L));
+		testDataset.setArachneId(new EntityId("test", 123L, 1L, false, null, 1L));
 				
 		testDataset.setFields("test.otherId", "1234567890");
 		testDataset.setFields("test.anotherId", "a1b2c3d4");
@@ -143,7 +143,7 @@ public final class TestData {
 		
 		final Dataset linkDataset = new Dataset();
 		
-		linkDataset.setArachneId(new EntityId("testContext", 12L, 2L, false, null));
+		linkDataset.setArachneId(new EntityId("testContext", 12L, 2L, false, null, null));
 				
 		linkDataset.setFields("testContext.value1", "Test Context Value1");
 		linkDataset.setFields("testContext.value3", "Test Context Value3");

@@ -87,7 +87,7 @@ public class TestImageService {
 		images.setAccessible(true);
 		images.set(dataset, null);
 		// change entityId
-		dataset.setArachneId(new EntityId("noImage", 321L, 2L, false, null));
+		dataset.setArachneId(new EntityId("noImage", 321L, 2L, false, null, null));
 		
 		imageService.addImages(dataset);
 		
@@ -103,7 +103,7 @@ public class TestImageService {
 		// shallow copy
 		BeanUtils.copyProperties(testDataset, dataset);
 		// change table name
-		dataset.setArachneId(new EntityId("marbilder", 123L, 123L, false, 1L));
+		dataset.setArachneId(new EntityId("marbilder", 123L, 123L, false, null, 1L));
 		// add file name field
 		dataset.getFields().put("marbilder.DateinameMarbilder", "Image 123.someimageformat");
 		
@@ -164,7 +164,7 @@ public class TestImageService {
 	 */
 	@Test
 	public void testGetImagesSubListInvalidExcluded() {
-		EntityId entityId = new EntityId("noImage", 321L, 2L, false, null);
+		EntityId entityId = new EntityId("noImage", 321L, 2L, false, null, null);
 		TypeWithHTTPStatus<List<Image>> actualValue = imageService.getImagesSubList(entityId, 0, 2);
 		
 		assertEquals(HttpStatus.NOT_FOUND, actualValue.getStatus());
@@ -175,7 +175,7 @@ public class TestImageService {
 	 */
 	@Test
 	public void testGetImagesSubListInvalidMARBilder() {
-		EntityId entityId = new EntityId("marbilder", 321L, 2L, false, null);
+		EntityId entityId = new EntityId("marbilder", 321L, 2L, false, null, null);
 		TypeWithHTTPStatus<List<Image>> actualValue = imageService.getImagesSubList(entityId, 0, 2);
 		
 		assertEquals(HttpStatus.NOT_FOUND, actualValue.getStatus());
