@@ -30,6 +30,11 @@ public class EntityId {
 	protected transient boolean deleted;
 
 	/**
+	 * The corresponding image filename if entity is an image.
+	 */
+	protected transient String imageFilename;
+
+	/**
 	 * A measure for the number of entities this entity is connected to.
 	 */
 	protected transient Long degree;
@@ -44,11 +49,12 @@ public class EntityId {
 	 * as the number of fields).
 	 */
 	public EntityId(final String tableName, final Long internalKey, final Long arachneEntityID, final boolean deleted,
-			final Long degree) {
+			final String imageFilename, final Long degree) {
 		this.arachneEntityID = arachneEntityID;
 		this.tableName = tableName;
 		this.internalKey = internalKey;
 		this.deleted = deleted;
+		this.imageFilename = imageFilename;
 		this.degree = degree;
 	}
 	
@@ -62,6 +68,7 @@ public class EntityId {
 		this.tableName = entity.getTableName();
 		this.internalKey = entity.getForeignKey();
 		this.deleted = entity.isDeleted();
+		this.imageFilename = entity.getImageFilename();
 	}
 	
 	/**
@@ -89,6 +96,11 @@ public class EntityId {
 	@XmlElement
 	public boolean isDeleted() {
 		return deleted;
+	}
+
+	@XmlElement
+	public String getImageFilename() {
+		return imageFilename;
 	}
 	
 	@Override

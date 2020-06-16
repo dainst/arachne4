@@ -29,6 +29,11 @@ public class BaseArachneEntity {
 	 * The group of the dataset used for rights management 
 	 */
 	protected String datasetGroup = null;
+
+	/**
+	 * The image file name if the Entity represents an image
+	 */
+	protected String imageFilename = null;
 	
 	/**
 	 * Field for additional content of any type.
@@ -98,6 +103,22 @@ public class BaseArachneEntity {
 	 */
 	public void setDatasetGroup(final String datasetGroup) {
 		this.datasetGroup = datasetGroup;
+	}
+
+	/**
+	 * Image filename getter.
+	 * @return The image filename.
+	 */
+	public String getImageFilename() {
+		return imageFilename;
+	}
+
+	/**
+	 * Image filename setter.
+	 * @param imageFilename A image filename.
+	 */
+	public void setImageFilename(final String imageFilename) {
+		this.imageFilename = imageFilename;
 	}
 	
 	/**

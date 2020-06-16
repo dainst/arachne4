@@ -43,5 +43,6 @@ public class DeletedArachneEntity extends BaseArachneEntity {
 		this.entityId = entityId.getArachneEntityID();
 		this.type = entityId.getTableName();
 		this.internalId = entityId.getInternalKey();
+		this.imageFilename = entityId.getImageFilename();
 	}
 }

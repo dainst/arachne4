@@ -184,7 +184,9 @@ public class EntityController {
 			LOGGER.error("Failed to contact transl8. Cause: ", e);
 			result = new TypeWithHTTPStatus<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return ResponseEntity.status(result.getStatus()).body(result.getValue());
+		return ResponseEntity.status(result.getStatus())
+			.headers(result.getHeaders())
+			.body(result.getValue());
 
 	}
 

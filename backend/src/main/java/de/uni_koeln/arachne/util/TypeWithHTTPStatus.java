@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.util;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -13,6 +14,8 @@ public class TypeWithHTTPStatus<T> {
 	private T value;
 	
 	private HttpStatus status;
+
+	private HttpHeaders headers;
 	
 	/**
 	 * Convenience constructor to only set the value setting the status code to 200.
@@ -68,6 +71,20 @@ public class TypeWithHTTPStatus<T> {
 	 */
 	public void setStatus(HttpStatus status) {
 		this.status = status;
+	}
+
+	/**
+	 * @return the headers
+	 */
+	public HttpHeaders getHeaders() {
+		return headers;
+	}
+
+	/**
+	 * @param headers the headers
+	 */
+	public void setHeaders(HttpHeaders headers) {
+		this.headers = headers;
 	}
 
 	@Override

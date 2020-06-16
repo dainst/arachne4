@@ -130,7 +130,7 @@ public abstract class AbstractSemanticConnectionPathContextualizer extends Abstr
 			}
 		}
 
-		final EntityId entityId = new EntityId(contextPath.getTargetType(), foreignKey, eId, false, degree);
+		final EntityId entityId = new EntityId(contextPath.getTargetType(), foreignKey, eId, false, null, degree);
 		result.setArachneId(entityId);
 		result.appendFields(resultMap);
 		return result;

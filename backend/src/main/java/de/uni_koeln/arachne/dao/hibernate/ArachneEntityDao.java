@@ -74,4 +74,18 @@ public class ArachneEntityDao {
 			return list;
 		}
 	}
+
+	/**
+	 * Get the currently active Entity-ID for the given image file name.
+	 * @param imageFilename The image file name.
+	 * @return an <code>ArachneId</code> object that contains all the identification information.
+	 */
+	@Transactional(readOnly=true)
+	public ArachneEntity getNotDeletedByImageFilename(final String imageFilename) {
+		final Session session = sessionFactory.getCurrentSession();
+		final Criteria criteria = session.createCriteria(ArachneEntity.class);
+		criteria.add(Restrictions.like("imageFilename", imageFilename));
+		criteria.add(Restrictions.eq("isDeleted", false));
+		return (ArachneEntity) criteria.uniqueResult();
+	}
 }

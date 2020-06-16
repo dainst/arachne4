@@ -43,6 +43,14 @@ public class ArachneEntity {
 	boolean isDeleted;
 	
 	/**
+	 * The file name of the corresponding image if the entity represents an image.
+	 * This allows retrieving the new Entity for the image if the old Entity has been deleted
+	 * which may happen from time to time if image collections are reimported.
+	 */
+	@Column(name="DateinameMarbilder")
+	String imageFilename;
+	
+	/**
 	 * The returns the Unique Arachne Identifier.
 	 * @return The Arachne Entity ID
 	 */
@@ -72,5 +80,13 @@ public class ArachneEntity {
 	 */
 	public boolean isDeleted() {
 		return isDeleted;
+	}
+	
+	/**
+	 * Returns the image filename if entity is an image
+	 * @return image filename
+	 */
+	public String getImageFilename() {
+		return imageFilename;
 	}
 }

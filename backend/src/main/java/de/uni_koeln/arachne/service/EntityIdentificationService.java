@@ -49,6 +49,19 @@ public class EntityIdentificationService {
 	public List<ArachneEntity> getByLimitedEntityIdRange(final long startId, final int limit) {
 		return arachneEntityDao.getByLimitedEntityIdRange(startId, limit);
 	}
+
+	/**
+	 * Get the currently active Entity-ID for the given image file name.
+	 * @param imageFilename The image file name.
+	 * @return an <code>ArachneId</code> object that contains all the identification information.
+	 */
+	public EntityId getNotDeletedByImageFilename(final String imageFilename) {
+		ArachneEntity entity = arachneEntityDao.getNotDeletedByImageFilename(imageFilename);
+		if (entity != null) {
+			return new EntityId(entity);
+		}
+		return null;
+	}
 	
 	/**
 	 * Gets all identifiers of a dataset by Arachne entity ID. This is the external reference ID for the dataset in Arachne.

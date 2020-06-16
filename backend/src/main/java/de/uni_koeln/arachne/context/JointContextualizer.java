@@ -192,7 +192,7 @@ public class JointContextualizer extends AbstractContextualizer {
 			resultMap.put(prefix + key, entry.getValue());
 		}
 
-		final EntityId entityId = new EntityId(contextType, foreignKey, eId, false, 0L);
+		final EntityId entityId = new EntityId(contextType, foreignKey, eId, false, null, 0L);
 		result.setArachneId(entityId);
 		result.appendFields(resultMap);
 		return result;
