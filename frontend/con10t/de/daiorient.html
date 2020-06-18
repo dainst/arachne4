@@ -1,31 +1,110 @@
-<div class="con10t-page container">
+
+<idai-header
+        image="/con10t/img/daiorient/orient.jpg">
+</idai-header>
+
+<div class="con10t-page teaserpage container">
+
     <div class="con10t-row">
-        <div class="con10t-title">
-            <h1>Fotothek der Orientabteilung des DAI</h1>
+
+        <div style="background-color:#fff3;" class="con10t-title">
+            <h1>Das Archiv der Orient-Abteilung des DAI</h1>
         </div>
-        <div class="con10t-sidebar">
-            <h3>Weiterführende Links</h3>
-            <p>
-                <a href="http://arachne.uni-koeln.de/fotothek/orient">Fotothek der Orientabteilung des DAI</a>
-            </p>
-             <p><con10t-search></con10t-search></p>
+
+        <!-- sidebar -->
+        <div class="con10t-sidebar" style = "padding-top: 4vw;">
+
+            <con10t-toc toc-heading="Übersicht"></con10t-toc>
+
+            <h3>Zu den Digitalisaten</h3>
+
+            <p><con10t-search></con10t-search></p>
+
+        <!--- 
+    <div style = "margin-top: 1vw;">
+        <a href="/project/kaak_merimde_map" title="Zur Karte" style="cursor:pointer">
+        <span class="glyphicon glyphicon-fullscreen"></span>
+        Größere Karte</a>
+    </div>
+
+    <div ng-init="config = {
+        facetsSelect: [
+            {
+                key: 'facet_kategorie',
+                value: 'Bilder'
+            },
+            {
+                key: 'facet_subkategoriebestand_level3',
+                value: 'Merimde'
+            }
+        ]
+    }"></div>
+
+    <div con10t-map style = "margin-bottom: 1vw;"
+         id="map"
+         limit="200"
+         facets-select="config.facetsSelect"
+         lat="36.85"
+         lng="10.33"
+         zoom="5">
+    </div>
+
+            
+            <h3>weiterführende Links</h3>
+            <p><a con10t-page="gelehrten_netzwerk">Korrespondenzanalyse</a></p>
+            -->
+
         </div>
+
+        <!-- main -->
         <div class="con10t-content">
-            <p>
-                <con10t-image src="/con10t/img/daiorient/welcome.jpg" align="left"></con10t-image>
-            </p>
+
+            <h2 class="con10t-toc-entry">Das Archiv</h2>
+
             <p>Die Orient-Abteilung des Deutschen Archäologischen Instituts wurde 1996
                 gegründet. Sie hat ihren Stammsitz in Berlin und unterhält Außenstellen in
-                Baghdad, Damaskus und Sanaa. Den Grundstock des Bildarchivs der
+                Baghdad, Damaskus und Sanaa. 
+                <br>
+                Den Grundstock des Bildarchivs der
                 Orient-Abteilung bildet das Uruk/Warka-Archiv der ehemaligen Abteilung
                 Baghdad mit ca. 30.000 (Glasplatten)-Negativen und Dias. Darüber hinaus
                 besitzt die Abteilung einige Sammlungen und Archive, u. a. mit historischen
                 Aufnahmen aus dem Iraq. Seit 1998 liegen die Schwerpunkte der
                 fotografischen Sammlung in der Dokumentation eigener Ausgrabungsprojekte in
                 den Ländern Äthiopien, Iraq, Jemen, Jordanien, Libanon, Oman, Saudi
-                Arabien, Syrien und der Osttürkei. Der Bestand ist mittlerweile auf ca.
+                Arabien, Syrien und der Osttürkei. 
+                <br>
+                Der Bestand ist mittlerweile auf ca.
                 100.000 Bildmotive zur Archäologie und Kulturgeschichte des Vorderen
-                Orients angewachsen.</p>
+                Orients angewachsen. 
+                <br> 
+                Die Fotothek wird im Laufe der Zeit auch in digitalisierter Form bereitsgestellt werden.
+            </p>
+
+            <!-- Baalbeck -->
+            <div style = "clear:both;">
+                <h3 class="con10t-toc-entry">Digitalisierte Fotos aus Baalbeck</h3>
+                <con10t-image src="/con10t/img/daiorient/baalbek.jpg"
+                              align="left" width="300"
+                              alt="Baalbeck">
+                              Baalbek, Venustempel
+                </con10t-image>
+
+                <p>Die Fotothek der Orient-Abteilung enthält momentan Bilder aus Baalbek, untergliedert zunächst in die unterschiedlichen Aufnahmejahre der Daten, 2004 und 2005. Kategorien umfassen unter anderem Fotografien aus dem Survey und den Grabungen, Nachtaufnahmen, Funde und unterschiedliche Areale in Baalbek.
+                <br>
+                <br>
+                Die weitere Untergliederung in die unterschiedlichen Kategorien geschieht in der Facettensuche am linken Rand der Arachne.
+                </p>
+
+                <br>
+                <p>zu den Digitalisaten:</p>
+                <a href="https://arachne.dainst.org/search?fq=facet_bestandsname:%22dai-orientabteilung%22&fq=facet_subkategoriebestand_level1:%22Baalbek%202004%22&fl=20&q=*" target="_blank">Baalbek 2004</a>
+                <br>
+                <a href="https://arachne.dainst.org/search?fq=facet_bestandsname:%22dai-orientabteilung%22&fq=facet_subkategoriebestand_level1:%22Baalbek%202005%22&fl=20&q=*" target="_blank">Baalbek 2005</a>
+            </div>
+
+        
+
         </div>
     </div>
 </div>

@@ -34,7 +34,13 @@
     "q": "catalogPaths:41"
   },
   "daiorient": {
-    "q": "searchableEditorContent:D-DAI-ORI"
+    "q": "searchableEditorContent:D-DAI-ORI",
+     "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "dai-orientabteilung"
+      }
+    ]
   }, 
   "databasepausanias": {
     "q": "(catalogPaths:111 OR catalogPaths:110)"
