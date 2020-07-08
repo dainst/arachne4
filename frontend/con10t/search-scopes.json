@@ -87,12 +87,12 @@
     ]
   },
   "fotomadrid": {
-    "q": "D-DAI-MAD",
-    "facets": [
+    "q": "searchableEditorContent:D-DAI-MAD",
+      "facets": [
       {
-        "key": "facet_kategorie",
-        "value": "Bilder"
-      }
+        "key": "facet_bestandsname",
+        "value": "dai-fotothek-madrid"
+      } 
     ]
   },
   "gelehrtenbriefe": {
