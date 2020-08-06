@@ -494,6 +494,13 @@
           }
         },
         {
+          "id": "chronoi",
+          "title": {
+            "de": "Chronoi: Multilingualismus der Zeit",
+            "en": "Chronoi: the multilignualism of time"
+          }
+        },
+        {
           "id": "databasepausanias",
           "title": {
             "de": "Datenbank - Bildwerke bei Pausanias",
