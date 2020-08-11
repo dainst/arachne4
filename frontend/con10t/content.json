@@ -402,6 +402,13 @@
           }
         },
         {
+          "id": "krause",
+          "title": {
+            "de": "Das Krause Archiv",
+            "en": "Krause Archive"
+          }
+        },
+        {
           "id": "abguesseMuenchen",
           "title": {
             "de": "Münchener Abguss Sammlung",
