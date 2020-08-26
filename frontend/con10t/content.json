@@ -583,6 +583,13 @@
             "de": "Palmyra GIS - Digitaler Kulturerhalt in Syrien"
           },
           "hidden": true
+        },
+        {
+          "id": "tuna",
+          "title": {
+            "de": "Grabbauten in Tuna el-Gebel"
+          },
+          "hidden": true
         }
       ]
     },
