@@ -1,12 +1,115 @@
-<div class="con10t-page container">
+<!-- header -->
+
+<idai-header
+        image="/con10t/headerimages/wuestenblick.jpg">
+</idai-header>
+<div class="con10t-page teaserpage container">
     <div class="con10t-row">
         <div class="con10t-title">
-            <h1>Die Phönizische Nekropole von Ayamonte</h1>
+            <h1 class="con10t-toc-entry">Die phönizische Nekropole von Ayamonte </h1>
+            <h2>Grabungsdatenbank</h2>
         </div>
-        <div class="con10t-sidebar">
+
+<!-- sidebar -->
+
+    <div class="con10t-sidebar">
+        <con10t-toc toc-heading="Inhaltsverzeichnis">
+        </con10t-toc>
+        
+        <con10t-image src="con10t/img/ayamonte/dai-logo-mad.jpg" width="230"></con10t-image>
+        <con10t-image src="con10t/img/ayamonte/junta.jpg" width="100"></con10t-image>
+       <br>
+       <br>
+       <hr>
+       <br>
+        <h3>Kontakt</h3>
+            <ul>
+                <li><a href="mailto:Dirce.Marzoli@dainst.de">Prof. Dr. Dirce Marzoli</a> (Projektleitung)</li>
+               <li><a href="mailto:theresa.hradilak@gmail.com">Theresa Hradilak</a>  (Datenmigration iDAI.field 2)</li>
+                <li><a href="mailto:ulrich.stockinger@unibas.ch">Ulrich Stockinger</a>(Datenerfassung iDAI.field 1, Vorbereitung und archäologische Beratung der Datenmigration)</li>
+            </ul>
+
+    </div>
+
+<!-- main -->
+
+    <div class="con10t-content">
+            <p> Die hier publizierten Daten sind ein Teil der Dokumentation der Ausgrabung von 2013 in der phönizischen Nekropole von Ayamonte (Huelva, Andalusien, Spanien) und ein digitales Supplement zu den monographischen Publikationen: D. Marzoli - E. García Teyssandier, Die phönizische Nekropole von Ayamonte (Huelva, Andalusien, Spanien). Bericht zur Ausgrabung im Jahre 2013, ihren Vor- und Begleituntersuchungen, MB 37 (Wiesbaden 2018); D. Marzoli - E. García Teyssandier, La necrópolis fenicia de Ayamonte (Huelva). Memoria de la excavación del año 2013, estudios previos y complementarios, Arqueología Monografías (Sevilla 2019). 
+            </p>
+            <section>
+        <h3 class="con10t-toc-entry">Fundplatz</h3>
+            <p>
+            	Der Fundplatz Ayamonte liegt mehr als 3000 Seemeilen westlich des phönizischen Mutterlands und ist damit die westlichste bekannte phönizische Kolonie der frühen Expansionswelle des 8. Jahrhunderts v. Chr. Das Mündungsgebiet des Guadiana, heute Grenzfluss zwischen Spanien und Portugal, in den Atlantik bot geschützte Anlegestätten und ideale Voraussetzungen für die Entwicklung einer Siedlung und den Austausch mit einheimischen Handelspartnern des ressourcenreichen Hinterlands.
+            </p>
+
+        </section>
+            <section>
+        <h3 class="con10t-toc-entry">Projekt</h3>
+            <p>
+                Reste der phönizischen Brandgräbernekropole kamen erstmals 2007 bei Bauarbeiten zutage und wurden in Rettungsgrabungen durch Elisabet García Teyssandier und Benjamín Cabaco Encinas dokumentiert. Die Abteilung Madrid des Deutschen Archäologischen Instituts beteiligte sich auf Einladung von Juan Aurelio Pérez Macías (Universität Huelva / Korrespondierendes Mitglied des DAI) an den Auswertungen der Ausgrabungsergebnisse der Nekropole. Aufbauend auf diesen Arbeiten wurde im September 2013 unter der Leitung von Dirce Marzoli (DAI Madrid) in Zusammenarbeit mit E. García Teyssandier eine vom Andalusischen Denkmalamt (Delegación General del Patrimoio Arqueológico y de Instituciones Museisticas de la Junta de Andalucía, Sevilla / Delegación de Cultura de Huelva) genehmigte Forschungsgrabung in der phönizischen Nekropole durchgeführt. 
+            </p>
+            <p>
+                Das Projekt ist im DAI-Cluster 6 „Connecting Cultures“ angesiedelt. Die Finanzierung erfolgte aus dem wissenschaftlichen Etat des DAI. In dieses Projekt flossen neben den archäologischen Grabungen auch die Ergebnisse zahlreicher anderer Disziplinen ein (u. a. Anthropologie, Archäobotanik, Archäometrie, Geographie). Die Funde befinden sich im Museo de Huelva. 
+            </p>
+        </section>
+        <section>
+        <h3 class="con10t-toc-entry">Datenbank</h3>
+            <p>
+                Die Grabungen im Jahr 2013 wurden detailliert digital dokumentiert: Neben der umfassenden Dokumentation der Befunde mit 3D-Aufnahmen durch Arie Kai-Browne umfasste das insbesondere eine vom IT-Referat des DAI entwickelte, relationale FileMaker-Datenbank für Feldforschungsprojekte (iDAI.field 1), die von Ulrich Stockinger betreut wurde. Die Daten wurden für die Veröffentlichung in die Nachfolger-Applikation iDAI.field 2 migriert, eine Open-Source-Lösung, die auf Electron, Angular, Typescript und PouchDB basiert und auf viele Webtechnologien zurückgreift (Javascript, HTML, CSS).
+            </p>
+        </section>
+        <section>
+            <h3 class="con10t-toc-entry">Hinweise zur Nutzung</h3>
+            <p>
+                Beim Öffnen der Datenbank befinden Sie sich zunächst im Tab „Übersicht“, der durch ein Haus-Symbol gekennzeichnet ist. Hier werden die hierarchisch angelegten Orte und Schnitte des Projekts verwaltet, über die Sie zu den Befunden und Funden gelangen. Die vielfältigen archäologischen Daten (z. B. Schnitte, Befunde, Funde) werden in iDAI.field 2 mit dem Sammelbegriff „Ressourcen“ bezeichnet. Bei allen Ressourcen öffnet ein Klick auf das Info-Symbol die zugehörigen Daten. Die Dokumentation liegt in deutscher und spanischer Sprache vor, getrennt durch „ / “. Das Interface der Datenbank kann entweder deutsch oder englisch eingestellt werden (Datei>Einstellungen>Sprache bzw. File>Settings>Language). Der rechtwinklige Pfeil nach rechts unten führt zu den untergeordneten Ressourcen, während der Pfeil nach rechts oben die jeweilige(n) Ressource(n) innerhalb eines Grabungsschnitts in einem neuen Tab aufruft („Zur Maßnahme wechseln“ bzw. „Im Kontext der Maßnahme anzeigen“). Sie können mehrere Schnitte nebeneinander öffnen und zwischen diesen wechseln. 
+            </p>
+            <p>
+                Über die Symbole rechts oben können Sie zudem zwischen Karten- und Listendarstellung wechseln, wobei sich die folgenden Hinweise auf die Kartendarstellung beziehen. Hier wird der ausgewählte Eintrag dynamisch links grau hinterlegt bzw. auf der Karte angezeigt, wenn Geodaten (Polygone, Multipunkte, Punkte) vorhanden sind. Oben links wird der aktuelle Pfad innerhalb des Projekts bzw. eines Schnitts angezeigt, über den Sie per Klick rasch zu einer anderen Hierarchieebene navigieren können. Über einen Klick auf das Lupen-Symbol kann der „Erweiterte Suchmodus“ aktiviert (bzw. deaktiviert) werden: Dies erlaubt eine Suche über größere Datenmengen, d. h. im „Übersicht“-Tab werden alle Ressourcen des Projekts, in den „Maßnahmen“-Tabs alle Ressourcen des jeweiligen Schnitts berücksichtigt. Ansonsten werden nur Ressourcen der direkt untergeordneten Hierarchieebene angezeigt. 
+            </p>
+            <p>
+                Im Eingabefeld können Sie Freitextsuchen in den aktuell angezeigten Ressourcen ausführen, wobei Suchbegriffe derzeit mit den Feldern „Bezeichner“ und „Kurzbeschreibung“ der Ressourcen abgeglichen werden. Dabei handelt es sich um eine sogenannte Präfix-Suche, d. h. es wird stets auf den Anfang eines Begriffs (nach Leerzeichen oder Bindestrich) geprüft; Groß- bzw. Kleinschreibung wird bei der Suche ignoriert. Der Suchbegriff „fragment“ findet also beispielsweise „Amphore, fragmentarisch erhalten“ und „Gefäßkeramik-Fragmente“, aber nicht die Einträge „Frgt.“, „Keramikfragmente“ oder „Wandfragment“. Sie können statt eines Zeichens verschiedene erlaubte Zeichen in eckigen Klammern angeben, um Platzhaltersuchen durchzuführen: „AYA13-10[14]3“ liefert beispielsweise sowohl „AYA13-1013“ als auch „AYA13-1043“ als Ergebnis. Eine Platzhaltersuche mit * wird nicht unterstützt.
+            </p>
+            <p>
+                Im erweiterten Suchmodus können Sie über das Plus-Symbol Suchkriterien hinzufügen, beispielsweise um das Ergebnis auf Ressourcen mit Bildern zu beschränken. Das Trichtersymbol rechts davon erlaubt, die Suche auf eine Kategorie (z. B. „Bestattung“ oder „Mollusk“) zu begrenzen. Suchkriterien und Kategoriefilter können miteinander kombiniert und auch ohne Suchtext angewendet werden. Die gefundenen Suchergebnisse werden links in der Liste sowie auf der Karte angezeigt. Werden bei gesetztem Suchfilter keine Suchergebnisse im aktuellen Kontext gefunden, werden unterhalb des Textfelds Suchergebnisse aus anderen Kontexten angezeigt, zu denen Sie per Klick gelangen. 
+            </p>
+            <p>
+                Über „Werkzeuge“ können Sie im Menü die Bildverwaltung aufrufen, in der sie alle Bilder des Projekts durchsuchen und aufrufen können. Neben dem Eingabefeld für die Suche finden Sie eine Seitennavigation zum Vor- und Zurückblättern sowie einen Regler zur Anpassung der Größe der Bildervoransicht.
+            </p>
+        </section>
+        <section>
+            <h3 class="con10t-toc-entry">Literatur</h3>
+            <p>
+                S. Cuy – J. Watson – Th. Kleinke – D. de Oliveira – Ph. Gerth – J. Schierenbeck, iDAI.field 2 : A Modern Approach to Distributed Fieldwork Documentation, in: W. Börner – S. Uhlirz (Hrsg.), Proceedings of the 22nd International Conference on Cultural Heritage and New Technologies 2017 (Wien 2019) 1:1–1:8.  
+            </p>
+            <p>
+                E. García Teyssandier – D. Marzoli, Phönizische Gräber in Huelva. Ein Vorbericht, Madrider Mitteilungen 54, 2013, 89–158
+            </p>
+            <p>
+                E. García Teyssandier – D. Marzoli – B. Cabaco Encinas, El descubrimiento de la necrópolis fenicia de Ayamonte, Huelva (siglos VIII-VII a.C.), in: J. Jiménez Ávila (Hrsg.), Sidereum Ana III. El río Guadiana y Tartessos (Mérida 2016) 493–530.
+            </p>
+            <p>
+                E. García Teyssandier – D. Marzoli – B. Cabaco Encinas, Phoenician Necropolis in Ayamonte (Huelva, Spain). A preliminary report, in: M. Botto (Hrsg.), De Huelva a Malaka. Los fenicios en Andalucía a la luz de los descubrimientos más recientes, Collezione di studi fenici 48 (Rom 2018) 217–272.
+            </p>
+            <p>
+                D. Marzoli - E. García Teyssandier, Die phönizische Nekropole von Ayamonte (Huelva, Andalusien, Spanien). Bericht zur Ausgrabung im Jahre 2013, ihren Vor- und Begleituntersuchungen, Madrider Beiträge 37 (Wiesbaden 2018.
+            </p>
+            <p>
+                D. Marzoli - E. García Teyssandier, La necrópolis fenicia de Ayamonte (Huelva). Memoria de la excavación del año 2013, estudios previos y complementarios (Sevilla 2019).
+            </p>
+            <p>
+                F. Schäfer, iDAI.field – ein modulares Dokumentationssystem für archäologische Forschungsprojekte, Kölner und Bonner Archaeologica 1, 2011, 201–208.
+            </p>
+            <p>
+                U. Stockinger, Datenerfassung in einem relationalen Datenbankmanagementsystem (iDAI.field), in: García Teyssandier – Marzoli 2018, 57–61.
+            </p>
+            <p>
+                U. Stockinger, Katalog: Ausschnitt aus iDAI.field, in: García Teyssandier – Marzoli 2018, 381–414.
+            </p>
+            <p>
+                U. Stockinger, Captura de datos en uns sistema de gestión de bases de datos relacionales (iDAI.field), in: Marzoli – García Teyssandier 2019, 56–60.
+            </p>
+        </section>
         </div>
-        <div class="con10t-content">
-            Hier werden in Kürze Daten zur Phönizischen Nekropole von Ayamonte bereitgestellt.
-        </div>
+
     </div>
 </div>
