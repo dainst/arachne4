@@ -845,6 +845,30 @@
           },
           "hidden": true
         },
+		{
+          "id": "JOGA_2020_Pruemers",
+          "title": {
+            "de": "H. Prümers, The original of Max Uhle´s map of Pachacamac in Quito, JoGA, § 1–33. Supplement",
+			"en": "H. Prümers, The original of Max Uhle´s map of Pachacamac in Quito, JoGA, § 1–33. Supplement"
+          },
+          "hidden": false
+        },
+		{
+          "id": "JOGA_2020_Fecher",
+          "title": {
+            "de": "F. Fecher et al., The ceramic finds from Guadalupe, Honduras: Optimizing archaeological documentation with a combination of digital and analog techniques, JoGA, § 1–53. Supplement",
+			"en": "F. Fecher et al., The ceramic finds from Guadalupe, Honduras: Optimizing archaeological documentation with a combination of digital and analog techniques, JoGA, § 1–53. Supplement"
+          },
+          "hidden": false
+        },
+		{
+          "id": "JOGA_2020_Lange",
+          "title": {
+            "de": "P. Lange, Das Nepal Temple Project: Archäologie eines Hindu-Tempels, JoGA, § 1–29. Supplement",
+			"en": "P. Lange, Das Nepal Temple Project: Archäologie eines Hindu-Tempels, JoGA, § 1–29. Supplement"
+          },
+          "hidden": false
+        },
         {
          "id": "inden1",
          "title": {
