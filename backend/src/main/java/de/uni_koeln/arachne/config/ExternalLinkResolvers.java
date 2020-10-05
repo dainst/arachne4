@@ -44,8 +44,6 @@ public class ExternalLinkResolvers {
 	public SimpleExternalLinkResolver viewer3D() {
 		final SimpleExternalLinkResolver result = new SimpleExternalLinkResolver();
 		result.setLabel("3D-Modell Viewer");
-		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "modell3d", "modell3d.Dateiformat", "obj");
-		result.setCriteria(criteria);
 		result.setMatchAllCriteria(true);
 		result.setLinkPattern("https://arachne.dainst.org/3d?id=%s");
 		result.setPatternFields(Arrays.asList("Dataset.internalId"));
