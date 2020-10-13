@@ -245,7 +245,22 @@
     "q": "catalogPaths:132"
   },
   "rakob": {
-    "q": "D-DAI-NA-RAK"
+    "q": "D-DAI-NA-RAK",
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "dai-rom-nara"
+      }
+    ]
+  },
+  "rakob_sidebar": {
+    "q": "D-DAI-NA-RAK",
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "dai-rom-nara"
+      }
+    ]
   },
   "rakob_map": {
     "alias": "rakob"
