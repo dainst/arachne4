@@ -20,6 +20,46 @@
             <p><con10t-search></con10t-search></p>
 
         <!--- Map --->
+        <h3>Kartenansicht</h3>
+        <!--Platzhalter Sri Lanka-->
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <!--Merimde Map-->
+            <div ng-init="config = {
+            baselayers: {
+                osm: {
+                    name: 'OpenStreetMap',
+                    type: 'xyz',
+                    url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    layerOptions: {
+                        subdomains: ['a', 'b', 'c'],
+                        attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
+                        continuousWorld: true,
+                        maxZoom: 18
+                    }
+                }
+            },
+            baselayerKey: 'osm'
+        }"></div>
+
     <div style = "margin-top: 1vw;">
         <a href="/project/kaak_merimde_map" title="Zur Karte" style="cursor:pointer">
         <span class="glyphicon glyphicon-fullscreen"></span>
@@ -27,26 +67,31 @@
     </div>
 
     <div ng-init="config = {
+        menuTitle: 'Merimde',
         facetsSelect: [
             {
-                key: 'facet_kategorie',
-                value: 'Bilder'
+                key: 'facet_bestandsname',
+                value: 'dai-kaak-archiv'
             },
             {
-                key: 'facet_subkategoriebestand_level3',
-                value: 'Merimde'
+                key: 'facet_subkategoriebestand_level1',
+                value: 'KAAK-Archiv-MBS'
             }
-        ]
+            ]
     }"></div>
 
     <div con10t-map style = "margin-bottom: 1vw;"
          id="map"
          limit="200"
          facets-select="config.facetsSelect"
-         lat="36.85"
-         lng="10.33"
-         zoom="5">
+         lat="26.82"
+         lng="30.80"
+         zoom="5"
+         baselayers="config.baselayers"
+         default-baselayer="config.baselayerKey"
+         facets-select="config.facetsSelect">>
     </div>
+    <!---->
 
             <!--
             <h3>weiterführende Links</h3>
