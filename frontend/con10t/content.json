@@ -795,7 +795,8 @@
           "title": {
             "de": "S. Kielau, Terrakotten aus Pergamon. Tonfiguren und -objekte aus der Wohnstadt am Südhang der Akropolis und von weiteren Fundorten, PF 17 (Berlin 2018). Erweiterter Online-Katalog",
             "en": "S. Kielau, Terrakotten aus Pergamon. Tonfiguren und -objekte aus der Wohnstadt am Südhang der Akropolis und von weiteren Fundorten, PF 17 (Berlin 2018). Erweiterter Online-Katalog"
-          }
+          },
+          "hidden": false
         },
         {
           "id": "ayamonte",
