@@ -1,45 +1,215 @@
-<div class="con10t-page container">
+<style>
+
+    #sticky-sidebar {
+        padding-top: 3vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+    </style>
+    
+<idai-header
+        image="/con10t/headerimages/Bestand-D-DAI-MAD-MK-DG-25-2007-021.jpg">
+</idai-header>
+
+<div class="con10t-page teaserpage container">
+
     <div class="con10t-row">
-        <div class="con10t-title">
-            <h1>The German Archaeological Institute (DAI) Madrid photo archive</h1>
+
+        <div style="background-color:#fff3;" class="con10t-title">
+            <h1>The photo archive of the Madrid department</h1>
         </div>
-        <div class="con10t-sidebar">
-            <h3>Related Links</h3>
-            <a con10t-search-query="*" con10t-search-facet="facet_subkategorie_bilder:strukturiert">to the images of the structured stock</a>
 
-            <h3>Unstructured stock</h3>
+        <!-- sidebar -->
+        <div class="con10t-sidebar" id = "sticky-sidebar" style = "padding-top: 4vw;">
 
+            <con10t-toc toc-heading="Content"></con10t-toc>
+
+            <h3>to the images</h3>
+
+            <div class="panel panel-default" style="border-color: rgb(209, 177, 147)">
+                <div class="panel-body" style="background-color:rgb(255, 247, 200); border-color: rgb(170, 100, 34);">
+                    <p>
+                        <a href="mailto:fotothek@madrid.dainst.org" style="color:rgb(212, 151, 93)">Access to the Madrid photo archive's images must be requested through inquiry</a>
+                    </p>
+                </div>
+              </div>
+
+            <p><con10t-search></con10t-search></p>
+            
             <con10t-tree fq="facet_bestandsname:dai-fotothek-madrid" wildcard-facet="facet_subkategorie"></con10t-tree>
         </div>
+       
         <div class="con10t-content">
-            <p>The archive holds ca. 50,500 photographs. It covers all archaeological
-                art forms of the Iberian Peninsula from the beginning up to the Islamic
-                period.</p>
 
-            <h3>Address</h3>
+            <h2 class="con10t-toc-entry">The photo archive</h2>
 
-            <p>German Archaeological Institute</p>
+                <p>The photo archive of the Madrid department of the DAI contains images from the department's projects, among these Zambujal, Centccelles, Ampurdan, Fuente Alamo and Sizandro-Alcabichel. Photos of important peoole and the institute's history are also part of the archive. 
+                <br>
+                The digital content can also be filtered by location or the material of the object. 
+                <br>
+                Illuminations in Spanish codices that were digitized as a part of the project Emagines can also be found in the photo archive.
+                <br>
+                Further subcategories can be chosen through the faceted search on the left hand side of Arachne.
+                </p>
+         
+
+            <!-- Projekte Madrid -->
+            <div style = "clear:both;">
+                <h3 class="con10t-toc-entry">Digitized photos of projects</h3>
+                <con10t-image src="/con10t/img/fotomadrid/projekte.jpg"
+                              align="left" width="350"
+                              alt="Zambujal">
+                              Zambujal D-DAI-MAD-MK-DG-25-2007-109 (© DAI Madrid)
+                </con10t-image>
+
+                <p>The digital photo archive of the Madrid department features all images of the Madrid department's projects, organized by the name of the project.
+                <br>
+                Futher subdivisions into the projects can be chosen through the faceted search on the left hand side of Arachne.
+                </p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <p><a href="https://arachne.dainst.org/project/fotomadrid/search?fq=facet_subkategoriebestand_level1:'1%20Projekte%20DAI%20Madrid'&fl=20&q=*" target="_blank">to the images of the projects ></a></p>
+                <br>
+               <p><con10t-search fq="facet_subkategoriebestand_level1:1%20Projekte%20DAI%20Madrid"search-placeholder="search all projects"></con10t-search></p>
+                <br>
+                <con10t-tree fq="facet_subkategoriebestand_level1:1 Projekte DAI Madrid" wildcard-facet="facet_subkategoriebestand_level2"></con10t-tree>
+       		 </div>
+
+       		 <!-- Institutsgeschichte Madrid -->
+            <div style = "clear:both;">
+                <h3 class="con10t-toc-entry">Photos of the institute's history</h3>
+                <con10t-image src="/con10t/img/fotomadrid/Bestand-D-DAI-MAD-MK-DG-016-2010-003.jpg"
+                              align="right" width="350"
+                              alt="D-DAI-MAD-MK-DG-016-2010-003">
+                              D-DAI-MAD-MK-DG-016-2010-003 (© DAI Madrid)
+                </con10t-image>
+
+                <p>The photo archive of the Madrid department also includes images on the history of the department.
+                </p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <p><a href="https://arachne.dainst.org/project/fotomadrid/search?fq=facet_bestandsname:%22dai-fotothek-madrid%22&fq=facet_subkategoriebestand_level1:%222%20Institutsgeschichte%22&fl=20&q=*" target="_blank">to the images of the department's history ></a></p>
+                <br>
+               <p><con10t-search fq="facet_subkategoriebestand_level1:2 Institutsgeschichte"search-placeholder="search all images"></con10t-search></p>
+       		 </div>
+
+       		 <!-- Personen Madrid -->
+            <div style = "clear:both;">
+                <h3 class="con10t-toc-entry">Significant researchers at the Madrid department</h3>
+                <con10t-image src="/con10t/img/fotomadrid/Bestand-D-DAI-MAD-KB-11-93-26.jpg"
+                              align="left" width="350"
+                              alt="D-DAI-MAD-KB-11-93-26">
+                              D-DAI-MAD-KB-11-93-26 (© DAI Madrid)
+                </con10t-image>
+
+                <p>Photos of important researchers who have been working at the Madrid department can also be accessed through Arachne.
+                </p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <p><a href="https://arachne.dainst.org/project/fotomadrid/search?fq=facet_bestandsname:%22dai-fotothek-madrid%22&fq=facet_subkategoriebestand_level1:%223%20Personen%22&fl=20&q=*" target="_blank">to the images of people ></a></p>
+                <br>
+               <p><con10t-search fq="facet_subkategoriebestand_level1:3 Personen"search-placeholder="search all images of people"></con10t-search></p>
+       		 </div>
+
+       		 <!-- Fotothek nach Standort -->
+            <div style = "clear:both;">
+                <h3 class="con10t-toc-entry">The photo archive by location</h3>
+                <con10t-image src="/con10t/img/fotomadrid/Bestand-D-DAI-MAD-DKB-SN-01129.jpg"
+                              align="right" width="350"
+                              alt="D-DAI-MAD-DKB-SN-01129">
+                              D-DAI-MAD-DKB-SN-01129 (© DAI Madrid)
+                </con10t-image>
+
+                <p>Photos of the photo archive Madrid are divided into locations. A list can be found at the left side navigation or in the list added below.
+                </p>
+                <br>
+                <br>
+                <p><a href="https://arachne.dainst.org/project/fotomadrid/search?fq=facet_subkategoriebestand_level1:%224%20Fotothek%20nach%20Standort%20gegliedert%22&fl=20&q=*" target="_blank">to images by location ></a></p>
+                <br>
+               <p><con10t-search fq="facet_subkategoriebestand_level1:4 Fotothek nach Standort gegliedert"search-placeholder="search all images"></con10t-search></p>
+               <br>
+                <con10t-tree fq="facet_subkategoriebestand_level1:4 Fotothek nach Standort gegliedert" wildcard-facet="facet_subkategoriebestand_level2"></con10t-tree>
+       		 </div>
+
+       		 <!-- Buchmalereien Emagines -->
+            <div style = "clear:both;">
+                <h3 class="con10t-toc-entry">Illuminations in Spanish codices as a part of Emagines</h3>
+                <con10t-image src="/con10t/img/fotomadrid/Bestand-D-DAI-MAD-DKB-00460.jpg"
+                              align="right" width="350"
+                              alt="D-DAI-MAD-DKB-00460">
+                              D-DAI-MAD-DKB-00460 (© DAI Madrid)
+                </con10t-image>
+
+                <p>The project Spanish codices, which was conducted as a part of the Emagines project, digitized illuminations from Spanish codices now available through Arachne. 
+                </p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <p><a href="https://arachne.dainst.org/project/fotomadrid/search?fq=facet_bestandsname:%22dai-fotothek-madrid%22&fq=facet_subkategoriebestand_level1:%22Emagines%20Buchmalereien%22&fl=20&q=*" target="_blank">to the digitized illuminations ></a></p>
+                <br>
+               <p><con10t-search fq="facet_subkategoriebestand_level1:Emagines Buchmalereien"search-placeholder="search all illuminations"></con10t-search></p>
+               <br>
+                <con10t-tree fq="facet_subkategoriebestand_level1:Emagines Buchmalereien" wildcard-facet="facet_subkategoriebestand_level2"></con10t-tree>
+       		 </div>
+
+       		 <!-- Material -->
+            <div style = "clear:both;">
+                <h3 class="con10t-toc-entry">Material</h3>
+                <con10t-image src="/con10t/img/fotomadrid/Bestand-D-DAI-MAD-DKB-01906b.jpg"
+                              align="left" width="200"
+                              alt="D-DAI-MAD-DKB-01906">
+                              D-DAI-MAD-DKB-01906 <br>(© DAI Madrid)
+                </con10t-image>
+
+                <p>The following section allows to filter the Madrid department's photos by location.
+                </p>
+                <br>
+               <p><li><a href="https://arachne.dainst.org/project/fotomadrid/search?fq=facet_bestandsname:%22dai-fotothek-madrid%22&fq=facet_subkategoriebestand_level1:%22Keramik%22&fl=20&q=*" target="_blank">Pottery</a></li></p>
+               <p><li><a href="https://arachne.dainst.org/project/fotomadrid/search?fq=facet_bestandsname:%22dai-fotothek-madrid%22&fq=facet_subkategoriebestand_level1:%22Glas%22&fl=20&q=*" target="_blank">Glass</a></li></p>
+            	<p><li><a href="https://arachne.dainst.org/project/fotomadrid/search?fq=facet_bestandsname:%22dai-fotothek-madrid%22&fq=facet_subkategoriebestand_level1:%22Gold%20und%20Silber%22&fl=20&q=*" target="_blank">Gold and silver</a></li></p>
+            	<p><li><a href="https://arachne.dainst.org/project/fotomadrid/search?fq=facet_bestandsname:%22dai-fotothek-madrid%22&fq=facet_subkategoriebestand_level1:%22Romanische%20Malerei%22&fl=20&q=*" target="_blank">Romanesque paintings</a></li></p>
+            	<p><li><a href="https://arachne.dainst.org/project/fotomadrid/search?fq=facet_bestandsname:%22dai-fotothek-madrid%22&fq=facet_subkategoriebestand_level1:%22Romanische%20Plastik%22&fl=20&q=*" target="_blank">Romanesque sculptures</a></li></p>
+       		 </div>
+
+       		 <!-- Kontakt -->
+            <div style = "clear:both;">
+                <h3 class="con10t-toc-entry">Contact</h3>
+           
+
+             <p>German Archaeological Institute</p>
             <p>Madrid Department</p>
             <p>Serrano 159</p>
             <p>28002 Madrid</p>
-
-            <h3>Contact</h3>
-
-            <p>PD Dr. Michael Kunst</p>
-            <p>Telephone: <span style="white-space:pre">		</span>+ 34-91-561 09 04
-                <br> <span style="white-space:pre">		</span>+ 34-91-411 01 63</p>
-            <p>Fax: <span style="white-space:pre">		</span>+ 34-91- 564 00 54</p>
+         	<br>
+            <p>Dr. Ing. Felix Arnold</p>
             <p>E-Mail: <a href="mailto:fotothek@madrid.dainst.org">fotothek@madrid.dainst.org</a>
-            </p>
-            <p>Additional e-Mail: <a href="mailto:sekretariat@madrid.dainst.org">sekretariat@madrid.dainst.org</a>
-            </p>
-            <p></p>
-            <h3></h3>
-            <p></p>
-            <p>Last updated: 06-15-2011</p>
-            <p><a href="http://www.dainst.org/en/standort/-/organization-display/ZI9STUj61zKB/18549?"
-                  target="_blank">The Madrid photo archive on the German Archaeological Institute's website</a>
-            </p>
-        </div>
+            </p>further E-Mail address: <a href="mailto:sekretariat@madrid.dainst.org">sekretariat@madrid.dainst.org</a>
+
+            <p>Date: 20.10.2020</p><a href="http://www.dainst.org/standort/-/organization-display/ZI9STUj61zKB/18549?"
+                                       target="_blank">Madrid department's photo archive on the DAI homepage</a>
+       		 </div>
+
+    	</div>
     </div>
 </div>
+
