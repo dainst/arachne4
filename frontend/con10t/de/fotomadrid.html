@@ -1,3 +1,14 @@
+<style>
+
+    #sticky-sidebar {
+        padding-top: 3vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+    </style>
+    
 <idai-header
         image="/con10t/headerimages/Bestand-D-DAI-MAD-MK-DG-25-2007-021.jpg">
 </idai-header>
@@ -11,11 +22,19 @@
         </div>
 
         <!-- sidebar -->
-        <div class="con10t-sidebar" style = "padding-top: 4vw;">
+        <div class="con10t-sidebar" id = "sticky-sidebar" style = "padding-top: 4vw;">
 
             <con10t-toc toc-heading="Übersicht"></con10t-toc>
 
             <h3>Zu den Digitalisaten</h3>
+
+            <div class="panel panel-default" style="border-color: rgb(209, 177, 147)">
+                <div class="panel-body" style="background-color:rgb(255, 247, 200); border-color: rgb(170, 100, 34);">
+                    <p>
+                        <a href="mailto:fotothek@madrid.dainst.org" style="color:rgb(212, 151, 93)">Zugang zu den Bildern der Fotothek Madrid muss durch Anfrage freigeschaltet werden</a>
+                    </p>
+                </div>
+              </div>
 
             <p><con10t-search></con10t-search></p>
             
