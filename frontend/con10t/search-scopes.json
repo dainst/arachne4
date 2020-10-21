@@ -245,19 +245,18 @@
     "q": "catalogPaths:132"
   },
   "rakob": {
-    "q": "D-DAI-NA-RAK",
     "facets": [
       {
-        "key": "facet_bestandsname",
-        "value": "dai-rom-nara"
+        "key": "facet_subkategoriebestand_level2",
+        "value": "Nachlass-Friedrich-Rakob"
       }
     ]
   },
   "rakob_sidebar": {
     "facets": [
       {
-        "key": "facet_bestandsname",
-        "value": "dai-rom-nara"
+        "key": "facet_subkategoriebestand_level2",
+        "value": "Nachlass-Friedrich-Rakob"
       }
     ]
   },
