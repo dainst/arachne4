@@ -444,7 +444,7 @@
 							<field datasource="objektplastik.Haarfrisur" />
 						</section>
 						<section labelKey="Zopf">
-							<field datasource="objektplastik.Heerzopf" />
+							<field datasource="objektplastik.Haarrzopf" />
 						</section>
 						<section labelKey="Stirnhaar">
 							<field datasource="objektplastik.Stirnhaar" />
@@ -496,11 +496,13 @@
 					<section labelKey="Tier">
 						<field datasource="objektplastik.AttributeTier" />
 					</section>
-					<section separator=" ">
+					<section labelKey="Sonstige Attribute">
 						<field datasource="objektplastik.AttributeSonstige" />
+					</section>
+					<section labelKey="Beschreibung">
 						<field datasource="objektplastik.AttributeBeschreibung" />
 					</section>
-					<section labelKey="Dekoration" separator=" ">
+					<section labelKey="Dekoration" separator="; ">
 						<field datasource="objektplastik.Dekorationsrt" />
 						<field datasource="objektplastik.Dekoration" />
 					</section>
@@ -509,7 +511,7 @@
 					<section labelKey="Objekt ist">
 						<field datasource="objektplastik.reliefiert" />
 					</section>
-					<section labelKey="Reliefträger" separator=" ">
+					<section labelKey="Reliefträger" separator="; ">
 						<field datasource="objektplastik.TraegerAllgemein" />
 						<field datasource="objektplastik.FormatRelieftraeger" />
 						<field datasource="objektplastik.Relieftypus" />
