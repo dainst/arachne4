@@ -245,20 +245,7 @@
     "q": "catalogPaths:132"
   },
   "rakob": {
-    "facets": [
-      {
-        "key": "facet_subkategoriebestand_level2",
-        "value": "Nachlass-Friedrich-Rakob"
-      }
-    ]
-  },
-  "rakob_sidebar": {
-    "facets": [
-      {
-        "key": "facet_subkategoriebestand_level2",
-        "value": "Nachlass-Friedrich-Rakob"
-      }
-    ]
+    "q": "D-DAI-ROM-NA-RAK"
   },
   "rakob_map": {
     "alias": "rakob"
