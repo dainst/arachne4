@@ -844,7 +844,7 @@
             "de": "A. Schachner, Die Ausgrabungen in Boğazköy-Ḫattuša 2019, AA 2020/1, § 1–111. Supplement",
 			"en": "A. Schachner, The Excavations at Boğazköy-Ḫattuša in 2019, AA 2020/1, § 1–111. Supplement"
           },
-          "hidden": true
+          "hidden": false
         },
 		{
           "id": "JOGA_2020_Pruemers",
