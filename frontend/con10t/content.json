@@ -799,6 +799,14 @@
           "hidden": false
         },
         {
+          "id": "pergamenischeforschungen19",
+          "title": {
+            "de": "E. Laufer, Architektur unter den Attaliden. Pergamon und die Städte zwischen herrscherlichem Bauengagement und Lokaltradition, PF 19 (Berlin 2021). Online-Katalog",
+            "en": "E. Laufer, Architektur unter den Attaliden. Pergamon und die Städte zwischen herrscherlichem Bauengagement und Lokaltradition, PF 19 (Berlin 2021). Online-Katalog"
+          },
+          "hidden": true
+        },
+        {
           "id": "ayamonte",
           "title": {
             "de": "Die Phönizische Nekropole von Ayamonte",
@@ -844,7 +852,7 @@
             "de": "A. Schachner, Die Ausgrabungen in Boğazköy-Ḫattuša 2019, AA 2020/1, § 1–111. Supplement",
 			"en": "A. Schachner, The Excavations at Boğazköy-Ḫattuša in 2019, AA 2020/1, § 1–111. Supplement"
           },
-          "hidden": true
+          "hidden": false
         },
 		{
           "id": "JOGA_2020_Pruemers",
@@ -891,6 +899,13 @@
             "de": "MAR 41: A. Reinhardt, Reproduktion und Bild. Zur Wiederholung und Vervielfältigung von Reliefs in römischer Zeit, MAR XLI (Wiesbaden 2019). Online-Katalog"
           },
           "hidden": false
+        },
+        {
+          "id": "blankenheim",
+          "title": {
+            "de": "P. Noelke – N. Hanel - P. Pauly, Die Antiken der Grafen von Manderscheid-Blankenheim. Kontext, Schicksal und Kommentierung einer rheinischen Sammlung der Zeit des Humanismus (Onlinekatalog)."
+          },
+          "hidden": true
         }
       ]
     },
