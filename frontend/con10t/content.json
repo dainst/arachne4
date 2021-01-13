@@ -903,9 +903,10 @@
         {
           "id": "blankenheim",
           "title": {
-            "de": "P. Noelke – N. Hanel - P. Pauly, Die Antiken der Grafen von Manderscheid-Blankenheim. Kontext, Schicksal und Kommentierung einer rheinischen Sammlung der Zeit des Humanismus (Onlinekatalog)."
+            "de": "P. Noelke – N. Hanel - P. Pauly, Die Antiken der Grafen von Manderscheid-Blankenheim. Kontext, Schicksal und Kommentierung einer rheinischen Sammlung der Zeit des Humanismus (Onlinekatalog).",
+			"en": "P. Noelke – N. Hanel - P. Pauly, Die Antiken der Grafen von Manderscheid-Blankenheim. Kontext, Schicksal und Kommentierung einer rheinischen Sammlung der Zeit des Humanismus (Onlinekatalog)."
           },
-          "hidden": true
+          "hidden": false
         }
       ]
     },
