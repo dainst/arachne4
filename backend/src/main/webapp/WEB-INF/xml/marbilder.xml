@@ -91,7 +91,7 @@
 							<field datasource="marbilderbestand.Aufnahmedatum" />
 						</ifEmpty>
 					</field>
-					<field datasource="marbilderinventar.04_Bildautor" prefix="Bildautor: ">
+					<field datasource="marbilderinventar.04_Bildautor" prefix="Bildautor/in: ">
 						<ifEmpty>
 							<field datasource="marbilderbestand.Bildautor" />
 						</ifEmpty>
@@ -136,7 +136,7 @@
 							<field datasource="marbilderbestand.Material" prefix="Material: " />
 						</ifEmpty>
 					</field>
-					<field datasource="marbilderinventar.AutorBeschreibung" prefix="Autor der Beschreibung: " />
+					<field datasource="marbilderinventar.AutorBeschreibung" prefix="Autor/in der Beschreibung: " />
 					<field datasource="marbilderinventar.MuseumsNr" prefix="Museumsnummer: " />
 					<field datasource="marbilderinventar.DepotNr" prefix="Depotnummer: " />
 					<field datasource="marbilderinventar.Hinweise" prefix="Hinweise: " />
@@ -168,7 +168,7 @@
 					<field datasource="marbilder.Kommentar" prefix="Kommentar: " />
 					<field datasource="marbilder.AnsichtObjekt" prefix="Ansicht des Objekts: " />
                     <field datasource="marbilder.Fotodatum" prefix="Fotodatum: " />
-					<field datasource="marbilder.Fotograf" prefix="Fotograf: " />
+					<field datasource="marbilder.Fotograf" prefix="Fotograf/in: " />
 					<field datasource="marbilder.BildtraegerMarbilder" prefix="Bildträger: " />
 					<field datasource="marbilder.FilmNr" prefix="Filmnummer: " />
 					<field datasource="marbilder.NegativNr" prefix="Negativnummer: " />
