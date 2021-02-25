@@ -69,6 +69,11 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 	protected List<Image> images;
 	
 	/**
+	 * The 3d models that are associated with the dataset
+	 */
+	protected List<Model> models;
+	
+	/**
 	 * The number of connected images
 	 */
 	protected int imageSize = 0;
@@ -194,12 +199,20 @@ public class FormattedArachneEntity extends BaseArachneEntity {
 		return images;
 	}
 	
+	public List<Model> getModels() {
+		return models;
+	}
+	
 	public Long getThumbnailId() {
 		return thumbnailId;
 	}
 	
 	public void setImages(final List<Image> images) {
 		this.images = images;
+	}
+	
+	public void setModels(final List<Model> models) {
+		this.models = models;
 	}
 	
 	public int getImageSize() {

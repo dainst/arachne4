@@ -58,6 +58,13 @@ public class Dataset {
 	protected List<Image> images;
 	
 	/**
+	 * The 3d models that are asociated with the dataset.
+	 */
+	protected List<Model> models;
+	
+
+
+	/**
 	 * Generic field for additional content
 	 */
 	protected AdditionalContent additionalContent; 
@@ -146,6 +153,10 @@ public class Dataset {
 	
 	public List<Image> getImages() {
 		return images;
+	}
+	
+	public List<Model> getModels() {
+		return models;
 	}
 	
 	public Long getThumbnailId() {
@@ -327,6 +338,10 @@ public class Dataset {
 	
 	public void setImages(final List<Image> images) {
 		this.images = images;
+	}
+	
+	public void setModels(final List<Model> models) {
+		this.models = models;
 	}
 	
 	public void setThumbnailId(final Long thumbnailId) {

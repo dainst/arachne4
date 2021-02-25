@@ -658,6 +658,12 @@ public class ResponseFactory {
 		}
 		response.setImages(imageList);
 
+		// Set 3D models
+		List<Model> modelList = dataset.getModels();
+		if (modelList != null && modelList.size() > 0) {
+			response.setModels(modelList);
+		}
+
 		// set external links
 		setExternalLinks(dataset, response);
 		return getFacettedEntityAsJson(dataset, document, response, namespace, lang);

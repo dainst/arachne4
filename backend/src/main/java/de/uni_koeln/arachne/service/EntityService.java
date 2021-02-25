@@ -42,6 +42,9 @@ public class EntityService {
 	private transient ImageService imageService;
 
 	@Autowired
+	private transient ModelService modelService;
+
+	@Autowired
 	private transient UserRightsService userRightsService;
 
 	@Autowired
@@ -211,6 +214,7 @@ public class EntityService {
     		long nextTime = System.currentTimeMillis();
 
     		imageService.addImages(arachneDataset);
+    		modelService.addModels(arachneDataset);
 
     		final long imageTime = System.currentTimeMillis() - nextTime;
     		nextTime = System.currentTimeMillis();
@@ -228,6 +232,7 @@ public class EntityService {
     		LOGGER.info("-- Creating response took " + (System.currentTimeMillis() - nextTime) + " ms");
     	} else {
     		imageService.addImages(arachneDataset);
+    		modelService.addModels(arachneDataset);
 
     		contextService.addMandatoryContexts(arachneDataset, lang);
 
@@ -272,6 +277,7 @@ public class EntityService {
     		long nextTime = System.currentTimeMillis();
 
     		imageService.addImages(arachneDataset);
+    		modelService.addModels(arachneDataset);
 
     		final long imageTime = System.currentTimeMillis() - nextTime;
     		nextTime = System.currentTimeMillis();
@@ -289,6 +295,7 @@ public class EntityService {
     		LOGGER.info("-- Creating response took " + (System.currentTimeMillis() - nextTime) + " ms");
     	} else {
     		imageService.addImages(arachneDataset);
+    		modelService.addModels(arachneDataset);
 
     		contextService.addMandatoryContexts(arachneDataset, lang);
 

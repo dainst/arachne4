@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import de.uni_koeln.arachne.context.ContextPath;
 import de.uni_koeln.arachne.mapping.jdbc.GenericEntitiesMapper;
 import de.uni_koeln.arachne.response.Image;
+import de.uni_koeln.arachne.response.Model;
 import de.uni_koeln.arachne.service.DataIntegrityLogService;
 import de.uni_koeln.arachne.service.UserRightsService;
 import de.uni_koeln.arachne.util.StrUtils;
@@ -289,6 +290,50 @@ public class GenericSQLDao extends SQLDao {
 			}
 			image.setImageId(rs.getLong(2));
 			return image;
+		});
+
+		if (result != null && !result.isEmpty()) {
+			return result;
+		}
+		return null;
+	}
+
+	/**
+	 * Gets a list of connected 3d models for the given entity from the DB. Handles
+	 * user access rights.
+	 * 
+	 * @param type
+	 *            The type of the entity.
+	 * @param internalId
+	 *            The internal id of the entity.
+	 * @return The list of models.
+	 */
+	public List<Model> getModelList(final String type, final long internalId) {
+
+		List<Model> result = query(con -> {
+			final String sql = "SELECT `modell3d`.`Titel`, `modell3d`.`Dateiname`, "
+					+ "`modell3d`.`PS_Modell3dID`, `arachneentityidentification`.`ArachneEntityID` "
+					+ "FROM `modell3d` " + "LEFT JOIN `arachneentityidentification` "
+					+ "ON (`arachneentityidentification`.`TableName` = 'modell3d' "
+					+ "AND `arachneentityidentification`.`ForeignKey` = `modell3d`.`PS_Modell3dID`) " + "WHERE "
+					+ SQLToolbox.getQualifiedFieldname("modell3d", SQLToolbox.generateForeignKeyName(type)) + " = ?"
+					+ userRightsService.getSQL("modell3d");
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setLong(1, internalId);
+			return ps;
+		}, (rs, rowNUm) -> {
+			final Model model = new Model();
+			model.setTitle(rs.getString(1));
+			final String fileName = rs.getString(2);
+			if (fileName != null) {
+				model.setFileName(fileName);
+			} else {
+				dataIntegrityLogService.logWarning(rs.getLong(3), "PS_Modell3dID", "3d model without file name.");
+			}
+			model.setInternalId(rs.getLong(3));
+			model.setModelId(rs.getLong(4));
+			
+			return model;
 		});
 
 		if (result != null && !result.isEmpty()) {
