@@ -33,8 +33,9 @@ public class ModelService {
 			if ("modell3d".equals(arachneId.getTableName())) {
 				final Model model = new Model();
 				model.setModelId(arachneId.getArachneEntityID());
-				String title = dataset.getField("modell3d.Titel");
-				model.setTitle(title);
+				model.setTitle(dataset.getField("modell3d.Titel"));
+				model.setFileName(dataset.getField("modell3d.Dateiname"));
+				model.setInternalId(dataset.getArachneId().getInternalKey());
 				final List<Model> modelList = new ArrayList<>();
 				modelList.add(model);
 				dataset.setModels(modelList);
