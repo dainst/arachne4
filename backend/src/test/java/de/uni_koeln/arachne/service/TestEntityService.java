@@ -41,6 +41,9 @@ public class TestEntityService {
 	private ImageService imageService;
 	
 	@Mock
+	private ModelService modelService;
+	
+	@Mock
 	private ContextService contextService;
 	
 	@Mock
