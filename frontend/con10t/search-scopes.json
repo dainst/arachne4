@@ -44,7 +44,7 @@
         "value": "dai-orientabteilung"
       }
     ]
-  }, 
+  },
   "databasepausanias": {
     "q": "(catalogPaths:111 OR catalogPaths:110)"
   },
@@ -69,7 +69,7 @@
       {
         "key": "facet_kategorie",
         "value": "Bilder"
-      }, 
+      },
       {
         "key": "facet_subkategorie_bilder",
         "value": "unstrukturiert"
@@ -95,7 +95,7 @@
       {
         "key": "facet_bestandsname",
         "value": "dai-fotothek-madrid"
-      } 
+      }
     ]
   },
   "gelehrtenbriefe": {
@@ -212,6 +212,9 @@
   },
   "mar41": {
     "q": "catalogPaths:388"
+  },
+  "milet_V4": {
+    "q": "catalogPaths:597"
   },
   "nara": {
     "q": "searchableEditorContent:D-DAI-ROM-NA"
