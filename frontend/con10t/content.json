@@ -842,7 +842,7 @@
           "title": {
             "de": "A. Schachner, Die Ausgrabungen in Boğazköy-Ḫattuša 2018, AA 2019/1, § 1–147. Supplement",
 			"en": "A. Schachner, The Excavations at Boğazköy-Ḫattuša in 2018, AA 2019/1, § 1–147. Supplement"
-			
+
           },
           "hidden": false
         },
@@ -897,6 +897,14 @@
           "id": "mar41",
           "title": {
             "de": "MAR 41: A. Reinhardt, Reproduktion und Bild. Zur Wiederholung und Vervielfältigung von Reliefs in römischer Zeit, MAR XLI (Wiesbaden 2019). Online-Katalog"
+          },
+          "hidden": false
+        },
+        {
+          "id": "milet_V4",
+          "title": {
+            "de": "Milet V 4: G. P. Schaus, Funde aus Milet Teil 4, Laconian and Chian Fine Ware Pottery at Miletus. Milet V 4 (Wiesbaden 2020). Digitaler Katalog",
+            "en": "Milet V 4: G. P. Schaus, Funde aus Milet Teil 4, Laconian and Chian Fine Ware Pottery at Miletus. Milet V 4 (Wiesbaden 2020). Digitaler Katalog"
           },
           "hidden": false
         },
