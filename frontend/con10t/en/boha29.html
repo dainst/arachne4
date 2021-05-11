@@ -1,0 +1,104 @@
+<style>
+
+    .con10t-row {
+        margin-top: 5vh;
+    }
+</style>
+
+
+    <!-- Kopfbereich der Projektseite -->
+   <idai-header
+           image="/con10t/headerimages/boha29.jpg"
+           description="S. Herbordt – A. von Wickede, Kleinfunde aus der Oberstadt von Hattusa. Das zentrale Tempelviertel und die Tempelviertel am Königs- und Löwentor, Boğazköy-Ḫattuša 29 (Berlin 2021). Erweiterter Online-Katalog"
+           link="https://doi.org/10.34780/jgjb-0h27">
+   </idai-header>
+
+   <!-- Hauptbereich der Projektseite -->
+   <div class="con10t-page teaserpage container">
+
+       <div class="con10t-row">
+
+           <div class="con10t-title">
+               <h1>S. Herbordt – A. von Wickede, Kleinfunde aus der Oberstadt von Hattusa. Das zentrale Tempelviertel und die Tempelviertel am Königs- und Löwentor, Boğazköy-Ḫattuša 29 (Berlin 2021). Erweiterter Online-Katalog</h1>
+           </div>
+
+           <div class="con10t-sidebar" style = "padding-top: 2vw;">
+
+               <con10t-toc toc-heading="Content"></con10t-toc>
+
+               <h3>Project Data</h3>
+
+               <a con10t-search-query="*&amp;fq=catalogIds:'872'" target = "_blank">Show project data</a>
+
+               <con10t-search catalog-id="872"></con10t-search>
+
+               <br>
+
+               <!--- Map --->
+               <h3>Map</h3>
+
+               <div ng-init="config = {
+				facetsSelect: [
+					{
+						key: 'facet_kategorie',
+						value: 'Einzelobjekte'
+					}
+				]
+			    }">
+
+               </div>
+
+               <div con10t-map style = "margin-bottom: 1vw;"
+                    id="map"
+                    limit="200"
+                    facets-select="config.facetsSelect"
+                    lat="40.019722"
+                    lng="34.615278"
+                    zoom="14">
+               </div>
+
+               <h3>Catalog</h3>
+
+               <a href = "https://arachne.dainst.org/catalog/872">To catalog view</a>
+
+               <h3 style = "margin-top: 5%">About the book</h3>
+
+               <p><a href = "https://doi.org/10.34780/jgjb-0h27" target = "_blank">iDAI.publications</a></p>
+
+               <con10t-image src = "/con10t/img/boha29/Boha29_Cover.jpg" alt = "Cover-Printausgabe" width = "350"></con10t-image>
+
+           </div>
+
+           <div class="con10t-content">
+
+               <h2 class="con10t-toc-entry">Introduction</h2>
+
+               <p>Presented here is the additional online catalogue consisting of ca. 4,800 objects from the excavations of P. Neve in the upper city of the Hittite capital, Hattusa/Boğazköy, from the central temple district and the temple precincts located at the King’s Gate and Lion’s Gate in the years 1978–1988.
+                   The material comes primarily from 29 temple precincts and 37 further buildings that have been interpreted as workshops and houses. The temple precincts contained extensive inventories of the Hittite period (15th–13th centuries B.C.) including cultic artefacts, tools, weapons, jewellery, seals and sealed bullae, written documents, and pottery.
+                   In addition to the Hittite finds, the catalogue includes a small number of earlier artefacts of the Karum period, the Early Bronze Age and Late Chalcolithic period (lithic finds and glyptic) as well as post Hittite finds dating to the Iron Age. The small finds from the Byzantine period are not included here.</p>
+
+               <!-- Figure 1 -->
+               <con10t-image src="/con10t/img/boha29/D-DAI-IST-BO-1984-15-215-GKK.jpg" align="left" alt="Statuettengruppe" width="340">
+                   <span class="ng-scope"><a href = "https://arachne.dainst.org/entity/6876802" target = "_blank">Statuengruppe [Inv. 84/169] (Foto: P. Neve)</a></span>
+               </con10t-image>
+
+               <p>In supplement to the published volume »Kleinfunde aus der Oberstadt von Ḫattuša« (BoHa 29) the online catalogue presents both the objects with excavation inventory numbers and the study material (etüdlük objects) together with all available information on the find spots, dimensions, and object descriptions. The object attributions as well as the information
+                   concerning the find spots and material determinations as noted on the inventory cards of the expedition were checked and corrected if necessary both during study trips to Boğazköy and through continuous work in the Boğazköy archive of the DAI in Berlin. The locations of older excavation areas and trenches have been correlated with both Neve’s north-south coordinate system and the new coordinate system established by H. P. Birk.</p>
+
+               <p>The material analysis of the objects has shown that most tools and implements were made of bronze, although there are some examples for the use of copper alone. Surprisingly, iron objects are almost entirely missing in the extensive material from the upper city. Also, the slag deposits found in the workshops provide no evidence for iron smelting.</p>
+
+               <p style = "padding-top: 2vh;">The presentation of the small finds from the upper city is organized according to categories of function rather than the material of the objects. The following categories of function have been distinguished:</p>
+
+               <p>lithics; ground stone implements; waste products and raw materials; tools and implements for metal working; tools and implements for cutting and splitting; tools and implements for chiselling, stemming, and chasing; tools and implements for drilling, chipping, and engraving; tools and implements for leather and textile working; other implements; spatulas and other toiletries; connecting elements; writing implements; weights; handles; weapons;
+                   jewellery and garment pins; glyptic; metal fittings and ornaments; astragals and other game pieces; relief sculpture and sculpture in the round; stone and metal vessels; varia; cult vessels and implements; written documents.</p>
+
+               <p>The objects with inventory numbers are stored in the Archaeological Museum of Çorum as well as in the Boğazköy Museum.</p>
+
+               <h2 class="con10t-toc-entry">Catalog</h2>
+
+               <con10t-catalog-tree catalog-id="872"></con10t-catalog-tree>
+
+           </div>
+
+       </div>
+   </div>
