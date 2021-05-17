@@ -185,8 +185,9 @@
 		<facet name="autor" labelKey="Autor">
 			<field datasource="buch.BuchAuthor" />
 		</facet>
-		<!-- <facet name="buchtitel" labelKey="Titel"> <field datasource="buch.BuchTitel" 
-			/> </facet> -->
+		<facet name="weiterepersonen" labelKey="Weitere Personen">
+			<field datasource="buch.BuchWeiterePersonen" />
+		</facet>
 		<facet name="jahr" labelKey="Jahr">
 			<field datasource="buch.BuchJahr" />
 		</facet>
