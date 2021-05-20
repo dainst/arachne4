@@ -22,8 +22,11 @@
       }
     ]
   },
-   "blankenheim": {
+  "blankenheim": {
     "q": "catalogPaths:871"
+  },
+  "boha29": {
+    "q": "catalogPaths:872"
   },
   "ceramegypt": {
     "facets": [

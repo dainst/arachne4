@@ -1,26 +1,102 @@
-  <!-- Kopfbereich der Projektseite -->
+<style>
+
+    .con10t-row {
+        margin-top: 5vh;
+    }
+</style>
+
+
+    <!-- Kopfbereich der Projektseite -->
    <idai-header
-           image="/con10t/headerimages/hoch-aufgeloestes-bild.jpg"
-           description="Kurze Beschreibung des Bildes"
-           link="http://verweis-auf-ressource.de">
+           image="/con10t/headerimages/boha29.jpg"
+           description="S. Herbordt – A. von Wickede, Kleinfunde aus der Oberstadt von Hattusa. Das zentrale Tempelviertel und die Tempelviertel am Königs- und Löwentor, Boğazköy-Ḫattuša 29 (Berlin 2021). Erweiterter Online-Katalog"
+           link="https://publications.dainst.org/books/index.php/dai/catalog/series/boghattusa">
    </idai-header>
-   
+
    <!-- Hauptbereich der Projektseite -->
    <div class="con10t-page teaserpage container">
-   
+
        <div class="con10t-row">
-   
+
            <div class="con10t-title">
-               <h1>BoHa 29</h1>
+               <h1>S. Herbordt – A. von Wickede, Kleinfunde aus der Oberstadt von Hattusa. Das zentrale Tempelviertel und die Tempelviertel am Königs- und Löwentor, Boğazköy-Ḫattuša 29 (Berlin 2021). Erweiterter Online-Katalog</h1>
            </div>
-   
-           <div class="con10t-sidebar">
-               <!-- Rechte Seitenleiste -->
+
+           <div class="con10t-sidebar" style = "padding-top: 2vw;">
+
+               <con10t-toc toc-heading="Übersicht"></con10t-toc>
+
+               <h3>Suche in den Daten des Projekts</h3>
+
+               <a con10t-search-query="*&amp;fq=catalogIds:'872'" target = "_blank">Alle Datensätze anzeigen</a>
+
+               <con10t-search catalog-id="872"></con10t-search>
+
+               <br>
+
+               <!--- Map --->
+               <h3>Karte</h3>
+
+               <div ng-init="config = {
+				facetsSelect: [
+					{
+						key: 'facet_kategorie',
+						value: 'Einzelobjekte'
+					}
+				]
+			    }">
+
+               </div>
+
+               <div con10t-map style = "margin-bottom: 1vw;"
+                    id="map"
+                    limit="200"
+                    facets-select="config.facetsSelect"
+                    lat="40.019722"
+                    lng="34.615278"
+                    zoom="14">
+               </div>
+
+               <h3>Katalog</h3>
+
+               <a href = "https://arachne.dainst.org/catalog/872">Zur Katalogansicht</a>
+
+               <h3 style = "margin-top: 5%">Informationen zum Buch</h3>
+
+               <p><a href = "https://publications.dainst.org/books/index.php/dai/catalog/series/boghattusa" target = "_blank">iDAI.publications</a></p>
+
+               <con10t-image src = "/con10t/img/boha29/Boha29_Cover.jpg" alt = "Cover-Printausgabe" width = "350"></con10t-image>
+
            </div>
-   
+
            <div class="con10t-content">
-               Coming soon...
+
+               <h2 class="con10t-toc-entry">Einleitung</h2>
+
+               <p>Der hier präsentierte zusätzliche Online-Katalog basiert auf rund 4.800 Objekten der Grabungen P. Neves in der Oberstadt der hethitischen Hauptstadt Ḫattuša/Boğazköy im zentralen Tempelviertel und in den Tempelanlagen an Königs- und Löwentor aus den Jahren 1978–1988. Das Fundmaterial stammt primär aus 29 Tempelanlagen und 37 weiteren Gebäuden, die als Werkstätten und Häuser gedeutet werden. Die Heiligtümer enthielten ein reichhaltiges Inventar aus hethitischer Zeit (15.–13. Jahrhundert v. Chr.), darunter Gegenstände kultischer Funktion, Gebrauchsgerät, Werkzeuge, Waffen, Schmuck, Siegel,
+                   gesiegelte Tonbullen, Schriftdokumente sowie Gebrauchskeramik. Neben den hethitischen Kleinfunden  enthält der Katalog eine kleine Anzahl karum-zeitlicher und  älterer Artefakte (Lithik und Glyptik) aus der Frühbronzezeit und dem Spätchalkolithikum sowie nachhethitische eisenzeitliche Funde. Die Funde aus byzantinischer Zeit sind nicht enthalten.</p>
+
+               <!-- Figure 1 -->
+               <con10t-image src="/con10t/img/boha29/D-DAI-IST-BO-1984-15-215-GKK.jpg" align="left" alt="Statuettengruppe" width="340">
+                   <span class="ng-scope"><a href = "https://arachne.dainst.org/entity/6876802" target = "_blank">Statuengruppe [Inv. 84/169] (Foto: P. Neve)</a></span>
+               </con10t-image>
+
+               <p>In Ergänzung zum veröffentlichten Band der »Kleinfunde aus der Oberstadt von Ḫattuša« (BoHa 29) sind sowohl inventarisierte Stücke als auch Studienmaterial (Etüdlük-Objekte) in den Katalog mit allen verfügbaren Fundangaben, Maßen und Beschreibungen aufgenommen.
+                   Die Objektbestimmungen sowie Angaben zu Areal, Fundlage und Material aus der Fundkartei wurden während der Kleinfundbearbeitung vor Ort und im Boğazköy-Archiv des Deutschen Archäologischen Instituts überprüft und soweit notwendig korrigiert. Es erfolgte eine Korrelation der Grabungs- und Suchschnitte sowohl mit dem genordeten alten (Neve) als auch neuen (Birk) Koordinatensystem.</p>
+
+               <p>Die Materialanalysen der Fundobjekte haben gezeigt, dass die meisten Geräte und Werkzeuge aus Bronze bestanden, wenngleich auch noch reines Kupfer Verwendung fand. Überraschenderweise fehlen in dem umfangreichen Fundmaterial Eisenobjekte nahezu vollkommen und auch bei den Schlackeresten in den Werkstätten lässt sich keine Eisenverhüttung nachweisen.</p>
+
+               <p style = "padding-top: 2vh;">Bei der Vorlage der Funde wurde eine Kategorisierung nach Funktionstypen und keine Einteilung nach Material vorgenommen. Es werden die folgenden Kategorien und Funktionsgattungen unterschieden:</p>
+
+               <p>Lithik; Grobsteingeräte; Abfallprodukte, Rohstoffe, Werkstoffe; Geräte zur Metallverarbeitung; Schneide- und Spaltwerkzeuge; Werkzeuge zum Meißeln, Stemmen, Treiben; Werkzeuge zum Bohren, Spanen, Stechen; Geräte und Werkzeuge zur Leder- und Textilverarbeitung; Sonstige Geräte; Spatel- und Toilettengeräte; Verbindungselemente; Schreibgeräte; Gewichte; Griffe; Waffen; Schmuck und Gewandteile; Glyptik; Verzierungen und Beschläge; Astragale und Spielsteine; Flach- und Rundbilder; Stein- und Metallgefäße; Varia; Kultgefäße und –geräte, im Online-Supplement zusätzlich Schriftdokumente.</p>
+
+               <p>Die inventarisierten Funde werden im Archäologischen Museum von Çorum sowie vor Ort im Museum von Boğazköy aufbewahrt.</p>
+
+               <h2 class="con10t-toc-entry">Katalog</h2>
+
+               <con10t-catalog-tree catalog-id="872"></con10t-catalog-tree>
+
            </div>
-   
+
        </div>
    </div>
