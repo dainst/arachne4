@@ -198,6 +198,14 @@
       }
     ]
   },
+  "koester": {
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "Milet Archiv Reinhard Köster"
+      }
+    ]
+  },
   "kossack": {
     "q": "kossack-",
     "facets": [
