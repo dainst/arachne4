@@ -1,6 +1,6 @@
 <idai-header
-        image="/con10t/headerimages/teheran_digital.jpg"
-        description="Dias aus der Sammlung W. Kleiss – Übersichtsscan">
+        image="/con10t/headerimages/koester2.jpg"
+        description="Blick vom byzantinischen Kastell nach Osten auf den Nordmarkt mit Delphinion und Ionischer Halle">
 </idai-header>
 
 <div class="con10t-page teaserpage container">
@@ -13,22 +13,16 @@
 
         <div class="con10t-sidebar">
 
-            <div class="alert alert-warning">
+            <div class="alert alert-warning" style="margin-bottom:2vw">
                 <p class="alert-message">
                     Das digitale Archiv von Reinhard Köster zur Bauornamentik von Milet ist nach vorheriger Anmeldung und erfolgter Freischaltung (Kontakt <a href="mailto:natalia.toma@dainst.de">natalia.toma@dainst.de</a>) einsehbar.
                 </p>
             </div>
-            
-            <h3>Weiterführende Links</h3>
+            <hr>
+            <h3 style="margin-top: 1vw">Weiterführende Links</h3>
 		
             <p><a con10t-search-query>Alle Projektdaten anzeigen</a></p>
 	
-            <p><a con10t-search-query="facet_kategorie:Bücher">Archivkonvolute anzeigen</a></p>
-            <p>
-                <a href="https://gazetteer.dainst.org/search?q=TehranDigital" target="_blank">
-                    <span class="glyphicon glyphicon-globe"></span>
-                    Orte im iDAI.gazetteer anzeigen
-                </a>
             </p>
 
             <div class="well">
@@ -36,87 +30,52 @@
             </div>
 
 
-            <!--- Map --->
-            <div style = "margin-top: 1vw;">
-                <a href="/project/teheran_digital_map" title="Zur Karte" style="cursor:pointer">
-                    <span class="glyphicon glyphicon-fullscreen"></span>
-                    Größere Karte</a>
-            </div>
+            
 
-            <div ng-init="config = {
-                facetsSelect: [
+             <!--Container Verzeichnisbaum-->
 
-                    {
-                        key: 'facet_kategorie',
-                        value: 'Bilder'
-                    },
-                    {
-                        key: 'facet_bestandsname',
-                        value: 'dai-eurasienabteilung-teheran-archiv'
-                    }
-                 ]
-             }"></div>
-
-            <div con10t-map style = "margin-bottom: 1vw;"
-                 id="map"
-                 limit="200"
-                 overlays="config.overlays"
-                 facets-select="config.facetsSelect"
-                 lat="33.3761"
-                 lng="52.3694"
-                 zoom="4">
+             <div>
+                <h3 style="margin-top: 3vw">Einstieg mit originaler Verzeichnisbaum-Struktur</h3>
+                <div>
+                     <p>
+                             <con10t-tree fq="facet_bestandsname:Milet Archiv Reinhard Köster"  wildcard-facet="facet_subkategorie"></con10t-tree>
+                    </p>
+                </div>
             </div>
 
 		
         </div>
         <div class="con10t-content">
-
-            <p>
-                Reinhard Köster gehört zu den ausgewiesenen Spezialisten antiker Architekturornamentik. Sein Hauptforschungsgebiet ist die Bauornamentik Kleinasiens mit einem dezidierten Schwerpunkt auf Milet. Im Rahmen mehrmonatiger Kampagnen 1977–1981 und während späterer Aufenthalte in den 1990er Jahren dokumentierte Köster die kaiserzeitliche Ornamentik von mehr als 15 milesischen Bauten, die als Grundlage für seine 1987 von der Goethe-Universität Frankfurt a. M. angenommene Dissertation „()“ diente. Darauf aufbauend veröffentliche Reinhard Köster 2004 in der Serie „Milet. Ergebnisse der Ausgrabungen und Untersuchungen seit dem Jahre 1899“ den ersten Band zur „Bauornamentik von Milet“ und zwar die „Die Bauornamentik der frühen und mittleren Kaiserzeit“ (Milet VII, 1).
-            </p>
-            <p>
-                Nach der Übernahme der Verlagsleitung des Römisch-Germanischen Zentralmuseums in Mainz (1994), konnte Reinhard Köster seine wissenschaftliche Tätigkeit auf dem Gebiet der antiken Bauornamentik nur begrenzt weiterverfolgen was dazu führte, dass seine umfangreiche und akribische Materialaufname zur spätkaiserzeitlichen Bauornamentik unveröffentlicht blieb. 
-            </p>
-            
-            <p>
-                Dankenswerterer Weise stellte Reinhard Köster sein Archiv Natalia Toma zwecks Bearbeitung und Publikation zur Verfügung. In den Jahren 2017–2019 wurde ein Bestand von ca. 1200 schwarz-weißen Abzügen, Negativen und Zeichnungen digitalisiert und in strukturierter Form (nach Bauwerken und/oder Fundorten) in iDAI.objects/Arachne gesichert und für weitere Forschungszwecke zugänglich gemacht. 
-            </p>
-        
-            <!--Container Ortsstruktur-->
-
-            <h2>Milet Archiv Reinhard Köster</h2>
-
-            <con10t-include src="/con10t/de/koester_toc.html"></con10t-include>
-
-            <!--Container Verzeichnisbaum-->
-
-            <h2>Einstieg mit originaler Verzeichnisbaum-Struktur</h2>
             <div>
                 <p>
-                    <con10t-tree fq="facet_bestandsname:Milet Archiv Reinhard Köster"
-                             wildcard-facet="facet_subkategorie"></con10t-tree>
+                Nach der Übernahme der Verlagsleitung des Römisch-Germanischen Zentralmuseums in Mainz (1994), konnte Reinhard Köster seine wissenschaftliche Tätigkeit auf dem Gebiet der antiken Bauornamentik nur begrenzt weiterverfolgen was dazu führte, dass seine umfangreiche und akribische Materialaufname zur spätkaiserzeitlichen Bauornamentik unveröffentlicht blieb. 
+                </p>
+            
+                <p style="margin-bottom: 30px"> 
+                Dankenswerterer Weise stellte Reinhard Köster sein Archiv Natalia Toma zwecks Bearbeitung und Publikation zur Verfügung. In den Jahren 2017–2019 wurde ein Bestand von ca. 1200 schwarz-weißen Abzügen, Negativen und Zeichnungen digitalisiert und in strukturierter Form (nach Bauwerken und/oder Fundorten) in iDAI.objects/Arachne gesichert und für weitere Forschungszwecke zugänglich gemacht. 
                 </p>
             </div>
 
-            <!--Bilderbanner2-->
-            <p>
-                <con10t-image src="/con10t/img/teheran_digital/Bild_3.jpg" align="left" width="154">Hashtparr 1967<br>vor Restaurierung</con10t-image>
-                <con10t-image src="/con10t/img/teheran_digital/Bild_4.jpg" align="left" width="154">Hashtparr 1968<br>nach Restaurierung</con10t-image>
-                <con10t-image src="/con10t/img/teheran_digital/Bild_5.jpg" align="left" width="154">Godin Tepe<br>bei Ausgrabung 1967</con10t-image>
-                <con10t-image src="/con10t/img/teheran_digital/Bild_6.jpg" align="left" width="154">Godin Tepe<br>Zustand 1995</con10t-image>
-
-            </p>   
-            
-
             <!--Bilderbanner-->
-            <p>
-                <con10t-image src="/con10t/img/teheran_digital/Bild_3.jpg" align="left" width="154">Hashtparr 1967<br>vor Restaurierung</con10t-image>
-                <con10t-image src="/con10t/img/teheran_digital/Bild_4.jpg" align="left" width="154">Hashtparr 1968<br>nach Restaurierung</con10t-image>
-                <con10t-image src="/con10t/img/teheran_digital/Bild_5.jpg" align="left" width="154">Godin Tepe<br>bei Ausgrabung 1967</con10t-image>
-                <con10t-image src="/con10t/img/teheran_digital/Bild_6.jpg" align="left" width="154">Godin Tepe<br>Zustand 1995</con10t-image>
+            <div style="margin-bottom: 250px">
+                
+                    <con10t-image src="/con10t/img/koester/Milet_Delphinion_Kompositkapitell der kaiserzeitlichen Halle.jpg" align="left" width="154">Kompositkapitell,<br>Delphinion</con10t-image>
+                    <con10t-image src="/con10t/img/koester/Milet_Faustinathermen_Kompositkapitell der Palästra.jpg" align="left" width="154">Kompositkapitell<br>aus Faustinathermen</con10t-image>
+                    <con10t-image src="/con10t/img/koester/Milet_Propylon des Nord-Ost-Bezirkes_Kompositkapitell.jpg" align="left" width="154">Kompositkapitell,<br>Propylon (NO Bezirk)</con10t-image>
+                    <con10t-image src="/con10t/img/koester/Milet_Serapeion_Korinthisches Pilasterkapitell des Propylons.jpg" align="left" width="154">Korinthisches Pilaster-<br>kapitell, Propylon</con10t-image>
 
-            </p>   
+            </div>    
+        
 
+            <!--Container Ortsstruktur-->
+            <div>
+                <con10t-include src="/con10t/de/koester_toc.html"></con10t-include>
+            </div>
+
+           
+
+              
+            
 
         </div>
     </div>
