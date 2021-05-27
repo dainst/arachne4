@@ -13,70 +13,182 @@
 
         <div class="con10t-sidebar">
 
-            <div class="alert alert-warning" style="margin-bottom:2vw">
+            <div class="alert alert-warning" style="margin-bottom:1vw">
                 <p class="alert-message">
                     Das digitale Archiv von Reinhard Köster zur Bauornamentik von Milet ist nach vorheriger Anmeldung und erfolgter Freischaltung (Kontakt <a href="mailto:natalia.toma@dainst.de">natalia.toma@dainst.de</a>) einsehbar.
                 </p>
             </div>
-            <hr>
-            <h3 style="margin-top: 1vw">Weiterführende Links</h3>
-		
-            <p><a con10t-search-query>Alle Projektdaten anzeigen</a></p>
+
+            <div>
+                <p><a con10t-search-query>Alle Projektdaten anzeigen</a></p>
 	
-            </p>
+            </div>
 
             <div class="well">
                 <con10t-search search-placeholder="Projektdaten durchsuchen"></con10t-search>
             </div>
 
+                <!--- Map --->
 
-            
+                <div float="right">
+                
+                    <div style = "margin-top: 2vw;">
+                        <a href="/project/koester_map" title="Zur Karte" style="cursor:pointer">
+                        <span class="glyphicon glyphicon-fullscreen"></span>
+                        Größere Karte</a>
+                    </div> 
+                    <div ng-init="config = {
+                        facetsSelect: [
+        
+                         {
+                             key: 'facet_kategorie',
+                             value: 'Bilder'
+                        },
+                        {
+                            key: 'facet_bestandsname',
+                            value: 'Milet Archiv Reinhard Köster'
+                        }
+                    ]
+                    }">
+                    </div>
+                    <div con10t-map style = "margin-bottom: 1vw;"
+                        id="map"
+                        width="250"
+                        limit="20"
+                        overlays="config.overlays"
+                        facets-select="config.facetsSelect"
+                        lat="37.5289" 
+                        lng="27.2777"
+                        zoom="15">
+                    </div>
+                </div> 
+                <!--/Map-->
+
+            <!--Container Ortsstruktur-->
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+        
+                    <p style="font-size: 20px">Milet Archiv Reinhard Köster</p>
+                    <p style="line-height:40%; font-size: 15px">- nach Gebäude</p>
+        
+                </div>
+        
+                <div class="panel-body">
+                    <div>
+                       <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Bouleuterion%22&fl=20&q=*">Bouleuterion</a>
+                        <br>
+                        <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Delphinion%22&fl=20&q=*">Delphinion</a>
+                        <br>
+                        <!--der Link muss noch korrigiert werden, momentan ist die GazID noch Provinz Aydin und nicht der Fari Bey Sitz-->
+                        <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_ort:%22Ayd%C4%B1n%20(Provinz),%20Republik%20T%C3%BCrkei%22&fl=20">Fari-Bey-Sitz auf Lade</a>
+                        <br>
+                        <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Faustina-Thermen%22&fl=20&q=*">Faustinathermen</a>
+                        <br>
+                        <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Heroon%20II%22&fl=20&q=*">Heroon II</a>
+                        <br>
+                        <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Heroon%20III%22&fl=20&q=*">Heroon III</a>
+                        <br>
+                        <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Arch%C3%A4ologisches%20Museum%22&fl=20&q=*">Museum/Depot</a>
+                        <br>
+                        <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Nord-Ost-Bezirk%22&fl=20&q=*">Nord-Ost-Bezirk</a>
+                        <br>
+                        <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Serapeion%22&fl=20&q=*">Serapeion</a>
+                        <br>
+                        <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Stadion%22&fl=20&q=*">Stadion, Osttor</a>
+                        <br>
+                        <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22S%C3%BCdmarkt%22&fl=20&q=*">Südmarkt</a>
+                        <br>
+                        <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Theater%22&fl=20&q=*">Theater</a>
+                        <br>
+                        <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Zeytintepe%22&fl=20&q=*">Zeytintepe</a>
+                        <br>
+                        <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Michaelskirche%22&fl=20&q=*">Michaelskirche</a>
+                        <br>
+                        <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Capitothermen%22&fl=20&q=*">Capitothermen</a>
+                        <br>
+                        <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Capitothermen%22&fl=20&q=*">Ionische Halle</a>
+                    </div>
+                        
+                </div>
+        
+        </div>
+        <!--/Ortsstruktur Gebäude-->
 
              <!--Container Verzeichnisbaum-->
 
              <div>
-                <h3 style="margin-top: 3vw">Einstieg mit originaler Verzeichnisbaum-Struktur</h3>
+                <h3 style="margin-top: 1vw">Einstieg mit originaler Verzeichnisbaum-Struktur</h3>
                 <div>
                      <p>
                              <con10t-tree fq="facet_bestandsname:Milet Archiv Reinhard Köster"  wildcard-facet="facet_subkategorie"></con10t-tree>
                     </p>
                 </div>
             </div>
+            <!--/Container Verzeichnisbaum-->
 
 		
         </div>
+        <!--Content-->
         <div class="con10t-content">
             <div>
+                <h2>Zur Person</h2>
                 <p>
-                Nach der Übernahme der Verlagsleitung des Römisch-Germanischen Zentralmuseums in Mainz (1994), konnte Reinhard Köster seine wissenschaftliche Tätigkeit auf dem Gebiet der antiken Bauornamentik nur begrenzt weiterverfolgen was dazu führte, dass seine umfangreiche und akribische Materialaufname zur spätkaiserzeitlichen Bauornamentik unveröffentlicht blieb. 
+                    Reinhard Köster gehört zu den ausgewiesenen Spezialisten antiker Architekturornamentik. Sein Hauptforschungsgebiet ist die Bauornamentik Kleinasiens mit einem dezidierten Schwerpunkt auf Milet. Im Rahmen mehrmonatiger Kampagnen 1977–1987 und 1994 dokumentierte Köster die kaiserzeitliche Ornamentik von mehr als 15 milesischen Bauten sowie weitere antike Bauteile im Grabungsgelände oder in den Kollektionen des Museums im Balat oder der Fari Bey-Sitz auf Lade / Batiköy. Diese Dokumentation stellt die Grundlage für Reinhard Kösters Dissertation „Die milesische Bauornamentik der früheren und späteren Kaiserzeit“ dar, die 1988 von der Goethe-Universität Frankfurt a. M. angenommen und 2004 in der Serie „Milet. Ergebnisse der Ausgrabungen und Untersuchungen seit dem Jahre 1899“ als erster Band der „Bauornamentik von Milet“ (Milet VII, 1) publiziert wurde.
                 </p>
+                <p style="margin-bottom: 30px">
+                    Nach der einer Station an der Istanbuler Abteilung des Deutschen Archäologischen Institut (DAI), wechselte Reinhard Köster 1994 nach Mainz, wo er 2005 die Verlagsleitung des Römisch-Germanischen Zentralmuseums (RGZM) übernahm. In Folge dessen konnte Reinhard Köster seine wissenschaftliche Tätigkeit auf dem Gebiet der antiken Bauornamentik nur begrenzt weiterverfolgen was dazu führte, dass seine umfangreiche und akribische Materialaufname zur spätkaiserzeitlichen Bauornamentik unveröffentlicht blieb.
+                </p>
+
+            </div>
+            <!--Bildbanenr1-->
+                <div style="margin-bottom: 250px">
+                
+                    <con10t-image src="/con10t/img/koester/Blick vom byzantinischen Kastell nach Osten auf die Mäanderebene .jpg" align="left" width="154">Blick vom byzantinischen<br>Kastell nach Osten<br>auf die Mäanderebene</con10t-image>
+                    <con10t-image src="/con10t/img/koester/Blick vom byzantinischen Kastell nach Norden auf den Humei Tepe.jpg" align="left" width="154">Blick vom byzantinischen<br>Kastell nach Norden<br>auf den Humei Tepe</con10t-image>
+                    <con10t-image src="/con10t/img/koester/Blick vom byzantinischen Kastell nach Osten auf den Löwenhafen und die Thermen am Humei Tepe.jpg" align="left" width="154">Blick vom byzantinischen<br>Kastell nach Osten<br>auf den Löwenhafen</con10t-image>
+                    <con10t-image src="/con10t/img/koester/koester copy.jpg" align="left" width="154">Blick vom byzantinischen<br>Kastell nach Osten<br>auf den Nordmarkt</con10t-image>
+
+                </div>
+                <!--/Bildbanner1-->
+                <br>
+                <br>
+                <br>
+            <div>
+                <h2>Zum digitalen Archiv</h2>
+                <p>
+                    Dankenswerterer Weise stellte Reinhard Köster sein Archiv Natalia Toma zwecks Bearbeitung und Publikation zur Verfügung. In den Jahren 2017–2019 wurde ein Bestand von ca. 1400 schwarz-weißen Abzügen, Negativen und Zeichnungen digitalisiert und in strukturierter Form (nach Bauwerken und/oder Fundorten) in iDAI.objects/Arachne gesichert und für weitere Forschungszwecke zugänglich gemacht.
+                </p>
+
             
                 <p style="margin-bottom: 30px"> 
-                Dankenswerterer Weise stellte Reinhard Köster sein Archiv Natalia Toma zwecks Bearbeitung und Publikation zur Verfügung. In den Jahren 2017–2019 wurde ein Bestand von ca. 1200 schwarz-weißen Abzügen, Negativen und Zeichnungen digitalisiert und in strukturierter Form (nach Bauwerken und/oder Fundorten) in iDAI.objects/Arachne gesichert und für weitere Forschungszwecke zugänglich gemacht. 
+                    Die Digitalisierung der Archivbestände erfolgte im Rahmen des DFG-gefördertes Projekt „Bauprozesse und Wirtschaftsdynamiken in Milet der Kaiserzeit. Wirtschaftshistorische und archäometrische Studie zu den Baumaterialien der Mäanderebene“ (TO1102/1-1).
                 </p>
             </div>
 
-            <!--Bilderbanner-->
-            <div style="margin-bottom: 250px">
+            <!--Bilderbanner2-->
+           <div style="margin-bottom: 250px">
                 
                     <con10t-image src="/con10t/img/koester/Milet_Delphinion_Kompositkapitell der kaiserzeitlichen Halle.jpg" align="left" width="154">Kompositkapitell,<br>Delphinion</con10t-image>
                     <con10t-image src="/con10t/img/koester/Milet_Faustinathermen_Kompositkapitell der Palästra.jpg" align="left" width="154">Kompositkapitell<br>aus Faustinathermen</con10t-image>
                     <con10t-image src="/con10t/img/koester/Milet_Propylon des Nord-Ost-Bezirkes_Kompositkapitell.jpg" align="left" width="154">Kompositkapitell,<br>Propylon (NO Bezirk)</con10t-image>
                     <con10t-image src="/con10t/img/koester/Milet_Serapeion_Korinthisches Pilasterkapitell des Propylons.jpg" align="left" width="154">Korinthisches Pilaster-<br>kapitell, Propylon</con10t-image>
 
-            </div>    
-        
-
-            <!--Container Ortsstruktur-->
+            </div> 
+            <!--/Bildbanner2-->
+            <br>
+            <hr>
+            <br>
             <div>
-                <con10t-include src="/con10t/de/koester_toc.html"></con10t-include>
+                <h2 style="margin-top: 1vw">Weiterführende Links</h2>
+                <p><a href="https://zenon.dainst.org/Search/Results?lookfor=Reinhard+K%C3%B6ster&type=AllFields&filter%5B%5D=%7Eauthor_facet%3A%22K%C3%B6ster%2C+Reinhard%22">Publikationen von Reinhard Köster in iDAI.bibliography  ></a></p>
+                <p><a href="https://gepris.dfg.de/gepris/projekt/324792715">Projektseite der DFG  ></a></p>
             </div>
 
-           
+            <div><img src="/con10t/img/koester/dfg.jpg" style="margin-top:2vw"></div>
 
-              
-            
+        <!--/Content-->
+        
 
-        </div>
     </div>
 </div>

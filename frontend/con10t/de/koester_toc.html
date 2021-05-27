@@ -9,7 +9,7 @@
         </div>
 
         <div class="panel-body">
-            <div style="border-style:solid; border-color:black; margin-right:500px" align="left">
+            <div>
                <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Bouleuterion%22&fl=20&q=*">Bouleuterion</a>
                 <br>
                 <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Delphinion%22&fl=20&q=*">Delphinion</a>
@@ -43,41 +43,9 @@
                 <br>
                 <a class="con10t-toc-item" href="https://arachne.dainst.org/search?fq=facet_city:%22Milet%22&fq=facet_kategorie:%22Bilder%22&fq=facet_bestandsname:%22Milet%20Archiv%20Reinhard%20K%C3%B6ster%22&fq=facet_locality:%22Capitothermen%22&fl=20&q=*">Ionische Halle</a>
             </div>
-                <!--- Map --->
-
-                <div align="right">
-                    <div style = "margin-top: 2vw;">
-                        <a href="/project/koester_map" title="Zur Karte" style="cursor:pointer">
-                        <span class="glyphicon glyphicon-fullscreen"></span>
-                        Größere Karte</a>
-                    </div>
-                    <div width="50%">
-                    <div ng-init="config = {
-                        facetsSelect: [
-
-                         {
-                             key: 'facet_kategorie',
-                             value: 'Bilder'
-                        },
-                        {
-                            key: 'facet_bestandsname',
-                            value: 'Milet Archiv Reinhard Köster'
-                        }
-                    ]
-                    }">
-                    </div>
-                    <div con10t-map style = "margin-bottom: 1vw;"
-                        id="map"
-                        limit="20"
-                        overlays="config.overlays"
-                        facets-select="config.facetsSelect"
-                        lat="37.5289" 
-                        lng="27.2777"
-                        zoom="15">
-                    </div>
-                    </div>
-                </div> 
+                
         </div>
+
     </div>
  
  
