@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import de.uni_koeln.arachne.dao.jdbc.GenericSQLDao;
@@ -22,6 +23,17 @@ public class ModelService {
 	
 	@Autowired
 	private GenericSQLDao genericSQLDao; 
+	
+	private transient final List<String> includeList;
+	
+	/**
+	 * Constructor setting the list of types that do not have any connected models.
+	 * @param modelIncludeList The list of types without images.
+	 */
+	@Autowired
+	public ModelService(final @Value("#{'${modelIncludeList}'.split(',')}") List<String> modelIncludeList) {
+		includeList = modelIncludeList;
+	}
     
     /**
 	 * This method retrieves the model ids for a given dataset from the database and adds them to the datasets list
@@ -30,6 +42,9 @@ public class ModelService {
 	 */
 	public void addModels(final Dataset dataset) {
 		final EntityId arachneId = dataset.getArachneId();
+		if (!includeList.contains(arachneId.getTableName())) {
+			return;
+		} else {
 			if ("modell3d".equals(arachneId.getTableName())) {
 				final Model model = new Model();
 				model.setModelId(arachneId.getArachneEntityID());
@@ -40,10 +55,11 @@ public class ModelService {
 				modelList.add(model);
 				dataset.setModels(modelList);
 			} else {
-				final List<Model> imageList = (List<Model>) genericSQLDao.getModelList(arachneId.getTableName()
+				final List<Model> modelList = (List<Model>) genericSQLDao.getModelList(arachneId.getTableName()
 						, arachneId.getInternalKey());
-				dataset.setModels(imageList);
+				dataset.setModels(modelList);
 			}
+		}
 	}
 
 }
