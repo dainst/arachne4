@@ -69,6 +69,7 @@
 		<include type="facet_ort" />
 		<include type="facet_datierung" />
 		<include type="facet_literatur" />
+		<include type="facet_personrole" />
 		<facet name="topographieart" labelKey="Natürlich oder Anthropogen">
 			<field datasource="topographie.TopographieArt" />
 		</facet>

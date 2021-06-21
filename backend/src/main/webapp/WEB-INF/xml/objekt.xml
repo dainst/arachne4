@@ -927,6 +927,7 @@
 		<include type="facet_ort" />
 		<include type="facet_datierung" />
 		<include type="facet_literatur" />
+		<include type="facet_personrole" />
 		<facet name="subkategorie_objekt" labelKey="Unterkategorie">
 			<field datasource="KategorieObjekt.Typ" />
 		</facet>

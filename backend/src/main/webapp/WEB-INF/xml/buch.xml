@@ -182,11 +182,9 @@
 		<include type="facet_ort" />
 		<include type="facet_datierung" />
 		<include type="facet_literatur" />
+		<include type="facet_personrole" />
 		<facet name="autor" labelKey="Autor">
 			<field datasource="buch.BuchAuthor" />
-		</facet>
-		<facet name="weiterepersonen" labelKey="Weitere Personen">
-			<field datasource="buch.BuchWeiterePersonen" />
 		</facet>
 		<facet name="jahr" labelKey="Jahr">
 			<field datasource="buch.BuchJahr" />

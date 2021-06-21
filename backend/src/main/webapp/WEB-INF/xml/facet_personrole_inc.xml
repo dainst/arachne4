@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includeSection
+	xmlns="http://arachne.uni-koeln.de/schemas/include"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
+	<facet name="personroleauthor" labelKey="Autor" group="person">
+		<context type="personroleauthor" separator="">
+			<field datasource=".Namenszusatz" postfix=" " />
+			<field datasource=".FamVatersnameSonst" />
+			<field datasource=".VornameSonst" prefix=", " />
+		</context>
+	</facet>
+	<facet name="personroleaddressee" labelKey="Adressat"
+		group="person">
+		<context type="personroleaddressee" separator="">
+			<field datasource=".Namenszusatz" postfix=" " />
+			<field datasource=".FamVatersnameSonst" />
+			<field datasource=".VornameSonst" prefix=", " />
+		</context>
+	</facet>
+	<facet name="personroletopic" labelKey="Behandelt" group="person">
+		<context type="personroletopic" separator="">
+			<field datasource=".Namenszusatz" postfix=" " />
+			<field datasource=".FamVatersnameSonst" />
+			<field datasource=".VornameSonst" prefix=", " />
+		</context>
+	</facet>
+	<facet name="personrolenone" labelKey="Ohne Rolle" group="person">
+		<context type="personrolenone" separator="">
+			<field datasource=".Namenszusatz" postfix=" " />
+			<field datasource=".FamVatersnameSonst" />
+			<field datasource=".VornameSonst" prefix=", " />
+		</context>
+	</facet>
+</includeSection>
