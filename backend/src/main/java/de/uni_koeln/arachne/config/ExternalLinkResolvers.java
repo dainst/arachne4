@@ -224,6 +224,26 @@ public class ExternalLinkResolvers {
 		return result;
 	}
 
+	/**
+	 * Resolver for bookviewer links from the gelehrtenbriefe project.
+	 *
+	 * @return The Link resolver
+	 */
+	// NOTE: It is unclear to what extent the book viewer will be used in the
+	// future. For this reason we did not attempt a more general solution.
+	@Bean
+	public SimpleExternalLinkResolver bookviewerGelehrtenbriefe() {
+		final SimpleExternalLinkResolver result = new SimpleExternalLinkResolver();
+		result.setLabel("Book-Viewer");
+		final Map<String, String> criteria = ImmutableMap.of("buch.ArbeitsnotizBuch", "TranskriptionGelehrtenbriefe");
+		result.setCriteria(criteria);
+		result.setExactMatch(false);
+		// We cannot decide if annotations are present, so just include the param
+		result.setLinkPattern("https://viewer.idai.world/?file=data/gelehrtenbriefe/%s.pdf&pubid=annotations/%s.json");
+		result.setPatternFields(Arrays.asList("buch.bibid", "buch.bibid"));
+		return result;
+	}
+
 	// TODO implement Clarac browser link resolver
 	// is the link pattern correct?
 	/*<!-- resolver for links to the clarac browser -->
