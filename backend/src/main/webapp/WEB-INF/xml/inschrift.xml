@@ -57,6 +57,7 @@
 		<include type="facet_kategorie" />
 		<include type="facet_datierung" />
 		<include type="facet_literatur" />
+		<include type="facet_personrole" />
 		<facet name="sprache" labelKey="Sprache bzw. Schrift">
 			<field datasource="inschrift.Sprache" />
 		</facet>

@@ -129,6 +129,7 @@
 		<include type="facet_ort" />
 		<include type="facet_literatur" />
 		<include type="facet_datierung" />
+		<include type="facet_personrole" />
 		<facet name="gebaeudetyp" labelKey="Gebäudetyp allgemein" group="buildingtype">
 			<field datasource="bauwerk.Gebaeudetyp" />
 		</facet>
