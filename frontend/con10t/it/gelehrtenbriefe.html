@@ -19,18 +19,26 @@
         <p>&nbsp;</p>
         <p>&nbsp;</p>
 
-        <!--Quarantäne-Spezial-->
+        <!-- Haupt-Links -->
         <div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">Speziale quarantena</h3>
-    </div>
-    <div class="panel-body">
-        <div>
-            <a href="project/gelehrtenbriefe_quarantaene" target="_blank">In Grecia e ritorno - Scambio di lettere tra Eduard Gerhard ed Emil Braun durante un'epidemia di colera negli anni 1836-1837 (in tedesco)</a>
+            <div class="panel-heading">
+                <h3 class="panel-title">Dati e visualizzazioni del progetto</h3>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <a con10t-search-query="searchableEditorContent:gelehrtenbriefe&amp;fq=facet_kategorie:&quot;Bücher&quot;" target= "_blank">mostra tutte le lettere su iDAI.objects</a>
+                </div>
+                <div>
+                    <a href="/search?fq=facet_kategorie:&quot;Bücher&quot;&fl=20&q=TranskriptionGelehrtenbriefe" target= "_blank"><span class="glyphicon glyphicon-search"></span>  mostra tutte le trascrizioni su iDAI.objects</a>
+                </div>
+                <div>
+                    <a href="project/gelehrtenbriefe_visualisierung" target= "_blank"><span class="glyphicon glyphicon-eye-open"></span> mostra visualizzazione di rete</a>
+                </div>
+                <div>
+                    <a href="project/gelehrtenbriefe_kookkurrenz" target= "_blank"><span class="glyphicon glyphicon-eye-open"></span> mostra visualizzazione delle co-occorenze</a>
+                </div>
+            </div>
         </div>
-</div>
-</div>
-<!-- -->
 
         <div dir="rtl">
         <p><a href="project/gelehrtenbriefe?lang=de" target="_self">Deutsch</a></p>
@@ -44,12 +52,20 @@
 
             <con10t-toc toc-heading="Übersicht"></con10t-toc>
             <con10t-include src="/con10t/de/gelehrtenbriefe_toc.html"></con10t-include>
-        <p>&nbsp;</p>
+            <p>&nbsp;</p>
 
-        
-            <a con10t-search-query="searchableEditorContent:gelehrtenbriefe" target= "_blank">mostra tutte le lettere su iDAI.objects</a>
-            <br>
-            <a href="project/gelehrtenbriefe_visualisierung" target= "_blank"><span class="glyphicon glyphicon-eye-open"></span> mostra visualizzazione di rete</a>
+            <!--Quarantäne-Spezial-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Speziale quarantena</h3>
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <a href="project/gelehrtenbriefe_quarantaene" target="_blank">In Grecia e ritorno - Scambio di lettere tra Eduard Gerhard ed Emil Braun durante un'epidemia di colera negli anni 1836-1837 (in tedesco)</a>
+                    </div>
+                </div>
+            </div>
+            <!-- -->
 
             <p>&nbsp;</p>
             <h3>Dati del progetto in Kalliope:</h3>
@@ -136,7 +152,7 @@
             <a href="project/gelehrtenbriefe_visualisierung">
                 <con10t-image src="/con10t/img/gelehrtenbriefe/Chorddiagramm-1833.jpg"
                               align="left" width="350" alt="Chorddiagramm-1833">
-                              Chord-chart del rete di correspondenze nell'anno 1833<br> (versione di prova, gennaio 2019)
+                              Chord-chart del rete di correspondenze nell'anno 1833<br> (gennaio 2019)
                 </con10t-image>
             </a>
 
@@ -147,15 +163,15 @@
             <p>
                 Nell'archivio della sede centrale sono stati invece scelti lasciti contenenti le lettere di importanti archeologi, come il segretario fondatore Eduard Gerhard, che vanno ad integrare e completare la raccolta delle lettere conservate a Roma. 
             <p>
-                L'indicizzazione è effettuata inizialmente in <a href="http://kalliope-verbund.info" target= "_blank">Kalliope</a>, il sistema nazionale tedesco di registrazione e catalogazione di lasciti e autografi. I records contengono un link alle lettere digitalizzate che si possono visualizzare nella banca dati iDAI.objects. Tutti i metadati sono anche integrati e accessibili nel catalogo bibliografico <a href="https://zenon.dainst.org/Record/001474332" target= "_blank">iDAI.bibliography</a> (<a href=https://zenon.dainst.org/Record/001474332 >DAI Roma</a>, <a href=https://zenon.dainst.org/Record/001548031 target= "_blank">sede centrale di Berlino<a/>).
+                L'indicizzazione è effettuata inizialmente in <a href="http://kalliope-verbund.info" target= "_blank">Kalliope</a>, il sistema nazionale tedesco di registrazione e catalogazione di lasciti e autografi. I records contengono un link alle lettere digitalizzate che si possono visualizzare nella banca dati iDAI.objects. Tutti i metadati sono anche integrati e accessibili nel catalogo bibliografico <a href="https://zenon.dainst.org/Record/001474332" target= "_blank">iDAI.bibliography</a> (<a href=https://zenon.dainst.org/Record/001474332 >DAI Roma</a>, <a href=https://zenon.dainst.org/Record/001548031 target= "_blank">sede centrale di Berlino</a>).
             </p>   
             <p>&nbsp;</p>
             <con10t-image src="/con10t/img/gelehrtenbriefe/Text-mining-Viewer_Mockup.jpg"
                           align="left" width="900" alt="Text-mining">
-                          visualizzatore di documenti con annotazioni del luoghi, persone, oggetti archeologici e tempi (versione di prova)
-            </con10t-image>   
+                          visualizzatore di documenti con annotazioni del luoghi, persone, oggetti archeologici e tempi
+            </con10t-image>
             <p>&nbsp;</p> 
-               I dati raccolti vengono elaborati e le relazioni sono visualizzate attraverso vari modelli informatici. Utilizzando tecniche di Text Mining e di Named Entity Recognition, le informazioni contenute in una parte delle lettere, di cui sono disponibili le copie dattiloscritte, è semi-automaticamente arricchita con annotazioni sulle persone e sui luoghi menzionati. Nel corso di questo lavoro, nomi di persone, luoghi e oggetti vengono identificati e, se necessario, inseriti nelle corrispondenti banche dati standardizzate. Gli strumenti di visualizzazione sviluppati sono tuttora in fase di test e saranno presto disponibili online. 
+               I dati raccolti vengono elaborati e le relazioni sono visualizzate attraverso vari modelli informatici. Utilizzando tecniche di Text Mining e di Named Entity Recognition, le informazioni contenute in una parte delle lettere, di cui sono disponibili le copie dattiloscritte, è semi-automaticamente arricchita con annotazioni sulle persone e sui luoghi menzionati. Nel corso di questo lavoro, nomi di persone, luoghi e oggetti vengono identificati e, se necessario, inseriti nelle corrispondenti banche dati standardizzate.
 
         </div>
     </div>

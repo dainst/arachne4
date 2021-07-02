@@ -19,18 +19,26 @@
         <p>&nbsp;</p>
         <p>&nbsp;</p>
 
-<!--Quarantäne-Spezial-->
+        <!-- Haupt-Links -->
         <div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">Quarantine Special</h3>
-    </div>
-    <div class="panel-body">
-        <div>
-            <a href="project/gelehrtenbriefe_quarantaene" target="_blank">To Greece and back - Letter exchange between Eduard Gerhard and Emil Braun during a cholora outbreak in 1836-1837 (in German)</a>
+            <div class="panel-heading">
+                <h3 class="panel-title">Project data and visualizations</h3>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <a con10t-search-query="searchableEditorContent:gelehrtenbriefe&amp;fq=facet_kategorie:&quot;Bücher&quot;" target= "_blank">Show all letters in iDAI.objects</a>
+                </div>
+                <div>
+                    <a href="/search?fq=facet_kategorie:&quot;Bücher&quot;&fl=20&q=TranskriptionGelehrtenbriefe" target= "_blank"><span class="glyphicon glyphicon-search"></span> Show all transcriptions in iDAI.objects</a>
+                </div>
+                <div>
+                    <a href="project/gelehrtenbriefe_visualisierung" target= "_blank"><span class="glyphicon glyphicon-eye-open"></span> Show network visualization</a>
+                </div>
+                <div>
+                    <a href="project/gelehrtenbriefe_kookkurrenz" target= "_blank"><span class="glyphicon glyphicon-eye-open"></span> Show visualization of co-occurrences</a>
+                </div>
+            </div>
         </div>
-</div>
-</div>
-<!-- -->
 
         <div dir="rtl">
         <p><a href="project/gelehrtenbriefe?lang=it" target="_self">Italiano</a></p>
@@ -44,11 +52,20 @@
 
             <con10t-toc toc-heading="Übersicht"></con10t-toc>
             <con10t-include src="/con10t/de/gelehrtenbriefe_toc.html"></con10t-include>
-        <p>&nbsp;</p>
-        
-            <a con10t-search-query="searchableEditorContent:gelehrtenbriefe" target= "_blank">Show all letters in iDAI.objects</a>
-            <br>
-            <a href="project/gelehrtenbriefe_visualisierung" target= "_blank"><span class="glyphicon glyphicon-eye-open"></span> Show network visualization</a>
+            <p>&nbsp;</p>
+
+            <!--Quarantäne-Spezial-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Quarantine Special</h3>
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <a href="project/gelehrtenbriefe_quarantaene" target="_blank">To Greece and back - Letter exchange between Eduard Gerhard and Emil Braun during a cholora outbreak in 1836-1837 (in German)</a>
+                    </div>
+                </div>
+            </div>
+            <!-- -->
 
             <p>&nbsp;</p>
             <h3>Project data in Kalliope:</h3>
@@ -135,7 +152,7 @@
             <a href="project/gelehrtenbriefe_visualisierung">
                 <con10t-image src="/con10t/img/gelehrtenbriefe/Chorddiagramm-1833.jpg"
                               align="left" width="350" alt="Chorddiagramm-1833">
-                              Chord-chart of the correspondent network in the year 1833 <br> (test version, as of January 2019)
+                              Chord-chart of the correspondent network in the year 1833 <br> (as of January 2019)
                 </con10t-image>
             </a>
 
@@ -144,17 +161,17 @@
             <p>
                 In the first project phase, all correspondence from the founding of the Institute in 1829 to around 1860 is being processed. This date was chosen because the gradual "nationalisation" of the Institute assumed concrete forms from 1859 onwards; this development occurred parallel to the formation of national states both in Italy and in Germany. Bequests of letters from important archaeologists - such as the segretario fondatore Eduard Gerhard - holding at the Head Office in Berlin were selected to complement the Roman correspondences which likewise started before 1859.
             <p>
-                The letters are catalogued in <a href="http://kalliope-verbund.info" target= "_blank">Kalliope</a>, the national system of proof for bequests and autographs. The data sets contain a link to the digitized letters on iDAI.objects, the DAI’s main data publication system. All metadata are integrated into <a href="https://zenon.dainst.org/Record/001474332" target= "_blank">iDAI.bibliography</a> (<a href=https://zenon.dainst.org/Record/001474332 >DAI Rome</a>, <a href=https://zenon.dainst.org/Record/001548031 target= "_blank">DAI Head Office Berlin<a/>).
+                The letters are catalogued in <a href="http://kalliope-verbund.info" target= "_blank">Kalliope</a>, the national system of proof for bequests and autographs. The data sets contain a link to the digitized letters on iDAI.objects, the DAI’s main data publication system. All metadata are integrated into <a href="https://zenon.dainst.org/Record/001474332" target= "_blank">iDAI.bibliography</a> (<a href=https://zenon.dainst.org/Record/001474332 >DAI Rome</a>, <a href=https://zenon.dainst.org/Record/001548031 target= "_blank">DAI Head Office Berlin</a>).
             <p>
                 The collected data are being evaluated and visualized concerning their relationships to each other by using various IT models. Using text mining methods and Named Entity Recognition, a selection of letters, which are available in typewritten transcriptions, is semi-automatically provided with annotations on people and places mentioned. In the wake of this process, individuals, places and objects are being identified and, if necessary, entered into corresponding norm databases. The developed visualization tools are currently in the test phase and will soon be available online.
             </p>   
             <p>&nbsp;</p>
             <con10t-image src="/con10t/img/gelehrtenbriefe/Text-mining-Viewer_Mockup.jpg"
                           align="left" width="900" alt="Text-mining">
-                          Document viewer with annotations of places, persons, archaeological objects and time (test version)
-            </con10t-image>   
+                          Book viewer with annotations of places, persons, archaeological objects and time.
+            </con10t-image>
             <p>&nbsp;</p> 
-               The gathered data will be analyzed and their relationship will be visualized through information technological models. Text Mining and Named Entity Recognition will semi-automatically add annotations about mentioned people and places from the written texts. As a part of the project, persons, places and objects can be identified and possibly be added into a norm database. The developed tools for visualization are currently in a test phase and will soon be accessible online.
+               The gathered data will be analyzed and their relationship will be visualized through information technological models. Text Mining and Named Entity Recognition will semi-automatically add annotations about mentioned people and places from the written texts. As a part of the project, persons, places and objects can be identified and possibly be added into a norm database.
 
         </div>
     </div>
