@@ -70,5 +70,6 @@
   "type_rezeption":"Reception",
   "type_sammlungen":"Collections",
   "type_topographie":"Topographies",
-  "type_typus":"Type"
+  "type_typus":"Type",
+  "type_person":"Persons"
 }
