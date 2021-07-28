@@ -1,0 +1,130 @@
+<style>
+
+	.con10t-row {
+		margin-top: 5vh;
+	}
+</style>
+
+
+<!-- Kopfbereich der Projektseite -->
+<idai-header
+        image="/con10t/headerimages/faak18.jpg"
+		description="La bóveda en la arquitectura maya"
+		link="https://doi.org/10.34780/faak.v16i0.1000">
+</idai-header>
+
+<!-- Hauptbereich der Projektseite -->
+<div class="con10t-page teaserpage container">
+
+    <div class="con10t-row">
+
+		<!-- Haupttitel des Projektes: Überschrift der Größe <h1> oder Logo / Bild -->
+        <div class="con10t-title">
+			<h1>Catálogo de bóvedas mayas</h1>
+		</div>
+
+		<!-- Rechte Seitenleiste -->
+        <div class="con10t-sidebar" style = "padding-top: 2vw;">
+
+			<con10t-toc toc-heading="Übersicht"></con10t-toc>
+
+			<h3>Suche in den Daten des Projekts</h3>
+
+			<p><a con10t-search-query target = "_blank">Alle Projektdaten anzeigen</a></p>
+
+			<con10t-search catalog-id="860"></con10t-search>
+
+			<br>
+
+			<!--- Map --->
+			<div>
+				<a href="/project/faak18_map" target = "_blank" title="Zur Karte" style="cursor:pointer">
+					<span class="glyphicon glyphicon-fullscreen"></span>
+					Größere Karte</a>
+			</div>
+
+			<div ng-init="config = {
+				facetsSelect: [
+					{
+						key: 'facet_kategorie',
+						value: 'Einzelobjekte'
+					}
+				]
+			}"></div>
+
+			<div con10t-map style = "margin-bottom: 1vw;"
+				 id="map"
+				 limit="200"
+				 facets-select="config.facetsSelect"
+				 lat="-14.5"
+				 lng="-75.2"
+				 zoom="5">
+			</div>
+
+			<h3>Katalog</h3>
+
+			<a href = "https://arachne.dainst.org/catalog/860" target = "_blank">Zur Katalogansicht</a>
+
+			<h3 style="margin-top: 5%">Informationen zum Buch</h3>
+
+			<p><a href = "https://doi.org/10.34780/faak.v16i0.1000" target = "_blank">iDAI.publications</a></p>
+
+			<con10t-image src = "/con10t/img/faak18/Gilabert_Cover.png" alt = "Cover-Printausgabe" width = "390"></con10t-image>
+
+        </div>
+
+		<!-- Inhalt der Projektseite -->
+        <div class="con10t-content">
+
+				<p>Este catálogo digital acompaña al libro La bóveda en la arquitectura maya, publicado en la serie 
+				Forschungen zur Archäologie Außereuropäischer Kulturen del Deutsches Archäologisches Institut (DAI). 
+				Contiene datos y documentación gráfica sobre 391 bóvedas de 200 edificios pertenecientes a 48 sitios 
+				arqueológicos de las Tierras Bajas Mayas, y constituye la base de la investigación realizada sobre la 
+				bóveda en la arquitectura maya.</p>
+
+				<!-- Figure 1 -->
+				<con10t-image src="/con10t/img/faak18/CBM_sitios.jpg" align="left" alt="Map_sites" width="800">
+					<span class="ng-scope">Sitios arqueológicos incluidos en el Catálogo</span>
+				</con10t-image>
+				
+				
+				<p>Los datos incluidos en el Catálogo fueron tomados en campo durante varias campañas realizadas entre 
+				2015 y 2017, y complementados con información tomada de la bibliografía existente.</p>
+				
+				
+				<p>La información del Catálogo está organizada por sitios arqueológicos y edificios. Para cada uno de 
+				los edificios abovedados considerados se incluyen fotografías y datos generales sobre su localización, 
+				rasgos arquitectónicos más relevantes y datación cronológica. La información de los edificios a los que 
+				pertenecen las bóvedas estudiadas nos ha permitido comparar sus rasgos por áreas geográficas, tipologías 
+				arquitectónicas y períodos cronológicos.</p>
+				
+				<p>En cada edificio se han documentado con detalle una o varias bóvedas, incluyendo datos formales, geométricos, 
+				constructivos y de conservación que se acompañan con una selección de la documentación gráfica obtenida, principalmente 
+				fotografías, dibujos, planos y modelos fotogramétricos. A partir del análisis del universo de datos interrelacionados 
+				obtenidos se ha realizado una investigación sobre la bóveda maya desde el punto de vista arquitectónico. Los resultados 
+				han permitido analizar con detalle su técnica constructiva, establecer una clasificación de las bóvedas según varios criterios 
+				y estudiar sus variantes regionales y evolución en el tiempo.</p>
+				
+				
+				<!-- Figure 2 -->
+				<con10t-image src="/con10t/img/faak18/CBM_mosaico.jpg" align = "right" alt="club head" width="166">
+					<span class="ng-scope">Algunos ejemplos de bóvedas mayas incluidas en el Catálogo. a) Edificio 20 de Chicanná (Campeche,<br>
+					México); b) Estructura 5D-91 de Tikal (Petén, Guatemala); c) Edificio D de Nakum (Petén, Guatemala); d)<br>
+					Edificio Z de Nakum (Petén, Guatemala); e) Edificio Boca de Serpiente de Santa Rosa Xtampak<br>
+					(Campeche, México); f) Palacio Chich de Oxkintok (Yucatán, México); g) Edificio Chenes I de Uxmal<br>
+					(Yucatán, México); h) Edificio 7 de Yaxchilán (Chiapas, México); i) Templo de las Siete Muñecas de<br>
+					Dzibilchaltún (Yucatán, México).</span>
+				</con10t-image>
+
+		
+				<h3 class="con10t-toc-entry">Kontakt</h3>
+
+				<p>Redaktion KAAK<br>
+				Dürenstraße 35-37<br>
+				53173 Bonn<br>
+				+49 (0)228 997712-0<br>
+				redaktion.kaak@dainst.de
+				</p>
+		</div>
+	</div>
+</div>
