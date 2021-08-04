@@ -1,0 +1,144 @@
+<style>
+
+	.con10t-row {
+		margin-top: 5vh;
+	}
+</style>
+
+
+<!-- Kopfbereich der Projektseite -->
+<idai-header
+        image="/con10t/headerimages/faak18.jpg"
+		description="L. Gilabert Sansalvador, La bóveda en la arquitectura maya (Bonn 2021). Catalog of Maya Vaults"
+		link="https://doi.org/10.34780/2z2o-f062">
+</idai-header>
+
+<!-- Hauptbereich der Projektseite -->
+<div class="con10t-page teaserpage container">
+
+    <div class="con10t-row">
+
+		<!-- Haupttitel des Projektes: Überschrift der Größe <h1> oder Logo / Bild -->
+        <div class="con10t-title">
+			<h1>L. Gilabert Sansalvador, La bóveda en la arquitectura maya (Bonn 2021). Catalog of Maya Vaults</h1>
+		</div>
+
+		<!-- Rechte Seitenleiste -->
+        <div class="con10t-sidebar" style = "padding-top: 2vw;">
+
+			<con10t-toc toc-heading="Content"></con10t-toc>
+
+			<h3>Project data</h3>
+
+			<p><a con10t-search-query target = "_blank">Show project data</a></p>
+
+			<con10t-search catalog-id="860"></con10t-search>
+
+			<br>
+
+			<!--- Map --->
+			<div>
+				<a href="/project/faak18_map" target = "_blank" title="Zur Karte" style="cursor:pointer">
+					<span class="glyphicon glyphicon-fullscreen"></span>
+					View a larger map</a>
+			</div>
+
+			<div ng-init="config = {
+				facetsSelect: [
+					{
+						key: 'facet_kategorie',
+						value: 'Einzelobjekte'
+					}
+				]
+			}"></div>
+
+			<div con10t-map style = "margin-bottom: 1vw;"
+				 id="map"
+				 limit="200"
+				 facets-select="config.facetsSelect"
+				 lat="-14.5"
+				 lng="-75.2"
+				 zoom="5">
+			</div>
+
+			<h3>Catalog</h3>
+
+			<a href = "https://arachne.dainst.org/catalog/860" target = "_blank">To catalog view</a>
+
+			<h3 style="margin-top: 5%">About the book</h3>
+
+			<p><a href = "https://doi.org/10.34780/2z2o-f062" target = "_blank">iDAI.publications</a></p>
+
+			<con10t-image src = "/con10t/img/faak18/Gilabert_Cover.jpg" alt = "Cover-Printausgabe" width = "250"></con10t-image>
+
+        </div>
+
+		<!-- Inhalt der Projektseite -->
+        <div class="con10t-content">
+
+				<p>This digital catalog accompanies the book La bóveda en la arquitectura maya, published as part 
+				of the series “Research into the Archaeology of Non-European Cultures” of the German Archaeological 
+				Institute (DAI). It contains data and graphic documentation on 391 vaults of 200 buildings from 48 
+				archaeological sites in the Maya Lowlands, and constitutes the basis of the conducted research on the 
+				vault in Maya architecture.</p>
+
+				<!-- Figure 1 -->
+				<con10t-image src="/con10t/img/faak18/CBM_sitios.png" align="center" alt="Map_sites" width="500">
+					<span class="ng-scope">Archaeological sites included in the Catalog.</span>
+				</con10t-image>
+				
+				
+				<p>The data included in the Catalog were collected during several field campaigns conducted between 
+				2015 and 2017, and complemented with information from existing literature.</p>
+				
+				
+				<p>The information in the Catalog is organized by sites and buildings. For each of the vaulted buildings 
+				considered, photographs and general data on location, most relevant architectural features and chronological 
+				dating are included. The information on the buildings allowed us to compare the features of the studied vaults 
+				by geographical areas, architectural typologies and chronological periods.</p>
+				
+				
+				<p>One or several vaults of each building were documented in detail, including formal, geometric, constructive 
+				and conservation data, accompanied by a selection of the graphic documentation obtained, mainly photographs, 
+				drawings, plans and photogrammetric models. From the analysis of the universe of interrelated data obtained, 
+				an investigation of the Maya vault from the architectural point of view was conducted. The results allowed us 
+				to analyze in detail its construction technique, establish a classification of the vaults according to several 
+				criteria and study the regional variants and their evolution over time.</p>
+				
+				
+				
+				<h2 class="con10t-toc-entry">Catalog</h2>
+
+			<con10t-catalog-tree catalog-id="860"></con10t-catalog-tree>
+
+				
+				
+				<!-- Figure 2 -->
+				<con10t-image src="/con10t/img/faak18/CBM_mosaico.jpg" align = "left" alt="club head" width="350"></con10t-image>
+				
+				<p style = "text-align: left;">Some examples of Maya vaults included in the Catalog:</p><br> 
+				
+				<ol style="list-style-type:lower-alpha; text-align: left;">
+				<li>Structure 20 of Chicanná (Campeche, México)</li>
+				<li>Structure 5D-91 of Tikal (Petén, Guatemala)</li>
+				<li>Structure D of Nakum (Petén, Guatemala)</li>
+				<li>Structure Z of Nakum (Petén, Guatemala)</li>
+				<li>Monster-Mask Building in Santa Rosa Xtampak (Campeche, Mexico)</li>
+				<li>Palace Chich of Oxkintok (Yucatán, México)</li>
+				<li>Chenes Building 1 of Uxmal (Yucatán, México)</li>
+				<li>Building 7 of Yaxchilán (Chiapas, México)</li>
+				<li>Temple of the Seven Dolls in Dzibilchaltun (Yucatán, México).</li>
+				</ol>
+		
+		
+				<h2 class="con10t-toc-entry">Contacto</h2>
+
+				<p>Redaktion KAAK<br>
+				Dürenstraße 35-37<br>
+				53173 Bonn<br>
+				+49 (0)228 997712-0<br>
+				redaktion.kaak@dainst.de
+				</p>
+		</div>
+	</div>
+</div>
