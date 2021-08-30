@@ -3,6 +3,8 @@ package de.uni_koeln.arachne.controller;
 import java.util.Arrays;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -216,18 +218,24 @@ public class Model3DController {
 		return new ResponseEntity<byte[]>(textureData, responseHeaders, HttpStatus.OK);
 	}
 
-	@RequestMapping(value="/model/file/**", method=RequestMethod.GET)
-	public @ResponseBody ResponseEntity<byte[]> handleModelFileRequest(
-			final HttpServletRequest request,
+	@RequestMapping(value = "/model/file/**", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<byte[]> handleModelFileRequest(final HttpServletRequest request,
 			final HttpServletResponse response) {
 
 		String requestURL = request.getRequestURL().toString();
-		final HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.add("Content-Type", "application/octet-stream");
-		String filePath = requestURL.split("/model/file/")[1];
+		String pathInput = requestURL.split("/model/file/")[1];
+		// Get rid of any '..' which could (theoretically) escape the model dir.
+		Path normalized = Paths.get(pathInput).normalize();
 
-		final byte[] fileData = getFileData(filePath);
-		return new ResponseEntity<>(fileData, HttpStatus.OK);
+		final String fileName = normalized.getFileName().toString();
+		final String contentType = hasBinaryFileEnding(fileName) ? "application/octet-stream"
+				: "text/plain; charset=utf-8";
+
+		final HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", contentType);
+		responseHeaders.add("Content-Disposition", "attachment; filename=" + fileName);
+		final byte[] fileData = getFileData(normalized.toString());
+		return new ResponseEntity<byte[]>(fileData, responseHeaders, HttpStatus.OK);
 	}
 
 	private ResponseEntity<String> buildMetadataResponse(Dataset dataset) {
@@ -365,6 +373,21 @@ public class Model3DController {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Determine if a filename ends in an extension that makes it likely that the
+	 * file is binary.
+	 *
+	 * @return <code>true</code> if the filename is likely that of a binary file.
+	 */
+	private boolean hasBinaryFileEnding(final String filename) {
+		for (final String format : BINARY_FORMATS) {
+			if (filename.toLowerCase().endsWith(format)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
