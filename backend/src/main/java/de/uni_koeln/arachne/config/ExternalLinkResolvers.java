@@ -36,7 +36,7 @@ public class ExternalLinkResolvers {
 	}
 
 	/**
-	 * Resolver for 3D model viewer links.
+	 * Resolver for 3D model viewer links (obj format).
 	 *
 	 * @return The link resolver.
 	 */
@@ -53,7 +53,7 @@ public class ExternalLinkResolvers {
 	}
 
 	/**
-	 * Resolver for 3D model viewer links.
+	 * Resolver for 3D model viewer links (objmtl format).
 	 *
 	 * @return The link resolver.
 	 */
@@ -65,6 +65,23 @@ public class ExternalLinkResolvers {
 		result.setCriteria(criteria);
 		result.setMatchAllCriteria(true);
 		result.setLinkPattern("https://arachne.dainst.org/3d?id=%s");
+		result.setPatternFields(Arrays.asList("Dataset.internalId"));
+		return result;
+	}
+
+	/**
+	 * Resolver for 3D model viewer links (nxz format).
+	 *
+	 * @return The link resolver.
+	 */
+	@Bean
+	public SimpleExternalLinkResolver viewer3Dnxz() {
+		final SimpleExternalLinkResolver result = new SimpleExternalLinkResolver();
+		result.setLabel("3D-Modell Viewer");
+		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "modell3d", "modell3d.Dateiformat", "nxz");
+		result.setCriteria(criteria);
+		result.setMatchAllCriteria(true);
+		result.setLinkPattern("https://arachne.dainst.org/3dhop/full.html?model=/data/model/%s.nxz");
 		result.setPatternFields(Arrays.asList("Dataset.internalId"));
 		return result;
 	}
