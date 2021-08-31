@@ -32,6 +32,9 @@
 				<section labelKey="Technische Hinweise">
 					<field datasource="modell3d.TechnischeHinweise" prefix="" />
 				</section>
+				<context type="Modell3DDownloads" labelKey="Download des Modells">
+					<linkField labelKey="" datasource=".downloadPath" prefix="http://arachne.dainst.org/data/model/file/" postfix="" />
+				</context>
 			</section>
 		</datasections>
 		<editorsection>
