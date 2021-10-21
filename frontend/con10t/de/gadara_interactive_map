@@ -1,0 +1,20 @@
+<idai-header
+	image="/con10t/headerimages/Projekt_Gadara_Hartl_Reiter.jpg">
+	description="Gadara. Blick nach Westen entlang der Ost-West-orientierte Hauptverkehrsachse der antiken Stadt (DAI-Dam/C. Hartl-Reiter)">
+link= "https://arachne.dainst.org/entity/XXXXX">
+</idai-header>
+
+<div class="con10t-page teaserpage container">
+    <div class="con10t-row">
+        <div class="con10t-title">
+            <h1>Interaktiver Übersichtsplan des Grabungsgeländes in Gadara</h1>
+        </div>
+
+<!--Sidebar-->
+<div class="con10t-sidebar" style = "padding-top: 2vw;">
+    <div>
+        <a href="project/gadara_interaktiver_plan?lang=en" target="_self">English Version</a>
+        <br>
+        <a href="project/gadara_interaktiver_plan?lang=ar" target="_self">النسخة العربية</a> 
+    </div>
+    

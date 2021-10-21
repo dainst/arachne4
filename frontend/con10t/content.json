@@ -100,6 +100,13 @@
           }
         },
         {
+          "id": "gadara",
+          "title": {
+            "de": "Fotoarchiv Gadara",
+            "en": "Gadara photo archive"
+          }
+        },
+        {
           "id": "daiorient",
           "title": {
             "de": "Fotothek DAI Orientabteilung",
