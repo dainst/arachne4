@@ -34,10 +34,37 @@
     <hr>
     <br>
 
-    <div style = "margin-top: 1vw;">
-            <a href="/project/gadara_map" title="Zur Karte" style="cursor:pointer">
-                <span class="glyphicon glyphicon-fullscreen"></span>Größere Karte</a>
-    </div>
+    <p>
+        <div>
+            <a href="/project/hinkel_map?lang=de" title="Zur Karte" style="cursor:pointer">
+                <span class="glyphicon glyphicon-fullscreen"></span>
+                Größere Karte
+            </a>
+        </div>
+
+        <div ng-init="config = {
+                clustered: false,
+                menuFacetsAllow: [
+                    'facet_bestandsname'
+                ],
+                facetsSelect: [
+                    {
+                        key: 'facet_bestandsname',
+                        value: 'Archiv-Friedrich-W-Hinkel'
+                    }
+                ]
+            }"></div>
+        <div con10t-map
+             id="map"
+             limit="200"
+             overlays="config.overlays"
+             facets-select="config.facetsSelect"
+             lat="15.114552871944115"
+             lng="31.134765625"
+             zoom="5"
+             style="height: 500px">
+        </div>
+        </p>
             
     <hr>
     <br>
@@ -84,11 +111,12 @@
             	Mit einer absoluten Höhe von 378 m über dem Meeresspiegel – während die Niederungen zum Teil knapp 200 m unter dem Meeresspiegel liegen – ist die Siedlungslage strategisch äußerst vorteilhaft. Dies führte spätestens in hellenistischer Zeit zum befestigten Ausbau der Siedlung. Der höchste topographische Punkt, die zur Festung ausgebaute Hügelkuppe, gibt dann auch den Blick frei auf die syrischen Golan-Höhen und das Yarmouk-Tal im Norden, das Wadi al-Arab im Süden, das Jordan-Tal im Westen und das transjordanische Kalksteinplateau im Osten. 
             </p>
             <br>
-            <con10t-image src="/con10t/img/gadara/Projekt_Gadara_Schauerte.jpg">
+            <con10t-image src="/con10t/img/gadara/Gadara_Schauerte.jpg">
                 Gadara. Blick von Südwesten auf die hellenistische Festungsmauer mit der neuzeitlichen Überbauung aus dem Anfang des 20. Jh. 
                 <br>
                 (Gadara Projekt/Schauerte) 
             </con10t-image>
+            <br>
             <br>
             <p>
             	Aufgrund der topographischen und geomorphologischen Gegebenheiten war eine weitere Ausdehnung der Stadt nur nach Westen möglich. Die Oberstadt auf der Hügelkuppe und die sich nach Westen orientierende Unterstadt bilden ein Stadtareal von ca. 32 ha. Bereits ab dem 1. Jh. n. Chr. entwickelte sich eine Ost-West-orientierte Achse, die zum Rückgrat der Stadt werden sollte. Sie bildet die Verbindungslinie zwischen der Mittelmeerküste und der Steppe wie auch der Wüste östlich des Grabenbruchs. Stadtplanung und innerstädtische Verkehrsführung wurden nach ihr ausgerichtet, wie auch die heute bekannten Baudenkmäler (<a href ="https://geoserver.dainst.org/maps/5657" target="_blank">Topographische Bestandskarte Gadara</a>). Darüber hinaus ist es die Lage an einem wichtigen Verkehrsknotenpunkt, der die Dekapolis-Stadt Gadara zu Reichtum kommen ließ. Die Wirtschaftsgemeinschaft der sog. Dekapolis (griech. Zehn-Stadt) kam durch Handel zu Wohlstand. Eine wichtige Errungenschaft, um diese Städte zuverlässig mit Wasser zu versorgen, ist die in der frühen römischen Kaiserzeit zum großen Teil unterirdisch geführte Fernwasserleitung mit einer Länge von 170 km. 
