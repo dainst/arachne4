@@ -113,7 +113,17 @@
       }
     ]
   },
-
+  "gadara": {
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "Bestand-D-DAI-OA-DAM-GA-UQ"
+      }
+    ]
+  },
+  "gadara_interactive_map": {
+    "alias": "gadara"
+  },
   "gipsleipzigsamml": {
     "q": "connectedEntities:1241594",
     "facets": [

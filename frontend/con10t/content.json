@@ -104,16 +104,14 @@
           "title": {
             "de": "Fotoarchiv Gadara",
             "en": "Gadara photo archive"
+          }
           },
-          "children": [
           {
               "id": "gadara_interactive_map",
               "title": {
                 "de": "Interaktiver Übersichtsplan des Grabungsgeländes in Gadara",
                 "en": "#"
               }
-            }    
-            ]
         },
         {
           "id": "daiorient",
