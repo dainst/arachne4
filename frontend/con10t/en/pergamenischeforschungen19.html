@@ -25,9 +25,19 @@
 
             <br>
 
-            <h3>Kartenansicht</h3>
+            <h3>Map</h3>
 
             <!-- Map -->
+            <div ng-init="config = {
+                    clustered: false,
+                    facetsSelect: [
+                        {
+                        key: 'catalogIds',
+                        value: 546
+                        }
+                    ]
+                }"></div>
+
             <div con10t-map style = "margin-bottom: 1vw;"
                  id="map"
                  limit="200"
