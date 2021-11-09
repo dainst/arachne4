@@ -43,14 +43,16 @@
 					Mapa grande</a>
 			</div>
 
+			<!-- Map -->
 			<div ng-init="config = {
-				facetsSelect: [
-					{
-						key: 'facet_kategorie',
-						value: 'Einzelobjekte'
-					}
-				]
-			}"></div>
+                    clustered: false,
+                    facetsSelect: [
+                        {
+                        key: 'catalogIds',
+                        value: 860
+                        }
+                    ]
+                }"></div>
 
 			<div con10t-map style = "margin-bottom: 1vw;"
 				 id="map"
@@ -76,49 +78,49 @@
 		<!-- Inhalt der Projektseite -->
         <div class="con10t-content">
 
-				<p>Este catálogo digital acompaña al libro La bóveda en la arquitectura maya, publicado en la serie 
-				Forschungen zur Archäologie Außereuropäischer Kulturen del Deutsches Archäologisches Institut (DAI). 
-				Contiene datos y documentación gráfica sobre 391 bóvedas de 200 edificios pertenecientes a 48 sitios 
-				arqueológicos de las Tierras Bajas Mayas, y constituye la base de la investigación realizada sobre la 
+				<p>Este catálogo digital acompaña al libro La bóveda en la arquitectura maya, publicado en la serie
+				Forschungen zur Archäologie Außereuropäischer Kulturen del Deutsches Archäologisches Institut (DAI).
+				Contiene datos y documentación gráfica sobre 391 bóvedas de 200 edificios pertenecientes a 48 sitios
+				arqueológicos de las Tierras Bajas Mayas, y constituye la base de la investigación realizada sobre la
 				bóveda en la arquitectura maya.</p>
 
 				<!-- Figure 1 -->
 				<con10t-image src="/con10t/img/faak18/CBM_sitios.png" align="center" alt="Map_sites" width="500">
 					<span class="ng-scope">Sitios arqueológicos incluidos en el Catálogo</span>
 				</con10t-image>
-				
-				
-				<p>Los datos incluidos en el Catálogo fueron tomados en campo durante varias campañas realizadas entre 
+
+
+				<p>Los datos incluidos en el Catálogo fueron tomados en campo durante varias campañas realizadas entre
 				2015 y 2017, y complementados con información tomada de la bibliografía existente.</p>
-				
-				
-				<p>La información del Catálogo está organizada por sitios arqueológicos y edificios. Para cada uno de 
-				los edificios abovedados considerados se incluyen fotografías y datos generales sobre su localización, 
-				rasgos arquitectónicos más relevantes y datación cronológica. La información de los edificios a los que 
-				pertenecen las bóvedas estudiadas nos ha permitido comparar sus rasgos por áreas geográficas, tipologías 
+
+
+				<p>La información del Catálogo está organizada por sitios arqueológicos y edificios. Para cada uno de
+				los edificios abovedados considerados se incluyen fotografías y datos generales sobre su localización,
+				rasgos arquitectónicos más relevantes y datación cronológica. La información de los edificios a los que
+				pertenecen las bóvedas estudiadas nos ha permitido comparar sus rasgos por áreas geográficas, tipologías
 				arquitectónicas y períodos cronológicos.</p>
-				
-				
-				<p>En cada edificio se han documentado con detalle una o varias bóvedas, incluyendo datos formales, geométricos, 
-				constructivos y de conservación que se acompañan con una selección de la documentación gráfica obtenida, principalmente 
-				fotografías, dibujos, planos y modelos fotogramétricos. A partir del análisis del universo de datos interrelacionados 
-				obtenidos se ha realizado una investigación sobre la bóveda maya desde el punto de vista arquitectónico. Los resultados 
-				han permitido analizar con detalle su técnica constructiva, establecer una clasificación de las bóvedas según varios criterios 
+
+
+				<p>En cada edificio se han documentado con detalle una o varias bóvedas, incluyendo datos formales, geométricos,
+				constructivos y de conservación que se acompañan con una selección de la documentación gráfica obtenida, principalmente
+				fotografías, dibujos, planos y modelos fotogramétricos. A partir del análisis del universo de datos interrelacionados
+				obtenidos se ha realizado una investigación sobre la bóveda maya desde el punto de vista arquitectónico. Los resultados
+				han permitido analizar con detalle su técnica constructiva, establecer una clasificación de las bóvedas según varios criterios
 				y estudiar sus variantes regionales y evolución en el tiempo.</p>
-				
-				
-				
+
+
+
 				<h2 class="con10t-toc-entry">Catálogo</h2>
 
 			<con10t-catalog-tree catalog-id="860"></con10t-catalog-tree>
 
-				
-				
+
+
 				<!-- Figure 2 -->
 				<con10t-image src="/con10t/img/faak18/CBM_mosaico.jpg" align = "left" alt="club head" width="350"></con10t-image>
-				
-				<p style = "text-align: left;">Algunos ejemplos de bóvedas mayas incluidas en el Catálogo:</p><br> 
-				
+
+				<p style = "text-align: left;">Algunos ejemplos de bóvedas mayas incluidas en el Catálogo:</p><br>
+
 				<ol style="list-style-type:lower-alpha; text-align: left;">
 				<li>Edificio 20 de Chicanná (Campeche, México)</li>
 				<li>Estructura 5D-91 de Tikal (Petén, Guatemala)</li>
@@ -130,8 +132,8 @@
 				<li>Edificio 7 de Yaxchilán (Chiapas, México)</li>
 				<li>Templo de las Siete Muñecas de Dzibilchaltún (Yucatán, México).</li>
 				</ol>
-		
-		
+
+
 				<h2 class="con10t-toc-entry">Contacto</h2>
 
 				<p>Redaktion KAAK<br>

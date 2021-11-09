@@ -57,6 +57,9 @@
   "faak16_map": {
     "alias": "faak"
   },
+  "faak18": {
+    "q": "catalogPaths:860"
+  },
   "fotoarchivdaiberlin": {
     "q": "D-DAI-Z",
     "facets": [
