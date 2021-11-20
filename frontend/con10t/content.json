@@ -937,6 +937,14 @@
           },
           "hidden": false
         },
+	   {
+          "id": "mumienmasken",
+          "title": {
+            "de": "A. Müller, Ägyptens schöne Gesichter. Die Mumienmasken der römischen Kaiserzeit und ihre Funktion im Totenritual, AF 39 (Wiesbaden 2021). Datenbank-Katalog",
+            "en": "A. Müller, Ägyptens schöne Gesichter. Die Mumienmasken der römischen Kaiserzeit und ihre Funktion im Totenritual, AF 39 (Wiesbaden 2021). Database Catalog"
+          },
+          "hidden": false
+        },
         {
           "id": "blankenheim",
           "title": {

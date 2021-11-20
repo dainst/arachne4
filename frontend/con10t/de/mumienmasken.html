@@ -33,15 +33,16 @@
 
             <h3>Karte</h3>
 
-            <div ng-init="config = {
+           <div ng-init="config = {
                     clustered: false,
                     facetsSelect: [
                         {
                         key: 'catalogIds',
-                        value: 546
+                        value: 1060
                         }
                     ]
-                }"></div>
+                }">
+           </div>
 
             <!-- Map -->
             <div con10t-map style = "margin-bottom: 1vw;"
@@ -53,17 +54,17 @@
                  zoom="5">
             </div>
 
-            <h3>Suche in den Projektdaten</h3>
+            <!-- <h3>Suche in den Projektdaten</h3>
 
             <a con10t-search-query target = "_blank">Alle Datensätze anzeigen</a>
 
-            <con10t-search catalog-id="546"></con10t-search>
+            <con10t-search catalog-id="546"></con10t-search> -->
 
             <br>
 
-            <h3>Katalog</h3>
+            <!-- <h3>Katalog</h3>
 
-            <a href = "https://arachne.dainst.org/catalog/546">Zur Katalogansicht</a>
+            <a href = "https://arachne.dainst.org/catalog/546">Zur Katalogansicht</a> -->
 
             <h3 style = "margin-top: 5%">Informationen zum Buch</h3>
 
@@ -93,7 +94,12 @@
 
             <h2 class="con10t-toc-entry">Katalog</h2>
 
-            <con10t-catalog-tree catalog-id="546"></con10t-catalog-tree>
+            <div class="alert alert-warning">
+                <p>Hinweis:</p>
+                <p>Der Datenbank-Katalog wird Ende November 2021 freigeschaltet.</p>
+            </div>
+
+            <!--- <con10t-catalog-tree catalog-id="546"></con10t-catalog-tree> --->
 
             <h2 class="con10t-toc-entry">Hinweise zur Nutzung</h2>
 
@@ -114,8 +120,7 @@
 
             <table id = "bibliographie">
                 <tr><td>Grimm 1974</td><td>G. Grimm, Die römischen Mumienmasken aus Ägypten (Wiesbaden 1974)</td></tr>
-                <tr><td>Lembke 2004</td><td>K. Lembke, Ägyptens späte Blüte. Die Römer am Nil (Mainz 2004)</td></tr>
-                <tr><td>Wiesbaden 2021</td><td>A. Müller, Ägyptens schöne Gesichter. Die Mumienmasken der römischen Kaiserzeit und ihre Funktion im Totenritual, AF 39 (Wiesbaden 2021)</td></tr>
+                <tr><td>Müller 2021</td><td>A. Müller, Ägyptens schöne Gesichter. Die Mumienmasken der römischen Kaiserzeit und ihre Funktion im Totenritual, AF 39 (Wiesbaden 2021)</td></tr>
             </table>
         </div>
 
