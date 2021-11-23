@@ -263,14 +263,21 @@ public class CatalogEntryDao extends SQLDao {
 					newCatalogEntry.setIndexParent(maxIndex);
 				}
 
-				update(con -> {
-					final String sql = "UPDATE catalog_entry " + "SET index_parent = index_parent + 1 "
-							+ "WHERE (index_parent >= ? AND parent_id = ?)";
-					PreparedStatement ps = con.prepareStatement(sql);
-					ps.setLong(1, newCatalogEntry.getIndexParent());
-					ps.setObject(2, newCatalogEntry.getParentId(), Types.BIGINT);
-					return ps;
-				});
+				final String entryByIndexQuery = "SELECT id FROM catalog_entry "
+					+ "WHERE parent_id = " + newCatalogEntry.getParentId()
+					+ " AND index_parent = " + newCatalogEntry.getIndexParent();
+				final Long entryId = queryForLong(entryByIndexQuery);
+
+				if (entryId != null) {
+					update(con -> {
+						final String sql = "UPDATE catalog_entry " + "SET index_parent = index_parent + 1 "
+								+ "WHERE (index_parent >= ? AND parent_id = ?)";
+						PreparedStatement ps = con.prepareStatement(sql);
+						ps.setLong(1, newCatalogEntry.getIndexParent());
+						ps.setObject(2, newCatalogEntry.getParentId(), Types.BIGINT);
+						return ps;
+					});
+				}
 			} else {
 				newCatalogEntry.setPath(String.valueOf(newCatalogEntry.getCatalogId()));
 				final String sql = "SELECT id FROM catalog_entry WHERE (catalog_id = " + newCatalogEntry.getCatalogId()
