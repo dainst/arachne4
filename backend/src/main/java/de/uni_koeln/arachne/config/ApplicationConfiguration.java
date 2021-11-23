@@ -159,7 +159,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
         hikariDataSource.setUsername(environment.getProperty("jdbcUsername"));
         hikariDataSource.setPassword(environment.getProperty("jdbcPassword"));
         hikariDataSource.setAutoCommit(false);
-        hikariDataSource.setLeakDetectionThreshold(20000);
+        hikariDataSource.setLeakDetectionThreshold(60000);
 
         // Tells Spring to bounce off the connection pool
         return new LazyConnectionDataSourceProxy(hikariDataSource) {
