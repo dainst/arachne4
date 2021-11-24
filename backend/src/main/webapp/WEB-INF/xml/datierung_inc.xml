@@ -6,7 +6,7 @@
         <field datasource=".FestDat" prefix="(fest datiert: " postfix=")" />
         <field datasource=".AnfEpoche" />
         <linkField datasource=".AnfEpocheChronId" labelKey="(Chronontology)" separator=" "
-                   prefix="http://chronontology.dainst.org/period/" />
+                   prefix="https://chronontology.dainst.org/period/" />
         <field datasource=".AnfKultur" postfix="," />
         <field datasource=".AnfDatZeitraum" postfix=","/>
         <field datasource=".AnfDatJt" postfix=". Jt." />
@@ -16,7 +16,7 @@
         <field datasource=".AnfTerminus" prefix=", " postfix=". " />
         <field datasource=".EndEpoche" prefix=" - " />
         <linkField datasource=".EndEpocheChronId" labelKey="(Chronontology)" separator=" "
-                   prefix="http://chronontology.dainst.org/period/" />
+                   prefix="https://chronontology.dainst.org/period/" />
         <field datasource=".EndKultur" postfix="," />
         <field datasource=".EndDatZeitraum" postfix="," />
         <field datasource=".EndDatJt" postfix=". Jt." />

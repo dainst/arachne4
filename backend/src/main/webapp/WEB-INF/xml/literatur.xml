@@ -14,7 +14,7 @@
 		</subtitle>
 		<datasections>
 			<section labelKey="Informationen zur Literatur">
-				<linkField labelKey="Datensatz im Zenon" prefix="http://zenon.dainst.org/Record/"
+				<linkField labelKey="Datensatz im Zenon" prefix="https://zenon.dainst.org/Record/"
 					datasource="literatur.ZenonID" />
 				<field datasource="literatur.DAIRichtlinien" prefix="Zitat nach DAI-Richtlinien: " />
 				<field datasource="literatur.Titel" prefix="Titel: " />

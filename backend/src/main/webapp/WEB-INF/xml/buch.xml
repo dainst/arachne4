@@ -30,7 +30,7 @@
 		</subtitle>
 		<datasections>
 			<section labelKey="Permalink">
-				<linkField labelKey="" datasource="buch.alias" prefix="http://arachne.dainst.org/books/" />
+				<linkField labelKey="" datasource="buch.alias" prefix="https://arachne.dainst.org/books/" />
 			</section>
 			<section labelKey="Informationen zum Buch">
 				<include type="ort" />
@@ -96,7 +96,7 @@
 				<section labelKey="BibId" separator=", ">
 					<field datasource="buch.bibid" />
 					<linkField labelKey="Zenon" datasource="buch.bibid"
-						prefix="http://zenon.dainst.org/Record/" />
+						prefix="https://zenon.dainst.org/Record/" />
 				</section>
 				<section labelKey="Band">
 					<field datasource="buch.Band" />
@@ -164,7 +164,7 @@
 				</section>
 				<include type="uri" />
 				<section labelKey="Download">
-					<linkField labelKey="Gesamtes Buch als PDF herunterladen" datasource="buch.Verzeichnis" prefix="http://arachne.dainst.org/download-book/" postfix=".pdf.zip" />
+					<linkField labelKey="Gesamtes Buch als PDF herunterladen" datasource="buch.Verzeichnis" prefix="https://arachne.dainst.org/download-book/" postfix=".pdf.zip" />
 				</section>
 			</section>
 		</datasections>

@@ -57,7 +57,7 @@
 					<section labelKey="BibID" separator=", ">
 						<field datasource="zenon.001" />
 						<linkField labelKey="Zenon" datasource="buchseite.bibidSeite"
-							prefix="http://zenon.dainst.org/Record/" />
+							prefix="https://zenon.dainst.org/Record/" />
 					</section>
 					<section labelKey="Autor" separator=", ">
 						<field datasource="zenon.100_a" />
