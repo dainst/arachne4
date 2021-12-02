@@ -333,7 +333,7 @@
 				</section>
 			</section>
 			<section labelKey="Information zur Plastik">
-				<section labelKey="Bennung und Charakterisierung">
+				<section labelKey="Benennung und Charakterisierung">
 					<section labelKey="Benennung">
 						<field datasource="objektplastik.Benennung" />
 					</section>
