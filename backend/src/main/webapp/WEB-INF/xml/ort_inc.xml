@@ -7,6 +7,10 @@
     <field datasource=".Stadt" postfix="," />
     <field datasource=".Land" postfix="," />
     <field datasource=".Zusatz" postfix="." />
+    <!--- Test -->
+    <field datasource=".ArtOrtsangabe" prefix="Zuverlässigkeit: "/>
+    <field datasource=".DokumentationArt" postfix="; "/>
+    <field datasource=".DokumentationBemerkungen"/>
     <!-- AdditionalInfosJSON -> Field from Semantic-Connection-Table -->
     <field datasource=".BerlinIdentNr" prefix="Berlin Ident.Nr. " />
     <field datasource=".InvNr" prefix="Inv.-Nr. " />
@@ -22,10 +26,12 @@
         <field datasource=".AufbewahrungBisMonat" prefix="." />
         <field datasource=".AufbewahrungBisJahr" prefix="." />
     </compoundDateField>
+      <!---
     <compoundDateField prefix="&lt;br/&gt;Zuverlässigkeit / Dokumentation: " >
           <field datasource=".ArtOrtsangabe" prefix="Zuverlässigkeit: "/>
           <field datasource=".DokumentationArt" postfix="; "/>
           <field datasource=".DokumentationBemerkungen"/>
     </compoundDateField>
+    -->
   </context>
 </includeSection>
