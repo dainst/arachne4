@@ -7,10 +7,6 @@
     <field datasource=".Stadt" postfix="," />
     <field datasource=".Land" postfix="," />
     <field datasource=".Zusatz" postfix="." />
-    <!--- Test -->
-    <field datasource=".ArtOrtsangabe" prefix="Zuverlässigkeit: "/>
-    <field datasource=".DokumentationArt" postfix="; "/>
-    <field datasource=".DokumentationBemerkungen"/>
     <!-- AdditionalInfosJSON -> Field from Semantic-Connection-Table -->
     <field datasource=".BerlinIdentNr" prefix="Berlin Ident.Nr. " />
     <field datasource=".InvNr" prefix="Inv.-Nr. " />
