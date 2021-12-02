@@ -22,5 +22,10 @@
         <field datasource=".AufbewahrungBisMonat" prefix="." />
         <field datasource=".AufbewahrungBisJahr" prefix="." />
     </compoundDateField>
+    <compoundDateField prefix="&lt;br/&gt;Zuverlässigkeit / Dokumentation: " >
+          <field datasource=".ArtOrtsangabe" prefix="Zuverlässigkeit: "/>
+          <field datasource=".DokumentationArt" postfix="; "/>
+          <field datasource=".DokumentationBemerkungen"/>
+    </compoundDateField>
   </context>
 </includeSection>
