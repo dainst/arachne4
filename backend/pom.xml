@@ -48,7 +48,7 @@
 		<!-- HTTP Client -->
 		<httpclient-version>4.5.2</httpclient-version>
 		<!-- Log4J -->
-        <log4j-version>2.7</log4j-version>
+        <log4j-version>2.15.0</log4j-version>
 		<!-- Testing -->
         <!-- JUnit -->
         <junit-version>4.12</junit-version>
