@@ -470,7 +470,7 @@
         <repository>
             <id>central</id>
             <name>Central Repository</name>
-            <url>http://repo.maven.apache.org/maven2</url>
+            <url>https://repo.maven.apache.org/maven2</url>
             <layout>default</layout>
         </repository>
 
@@ -478,7 +478,7 @@
 		<repository>
 			<id>springsource-repo</id>
 			<name>SpringSource Repository</name>
-			<url>http://repo.spring.io/release</url>
+			<url>https://repo.spring.io/release</url>
 		</repository>
 		<!-- For testing against latest Spring snapshots -->
 		<!-- <repository> <id>org.springframework.maven.snapshot</id> <name>Spring 
@@ -502,7 +502,7 @@
 		<repository>
 			<id>mysql</id>
 			<name>MySQL Connector</name>
-			<url>http://mvnrepository.com/artifact/mysql/mysql-connector-java/</url>
+			<url>https://mvnrepository.com/artifact/mysql/mysql-connector-java/</url>
 		</repository>
 		<!-- jitpack.io for pfdbox-layout -->
 		<repository>
