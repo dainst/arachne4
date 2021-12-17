@@ -4,8 +4,7 @@
             {
                 "facet_template":{
                     "mapping":{
-                        "type":"string",
-                        "index":"not_analyzed"
+                        "type":"keyword"
                     },
                     "match":"facet*"
                 }
@@ -13,7 +12,7 @@
             {
                 "all_template":{
                     "mapping":{
-                        "type":"string",
+                        "type":"text",
                         "index_options":"positions",
                         "copy_to":"searchableContent"
                     },
@@ -25,7 +24,7 @@
             {
                 "editor_template":{
                     "mapping":{
-                        "type":"string",
+                        "type":"text",
                         "index_options":"positions",
                         "copy_to":"searchableEditorContent"
                     },
@@ -36,12 +35,10 @@
         ],
         "properties":{
             "datasetGroup":{
-                "type":"string",
-                "index":"not_analyzed"
+                "type":"keyword"
             },
             "@id":{
-                "type":"string",
-                "index":"not_analyzed"
+                "type":"keyword"
             },
             "entityId":{
                 "type":"long"
@@ -53,11 +50,13 @@
                 "type":"long"
             },
             "subtitle":{
-                "type":"string",
+                "type":"text",
                 "fields":{
                     "sort":{
-                        "type":"string",
-                        "analyzer":"collation"
+                        "type":"icu_collation_keyword",
+                        "language":"de",
+                        "country":"DE",
+                        "numeric":true
                     }
                 }
             },
@@ -65,25 +64,21 @@
                 "type":"long"
             },
             "title":{
-                "type":"string",
+                "type":"text",
                 "fields":{
                     "sort":{
-                        "type":"string",
-                        "index":"not_analyzed"
+                        "type":"keyword"
                     }
                 }
             },
             "type":{
-                "type":"string",
-                "index":"not_analyzed"
+                "type":"keyword"
             },
             "ids":{
-                "type":"string",
-                "index":"not_analyzed"
+                "type":"keyword"
             },
             "filename":{
-                "type":"string",
-                "index":"not_analyzed"
+                "type":"keyword"
             },
             "images":{
                 "properties":{
@@ -91,13 +86,13 @@
                         "type":"long"
                     },
                     "sourceContext":{
-                        "type":"string"
+                        "type":"text"
                     },
                     "sourceRecordId":{
                         "type":"long"
                     },
                     "imageSubtitle":{
-                        "type":"string"
+                        "type":"text"
                     }
                 }
             },
@@ -105,33 +100,25 @@
                 "type":"nested",
                 "properties":{
                     "name":{
-                        "type":"string"
+                        "type":"text"
                     },
                     "country":{
-                        "type":"string",
-                        "index":"not_analyzed"
+                        "type":"keyword"
                     },
                     "region":{
-                        "type":"string",
-                        "index":"not_analyzed"
+                        "type":"keyword"
                     },
                     "subregion":{
-                        "type":"string",
-                        "index":"not_analyzed"
+                        "type":"keyword"
                     },
                     "city":{
-                        "type":"string",
-                        "index":"not_analyzed"
+                        "type":"keyword"
                     },
                     "relation":{
-                        "type":"string",
-                        "index":"not_analyzed"
+                        "type":"keyword"
                     },
                     "location":{
-                        "type":"geo_point",
-                        "lat_lon":true,
-                        "geohash_prefix":true,
-                        "geohash_precision":9
+                        "type":"geo_point"
                     },
                     "gazetteerId":{
                         "type":"long"
@@ -159,10 +146,10 @@
             "dates":{
                 "properties":{
                     "label":{
-                        "type":"string"
+                        "type":"text"
                     },
                     "relation":{
-                        "type":"string"
+                        "type":"text"
                     },
                     "date":{
                         "type":"date"
@@ -170,13 +157,13 @@
                 }
             },
             "searchableContent":{
-                "type":"string",
-                "omit_norms":true,
+                "type":"text",
+                "norms":false,
                 "store":true
             },
             "searchableEditorContent":{
-                "type":"string",
-                "omit_norms":true,
+                "type":"text",
+                "norms":false,
                 "store":true
             },
             "boost":{

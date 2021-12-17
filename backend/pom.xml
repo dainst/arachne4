@@ -24,11 +24,9 @@
         <!-- HikariCP -->
         <hikariCP-version>3.3.1</hikariCP-version>
 		<!-- elasticsearch -->
-		<elasticsearch-version>2.3.1</elasticsearch-version>
-		<!-- Snappy -->
-        <snappy-version>1.1.2.6</snappy-version>
+		<elasticsearch-version>7.16.1</elasticsearch-version>
 		<!-- Jackson -->
-		<jackson-version>2.7.8</jackson-version>
+		<jackson-version>2.12.3</jackson-version>
 		<!-- JDom -->
 		<org.jdom-version>2.0.6</org.jdom-version>
 		<!-- Xerces -->
@@ -354,16 +352,14 @@
 
 		<!-- elasticsearch -->
 		<dependency>
-			<groupId>org.elasticsearch</groupId>
-			<artifactId>elasticsearch</artifactId>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>transport</artifactId>
 			<version>${elasticsearch-version}</version>
 		</dependency>
-
-		<!-- snappy for elastic search -->
 		<dependency>
-			<groupId>org.xerial.snappy</groupId>
-			<artifactId>snappy-java</artifactId>
-			<version>${snappy-version}</version>
+		<groupId>org.elasticsearch.client</groupId>
+		<artifactId>elasticsearch-rest-client</artifactId>
+			<version>${elasticsearch-version}</version>
 		</dependency>
 
 		<!-- geo -->
@@ -489,21 +485,6 @@
 		<!-- <repository> <id>org.springframework.maven.milestone</id> <name>Spring 
 			Maven Milestone Repository</name> <url>http://maven.springframework.org/milestone</url> 
 			<snapshots> <enabled>false</enabled> </snapshots> </repository> -->
-		<!-- Hibernate -->
-		<repository>
-			<id>org.hibernate</id>
-			<name>Hibernate Repository</name>
-			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<!-- MySQL Connector -->
-		<repository>
-			<id>mysql</id>
-			<name>MySQL Connector</name>
-			<url>https://mvnrepository.com/artifact/mysql/mysql-connector-java/</url>
-		</repository>
 		<!-- jitpack.io for pfdbox-layout -->
 		<repository>
             <id>jitpack.io</id>

@@ -3,12 +3,8 @@
         "analyzer" : {
         	"default": {
         		"tokenizer" : "standard",
-                "filter" : ["standard", "lowercase", "custom_snowball"]
+                "filter" : ["lowercase", "custom_snowball"]
         	},
-            "collation" : {
-                "tokenizer" : "keyword",
-                "filter" : ["collation_filter"]
-            },
             "keyword_lowercase": {
                 "tokenizer" : "keyword",
                 "filter" : ["lowercase"]
@@ -18,12 +14,7 @@
         	"custom_snowball": {
         		"type" : "snowball",
                 "language" : "German2"
-        	},
-            "collation_filter" : {
-                "type" : "icu_collation",
-                "language" : "de",
-                "numeric" : "true"
-            }
+        	}
         }
     },
     "similarity" : {

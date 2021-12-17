@@ -12,31 +12,28 @@ import java.util.Set;
 import javax.annotation.PreDestroy;
 import javax.servlet.ServletContext;
 
-import org.elasticsearch.action.admin.indices.alias.IndicesAliasesResponse;
 import org.elasticsearch.action.admin.indices.alias.get.GetAliasesRequest;
 import org.elasticsearch.action.admin.indices.close.CloseIndexResponse;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
-import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
-import org.elasticsearch.action.admin.indices.open.OpenIndexResponse;
-import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.cluster.metadata.AliasMetaData;
+import org.elasticsearch.cluster.metadata.AliasMetadata;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.index.IndexNotFoundException;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.node.Node;
-import org.elasticsearch.node.NodeBuilder;
 import org.elasticsearch.rest.RestStatus;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.elasticsearch.xcontent.XContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,10 +79,7 @@ public class ESService implements ServletContextAware {
 		
 	private transient final int esBulkActions;
 	private transient final int esBulkSize;
-
-	private transient final boolean esRemoteClient;
 	
-	private transient final Node node;
 	private transient final Client client;
 
 	@Autowired
@@ -97,7 +91,6 @@ public class ESService implements ServletContextAware {
 			, final @Value("${esIndexName}") String esIndexName
 			, final @Value("${esBulkActions}") int esBulkActions
 			, final @Value("${esBulkSize}") int esBulkSize
-			, final @Value("${esClientTypeRemote}") boolean esRemoteClient
 			, final @Value("${esRESTPort}") String esRESTPort) {
 
 		this.esClusterName = esClusterName;
@@ -107,21 +100,12 @@ public class ESService implements ServletContextAware {
 		
 		this.esBulkActions = esBulkActions;
 		this.esBulkSize = esBulkSize;
-		this.esRemoteClient = esRemoteClient;
 		
-		if (esRemoteClient) {
-			LOGGER.info("Setting up elasticsearch transport client...");
-			node = null;
-			final Settings settings = Settings.settingsBuilder().put("cluster.name", esClusterName).build();
-			client = TransportClient.builder().settings(settings).build();
-			((TransportClient) client).addTransportAddress(new InetSocketTransportAddress(
-					new InetSocketAddress(esAddress, esRemotePort)));
-		} else {
-			LOGGER.info("Setting up elasticsearch node client...");
-			final Settings settings = Settings.settingsBuilder().put("discovery.zen.ping.multicast.enabled", false).build();
-			node = NodeBuilder.nodeBuilder().client(true).clusterName(esClusterName).settings(settings).node();
-			client = node.client();
-		}
+		LOGGER.info("Setting up elasticsearch transport client...");
+		final Settings settings = Settings.builder().put("cluster.name", esClusterName).build();
+		client = new PreBuiltTransportClient(settings)
+			.addTransportAddress(new TransportAddress(new InetSocketAddress(esAddress, esRemotePort)));
+		
 	}
 
 	/**
@@ -132,7 +116,7 @@ public class ESService implements ServletContextAware {
 	public boolean deleteIndex(final String indexName) {
 		boolean result = true;
 		LOGGER.info("Deleting index " + indexName);
-		DeleteIndexResponse delete = null;
+		AcknowledgedResponse delete = null;
 		try {
 			delete = client.admin().indices().prepareDelete(indexName).execute().actionGet();
 			if (!delete.isAcknowledged()) {
@@ -150,13 +134,8 @@ public class ESService implements ServletContextAware {
 	 */
 	@PreDestroy
 	public void destroy() {
-		if (esRemoteClient) {
-			LOGGER.info("Closing elasticsearch transport client...");
-			client.close();
-		} else {
-			LOGGER.info("Closing elasticsearch node client...");
-			node.close();
-		}
+		LOGGER.info("Closing elasticsearch transport client...");
+		client.close();
 	}
 
 	/**
@@ -223,7 +202,7 @@ public class ESService implements ServletContextAware {
 		CreateIndexRequestBuilder prepareCreate = client.admin().indices().prepareCreate(indexName);
 
 		if (!"undefined".equals(settings)) {
-			prepareCreate = prepareCreate.setSettings(Settings.settingsBuilder().loadFromSource(settings));
+			prepareCreate = prepareCreate.setSettings(Settings.builder().loadFromSource(settings, XContentType.JSON));
 		}
 
 		final CreateIndexResponse createResponse = prepareCreate.execute().actionGet();
@@ -263,14 +242,6 @@ public class ESService implements ServletContextAware {
 		return this.esAliasName;
 	}
 
-	/**
-	 * Indicates whether a remote client is used. 
-	 * @return <code>true</code> if the client is remote else <code>false</code>. 
-	 */
-	public boolean isRemote() {
-		return esRemoteClient;
-	}
-
 	public void setRefreshInterval(final String indexName, final boolean enabled) {
 		// close index		
 		final CloseIndexResponse closeResponse = client.admin().indices()
@@ -285,9 +256,9 @@ public class ESService implements ServletContextAware {
 		if (!enabled) {
 			refreshValue = "-1";
 		}
-		final Settings settings = Settings.settingsBuilder().put("refresh_intervall", refreshValue).build();
+		final Settings settings = Settings.builder().put("refresh_interval", refreshValue).build();
 
-		final UpdateSettingsResponse response = client.admin().indices()
+		final AcknowledgedResponse response = client.admin().indices()
 				.prepareUpdateSettings(indexName)
 				.setSettings(settings)
 				.execute().actionGet();
@@ -296,7 +267,7 @@ public class ESService implements ServletContextAware {
 		}
 
 		// open index
-		final OpenIndexResponse openResponse = client.admin().indices()
+		final AcknowledgedResponse openResponse = client.admin().indices()
 				.prepareOpen(indexName)
 				.execute().actionGet();
 		if (!openResponse.isAcknowledged()) {
@@ -305,9 +276,9 @@ public class ESService implements ServletContextAware {
 	}
 
 	public void setMaxResultWindow(final String indexName, final long value) {
-		final Settings settings = Settings.settingsBuilder().put("max_result_window", value).build();
+		final Settings settings = Settings.builder().put("max_result_window", value).build();
 
-		final UpdateSettingsResponse response = client.admin().indices()
+		final AcknowledgedResponse response = client.admin().indices()
 				.prepareUpdateSettings(indexName)
 				.setSettings(settings)
 				.execute().actionGet();
@@ -333,7 +304,7 @@ public class ESService implements ServletContextAware {
 		final String indexName = getDataImportIndexName();
 		final String oldName = INDEX_2.equals(indexName) ? INDEX_1 : INDEX_2;
 		try {
-			final IndicesAliasesResponse indexResponse = client.admin().indices().prepareAliases()
+			final AcknowledgedResponse indexResponse = client.admin().indices().prepareAliases()
 					.addAlias(indexName, esAliasName)
 					.removeAlias(oldName, esAliasName)
 					.execute().actionGet();
@@ -350,7 +321,7 @@ public class ESService implements ServletContextAware {
 			LOGGER.warn("Failed to set alias. Index Missing. Trying to just set the new one.");
 			// perhaps we are running for the first time so try just to add the new alias
 			try {
-				final IndicesAliasesResponse indexResponse = client.admin().indices().prepareAliases().addAlias(indexName, esAliasName)
+				final AcknowledgedResponse indexResponse = client.admin().indices().prepareAliases().addAlias(indexName, esAliasName)
 						.execute().actionGet();
 				if (indexResponse.isAcknowledged()) {
 					LOGGER.info("Set alias for '" + indexName + "'");
@@ -388,7 +359,7 @@ public class ESService implements ServletContextAware {
 				.setSize(0)
 				.execute().actionGet();
 		if (searchResponse.status() == RestStatus.OK) {
-			return searchResponse.getHits().totalHits();
+			return searchResponse.getHits().getTotalHits().value;
 		} else {
 			LOGGER.error("Getting count from search index failed. Cause: " + searchResponse.status().toString());
 			return -1;
@@ -458,10 +429,10 @@ public class ESService implements ServletContextAware {
 					.execute().actionGet();
 		}
 		
-		if (searchResponse.getHits().getTotalHits() == 1) {
+		if (searchResponse.getHits().getTotalHits().value == 1) {
     		return new TypeWithHTTPStatus<String>(searchResponse.getHits().getAt(0).getSourceAsString());
     	} else {
-    		if (acLessSearchResponse.getHits().getTotalHits() == 1) {
+    		if (acLessSearchResponse.getHits().getTotalHits().value == 1) {
     			return new TypeWithHTTPStatus<String>(HttpStatus.FORBIDDEN);
     		}
     	}
@@ -488,7 +459,7 @@ public class ESService implements ServletContextAware {
 	 */
 	private Set<String> getIndicesFromAliasName(String aliasName) {
 	    final IndicesAdminClient indicesAdminClient = client.admin().indices();
-	    final ImmutableOpenMap<String, List<AliasMetaData>> map 
+	    final ImmutableOpenMap<String, List<AliasMetadata>> map 
 	    		= indicesAdminClient.getAliases(new GetAliasesRequest(aliasName)).actionGet().getAliases();
 	    final Set<String> allIndices = new HashSet<>();
 	    map.keysIt().forEachRemaining(allIndices::add);
@@ -542,10 +513,10 @@ public class ESService implements ServletContextAware {
 			return message;
 		}
 
-		final PutMappingResponse putResponse = client.admin().indices()
+		final AcknowledgedResponse putResponse = client.admin().indices()
 				.preparePutMapping(indexName)
 				.setType("entity")
-				.setSource(mapping)
+				.setSource(mapping, XContentType.JSON)
 				.execute().actionGet();
 
 		if (putResponse.isAcknowledged()) {

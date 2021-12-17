@@ -11,6 +11,7 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
+import org.elasticsearch.xcontent.XContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,7 +156,7 @@ public class DataImportService { // NOPMD
 				@Override
 				public void afterBulk(long executionId, BulkRequest request, BulkResponse response) {
 					LOGGER.info(String.format("ExecutionID %s: bulk insert composed of %s actions completed in %s ms"
-							, executionId, request.numberOfActions(), response.getTookInMillis()));
+							, executionId, request.numberOfActions(), response.getTook().millis()));
 					openRequests--;
 				}
 
@@ -237,7 +238,7 @@ public class DataImportService { // NOPMD
 							}
 							LOGGER.debug("Adding entity " + dbgEntityId + " to bulk.");
 							bulkProcessor.add(client.prepareIndex(indexName, "entity", String.valueOf(dbgEntityId))
-									.setSource(jsonEntity).request());
+									.setSource(jsonEntity, XContentType.JSON).request());
 							index++;
 							indexedDocuments = index;
 						}

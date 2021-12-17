@@ -5,7 +5,7 @@ package de.uni_koeln.arachne.util.search;
 
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.BucketOrder;
 
 /**
  * Wrapper for an elasticsearch terms aggregation. 
@@ -76,12 +76,12 @@ public class TermsAggregation extends Aggregation {
 	 * <code>order</code>.
 	 * @return The current search order.
 	 */
-	private org.elasticsearch.search.aggregations.bucket.terms.Terms.Order getESOrder() {
+	private BucketOrder getESOrder() {
 		switch (order) {
-		case TERMS:
-			return Terms.Order.term(true);
-		default:
-			return Terms.Order.count(false);
+			case TERMS:
+				return BucketOrder.key(true);
+			default:
+				return BucketOrder.count(false);
 		}
 	}
 }

@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.admin.cluster.node.stats.NodeStats;
 import org.elasticsearch.action.admin.cluster.node.stats.NodesStatsResponse;
@@ -20,29 +21,28 @@ import org.elasticsearch.action.search.SearchPhaseExecutionException;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.action.suggest.SuggestResponse;
+import org.elasticsearch.common.lucene.search.function.CombineFunction;
+import org.elasticsearch.search.suggest.SuggestBuilder;
+import org.elasticsearch.search.suggest.SuggestBuilders;
+import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoBoundingBoxQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
-import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.index.query.functionscore.FieldValueFactorFunctionBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
-import org.elasticsearch.index.query.functionscore.fieldvaluefactor.FieldValueFactorFunctionBuilder;
-import org.elasticsearch.index.query.functionscore.script.ScriptScoreFunctionBuilder;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.script.Script;
-import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.InternalSingleBucketAggregation;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
 import org.elasticsearch.search.aggregations.bucket.geogrid.InternalGeoHashGrid;
-import org.elasticsearch.search.highlight.HighlightBuilder.Field;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortOrder;
-import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,34 +146,19 @@ public class SearchService {
 				.setFrom(searchParameters.getOffset());
 
 		if (!searchParameters.isFacetMode()) {
-			result
-				.setHighlighterQuery(buildQuery(searchParameters.getQuery(), filters, null, true))
-				.setHighlighterOrder("score");
 			if (searchParameters.isScrollMode()
 					&& userRightsService.isSignedInUser()
 					&& getOpenScrollRequests() < MAX_OPEN_SCROLL_REQUESTS) {
 				result.setScroll("1m");
 			} else {
 				// enable highlighting for all search fields (text fields only)
-				Field field = new Field("title");
-				field.numOfFragments(0);
-				result.addHighlightedField(field);
-
-				field = new Field("subtitle");
-				field.numOfFragments(0);
-				result.addHighlightedField(field);
-
-				field = new Field("searchableContent");
-				field.numOfFragments(5);
-				result.addHighlightedField(field);
-
-				field = new Field("datasetGroup");
-				field.numOfFragments(0);
-				result.addHighlightedField(field);
-
-				field = new Field("searchableEditorContent");
-				field.numOfFragments(0);
-				result.addHighlightedField(field);
+				HighlightBuilder highlightBuilder = new HighlightBuilder()
+					.field("title", 100, 0)
+					.field("subtitle", 100, 0)
+					.field("searchableContent", 100, 5)
+					.field("datasetGroup", 100, 0)
+					.field("searchableEditorContent", 100, 0);
+				result.highlighter(highlightBuilder);
 			}
 		}
 
@@ -193,7 +178,7 @@ public class SearchService {
 
 		long scrollCurrent = 0;
 
-		for (NodeStats nodeStats : nodesStatsResponse) {
+		for (NodeStats nodeStats : nodesStatsResponse.getNodes()) {
 			scrollCurrent += nodeStats.getIndices().getSearch().getTotal().getScrollCurrent();
 		}
 
@@ -326,13 +311,13 @@ public class SearchService {
 		final SearchResult searchResult = new SearchResult();
 		searchResult.setLimit(size);
 		searchResult.setOffset(offset);
-		searchResult.setSize(hits.totalHits());
+		searchResult.setSize(hits.getTotalHits().value);
 		searchResult.setScrollId(searchResponse.getScrollId());
         searchResult.setSearchParameters(searchParameters);
         searchResult.setFilters(filters);
 
 		for (final SearchHit currenthit: hits) {
-			Map<String, Object> source = currenthit.getSource();
+			Map<String, Object> source = currenthit.getSourceAsMap();
 			final Integer intThumbnailId = (Integer) source.get("thumbnailId");
 			Long thumbnailId = null;
 			if (intThumbnailId != null) {
@@ -441,7 +426,7 @@ public class SearchService {
 		final SearchHits hits = searchResponse.getHits();
 
 		// clear scroll request when a page after the last is requested
-		if (hits.hits().length == 0) {
+		if (hits.getHits().length == 0) {
 			ClearScrollResponse clearScrollResponse = esService.getClient().prepareClearScroll()
 					.addScrollId(searchResponse.getScrollId()).execute().actionGet();
 			if (!clearScrollResponse.isSucceeded()) {
@@ -451,12 +436,12 @@ public class SearchService {
 		}
 
 		final SearchResult searchResult = new SearchResult();
-		searchResult.setLimit(hits.hits().length);
-		searchResult.setSize(hits.totalHits());
+		searchResult.setLimit(hits.getHits().length);
+		searchResult.setSize(hits.getTotalHits().value);
 		searchResult.setScrollId(searchResponse.getScrollId());
 
 		for (final SearchHit currenthit: hits) {
-			Map<String, Object> source = currenthit.getSource();
+			Map<String, Object> source = currenthit.getSourceAsMap();
 			final Integer intThumbnailId = (Integer) source.get("thumbnailId");
 			Long thumbnailId = null;
 			if (intThumbnailId != null) {
@@ -484,18 +469,22 @@ public class SearchService {
 	public SuggestResult executeSuggestRequest(String queryString) {
 		SuggestResult suggestResult = new SuggestResult();
 
-		CompletionSuggestionBuilder suggestBuilder = new CompletionSuggestionBuilder("complete");
-		suggestBuilder.field("suggest");
-		suggestBuilder.text(queryString);
-		suggestBuilder.size(10);
+		CompletionSuggestionBuilder suggestionBuilder = SuggestBuilders
+			.completionSuggestion("suggest")
+			.text(queryString)
+			.size(10);
 
-		SuggestResponse suggestResponse = esService.getClient().prepareSuggest(esService.getSearchIndexAlias())
-				.addSuggestion(suggestBuilder).execute().actionGet();
+		SearchResponse searchResponse = esService.getClient()
+			.prepareSearch(esService.getSearchIndexAlias())
+			.suggest(new SuggestBuilder().addSuggestion("suggest", suggestionBuilder))
+			.execute()
+			.actionGet();
 
-		suggestResponse.getSuggest().forEach(suggestion -> {
-			suggestion.getEntries().forEach(entry -> entry.getOptions()
-					.forEach(option -> suggestResult.addSuggestion(option.getText().string())));
-		});
+		searchResponse.getSuggest().getSuggestion("suggest").getEntries().forEach(entry -> 
+			entry.getOptions().forEach(option -> 
+				suggestResult.addSuggestion(option.getText().string())
+			)
+		);
 
 		return suggestResult;
 	}
@@ -679,9 +668,10 @@ public class SearchService {
             for (final Map.Entry<String, Collection<String>> filter: filters.asMap().entrySet()) {
                 // TODO find a way to unify this
                 if (filter.getKey().equals(GeoHashGridAggregation.GEO_HASH_GRID_NAME)) {
-                    final String filterValue = filter.getValue().iterator().next();
-					QueryBuilder geoFilter = QueryBuilders.geoHashCellQuery(GeoHashGridAggregation.GEO_HASH_GRID_FIELD, filterValue);
-					QueryBuilder nestedGeoFilter = QueryBuilders.nestedQuery("places", geoFilter);
+					QueryBuilder geoFilter = QueryBuilders
+						.geoBoundingBoxQuery(GeoHashGridAggregation.GEO_HASH_GRID_FIELD)
+						.setCorners(filter.getValue().iterator().next());
+					QueryBuilder nestedGeoFilter = QueryBuilders.nestedQuery("places", geoFilter, ScoreMode.Avg);
 					facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(nestedGeoFilter);
                 } else {
                     if (filter.getKey().equals("facet_ortsangabe") &&
@@ -714,7 +704,7 @@ public class SearchService {
 
                         facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
                                 QueryBuilders.termsQuery(filter.getKey(), filter.getValue())).must(
-                                        QueryBuilders.nestedQuery("places", placeFilter));
+                                        QueryBuilders.nestedQuery("places", placeFilter, ScoreMode.Avg));
                         nestedFilterInserted = true;
                     } else {
                         facetFilter = QueryBuilders.boolQuery().must(facetFilter).must(
@@ -739,7 +729,7 @@ public class SearchService {
 		    }
 
 		    QueryBuilder matchQuery = QueryBuilders.matchQuery("places.gazetteerId", gazetteerID);
-		    nestedQuery = QueryBuilders.nestedQuery("places", QueryBuilders.boolQuery().must(matchQuery));
+		    nestedQuery = QueryBuilders.nestedQuery("places", QueryBuilders.boolQuery().must(matchQuery), ScoreMode.Avg);
 		}
 
         innerQuery = QueryBuilders.queryStringQuery(searchParam)
@@ -763,9 +753,8 @@ public class SearchService {
 		if (bbCoords != null && bbCoords.length == 4) {
             GeoBoundingBoxQueryBuilder bBoxFilter =
 		            QueryBuilders.geoBoundingBoxQuery("places.location")
-                        .topLeft(bbCoords[0], bbCoords[1])
-                        .bottomRight(bbCoords[2], bbCoords[3]);
-		    QueryBuilder nestedFilter = QueryBuilders.nestedQuery("places", bBoxFilter);
+						.setCorners(bbCoords[0], bbCoords[1], bbCoords[2], bbCoords[3]);
+		    QueryBuilder nestedFilter = QueryBuilders.nestedQuery("places", bBoxFilter, ScoreMode.Avg);
 			BoolQueryBuilder andFilter = QueryBuilders.boolQuery().must(facetFilter).must(nestedFilter);
 			if (nestedQuery != null) {
 			    filteredQuery = QueryBuilders.boolQuery().must(innerQuery).must(nestedQuery).filter(andFilter);
@@ -783,7 +772,9 @@ public class SearchService {
 		final FieldValueFactorFunctionBuilder scoreFunction = ScoreFunctionBuilders
 				.fieldValueFactorFunction("boost")
 				.missing(1);
-		final QueryBuilder query = QueryBuilders.functionScoreQuery(filteredQuery, scoreFunction).boostMode("multiply");
+		final QueryBuilder query = QueryBuilders
+			.functionScoreQuery(filteredQuery, scoreFunction)
+			.boostMode(CombineFunction.MULTIPLY);
 
 		LOGGER.debug("Elastic search query part: " + query.toString());
 		return query;

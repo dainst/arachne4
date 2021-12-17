@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -66,12 +65,9 @@ public class NestedTermsAggregation extends TermsAggregation {
             facetName = name.substring(name.indexOf("_") + 1);
         }
 
-        BoolQueryBuilder boolFilter = buildQueryFilters();
+        FilterAggregationBuilder nestedFilter = AggregationBuilders.filter("nestedFilter", buildQueryFilters());
 
-        FilterAggregationBuilder nestedFilter = AggregationBuilders.filter("nestedFilter").
-            filter((QueryBuilder) boolFilter);
-
-        return AggregationBuilders.nested(name).path("places")
+        return AggregationBuilders.nested(name, "places")
                 .subAggregation(nestedFilter
                 .subAggregation(
                     AggregationBuilders.terms("newFacet").field("places." + facetName)

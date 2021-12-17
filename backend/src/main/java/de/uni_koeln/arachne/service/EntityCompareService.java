@@ -42,7 +42,7 @@ public class EntityCompareService {
     			.execute().actionGet();
     	
     	String jsonFromIndex = null;
-    	if (searchResponse.getHits().getTotalHits() == 1) { 
+    	if (searchResponse.getHits().getTotalHits().value == 1) { 
     		 jsonFromIndex = searchResponse.getHits().getAt(0).getSourceAsString();
     	}
     	
