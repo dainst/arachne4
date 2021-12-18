@@ -1,16 +1,27 @@
 <style>
     #sticky-sidebar {
-        padding-top: 5vw;
+        padding-top: 4vw;
         padding-bottom: 2vw;
         position: -webkit-sticky;
         position: sticky;
         top: 0;
     }
+
+    @media (max-width: 992px) {
+        #sticky-sidebar {
+            position: relative;
+        }
+
+        .con10t-image {
+            float: none;
+        }
+    }
+
 </style>
 
 
 <idai-header image="/con10t/headerimages/RM_header.jpg"
-             description=" RM 127: M. Franceschini – P. P. Pasieka, 'da niuna cura accompagnato fuori che quella di scoprire antiche cose'. Nuovi dati sugli scavi Campanari a Vulci (Rapporti di scavo inediti, 09.11.1835–28.05.1836)"
+             description=" RM 127: M. Franceschini – P. P. Pasieka, &rdquo;da niuna cura accompagnato fuori che quella di scoprire antiche cose&rdquo;. Nuovi dati sugli scavi Campanari a Vulci (Rapporti di scavo inediti, 09.11.1835–28.05.1836)"
              link= "https://doi.org/10.34780/g2l3-4kzl">
 </idai-header>
 
@@ -20,13 +31,14 @@
             <h1 align="center" >RM 127: Mariachiara Franceschini – Paul P. Pasieka, "da niuna cura accompagnato fuori che quella di scoprire antiche cose". Nuovi dati sugli scavi Campanari a Vulci (Rapporti di scavo inediti, 09.11.1835–28.05.1836)</h1>
         </div>
         <div id="sticky-sidebar" class="con10t-sidebar">
+
             <p><a href="project/rm127_Pasieka-Franceschini?lang=it" target="_self">Italiano</a></p>
 
             <!--- <h3 style = "margin-top: 2vw;">Suche in den Daten des Projektes</h3>
 
-            <a con10t-search-query target = "_blank">Alle Datensätze anzeigen</a>
+            <a con10t-search-query target = "_blank">Alle Datensätze anzeigen</a> --->
 
-            <con10t-search catalog-id="?"></con10t-search> -->
+           <!-- <con10t-search catalog-id="1111"></con10t-search> -->
 
             <h3 style = "padding-top: 2vh;">Artikel</h3>
 
@@ -41,17 +53,24 @@
             <p>Im Rahmen des Projektes <em>Vulci Cityscape</em> wurden in Rom Archivrecherchen durchgeführt, durch die am Deutschen Archäologischen Institut, Abteilung Rom, ein bislang unbekanntes Konvolut der originalen Grabungsberichte der <em>Società Vincenzo Campanari – Governo Pontificio</em> in der etruskischen Stadt Vulci identifiziert werden konnte. Sie verbessern nicht nur unsere Kenntnis der frühen Ausgrabungen in Vulci, insbesondere ihres räumlichen und zeitlichen Ablaufs, sondern verändern auch unser Verständnis der Verteilung der Funde und der Mechanismen des Kunstmarkts in den späten 1830er Jahren.</p>
 
             <!-- Abbildung -->
-            <con10t-image src="/con10t/img/rm127/v_r4_04-05.jpg" align="left" alt="v_r4_04-05.jpg" width="310">
-                <span class="ng-scope">!?Bildunterschrift!?</span>
+            <con10t-image src="/con10t/img/rm127/v_r4_04-05.jpg" alt="v_r4_04-05.jpg" width="310" align = "left">
+                <span class="ng-scope">Zwei Seiten aus dem vierte Grabungsbericht<br>
+                Campanaris mit Wiedergabe gefundener Inschriften<br>
+                (DAIR-04)</span>
             </con10t-image>
 
-            <p style = "padding-top: 1vh;">Die Grabungsberichte, die von Domenico Campanari unterschrieben und an Karl Josias von Bunsen, einen der Gründer des <em>Instituto di Corrispondenza Archeologica</em>, adressiert sind, umfassen insgesamt 157 Arbeitstage und damit die gesamte zweite AUsgrabungssaison vom 9. November 1835 bis zum 28. Mai 1836. Mit Hilfe der Berichte ist es gelungen, insgesamt 37 Objekte in europäischen und internationalen Sammlungen und Museen zu identifizieren und unmittelbar mit den Ausgrabungen der Campanari zu verbinden. Auf diesem Wege war es möglich, ein lebhaftes Netz aus Wissenschaftlern, Kunsthändlern und Sammlern zu rekonstruieren, in dem sich die Campanari bewegten und das gleichermaßen wissenschaftliche und kommerzielle Interessen miteinander verband.</p>
-            <p>Im Gegensatz zu den bereits von Francesco Buranelli in seinem Buch <em>Gli scavi a Vulci della Società Vincenzo Campanari – Governo Pontificio, 1835–1837</em> (Rom 1991) veröffentlichten Berichten der Ausgrabungen der Familie Campanari, sind die hier publizierten <em>Rapporti</em> für die zweite Grabungssaison deutlich detaillierter und ausführlicher. Das Konvolut besteht aus 25 <em>Rapporti</em>, die von 1 bis 24 nummeriert sind, wobei Nummer 18 zweimal mit unterschiedlichen Daten vorkommt. Es handelt sich dabei um 27 Blatt von 40 cm mal 27 cm mit dem Wasserzeichen von "Pietro Miliani Fabriano" (PMF), die gefaltet 108 Seiten ergeben, von denen wiederum 65 beschriftet sind. Größtenteils bestehen die Berichte aus Listen der insgesamt 250 in diesem Zeitraum gefundenen Objekte, die nach Materialklassen unterteilt sind. Zusätzlich verfügen DAIR-01, DAIR-06, DAIR-07, DAIR-08, DAIR-09, DAIR-10, DAIR-11, DAIR-13, DAIR-18a und DAIR-18b über deskriptive Absätze, die die Ausgrabungen im Bereich der Stadt ("Scavi della Città") näher beschreiben.</p>
-            <p>Mit der Bereitstellung der <em>Rapporti</em> als frei zugängliche Online-Ressource für die wissenschaftliche Gemeinschaft wird erhofft, weitere Forschungen zur Familie der Campanari, den frühen Ausgrabungen in Vulci und dem Kunstmarkt des 19. Jhs. zu fördern und weiteren wissenschaftlichen Austausch und Kollaborationen dazu zu ermöglichen, die über die Erstpublikation in den RM 127, 2021, hinausgehen. Publiziert werden hier sowohl Digitalisate der Originalmanuskripte als auch die durch Mariachiara Franceschini, Paul P. Pasieka und Giuseppina Scotti angefertigten Transskriptionen. Letztere sind über eine Freitextsuche außerdem durchsuchbar.</p>
+            <p>Die Grabungsberichte, die von Domenico Campanari unterschrieben und an Karl Josias von Bunsen, einen der Gründer des <em>Instituto di Corrispondenza Archeologica</em>, adressiert sind, umfassen insgesamt 157 Arbeitstage und damit die gesamte zweite Ausgrabungssaison vom 9. November 1835 bis zum 28. Mai 1836. Mit Hilfe der Berichte ist es gelungen, insgesamt 37 Objekte in europäischen und internationalen Sammlungen und Museen zu identifizieren und unmittelbar mit den Ausgrabungen der Campanari zu verbinden. Auf diesem Wege war es möglich, ein lebhaftes Netz aus Wissenschaftlern, Kunsthändlern und Sammlern zu rekonstruieren, in dem sich die Campanari bewegten und das gleichermaßen wissenschaftliche und kommerzielle Interessen miteinander verband.</p>
+            <p style = "padding-top: 1vh;">Im Gegensatz zu den bereits von Francesco Buranelli in seinem Buch <em>Gli scavi a Vulci della Società Vincenzo Campanari – Governo Pontificio, 1835–1837</em> (Rom 1991) veröffentlichten Berichten der Ausgrabungen der Familie Campanari, sind die hier publizierten <em>Rapporti</em> für die zweite Grabungssaison deutlich detaillierter und ausführlicher. Das Konvolut besteht aus 25 <em>Rapporti</em>, die von 1 bis 24 nummeriert sind, wobei Nummer 18 zweimal mit unterschiedlichen Daten vorkommt. Es handelt sich dabei um 27 Blatt von 40 cm mal 27 cm mit dem Wasserzeichen von "Pietro Miliani Fabriano" (PMF), die gefaltet 108 Seiten ergeben, von denen wiederum 65 beschriftet sind. Größtenteils bestehen die Berichte aus Listen der insgesamt 250 in diesem Zeitraum gefundenen Objekte, die nach Materialklassen unterteilt sind. Zusätzlich verfügen DAIR-01, DAIR-06, DAIR-07, DAIR-08, DAIR-09, DAIR-10, DAIR-11, DAIR-13, DAIR-18a und DAIR-18b über deskriptive Absätze, die die Ausgrabungen im Bereich der Stadt ("Scavi della Città") näher beschreiben.</p>
+            <p>Mit der Bereitstellung der <em>Rapporti</em> als frei zugängliche Online-Ressource für die wissenschaftliche Gemeinschaft wird erhofft, weitere Forschungen zur Familie der Campanari, den frühen Ausgrabungen in Vulci und dem Kunstmarkt des 19. Jhs. zu fördern und weiteren wissenschaftlichen Austausch und Kollaborationen dazu zu ermöglichen, die über die Erstpublikation in den RM 127, 2021, hinausgehen. Publiziert werden hier sowohl Digitalisate der Originalmanuskripte als auch die durch Mariachiara Franceschini, Paul P. Pasieka und Giuseppina Scotti angefertigten Transskriptionen.</p>
 
             <h2 class="con10t-toc-entry">Katalog</h2>
 
-            <con10t-catalog-tree catalog-id="?"></con10t-catalog-tree>
+            <div class="alert alert-warning">
+                <p>Hinweis:</p>
+                <p>Die Faksimile werden im Januar 2022 freigeschaltet. Die Transkriptionen sind bereits jetzt verfügbar.</p>
+            </div>
+
+            <con10t-catalog-tree catalog-id="1111"></con10t-catalog-tree>
 
             <h2 class="con10t-toc-entry">Zitationshinweis</h2>
 
