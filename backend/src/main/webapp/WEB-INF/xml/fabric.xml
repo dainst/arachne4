@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CeramEgypt Objects 2.0
+  This represents a piece of ceramic
+-->
+<category name="fabric" xmlns="http://arachne.uni-koeln.de/schemas/category"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+    <subtables>
+        <subtable connectFieldParent="PS_FabricID" connectFieldSubTable="FS_FabricID">fabricdescription</subtable>
+        <subtable connectFieldParent="fabricdescription.PS_FabricDescriptionID" connectFieldSubTable="FS_FabricDescriptionID">einschluss</subtable>
+    </subtables>
+    <display>
+        <title>
+            <section separator=" / ">
+                <field datasource="fabric.Origin"/>
+                <field datasource="fabric.Name"/>
+                <field datasource="fabric.CommonName"/>
+            </section>
+        </title>
+        
+        <subtitle>
+            <section labelKey="Unique Identifier">
+                <field datasource="Dataset.ID"/>
+            </section>
+        </subtitle>
+        
+        <datasections>
+            <section labelKey="Fabrikat">
+                <include type="fabric"></include>
+            </section>
+            <section labelKey="Einschluss">
+                <include type="einschluss"></include>
+            </section>
+        </datasections>
+
+        <editorsection>
+            <section labelKey="Für Bearbeiter">
+                <field datasource="fabric.Editor" prefix="Bearbeiter (fabric): " />
+                <field datasource="fabric.lastModified" prefix="Zuletzt Geändert (fabric): " />
+            </section>
+            <section labelKey="Für Bearbeiter">
+                <field datasource="fabricdescription.Editor" prefix="Bearbeiter (fabricdescription): " />
+                <field datasource="fabricdescription.lastModified" prefix="Zuletzt Geändert (fabricdescription): " />
+            </section>
+        </editorsection>
+
+        <contextImages>
+            <contextImage show="always">fabricdescription</contextImage>
+        </contextImages>
+    </display>
+    
+    <facets>
+        <include type="facet_kategorie" />
+        <include type="facet_fabric" />
+    </facets>
+</category>

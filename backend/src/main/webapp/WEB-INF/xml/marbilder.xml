@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category"
+		  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="bilder"
+		  xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<explicitContextualizers>marbilderbestandort</explicitContextualizers>
+	<subtables>
+		<subtable connectFieldParent="DateinameMarbilder"
+				  connectFieldSubTable="DateinameMarbilderbestand">marbilderbestand</subtable>
+		<subtable connectFieldParent="DateinameMarbilder"
+				  connectFieldSubTable="DateinameMarbilderinventar">marbilderinventar</subtable>
+		<subtable connectFieldParent="DateinameMarbilder"
+				  connectFieldSubTable="DateinameRwwa">marbilderrwwa</subtable>
+		<subtable connectFieldParent="DateinameMarbilder"
+				  connectFieldSubTable="DateinameOppenheim">marbilderoppenheim</subtable>
+	</subtables>
+	<search>
+		<additionalIds>Inventarnummer, Bildnummer</additionalIds>
+		<filename>
+			DateinameMarbilder
+		</filename>
+	</search>
+	<display>
+		<title>
+			<section>
+				<field datasource="marbilderbestand.TitelMarbilderbestand">
+					<ifEmpty>
+						<field datasource="marbilderinventar.01_Titel">
+							<ifEmpty>
+								<field datasource="marbilder.DateinameMarbilder" search="\.jpg"
+									   replace="" />
+							</ifEmpty>
+						</field>
+					</ifEmpty>
+				</field>
+			</section>
+		</title>
+		<subtitle>
+			<section>
+				<section separator=", ">
+					<section>
+						<field datasource="ort.Aufbewahrungsort">
+							<ifEmpty>
+								<field datasource="marbilderbestand.AufbewahrungHerkunft">
+									<ifEmpty>
+										<field datasource="marbilderinventar.09_Ortsbezeichnung2" />
+									</ifEmpty>
+								</field>
+							</ifEmpty>
+						</field>
+						<field datasource="ort.Ort_antik" prefix="(" postfix=")" />
+					</section>
+					<section>
+						<field datasource="ort.Stadt">
+							<ifEmpty>
+								<field datasource="marbilderbestand.Standstadt">
+									<ifEmpty>
+										<field datasource="marbilderinventar.08_Ortsbezeichnung1">
+											<ifEmpty>
+												<field datasource="marbilderoppenheim.OrtOppenheim" />
+											</ifEmpty>
+										</field>
+									</ifEmpty>
+								</field>
+							</ifEmpty>
+						</field>
+					</section>
+				</section>
+			</section>
+		</subtitle>
+
+		<datasections>
+			<section labelKey="Informationen zum Bild">
+
+				<include type="ort" />
+
+				<section labelKey="DAI Kernfelder">
+					<field datasource="marbilderinventar.01_Titel" prefix="Titel: ">
+						<ifEmpty>
+							<field datasource="marbilderbestand.TitelMarbilderbestand" />
+						</ifEmpty>
+					</field>
+					<field datasource="marbilderbestand.TitelMarbilderbestandEN"
+						   prefix="Titel (Englisch): " />
+					<field datasource="marbilderinventar.02_Bildnummer" prefix="Bildnummer: ">
+						<ifEmpty>
+							<field datasource="marbilderbestand.Bildnummer" />
+						</ifEmpty>
+					</field>
+					<field datasource="marbilderinventar.03_Aufnahmedatum" prefix="Aufnahmedatum: ">
+						<ifEmpty>
+							<field datasource="marbilderbestand.Aufnahmedatum" />
+						</ifEmpty>
+					</field>
+					<field datasource="marbilderinventar.04_Bildautor" prefix="Bildautor/in: ">
+						<ifEmpty>
+							<field datasource="marbilderbestand.Bildautor" />
+						</ifEmpty>
+					</field>
+					<field datasource="marbilderinventar.05_Freigabe" prefix="Freigabe: " />
+					<field datasource="marbilderinventar.06_Verantwortlichkeit" prefix="Verantwortlichkeit für das Bild: ">
+						<ifEmpty>
+							<field datasource="marbilderbestand.Eigentuemer" />
+						</ifEmpty>
+					</field>
+					<field datasource="marbilderinventar.07_Veraenderbarkeit" prefix="Veränderbarkeit: " />
+					<field datasource="marbilderinventar.08_Ortsbezeichnung1" prefix="Ortsbezeichnung 1: " />
+					<field datasource="marbilderinventar.09_Ortsbezeichnung2" prefix="Ortsbezeichnung 2/Unterort: " />
+					<field datasource="marbilderinventar.10_Objekt1" prefix="Kategorie: " />
+					<field datasource="marbilderinventar.11_Objekt2" prefix="Beschreibung: " />
+					<field datasource="marbilderinventar.12_Objekt3" prefix="Inventar- oder Fundnummer: ">
+						<ifEmpty>
+							<field datasource="marbilderbestand.Inventarnummer" />
+						</ifEmpty>
+					</field>
+					<field datasource="marbilderinventar.13_Dateityp" prefix="Dateityp: " />
+				</section>
+				
+				<section labelKey="Sonstige Metadaten">
+
+					<field datasource="marbilderinventar.Land" prefix="Land: " />
+					<field datasource="marbilderinventar.StandortObjekt" prefix="Standort des Objekts: " />
+					<field datasource="marbilderinventar.Copyright" prefix="Copyright: "/>
+					<field datasource="marbilderinventar.Schlagworte" prefix="Schlagwörter: " />
+					<field datasource="marbilderinventar.Institution" prefix="Institution: " />
+					<field datasource="marbilderinventar.Negativnr" prefix="Negativnummer: " />
+					<field datasource="marbilderinventar.AltNegativnr" prefix="Alternative Negativnummern: " />
+					<field datasource="marbilderinventar.Fundlandschaft" prefix="Fundlandschaft: " />
+					<field datasource="marbilderinventar.Fundort1" prefix="Fundort 1: " />
+					<field datasource="marbilderinventar.Fundort2" prefix="Fundort 2: " />
+					<field datasource="marbilderinventar.Inventarnummer_Istanbul" prefix="Inventarnummer Istanbul: " />
+					<field datasource="marbilderinventar.Kasten" prefix="Kasten: " />
+					<field datasource="marbilderinventar.Verweise" prefix="Verweise: " />
+					<field datasource="marbilderinventar.Datierung" prefix="Datierung: " />
+					<field datasource="marbilderinventar.Material" prefix="Material: ">
+						<ifEmpty>
+							<field datasource="marbilderbestand.Material" prefix="Material: " />
+						</ifEmpty>
+					</field>
+					<field datasource="marbilderinventar.AutorBeschreibung" prefix="Autor/in der Beschreibung: " />
+					<field datasource="marbilderinventar.MuseumsNr" prefix="Museumsnummer: " />
+					<field datasource="marbilderinventar.DepotNr" prefix="Depotnummer: " />
+					<field datasource="marbilderinventar.Hinweise" prefix="Hinweise: " />
+					<field datasource="marbilderinventar.Bildunterschrift" prefix="Bildunterschrift: " />
+					<field datasource="marbilderinventar.MiscMetadata" prefix="Sonstige Metadaten: " />
+
+					<field datasource="marbilderbestand.Standstadt" prefix="Standstadt: " />
+					<field datasource="marbilderbestand.AAArC_Region" prefix="Region: " />
+					<field datasource="marbilderbestand.Standstaat" prefix="Standstaat: " />
+					<field datasource="marbilderbestand.Aufbewahrungsort" prefix="Aufbewahrung / Standort: " />
+					<field datasource="marbilderbestand.AufbewahrungHerkunft" prefix="Aufbewahrung / Herkunft: " />
+					<field datasource="marbilderbestand.AAArC_Fundplatz" prefix="Fundplatz: " />
+					<field datasource="marbilderbestand.Beschreibung" prefix="Beschreibung: " />
+					<field datasource="marbilderbestand.Bildinhalt_1" prefix="Bildinhalt 1: " />
+					<field datasource="marbilderbestand.Bildinhalt_2" prefix="Bildinhalt 2: " />
+					<field datasource="marbilderbestand.Bildinhalt_3" prefix="Bildinhalt 3: " />
+					<field datasource="marbilderbestand.Zusatz" prefix="Zusatz: " />
+					<field datasource="marbilderbestand.AltInvNr" prefix="Alte Invnr.: " />
+					<field datasource="marbilderbestand.FunddatumMarbilderbestand" prefix="Funddatum: " />
+					<field datasource="marbilderbestand.DatierungEpoche" prefix="Datierung(Epoche): " />
+					<field datasource="marbilderbestand.Fotoabzuege" prefix="Fotoabzüge: " />
+					<field datasource="marbilderbestand.DarstellungMarbilderbestand" prefix="Darstellung: " />
+					<field datasource="marbilderbestand.Literatur" prefix="Literatur: " />
+					<field datasource="marbilderbestand.AlterDateinameMarbilderbestand" prefix="Alter Dateiname: " />
+					<field datasource="marbilderbestand.Favoritenkennung" prefix="Favoritenkennung: " />
+
+					<field datasource="marbilder.Bildbeschreibung" prefix="Bildbeschreibung: " />
+					<field datasource="marbilder.Bildausschnitt" prefix="Bildausschnitt: " />
+					<field datasource="marbilder.Kommentar" prefix="Kommentar: " />
+					<field datasource="marbilder.AnsichtObjekt" prefix="Ansicht des Objekts: " />
+                    <field datasource="marbilder.Fotodatum" prefix="Fotodatum: " />
+					<field datasource="marbilder.Fotograf" prefix="Fotograf/in: " />
+					<field datasource="marbilder.BildtraegerMarbilder" prefix="Bildträger: " />
+					<field datasource="marbilder.FilmNr" prefix="Filmnummer: " />
+					<field datasource="marbilder.NegativNr" prefix="Negativnummer: " />
+					<field datasource="marbilder.Scannummer" prefix="Scannummer: " />
+					<field datasource="marbilder.Bemerkung" prefix="Bemerkung: " />
+
+					<field datasource="marbilderoppenheim.KurzbeschreibungMarbilderoppenheim" prefix="Beschreibung: " />
+					<field datasource="marbilderoppenheim.Fotodatum" prefix="Fotodatum: " />
+					<field datasource="marbilderoppenheim.FotografOppenheim" prefix="Fotograf: " />
+					<field datasource="marbilderoppenheim.Fotonummer" prefix="Fotonummer: " />
+					<field datasource="marbilderoppenheim.Negativ" prefix="Negativnummer: " />
+					<field datasource="marbilderoppenheim.Staat_Gegend" prefix="Staat/Gegend: " />
+					<field datasource="marbilderoppenheim.OrtOppenheim" prefix="Ort: " />
+					<field datasource="marbilderoppenheim.Standort" prefix="Standort: " />
+					<field datasource="marbilderoppenheim.Museum" prefix="Museum: " />
+					<field datasource="marbilderoppenheim.BandOppenheim" prefix="Band: " />
+					<field datasource="marbilderoppenheim.BandsignaturAlt" prefix="Alte Bandsignatur: " />
+					<field datasource="marbilderoppenheim.BandsignaturNeu" prefix="Neue Bandsignatur: " />
+					<field datasource="marbilderoppenheim.Seitenzahl" prefix="Seitenzahl: " />
+                    <field datasource="marbilderoppenheim.SignaturSeite" prefix="Seitensignatur: " />
+                    <field datasource="marbilderoppenheim.DarstellungMarbilderOppenheim" prefix="Darstellung: " />
+					
+					<field datasource="marbilderrwwa.Inhalt" prefix="Inhalt: " />
+					<field datasource="marbilderrwwa.KurzbeschreibungMarbilderRwwa" prefix="Beschreibung: " />
+					<field datasource="marbilderrwwa.Motiv_alphabetisch" prefix="Motiv: " />
+					<field datasource="marbilderrwwa.Fotograf" prefix="Fotograf: " />
+					<field datasource="marbilderrwwa.Negativnummer" prefix="Negativnummer: " />
+					<field datasource="marbilderrwwa.Klassifikation" prefix="Klassifikation: " />
+					<field datasource="marbilderrwwa.Signatur" prefix="Signatur: " />
+					<field datasource="marbilderrwwa.AltSignatur" prefix="Alte Signatur: " />
+					<field datasource="marbilderrwwa.AltSignatur2" prefix="Alte Signatur 2: " />
+					<field datasource="marbilderrwwa.Anlass" prefix="Anlass:" />
+					<field datasource="marbilderrwwa.Bestand" prefix="Bestand: " />
+					<field datasource="marbilderrwwa.NrFotofinder" prefix="Fotofinder Nr.: " />
+					<field datasource="marbilderrwwa.Format" prefix="Format: " />
+					<field datasource="marbilderrwwa.Laufzeit" prefix="Laufzeit: " />
+					<field datasource="marbilderrwwa.Laufzeitbeschreibung" prefix="Laufzeitbeschreibung: " />
+					<field datasource="marbilderrwwa.LfdNr" prefix="Laufende Nr.: " />
+					<field datasource="marbilderrwwa.Typ" prefix="Typ: " />
+					<field datasource="marbilderrwwa.Technik" prefix="Technik: " />
+				</section>
+
+				<section labelKey="Technische Metadaten">
+					<field datasource="marbilder.DateinameMarbilder" prefix="Dateiname: " />
+					<field datasource="marbilderbestand.Bestandsname" prefix="Bestandsname: ">
+						<ifEmpty>
+							<field datasource="marbilder.BestandsnameMarbilder" />
+						</ifEmpty>
+					</field>
+					<field datasource="marbilder.Projekttitel" prefix="Projekttitel: ">
+						<ifEmpty>
+							<field datasource="marbilderbestand.AAArC_Projekt" prefix="Projekt: " />
+						</ifEmpty>
+					</field>
+					<field datasource="marbilderbestand.Unterkategorie" prefix="Unterkategorie des Bestandes: " />
+					<field datasource="marbilder.Dateiformat" prefix="Dateiformat: " />
+					<field datasource="marbilder.Dateigroesse" prefix="Dateigröße: " postfix=" kb" />
+					<field datasource="marbilder.AnzahlFigurenGruppen" prefix="Pfad: " />
+					<field datasource="marbilder.Scanquelle" prefix="Scanquelle: " />
+					<field datasource="marbilder.erstellt" prefix="Erstellt: " />
+					<field datasource="marbilder.geaendert" prefix="Geändert: " />
+					<field datasource="marbilder.Vorlagenart" prefix="Vorlagenart: " />
+
+					<field datasource="marbilderbestand.Breite" prefix="Breite: " />
+					<field datasource="marbilderbestand.Hoehe" prefix="Höhe: " />
+					<field datasource="marbilderbestand.Tiefe" prefix="Tiefe: " />
+					<field datasource="marbilderbestand.Durchmesser" prefix="Durchmesser: " />
+				</section>
+
+			</section>
+		</datasections>
+
+		<editorsection>
+			<section labelKey="Für Bearbeiter">
+				<field datasource="marbilderbestand.ArbeitsnotizMARBilderBestand" prefix="Interne Arbeitsnotiz: " />
+				<field datasource="marbilder.DatensatzGruppeMARBilder" prefix="Datensatz-Gruppe: " />
+				<field datasource="marbilder.BildrechteGruppe" prefix="Bildrechte-Gruppe: " />
+				<field datasource="marbilder.Pfad" prefix="Pfad: " />
+				<field datasource="marbilder.PfadNeu" prefix="Pfad(ptif): " />
+			</section>
+		</editorsection>
+	</display>
+	<facets>
+		<include type="facet_kategorie" />
+		<include type="facet_ort" />
+		<facet name="subkategorie_bilder" labelKey="Unterkategorie">
+			<field datasource="KategorieMarbilder.Typ" />
+		</facet>
+		<facet name="bestandsname" labelKey="Bestandsname">
+			<field datasource="marbilderbestand.Bestandsname" />
+		</facet>
+		<facet name="bestandsname" labelKey="Bestandsname">
+			<field datasource="marbilderoppenheim.Facette" />
+		</facet>
+		<facet name="bestandsname" labelKey="Bestandsname">
+			<field datasource="marbilderrwwa.Facette" />
+		</facet>
+		<facet name="kommentar" labelKey="Kommentar">
+			<field datasource="marbilder.Kommentar" />
+		</facet>
+		<facet name="schlagworte" labelKey="Schlagworte">
+			<field datasource="marbilderbestand.Kategorie" />
+		</facet>
+		<facet name="schlagworte" labelKey="Schlagworte">
+			<field datasource="marbilderinventar.Schlagworte" />
+		</facet>
+		<facet name="aufnahmedatum" labelKey="Aufnahmedatum">
+			<field datasource="marbilderinventar.03_Aufnahmedatum" />
+		</facet>
+	</facets>
+</category>

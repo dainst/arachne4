@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<Configuration>
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
+        </Console>
+
+        <RollingFile name="ROLLING"
+                     fileName="/var/log/arachne/arachnedataservice/dataservice.log"
+                     filePattern="/var/log/arachne/arachnedataservice/dataservice-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10240KB" />
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="/var/log/arachne/arachnedataservice/">
+                    <IfFileName glob="dataservice-*.log" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="Profile"
+                     fileName="/var/log/arachne/arachnedataservice/profile.log"
+                     filePattern="/var/log/arachne/arachnedataservice/profile-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10240KB" />
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="/var/log/arachne/arachnedataservice/">
+                    <IfFileName glob="profile-*.log" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="DataIntegrity"
+                     fileName="/var/log/arachne/arachnedataservice/data_integrity.log"
+                     filePattern="/var/log/arachne/arachnedataservice/data_integrity-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10240KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+        <RollingFile name="DataExport"
+                     fileName="/var/log/arachne/arachnedataservice/data_export.log"
+                     filePattern="/var/log/arachne/arachnedataservice/data_export-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10240KB" />
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="/var/log/arachne/arachnedataservice/">
+                    <IfFileName glob="data_export-*.log" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="IIPService"
+                     fileName="/var/log/arachne/arachnedataservice/iip_service.log"
+                     filePattern="/var/log/arachne/arachnedataservice/iip_service-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10240KB" />
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="/var/log/arachne/arachnedataservice/">
+                    <IfFileName glob="iip_service-*.log" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="UserManagement"
+		             fileName="/var/log/arachne/arachnedataservice/user_management.log"
+                     filePattern="/var/log/arachne/arachnedataservice/user_management-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10240KB" />
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="/var/log/arachne/arachnedataservice/">
+                    <IfFileName glob="user_management-*.log" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+
+        <logger name="org.springframework.web" level="info" />
+
+        <logger name="de.uni_koeln.arachne" level="info" />
+        <logger name="de.uni_koeln.arachne.controller" level="info" />
+        <logger name="de.uni_koeln.arachne.service" level="debug" />
+        <logger name="de.uni_koeln.arachne.dao" level="debug" />
+
+        <logger name="org.elasticsearch" level="info" />
+        <logger name="com.zaxxer.hikari" level="info" />
+
+        <Root level="info">
+	        <AppenderRef ref="CONSOLE" />
+        </Root>
+
+        <Logger name="Profiling" additivity="false">
+            <AppenderRef ref="Profile" />
+        </Logger>
+        <Logger name="DataIntegrityLogger" additivity="false">
+            <AppenderRef ref="DataIntegrity" />
+        </Logger>
+        <logger name="DataExportLogger" level="info" additivity="false">
+            <AppenderRef ref="DataExport" />
+        </logger>
+
+        <logger name="de.uni_koeln.arachne.service.IIPService" level="debug" additivity="false">
+            <AppenderRef ref="CONSOLE" />
+        </logger>
+
+        <logger name="de.uni_koeln.arachne.controller.UserManagementController" level="info" additivity="false">
+            <AppenderRef ref="UserManagement" />
+        </logger>
+
+    </Loggers>
+</Configuration>

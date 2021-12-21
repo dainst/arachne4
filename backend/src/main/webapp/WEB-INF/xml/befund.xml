@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CeramEgypt Objects 2.0
+  a befund object (where a piece of ceramics was found)
+-->
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="befund" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <display>
+    <title>
+      <section separator=" / ">
+        <field datasource="befund.Grabungsort"/>
+        <field datasource="befund.Areal" />
+        <field datasource="befund.Befund" />
+      </section>
+    </title>
+    <subtitle labelKey="">
+      <section labelKey="Unique Identifier">
+        <field datasource="Dataset.internalId"/>
+      </section>
+    </subtitle>
+    <datasections>
+      <include type="befund" />
+      <include type="datierung"/>
+    </datasections>
+
+    <editorsection>
+      <section labelKey="Für Bearbeiter">
+        <field datasource="befund.Editor" prefix="Bearbeiter (befund): " />
+        <field datasource="befund.lastModified" prefix="Zuletzt Geändert (befund): " />
+      </section>
+    </editorsection>
+
+    <contextImages>
+    </contextImages>
+  </display>
+  <facets>
+
+    <include type="facet_kategorie"/>
+
+    <include type="facet_ort"/>
+
+    <include type="facet_befund" />
+
+  </facets>
+</category>

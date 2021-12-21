@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CeramEgypt Objects 2.0
+  localisation of finding
+-->
+<includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
+
+    <section>
+        <section labelKey="Grabungsort">
+            <field datasource="befund.Grabungsort"/>
+        </section>
+        <section labelKey="Areal">
+            <field datasource="befund.Areal"/>
+        </section>
+        <section labelKey="Stratigraphische Einheit">
+            <field datasource="befund.Befund"/>
+        </section>
+        <section labelKey="Abhub">
+            <field datasource="befund.Abhub"/>
+        </section>
+        <section labelKey="Kommentar">
+            <field datasource="befund.Kommentar"/>
+        </section>
+    </section>
+
+</includeSection>

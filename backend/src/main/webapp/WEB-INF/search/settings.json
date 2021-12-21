@@ -1,0 +1,26 @@
+{
+    "analysis": {
+        "analyzer" : {
+        	"default": {
+        		"tokenizer" : "standard",
+                "filter" : ["lowercase", "custom_snowball"]
+        	},
+            "keyword_lowercase": {
+                "tokenizer" : "keyword",
+                "filter" : ["lowercase"]
+            }
+        },
+        "filter" : {
+        	"custom_snowball": {
+        		"type" : "snowball",
+                "language" : "German2"
+        	}
+        }
+    },
+    "similarity" : {
+		"bm25" : {
+			"type": "BM25",
+			"b": 0
+		}
+	}
+}

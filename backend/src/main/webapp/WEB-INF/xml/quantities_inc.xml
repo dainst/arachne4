@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CeramEgypt Objects 2.0
+  a quantified set of ceramic objects
+-->
+<includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
+
+    <section labelKey="Weitere Quantifierzungsinformationen">
+        <section labelKey="Randanteil">
+            <field datasource="quantities.RimPercentage" postfix="%"/>
+        </section>
+        <section labelKey="Anzahl Joins">
+            <field datasource="quantities.Joins"/>
+        </section>
+        <section labelKey="MNI">
+            <field datasource="quantities.MNI"/>
+        </section>
+        <section labelKey="Gewichtetes MNI">
+            <field datasource="quantities.MNIWeighted"/>
+        </section>
+        <section labelKey="MXI">
+            <field datasource="quantities.MXI"/>
+        </section>
+    </section>
+
+    <section labelKey="Gewicht">
+        <section labelKey="Ränder">
+            <field datasource="quantities.RimWeight" postfix="g"/>
+        </section>
+        <section labelKey="Henkel">
+            <field datasource="quantities.HandleWeight" postfix="g"/>
+        </section>
+        <section labelKey="Bodenfragmente">
+            <field datasource="quantities.BaseWeight" postfix="g"/>
+        </section>
+        <section labelKey="Wandscherben">
+            <field datasource="quantities.BodySherdWeight" postfix="g"/>
+        </section>
+        <section labelKey="Weitere Fragmente">
+            <field datasource="quantities.OthersWeight" postfix="g"/>
+        </section>
+    </section>
+
+    <section labelKey="Anzahl">
+        <section labelKey="Ränder">
+            <field datasource="quantities.RimCount"/>
+        </section>
+        <section labelKey="Henkel">
+            <field datasource="quantities.HandleCount"/>
+        </section>
+        <section labelKey="Bodenfragmente">
+            <field datasource="quantities.BaseCount"/>
+        </section>
+        <section labelKey="Wandscherben">
+            <field datasource="quantities.BodySherdCount"/>
+        </section>
+        <section labelKey="Weitere Fragmente">
+            <field datasource="quantities.OthersCount"/>
+        </section>
+        <section labelKey="Gesamt">
+            <field datasource="quantities.TotalSherds"/>
+        </section>
+    </section>
+
+</includeSection>

@@ -1,0 +1,86 @@
+package de.uni_koeln.arachne.context;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import de.uni_koeln.arachne.response.Dataset;
+
+/**
+ * This class is a specialized <code>Link</code> to hold internal links. This means that both sides of the link
+ * are entities fetched from the database. As such they a represented as <code>ArachneDatasets</code>. 
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ArachneLink extends AbstractLink {
+
+	/**
+	 * Left side of the link. In general this is the parent entity.
+	 */
+	private Dataset entity1; 
+	
+	/**
+	 * Right side of the link.
+	 */
+	private Dataset entity2;
+	
+	@Override
+	@JsonIgnore
+	public String getUri1() {
+		return entity1.getUri();
+	}
+
+	@Override
+	@JsonIgnore
+	public String getUri2() {
+		return entity2.getUri();
+	}
+
+	@Override
+	@JsonIgnore
+	public Dataset getEntity1() {
+		return entity1;
+	}
+
+	/**
+	 * Sets the left side of the link.
+	 * @param entity1 A dataset.
+	 */
+	public void setEntity1(final Dataset entity1) {
+		this.entity1 = entity1;
+	}
+
+	@Override
+	@JsonUnwrapped
+	public Dataset getEntity2() {
+		return entity2;
+	}
+
+	/**
+	 * Sets the right side of the link.
+	 * @param entity2 A dataset.
+	 */
+	public void setEntity2(final Dataset entity2) {
+		this.entity2 = entity2;
+	}
+	
+	/**
+	 * Looks up a field in the <code>fields</code> list and returns its value.
+	 * If field is not found in the links fields it is looked up in the fields of entity2.
+	 * @param fieldName The full qualified fieldName to look up.
+	 * @return The value of the field or <code>null</code> if the field is not found.
+	 */
+	@Override
+	public String getFieldFromFields(final String fieldName) {
+		if (fields != null && fields.containsKey(fieldName)) {
+			return fields.get(fieldName);
+		} else if (getEntity2() == null) { 
+			return null;
+		} else {
+			return getEntity2().getField(fieldName);
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "[link: " + entity1.getArachneId() + "|" + entity2.getArachneId() + "]";
+	}
+}

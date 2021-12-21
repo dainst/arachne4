@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="sammlungen" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+    <subtables>
+        <subtable connectFieldParent="PrimaryKey"
+                  connectFieldSubTable="FS_SammlungenID">personsammlung</subtable>
+    </subtables>
+    <display>
+    <title>
+      <section separator=" / ">
+        <field datasource="sammlungen.KurzbeschreibungSammlungen"/>
+      </section>
+    </title>
+    <subtitle>
+      <section separator=", ">
+        <field datasource="ort.Stadt"/>
+        <field datasource="ort.Land"/>
+      </section>
+    </subtitle>
+    <datasections>
+      <section labelKey="Informationen zur Sammlung">
+        <section labelKey="Lokalisierung">
+          <section labelKey="Ort">
+            <field datasource="sammlungen.OrtSammlungen"/>
+          </section>
+          <section>
+            <field datasource="sammlungen.LandSammlungen" prefix="Land: "/>
+            <field datasource="sammlungen.Herkunftsland" prefix="Herkunftsland: "/>
+          </section>
+          <include type="ort"/>
+          <section labelKey="Aufstellung">
+            <field datasource="sammlungen.AufstellungSammlungen"/>
+          </section>
+        </section>
+        <section labelKey="Sammlungskategorie">
+          <field datasource="sammlungen.Sammlungskategorie"/>
+          <field datasource="sammlungen.Vasen"/>
+          <field datasource="sammlungen.vollstaendig" prefix="Vollständig: "/>
+          <field datasource="sammlungen.Weiterverarbeitung" prefix="Weiterverarbeitet: "/>
+        </section>
+        <section labelKey="Geschichte" separator="; ">
+          <section labelKey="Entstehung">
+            <field datasource="sammlungen.EntstehungDatum"/>
+            <field datasource="sammlungen.Entstehung"/>
+          </section>
+          <section>
+            <field datasource="sammlungen.GeschichteSammlungen"/>
+          </section>
+          <section labelKey="Auflösung">
+            <field datasource="sammlungen.AufloesungDatum"/>
+            <field datasource="sammlungen.Aufloesung"/>
+            <field datasource="sammlungen.AufloesungArt"/>
+          </section>
+        </section>
+        <section labelKey="Kommentar">
+            <field datasource="sammlungen.Hinweise"/>
+            <field datasource="sammlungen.AnmerkungSammlungen"/>
+        </section>
+        <!-- TODO Sammler und Personen müssen eingepflegt werden -->
+        <include type="personsammlungcomplete"/>
+        <section labelKey="Quellen" separator="; ">
+            <field datasource="sammlungen.Quellen"/>
+        </section>
+        <include type="literaturcomplete"/>
+        <include type="uri"/>
+      </section>
+    </datasections>
+    <editorsection>
+            <section labelKey="Für Bearbeiter">
+                <field datasource="sammlungen.DatensatzGruppeSammlungen" prefix="Datensatz-Gruppe: " />
+                <field datasource="sammlungen.ArbeitsnotizSammlungen" prefix="Interne Arbeitsnotiz: " />
+                <field datasource="sammlungen.BearbeiterSammlungen" prefix="Erstellt von: " />
+                <field datasource="sammlungen.KorrektorSammlungen" prefix="Bearbeitet von: " />
+            </section>
+        </editorsection>
+  </display>
+  <facets>
+    <include type="facet_kategorie"/>
+    <include type="facet_ort"/>
+    <include type="facet_datierung" />
+    <include type="facet_literatur"/>
+    <facet name="sammlungskategorie" labelKey="Sammlungskategorie">
+      <field datasource="sammlungen.Sammlungskategorie"/>
+    </facet>
+    <facet name="herkunftsland" labelKey="Herkunftsländer">
+      <field datasource="sammlungen.Herkunftsland"/>
+    </facet>
+  </facets>
+</category>

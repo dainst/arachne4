@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>%%%title%%%</title>
+    <meta name="author" content="%%%author%%%">
+
+    <style>
+
+        @font-face {
+            font-family: 'source-sans';
+            font-style: normal;
+            font-weight: 400;
+            src: url(dataexport/SourceSansPro-Regular.ttf);
+            -fs-font-subset: complete-font;
+        }
+
+        body {
+            font-family: 'source-sans', Arial, Helvetica, sans-serif;
+            background: silver;
+        }
+
+        hr {
+            border: none;
+            margin: 0px;
+        }
+
+        .frontmatter .page-body {
+            padding-bottom: 2cm;
+        }
+
+        a {
+            color: #37588e;
+        }
+
+        .small, small {
+            font-size: 90%;
+        }
+
+        .btn-primary {
+            background-color: #5283d2;
+            border-color: #4A76BD;
+        }
+
+        .btn-primary:hover {
+            background-color: #5572a1;
+            border-color: #4C6791;
+        }
+
+        .btn-group-sm>.btn, .btn-sm {
+            font-size: 13px;
+        }
+
+        .container {
+            padding: 2em;
+            width: 800px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .page {
+            border-radius: 2px;
+            box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.38);
+            background: white;
+            float: none;
+            margin: 0.5em 0;
+        }
+
+        .page.level-2 .page-body,
+        .page.level-2 .page-footer {
+            border-left: 0.5em solid #eee;
+        }
+        .page.level-3 .page-body,
+        .page.level-3 .page-footer {
+            border-left: 1em solid #eee;
+        }
+        .page.level-4 .page-body,
+        .page.level-4 .page-footer {
+            border-left: 1.5em solid #eee;
+        }
+        .page.level-5 .page-body,
+        .page.level-5 .page-footer {
+            border-left: 2em solid #eee;
+        }
+        .page.level-6 .page-body,
+        .page.level-6 .page-footer {
+            border-left: 2.5em solid #eee;
+        }
+        .page.level-7 .page-body,
+        .page.level-7 .page-footer {
+            border-left: 3em solid #eee;
+        }
+
+        .page.level-3 .page-header-left {
+            padding-left: 0.5em;
+        }
+        .page.level-4 .page-header-left {
+            padding-left: 1em;
+        }
+        .page.level-5 .page-header-left {
+            padding-left: 1.5em;
+        }
+        .page.level-6 .page-header-left {
+            padding-left: 2em;
+        }
+        .page.level-7 .page-header-left {
+            padding-left: 2.5em;
+        }
+
+        .page-header {
+            border-top-right-radius: 2px;
+            border-top-left-radius: 2px;
+            background: #eee;
+            font-size: small;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .page-header-left {
+            width: 50%;
+            padding: 0.5em;
+        }
+
+        .page-header-right {
+            text-align: right;
+            width: 50%;
+            padding: 0.5em;
+        }
+
+        .page-body {
+            padding: 0.5em;
+        }
+
+        .page-footer {
+            padding: 1em 0.5em 0.5em 0.5em;
+            text-align: right;
+            border-bottom-right-radius: 2px;
+            border-bottom-left-radius: 2px;
+        }
+
+        .page:after {
+            content: "";
+            display: table;
+            clear: both;
+            width: 100%;
+        }
+
+        .doc-title {
+            font-size: xx-large;
+            margin: 6cm 0 3cm;
+        }
+
+        .doc-title span {
+            display: block;
+            font-size: medium;
+        }
+
+        .title {
+            font-size: x-large;
+            font-weight: bold;
+            margin: 0.5em 0 0.2em;
+        }
+
+        .subtitle {
+            font-size: medium;
+            font-weight: normal;
+            margin-top: 0;
+        }
+
+
+
+
+        .logo-topline-left,
+        .page-right {
+            text-align: left;
+        }
+
+        .frontmatter .page-right,
+        .logo-topline-right {
+            text-align: right;
+        }
+
+        .thumbnail {
+            margin-bottom: 0.5em;
+            float: right;
+        }
+
+        .logo-box {
+            text-align: right;
+        }
+
+        .logo {
+            display: inline-block;
+        }
+
+
+        .logo-topline a {
+            text-decoration: none;
+            color: black
+        }
+        .logo-bottomline {
+            text-align: right;
+            font-size: x-small;
+        }
+        .logo-centerline {
+            display: inline-block;
+            font-size: xx-large;
+            margin-top: 0.2em;
+            margin-bottom: 0.2em;
+        }
+
+        .logo-centerline-initial {
+            color: #37588e
+        }
+
+        .logo-topline-initial {
+            color: transparent;
+            font-size: xx-large;
+            line-height: 0;
+        }
+
+        .logo-centerline-body {
+            border-top: 1px solid silver;
+            border-bottom: 1px solid silver;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            padding-top : 2px;
+            padding-bottom: 3px
+        }
+
+        .logo-img {
+            width: 80px;
+            margin-left: -5px;
+        }
+
+        .logo-topline {
+            font-size: 6px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo-topline-right {
+            position:absolute;
+            right: 0;
+            bottom: 0;
+        }
+
+        .dataset {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .dataset tr:first-child td {
+            border: none;
+        }
+
+        .dataset td:first-child {
+            width: 25%;
+        }
+
+        .dataset td {
+            border-top: 1px solid #ccc;
+            padding: 0.5em 0;
+        }
+
+        .dataset td.section {
+            border-top: none;
+            padding-top: 1.5em;
+            font-weight: bold;
+        }
+
+        .error {
+            color: darkred;
+        }
+
+        .imprint {
+            font-size: small
+        }
+
+        .dataset ul {
+            padding-left: 16px;
+            margin: 0;
+        }
+
+        .dataset li {
+            padding-bottom: 3px;
+        }
+
+        #bottomLeftFooter {
+            position: running(footer);
+            font-family: 'Source Sans Pro',Arial,Helvetica, sans-serif;
+            font-size: 8pt;
+            display: none;
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm 20mm 25mm 20mm; /* DIN 5008 */
+            orphans: 4;
+            widows: 2;
+
+
+            @bottom-left {
+                content: element(footer);
+            }
+
+            @bottom-right {
+                font-family: 'Source Sans Pro',Arial,Helvetica, sans-serif;
+                font-size: 8pt;
+                content: "Page " counter(page) " of " counter(pages);
+            }
+
+        }
+
+        @page:first {
+            @bottom-right {
+                display: none
+            }
+            @bottom-left {
+                display: none
+            }
+        }
+
+
+
+        @media print {
+
+            body {
+                background: white;
+                font-size: 75%
+            }
+
+            #bottomLeftFooter {
+                display: block;
+            }
+
+            .logo-topline-initial {
+                color: white;
+            }
+            .logo-bottomline {
+                margin-top: 3px;
+            }
+
+            .frontmatter {
+                clear:both;
+                page-break-after: always !important;
+            }
+
+            .imprint {
+                page-break-before: always!important ;
+            }
+
+            .container {
+                width: 100%;
+                padding: 0;
+            }
+
+
+            .page {
+                width: 100%;
+                page-break-inside: avoid;
+                page-break-after: auto;
+                margin-bottom: 1.5em;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0;
+            }
+
+            .dataset {
+                page-break-inside: auto;
+            }
+
+            .page-header {
+                border-radius: 0;
+                page-break-after: avoid;
+            }
+
+            .page-body,
+            .page-footer {
+                background: white;
+                border: none !important;
+            }
+
+            h1.title  {
+                border-bottom: 1px solid black;
+                font-size: 16pt !important
+            }
+
+            h2.title  {
+                font-size: 14pt !important;
+                font-weight: bold;
+                border-bottom: 1px solid #ccc
+            }
+
+            h3.title  {
+                font-size: 14pt !important;
+                font-weight: bold;
+                border-bottom: 1px dotted #ccc
+            }
+
+            h4.title  {
+                font-size: 14pt !important;
+                border-bottom: 1px dotted #ccc
+
+            }
+
+            h6.title , h5.title  {
+                font-size: 14pt !important;
+            }
+
+
+
+        }
+
+    </style>
+
+
+</head>
+<body>
+<div class="container">

@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CeramEgypt Objects 2.0
+  This represents a piece of ceramic
+-->
+<category xmlns="http://arachne.uni-koeln.de/schemas/category" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="mainabstract" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+  <contexts>
+
+    <context id="surface" connectFieldParent="PS_MainAbstractID">
+      <join type="xsurfacetreatmentx" connectFieldParent="PS_MainAbstractID" connectFieldChild="FS_MainAbstractID" />
+      <join type="surfacetreatment" connectFieldParent="FS_SurfaceTreatmentID" connectFieldChild="PS_SurfaceTreatmentID" />
+      <join type="surfacetreatmentaction" connectFieldParent="PS_SurfaceTreatmentID" connectFieldChild="FS_SurfaceTreatmentID" />
+      <order by="surfacetreatment.Bezeichner" />
+      <group type="surfacetreatmentaction" by="surfacetreatment.PS_SurfaceTreatmentID"  />
+    </context>
+  </contexts>
+
+  <subtables>
+    <subtable connectFieldParent="FS_FabricID" connectFieldSubTable="FS_FabricID">fabricdescription</subtable>
+  </subtables>
+  <display>
+    <title>
+      <section separator=" / ">
+        <section separator=" - ">
+          <field datasource="befund.Grabungsort"/>
+          <field datasource="befund.Befund" prefix="SE: "/>
+        </section>
+        <section separator=" - ">
+          <field datasource="morphology.Level1"/>
+          <field datasource="morphology.Level2"/>
+        </section>
+        <section separator=" - " labelKey="Fabric">
+          <field datasource="fabric.Origin"/>
+          <field datasource="fabric.CommonName"/>
+          <field datasource="fabric.Name"/>
+        </section>
+        <section>
+        	<field datasource="quantities.TotalSherds" postfix=" sherds"/>
+        </section>
+      </section>
+
+    </title>
+    <subtitle>
+      <section labelKey="Unique Identifier">
+        <field datasource="Dataset.internalId"/>
+      </section>
+    </subtitle>
+    <datasections>
+
+      <!-- it will have this -->
+      <section labelKey="Keramikfragment">
+        <include type="isolatedsherd" />
+      </section>
+
+      <!-- OR this -->
+      <section labelKey="Keramikkonvolut">
+        <include type="quantities" />
+      </section>
+
+      <section labelKey="Morphologie">
+        <include type="morphology" />
+      </section>
+
+      <section labelKey="Fabrikat">
+        <include type="fabric" />
+      </section>
+
+      <section labelKey="Befund">
+        <include type="befund" />
+      </section>
+
+      <include type="datierung" />
+
+      <include type="surface" />
+
+    </datasections>
+
+    <editorsection>
+      <section labelKey="Für Bearbeiter">
+        <field datasource="mainabstract.Editor" prefix="Bearbeiter (mainabstract): " />
+        <field datasource="mainabstract.lastModified" prefix="Zuletzt Geändert (mainabstract): " />
+      </section>
+    </editorsection>
+
+    <contextImages>
+      <contextImage show="always">isolatedsherd</contextImage>
+    </contextImages>
+
+  </display>
+
+  <!-- TODO connectedEntities ausblenden: isolated sherd; quantities, surfacetreatment -->
+
+  <facets>
+
+    <include type="facet_kategorie"/>
+
+    <include type="facet_datierung" />
+
+    <include type="facet_morphology" />
+
+    <include type="facet_fabric" />
+
+    <include type="facet_befund" />
+
+  </facets>
+</category>
