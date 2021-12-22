@@ -10,6 +10,19 @@ services:
     ports:
       - 8081:8080
 
+  db:
+    image: mariadb:latest
+    environment:
+      - "MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}"
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    image: phpmyadmin:fpm-alpine
+    environment:
+      - "PMA_HOST=db"
+      - "MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}"
+
   elasticsearch:
     build: ./elasticsearch
     environment:
