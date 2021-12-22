@@ -1,12 +1,12 @@
 FROM node:lts as builder
 
-COPY . /ui 
-WORKDIR /ui
+COPY . /frontend 
+WORKDIR /frontend
 
 RUN npm i
 RUN npm run build
 
 FROM nginx
 
-COPY --from=builder /ui/public /usr/share/nginx/html
+COPY --from=builder /frontend/public /usr/share/nginx/html
 COPY config/nginx.conf /etc/nginx/nginx.conf

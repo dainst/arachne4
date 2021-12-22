@@ -4,11 +4,14 @@ services:
     build: ./frontend
     ports:
       - 8080:80
+  
+  backend:
+    build: ./backend
+    ports:
+      - 8081:8080
 
   elasticsearch:
-    build:
-      context: .
-      dockerfile: ./Dockerfile-elasticsearch
+    build: ./elasticsearch
     environment:
       - discovery.type=single-node
       - cluster.name=arachne4
