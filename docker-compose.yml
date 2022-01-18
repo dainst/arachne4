@@ -4,6 +4,9 @@ services:
     build: ./frontend
     ports:
       - 8080:80
+      - 8888:8888
+    volumes:
+      - phpmyadmin_data:/var/www/html/:ro
   
   backend:
     build: ./backend
@@ -22,6 +25,8 @@ services:
     environment:
       - "PMA_HOST=db"
       - "MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}"
+    volumes:
+      - phpmyadmin_data:/var/www/html/
 
   elasticsearch:
     build: ./elasticsearch
@@ -31,3 +36,9 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+
+  iipimage:
+    build: ./iipimage
+
+volumes:
+  phpmyadmin_data:
