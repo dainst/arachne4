@@ -70,5 +70,5 @@ volumes:
   archaeocloud:
       driver_opts:
           type: cifs
-          o: "user=alc01,file_mode=0777,dir_mode=0777,password="
+          o: "user=alc01,file_mode=0777,dir_mode=0777,password=${ARCHAEOCLOUD_PASSWORD}"
           device: "//172.17.113.250/archaeocloud" 
