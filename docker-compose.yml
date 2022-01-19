@@ -1,7 +1,7 @@
 # TODO:
 # - mount archaeocloud in iip
 # - HTTPS / traefik
-# - passwörter in env statt application.properties
+# - passwörter in env statt application.properties testen
 
 
 services:
@@ -22,6 +22,8 @@ services:
       - "DB_SERVER=db"
       - "IIPIMAGE_SERVER=iipimage"
       - "ELASTICSEARCH_SERVER=elasticsearch"
+    volumes:
+      - archaeocloud:/media/archaeocloud
     ports:
       - 8081:8080
 
@@ -58,8 +60,15 @@ services:
 
   iipimage:
     build: ./iipimage
+    volumes:
+      - archaeocloud:/media/archaeocloud
 
 volumes:
   db_data:
   elasticsearch_data:
   phpmyadmin_data:
+  archaeocloud:
+      driver_opts:
+          type: cifs
+          o: "user=alc01,file_mode=0777,dir_mode=0777,password="
+          device: "//172.17.113.250/archaeocloud" 
