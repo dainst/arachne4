@@ -1,0 +1,78 @@
+# jdbc
+jdbcDriverClassName=com.mysql.jdbc.Driver
+jdbcUrl=jdbc:mysql://${DB_SERVER}/arachne?&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=Europe/Berlin
+jdbcUsername=arachne
+jdbcPassword=${DB_PASSWORD}
+
+# elasticsearch
+esAddress=${ELASTICSEARCH_SERVER}
+esRESTPort=9200
+esProtocol=http
+esClusterName=arachne4
+esAliasName=arachne4
+esIndexName=arachne4-index
+esBulkActions=25000
+esBulkSize=10
+esDefaultLimit=50
+esDefaultFacetLimit=20
+esClientTypeRemote=yes
+esRemotePort=9300
+esTextSearchFields=title^2,subtitle^1.0,ids^1.0,filename^1.0,searchableContent^0.5
+esNumericSearchFields=entityId^100.0,internalId^100.0
+esSortFields=title,subtitle,entityId
+esDefaultFacets=facet_land,facet_image,facet_kategorie,facet_ort,facet_ortsangabe,facet_aufbewahrungsort,facet_fundort,facet_geo,facet_datierungepoche,facet_aufbewahrungsort,facet_literatur
+esSuggestFacets=facet_ort,facet_datierungepoche
+
+# iip image
+imageServerPath=http://${IIPIMAGE_SERVER}:8888/
+imageServerName=no-watermark
+imageServerExtension=.fcgi
+imagePath=/media/archaeocloud/S-Arachne/arachne4scans/arachne4webimages/
+imageResolutionICON=50
+imageResolutionTHUMBNAIL=150
+imageResolutionPREVIEW=600
+imageResolutionHIGH=0
+imageCacheDir=/tmp/arachne4ImageCache/
+
+# MailService
+mailSMTPServer=smtp.uni-koeln.de
+mailSender=arachne@uni-koeln.de
+
+# transl8
+transl8Url=https://arachne.dainst.org/transl8/translation/json?application=arachne4_backend
+
+# 3d
+model3dBasePath=/media/archaeocloud/S-Arachne/arachne4scans/arachne4webmodels3d
+
+# General
+serverAddress={$SERVER_ADDRESS}
+authFreeTables=SemanticConnection,datierung,literatur,literaturzitat_leftjoin_literatur,rezeptionsobjekte,sammler,URI,zenon,arachneentitydegrees
+imageExcludeList=literatur,ort,sarkophag,person,sammler,einschluss,befund,individualvessel,niton,quantities,surfacetreatment,surfacetreatmentaction
+modelIncludeList=bauwerk,objekt,reproduktion,topographie
+internalFields=boost,connectedEntities,degree,fields,suggest
+checkIndexOnDataImport=no
+profilingDataimport=no
+profilingEntityRetrieval=no
+restReadTimeout=0
+restConnectionTimeout=2000
+defaultDatasetGroups=Arachne,Oppenheim
+imageLimit=500
+adminEmail=arachne4-tec-devel@uni-koeln.de
+contactEmail=idai.objects@dainst.de
+
+# e2e frontend testing
+testUserName=e2e_test_user
+
+# specialnavigation stuff
+teiViewerLink=http://arachne.uni-koeln.de/Tei-Viewer/cgi-bin/teiviewer.php
+dfgViewerLink=http://dfg-viewer.de/v1/?set[mets]=http%3A%2F%2Farachne.uni-koeln.de%2FMetsDocuments%2Foai_arachne.uni-koeln.de_buch-
+modelViewerLink=/3d?id=
+
+# book browser module
+booksPath=/tmp
+
+# data export
+dataExportMaxThreads=4
+dataExportMaxTaskLifeTime=30000
+dataExportPath=/tmp
+dataExportMaxItemsPerExport=1000000

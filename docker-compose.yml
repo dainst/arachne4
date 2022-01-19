@@ -1,3 +1,9 @@
+# TODO:
+# - mount archaeocloud in iip
+# - HTTPS / traefik
+# - passwörter in env statt application.properties
+
+
 services:
 
   frontend:
@@ -10,6 +16,12 @@ services:
   
   backend:
     build: ./backend
+    environment:
+      - "DB_PASSWORD=${DB_PASSWORD}"
+      - "SERVER_ADDRESS=${SERVER_ADDRESS}"
+      - "DB_SERVER=db"
+      - "IIPIMAGE_SERVER=iipimage"
+      - "ELASTICSEARCH_SERVER=elasticsearch"
     ports:
       - 8081:8080
 
