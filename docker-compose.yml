@@ -3,7 +3,7 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - 8080:80
+      - 80:80
       - 8888:8888
     volumes:
       - phpmyadmin_data:/var/www/html/:ro
@@ -17,6 +17,11 @@ services:
     image: mariadb:latest
     environment:
       - "MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}"
+      - "MYSQL_DATABASE=arachne"
+      - "MYSQL_USER=arachne"
+      - "MYSQL_PASSWORD=${DB_PASSWORD}"
+    volumes:
+      db_data:/var/lib/mysql
     ports:
       - 3306:3306
 
@@ -33,6 +38,8 @@ services:
     environment:
       - discovery.type=single-node
       - cluster.name=arachne4
+    volumes:
+      elasticsearch_data:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
       - 9300:9300
@@ -41,4 +48,6 @@ services:
     build: ./iipimage
 
 volumes:
+  db_data:
+  elasticsearch_data:
   phpmyadmin_data:
