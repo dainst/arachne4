@@ -116,7 +116,10 @@ module.exports = {
             paths: [
                 ...glob.sync(`${path.resolve(__dirname, '../app')}/**/*.html`, { nodir: true }),
                 ...glob.sync(`${path.resolve(__dirname, '../node_modules/idai-components')}/**/*.html`, { nodir: true }),
-            ]
+            ],
+            safelist: {
+                standard: [/^modal-/, /^fade/]
+            }
         }),
         new webpack.ProvidePlugin({
             THREE: 'three',
@@ -126,7 +129,7 @@ module.exports = {
     devServer: {
         proxy: {
             '/data': {
-                target: 'http://bogusman02.dai-cloud.uni-koeln.de',
+                target: 'https://arachne.dainst.org',
                 changeOrigin: true,
             }
         },
