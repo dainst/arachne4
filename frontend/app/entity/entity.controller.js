@@ -2,6 +2,9 @@ export default function ($rootScope, $stateParams, searchService, $scope, Entity
             $location, authService, categoryService, Query,
             messages, searchScope) {
 
+    import('../image/image.module.js').then(mod => $scope.lazyLoadImage = mod.default);
+    import('../map/map.module.js').then(mod => $scope.lazyLoadMap = mod.default);
+
     searchService.initQuery();
 
     $rootScope.tinyFooter = false;

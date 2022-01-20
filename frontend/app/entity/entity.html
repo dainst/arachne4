@@ -113,7 +113,9 @@
         <!-- Karte -->
         <div ng-if="entity.places" class="hidden-xs hidden-sm">
             <h5 class="text-muted uppercase"><strong>{{'entity_places'|transl8}}</strong></h5>
-            <div class="well" ar-entity-map places="entity.places" id="entityMap" style="height:200px;"></div>
+            <div oc-lazy-load="lazyLoadMap">
+                <div class="well" ar-entity-map places="entity.places" id="entityMap" style="height:200px;"></div>
+            </div>
         </div>
 
         <!-- CATALOG ENTRIES -->
@@ -140,7 +142,9 @@
 
                 <div ar-entity-3dmodel ng-if="entity.models" entity="entity"></div>
 
-                <div ar-imageslider ng-if="entity.images" entity="entity" current-query="currentQuery"></div>
+                <div oc-lazy-load="lazyLoadImage">
+                    <div ar-imageslider ng-if="entity.images" entity="entity" current-query="currentQuery"></div>
+                </div>
 
                 <ar-entity-links entity="entity"></ar-entity-links>
 
