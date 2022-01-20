@@ -119,7 +119,9 @@
         </div>
 
         <!-- CATALOG ENTRIES -->
-        <ar-catalog-occurrences entity="entity"></ar-catalog-occurrences>
+        <div oc-lazy-load="lazyLoadCatalog">
+            <ar-catalog-occurrences entity="entity"></ar-catalog-occurrences>
+        </div>
     </div>
 
     <div ng-show="entity.entityId" class="col-md-9">
