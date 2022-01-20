@@ -86,6 +86,9 @@ const lazyLoad = (importPromise) => ($transition$) => {
     return importPromise.then(mod => $ocLazyLoad.load(mod.default));
 }
 
+const lazyLoadService = ($ocLazyLoad) => (importPromise) =>
+    importPromise.then(mod => $ocLazyLoad.load(mod.default));
+
 angular.module('arachne', [
     'ui.bootstrap',
     'ui.bootstrap.tpls',
@@ -120,6 +123,7 @@ angular.module('arachne', [
 .factory('searchService', ['$location', 'Entity', 'Query', '$q', 'searchScope', searchService])
 .factory('Query', ['arachneSettings', Query])
 .factory('authService', ['$http', 'arachneSettings', '$filter', '$cookies', authService])
+.factory('lazyLoad', ['$ocLazyLoad', lazyLoadService])
 .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$compileProvider', '$resourceProvider', '$qProvider', '$httpProvider',
     function($stateProvider, $urlRouterProvider, $locationProvider, $compileProvider, $resourceProvider, $qProvider, $httpProvider) {
 

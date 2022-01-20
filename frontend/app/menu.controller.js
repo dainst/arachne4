@@ -2,8 +2,8 @@
 
 angular.module('arachne.controllers')
 
-    .controller('MenuController', ['$scope', '$uibModal', 'authService', '$location', '$window', 'searchScope',
-        function ($scope, $uibModal, authService, $location, $window, searchScope) {
+    .controller('MenuController', ['$scope', '$uibModal', 'authService', '$location', '$window', 'searchScope', 'lazyLoad',
+        function ($scope, $uibModal, authService, $location, $window, searchScope, lazyLoad) {
 
             $scope.user = authService.getUser();
 
@@ -12,7 +12,8 @@ angular.module('arachne.controllers')
                 $scope.currentPath = $location.path();
             });
 
-            $scope.openLoginModal = function () {
+            $scope.openLoginModal = async function () {
+                await lazyLoad(import('./users/users.module.js'));
                 var modalInstance = $uibModal.open({
                     template: require('./users/login-form.html'),
                     controller: 'LoginFormController'
