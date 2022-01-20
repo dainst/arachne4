@@ -8,11 +8,14 @@ services:
 
   frontend:
     build: ./frontend
-    ports:
-      - 80:80
-      - 8888:8888
     volumes:
       - phpmyadmin_data:/var/www/html/:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`${SERVER_ADDRESS}`)
+      - traefik.http.routers.frontend.entrypoints=websecure
+      - traefik.http.routers.frontend.tls.certresolver=myresolver
+      - traefik.port=80
   
   backend:
     build: ./backend
@@ -24,8 +27,12 @@ services:
       - "ELASTICSEARCH_SERVER=elasticsearch"
     volumes:
       - archaeocloud:/media/archaeocloud
-    ports:
-      - 8081:8080
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=Host(`${SERVER_ADDRESS}`) && PathPrefix(`/data`)
+      - traefik.http.routers.backend.entrypoints=websecure
+      - traefik.http.routers.backend.tls.certresolver=myresolver
+      - traefik.port=8080
 
   db:
     image: mariadb:latest
@@ -63,6 +70,25 @@ services:
     build: ./iipimage
     volumes:
       - archaeocloud:/media/archaeocloud
+
+  traefik:
+    image: "traefik:v2.5"
+    restart: always
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=dev@dainst.org"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt"
+    ports:
+      - "80:80"
+      - "443:443"
 
 volumes:
   db_data:
