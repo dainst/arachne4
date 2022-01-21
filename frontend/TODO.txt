@@ -1,0 +1,6 @@
+TODO:
+* Leaflet-Karte in Einzelansicht zerschossen
+* Suche in Navbar defekt
+* info/-URLs defekt
+* project/-URLs defekt
+* -VERSION STRING- in build ersetzen
