@@ -1,3 +1,5 @@
+import 'leaflet';
+
 export default function(arachneSettings, $http) {
     return {
         restrict: 'A',

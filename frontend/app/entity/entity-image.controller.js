@@ -1,5 +1,7 @@
 export default function ($stateParams, $scope, Entity, authService, searchService, $rootScope, messages) {
 
+    import('../image/image.module.js').then(mod => $scope.lazyLoadImage = mod.default);
+
     $rootScope.tinyFooter = true;
     $scope.allow = true;
 

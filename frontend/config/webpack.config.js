@@ -118,7 +118,7 @@ module.exports = {
                 ...glob.sync(`${path.resolve(__dirname, '../node_modules/idai-components')}/**/*.html`, { nodir: true }),
             ],
             safelist: {
-                standard: [/^modal-/, /^fade/, /^panel/]
+                standard: [/^modal-/, /^fade/, /^panel/, /^leaflet/]
             }
         }),
         new webpack.ProvidePlugin({

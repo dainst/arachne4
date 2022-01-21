@@ -15,6 +15,11 @@ import './lib/ui-bootstrap-custom-build/ui-bootstrap-custom-2.5.0.js';
 import './lib/ui-bootstrap-custom-build/ui-bootstrap-custom-tpls-2.5.0.js';
 import './lib/ui-bootstrap-custom-build/ui-bootstrap-custom-2.5.0-csp.css';
 
+import 'leaflet/dist/leaflet.css';
+import 'drmonty-leaflet-awesome-markers/css/leaflet.awesome-markers.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+
 import transl8_en from './_transl8.en.js';
 import transl8_de from './_transl8.de.js';
 
