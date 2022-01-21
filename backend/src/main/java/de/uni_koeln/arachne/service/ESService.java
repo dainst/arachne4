@@ -357,6 +357,7 @@ public class ESService implements ServletContextAware {
 				.setQuery(QueryBuilders.matchAllQuery())
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setSize(0)
+				.setTrackTotalHits(true)
 				.execute().actionGet();
 		if (searchResponse.status() == RestStatus.OK) {
 			return searchResponse.getHits().getTotalHits().value;

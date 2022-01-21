@@ -143,7 +143,8 @@ public class SearchService {
 				.setQuery(buildQuery(searchParameters.getQuery(), filters, searchParameters.getBoundingBox(), false))
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setSize(searchParameters.getLimit())
-				.setFrom(searchParameters.getOffset());
+				.setFrom(searchParameters.getOffset())
+				.setTrackTotalHits(true);
 
 		if (!searchParameters.isFacetMode()) {
 			if (searchParameters.isScrollMode()
@@ -736,16 +737,16 @@ public class SearchService {
                 .defaultOperator(Operator.AND)
                 .analyzeWildcard(true);
 
-		innerQuery.field("searchableEditorContent^0.5");
-		innerQuery.field("datasetGroup^0.5");
+		innerQuery.field("searchableEditorContent", 0.5f);
+		innerQuery.field("datasetGroup", 0.5f);
 
-		for (String textField: searchFields.text()) {
-			innerQuery.field(textField);
+		for (Map.Entry<String, Float> entry : searchFields.text().entrySet()) {
+			innerQuery.field(entry.getKey(), entry.getValue());
 		}
 
 		if (StringUtils.isNumeric(searchParam)) {
-			for (final String numericField: searchFields.numeric()) {
-				innerQuery.field(numericField);
+			for (Map.Entry<String, Float> entry : searchFields.numeric().entrySet()) {
+				innerQuery.field(entry.getKey(), entry.getValue());
 			}
 		}
 
