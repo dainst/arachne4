@@ -5,38 +5,23 @@
         <Console name="CONSOLE" target="SYSTEM_OUT">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
         </Console>
-
-        <RollingFile name="ROLLING"
-                     fileName="/var/log/arachne/arachnedataservice/dataservice.log"
-                     filePattern="/var/log/arachne/arachnedataservice/dataservice-%d{yyyy-MM-dd}.log">
-            <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
-            <Policies>
-                <SizeBasedTriggeringPolicy size="10240KB" />
-            </Policies>
-            <DefaultRolloverStrategy>
-                <Delete basePath="/var/log/arachne/arachnedataservice/">
-                    <IfFileName glob="dataservice-*.log" />
-                    <IfLastModified age="30d" />
-                </Delete>
-            </DefaultRolloverStrategy>
-        </RollingFile>
         <RollingFile name="Profile"
-                     fileName="/var/log/arachne/arachnedataservice/profile.log"
-                     filePattern="/var/log/arachne/arachnedataservice/profile-%d{yyyy-MM-dd}.log">
+                     fileName="./logs/profile.log"
+                     filePattern="./logs/profile-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
             </Policies>
             <DefaultRolloverStrategy>
-                <Delete basePath="/var/log/arachne/arachnedataservice/">
+                <Delete basePath="./logs/">
                     <IfFileName glob="profile-*.log" />
                     <IfLastModified age="30d" />
                 </Delete>
             </DefaultRolloverStrategy>
         </RollingFile>
         <RollingFile name="DataIntegrity"
-                     fileName="/var/log/arachne/arachnedataservice/data_integrity.log"
-                     filePattern="/var/log/arachne/arachnedataservice/data_integrity-%d{yyyy-MM-dd}.log">
+                     fileName="./logs/data_integrity.log"
+                     filePattern="./logs/data_integrity-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
@@ -44,42 +29,42 @@
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
         <RollingFile name="DataExport"
-                     fileName="/var/log/arachne/arachnedataservice/data_export.log"
-                     filePattern="/var/log/arachne/arachnedataservice/data_export-%d{yyyy-MM-dd}.log">
+                     fileName="./logs/data_export.log"
+                     filePattern="./logs/data_export-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
             </Policies>
             <DefaultRolloverStrategy>
-                <Delete basePath="/var/log/arachne/arachnedataservice/">
+                <Delete basePath="./logs/">
                     <IfFileName glob="data_export-*.log" />
                     <IfLastModified age="30d" />
                 </Delete>
             </DefaultRolloverStrategy>
         </RollingFile>
         <RollingFile name="IIPService"
-                     fileName="/var/log/arachne/arachnedataservice/iip_service.log"
-                     filePattern="/var/log/arachne/arachnedataservice/iip_service-%d{yyyy-MM-dd}.log">
+                     fileName="./logs/iip_service.log"
+                     filePattern="./logs/iip_service-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
             </Policies>
             <DefaultRolloverStrategy>
-                <Delete basePath="/var/log/arachne/arachnedataservice/">
+                <Delete basePath="./logs/">
                     <IfFileName glob="iip_service-*.log" />
                     <IfLastModified age="30d" />
                 </Delete>
             </DefaultRolloverStrategy>
         </RollingFile>
         <RollingFile name="UserManagement"
-		             fileName="/var/log/arachne/arachnedataservice/user_management.log"
-                     filePattern="/var/log/arachne/arachnedataservice/user_management-%d{yyyy-MM-dd}.log">
+		             fileName="./logs/user_management.log"
+                     filePattern="./logs/user_management-%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="%-5p[%d{DATE}]: %c - %m%n" />
             <Policies>
                 <SizeBasedTriggeringPolicy size="10240KB" />
             </Policies>
             <DefaultRolloverStrategy>
-                <Delete basePath="/var/log/arachne/arachnedataservice/">
+                <Delete basePath="./logs/">
                     <IfFileName glob="user_management-*.log" />
                     <IfLastModified age="30d" />
                 </Delete>
