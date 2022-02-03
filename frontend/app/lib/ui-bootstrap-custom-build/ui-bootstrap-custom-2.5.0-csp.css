@@ -80,3 +80,6 @@
 .uib-position-body-scrollbar-measure {
   overflow: scroll !important;
 }
+[uib-typeahead-popup].dropdown-menu {
+  display: block;
+}
