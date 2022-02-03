@@ -81,7 +81,7 @@ export default function($location, $http, $stateParams, language, $state) {
         currentSearchPath: function() {
             searchScope.currentScopeName();
             searchScope.currentScopeName();
-            var definedSearchPage = $state.current.data.searchPage;
+            var definedSearchPage = $state.current.data?.searchPage;
             definedSearchPage = (typeof definedSearchPage !== "undefined") ? definedSearchPage : 'search';
             return searchScope.currentScopePath() + definedSearchPage;
         },
