@@ -89,6 +89,7 @@
     "rimraf": "~2.6.2",
     "sass": "^1.43.5",
     "sass-loader": "^12.3.0",
+    "string-replace-loader": "^3.1.0",
     "style-loader": "^3.3.1",
     "url": "~0.11.0",
     "webdriver-manager": "~12.1.0",
