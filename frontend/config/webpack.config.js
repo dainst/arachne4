@@ -99,6 +99,7 @@ module.exports = {
             patterns: [
                 { from: "3dhop", to: "3dhop" },
                 { from: "3dviewer", to: "3dviewer" },
+                { from: "con10t", to: "con10t" },
                 { from: "info", to: "info" },
                 { from: "app/partials/navbar-menu.html", to: "partials/navbar-menu.html" },
                 { from: "node_modules/idai-3dviewer/dist/idai-3dviewer.min.js", to: "3dviewer/idai-3dviewer.min.js" },
