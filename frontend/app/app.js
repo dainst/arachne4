@@ -26,8 +26,8 @@ import transl8_de from './_transl8.de.js';
 import 'idai-components';
 import '../lib/relative-paths-in-partial.js';
 
-require.context('../con10t/frontimages', false, /^\.\/.*\.(png|jpg|gif|svg)$/);
-require.context('../img/', true, /^\.\/.*\.(png|jpg|gif|svg)$/);
+require.context('../con10t/frontimages', false, /^\.\/.*\.(png|jpg|gif|svg|webp)$/);
+require.context('../img/', true, /^\.\/.*\.(png|jpg|gif|svg|webp)$/);
 
 import '../con10t/search-scopes.json';
 import '../con10t/content.json';
