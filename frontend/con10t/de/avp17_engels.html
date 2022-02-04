@@ -42,6 +42,17 @@
             <h3>Suche in den Daten des Projektes</h3>
 
             <!-- Map -->
+            <div ng-init="config = {
+                    clustered: false,
+                    facetsSelect: [
+                        {
+                        key: 'catalogIds',
+                        value: 1112
+                        }
+                    ]
+                }">
+            </div>
+
             <div con10t-map style = "margin-bottom: 1vw;"
                  id="map"
                  limit="200"
