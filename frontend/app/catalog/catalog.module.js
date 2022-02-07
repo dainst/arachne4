@@ -8,10 +8,12 @@ import EditCatalogEntryController from './edit-catalog-entry.controller.js';
 import EditCatalogHelpController from './edit-catalog-help.controller.js';
 import EditCatalogController from './edit-catalog.controller.js';
 import EditEntryController from './edit-entry.controller.js';
+import EntityModule from '../entity/entity.module.js';
+import ImageModule  from '../image/image.module.js';
 import MarkdownModule from '../markdown/markdown.module.js';
 import NgShowdownModule from 'ng-showdown';
 
-export default angular.module('arachne.catalog', [MarkdownModule.name, NgShowdownModule.name])
+export default angular.module('arachne.catalog', [EntityModule.name, ImageModule.name, MarkdownModule.name, NgShowdownModule.name])
     .config(['$stateProvider', $stateProvider => {
         $stateProvider.state({ name: 'catalogs', url: '/catalogs', template: require('./catalogs.html')});
         $stateProvider.state({ name: 'catalog', url: '/catalog/:id?view', template: require('./catalog.html')});

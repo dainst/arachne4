@@ -1,3 +1,5 @@
+import 'angular-ui-tree/dist/angular-ui-tree.css';
+
 /**
  * Handles the layout for viewing and editing a catalog.
  *
