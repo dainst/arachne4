@@ -11,7 +11,7 @@ import EntityController from './entity.controller.js';
 
 export default angular.module('arachne.entity', ['arachne.scope'])
     .config(['$stateProvider', $stateProvider => {
-        $stateProvider.state({ name: 'entity', url: '/entity/:id?/:params?', template: require('./entity.html') });
+        $stateProvider.state({ name: 'entity', url: '/entity/:id?/:params?fl&q&resultIndex&live', template: require('./entity.html') });
         $stateProvider.state({ name: 'entityImages', url: '/entity/:entityId/images', template: require('./entity-images.html') });
         $stateProvider.state({ name: 'entityImage', url: '/entity/:entityId/image/:imageId', template: require('./entity-image.html') });
         $stateProvider.state({ name: 'books', url: '/books/:id', template: require('./entity.html') });
