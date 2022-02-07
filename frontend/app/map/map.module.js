@@ -16,8 +16,9 @@ import mapService from './map.service.js';
 import Place from './place.prototype.js';
 import placesPainter from './places-painter.js';
 import placesService from './places.service.js';
+import SearchModule  from '../search/search.module.js';
 
-export default angular.module('arachne.map', [])
+export default angular.module('arachne.map', [SearchModule.name])
     .config(['$stateProvider', $stateProvider => {
         $stateProvider.state({ name: 'map', url: '/map?q&fq&view&sort&offset&limit&desc&bbox&ghprec', template: require('./map.html')});
     }])
