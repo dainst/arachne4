@@ -1,3 +1,7 @@
+import 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet.heat';
+
 /**
  * @author Daniel de Oliveira
  * @author Sebastian Cuy
@@ -32,7 +36,7 @@ export default function () {
 
     var heatPoints = function(boxesToDraw) {
 
-        var heatPoints=[];
+        var heatPoints = [];
         for (var i = 0; i < boxesToDraw.length; i++) {
             var coords = angular.fromJson(boxesToDraw[i].value);
             coords.push(boxesToDraw[i].count);
@@ -45,7 +49,8 @@ export default function () {
         setMap: function(mp) {
             map = mp;
         },
-        drawBuckets: function (bbox,bucketsToDraw) {
+        drawBuckets: function (bucketsToDraw) {
+
             if (!bucketsToDraw) return;
 
             var max = bucketsToDraw[0].count;
