@@ -1,5 +1,9 @@
 import 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import 'leaflet-polylinedecorator';
+import 'leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
 /*
  * @author: David Neugebauer
@@ -282,7 +286,7 @@ export default function($compile, Place, $rootScope) {
                     marker.openPopup();
                 })
                 .on('clusterclick', function(clickEvent) {
-                    clickEvent.layer.spiderfy();
+                    clickEvent.propagatedFrom.spiderfy();
                 })
                 .bringToFront();
 
