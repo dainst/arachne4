@@ -1,4 +1,5 @@
 import 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 export default function(arachneSettings, $http) {
     return {

@@ -20,7 +20,7 @@ import SearchModule  from '../search/search.module.js';
 
 export default angular.module('arachne.map', [SearchModule.name])
     .config(['$stateProvider', $stateProvider => {
-        $stateProvider.state({ name: 'map', url: '/map?q&fq&view&sort&offset&limit&desc&bbox&ghprec', template: require('./map.html')});
+        $stateProvider.state({ name: 'map', url: '/map?fl&q&fq&view&sort&offset&limit&desc&bbox&ghprec&lat&lng&baselayer', template: require('./map.html')});
     }])
     .directive('arEntityMap', ['$compile', 'Query', 'placesPainter', arEntityMap])
     .directive('arMapMarkerPopup', ['$location', 'Entity', 'searchScope', arMapMarkerPopup])

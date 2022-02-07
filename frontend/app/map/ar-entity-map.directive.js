@@ -1,5 +1,7 @@
 import 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import 'drmonty-leaflet-awesome-markers';
+import 'drmonty-leaflet-awesome-markers/css/leaflet.awesome-markers.css';
 import 'overlapping-marker-spiderfier-leaflet';
 
 /**
@@ -46,7 +48,7 @@ export default function($compile, Query, placesPainter) {
 
             var oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied: true });
             oms.addListener('spiderfy', function(markers) {
-                    map.closePopup();
+                map.closePopup();
             });
 
             var markers = [];

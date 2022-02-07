@@ -4,12 +4,9 @@ export default function(searchService, authService, $uibModal, $location, mapSer
         template: require('./ar-map-nav.html'),
         link: function(scope) {
 
-            scope.$watch(function() {
-                scope.resultSize = searchService.getSize();
-                scope.currentQuery = searchService.currentQuery();
-                scope.user = authService.getUser();
-            });
-
+            scope.resultSize = searchService.getSize();
+            scope.currentQuery = searchService.currentQuery();
+            scope.user = authService.getUser();
 
             // renders a modal that contains a link to the current map's view
             scope.showLinkModal = function () {

@@ -152,7 +152,7 @@ export default function(searchService, mapService, heatmapPainter, placesService
                 var bucketsToDraw = null;
                 var agg_geogrid = searchService.getFacet("agg_geogrid");
                 if (agg_geogrid) bucketsToDraw = agg_geogrid.values;
-                heatmapPainter.drawBuckets(cq.bbox, bucketsToDraw);
+                heatmapPainter.drawBuckets(bucketsToDraw);
             }
 
             function mapOnMove(entities) {
