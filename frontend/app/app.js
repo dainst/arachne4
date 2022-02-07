@@ -3,8 +3,6 @@ import '@uirouter/angularjs';
 import 'angular-sanitize';
 import 'angular-resource';
 import 'angular-cookies';
-//import 'showdown';
-//import 'ng-showdown';
 //import 'ng-table';
 import 'angulartics';
 import 'angulartics-piwik';
@@ -102,7 +100,6 @@ angular.module('arachne', [
     'ngSanitize',
     'ngResource',
     'ngCookies',
-    //'ng-showdown',
     //'ngTable',
     'angulartics',
     'angulartics.piwik',
@@ -110,8 +107,6 @@ angular.module('arachne', [
     'ui.tree',
     'idai.templates',
     'idai.components',
-    //'arachne.js-templates',
-    //'arachne.partials-templates',
     'arachne.filters',
     'arachne.resources',
     'arachne.services',
