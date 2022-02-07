@@ -1,4 +1,4 @@
-export default function ($rootScope, $scope, $uibModal, Query, $http, arachneSettings, categoryService, $location, Entity, $filter, indexService) {
+export default function ($rootScope, $scope, Query, categoryService, $location, Entity, indexService) {
 
     $scope.currentFacet = undefined;
     $scope.currentValue = undefined;
