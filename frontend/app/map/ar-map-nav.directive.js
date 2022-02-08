@@ -5,8 +5,13 @@ export default function(searchService, authService, $uibModal, $location, mapSer
         link: function(scope) {
 
             scope.resultSize = searchService.getSize();
+            scope.$watch(searchService.getSize(), () => scope.resultSize = searchService.getSize());
+
             scope.currentQuery = searchService.currentQuery();
+            scope.$watch(searchService.currentQuery(), () => scope.currentQuery = searchService.currentQuery());
+
             scope.user = authService.getUser();
+            scope.$watch(authService.getUser(), () => scope.user = authService.getUser());
 
             // renders a modal that contains a link to the current map's view
             scope.showLinkModal = function () {
