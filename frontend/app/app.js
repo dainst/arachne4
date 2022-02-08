@@ -3,7 +3,6 @@ import '@uirouter/angularjs';
 import 'angular-sanitize';
 import 'angular-resource';
 import 'angular-cookies';
-//import 'ng-table';
 import 'angulartics';
 import 'angulartics-piwik';
 import 'angular-ui-tree';
@@ -52,13 +51,6 @@ import './utils/tiny-footer.directive.js';
 import './utils/con10t-include.directive.js';
 import './utils/news.service.js';
 import './utils/con10t-media-tree.directive.js';
-import './visualizations/con10t-time-line-chart.directive.js';
-import './visualizations/con10t-network.directive.js';
-////import './visualizations/con10t-table.directive.js';
-import './visualizations/con10t-paginated-item-list.directive.js';
-import './visualizations/con10t-network-chord.directive.js';
-import './visualizations/con10t-network-map-popup.directive.js';
-import './visualizations/con10t-network-map.directive.js';
 import './menu.controller.js';
 import './pages/dataexport.controller.js';
 import './pages/con10t-toc.directive.js';
@@ -67,6 +59,7 @@ import './pages/welcome-page.controller.js';
 import './pages/projects.controller.js';
 import './pages/con10t-page.directive.js';
 import './pages/static-content.controller.js';
+import './visualizations/network/con10t-network.directive.js';
 
 import '../scss/app.scss';
 
@@ -95,7 +88,6 @@ angular.module('arachne', [
     'ngSanitize',
     'ngResource',
     'ngCookies',
-    //'ngTable',
     'angulartics',
     'angulartics.piwik',
     'relativePathsInPartial',

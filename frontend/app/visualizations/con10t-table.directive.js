@@ -1,12 +1,7 @@
-'use strict';
-
-/* Widget directives */
-angular.module('arachne.widgets.directives')
-
 /**
  * @author: Marcel Riedel
  */
-
+angular.module('arachne.visualizations.table', [])
 .directive('con10tTable', ['NgTableParams',
     function(NgTableParams) {
         return {
@@ -58,7 +53,3 @@ angular.module('ngTable').run(['$templateCache', function ($templateCache) {
     $templateCache.put('ng-table/filters/text.html',
         '<input type="text" ng-model="params.filter()[name]" ng-if="filter==\'text\'" placeholder="Filter..." class="input-filter form-control"/>');
 }]);
-
-
-
-
