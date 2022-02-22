@@ -5,7 +5,7 @@ import 'angular-ui-grid/ui-grid.css';
 /**
  * @author: Sebastian Cuy
  */
-export default angular.module('arachne.visualizations.table_lazy', ['ui.grid'])
+export default angular.module('arachne.visualizations.table_lazy', [])
 .directive('con10tTableWrapper', ['$http', function($http) {
     return {
         restrict: 'E',
