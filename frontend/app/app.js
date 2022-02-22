@@ -59,7 +59,8 @@ import './pages/welcome-page.controller.js';
 import './pages/projects.controller.js';
 import './pages/con10t-page.directive.js';
 import './pages/static-content.controller.js';
-import './visualizations/network/con10t-network.directive.js';
+import con10tNetworkModule from './visualizations/network/con10t-network.directive.js';
+import con10tTableModule from './visualizations/table/con10t-table.directive.js';
 
 import '../scss/app.scss';
 
@@ -100,7 +101,8 @@ angular.module('arachne', [
     'arachne.directives',
     'arachne.controllers',
     'arachne.widgets.directives',
-    'arachne.visualizations.directives',
+    con10tNetworkModule.name,
+    con10tTableModule.name,
     scopeModule.name
 ])
 .factory('Catalog', ['$resource', 'arachneSettings', Catalog])

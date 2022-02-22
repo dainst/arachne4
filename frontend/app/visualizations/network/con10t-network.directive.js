@@ -1,4 +1,4 @@
-angular.module('arachne.widgets.directives')
+export default angular.module('arachne.visualizations.network', [])
 .directive('con10tNetwork', function() {
     return {
         restrict: 'E',

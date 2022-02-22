@@ -25,6 +25,7 @@ angular.module('arachne.controllers')
         function ($scope, $stateParams, $http, $location, localizedContent, $timeout, $templateCache) {
 
             $scope.$on("$includeContentError", function (event, templateName) {
+                console.error('Failed to include template: ' + templateName);
                 $location.path('/404');
             });
 
