@@ -3,7 +3,6 @@ export default function ($rootScope, $stateParams, searchService, $scope, Entity
             messages, searchScope) {
 
     import('../catalog/catalog.module.js').then(mod => $scope.lazyLoadCatalog = mod.default);
-    import('../facets/facets.module.js').then(mod => $scope.lazyLoadFacets = mod.default);
     import('../image/image.module.js').then(mod => $scope.lazyLoadImage = mod.default);
     import('../map/map.module.js').then(mod => $scope.lazyLoadMap = mod.default);
 

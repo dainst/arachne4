@@ -1,3 +1,4 @@
+import arActiveFacets from './ar-active-facets.directive.js';
 import arSearchNav from './ar-search-nav.directive.js';
 import con10tSearchCatalog from './con10t-search-catalog.directive.js';
 import con10tSearchQuery from './con10t-search-query.directive.js';
@@ -7,13 +8,13 @@ import SearchController from './search.controller.js';
 import cellsFromEntities from './cells-from-entities.filter.js';
 import scopeModule from '../scope/scope.module.js';
 import imageModule from '../image/image.module.js';
-import facetsModule from '../facets/facets.module.js';
 import indexModule from '../index/index.module.js';
 
-export default angular.module('arachne.search', [scopeModule.name, imageModule.name, facetsModule.name, indexModule.name])
+export default angular.module('arachne.search', [scopeModule.name, imageModule.name, indexModule.name])
     .config(['$stateProvider', $stateProvider => {
         $stateProvider.state({ name: 'search',  url: '/search?q&fq&view&sort&offset&limit&desc&bbox&ghprec&group', template: require('./search.html')});
     }])
+    .directive('arActiveFacets', arActiveFacets)
     .directive('arSearchNav', ['arachneSettings', arSearchNav])
     .directive('con10tSearchCatalog', con10tSearchCatalog)
     .directive('con10tSearchQuery', ['$location', con10tSearchQuery])
