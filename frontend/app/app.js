@@ -26,10 +26,6 @@ import '../con10t/front.json';
 import '../info/content.json';
 
 import './_modules.js';
-import './facets/ar-active-facets.directive.js';
-import './facets/index.controller.js';
-import './facets/ar-facet-browser.directive.js';
-import './facets/index.service.js';
 import './utils/filters/error-message.filter.js';
 import './utils/filters/range.filter.js';
 import './utils/filters/base64.filter.js';
@@ -173,7 +169,7 @@ angular.module('arachne', [
             'dataimport': { url: '/admin/dataimport', template: require('./pages/dataimport.html'), data: { pageTitle: title }},
             'dataexport': { url: '/admin/dataexport', template: require('./pages/dataexport.html'), data: { pageTitle: title }},
             'project': { url: '/project/:title', template: require('./pages/static.html'), data: { pageTitle: title } },
-            'index': { url: '/index?c&fq&fv&group', template: require('./facets/index.html'), reloadOnSearch: true, data: { pageTitle: title } },
+            'index.**': { url: '/index', lazyLoad: lazyLoad('./index/indes.module.js'), data: { pageTitle: title } },
             'info': { url: '/info/:title?id', template: require('./pages/static.html'), data: { pageTitle: title } },
         };
 

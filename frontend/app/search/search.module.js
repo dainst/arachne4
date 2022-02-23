@@ -7,8 +7,10 @@ import SearchController from './search.controller.js';
 import cellsFromEntities from './cells-from-entities.filter.js';
 import scopeModule from '../scope/scope.module.js';
 import imageModule from '../image/image.module.js';
+import facetsModule from '../facets/facets.module.js';
+import indexModule from '../index/index.module.js';
 
-export default angular.module('arachne.search', [scopeModule.name, imageModule.name])
+export default angular.module('arachne.search', [scopeModule.name, imageModule.name, facetsModule.name, indexModule.name])
     .config(['$stateProvider', $stateProvider => {
         $stateProvider.state({ name: 'search',  url: '/search?q&fq&view&sort&offset&limit&desc&bbox&ghprec&group', template: require('./search.html')});
     }])
