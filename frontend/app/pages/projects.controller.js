@@ -1,5 +1,4 @@
-'use strict';
-
+import con10tPages from '../../con10t/content.json';
 angular.module('arachne.controllers')
 
 
@@ -16,14 +15,8 @@ angular.module('arachne.controllers')
 
             $scope.columns = [];
 
-            $http.get('con10t/content.json').then(function (result) {
-
-                var data = result.data;
-                localizedContent.reduceTitles(data);
-                $scope.sliceColumns(data.children);
-            }).catch(function () {
-                console.log(error);
-            });
+            localizedContent.reduceTitles(con10tPages);
+            $scope.sliceColumns(con10tPages.children);
 
             $scope.getProjectLink = function (project) {
 
