@@ -11,8 +11,9 @@ import EditEntryController from './edit-entry.controller.js';
 import ImageModule  from '../image/image.module.js';
 import MarkdownModule from '../markdown/markdown.module.js';
 import NgShowdownModule from 'ng-showdown';
+import 'angular-ui-tree';
 
-export default angular.module('arachne.catalog', [ImageModule.name, MarkdownModule.name, NgShowdownModule.name])
+export default angular.module('arachne.catalog', [ImageModule.name, MarkdownModule.name, NgShowdownModule.name, 'ui.tree'])
     .config(['$stateProvider', $stateProvider => {
         $stateProvider.state({ name: 'catalogs', url: '/catalogs', template: require('./catalogs.html')});
         $stateProvider.state({ name: 'catalog', url: '/catalog/:id?view', template: require('./catalog.html')});

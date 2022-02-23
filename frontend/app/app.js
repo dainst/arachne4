@@ -5,7 +5,6 @@ import 'angular-resource';
 import 'angular-cookies';
 import 'angulartics';
 import 'angulartics-piwik';
-import 'angular-ui-tree';
 import 'oclazyload';
 
 import './lib/ui-bootstrap-custom-build/ui-bootstrap-custom-2.5.0.js';
@@ -92,7 +91,6 @@ angular.module('arachne', [
     'angulartics',
     'angulartics.piwik',
     'relativePathsInPartial',
-    'ui.tree',
     'idai.templates',
     'idai.components',
     'arachne.filters',
