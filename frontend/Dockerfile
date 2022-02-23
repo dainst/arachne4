@@ -3,7 +3,7 @@ FROM node:lts as builder
 COPY . /frontend 
 WORKDIR /frontend
 
-RUN test -d "./con10t" || git clone https://github.com/dainst/con10t
+RUN test -d "./con10t" || git clone --depth 1 https://github.com/dainst/con10t
 RUN npm i
 RUN npm run build
 
