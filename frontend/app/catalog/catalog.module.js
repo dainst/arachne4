@@ -13,6 +13,8 @@ import MarkdownModule from '../markdown/markdown.module.js';
 import NgShowdownModule from 'ng-showdown';
 import 'angular-ui-tree';
 
+import './catalog.scss';
+
 export default angular.module('arachne.catalog', [ImageModule.name, MarkdownModule.name, NgShowdownModule.name, 'ui.tree'])
     .config(['$stateProvider', $stateProvider => {
         $stateProvider.state({ name: 'catalogs', url: '/catalogs', template: require('./catalogs.html')});

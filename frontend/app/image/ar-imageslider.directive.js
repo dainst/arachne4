@@ -1,3 +1,5 @@
+import './ar-imageslider.scss';
+
 export default function() {
     return {
         scope: {entity: '=', currentQuery: '='},

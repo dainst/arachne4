@@ -18,6 +18,8 @@ import placesPainter from './places-painter.js';
 import placesService from './places.service.js';
 import SearchModule  from '../search/search.module.js';
 
+import './map.scss';
+
 export default angular.module('arachne.map', [SearchModule.name])
     .config(['$stateProvider', $stateProvider => {
         $stateProvider.state({ name: 'map', url: '/map?fl&q&fq&view&sort&offset&limit&desc&bbox&ghprec&lat&lng&baselayer', template: require('./map.html')});

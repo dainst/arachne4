@@ -1,3 +1,5 @@
+import './ar-markdown-text-editor.scss';
+
 /**
  * @author: Thomas Kleinke
  */

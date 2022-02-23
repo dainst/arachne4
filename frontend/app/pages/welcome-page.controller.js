@@ -1,4 +1,4 @@
-'use strict';
+import './welcome-page.scss';
 
 angular.module('arachne.controllers')
 

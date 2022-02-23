@@ -10,6 +10,8 @@ import EntityImageController from './entity-image.controller.js';
 import EntityImagesController from './entity-images.controller.js';
 import EntityController from './entity.controller.js';
 
+import './entity.scss';
+
 export default angular.module('arachne.entity', ['arachne.scope'])
     .config(['$stateProvider', $stateProvider => {
         $stateProvider.state({ name: 'entity', url: '/entity/:id?/:params?fl&q&resultIndex&live', template: require('./entity.html') });

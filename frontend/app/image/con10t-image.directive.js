@@ -1,3 +1,5 @@
+import './con10t-image.scss';
+
 /**
  * @author: Jan G. Wieners
  */

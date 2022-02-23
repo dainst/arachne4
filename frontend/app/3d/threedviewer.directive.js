@@ -1,4 +1,5 @@
 import { _3dviewer } from 'idai-3dviewer';
+import './threedviewer.scss';
 
 export default function () {
     return {

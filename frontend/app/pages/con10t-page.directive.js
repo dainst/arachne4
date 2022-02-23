@@ -1,4 +1,4 @@
-'use strict';
+import './con10t-page.scss';
 
 angular.module('arachne.widgets.directives')
 

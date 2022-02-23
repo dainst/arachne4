@@ -105,12 +105,11 @@
 }
 
 .threedviewer-container {
-    position: relative;
+    position: relative !important;
     height: 310px;
-    top: 0;
-    overflow: hidden;
+    top: 0 !important;
+    overflow: hidden !important;
     width: 100%;
-    height: 310px;
 
     iframe {
       overflow: hidden;
@@ -118,4 +117,21 @@
       width: 100%;
       height: 100%;
     }
+}
+
+.entity-title {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.entity-title .title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.entity-title .title:hover{
+  width: inherit;
+  height: auto;
+  white-space: normal;
 }

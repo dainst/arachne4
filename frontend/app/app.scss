@@ -1,21 +1,6 @@
 @import "variables";
 @import "idai-components";
-@import "catalog";
-@import "con10t-page";
-@import "con10t-image";
-@import "con10t-widgets";
-@import "con10t-media-tree.scss";
-@import "leaflet";
-@import "map";
-@import "threedviewer";
-@import "tabs";
-@import "entity";
-@import "search";
-@import "ar-imageslider";
-@import "ar-markdown-text-editor.scss";
-@import "welcome-page";
-@import "download-modal";
-@import "footer";
+@import "pages/con10t-widgets";
 
 body {
   overflow-y: scroll; /* always show scrollbar */
@@ -172,6 +157,34 @@ idai-footer.white {
   background-color: white;
 }
 
+idai-footer.tinyfooter img, idai-footer.tinyfooter small {
+  display: none;
+}
+
+idai-footer.tinyfooter {
+  display: inline-block;
+  z-index: 1500;
+  padding: 0 0 !important;
+  background: rgba(255,255,255,.7);
+  position: fixed;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 380px;
+  font-size: 11px;
+  border: none;
+
+}
+
+idai-footer.tinyfooter div {
+  padding: 0!important;
+  margin: 0 !important;
+}
+
 [ui-view] {
     padding-top: 50px;
 }
@@ -206,110 +219,6 @@ h6 { font-size: 12px; }
   cursor: pointer;
 }
 
-#custom-catalog .panel-heading {
-    background-color: #337ab7 !important;
-    color: white;
-}
-
-#custom-catalog .panel-default {
-    border-color: #337ab7;
-}
-
-#custom-entry .panel-heading {
-    background-color: #f5f5f5 !important;
-    color: #333;
-}
-
-#custom-entry .panel-default {
-    border-color: #ddd;
-}
-
-.entity-title {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
-.entity-title .title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.entity-title .title:hover{
-  width: inherit;
-  height: auto;
-  white-space: normal;
-}
-
-.ar-imagegrid-cell-title {
-  background: #ffffff;
-  padding: 2px 4px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  height: 36px;
-  line-height: 1.2;
-}
-
-.ar-imagegrid-cell-link {
-  transition: all .3s ease;
-}
-
-.ar-imagegrid-cell-link:hover, .ar-imagegrid-cell-link.hover {
-  box-shadow: 0 0 10px #777;
-  z-index: 500;
-  position: absolute;
-  text-decoration: none;
-}
-
-.ar-imagegrid-cell-link:hover .ar-imagegrid-cell-title, .ar-imagegrid-cell-link.hover .ar-imagegrid-cell-title {
-  width: inherit;
-  height: auto;
-  white-space: normal;
-}
-
-.ar-imagegrid-cell-link .label {
-  position: absolute;
-  left: 5px;
-  top: 5px;
-  opacity: 0.7;
-  white-space: normal;
-}
-
-.ar-imagegrid-cell-link:hover .label {
-  opacity: 1;
-}
-
-/* map widgets */
-
-.ar-map * {
-  box-sizing: content-box;
-}
-
-*[ar-map-popup] ul {
-  padding-left: 10px;
-}
-
-.ar-map-geogrid-label {
-  color: #3f3f3f;
-  text-shadow: -1px 0 #fefefe, 0 1px #fefefe, 1px 0 #fefefe, 0 -1px #fefefe;
-  font-weight: bold;
-  width: 50px !important;
-  left: -19px !important;
-  top: -4px !important;
-}
-
-.ar-map-geogrid-label-inner {
-  width: 90%;
-  height: 90%;
-  margin: 0 auto;
-  text-align: center;
-}
-
-*[ar-grid-map] .leaflet-popup {
-  bottom: 0 !important;
-}
-
 .single-line {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -318,19 +227,6 @@ h6 { font-size: 12px; }
 
 .capitalized {
   text-transform: capitalize;
-}
-
-.search-nav {
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.search-nav .btn-sm {
-  line-height: 1.1;
-}
-
-.search-nav .input-sm {
-  height: 20px;
 }
 
 .row {
@@ -353,38 +249,6 @@ h6 { font-size: 12px; }
 hr {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
-}
-
-.facet.panel {
-  margin-bottom: 10px;
-}
-.facet .panel-title {
-  font-size: 12px;
-  cursor: pointer;
-  color: #37588e;
-}
-.facet ul {
-	margin: 0;
-}
-.facet li {
-  overflow: hidden;
-  margin: 3px 0;
-}
-.facet li:hover, .facet li.selected {
-  background-color: rgba(85, 114, 161, 0.9);
-  color: white;
-}
-.facet li a {
-  color: black;
-  display: block;
-  padding: 3px 6px;
-}
-.facet li:hover a {
-  color: white;
-  text-decoration: none;
-}
-.facet li:hover .text-muted, .facet li.selected a {
-  color: white;
 }
 
 .linethrough-hover:hover {
@@ -491,29 +355,6 @@ hr {
 
 .con10t-page img[align="left"] {
   padding: 0 15px 0 0;
-}
-
-.markdown-editor-button-group {
-  margin-bottom: 3px;
-}
-
-.markdown-editor-button-group .btn {
-  width: 24px;
-  height: 24px;
-}
-
-.markdown-editor-button-group .btn span {
-  text-align: center;
-}
-
-.markdown-editor-button-group .heading-button span {
-  font-size: 11px;
-  margin-left: -2px;
-}
-
-.markdown-editor-button-group .heading-button .heading-button-number {
-  font-weight: bold;
-  margin-left: 0;
 }
 
 /* OVERWRITING MARKER CLUSTER STYLING FOR LEAFLET PLUGIN MARKERCLUSTER */

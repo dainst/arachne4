@@ -26,10 +26,6 @@
   border-radius: 4px;
 }
 
-.search-scope:hover {
-  //box-shadow: 0 0 10px #777;
-}
-
 .search-scope:hover .search-scope-title {
   color:black
 }
@@ -49,4 +45,49 @@
 
 .btn-wrap {
   white-space: normal;
+}
+
+.search-nav {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.search-nav .btn-sm {
+  line-height: 1.1;
+}
+
+.search-nav .input-sm {
+  height: 20px;
+}
+
+.facet.panel {
+  margin-bottom: 10px;
+}
+.facet .panel-title {
+  font-size: 12px;
+  cursor: pointer;
+  color: #37588e;
+}
+.facet ul {
+	margin: 0;
+}
+.facet li {
+  overflow: hidden;
+  margin: 3px 0;
+}
+.facet li:hover, .facet li.selected {
+  background-color: rgba(85, 114, 161, 0.9);
+  color: white;
+}
+.facet li a {
+  color: black;
+  display: block;
+  padding: 3px 6px;
+}
+.facet li:hover a {
+  color: white;
+  text-decoration: none;
+}
+.facet li:hover .text-muted, .facet li.selected a {
+  color: white;
 }

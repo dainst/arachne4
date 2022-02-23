@@ -57,7 +57,7 @@ import './pages/static-content.controller.js';
 import con10tNetworkModule from './visualizations/network/con10t-network.directive.js';
 import con10tTableModule from './visualizations/table/con10t-table.directive.js';
 
-import '../scss/app.scss';
+import './app.scss';
 
 import Catalog from './catalog/catalog.resource.js';
 import CatalogEntry from './catalog/catalog-entry.resource.js';
