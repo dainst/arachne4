@@ -16,6 +16,7 @@ services:
       - traefik.http.routers.frontend.tls.certresolver=myresolver
       - traefik.port=80
       - traefik.http.middlewares.frontend-compress.compress=true
+      - traefik.http.routers.frontend.middlewares=frontend-compress
   
   backend:
     build: ./backend
@@ -34,6 +35,7 @@ services:
       - traefik.http.routers.backend.tls.certresolver=myresolver
       - traefik.port=8080
       - traefik.http.middlewares.backend-compress.compress=true
+      - traefik.http.routers.backend.middlewares=backend-compress
 
   db:
     image: mariadb:latest
