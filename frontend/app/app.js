@@ -156,7 +156,6 @@ angular.module('arachne', [
             'welcome': { url: '/', template: require('./pages/welcome-page.html'), data: { pageTitle: title } },
             'catalogs.**': { url: '/catalogs', lazyLoad: lazyLoad(import('./catalog/catalog.module.js')), data: { pageTitle: title } },
             'catalog.**': { url: '/catalog', lazyLoad: lazyLoad(import('./catalog/catalog.module.js')), data: { pageTitle: title } },
-            'catalog.entry': { url: '/:entryId?view', template: require('./catalog/catalog.html'), data: { pageTitle: title } },
             'books.**': { url: '/books', lazyLoad: lazyLoad(import('./entity/entity.module.js')), reloadOnSearch: false, data: { pageTitle: title } },
             'entity.**': { url: '/entity', lazyLoad: lazyLoad(import('./entity/entity.module.js')), reloadOnSearch: false, data: { pageTitle: title } },
             'search.**': { url: '/search', lazyLoad: lazyLoad(import('./search/search.module.js')), data: { pageTitle: title } },
