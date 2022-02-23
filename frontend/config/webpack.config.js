@@ -115,7 +115,7 @@ module.exports = (env) => {
                 patterns: [
                     { from: "3dhop", to: "3dhop" },
                     { from: "3dviewer", to: "3dviewer" },
-                    { from: "con10t", to: "con10t" },
+                    { from: "con10t/**/*", to: "./" },
                     { from: "info", to: "info" },
                     { from: "app/partials/navbar-menu.html", to: "partials/navbar-menu.html" },
                     { from: "node_modules/idai-3dviewer/dist/idai-3dviewer.min.js", to: "3dviewer/idai-3dviewer.min.js" },
@@ -143,7 +143,7 @@ module.exports = (env) => {
                 THREE: 'three',
             }),
         ],
-        devtool: 'source-map',
+        devtool: env.production ? false : 'source-map',
         devServer: {
             proxy: {
                 '/data': {
