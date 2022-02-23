@@ -58,16 +58,6 @@ module.exports = (env) => {
                     }
                 },
                 {
-                    test: /\.(json)$/i,
-                    exclude: [
-                        path.resolve(__dirname, "../app")
-                    ],
-                    type: 'asset/resource',
-                    generator: {
-                        filename: '[file][query]'
-                    }
-                },
-                {
                     test: /\.s[ac]ss$/i,
                     use: [
                         MiniCssExtractPlugin.loader,

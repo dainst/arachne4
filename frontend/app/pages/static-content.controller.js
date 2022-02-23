@@ -1,4 +1,5 @@
-'use strict';
+import infoPages from '../../info/content.json';
+import con10tPages from '../../con10t/content.json';
 
 angular.module('arachne.controllers')
 
@@ -29,15 +30,9 @@ angular.module('arachne.controllers')
                 $location.path('/404');
             });
 
-            var CONTENT_URL = '{LOCATION}/{LANG}/{NAME}.html';
-            var CONTENT_TOC = '{LOCATION}/content.json';
+            var contentDir = ($location.path().indexOf('/info') == 0) ? 'info' : 'con10t';
 
-            // Map route to contentDir
-            var contentDir = '';
-            if ($location.path().indexOf('/info') == 0)
-                contentDir = 'info';
-            else
-                contentDir = 'con10t';
+            var CONTENT_URL = '{LOCATION}/{LANG}/{NAME}.html';
 
             var content_url = $scope.curl = CONTENT_URL.replace('{NAME}', $stateParams.title).replace('{LOCATION}', contentDir);
 
@@ -50,31 +45,24 @@ angular.module('arachne.controllers')
 
             } else {
 
-                $http.get(CONTENT_TOC.replace('{LOCATION}', contentDir))
+                var pages = (contentDir === 'info') ? infoPages : con10tPages;
+                var lang = localizedContent.determineLanguage(pages, $stateParams.title);
 
-                    .then(function (result) {
+                $scope.templateUrl = content_url.replace('{LANG}', lang);
 
-                        var data = result.data;
-                        var lang = localizedContent.determineLanguage(data, $stateParams.title);
+                // Ensure that images are loaded correctly
+                $templateCache.remove($scope.templateUrl);
 
-                        $scope.templateUrl = content_url.replace('{LANG}', lang);
-
-                        // Ensure that images are loaded correctly
-                        $templateCache.remove($scope.templateUrl);
-
-                        if ($stateParams.id) $timeout(function () {
-                            var element = document.getElementById($stateParams.id);
-                            element.scrollIntoView();
-                            var clickEvent = new MouseEvent("click", {
-                                bubbles: false,
-                                cancelable: true,
-                                view: window
-                            });
-                            var link = element.parentElement.parentElement;
-                            link.dispatchEvent(clickEvent);
-                        }, 500);
-                    }).catch(function (error) {
-                    console.log(error);
-                });
+                if ($stateParams.id) $timeout(function () {
+                    var element = document.getElementById($stateParams.id);
+                    element.scrollIntoView();
+                    var clickEvent = new MouseEvent("click", {
+                        bubbles: false,
+                        cancelable: true,
+                        view: window
+                    });
+                    var link = element.parentElement.parentElement;
+                    link.dispatchEvent(clickEvent);
+                }, 500);
             }
         }]);

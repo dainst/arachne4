@@ -1,3 +1,6 @@
+import searchScopes from '../../con10t/search-scopes.json';
+import con10tConfig from '../../con10t/content.json';
+
 /**
  * @author: Philipp Franck
  */
@@ -5,10 +8,9 @@ export default function($location, $http, $stateParams, language, $state) {
 
     var currentScopeName = null;
 
-    var scopes = {}; // scope data (from search-scopes.json, necessarily present when isReady)
+    var scopes = searchScopes;
 
-    var scopeTitles = {}; // scope titles (from content.json, not necessarily present when isReady)
-
+    var scopeTitles = Object.fromEntries(flatten([con10tConfig]));
 
     function getScopeTitle(scopeName) {
 
@@ -48,8 +50,6 @@ export default function($location, $http, $stateParams, language, $state) {
 
 
     var searchScope = {
-
-        loadingPromise: $http.get('con10t/search-scopes.json').then(function(response) {scopes = response.data}),
 
         dirty: false, // same as in search-service, dublicated to avoid biderectional dependency
 
@@ -134,25 +134,19 @@ export default function($location, $http, $stateParams, language, $state) {
 
     };
 
+    searchScope.refresh();
 
-    $http.get('con10t/content.json').then(function(response) {
-        function flatten(tree, map) {
-            tree.map(function(branch) {
-                map[branch.id] = branch.title;
-                if (typeof branch.children !== "undefined") {
-                    flatten(branch.children, map);
-                }
-            });
-        }
-        flatten([response.data], scopeTitles);
-
-        searchScope.refresh();
-
-        document.title = (searchScope.currentScopeTitle() !== null) ? searchScope.currentScopeTitle() + ' |\u00A0' : '';
-        document.title += (typeof $state.current.data !== "undefined") ? $state.current.data.pageTitle : '';
-    });
-
+    document.title = (searchScope.currentScopeTitle() !== null) ? searchScope.currentScopeTitle() + ' |\u00A0' : '';
+    document.title += (typeof $state.current.data !== "undefined") ? $state.current.data.pageTitle : '';
 
     return searchScope;
 
 };
+
+const flatten = (tree) => 
+    tree.reduce((entries, node) => {
+        if (node.children) {
+            entries = entries.concat(flatten(node.children));
+        }
+        return entries.concat([[node.id, node.title]]);
+    }, []);

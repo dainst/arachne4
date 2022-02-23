@@ -20,11 +20,6 @@ import '../lib/relative-paths-in-partial.js';
 require.context('../con10t/frontimages', false, /^\.\/.*\.(png|jpg|gif|svg|webp)$/);
 require.context('../img/', true, /^\.\/.*\.(png|jpg|gif|svg|webp)$/);
 
-import '../con10t/search-scopes.json';
-import '../con10t/content.json';
-import '../con10t/front.json';
-import '../info/content.json';
-
 import './_modules.js';
 import './utils/filters/error-message.filter.js';
 import './utils/filters/range.filter.js';
@@ -128,13 +123,6 @@ angular.module('arachne', [
 
         var title = 'iDAI.objects / Arachne';
 
-
-        var loadingPromises = {
-            'getSearchScopes': ['searchScope', function (searchScope) {
-                return searchScope.loadingPromise;
-            }]
-        };
-
         /**
          * we want to realize scope-prefixed urls like project/whatever/search as well as /search
          * and don't want to define all of them double.
@@ -180,7 +168,6 @@ angular.module('arachne', [
             angular.forEach(scoped[name] || [], function(child) {
                 var newState = angular.copy(states[child]);
                 newState.url = state.url + newState.url;
-                newState.resolve = loadingPromises;
                 newState.data.scoped = true;
                 registerState(newState, name + '-' + child);
             });

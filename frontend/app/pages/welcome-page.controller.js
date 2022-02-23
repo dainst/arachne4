@@ -1,24 +1,22 @@
 import './welcome-page.scss';
+import frontProjects from '../../con10t/front.json';
 
 angular.module('arachne.controllers')
 
-    .controller('WelcomePageController', ['$rootScope', '$scope', '$http', '$sce', 'arachneSettings', 'messageService', '$timeout',
-        function ($rootScope, $scope, $http, $sce, arachneSettings, messages, $timeout) {
+    .controller('WelcomePageController', ['$rootScope', '$scope', '$http', 'arachneSettings', 'messageService', '$timeout',
+        function ($rootScope, $scope, $http, arachneSettings, messages, $timeout) {
 
             $rootScope.tinyFooter = false;
 
-            $http.get('con10t/front.json').then(function (result) {
+            $scope.projects = frontProjects;
 
-                $scope.projects = result.data;
+            var lang = navigator.language || navigator.userLanguage;
 
-                var lang = navigator.language || navigator.userLanguage;
-
-                if (lang === 'de' || lang === 'de-de') {
-                    $scope.lang = 'de';
-                } else {
-                    $scope.lang = 'en';
-                }
-            });
+            if (lang === 'de' || lang === 'de-de') {
+                $scope.lang = 'de';
+            } else {
+                $scope.lang = 'en';
+            }
 
             $http.get(arachneSettings.dataserviceUri + "/entity/count")
                 .then(function (result) {
