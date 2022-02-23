@@ -22,7 +22,7 @@ services:
       - "DB_PASSWORD=${DB_PASSWORD}"
       - "SERVER_ADDRESS=${SERVER_ADDRESS}"
       - "DB_SERVER=db"
-      - "IIPIMAGE_SERVER=iipimage"
+      - "IIPIMAGE_SERVER=frontend"
       - "ELASTICSEARCH_SERVER=elasticsearch"
     volumes:
       - archaeocloud:/media/archaeocloud
