@@ -4,7 +4,7 @@ import con10tConfig from '../../con10t/content.json';
 /**
  * @author: Philipp Franck
  */
-export default function($location, $http, $stateParams, language, $state) {
+export default function($location, $stateParams, language, $state) {
 
     var currentScopeName = null;
 

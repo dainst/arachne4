@@ -21,8 +21,8 @@
         logout-function="logout()"
         user-object="user"
         hide-search-form="currentPath == '/'"
-
-        search-scope="searchScopeObject">
+        search-scope="searchScopeObject"
+        content-info="contentInfo">
 </idai-navbar>
 
 <div class="container-fluid view-container">
@@ -36,7 +36,8 @@
              ng-class="{tinyfooter: $root.tinyFooter}"
              institutions="{'dai': 'http://www.dainst.de/', 'unikoeln': 'http://archaeologie.uni-koeln.de'}"
              mailto="idai.objects@dainst.org"
-             version="-VERSION-STRING-">
+             version="-VERSION-STRING-"
+             content-info="contentInfo">
 </idai-footer>
 
 <!-- Piwik -->

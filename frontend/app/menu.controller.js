@@ -1,10 +1,11 @@
-'use strict';
+import contentInfo from '../info/content.json';
 
 angular.module('arachne.controllers')
 
     .controller('MenuController', ['$scope', '$uibModal', 'authService', '$location', '$window', 'searchScope', 'lazyLoad',
         function ($scope, $uibModal, authService, $location, $window, searchScope, lazyLoad) {
 
+            $scope.contentInfo = contentInfo;
             $scope.user = authService.getUser();
 
             $scope.currentPath = $location.path();
