@@ -1,8 +1,5 @@
 import arActiveFacets from './ar-active-facets.directive.js';
 import arSearchNav from './ar-search-nav.directive.js';
-import con10tSearchCatalog from './con10t-search-catalog.directive.js';
-import con10tSearchQuery from './con10t-search-query.directive.js';
-import con10tSearch from './con10t-search.directive.js';
 import FacetValueModalController from './facet-value-modal.controller.js';
 import SearchController from './search.controller.js';
 import cellsFromEntities from './cells-from-entities.filter.js';
@@ -18,9 +15,6 @@ export default angular.module('arachne.search', [scopeModule.name, imageModule.n
     }])
     .directive('arActiveFacets', arActiveFacets)
     .directive('arSearchNav', ['arachneSettings', arSearchNav])
-    .directive('con10tSearchCatalog', con10tSearchCatalog)
-    .directive('con10tSearchQuery', ['$location', con10tSearchQuery])
-    .directive('con10tSearch', ['$location', '$filter', con10tSearch])
     .controller('FacetValueModalController', ['$scope', 'facet', '$location', 'indexService', 'searchService', FacetValueModalController])
     .controller('SearchController', ['$rootScope', '$scope', 'searchService', 'categoryService', '$filter',
         'arachneSettings', '$location', 'Catalog', 'CatalogEntry', 'messageService', '$uibModal', '$http', 'Entity',

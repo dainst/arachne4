@@ -1,3 +1,4 @@
+import '../con10t-widgets/con10t-widgets.module.js'
 import infoPages from '../../info/content.json';
 import con10tPages from '../../con10t/content.json';
 

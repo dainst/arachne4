@@ -2,7 +2,6 @@ import arCatalogOccurrences from './ar-catalog-occurrences.directive.js';
 import ManageEditorController from './catalog-manage-editor.controller.js';
 import CatalogController from './catalog.controller.js';
 import CatalogsController from './catalogs.controller.js';
-import con10tCatalogTree from './con10t-catalog-tree.directive.js';
 import DeleteCatalogController from './delete-catalog.js';
 import EditCatalogEntryController from './edit-catalog-entry.controller.js';
 import EditCatalogHelpController from './edit-catalog-help.controller.js';
@@ -26,7 +25,6 @@ export default angular.module('arachne.catalog', [ImageModule.name, MarkdownModu
         'Catalog', 'CatalogEntry', 'authService', '$http', 'arachneSettings', 'Entity', '$location', 'messageService', CatalogController])
     .controller('CatalogsController',['$scope', '$uibModal', '$location',
         'authService', 'Entity', 'Catalog', 'CatalogEntry', '$http', 'arachneSettings', 'messageService', CatalogsController])
-    .directive('con10tCatalogTree', ['Catalog', 'CatalogEntry', '$filter', con10tCatalogTree])
     .controller('DeleteCatalogController', ['$scope', DeleteCatalogController])
     .controller('EditCatalogEntryController', ['$scope', 'Entity', 'entry', EditCatalogEntryController])
     .controller('EditCatalogHelpController', ['$scope', EditCatalogHelpController])

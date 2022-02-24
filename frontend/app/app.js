@@ -29,23 +29,18 @@ import './utils/filters/escape-slashes.filter.js';
 import './utils/filters/singular.filter.js';
 import './utils/filters/md5.filter.js';
 import './utils/filters/strip-coords.filter.js';
-import './utils/con10t-show-if.directive.js';
-import './utils/con10t-tree.directive.js';
 import './utils/autofillfix.directive.js';
 import './utils/focus-me.directive.js';
 import './utils/convert-to-bool.directive.js';
 import './utils/tiny-footer.directive.js';
-import './utils/con10t-include.directive.js';
 import './utils/news.service.js';
-import './utils/con10t-media-tree.directive.js';
 import './menu.controller.js';
 import './pages/dataexport.controller.js';
-import './pages/con10t-toc.directive.js';
 import './pages/dataimport.controller.js';
 import './pages/welcome-page.controller.js';
 import './pages/projects.controller.js';
-import './pages/con10t-page.directive.js';
 import './pages/static-content.controller.js';
+import con10tWidgetsModule from './con10t-widgets/con10t-widgets.module.js';
 import con10tNetworkModule from './visualizations/network/con10t-network.directive.js';
 import con10tTableModule from './visualizations/table/con10t-table.directive.js';
 
@@ -84,6 +79,7 @@ angular.module('arachne', [
     'arachne.directives',
     'arachne.controllers',
     'arachne.widgets.directives',
+    con10tWidgetsModule.name,
     con10tNetworkModule.name,
     con10tTableModule.name,
     scopeModule.name

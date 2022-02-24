@@ -5,7 +5,6 @@ import arEntitySections from './ar-entity-sections.directive.js';
 import arEntityTitle from './ar-entity-title.directive.js';
 import arFacetBrowser from './ar-facet-browser.directive.js';
 import arSchemaorgJsonld from './ar-schemaorg-jsonld.directive.js';
-import con10tItem from './con10t-item.directive.js';
 import EntityImageController from './entity-image.controller.js';
 import EntityImagesController from './entity-images.controller.js';
 import EntityController from './entity.controller.js';
@@ -28,7 +27,6 @@ export default angular.module('arachne.entity', ['arachne.scope'])
     .directive('arEntityTitle', arEntityTitle)
     .directive('arFacetBrowser', ['Entity', arFacetBrowser])
     .directive('arSchemaorgJsonld', arSchemaorgJsonld)
-    .directive('con10tItem', con10tItem)
     .controller('EntityImageController', ['$stateParams', '$scope', 'Entity', 'authService', 'searchService', '$rootScope', 'messageService', EntityImageController])
     .controller('EntityImagesController', ['$stateParams', '$scope', 'Entity', '$filter', 'searchService', '$rootScope', 'messageService', EntityImagesController])
     .controller('EntityController', ['$rootScope', '$stateParams', 'searchService', '$scope', 'Entity',
