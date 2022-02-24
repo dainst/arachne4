@@ -124,6 +124,7 @@ module.exports = (env) => {
                 paths: [
                     ...glob.sync(`${path.resolve(__dirname, '../app')}/**/*.html`, { nodir: true }),
                     ...glob.sync(`${path.resolve(__dirname, '../node_modules/idai-components')}/**/*.html`, { nodir: true }),
+                    ...glob.sync(`${path.resolve(__dirname, '../con10t')}/**/*.html`, { nodir: true }),
                 ],
                 safelist: {
                     standard: [/^modal-/, /^fade/, /^panel/, /^leaflet/, /^cluster-marker/, /^ui-grid/, /^class/]
