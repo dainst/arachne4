@@ -1,7 +1,5 @@
-angular.module('arachne.filters')
-
-    .filter('escapeSlashes', function () {
-        return function (string) {
-            return string.replace(/\//g, '\\/');
-        }
-    });
+export default function () {
+    return function (string) {
+        return string.replace(/\//g, '\\/');
+    }
+};
