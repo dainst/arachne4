@@ -1,6 +1,5 @@
 import angular from 'angular';
 import '@uirouter/angularjs';
-import 'angular-sanitize';
 import 'angular-resource';
 import 'angular-cookies';
 import 'oclazyload';
@@ -74,7 +73,6 @@ angular.module('arachne', [
     'ui.bootstrap.tpls',
     'ui.router',
     'oc.lazyLoad',
-    'ngSanitize',
     'ngResource',
     'ngCookies',
     'relativePathsInPartial',
