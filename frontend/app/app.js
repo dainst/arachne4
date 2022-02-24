@@ -3,8 +3,6 @@ import '@uirouter/angularjs';
 import 'angular-sanitize';
 import 'angular-resource';
 import 'angular-cookies';
-import 'angulartics';
-import 'angulartics-piwik';
 import 'oclazyload';
 
 import './lib/ui-bootstrap-custom-build/ui-bootstrap-custom-2.5.0.js';
@@ -79,8 +77,6 @@ angular.module('arachne', [
     'ngSanitize',
     'ngResource',
     'ngCookies',
-    'angulartics',
-    'angulartics.piwik',
     'relativePathsInPartial',
     'idai.templates',
     'idai.components',
