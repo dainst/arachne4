@@ -19,11 +19,10 @@ require.context('../img/', true, /^\.\/.*\.(png|jpg|gif|svg|webp)$/);
 
 import './_modules.js';
 import './menu.controller.js';
-import './pages/dataexport.controller.js';
-import './pages/dataimport.controller.js';
-import './pages/welcome-page.controller.js';
-import './pages/projects.controller.js';
-import './pages/static-content.controller.js';
+import './admin/dataexport.controller.js';
+import './admin/dataimport.controller.js';
+import infoController from './info/info.controller.js';
+import projectController from './project/project.controller.js';
 import con10tWidgetsModule from './con10t-widgets/con10t-widgets.module.js';
 import utilsModule from './utils/utils.module.js';
 import con10tNetworkModule from './visualizations/network/con10t-network.directive.js';
@@ -39,6 +38,7 @@ import Query from './search/query.prototype.js';
 import searchService from './search/search.service.js';
 import authService from './users/auth.service.js';
 import scopeModule from './scope/scope.module.js';
+import welcomePageController from './welcome-page.controller.js';
 
 const lazyLoad = (importPromise) => ($transition$) => {
     const $ocLazyLoad = $transition$.injector().get('$ocLazyLoad');
@@ -64,12 +64,15 @@ angular.module('arachne', [
     'arachne.directives',
     'arachne.controllers',
     'arachne.widgets.directives',
+    infoController.name,
+    projectController.name,
     con10tWidgetsModule.name,
     utilsModule.name,
     con10tNetworkModule.name,
     con10tTableModule.name,
     scopeModule.name
 ])
+.controller('WelcomePageController', ['$rootScope', '$scope', '$http', 'arachneSettings', 'messageService', '$timeout', welcomePageController])
 .factory('Catalog', ['$resource', 'arachneSettings', Catalog])
 .factory('CatalogEntry', ['$resource', 'arachneSettings', CatalogEntry])
 .factory('categoryService', ['$filter', '$q', 'transl8', categoryService])
@@ -110,8 +113,8 @@ angular.module('arachne', [
 
 
         var states = {
-            '404': { url: '/404', template: require('./pages/404.html'), data: { pageTitle: 'Arachne | 404' } },
-            'welcome': { url: '/', template: require('./pages/welcome-page.html'), data: { pageTitle: title } },
+            '404': { url: '/404', template: require('./404.html'), data: { pageTitle: 'Arachne | 404' } },
+            'welcome': { url: '/', template: require('./welcome-page.html'), data: { pageTitle: title } },
             'catalogs.**': { url: '/catalogs', lazyLoad: lazyLoad(import('./catalog/catalog.module.js')), data: { pageTitle: title } },
             'catalog.**': { url: '/catalog', lazyLoad: lazyLoad(import('./catalog/catalog.module.js')), data: { pageTitle: title } },
             'books.**': { url: '/books', lazyLoad: lazyLoad(import('./entity/entity.module.js')), reloadOnSearch: false, data: { pageTitle: title } },
@@ -120,7 +123,6 @@ angular.module('arachne', [
             'categories.**': { url: '/categories', lazyLoad: lazyLoad(import('./category/category.module.js')), data: { pageTitle: title } },
             'category.**': { url: '/category', lazyLoad: lazyLoad(import('./category/category.module.js')), data: { pageTitle: title } },
             'map.**': { url: '/map', lazyLoad: lazyLoad(import('./map/map.module.js')), data: { pageTitle: title, searchPage: 'map' } },
-            // 'gridmap': { url: '/gridmap', template: require('./map/gridmap.html'), data: { pageTitle: title }},
             '3d.**': { url: '/3d', lazyLoad: lazyLoad(import('./3d/3d.module.js')), data: { pageTitle: title } },
             'svg.**': { url: '/svg', lazyLoad: lazyLoad(import('./svg/svg.module.js')), data: { pageTitle: title } },
             'register.**': { url: '/register', lazyLoad: lazyLoad(import('./users/users.module.js')), data: { pageTitle: title }},
@@ -130,11 +132,11 @@ angular.module('arachne', [
 			'pwdchange.**': { url: '/pwdchange', lazyLoad: lazyLoad(import('./users/users.module.js')), data: { pageTitle: title }},
 			'userActivation.**': { url: '/user/activation/:token', lazyLoad: lazyLoad(import('./users/users.module.js')), data: { pageTitle: title }},
             'login.**': { url: '/login?redirectTo',lazyLoad: lazyLoad(import('./users/users.module.js')), data: { pageTitle: title }},
-            'dataimport': { url: '/admin/dataimport', template: require('./pages/dataimport.html'), data: { pageTitle: title }},
-            'dataexport': { url: '/admin/dataexport', template: require('./pages/dataexport.html'), data: { pageTitle: title }},
-            'project': { url: '/project/:title', template: require('./pages/static.html'), data: { pageTitle: title } },
+            'dataimport': { url: '/admin/dataimport', template: require('./admin/dataimport.html'), data: { pageTitle: title }},
+            'dataexport': { url: '/admin/dataexport', template: require('./admin/dataexport.html'), data: { pageTitle: title }},
+            'project': { url: '/project/:title', template: require('./project/project.html'), data: { pageTitle: title } },
             'index.**': { url: '/index', lazyLoad: lazyLoad('./index/indes.module.js'), data: { pageTitle: title } },
-            'info': { url: '/info/:title?id', template: require('./pages/static.html'), data: { pageTitle: title } },
+            'info': { url: '/info/:title?id', template: require('./info/info.html'), data: { pageTitle: title } },
         };
 
         var scoped = {'project': ['search.**', 'map.**', 'entity.**']};
