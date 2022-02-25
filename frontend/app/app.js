@@ -21,6 +21,7 @@ import './_modules.js';
 import './menu.controller.js';
 import './admin/dataexport.controller.js';
 import './admin/dataimport.controller.js';
+import adminModule from './admin/admin.module.js';
 import infoModule from './info/info.module.js';
 import projectModule from './project/project.module.js';
 import con10tWidgetsModule from './con10t-widgets/con10t-widgets.module.js';
@@ -64,6 +65,7 @@ angular.module('arachne', [
     'arachne.directives',
     'arachne.controllers',
     'arachne.widgets.directives',
+    adminModule.name,
     infoModule.name,
     projectModule.name,
     con10tWidgetsModule.name,
