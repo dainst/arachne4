@@ -1,5 +1,4 @@
-export default angular.module('arachne.visualizations.network', [])
-.directive('con10tNetwork', function() {
+export default function() {
     return {
         restrict: 'E',
         scope: {
@@ -17,10 +16,10 @@ export default angular.module('arachne.visualizations.network', [])
             receiverTerm: '@'
         },
         link: function(scope) {
-            import('./con10t-network.module.js')
-                .then(mod => scope.$apply(() => scope.lazyLoadNetwork = mod.default)); 
+            import('./network/con10t-network.module.js')
+                .then(mod => scope.$apply(scope => scope.lazyLoadNetwork = mod.default)); 
         },
-        template: `<div oc-lazy-load="lazyLoadNetwork">
+        template: `<div oc-lazy-load="[lazyLoadNetwork]">
             <con10t-network-wrapper
                 object-data-path="{{objectDataPath}}"
                 object-group-term="{{objectGroupTerm}}"
@@ -37,4 +36,4 @@ export default angular.module('arachne.visualizations.network', [])
             />
         </div>`
     }
-});
+};

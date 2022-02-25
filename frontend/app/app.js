@@ -26,8 +26,6 @@ import infoModule from './info/info.module.js';
 import projectModule from './project/project.module.js';
 import con10tWidgetsModule from './con10t-widgets/con10t-widgets.module.js';
 import utilsModule from './utils/utils.module.js';
-import con10tNetworkModule from './visualizations/network/con10t-network.directive.js';
-import con10tTableModule from './visualizations/table/con10t-table.directive.js';
 
 import './app.scss';
 
@@ -70,8 +68,6 @@ angular.module('arachne', [
     projectModule.name,
     con10tWidgetsModule.name,
     utilsModule.name,
-    con10tNetworkModule.name,
-    con10tTableModule.name,
     scopeModule.name
 ])
 .controller('WelcomePageController', ['$rootScope', '$scope', '$http', 'arachneSettings', 'messageService', '$timeout', welcomePageController])
@@ -137,7 +133,6 @@ angular.module('arachne', [
             'dataimport': { url: '/admin/dataimport', template: require('./admin/dataimport.html'), data: { pageTitle: title }},
             'dataexport': { url: '/admin/dataexport', template: require('./admin/dataexport.html'), data: { pageTitle: title }},
             'project': { url: '/project/:title', template: require('./project/project.html'), data: { pageTitle: title } },
-            'index.**': { url: '/index', lazyLoad: lazyLoad('./index/index.module.js'), data: { pageTitle: title } },
             'info': { url: '/info/:title?id', template: require('./info/info.html'), data: { pageTitle: title } },
         };
 

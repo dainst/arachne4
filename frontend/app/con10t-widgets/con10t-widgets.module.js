@@ -19,10 +19,12 @@ import con10tInclude from './con10t-include.directive.js';
 import con10tMediaTree from './con10t-media-tree.directive.js';
 import con10tShowIf from './con10t-show-if.directive.js';
 import con10tTree from './con10t-tree.directive.js';
+import con10tTable from './con10t-table.directive.js';
+import con10tNetwork from './con10t-network.directive.js';
 
 import './con10t-widgets.scss';
 
-export default angular.module('arachne.con10t.widgets', [])
+export default angular.module('arachne.con10t-widgets', ['oc.lazyLoad'])
     .directive('con10tCatalogTree', ['Catalog', 'CatalogEntry', '$filter', con10tCatalogTree])
     .directive('con10tItem', con10tItem)
     .directive('con10tImage', con10tImage).directive('con10tMapMenuBaselayer', ['searchService', 'mapService', con10tMapMenuBaselayer])
@@ -43,5 +45,7 @@ export default angular.module('arachne.con10t.widgets', [])
     .directive('con10tMediaTree', ['arachneSettings', con10tMediaTree])
     .directive('con10tShowIf', ['authService', con10tShowIf])
     .directive('con10tTree', ['Query', 'Entity', con10tTree])
+    .directive('con10tTable', con10tTable)
+    .directive('con10tNetwork', con10tNetwork)
 ;
     

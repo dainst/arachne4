@@ -1,18 +1,13 @@
-import 'angular';
-import 'angular-ui-grid';
-import 'angular-ui-grid/ui-grid.css';
-
 /**
  * @author: Sebastian Cuy
  */
-export default angular.module('arachne.visualizations.table_lazy', [])
-.directive('con10tTableWrapper', ['$http', function($http) {
+export default function($http) {
     return {
         restrict: 'E',
         scope: {
             pathToData: '@',
-            rowsPerPage: '@',
-            columnDefs: '=',
+            rowsPerPage: '@?',
+            columnDefs: '=?',
         },
         template: '<div ng-if="gridOptions" ui-grid="gridOptions"></div>',
         link: function(scope) {
@@ -20,7 +15,7 @@ export default angular.module('arachne.visualizations.table_lazy', [])
                 .then(({ data }) => scope.gridOptions = buildGridOptions(data, scope.columnDefs, scope.rowsPerPage));
         }
     };
-}]);
+};
 
 const buildGridOptions = (data, columnDefs, rowsPerPage) => ({
     data,
