@@ -137,7 +137,7 @@ angular.module('arachne', [
             'dataimport': { url: '/admin/dataimport', template: require('./admin/dataimport.html'), data: { pageTitle: title }},
             'dataexport': { url: '/admin/dataexport', template: require('./admin/dataexport.html'), data: { pageTitle: title }},
             'project': { url: '/project/:title', template: require('./project/project.html'), data: { pageTitle: title } },
-            'index.**': { url: '/index', lazyLoad: lazyLoad('./index/indes.module.js'), data: { pageTitle: title } },
+            'index.**': { url: '/index', lazyLoad: lazyLoad('./index/index.module.js'), data: { pageTitle: title } },
             'info': { url: '/info/:title?id', template: require('./info/info.html'), data: { pageTitle: title } },
         };
 
