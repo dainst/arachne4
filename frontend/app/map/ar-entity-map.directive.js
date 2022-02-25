@@ -8,6 +8,8 @@ import 'overlapping-marker-spiderfier-leaflet';
  * @author: Jan G. Wieners
  */    
 export default function($compile, Query, placesPainter) {
+
+
     return {
         restrict: 'A',
         scope: {

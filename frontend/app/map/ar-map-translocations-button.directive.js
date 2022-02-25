@@ -3,7 +3,7 @@
  * @author: Philipp Franck
  * @author: Sebastian Cuy
  */  
-export default function (placesPainter, mapService, searchService, placesService) {
+export default function (placesPainter, mapService, searchService) {
 
     var MAX_PLACES_FOR_TRANSLOCATIONS = 1000;
 
@@ -13,7 +13,7 @@ export default function (placesPainter, mapService, searchService, placesService
             type: '@',
             searchScope: '@'
         },
-        template: require('./con10t-map-menu-translocations.html'),
+        template: require('./ar-map-translocations-button.html'),
         link: function (scope) {
             scope.isTranslocationViewShown = false;
 

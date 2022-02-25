@@ -8,6 +8,7 @@ import Place from './place.prototype.js';
 import placesPainter from './places-painter.js';
 import placesService from './places.service.js';
 import SearchModule  from '../search/search.module.js';
+import arMapTranslocationsButton from './ar-map-translocations-button.directive.js';
 
 import './map.scss';
 
@@ -25,4 +26,5 @@ export default angular.module('arachne.map', [SearchModule.name])
     .factory('Place', Place)
     .factory('placesPainter', ['$compile', 'Place', '$rootScope', placesPainter])
     .factory('placesService', ['searchService', 'Place', placesService])
+    .directive('arMapTranslocationsButton', ['placesPainter', 'mapService', 'searchService', arMapTranslocationsButton])
 ;
