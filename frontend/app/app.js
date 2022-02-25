@@ -2,6 +2,7 @@ import angular from 'angular';
 import '@uirouter/angularjs';
 import 'angular-resource';
 import 'angular-cookies';
+import 'angular-sanitize';
 import 'oclazyload';
 
 import './lib/ui-bootstrap-custom-build/ui-bootstrap-custom-2.5.0.js';
@@ -54,6 +55,7 @@ angular.module('arachne', [
     'oc.lazyLoad',
     'ngResource',
     'ngCookies',
+    'ngSanitize',
     'relativePathsInPartial',
     'idai.templates',
     'idai.components',
