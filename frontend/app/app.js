@@ -21,8 +21,8 @@ import './_modules.js';
 import './menu.controller.js';
 import './admin/dataexport.controller.js';
 import './admin/dataimport.controller.js';
-import infoController from './info/info.controller.js';
-import projectController from './project/project.controller.js';
+import infoModule from './info/info.module.js';
+import projectModule from './project/project.module.js';
 import con10tWidgetsModule from './con10t-widgets/con10t-widgets.module.js';
 import utilsModule from './utils/utils.module.js';
 import con10tNetworkModule from './visualizations/network/con10t-network.directive.js';
@@ -64,8 +64,8 @@ angular.module('arachne', [
     'arachne.directives',
     'arachne.controllers',
     'arachne.widgets.directives',
-    infoController.name,
-    projectController.name,
+    infoModule.name,
+    projectModule.name,
     con10tWidgetsModule.name,
     utilsModule.name,
     con10tNetworkModule.name,

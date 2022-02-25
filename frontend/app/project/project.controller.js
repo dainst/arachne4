@@ -1,7 +1,4 @@
-import con10tWidgetsModule from '../con10t-widgets/con10t-widgets.module.js';
 import con10tPages from '../../con10t/content.json';
-
-export default angular.module('arachne.project', [con10tWidgetsModule.name])
 
 /**
  * Sets the templateUrl for a localized project page.
@@ -16,19 +13,17 @@ export default angular.module('arachne.project', [con10tWidgetsModule.name])
  * @author: Daniel M. de Oliveira
  * @author: Jan G. Wieners
  */
+export default function ($scope, $stateParams, $location, localizedContent, $templateCache) {
 
-.controller('ProjectController', ['$scope', '$stateParams', '$location', 'localizedContent', '$templateCache',
-    function ($scope, $stateParams, $location, localizedContent, $templateCache) {
+    $scope.$on("$includeContentError", function (event, templateName) {
+        console.error('Failed to include template: ' + templateName);
+        $location.path('/404');
+    });
 
-        $scope.$on("$includeContentError", function (event, templateName) {
-            console.error('Failed to include template: ' + templateName);
-            $location.path('/404');
-        });
+    const lang = $location.search()['lang'] || localizedContent.determineLanguage(con10tPages, $stateParams.title);
 
-        const lang = $location.search()['lang'] || localizedContent.determineLanguage(con10tPages, $stateParams.title);
+    $scope.templateUrl = `con10t/${lang}/${$stateParams.title}.html`;
 
-        $scope.templateUrl = `con10t/${lang}/${$stateParams.title}.html`;
-
-        // Ensure that images are loaded correctly
-        $templateCache.remove($scope.templateUrl);
-    }]);
+    // Ensure that images are loaded correctly
+    $templateCache.remove($scope.templateUrl);
+};
