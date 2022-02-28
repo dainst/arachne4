@@ -1,3 +1,8 @@
+import 'angular';
+import 'angular-mocks';
+import 'idai-components';
+import './admin.module.js';
+
 /**
  * Author: Daniel de Oliveira
  */
@@ -16,19 +21,21 @@ describe ('DataimportController', function() {
 	var msg_unavailable='The system reports that the backend is temporarily unavailable. ';
 	var msg_unauthorized='The system rejects your request. You have not the necessary permissions. Please log in with admin rights. ';
 
+	var $httpBackend;
+
 	beforeEach(function(){
 
 
-		module('idai.components',function($provide){
+		angular.mock.module('idai.components',function($provide){
 			$provide.constant('arachneSettings', {
 				dataserviceUri: dataserviceUri
 			});
 			$provide.value('transl8',{fetchTranslations:function(){return true;}})
 		});
-		module('arachne.controllers');
+		angular.mock.module('arachne.admin');
 	});
 
-	beforeEach(inject(function($controller,_$httpBackend_,arachneSettings){
+	beforeEach(angular.mock.inject(function($controller,_$httpBackend_){
 
 		$httpBackend=_$httpBackend_;
 		scope = { $watch: function() {} };

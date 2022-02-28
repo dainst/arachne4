@@ -1,40 +1,37 @@
 // Karma configuration
 // Generated on Mon Jun 15 2015 13:37:24 GMT+0200 (CEST)
 
-const puppeteer = require('puppeteer');
-process.env.CHROME_BIN = puppeteer.executablePath();
+var webpackConfig = require('./webpack.config.js');
 
 module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '.',
+    basePath : '../app',
 
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'webpack'],
 
     browsers : ['ChromeHeadless'],
 
     plugins : [
       'karma-chrome-launcher',
       'karma-jasmine',
-      'karma-ng-html2js-preprocessor'
+      'karma-webpack',
     ],
     // list of files / patterns to load in the browser
     files: [
-
-      '../../node_modules/angular/angular.js',
-      '../../node_modules/angular-mocks/angular-mocks.js',
-      '../../node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
-      '../../node_modules/idai-components/dist/idai-components.min.js',
-      '../../app/_modules.js',
-      '../../app/pages/*.js',
-      '**/*.spec.js',
-      '../../app/**/*.html'
+      { pattern: '**/*.spec.js', watched: false }
     ],
 
+    preprocessors: {
+      '**/*.spec.js': [ 'webpack' ],
+      '**/*.html': [ 'webpack' ]
+    },
+
+    webpack: webpackConfig('test'),
 
     // list of files to exclude
     exclude: [
@@ -61,7 +58,7 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
+    autoWatch: false,
 
 
     // start these browsers
@@ -73,12 +70,5 @@ module.exports = function(config) {
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: true,
 
-	ngHtml2JsPreprocessor: {
-	    stripPrefix: 'app/',
-		moduleName: 'templates'
-	},
-	preprocessors: {
-	    "partials/**/*.html": "ng-html2js"
-	}
   });
 };

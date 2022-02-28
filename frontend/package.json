@@ -7,7 +7,7 @@
     "url": "https://github.com/dainst/arachnefrontend.git"
   },
   "scripts": {
-    "test": "karma start test/browser/karma.conf",
+    "test": "karma start config/karma.conf",
     "e2e": "rimraf test/e2e-screenshots/*.png && protractor test/e2e/protractor.conf.js",
     "build": "webpack --config config/webpack.config.js --mode production",
     "start": "webpack-dev-server --config config/webpack.config.js --mode development"
@@ -75,6 +75,7 @@
     "karma-chrome-launcher": "~3.1.0",
     "karma-jasmine": "~4.0.1",
     "karma-ng-html2js-preprocessor": "~1.0.0",
+    "karma-webpack": "^5.0.0",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^2.4.5",
     "node-sass": "^6.0.1",
