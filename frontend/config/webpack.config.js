@@ -127,7 +127,17 @@ module.exports = (env) => {
                     ...glob.sync(`${path.resolve(__dirname, '../con10t')}/**/*.html`, { nodir: true }),
                 ],
                 safelist: {
-                    standard: [/^modal-/, /^fade/, /^panel/, /^leaflet/, /^cluster-marker/, /^ui-grid/, /^class/]
+                    standard: [
+                        /^modal-/,
+                        /^fade/,
+                        /^panel/,
+                        /^leaflet/,
+                        /^cluster-marker/,
+                        /^ui-grid/,
+                        /^class/,
+                        /^awesome-marker/, 
+                        "glyphicon-record", "glyphicon-home", "glyphicon-eye-open", "icon-white"
+                    ]
                 }
             }),
             new webpack.ProvidePlugin({
