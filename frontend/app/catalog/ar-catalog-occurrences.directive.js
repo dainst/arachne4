@@ -1,11 +1,12 @@
 export default function (arachneSettings, $http, $uibModal, Catalog, CatalogEntry) {
+    console.log('construct catalog-occurrences.directive.js');
     return {
         scope: {
             entity: '='
         },
         template: require('./ar-catalog-occurrences.html'),
         link: function (scope, element, attrs) {
-
+            console.log('link catalog-occurrences.directive.js');
             scope.catalogEntries = [];
             scope.catalogEntrySets = [];
 

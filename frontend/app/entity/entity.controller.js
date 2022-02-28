@@ -1,10 +1,10 @@
 export default function ($rootScope, $stateParams, searchService, $scope, Entity,
             $location, authService, categoryService, Query,
-            messages, searchScope) {
+            messages, searchScope, lazyLoad) {
 
-    import('../catalog/catalog.module.js').then(mod => $scope.lazyLoadCatalog = mod.default);
-    import('../image/image.module.js').then(mod => $scope.lazyLoadImage = mod.default);
-    import('../map/map.module.js').then(mod => $scope.lazyLoadMap = mod.default);
+    lazyLoad(import('../catalog/catalog.module.js')).then(mod => $scope.lazyLoadCatalog = mod);
+    lazyLoad(import('../image/image.module.js')).then(mod => $scope.lazyLoadImage = mod);
+    lazyLoad(import('../map/map.module.js')).then(mod => $scope.lazyLoadMap = mod);
 
     searchService.initQuery();
 

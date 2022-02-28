@@ -9,7 +9,6 @@ import 'overlapping-marker-spiderfier-leaflet';
  */    
 export default function($compile, Query, placesPainter) {
 
-
     return {
         restrict: 'A',
         scope: {

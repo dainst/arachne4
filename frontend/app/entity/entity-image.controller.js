@@ -1,6 +1,6 @@
-export default function ($stateParams, $scope, Entity, authService, searchService, $rootScope, messages) {
+export default function ($stateParams, $scope, Entity, authService, searchService, $rootScope, messages, lazyLoad) {
 
-    import('../image/image.module.js').then(mod => $scope.lazyLoadImage = mod.default);
+    lazyLoad(import('../image/image.module.js')).then(mod => $scope.lazyLoadImage = mod);
 
     $rootScope.tinyFooter = true;
     $scope.allow = true;

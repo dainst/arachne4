@@ -1,4 +1,4 @@
-export default function() {
+export default function(lazyLoad) {
     return {
         restrict: 'E',
         scope: {
@@ -16,10 +16,10 @@ export default function() {
             receiverTerm: '@'
         },
         link: function(scope) {
-            import('./network/con10t-network.module.js')
-                .then(mod => scope.$apply(scope => scope.lazyLoadNetwork = mod.default)); 
+            lazyLoad(import('./network/con10t-network.module.js'))
+                .then(mod => scope.$apply(scope => scope.lazyLoadNetwork = mod)); 
         },
-        template: `<div oc-lazy-load="[lazyLoadNetwork]">
+        template: `<div oc-lazy-load="lazyLoadNetwork">
             <con10t-network-wrapper
                 object-data-path="{{objectDataPath}}"
                 object-group-term="{{objectGroupTerm}}"

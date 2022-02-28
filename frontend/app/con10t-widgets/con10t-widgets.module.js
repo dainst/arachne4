@@ -43,7 +43,7 @@ export default angular.module('arachne.con10t-widgets', ['oc.lazyLoad'])
     .directive('con10tMediaTree', ['arachneSettings', con10tMediaTree])
     .directive('con10tShowIf', ['authService', con10tShowIf])
     .directive('con10tTree', ['Query', 'Entity', con10tTree])
-    .directive('con10tTable', con10tTable)
-    .directive('con10tNetwork', con10tNetwork)
+    .directive('con10tTable', ['lazyLoad', con10tTable])
+    .directive('con10tNetwork', ['lazyLoad', con10tNetwork])
 ;
     

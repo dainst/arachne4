@@ -46,7 +46,10 @@ const lazyLoad = (importPromise) => ($transition$) => {
 }
 
 const lazyLoadService = ($ocLazyLoad) => (importPromise) =>
-    importPromise.then(mod => $ocLazyLoad.load(mod.default));
+    importPromise.then(mod => {
+        $ocLazyLoad.load(mod.default);
+        return mod.default.name;
+    });
 
 angular.module('arachne', [
     'ui.bootstrap',
