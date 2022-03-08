@@ -1,3 +1,4 @@
+const { copyFileSync, constants } = require('fs');
 const path = require('path');
 const glob = require('glob');
 const webpack = require('webpack');
@@ -5,9 +6,11 @@ const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PurgecssPlugin = require('purgecss-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const devConfig = require('./dev-config.json');
 
 const package = require('../package.json');
+
+createDevConfig();
+const devConfig = require('./dev-config.json');
 
 module.exports = (env) => {
 
@@ -157,3 +160,14 @@ module.exports = (env) => {
         }
     };
 };
+
+function createDevConfig() {
+    try {
+        const src = path.resolve(__dirname, './dev-config.json.template');
+        const target = path.resolve(__dirname, './dev-config.json');
+        copyFileSync(src, target, constants.COPYFILE_EXCL);
+        console.log('New dev-config.json created from template');
+    } catch (err) {
+        console.log('No new dev-config.json is created since it already exists');
+    }
+}
