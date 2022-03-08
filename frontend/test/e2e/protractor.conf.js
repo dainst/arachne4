@@ -3,7 +3,7 @@ process = require('process');
 
 exports.config = {
     chromeDriver : '../../node_modules/chromedriver/lib/chromedriver/chromedriver' + (process.platform === 'win32' ? '.exe' : ''),
-    baseUrl: 'http://localhost:8082', //
+    baseUrl: 'http://localhost:8080',
     suites: {
        util: './util/delays.js',
        pretest: 'pre-test/pretest.spec.js',

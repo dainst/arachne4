@@ -5,6 +5,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PurgecssPlugin = require('purgecss-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const devConfig = require('./dev-config.json');
 
 const package = require('../package.json');
 
@@ -148,7 +149,7 @@ module.exports = (env) => {
         devServer: {
             proxy: {
                 '/data': {
-                    target: 'https://arachne.dainst.org',
+                    target: devConfig.backendUri.replace('/data', ''),
                     changeOrigin: true,
                 }
             },
