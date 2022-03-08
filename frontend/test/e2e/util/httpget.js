@@ -5,12 +5,14 @@
 
 
 function httpGet(siteUrl, timeout) {
-    var http = require('http');
+
+    var url = new URL(siteUrl);
+    var client = url.protocol === 'https:' ? require('https') : require('http');
 
     timeout = timeout || 15;
 
     return new Promise(function(resolve, reject) {
-        http.get(siteUrl, function(response) {
+        client.get(siteUrl, function(response) {
 
             var bodyString = '';
 
