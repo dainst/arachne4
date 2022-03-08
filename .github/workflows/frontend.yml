@@ -28,7 +28,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: ./frontend
+          context: "{{defaultContext}}:frontend"
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref == 'refs/heads/stable' && 'stable' || 'latest' }}
           labels: ${{ steps.meta.outputs.labels }}
