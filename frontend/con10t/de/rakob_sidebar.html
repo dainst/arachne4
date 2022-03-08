@@ -1,0 +1,89 @@
+<div class="con10t-sidebar" id = "sticky-sidebar">
+
+    <div dir="rtl">
+        <p><a href="project/rakob?lang=en" target="_self">English</a></p>
+        <p><a href="project/rakob?lang=fr" target="_self">Française</a></p>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Inhalt</h3>
+        </div>
+        <div class="panel-body">
+            <div>
+                <a class="con10t-toc-item level-1" href="project/rakob">Über das Projekt</a>
+            </div>
+            <div>
+                <a class="con10t-toc-item level-1" href="project/rakob#Nachlass">Erschließung des Nachlasses</a>
+            </div>
+            <div>
+                <a class="con10t-toc-item level-2" href="project/rakob#Nachlass">Fotografien</a>
+            </div>
+            <div>
+                <a class="con10t-toc-item level-2" href="project/rakob#Nachlass">Zeichnungen (Pläne, Skizzen u.a.)</a>
+            </div>
+            <div>
+                <a class="con10t-toc-item level-2" href="project/rakob#Nachlass">Grabungstagebücher und Dokumente</a>
+            </div>
+            <div>
+                <a class="con10t-toc-item level-1" href="project/rakob_bio">Biografie und Forschungsprojekte</a>
+            </div>
+            <div>
+                <a class="con10t-toc-item level-2" href="project/rakob_bio">Forschungen in Chimtou und Karthago</a>
+            </div>
+            <div>
+                <a class="con10t-toc-item level-2" href="project/rakob_bio">Publikationen von Friedrich Rakob</a>
+            </div>
+        </div>
+    </div>
+
+    <!--- Zum Bestand --->
+   <!--- <h4>Katalog</h4>
+    <a href = "/catalog/502" target = "_blank">Hierarchisierte Katalogstruktur</a> --->
+
+    <!--- Map --->
+    <div style = "margin-top: 1vw;">
+        <a href="/project/rakob_map" title="Zur Karte" style="cursor:pointer">
+        <span class="glyphicon glyphicon-fullscreen"></span>
+        Größere Karte</a>
+    </div>
+
+    <div ng-init="config = {
+        facetsSelect: [
+            {
+                key: 'facet_kategorie',
+                value: 'Bilder'
+            },
+            {
+                key: 'facet_bestandsname',
+                value: 'dai-rom-nara'
+            }
+        ]
+    }"></div>
+
+    <div con10t-map style = "margin-bottom: 1vw;"
+         id="map"
+         limit="200"
+         facets-select="config.facetsSelect"
+         lat="36.85"
+         lng="10.33"
+         zoom="5">
+    </div>
+
+    <p><a con10t-search-query target="_blank">Alle Projektdaten anzeigen</a></p>
+
+    <div class="well">
+        <con10t-search search-placeholder="Projektdaten durchsuchen"></con10t-search>
+    </div>
+
+    <!--- Ansprechpartner und Links--->
+    <h4>Ansprechpartner</h4>
+        <a href="mailto: fotothek.rom@dainst.de" target="_blank">Dr. Ralf Bockmann</a><br>
+        <a href="mailto: christoph.lehnert@dainst.de" target="_blank">Christoph Lehnert</a>
+
+    <h4>Weiterführende Links</h4>
+        <a href ="https://www.dainst.org/projekt/-/project-display/3929488" target="_blank">Projekt Nachlass Rakob</a><br>
+        <a href ="http://www.nahanweb.org" target="_blank">Projekt NAHAN<a><br>
+        <a href ="https://www.dainst.org/dai/presse/nachricht/-/asset_publisher/XV2P83pNHjQz/content/karthago-ist-um-eine-archaologische-attraktion-reicher-einweihung-des-quartier-didon" target="_blank">Einweihung des Quartier Didon</a><br>
+        <a href ="https://arachne.dainst.org/project/handzeichnungen" target="_blank">Architektenarchiv</a>
+</div>

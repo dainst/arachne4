@@ -1,0 +1,144 @@
+<style>
+
+    .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .teaserpage {
+        position: relative;
+        margin-top: 0;
+    }
+
+    .con10t-row {
+        padding-left: 5vw;
+    }
+
+    .con10t-title {
+        background-image: url("/con10t/headerimages/inden1.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: #6492b1;
+        padding: 3vw 2vw 11vw 2vw;
+        padding-right: 2vw;
+        text-align: right;
+        webkit-box-shadow: inset 0px 13px 0px 6px rgba(248, 245, 245, 0.23);
+        -moz-box-shadow: inset 0px 13px 0px 6px rgba(248, 245, 245, 0.23);
+        box-shadow: inset 0px 13px 0px 6px rgba(248, 245, 245, 0.23);
+    }
+
+    #inden-title-span {
+        color: #ce2828;
+    }
+
+    span.image_description {
+        position: absolute;
+        right: 1.7vw;
+        bottom: 0.5vw;
+        color: #ffffffc9;
+        text-shadow: 1px 1px 1px #131111;
+    }
+
+    .con10t-content {
+        padding-right: 5vw;
+    }
+
+    #content-inden p {
+        padding-right: 1.5vw;
+    }
+
+    #sticky-sidebar {
+        padding-top: 4vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    @media (max-width: 992px) {
+        #sticky-sidebar {
+            position: relative;
+        }
+    }
+
+    img#gesamtplan {
+        padding: 0;
+        width: 100%;
+    }
+
+</style>
+
+<div class="con10t-title" style = "position:relative;">
+    <h1 style = "text-shadow: 1px 1px 1px #000;">Rudolph Kuper<br>
+        <span id = "inden-title-span">INDEN 1</span><br>
+        Eine Siedlung der Rössener Kultur im Rheinland<br>
+        Felddokumentation 1965-67<br></h1>
+    <span class = "image_description">Grabung Inden 1, Arbeiten an »Bau 26« beim Bagger-Durchschnitt am 21.07.1966</span>
+</div>
+
+<!-- Hauptbereich der Projektseite -->
+<div class="con10t-page teaserpage">
+
+    <div class="con10t-row">
+
+    <div id = "sticky-sidebar" class="con10t-sidebar">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Inhalte</h2>
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li><a target = "_blank" href="entity/6677461">Gesamtplan der Rössener Siedlung Inden 1</a></li>
+                    <li><a target = "_blank" href="search?fq=facet_kategorie:%22Buchseiten%22&fl=20&label=Mit%206677460%20verkn%C3%BCpfte%20Objekte&q=connectedEntities:6677460&sort=subtitle">Scans der Rollen mit Planumszeichnungen</a></li>
+                    <li><a target = "_blank" href="search?fq=facet_kategorie:%22Buchseiten%22&fl=20&label=Mit%206677493%20verknüpfte%20Objekte&q=connectedEntities:6677493&sort=subtitle">Scans der DIN A3 - Zeichenblätter</a></li>
+                    <li><a target = "_blank" href="project/inden1_stellenliste">Stellenliste mit Korrekturverzeichnis</a></li>
+                    <li><a target = "_blank" href="https://zenon.dainst.org/Record/001562471">Publikation</a></li>
+                </ul>
+            </div>
+        </div>
+        <p><a con10t-search-query target = "_blank">Alle Projektdaten anzeigen</a></p>
+
+        <div con10t-map style = "margin-bottom: 1vw;"
+             id="map"
+             limit="200"
+             lat="50.8667"
+             lng="6.36667"
+             zoom="12">
+        </div>
+    </div>
+
+    <div id = "content-inden" class="con10t-content">
+
+        <h2>Erläuterungen zur Felddokumentation</h2>
+
+        <p>Die Feldbefunde der Grabung Inden 1 wurden von 1965 bis 1967 durchgehend farbig auf Millimeterpapier dokumentiert, und zwar:</p>
+        <ul>
+            <li>Plana auf 1 m breiten Rollen im Maßstab 1:20 (s. Abb.18 im Band),</li>
+            <li>Profile und Planum-Details auf DIN A3 Bögen, meist im Maßstab 1:10 (s. Abb.4).</li>
+        </ul>
+
+        <p>Verwendet wurde hierfür eine Auswahl von 12 Farbstiften der Firma Staedtler und zwar die STABILO-Nummern  8748 rot, 8754 orange, 8734 dunkel-gelb,
+            8744 hell-gelb, 8739 hell-braun, 8735 mittel-braun, 8738 rot-braun, 8745 dunkel-braun, 8746 schwarz, 8749 grau, 8741 blau, 8743 grün.</p>
+
+        <p>Ausgeführt wurden die Zeichnungen von insgesamt 44 meist freiwilligen Helfern, größtenteils Studenten des Kölner Instituts für Ur- und Frühgeschichte,
+            aber auch von Nicht-Archäologen. Die Zeichnungen spiegeln den unterschiedlichen Erfahrungsstand und persönliche Sichtweisen ebenso wie Wetter und Zeitdruck wider,
+            werden aber – zunehmend mit dem Fortschritt der Grabung – durchgehend den Ansprüchen der Dokumentationstreue gerecht.</p>
+
+        <p>Die Zeichnungen der Grabungsflächen, insbesondere der Hausgrundrisse,  sowie der einzelnen Befunde („Stellen“) erschließen sich über eine Tabelle der
+            Stellen-Nummern (s. Stellenliste). Unter diesen finden sich Angaben zur Befundart, Zugehörigkeit zu Groß-Befunden (Bauten, Zäune), Lage auf dem Gesamtplan („Quadrat“ / „Rolle“) die Blatt-Nummern
+            der A3-Zeichnungen mit den betreffenden Positionen sowie nach den Namen der Zeichner(innen) auch die Inventarnummern der zugehörigen Funde. Hier sind gewiss weiterhin einzelne
+            Unstimmigkeiten zu entdecken, die – wie z.B. doppelt oder gar nicht vergebene Stellen-Nummern –  durch Zeitdruck auf der Grabung ebenso wie durch Kommunikationsprobleme innerhalb
+            der ausgedehnten Grabungsflächen zu erklären sind, sich aber auch – wie einzelne Befund-Ansprachen – nach mehr als 50 Jahren einer Überprüfbarkeit entzogen haben.</p>
+
+        <p>Nicht eingescannt wurden einige Rollen ohne Baubefunde und die zu Beginn der Grabung vor allem im Westen angelegten Flächen außerhalb der Rössener Siedlung sowie die
+            Profilzeichnungen der dort zumeist angetroffenen eisenzeitlichen Befunde.</p>
+
+        <div>
+            <h2>Gesamtplan mit Rollenraster</h2>
+
+            <img id = "gesamtplan" src = "/con10t/visualizations/inden1/Rasternavigation_Gesamtplan.jpg">
+        </div>
+
+    </div>
+</div>
+</div>

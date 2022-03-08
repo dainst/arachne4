@@ -1,0 +1,419 @@
+{
+  "afrarchcologne": {
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "AAArC"
+      }
+    ]
+  },
+  "antiksammlberlin": {
+    "q": "catalogPaths:105"
+  },
+   "avp17_engels": {
+    "q": "catalogPaths:1112"
+  },
+  "basilaemil": {
+    "q": "catalogPaths:24"
+  },
+  "berlinsamml": {
+    "q": "connectedEntities:1241844",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Reproduktionen"
+      }
+    ]
+  },
+  "blankenheim": {
+    "q": "catalogPaths:871"
+  },
+  "boha29": {
+    "q": "catalogPaths:872"
+  },
+  "ceramegypt": {
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Keramik"
+      }
+    ]
+  },
+  "cilopac": {
+    "q": "catalogPaths:41"
+  },
+  "daiorient": {
+    "q": "searchableEditorContent:D-DAI-ORI",
+     "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "dai-orientabteilung"
+      }
+    ]
+  },
+  "databasepausanias": {
+    "q": "(catalogPaths:111 OR catalogPaths:110)"
+  },
+  "faak16": {
+    "q": "catalogPaths:566"
+  },
+  "faak16_map": {
+    "alias": "faak"
+  },
+  "faak18": {
+    "q": "catalogPaths:860"
+  },
+  "fotoarchivdaiberlin": {
+    "q": "D-DAI-Z",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bilder"
+      }
+    ]
+  },
+  "fotoistanbul": {
+    "q": "D-DAI-IST",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bilder"
+      },
+      {
+        "key": "facet_subkategorie_bilder",
+        "value": "unstrukturiert"
+      },
+      {
+        "key": "facet_bestandsname",
+        "value": "dai-istanbul-fotothek"
+      }
+    ]
+  },
+  "fotokairo": {
+    "q": "D-DAI-KAI",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bilder"
+      }
+    ]
+  },
+  "fotomadrid": {
+    "q": "searchableEditorContent:D-DAI-MAD",
+      "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "dai-fotothek-madrid"
+      }
+    ]
+  },
+  "gelehrtenbriefe": {
+    "q": "searchableEditorContent:Gelehrtenbriefe"
+  },
+  "athenDigital": {
+    "q": "athenDigital",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bücher"
+      }
+    ]
+  },
+  "gadara": {
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "Bestand-D-DAI-OA-DAM-GA-UQ"
+      }
+    ]
+  },
+  "gadara_interactive_map": {
+    "alias": "gadara"
+  },
+  "gipsleipzigsamml": {
+    "q": "connectedEntities:1241594",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Einzelobjekte"
+      }
+    ]
+  },
+  "grako": {
+    "facets": [
+      {
+        "key": "catalogIds",
+        "value": "294"
+      },
+      {
+        "key": "facet_kategorie",
+        "value": "Bauwerke"
+      }
+    ]
+  },
+  "grako_map": {
+    "alias": "grako"
+  },
+  "hafen": {
+    "q": "catalogPaths:22"
+  },
+  "hinkel": {
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "Archiv-Friedrich-W-Hinkel"
+      }
+    ]
+  },
+  "hinkel_map": {
+    "alias": "hinkel"
+  },
+  "imagegrid": {
+    "q": "vaticanischen sculpturen",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bücher"
+      }
+    ]
+  },
+  "inden1": {
+    "q": "Inden1"
+  },
+  "invbuecherrom": {
+    "q": "Inventarbuch",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bücher"
+      }
+    ]
+  },
+  "kaak": {
+    "q": "searchableEditorContent:D-DAI-KAAK"
+    ,
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "dai-kaak-archiv"
+      }
+    ]
+  },
+  "kaak_merimde": {
+    "q": "D-DAI-KAAK-A-MBS"
+  },
+  "kanatha": {
+    "q": "catalogPaths:109"
+  },
+  "katalogskulpthess": {
+    "q": "connectedEntities:1241674",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Einzelobjekte"
+      }
+    ]
+  },
+  "koester": {
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "Milet Archiv Reinhard Köster"
+      }
+    ]
+  },
+  "kossack": {
+    "q": "kossack-",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bücher"
+      }
+    ]
+  },
+  "langwiss": {
+    "q": "catalogPaths:38"
+  },
+  "lippsbasilica": {
+    "q": "catalogPaths:27"
+  },
+  "mar41": {
+    "q": "catalogPaths:388"
+  },
+  "milet_V4": {
+    "q": "catalogPaths:597"
+  },
+  "nara": {
+    "q": "searchableEditorContent:D-DAI-ROM-NA"
+    ,
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "dai-rom-nara"
+      }
+    ]
+  },
+  "oppenheim": {
+    "q": "(catalogPaths:54 OR catalogPaths:28)",
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "Fotosammlung Max von Oppenheim"
+      }
+    ]
+  },
+  "palilia20Baubefunde": {
+    "q": "(catalogPaths:39 OR catalogPaths:33)"
+  },
+  "palilia20Grabdenkmaeler": {
+    "q": "(catalogPaths:31 OR catalogPaths:40)"
+  },
+  "palilia26": {
+    "q": "catalogPaths:34"
+  },
+  "palilia32": {
+    "q": "catalogPaths:62"
+  },
+  "pergamenischeforschungen17": {
+    "q": "catalogPaths:132"
+  },
+  "pergamenischeforschungen19": {
+    "q": "catalogPaths:546"
+  },
+  "mumienmasken": {
+    "q": "catalogPaths:1092"
+  },
+  "rakob": {
+    "facets": [
+      {
+        "key": "facet_subkategoriebestand_level2",
+        "value": "Nachlass-Friedrich-Rakob"
+      }
+    ]
+  },
+  "rakob": {
+    "q": "D-DAI-ROM-NA-RAK"
+  },
+  "rakob_map": {
+    "alias": "rakob"
+  },
+  "rm127_Pasieka-Franceschini": {
+    "q": "catalogPaths:1111"
+  },
+  "resafa": {
+    "q": "catalogPaths:427"
+  },
+  "rezeptionantike": {
+    "q": "(catalogPaths:107 OR catalogPaths:108)"
+  },
+  "roseterra": {
+    "q": " H. Rose römischen Terrakottamasken Nordwestprovinzen",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Einzelobjekte"
+      }
+    ]
+  },
+  "rwwa": {
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "Rheinisch-Westfälisches Wirtschaftsarchiv"
+      },
+      {
+        "key": "facet_kategorie",
+        "value": "Bilder"
+      }
+    ]
+  },
+  "sammlakakunst": {
+    "q": "connectedEntities:1241765",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Reproduktionen"
+      }
+    ]
+  },
+  "sammlsaarbr": {
+    "q": "connectedEntities:1241756",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Reproduktionen"
+      }
+    ]
+  },
+  "schlossfulda": {
+    "q": "connectedEntities:1241588",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Einzelobjekte"
+      }
+    ]
+  },
+  "schulzmeer": {
+    "q": "catalogPaths:200"
+  },
+  "skulpturnegdairom": {
+    "q": "catalogPaths:106"
+  },
+  "spacodices": {
+    "q": "catalogPaths:32",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bücher"
+      }
+    ]
+  },
+  "spornsiegel": {
+    "q": "connectedEntities:1241917"
+  },
+  "stendal": {
+    "q": "connectedEntities:1241766",
+    "facets": [
+      {
+        "key": "facet_image",
+        "value": "ja"
+      }
+    ]
+  },
+  "syrher": {
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "Syrian-Heritage-Archive-Project"
+      }
+    ]
+  },
+  "syrher_map": {
+    "alias": "syrher"
+  },
+  "teheran_digital": {
+     "q": "(\"Teheran Digital\" OR \"D-DAI-EUR-TEH*\")"
+  },
+  "teheran_digital_map": {
+    "alias": "teheran_digital"
+  },
+  "widgetsdemo": {
+    "q": "spirit"
+  },
+  "wohnkulturOstia": {
+    "q": "catalogPaths:102"
+  },
+  "test_project": {
+    "q": "spirit"
+  },
+  "_testscope": {
+    "q": "you",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Personen"
+      }
+    ]
+  }
+}

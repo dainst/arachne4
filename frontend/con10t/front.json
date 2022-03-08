@@ -1,0 +1,62 @@
+[
+  {
+    "id": "fotorom",
+    "img": "fotothekrom.webp",
+    "title": {
+      "de": "Fotothek Rom",
+      "en": "Fotothek Rom"
+    },
+    "teaser": {
+      "de": "Die fotografische Sammlung des Deutschen Archäologischen Instituts, Abteilung Rom hat ihre Anfänge im 19. Jh. und umfasst zum heutigen Zeitpunkt über 300.000 Fotografien und Negative. Dabei bildet die fotografische Dokumentation der Altertümer auf italischen Boden seit Anbeginn das zentrale Anliegen der Fotothek. Das Herzstück der Fotothek stellt das kontinuierlich anwachsende Negativarchiv mit seinen ca. 200.000 Glas-, Nitrat-, Acetat- und Safety-Negativen dar.",
+      "en": "Die fotografische Sammlung des Deutschen Archäologischen Instituts, Abteilung Rom hat ihre Anfänge im 19. Jh. und umfasst zum heutigen Zeitpunkt über 300.000 Fotografien und Negative. Dabei bildet die fotografische Dokumentation der Altertümer auf italischen Boden seit Anbeginn das zentrale Anliegen der Fotothek. Das Herzstück der Fotothek stellt das kontinuierlich anwachsende Negativarchiv mit seinen ca. 200.000 Glas-, Nitrat-, Acetat- und Safety-Negativen dar."
+    }
+  },
+  {
+    "id": "syrher",
+    "img": "syrher.webp",
+    "title": {
+      "de": "Syrian Heritage Archive Project",
+      "en": "Syrian Heritage Archive Project"
+    },
+    "teaser": {
+      "de": "Die Kulturlandschaft Syrien gehört hinsichtlich der Anzahl und historischen Bedeutung der dort vorhandenen Denkmäler zu den herausragenden Regionen weltweit. Da in Syrien alle Zeitabschnitte vom Beginn menschlicher Nutzung ab etwa eine Million Jahre vor heute bis in die osmanische Zeit durch archäologische oder historische Monumente belegt sind, verfügt das Land über eines der umfassendsten kulturellen Langzeitarchive, das in weiten Teilen noch nicht wissenschaftlich erschlossen ist.",
+      "en": "With regard to density and the historical importance of its heritage sites, Syria’s cultural landscape belongs to the world’s most exceptional regions. As Syria today looks back on a human occupation through archaeological and historical sites dating from about one million years ago right up to the Ottoman Period, it harbours one of the world’s most comprehensive and long-lasting cultural heritage records, which in large parts yet remains to be explored by scholarly research."
+    }
+  },
+  {
+    "id": "hinkel",
+    "img": "hinkel.webp",
+    "title": {
+      "de": "Das Archiv von Friedrich W. Hinkel",
+      "en": "The Archive of Friedrich W. Hinkel"
+    },
+    "teaser": {
+      "de": "Das Archiv von Friedrich W. Hinkel stellt eines der größten Forschungsarchive zum antiken Sudan dar und spiegelt die über 40 Jahre währende Grabungs- und Forschungstätigkeit Dr. Hinkels im Sudan wider. Beginnend mit seiner Teilnahme an den Ausgrabungen in Musawwarat es Sufra der Humboldt Universität Berlin im Jahr 1961 führte den Architekten Dr. Friedrich W. Hinkel (1925 – 2006) nicht nur ein reges Forschungsinteresse immer wieder in den Sudan, für den er nach Freistellung durch die Akademie ab 1962 auch direkt tätig war, sondern auch eine enge Verbundenheit mit Land und Leuten.",
+      "en": "The archive of Friedrich W. Hinkel represents one of the largest collections of research materials concerning the archaeology of the Ancient Sudan. It is the result of Dr. Hinkel's (1925 - 2006) over 40 years of continued research, beginning with his participation in the Humboldt University's excavation at Musawwarat es Sufra in 1961. From 1962 onwards he was deputized by the Academy of Sciences of GDR to the Sudan's Archaeological Service, for which he worked as an architect focusing on the excavation, reconstruction and conservation of archaeological monuments."
+    }
+  },
+  {
+    "id": "rakob",
+    "img": "rakob.webp",
+    "title": {
+      "de": "Nachlass von Friedrich Rakob",
+      "en": "Bequest of Friedrich Rakob"
+    },
+    "teaser": {
+      "de": "Der Nachlass von Friedrich Rakob umfasst insgesamt über 63.000 Fotonegative, Diapositive und Kontaktabzüge sowie etwa 190 Kisten und Ordner mit Grabungstagebüchern, Zeichnungen, Plänen, VHS-Kassetten und weiteren Dokumenten wie Vorberichten, Vortragstexten und Briefen aus über 35-jähriger Forschungsarbeit. Die Materialien wurden einerseits während der Forschungstätigkeiten Rakobs und andererseits nach seinem Tod im Jahre 2007 aus seinem Privatbesitz dem DAI übergeben. Den umfangreichsten Teil des Bestands bildet dabei die Dokumentation der Ausgrabungen und Funde aus Chimtou und Karthago.",
+      "en": "Friedrich Rakob’s bequest includes a total of more than 63,000 photographic negatives, slides and contact prints as well as around 190 crates and folders containing excavation diaries, drawings, plans, VHS cassettes and other documents, such as preliminary reports, texts of speeches and letters from his 35 years of research work. Some of these materials were presented to the DAI during Rakob’s research activities, while others were bequeathed to the institute after his death in 2007. The most extensive part of the holding is the documentation of the excavations and finds from Chimtou and Carthage."
+    }
+  },
+  {
+    "id": "afrarchcologne",
+    "img": "afrarchcologne.webp",
+    "title": {
+      "de": "African Archaeology Archive Cologne",
+      "en": "African Archaeology Archive Cologne"
+    },
+    "teaser": {
+      "de": "Seit über fünfzig Jahren findet am Institut für Ur- und Frühgeschichte der Universität zu Köln archäologische Forschung in Afrika statt. Neben der 1963 begonnen Felsbildforschung in Namibia etablierte sich Anfang der 1980er Jahre Nordostafrika als zweite Schwerpunktregion – beides Gebiete, die bis dahin weitgehend \"terra incognita\" prähistorischer Forschung waren.",
+      "en": "For over fifty years, archaeological research in Africa has been done at the Institute of Prehistoric Archaeology at the University of Cologne. In addition to the rock art research started in Namibia in 1963, Northeastern Africa established itself as a second focus region in the early 1980s - both areas that had been largely \"terra incognita\" of prehistoric research until then."
+    }
+  }
+]

@@ -1,0 +1,205 @@
+<style>
+
+	.con10t-row {
+		margin-top: 5vh;
+	}
+</style>
+
+
+<!-- Kopfbereich der Projektseite -->
+<idai-header
+        image="/con10t/headerimages/faak16.jpg"
+		description="C. Mader, Sea Shells in the Mountains and Llamas on the Coast: The Economy of the Paracas Culture (800 to 200 BC) in Southern Peru (Mader 2019). Catalog of Paracas Archaeological Materials"
+		link="https://doi.org/10.34780/faak.v16i0.1000">
+</idai-header>
+
+<!-- Hauptbereich der Projektseite -->
+<div class="con10t-page teaserpage container">
+
+    <div class="con10t-row">
+
+		<!-- Haupttitel des Projektes: Überschrift der Größe <h1> oder Logo / Bild -->
+        <div class="con10t-title">
+			<h1>Catalog of Paracas Archaeological Materials</h1>
+		</div>
+
+		<!-- Rechte Seitenleiste -->
+        <div class="con10t-sidebar" style = "padding-top: 2vw;">
+
+			<con10t-toc toc-heading="Übersicht"></con10t-toc>
+
+			<h3>Suche in den Daten des Projekts</h3>
+
+			<p><a con10t-search-query target = "_blank">Alle Projektdaten anzeigen</a></p>
+
+			<con10t-search catalog-id="566"></con10t-search>
+
+			<br>
+
+			<!--- Map --->
+			<div>
+				<a href="/project/faak16_map" target = "_blank" title="Zur Karte" style="cursor:pointer">
+					<span class="glyphicon glyphicon-fullscreen"></span>
+					Größere Karte</a>
+			</div>
+
+			<div ng-init="config = {
+				facetsSelect: [
+					{
+						key: 'facet_kategorie',
+						value: 'Einzelobjekte'
+					}
+				]
+			}"></div>
+
+			<div con10t-map style = "margin-bottom: 1vw;"
+				 id="map"
+				 limit="200"
+				 facets-select="config.facetsSelect"
+				 lat="-14.5"
+				 lng="-75.2"
+				 zoom="5">
+			</div>
+
+			<h3>Katalog</h3>
+
+			<a href = "https://arachne.dainst.org/catalog/566" target = "_blank">Zur Katalogansicht</a>
+
+			<h3 style="margin-top: 5%">Informationen zum Buch</h3>
+
+			<p><a href = "https://doi.org/10.34780/faak.v16i0.1000" target = "_blank">iDAI.publications</a></p>
+
+			<con10t-image src = "/con10t/img/faak16/Mader_Cover.png" alt = "Cover-Printausgabe" width = "390"></con10t-image>
+
+        </div>
+
+		<!-- Inhalt der Projektseite -->
+        <div class="con10t-content">
+
+			<h2 class="con10t-toc-entry">Introduction</h2>
+
+				<p>This online catalog accompanies the book <span style = "font-style:italic;">Sea Shells in the Mountains and Llamas on the Coast:
+					The Economy of the Paracas Culture (800 to 200 BC) in Southern Peru</span> (Mader 2019), published as part
+					of the series “Research into the Archaeology of Non-European Cultures” by the German Archaeological
+					Institute (DAI). The catalog provides data and images of archaeological finds and contexts which
+					have been excavated since 1996 by the Nasca-Palpa Project of the DAI’s Commission for Archaeology of
+					Non-European Cultures (KAAK).</p>
+
+				<!-- Figure 1 -->
+				<con10t-image src="/con10t/img/faak16/Figure_1_Map_sites.png" align="left" alt="Map_sites" width="800">
+					<span class="ng-scope">Map showing the location of the archaeological sites where the material of this catalog was excavated.</span>
+				</con10t-image>
+
+				<!-- Figure 2 -->
+				<con10t-image src="/con10t/img/faak16/Figure_2_Club_head_212.jpg" align = "right" alt="club head" width="166">
+					<span class="ng-scope">Two views of a stone club head,<br> which was excavated at Cutamalla.</span>
+				</con10t-image>
+
+				<p>Due to large-scale excavations, Jauranga (285 m.a.s.l.), Collanco (1.630 m.a.s.l), and Cutamalla
+					(3.300 m.a.s.l.) are the most important archaeological sites for this study. The information
+					presented in the database served as the primary basis for the research and results which are
+					treated at greater length in the monograph. Moreover, the long-term storage of this data makes the
+					material available for future investigations. Objects attributed to the Paracas culture (800 to 200 BC) in southern Peru are displayed in museums
+					all over the world, attracting visitors and encouraging people to travel to Peru. “Typical” Paracas
+					objects are incised polychrome ceramics of high quality, large and extremely carefully made textiles
+					with elaborate geometric designs, extravagant mummy bundles with rich grave goods which have been
+					preserved in the sandy hyper-arid desert of the Pacific coast, and artificially deformed human
+					skulls. The emphasis on this kind of material culture was the foundation for defining the
+					archaeological culture, stimulating ideas about the nature of the Paracas society.
+					<br>
+					The approach chosen in this work complements previous research designs and provides a new perspective
+					on the Paracas culture. The archaeological material analyzed here was unearthed in large quantities
+					and represents the sphere of everyday life of the Paracas people. An archaeoeconomic methodology was
+					applied to look at this material, an approach not previously employed, which explored production,
+					exchange, and consumption processes and their interconnections through the archaeological record.</p>
+
+			<h2 class="con10t-toc-entry" style = "clear: both;">Instructions and Archaeological Finds</h2>
+
+				<p>The data of this catalog is arranged according to the archaeological material types relevant to this
+					study, which are animal bones, botanical material, ground stone, knapped stone, lithics in general,
+					malacological material, metal, minerals, and organic material. Sorting the database by these
+					material types, you will find detailed information on the objects themselves as well as their
+					archaeological sites and contexts.
+
+					Images are available for many, albeit not all, objects. There is also geospatial data available for
+					archaeological sites. The basic language of the catalog is Spanish. Because of the general structure
+					of the central iDAI.objects Arachne database, some information is provided in German or English.
+
+					From the archaeological material groups, in particular obsidian artifacts, malacological material,
+					and camelid bones were comprehensively analyzed, with results explained in detail in the monograph.
+					We used a combination of methods for these analyses, including archaeometric techniques,
+					quantification, artifact classification, and species determination. Data on the other material types
+					was consulted as contextual information in the book, although an in-depth examination similar to the
+					one carried out for the three main material groups has not been done yet, and could be performed in
+					a next stage of research.</p>
+
+				 <!-- Figure 3 -->
+
+				<con10t-image src="/con10t/img/faak16/Figure_3_Camelid_Jauranga_15365_neu.jpg" align="center" alt="camelid jaura" height="30">
+
+					<span class="ng-scope">The complete skeleton of a camelid, next to a mealing stone, at Jauranga during excavation works.</span>
+				</con10t-image>
+
+			<h2 class="con10t-toc-entry">Catalog</h2>
+
+			<con10t-catalog-tree catalog-id="566"></con10t-catalog-tree>
+
+			<h2 class="con10t-toc-entry">Reconstructing the Economic System of the Paracas Culture</h2>
+
+				<p>The analysis of the archaeological materials in this catalog was fundamental for the reconstruction
+					of the Paracas economic organization, characterized by unbalanced commodity flows in the western
+					Andes. Highland resources such as obsidian, camelids and their products were transported towards the
+					Pacific desert strip in large amounts, while marine resources such as sea shells reached the
+					highlands only in small amounts.
+
+				Raw materials were not just procured in the mountains; there were also strategic centers like Cutamalla,
+					where the production and distribution of goods was coordinated. All in all, consumption at coastal
+					settlements like Jauranga can be seen as the driving force behind the economy of the Paracas culture.
+					Based on these socioeconomic patterns, a new model called economic directness was formulated,
+				which is a central outcome of both the catalog and the book.</p>
+
+				<!-- Figure 4 -->
+				<con10t-image src="/con10t/img/faak16/Figure_4_Map_reconstruction_economy.png" align="left" alt="map reconstruction economy" height="200">
+					<span class="ng-scope">Map of the study area on the western Andean slope, showing a schematic reconstruction of the socioeconomic organization during the Paracas period.</span>
+				</con10t-image>
+
+			<h2 class="con10t-toc-entry">Further Reading</h2>
+
+
+			<p>Mader, C., 2019. Sea Shells in the Mountains and Llamas on the Coast: The Economy of the Paracas Culture
+				(800 to 200 BC) in Southern Peru, Research into the Archaeology of Non-European Cultures 16. Harrassowitz, Wiesbaden.</p>
+
+			<p>Mader, C., 2019. The Economic Organisation of the Paracas Culture (800–200 BC) in Southern Peru, in:
+				Excavated Worlds: 40 Years of Archaeological Research on Four Continents. German Archaeological
+				Institute, Commission for Archaeology of Non-European Cultures, Bonn, pp. 64–73.</p>
+
+			<p>Mader, C., Hölzl, S., Heck, K., Reindel, M., Isla, J., 2018. The Llama’s Share: Highland Origins of
+				Camelids During the Late Paracas Period (370 to 200 BCE) in South Peru Demonstrated by Strontium Isotope
+				Analysis. J. Archaeol. Sci. Rep. 20, 257–270. <a href="https://doi.org/10.1016/j.jasrep.2018.04.032">Open access</a></p>
+
+			<p>Reindel, M., Isla, J., 2013. Jauranga: una aproximación a la ocupación Paracas en los valles de Palpa.
+				Boletín de Arqueología PUCP 17, 231–262.</p>
+
+			<p>Reindel, M., Isla, J., 2017. Nuevo patrón arquitectónico Paracas en Lucanas, sierra sur del Perú. Boletín de Arqueología PUCP 22, 227–254.</p>
+
+			<p>Reindel, M., Isla, J., Gorbahn, H., Otten, H., 2015. Paracas en Palpa: los fundamentos del poder de la cultura Nasca. Peruvian Archaeology 2, 37–64.</p>
+
+			<div>
+				<h3 class="con10t-toc-entry">Kontakt</h3>
+
+				<p>Redaktion KAAK<br>
+				Dürenstraße 35-37<br>
+				53173 Bonn<br>
+				+49 (0)228 997712-0<br>
+				redaktion.kaak@dainst.de
+				</p>
+			</div>
+
+			<div style = "margin-top: 4vh;">
+				<img style = "padding: 0;" src="/con10t/img/faak16/archaeologie-vormoderner-wirtschaftsraeume1.jpg" alt="logo_grako" height="80">
+				<img style = "padding: 0;" src="/con10t/img/faak16/LOGO-UNI Bonn.png" alt="logo_uni-bonn" height="80">
+			</div>
+		</div>
+
+    </div>
+</div>

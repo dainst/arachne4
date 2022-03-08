@@ -1,0 +1,1045 @@
+{
+  "id": "",
+  "title": {
+    "de": "Inhalte",
+    "en": "Content"
+  },
+  "children": [
+    {
+      "id": "",
+      "title": {
+        "de": "DAI - Objektdatenbank",
+        "en": "DAI - Objectdatabase"
+      },
+      "children": [
+        {
+          "id": "emagines",
+          "title": {
+            "de": "Emagines",
+            "en": "Emagines"
+          }
+        },
+        {
+          "id": "fotoistanbul",
+          "title": {
+            "de": "Fotothek DAI Istanbul",
+            "en": "DAI Istanbul photo archive"
+          }
+        },
+        {
+          "id": "fotokairo",
+          "title": {
+            "de": "Fotothek DAI Kairo",
+            "en": "DAI Cairo photo archive"
+          }
+        },
+        {
+          "id": "fotomadrid",
+          "title": {
+            "de": "Fotothek DAI Madrid",
+            "en": "DAI Madrid photo archive"
+          }
+        },
+        {
+          "id": "kaak",
+          "title": {
+            "de": "Die Archive der KAAK",
+            "en":"Archives of the KAAK"
+          },
+          "hidden": true
+        },
+        {
+          "id": "fotorom",
+          "title": {
+            "de": "Fotothek DAI Rom",
+            "en": "DAI Rome photo archive"
+          },
+          "children": [
+            {
+              "id": "fotoromcategories",
+              "title": {
+                "de": "Die Kategorien der Fotothek des DAI Rom",
+                "en": "Categories of the DAI Rome's photo archive"
+              }
+            },
+            {
+              "id": "skulpturnegdairom",
+              "title": {
+                "de": "Skulpturennegative DAI Rom",
+                "en": "Sculpture Negatives of the DAI Rome"
+              }
+            },
+            {
+              "id": "nachlassroeder",
+              "title": {
+                "de": "Nachlass Josef Röder",
+                "en": "Scholarly bequests of Josef Röder"
+              }
+            },
+            {
+              "id": "invbuecherrom",
+              "title": {
+                "de": "Inventarbücher",
+                "en": "Inventory registers"
+              }
+            },
+            {
+              "id": "imagegrid",
+              "title": {
+                "de": "Image Grid",
+                "en": "Image Grid"
+              }
+            }
+          ]
+        },
+        {
+          "id": "fotoarchivdaiberlin",
+          "title": {
+            "de": "Fotoarchiv der Zentrale des DAI in Berlin",
+            "en": "DAI Head Office photo archive"
+          }
+        },
+        {
+          "id": "gadara",
+          "title": {
+            "de": "Fotoarchiv Gadara",
+            "en": "Gadara photo archive"
+          }
+          },
+          {
+              "id": "gadara_interactive_map",
+              "title": {
+                "de": "Interaktiver Übersichtsplan des Grabungsgeländes in Gadara",
+                "en": "#"
+              }
+        },
+        {
+          "id": "daiorient",
+          "title": {
+            "de": "Fotothek DAI Orientabteilung",
+            "en":"Photo archive of the Orient Department"
+          }
+        }
+      ]
+    },
+    {
+      "id": "idaibookbrowser",
+      "title": {
+        "de": "iDAI.bookbrowser",
+        "en": "iDAI.bookbrowser",
+        "it": "iDAI.bookbrowser"
+      },
+      "children": [
+        {
+          "id": "rezeptionantike",
+          "title": {
+            "de": "Rezeption der Antike im semantischen Netz",
+            "en": "Reception of Antiquity in a Semantic Network"
+          }
+        },
+        {
+          "id": "antikzeichnung",
+          "title": {
+            "de": "Die Antike in Zeichnung, Plan und Bauaufnahme",
+            "en": "The Antiquity in Drawing, Plan and Architectural Survey"
+          },
+          "hidden": true
+        },
+        {
+          "id": "handzeichnungen",
+          "title": {
+            "de": "Die Antike in Zeichnung, Plan und Bauaufnahme",
+            "en": "The Antiquity in Drawing, Plan and Architectural Survey"
+          }
+        },
+        {
+          "id": "handzeichnungen_map",
+          "title": {
+            "de": "Die Antike in Zeichnung, große Karte",
+            "en": "The Antiquity in Drawing, big map"
+          },
+          "hidden": true
+        },
+        {
+          "id": "gelehrtenbriefe",
+          "title": {
+            "de": "Gelehrte, Ausgräber und Kunsthändler",
+            "en": "Scholars, Excavators and Art Dealers",
+            "it": "L’Instituto di Corrispondenza Archeologica "
+         }
+         },
+         {
+           "id": "athenDigital",
+           "title": {
+             "de": "AthenDigital: Das Nachlassarchiv",
+             "en": "AthensDigital: Archive of bequests"
+          }
+        }
+      ]
+    },
+    {
+      "id": "monumentbrowser",
+      "title": {
+        "de": "Monumentbrowser",
+        "en": "Monument Browser",
+        "it": "Browser dei monumenti"
+      },
+      "children": [
+        {
+          "id": "arapacis",
+          "title": {
+            "de": "Ara Pacis",
+            "en": "Ara Pacis",
+            "it": "Ara Pacis"
+          }
+        },
+        {
+          "id": "pergaltarbrowser",
+          "title": {
+            "de": "Pergamonaltarbrowser",
+            "en": "Pergamon Altar Browser",
+            "it": "Altare di Pergamo"
+          }
+        },
+        {
+          "id": "corpusantsark",
+          "title": {
+            "de": "Corpus der Antiken Sarkophage",
+            "en": "Corpus of Ancient Sarcophagi"
+          }
+        },
+        {
+          "id": "traianssaeule",
+          "title": {
+            "de": "Trajanssäule",
+            "en": "Trajan’s Column",
+            "it": "Colonna Traiana"
+          }
+        },
+        {
+          "id": "mercatorplan",
+          "title": {
+            "de": "Kölnplan des Arnold Mercator",
+            "en": "Mercator’s Map of Cologne"
+          }
+        }
+      ]
+    },
+    {
+      "id": "",
+      "title": {
+        "de": "Sammlungen",
+        "en": "Collections",
+        "it": "Collezioni"
+      },
+      "children": [
+        {
+          "id": "antiksammlberlin",
+          "title": {
+            "de": "Antikensammlung der Staatlichen Museen zu Berlin",
+            "en": "Antiquities Collection of the Berlin State Museums",
+            "it": "Collezione di antichità del Museo statale di Berlino"
+          }
+        },
+        {
+          "id": "skulpberlinantik",
+          "title": {
+            "de": "Die Skulpturen der Berliner Antikensammlung",
+            "en": "Berlin Sculpture-Network - contextualization and translation of ancient sculpture",
+            "it": "Le sculture della Berliner Antikensammlung"
+          }
+        },
+        {
+          "id": "berlinsamml",
+          "title": {
+            "de": "Katalog der Gipsabgüsse nach griechisch-römischen Skulpturen in Berliner Sammlungen",
+            "en": "Image database of the Cast Collection of Ancient Sculpture in Berlin",
+            "it": "Database delle immagini della Collezione di riproduzioni di scultura antica di Berlino"
+          }
+        },
+        {
+          "id": "sammlakakunst",
+          "title": {
+            "de": "Abgußsammlung Bonn",
+            "en": "Plaster Cast Collection Bonn",
+            "it": "Collezione dei calchi di sculture antiche Bonn"
+          }
+        },
+        {
+          "id": "sammlsaarbr",
+          "title": {
+            "de": "Abgußsammlung Saarbrücken",
+            "en": "Cast collection Saarbrücken"
+          }
+        },
+        {
+          "id": "schlossfulda",
+          "title": {
+            "de": "Schloß Fasanerie (Adolphseck) bei Fulda",
+            "en": "Fasanerie Castle (Adolphseck) near Fulda"
+          }
+        },
+        {
+          "id": "gipsleipzigsamml",
+          "title": {
+            "de": "Antikenmuseum der Universität Leipzig",
+            "en": "Museum of Antiquities of the Leipzig University"
+          }
+        },
+        {
+          "id": "oppenheim",
+          "title": {
+            "de": "Die Fotosammlung Max von Oppenheim",
+            "en": "The Max von Oppenheim photo collection"
+          }
+        },
+        {
+          "id": "stendal",
+          "title": {
+            "de": "Gemälde- und Grafiksammlung Stendal",
+            "en": "The Stendal Collection of Paintings and Drawings"
+          }
+        },
+        {
+          "id": "katalogskulpthess",
+          "title": {
+            "de": "Archäologisches Museum Thessaloniki",
+            "en": "Archaeological Museum of Thessaloniki"
+          }
+        },
+        {
+          "id": "kossack",
+          "title": {
+            "de": "Nachlass Georg Kossack",
+            "en": "Bequests of Georg Kossack"
+          }
+        },
+        {
+          "id": "villaWolkonsky",
+          "title": {
+            "de": "Die Antikensammlung der Villa Wolkonsky (Rom)",
+            "en": "The Antiquities Collection of Villa Wolkonsky (Rome)",
+            "it": "La collezione di antichità della Villa Wolkonsky (Roma)"
+          }
+        },
+        {
+          "id": "antikeplastik",
+          "title": {
+            "de": "Antike Plastik 5.0://",
+            "en": "Antike Plastik 5.0://"
+          }
+        },
+        {
+          "id": "fotothekmuenchen",
+          "title": {
+            "de": "Fotothek München",
+            "en": "Fotothek Munich"
+          },
+          "hidden": false
+        },
+        {
+          "id": "hinkel",
+          "title": {
+            "de": "Das Archiv von Friedrich W. Hinkel",
+            "en": "The Archive of Friedrich W. Hinkel",
+            "ar": "أرشيف فريدريخ ڤ. هِنكل بشكلٍ رقمي"
+          }
+        },
+        {
+          "id": "hinkel_ams",
+          "title": {
+            "de": "Hinkel",
+            "en": "Hinkel",
+            "ar": "نظام AMS"
+          },
+          "hidden": true
+        },
+        {
+          "id": "hinkel_foto-dia",
+          "title": {
+            "de": "Hinkel",
+            "en": "Hinkel",
+            "ar": "مجموعة الصور والشرائح الشفّافة"
+          },
+          "hidden": true
+        },
+        {
+          "id": "hinkel_karteikarten",
+          "title": {
+            "de": "Hinkel",
+            "en": "Hinkel",
+            "ar": "بطاقات الفهرسة"
+          },
+          "hidden": true
+        },
+        {
+          "id": "hinkel_karten",
+          "title": {
+            "de": "Hinkel",
+            "en": "Hinkel",
+            "ar": "الخرائط الطوبوغرافية"
+          },
+          "hidden": true
+        },
+        {
+          "id": "hinkel_map",
+          "title": {
+            "de": "Hinkel",
+            "en": "Hinkel",
+            "ar": "Hinkel"
+          },
+          "hidden": true
+        },
+        {
+          "id": "hinkel_wms",
+          "title": {
+            "de": "Hinkel",
+            "en": "Hinkel",
+            "ar": " مجموعات المواد العلمية (WMS) الموجودة في أرشيف فريدريخ ڤ. هِنكل"
+          },
+          "hidden": true
+        },
+        {
+          "id": "hinkel_zeichnungen",
+          "title": {
+            "de": "Hinkel",
+            "en": "Hinkel",
+            "ar": "الرسومات:"
+          },
+          "hidden": true
+        },
+        {
+          "id": "koester",
+          "title": {
+            "de": "Das Milet Archiv von Reinhard Köster",
+            "en": "The Milet Archive of Reinhard Köster"
+          }
+        },
+        {
+          "id": "tuna_el_gebel",
+          "title": {
+            "de": "Feiern mit den Toten. Raumkonzepte und Bestattungsrituale in der Petosiris-Nekropole von Tuna el-Gebel",
+            "en": "Celebrating with the dead. Room concepts and funerary rituals in the Petosiris necropolis of Tuna el-Gebel"
+          }
+        },
+        {
+          "id": "abguesseMuenchen",
+          "title": {
+            "de": "Münchener Abguss Sammlung",
+            "en": "Plaster Cast Collection Munich"
+          }
+        },
+        {
+            "id": "teheran_digital",
+            "title": {
+              "de": "Das Archiv der Außenstelle Teheran des Deutschen Archäologischen Instituts",
+              "en": "The Archive of the Tehran branch of the German Archaeological Institute"
+            }
+        }
+      ]
+    },
+    {
+      "id": "",
+      "title": {
+        "de": "Sonstige Projekte",
+        "en": "Other Projects",
+        "it": "Altri progetti"
+      },
+      "children": [
+        {
+          "id": "ariadne",
+          "title": {
+            "de": "ARIADNE - The Way Forward to Digital Archaeology in Europe",
+            "en": "ARIADNE - The Way Forward to Digital Archaeology in Europe"
+          }
+        },
+        {
+          "id": "steindorff",
+          "title": {
+            "de": "Der Ägyptologe Georg Steindorff: Ein Briefnachlass und dessen wissenschaftsgeschichtliche Erforschung",
+            "en": "The egyptologist Georg Steindorff: A heritage in letters and its scientific exploration"
+          }
+        },
+        {
+          "id": "syrher",
+          "title": {
+            "de": "Syrian Heritage Archive Project",
+            "en": "Syrian Heritage Archive Project",
+            "ar": "إنشاء سجلّ حضاري رقمي لسورية"
+          }
+        },
+        {
+          "id": "nara",
+          "title": {
+            "de": "North African Research Archive (NARA)",
+            "en": "North African Research Archive (NARA)",
+            "fr": "North African Research Archive (NARA)"
+           }
+         },
+         {
+          "id": "rakob",
+          "title": {
+            "de": "Nachlass von Friedrich Rakob",
+            "en": "Friedrich Rakob’s Bequest",
+            "fr": "Fonds Friedrich Rakob"
+           }
+          },
+        {
+          "id": "analysearachne",
+          "title": {
+            "de": "Analyse zur Arachne-Nutzung",
+            "en": "Analyse zur Arachne-Nutzung",
+            "it": "Analisi dell'utilizzo di Arachne"
+          }
+        },
+        {
+          "id": "afrarchcologne",
+          "title": {
+            "de": "African Archaeology Archive Cologne",
+            "en": "African Archaeology Archive Cologne",
+            "it": "Archivio archeologico africano di Colonia"
+          }
+        },
+        {
+          "id": "preussdenk",
+          "title": {
+            "de": "Die preußische Denkmalpflege in der Provinz Brandenburg/Berlin",
+            "en": "Prussian monuments in the province of Brandenburg/Berlin between 1860/70 and 1918"
+          }
+        },
+        {
+          "id": "carare",
+          "title": {
+            "de": "CARARE",
+            "en": "CARARE"
+          }
+        },
+        {
+          "id": "chronoi",
+          "title": {
+            "de": "Chronoi: Multilingualismus der Zeit",
+            "en": "Chronoi: the multilignualism of time"
+          }
+        },
+        {
+          "id": "databasepausanias",
+          "title": {
+            "de": "Datenbank - Bildwerke bei Pausanias",
+            "en": "Database “Images in Pausanias”"
+          }
+        },
+        {
+          "id": "rwwa",
+          "title": {
+            "de": "Rheinisch-Westfälisches Wirtschaftsarchiv",
+            "en": "Foundation of the Rhine-Westphalian Economy Archive"
+          }
+        },
+        {
+          "id": "cilopac",
+          "title": {
+            "de": "CIL Open Access",
+            "en": "CIL Open Access"
+          }
+        },
+        {
+          "id": "spacodices",
+          "title": {
+            "de": "Spanische Codices",
+            "en": "Spanish Codices"
+          }
+        },
+        {
+          "id": "hellespont",
+          "title": {
+            "de": "Das Hellespont-Projekt",
+            "en": "The Hellespont Project"
+          }
+        },
+        {
+          "id": "grako",
+          "title": {
+            "de": "Werkstätten vormoderner Wirtschaftsräume",
+            "en": "Craft production sites of pre-modern economies"
+          }
+        },
+        {
+          "id": "jtfourplace",
+          "title": {
+            "de": "Our Place: Our Place in the World",
+            "en": "Our Place: Our Place in the World"
+          }
+        },
+        {
+          "id": "ceramegypt",
+          "title": {
+            "en": "CeramEgypt – Pottery production and consumption in Ptolemaic-Roman Egypt"
+          }
+        },
+        {
+          "id": "siracusa_citta_e_mura",
+          "title": {
+            "de": "Siracusa - La città e le sue mura",
+            "en": "Siracusa - La città e le sue mura",
+            "it": "Siracusa - La città e le sue mura"
+          }
+        },
+        {
+          "id": "casadelfauno",
+          "title": {
+            "de": "Casa del Fauno"
+          },
+          "hidden": true
+        },
+        {
+          "id": "palmyra-gis",
+          "title": {
+            "de": "Palmyra GIS - Digitaler Kulturerhalt in Syrien"
+          },
+          "hidden": true
+        },
+        {
+          "id": "tuna",
+          "title": {
+            "de": "Grabbauten in Tuna el-Gebel"
+          },
+          "hidden": true
+        }
+      ]
+    },
+    {
+      "id": "",
+      "title": {
+        "de": "Digitale Publikationen",
+        "en": "Digital publications",
+        "it": "Pubblicazioni digitali"
+      },
+      "children": [
+        {
+          "id": "wohnkulturOstia",
+          "title": {
+            "de": "Wohnkultur im spätantiken Ostia",
+            "en": "The culture of living in Late Antique Ostia"
+          }
+        },
+        {
+          "id": "basilaemil",
+          "title": {
+            "de": "Die Basilica Aemilia",
+            "en": "The Basilica Aemilia",
+            "it": "La basilica Aemilia"
+          }
+        },
+        {
+          "id": "kanatha",
+          "title": {
+            "de": "Die Heiligtümer in Kanatha",
+            "en": "Sanctuaries in Kanatha"
+          }
+        },
+        {
+          "id": "claracstart",
+          "title": {
+            "de": "Clarac, Musée de sculpture",
+            "en": "Clarac, Musée de sculpture"
+          }
+        },
+        {
+          "id": "museomaff",
+          "title": {
+            "de": "Das Museo Maffeiano als Online-Edition",
+            "en": "The Museo Maffeiano online-edition"
+          }
+        },
+        {
+          "id": "corpusantsark",
+          "title": {
+            "de": "Corpus der Antiken Sarkophage",
+            "en": "Corpus of Ancient Sarcophagi"
+          }
+        },
+        {
+          "id": "corpusminmyk",
+          "title": {
+            "de": "Corpus der minoischen und mykenischen Siegel",
+            "en": "Corpus of Minoan and Mycenaean Seals",
+            "it": "Corpus dei sigilli minoici e micenei"
+          }
+        },
+        {
+          "id": "langwiss",
+          "title": {
+            "de": "Jörn Lang, “Mit Wissen geschmückt?”. Zur bildlichen Rezeption griechischer Dichter und Denker in der römischen Lebenswelt (Wiesbaden 2012)",
+            "en": "Jörn Lang,Figurative Reception of Greek Poets and Philosophers"
+          }
+        },
+        {
+          "id": "roseterra",
+          "title": {
+            "de": "H. Rose, Die römischen Terrakottamasken in den Nordwestprovinzen. MAR XXXVII (2006)",
+            "en": "H. Rose, Roman Terracotta Masks in the Northwestern Provinces (Die römischen Terrakottamasken in den Nordwestprovinzen. MAR XXXVII)"
+          }
+        },
+        {
+          "id": "katalogskulpthess",
+          "title": {
+            "de": "Katalog der Skulpturen im Archäologischen Museum von Thessaloniki",
+            "en": "Katalog der Skulpturen im Archäologischen Museum von Thessaloniki"
+          }
+        },
+        {
+          "id": "hafen",
+          "title": {
+            "de": "Torsten Bendschus – Stefan Feuser, Bilder und Vorstellungen römischer Hafenanlagen. Gattungsübergreifende Dokumentation und kontextualisierte Analyse römischer Hafendarstellungen",
+            "en": "Torsten Bendschus – Stefan Feuser, Images and Imaginations of Roman Harbors. Documentation and contextualized analysis of Roman harbor depictions"
+          }
+        },
+        {
+          "id": "centurions",
+          "title": {
+            "de": "U. Stockinger, Dressed to Drill. The Evidence of Funerary Monuments on Roman Centurions‘ Equipment. Journal of Roman Military Equipment Studies 18, 2017",
+            "en": "U. Stockinger, Dressed to Drill. The Evidence of Funerary Monuments on Roman Centurions‘ Equipment. Journal of Roman Military Equipment Studies 18, 2017"
+          }
+        },
+        {
+          "id": "spornsiegel",
+          "title": {
+            "de": "K. Sporn (Hrsg.), Spiegel Europas. Die Antikensammlung im Suermondt-Ludwig-Museum",
+            "en": "K. Sporn (ed.), Spiegel Europas. Die Antikensammlung im Suermondt-Ludwig-Museum"
+          }
+        },
+        {
+          "id": "resafa",
+          "title": {
+            "de": "C. Hof, Die Stadtmauer, Resafa 9, 1, Resafa – Sergiupolis/Rusafat Hisham (Wiesbaden 2020). Digitale Supplemente",
+            "en": "C. Hof, Die Stadtmauer, Resafa 9, 1, Resafa – Sergiupolis/Rusafat Hisham (Wiesbaden 2020). Digitale Supplemente"
+          }
+        }
+      ]
+    },
+    {
+      "id": "",
+      "title": {
+        "de": "Digitale Kataloge",
+        "en": "Digital catalogs",
+        "it": "cataloghi digitali"
+      },
+      "children": [
+        {
+          "id": "paliliastart",
+          "title": {
+            "de": "Palilia",
+            "en": "Palilia",
+            "it": "Palilia"
+          },
+          "children": [
+            {
+              "id": "palilia20",
+              "title": {
+                "de": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild (2012)",
+                "en": "Palilia 20: Alexandra W. Busch, Military in Rome. Military and paramilitary units in the imperial cityscape (2012)",
+                "it": "Palilia 20: Alexandra W. Busch, Militär in Rom. Militärische und paramilitärische Einheiten im kaiserzeitlichen Stadtbild (2012)"
+              }
+            },
+            {
+              "id": "lippsbasilica",
+              "title": {
+                "de": "Palilia 24: Johannes Lipps, Die Basilica Aemilia am Forum Romanum. Der kaiserzeitliche Bau und seine Ornamentik (Diss. Köln 2008)",
+                "en": "Palilia 24: Johannes Lipps, The Basilica Aemilia on the Forum Romanum. The building and its ornamentation in Imperial times (Dissertation, Cologne 2008)"
+              }
+            },
+            {
+              "id": "palilia25",
+              "title": {
+                "de": "Palilia 25: M. Tombrägel, Die republikanischen Otiumvillen von Tivoli (Wiesbaden 2012) ",
+                "en": "Palilia 25: M. Tombrägel, The Republican otium-villas at Tivoli (Wiesbaden 2012)",
+                "it": "Palilia 25: M. Tombrägel, Die republikanischen Otiumvillen von Tivoli (Wiesbaden 2012)"
+              }
+            },
+            {
+              "id": "palilia26",
+              "title": {
+                "de": "Palilia 26: Wolfgang Ehrhardt, Dekorations- und Wohnkontext. Beseitigung, Restaurierung und Konservierung von Wandbemalungen in den kampanischen Antikenstätten",
+                "en": "Palilia 26: Wolfgang Ehrhardt, Decorative and residential context. Removal, restoration and preservation of wall paintings in the Campanian antique sites",
+                "it": "Palilia 26: Wolfgang Ehrhardt, Dekorations- und Wohnkontext. Beseitigung, Restaurierung und Konservierung von Wandbemalungen in den kampanischen Antikenstätten"
+              }
+            },
+            {
+              "id": "palilia32",
+              "title": {
+                "de": "Palilia 32: D. Doepner, ›Große Statuetten‹ in Medma (Kalabrien) (Wiesbaden 2020). Erweiterter Online-Katalog"
+              }
+            },
+            {
+              "id": "palilia33"
+            },
+            {
+              "id": "sonderschriften23"
+            }
+          ]
+        },
+        {
+          "id": "rmstart",
+          "title": {
+            "de": "Mitteilungen des Deutschen Archäologischen Instituts, Römische Abteilung",
+            "en": "Communications from the German Archaeological Institute, Roman Department",
+            "it": "Dichiarazioni dell'Istituto Archeologico tedesco, Dipartimento di Roma"
+          },
+          "children": [
+            {
+              "id": "rm121",
+              "title": {
+                "de": "Band 121, 2015: I bolli laterizi delle residenze imperiali sul Palatino a Roma",
+                "en": "Volume 121, 2015: I bolli laterizi delle residenze imperiali sul Palatino a Roma",
+                "it": "Volume 121, 2015: I bolli laterizi delle residenze imperiali sul Palatino a Roma"
+              }
+            },
+            {
+              "id": "rm125minervamedica",
+              "title": {
+                "de": "Band 125, 2019: Eva Staurenghi, Le ricerche di Friedrich Wilhelm Deichmann e dell'Istituto Archeologico Germanico di Roma sul cosiddetto Tempio di Minerva Medica nell'ambito del progetto degli Spätrömische Rundbauten von Rom und Latium",
+                "it": "Volume 125, 2019: Eva Staurenghi, Le ricerche di Friedrich Wilhelm Deichmann e dell'Istituto Archeologico Germanico di Roma sul cosiddetto Tempio di Minerva Medica nell'ambito del progetto degli Spätrömische Rundbauten von Rom und Latium"
+              }
+            },
+            {
+              "id": "rm125vignacodini",
+              "title": {
+                "de": "Band 125, 2019: Antonello Vilella, Inedite (e dimenticate) iscrizioni parietali dal colombario di Vigna Codini III",
+                "it": "Volume 125, 2019: Antonello Vilella, Inedite (e dimenticate) iscrizioni parietali dal colombario di Vigna Codini III"
+              }
+            },
+			{
+              "id": "rm127_Pasieka-Franceschini",
+              "title": {
+                "de": "RM 127.2021: M. Franceschini – Paul P. Pasieka, 'da niuna cura accompagnato fuori che quella di scoprire antiche cose'. Nuovi dati sugli scavi Campanari a Vulci (Rapporti di scavo inediti, 09.11.1835–28.05.1836)",
+                "it": "RM 127.2021: M. Franceschini – Paul P. Pasieka, 'da niuna cura accompagnato fuori che quella di scoprire antiche cose'. Nuovi dati sugli scavi Campanari a Vulci (Rapporti di scavo inediti, 09.11.1835–28.05.1836)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "pergamenischeforschungen17",
+          "title": {
+            "de": "S. Kielau, Terrakotten aus Pergamon. Tonfiguren und -objekte aus der Wohnstadt am Südhang der Akropolis und von weiteren Fundorten, PF 17 (Berlin 2018). Erweiterter Online-Katalog",
+            "en": "S. Kielau, Terrakotten aus Pergamon. Tonfiguren und -objekte aus der Wohnstadt am Südhang der Akropolis und von weiteren Fundorten, PF 17 (Berlin 2018). Erweiterter Online-Katalog"
+          },
+          "hidden": false
+        },
+        {
+          "id": "pergamenischeforschungen19",
+          "title": {
+            "de": "E. Laufer, Architektur unter den Attaliden. Pergamon und die Städte zwischen herrscherlichem Bauengagement und Lokaltradition, PF 19 (Berlin 2021). Online-Katalog",
+            "en": "E. Laufer, Architektur unter den Attaliden. Pergamon und die Städte zwischen herrscherlichem Bauengagement und Lokaltradition, PF 19 (Berlin 2021). Online-Katalog"
+          },
+          "hidden": true
+        },
+        {
+          "id": "ayamonte",
+          "title": {
+            "de": "Die Phönizische Nekropole von Ayamonte",
+            "en": "The Phoenician Necropolis of Ayamonte",
+            "es": "La necrópolis fenico di Ayamonte"
+          },
+          "hidden": true
+        },
+        {
+          "id": "databaseaksum1906",
+          "title": {
+            "de": "Die Deutsche Aksum-Expedition 1906"
+          },
+          "hidden": true
+        },
+        {
+          "id": "naher",
+          "title": {
+            "de": "North Africa Heritage Archive"
+          },
+          "hidden": true
+        },
+        {
+          "id": "faak16",
+          "title": {
+            "de": "C. Mader, Sea Shells in the Mountains and Llamas on the Coast: The Economy of the Paracas Culture (800 to 200 BC) in Southern Peru",
+            "en": "C. Mader, Sea Shells in the Mountains and Llamas on the Coast: The Economy of the Paracas Culture (800 to 200 BC) in Southern Peru"
+          },
+          "hidden": false
+        },
+        {
+          "id": "faak18",
+          "title": {
+            "de": "L. Gilabert Sansalvador, La bóveda en la arquitectura maya (Bonn 2021). Catálogo de bóvedas mayas",
+            "en": "L. Gilabert Sansalvador, La bóveda en la arquitectura maya (Bonn 2021). Catálogo de bóvedas mayas",
+            "es": "L. Gilabert Sansalvador, La bóveda en la arquitectura maya (Bonn 2021). Catálogo de bóvedas mayas"
+          },
+          "hidden": false
+        },
+        {
+          "id": "AA_2019_1",
+          "title": {
+            "de": "A. Schachner, Die Ausgrabungen in Boğazköy-Ḫattuša 2018, AA 2019/1, § 1–147. Supplement",
+			"en": "A. Schachner, The Excavations at Boğazköy-Ḫattuša in 2018, AA 2019/1, § 1–147. Supplement"
+
+          },
+          "hidden": false
+        },
+		{
+          "id": "AA_2019_2",
+          "title": {
+            "de": "A. Schachner, Die Ausgrabungen in Boğazköy-Ḫattuša 2019, AA 2020/1, § 1–111. Supplement",
+			"en": "A. Schachner, The Excavations at Boğazköy-Ḫattuša in 2019, AA 2020/1, § 1–111. Supplement"
+          },
+          "hidden": false
+        },
+		{
+          "id": "JOGA_2020_Pruemers",
+          "title": {
+            "de": "H. Prümers, The original of Max Uhle´s map of Pachacamac in Quito, JoGA, § 1–33. Supplement",
+			"en": "H. Prümers, The original of Max Uhle´s map of Pachacamac in Quito, JoGA, § 1–33. Supplement"
+          },
+          "hidden": false
+        },
+		{
+          "id": "JOGA_2020_Fecher",
+          "title": {
+            "de": "F. Fecher et al., The ceramic finds from Guadalupe, Honduras: Optimizing archaeological documentation with a combination of digital and analog techniques, JoGA, § 1–53. Supplement",
+			"en": "F. Fecher et al., The ceramic finds from Guadalupe, Honduras: Optimizing archaeological documentation with a combination of digital and analog techniques, JoGA, § 1–53. Supplement"
+          },
+          "hidden": false
+        },
+		{
+          "id": "JOGA_2020_Lange",
+          "title": {
+            "de": "P. Lange, Das Nepal Temple Project: Archäologie eines Hindu-Tempels, JoGA, § 1–29. Supplement",
+			"en": "P. Lange, Das Nepal Temple Project: Archäologie eines Hindu-Tempels, JoGA, § 1–29. Supplement"
+          },
+          "hidden": false
+        },
+		{
+          "id": "E-FB-2020-2-Rosenow",
+          "title": {
+            "de": "D. Rosenow, Dahschur, Ägypten – Die Arbeiten der Herbstkampagne 2019 und Frühjahrskampagne 2020, eDAI-F 2020-2, § 1–18. Digital Supplement",
+			"en": "D. Rosenow, Dahschur, Ägypten – Die Arbeiten der Herbstkampagne 2019 und Frühjahrskampagne 2020, eDAI-F 2020-2, § 1–18. Digital Supplement"
+          },
+          "hidden": false
+        },
+        {
+         "id": "inden1",
+         "title": {
+            "de": "R. Kuper, Inden 1. Eine Siedlung der Rössener Kultur im Rheinland. Felddokumentation 1965-67"
+          },
+         "hidden": false
+        },
+        {
+          "id": "mar41",
+          "title": {
+            "de": "MAR 41: A. Reinhardt, Reproduktion und Bild. Zur Wiederholung und Vervielfältigung von Reliefs in römischer Zeit, MAR XLI (Wiesbaden 2019). Online-Katalog"
+          },
+          "hidden": false
+        },
+        {
+          "id": "milet_V4",
+          "title": {
+            "de": "Milet V 4: G. P. Schaus, Funde aus Milet Teil 4, Laconian and Chian Fine Ware Pottery at Miletus. Milet V 4 (Wiesbaden 2020). Digitaler Katalog",
+            "en": "Milet V 4: G. P. Schaus, Funde aus Milet Teil 4, Laconian and Chian Fine Ware Pottery at Miletus. Milet V 4 (Wiesbaden 2020). Digital Catalog"
+          },
+          "hidden": false
+        },
+	   {
+          "id": "mumienmasken",
+          "title": {
+            "de": "A. Müller, Ägyptens schöne Gesichter. Die Mumienmasken der römischen Kaiserzeit und ihre Funktion im Totenritual, AF 39 (Wiesbaden 2021). Datenbank-Katalog",
+            "de": "A. Müller, Ägyptens schöne Gesichter. Die Mumienmasken der römischen Kaiserzeit und ihre Funktion im Totenritual, AF 39 (Wiesbaden 2021). Database-Catalog"
+          },
+          "hidden": false
+        },
+        {
+          "id": "blankenheim",
+          "title": {
+            "de": "P. Noelke – N. Hanel - P. Pauly, Die Antiken der Grafen von Manderscheid-Blankenheim. Kontext, Schicksal und Kommentierung einer rheinischen Sammlung der Zeit des Humanismus (Onlinekatalog).",
+			"en": "P. Noelke – N. Hanel - P. Pauly, Die Antiken der Grafen von Manderscheid-Blankenheim. Kontext, Schicksal und Kommentierung einer rheinischen Sammlung der Zeit des Humanismus (Onlinekatalog)."
+          },
+          "hidden": false
+        },
+        {
+          "id": "boha29",
+          "title": {
+            "de": "S. Herbordt – A. von Wickede, Kleinfunde aus der Oberstadt von Hattusa. Das zentrale Tempelviertel und die Tempelviertel am Königs- und Löwentor, Boğazköy-Ḫattuša 29 (Berlin 2021). Erweiterter Online-Katalog",
+            "en": "S. Herbordt – A. von Wickede, Kleinfunde aus der Oberstadt von Hattusa. Das zentrale Tempelviertel und die Tempelviertel am Königs- und Löwentor, Boğazköy-Ḫattuša 29 (Berlin 2021). Extended Online-Catalog"
+          },
+          "hidden": false
+        },
+        {
+          "id": "avp17_engels",
+          "title": {
+            "de": "B. Engels, Das Grottenheiligtum am Osthang von Pergamon. Eine Mikrostudie zur späthellenistischen Kultpraxis, Altertümer von Pergamon 17 (Berlin 2022). Erweiterter Online-Katalog",
+            "en": "B. Engels, Das Grottenheiligtum am Osthang von Pergamon. Eine Mikrostudie zur späthellenistischen Kultpraxis, Altertümer von Pergamon 17 (Berlin 2022). Extended Online-Catalog"
+          },
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "",
+      "title": {
+        "de": "Wissenschaftliche Qualifikationsarbeiten",
+        "en": "Dissertations/academic final papers",
+        "it": "Tesi di laurea e di dottorato"
+      },
+      "children": [
+        {
+          "id": "roseterra",
+          "title": {
+            "de": "H. Rose, Die römischen Terrakottamasken in den Nordwestprovinzen. MAR XXXVII (2006)",
+            "en": "H. Rose, Roman Terracotta Masks in the Northwestern Provinces (Die römischen Terrakottamasken in den Nordwestprovinzen. MAR XXXVII)"
+          }
+        },
+        {
+          "id": "lipps",
+          "title": {
+            "de": "Lipps"
+          },
+          "hidden": true
+        },
+        {
+          "id": "lang",
+          "title": {
+            "de": "Lang"
+          },
+          "hidden": true
+        },
+        {
+          "id": "busch",
+          "title": {
+            "de": "busch"
+          },
+          "hidden": true
+        },
+        {
+          "id": "doepner",
+          "title": {
+            "de": "Doepner"
+          },
+          "hidden": true
+        },
+        {
+          "id": "tombraegel",
+          "title": {
+            "de": "Tombrägel"
+          },
+          "hidden": true
+        },
+        {
+          "id": "schulzmeer",
+          "title": {
+            "de": "J. Schulz, Meerwesen auf römischen Sarkophagen. Ikonographie und Bedeutung",
+            "en": "J. Schulz, Sea Creatures on Roman Sarkophagi. Iconography and Meaning"
+          }
+        }
+      ]
+    },
+    {
+      "id": "_testscope",
+      "hidden": true
+    }
+  ]
+}
