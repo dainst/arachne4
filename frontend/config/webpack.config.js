@@ -9,16 +9,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const package = require('../package.json');
 
-createDevConfig();
-const devConfig = require('./dev-config.json');
 
-module.exports = (env) => {
+module.exports = (env, argv) => {
 
     let versionString = `v${package.version}`;
     if (env.build) versionString += ` (build #${env.build})`;
     else versionString += ` (DEV)`;
 
-    return { 
+    const webpackConf = { 
         entry: path.resolve(__dirname, '../app/app.js'),
         output: {
             path: path.resolve(__dirname, '../public'),
@@ -149,16 +147,24 @@ module.exports = (env) => {
             }),
         ],
         devtool: env.production ? false : 'source-map',
-        devServer: {
+    };
+
+    if (argv.mode !== 'production') {
+        createDevConfig();
+        const proxyUri = require('./dev-config.json').backendUri.replace('/data', '');
+
+        webpackConf.devServer = {
             proxy: {
                 '/data': {
-                    target: devConfig.backendUri.replace('/data', ''),
+                    target: proxyUri,
                     changeOrigin: true,
                 }
             },
             historyApiFallback: true,
         }
-    };
+    }
+
+    return webpackConf;
 };
 
 function createDevConfig() {
