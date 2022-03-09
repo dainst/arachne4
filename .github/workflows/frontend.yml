@@ -39,11 +39,17 @@ jobs:
       - name: Run unit tests
         run: npm run test
 
+      - name: Set backend URI to test server
+        run: sed -i 's/document.location.host/\"'"$TEST_SERVER"'\"/' app/app.js
+
       - name: Start dev server (in background)
-        run: npm start
+        run: npm start &
 
       - name: Run e2e tests
         run: xvfb-run -n 97 npm run e2e
+
+      - name: Reset backend URI
+        run: sed -i 's/\"'"$TEST_SERVER"'\"/document.location.host/' app/app.js
 
       - name: Log in to the Container registry
         uses: docker/login-action@v1
