@@ -49,5 +49,4 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref == 'refs/heads/stable' && 'stable' || 'latest' }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args:
-            - BUILD_NO=${{ github.run_number }}
+          build-args: BUILD_NO=${{ github.run_number }}
