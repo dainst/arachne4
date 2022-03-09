@@ -149,7 +149,7 @@ module.exports = (env, argv) => {
         devtool: env.production ? false : 'source-map',
     };
 
-    if (argv.mode !== 'production') {
+    if (argv?.mode && argv.mode !== 'production') {
         createDevConfig();
         const proxyUri = require('./dev-config.json').backendUri.replace('/data', '');
 
