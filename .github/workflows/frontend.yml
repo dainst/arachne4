@@ -39,6 +39,12 @@ jobs:
       - name: Run unit tests
         run: npm run test
 
+      - name: Start dev server (in background)
+        run: npm start &
+
+      - name: Run e2e tests
+        run: npm run e2e
+
       - name: Log in to the Container registry
         uses: docker/login-action@v1
         with:

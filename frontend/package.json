@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "karma start config/karma.conf",
-    "e2e": "rimraf test/e2e-screenshots/*.png && protractor test/e2e/protractor.conf.js",
+    "e2e": "wait-on http://localhost:8080 && rimraf test/e2e-screenshots/*.png && protractor test/e2e/protractor.conf.js",
     "build": "webpack --config config/webpack.config.js --mode production",
     "start": "webpack-dev-server --config config/webpack.config.js --mode development"
   },
@@ -91,6 +91,7 @@
     "string-replace-loader": "^3.1.0",
     "style-loader": "^3.3.1",
     "url": "~0.11.0",
+    "wait-on": "^6.0.1",
     "webdriver-manager": "~12.1.0",
     "webpack": "^5.64.3",
     "webpack-cli": "^4.9.1",
