@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+defaults:
+  run:
+    working-directory: frontend
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: arachne4-frontend
