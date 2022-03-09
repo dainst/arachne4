@@ -15,7 +15,7 @@ exports.config = {
     multiCapabilities: [{
         browserName: 'chrome',
         chromeOptions: {
-            args: ['--disable-web-security', '--disable-dev-shm-usage'],
+            args: ['--disable-web-security'],
             prefs: {
                 download: {
                     prompt_for_download: false,
