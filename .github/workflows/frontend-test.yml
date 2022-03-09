@@ -39,14 +39,14 @@ jobs:
       - name: Run unit tests
         run: npm run test
 
-      - name: Set backend URI to test server
-        run: sed -i 's/document.location.host/\"'"${{ env.TEST_SERVER }}"'\"/' app/app.js
+      # - name: Set backend URI to test server
+      #   run: sed -i 's/document.location.host/\"'"${{ env.TEST_SERVER }}"'\"/' app/app.js
 
-      - name: Start dev server (in background)
-        run: npm start &
+      # - name: Start dev server (in background)
+      #   run: npm start &
 
-      - name: Run e2e tests
-        run: xvfb-run -n 97 npm run e2e
+      # - name: Run e2e tests
+      #   run: xvfb-run -n 97 npm run e2e
 
-      - name: Reset backend URI
-        run: sed -i 's/\"'"${{ env.TEST_SERVER }}"'\"/document.location.host/' app/app.js
+      # - name: Reset backend URI
+      #   run: sed -i 's/\"'"${{ env.TEST_SERVER }}"'\"/document.location.host/' app/app.js
