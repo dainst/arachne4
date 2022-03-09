@@ -15,7 +15,7 @@ defaults:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}-frontend
-  TEST_SERVER: https:\/\/bogusman02\.uni-koeln\.de
+  TEST_SERVER: bogusman02.uni-koeln.de
 
 jobs:
 
