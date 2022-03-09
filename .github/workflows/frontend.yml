@@ -42,8 +42,10 @@ jobs:
       - name: Start dev server (in background)
         run: npm start &
 
+      - name: Setup chromedriver
+        uses: nanasess/setup-chromedriver@v1
+
       - name: Run e2e tests
-        uses: browser-actions/setup-chrome@latest
         run: npm run e2e
 
       - name: Log in to the Container registry
