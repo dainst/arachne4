@@ -18,6 +18,16 @@ jobs:
 
     steps:
 
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Log in to the Container registry
         uses: docker/login-action@v1
         with:
@@ -28,7 +38,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: "{{defaultContext}}:frontend"
+          context: "frontend"
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref == 'refs/heads/stable' && 'stable' || 'latest' }}
           labels: ${{ steps.meta.outputs.labels }}
