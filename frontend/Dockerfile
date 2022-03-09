@@ -1,10 +1,12 @@
 FROM node:lts as builder
 
+ARG BUILD_NO=DEV
+
 COPY . /frontend 
 WORKDIR /frontend
 
 RUN npm i
-RUN npm run build
+RUN npm run build -- --env build=${BUILD_NO}
 
 FROM nginx
 
