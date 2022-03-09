@@ -42,9 +42,6 @@ jobs:
       - name: Start dev server (in background)
         run: npm start &
 
-      - name: Setup chromedriver
-        uses: nanasess/setup-chromedriver@v1
-
       - name: Run e2e tests
         run: npm run e2e
 
