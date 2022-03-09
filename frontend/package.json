@@ -46,7 +46,7 @@
     "angular-mocks": "~1.6.10",
     "bootstrap-sass": "^3.4.1",
     "browser-sync": "^2.27.5",
-    "chromedriver": "~99.0.0",
+    "chromedriver": "^98.0.0",
     "connect-modrewrite": "~0.10.2",
     "copy-webpack-plugin": "^10.0.0",
     "cors": "~2.8.4",
