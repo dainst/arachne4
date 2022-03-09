@@ -40,7 +40,7 @@ jobs:
         run: npm run test
 
       - name: Start dev server (in background)
-        run: npm start &
+        run: npm start
 
       - name: Run e2e tests
         run: xvfb-run -n 97 npm run e2e
