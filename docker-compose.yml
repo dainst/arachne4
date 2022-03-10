@@ -24,9 +24,9 @@ services:
     build: ./backend
     image: ghcr.io/dainst/arachne4-backend:latest
     environment:
+      - "DB_SERVER=${DB_SERVER}"
       - "DB_PASSWORD=${DB_PASSWORD}"
       - "SERVER_ADDRESS=${SERVER_ADDRESS}"
-      - "DB_SERVER=db"
       - "IIPIMAGE_SERVER=frontend"
       - "ELASTICSEARCH_SERVER=elasticsearch"
     volumes:
@@ -53,11 +53,13 @@ services:
       - db_data:/var/lib/mysql
     ports:
       - 3306:3306
+    profiles:
+      - with-db
 
   phpmyadmin:
     image: phpmyadmin:fpm-alpine
     environment:
-      - "PMA_HOST=db"
+      - "PMA_HOST=${DB_SERVER}"
       - "MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}"
     volumes:
       - phpmyadmin_data:/var/www/html/
