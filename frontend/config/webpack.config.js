@@ -138,7 +138,8 @@ module.exports = (env, argv) => {
                         /^ui-grid/,
                         /^class/,
                         /^awesome-marker/, 
-                        "glyphicon-record", "glyphicon-home", "glyphicon-eye-open", "icon-white"
+                        "glyphicon-record", "glyphicon-home", "glyphicon-eye-open", "icon-white",
+                        "maximg",
                     ]
                 }
             }),
