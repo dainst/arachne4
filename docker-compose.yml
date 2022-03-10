@@ -7,7 +7,7 @@ services:
 
   frontend:
     build: ./frontend
-    image: ghcr.io/dainst/arachne4-frontend:latest
+    image: ghcr.io/dainst/arachne4-frontend:${ARACHNE_IMAGE_VERSION}
     volumes:
       - phpmyadmin_data:/var/www/html/:ro
     labels:
@@ -22,7 +22,7 @@ services:
   
   backend:
     build: ./backend
-    image: ghcr.io/dainst/arachne4-backend:latest
+    image: ghcr.io/dainst/arachne4-backend:${ARACHNE_IMAGE_VERSION}
     environment:
       - "DB_SERVER=${DB_SERVER}"
       - "DB_PASSWORD=${DB_PASSWORD}"
@@ -81,7 +81,7 @@ services:
       - archaeocloud:/media/archaeocloud
 
   traefik:
-    image: "traefik:v2.5"
+    image: traefik:v2.5
     restart: always
     command:
       - "--providers.docker=true"
@@ -100,7 +100,7 @@ services:
       - "443:443"
 
   watchtower:
-    image: containrrr/watchtower
+    image: containrrr/watchtower:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /root/.docker/config.json:/config.json
