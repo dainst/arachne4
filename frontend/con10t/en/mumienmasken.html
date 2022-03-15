@@ -1,0 +1,123 @@
+<style>
+
+    .con10t-image con10t-image- {
+        margin:auto;
+    }
+
+    .con10t-row {
+        margin-top: 2vh;
+    }
+
+    table#bibliographie td:nth-child(odd) {
+        padding: 0.5vw 0;
+    }
+
+</style>
+
+<idai-header
+        image="/con10t/headerimages/Mumienmasken_cover.jpg"
+        description="A. Müller, Ägyptens schöne Gesichter. Die Mumienmasken der römischen Kaiserzeit und ihre Funktion im Totenritual, AF 39 (Wiesbaden 2021). Datenbank-Katalog"
+        link="https://doi.org/10.34780/39am-96ag">
+</idai-header>
+
+<div class="con10t-page teaserpage container">
+    <div class="con10t-row">
+        <div class="con10t-title">
+            <h1>A. Müller, Ägyptens schöne Gesichter. Die Mumienmasken der römischen Kaiserzeit und ihre Funktion im Totenritual, AF 39 (Wiesbaden 2021). Database-Catalog</h1>
+        </div>
+
+        <div class="con10t-sidebar">
+
+            <con10t-toc toc-heading="Content"></con10t-toc>
+            <br>
+
+            <h3>Map</h3>
+
+            <!-- Map -->
+           <div ng-init="config = {
+                    clustered: false,
+                    facetsSelect: [
+                        {
+                        key: 'catalogIds',
+                        value: 1092
+                        }
+                    ]
+                }">
+           </div>
+
+            <div con10t-map style = "margin-bottom: 1vw;"
+                 id="map"
+                 limit="200"
+                 facets-select="config.facetsSelect"
+                 lat="27"
+                 lng="30"
+                 zoom="5">
+            </div>
+
+            <h3>Browse project data</h3>
+
+            <a con10t-search-query target = "_blank">Show all datasets</a>
+
+            <con10t-search catalog-id="1092"></con10t-search>
+
+            <br>
+
+            <h3>Catalog</h3>
+
+            <a href = "https://arachne.dainst.org/catalog/1092">Browse catalog</a>
+
+            <h3 style = "margin-top: 5%">About the book</h3>
+
+            <p><a href = "https://doi.org/10.34780/39am-96ag" target = "_blank">iDAI.publications</a></p>
+
+            <con10t-image src = "/con10t/img/mumienmasken/Mumienmasken-cover_full.jpg" alt = "Cover-Printausgabe" width = "300"></con10t-image>
+
+        </div>
+
+        <div class="con10t-content">
+
+            <h2 class="con10t-toc-entry">Introduction to the database catalogue</h2>
+
+            <p>How do mummy masks act? This question is the starting point of the dissertation "Egypt's Beautiful Faces. Mummy Masks of the Roman Imperial Period and their Function in the Funerary Ritual" (hereafter Müller 2021), which aims to change perspectives.  In contrast to the prevailing view, mummy masks are not regarded solely as inanimate objects, but as entities in their own right, which, depending on the context of use, could also assume subject status.</p>
+
+            <con10t-image src="/con10t/img/mumienmasken/Mumienmaske-6867002.jpg" align="center" alt="Mumienmaske-6867002" height="200">
+                    <span class="ng-scope">
+                        <a href = "arachne.dainst.org/entity/6867406" target = "_blank">Mummy mask of a man from Middle-Egypt. © Hildesheim, Roemer- und Pelizaeums-Museum PM 1581, Photo: Sh. Shalchi</a>
+                    </span>
+            </con10t-image>
+
+            <p>The work comprises two parts that are closely intertwined: In addition to the section with text and plates, which was printed and remains unchanged, the second part, the database catalogue, was consciously realised in digital form, as it was designed to be as flexible as possible.</p>
+
+            <p>The database consists of a collection of all mummy masks from Egypt that have come to the attention of the author to date and that were created during the Imperial period. When the database catalogue was published, it comprised 1789 pieces.  The focus was on the Nile Valley; objects from the oases were only included as comparative examples. This corpus is largely based on Günter Grimm's collection of material (Grimm 1974, pp. 177–194), which, however, also included a whole series of objects of a different function and date. Therefore, his collection of materials and the present catalogue are only partially congruent. Where no illustration or confirming information on the respective object was available, for example because it was not physically accessible or only accessible as an illustration, destroyed or lost, its data was nevertheless included in the catalogue (these objects can be subsequently identified as other categories in the adaptable database if new findings should arise in the future).  If, however, there were definite reasons for exclusion from the outset (object identification, dating information, etc.), the respective pieces were not registered.</p>
+
+            <p>Thus, a large number of objects were included in the catalogue that were obviously not (yet) known to Günter Grimm or that originated from recent excavations.  This applies in particular to the more recent fieldwork in Tuna el-Gebel and Thebes-West, but also in part to the Western Oases (detailed acknowledgements in Müller 2021, pp. IX–XIII). Some complexes (finds from Sami Gabra's old excavations in Tuna el-Gebel, and also unpublished mask fragments from the more recent excavations in Antinooupolis) could not be included in the database catalogue for reasons of publication rights; however, they are listed with their inventory numbers in the dissertation (Müller 2021, pp. 355. 369–370).</p>
+
+            <h2 class="con10t-toc-entry">Catalog</h2>
+
+            <con10t-catalog-tree catalog-id="1092"></con10t-catalog-tree>
+
+            <h2 class="con10t-toc-entry">Usage Notices</h2>
+
+            <p style = "padding-bottom:2vh;">The database catalogue contains all information relevant to the research question of the dissertation in bullet point form. This includes details on material, production technique and iconography. In addition, it contains information on the history of the object (proven and recorded sites, former and current storage locations, publication records, etc.). If the original place of discovery is not known, a suggestion for provenance reconstruction was made by assigning the object to a workshop group with a clearly identifiable distribution area (Müller 2021, pp. 167–195). The same applies to the dating suggestions along with references to what they are based on (e.g. hairstyle, find associations, technical details, stylistic considerations, etc.). For the sake of comparison, dating suggestions already available in the research literature were also listed, since considerable discrepancies can be noted here in some cases (critical discussion of the totality of available dating approaches in Müller 2021, pp. 32-41).</p>
+
+            <con10t-image src="/con10t/img/mumienmasken/Tuna-el-Gebel-TG2006-G6.jpg" alt="Tuna-el-Gebel" height="200">
+
+                <span>Tuna el-Gebel, Tomb TG2006.G6, View from West. © Project »Tuna el-Gebel«, LMU München / Mélanie Flossmann-Schütze</span>
+
+            </con10t-image>
+
+            <p style = "padding-top:2vh;">In order to ensure maximum flexibility, the database catalogue was designed without generally arranging the material in fixed groups. Although there is a fixed catalogue numbering and also a catalogue text that reflects the status at the time of distribution of the book (November 2021), their arrangement does not correspond to content-related criteria, but rather to the alphabetical sequence of the storage locations. If an insight into this state of knowledge is desired, reference can be made to the fixed catalogue.  The technical, iconographic and contextual categorisation status of the material at the time of printing can also be inferred from the so-called "Beleglisten" of the dissertation (Appendix 2: Müller 2021, pp. 283–329).</p>
+            <p>In addition, it is possible for every user to independently sort and evaluate the flexible data records in the database with the help of the keywords that can be taken from the dissertation (continuous text, titles of the “Beleglisten” etc.). All entries in the catalogue are referenced in the dissertation; conversely, there is a reference back to the dissertation in the form of page and plate numbers on which the respective piece is mentioned. This is intended to ensure that the analogue and digital components of the research work are as closely intertwined as possible, as they are decidedly conceived as a complementary body of work.</p>
+
+            <p>A. Müller</p>
+
+            <h2 class="con10t-toc-entry">References</h2>
+
+            <table id = "bibliographie">
+                <tr><td>Grimm 1974</td><td>G. Grimm, Die römischen Mumienmasken aus Ägypten (Wiesbaden 1974)</td></tr>
+                <tr><td>Müller 2021</td><td>A. Müller, Ägyptens schöne Gesichter. Die Mumienmasken der römischen Kaiserzeit und ihre Funktion im Totenritual, AF 39 (Wiesbaden 2021)</td></tr>
+            </table>
+        </div>
+
+    </div>
+</div>
