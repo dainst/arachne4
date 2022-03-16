@@ -5,6 +5,7 @@ services:
     image: ghcr.io/dainst/arachne4-frontend:${ARACHNE_IMAGE_VERSION}
     volumes:
       - phpmyadmin_data:/var/www/html/:ro
+      - archaeocloud:/media/archaeocloud
     labels:
       - traefik.enable=true
       - traefik.http.routers.frontend.rule=Host(`${SERVER_ADDRESS}`)
