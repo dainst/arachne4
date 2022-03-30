@@ -17,7 +17,8 @@ import './catalog.scss';
 export default angular.module('arachne.catalog', [ImageModule.name, MarkdownModule.name, NgShowdownModule.name, 'ui.tree'])
     .config(['$stateProvider', $stateProvider => {
         $stateProvider.state({ name: 'catalogs', url: '/catalogs', template: require('./catalogs.html')});
-        $stateProvider.state({ name: 'catalog', url: '/catalog/:id?view', template: require('./catalog.html')});
+        $stateProvider.state({ name: 'catalog', url: '/catalog/:id', template: require('./catalog.html')});
+        $stateProvider.state({ name: 'catalogEntry', url: '/catalog/:id/:entryId', template: require('./catalog.html')});
     }])
     .directive('arCatalogOccurrences', ['arachneSettings', '$http', '$uibModal', 'Catalog', 'CatalogEntry', arCatalogOccurrences])
     .controller('ManageEditorController', ['$scope', '$http', 'arachneSettings', 'messageService', '$uibModalInstance', 'catalog', ManageEditorController])
