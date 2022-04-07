@@ -15,6 +15,7 @@ services:
       - traefik.http.middlewares.frontend-compress.compress=true
       - traefik.http.routers.frontend.middlewares=frontend-compress
       - "com.centurylinklabs.watchtower.enable=true"
+    restart: always
   
   backend:
     build: ./backend
@@ -36,6 +37,7 @@ services:
       - traefik.http.middlewares.backend-compress.compress=true
       - traefik.http.routers.backend.middlewares=backend-compress
       - "com.centurylinklabs.watchtower.enable=true"
+    restart: always
 
   db:
     image: mariadb:latest
@@ -51,6 +53,7 @@ services:
       - 3306:3306
     profiles:
       - with-db
+    restart: always
 
   phpmyadmin:
     image: phpmyadmin:fpm-alpine
@@ -59,6 +62,7 @@ services:
       - "MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}"
     volumes:
       - phpmyadmin_data:/var/www/html/
+    restart: always
 
   elasticsearch:
     build: ./elasticsearch
@@ -70,11 +74,13 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+    restart: always
 
   iipimage:
     build: ./iipimage
     volumes:
       - archaeocloud:/media/archaeocloud
+    restart: always
 
   traefik:
     image: traefik:v2.5
@@ -104,6 +110,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --label-enable --cleanup --interval 60
+    restart: always
 
 volumes:
   db_data:
