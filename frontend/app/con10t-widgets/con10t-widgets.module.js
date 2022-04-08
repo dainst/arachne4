@@ -8,7 +8,7 @@ import con10tMapMenuOverlays from './con10t-map-menu-overlays.directive.js';
 import con10tMapMenuSearchField from './con10t-map-menu-search-field.directive.js';
 import con10tMapMenuSearchInfo from './con10t-map-menu-search-info.directive.js';
 import con10tMapOverlays from './con10t-map-overlays.directive.js';
-import mapService from './map/map.service.js';
+import mapService from '../map/map.service.js';
 import con10tMap from './con10t-map.directive.js';
 import con10tPage from './con10t-page.directive.js';
 import con10tToc from './con10t-toc.directive.js';
