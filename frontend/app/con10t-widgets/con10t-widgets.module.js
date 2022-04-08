@@ -8,6 +8,7 @@ import con10tMapMenuOverlays from './con10t-map-menu-overlays.directive.js';
 import con10tMapMenuSearchField from './con10t-map-menu-search-field.directive.js';
 import con10tMapMenuSearchInfo from './con10t-map-menu-search-info.directive.js';
 import con10tMapOverlays from './con10t-map-overlays.directive.js';
+import mapService from './map/map.service.js';
 import con10tMap from './con10t-map.directive.js';
 import con10tPage from './con10t-page.directive.js';
 import con10tToc from './con10t-toc.directive.js';
@@ -33,7 +34,7 @@ export default angular.module('arachne.con10t-widgets', ['oc.lazyLoad'])
     .directive('con10tMapMenuSearchField', ['$location', 'searchService', 'mapService', '$window', con10tMapMenuSearchField])
     .directive('con10tMapMenuSearchInfo', ['searchService', 'mapService', con10tMapMenuSearchInfo])
     .directive('con10tMapOverlays', ['mapService', 'searchService', con10tMapOverlays])
-    .directive('con10tMap', ['searchService', 'mapService', 'heatmapPainter', 'placesService', 'placesPainter', 'arachneSettings', con10tMap]) 
+    .directive('con10tMap', ['searchService', 'mapService', 'heatmapPainter', 'placesService', 'placesPainter', 'arachneSettings', con10tMap])
     .directive('con10tPage', con10tPage)
     .directive('con10tToc', con10tToc)
     .directive('con10tSearchCatalog', con10tSearchCatalog)
@@ -46,4 +47,3 @@ export default angular.module('arachne.con10t-widgets', ['oc.lazyLoad'])
     .directive('con10tTable', ['lazyLoad', con10tTable])
     .directive('con10tNetwork', ['lazyLoad', con10tNetwork])
 ;
-    
