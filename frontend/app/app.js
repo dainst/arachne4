@@ -68,6 +68,7 @@ angular.module('arachne', [
     'arachne.directives',
     'arachne.controllers',
     'arachne.widgets.directives',
+    'arachne.widgets.map',
     adminModule.name,
     infoModule.name,
     projectModule.name,
