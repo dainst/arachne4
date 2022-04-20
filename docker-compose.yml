@@ -36,6 +36,9 @@ services:
       - traefik.port=8080
       - traefik.http.middlewares.backend-middlewares.compress=true
       - traefik.http.middlewares.backend-middlewares.headers.accesscontrolalloworigin=*
+      - traefik.http.middlewares.backend-middlewares.headers.accesscontrolallowmethods=GET,OPTIONS,POST
+      - traefik.http.middlewares.backend-middlewares.headers.accesscontrolmaxage=1728000  
+      - traefik.http.middlewares.backend-middlewares.headers.addvaryheader=true
       - traefik.http.routers.backend.middlewares=backend-middlewares
       - "com.centurylinklabs.watchtower.enable=true"
     restart: always
