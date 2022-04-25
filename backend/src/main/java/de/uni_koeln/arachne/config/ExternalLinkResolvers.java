@@ -30,7 +30,7 @@ public class ExternalLinkResolvers {
 		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "modell3d", "modell3d.Dateiformat", "svg");
 		result.setCriteria(criteria);
 		result.setMatchAllCriteria(true);
-		result.setLinkPattern("https://arachne.dainst.org/SVG?id=%s");
+		result.setLinkPattern("https://arachne.dainst.org/svg?id=%s");
 		result.setPatternFields(Arrays.asList("Dataset.internalId"));
 		return result;
 	}
