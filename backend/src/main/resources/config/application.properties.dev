@@ -45,7 +45,7 @@ transl8Url=https://arachne.dainst.org/transl8/translation/json?application=arach
 model3dBasePath=/media/archaeocloud/S-Arachne/arachne4scans/arachne4webmodels3d
 
 # General
-serverAddress={$SERVER_ADDRESS}
+serverAddress=${SERVER_ADDRESS}
 authFreeTables=SemanticConnection,datierung,literatur,literaturzitat_leftjoin_literatur,rezeptionsobjekte,sammler,URI,zenon,arachneentitydegrees
 imageExcludeList=literatur,ort,sarkophag,person,sammler,einschluss,befund,individualvessel,niton,quantities,surfacetreatment,surfacetreatmentaction
 modelIncludeList=bauwerk,objekt,reproduktion,topographie
