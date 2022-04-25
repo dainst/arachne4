@@ -34,8 +34,9 @@ services:
       - traefik.http.routers.backend.entrypoints=websecure
       - traefik.http.routers.backend.tls.certresolver=myresolver
       - traefik.port=8080
-      - traefik.http.middlewares.backend-compress.compress=true
-      - traefik.http.routers.backend.middlewares=backend-compress
+      - traefik.http.middlewares.backend-compress.compress=true      
+      - traefik.http.middlewares.backend-headers.headers.accesscontrolalloworiginlist=*
+      - traefik.http.routers.backend.middlewares=backend-compress,backend-headers
       - "com.centurylinklabs.watchtower.enable=true"
     restart: always
 
