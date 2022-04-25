@@ -39,6 +39,10 @@ import searchService from './search/search.service.js';
 import authService from './users/auth.service.js';
 import scopeModule from './scope/scope.module.js';
 import welcomePageController from './welcome-page.controller.js';
+import mapService from './map/map.service.js';
+import heatmapPainter from './map/heatmap-painter.js';
+import placesService from './map/places.service.js';
+import placesPainter from './map/places-painter.js';
 
 const lazyLoad = (importPromise) => ($transition$) => {
     const $ocLazyLoad = $transition$.injector().get('$ocLazyLoad');
@@ -85,6 +89,10 @@ angular.module('arachne', [
 .factory('Query', ['arachneSettings', Query])
 .factory('authService', ['$http', 'arachneSettings', '$filter', '$cookies', authService])
 .factory('lazyLoad', ['$ocLazyLoad', lazyLoadService])
+.factory('mapService', ['searchService', mapService])
+.factory('heatmapPainter', [heatmapPainter])
+.factory('placesService', [placesService])
+.factory('placesPainter', [placesPainter])
 .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$compileProvider', '$resourceProvider', '$qProvider', '$httpProvider',
     function($stateProvider, $urlRouterProvider, $locationProvider, $compileProvider, $resourceProvider, $qProvider, $httpProvider) {
 
