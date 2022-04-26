@@ -14,6 +14,7 @@ import './map.scss';
 
 export default angular.module('arachne.map', [SearchModule.name])
     .config(['$stateProvider', $stateProvider => {
+        $stateProvider.state({ name: 'mapScoped', url: '/project/:title/map?fl&q&fq&view&sort&offset&limit&desc&bbox&ghprec&lat&lng&baselayer', template: require('./map.html'), data: { searchPage: 'map' }});
         $stateProvider.state({ name: 'map', url: '/map?fl&q&fq&view&sort&offset&limit&desc&bbox&ghprec&lat&lng&baselayer', template: require('./map.html')});
     }])
     .directive('arEntityMap', ['$compile', 'Query', 'placesPainter', arEntityMap])
