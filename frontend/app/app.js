@@ -112,7 +112,6 @@ angular.module('arachne', [
 
         $httpProvider.useApplyAsync(true);
 
-        var title = 'iDAI.objects / Arachne';
 
         /**
          * we want to realize scope-prefixed urls like project/whatever/search as well as /search
@@ -126,28 +125,28 @@ angular.module('arachne', [
 
         var states = {
             '404': { url: '/404', template: require('./404.html'), data: { pageTitle: 'Arachne | 404' } },
-            'welcome': { url: '/', template: require('./welcome-page.html'), data: { pageTitle: title } },
-            'catalogs.**': { url: '/catalogs', lazyLoad: lazyLoad(import('./catalog/catalog.module.js')), data: { pageTitle: title } },
-            'catalog.**': { url: '/catalog', lazyLoad: lazyLoad(import('./catalog/catalog.module.js')), data: { pageTitle: title } },
-            'books.**': { url: '/books', lazyLoad: lazyLoad(import('./entity/entity.module.js')), reloadOnSearch: false, data: { pageTitle: title } },
-            'entity.**': { url: '/entity', lazyLoad: lazyLoad(import('./entity/entity.module.js')), reloadOnSearch: false, data: { pageTitle: title } },
-            'search.**': { url: '/search', lazyLoad: lazyLoad(import('./search/search.module.js')), data: { pageTitle: title } },
-            'categories.**': { url: '/categories', lazyLoad: lazyLoad(import('./category/category.module.js')), data: { pageTitle: title } },
-            'category.**': { url: '/category', lazyLoad: lazyLoad(import('./category/category.module.js')), data: { pageTitle: title } },
-            'map.**': { url: '/map', lazyLoad: lazyLoad(import('./map/map.module.js')), data: { pageTitle: title, searchPage: 'map' } },
-            '3d.**': { url: '/3d', lazyLoad: lazyLoad(import('./3d/3d.module.js')), data: { pageTitle: title } },
-            'svg.**': { url: '/svg', lazyLoad: lazyLoad(import('./svg/svg.module.js')), data: { pageTitle: title } },
-            'register.**': { url: '/register', lazyLoad: lazyLoad(import('./users/users.module.js')), data: { pageTitle: title }},
-            'editUser.**': { url: '/editUser', lazyLoad: lazyLoad(import('./users/users.module.js')), data: { pageTitle: title }},
-            'contact.**': { url: '/contact', lazyLoad: lazyLoad(import('./users/users.module.js')), data: { pageTitle: title }},
-            'pwdreset.**': { url: '/pwdreset', lazyLoad: lazyLoad(import('./users/users.module.js')), data: { pageTitle: title }},
-			'pwdchange.**': { url: '/pwdchange', lazyLoad: lazyLoad(import('./users/users.module.js')), data: { pageTitle: title }},
-			'userActivation.**': { url: '/user/activation/:token', lazyLoad: lazyLoad(import('./users/users.module.js')), data: { pageTitle: title }},
-            'login.**': { url: '/login?redirectTo',lazyLoad: lazyLoad(import('./users/users.module.js')), data: { pageTitle: title }},
-            'dataimport': { url: '/admin/dataimport', template: require('./admin/dataimport.html'), data: { pageTitle: title }},
-            'dataexport': { url: '/admin/dataexport', template: require('./admin/dataexport.html'), data: { pageTitle: title }},
-            'project': { url: '/project/:title', template: require('./project/project.html'), data: { pageTitle: title } },
-            'info': { url: '/info/:title?id', template: require('./info/info.html'), data: { pageTitle: title } },
+            'welcome': { url: '/', template: require('./welcome-page.html')},
+            'catalogs.**': { url: '/catalogs', lazyLoad: lazyLoad(import('./catalog/catalog.module.js'))},
+            'catalog.**': { url: '/catalog', lazyLoad: lazyLoad(import('./catalog/catalog.module.js'))},
+            'books.**': { url: '/books', lazyLoad: lazyLoad(import('./entity/entity.module.js')), reloadOnSearch: false },
+            'entity.**': { url: '/entity', lazyLoad: lazyLoad(import('./entity/entity.module.js')), reloadOnSearch: false },
+            'search.**': { url: '/search', lazyLoad: lazyLoad(import('./search/search.module.js'))},
+            'categories.**': { url: '/categories', lazyLoad: lazyLoad(import('./category/category.module.js'))},
+            'category.**': { url: '/category', lazyLoad: lazyLoad(import('./category/category.module.js')) },
+            'map.**': { url: '/map', lazyLoad: lazyLoad(import('./map/map.module.js')), data: { searchPage: 'map' } },
+            '3d.**': { url: '/3d', lazyLoad: lazyLoad(import('./3d/3d.module.js'))},
+            'svg.**': { url: '/svg', lazyLoad: lazyLoad(import('./svg/svg.module.js'))},
+            'register.**': { url: '/register', lazyLoad: lazyLoad(import('./users/users.module.js'))},
+            'editUser.**': { url: '/editUser', lazyLoad: lazyLoad(import('./users/users.module.js'))},
+            'contact.**': { url: '/contact', lazyLoad: lazyLoad(import('./users/users.module.js'))},
+            'pwdreset.**': { url: '/pwdreset', lazyLoad: lazyLoad(import('./users/users.module.js'))},
+			'pwdchange.**': { url: '/pwdchange', lazyLoad: lazyLoad(import('./users/users.module.js'))},
+			'userActivation.**': { url: '/user/activation/:token', lazyLoad: lazyLoad(import('./users/users.module.js'))},
+            'login.**': { url: '/login?redirectTo',lazyLoad: lazyLoad(import('./users/users.module.js'))},
+            'dataimport': { url: '/admin/dataimport', template: require('./admin/dataimport.html')},
+            'dataexport': { url: '/admin/dataexport', template: require('./admin/dataexport.html')},
+            'project': { url: '/project/:title', template: require('./project/project.html')},
+            'info': { url: '/info/:title?id', template: require('./info/info.html')},
         };
 
         var scoped = {'project': ['search.**', 'map.**', 'entity.**']};
@@ -157,7 +156,12 @@ angular.module('arachne', [
             angular.forEach(scoped[name] || [], function(child) {
                 var newState = angular.copy(states[child]);
                 newState.url = state.url + newState.url;
-                newState.data.scoped = true;
+
+                if ('data' in newState) {
+                    newState.data.scoped = true;
+                } else {
+                    newState.data = {scoped: true};
+                }
                 registerState(newState, name + '-' + child);
             });
         }
@@ -178,6 +182,10 @@ angular.module('arachne', [
 
         document.title = (typeof toParams.title !== "undefined") ? searchScope.getScopeTitle(toParams.title) + ' |\u00A0' : '';
         document.title += toState.data?.pageTitle || '';
+
+        if (document.title === '') {
+            document.title = 'iDAI.objects / Arachne';
+        }
 
         searchScope.refresh(); // refresh scopeObject for navbarSearch
     });
