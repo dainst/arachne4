@@ -145,29 +145,16 @@ angular.module('arachne', [
             'login.**': { url: '/login?redirectTo',lazyLoad: lazyLoad(import('./users/users.module.js'))},
             'dataimport': { url: '/admin/dataimport', template: require('./admin/dataimport.html')},
             'dataexport': { url: '/admin/dataexport', template: require('./admin/dataexport.html')},
+            'project-entity.**': {url: '/project/:title/entity', lazyLoad: lazyLoad(import('./entity/entity.module.js')), reloadOnSearch: false },
+            'project-map.**': {url: '/project/:title/map', lazyLoad: lazyLoad(import('./map/map.module.js')), data: { searchPage: 'map' } },
+            'project-search.**': {url: '/project/:title/search', lazyLoad: lazyLoad(import('./search/search.module.js'))},
             'project': { url: '/project/:title', template: require('./project/project.html')},
             'info': { url: '/info/:title?id', template: require('./info/info.html')},
         };
 
-        var scoped = {'project': ['search.**', 'map.**', 'entity.**']};
-
-        function registerState(state, name) {
+        angular.forEach(states, (state, name) => {
             $stateProvider.state(name, angular.copy(state));
-            angular.forEach(scoped[name] || [], function(child) {
-                var newState = angular.copy(states[child]);
-                newState.url = state.url + newState.url;
-
-                if ('data' in newState) {
-                    newState.data.scoped = true;
-                } else {
-                    newState.data = {scoped: true};
-                }
-                registerState(newState, name + '-' + child);
-            });
-        }
-
-        angular.forEach(states, registerState);
-
+        });
     }
 ])
 /**
