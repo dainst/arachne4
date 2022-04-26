@@ -11,8 +11,9 @@ import './search.scss';
 
 export default angular.module('arachne.search', [scopeModule.name, imageModule.name, indexModule.name])
     .config(['$stateProvider', $stateProvider => {
+        $stateProvider.state({ name: 'scopedSearch',  url: '/project/:title/search?q&fq&view&sort&offset&limit&desc&bbox&ghprec&group', template: require('./search.html'), data: {scoped: true}});
         $stateProvider.state({ name: 'search',  url: '/search?q&fq&view&sort&offset&limit&desc&bbox&ghprec&group', template: require('./search.html')});
-    }])
+        }])
     .directive('arActiveFacets', arActiveFacets)
     .directive('arSearchNav', ['arachneSettings', arSearchNav])
     .controller('FacetValueModalController', ['$scope', 'facet', '$location', 'indexService', 'searchService', FacetValueModalController])
