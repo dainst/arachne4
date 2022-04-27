@@ -80,6 +80,9 @@
 
   }
 
+  ol {
+    list-style-type: none;
+   }
 }
 
 .catalog-entry {
@@ -122,7 +125,6 @@
     visibility: hidden;
     cursor: pointer;
   }
-
 }
 
 #catalog-to-delete-name {
