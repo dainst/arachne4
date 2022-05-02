@@ -16,7 +16,7 @@ module.exports = (env, argv) => {
     if (env.build) versionString += ` (build #${env.build})`;
     else versionString += ` (DEV)`;
 
-    const webpackConf = { 
+    const webpackConf = {
         entry: path.resolve(__dirname, '../app/app.js'),
         output: {
             path: path.resolve(__dirname, '../public'),
@@ -137,7 +137,7 @@ module.exports = (env, argv) => {
                         /^cluster-marker/,
                         /^ui-grid/,
                         /^class/,
-                        /^awesome-marker/, 
+                        /^awesome-marker/,
                         "glyphicon-record", "glyphicon-home", "glyphicon-eye-open", "icon-white",
                         "maximg",
                     ]
@@ -150,7 +150,7 @@ module.exports = (env, argv) => {
         devtool: env.production ? false : 'source-map',
     };
 
-    if (argv?.mode && argv.mode !== 'production') {
+    if (argv.mode && argv.mode !== 'production') {
         createDevConfig();
         const proxyUri = require('./dev-config.json').backendUri.replace('/data', '');
 
