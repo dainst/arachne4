@@ -24,6 +24,6 @@ public class NestedGeoHashGridAggregation extends GeoHashGridAggregation {
         }
 
         return AggregationBuilders.nested(name, "places").subAggregation(
-            AggregationBuilders.geohashGrid(name).field(field).precision(precision).size(size));
+            AggregationBuilders.geohashGrid(name).field(field).precision(precision));
     }
 }
