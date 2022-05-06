@@ -10,6 +10,8 @@ import EditEntryController from './edit-entry.controller.js';
 import ImageModule  from '../image/image.module.js';
 import MarkdownModule from '../markdown/markdown.module.js';
 import NgShowdownModule from 'ng-showdown';
+import arEntityHeader from '../entity/ar-entity-header.directive.js';
+import arEntityLinks from '../entity/ar-entity-links.directive.js';
 import 'angular-ui-tree';
 
 import './catalog.scss';
@@ -21,6 +23,8 @@ export default angular.module('arachne.catalog', [ImageModule.name, MarkdownModu
         $stateProvider.state({ name: 'catalogEntry', url: '/catalog/:id/:entryId', template: require('./catalog.html')});
     }])
     .directive('arCatalogOccurrences', ['arachneSettings', '$http', '$uibModal', 'Catalog', 'CatalogEntry', arCatalogOccurrences])
+    .directive('arEntityHeader', arEntityHeader)
+    .directive('arEntityLinks', arEntityLinks)
     .controller('ManageEditorController', ['$scope', '$http', 'arachneSettings', 'messageService', '$uibModalInstance', 'catalog', ManageEditorController])
     .controller('CatalogController', ['$rootScope', '$scope', '$state', '$stateParams', '$uibModal', '$window', '$timeout',
         'Catalog', 'CatalogEntry', 'authService', '$http', 'arachneSettings', 'Entity', '$location', 'messageService', CatalogController])

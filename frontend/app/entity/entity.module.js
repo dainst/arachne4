@@ -16,6 +16,7 @@ export default angular.module('arachne.entity', ['arachne.scope'])
         $stateProvider.state({ name: 'entity', url: '/entity/:id?/:params?fl&q&resultIndex&live', template: require('./entity.html') });
         $stateProvider.state({ name: 'entityImages', url: '/entity/:entityId/images', template: require('./entity-images.html') });
         $stateProvider.state({ name: 'entityImage', url: '/entity/:entityId/image/:imageId', template: require('./entity-image.html') });
+        $stateProvider.state({ name: 'entityScoped',  url: '/project/:title/entity/:id?/:params?fl&q&resultIndex&live', template: require('./entity.html')});
         $stateProvider.state({ name: 'books', url: '/books/:id', template: require('./entity.html') });
         $stateProvider.state({ name: 'booksSuffixed', url: '/books/:id/:suffix?', template: require('./entity.html') });
         $stateProvider.state({ name: 'booksSuffixedPage', url: '/books/:id/:suffix/:page?', template: require('./entity.html') });   
