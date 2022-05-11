@@ -41,6 +41,7 @@ import scopeModule from './scope/scope.module.js';
 import welcomePageController from './welcome-page.controller.js';
 import mapService from './map/map.service.js';
 import heatmapPainter from './map/heatmap-painter.js';
+import Place from './map/place.prototype.js';
 import placesService from './map/places.service.js';
 import placesPainter from './map/places-painter.js';
 
@@ -91,8 +92,9 @@ angular.module('arachne', [
 .factory('lazyLoad', ['$ocLazyLoad', lazyLoadService])
 .factory('mapService', ['searchService', mapService])
 .factory('heatmapPainter', [heatmapPainter])
-.factory('placesService', [placesService])
-.factory('placesPainter', [placesPainter])
+.factory('Place', Place)
+.factory('placesPainter', ['$compile', 'Place', '$rootScope', placesPainter])
+.factory('placesService', ['searchService', 'Place', placesService])
 .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$compileProvider', '$resourceProvider', '$qProvider', '$httpProvider',
     function($stateProvider, $urlRouterProvider, $locationProvider, $compileProvider, $resourceProvider, $qProvider, $httpProvider) {
 

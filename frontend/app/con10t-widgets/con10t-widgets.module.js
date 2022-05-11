@@ -20,6 +20,7 @@ import con10tShowIf from './con10t-show-if.directive.js';
 import con10tTree from './con10t-tree.directive.js';
 import con10tTable from './con10t-table.directive.js';
 import con10tNetwork from './con10t-network.directive.js';
+import arMapMarkerPopup from '../map/ar-map-marker-popup.directive.js';
 
 import './con10t-widgets.scss';
 
@@ -46,4 +47,5 @@ export default angular.module('arachne.con10t-widgets', ['oc.lazyLoad'])
     .directive('con10tTree', ['Query', 'Entity', con10tTree])
     .directive('con10tTable', ['lazyLoad', con10tTable])
     .directive('con10tNetwork', ['lazyLoad', con10tNetwork])
+    .directive('con10tMapPopup', ['$location', 'Entity', 'searchScope', arMapMarkerPopup])
 ;
