@@ -1,3 +1,27 @@
+<style>
+    .con10t-row {
+        margin-top: 10vh;
+    }
+
+    #sticky-sidebar {
+        padding-top: 4vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    @media (max-width: 992px) {
+        #sticky-sidebar {
+            position: relative;
+        }
+
+        .con10t-image {
+            float: none;
+        }
+    }
+</style>
+
 <idai-header
         image="/con10t/img/kaak/ecuador3.jpg">
 </idai-header>
@@ -11,121 +35,86 @@
         </div>
 
         <!-- sidebar -->
-        <div class="con10t-sidebar" style = "padding-top: 4vw;">
+        <div class="con10t-sidebar" id="sticky-sidebar">
 
             <con10t-toc toc-heading="Übersicht"></con10t-toc>
 
-            <h3>Zu den Digitalisaten</h3>
+            <!--- Search --->
+            <h3>Bestand durchsuchen</h3>
 
             <p><con10t-search></con10t-search></p>
 
-        <!--- Map --->
-        <h3>Kartenansicht</h3>
-        <!--Platzhalter Sri Lanka-->
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <!--Merimde Map-->
+            <h3 style = "margin-top: 2vh;">Zu den Einzelarchiven</h3>
+
+            <p><a con10t-search-query="*" con10t-search-facet="facet_subkategoriebestand_level3:Merimde">Zum digitalen Merimde Archiv</a></p>
+            <p><a con10t-search-query="*" con10t-search-facet="facet_subkategoriebestand_level3:Khyinga">Zu den Digitalisaten aus Nepal</a></p>
+
+            <!--- Map --->
+            <h3 style = "margin-top: 2vh;">Kartenansicht</h3>
+
+            <!-- Merimde Map -->
             <div ng-init="config = {
-            baselayers: {
-                osm: {
-                    name: 'OpenStreetMap',
-                    type: 'xyz',
-                    url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    layerOptions: {
-                        subdomains: ['a', 'b', 'c'],
-                        attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
-                        continuousWorld: true,
-                        maxZoom: 18
+                baselayers: {
+                    osm: {
+                        name: 'OpenStreetMap',
+                        type: 'xyz',
+                        url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        layerOptions: {
+                            subdomains: ['a', 'b', 'c'],
+                            attribution: '<a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
+                            continuousWorld: true,
+                            maxZoom: 18
+                        }
                     }
-                }
-            },
-            baselayerKey: 'osm'
-        }"></div>
+                },
+                baselayerKey: 'osm'
+            }"></div>
 
-    <div style = "margin-top: 1vw;">
-        <a href="/project/kaak_merimde_map" title="Zur Karte" style="cursor:pointer">
-        <span class="glyphicon glyphicon-fullscreen"></span>
-        Größere Karte</a>
-    </div>
+            <div style = "margin-top: 1vw;">
+                <a href="/project/kaak_merimde_map" title="Zur Karte" style="cursor:pointer">
+                    <span class="glyphicon glyphicon-fullscreen"></span>Größere Karte</a>
+            </div>
 
-    <div ng-init="config = {
-        menuTitle: 'Merimde',
-        facetsSelect: [
-            {
-                key: 'facet_bestandsname',
-                value: 'dai-kaak-archiv'
-            },
-            {
-                key: 'facet_subkategoriebestand_level1',
-                value: 'KAAK-Archiv-MBS'
-            }
-            ]
-    }"></div>
+            <div ng-init="config = {
+                menuTitle: 'Merimde',
+                facetsSelect: [
+                    {
+                        key: 'facet_bestandsname',
+                        value: 'dai-kaak-archiv'
+                    },
+                    {
+                        key: 'facet_subkategoriebestand_level1',
+                        value: 'KAAK-Archiv-MBS'
+                    }
+                    ]
+            }"></div>
 
-    <div con10t-map style = "margin-bottom: 1vw;"
-         id="map"
-         limit="200"
-         facets-select="config.facetsSelect"
-         lat="26.82"
-         lng="30.80"
-         zoom="5"
-         baselayers="config.baselayers"
-         default-baselayer="config.baselayerKey"
-         facets-select="config.facetsSelect">>
-    </div>
-    <!---->
+            <div con10t-map style = "margin-bottom: 1vw;"
+                 id="map"
+                 limit="200"
+                 facets-select="config.facetsSelect"
+                 lat="26.82"
+                 lng="30.80"
+                 zoom="5"
+                 baselayers="config.baselayers"
+                 default-baselayer="config.baselayerKey"
+                 facets-select="config.facetsSelect">>
+            </div>
 
-            <!--
-            <h3>weiterführende Links</h3>
-            <p><a con10t-page="gelehrten_netzwerk">Korrespondenzanalyse</a></p>
-            -->
         </div>
 
         <!-- main -->
         <div class="con10t-content">
 
             <h2 class="con10t-toc-entry">Das Archiv</h2>
-
             <p>Das Archiv umfasst eine vielfältige Sammlung von Grabungsdokumentationen in Form von Zeichnungen, Plänen und Tagebüchern, sowie Briefe und Nachlässe von ehemaligen Forschern an der Abteilung.
-            Dabei handelt es sich um Dokumente deutschsprachiger Archäologen aus Projekten in verschiedenen Ländern Südasiens, Afrikas, Lateinamerikas und im Pazifik, die von der Gründung der Abteilung bis heute reichen.
-            Dazu zählt ebenfalls eine große Fotosammlung, welche um die 48 Bestände umfasst. Dieses Fotoarchiv beinhaltet neben Dias und Negativen im Klein- und Mittelformat auch Fotoabzüge unterschiedlichen Formats sowie digitale Bilder.
-            Insgesamt handelt es sich um etwa 23.653 Kleinbild-Dias, 1129 Mittelformat-Dias, 23.504 Kleinbild- Negative, 3016 Mittelformat-Negative, 2316 Fotoabzüge und 231.723 digitale Fotos. Die Aufnahmen zeigen neben archäologischen Ausgrabungen,
-            Fundplätzen und Funden auch die Landschaft und Umgebung sowie die Menschen vor Ort, und dokumentieren somit sowohl die wissenschaftliche Arbeit als auch das alltägliche Leben in der jeweiligen Region. Das analoge Material wird derzeit digitalisiert und online in iDAI.objects zur Verfügung gestellt.</p>
-
-            <!-- Sri Lanka -->
-            <div style = "clear:both;">
-                <h3 class="con10t-toc-entry">Digitalisierte Fotos aus Sri Lanka</h3>
-                <con10t-image src="/con10t/img/kaak/SriLanka1.jpg"
-                              align="left" width="400"
-                              alt="Grabung Tissamaharama">
-                              Grabung auf der Zitadelle von Tissamaharama (© KAAK)
-                </con10t-image>
-
-                <p>Die Daten aus Sri Lanka werden zu dieser Zeit im Scanlabor der KAAK digitalisiert.</p>
-
-                <a href="ERGÄNZEN" target="_blank">Zu den Digitalisaten aus Sri Lanka</a>
-            </div>
+                Dabei handelt es sich um Dokumente deutschsprachiger Archäologen aus Projekten in verschiedenen Ländern Südasiens, Afrikas, Lateinamerikas und im Pazifik, die von der Gründung der Abteilung bis heute reichen.
+                Dazu zählt ebenfalls eine große Fotosammlung, welche um die 48 Bestände umfasst. Dieses Fotoarchiv beinhaltet neben Dias und Negativen im Klein- und Mittelformat auch Fotoabzüge unterschiedlichen Formats sowie digitale Bilder.
+                Insgesamt handelt es sich um etwa 23.653 Kleinbild-Dias, 1129 Mittelformat-Dias, 23.504 Kleinbild- Negative, 3016 Mittelformat-Negative, 2316 Fotoabzüge und 231.723 digitale Fotos. Die Aufnahmen zeigen neben archäologischen Ausgrabungen,
+                Fundplätzen und Funden auch die Landschaft und Umgebung sowie die Menschen vor Ort, und dokumentieren somit sowohl die wissenschaftliche Arbeit als auch das alltägliche Leben in der jeweiligen Region. Das analoge Material wird derzeit digitalisiert und online in iDAI.objects zur Verfügung gestellt.</p>
 
             <!-- Merimde -->
-            <div style = "clear:both;">
+            <div style="clear:both;">
                 <h3 class="con10t-toc-entry">Merimde Archiv Digital</h3>
 
                 <con10t-image src="/con10t/img/kaak/Merimde1.jpg"
@@ -135,19 +124,31 @@
                 </con10t-image>
 
                 <p>Merimde, welches sich im heutigen Ägypten befindet, wurde in den als erstes Fotoarchiv der KAAK digitalisiert und über die Arachne zugänglich gemacht,
-                obwohl das Projekt eigentlich zu Abteilung Kairo gehört. Der Grund warum sich die Daten bei der KAAK in Bonn befinden ist der, dass der damalige
-                Projektleiter Josef Einwanger als zweiter Direktor der KAAK tätig war. Einige Fotos zu Merimde sind auch im AAArC zu finden, da Herr Kuper,
-                der damalige Zuständige in Köln, in den 1980er Jahren die Grabung in Merimde besuchte.</p>
+                    obwohl das Projekt eigentlich zu Abteilung Kairo gehört. Der Grund warum sich die Daten bei der KAAK in Bonn befinden ist der, dass der damalige
+                    Projektleiter Josef Einwanger als zweiter Direktor der KAAK tätig war. Einige Fotos zu Merimde sind auch im AAArC zu finden, da Herr Kuper,
+                    der damalige Zuständige in Köln, in den 1980er Jahren die Grabung in Merimde besuchte.</p>
+            </div>
 
-                <con10t-search fq="facet_subkategoriebestand_level3:Merimde"></con10t-search>
-                <br>
-                <a con10t-search-query="*" con10t-search-facet="facet_subkategoriebestand_level3:Merimde">Zum digitalen Merimde Archiv</a>
+            <!-- Nepal -->
+            <div style="clear:both;">
+                <h3 class="con10t-toc-entry">Nepal Digitalisate</h3>
 
+                <con10t-image src="/con10t/img/kaak/Nepal.jpg"
+                              align="left" width="400"
+                              alt="Grabung Khyinga">
+                    Landschaft bei Khyinga, Nepal (© KAAK)
+                </con10t-image>
+
+                <p>Die archäologische Untersuchung des Himalaja ist insofern von Bedeutung, da hier der Zusammenhang von Siedlungsprozessen und frühen Staatenbildungen unter den besonderen naturräumlichen Voraussetzungen eines extremen Hochgebirgsraumes erforschbar gemacht wird. Das dichte Nebeneinander grundverschiedener Ökosysteme und unterschiedlich ausgeprägter Kulturlandschaften, die enge Nachbarschaft und die über weite Zeiträume historischen Schicksalsgemeinschaften verschiedener Kulturen, Sprachen und machen den Himalaja zu einem einzigartigen landschaftsarchäologischen Laboratorium. Dadurch bietet sich der Tibetische Himalaya für die Untersuchung von Siedlungsprozessen unter extremen naturräumlichen Bedingungen ideale Voraussetzungen. Ein weiterer Grund für das Interesse an Nepal besteht darin, dass es sich bei der Gegend um eine sogenannte „transit area“ handelt, in der auch heute noch Altformen der geistigen und materiellen Kultur vorhanden sind. All diese Gründe unterscheiden Nepal von anderen Orten.
+                    Dies zeigt sich vor allem in der siedlungsarchäologischen Untersuchung von Naturkatastrophen und ihren Auswirkungen auf das Siedlungsgeschehen der Vergangenheit. Naturgewalten steuern den Siedlungsprozess, entscheiden über Siedlungsgründung oder Aufgabe einer Siedlung. Indem sie Naturkatastrophen unter siedlungsgeschichtlichen Gesichtspunkten beschreibt, analysiert und systematisiert, kann die Landschaftsarchäologie Erkenntnisse gewinnen von gesetzmäßigen Verlaufswirkungen und über günstige und ungünstige Standorteinflüsse.
+                    Außerdem von Bedeutung ist die tibetischen Siedlungsgeschichte und die ‘Tibetisierung’ des nördlichen Himalaja. Aufgabe der Archäologen war es, durch Surveys und gezielte Ausgrabungen von Höhlenplätzen und Freilandsiedlungen die frühe siedlerische Aufschließung des Tibetischen Himalaja sowie die Ausbreitung und Geschichte der tibetischen Kultur im nördlichen Nepal-Himalaja zu untersuchen.
+                    Der Hauptort der Untersuchungen des DAI befand sich in Khyinga, wo es auch erstmals möglich war eine 1700 Jahre reichende Siedlungsfolge zu ergraben und somit aufschlussreiche Ergebnisse zu erzielen.
+                </p>
             </div>
 
             <!-- Marokko -->
-            <div style = "clear:both;">
-                <h3 style = "padding-top: 0.5vw !important;" class="con10t-toc-entry">Digitalisierte Fotos aus Marokko</h3>
+            <div style="clear:both;">
+                <h3 class="con10t-toc-entry">Digitalisierte Fotos aus Marokko</h3>
 
                 <con10t-image src="/con10t/img/kaak/Marokko2.jpg"
                               align="left" width="400"
@@ -157,38 +158,19 @@
 
                 <p>Die Daten aus Marokko werden zu dieser Zeit im Scanlabor der KAAK digitalisiert.</p>
 
-                <a href="https://zenon.dainst.org/Record/001480089" target="_blank">Zu den digitalisierten Daten aus Marokko</a>
             </div>
 
-            <!-- Nepal -->
-            <div style = "clear:both;">
-
-                <h3 style = "padding-top: 0.5vw !important;" class="con10t-toc-entry">Nepal Digitalisate</h3>
-
-                <con10t-image src="/con10t/img/kaak/Nepal.jpg"
+            <!-- Sri Lanka -->
+            <div style="clear:both;">
+                <h3 class="con10t-toc-entry">Digitalisierte Fotos aus Sri Lanka</h3>
+                <con10t-image src="/con10t/img/kaak/SriLanka1.jpg"
                               align="left" width="400"
-                              alt="Grabung Khyinga">
-                              Landschaft bei Khyinga, Nepal (© KAAK)
+                              alt="Grabung Tissamaharama">
+                    Grabung auf der Zitadelle von Tissamaharama (© KAAK)
                 </con10t-image>
 
-
-                <p>Die archäologische Untersuchung des Himalaja ist insofern von Bedeutung, da hier der Zusammenhang von Siedlungsprozessen und frühen Staatenbildungen unter den besonderen naturräumlichen Voraussetzungen eines extremen Hochgebirgsraumes erforschbar gemacht wird. Das dichte Nebeneinander grundverschiedener Ökosysteme und unterschiedlich ausgeprägter Kulturlandschaften, die enge Nachbarschaft und die über weite Zeiträume historischen Schicksalsgemeinschaften verschiedener Kulturen, Sprachen und machen den Himalaja zu einem einzigartigen landschaftsarchäologischen Laboratorium. Dadurch bietet sich der Tibetische Himalaya für die Untersuchung von Siedlungsprozessen unter extremen naturräumlichen Bedingungen ideale Voraussetzungen. Ein weiterer Grund für das Interesse an Nepal besteht darin, dass es sich bei der Gegend um eine sogenannte „transit area“ handelt, in der auch heute noch Altformen der geistigen und materiellen Kultur vorhanden sind. All diese Gründe unterscheiden Nepal von anderen Orten.
-                    <br>
-                    <br>
-                Dies zeigt sich vor allem in der siedlungsarchäologischen Untersuchung von Naturkatastrophen und ihren Auswirkungen auf das Siedlungsgeschehen der Vergangenheit. Naturgewalten steuern den Siedlungsprozess, entscheiden über Siedlungsgründung oder Aufgabe einer Siedlung. Indem sie Naturkatastrophen unter siedlungsgeschichtlichen Gesichtspunkten beschreibt, analysiert und systematisiert, kann die Landschaftsarchäologie Erkenntnisse gewinnen von gesetzmäßigen Verlaufswirkungen und über günstige und ungünstige Standorteinflüsse.
-                <br>
-                <br>
-                Außerdem von Bedeutung ist die tibetischen Siedlungsgeschichte und die ‘Tibetisierung’ des nördlichen Himalaja. Aufgabe der Archäologen war es, durch Surveys und gezielte Ausgrabungen von Höhlenplätzen und Freilandsiedlungen die frühe siedlerische Aufschließung des Tibetischen Himalaja sowie die Ausbreitung und Geschichte der tibetischen Kultur im nördlichen Nepal-Himalaja zu untersuchen.
-                <br>
-                <br>
-                Der Hauptort der Untersuchungen des DAI befand sich in Khyinga, wo es auch erstmals möglich war eine 1700 Jahre reichende Siedlungsfolge zu ergraben und somit aufschlussreiche Ergebnisse zu erzielen.
-                </p>
-
-                <con10t-search fq="facet_land:Nepal"></con10t-search>
-                <br>
-                <a con10t-search-query="*" con10t-search-facet="facet_subkategoriebestand_level3:Khyinga">Zu den Digitalisaten aus Nepal</a>
+                <p>Die Daten aus Sri Lanka werden zu dieser Zeit im Scanlabor der KAAK digitalisiert.</p>
             </div>
-
         </div>
     </div>
 </div>
