@@ -4,7 +4,7 @@
 
   .edit-section {
     position: absolute;
-    right: 7px;
+    right: 25px;
   }
 
   .catalog-text {
@@ -80,6 +80,14 @@
 
   }
 
+  ol {
+    list-style-type: none;
+    padding-left: 1vw;
+   }
+
+  ol:first-child {
+    padding-left:0;
+  }
 }
 
 .catalog-entry {
@@ -122,7 +130,6 @@
     visibility: hidden;
     cursor: pointer;
   }
-
 }
 
 #catalog-to-delete-name {

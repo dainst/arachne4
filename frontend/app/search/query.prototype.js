@@ -176,14 +176,12 @@ export default function(arachneSettings) {
                 if (angular.isString(search['fq'])) {
                     var i = search['fq'].indexOf(':');
                     var facet = [search['fq'].slice(0,i), search['fq'].slice(i+1)];
-                    console.log(facet);
                     if (facet.length == 2)
                         newQuery.facets.push({key:facet[0], value: facet[1].substr(1,facet[1].length-2)});
                 } else if (angular.isArray(search['fq'])) {
                     search['fq'].forEach(function(facetString) {
                         var i = facetString.indexOf(':');
                         var facet = [facetString.slice(0,i), facetString.slice(i+1)];
-                        console.log(facet);
                         newQuery.facets.push({key:facet[0], value: facet[1].substr(1,facet[1].length-2)});
                     })
                 }
