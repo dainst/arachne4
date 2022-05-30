@@ -36,14 +36,12 @@ public class Modell3ddownloadsContextualizer extends AbstractContextualizer {
 
 		final String folder = parent.getField("modell3d.Pfad");
 		if (!StrUtils.isEmptyOrNull(folder)) {
-			final String model = parent.getField("modell3d.Dateiname");
-			if (!StrUtils.isEmptyOrNull(model)) {
-				links.add(new LinkWithAddedDownloadPath(parent, buildPath(folder, model)));
+			String zipPath = folder + ".zip";
+			while (zipPath.startsWith("/")) {
+				zipPath = zipPath.replaceFirst("/", "");
 			}
-			final String material = parent.getField("modell3d.DateinameMTL");
-			if (!StrUtils.isEmptyOrNull(material)) {
-				links.add(new LinkWithAddedDownloadPath(parent, buildPath(folder, material)));
-			}
+			
+			links.add(new LinkWithAddedDownloadPath(parent, zipPath));
 		}
 		return links;
 	}
