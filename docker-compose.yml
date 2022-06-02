@@ -4,8 +4,8 @@ services:
     build: ./frontend
     image: ghcr.io/dainst/arachne4-frontend:${ARACHNE_IMAGE_VERSION}
     volumes:
-      - phpmyadmin_data:/var/www/html/:ro
       - archaeocloud:/media/archaeocloud
+      - /mnt/sitemap:/var/www/sitemap
     labels:
       - traefik.enable=true
       - traefik.http.routers.frontend.rule=Host(`${SERVER_ADDRESS}`)
@@ -57,12 +57,20 @@ services:
     restart: always
 
   phpmyadmin:
-    image: phpmyadmin:fpm-alpine
+    image: phpmyadmin:apache
     environment:
       - "PMA_HOST=${DB_SERVER}"
+      - "PMA_ABSOLUTE_URI=https://${SERVER_ADDRESS}/phpmyadmin/"
       - "MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}"
-    volumes:
-      - phpmyadmin_data:/var/www/html/
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.phpmyadmin.rule=Host(`${SERVER_ADDRESS}`) && PathPrefix(`/phpmyadmin`)
+      - traefik.http.routers.phpmyadmin.entrypoints=websecure
+      - traefik.http.routers.phpmyadmin.tls.certresolver=myresolver
+      - traefik.http.middlewares.phpmyadmin-strip.stripprefix.prefixes=/phpmyadmin
+      - traefik.http.middlewares.phpmyadmin-ipwhitelist.ipwhitelist.sourcerange=134.95.0.0/16,172.28.0.0/20
+      - traefik.http.routers.phpmyadmin.middlewares=phpmyadmin-strip,phpmyadmin-ipwhitelist
+      - traefik.port=80
     restart: always
 
   elasticsearch:
@@ -116,7 +124,6 @@ services:
 volumes:
   db_data:
   elasticsearch_data:
-  phpmyadmin_data:
   archaeocloud:
     driver_opts:
       type: cifs

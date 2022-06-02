@@ -36,14 +36,23 @@ public class Modell3ddownloadsContextualizer extends AbstractContextualizer {
 
 		final String folder = parent.getField("modell3d.Pfad");
 		if (!StrUtils.isEmptyOrNull(folder)) {
-			final String model = parent.getField("modell3d.Dateiname");
-			if (!StrUtils.isEmptyOrNull(model)) {
-				links.add(new LinkWithAddedDownloadPath(parent, buildPath(folder, model)));
+			// final String model = parent.getField("modell3d.Dateiname");
+			// final String format = parent.getField("modell3d.Dateiformat");
+
+			// if (!StrUtils.isEmptyOrNull(model)) {
+			// 	String path = buildPath(folder, model);
+			// 	if (!StrUtils.isEmptyOrNull(format) && format.equals("objmtl")) {
+			// 		int index = path.lastIndexOf(".");
+			// 		path = path.substring(0, index) + ".zip";
+			// 	}
+			//  	links.add(new LinkWithAddedDownloadPath(parent, path));	
+			// }
+			String zipPath = folder + ".zip";
+			while (zipPath.startsWith("/")) {
+				zipPath = zipPath.replaceFirst("/", "");
 			}
-			final String material = parent.getField("modell3d.DateinameMTL");
-			if (!StrUtils.isEmptyOrNull(material)) {
-				links.add(new LinkWithAddedDownloadPath(parent, buildPath(folder, material)));
-			}
+
+			links.add(new LinkWithAddedDownloadPath(parent, zipPath));
 		}
 		return links;
 	}
