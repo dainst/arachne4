@@ -54,6 +54,7 @@ public class Modell3ddownloadsContextualizer extends AbstractContextualizer {
 			final String material = parent.getField("modell3d.DateinameMTL");
 			if (!StrUtils.isEmptyOrNull(material)) {
 				links.add(new LinkWithAddedDownloadPath(parent, buildPath(folder, material)));
+			}
 		}
 		return links;
 	}
