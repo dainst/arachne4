@@ -46,13 +46,14 @@ public class Modell3ddownloadsContextualizer extends AbstractContextualizer {
 			// 		path = path.substring(0, index) + ".zip";
 			// 	}
 			//  	links.add(new LinkWithAddedDownloadPath(parent, path));	
-			// }
-			String zipPath = folder + ".zip";
-			while (zipPath.startsWith("/")) {
-				zipPath = zipPath.replaceFirst("/", "");
+			// }	
+			final String model = parent.getField("modell3d.Dateiname");
+			if (!StrUtils.isEmptyOrNull(model)) {
+				links.add(new LinkWithAddedDownloadPath(parent, buildPath(folder, model)));
 			}
-
-			links.add(new LinkWithAddedDownloadPath(parent, zipPath));
+			final String material = parent.getField("modell3d.DateinameMTL");
+			if (!StrUtils.isEmptyOrNull(material)) {
+				links.add(new LinkWithAddedDownloadPath(parent, buildPath(folder, material)));
 		}
 		return links;
 	}
