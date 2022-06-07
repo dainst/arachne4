@@ -28,7 +28,8 @@ export default function ($filter, $sce) {
                     "streetAdress": "Podbielskiallee 69-71",
                     "email": "idai.objects@dainst.de"
                 },
-                "url": "https://www.dainst.org"
+                "url": "https://www.dainst.org",
+                "logo": "https://de.wikipedia.org/wiki/Datei:Deutsches_Arch%C3%A4ologisches_Institut_Logo.svg#/media/Datei:Deutsches_Archäologisches_Institut_Logo.svg"
             }
 
             let places = {};
