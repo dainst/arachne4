@@ -16,6 +16,22 @@ export default function ($filter, $sce) {
         },
         getJson: (entity) => {
 
+            const organization = {
+                "@type": "Organization",
+                "name": "Deutsches Archäologisches Institut",
+                "alternateName": "German Archaeological Institute",
+                "location": {
+                    "@type": "PostalAdress",
+                    "addressCountry": "Germany",
+                    "addressRegion": "Berlin",
+                    "postalCode": "14195",
+                    "streetAdress": "Podbielskiallee 69-71",
+                    "email": "idai.objects@dainst.de"
+                },
+                "url": "https://www.dainst.org",
+                "logo": "https://de.wikipedia.org/wiki/Datei:Deutsches_Arch%C3%A4ologisches_Institut_Logo.svg#/media/Datei:Deutsches_Archäologisches_Institut_Logo.svg"
+            }
+
             let places = {};
             if (entity.places && entity.places.length > 0) {
                 places = {
@@ -42,19 +58,12 @@ export default function ($filter, $sce) {
             const coreFields = {
                 "@type": "Article",
                 "@id": "https://arachne.dainst.org/entity/" + entity.entityId,
-                "author": "Arachne",
+                "author": organization,
                 "dateModified": entity.lastModified,
                 "datePublished": entity.lastModified,
                 "mainEntityOfPage": "https://arachne.dainst.org",
                 "headline": entity.title.substring(0, 110),
-                "publisher": {
-                    "@type": "Organization",
-                    "name": "Arachne - Archaeological Institute of the University of Cologne and the German Archaeological Institute",
-                    "logo": {
-                        "@type": "imageObject",
-                        "url": "https://arachne.dainst.org/img/arachnelogo.png"
-                    }
-                }
+                "publisher": organization
             }
 
             return $sce.trustAsHtml($filter('json')({
