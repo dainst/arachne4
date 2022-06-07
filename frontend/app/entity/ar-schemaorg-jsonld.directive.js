@@ -35,12 +35,7 @@ export default function ($filter, $sce) {
             let image = {};
             if (entity.thumbnailId) {
                 image = {
-                    "image": {
-                        "@type": "imageObject",
-                        "url": "https://arachne.dainst.org/entity/" + entity.entityId + "/image/" + entity.thumbnailId,
-                        "height": "300",
-                        "width": "400"
-                    }
+                    "image": "https://arachne.dainst.org/data/image/" + entity.thumbnailId,
                 }
             }
 
@@ -57,7 +52,7 @@ export default function ($filter, $sce) {
                     "name": "Arachne - Archaeological Institute of the University of Cologne and the German Archaeological Institute",
                     "logo": {
                         "@type": "imageObject",
-                        "url": "https://arachne.dainst.org/img/logo_arachne.png"
+                        "url": "https://arachne.dainst.org/img/arachnelogo.png"
                     }
                 }
             }
