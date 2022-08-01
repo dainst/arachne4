@@ -476,7 +476,7 @@ export default {
     "ui_map_legende": "Number of hits",
     "ui_map_legende_min": "low",
     "ui_map_legende_max": "high",
-    "search_500": "We encountered an internal server error while processing your search request. This should not happen. Please contact arachne@uni-koeln.de so that we may fix this issue.",
+    "search_500": "We encountered an internal server error while processing your search request. This should not happen. Please contact iDAI.objects@dainst.org so that we may fix this issue.",
     "catalog_preview": "Overview",
     "ui_download_as": "Download as",
     "ui_download_limit": "Set amount of entities",
