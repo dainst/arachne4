@@ -6,16 +6,17 @@
 	</div>
 
 	<!-- zoomable image viewer for logged in users -->
-	<div oc-lazy-load="lazyLoadImage" style="height:100%">
-		<div zoomifyimg ng-if="allow && imageProperties.width"
-				entityid="{{imageId}}"
-				imageProperties="{{imageProperties}}"
-				zoomifyHeight="{{imageProperties.height}}"
-				zoomifiyTilesize="{{imageProperties.tilesize}}"
-				style="height:100%">
-		</div>
+	<div ng-if="allow" style="height: 100%;">
+		<div oc-lazy-load="lazyLoadImage" style="height: 100%;">
+			<div zoomifyimg ng-if="imageProperties.width"
+					entityid="{{imageId}}"
+					imageProperties="{{imageProperties}}"
+					zoomifyHeight="{{imageProperties.height}}"
+					zoomifiyTilesize="{{imageProperties.tilesize}}"
+					style="height:100%">
+			</div>
+</div>
 	</div>
-
 	<!-- low res image for anonymous users -->
 	<div ng-if="!allow" style="height:100%; position:relative; background-color:#ddd;">
 		<img ar-img img-id="{{imageId}}" style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%);">
