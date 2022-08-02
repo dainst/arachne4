@@ -1,0 +1,195 @@
+<style>
+
+    .con10t-row {
+        margin-top: 11vh;
+    }
+
+    #sticky-sidebar {
+        padding-top: 4vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    @media (max-width: 992px) {
+        #sticky-sidebar {
+            position: relative;
+        }
+
+        .con10t-image {
+            float: none;
+        }
+    }
+</style>
+
+<idai-header
+        image="/con10t/headerimages/glienickerantiken_header.jpg"
+        description="Sepp-Gustav Gröschel, Antike Spolien aus der Sammlung des Prinzen Carl von Preußen in Glienicke (Potsdam 2022). Stiftung Preußische Schlösser und Gärten Berlin-Brandenburg, Bestandskataloge der Kunstsammlungen, Antiken II"
+>
+</idai-header>
+
+<div class="con10t-page teaserpage container">
+    <div class="con10t-row">
+        <div class="con10t-title">
+
+            <h1>Sepp-Gustav Gröschel, Antike Spolien aus der Sammlung des Prinzen Carl von Preußen in Glienicke (Potsdam
+                2022). Stiftung Preußische Schlösser und Gärten Berlin-Brandenburg, Bestandskataloge der
+                Kunstsammlungen, Antiken II</h1>
+
+        </div>
+
+        <div id="sticky-sidebar" class="con10t-sidebar">
+
+            <con10t-toc toc-heading="Übersicht"></con10t-toc>
+
+            <h3>Karte</h3>
+
+            <div ng-init="config = {
+                    clustered: false,
+                    facetsSelect: [
+                        {
+                        key: 'catalogIds',
+                        value: 1161
+                        }
+                    ]
+                }"></div>
+
+            <!-- Map -->
+            <div con10t-map style = "margin-bottom: 1vw;"
+                 id="map"
+                 limit="200"
+                 facets-select="config.facetsSelect"
+                 lat="52.413859"
+                 lng="13.095411"
+                 zoom="5">
+            </div>
+
+            <h3>Suche in den Daten des Projekts</h3>
+
+            <a con10t-search-query target="_blank">Alle Datensätze anzeigen</a>
+
+            <con10t-search catalog-id="1161"></con10t-search>
+
+            <br>
+
+            <h3>Katalog</h3>
+
+            <a href="https://arachne.dainst.org/catalog/1161">Zur Katalogansicht</a>
+
+        </div>
+
+        <div class="con10t-content">
+
+            <p>Für seinen Sommersitz in Klein-Glienicke im heutigen Berliner Stadtbezirk Steglitz-Zehlendorf, direkt an
+                der Glienicker Brücke nach Potsdam, trug Prinz Carl von Preußen (1801-1873) eine der reichsten
+                fürstlichen Privatsammlungen des 19. Jahrhunderts in Deutschland zusammen. Viele der antiken Objekte,
+                aber auch Antikenkopien oder -nachahmungen, wurden als Garten- und Brunnenfiguren aufgestellt oder rein
+                dekorativ im Gartenhof des Schlosses, im und am Casino sowie in bzw. an der Kleinen Neugierde, einem
+                Teepavillon, als Wand- oder Bodenschmuck eingelassen. Weitere Stücke, wie die auf der Wiese im
+                Pleasureground gruppierten Architekturfragmente, bilden einen malerischen Akzent in dem von Peter Joseph
+                Lenné (1789-1866) gestalteten Landschaftsgarten. Die Bildwerke gehören somit zu wesentlichen
+                Gestaltungselementen des Schloss- und Gartenensembles, das als eines der wertvollsten Zeugnisse für die
+                gestalterische Auseinandersetzung mit der Antike durch den Bauherrn und die beteiligten Baumeister Karl
+                Friedrich Schinkel (1781-1841), Ludwig Persius (1803-1845) und Ferdinand von Arnim (1814-1866) gilt.</p>
+
+            <con10t-image src="/con10t/img/glienickerantiken/Schloss_Glienicke_S-Wand_IV_Innenhof.jpg"
+                          align="center" alt="Terrakotte">
+
+                <span class="ng-scope">Berlin, Schloss Glienicke, Südwand mit der typischen, dekorativen Anordnung der antiken Spolien. Foto: SPSG, Daniel Lindner, 2019.</span>
+
+            </con10t-image>
+
+            <p>Kenntnisse über Kunst und die Antike erhielt der junge Prinz Carl durch den Unterricht bei Aloys Hirt
+                (1759-1837). Mit dessen Schriften bereitete er sich auf seine erste Italien-Reise 1822/23 mit seinem
+                Vater König Friedrich Wilhelm III. von Preußen (1770-1840) und Bruder Prinz Wilhelm (1797-1888) vor. Die
+                Leidenschaft für das Sammeln jedoch weckte in ihm sein Erzieher Johann Heinrich Carl Freiherr von Menu
+                (1772-1846), ab 1820 von Minutoli, der selbst Ausgrabungen durchführte. Dabei sammelte Prinz Carl nicht
+                nur Antiken, sondern auch Kunstwerke des Mittelalters und der Renaissance, vor allem aber Waffen. </p>
+
+            <p>Nach dem Erwerb des Gutes Glienicke am 1. Mai 1824 und mit dem Wunsch, dort eine an Italien erinnernde
+                Sehnsuchtslandschaft zu formen, wuchs beim Prinzen Carl das Interesse an der Antike. Beispiele für
+                Zitate des klassischen Altertums sind die fünf Bogenöffnungen in der Fassade der Wagenremise am Schloss,
+                die auf das Agoranomion in Athen verweisen, oder die Große Neugierde, ein Aussichtspavillon nahe der
+                Glienicker Brücke, der sich auf das Athene-Monument des Lysikrates bezieht. Es ging dem Prinzen Carl und
+                seinem Baumeister Schinkel jedoch nicht darum, die Antike einfach nur wiederzugeben, sondern im „Geist
+                der Antike“ zu gestalten. Dazu gehören beispielsweise das Plinius-Beet mit der Statue der Eilenden
+                Artemis in der Nähe des Casinos oder das Stibadium beim Schloss, das den Blick von der Villa Medici auf
+                den Petersdom in Rom (hier auf die Nikolaikirche in Potsdam) evoziert.</p>
+
+            <con10t-image src="/con10t/img/glienickerantiken/F0115666_Demosthenes.jpg"
+                          align="left" alt="Terrakotte" width="310">
+
+                <span class="ng-scope"><a href="https://arachne.dainst.org/entity/7075548" target="_blank">
+                    Unbekannt, Kopie nach griechischem Vorbild: <br>
+                    Bildnis des Demosthenes, Marmor, Rom, 40-20 v. Chr.<br>
+                    SPSG, Skulpt.slg. 5083, Casino im<br>
+                    Schlossgarten Glienicke.<br>
+                    Foto: SPSG, Daniel Lindner, 2021.</a>
+                </span>
+
+            </con10t-image>
+
+            <p>Erst im Jahre 1841 bereiste der Prinz erneut Italien. Seit dieser Zeit änderte sich die Einstellung zu
+                seiner Antikensammlung. Er kaufte wertvolle Skulpturen an, wie den Kopf der Athena vom Typus Rospigliosi
+                (heute in Basel, Antikenmuseum) oder die Muse Vescuvali, die sich noch heute im Casino befindet. In
+                diesem Gebäude am Ufer der Havel konzentrierte Carl seine kostbarsten Antikenerwerbungen.</p>
+
+            <p>1877 tätigte Prinz Carl letztmalig einen sehr großen Ankauf von Antiken. Möglicherweise entstand damals
+                das pompejianische Gärtchen an der Ostwand des Casinos, dessen überreiche, dichte Ausgestaltung mit
+                Statuen, Büsten und Architekturfragmenten nur durch ein historisches Foto von Robert Scholz aus dieser
+                Zeit (SPSG, GK II (17) NL Cerrini, o. Nr.) überliefert ist. Die Aufstellung dieser Stücke in einem
+                architektonisch und malerisch gestalteten Wandfeld sowie auf der Rücklehne und in der Umgebung einer
+                Marmorbank zeigt beispielhaft, dass die Sammlung des Prinzen Carl im Wesentlichen nicht nach
+                wissenschaftlichen Kriterien präsentiert worden war, sondern als Teil eines Ensembles mit Bezügen zur
+                Antike in einer von italienischer Formensprache geprägten Umgebung.</p>
+
+            <p style = "margin-top: 8vh;">Auch wenn der Antiken-Bestand vor und nach dem Zweiten Weltkrieg deutlich reduziert worden ist, zählt der
+                Online-Bestandskatalog noch 457 Objekte der Glienicker Antikensammlung auf. Sie wurden durch den
+                Hauptverfasser Dr. Sepp-Gustav Gröschel in elf Gruppen unterteilt: Rundplastik, Reliefs,
+                Grabaren/Ascheurnen, Sarkophage, Steingeräte/-gefäße, Architektur, Mosaike, Wandmalerei, Inschriften,
+                antikisierende Objekte sowie ehemals in Glienicke, heute an anderen Orten befindliche Werke, und werden
+                nun – erstmals vollständig erschlossen und mit aktuellen Abbildungen (SPSG, Lindner u.a.) versehen –
+                vorgelegt. </p>
+
+            <p>In der Spätphase der Fertigstellung der einzelnen Katalognummern haben insbesondere drei Fachkollegen das
+                Projekt unterstützt: Dr. Veit Vaelske, Berlin, auf den Gebieten der lateinischen Epigraphik, Ägyptologie
+                und Nachantike, Sebastian Prignitz, Österreichische Akademie der Wissenschaften, Wien, für das Gebiet
+                der griechischen Epigraphik. Daniela Siegel, Augsburg, hat die wissenschaftlichen Texte zu den Objekten
+                vor Ort auf Stimmigkeit überprüft.</p>
+
+            <p>Das Projekt wurde durch die Reinhold und Elisabeth Schulze-Stiftung gefördert.</p>
+
+            <h2 class="con10t-toc-entry">Katalog</h2>
+
+            <con10t-catalog-tree catalog-id="1161"></con10t-catalog-tree>
+
+            <h2 class="con10t-toc-entry">Hinweise zur Katalognutzung</h2>
+
+            <p>Sie haben von dieser Startseite aus drei Möglichkeiten, um zu den katalogisierten Objekten und Bildern zu gelangen.
+
+            <ul>
+                <li>Wenn Sie rechts oben unter <strong>"Suche in den Daten des Projekts"</strong> auf "Alle Datensätze
+                    anzeigen" klicken, gelangen Sie zu einer Ergebnisansicht, in der alle von S.-G. Gröschel
+                    untersuchten Objekte angezeigt werden. In dieser Ergebnisansicht können Sie die Objekte nach
+                    bestimmten Kriterien (z.B. Abbildung(en) vorhanden) weiter filtern und das Ergebnis in Form einer
+                    Kachel-, Listen-, oder Kartenansicht darstellen. Sie können die Ergebnisse auch schon direkt über
+                    das Suchfeld "Projekt durchsuchen" filtern.</li>
+
+                <li>Sie können außerdem über die <strong>oben eingeblendete Katalogansicht </strong> gezielt innerhalb
+                    des ikonographisch strukturierten Kataloges navigieren. Durch Klicken auf ein Ordnersymbol werden
+                    die untergeordneten Katalogdatensätze dargestellt. Zudem können Sie über das Lupensymbol rechts
+                    stets alle diesem Ordner untergeordneten Datensätze in der Ergebnisansicht anzeigen lassen.</li>
+
+                <li>Über den oben aufgeführten Link "Zur Katalogansicht" gelangen Sie zu einer <strong>Gesamtansicht des
+                    Kataloges</strong>. Dort können Sie auf der linken Seite durch die Katalogstruktur navigieren. Wenn
+                    Sie dort einen Katalogeintrag anklicken, wird rechts davon der entsprechende Katalogtext von S.-G.
+                    Gröschel, der zugehörige Arachne-Datensatz sowie das Bildmaterial eingeblendet.</li>
+            </ul>
+
+            </p>
+
+        </div>
+
+    </div>
+</div>
