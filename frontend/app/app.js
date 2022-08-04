@@ -3,6 +3,8 @@ import '@uirouter/angularjs';
 import 'angular-resource';
 import 'angular-cookies';
 import 'angular-sanitize';
+import 'angulartics';
+import 'angulartics-piwik';
 import 'oclazyload';
 
 import './lib/ui-bootstrap-custom-build/ui-bootstrap-custom-2.5.0.js';
@@ -58,6 +60,8 @@ const lazyLoadService = ($ocLazyLoad) => (importPromise) =>
     });
 
 angular.module('arachne', [
+    'angulartics', 
+    'angulartics.piwik',
     'ui.bootstrap',
     'ui.bootstrap.tpls',
     'ui.router',
