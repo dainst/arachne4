@@ -59,7 +59,7 @@ restReadTimeout=0
 restConnectionTimeout=2000
 defaultDatasetGroups=Arachne,Oppenheim
 imageLimit=500
-adminEmail=arachne4-tec-devel@uni-koeln.de
+adminEmail=idai.objects-status@dainst.de
 contactEmail=idai.objects@dainst.de
 
 # e2e frontend testing
