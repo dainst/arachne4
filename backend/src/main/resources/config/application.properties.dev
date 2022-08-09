@@ -38,7 +38,7 @@ imageCacheDir=/tmp/arachne4ImageCache/
 mailSMTPServer=mail.dainst.org
 mailSMTPUserName=${SMTP_USERNAME}
 mailSMTPUserPassword=${SMTP_USERPASSWORD}
-mailSender=idai.objects-status@dainst.de
+mailSender=idai.objects@dainst.de
 
 # transl8
 transl8Url=https://arachne.dainst.org/transl8/translation/json?application=arachne4_backend
