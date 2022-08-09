@@ -35,9 +35,13 @@ public class MailService {
 	 */
 	@Autowired
 	public MailService(final @Value("${mailSMTPServer}") String smtpServer
-			, final @Value("${mailSender}") String sender) {
-		
+			, final @Value("${mailSender}") String sender
+			, final @Value("${mailSMTPUserName") String smtpUserName
+			, final @Value("${mailSMTPUserPassword}") String smtpUserPassword) {
+
 		mailSender.setHost(smtpServer);
+		mailSender.setUsername(smtpUserName);
+		mailSender.setPassword(smtpUserPassword);
 		this.sender = sender;
 	}
 	
