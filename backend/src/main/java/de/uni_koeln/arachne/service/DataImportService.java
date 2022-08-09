@@ -276,18 +276,18 @@ public class DataImportService { // NOPMD
 						+ index/((float)elapsedTime/1000) + " documents per second)." + System.lineSeparator()
 						+ System.lineSeparator() + dataIntegrityLogService.getSummary();
 				LOGGER.info(success);
-				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - success", success);
+				mailService.sendMail("idai.objects-status@dainst.de", "Dataimport(" + BasicNetwork.getHostName() + ") - success", success);
 				contextService.clearCache();
 			} else {
 				LOGGER.info("Dataimport aborted.");
 				esService.deleteIndex(indexName);
-				mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - abort", "Dataimport was manually aborted.");
+				mailService.sendMail("idai.objects-status@dainst.de", "Dataimport(" + BasicNetwork.getHostName() + ") - abort", "Dataimport was manually aborted.");
 			}
 		} catch (Exception e) {
 			final String failure = "Dataimport failed at [" + dbgEntityId + "] with: ";
 			LOGGER.error(failure, e);
 			final String stacktrace = Throwables.getStackTraceAsString(e);
-			mailService.sendMail("arachne4-tec-devel@uni-koeln.de", "Dataimport(" + BasicNetwork.getHostName() + ") - failure"
+			mailService.sendMail("idai.objects-status@dainst.de", "Dataimport(" + BasicNetwork.getHostName() + ") - failure"
 					, failure + e.toString() + System.getProperty("line.separator") + "StackTrace: " + stacktrace);
 			esService.deleteIndex(indexName);
 		}
