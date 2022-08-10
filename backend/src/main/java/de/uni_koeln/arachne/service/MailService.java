@@ -38,8 +38,6 @@ public class MailService {
 			, final @Value("${mailSender}") String sender) {
 
 		mailSender.setHost(smtpServer);
-		mailSender.setUsername(smtpUserName);
-		mailSender.setPassword(smtpUserPassword);
 		this.sender = sender;
 	}
 	
