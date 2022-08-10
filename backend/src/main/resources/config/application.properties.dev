@@ -35,9 +35,7 @@ imageResolutionHIGH=0
 imageCacheDir=/tmp/arachne4ImageCache/
 
 # MailService
-mailSMTPServer=mail.dainst.org
-mailSMTPUserName=${SMTP_USERNAME}
-mailSMTPUserPassword=${SMTP_USERPASSWORD}
+mailSMTPServer=smtp.uni-koeln.de
 mailSender=idai.objects@dainst.de
 
 # transl8
