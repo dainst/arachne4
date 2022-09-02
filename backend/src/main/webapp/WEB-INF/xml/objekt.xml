@@ -319,7 +319,10 @@
 						<field datasource="objektkeramik.Scherbenfarbe" />
 					</section>
 					<section labelKey="Korngröße der Magerung">
-						<field datasource="objektkeramik.KrongroesseMagerung" />
+						<field datasource="objektkeramik.KorngroesseMagerung" />
+					</section>
+					<section labelKey="Kornmenge der Magerung">
+						<field datasource="objektkeramik.KornmengeMagerung" />
 					</section>
 					<section labelKey="Einschluesse">
 						<field datasource="objektkeramik.Einschluesse" />
