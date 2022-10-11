@@ -41,17 +41,21 @@
 
             <h3>Browse project data</h3>
 
-            <!-- Map
+            <!-- Map -->
             <div ng-init="config = {
                     clustered: false,
                     facetsSelect: [
                         {
                         key: 'catalogIds',
-                        value: 1112
+                        value: 1258
+                        },
+                        {
+                        key: 'catalogIds',
+                        value: 1259
                         }
                     ]
                 }">
-            </div> -->
+            </div>
 
             <div con10t-map style = "margin-bottom: 1vw;"
                  id="map"
@@ -59,7 +63,7 @@
                  facets-select="config.facetsSelect"
                  lat="47.23"
                  lng="38.89"
-                 zoom="12">
+                 zoom="5">
             </div>
 
             <a con10t-search-query target = "_blank">Show all project data</a>
@@ -89,9 +93,9 @@
 
             <h2 class="con10t-toc-entry">Catalog</h2>
 
-            <p>folgt..</p>
+            <con10t-catalog-tree catalog-id="1258"></con10t-catalog-tree>
 
-            <!-- <con10t-catalog-tree catalog-id="1112"></con10t-catalog-tree> -->
+            <con10t-catalog-tree catalog-id="1259"></con10t-catalog-tree>
 
             <h2 class="con10t-toc-entry">Notes on the catalogue</h2>
 
