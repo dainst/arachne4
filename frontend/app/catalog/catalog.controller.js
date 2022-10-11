@@ -6,7 +6,7 @@ import 'angular-ui-tree/dist/angular-ui-tree.css';
  * @author: Sebastian Cuy
  * @author: Jan G. Wieners
  * @author: Finn Prox
- */    
+ */
 export default function ($rootScope, $scope, $state, $stateParams, $uibModal, $window, $timeout,
     Catalog, CatalogEntry, authService, $http, arachneSettings, Entity, $location, messages) {
 
