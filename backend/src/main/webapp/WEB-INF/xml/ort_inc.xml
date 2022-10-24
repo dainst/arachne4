@@ -12,7 +12,10 @@
     <field datasource=".InvNr" prefix="Inv.-Nr. " />
     <field datasource=".AltInvNr" prefix="Alte Inv.-Nr. " />
     <field datasource=".ArtOrtsangabe" search="Aufbewahrung Automatisch erstellt" replace="Aufbewahrungsort" prefix="&lt;br/&gt;Art der Ortsangabe: " />
-    <compoundDateField prefix="&lt;br/&gt;Ortsangabe von: " >
+    <field datasource=".AngabeGesichert" prefix="Angabe gesichert : " postfix="; "/>
+    <field datasource=".DokumentationArt" prefix= "Dokumentation: " postfix="; "/>
+    <field datasource=".DokumentationBemerkungen" prefix= "Bemerkungen: "/>
+    <compoundDateField prefix="&lt;br/&gt;Aufbewahrung von: " >
         <field datasource=".AufbewahrungVonTag" />
         <field datasource=".AufbewahrungVonMonat" prefix="." />
         <field datasource=".AufbewahrungVonJahr" prefix="." />
@@ -21,11 +24,6 @@
         <field datasource=".AufbewahrungBisTag" />
         <field datasource=".AufbewahrungBisMonat" prefix="." />
         <field datasource=".AufbewahrungBisJahr" prefix="." />
-    </compoundDateField>
-    <compoundDateField prefix="&lt;br/&gt;Dokumentation: " >
-          <field datasource=".AngabeGesichert" prefix="Zuverlässigkeit: "/>
-          <field datasource=".DokumentationArt" postfix="; "/>
-          <field datasource=".DokumentationBemerkungen"/>
     </compoundDateField>
   </context>
 </includeSection>

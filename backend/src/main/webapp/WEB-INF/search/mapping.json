@@ -140,6 +140,15 @@
                     },
                     "storageToYear":{
                         "type":"long"
+                    },
+                    "InformationSecured": {
+                        "type":"text"
+                    },
+                    "TypeOfDocumentation":{
+                        "type":"text"
+                    },
+                    "NotesOnDocumentation":{
+                        "type":"text"
                     }
                 }
             },

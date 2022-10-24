@@ -294,6 +294,9 @@ public class ResponseFactory {
 				final String storageToDay = link.getFieldFromFields("ort.AufbewahrungBisTag");
 				final String storageToMonth = link.getFieldFromFields("ort.AufbewahrungBisMonat");
 				final String storageToYear = link.getFieldFromFields("ort.AufbewahrungBisJahr");
+				final String InformationSecured = link.getFieldFromFields("ort.AngabeGesichert");
+				final String TypeOfDocumentation = link.getFieldFromFields("ort.DokumentationArt");
+				final String NotesOnDocumentation = link.getFieldFromFields("ort.DokumentationBemerkungen");
 
 				if (!StrUtils.isEmptyOrNull(placeName)) {
 					final Place place = new Place(placeName);

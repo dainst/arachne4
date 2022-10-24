@@ -2,6 +2,9 @@
   "AA_2021_2_Tzochev": {
     "q": "catalogPaths:1143"
   },
+  "af44_huy": {
+    "q": "(catalogPaths:1258 OR catalogPaths:1259)"
+  },
   "afrarchcologne": {
     "facets": [
       {
@@ -323,6 +326,9 @@
         "value": "Einzelobjekte"
       }
     ]
+  },
+  "riedel_boegen": {
+    "q": "catalogPaths:68"
   },
   "rwwa": {
     "facets": [
