@@ -905,6 +905,14 @@
           },
           "hidden": false
         },
+        {
+          "id": "AA_2022_1_Kose_et_al",
+          "title": {
+            "de": "A. Kose – B. Engels – M. Trümper, Die Basilike Stoa an der Agora von Thera. Rekonstruktion ihrer Entwicklung auf Basis stratigraphischer Grabungen, AA 2022/1, § 1–109. Supplement",
+            "en": "A. Kose – B. Engels – M. Trümper, Die Basilike Stoa an der Agora von Thera. Rekonstruktion ihrer Entwicklung auf Basis stratigraphischer Grabungen, AA 2022/1, § 1–109. Supplement"
+          },
+          "hidden": false
+        },
 		{
           "id": "JOGA_2020_Pruemers",
           "title": {
@@ -999,7 +1007,7 @@
           },
           "hidden": false
         }
-		
+
       ]
     },
     {
