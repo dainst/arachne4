@@ -80,7 +80,6 @@
         <logger name="de.uni_koeln.arachne.controller" level="info" />
         <logger name="de.uni_koeln.arachne.service" level="info" />
         <logger name="de.uni_koeln.arachne.dao" level="info" />
-        <logger name="de.uni_koeln.arachne.service.DataImportService" level="debug" />
 
         <logger name="org.elasticsearch" level="info" />
         <logger name="com.zaxxer.hikari" level="info" />
