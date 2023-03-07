@@ -54,6 +54,9 @@
   "cilopac": {
     "q": "catalogPaths:41"
   },
+  "daa21_pausilypon": {
+    "q": "catalogPaths:1348"
+  },
   "daiorient": {
     "q": "searchableEditorContent:D-DAI-ORI",
      "facets": [
