@@ -1,0 +1,95 @@
+<style>
+
+    .con10t-row {
+        margin-top: 10vh;
+    }
+
+    #sticky-sidebar {
+        padding-top: 4vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    @media (max-width: 992px) {
+        #sticky-sidebar {
+            position: relative;
+        }
+
+        .con10t-image {
+            float: none;
+        }
+    }
+</style>
+
+
+<!-- Kopfbereich der Projektseite -->
+<idai-header
+        image="/con10t/headerimages/daa21_header.jpg"
+        description="T. Busen, Die römische Kaiservilla Pausilypon. Gesamtanlage und Bauten des oberen Plateaus (Wiesbaden 2023). Digitale Beilagen"
+        link="https://publications.dainst.org/books/dai/catalog/series/daa">
+</idai-header>
+
+<!-- Hauptbereich der Projektseite -->
+<div class="con10t-page teaserpage container">
+
+    <div class="con10t-row">
+
+        <div class="con10t-title">
+            <h1>T. Busen, Die römische Kaiservilla Pausilypon. Gesamtanlage und Bauten des oberen Plateaus (Wiesbaden 2023). Digitale Beilagen</h1>
+        </div>
+
+        <div id="sticky-sidebar" class="con10t-sidebar">
+
+            <con10t-toc toc-heading="Übersicht"></con10t-toc>
+
+            <h3>Projektdaten</h3>
+
+            <a con10t-search-query target = "_blank">Alle Beilagen anzeigen</a>
+
+            <!--- Map --->
+            <h3 style="padding-top: 2vh;">Karte</h3>
+
+            <!-- Map -->
+            <div ng-init="config = {
+                clustered: false,
+                facetsSelect: [
+                {
+                key: 'catalogIds',
+                value: 1348
+                }
+                ]
+                }">
+            </div>
+
+            <div con10t-map style = "margin-bottom: 1vw;"
+                   id="map"
+                   limit="200"
+                   facets-select="config.facetsSelect"
+                   lat="40.7943915629595"
+                   lng="14.18495031975199"
+                   zoom="16">
+            </div>
+
+            <h3 style = "margin-top: 5%">Informationen zum Buch</h3>
+
+            <p><a href = "https://doi.org/10.34780/96w6-nh0w" target = "_blank">iDAI.publications</a></p>
+
+            <con10t-image src = "/con10t/img/daa21_pausilypon/daa21_cover.jpg" alt = "Cover-Printausgabe" width = "330"></con10t-image>
+        </div>
+
+        <div class="con10t-content">
+
+            <h3 class="con10t-toc-entry">Zum Publikationsprojekt</h3>
+
+            <p>Die hier eingefügten Pläne sind zugehörig zur Publikation DAA 21 und zeigen Grundrisse und Schnitte der dort besprochenen Komplexe der Villa Pausilypon.</p>
+            <p>Die am Golf von Neapel gelegene Villa Pausilypon stellt eine der wenigen Anlagen ihrer Art dar, die über mindestens eineinhalb Jahrhunderte eindeutig dem römischen Kaiserhaus zugeordnet werden kann.
+                Erstmals seit den frühesten Ausgrabungen im Jahr 1841 konnten alle verfügbaren Quellen über den mehr als sechs Hektar umfassenden Komplex zu einem verlässlichen Plan der Anlage verknüpft, eine verformungsgerechte Dokumentation der Bauten des oberen Plateaus angefertigt und darauf aufbauend bauforscherische Untersuchungen zum Entwurfs- und Bauprozess, den Bauformen und Umbauphasen angestellt werden.</p>
+
+            <h3 class="con10t-toc-entry">Katalog der Beilagen</h3>
+
+            <con10t-catalog-tree catalog-id="1348"></con10t-catalog-tree>
+        </div>
+    </div>
+</div>
