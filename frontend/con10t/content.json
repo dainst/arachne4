@@ -604,6 +604,12 @@
             "de": "Grabbauten in Tuna el-Gebel"
           },
           "hidden": true
+        },
+        {
+          "id": "ewert",
+          "title": {
+            "de": "Das Archiv des Bauforschers Christian Ewert"
+          }
         }
       ]
     },

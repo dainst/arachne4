@@ -69,6 +69,14 @@
   "databasepausanias": {
     "q": "(catalogPaths:111 OR catalogPaths:110)"
   },
+  "ewert": {
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "Ewert-Nachlass"
+      }
+    ]
+  },
   "faak16": {
     "q": "catalogPaths:566"
   },
