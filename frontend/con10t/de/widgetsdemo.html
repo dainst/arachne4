@@ -17,16 +17,17 @@
         </div>
 
         <div class="con10t-content">
-            <h2 class="con10t-toc-entry">Zugriffsbeschränkung: con10t-show-if</h2>
-            <p>Die Direktive "con10t-show-if" ermöglicht die datensatzgruppenspezifische Anzeige von Inhalten.</p>
+            <h2 class="con10t-toc-entry">con10t-show-if</h2>
+            <p>Die Direktive "con10t-show-if" ermöglicht Inhalte bei fehlenden Rechten mit einem Overlay zu verdecken.</p>
+            
             <h3>Markup</h3>
             <pre>
 &lt;con10t-show-if <strong>dataset-group="SyrianHeritage"</strong>&gt;
     &lt;zu verteckender Inhalt&gt;
-&lt;/con10t-show-if&gt;
-            </pre>
+&lt;/con10t-show-if&gt;</pre>
+            
             <h3>Darstellung</h3>
-            <con10t-show-if dataset-group="SyrianHeritage">
+            <con10t-show-if dataset-group="unknown-project">
                 <div style="height: 100px;"></div>
             </con10t-show-if>
 
