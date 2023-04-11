@@ -17,66 +17,81 @@
         </div>
 
         <div class="con10t-content">
-            <h2 class="con10t-toc-entry">Zugriffsbeschränkung: con10t-show-if</h2>
-            <p>Die Direktive "con10t-show-if" ermöglicht die datensatzgruppenspezifische Anzeige von Inhalten.</p>
+            <h2 class="con10t-toc-entry">con10t-show-if: Overlay bei fehlenden Zugriffsrechten</h2>
+            <p>Die Direktive "con10t-show-if" ermöglicht Inhalte bei fehlenden Rechten mit einem Overlay zu verdecken.</p>
+            
             <h3>Markup</h3>
             <pre>
 &lt;con10t-show-if <strong>dataset-group="SyrianHeritage"</strong>&gt;
     &lt;zu verteckender Inhalt&gt;
-&lt;/con10t-show-if&gt;
-            </pre>
+&lt;/con10t-show-if&gt;</pre>
+            
             <h3>Darstellung</h3>
-            <con10t-show-if dataset-group="SyrianHeritage">
+            <con10t-show-if dataset-group="unknown-project">
                 <div style="height: 100px;"></div>
             </con10t-show-if>
 
 
-            <h2 class="con10t-toc-entry"  style="margin-top: .6em">Link zu Datensatz: con10t-item</h2>
+            <h2 class="con10t-toc-entry">con10t-item: Link zu Entity</h2>
+            <p>Die Direktive "con10t-item" erstellt einen Link zur angegebenen Entity.</p>
+
             <h3>Markup</h3>
             <pre>
-&lt;a con10t-item=&quot;1241917&quot;&gt;Zu den Datens&auml;tzen der Antikensammlung im Suermondt-Ludwig-Museum Aachen&lt;/a&gt;
-            </pre>
+&lt;a con10t-item=&quot;1241917&quot;&gt;
+    Zu den Datens&auml;tzen der Antikensammlung im Suermondt-Ludwig-Museum Aachen
+&lt;/a&gt;</pre>
+
             <h3>Darstellung</h3>
             <p><a con10t-item="1241917">Zu den Datensätzen der Antikensammlung im Suermondt-Ludwig-Museum Aachen</a></p>
 
-            <h2 class="con10t-toc-entry">Link zur Suche innerhalb des Projekt-Scopes: con10t-search-query</h2>
+            <h2 class="con10t-toc-entry">con10t-search-query: Suche innerhalb des Projekt-Scopes</h2>
+
+            <p>Die Direktive "con10t-search-query" erstellt einen Link zu einer Suche innerhalb des aktuellen Projekt-Scopes</p>
+
             <h3>Markup</h3>
-            <pre>&lt;a&gt;con10t-search-query&gt;zu den Objekten/a&gt;</pre>
+            <pre>&lt;a con10t-search-query&gt;Zu den Datensätzen des Projektes&lt;/a&gt;</pre>
 
-            <h4>Darstellung</h4>
-            <a con10t-search-query>zu den Objekten</a>
-
-            <h2 class="con10t-toc-entry">Link zu Suchmenge: con10t-search-query</h2>
+            <h3>Darstellung</h3>
+            <a con10t-search-query>Zu den Datensätzen des Projektes</a>
+            <hr>
+            <p>Alternativ kann auch eine zusätzliche Suche angegeben werden.</p>
 
             <h3>Markup</h3>
             <pre>
-&lt;a con10t-search-query=&quot;connectedEntities:1241766&quot;&gt;zu den Objekten&lt;/a&gt;
-            </pre>
+&lt;a con10t-search-query='facet_kategorie:"Einzelobjekte"'&gt;
+    Zu den Einzelobjekten des Projektes
+&lt;/a&gt;</pre>
+    
             <h3>Darstellung</h3>
-            <a con10t-search-query="connectedEntities:1241766">zu den Objekten</a>
+            <a con10t-search-query='facet_kategorie:"Einzelobjekte"'>Zu den Einzelobjekten des Projektes</a>
 
+            <h2 class="con10t-toc-entry">con10t-search-catalog: Link zu inhalten eines Katalogs</h2>
 
-            <h2 class="con10t-toc-entry"  style="margin-top: .6em">Link zu Objekten eines Kataloges: con10t-item</h2>
+            <p>Die Direktive "con10t-search-catalog" erstellt einen Link zu den Inhalten eines Katalogs.</p>
+
             <h3>Markup</h3>
-            <pre>
-&lt;a con10t-search-catalog=&quot;216&quot;&gt;Das Archiv von Friedrich W. Hinkel in digitaler Form&lt;/a&gt;
-            </pre>
+            <pre>&lt;a con10t-search-catalog=&quot;1092&quot;&gt;Die Mumienmasken der römischen Kaiserzeit&lt;/a&gt;</pre>
+
             <h3>Darstellung</h3>
-            <a con10t-search-catalog="216">Das Archiv von Friedrich W. Hinkel in digitaler Form</a>
+            <a con10t-search-catalog="1092">Die Mumienmasken der römischen Kaiserzeit</a>
 
+            <h2 class="con10t-toc-entry">con10t-page: Link zu Projektseite.</h2>
 
-            <h2 class="con10t-toc-entry" style="margin-top: .6em">Link zu anderer CMS-Seite: con10t-page</h2>
+            <p>Die Direktive "con10t-page" erstellt einen Link zu einer anderen Projektseite.</p>
+
             <h3>Markup</h3>
             <pre>
 &lt;a con10t-page=&quot;palilia25&quot;&gt;
-   Palilia 25: Martin Tombr&auml;gel, Die republikanischen Otiumvillen von Tivoli
-&lt;/a&gt;
-            </pre>
+    Palilia 25: Martin Tombr&auml;gel, Die republikanischen Otiumvillen von Tivoli
+&lt;/a&gt;</pre>
+
             <h3>Darstellung</h3>
             <a con10t-page="palilia25">Palilia 25: Martin Tombrägel, Die republikanischen Otiumvillen von Tivoli</a>
 
+            <h2 class="con10t-toc-entry">con10t-map: Kartendarstellung für Teilmenge der Arachne Daten</h2>
 
-            <h2 class="con10t-toc-entry" style="margin-top: .6em">Weltkarte</h2>
+            <strong>TODO: Bestand ersetzen mit einem der passt und keine Anmeldung benötigt.</strong>
+
             <h3>Markup</h3>
             <pre>
 &lt;div ng-init=&quot;config = {
@@ -91,17 +106,17 @@
         }
     ]
 }&quot;&gt;&lt;/div&gt;
-&lt;div con10t-map
-id=&quot;map&quot;
-limit=&quot;200&quot;
-overlays=&quot;config.overlays&quot;
-facets-select=&quot;config.facetsSelect&quot;
-lat=&quot;15.114552871944115&quot;
-lng=&quot;31.134765625&quot;
-zoom=&quot;5&quot;
-style=&quot;height: 500px&quot;&gt;
-&lt;/div&gt;
-            </pre>
+&lt;div con10t-map 
+    id=&quot;map&quot; 
+    limit=&quot;200&quot; 
+    overlays=&quot;config.overlays&quot;
+    facets-select=&quot;config.facetsSelect&quot;
+    lat=&quot;15.114552871944115&quot;
+    lng=&quot;31.134765625&quot;
+    zoom=&quot;5&quot;
+    style=&quot;height: 500px&quot;&gt;
+&lt;/div&gt;</pre>
+
             <h3>Darstellung</h3>
             <div ng-init="config = {
                     clustered: false,
@@ -126,26 +141,42 @@ style=&quot;height: 500px&quot;&gt;
                  style="height: 500px">
             </div>
 
-            <h2 class="con10t-toc-entry"  style="margin-top: .6em">Baumdarstellung con10t-tree</h2>
+            <h2 class="con10t-toc-entry">con10t-tree: Hierarchische Darstellung geschachtelter Suchen</h2>
             <h3>Markup</h3>
             <pre>
-&lt;con10t-tree fq=&quot;facet_bestandsname:Archiv-Friedrich-W-Hinkel&quot; wildcard-facet=&quot;facet_subkategorie&quot;&gt;&lt;/con10t-tree&gt;
+&lt;con10t-tree 
+    fq=&quot;facet_bestandsname:Archiv-Friedrich-W-Hinkel&quot;
+    wildcard-facet=&quot;facet_subkategorie&quot;
+&gt;&lt;/con10t-tree&gt;
             </pre>
             <h3>Darstellung</h3>
             <con10t-tree fq="facet_bestandsname:Archiv-Friedrich-W-Hinkel"
                          wildcard-facet="facet_subkategorie"></con10t-tree>
 
 
-            <h2 class="con10t-toc-entry" style="margin-top: .6em">Suche in einem definierten Katalog: con10t-search</h2>
+            <h2 class="con10t-toc-entry">con10t-search: Katalogsuche</h2>
+
+            <strong>
+                TODO: Aktuell wird nur nach dem Katalog im Kontext des Projektes gesucht. Macht die Einschränkung auf das Projekt überhaupt
+                Sinn? Gibt es Kataloge die über zwei Projekte verteilt sind und bei denen man dann nur auf die Inhalte des aktuellen Projektes 
+                einschränken möchte? 
+                
+                <br>
+                Das Design der Widgets bzw. ihre Benennung ist nicht ganz stringent. Vermutlich sollte man für die Demo die Einschränkung auf den Katalog 
+                herausnehmen. Der Name des Wigets klingt ja eigentlich danach, als wolle man einfach im Projekt suchen: Keine Ahnung wieso es
+                in der Demo nur diese Variante mit Katalogsuche gibt. Falls man die Demo mit der Katalog-Einschränkung haben möchte, sollte man entsprechend
+                einen Katalog für <i>widgetsdemo</i> anlegen.
+            </strong>
+            
             <h3>Markup</h3>
             <pre>
-&lt;con10t-search catalog-id=&quot;102&quot;&gt;&lt;/con10t-search&gt;
+&lt;con10t-search catalog-id=&quot;1092&quot;&gt;&lt;/con10t-search&gt;
             </pre>
             <h3>Darstellung</h3>
-            <con10t-search catalog-id="102"></con10t-search>
+            <con10t-search catalog-id="1092"></con10t-search>
 
 
-            <h2 class="con10t-toc-entry" style="margin-top: .6em">Katalogbaum: con10t-catalog-tree</h2>
+            <h2 class="con10t-toc-entry">con10t-catalog-tree: Hierarchische Darstellung eines Katalogs</h2>
             <h3>Markup</h3>
             <pre>
 &lt;con10t-catalog-tree catalog-id=&quot;136&quot;&gt;&lt;/con10t-catalog-tree&gt;
@@ -153,15 +184,23 @@ style=&quot;height: 500px&quot;&gt;
             <h3>Darstellung</h3>
             <con10t-catalog-tree catalog-id="136"></con10t-catalog-tree>
 
-
-            <h2 class="con10t-toc-entry" style="margin-top: .6em">Inhaltsverzeichnis: con10t-toc / con10t-toc-entry</h2>
+            <h2 class="con10t-toc-entry">con10t-toc: Inhaltsverzeichnis</h2>
             <h3>Markup</h3>
             <pre>
 &lt;con10t-toc toc-heading=&quot;Widget&uuml;bersicht&quot;&gt;&lt;/con10t-toc&gt;
-&lt;h2 class=&quot;con10t-toc-entry&quot;&gt;Inhaltsverzeichnis: con10t-toc / con10t-toc-entry&lt;/h2&gt;
             </pre>
+            <h3>Darstellung</h3>
+            Siehe diese Seite oben rechts.
 
-            <h2 class="con10t-toc-entry" style="margin-top: .6em">Bildwidget: con10t-image</h2>
+            <h2 class="con10t-toc-entry">con10t-toc-entry: Inhalt für das Inhaltsverzeichnis</h2>
+
+            <h3>Markup</h3>
+            <pre>&lt;h2 class=&quot;con10t-toc-entry&quot;&gt;con10t-toc-entry: Inhalt für das Inhaltsverzeichnis&lt;/h2&gt;</pre>
+
+            <h3>Darstellung</h3>
+            Siehe einerseits die Überschrift dieses Abschnitts, außerdem den Eintrag im Inhaltsverzeichnis oben rechts.
+
+            <h2 class="con10t-toc-entry">con10t-image: Anzeige eines Bildes</h2>
             <h3>Markup</h3>
             <p>Bildanzeige per Arachne-ID</p>
             <pre>
@@ -171,7 +210,7 @@ style=&quot;height: 500px&quot;&gt;
             </pre>
             <p>Bildanzeige per URL</p>
             <pre>
-&lt;con10t-image src=&quot;/con10t/img/hinkel/hinkel-ams_01.png&quot; width=&quot;250&quot;&gt;&lt;/con10t-image&gt;
+&lt;con10t-image src=&quot;/con10t/img/hinkel/hinkel-ams_01.png&quot; width=&quot;250&quot;&gt;Karte&lt;/con10t-image&gt;
             </pre>
             <h3>Darstellung</h3>
             <div style="float: left">
@@ -180,7 +219,7 @@ style=&quot;height: 500px&quot;&gt;
             </div>
             <div style="float: left; margin-left: 1em">
                 <p>Bildanzeige per URL</p>
-                <con10t-image src="/con10t/img/hinkel/hinkel-ams_01.png" width="250"></con10t-image>
+                <con10t-image src="/con10t/img/hinkel/hinkel-ams_01.png" width="250">Karte</con10t-image>
             </div>
             <div class="clearfix"></div>
 
@@ -197,36 +236,43 @@ style=&quot;height: 500px&quot;&gt;
             <h3>Markup</h3>
             <pre>
 &lt;con10t-media-tree
-        header-teaser="1246708"
+        header-teaser="1020757"
         title="Rom Einzelmotive"
         images="[{
-                entityid: 1244857,
+                entityid: 2264785,
                 title: 'Sarkophagfront mit Löwenjagd'
             }, {
-                entityid: 1246520,
+                entityid: 920590,
                 title: 'Schlachtsarkophag'
             }, {
-                entityid: 1243817,
+                entityid: 5567083,
                 title: 'Reliefplatte des großen trajanischen Schlachtenfrieses'
             }]"&gt;
 &lt;/con10t-media-tree&gt;
             </pre>
             <h3>Darstellung</h3>
             <con10t-media-tree
-                    header-teaser="1246708"
+                    header-teaser="1020757"
                     title="Rom Einzelmotive"
                     images="[{
-                            entityid: 1244857,
+                            entityid: 2264785,
                             title: 'Sarkophagfront mit Löwenjagd'
                         }, {
-                            entityid: 1246520,
+                            entityid: 920590,
                             title: 'Schlachtsarkophag'
                         }, {
-                            entityid: 1243817,
+                            entityid: 5567083,
                             title: 'Reliefplatte des großen trajanischen Schlachtenfrieses'
                         }]">
             </con10t-media-tree>
 
         </div>
     </div>
+
+    <style>
+        /* increases margin-top compared to the default (which is -50px) */
+        .con10t-toc-entry {
+            margin-top: -30px;
+        }
+    </style>
 </div>
