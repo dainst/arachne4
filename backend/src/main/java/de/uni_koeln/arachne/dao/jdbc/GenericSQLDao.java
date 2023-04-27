@@ -369,6 +369,43 @@ public class GenericSQLDao extends SQLDao {
 		return null;
 	}
 
+	public List<Map<String, String>> getLebewesen(final Long entityId) {
+
+		final List<Map<String, String>> result = query(con -> {
+
+			final String sql = "SELECT " 
+			+ "`siegel_lebewesen`.`AnzahlLebewesen`, "
+			+ "`siegel_lebewesen`.`Art`, "
+			+ "`siegel_lebewesen`.`LW1`, "
+			+ "`siegel_lebewesen`.`Lw2`, "
+			+ "`siegel_lebewesen`.`Lw3`, "
+			+ "`siegel_lebewesen`.`sHaltung`, "
+			+ "`siegel_lebewesen`.`stAnsicht`, "
+			+ "`siegel_lebewesen`.`Kopfrich`, "
+			+ "`siegel_lebewesen`.`Halsrich`, "
+			+ "`siegel_lebewesen`.`KleidungA`, "
+			+ "`siegel_lebewesen`.`KleidungB`, "
+			+ "`siegel_lebewesen`.`KleidungC`, "
+			+ "`siegel_lebewesen`.`sGeschlecht` "
+			+ "FROM `arachneentityidentification`, `objektsiegel`, `siegel_lebewesen` WHERE "
+			+ "`arachneentityidentification`.`ArachneEntityID` = ? AND "
+			+ "`arachneentityidentification`.`ForeignKey` = `objektsiegel`.`PS_ObjektsiegelID` AND "
+    	    + "`arachneentityidentification`.`TableName` = 'objekt' AND "
+    		+ "`siegel_lebewesen`.`CMSNR` = `objektsiegel`.`CMSNR` AND "
+			+ "`siegel_lebewesen`.`AnzahlLebewesen` IS NOT NULL;";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setLong(1, entityId);
+
+			return ps;
+		}, new GenericEntitiesMapper("AdditionalInfosJSON"));
+
+		if (result != null && !result.isEmpty()) {
+			return result;
+		}
+		return null;
+	}
+
 	/**
 	 * Gets the cover page of a book record. The SQL will always return a result
 	 * so that 'queryForLong' does not throw an
