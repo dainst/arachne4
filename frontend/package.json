@@ -39,7 +39,6 @@
     "ng-showdown": "1.1.0",
     "oclazyload": "^1.1.0",
     "overlapping-marker-spiderfier-leaflet": "^0.2.7",
-    "request": "^2.87.0",
     "showdown": "^1.9.1",
     "svg-pan-zoom": "3.5.3",
     "three": "^0.103.0"
@@ -98,6 +97,7 @@
     "webpack": "^5.64.3",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.5.0",
-    "yargs": "~15.0.2"
+    "yargs": "~15.0.2",
+    "request": "^2.87.0"
   }
 }

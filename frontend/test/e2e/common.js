@@ -1,4 +1,3 @@
-var request = require('request');
 var promisedRequest = require('./util/promisedRequest');
 var hasha = require('hasha');
 var config = require('../../config/dev-config.json');
