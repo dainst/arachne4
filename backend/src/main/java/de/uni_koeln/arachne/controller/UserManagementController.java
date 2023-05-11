@@ -300,7 +300,7 @@ public class UserManagementController {
 						+ "E-Mail: " + user.getEmail() + newLine + newLine
 						+ "Wenn Sie in Arachne eingeloggt sind, können Sie folgenden Link benutzen um den Benutzer "
 						+ "freizuschalten:" + newLine
-						+ "http://arachne.uni-koeln.de/activate_account/" + user.getId();
+						+ "https://oneeyedjacks04.dai-cloud.uni-koeln.de/activate_account/" + user.getId();
 
 				if (!mailService.sendMail(adminEmail, "Anmeldung bei Arachne", messageBody)) {
 					LOGGER.error("Unable to send registration eMail to admin.");

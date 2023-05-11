@@ -1,0 +1,110 @@
+<style>
+
+    .con10t-row {
+        margin-top: 10vh;
+    }
+
+    #sticky-sidebar {
+        padding-top: 4vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    @media (max-width: 992px) {
+        #sticky-sidebar {
+            position: relative;
+        }
+
+        .con10t-image {
+            float: none;
+        }
+    }
+</style>
+
+<idai-header
+        image="/con10t/headerimages/AF_44_Header.jpg"
+        description="S. Huy, Praktiken der Aneignung. Kulturelle Kontakte im nordöstlichen Azovraum vom späten 7.–3. Jh. v. Chr, AF 44, Taganrog und sein Umland 1 (Berlin 2022). Ergänzender Online-Katalog"
+        link="https://doi.org/10.34780/7se6-sm5h">
+</idai-header>
+
+<div class="con10t-page teaserpage container">
+    <div class="con10t-row">
+        <div class="con10t-title">
+            <h1>S. Huy, Praktiken der Aneignung. Kulturelle Kontakte im nordöstlichen Azovraum vom späten 7.–3. Jh. v. Chr, AF 44, Taganrog und sein Umland 1 (Berlin 2022). Ergänzender Online-Katalog</h1>
+        </div>
+
+        <div id="sticky-sidebar" class="con10t-sidebar">
+
+            <con10t-toc toc-heading="Übersicht"></con10t-toc>
+
+            <h3>Browse project data</h3>
+
+		   <!-- Map -->
+            <div ng-init="config = {
+                    clustered: false,
+                    facetsSelect: [
+                        {
+                        key: 'catalogIds',
+                        value: 1276
+                        },
+                        {
+                        key: 'catalogIds',
+                        value: 1277
+                        }
+                    ]
+                }">
+            </div>
+
+            <div con10t-map style = "margin-bottom: 1vw;"
+                 id="map"
+                 limit="200"
+                 facets-select="config.facetsSelect"
+                 lat="47.23"
+                 lng="38.89"
+                 zoom="5">
+            </div>
+
+            <a con10t-search-query target = "_blank">Show all project data</a>
+
+            <con10t-search search-placeholder="Search..."></con10t-search>
+
+            <br>
+
+            <h3>Catalogue</h3>
+
+            <a href = "https://arachne.dainst.org/catalog/1277">Novo Zolotovka</a>
+
+            <a href = "https://arachne.dainst.org/catalog/1276">Dugino X</a>
+
+            <h3 style = "margin-top: 5%">About the book</h3>
+
+            <p><a href = "https://doi.org/10.34780/7se6-sm5h" target = "_blank">iDAI.publications</a></p>
+
+            <con10t-image src = "/con10t/img/af44_huy/AF_44_Cover.jpg" alt = "Cover-Printausgabe" width = "340"></con10t-image>
+
+        </div>
+
+        <div class="con10t-content">
+
+            <h2 class="con10t-toc-entry">Introduction</h2>
+
+            <p>The foundation of a settlement on the territory of the modern city of <a href = "https://gazetteer.dainst.org/place/2069080" target="_blank">Taganrog</a> by Ionian Greeks in the last quarter of the 7th century B.C.E. established contacts between the north-eastern Azov region and the Aegean. These are particularly evident in the numerous Greek ceramic vessels that were widespread in the region until the early 3rd century B.C.E. During this period, the north-eastern Azov region was characterised by a dynamic population fluctuation. Overall, a successive increase in settlements and burials can be observed, which merged into a dense web in the middle of the 4th century B.C.E. The parent publication of the presented catalogue examines the role that cultural contacts between the north-eastern Azov region and the Greek world on the Aegean and Black Seas played in this transformation. To this end, a consumption analysis of Greek objects is carried out, the results of which are interpreted applying the concept of cultural appropriation. This requires a detailed investigation of the social contexts, which is undertaken using the settlement near <a href = "https://gazetteer.dainst.org/place/2777600" target="_blank">Novo Zolotovka</a> and the burial ground <a href = "https://gazetteer.dainst.org/place/2777600" target="_blank">Dugino X</a> as case studies. Both sites have been subject to various excavations and systematic surface surveys over many years. Those have yielded a large number of features and finds, which form the material basis of the thesis. The digital catalogue contains a selection from this spectrum and is a supplement to the parent publication.</p>
+
+            <h2 class="con10t-toc-entry">Catalogue</h2>
+
+            <con10t-catalog-tree catalog-id="1277"></con10t-catalog-tree>
+
+            <con10t-catalog-tree catalog-id="1276"></con10t-catalog-tree>
+
+            <h2 class="con10t-toc-entry">Notes on the catalogue</h2>
+
+            <p>The contexts and finds published here are discussed in the parent book AF 44, but have been removed for reasons of space. The digitally published entries are indicated there with an *. The choice of the outsourced catalogue numbers is primarily based on their importance with regard to the research question of the publication. In the printed version, all finds and features important for the line of argument are presented and illustrated. Most of them are in a better state of preservation than the selection here..
+            All technical details, such as ceramic fabric groups and decoration systems, are explained in subchapters 3.2 and 3.3 of AF 44. As a basis for the classification, they also provide an overview of the most important typologies with the associated chronologies. The catalogue on the burial ground Dugino X was produced in collaboration with Roman V. Prokof'ev, who directed the excavations in 2009.</p>
+
+            <p>S. Huy</p>
+        </div>
+
+    </div>
+</div>

@@ -319,7 +319,10 @@
 						<field datasource="objektkeramik.Scherbenfarbe" />
 					</section>
 					<section labelKey="Korngröße der Magerung">
-						<field datasource="objektkeramik.KrongroesseMagerung" />
+						<field datasource="objektkeramik.KorngroesseMagerung" />
+					</section>
+					<section labelKey="Kornmenge der Magerung">
+						<field datasource="objektkeramik.KornmengeMagerung" />
 					</section>
 					<section labelKey="Einschluesse">
 						<field datasource="objektkeramik.Einschluesse" />
@@ -871,7 +874,11 @@
 				<section labelKey="Schriftzeichen">
 					<field datasource="objektsiegel.SCHRIFT" prefix="Schrift: " />
 				</section>
-				<section labelKey="Figürliche Motive außer Lebewesen">
+
+				<include type="siegel_lebewesen" />
+
+				<section labelKey="Weitere figürliche Motive">
+
 					<field datasource="objektsiegel.GELAENDE" prefix="Gelände: " />
 					<field datasource="objektsiegel.sPFLANZEN" prefix="Pflanzen: " />
 					<field datasource="objektsiegel.SYMBOLE" prefix="Symbole: " />

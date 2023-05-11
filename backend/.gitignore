@@ -3,3 +3,7 @@ src/main/resources/config/application.properties
 .idea
 *.iml
 muell
+/.apt_generated/
+/.apt_generated_tests/
+
+logs/

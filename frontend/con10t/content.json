@@ -435,6 +435,13 @@
               "de": "Das Archiv der Außenstelle Teheran des Deutschen Archäologischen Instituts",
               "en": "The Archive of the Tehran branch of the German Archaeological Institute"
             }
+        },
+        {
+          "id": "glienickerantiken",
+          "title": {
+            "de": "Sepp-Gustav Gröschel, Antike Spolien aus der Sammlung des Prinzen Carl von Preußen in Glienicke (Potsdam 2022). Stiftung Preußische Schlösser und Gärten Berlin-Brandenburg, Bestandskataloge der Kunstsammlungen, Antiken II",
+            "en": "Sepp-Gustav Gröschel, Antike Spolien aus der Sammlung des Prinzen Carl von Preußen in Glienicke (Potsdam 2022). Stiftung Preußische Schlösser und Gärten Berlin-Brandenburg, Bestandskataloge der Kunstsammlungen, Antiken II"
+          }
         }
       ]
     },
@@ -604,6 +611,12 @@
             "de": "Grabbauten in Tuna el-Gebel"
           },
           "hidden": true
+        },
+        {
+          "id": "ewert",
+          "title": {
+            "de": "Das Archiv des Bauforschers Christian Ewert"
+          }
         }
       ]
     },
@@ -678,6 +691,13 @@
           "title": {
             "de": "H. Rose, Die römischen Terrakottamasken in den Nordwestprovinzen. MAR XXXVII (2006)",
             "en": "H. Rose, Roman Terracotta Masks in the Northwestern Provinces (Die römischen Terrakottamasken in den Nordwestprovinzen. MAR XXXVII)"
+          }
+        },
+        {
+          "id": "riedel_boegen",
+          "title": {
+            "de": "M. Riedel, Römische Bogenmonumente in der Africa Proconsularis (Byzacena und Zeugitana) und Numidia (Militiana und Cirtensis), 2022, Digitaler Katalog",
+            "en": "M. Riedel, Römische Bogenmonumente in der Africa Proconsularis (Byzacena und Zeugitana) und Numidia (Militiana und Cirtensis), 2022, Digitaler Katalog"
           }
         },
         {
@@ -898,6 +918,14 @@
           },
           "hidden": false
         },
+        {
+          "id": "AA_2022_1_Kose_et_al",
+          "title": {
+            "de": "A. Kose – B. Engels – M. Trümper, Die Basilike Stoa an der Agora von Thera. Rekonstruktion ihrer Entwicklung auf Basis stratigraphischer Grabungen, AA 2022/1, § 1–109. Supplement",
+            "en": "A. Kose – B. Engels – M. Trümper, Die Basilike Stoa an der Agora von Thera. Rekonstruktion ihrer Entwicklung auf Basis stratigraphischer Grabungen, AA 2022/1, § 1–109. Supplement"
+          },
+          "hidden": false
+        },
 		{
           "id": "JOGA_2020_Pruemers",
           "title": {
@@ -981,6 +1009,38 @@
           "title": {
             "de": "B. Engels, Das Grottenheiligtum am Osthang von Pergamon. Eine Mikrostudie zur späthellenistischen Kultpraxis, Altertümer von Pergamon 17 (Berlin 2022). Erweiterter Online-Katalog",
             "en": "B. Engels, Das Grottenheiligtum am Osthang von Pergamon. Eine Mikrostudie zur späthellenistischen Kultpraxis, Altertümer von Pergamon 17 (Berlin 2022). Extended Online-Catalog"
+          },
+          "hidden": false
+        },
+		{
+          "id": "Jdi_137_Lang",
+          "title": {
+            "de": "J. Lang, Hellenistisch-römische Wohnkultur in der ersten römischen Provinz – Häuser in Solunt im Spiegel ihrer dauerhaften Ausstattung. Mit Beiträgen von Melanie Lang und Julika Steglich, JdI 137, 2022, 39–140. Supplement",
+            "en": "J. Lang, Hellenistisch-römische Wohnkultur in der ersten römischen Provinz – Häuser in Solunt im Spiegel ihrer dauerhaften Ausstattung. M, JdI 137, 2022, 39–140. Supplement"
+          },
+          "hidden": false
+        },
+        {
+          "id": "mkt20_boecker",
+          "title": {
+            "de": "V. Boecker, Kulte, Orte, Körperteile. Eine Neubewertung der Weihung anatomischer Votive in Latiums Heiligtümer, Menschen – Kulturen – Traditionen 20 (Wiesbaden 2023). Online-Katalog",
+            "en": "V. Boecker, Kulte, Orte, Körperteile. Eine Neubewertung der Weihung anatomischer Votive in Latiums Heiligtümer, Menschen – Kulturen – Traditionen 20 (Wiesbaden 2023). Online-Katalog"
+          },
+          "hidden": false
+        },
+        {
+          "id": "af44_huy",
+          "title": {
+            "de": "S. Huy, Praktiken der Aneignung. Kulturelle Kontakte im nordöstlichen Azovraum vom späten 7.–3. Jh. v. Chr, AF 44, Taganrog und sein Umland 1 (Berlin 2022). Ergänzender Online-Katalog",
+            "en": "S. Huy, Praktiken der Aneignung. Kulturelle Kontakte im nordöstlichen Azovraum vom späten 7.–3. Jh. v. Chr, AF 44, Taganrog und sein Umland 1 (Berlin 2022). Ergänzender Online-Katalog"
+          },
+          "hidden": false
+        },
+        {
+          "id": "daa21_pausilypon",
+          "title": {
+            "de": "T. Busen, Die römische Kaiservilla Pausilypon. Gesamtanlage und Bauten des oberen Plateaus (Wiesbaden 2023). Digitale Beilagen",
+            "en": "T. Busen, Die römische Kaiservilla Pausilypon. Gesamtanlage und Bauten des oberen Plateaus (Wiesbaden 2023). Digital Supplements"
           },
           "hidden": false
         }

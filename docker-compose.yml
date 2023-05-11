@@ -24,6 +24,8 @@ services:
       - "DB_SERVER=${DB_SERVER}"
       - "DB_PASSWORD=${DB_PASSWORD}"
       - "SERVER_ADDRESS=${SERVER_ADDRESS}"
+      - "SMTP_USERNAME=${SMTP_USERNAME}"
+      - "SMTP_USERPASSWORD=${SMTP_USERPASSWORD}"
       - "IIPIMAGE_SERVER=frontend"
       - "ELASTICSEARCH_SERVER=elasticsearch"
     volumes:
@@ -89,6 +91,26 @@ services:
     build: ./iipimage
     volumes:
       - archaeocloud:/media/archaeocloud
+    restart: always
+
+  aiax:
+    image: ghcr.io/dainst/aiax:${AIAX_VERSION}
+    volumes:
+      - ${AIAX_DATA_DIR}:/mnt/aiax-data
+    environment:
+      - ARACHNE4_BASE_URL=https://${SERVER_ADDRESS}
+      - BASE_URL=https://${SERVER_ADDRESS}
+      - DB_SERVER=${SERVER_ADDRESS}
+      - DB_PASSWORD
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=Host(`${SERVER_ADDRESS}`) && PathPrefix(`/aiax`)
+      - traefik.http.routers.backend.entrypoints=websecure
+      - traefik.http.routers.backend.tls.certresolver=myresolver
+      - traefik.port=80
+      - traefik.http.middlewares.backend-compress.compress=true      
+      - traefik.http.middlewares.backend-headers.headers.accesscontrolalloworiginlist=*
+      - traefik.http.routers.backend.middlewares=backend-compress,backend-headers
     restart: always
 
   traefik:

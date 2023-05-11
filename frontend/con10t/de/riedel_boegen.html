@@ -1,0 +1,113 @@
+<style>
+
+	.con10t-row {
+		margin-top: 10vh;
+	}
+
+    #sticky-sidebar {
+        padding-top: 4vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    @media (max-width: 992px) {
+        #sticky-sidebar {
+            position: relative;
+        }
+
+        .con10t-image {
+            float: none;
+        }
+    }
+</style>
+
+<idai-header
+        image="/con10t/headerimages/riedel_boegen_header.jpg"
+
+        description="M. Riedel, Römische Bogenmonumente in der Africa Proconsularis (Byzacena und Zeugitana) und Numidia (Militiana und Cirtensis), 2022. Digitaler Katalog"
+
+        link="">
+</idai-header>
+
+<div class="con10t-page teaserpage container">
+    <div class="con10t-row">
+        <div class="con10t-title">
+            <h1>M. Riedel, Römische Bogenmonumente in der Africa Proconsularis (Byzacena und Zeugitana) und Numidia (Militiana und Cirtensis), 2022. Katalog</h1>
+        </div>
+
+        <div id="sticky-sidebar" class="con10t-sidebar">
+
+            <con10t-toc toc-heading="Übersicht"></con10t-toc>
+
+            <h3>Katalog</h3>
+
+            <a href = "https://arachne.dainst.org/catalog/68">Direkt zum Katalog</a>
+
+            <h3 style="margin-top: 2vh;">Projektdaten durchsuchen</h3>
+
+            <!-- Map  -->
+            <div ng-init="config = {
+                    clustered: false,
+                    facetsSelect: [
+                        {
+                        key: 'catalogIds',
+                        value: 68
+                        }
+                    ]
+                }">
+            </div>
+
+            <div con10t-map style = "margin-bottom: 1vw;"
+                 id="map"
+                 limit="200"
+                 overlays="config.overlays"
+                 facets-select="config.facetsSelect"
+                 lat="36.85"
+                 lng="10.33"
+                 zoom="5">
+            </div>
+
+            <a con10t-search-query target = "_blank">Alle Datensätze anzeigen</a>
+
+            <con10t-search catalog-id="68"></con10t-search>
+
+            <h3 style="margin-top: 2vh;">Informationen zur Dissertation</h3>
+
+            <p>Die Dissertation ist als PDF abrufbar über <a href = "http://nbn-resolving.de/urn:nbn:de:hbz:38-633296" target = "_blank">KUPS</a></p>
+
+        </div>
+
+        <div class="con10t-content">
+
+            <h2 class="con10t-toc-entry">Einleitung zum Katalog</h2>
+
+            <p>Dieser Katalog ist Bestandteil der Dissertation <span style = "font-style:italic;">Römische Bogenmonumente in der Africa Proconsularis (Byzacena und Zeugitana) und Numidia (Militiana und Cirtensis)</span>,
+            die im Rahmen eines Promotionsprojektes am Archäologischen Institut der Universität zu Köln im Sommersemester 2019 erfolgreich abgeschlossen wurde. Die Dissertation wurde von Prof. Dr. Michael Heinzelmann
+            und Prof. Dr. Dietrich Boschung betreut. Diese Untersuchung ist in Form einer formal überarbeiten <a href="http://nbn-resolving.de/urn:nbn:de:hbz:38-633296" target="_blank">Fassung</a> über den Hochschulschriftenserver der Universität Köln abrufbar.</p>
+
+            <p>Ausgangspunkt der vorliegenden Untersuchung war die Erstellung eines archäologischen Kataloges. Die Auswahl der Einzeldenkmäler (136) basierte weitgehend auf dem bisherigen Bestand früherer Kataloge und Einzelstudien.
+            Etwaige Einschränkungen bei der Aufnahme bestimmter Einzeldenkmäler in den Katalog begründen sich durch die Definition des Untersuchungsrahmens: Untersucht wurden die kaiserzeitlichen Denkmäler (1. bis 3. Jh. n. Chr.) in der Africa Proconsularis
+            (Byzacena und Zeugitana) und Numidia (Militiana und Cirtensis). Bei der Katalogisierung der Denkmäler wurde der bisherige Kenntnisstand vorangegangener Studien zusammengetragen und – soweit möglich - durch eigene Feldstudien überprüft und erweitert.
+            In Algerien konnten aufgrund der schlechten Sicherheitslage leider keine eigenen Feldstudien durchgeführt werden.</p>
+
+            <h2 class="con10t-toc-entry">Katalog</h2>
+
+            <con10t-catalog-tree catalog-id="68"></con10t-catalog-tree>
+
+            <h2 class="con10t-toc-entry">Hinweise zur Nutzung des Kataloges</h2>
+
+            <p>Der Katalog besteht aus zwei Teilen (I – Africa Zeugitana und Byzacena, II – Numidia Militiana und Cirtensis) und ist nach den antiken Bezeichnungen der Orte,
+            in denen die Einzeldenkmäler lokalisiert werden, alphabetisch strukturiert. Die Ortsbezeichnungen mit * beziehen sich auf moderne Standorte. Mehrere Einzeldenkmäler
+            innerhalb eines Ortes sind nach der Entstehungszeit der Denkmäler – soweit bekannt – in chronologischer Reihenfolge angeordnet. Nicht sicher datierbare Bauten sind
+            den Denkmälern mit bekannter Entstehungszeit nachgeordnet.</p>
+
+            <p>Die in der Bibliographie hinterlegten Autor-Jahr-Verweise können über die Literaturliste im verlinkten Entity-Datensatz sowie über die
+            Bibliographie der veröffentlichten Dissertation erschlossen werden.</p>
+
+            <p>M. Riedel</p>
+        </div>
+
+    </div>
+</div>

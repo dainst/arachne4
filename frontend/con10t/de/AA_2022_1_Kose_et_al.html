@@ -1,0 +1,107 @@
+<style>
+
+    .con10t-row {
+    margin-top: 10vh;
+    }
+
+    #sticky-sidebar {
+    padding-top: 4vw;
+    padding-bottom: 2vw;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    }
+
+    @media (max-width: 992px) {
+    #sticky-sidebar {
+    position: relative;
+    }
+
+    .con10t-image {
+    float: none;
+    }
+    }
+</style>
+
+<idai-header
+    image="/con10t/headerimages/AA_Logo-Querformat.jpg"
+    description="A. Kose – B. Engels – M. Trümper, Die Basilike Stoa an der Agora von Thera. Rekonstruktion ihrer Entwicklung auf Basis stratigraphischer Grabungen, AA 2022/1, § 1–109. Supplement"
+    link="https://doi.org/10.34780/tiq0-a22r">
+</idai-header>
+
+<div class="con10t-page teaserpage container">
+    <div class="con10t-row">
+        <div class="con10t-title">
+            <h1>A. Kose – B. Engels – M. Trümper, Die Basilike Stoa an der Agora von Thera. Rekonstruktion ihrer Entwicklung auf Basis stratigraphischer Grabungen, AA 2022/1, § 1–109. Supplement</h1>
+        </div>
+
+        <div id="sticky-sidebar" class="con10t-sidebar">
+
+            <con10t-toc toc-heading="Übersicht"></con10t-toc>
+
+            <h3>Suche in den Daten des Projektes</h3>
+
+            <!-- Map -->
+            <div ng-init="config = {
+                clustered: false,
+                facetsSelect: [
+                {
+                key: 'catalogIds',
+                value: 1224
+                }
+                ]
+                }">
+            </div>
+
+            <div con10t-map style = "margin-bottom: 1vw;"
+                id="map"
+                limit="200"
+                facets-select="config.facetsSelect"
+                lat="36.363859"
+                lng="25.478255"
+                zoom="12">
+            </div>
+
+            <a con10t-search-query target = "_blank">Alle Datensätze anzeigen</a>
+
+            <con10t-search catalog-id="1224"></con10t-search>
+
+            <br>
+
+            <h3>Katalog</h3>
+            <a href = "https://arachne.dainst.org/catalog/1224">Zur Katalogansicht</a>
+
+            <h3 style = "margin-top: 5%">Informationen zum Buch</h3>
+            <p><a href="https://doi.org/10.34780/tiq0-a22r">Vollständiger Artikel abrufbar über iDAI.publications/journals</a> </p>
+            <con10t-image src = "/con10t/img/AA_2022_1_Kose_et_al/AA_2022_1_Kose_et_al_TitlePage.jpg" alt = "Startseite-Printausgabe" width = "330"></con10t-image>
+
+        </div>
+
+        <div class="con10t-content">
+
+            <h2 class="con10t-toc-entry">Einleitung zum Online-Katalog</h2>
+            <!-- Abbildung -->
+            <con10t-image src="/con10t/img/AA_2022_1_Kose_et_al/AA_2022_1_Kose_et_al_4.jpg" alt="AA_Kose_et_al_4.jpg"align="left" alt="Thera" width="350">
+                <span class="ng-scope">
+                    Basilike Stoa, Ansicht von Norden im Jahr 1896.<br>
+                    Fotothek DAI Athen, D-DAI-ATH-Thera-0261 (Foto: Rudolf Rohrer?)
+                    </span>
+            </con10t-image>
+
+            <p>Dieser Online-Katalog ist die ausführlichere Fassung der im Archäologischen Anzeiger gedruckt vorliegenden Zusammenstellung aller diagnostischen Keramikfragmente aus dem Schnitt 1992 C.
+            Das Material umfasst in seiner Gesamtheit eine chronologische Bandbreite vom 7. Jh. v. Chr. bis in die frühe Kaiserzeit, erlaubt aber in einigen Fällen eine recht sichere Datierung der einzelnen Straten.
+            Insbesondere bei einem derart heterogenen Material wird die Auswertung dadurch erschwert, dass zwischen der Erstaufnahme und Publikation der Daten viel Zeit vergangen ist und darüber hinaus in Händen verschiedener Bearbeiter lag.
+            Die detaillierte Bearbeitung der Keramikfunde für die Publikation durch Benjamin Engels erfolgte ohne Autopsie des Materials allein auf Grundlage der Dokumentation in Zeichnungen und Schwarzweiß-Sammelaufnahmen.
+            Sämtliche Farb- und Fabrikatsbeschreibungen sowie die Maße wurden unverändert aus der Grabungsdatenbank übernommen.
+            Das darin liegende Fehlerpotential ist dem Bearbeiter bewusst und äußert sich in einer im Zweifelsfall zurückhaltenden Datierung und Bestimmung der Warenarten und Typen.</p>
+
+            <p>B. Engels</p>
+
+            <h2 class="con10t-toc-entry">Katalog</h2>
+
+            <con10t-catalog-tree catalog-id="1224"></con10t-catalog-tree>
+
+        </div>
+
+    </div>
+</div>

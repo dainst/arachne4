@@ -2,7 +2,7 @@
  * @author: Jan G. Wieners
  * @author: Thomas Kleinke
  * @author: Patrick Jominet
- */ 
+ */
 export default function ($rootScope, $scope, searchService, categoryService, $filter,
             arachneSettings, $location, Catalog, CatalogEntry, messages, $uibModal, $http, Entity,
             authService, $timeout, searchScope) {
@@ -114,7 +114,7 @@ export default function ($rootScope, $scope, searchService, categoryService, $fi
     };
 
     $scope.openCatalogModal = function() {
-        
+
         if (searchService.getSize() > arachneSettings.maxSearchSizeForCatalog) {
             return;
         }
@@ -143,14 +143,15 @@ export default function ($rootScope, $scope, searchService, categoryService, $fi
 
                 $scope.entitiesBuilt = 0;
                 $scope.entitiesAdded = 0;
-                $scope.catalogCreationCancelled = false;
+                // $scope.catalogCreationCancelled = false;
 
                 $uibModal.open({
                     template: require('../catalog/catalog-progress.html'),
                     scope: $scope,
-                }).result.catch(() => {
-                    $scope.catalogCreationCancelled = true;
+                /* }).result.catch(() => {
+                    // $scope.catalogCreationCancelled = true;
                     Catalog.delete({ id: $scope.catalogId });
+                */
                 });
 
                 Catalog.save({}, catalog).$promise.then(result => {
@@ -163,7 +164,7 @@ export default function ($rootScope, $scope, searchService, categoryService, $fi
 
     $scope.processCatalogEntities = function(catalog, entities, generateTexts) {
 
-        if ($scope.catalogCreationCancelled) return;
+        // if ($scope.catalogCreationCancelled) return;
 
         var promises = entities.map(entity => {
             return Entity.get({id: entity.entityId}).$promise
@@ -192,7 +193,7 @@ export default function ($rootScope, $scope, searchService, categoryService, $fi
 
     $scope.addCatalogEntries = function(entries) {
 
-        if ($scope.catalogCreationCancelled) return Promise.reject();
+        // if ($scope.catalogCreationCancelled) return Promise.reject();
 
         return CatalogEntry.save({}, entries).$promise;
     };
@@ -204,7 +205,7 @@ export default function ($rootScope, $scope, searchService, categoryService, $fi
 
     $scope.createCatalogEntriesForBatch = function(catalog, generateTexts, offset=0) {
 
-        if ($scope.catalogCreationCancelled) return;
+        // if ($scope.catalogCreationCancelled) return;
 
         var query = $scope.currentQuery.toFlatObject();
         if (query.q === "") {

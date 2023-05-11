@@ -2,6 +2,12 @@
   "AA_2021_2_Tzochev": {
     "q": "catalogPaths:1143"
   },
+  "AA_2022_1_Kose_et_al": {
+    "q": "catalogPaths:1224"
+  },
+  "af44_huy": {
+    "q": "(catalogPaths:1277 OR catalogPaths:1276)"
+  },
   "afrarchcologne": {
     "facets": [
       {
@@ -42,8 +48,17 @@
       }
     ]
   },
+  "cherchell": {
+    "q": "catalogPaths:1135"
+  },
   "cilopac": {
     "q": "catalogPaths:41"
+  },
+  "corpusminmyk": {
+    "q": "catalogPaths:1403"
+  },
+  "daa21_pausilypon": {
+    "q": "catalogPaths:1348"
   },
   "daiorient": {
     "q": "searchableEditorContent:D-DAI-ORI",
@@ -56,6 +71,14 @@
   },
   "databasepausanias": {
     "q": "(catalogPaths:111 OR catalogPaths:110)"
+  },
+  "ewert": {
+    "facets": [
+      {
+        "key": "facet_bestandsname",
+        "value": "Ewert-Nachlass"
+      }
+    ]
   },
   "faak16": {
     "q": "catalogPaths:566"
@@ -195,6 +218,9 @@
       }
     ]
   },
+  "Jdi_137_Lang": {
+    "q": "catalogPaths:1198"
+  },
   "kaak": {
     "q": "searchableEditorContent:D-DAI-KAAK"
     ,
@@ -249,6 +275,9 @@
   "milet_V4": {
     "q": "catalogPaths:597"
   },
+  "mkt20_boecker": {
+    "q": "catalogPaths:1279"
+  },
   "nara": {
     "q": "searchableEditorContent:D-DAI-ROM-NA"
     ,
@@ -295,9 +324,7 @@
         "key": "facet_subkategoriebestand_level2",
         "value": "Nachlass-Friedrich-Rakob"
       }
-    ]
-  },
-  "rakob": {
+    ],
     "q": "D-DAI-ROM-NA-RAK"
   },
   "rakob_map": {
@@ -320,6 +347,9 @@
         "value": "Einzelobjekte"
       }
     ]
+  },
+  "riedel_boegen": {
+    "q": "catalogPaths:68"
   },
   "rwwa": {
     "facets": [

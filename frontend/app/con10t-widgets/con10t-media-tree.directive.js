@@ -12,7 +12,7 @@ export default function (arachneSettings) {
             images: '='
         },
         transclude: true,
-        link: function (scope, element, attrs, $transclude) {
+        link: function (scope, element, attrs, ctrl, $transclude) {
             scope.arachneUrl = arachneSettings.arachneUrl;
             scope.cols = 12 / scope.images.length;
             scope.hasTeaser = attrs.headerTeaser;
