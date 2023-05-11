@@ -99,7 +99,7 @@ services:
       - ${AIAX_DATA_DIR}:/mnt/aiax-data
     environment:
       - ARACHNE4_BASE_URL=https://${SERVER_ADDRESS}
-      - BASE_URL=${SERVER_ADDRESS}
+      - BASE_URL=https://${SERVER_ADDRESS}
       - DB_SERVER=${SERVER_ADDRESS}
       - DB_PASSWORD
     labels:
