@@ -1,3 +1,14 @@
+<style>
+    .row {
+    display: flex;
+    }
+
+    .column {
+    flex: 33.33%;
+    padding: 5px;
+    }
+</style>
+
 <!-- Kopfbereich der Projektseite -->
 <idai-header image="/con10t/headerimages/D-DAI-MAD-A-70-Z-0530_01.png"
     description="Christian Ewert, Aljafería / Einzelobjekt / Parte de edificio, 11. Jhd. / s. XI"
@@ -112,13 +123,22 @@
                 <li>Der Kreuzgang des Klosters San Juan de Duero (MM 8, 1967)</li>
             </ol>
 
-            <con10t-image src="/con10t/img/ewert/Fig_3_Mezquita_de_Cordoba_D-DAI-MAD-A-18-Z-0064.png" align="left" alt="Bögen der Moschee von Córdoba" width="800">
-                <span class="ng-scope">Bögen der Moschee von Córdoba</span>
-            </con10t-image>
+            <div class="row">
+                <div class="column">
+                    <con10t-image src="/con10t/img/ewert/Fig_3_Mezquita_de_Cordoba_D-DAI-MAD-A-18-Z-0064.png" align="left" alt="Bögen der Moschee von Córdoba" style="width:100%">
+                        <span class="ng-scope">Bögen der Moschee von Córdoba</span>
+                    </con10t-image>
+                </div>
+                <div class="column">
+                    <con10t-image src="/con10t/img/ewert/Fig_4_Mezquite_Cordoba.jpg" align="left" alt="Grundriss der Moschee von Córdoba" style="width:100%"">
+                        <span class="ng-scope">Grundriss der Moschee von Córdoba</span>
+                    </con10t-image>
+                </div>
+              </div>
 
-            <con10t-image src="/con10t/img/ewert/Fig_4_Mezquite_Cordoba.jpg" align="left" alt="Grundriss der Moschee von Córdoba" width="800">
-                <span class="ng-scope">Grundriss der Moschee von Córdoba</span>
-            </con10t-image>
+
+
+
 
             <p>Studien zu den almohadischen Moschee (1980-1991)</p>
 
