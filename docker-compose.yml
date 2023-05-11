@@ -93,6 +93,24 @@ services:
       - archaeocloud:/media/archaeocloud
     restart: always
 
+  aiax:
+    image: ghcr.io/dainst/aiax:${AIAX_VERSION}
+    environment:
+      - ARACHNE4_BASE_URL=https://${SERVER_ADDRESS}
+      - BASE_URL=${SERVER_ADDRESS}
+      - DB_SERVER=${SERVER_ADDRESS}
+      - DB_PASSWORD
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=Host(`${SERVER_ADDRESS}`) && PathPrefix(`/aiax`)
+      - traefik.http.routers.backend.entrypoints=websecure
+      - traefik.http.routers.backend.tls.certresolver=myresolver
+      - traefik.port=80
+      - traefik.http.middlewares.backend-compress.compress=true      
+      - traefik.http.middlewares.backend-headers.headers.accesscontrolalloworiginlist=*
+      - traefik.http.routers.backend.middlewares=backend-compress,backend-headers
+    restart: always
+
   traefik:
     image: traefik:v2.5
     restart: always
