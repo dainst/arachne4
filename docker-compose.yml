@@ -47,9 +47,9 @@ services:
       - "MYSQL_DATABASE=arachne"
       - "MYSQL_USER=arachne"
       - "MYSQL_PASSWORD=${DB_PASSWORD}"
-    command: --innodb-log-file-size=256M --innodb_buffer_pool_size=12G --innodb_strict_mode=off
+    command: --innodb-log-file-size=256M --innodb_buffer_pool_size=12G --innodb_strict_mode=off --sql_mode="NO_ENGINE_SUBSTITUTION"
     volumes:
-      - db_data:/var/lib/mysql
+      - ./db_data:/var/lib/mysql
     ports:
       - 3306:3306
     profiles:
@@ -122,7 +122,6 @@ services:
     restart: always
 
 volumes:
-  db_data:
   elasticsearch_data:
   archaeocloud:
     driver_opts:
