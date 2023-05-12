@@ -113,13 +113,13 @@
 
         <h3 ng-click="selectEntry(catalog.root)" style="cursor:pointer">
 
-            <div class="btn-toolbar">
-                <button ng-show="editable" ng-click="showHelp()" class="btn btn-default btn-sm pull-right"
-                    uib-tooltip="{{ 'catalog_show_help' | transl8 }}" tooltip-append-to-body="true">
-                    <span class="glyphicon glyphicon glyphicon-question-sign"></span>
-                </button>
+            <div class="btn-toolbar" style="margin-bottom: 5px;">
 
                 <div ng-show="editable" class="btn-group btn-group-sm pull-right">
+                    <button ng-show="editable" ng-click="showHelp()" class="btn btn-default btn-sm"
+                        uib-tooltip="{{ 'catalog_show_help' | transl8 }}" tooltip-append-to-body="true">
+                        <span class="glyphicon glyphicon glyphicon-question-sign"></span>
+                    </button>
                     <button class="btn btn-default" ng-click="editCatalog()"
                         uib-tooltip="{{ 'catalog_edit' | transl8 }}" tooltip-append-to-body="true">
                         <span class="glyphicon glyphicon-edit"></span>
@@ -151,26 +151,33 @@
                     </button>
                 </div>
 
-                <button ng-if="catalog.projectId" id="catalog-project-button" class="btn btn-default btn-sm pull-right"
-                    uib-tooltip="{{ 'catalog_project' | transl8 }}" tooltip-append-to-body="true">
-                    <a ng-href="/project/{{catalog.projectId}}">
-                        <span class="glyphicon glyphicon-globe"></span>
-                    </a>
-                </button>
+                <div class="btn-group btn-group-sm pull-right">
+                    <button id="catalog-search-button" class="btn btn-default btn-sm"
+                        uib-tooltip="{{ 'catalog_project' | transl8 }}" tooltip-append-to-body="true">
+                        <a ng-if="catalog.root.totalChildren > 0"
+                            ng-href="search?q=catalogPaths:{{catalogId | escapeSlashes}}">
+                            <span class="glyphicon glyphicon-search" title="{{'ui_showall' | transl8}}"></span>
+                        </a>
+                    </button>
 
-                <button ng-if="catalog.public" ng-click="$parent.map = true; $event.stopPropagation();"
-                    id="catalog-map-button" class="btn btn-default btn-sm pull-right"
-                    uib-tooltip="{{ 'catalog_map' | transl8 }}" tooltip-append-to-body="true">
-                    <span class="glyphicon glyphicon-map-marker"></span>
-                </button>
+                    <button ng-if="catalog.projectId" id="catalog-project-button" class="btn btn-default btn-sm"
+                        uib-tooltip="{{ 'catalog_project' | transl8 }}" tooltip-append-to-body="true">
+                        <a ng-href="/project/{{catalog.projectId}}">
+                            <span class="glyphicon glyphicon-globe"></span>
+                        </a>
+                    </button>
 
-                <button ng-click="openDownloadDialog()" id="catalog-download-button"
-                    class="btn btn-default btn-sm pull-right" uib-tooltip="{{ 'catalog_download' | transl8 }}"
-                    tooltip-append-to-body="true">
-                    <span class="glyphicon glyphicon-download-alt"></span>
-                </button>
+                    <button ng-if="catalog.public" ng-click="$parent.map = true; $event.stopPropagation();"
+                        id="catalog-map-button" class="btn btn-default btn-sm"
+                        uib-tooltip="{{ 'catalog_map' | transl8 }}" tooltip-append-to-body="true">
+                        <span class="glyphicon glyphicon-map-marker"></span>
+                    </button>
 
-
+                    <button ng-click="openDownloadDialog()" id="catalog-download-button" class="btn btn-default btn-sm "
+                        uib-tooltip="{{ 'catalog_download' | transl8 }}" tooltip-append-to-body="true">
+                        <span class="glyphicon glyphicon-download-alt"></span>
+                    </button>
+                </div>
             </div>
 
             <span class="glyphicon glyphicon-inbox text-muted"></span>
@@ -190,7 +197,8 @@
                 </li>
 
                 <div ng-if="!catalog.root.loading && catalog.root.children.length < catalog.root.totalChildren"
-                    class="catalog-entry" id="entry-more-{{catalog.root.id}}" style="cursor: pointer;" ng-click="loadChildren(catalog.root)">
+                    class="catalog-entry" id="entry-more-{{catalog.root.id}}" style="cursor: pointer;"
+                    ng-click="loadChildren(catalog.root)">
                     <a style="display: block;">
                         <em ng-if="catalog.root.totalChildren - catalog.root.children.length == 1">
                             {{ 'ui_show_more' | transl8 }} ({{ 'ui_one_more_entry' | transl8 }})
@@ -252,14 +260,14 @@
 
                             <div class="panel panel-default">
                                 <!-- catalog.root has catalog_description -->
-                                <div ng-if = "activeEntry.id == catalog.root.id" class="panel-heading">
+                                <div ng-if="activeEntry.id == catalog.root.id" class="panel-heading">
                                     <h2 class="panel-title">
                                         <span class="glyphicon glyphicon-file"></span>
                                         {{ 'catalog_description' | transl8 }}
                                     </h2>
                                 </div>
                                 <!-- all other entries have catalog_text -->
-                                <div ng-if = "activeEntry.id != catalog.root.id" class="panel-heading">
+                                <div ng-if="activeEntry.id != catalog.root.id" class="panel-heading">
                                     <h2 class="panel-title">
                                         <span class="glyphicon glyphicon-file"></span>
                                         {{ 'catalog_text' | transl8 }}
