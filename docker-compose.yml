@@ -98,7 +98,7 @@ services:
     environment:
       - ARACHNE4_BASE_URL=https://${SERVER_ADDRESS}
       - BASE_URL=https://${SERVER_ADDRESS}
-      - DB_SERVER=${SERVER_ADDRESS}
+      - DB_SERVER=${DB_SERVER}
       - DB_PASSWORD
     labels:
       - traefik.enable=true
