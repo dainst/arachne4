@@ -3,7 +3,7 @@
   "and":"and",
   "by":"by",
   "data_export_ready":"iDai.objects | Arachne: Data-Export is ready",
-  "data_export_success_mail": "Dear %USER%, Your Data-Export of \\\"%NAME%\\\" is ready. Click on <a href=\\\"%URL%\\\">%URL%<\\u002fa> to download it. Please note, that every export can only be donwloaded once. Best Wishes, Your Arachne Team.\n",
+  "data_export_success_mail": "Dear %USER%, Your Data-Export of \\\"%NAME%\\\" is ready. Click on <a href=\\\"%URL%\\\">%URL%</a> to download it. Please note, that every export can only be donwloaded once. Best Wishes, Your Arachne Team.\n",
   "date_format":"yyyy/MM/dd HH:mm:ss",
   "entityId":"entityId",
   "facet_kategorie_bauwerk":"Building",
