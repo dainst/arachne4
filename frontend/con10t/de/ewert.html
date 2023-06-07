@@ -13,6 +13,14 @@
             width: 100%;
         }
     }
+
+    #sticky-sidebar {
+        padding-top: 3vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
 </style>
 
 <!-- Kopfbereich der Projektseite -->
@@ -50,7 +58,7 @@
             </div>
 
             <div con10t-map style="margin-bottom: 1vw;" id="map" limit="200" facets-select="config.facetsSelect"
-                lat="36.70" lng="-4.50" zoom="7">
+                lat="36.70" lng="-4.50" zoom="3">
             </div>
 
             <a con10t-search-query target="_blank">Alle Datensätze anzeigen</a>
