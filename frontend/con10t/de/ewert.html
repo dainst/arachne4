@@ -31,8 +31,8 @@
             <h1>Das Archiv des Bauforschers Christian Ewert</h1>
         </div>
 
-        <div class="con10t-sidebar">
-            <!-- Rechte Seitenleiste -->
+        <!-- Rechte Seitenleiste -->
+        <div class="con10t-sidebar" id = "sticky-sidebar">
             <con10t-toc toc-heading="Übersicht"></con10t-toc>
 
             <h3>Suche in den Daten des Projektes</h3>
@@ -50,17 +50,21 @@
             </div>
 
             <div con10t-map style="margin-bottom: 1vw;" id="map" limit="200" facets-select="config.facetsSelect"
-                lat="36.70" lng="-4.50" zoom="5">
+                lat="36.70" lng="-4.50" zoom="7">
             </div>
 
             <a con10t-search-query target="_blank">Alle Datensätze anzeigen</a>
 
             <con10t-search search-placeholder="Suche..."></con10t-search>
 
+            <!--- Ansprechpartner und Links--->
+            <h4>Ansprechpartner</h4>
+            <a href="mailto: archiv.madrid@dainst.de" target="_blank">Archiv der Abteilung Madrid</a><br>
+
         </div>
 
+        <!-- Inhalt der Projektseite -->
         <div class="con10t-content">
-            <!-- Inhalt der Projektseite -->
             <h2 class="con10t-toc-entry">Das Archiv des Bauforschers Christian Ewert</h2>
 
             <con10t-image src="/con10t/img/ewert/Fig_1_Ewert-Torre-del-Mar-1971.png" align="right" alt="Christian Ewert" width="200">
@@ -116,10 +120,10 @@
                 Asienstudien 7 (Berlin 2010), sowie das Kolloquium „Von Damaskus nach Córdoba. Die orientalischen
                 Wurzeln der westislamischen Architektur“ (publiziert in den Madrider Mitteilungen 50, 2009).</p>
 
-            <iframe
+            <!-- <iframe
                 style="border: none;" height="600" width="800"
                 src="https://geoserver.dainst.org/maps/7134/embed">
-            </iframe>
+            </iframe> -->
 
             <h2 class="con10t-toc-entry">Auswahl der Denkmäler</h2>
 
@@ -220,7 +224,7 @@
                 von Wisshak zu den Minaretten almohadischer Moscheen in Marrakesch, Rabat und Sevilla blieb unvollendet.
             </p>
 
-            <con10t-image src="/con10t/img/ewert/Fig_9_D-DAI-MAD-A-21-Z-0028.png" align="right" alt="Moschee von Tinmal, Grundriss der Frontansicht, geometrisches Schema" style="width:100%">
+            <con10t-image src="/con10t/img/ewert/Fig_9_D-DAI-MAD-A-21-Z-0028.png" align="left" alt="Moschee von Tinmal, Grundriss der Frontansicht, geometrisches Schema" style="width:100%">
                 <span class="ng-scope">Moschee von Tinmal, Grundriss der Frontansicht, geometrisches Schema</span>
             </con10t-image>
 
@@ -243,10 +247,10 @@
                 Untergeschoß des Nebengebäudes der Abteilung Madrid, in der Calle Serrano 157, Madrid aufbewahrt und
                 stehen hier nach Absprache interessierten Wissenschaftlern zur Verfügung.</p>
 
-            <h2 class="con10t-toc-entry">Einstieg mit originaler Verzeichnisbaum-Struktur</h2>
+            <!-- <h2 class="con10t-toc-entry">Einstieg mit originaler Verzeichnisbaum-Struktur</h2>
             <p>
                 <con10t-tree fq="facet_bestandsname:Ewert-Nachlass" wildcard-facet="facet_subkategorie"></con10t-tree>
-            </p>
+            </p> -->
 
             <h2 class="con10t-toc-entry">Thematischer Einstieg</h2>
             <p>
