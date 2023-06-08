@@ -16,7 +16,7 @@ services:
       - traefik.http.routers.frontend.middlewares=frontend-compress
       - "com.centurylinklabs.watchtower.enable=true"
     restart: always
-  
+
   backend:
     build: ./backend
     image: ghcr.io/dainst/arachne4-backend:${ARACHNE_IMAGE_VERSION}
@@ -34,7 +34,7 @@ services:
       - traefik.http.routers.backend.entrypoints=websecure
       - traefik.http.routers.backend.tls.certresolver=myresolver
       - traefik.port=8080
-      - traefik.http.middlewares.backend-compress.compress=true      
+      - traefik.http.middlewares.backend-compress.compress=true
       - traefik.http.middlewares.backend-headers.headers.accesscontrolalloworiginlist=*
       - traefik.http.routers.backend.middlewares=backend-compress,backend-headers
       - "com.centurylinklabs.watchtower.enable=true"
@@ -105,8 +105,6 @@ services:
       - traefik.http.routers.aiax.rule=Host(`${SERVER_ADDRESS}`) && PathPrefix(`/aiax`)
       - traefik.http.routers.aiax.entrypoints=websecure
       - traefik.http.routers.aiax.tls.certresolver=myresolver
-      - traefik.http.middlewares.aiax-ipwhitelist.ipwhitelist.sourcerange=134.95.0.0/16,172.28.0.0/20
-      - traefik.http.routers.aiax.middlewares=aiax-ipwhitelist
       - traefik.port=80
       - com.centurylinklabs.watchtower.enable=true
     restart: always
