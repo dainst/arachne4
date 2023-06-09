@@ -30,6 +30,7 @@ import projectModule from './project/project.module.js';
 import con10tWidgetsModule from './con10t-widgets/con10t-widgets.module.js';
 import utilsModule from './utils/utils.module.js';
 import exportModule from './export/export.module.js';
+import catalogModule from './catalog/catalog.module.js'
 
 import './app.scss';
 
@@ -82,6 +83,7 @@ angular.module('arachne', [
     adminModule.name,
     infoModule.name,
     exportModule.name,
+    catalogModule.name,
     projectModule.name,
     con10tWidgetsModule.name,
     utilsModule.name,
