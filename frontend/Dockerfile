@@ -1,4 +1,4 @@
-FROM node:lts as builder
+FROM node:20.3-bullseye as builder
 
 ARG BUILD_NO=DEV
 
