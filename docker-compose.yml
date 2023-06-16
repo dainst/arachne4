@@ -16,7 +16,7 @@ services:
       - traefik.http.routers.frontend.middlewares=frontend-compress
       - "com.centurylinklabs.watchtower.enable=true"
     restart: always
-  
+
   backend:
     build: ./backend
     image: ghcr.io/dainst/arachne4-backend:${ARACHNE_IMAGE_VERSION}
@@ -34,7 +34,7 @@ services:
       - traefik.http.routers.backend.entrypoints=websecure
       - traefik.http.routers.backend.tls.certresolver=myresolver
       - traefik.port=8080
-      - traefik.http.middlewares.backend-compress.compress=true      
+      - traefik.http.middlewares.backend-compress.compress=true
       - traefik.http.middlewares.backend-headers.headers.accesscontrolalloworiginlist=*
       - traefik.http.routers.backend.middlewares=backend-compress,backend-headers
       - "com.centurylinklabs.watchtower.enable=true"
@@ -47,9 +47,9 @@ services:
       - "MYSQL_DATABASE=arachne"
       - "MYSQL_USER=arachne"
       - "MYSQL_PASSWORD=${DB_PASSWORD}"
-    command: --innodb-log-file-size=256M --innodb_buffer_pool_size=12G --innodb_strict_mode=off
+    command: --innodb-log-file-size=256M --innodb_buffer_pool_size=12G --innodb_strict_mode=off --sql_mode="NO_ENGINE_SUBSTITUTION"
     volumes:
-      - db_data:/var/lib/mysql
+      - ./db_data:/var/lib/mysql
     ports:
       - 3306:3306
     profiles:
@@ -94,21 +94,19 @@ services:
   aiax:
     image: ghcr.io/dainst/aiax:${AIAX_VERSION}
     volumes:
-      - ${AIAX_DATA_DIR}:/mnt/aiax-data
+      - ${AIAX_DATA_DIR}:/var/www/html/aiax/data
     environment:
       - ARACHNE4_BASE_URL=https://${SERVER_ADDRESS}
       - BASE_URL=https://${SERVER_ADDRESS}
-      - DB_SERVER=${SERVER_ADDRESS}
+      - DB_SERVER=${DB_SERVER}
       - DB_PASSWORD
     labels:
       - traefik.enable=true
-      - traefik.http.routers.backend.rule=Host(`${SERVER_ADDRESS}`) && PathPrefix(`/aiax`)
-      - traefik.http.routers.backend.entrypoints=websecure
-      - traefik.http.routers.backend.tls.certresolver=myresolver
+      - traefik.http.routers.aiax.rule=Host(`${SERVER_ADDRESS}`) && PathPrefix(`/aiax`)
+      - traefik.http.routers.aiax.entrypoints=websecure
+      - traefik.http.routers.aiax.tls.certresolver=myresolver
       - traefik.port=80
-      - traefik.http.middlewares.backend-compress.compress=true      
-      - traefik.http.middlewares.backend-headers.headers.accesscontrolalloworiginlist=*
-      - traefik.http.routers.backend.middlewares=backend-compress,backend-headers
+      - com.centurylinklabs.watchtower.enable=true
     restart: always
 
   traefik:
@@ -142,7 +140,6 @@ services:
     restart: always
 
 volumes:
-  db_data:
   elasticsearch_data:
   archaeocloud:
     driver_opts:

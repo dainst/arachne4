@@ -1,4 +1,4 @@
-FROM node:lts as builder
+FROM node:16.13.2-alpine3.15 as builder
 
 ARG BUILD_NO=DEV
 
