@@ -20,7 +20,7 @@ module.exports = (env, argv) => {
         entry: path.resolve(__dirname, '../app/app.js'),
         output: {
             path: path.resolve(__dirname, '../public'),
-            filename: '[name].js',
+            filename: (env.build) ? '[name]-[hash].js' : '[name].js'
         },
         optimization: {
             splitChunks: {
