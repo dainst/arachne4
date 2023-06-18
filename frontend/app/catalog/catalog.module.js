@@ -23,8 +23,8 @@ export default angular.module('arachne.catalog', [ImageModule.name, MarkdownModu
         $stateProvider.state({ name: 'catalogEntry', url: '/catalog/:id/:entryId', template: require('./catalog.html')});
     }])
     .directive('arCatalogOccurrences', ['arachneSettings', '$http', '$uibModal', 'Catalog', 'CatalogEntry', arCatalogOccurrences])
-    .directive('arEntityHeader', arEntityHeader)
-    .directive('arEntityLinks', arEntityLinks)
+    .directive('arEntityHeaderCatalog', arEntityHeader)
+    .directive('arEntityLinksCatalog', arEntityLinks)
     .controller('ManageEditorController', ['$scope', '$http', 'arachneSettings', 'messageService', '$uibModalInstance', 'catalog', ManageEditorController])
     .controller('CatalogController', ['$rootScope', '$scope', '$state', '$stateParams', '$uibModal', '$window', '$timeout',
         'Catalog', 'CatalogEntry', 'authService', '$http', 'arachneSettings', 'Entity', '$location', 'messageService', CatalogController])
