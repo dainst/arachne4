@@ -117,7 +117,6 @@ module.exports = (env, argv) => {
                 ],
             }),
             new HtmlWebpackPlugin({
-                filename: (env.build) ? 'index.[contenthash].html' : 'index.html',
                 template: path.resolve(__dirname, '../app/index.html'),
             }),
             new MiniCssExtractPlugin({
