@@ -72,6 +72,15 @@
   "databasepausanias": {
     "q": "(catalogPaths:111 OR catalogPaths:110)"
   },
+  "deichmann": {
+    "q": "D-DAI-ROM-DEI",
+    "facets": [
+      {
+        "key": "facet_kategorie",
+        "value": "Bilder"
+      }
+    ]
+  },
   "ewert": {
     "facets": [
       {
