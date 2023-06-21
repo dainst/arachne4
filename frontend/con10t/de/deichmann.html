@@ -1,0 +1,66 @@
+<style>
+    .row {
+    display: flex;
+    }
+
+    .column {
+    flex: 33.33%;
+    padding: 5px;
+    }
+
+    @media screen and (max-width: 500px) {
+        .column {
+            width: 100%;
+        };
+        #sticky-sidebar {
+            position: relative;
+        };
+    }
+
+    #sticky-sidebar {
+        padding-top: 3vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+</style>
+
+<!-- Kopfbereich der Projektseite -->
+<idai-header
+        image="/con10t/headerimages/07_Deichmann-Nachlass_Staurenghi-02.png"
+        description="Kurze Beschreibung des Bildes"
+        link="https://archives.dainst.org/index.php/deutsches-archaologisches-institut-rom-archiv">
+</idai-header>
+
+<!-- Hauptbereich der Projektseite -->
+<div class="con10t-page teaserpage container">
+
+    <div class="con10t-row">
+
+        <div class="con10t-title">
+            <!-- Haupttitel des Projektes: Überschrift der Größe <h1> oder Logo / Bild -->
+            <h1>Nachlass von Friedrich Wilhelm Deichmann</h1>
+        </div>
+
+        <div class="con10t-sidebar">
+            <!-- Rechte Seitenleiste -->
+            <con10t-toc toc-heading="Übersicht"></con10t-toc>
+        </div>
+
+        <div class="con10t-content">
+            <!-- Inhalt der Projektseite -->
+            <h2 class="con10t-toc-entry">Deichmanns Bedeutung für das DAI Rom und die Christliche Archäologie</h2>
+
+            <p>Der in Jena geborene Friedrich Wilhelm Deichmann (1909-1993) promovierte im Jahr 1934 in Halle an der Saale mit einer Arbeit zum Thema „Versuch einer Darstellung der Grundrisstypen des Kirchenbaues in frühchristlicher und byzantinischer Zeit im Morgenlande auf kunstgeographischer Grundlage“ und war ab 1937 als Referent für Christliche Archäologie in der römischen Abteilung des Deutschen Archäologischen Instituts tätig.
+            <br> 
+            Während seiner Beschäftigung in Rom stach er nicht nur durch innovative Forschungsmethoden, sondern vor allem durch seinen Einsatz für das Institut in der Zeit des Nationalsozialismus heraus. Besonders deutlich zeigt sich dies an seinen erfolgreichen Bemühungen um die Rückkehr der zuvor nach Österreich abtransportierten Bibliothek, Fotothek und des Archivmaterials zurück nach Italien. Für sein Engagement wurde ihm 1974 das Verdienstkreuz der Bundesrepublik Deutschland verliehen. 
+            </p>
+
+            <h2 class="con10t-toc-entry">Erschließung seines Nachlasses</h2>
+            <h2 class="con10t-toc-entry">Literatur</h2>
+        </div>
+
+    </div>
+</div>
