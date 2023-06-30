@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
+  <context type="ort" labelKey="raw">
+    <contextSection labelKey="gazetteerURI"><field datasource=".Gazetteerid" prefix="https://gazetteer.dainst.org/place" /></contextSection>
+    <contextSection labelKey="placeStorage"><field datasource=".Aufbewahrungsort"/></contextSection>
+    <contextSection labelKey="placeAncient"><field datasource=".Ort_antik"/></contextSection>
+    <contextSection labelKey="placeCity"><field datasource=".Stadt"/></contextSection>
+    <contextSection labelKey="placeCountry"><field datasource=".Land"/></contextSection>
+    <contextSection labelKey="placeInventoryNumber"><field datasource=".InvNr"/></contextSection>
+    <contextSection labelKey="placeOldInventoryNumber"><field datasource=".AltInvNr"/></contextSection>
+    <contextSection labelKey="placeType"><field datasource=".ArtOrtsangabe"/></contextSection>
+  </context>
+</includeSection>

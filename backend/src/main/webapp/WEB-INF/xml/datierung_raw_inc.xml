@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<includeSection xmlns="http://arachne.uni-koeln.de/schemas/include" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/include include.xsd">
+    <context type="datierung" labelKey="raw" separator=" ">
+        <contextSection labelKey="datingType"><field datasource=".TypDatierung"/></contextSection>
+        <contextSection labelKey="datingStartEpoch"><field datasource=".AnfEpoche"/></contextSection>
+        <contextSection labelKey="datingStartCulture"><field datasource=".AnfKultur"/></contextSection>
+        <contextSection labelKey="datingStartChronontologyURI"><field datasource=".AnfEpocheChronId" prefix="https://chronontology.dainst.org/period/"/></contextSection>
+        <contextSection labelKey="datingEndEpoch"><field datasource=".EndEpoche"/></contextSection>
+        <contextSection labelKey="datingEndCulture"><field datasource=".EndKultur"/></contextSection>
+        <contextSection labelKey="datingEndChronontologyURI"><field datasource=".EndEpocheChronId" prefix="https://chronontology.dainst.org/period/"/></contextSection>
+    </context>
+</includeSection>
