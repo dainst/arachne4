@@ -73,7 +73,7 @@ In order to run the frontend in the development server use the following command
 npm start
 ```
 
-After that you should be able to access the frontend under [http://localhost:8082/](http://localhost:8082/).
+After that you should be able to access the frontend under [http://localhost:8080/](http://localhost:8080/).
 
 Any changes made to HTML, SCSS or JS files automatically trigger a browser reload.
 
@@ -93,7 +93,7 @@ Call
 export LC_NUMERIC="en_US.UTF-8" && npm run e2e
 ```
 
-to run the e2e tests matching the filename pattern `e2e/*.spec.js`. Precondition for this to work is that you have the `dist` dir that gets served at `localhost:8082`, as is the case when you run `npm start`.
+to run the e2e tests matching the filename pattern `e2e/*.spec.js`. Precondition for this to work is that you have the `dist` dir that gets served at `localhost:8080` by defaiöt, as is the case when you run `npm start`.
 
 ### Server Configuration
 
