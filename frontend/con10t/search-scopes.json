@@ -373,7 +373,7 @@
     ]
   },
   "sag": {
-    "q": "(catalogPaths:1412 OR catalogPaths:1443)"
+    "q": "D-DAI-ATH-SAG"
   },
   "sammlakakunst": {
     "q": "connectedEntities:1241765",

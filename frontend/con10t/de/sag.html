@@ -50,6 +50,28 @@
             <con10t-search search-placeholder="Suche..."></con10t-search>
             
             <br>
+
+            <!-- Map -->
+            <div ng-init="config = {
+                    clustered: false,
+                    facetsSelect: [
+                        {
+                        key: 'catalogIds',
+                        value: 1443
+                        }
+                    ]
+                    }">
+            </div>
+
+            <div con10t-map style = "margin-bottom: 1vw;"
+                id="map"
+                limit="200"
+                facets-select="config.facetsSelect"
+                lat="18.5"
+                lng="-89.5"
+                zoom="5">
+            </div>
+
         </div>
 
         <div class="con10t-content">
@@ -121,6 +143,8 @@
                 <li>A. Alexandridou, Attic Black-figured Pottery from the Collection of the German Archaeological Institute at Athens, AM 126. 2011, 63–110 (https://zenon.dainst.org/Record/001412358)</li>
                 <li><a href="https://zenon.dainst.org/Record/000449796">F. Brommer, Antiken des Athener Instituts, AM 87, 1972, 255–294, Taf. 90–102</a></li>
                 <li><a href="https://zenon.dainst.org/Record/000449797">F. Brommer, Antiken des Athener Instituts II, AM 90, 1975, 163–188, Taf. 59–64 (https://zenon.dainst.org/Record/000449797)</a></li>
+                <li>M. Georgiadis, Neolithic pottery from the DAI Collection. Attica, AM 125, 2010, 1–43 (<a href="https://zenon.dainst.org/Record/001373703">https://zenon.dainst.org/Record/001373703</a>)</li>
+                <li>M. Georgiadis, Neolithic pottery from the DAI Collection. Attica, AM 125, 2010, 1–43 (<a href="https://zenon.dainst.org/Record/001373703">Zenon</a>)</li>
             </ul>
         </div>
 
