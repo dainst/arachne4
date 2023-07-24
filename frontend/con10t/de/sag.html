@@ -1,0 +1,100 @@
+<style>
+    .row {
+    display: flex;
+    }
+
+    .column {
+    flex: 33.33%;
+    padding: 5px;
+    }
+
+    @media screen and (max-width: 500px) {
+        .column {
+            width: 100%;
+        }
+    }
+
+    #sticky-sidebar {
+        padding-top: 3vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+</style>
+
+<!-- Kopfbereich der Projektseite -->
+<idai-header
+        image="\con10t\headerimages\5_5_Header_NI_C5220_Nikos_Chrisikakis.jpg"
+        description="Kurze Beschreibung des Bildes"
+        link="http://verweis-auf-ressource.de">
+</idai-header>
+
+<!-- Hauptbereich der Projektseite -->
+<div class="con10t-page teaserpage container">
+
+    <div class="con10t-row">
+
+        <div class="con10t-title">
+            <!-- Haupttitel des Projektes: Überschrift der Größe <h1> oder Logo / Bild -->
+            <h1>SAG – Shapes of Ancient Greece. Digitalisierung der archäologischen Sammlung des Deutschen Archäologischen Instituts in Athen. Online-Katalog der Athener Antikensammlung</h1>
+        </div>
+
+        <div class="con10t-sidebar">
+            <!-- Rechte Seitenleiste -->
+            <con10t-toc toc-heading="Übersicht"></con10t-toc>
+            <br>
+            <a con10t-search-query target="_blank">Alle Datensätze anzeigen</a>
+
+            <con10t-search search-placeholder="Suche..."></con10t-search>
+            
+            <br>
+        </div>
+
+        <div class="con10t-content">
+            <!-- Inhalt der Projektseite -->
+            <h2 class="con10t-toc-entry">Das Projekt „Shapes of Ancient Greece” und die archäologische Sammlung des DAI Athen</h2>
+
+            <p>
+                Im DAI Athen befindet sich eine archäologische Sammlung, zu der 32035 Keramikscherben, 3148 Obsidianklingen und -abschläge sowie 2027 weitere Objekte aus verschiedenen Materialien gehören. Die meisten dieser Objekte wurden in der Zeit von der Gründung der Abteilung Athen im Jahr 1874 bis zum 2. Weltkrieg bei Landesbegehungen von Mitarbeitern aufgelesen. Ein besonderer wissenschaftlicher Wert der Sammlung liegt darin, dass durch sie die Existenz archäologischer Fundorte dokumentiert ist, die heute überbaut oder anderweitig stark verändert sind. Die Sammlung ist daher für topographische und siedlungshistorische Forschungen eine Quelle von größter Bedeutung. Dies gilt vor allem für Attika, das seit Jahrzehnten von einer massiven Überbauung und Zersiedlung betroffen ist.
+            </p>
+
+            <p>
+                Im Rahmen des von Januar 2021 bis November 2023 laufenden und vollumfänglich vom Bundesministerium für Bildung und Forschung finanzierten Projekts „Shapes of Ancient Greece (SAG) – Digitizing the Achaeological Collection oft he German Archaeological Institute at Athens wurde die Sammlung vollständig digitalisiert. Außerdem wurden Metadaten erarbeitet, wobei es sich um Angaben zum Fundort sowie zur Klassifikation und Chronologie der Objekte handelt (Für detaillierte Informationen zum Projekt und zur Sammlung s. u. Publikationen). Es war von Beginn an ein Ziel des Projekts, sämtliche Digitalisate den FAIR-Prinzipien (findable, accesible, interoperable, reusable) entsprechend in iDAi.objects/Arachne zugänglich zu machen.
+            </p>
+
+            <h2 class="con10t-toc-entry">Photographien, digitale Profilzeichnungen und 3D-Modelle</h2>
+
+            <p>
+                Sämtliche Sammlungsobjekte wurden fotografiert, von vielen wurden außerdem digitale Profilzeichnungen angefertigt und von einigen dafür geeigneten Objekten wurden 3D-Modelle generiert.
+            </p>
+
+            <p>
+                Für die Fotografien wurde eine Vollformatsensor-Kamera mit einer Auflösung von 42 Megapixeln verwendet. Diese hohe Auflösung ermöglicht eine starke Vergrößerung ohne Qualitätsverlust.
+            </p>
+
+            <p>
+                Für die Erstellung der Profilzeichnungen wurde der „Laser Aided Profiler“ (LAP) herangezogen. Die sehr große Anzahl der mit diesem Spezial-Scanner erzeugten Profilzeichnungen ermöglichte es, Workflows zu entwickeln und Möglichkeiten und Grenzen der Nutzung des Gerätes zu dokumentieren (s. u. Publikationen J. Ritter).
+            </p>
+
+            <p>
+                Etwas über 100 vollständig erhaltene Gefäße, Terrakotten, Lampen sowie verschiedene Stein- und Metallobjekte wurden mit dem »Go!SCAN 3D-Scanner« aufgenommen. Die 3D-Modelle können in iDAI.objects/Arachne mit dem 3D-Viewer angeschaut werden.
+            </p>
+
+            <h2 class="con10t-toc-entry">Kataloge</h2>
+
+            <con10t-catalog-tree catalog-id="1412"></con10t-catalog-tree>
+
+            <con10t-catalog-tree catalog-id="1443"></con10t-catalog-tree>
+
+
+
+            <h2 class="con10t-toc-entry">Hinweise zur Sammlungsorganisation und zur Katalognutzung</h2>
+            <h2 class="con10t-toc-entry">Hinweise zur Recherche</h2>
+            <h2 class="con10t-toc-entry">Projektmitarbeiter und Partner</h2>
+            <h2 class="con10t-toc-entry">Publikationen</h2>
+        </div>
+
+    </div>
+</div>
