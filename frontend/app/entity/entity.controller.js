@@ -81,6 +81,16 @@ export default function ($rootScope, $stateParams, searchService, $scope, Entity
             if (data.sections[0].label == 'Datenblatt Berlin') {
                 data.sections = data.sections.slice(0,1);
             }
+
+            if (data.sections[0].label === 'Datenblatt der Antikensammlung Berlin') {
+
+                for(var firstOrderContent of data.sections[0].content) {
+                    if(firstOrderContent.label === 'Literatur') {
+                        firstOrderContent.content.unshift({value: "<a href='/con10t/img/antiksammlberlin/Literaturliste.pdf' target='_blank'>Abkürzungsverzeichnis/abbreviation index (PDF)</a>"})
+                    }
+                }
+            }
+
             categoryService.getCategoryHref($scope.entity.type).then(function (categoryHref) {
                 $scope.entity.categoryHref = categoryHref;
             });

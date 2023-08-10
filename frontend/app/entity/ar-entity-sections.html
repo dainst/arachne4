@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="section_template.html">
-    <li ng-if="!section.value" ng-class="{'thumbnail' : section.contextEntity}" style="list-style-type:none;">
-        <strong ng-if="section.label">{{section.label}}</strong>
+    <li ng-if="!section.value && section.label !== 'raw'" ng-class="{'thumbnail' : section.contextEntity}" style="list-style-type:none;">
+        <strong ng-if="section.label && section.label !== 'formatted'">{{section.label}}</strong>
         <ul ng-repeat="section in (section.content || section.contextEntity)" ng-include="'section_template.html'"></ul>
     </li>
     <li ng-if="section.value" ng-switch="isArray(section.value)" style="list-style-type:none;">

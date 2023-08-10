@@ -120,7 +120,7 @@ module.exports = (env, argv) => {
                 template: path.resolve(__dirname, '../app/index.html'),
             }),
             new MiniCssExtractPlugin({
-                filename: "[name].css",
+                filename: (env.build) ? '[name]-[hash].css' : '[name].css'
             }),
             new PurgecssPlugin({
                 paths: [

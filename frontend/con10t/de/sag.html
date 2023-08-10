@@ -1,0 +1,166 @@
+<style>
+    .row {
+    display: flex;
+    }
+
+    .column {
+    flex: 33.33%;
+    padding: 5px;
+    }
+
+    @media screen and (max-width: 500px) {
+        .column {
+            width: 100%;
+        }
+    }
+
+    #sticky-sidebar {
+        padding-top: 3vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+</style>
+
+<!-- Kopfbereich der Projektseite -->
+<idai-header
+        image="/con10t/headerimages/5_5_Header_NI_C5220_Nikos_Chrisikakis.jpg"
+        description="Kurze Beschreibung des Bildes"
+        link="https://www.dainst.org/standort/-/organization-display/ZI9STUj61zKB/14487">
+</idai-header>
+
+<!-- Hauptbereich der Projektseite -->
+<div class="con10t-page teaserpage container">
+
+    <div class="con10t-row">
+
+        <div class="con10t-title">
+            <!-- Haupttitel des Projektes: Überschrift der Größe <h1> oder Logo / Bild -->
+            <h1>SAG – Shapes of Ancient Greece. Digitalisierung der archäologischen Sammlung des Deutschen Archäologischen Instituts in Athen. Online-Katalog der Athener Antikensammlung</h1>
+        </div>
+
+        <div class="con10t-sidebar">
+            <!-- Rechte Seitenleiste -->
+            <con10t-toc toc-heading="Übersicht"></con10t-toc>
+            <br>
+            <a con10t-search-query target="_blank">Alle Datensätze anzeigen</a>
+
+            <con10t-search search-placeholder="Suche..."></con10t-search>
+            
+            <br>
+
+            <!-- Map -->
+            <div ng-init="config = {
+                    clustered: false,
+                    facetsSelect: [
+                        {
+                        key: 'catalogIds',
+                        value: 1443
+                        }
+                    ]
+                    }">
+            </div>
+
+            <div con10t-map style = "margin-bottom: 1vw;"
+                id="map"
+                limit="200"
+                facets-select="config.facetsSelect"
+                lat="37.97"
+                lng="23.71"
+                zoom="5">
+            </div>
+
+            <br>
+
+            <img src="/con10t/img/sag/BMBF_gefördert vom_deutsch.jpg" align="left" alt="BMBF Logo" style="width:100%">
+        </img>
+
+        </div>
+
+        <div class="con10t-content">
+            <!-- Inhalt der Projektseite -->
+            <h2 class="con10t-toc-entry">Das Projekt „Shapes of Ancient Greece” und die archäologische Sammlung des DAI Athen</h2>
+
+            <p>
+                Im DAI Athen befindet sich eine archäologische Sammlung, zu der 32035 Keramikscherben, 3148 Obsidianklingen und -abschläge sowie 2027 weitere Objekte aus verschiedenen Materialien gehören. Die meisten dieser Objekte wurden in der Zeit von der Gründung der Abteilung Athen im Jahr 1874 bis zum 2. Weltkrieg bei Landesbegehungen von Mitarbeitern aufgelesen. Ein besonderer wissenschaftlicher Wert der Sammlung liegt darin, dass durch sie die Existenz archäologischer Fundorte dokumentiert ist, die heute überbaut oder anderweitig stark verändert sind. Die Sammlung ist daher für topographische und siedlungshistorische Forschungen eine Quelle von größter Bedeutung. Dies gilt vor allem für Attika, das seit Jahrzehnten von einer massiven Überbauung und Zersiedlung betroffen ist.
+            </p>
+
+            <p>
+                Im Rahmen des von Januar 2021 bis November 2023 laufenden und vollumfänglich vom Bundesministerium für Bildung und Forschung finanzierten Projekts „Shapes of Ancient Greece (SAG) – Digitizing the Achaeological Collection oft he German Archaeological Institute at Athens wurde die Sammlung vollständig digitalisiert. Außerdem wurden Metadaten erarbeitet, wobei es sich um Angaben zum Fundort sowie zur Klassifikation und Chronologie der Objekte handelt (Für detaillierte Informationen zum Projekt und zur Sammlung s. u. Publikationen). Es war von Beginn an ein Ziel des Projekts, sämtliche Digitalisate den FAIR-Prinzipien (findable, accesible, interoperable, reusable) entsprechend in iDAi.objects/Arachne zugänglich zu machen.
+            </p>
+
+            <h2 class="con10t-toc-entry">Photographien, digitale Profilzeichnungen und 3D-Modelle</h2>
+
+            <p>
+                Sämtliche Sammlungsobjekte wurden fotografiert, von vielen wurden außerdem digitale Profilzeichnungen angefertigt und von einigen dafür geeigneten Objekten wurden 3D-Modelle generiert.
+            </p>
+
+            <p>
+                Für die Fotografien wurde eine Vollformatsensor-Kamera mit einer Auflösung von 42 Megapixeln verwendet. Diese hohe Auflösung ermöglicht eine starke Vergrößerung ohne Qualitätsverlust.
+            </p>
+
+            <p>
+                Für die Erstellung der Profilzeichnungen wurde der „Laser Aided Profiler“ (LAP) herangezogen. Die sehr große Anzahl der mit diesem Spezial-Scanner erzeugten Profilzeichnungen ermöglichte es, Workflows zu entwickeln und Möglichkeiten und Grenzen der Nutzung des Gerätes zu dokumentieren (s. u. Publikationen J. Ritter).
+            </p>
+
+            <p>
+                Etwas über 100 vollständig erhaltene Gefäße, Terrakotten, Lampen sowie verschiedene Stein- und Metallobjekte wurden mit dem »Go!SCAN 3D-Scanner« aufgenommen. Die 3D-Modelle können in iDAI.objects/Arachne mit dem 3D-Viewer angeschaut werden.
+            </p>
+
+            <h2 class="con10t-toc-entry">Kataloge</h2>
+
+            <con10t-catalog-tree catalog-id="1412"></con10t-catalog-tree>
+
+            <con10t-catalog-tree catalog-id="1443"></con10t-catalog-tree>
+
+            <con10t-image entity-id="7112752" width="250" align="right">
+                Terrakotta
+            </con10t-image>
+                        
+
+
+
+            <h2 class="con10t-toc-entry">Hinweise zur Sammlungsorganisation und zur Katalognutzung</h2>
+
+            <p>
+                Alle Objekte der archäologischen Sammlung des DAI Athen haben sowohl eine individuelle Inventarnummer als auch eine Fundgruppennummer. Viele Funde haben zudem die Nummer einer Untergruppe, eine sogenannte OM-Nummer. Die Abkürzung „OM“ steht für das griechische Wort Omada (ομάδα), was nichts anderes als Gruppe bedeutet. Ein Objekt kann also bis zu drei Nummern haben. Die Existenz der verschiedenen Nummerierungssysteme ist auf die Sammlungsgeschichte zurückzuführen. Die ältesten noch heute verwendeten Nummern sind die OM-Nummern, die 1943 von Walther Wrede für Fundgruppen Attikas und der Argolis vergeben wurden. Das Material der OM-Gruppen stammt fast ausschließlich aus Fundorten, die von Wrede selbst aufgesucht wurden. Die OM-Nummern entsprechen den Nummern der Fundortlisten, die 1972 und 1975 (s. u. Publikationen) von Frank Brommer veröffentlicht wurden. Die Fundgruppennummern wurden 1994 von der griechischen Archäologin Katia Manteli im Zuge einer Katalogisierung der archäologischen Sammlung vergeben. Seitdem sind alle Sammlungsobjekte einer Fundgruppe zugeordnet. Dabei wurden von Manteli verschiedene OM-Gruppen zu einer Fundgruppe zusammengefasst. In Vorbereitung des Projekts und zu Beginn der Projektlaufzeit wurden in den Jahren 2020 und 2021 sämtliche zur Sammlung gehörenden Funde mit individuellen Inventarnummern versehen. Die vollständige Erschließung aller Einzelobjekte ist noch nicht abgeschlossen, weshalb ein Teil der Datensätze lediglich Informationen zu Fundort und Fundkontext enthält. Hier können zukünftig noch Ergänzungen vorgenommen werden.
+            </p>
+
+            <p>
+                Der eine Katalog umfasst sämtlichen Fundgruppen, die mit sämtlichen Sammlungsobjekten verknüpft sind. Der andere Katalog ist nach den Untergruppen (sog. OM-Nummern) sortiert und folgt den Publikationen von Frank Brommer. Die beiden Kataloge bieten die Möglichkeit sämtliche Sammlungsobjekte von verschiedenen Ausgangspunkten zu fassen. Man kann nach Fundgruppen, OM-Gruppen und Einzelobjekten suchen. Über die Fundgruppen hat man Zugriff auf alle zugehörigen Einzelobjekte. 
+            </p>
+            <h2 class="con10t-toc-entry">Hinweise zur Recherche</h2>
+
+            <p>
+                Mit den Suchbegriffen „Fundgruppe + Zahl + *“ (z.B.: Fundgruppe 1*) kann in idai.objects nach einer bestimmten Gruppe gesucht werden. Man kann anstelle des * auch mit Anführungszeichen suchen (z.B.: „Fundgruppe 1“). Dies gilt ebenfalls für die OM-Nummern (z.B.: OM 804*). Für die Suche nach Einzelobjekten muss die Sammlung und die Inventarnummer des Objektes angegeben werden (Beispiel: Sammlung des Deutschen Archäologischen Instituts Athen* 00001*). Die bisher publizierten Sammlungsobjekte können über „Autor*“ (z.B.: Brommer*) oder über die Fundgruppen, die in den älteren Publikationen angegeben werden, gesucht werden. Hierbei ist darauf zu achten, zwischen Fundgruppen und OM-Gruppen zu unterscheiden. Es ist auch möglich, regional und thematisch zu suchen, bspw. nach mykenischen Funden aus der Argolis. Dazu ruft man zunächst den Datensatz der Sammlung auf („Sammlung des Deutschen Archäologischen Instituts Athen“).  Die automatisch erscheinende connectedEntities:6939355 darf nicht gelöscht werden. Dahinter gibt man seine Suchbegriffe ein, in diesem Fall „Argolis“ und „mykenisch“ (z.B.: connectedEntities:6939355 "Argolis" "mykenisch").
+            </p>
+
+            <h2 class="con10t-toc-entry">Projektmitarbeiter und Partner</h2>
+
+            <p>
+                SAG-Team: Katja Sporn (Leitung), Florian Ruppenstein (Koordination), Jonathan Ritter, Marie Künzelmann (ab 1. 12. 2022), Annika Skolik (bis 14. 11. 2022)
+            </p>
+
+            <p>
+                Das SAG-Team dankt den Photographen Valtin von Eickstedt, Diana Breitfeldt-von Eickstedt und Alexander von Eickstedt für die Anfertigung aller hier veröffentlichten Photographien ab D-DAI-ATH-SAG-50000 und aufwärts. Ein weiterer Dank geht an Christina Marini für die Keramikbestimmungen der Fundgruppen 46-53, 56-81. Außerdem dankt das SAG-Team allen Praktikanten, die das Projekt durch ihre Mitarbeit unterstützt haben.
+            </p>
+
+            <h2 class="con10t-toc-entry">Publikationen</h2>
+
+            <ul>
+                <li>A. Alexandridou, Attic Black-figured Pottery from the Collection of the German Archaeological Institute at Athens, AM 126. 2011, 63–110 (https://zenon.dainst.org/Record/001412358)</li>
+                <li><a href="https://zenon.dainst.org/Record/000449796">F. Brommer, Antiken des Athener Instituts, AM 87, 1972, 255–294, Taf. 90–102</a></li>
+                <li><a href="https://zenon.dainst.org/Record/000449797">F. Brommer, Antiken des Athener Instituts II, AM 90, 1975, 163–188, Taf. 59–64 (https://zenon.dainst.org/Record/000449797)</a></li>
+                <li>M. Georgiadis, Neolithic pottery from the DAI Collection. Attica, AM 125, 2010, 1–43 (<a href="https://zenon.dainst.org/Record/001373703">https://zenon.dainst.org/Record/001373703</a>)</li>
+                <li>M. Georgiadis, Neolithic pottery from the DAI Collection. Attica, AM 125, 2010, 1–43 (<a href="https://zenon.dainst.org/Record/001373703">Zenon</a>)</li>
+            </ul>
+
+            <h2 class="con10t-toc-entry">Weiterführende Links</h2>
+            <p><a href="https://www.geistes-und-sozialwissenschaften-bmbf.de/de/eHeritage-1736.html">Bundesministerium für Bildung und Forschung (BMBF): Schwerpunkt eHeritage</a></p>
+            <p><a href="https://www.dainst.org/standort/-/organization-display/ZI9STUj61zKB/14487">Abteilung Athen</a></p>
+        </div>
+
+    </div>
+</div>
