@@ -86,7 +86,7 @@ export default function ($rootScope, $stateParams, searchService, $scope, Entity
 
                 for(var firstOrderContent of data.sections[0].content) {
                     if(firstOrderContent.label === 'Literatur') {
-                        firstOrderContent.content.unshift({value: "<a href='/con10t/img/antiksammlberlin/Literaturliste.pdf' target='_blank'>Abkürzungsverzeichnsi (PDF)</a>"})
+                        firstOrderContent.content.unshift({value: "<a href='/con10t/img/antiksammlberlin/Literaturliste.pdf' target='_blank'>Abkürzungsverzeichnis/abbreviation index (PDF)</a>"})
                     }
                 }
             }
