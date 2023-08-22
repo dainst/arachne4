@@ -16,14 +16,6 @@
           }
         },
         {
-          "id": "apis",
-          "path": "info/",
-          "title": {
-            "de": "APIs",
-            "en": "APIs"
-          }
-        },
-        {
           "id": "order",
           "path": "info/",
           "title": {
