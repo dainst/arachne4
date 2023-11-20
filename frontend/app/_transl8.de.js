@@ -515,7 +515,7 @@ export default {
     "ui_data_protection_pre": "Ich habe die",
     "ui_data_protection_post": "gelesen und erkläre mich mit ihnen einverstanden.",
     "ui_data_protection": "Hinweise zum Datenschutz",
-    "ui_data_protection_url": "https://www.dainst.org/de/datenschutz",
+    "ui_data_protection_url": "https://www.dainst.org/datenschutz",
     "facet_region": "Region",
     "facet_subregion": "Subregion",
     "facet_locality": "Lokalisierung",

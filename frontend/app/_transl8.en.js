@@ -515,7 +515,7 @@ export default {
     "translocation_view_to_many_results": "Too many results found for object movement visualization. Please zoom in or filter results in if you want to see movements.",
     "bounding_box": "Bounding Box",
     "ui_data_protection_pre": "I have read and accept the",
-    "ui_data_protection_url": "https://www.dainst.org/en/datenschutz",
+    "ui_data_protection_url": "https://www.dainst.org/datenschutz",
     "ui_data_protection_post": ".",
     "ui_data_protection": "data protection policy",
     "ui.register.dataProtection": "Please confirm the data protection policy to proceed with the registration.",
