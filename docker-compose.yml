@@ -80,9 +80,6 @@ services:
       - cluster.name=arachne4
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
-    ports:
-      - 9200:9200
-      - 9300:9300
     restart: always
 
   iipimage:
