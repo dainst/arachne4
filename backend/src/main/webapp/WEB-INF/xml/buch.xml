@@ -93,7 +93,7 @@
                 <section labelKey="Personennamen">
                     <field datasource="buch.BuchWeiterePersonen" />
                 </section>
-				<section labelKey="BibId" separator=", ">
+				<section labelKey="iDAI.bibliography/Zenon" separator=", ">
 					<field datasource="buch.bibid" />
 					<linkField labelKey="Zenon" datasource="buch.bibid"
 						prefix="https://zenon.dainst.org/Record/" />

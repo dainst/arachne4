@@ -54,7 +54,7 @@
 					<field datasource="buchseite.Inventarnummern" prefix="Negativnummer: " />
 				</section>
 				<section labelKey="Zenon Meta-Data">
-					<section labelKey="BibID" separator=", ">
+					<section labelKey="iDAI.bibliography/Zenon" separator=", ">
 						<field datasource="zenon.001" />
 						<linkField labelKey="Zenon" datasource="buchseite.bibidSeite"
 							prefix="https://zenon.dainst.org/Record/" />
