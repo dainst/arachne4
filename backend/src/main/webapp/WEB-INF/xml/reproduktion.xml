@@ -193,33 +193,66 @@
 					<field datasource="reproduktion.ReproObenMitte" prefix="Oben-mitte: " />
 				</section>
 				<section labelKey="Verhältnis Original und Reproduktion">
-					<field datasource="reproduktion.Veraenderungen" prefix="Veränderungen: " />
-					<field datasource="reproduktion.zusammensetzung" prefix="Zusammensetzung: " />
-					<field datasource="reproduktion.AbguszMitAltenErgaenzungen"
-						prefix="Reproduktion mit alten Ergänzungen: " />
+					<section labelKey="raw">
+						<section labelKey="changes"><field datasource="reproduktion.Veraenderungen" /></section>
+						<section labelKey="composition"><field datasource="reproduktion.zusammensetzung" /></section>
+						<section labelKey="castWithOldAdditions"><field datasource="reproduktion.AbguszMitAltenErgaenzungen" /></section>
+					</section>
+					<section labelKey="formatted">
+						<field datasource="reproduktion.Veraenderungen" prefix="Veränderungen: " />
+						<field datasource="reproduktion.zusammensetzung" prefix="Zusammensetzung: " />
+						<field datasource="reproduktion.AbguszMitAltenErgaenzungen"
+							prefix="Reproduktion mit alten Ergänzungen: " />
+					</section>
 				</section>
-				<section labelKey="Ergänzungen" separator="; ">
-					<field datasource="reproduktion.ErgaenzungenReproduktion" />
-					<field datasource="reproduktion.sonstigeErgaenzungen" />
-					<field datasource="reproduktion.sonstigeAbweichungen" />
-					<field datasource="reproduktion.KuenstlerErgaenzungen"
-						prefix="Künstler der Ergänzungen: " />
+				<section labelKey="Ergänzungen">
+					<section labelKey="raw">
+						<section labelKey="additionsReproduction"><field datasource="reproduktion.ErgaenzungenReproduktion" /></section>
+						<section labelKey="otherAdditions"><field datasource="reproduktion.sonstigeErgaenzungen" /></section>
+						<section labelKey="otherDeviations"><field datasource="reproduktion.sonstigeAbweichungen" /></section>
+						<section labelKey="artistAdditions"><field datasource="reproduktion.KuenstlerErgaenzungen" /></section>
+					</section>
+					<section labelKey="formatted" separator="; ">
+						<field datasource="reproduktion.ErgaenzungenReproduktion" />
+						<field datasource="reproduktion.sonstigeErgaenzungen" />
+						<field datasource="reproduktion.sonstigeAbweichungen" />
+						<field datasource="reproduktion.KuenstlerErgaenzungen"
+							prefix="Künstler der Ergänzungen: " />
+
+					</section>
 				</section>
 				<section labelKey="Künstler">
-					<field datasource="reproduktion.KuenstlerReproduktion"
-						prefix="Künstlername: " />
-					<field datasource="reproduktion.Kuenstlerzuschreibung"
-						prefix="Zuschreibung: " />
-					<field datasource="reproduktion.KuenstlerSignatur" prefix="Signatur: " />
-					<field datasource="reproduktion.AbugsformNr" prefix="Abgusform: " />
-					<field datasource="reproduktion.Hersteller" prefix="Hersteller: " />
-					<field datasource="reproduktion.ReproAnmerkungenForm" prefix="Anmerkungen zur Form: " />
-					<field datasource="reproduktion.ReproKuenstlerVorbildGemaelde"
-						prefix="Vorlage: " />
+					<section labelKey="raw">
+						<section labelKey="artistReproduction"><field datasource="reproduktion.KuenstlerReproduktion"/></section>
+						<section labelKey="artistAttribution"><field datasource="reproduktion.Kuenstlerzuschreibung"/></section>
+						<section labelKey="artistSignature"><field datasource="reproduktion.KuenstlerSignatur" /></section>
+						<section labelKey="castFormNumber"><field datasource="reproduktion.AbugsformNr" /></section>
+						<section labelKey="producer"><field datasource="reproduktion.Hersteller" /></section>
+						<section labelKey="castFormComment"><field datasource="reproduktion.ReproAnmerkungenForm" /></section>
+						<section labelKey="artistReferencePainting"><field datasource="reproduktion.ReproKuenstlerVorbildGemaelde" /></section>
+					</section>
+					<section labelKey="formatted">
+						<field datasource="reproduktion.KuenstlerReproduktion"
+							prefix="Künstlername: " />
+						<field datasource="reproduktion.Kuenstlerzuschreibung"
+							prefix="Zuschreibung: " />
+						<field datasource="reproduktion.KuenstlerSignatur" prefix="Signatur: " />
+						<field datasource="reproduktion.AbugsformNr" prefix="Abgusform: " />
+						<field datasource="reproduktion.Hersteller" prefix="Hersteller: " />
+						<field datasource="reproduktion.ReproAnmerkungenForm" prefix="Anmerkungen zur Form: " />
+						<field datasource="reproduktion.ReproKuenstlerVorbildGemaelde"
+							prefix="Vorlage: " />
+					</section>
 				</section>
 				<section labelKey="Kommentar">
-					<field datasource="reproduktion.BemerkungenReproduktion" />
-					<field datasource="reproduktion.wissKommentarRepro" />
+					<section labelKey="raw">
+						<section labelKey="reproductionComment"><field datasource="reproduktion.BemerkungenReproduktion" /></section>
+						<section labelKey="reproductionScientificComment"><field datasource="reproduktion.wissKommentarRepro" /></section>
+					</section>
+					<section labelKey="formatted">
+						<field datasource="reproduktion.BemerkungenReproduktion" />
+						<field datasource="reproduktion.wissKommentarRepro" />
+					</section>
 				</section>
 				<include type="literaturcomplete" />
 				<include type="uri" />

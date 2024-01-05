@@ -124,93 +124,203 @@
 
 			<section labelKey="Informationen zum Objekt">
 				<include type="ort" />
-				<section labelKey="Herkunft" separator=", ">
-					<field datasource="objekt.Herkunft" />
-					<field datasource="objekt.Fundstaat" />
-					<field datasource="objekt.Fundort" />
-					<field datasource="objekt.Fundkontext" />
-					<field datasource="objekt.FunddatumObjekt" />
-					<field datasource="objekt.HerkFundKommentar" />
-				</section>
-				<section labelKey="Gattung/Funktion/Kulturepoche">
-					<field datasource="objekt.GattungAllgemein" search=";" replace="; "/>
-					<field datasource="objekt.Funktion" />
-					<field datasource="objekt.funktionaleVerwendung" />
-					<field datasource="objekt.zuMonument" prefix="zu Monument gehörig: " />
-					<field datasource="objekt.SchmuckBeschreibung" prefix="Schmuck Beschreibung: " />
-					<field datasource="objekt.SchmuckSpezifizierung" prefix="Schmuck Spezifizierung: " />
-					<field datasource="objekt.Auftraggeber" prefix="Auftraggeber: " />
-					<field datasource="objekt.Adressat" prefix="Adressat: " />
-					<field datasource="objekt.Kulturkreis" prefix="Kulturepoche: " />
-					<field datasource="objekt.AntikerAufstellungsort" prefix="Antiker Aufstellungsort: " />
-					<field datasource="objekt.antikeGriechLandschaft" prefix="Antike Landschaft: " />
-					<field datasource="objekt.antikeRoemProvinz" prefix="Antike Römische Provinz: " />
-					<field datasource="objekt.FreieBeschreibung" />
-					<field datasource="objekt.Spolie" />
+				<include type="ort_raw" />
+				<section labelKey="Herkunft">
+					<section labelKey="raw">
+						<section labelKey="origin"><field datasource="objekt.Herkunft" /></section>
+						<section labelKey="originCountry"><field datasource="objekt.Fundstaat" /></section>
+						<section labelKey="originPlace"><field datasource="objekt.Fundort" /></section>
+						<section labelKey="originContext"><field datasource="objekt.Fundkontext" /></section>
+						<section labelKey="originDate"><field datasource="objekt.FunddatumObjekt" /></section>
+						<section labelKey="placeOriginComment"><field datasource="objekt.HerkFundKommentar" /></section>
+					</section>
+					<section labelKey="formatted" separator=", ">
+						<field datasource="objekt.Herkunft" />
+						<field datasource="objekt.Fundstaat" />
+						<field datasource="objekt.Fundort" />
+						<field datasource="objekt.Fundkontext" />
+						<field datasource="objekt.FunddatumObjekt" />
+						<field datasource="objekt.HerkFundKommentar" />
+					</section>
 				</section>
 				<include type="datierung" />
+				<include type="datierung_raw" />
+				<section labelKey="Gattung/Funktion/Kulturepoche">
+					<section labelKey="raw">
+						<section labelKey="generalGenre"><field datasource="objekt.GattungAllgemein"/></section>
+						<section labelKey="function"><field datasource="objekt.Funktion" /></section>
+						<section labelKey="functionalUsage"><field datasource="objekt.funktionaleVerwendung" /></section>
+						<section labelKey="partOfMounment"><field datasource="objekt.zuMonument"/></section>
+						<section labelKey="decorationDescription"><field datasource="objekt.SchmuckBeschreibung" /></section>
+						<section labelKey="decorationSpecification"><field datasource="objekt.SchmuckSpezifizierung" /></section>
+						<section labelKey="commissioner"><field datasource="objekt.Auftraggeber" /></section>
+						<section labelKey="recipient"><field datasource="objekt.Adressat" /></section>
+						<section labelKey="culturalEpoch"><field datasource="objekt.Kulturkreis" /></section>
+						<section labelKey="ancientPlaceOfInstallation"><field datasource="objekt.AntikerAufstellungsort" /></section>
+						<section labelKey="ancientGreekLandscape"><field datasource="objekt.antikeGriechLandschaft"/></section>
+						<section labelKey="ancientRomanProvince"><field datasource="objekt.antikeRoemProvinz"/></section>
+						<section labelKey="description"><field datasource="objekt.FreieBeschreibung" /></section>
+						<section labelKey="spolia"><field datasource="objekt.Spolie" /></section>
+					</section>
+					<section labelKey="formatted">
+						<field datasource="objekt.GattungAllgemein" search=";" replace="; "/>
+						<field datasource="objekt.Funktion" />
+						<field datasource="objekt.funktionaleVerwendung" />
+						<field datasource="objekt.zuMonument" prefix="zu Monument gehörig: " />
+						<field datasource="objekt.SchmuckBeschreibung" prefix="Schmuck Beschreibung: " />
+						<field datasource="objekt.SchmuckSpezifizierung" prefix="Schmuck Spezifizierung: " />
+						<field datasource="objekt.Auftraggeber" prefix="Auftraggeber: " />
+						<field datasource="objekt.Adressat" prefix="Adressat: " />
+						<field datasource="objekt.Kulturkreis" prefix="Kulturepoche: " />
+						<field datasource="objekt.AntikerAufstellungsort" prefix="Antiker Aufstellungsort: " />
+						<field datasource="objekt.antikeGriechLandschaft" prefix="Antike Landschaft: " />
+						<field datasource="objekt.antikeRoemProvinz" prefix="Antike Römische Provinz: " />
+						<field datasource="objekt.FreieBeschreibung" />
+						<field datasource="objekt.Spolie" />
+					</section>
+				</section>
 				<section labelKey="Technik">
-					<field datasource="objekt.Technik" />
-					<field datasource="objekt.TechnikDetails" />
-					<field datasource="objekt.ApplizierteElemente" prefix="Applikationen: "
-						search=";" replace="; " />
+					<section labelKey="raw">
+						<section labelKey="technique"><field datasource="objekt.Technik" /></section>
+						<section labelKey="techniqueDetails"><field datasource="objekt.TechnikDetails" /></section>
+						<section labelKey="appliedElements"><field datasource="objekt.ApplizierteElemente" /></section>
+					</section>
+					<section labelKey="formatted">
+						<field datasource="objekt.Technik" />
+						<field datasource="objekt.TechnikDetails" />
+						<field datasource="objekt.ApplizierteElemente" prefix="Applikationen: "
+							search=";" replace="; " />
+					</section>
 				</section>
 				<section labelKey="Material">
-					<field datasource="objekt.Material" />
-					<field datasource="objekt.Materialbeschreibung" />
-					<field datasource="objekt.MaterialBemerkung" prefix="Bemerkung: " />
+					<section labelKey="raw">
+						<section labelKey="material"><field datasource="objekt.Material" /></section>
+						<section labelKey="materialDesription"><field datasource="objekt.Materialbeschreibung" /></section>
+						<section labelKey="materialComment"><field datasource="objekt.MaterialBemerkung"/></section>
+					</section>
+					<section labelKey="formatted">
+						<field datasource="objekt.Material" />
+						<field datasource="objekt.Materialbeschreibung" />
+						<field datasource="objekt.MaterialBemerkung" prefix="Bemerkung: " />
+					</section>
 				</section>
 				<section labelKey="Typ">
-					<field datasource="objekt.TypSpeziell" />
+					<section labelKey="raw">
+						<section labelKey="specialType"><field datasource="objekt.TypSpeziell" /></section>
+					</section>
+					<section labelKey="formatted">
+						<field datasource="objekt.TypSpeziell" />
+					</section>
 				</section>
 				<section labelKey="Erhaltung">
-					<field datasource="objekt.Erhaltung" />
-					<field datasource="objekt.Erhaltungszustand" />
-					<field datasource="objekt.Farbreste" prefix="Farbreste: " />
-					<field datasource="objekt.DekorAllgemein" prefix="Dekor: " />
-					<field datasource="objekt.Bearbeitungen" prefix="Bearbeitungen: " />
-					<field datasource="objekt.BearbeitungenAntik" prefix="Antike Bearbeitungen: " />
-					<field datasource="objekt.BearbeitungenModern" prefix="Moderne Bearbeitungen: " />
+					<section labelKey="raw">
+						<section labelKey="preservation"><field datasource="objekt.Erhaltung" /></section>
+						<section labelKey="preservationState"><field datasource="objekt.Erhaltungszustand" /></section>
+						<section labelKey="residualPaint"><field datasource="objekt.Farbreste"/></section>
+						<section labelKey="decor"><field datasource="objekt.DekorAllgemein"/></section>
+						<section labelKey="processing"><field datasource="objekt.Bearbeitungen"/></section>
+						<section labelKey="processingAncient"><field datasource="objekt.BearbeitungenAntik"/></section>
+						<section labelKey="processingModern"><field datasource="objekt.BearbeitungenModern"/>	</section>
+					</section>
+					<section labelKey="formatted">
+						<field datasource="objekt.Erhaltung" />
+						<field datasource="objekt.Erhaltungszustand" />
+						<field datasource="objekt.Farbreste" prefix="Farbreste: " />
+						<field datasource="objekt.DekorAllgemein" prefix="Dekor: " />
+						<field datasource="objekt.Bearbeitungen" prefix="Bearbeitungen: " />
+						<field datasource="objekt.BearbeitungenAntik" prefix="Antike Bearbeitungen: " />
+						<field datasource="objekt.BearbeitungenModern" prefix="Moderne Bearbeitungen: " />	
+					</section>
 				</section>
 				<section labelKey="Maße">
-					<field datasource="objekt.BreiteGesamt" prefix="Breite: " postfix=" cm" />
-					<field datasource="objekt.HoeheGesamt" prefix="Höhe: " postfix=" cm" />
-					<field datasource="objekt.TiefeGesamt" prefix="Tiefe: " postfix=" cm" />
-					<field datasource="objekt.DurchmesserGesamt" prefix="Durchmesser: " postfix=" cm" />
-					<field datasource="objekt.GewichtGesamt" prefix="Gewicht: " postfix= " g"/>
-					<field datasource="objekt.ObjektMaszeBemerk" prefix="Bemerkung: " />
-					<field datasource="objekt.ZusaetzlicheMasze" prefix="Weitere Maßangaben: " />
+					<section labelKey="raw">
+						<section labelKey="width"><field datasource="objekt.BreiteGesamt" /></section>
+						<section labelKey="height"><field datasource="objekt.HoeheGesamt"/></section>
+						<section labelKey="depths"><field datasource="objekt.TiefeGesamt" /></section>
+						<section labelKey="diameter"><field datasource="objekt.DurchmesserGesamt"  /></section>
+						<section labelKey="weight"><field datasource="objekt.GewichtGesamt"/></section>
+						<section labelKey="comment"><field datasource="objekt.ObjektMaszeBemerk"/></section>
+						<section labelKey="otherMeasurements"><field datasource="objekt.ZusaetzlicheMasze" /></section>
+					</section>
+					<section labelKey="formatted">
+						<field datasource="objekt.BreiteGesamt" prefix="Breite: " postfix=" cm" />
+						<field datasource="objekt.HoeheGesamt" prefix="Höhe: " postfix=" cm" />
+						<field datasource="objekt.TiefeGesamt" prefix="Tiefe: " postfix=" cm" />
+						<field datasource="objekt.DurchmesserGesamt" prefix="Durchmesser: " postfix=" cm" />
+						<field datasource="objekt.GewichtGesamt" prefix="Gewicht: " postfix= " g"/>
+						<field datasource="objekt.ObjektMaszeBemerk" prefix="Bemerkung: " />
+						<field datasource="objekt.ZusaetzlicheMasze" prefix="Weitere Maßangaben: " />
+					</section>
 				</section>
 				<section labelKey="Restauration und Analyse">
-					<field datasource="objekt.RekoObjekt" />
-					<field datasource="objekt.ObjektRestauroRestaurier" />
-					<field datasource="objekt.ObjektRestauroBeschreibung" />
-					<field datasource="objekt.ObjektRestauroBeschreibungVorzustand" prefix="Vorzustand: " />
-					<field datasource="objekt.ObjektRestauroMasznahmen" prefix="Maßnahmen: " />
-					<field datasource="objekt.ObjektRestauroZeitraum" prefix="Zeitraum: " />
-					<field datasource="objekt.ObjektRestauroDurchgefuehrtVon" prefix="Restaurator: " />
-					<field datasource="objekt.ObjektRestauroMasznahmenFruehere" prefix="Frühere Maßnahmen: " />
-					<field datasource="objekt.ObjektRestauroMaterialBemerk" />
-					<field datasource="objekt.ObjektRestauroHerstell" />
-					<field datasource="objekt.ObjektRestauroAnalyseZiel" prefix="Analyseziel: " />
-					<field datasource="objekt.ObjektRestauroAnalyseMasznahmenMethoden" prefix="Maßnahmen und Methoden: " />
-					<field datasource="objekt.ObjektRestauroAnalyseDurchgefuehrtVon" prefix="Analyse durchgeführt von: " />
-					<field datasource="objekt.ObjektRestauroAnalyseZeitraum" prefix="Zeitraum: " />
-					<field datasource="objekt.ObjektRestauroAnalyseErgebnis" prefix="Ergebnis: " />
+					<section labelKey="raw">
+						<section labelKey="earlierRestorationMethods"><field datasource="objekt.ObjektRestauroMasznahmenFruehere" /></section>
+						<section labelKey="preRestorationDescription"><field datasource="objekt.ObjektRestauroBeschreibungVorzustand" /></section>
+						<section labelKey="restorationDescription"><field datasource="objekt.ObjektRestauroBeschreibung" /></section>
+						<section labelKey="restorationShortDescription"><field datasource="objekt.ObjektRestauroRestaurier" /></section>
+						<section labelKey="restorationMethods"><field datasource="objekt.ObjektRestauroMasznahmen" /></section>
+						<section labelKey="restorationPeriod"><field datasource="objekt.ObjektRestauroZeitraum"/></section>
+						<section labelKey="restorer"><field datasource="objekt.ObjektRestauroDurchgefuehrtVon"  /></section>
+						<section labelKey="restorationMaterialDetail"><field datasource="objekt.ObjektRestauroMaterialBemerk" /></section>
+						<section labelKey="restorationAnalysisGoal"><field datasource="objekt.ObjektRestauroAnalyseZiel" /></section>
+						<section labelKey="restorationAnalysisMethods"><field datasource="objekt.ObjektRestauroAnalyseMasznahmenMethoden" /></section>
+						<section labelKey="restorationAnalysisAuthor"><field datasource="objekt.ObjektRestauroAnalyseDurchgefuehrtVon"  /></section>
+						<section labelKey="restorationAnalysisPeriod"><field datasource="objekt.ObjektRestauroAnalyseZeitraum"  /></section>
+						<section labelKey="restorationAnalysisResult"><field datasource="objekt.ObjektRestauroAnalyseErgebnis" /></section>
+					</section>
+					<section labelKey="formatted">
+						<field datasource="objekt.RekoObjekt" />
+						<field datasource="objekt.ObjektRestauroRestaurier" />
+						<field datasource="objekt.ObjektRestauroBeschreibung" />
+						<field datasource="objekt.ObjektRestauroBeschreibungVorzustand" prefix="Vorzustand: " />
+						<field datasource="objekt.ObjektRestauroMasznahmen" prefix="Maßnahmen: " />
+						<field datasource="objekt.ObjektRestauroZeitraum" prefix="Zeitraum: " />
+						<field datasource="objekt.ObjektRestauroDurchgefuehrtVon" prefix="Restaurator: " />
+						<field datasource="objekt.ObjektRestauroMasznahmenFruehere" prefix="Frühere Maßnahmen: " />
+						<field datasource="objekt.ObjektRestauroMaterialBemerk" />
+						<field datasource="objekt.ObjektRestauroHerstell" />
+						<field datasource="objekt.ObjektRestauroAnalyseZiel" prefix="Analyseziel: " />
+						<field datasource="objekt.ObjektRestauroAnalyseMasznahmenMethoden" prefix="Maßnahmen und Methoden: " />
+						<field datasource="objekt.ObjektRestauroAnalyseDurchgefuehrtVon" prefix="Analyse durchgeführt von: " />
+						<field datasource="objekt.ObjektRestauroAnalyseZeitraum" prefix="Zeitraum: " />
+						<field datasource="objekt.ObjektRestauroAnalyseErgebnis" prefix="Ergebnis: " />
+					</section>
 				</section>
 				<section labelKey="Katalog (deutsch)">
-					<field datasource="objekt.Katalogbearbeitung" prefix="Bearbeiter: " />
-					<field datasource="objekt.Katalognummer" prefix="Nummer: " />
-					<field datasource="objekt.Katalogtext" />
+					<section labelKey="raw">
+						<section labelKey="catalogEditor"><field datasource="objekt.Katalogbearbeitung" /></section>
+						<section labelKey="catalogNumber"><field datasource="objekt.Katalognummer" /></section>
+						<section labelKey="catalogText"><field datasource="objekt.Katalogtext" /></section>
+					</section>
+					<section labelKey="formatted">
+						<field datasource="objekt.Katalogbearbeitung" prefix="Bearbeiter: " />
+						<field datasource="objekt.Katalognummer" prefix="Nummer: " />
+						<field datasource="objekt.Katalogtext" />
+					</section>
 				</section>
 				<section labelKey="Katalog (englisch)">
-					<field datasource="objekt.KatalogbearbeitungEnglisch" prefix="Bearbeiter: " />
-					<field datasource="objekt.KatalogtextEnglisch" />
+					<section labelKey="raw">
+						<section labelKey="catalogEditor"><field datasource="objekt.KatalogbearbeitungEnglisch" prefix="Editor: " /></section>
+						<section labelKey="catalogNumber"><field datasource="objekt.Katalognummer" prefix="Number: " /></section>
+						<section labelKey="catalogText"><field datasource="objekt.KatalogtextEnglisch" /></section>
+					</section>
+					<section labelKey="formatted">
+						<field datasource="objekt.KatalogbearbeitungEnglisch" prefix="Editor: " />
+						<field datasource="objekt.Katalognummer" prefix="Number: " />
+						<field datasource="objekt.KatalogtextEnglisch" />
+					</section>
 				</section>
 				<section labelKey="Inschrift">
-					<field datasource="inschrift.Inschrift" />
-					<field datasource="inschrift.Uebersetzung" />
-					<field datasource="inschrift.Sprache" prefix="Sprache/Schrift: " />
+					<section labelKey="raw">
+						<section labelKey="inscription"><field datasource="inschrift.Inschrift" /></section>
+						<section labelKey="inscriptionTranslation"><field datasource="inschrift.Uebersetzung" /></section>
+						<section labelKey="inscriptionLanguage"><field datasource="inschrift.Sprache" /></section>
+					</section>
+					<section labelKey="formatted">
+						<field datasource="inschrift.Inschrift" />
+						<field datasource="inschrift.Uebersetzung" />
+						<field datasource="inschrift.Sprache" prefix="Sprache/Schrift: " />
+					</section>
 				</section>
 				<include type="literaturcomplete" />
 				<include type="uri" />
