@@ -85,31 +85,39 @@ export default function ($rootScope, $scope, searchService, categoryService, $fi
 
         if (!section.content || section.content.length === 0) return "";
 
-        var sectionText = "";
+        let sectionText = "";
         if (section.label && section.label.length > 0) {
-            sectionText += firstLevel ? "#" : "###";
-            sectionText += " " + section.label + "\n";
-        }
-
-        for (var i in section.content) {
-            if (section.content[i].value) {
-                var value = "";
-                if (Array.isArray(section.content[i].value)) {
-                    for (var j in section.content[i].value) {
-                        value += section.content[i].value[j] + "  \n";
-                    }
-                } else {
-                    value = section.content[i].value;
-                }
-                value = value.replace(/<hr>/g, "  \n").replace(/<hr\/>/g, "  \n").replace(/<hr \/>/g, "  \n")
-                    .replace(/-/g, "\\-").replace(/\*/g, "\\*").replace(/#/g, "\\#")
-                    .replace(/<a href="(.*?)"( target="_blank")?>(.*?)<\/a>/g, "[$3]($1)");
-                sectionText += value + "  \n";
-            } else {
-                sectionText += $scope.createSectionText(section.content[i], false) + "  \n";
+            // skip technical labels ("raw" and "formatted")
+            if(section.label !== "raw" && section.label !== "formatted") {
+                sectionText += firstLevel ? "#" : "###";
+                sectionText += " " + section.label + "\n";
             }
         }
 
+        // process nested sections
+        if(section.content.label !== "raw") {
+            for (let i in section.content) {
+                // use "formatted"-parts only
+                if(section.content[i].label !== "raw") {
+                    if(section.content[i].value) {
+                        let value = "";
+                        if (Array.isArray(section.content[i].value)) {
+                            for (let j in section.content[i].value) {
+                                value += section.content[i].value[j] + "  \n";
+                            }
+                        } else {
+                            value = section.content[i].value;
+                        }
+                        value = value.replace(/<hr>/g, "  \n").replace(/<hr\/>/g, "  \n").replace(/<hr \/>/g, "  \n")
+                            .replace(/-/g, "\\-").replace(/\*/g, "\\*").replace(/#/g, "\\#")
+                            .replace(/<a href="(.*?)"( target="_blank")?>(.*?)<\/a>/g, "[$3]($1)");
+                        sectionText += value + "  \n";
+                    } else {
+                        sectionText += $scope.createSectionText(section.content[i], false) + "  \n";
+                    }
+                }
+            }
+        }
         return sectionText;
     };
 
