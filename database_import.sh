@@ -7,4 +7,4 @@
 # Read .env file and use as environment variables
 export $(cat .env | sed 's/#.*//g' | xargs)
 
-gunzip < $1 | docker exec -i arachne4-db-1 mysql -uroot -p${DB_ROOT_PASSWORD}
+gunzip < $1 | docker exec -i arachne4_db mariadb -uroot -p${DB_ROOT_PASSWORD}
