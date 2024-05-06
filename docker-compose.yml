@@ -19,7 +19,7 @@ services:
   backend:
     image: ghcr.io/dainst/arachne4-backend:${ARACHNE_BACKEND_IMAGE_VERSION}
     environment:
-      - "DB_SERVER=arachne4_db"
+      - "DB_SERVER=${SERVER_ADDRESS}:3306"
       - "DB_PASSWORD=${DB_PASSWORD}"
       - "SERVER_ADDRESS=${SERVER_ADDRESS}"
       - "IIPIMAGE_SERVER=frontend"
