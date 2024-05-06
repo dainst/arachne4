@@ -1,7 +1,7 @@
 services:
 
   frontend:
-    image: ghcr.io/dainst/arachne4-frontend:${ARACHNE_IMAGE_VERSION}
+    image: ghcr.io/dainst/arachne4-frontend:${ARACHNE_FRONTEND_IMAGE_VERSION}
     volumes:
       - ${ARCHAEOCLOUD_PATH}:/media/archaeocloud
       - /mnt/sitemap:/var/www/sitemap
@@ -17,7 +17,7 @@ services:
     restart: always
 
   backend:
-    image: ghcr.io/dainst/arachne4-backend:${ARACHNE_IMAGE_VERSION}
+    image: ghcr.io/dainst/arachne4-backend:${ARACHNE_BACKEND_IMAGE_VERSION}
     environment:
       - "DB_SERVER=arachne4_db"
       - "DB_PASSWORD=${DB_PASSWORD}"
