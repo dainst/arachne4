@@ -1,0 +1,127 @@
+<style>
+    .con10t-row {
+        margin-top: 10vh;
+    }
+
+    #sticky-sidebar {
+        padding-top: 4vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    @media (max-width: 992px) {
+        #sticky-sidebar {
+            position: relative;
+        }
+
+        .con10t-image {
+            float: none;
+        }
+    }
+</style>
+
+<idai-header image="/con10t/headerimages/beck_sm6_header.jpg"
+    description="D. Beck, Marmor Numidicum. Gewinnung, Verarbeitung und Distribution eines antiken Buntmarmors. Digitaler Katalog (2024)"
+    link="https://doi.org/10.34780/3xe5-a0z6">
+</idai-header>
+
+<div class="con10t-page teaserpage container">
+    <div class="con10t-row">
+        <div class="con10t-title">
+            <h1>D. Beck, Marmor Numidicum. Gewinnung, Verarbeitung und Distribution eines antiken Buntmarmors. Digitaler Katalog (2024)</h1>
+        </div>
+
+        <div id="sticky-sidebar" class="con10t-sidebar">
+
+            <con10t-toc toc-heading="Übersicht"></con10t-toc>
+
+            <h3>Browse project dat</h3>
+
+            <!-- Map -->
+            <div ng-init="config = {
+                    clustered: false,
+                    facetsSelect: [
+                        {
+                        key: 'catalogIds',
+                        value: 1695
+                        }
+                    ]
+                }">
+            </div>
+
+            <div con10t-map style="margin-bottom: 1vw;" id="map" limit="200" facets-select="config.facetsSelect"
+                lat="41.89" lng="12.48" zoom="2">
+            </div>
+
+            <a con10t-search-query target="_blank">Show all project data</a>
+
+            <con10t-search search-placeholder="Suche..."></con10t-search>
+
+            <br>
+
+            <h3>Links</h3>
+
+            <a href="https://arachne.dainst.org/catalog/1695">Show catalog view</a><br>
+
+            <a href="DOI">Show distribution maps</a><br>
+
+            <h3 style="margin-top: 5%">About the book</h3>
+
+            <p><a href="https://doi.org/10.34780/3xe5-a0z6" target="_blank">iDAI.publications</a></p>
+
+            <con10t-image src="/con10t/img/beck_sm6/beck-cover.jpg" alt="Cover-Printausgabe" width="340"></con10t-image>
+
+        </div>
+
+        <div class="con10t-content">
+
+            <h2 class="con10t-toc-entry">About the catalog</h2>
+
+            <p>This online catalogue supplements the publication <a href="https://doi.org/10.34780/3xe5-a0z6"
+                    target="_blank">
+                    »Marmor Numidicum. Gewinnung, Verarbeitung und Distribution eines antikes Buntmarmors«</a> (Series,
+                Volume: Simitthus 6) with a systematic data of all features and finds from the entire study.
+                The ID number assigned in the text establishes the link to the respective data record in
+                iDAI.objects/arachne.</p>
+
+            <p>The data records with all the information can be accessed under the ID numbers and some are supplemented
+                by photos and plans. The sequence of the 1221 data sets is based on the periods of investigation of the
+                study, whereby a superordinate subdivision into four periods of investigation was undertaken. Within
+                each research period, the findings and artefacts from Simitthus and North Africa are always presented
+                first; followed by the findings and artefacts from Rome, the environment of Rome, the Italian regions
+                and the other regions of the Mediterranean, mainly the former Roman provinces. For the period after 235
+                AD, no more entries have been included in the database and the features and finds have been listed in
+                the text volume without ID numbers. The chronological aspects within the respective periods may take a
+                back seat to the detriment of a city- or country-specific view, as no care have been taken to develop an
+                exact chronological sequence within each period of research.</p>
+
+            <h2 class="con10t-toc-entry">Catalog</h2>
+
+            <con10t-catalog-tree catalog-id="1695"></con10t-catalog-tree>
+
+            <h2 class="con10t-toc-entry">About the distribution maps</h2>
+
+            <p>The findings and artefacts are supplemented by periodically structured distribution maps of the marmor
+                Numidicum, which are available for download at [DOI].</p>
+
+            <p>The twelve utilisation and distribution maps accompanying the study show the periodic distribution of
+                marmor Numidicum in the Mediterranean region, which was compiled on the basis of the sites. The
+                respective legend provides information on the use of the marble in different genera and the respective
+                number of these uses within a study horizon. The maps illustrate the distribution and range of use of
+                marmor Numidicum for the four study horizons and supplement the respective study chapters. Individual
+                detailed maps of Simitthus, Rome, Pompeii, Herculaneum and Carthage supplement the overall maps of the
+                Mediterranean region in individual study horizons, depending on the material basis.
+                The legend includes the genres paviment, architecture (including individual architectural elements),
+                wall incrustation, monument (theatre and odeion), sculpture and inscription. The double mention of
+                paviment/wall incrustation refers in all cases to slab fragments that cannot be assigned to either genre
+                with certainty, either on the basis of their context or their appearance.
+            </p>
+
+            <p>D. Beck</p>
+
+        </div>
+
+    </div>
+</div>
