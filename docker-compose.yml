@@ -22,6 +22,8 @@ services:
       - "DB_SERVER=${SERVER_ADDRESS}:3306"
       - "DB_PASSWORD=${DB_PASSWORD}"
       - "SERVER_ADDRESS=${SERVER_ADDRESS}"
+      - "SMTP_USER_NAME=${SMTP_USER_NAME}"
+      - "SMTP_USER_PASSWORD=${SMTP_USER_PASSWORD}"
       - "IIPIMAGE_SERVER=frontend"
       - "ELASTICSEARCH_SERVER=elasticsearch"
     volumes:
