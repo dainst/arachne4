@@ -35,8 +35,8 @@ imageResolutionHIGH=0
 imageCacheDir=/tmp/arachne4ImageCache/
 
 # MailService
-mailSMTPServer=smtp.uni-koeln.de
-mailSender=arachne@uni-koeln.de
+mailSender=idai.objects@dainst.de
+mailSMTPServer=mail.dainst
 
 # transl8
 transl8Url=https://arachne.dainst.org/transl8/translation/json?application=arachne4_backend

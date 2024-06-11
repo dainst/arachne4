@@ -37,7 +37,12 @@ public class MailService {
 	public MailService(final @Value("${mailSMTPServer}") String smtpServer
 			, final @Value("${mailSender}") String sender) {
 
+		String smtpUserName = System.getenv("SMTP_USER_NAME");
+		String smtpUserPassword = System.getenv("SMTP_USER_PASSWORD");
+
 		mailSender.setHost(smtpServer);
+		mailSender.setUsername(smtpUserName);
+		mailSender.setPassword(smtpUserPassword);
 		this.sender = sender;
 	}
 	
