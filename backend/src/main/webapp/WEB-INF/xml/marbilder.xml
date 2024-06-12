@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <category xmlns="http://arachne.uni-koeln.de/schemas/category"
 		  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="bilder"
 		  xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
@@ -236,8 +236,6 @@
 					<field datasource="marbilderbestand.Hoehe" prefix="Höhe: " />
 					<field datasource="marbilderbestand.Tiefe" prefix="Tiefe: " />
 					<field datasource="marbilderbestand.Durchmesser" prefix="Durchmesser: " />
-
-					<field datasource="marbilder.Pfad" prefix="Pfad: " />
 				</section>
 
 			</section>
