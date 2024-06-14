@@ -1,0 +1,132 @@
+<style>
+
+	.con10t-row {
+		margin-top: 5vh;
+	}
+</style>
+
+
+<!-- Kopfbereich der Projektseite -->
+<idai-header
+        image="/con10t/headerimages/PalatinGIS.jpg"
+		description="PalatinGIS">
+</idai-header>
+
+<!-- Hauptbereich der Projektseite -->
+<div class="con10t-page teaserpage container">
+
+    <div class="con10t-row">
+
+		<!-- Haupttitel des Projektes: Überschrift der Größe <h1> oder Logo / Bild -->
+        <div class="con10t-title">
+			<h1 align="center">PalatinGIS.<br> 
+				An analysis tool for the project "From the hand drawing to the digital model.<br>
+				The Palatine in Rome as a case study for knowledge generation in archaeology"
+			</h1>
+			<h2 align="center">Head: Dr. Barbara Sielhorst (Ruhr-Universität Bochum)</h2>
+		</div>
+
+		<!-- Rechte Seitenleiste -->
+        <div class="con10t-sidebar" style= "padding-top: 2vw;">
+
+			<con10t-toc toc-heading="Übersicht"></con10t-toc>
+
+			<h3>Project data</h3>
+
+			<p><a con10t-search-query target = "_blank">Show project data</a></p>
+
+			<con10t-search catalog-id="860"></con10t-search>
+
+			<br>
+
+			<h3>Catalog</h3>
+
+			<a href = "https://arachne.dainst.org/catalog/860" target = "_blank">To catalog view</a>
+			
+			<h3 style="margin-top: 5%">Historic overview of the Palatine:</h3>
+
+			<p><a href = "https://geoserver.dainst.org/catalogue/#/map/7562" target = "_blank">iDAI.geoserver</a></p>
+
+			<con10t-image src="/con10t/img/PalatinGIS/PalatinGIS_Geoserver.PNG" alt="PalatinGIS geoserver" width="300"></con10t-image>
+
+
+
+        </div>
+
+		<!-- Inhalt der Projektseite -->
+        <div class="con10t-content">
+
+				<p>The Palatine as the 'cradle' of Rome aroused the interest of antiquarians, excavators and artists early on. This research project 
+                focuses on how the challenge of visually documenting and reconstructing the Palatine's ancient buildings and numerous finds, which techniques
+                 and methods were used and how the resulting images were used to create and pass on knowledge.</p>
+
+				<p>The project deals with the handling of pictorial documentation in archaeological research processes on the basis of a larger topographical complex.
+                The time frame is broad and ranges from the first plans and views of the Palatine in the early modern period to current computer-aided methods of image 
+                production. Due to the long period of investigation, changes and disruptions in the images come to light and enable an analysis of the factors responsible for this. 
+                In addition, the long-term perspective of the project also makes it possible to examine the influence of earlier images on the visualizations created after them, 
+                thus answering the question of how image conventions emerge, change and have a lasting impact on research questions and results. In this way, the project not only 
+                generates new information on the Palatine and its research history, but also makes a fundamental contribution to the practice of pictorial documentation and reconstruction 
+                as practices of knowledge production in archaeology.</p>
+
+				<p>Parallel to the analytical monograph, a geoinformation system for the visualization history of the Palatine ("PalatinGIS") is being set up within iDAI.world
+                as a central analysis tool. It enables the comprehensible comparison and evaluation of the extensive data collection already available (approx. 1,700 digitized 
+                images) from private and institutional archives. The GIS will be made accessible in accordance with the FAIR principles and will be freely available for further
+                research following the project. In the course of its development, there will also be an opportunity to critically reflect on the heuristic added value of digital
+                data processing.</p>
+
+
+				<!-- Figure 1 -->
+				<con10t-image src="/con10t/img/PalatinGIS/PalatinGIS_Abb.02.jpg" align="center" alt="bagni" width="750">
+					<span class="ng-scope">Layout and section of the so-called Bagni di Livia with an ideal plan of a Roman bath,<br>
+					watercolour drawing (A. Mampieri, 10: März 1845). (Quelle: Archivio Statale di Napoli, Maggiordomia, III inv., b. 2055, f. 253.)</span>
+				</con10t-image>
+
+
+				<!-- Figure 2 -->
+				<con10t-image src="/con10t/img/PalatinGIS/PalatinGIS_Abb.03.jpg" align="right" alt="domus_tiberiana" width="290">
+					<span class="ng-scope">Plan and elevation of the north front of the<br> Domus Tiberiana before and after the<br>
+					restoration, watercolour drawing<br> (P. Gambao, 1855). (Quelle: Archivio Statale<br> di Napoli, Maggiordomia, III inv., b. 2175, f. 305.)</span>
+				</con10t-image>
+
+				
+				<p>The Palatine geoinformation system ("PalatinGIS") is being created and will grow successively over the course of the project. In chronological order
+                and analogous to the monograph currently in progress, images from research into the Palatine from the early modern period (around 1500) to the age of 
+                digitization will be enriched with information and fed into iDAI.objects in the form of object entries. Each of these entries is mapped in a chronological
+                layer in iDAI.geoserver. A layer is a georeferenced map of the Palatine that was created not too long after the image was taken. The entries in Objects can 
+                be searched (https://arachne.dainst.org/info/faq) according to various criteria (object depicted, date, artist, technique, literature, etc.). A reciprocal 
+                linking of the entries - from the object entry in iDAI.objects to the corresponding layer in iDAI.geoserver and back - enables comprehensive research that 
+                facilitates the accessibility and comparability of the images with regard to various aspects that were investigated in more detail in the project. For a better 
+                overview, in addition to access to the entire catalogue, two further catalogues will be created containing material from specific time periods and from specific 
+                building complexes of the Palatine (chronological and topographical catalogue).</p>
+
+
+				<h2 class="con10t-toc-entry" style="padding-top: 300px;">Catalogues of the visualizations of the Palatine</h2>
+
+				<con10t-catalog-tree catalog-id="1724" style="width:49%; float:left"></con10t-catalog-tree>
+
+				<con10t-catalog-tree catalog-id="1725" style="width:49%; float:right"></con10t-catalog-tree>
+
+
+				<h2 class="con10t-toc-entry">Contributors and contact</h2>
+
+				<p>•    Project management: Dr. Barbara Sielhorst (<a href="barbara.sielhorst@rub.de">barbara.sielhorst@rub.de</a>)<br>
+                    •   Student assistant („PalatinGIS“): Anja Wolf (<a href="anja.wolf@rub.de">anja.wolf@rub.de</a>)</p>
+
+
+            	<h2 class="con10t-toc-entry">Funding and co-operations</h2>
+
+           	 	<p>The project at the Institute of Archaeological Sciences at the Ruhr University Bochum 
+                    has been funded by the German Research Foundation (project no. 524436111) since October 
+                    2023 and takes place within the framework of a cooperation with the German Archaeological Institute.</p>
+				
+					<div style ="display: flex; height: 100px;">
+					<a href="https://www.ruhr-uni-bochum.de/de"><img style="height:40px; margin: 10px;" src="/con10t/img/PalatinGIS/RUB_Logo.jpg"></a>
+					<a href="https://www.dfg.de/de"><img style="height:40px; margin: 10px;" src="/con10t/img/PalatinGIS/DFG_Logo.jpg"></a>
+					<a href="https://www.dainst.org/"><img style= "height:40px; margin: 10px;" src="/con10t/img/PalatinGIS/DAI_Logo.jpg"></a>
+					</div>
+			
+				<p>B. Sielhorst</p>
+
+		</div>
+	</div>
+</div>
