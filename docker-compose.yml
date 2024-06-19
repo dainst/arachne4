@@ -28,6 +28,7 @@ services:
       - "ELASTICSEARCH_SERVER=elasticsearch"
     volumes:
       - ${ARCHAEOCLOUD_PATH}:/media/archaeocloud
+    hostname: "${HOST_NAME}"
     labels:
       - traefik.enable=true
       - traefik.http.routers.backend.rule=Host(`${SERVER_ADDRESS}`) && PathPrefix(`/data`)
