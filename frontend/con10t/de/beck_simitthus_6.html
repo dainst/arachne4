@@ -1,0 +1,132 @@
+<style>
+    .con10t-row {
+        margin-top: 10vh;
+    }
+
+    #sticky-sidebar {
+        padding-top: 4vw;
+        padding-bottom: 2vw;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    @media (max-width: 992px) {
+        #sticky-sidebar {
+            position: relative;
+        }
+
+        .con10t-image {
+            float: none;
+        }
+    }
+</style>
+
+<idai-header image="/con10t/headerimages/beck_sm6_header.jpg"
+    description="D. Beck, Marmor Numidicum. Gewinnung, Verarbeitung und Distribution eines antiken Buntmarmors. Digitaler Katalog (2024)"
+    link="https://doi.org/10.34780/3xe5-a0z6">
+</idai-header>
+
+<div class="con10t-page teaserpage container">
+    <div class="con10t-row">
+        <div class="con10t-title">
+            <h1>D. Beck, Marmor Numidicum. Gewinnung, Verarbeitung und Distribution eines antiken Buntmarmors. Digitaler Katalog (2024)</h1>
+        </div>
+
+        <div id="sticky-sidebar" class="con10t-sidebar">
+
+            <con10t-toc toc-heading="Übersicht"></con10t-toc>
+
+            <h3>Suche in den Daten des Projektes</h3>
+
+            <!-- Map -->
+            <div ng-init="config = {
+                    clustered: false,
+                    facetsSelect: [
+                        {
+                        key: 'catalogIds',
+                        value: 1695
+                        }
+                    ]
+                }">
+            </div>
+
+            <div con10t-map style="margin-bottom: 1vw;" id="map" limit="200" facets-select="config.facetsSelect"
+                lat="41.89" lng="12.48" zoom="2">
+            </div>
+
+            <a con10t-search-query target="_blank">Alle Datensätze anzeigen</a>
+
+            <con10t-search search-placeholder="Suche..."></con10t-search>
+
+            <br>
+
+            <h3>Links</h3>
+
+            <a href="https://arachne.dainst.org/catalog/1695">Zum Katalog</a><br>
+
+            <a href="https://doi.org/10.34780/a0zb83sn" target="_blank">Zu den Distributionskarten (iDAI.repo)</a><br>
+
+            <h3 style="margin-top: 5%">Informationen zum Buch</h3>
+
+            <p><a href="https://doi.org/10.34780/3xe5-a0z6" target="_blank">iDAI.publications</a></p>
+
+            <con10t-image src="/con10t/img/beck_sm6/beck-cover.jpg" alt="Cover-Printausgabe" width="340"></con10t-image>
+
+        </div>
+
+        <div class="con10t-content">
+
+            <h2 class="con10t-toc-entry">Einleitung zum Katalog</h2>
+
+            <p>Dieser Online-Katalog liefert ergänzend zur Publikation <a href="https://doi.org/10.34780/3xe5-a0z6"
+                    target="_blank">
+                    »Marmor Numidicum. Gewinnung, Verarbeitung und Distribution eines antikes Buntmarmors«</a> (Reihe,
+                Band: Simitthus 6)
+                eine Auflistung aller Befunde und Funde der gesamten Studie. Dabei stellt die vergebene ID-Nummer im
+                Text die Verknüpfung zum jeweiligen
+                Datensatz in iDAI.objects/arachne her. Unter den ID-Nummern sind die Datensätze mit allen Informationen
+                sowie teilweise ergänzt durch Fotografien und Pläne abrufbar.</p>
+
+            <p> Die Reihenfolge der 1221 Datensätze orientiert sich an den Untersuchungszeiträumen der Arbeit, wobei
+                eine übergeordnete Unterteilung in vier
+                Untersuchungshorizonte vorgenommen wurde. Innerhalb des jeweiligen Untersuchungshorizontes wird stets
+                mit den Befunden und Funden aus Simitthus und Nordafrika begonnen. Anschließend werden die Befunde und
+                Funde aus Rom, dem Umland Roms, der italischen Regionen und der weiteren Regionen des Mittelmeerraumes,
+                überwiegend der ehemaligen römischen Provinzen, präsentiert. Für den Zeitraum nach 235 n. Chr. sind
+                keine Einträge mehr in die Datenbank aufgenommen und die Befunde und Funde im Textband ohne ID-Nummern
+                aufgeführt worden. Es ist grundsätzlich zu beachten, dass die chronologischen Aspekte innerhalb der
+                jeweiligen Zeitperiode damit zulasten einer stadt-bzw. provinzinternen Sicht zurückstehen können, da
+                nicht darauf geachtet werden konnte, eine exakte chronologische Abfolge innerhalb der
+                Untersuchungshorizonte zu entwickeln.</p>
+
+            <h2 class="con10t-toc-entry">Katalog</h2>
+
+            <con10t-catalog-tree catalog-id="1695"></con10t-catalog-tree>
+
+            <h2 class="con10t-toc-entry">Zu den Distributionskarten</h2>
+
+            <p> Die Befunde und Funde werden durch periodisch aufgebaute Distributionskarten des marmor Numidicum
+                ergänzt, die über <a href="https://doi.org/10.34780/a0zb83sn" target="_blank">iDAI.repo</a> zum Download zur Verfügung gestellt werden.</p>
+
+            <p>Die begleitend zur Arbeit vorgelegten zwölf Verwendungs- und Distributionskarten stellen die periodisch
+                aufgebaute Verbreitung des marmor Numidicum im Mittelmeerraum dar, welche auf Grundlage der Fundorte
+                zusammengestellt wurde. Die jeweilige Legende informiert über die Verwendung des Marmors in
+                unterschiedlichen Gattungen und die jeweilige Anzahl dieser Nutzung innerhalb eines
+                Untersuchungshorizontes. Die Karten bilden damit die Verbreitung und das Einsatzspektrums des marmor
+                Numidicum für die vier Untersuchungshorizonte ab und ergänzen die jeweiligen Untersuchungskapitel.
+                Einzelne Detailkarten zu Simitthus, Rom, Pompeji, Herculaneum und Karthago ergänzen je nach
+                Materialgrundlage die Gesamtkarten des Mittelmeerraumes in einzelnen Untersuchungshorizonten.
+                Die Legende beinhaltet die Gattungen Paviment, Architektur (auch einzelne Architekturglieder),
+                Wandinkrustation, Monument (Theater und Odeion), Skulptur, Inschrift. Die doppelte Nennung von
+                Paviment/Wandinkrustation bezieht sich in allen Fällen auf Plattenfragmente, die weder aufgrund ihres
+                Kontextes noch auf Basis ihres Erscheinungsbildes sicher einer beiden Gattungen zugeordnet werden
+                können.
+            </p>
+
+            <p>D. Beck</p>
+
+        </div>
+
+    </div>
+</div>
