@@ -40,7 +40,7 @@ public class BuchseiteocrtextContextualizer extends AbstractContextualizer {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(BuchseiteocrtextContextualizer.class);
 	
-	private final static String XELETOR_ADRESS = "http://objects.auxiliary.idai.world:6688"; 
+	private final static String XELETOR_ADRESS = "http://arachne.uni-koeln.de:6688"; 
 	
 	private final static String CONTEXT_TYPE = "Buchseiteocrtext";
 	
