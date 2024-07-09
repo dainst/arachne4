@@ -1,6 +1,7 @@
-export default function($scope, contactService, transl8, messages) {
+export default function ($scope, contactService, transl8, messages) {
 
     $scope.formChange = false;
+    $scope.submitButtonDisabled = false;
 
     $scope.dataChanged = function () {
         $scope.formChange = true;
@@ -36,6 +37,7 @@ export default function($scope, contactService, transl8, messages) {
 
     $scope.submit = function () {
         if (areCheckboxesChecked()) {
+            $scope.submitButtonDisabled = true;
             contactService.sendContact($scope.usrData,
                 function (data) {
                     $scope.error = "";
