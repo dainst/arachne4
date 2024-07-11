@@ -40,9 +40,13 @@ public class MailService {
 		String smtpUserName = System.getenv("SMTP_USER_NAME");
 		String smtpUserPassword = System.getenv("SMTP_USER_PASSWORD");
 
+  		Properties pros = new Properties();
+		pros.put("mail.smtp.auth", true);
+
 		mailSender.setHost(smtpServer);
 		mailSender.setUsername(smtpUserName);
 		mailSender.setPassword(smtpUserPassword);
+		mailSender.setJavaMailProperties(pros);
 		this.sender = sender;
 	}
 	
