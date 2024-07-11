@@ -76,5 +76,3 @@ dataExportMaxThreads=4
 dataExportMaxTaskLifeTime=30000
 dataExportPath=/tmp
 dataExportMaxItemsPerExport=1000000
-
-spring.mail.properties.mail.smtp.auth=true
