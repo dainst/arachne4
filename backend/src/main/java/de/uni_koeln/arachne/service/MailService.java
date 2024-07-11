@@ -43,7 +43,7 @@ public class MailService {
 		String smtpUserPassword = System.getenv("SMTP_USER_PASSWORD");
 
   		Properties props = new Properties();
-		props.put("mail.smtp.auth", true);
+		props.put("mail.smtps.auth", true);
 
 		mailSender.setJavaMailProperties(props);
 		mailSender.setHost(smtpServer);
