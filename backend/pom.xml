@@ -376,10 +376,11 @@
 			<version>${guava-version}</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail -->
 		<dependency>
-			<groupId>jakarta.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>${jakarta.mail-version}</version>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>jakarta.mail</artifactId>
+			<version>1.6.7</version>
 		</dependency>
 
 		<dependency>
