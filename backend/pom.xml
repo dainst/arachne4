@@ -38,7 +38,7 @@
 		<!-- Javaassist -->
 		<org.javassist-version>3.21.0-GA</org.javassist-version>
 		<!-- Javax mail -->
-		<javax.mail-version>1.6.2</javax.mail-version>
+		<jakarta.mail-version>1.6.7</jakarta.mail-version>
 		<!-- Commons Lang3 -->
 		<commons-lang3-version>3.5</commons-lang3-version>
 		<!-- Commons IO -->
@@ -377,9 +377,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>javax.mail</groupId>
+			<groupId>jakarta.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>${javax.mail-version}</version>
+			<version>${jakarta.mail-version}</version>
 		</dependency>
 
 		<dependency>
