@@ -49,8 +49,8 @@ public class MailService {
 		mailSender.setHost(smtpServer);
 		mailSender.setUsername(smtpUserName);
 		mailSender.setPassword(smtpUserPassword);
-		mailSender.setProtocol("smtps")
-		mailSender.setPort(465)
+		mailSender.setProtocol("smtps");
+		mailSender.setPort(465);
 		this.sender = sender;
 	}
 	
