@@ -42,16 +42,15 @@ public class MailService {
 		String smtpUserName = System.getenv("SMTP_USER_NAME");
 		String smtpUserPassword = System.getenv("SMTP_USER_PASSWORD");
 
-  		Properties pros = new Properties();
-		pros.put("mail.smtp.auth", true);
-    	// pros.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-		// pros.put("mail.smtp.ssl.enable", true);
+  		Properties props = new Properties();
+		props.put("mail.smtp.auth", true);
 
+		mailSender.setJavaMailProperties(props);
 		mailSender.setHost(smtpServer);
 		mailSender.setUsername(smtpUserName);
 		mailSender.setPassword(smtpUserPassword);
-		// mailSender.setPort(465);
-		mailSender.setJavaMailProperties(pros);
+		mailSender.setProtocol("smtps")
+		mailSender.setPort(465)
 		this.sender = sender;
 	}
 	
