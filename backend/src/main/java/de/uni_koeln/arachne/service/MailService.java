@@ -49,7 +49,7 @@ public class MailService {
 		mailSender.setHost(smtpServer);
 		mailSender.setUsername(smtpUserName);
 		mailSender.setPassword(smtpUserPassword);
-		mailSender.setPort(465)
+		mailSender.setPort(465);
 		this.sender = sender;
 	}
 	
