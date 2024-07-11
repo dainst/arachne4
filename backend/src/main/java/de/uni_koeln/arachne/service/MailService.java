@@ -46,6 +46,9 @@ public class MailService {
 		props.put("mail.smtps.auth", true);
 		props.put("mail.transport.protocol","smtp");
 		props.put("mail.smtp.tls", "true");
+
+        props.put("mail.debug", "true");
+
 		mailSender.setJavaMailProperties(props);
 		mailSender.setHost(smtpServer);
 		mailSender.setUsername(smtpUserName);
