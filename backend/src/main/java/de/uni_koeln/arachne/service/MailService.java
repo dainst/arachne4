@@ -44,13 +44,13 @@ public class MailService {
 
   		Properties pros = new Properties();
 		pros.put("mail.smtp.auth", true);
-    	pros.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+    	// pros.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		// pros.put("mail.smtp.ssl.enable", true);
 
 		mailSender.setHost(smtpServer);
 		mailSender.setUsername(smtpUserName);
 		mailSender.setPassword(smtpUserPassword);
-		mailSender.setPort(465);
+		// mailSender.setPort(465);
 		mailSender.setJavaMailProperties(pros);
 		this.sender = sender;
 	}
