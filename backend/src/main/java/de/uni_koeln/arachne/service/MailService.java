@@ -44,13 +44,12 @@ public class MailService {
 
   		Properties props = new Properties();
 		props.put("mail.smtp.auth", true);
-		props.put("mail.smtp.starttls.enable", true)
 
 		mailSender.setJavaMailProperties(props);
 		mailSender.setHost(smtpServer);
 		mailSender.setUsername(smtpUserName);
 		mailSender.setPassword(smtpUserPassword);
-		mailSender.setPort(587)
+		mailSender.setPort(465)
 		this.sender = sender;
 	}
 	
