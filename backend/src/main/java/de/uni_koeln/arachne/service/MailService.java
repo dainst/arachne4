@@ -1,5 +1,7 @@
 package de.uni_koeln.arachne.service;
 
+import java.util.Properties;
+
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -37,7 +39,18 @@ public class MailService {
 	public MailService(final @Value("${mailSMTPServer}") String smtpServer
 			, final @Value("${mailSender}") String sender) {
 
+		String smtpUserName = System.getenv("SMTP_USER_NAME");
+		String smtpUserPassword = System.getenv("SMTP_USER_PASSWORD");
+
+  		Properties props = new Properties();
+		props.put("mail.smtp.auth", true);
+		props.put("mail.smtp.ssl.enable", true);
+
+		mailSender.setJavaMailProperties(props);
 		mailSender.setHost(smtpServer);
+		mailSender.setUsername(smtpUserName);
+		mailSender.setPassword(smtpUserPassword);
+		mailSender.setPort(465);
 		this.sender = sender;
 	}
 	

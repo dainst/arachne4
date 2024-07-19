@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-	                    http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.uni_koeln</groupId>
 	<artifactId>arachne</artifactId>
@@ -18,11 +18,11 @@
 		<org.slf4j-version>1.7.21</org.slf4j-version>
 		<!-- External lib versions -->
 		<!-- MySQL-Connector -->
-        <mysql-connector-java-version>5.1.40</mysql-connector-java-version>
-        <!-- Hibernate -->
-        <org.hibernate-version>5.1.17.Final</org.hibernate-version>
-        <!-- HikariCP -->
-        <hikariCP-version>3.3.1</hikariCP-version>
+		<mysql-connector-java-version>5.1.40</mysql-connector-java-version>
+		<!-- Hibernate -->
+		<org.hibernate-version>5.1.17.Final</org.hibernate-version>
+		<!-- HikariCP -->
+		<hikariCP-version>3.3.1</hikariCP-version>
 		<!-- elasticsearch -->
 		<elasticsearch-version>7.16.1</elasticsearch-version>
 		<!-- Jackson -->
@@ -32,35 +32,35 @@
 		<!-- Xerces -->
 		<xerces-version>2.11.0</xerces-version>
 		<!-- geo -->
-        <geo-version>0.7.1</geo-version>
+		<geo-version>0.7.1</geo-version>
 		<!-- Guava -->
-        <guava-version>20.0</guava-version>
-	    <!-- Javaassist -->
+		<guava-version>20.0</guava-version>
+		<!-- Javaassist -->
 		<org.javassist-version>3.21.0-GA</org.javassist-version>
 		<!-- Javax mail -->
-		<javax.mail-version>1.4.7</javax.mail-version>
+		<jakarta.mail-version>1.6.7</jakarta.mail-version>
 		<!-- Commons Lang3 -->
 		<commons-lang3-version>3.5</commons-lang3-version>
 		<!-- Commons IO -->
-        <commons-io-version>2.5</commons-io-version>
+		<commons-io-version>2.5</commons-io-version>
 		<!-- HTTP Client -->
 		<httpclient-version>4.5.2</httpclient-version>
 		<!-- Log4J -->
-        <log4j-version>2.17.0</log4j-version>
+		<log4j-version>2.17.0</log4j-version>
 		<!-- Testing -->
-        <!-- JUnit -->
-        <junit-version>4.12</junit-version>
-        <!-- mockito -->
-        <org.mockito-version>1.10.19</org.mockito-version>
-        <!-- JSONassert -->
-        <jsonassert-version>1.5.0</jsonassert-version>
-        <!-- JSON path -->
-        <jsonpath-version>2.2.0</jsonpath-version>
+		<!-- JUnit -->
+		<junit-version>4.12</junit-version>
+		<!-- mockito -->
+		<org.mockito-version>1.10.19</org.mockito-version>
+		<!-- JSONassert -->
+		<jsonassert-version>1.5.0</jsonassert-version>
+		<!-- JSON path -->
+		<jsonpath-version>2.2.0</jsonpath-version>
 		<!-- export -->
-        <openhtml-version>0.0.1-RC18</openhtml-version>
+		<openhtml-version>0.0.1-RC18</openhtml-version>
 		<jsoup-version>1.11.2</jsoup-version>
 		<pdfbox-version>2.0.8</pdfbox-version>
-        <!-- Plugin Versions -->
+		<!-- Plugin Versions -->
 		<aspectj-maven-version>1.11</aspectj-maven-version>
 		<maven-failsafe-version>2.22.1</maven-failsafe-version>
 		<maven-javadoc-version>2.10.4</maven-javadoc-version>
@@ -101,15 +101,15 @@
 		</dependency>
 		<!-- Spring security -->
 		<dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>${org.springframework.security-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-            <version>${org.springframework.security-version}</version>
-        </dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${org.springframework.security-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${org.springframework.security-version}</version>
+		</dependency>
 		<!-- <dependency>
 			<groupId>org.springframework.ws</groupId>
 			<artifactId>spring-oxm-tiger</artifactId>
@@ -168,19 +168,19 @@
         </dependency>
 		 -->
 		<dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j-version}</version>
-        </dependency>
-		<dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-web</artifactId>
-            <version>${log4j-version}</version>
-            <scope>runtime</scope>
-        </dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j-version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
+			<artifactId>log4j-web</artifactId>
+			<version>${log4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
 			<version>${log4j-version}</version>
 			<exclusions>
 				<exclusion>
@@ -239,32 +239,32 @@
 		</dependency>
 
 		<dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>1.4</version>
-            <scope>test</scope>
-        </dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-mxj</artifactId>
-            <version>5.0.12</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-mxj</artifactId>
+			<version>5.0.12</version>
+			<scope>test</scope>
+		</dependency>
 
-        <!-- JSONassert -->
-        <dependency>
-            <groupId>org.skyscreamer</groupId>
-            <artifactId>jsonassert</artifactId>
-            <version>${jsonassert-version}</version>
-            <scope>test</scope>
+		<!-- JSONassert -->
+		<dependency>
+			<groupId>org.skyscreamer</groupId>
+			<artifactId>jsonassert</artifactId>
+			<version>${jsonassert-version}</version>
+			<scope>test</scope>
 			<exclusions>
 				<exclusion>
 					<groupId>com.vaadin.external.google</groupId>
 					<artifactId>android-json</artifactId>
 				</exclusion>
 			</exclusions>
-        </dependency>
+		</dependency>
 
 		<!-- Mockito -->
 		<dependency>
@@ -276,11 +276,11 @@
 
 		<!-- jsonpath -->
 		<dependency>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path-assert</artifactId>
-            <version>${jsonpath-version}</version>
-            <scope>test</scope>
-        </dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path-assert</artifactId>
+			<version>${jsonpath-version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- Hibernate -->
 		<dependency>
@@ -324,10 +324,10 @@
 		</dependency>
 
 		<dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${jackson-version}</version>
-        </dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson-version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.json</groupId>
@@ -335,13 +335,13 @@
 			<version>20170516</version>
 		</dependency>
 
-        <!-- artifact for Java 7 and 8 -->
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>${hikariCP-version}</version>
-            <scope>compile</scope>
-        </dependency>
+		<!-- artifact for Java 7 and 8 -->
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>${hikariCP-version}</version>
+			<scope>compile</scope>
+		</dependency>
 
 		<!-- javassist -->
 		<dependency>
@@ -357,29 +357,30 @@
 			<version>${elasticsearch-version}</version>
 		</dependency>
 		<dependency>
-		<groupId>org.elasticsearch.client</groupId>
-		<artifactId>elasticsearch-rest-client</artifactId>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>elasticsearch-rest-client</artifactId>
 			<version>${elasticsearch-version}</version>
 		</dependency>
 
 		<!-- geo -->
 		<dependency>
-            <groupId>com.github.davidmoten</groupId>
-            <artifactId>geo</artifactId>
-            <version>${geo-version}</version>
-        </dependency>
+			<groupId>com.github.davidmoten</groupId>
+			<artifactId>geo</artifactId>
+			<version>${geo-version}</version>
+		</dependency>
 
 		<!-- Google Guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava-version}</version>
-        </dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava-version}</version>
+		</dependency>
 
-        <dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>${javax.mail-version}</version>
+		<!-- https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail -->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>jakarta.mail</artifactId>
+			<version>1.6.7</version>
 		</dependency>
 
 		<dependency>
@@ -388,11 +389,11 @@
 			<version>${commons-lang3-version}</version>
 		</dependency>
 
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons-io-version}</version>
-        </dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io-version}</version>
+		</dependency>
 
 		<dependency>
 			<!-- Required for CSV output. -->
@@ -402,18 +403,18 @@
 		</dependency>
 
 		<dependency>
-        	<!-- ALWAYS required. -->
-        	<groupId>com.openhtmltopdf</groupId>
-        	<artifactId>openhtmltopdf-core</artifactId>
-        	<version>${openhtml-version}</version>
-    	</dependency>
+			<!-- ALWAYS required. -->
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-core</artifactId>
+			<version>${openhtml-version}</version>
+		</dependency>
 
-    	<dependency>
-        	<!-- Required for PDF export. -->
-        	<groupId>com.openhtmltopdf</groupId>
-        	<artifactId>openhtmltopdf-pdfbox</artifactId>
-        	<version>${openhtml-version}</version>
-    	</dependency>
+		<dependency>
+			<!-- Required for PDF export. -->
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-pdfbox</artifactId>
+			<version>${openhtml-version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
@@ -456,19 +457,19 @@
 			<optional>true</optional>
 		</dependency>
 
-		
+
 	</dependencies>
 
 
 	<repositories>
 
-        <!-- maven central repo -->
-        <repository>
-            <id>central</id>
-            <name>Central Repository</name>
-            <url>https://repo.maven.apache.org/maven2</url>
-            <layout>default</layout>
-        </repository>
+		<!-- maven central repo -->
+		<repository>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>https://repo.maven.apache.org/maven2</url>
+			<layout>default</layout>
+		</repository>
 
 		<!-- spring main repo -->
 		<repository>
@@ -487,9 +488,9 @@
 			<snapshots> <enabled>false</enabled> </snapshots> </repository> -->
 		<!-- jitpack.io for pfdbox-layout -->
 		<repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
 	</repositories>
 	<build>
 		<plugins>

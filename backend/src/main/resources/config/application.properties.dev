@@ -35,8 +35,8 @@ imageResolutionHIGH=0
 imageCacheDir=/tmp/arachne4ImageCache/
 
 # MailService
-mailSMTPServer=smtp.uni-koeln.de
-mailSender=arachne@uni-koeln.de
+mailSender=idai.objects@dainst.de
+mailSMTPServer=mail.dainst.org
 
 # transl8
 transl8Url=https://arachne.dainst.org/transl8/translation/json?application=arachne4_backend
@@ -64,8 +64,8 @@ contactEmail=idai.objects@dainst.de
 testUserName=e2e_test_user
 
 # specialnavigation stuff
-teiViewerLink=http://arachne.uni-koeln.de/Tei-Viewer/cgi-bin/teiviewer.php
-dfgViewerLink=http://dfg-viewer.de/v1/?set[mets]=http%3A%2F%2Farachne.uni-koeln.de%2FMetsDocuments%2Foai_arachne.uni-koeln.de_buch-
+teiViewerLink=http://objects.auxiliary.idai.world/Tei-Viewer/cgi-bin/teiviewer.php
+dfgViewerLink=http://dfg-viewer.de/v1/?set[mets]=http%3A%2F%2Fobjects.auxiliary.idai.world%2FMetsDocuments%2Foai_arachne.uni-koeln.de_buch-
 modelViewerLink=/3d?id=
 
 # book browser module

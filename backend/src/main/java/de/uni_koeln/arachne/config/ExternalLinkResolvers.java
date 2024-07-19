@@ -97,8 +97,8 @@ public class ExternalLinkResolvers {
 		result.setLabel("TEI-Viewer");
 		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "buch");
 		result.setCriteria(criteria);
-		result.setLinkPattern("https://arachne.uni-koeln.de/Tei-Viewer/cgi-bin/teiviewer.php?manifest=%s");
-		result.setValidationPattern("https://arachne.uni-koeln.de/TeiDocuments/%s/structure.xml");
+		result.setLinkPattern("https://objects.auxiliary.idai.world/Tei-Viewer/cgi-bin/teiviewer.php?manifest=%s");
+		result.setValidationPattern("https://objects.auxiliary.idai.world/TeiDocuments/%s/structure.xml");
 		result.setPatternFields(Arrays.asList("buch.Verzeichnis"));
 		return result;
 	}
@@ -116,7 +116,7 @@ public class ExternalLinkResolvers {
 		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "buch");
 		result.setCriteria(criteria);
 		result.setLinkPattern("http://dfg-viewer.de/show/"
-				+ "?set[mets]=http%%3A%%2F%%2Farachne.uni-koeln.de%%2FMetsDocuments%%2F"
+				+ "?set[mets]=http%%3A%%2F%%2Fobjects.auxiliary.idai.world%%2FMetsDocuments%%2F"
 				+ "oai_arachne.uni-koeln.de_buch-%s.xml");
 		result.setPatternFields(Arrays.asList("Dataset.internalId"));
 		return result;

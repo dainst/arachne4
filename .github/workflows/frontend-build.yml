@@ -48,6 +48,6 @@ jobs:
         with:
           context: "frontend"
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref == 'refs/heads/stable' && 'stable' || 'latest' }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: BUILD_NO=${{ github.run_number }}

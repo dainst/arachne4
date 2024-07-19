@@ -8,7 +8,7 @@
         <!-- ENTER EDITOR Note: This is currently just a link to the editor of this entity in Arachne 3 -->
         <div ng-if="user.groupID >= 600 && entity.categoryKey">
             <a class="btn btn-default center-block"
-                href="https://oneeyedjacks04.dai-cloud.uni-koeln.de/arachne/index.php?view[mode]=edit&view[layout]={{entity.categoryKey}}_item&view[section]=Allgemein&view[category]=overview&search[data]=ALL&search[mode]=detail&search[match]=similar&view[active_tab]=overview&search[constraints][{{entity.categoryKey}}][searchSeriennummer]={{entity.internalId}}">
+                href="https://objects.legacy.idai.world/arachne/index.php?view[mode]=edit&view[layout]={{entity.categoryKey}}_item&view[section]=Allgemein&view[category]=overview&search[data]=ALL&search[mode]=detail&search[match]=similar&view[active_tab]=overview&search[constraints][{{entity.categoryKey}}][searchSeriennummer]={{entity.internalId}}">
                 <span class="glyphicon glyphicon-wrench"></span>
                 {{"edit_button"|transl8}}
             </a>
@@ -76,13 +76,15 @@
                                         <input ng-model="resultIndexInput" type="number" size="4"
                                             class="form-control input-sm">
                                         <span class="input-group-addon"
-                                            style="border-top-right-radius: 3px; border-bottom-right-radius:3px; border-left:0;"><small>{{ 'ui_of' | transl8 }}</small>
+                                            style="border-top-right-radius: 3px; border-bottom-right-radius:3px; border-left:0;"><small>{{
+                                                'ui_of' | transl8 }}</small>
                                             <strong>{{resultSize|number}}</strong></span>
                                         <span
                                             ng-hide="resultIndex == resultIndexInput || resultIndexInput < 1 || resultIndexInput > resultSize"
                                             class="input-group-btn">
                                             <button class="btn btn-primary btn-sm"
-                                                ng-click="goToResultIndex(resultIndexInput)">{{ 'ui_goto' | transl8}}</button>
+                                                ng-click="goToResultIndex(resultIndexInput)">{{ 'ui_goto' |
+                                                transl8}}</button>
                                         </span>
                                     </div>
                                 </form>
@@ -157,9 +159,7 @@
                             <small>({{contextSize}})</small>
                         </a>
                     </h3>
-                    <div ar-facet-browser query="contextQuery"
-                        facet-name="facet_kategorie"
-                        context-size="contextSize">
+                    <div ar-facet-browser query="contextQuery" facet-name="facet_kategorie" context-size="contextSize">
                     </div>
                 </div>
 
