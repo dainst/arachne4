@@ -68,7 +68,7 @@ services:
       - traefik.http.routers.phpmyadmin.entrypoints=websecure
       - traefik.http.routers.phpmyadmin.tls.certresolver=myresolver
       - traefik.http.middlewares.phpmyadmin-strip.stripprefix.prefixes=/phpmyadmin
-      - traefik.http.middlewares.phpmyadmin-ipwhitelist.ipwhitelist.sourcerange=134.95.0.0/16,172.28.0.0/20,195.37.61.194,195.37.61.201,172.18.0.0/16
+      - traefik.http.middlewares.phpmyadmin-ipwhitelist.ipwhitelist.sourcerange=134.95.0.0/16,172.28.0.0/20,195.37.61.194,195.37.61.201,172.18.0.0/16,77.39.225.242,77.39.225.250,213.233.42.42
       - traefik.http.routers.phpmyadmin.middlewares=phpmyadmin-strip,phpmyadmin-ipwhitelist
       - traefik.port=80
     restart: always
