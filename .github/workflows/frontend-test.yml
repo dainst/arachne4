@@ -15,7 +15,7 @@ defaults:
     working-directory: frontend
 
 env:
-  TEST_SERVER: bogusman02.dai-cloud.uni-koeln.de
+  TEST_SERVER: arachne.test.dainst.org
 
 jobs:
 
