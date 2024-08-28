@@ -7,12 +7,22 @@ services:
       - /opt/arachne_sitemap:/var/www/sitemap
     labels:
       - traefik.enable=true
+      - traefik.port=80
+
+      - traefik.http.middlewares.frontend-compress.compress=true
+      - traefik.http.routers.frontend.middlewares=frontend-compress
       - traefik.http.routers.frontend.rule=Host(`${SERVER_ADDRESS}`)
       - traefik.http.routers.frontend.entrypoints=websecure
       - traefik.http.routers.frontend.tls.certresolver=myresolver
-      - traefik.port=80
-      - traefik.http.middlewares.frontend-compress.compress=true
-      - traefik.http.routers.frontend.middlewares=frontend-compress
+
+      # This block should only be added in the `stable` branch/be active on the production server.
+      - traefik.http.middlewares.alt-redirect.redirectregex.regex=.*
+      - traefik.http.middlewares.alt-redirect.redirectregex.replacement=https://arachne.dainst.org
+      - traefik.http.routers.alt.middlewares=alt-redirect
+      - traefik.http.routers.alt.rule=Host(`objects.idai.world`)
+      - traefik.http.routers.alt.entrypoints=websecure
+      - traefik.http.routers.alt.tls.certresolver=myresolver
+
       - "com.centurylinklabs.watchtower.enable=true"
     restart: always
 
