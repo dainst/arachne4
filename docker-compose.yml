@@ -30,6 +30,7 @@ services:
     volumes:
       - ${ARCHAEOCLOUD_PATH}:/media/archaeocloud
     hostname: "${HOST_NAME}"
+    user: "${UID}:${GID}"
     labels:
       - traefik.enable=true
       - traefik.http.routers.backend.rule=Host(`${SERVER_ADDRESS}`) && PathPrefix(`/data`)
@@ -110,6 +111,25 @@ services:
       - com.centurylinklabs.watchtower.enable=true
     user: "${UID}:${GID}"
     restart: always
+
+  hac_via:
+    image: ghcr.io/dainst/hac_via:latest
+    volumes:
+     - ${HAC_VIA_ARCHIVE_DIR}:/archive
+     - ${HAC_VIA_PREVIEW_DIR}:/previews
+    environment:
+     - PHX_HOST=images.${SERVER_ADDRESS}
+     - DATABASE_URL=ecto://arachne:${DB_PASSWORD}@arachne4_db/arachne
+     - SECRET_KEY_BASE=${HAC_VIA_KEY_BASE}
+    labels:
+     - traefik.enable=true
+     - traefik.http.routers.hac_via.rule=Host(`images.${SERVER_ADDRESS}`)
+     - traefik.http.routers.hac_via.entrypoints=websecure
+     - traefik.http.routers.hac_via.tls.certresolver=myresolver
+     - traefik.http.services.hac_via.loadbalancer.server.port=4000
+     - com.centurylinklabs.watchtower.enable=true
+    restart: always
+
 
   traefik:
     image: traefik:v2.5
