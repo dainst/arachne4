@@ -3,7 +3,7 @@
 export VERBOSITY=2
 export MAX_IMAGE_CACHE_SIZE=0
 
-FASTCGI_USER=www-data
+FASTCGI_USER=root
 FASTCGI_GROUP=www-data
 IIPSRV=/usr/lib/iipimage-server/iipsrv.fcgi
 
