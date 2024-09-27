@@ -24,6 +24,7 @@ services:
       - traefik.http.routers.alt.tls.certresolver=myresolver
 
       - "com.centurylinklabs.watchtower.enable=true"
+    user: "${UID}:${GID}"
     restart: always
 
   backend:
@@ -49,6 +50,7 @@ services:
       - traefik.http.middlewares.backend-headers.headers.accesscontrolalloworiginlist=*
       - traefik.http.routers.backend.middlewares=backend-compress,backend-headers
       - "com.centurylinklabs.watchtower.enable=true"
+    user: "${UID}:${GID}"
     restart: always
 
   db:
@@ -97,6 +99,7 @@ services:
     build: ./iipimage
     volumes:
       - ${ARCHAEOCLOUD_PATH}:/media/archaeocloud
+    user: "${UID}:${GID}"
     restart: always
 
   aiax:
@@ -115,6 +118,7 @@ services:
       - traefik.http.routers.aiax.tls.certresolver=myresolver
       - traefik.port=80
       - com.centurylinklabs.watchtower.enable=true
+    user: "${UID}:${GID}"
     restart: always
 
   traefik:
