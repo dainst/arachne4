@@ -3,8 +3,8 @@
 export VERBOSITY=2
 export MAX_IMAGE_CACHE_SIZE=0
 
-FASTCGI_USER=root
-FASTCGI_GROUP=www-data
+FASTCGI_USER=www-data
+FASTCGI_GROUP=2130916
 IIPSRV=/usr/lib/iipimage-server/iipsrv.fcgi
 
 echo "Starting IIPImage"
