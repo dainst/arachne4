@@ -187,7 +187,7 @@ public class ContextService {
 						final long imageId = Long.parseLong(currentContext.get("SemanticConnection.EntityID"));
 						image.setImageId(imageId);
 						image.setImageSubtitle(currentContext.get("marbilder.DateinameMarbilder"));
-						image.setEntityOrder(currentContext.get("marbilder.EntityOrder"));
+						image.setEntityOrder(Integer.parseInt(currentContext.get("marbilder.EntityOrder")));
 						image.setSourceContext(ts.transl8(contextName, lang));
 						final long sourceRecordId = Long.parseLong(currentContext.get("SemanticConnection.ForeignKeyTarget"));
 						image.setSourceRecordId(sourceRecordId);
