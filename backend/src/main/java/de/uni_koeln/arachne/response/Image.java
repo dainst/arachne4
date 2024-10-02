@@ -29,6 +29,11 @@ public class Image {
 	 * The category of the record, the image is assigned to
 	 */
 	protected String sourceContext;
+
+	/**
+	 * Defines the order when displayed together with images linked to same entity.
+	 */
+	protected Integer entityOrder = 0;
 	
 
 	public Long getImageId() {
@@ -37,6 +42,14 @@ public class Image {
 
 	public void setImageId(final Long imageId) {
 		this.imageId = imageId;
+	}
+
+	public Integer getEntityOrder() {
+		return entityOrder;
+	}
+
+	public void setEntityOrder(final Integer order) {
+		this.entityOrder = order;
 	}
 
 	public String getImageSubtitle() {

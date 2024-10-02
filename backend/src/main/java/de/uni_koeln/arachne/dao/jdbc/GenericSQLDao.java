@@ -271,7 +271,7 @@ public class GenericSQLDao extends SQLDao {
 	 */
 	public List<Image> getImageList(final String type, final long internalId) {
 		List<Image> result = query(con -> {
-			final String sql = "SELECT `marbilder`.`DateinameMarbilder`, `arachneentityidentification`.`ArachneEntityID` "
+			final String sql = "SELECT `marbilder`.`DateinameMarbilder`, `arachneentityidentification`.`ArachneEntityID`, `marbilder`.`EntityOrder`"
 					+ "FROM `marbilder` " + "LEFT JOIN `arachneentityidentification` "
 					+ "ON (`arachneentityidentification`.`TableName` = 'marbilder' "
 					+ "AND `arachneentityidentification`.`ForeignKey` = `marbilder`.`PS_MARBilderID`) " + "WHERE "
@@ -290,6 +290,7 @@ public class GenericSQLDao extends SQLDao {
 				dataIntegrityLogService.logWarning(rs.getLong(2), "PS_MARBilderID", "Image without filename.");
 			}
 			image.setImageId(rs.getLong(2));
+			image.setEntityOrder(rs.getInteger(3));
 			return image;
 		});
 
