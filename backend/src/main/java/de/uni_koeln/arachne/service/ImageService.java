@@ -62,7 +62,7 @@ public class ImageService {
 				image.setImageId(arachneId.getArachneEntityID());
 				String fileName = dataset.getField("marbilder.DateinameMarbilder");
 				image.setImageSubtitle(fileName.substring(0, fileName.lastIndexOf('.')));
-				image.setEntityOrder(Integer.parseInt(dataset.getField("marbilder.EntityOrder")));
+				//image.setEntityOrder(Integer.parseInt(dataset.getField("marbilder.EntityOrder")));
 				final List<Image> imageList = new ArrayList<Image>();
 				imageList.add(image);
 				dataset.setImages(imageList);
