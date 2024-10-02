@@ -290,7 +290,7 @@ public class GenericSQLDao extends SQLDao {
 				dataIntegrityLogService.logWarning(rs.getLong(2), "PS_MARBilderID", "Image without filename.");
 			}
 			image.setImageId(rs.getLong(2));
-			image.setEntityOrder(rs.getInteger(3));
+			image.setEntityOrder(rs.getInt(3));
 			return image;
 		});
 
