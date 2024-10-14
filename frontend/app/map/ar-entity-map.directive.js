@@ -38,7 +38,9 @@ export default function($compile, Query, placesPainter) {
             });
             // / Disable dragging functionality if outside of container bounds
 
-            var layer = L.tileLayer('http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=b47a3cf895b94aedad41e5cfb5222b87', {
+            var layer = L.tileLayer(
+                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                { attribution: 'Maps and Data &copy; <a href="https://osmfoundation.org/wiki/Licence">OpenStreetMap</a>.' }, {
                 maxZoom: 18,
                 minZoom: 2
             });
