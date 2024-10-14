@@ -20,8 +20,8 @@ export default function($compile, transl8) {
                 zoomAnimation: false});
 
             L.tileLayer(
-                'http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=b47a3cf895b94aedad41e5cfb5222b87',
-                { attribution: 'Maps &copy; Thunderforest, Data &copy; OpenStreetMap contributors' })
+                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                { attribution: 'Maps and Data &copy; <a href="https://osmfoundation.org/wiki/Licence">OpenStreetMap</a>.' })
                 .addTo(scope.map);
 
             scope.placeLayer = new L.LayerGroup().addTo(scope.map);
