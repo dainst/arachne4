@@ -404,6 +404,10 @@ public class IIPService {
 				LOGGER.error("EntityId {} does not refer to an image.", entityId);
 				return new ImageProperties(imageName, -1, -1, watermark, HttpStatus.NOT_FOUND);
 			}
+
+			if (arachneId.getDeleted() != 0) {
+				return new ImageProperties(imageName, -1, -1, watermark, HttpStatus.GONE);
+			}
 			
 			final Dataset imageEntity = arachneSingleEntityDataService.getSingleEntityByArachneId(arachneId);
 			
