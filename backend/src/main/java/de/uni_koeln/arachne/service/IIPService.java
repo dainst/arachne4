@@ -405,7 +405,7 @@ public class IIPService {
 				return new ImageProperties(imageName, -1, -1, watermark, HttpStatus.NOT_FOUND);
 			}
 
-			if (arachneId.getDeleted() != 0) {
+			if (arachneId.isDeleted() != 0) {
 				return new ImageProperties(imageName, -1, -1, watermark, HttpStatus.GONE);
 			}
 			
