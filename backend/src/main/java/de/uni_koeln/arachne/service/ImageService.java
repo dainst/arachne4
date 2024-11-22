@@ -57,7 +57,7 @@ public class ImageService {
 		if (excludeList.contains(arachneId.getTableName())) {
 			return;
 		} else {
-			if ("marbilder".equals(arachneId.getTableName()) && !arachneId.deleted) {
+			if ("marbilder".equals(arachneId.getTableName()) && !arachneId.isDeleted()) {
 				final Image image = new Image();
 				image.setImageId(arachneId.getArachneEntityID());
 				String fileName = dataset.getField("marbilder.DateinameMarbilder");
