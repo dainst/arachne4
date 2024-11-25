@@ -275,7 +275,7 @@ public class GenericSQLDao extends SQLDao {
 					+ "FROM `marbilder` " + "LEFT JOIN `arachneentityidentification` "
 					+ "ON (`arachneentityidentification`.`TableName` = 'marbilder' "
 					+ "AND `arachneentityidentification`.`ForeignKey` = `marbilder`.`PS_MARBilderID`) " + "WHERE "
-					+ SQLToolbox.getQualifiedFieldname("marbilder", SQLToolbox.generateForeignKeyName(type)) + " = ? AND `arachneentityidentification`.`isDeleted` = 0"
+					+ SQLToolbox.getQualifiedFieldname("marbilder", SQLToolbox.generateForeignKeyName(type)) + " = ? AND `arachneentityidentification`.`isDeleted` = 0 "
 					+ "ORDER BY `marbilder`.`EntityOrder` ASC"
 					+ userRightsService.getSQL("marbilder");
 			PreparedStatement ps = con.prepareStatement(sql);
