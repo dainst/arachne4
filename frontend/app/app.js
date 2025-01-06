@@ -60,7 +60,7 @@ const lazyLoadService = ($ocLazyLoad) => (importPromise) =>
     });
 
 angular.module('arachne', [
-    'angulartics', 
+    'angulartics',
     'angulartics.piwik',
     'ui.bootstrap',
     'ui.bootstrap.tpls',
@@ -148,8 +148,8 @@ angular.module('arachne', [
             'editUser.**': { url: '/editUser', lazyLoad: lazyLoad(import('./users/users.module.js'))},
             'contact.**': { url: '/contact', lazyLoad: lazyLoad(import('./users/users.module.js'))},
             'pwdreset.**': { url: '/pwdreset', lazyLoad: lazyLoad(import('./users/users.module.js'))},
-			'pwdchange.**': { url: '/pwdchange', lazyLoad: lazyLoad(import('./users/users.module.js'))},
-			'userActivation.**': { url: '/user/activation/:token', lazyLoad: lazyLoad(import('./users/users.module.js'))},
+            'pwdchange.**': { url: '/pwdchange', lazyLoad: lazyLoad(import('./users/users.module.js'))},
+            'userActivation.**': { url: '/user/activation/:token', lazyLoad: lazyLoad(import('./users/users.module.js'))},
             'login.**': { url: '/login?redirectTo',lazyLoad: lazyLoad(import('./users/users.module.js'))},
             'dataimport': { url: '/admin/dataimport', template: require('./admin/dataimport.html')},
             'dataexport': { url: '/admin/dataexport', template: require('./admin/dataexport.html')},
@@ -191,6 +191,9 @@ angular.module('arachne', [
 .constant('arachneSettings', {
     arachneUrl: 'https://arachne.dainst.org',
     dataserviceUri: "//" + document.location.host + "/data",
+    hacViaUrl: function () {
+        return document.location.host == "arachne.dainst.org" ? "//images.arachne.dainst.org" : "//images.arachne.test.dainst.org"
+    }(),
     limit: 50,
     facetLimit: 20,
     openFacets : ["facet_kategorie", "facet_image", "facet_bestandsname", "facet_subkategoriebestand"], // order is important for sorting of default facets

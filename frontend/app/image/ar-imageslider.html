@@ -1,11 +1,15 @@
-<h3 ng-if="entity.images.length > 1" ng-init="loadImages(entity)">
-    <a ng-href="entity/{{entity.entityId}}/images{{currentQuery.toString()}}">
+<h3>
+    <a ng-if="entity.images.length > 1" ng-init="loadImages(entity)"
+        ng-href="entity/{{entity.entityId}}/images{{currentQuery.toString()}}">
         {{'entity_images'|transl8}}
         <small>({{entity.imageSize}})</small>
     </a>
+    <span ng-if="entity.images.length == 1">{{'entity_image'|transl8}}></span>
+    <a ng-if="hacViaUrl" class="btn btn-default" target="_blank" href="{{hacViaUrl}}">
+        <span class="glyphicon glyphicon-folder-open"></span>
+        {{"image_archive_button"|transl8}}
+    </a>
 </h3>
-<h3 ng-if="entity.images.length == 1">{{'entity_image'|transl8}}</h3>
-
 <div class="ar-imageslider">
     <div ng-if="currentImgNo >= 0"
          class="panel panel-default"

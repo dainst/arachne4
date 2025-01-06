@@ -1,11 +1,31 @@
 import './ar-imageslider.scss';
 
-export default function() {
+const hacViaEntityCategories = [
+    "bauwerk",
+    "bauwerksteil",
+    "gruppen",
+    "gruppenrekonstruktion",
+    "inschrift",
+    "objekt",
+    "realien",
+    "relief",
+    "reproduktion",
+    "rezeption",
+    "sammlungen",
+    "typus"
+]
+
+export default function (arachneSettings, authService) {
     return {
-        scope: {entity: '=', currentQuery: '='},
+        scope: { entity: '=', currentQuery: '=' },
         template: require('./ar-imageslider.html'),
         link: function (scope, element, attrs) {
 
+            if (hacViaEntityCategories.includes(scope.entity.categoryKey)) {
+                scope.hacViaUrl = arachneSettings.hacViaUrl + "/archive/files/" + scope.entity.entityId;
+            }
+
+            scope.user = authService.getUser();
             var thumbRow = angular.element(angular.element(element.children()[0]).children()[0]).children()[2];
             var sliderRow = angular.element(element.children()[0]).children()[0];
 

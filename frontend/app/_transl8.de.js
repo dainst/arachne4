@@ -437,6 +437,7 @@ export default {
     "facet_bennenungallg": "Benennung allgemein",
     "ui.passwordchange.illegal": "Das alte und das neue Passwort dürfen nicht die selben sein!",
     "edit_button": "Bearbeitung",
+    "image_archive_button": "Archiv",
     "catalog_no_catalog_info": "Ein Katalog in Arachne ist geordnetes Verzeichnis von archäologischen Objekten.",
     "catalog_no_catalog_help": "Mit einem Klick auf \"Neuen Katalog anlegen\", kann man einen eigenen persönlichen Katalog erstellen. Weitere Hilfe zum Bearbeiten von Einträgen findet man wenn man den Katalog öffnet.",
     "catalog_no_catalog_hint_note": "Kataloge sind standardmäßig privat, sodass sie nicht öffentlich sichtar sind. Außerdem müssen weitere Bearbeiter gesondert freigeschaltet werden.",
