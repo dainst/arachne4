@@ -93,7 +93,6 @@ export default function ($rootScope, $scope, $state, $stateParams, $uibModal, $w
                         }));
 
                     } else { //Array contains entries with labels and entities attached to them
-                        console.log("HA", newEntry);
                         var toAddItem = {};
                         if (newEntry[i].entity) {
                             toAddItem.arachneEntityId = newEntry[i].entity.entityId;
@@ -196,7 +195,6 @@ export default function ($rootScope, $scope, $state, $stateParams, $uibModal, $w
                     entry.totalChildren += 1;
                     initialize(result[i]);
                     if (scope && scope.collapsed) {
-                        console.log("!!!!!");
                         $scope.toggleNode(scope, entry);
                     }
                 }
@@ -481,7 +479,7 @@ export default function ($rootScope, $scope, $state, $stateParams, $uibModal, $w
     };
 
 
-    function initialize (entry) {
+    function initialize(entry) {
         $scope.entryMap[entry.id] = entry;
 
         // needed to enable dragging to entries without children
@@ -489,12 +487,12 @@ export default function ($rootScope, $scope, $state, $stateParams, $uibModal, $w
         if (!entry.children) entry.children = [];
     }
 
-    function getIndexParent (entry) {
+    function getIndexParent(entry) {
         var parent = $scope.entryMap[entry.parentId];
         return parent.children.indexOf(entry);
     }
 
-    function retrieveCatalog (id, callback) {
+    function retrieveCatalog(id, callback) {
         Catalog.get({ id: id, limit: $scope.childrenLimit }, function (result) {
             initialize(result.root);
             if (result.root.children.length === 0 && result.root.totalChildren > 0) {
@@ -515,7 +513,7 @@ export default function ($rootScope, $scope, $state, $stateParams, $uibModal, $w
         });
     }
 
-    function showEntry (entry, treeScope) {
+    function showEntry(entry, treeScope) {
 
         // Toggle collapsed parent when selecting a thumbnail image in catalog preview
         if (!treeScope && $scope.currentTreeScope) {
@@ -548,7 +546,7 @@ export default function ($rootScope, $scope, $state, $stateParams, $uibModal, $w
         showThumbnails($scope.currentEntry, offset);
     };
 
-    function showThumbnails (entry, offset) {
+    function showThumbnails(entry, offset) {
 
         $scope.currentEntry = entry;
         $scope.cellsNotDisplayed = 0;
@@ -598,7 +596,7 @@ export default function ($rootScope, $scope, $state, $stateParams, $uibModal, $w
         $scope.showThumbnails = entry.totalChildren > 0;
     }
 
-    function checkIfEditable () {
+    function checkIfEditable() {
         if (!$scope.user) {
             $scope.editable = false;
         } else {
@@ -615,7 +613,7 @@ export default function ($rootScope, $scope, $state, $stateParams, $uibModal, $w
         }
     }
 
-    function loadEntry (entryId, callback) {
+    function loadEntry(entryId, callback) {
         CatalogEntry.get({
             id: entryId
         }, function (result) {
@@ -626,14 +624,14 @@ export default function ($rootScope, $scope, $state, $stateParams, $uibModal, $w
         });
     }
 
-    function toggleParentHierarchy (entryId) {
+    function toggleParentHierarchy(entryId) {
         getAncestorList(entryId, [], function (list) {
             list.reverse();
             toggleEntriesInList(list);
         });
     }
 
-    function getAncestorList (entryId, ancestorList, callback) {
+    function getAncestorList(entryId, ancestorList, callback) {
         if ($scope.entryMap[entryId] === undefined) {
             loadEntry(entryId, function (entry) {
                 ancestorList.push(entry);
@@ -649,7 +647,7 @@ export default function ($rootScope, $scope, $state, $stateParams, $uibModal, $w
         } // ^- if cached but no parentId present, we reached the root node and return the list
     }
 
-    function toggleEntriesInList (list) {
+    function toggleEntriesInList(list) {
 
         var current = list[0];
         if (current !== undefined) {
@@ -662,7 +660,7 @@ export default function ($rootScope, $scope, $state, $stateParams, $uibModal, $w
         }
     }
 
-    function waitForElem (id, callback) {
+    function waitForElem(id, callback) {
         var elem = document.getElementById(id);
         $timeout(function () {
             if (elem) callback(elem);
@@ -672,11 +670,11 @@ export default function ($rootScope, $scope, $state, $stateParams, $uibModal, $w
 
     function toggleMoreEntries(entry) {
         var parentEntry = $scope.entryMap[entry.parentId];
-        var foundEntry = parentEntry.children.find(function(e) { return e.id == entry.id });
+        var foundEntry = parentEntry.children.find(function (e) { return e.id == entry.id });
         if (!foundEntry) {
-            waitForElem("entry-more-" + entry.parentId, function(elem) {
+            waitForElem("entry-more-" + entry.parentId, function (elem) {
                 elem.parentNode.scrollIntoView();
-                $scope.loadChildren(parentEntry).then(function() {
+                $scope.loadChildren(parentEntry).then(function () {
                     toggleMoreEntries(entry);
                 });
             });

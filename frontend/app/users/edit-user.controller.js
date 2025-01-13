@@ -5,7 +5,7 @@
  *   user the logged in users personal information.
  *   submit function which sends the user data to the backend in order to update personal information.
  */
-export default function($scope, $http, arachneSettings, authService, messages, $timeout, transl8) {
+export default function ($scope, $http, arachneSettings, authService, messages, $timeout, transl8) {
 
     $scope.formChange = false;
 
@@ -32,7 +32,7 @@ export default function($scope, $http, arachneSettings, authService, messages, $
     });
 
     var HEADERS = {
-        "headers": {"Content-Type": "application/json"}
+        "headers": { "Content-Type": "application/json" }
     };
 
     /**
@@ -77,8 +77,8 @@ export default function($scope, $http, arachneSettings, authService, messages, $
                 $scope.user = data;
                 $scope.user.emailValidation = $scope.user.email;
             }).catch(function (data) {
-            console.log("no user info found for user " + authService.getUser().username);
-        });
+                console.error("no user info found for user " + authService.getUser().username);
+            });
     } else {
         $timeout(function () {
             putMsg('ui_not_logged_in', 'warning')

@@ -12,13 +12,13 @@ export default function ($scope, $http, $location, arachneSettings) {
     $scope.requestedId = null;
     $scope.panZoomObject = null;
 
-    $scope.init = function (){
+    $scope.init = function () {
         $scope.requestedId = $location.search().id;
 
-        var metadataRequestURL = arachneSettings.dataserviceUri + '/model/' + $scope.requestedId  + '?meta=true';
+        var metadataRequestURL = arachneSettings.dataserviceUri + '/model/' + $scope.requestedId + '?meta=true';
         $http.get(metadataRequestURL)
-            .then(function(response) {
-                if(!$scope.validFormat(response.data.format)){
+            .then(function (response) {
+                if (!$scope.validFormat(response.data.format)) {
                     $scope.setErrorMessage(
                         'Error: "' + response.data.format + '" is no valid vector graphics format for this viewer.'
                     );
@@ -32,17 +32,17 @@ export default function ($scope, $http, $location, arachneSettings) {
                 );
                 console.error(response.status + ", " + response.statusText);
             });
-        };
+    };
 
-    $scope.displayMetadata = function(metadata) {
+    $scope.displayMetadata = function (metadata) {
 
         $scope.titleDisplay.innerHTML = metadata['title'];
         $scope.licenseDisplay.innerHTML = metadata['license'];
         $scope.modellerDisplay.innerHTML = metadata['modeller'];
     };
 
-    $scope.validFormat = function(format) {
-        switch(format) {
+    $scope.validFormat = function (format) {
+        switch (format) {
             case 'svg':
                 return true;
             default:
@@ -50,7 +50,7 @@ export default function ($scope, $http, $location, arachneSettings) {
         }
     };
 
-    $scope.loadSVGData = function(url) {
+    $scope.loadSVGData = function (url) {
         $http.get(url)
             .then(
                 function (response) {
@@ -70,7 +70,6 @@ export default function ($scope, $http, $location, arachneSettings) {
                         fit: true,
                         contain: true
                     });
-                    console.log($scope.panZoomObject);
                 }, function (error) {
                     $scope.setErrorMessage(
                         'Error loading the requested SVG metadata.'
@@ -91,7 +90,7 @@ export default function ($scope, $http, $location, arachneSettings) {
         $scope.panZoomObject.reset();
     };
 
-    $scope.setErrorMessage = function(msg) {
+    $scope.setErrorMessage = function (msg) {
         $scope.statusElement.innerHTML = msg;
         $scope.statusElement.classList.remove('alert-success');
         $scope.statusElement.classList.add('alert-danger');
