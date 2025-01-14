@@ -439,7 +439,7 @@ public class UserManagementController {
         // if there is already a request pending do not allow to add a new one
         if (resetPasswordRequestDao.getByUserId(userByEmail.getId()) != null) {
         	result.put("message", "ui.passwordreset.already_present");
-			LOGGER.info("A non-expired password request is already present in the database for user: {}", userName);
+			LOGGER.info("A non-expired password request is already present in the database for user: {}", eMailAddress);
         	return result;
 		}
 
