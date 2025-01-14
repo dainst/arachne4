@@ -1,10 +1,10 @@
-export default function($resource, arachneSettings) {
+export default function ($resource, arachneSettings) {
 
     return $resource(arachneSettings.dataserviceUri + '/user/reset', {}, {
-        save : {
+        save: {
             isArray: false,
             method: 'POST',
-            headers: {'Content-Type': 'application/json'}
+            headers: { 'Content-Type': 'application/json' }
         }
     });
 };
