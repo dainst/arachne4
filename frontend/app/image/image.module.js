@@ -8,8 +8,8 @@ import zoomifyimg from './zoomifyimg.directive.js';
 export default angular.module('arachne.image', [])
     .directive('arImagegridCell', arImagegridCell)
     .directive('arImagegrid', ['$http', '$window', 'searchScope', arImagegrid])
-    .directive('arImageslider', arImageslider)
+    .directive('arImageslider', ['arachneSettings', 'authService', arImageslider])
     .directive('arImg', ['arachneSettings', '$http', arImg])
     .filter('cellsFromImages', ['arachneSettings', cellsFromImages])
     .directive('zoomifyimg', ['arachneSettings', '$http', zoomifyimg])
-;
+    ;

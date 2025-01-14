@@ -64,10 +64,10 @@ baselayers: {
     osm: {
         'name': 'OpenStreetMap',
         'type': 'xyz',
-        'url': 'http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=b47a3cf895b94aedad41e5cfb5222b87',
+        'url': 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
         'yayerOptions': {
             'subdomains': ['a', 'b', 'c'],
-            'attribution': '&copy; <a href=\'http://www.opencyclemap.org\'>OpenCycleMap</a>, &copy; <a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors',
+            'attribution': 'Maps and Data &copy; <a href=\'https://osmfoundation.org/wiki/Licence\'>OpenStreetMap</a>.'',
             'continuousWorld': false,
             'maxZoom': 18
         }
@@ -102,23 +102,12 @@ baselayers: {
         <div con10t-map-menu-legend></div>
     </div>
 
-    <div con10t-map
-         class="col-sm-8 fullscreencol"
-         id="map"
-         limit="200"
-         overlays="config.overlays"
-         baselayers="config.baselayers"
-         default-baselayer="config.defaultBaselayer"
-         facets-select="config.facetsSelect"
-         lat="18.06231230454674"
-         lng="33.837890625"
-         zoom="5">
+    <div con10t-map class="col-sm-8 fullscreencol" id="map" limit="200" overlays="config.overlays"
+        baselayers="config.baselayers" default-baselayer="config.defaultBaselayer" facets-select="config.facetsSelect"
+        lat="18.06231230454674" lng="33.837890625" zoom="5">
     </div>
 
-    <div con10t-map-overlays
-         class="col-sm-2 fullscreencol"
-         overlays="config.overlays"
-         baselayers="config.baselayers">
+    <div con10t-map-overlays class="col-sm-2 fullscreencol" overlays="config.overlays" baselayers="config.baselayers">
     </div>
 
 </div>

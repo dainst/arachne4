@@ -17,19 +17,19 @@
                 <label class="col-sm-4 control-label">{{'ui_username'|transl8}}*</label>
                 <div class="col-sm-8">
                     <input required type="text" class="form-control" placeholder="{{'ui_username'|transl8}}"
-                           ng-model="user.username">
+                        ng-model="user.username">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="inputPassword" class="col-sm-4 control-label">{{'ui_password'|transl8}}*</label>
                 <div class="col-sm-4">
-                    <input id="inputPassword" required type="password" class="form-control" placeholder="{{'ui_password'|transl8}}"
-                           ng-model="user.password">
+                    <input id="inputPassword" required type="password" class="form-control"
+                        placeholder="{{'ui_password'|transl8}}" ng-model="user.password">
                 </div>
                 <div class="col-sm-4">
                     <input required type="password" class="form-control" placeholder="{{'ui_repeat_password'|transl8}}"
-                           ng-model="user.passwordValidation">
+                        ng-model="user.passwordValidation">
                 </div>
             </div>
 
@@ -37,11 +37,11 @@
                 <label class="col-sm-4 control-label">Name*</label>
                 <div class="col-sm-4">
                     <input required type="text" class="form-control" placeholder="{{'ui_first_name'|transl8}}"
-                           ng-model="user.firstname">
+                        ng-model="user.firstname">
                 </div>
                 <div class="col-sm-4">
                     <input required type="text" class="form-control" placeholder="{{'ui_surname'|transl8}}"
-                           ng-model="user.lastname">
+                        ng-model="user.lastname">
                 </div>
             </div>
 
@@ -55,7 +55,7 @@
             <div class="form-group">
                 <div class="col-sm-8 col-sm-offset-4">
                     <input required type="email" class="form-control" placeholder="{{'ui_repeat'|transl8}}"
-                           ng-model="user.emailValidation">
+                        ng-model="user.emailValidation">
                 </div>
             </div>
 
@@ -63,46 +63,6 @@
                 <label class="col-sm-4 control-label">Institution</label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" placeholder="Institution" ng-model="user.institution">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-4 control-label">Homepage</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="Homepage" ng-model="user.homepage">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-4 control-label">{{'ui_address'|transl8}}*</label>
-                <div class="col-sm-3">
-                    <input required type="text" class="form-control" placeholder="{{'ui_zip'|transl8}}"
-                           ng-model="user.zip">
-                </div>
-                <div class="col-sm-5">
-                    <input required type="text" class="form-control" placeholder="{{'ui_place'|transl8}}"
-                           ng-model="user.place">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-sm-8 col-sm-offset-4">
-                    <input required type="text" class="form-control" placeholder="{{'ui_street'|transl8}}"
-                           ng-model="user.street">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-4 control-label">{{'ui_country'|transl8}}*</label>
-                <div class="col-sm-8">
-                    <idai-country-picker model="user.country"></idai-country-picker>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-4 control-label">{{'ui_phone'|transl8}}</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="{{'ui_phone'|transl8}}" ng-model="user.phone">
                 </div>
             </div>
 

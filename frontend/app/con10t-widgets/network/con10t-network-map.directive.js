@@ -1,4 +1,4 @@
-export default function($compile, transl8) {
+export default function ($compile, transl8) {
     return {
         restrict: 'E',
         template: require('./con10t-network-map.html'),
@@ -16,32 +16,34 @@ export default function($compile, transl8) {
             var mapElement = element[0].querySelector('.map-container');
             mapElement.setAttribute('style', 'height:' + scope.mapHeight);
 
-            scope.map = L.map( mapElement, {center: [scope.lat, scope.lng], zoom:  scope.zoom,
-                zoomAnimation: false});
+            scope.map = L.map(mapElement, {
+                center: [scope.lat, scope.lng], zoom: scope.zoom,
+                zoomAnimation: false
+            });
 
             L.tileLayer(
-                'http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=b47a3cf895b94aedad41e5cfb5222b87',
-                { attribution: 'Maps &copy; Thunderforest, Data &copy; OpenStreetMap contributors' })
+                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                { attribution: 'Maps and Data &copy; <a href="https://osmfoundation.org/wiki/Licence">OpenStreetMap</a>.' })
                 .addTo(scope.map);
 
             scope.placeLayer = new L.LayerGroup().addTo(scope.map);
             scope.connectionsLayer = new L.LayerGroup().addTo(scope.map);
             scope.previouslySelectedPlaceId = null;
 
-            scope.$watch('selectedPlaceId', function(newValue, oldValue) {
+            scope.$watch('selectedPlaceId', function (newValue, oldValue) {
                 scope.evaluateState();
             });
 
-            scope.$watch('places', function(newValue, oldValue) {
+            scope.$watch('places', function (newValue, oldValue) {
                 scope.evaluateState();
             });
 
-            transl8.onLoaded().then(function() {
+            transl8.onLoaded().then(function () {
                 var DeselectControl = L.Control.extend({
                     options: {
                         position: 'topright'
                     },
-                    onAdd: function(map) {
+                    onAdd: function (map) {
                         var container = document.createElement("div");
 
                         container.classList.add('leaflet-bar', 'leaflet-control', 'leaflet-control-custom');
@@ -62,9 +64,9 @@ export default function($compile, transl8) {
                 scope.map.addControl(new DeselectControl());
             });
 
-            scope.evaluateState = function() {
+            scope.evaluateState = function () {
 
-                if(typeof scope.places === 'undefined' || scope.connections === 'undefined')
+                if (typeof scope.places === 'undefined' || scope.connections === 'undefined')
                     return;
 
                 scope.evaluateVisiblePlaces();
@@ -73,16 +75,16 @@ export default function($compile, transl8) {
                 scope.renderPlaces();
                 scope.renderConnections();
 
-                if(!scope.$root.$$phase && !scope.$$phase) {
+                if (!scope.$root.$$phase && !scope.$$phase) {
                     scope.$apply();
                 }
             };
 
-            scope.evaluateVisiblePlaces = function() {
+            scope.evaluateVisiblePlaces = function () {
                 scope.visiblePlaces = [];
 
                 var weights = {};
-                for(var i = 0; i < scope.connections.length; i++){
+                for (var i = 0; i < scope.connections.length; i++) {
                     var connection = scope.connections[i];
 
                     if (connection[0] in weights) {
@@ -92,7 +94,7 @@ export default function($compile, transl8) {
                     }
                 }
 
-                for(var i = 0; i < scope.places.length; i++) {
+                for (var i = 0; i < scope.places.length; i++) {
                     scope.visiblePlaces.push({
                         'data': scope.places[i],
                         'weight': weights[scope.places[i]['id']]
@@ -100,14 +102,14 @@ export default function($compile, transl8) {
                 }
             };
 
-            scope.evaluateVisibleConnections = function() {
+            scope.evaluateVisibleConnections = function () {
                 scope.visibleConnections = [];
 
-                for(var i = 0; i < scope.connections.length; i++){
+                for (var i = 0; i < scope.connections.length; i++) {
                     var connection = scope.connections[i];
 
                     var connectionId = scope.constructConnectionKey(connection[0], connection[1]);
-                    if(connectionId in scope.visibleConnections){
+                    if (connectionId in scope.visibleConnections) {
                         scope.visibleConnections[connectionId] += 1
                     } else {
                         scope.visibleConnections[connectionId] = 1
@@ -115,19 +117,18 @@ export default function($compile, transl8) {
                 }
             };
 
-            scope.renderPlaces = function() {
-                if(typeof scope.places === 'undefined') {
-                    console.log('No places to render...');
+            scope.renderPlaces = function () {
+                if (typeof scope.places === 'undefined') {
                     return;
                 }
 
                 scope.map.removeLayer(scope.placeLayer);
                 scope.placeLayer = new L.LayerGroup();
 
-                for(var i = 0; i < scope.visiblePlaces.length; i++){
+                for (var i = 0; i < scope.visiblePlaces.length; i++) {
                     var weight = scope.visiblePlaces[i]['weight'];
                     var place = scope.visiblePlaces[i]['data'];
-                    if(place['lat'] === 'null'
+                    if (place['lat'] === 'null'
                         || place['lng'] === 'null'
                         || typeof weight === 'undefined'
                     ) continue;
@@ -135,12 +136,12 @@ export default function($compile, transl8) {
                     var coordinates = new L.LatLng(place['lat'], place['lng']);
                     var params = {
                         title: place['name'],
-                        radius: (Math.log(weight)  + 1)* 10000,
+                        radius: (Math.log(weight) + 1) * 10000,
                         id: place['id'],
                         className: 'crosshair-cursor-enabled'
                     };
 
-                    if(place['id'] === scope.selectedPlaceId){
+                    if (place['id'] === scope.selectedPlaceId) {
                         params['color'] = 'red';
                         params['fillColor'] = '#f03'
                     }
@@ -153,8 +154,8 @@ export default function($compile, transl8) {
                             scope.setSelectedPlaceId(event.sourceTarget.options.id);
                         });
 
-                    if(place['id'] === scope.selectedPlaceId) {
-                        scope.currentPopup = new L.Popup({ closeOnClick: false, minWidth : 250 })
+                    if (place['id'] === scope.selectedPlaceId) {
+                        scope.currentPopup = new L.Popup({ closeOnClick: false, minWidth: 250 })
                             .setLatLng([place['lat'], place['lng']]);
                     }
                 }
@@ -167,7 +168,7 @@ export default function($compile, transl8) {
                 scope.activeOutgoingConnections = [];
                 scope.activeIncomingConnections = [];
 
-                for (var idx in scope.visibleConnections){
+                for (var idx in scope.visibleConnections) {
                     var originId, destinationId;
 
                     var split = scope.deconstructConnectionKey(idx);
@@ -178,7 +179,7 @@ export default function($compile, transl8) {
                     var destination = scope.getPlaceById(destinationId);
 
                     if (originId === scope.selectedPlaceId) {
-                        if(
+                        if (
                             origin['lat'] !== 'null'
                             && origin['lng'] !== 'null'
                             && destination['lat'] !== 'null'
@@ -195,7 +196,7 @@ export default function($compile, transl8) {
                     }
 
                     if (destinationId === scope.selectedPlaceId) {
-                        if(
+                        if (
                             origin['lat'] !== 'null'
                             && origin['lng'] !== 'null'
                             && destination['lat'] !== 'null'
@@ -256,21 +257,21 @@ export default function($compile, transl8) {
                     L.polyline(latlngs, options).addTo(scope.connectionsLayer);
                 }
 
-                if(scope.currentPopup
+                if (scope.currentPopup
                     && scope.selectedPlaceId != null
                     && (scope.activeIncomingConnections.length > 0 || scope.activeOutgoingConnections.length > 0)) {
                     var popContent =
                         $compile
-                        (
-                            '<con10t-network-map-popup ' +
-                            'active-incoming-connections="activeIncomingConnections" ' +
-                            'active-outgoing-connections="activeOutgoingConnections" ' +
-                            'selected-place-id="selectedPlaceId" ' +
-                            'selection-callback="setSelectedPlaceId(id)" ' +
-                            'place-data-callback="getPlaceById(id)">' +
-                            '</con10t-network-map-popup>'
-                        )
-                        (scope);
+                            (
+                                '<con10t-network-map-popup ' +
+                                'active-incoming-connections="activeIncomingConnections" ' +
+                                'active-outgoing-connections="activeOutgoingConnections" ' +
+                                'selected-place-id="selectedPlaceId" ' +
+                                'selection-callback="setSelectedPlaceId(id)" ' +
+                                'place-data-callback="getPlaceById(id)">' +
+                                '</con10t-network-map-popup>'
+                            )
+                            (scope);
 
                     scope.currentPopup
                         .setContent(popContent[0])
@@ -280,30 +281,30 @@ export default function($compile, transl8) {
             };
 
 
-            scope.setSelectedPlaceId = function(id) {
+            scope.setSelectedPlaceId = function (id) {
                 scope.previouslySelectedPlaceId = scope.selectedPlaceId;
                 scope.selectedPlaceId = id;
 
                 // Reclicking a selected place should re-open the popup. Because the value stays the same for
                 // scope.selectedPlaceId the watches are not triggered in this case. Because of that, we trigger
                 // evaluate state for this special case and return.
-                if(scope.previouslySelectedPlaceId === scope.selectedPlaceId){
+                if (scope.previouslySelectedPlaceId === scope.selectedPlaceId) {
                     scope.evaluateState();
                     return;
                 }
 
-                if(!scope.$root.$$phase && !scope.$$phase) {
+                if (!scope.$root.$$phase && !scope.$$phase) {
                     scope.$apply();
                 }
             };
 
-            scope.getPlaceById = function(id) {
-                return scope.places.filter(function(place){
+            scope.getPlaceById = function (id) {
+                return scope.places.filter(function (place) {
                     return place['id'] === id;
                 })[0]
             };
 
-            scope.constructConnectionKey = function(originId, destinationId) {
+            scope.constructConnectionKey = function (originId, destinationId) {
                 return originId + ':::' + destinationId;
             };
 

@@ -21,7 +21,7 @@ import * as d3 from 'd3';
  *   If set as "true", minDate/maxDate are updated while dragging on the chart area. Otherwise, they are updated on
  *   drag end (= when the mouse button is finally released).
 */
-export default function() {
+export default function () {
     return {
         restrict: 'E',
         template: require('./con10t-time-line-chart.html'),
@@ -38,12 +38,11 @@ export default function() {
 
             // Output (minDate/maxDate) is provided in days resolution, no matter the binned dates' resolution is,
             // so we need to generate the day-dates between overall minimum and maximum date of the bins.
-            scope.generateDetailedTimeSpan = function() {
+            scope.generateDetailedTimeSpan = function () {
                 scope.detailedDates = [];
                 scope.detailedDates.push(scope.overallMinDate);
 
-                var addDays = function(inputDate, n)
-                {
+                var addDays = function (inputDate, n) {
                     return new Date(
                         inputDate.getFullYear(),
                         inputDate.getMonth(),
@@ -54,7 +53,7 @@ export default function() {
                 };
 
                 var currentDate = scope.overallMinDate;
-                while(currentDate < scope.overallMaxDate){
+                while (currentDate < scope.overallMaxDate) {
                     var newDate = addDays(currentDate, 1);
                     scope.detailedDates.push(newDate);
                     currentDate = newDate;
@@ -63,7 +62,7 @@ export default function() {
                 scope.detailedDates.push(scope.overallMaxDate);
             };
 
-            scope.initializeD3 = function(){
+            scope.initializeD3 = function () {
 
                 d3.select("#timeline-container").selectAll("*").remove();
                 var svgElement = document.querySelector('#timeline-container');
@@ -73,22 +72,22 @@ export default function() {
 
                 var outerWidth = 480;
                 var outerHeight = 200;
-                if(element.length === 1){
-                    if(element[0].offsetWidth !== 0){
+                if (element.length === 1) {
+                    if (element[0].offsetWidth !== 0) {
                         outerWidth = element[0].offsetWidth
                     }
-                    if(element[0].offsetHeight !== 0){
+                    if (element[0].offsetHeight !== 0) {
                         outerHeight = element[0].offsetHeight - (element[0].offsetHeight * 0.2);
                     }
                 }
 
-                var margin = {top: 20, right: 50, bottom: 30, left: 50},
+                var margin = { top: 20, right: 50, bottom: 30, left: 50 },
                     width = outerWidth - margin.left - margin.right,
                     height = outerHeight - margin.top - margin.bottom;
 
-                var bisectDate = d3.bisector(function(d) { return d.date; }).left;
+                var bisectDate = d3.bisector(function (d) { return d.date; }).left;
 
-                var bisectDetailedDate = d3.bisector(function(d) { return d; }).left;
+                var bisectDetailedDate = d3.bisector(function (d) { return d; }).left;
 
                 var x = scope.xValues = d3
                     .scaleTime()
@@ -115,8 +114,8 @@ export default function() {
 
                 var line = d3
                     .line()
-                    .x(function(d) { return x(d.date); })
-                    .y(function(d) { return y(d.count); });
+                    .x(function (d) { return x(d.date); })
+                    .y(function (d) { return y(d.count); });
 
                 scope.svg = d3
                     .select("#timeline-container")
@@ -125,10 +124,10 @@ export default function() {
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-                if(scope.zoomed){
+                if (scope.zoomed) {
                     y.domain([0, scope.zoomMaxValue + 5])
                 } else {
-                    y.domain([0, scope.noZoomMaxValue  + 5]);
+                    y.domain([0, scope.noZoomMaxValue + 5]);
                 }
 
                 scope.svg.append("g")
@@ -183,11 +182,11 @@ export default function() {
                     .attr("class", "overlay")
                     .attr("width", width)
                     .attr("height", height)
-                    .on("mouseover", function() {
+                    .on("mouseover", function () {
                         focus.style("display", null);
                         clickPreview.style("display", null);
                     })
-                    .on("mouseout", function() {
+                    .on("mouseout", function () {
                         focus.style("display", "none");
                         clickPreview.style("display", "none");
                     })
@@ -198,7 +197,7 @@ export default function() {
                             d2 = scope.binnedData[i],
                             d = xPos - d1.date > d2.date - xPos ? d2 : d1;
                         focus.attr("transform", "translate(" + x(d.date) + "," + y(d.count) + ")");
-                        focus.select("text").text(d.date.getFullYear() + ' (' + d.count +')');
+                        focus.select("text").text(d.date.getFullYear() + ' (' + d.count + ')');
 
                         var x1 = x(d1.date);
                         var x2 = x(d2.date);
@@ -212,8 +211,8 @@ export default function() {
                     var mousePosition = d3.mouse(this);
                     var xPos = mousePosition[0];
 
-                    if(xPos < 0) xPos = 0;
-                    if(xPos > width) xPos = width;
+                    if (xPos < 0) xPos = 0;
+                    if (xPos > width) xPos = width;
 
                     scope.dragStartPosition = xPos;
 
@@ -227,39 +226,39 @@ export default function() {
                     var mousePosition = d3.mouse(this);
                     var xPos = mousePosition[0];
 
-                    if(xPos < 0) xPos = 0;
-                    if(xPos > width) xPos = width;
+                    if (xPos < 0) xPos = 0;
+                    if (xPos > width) xPos = width;
 
                     scope.dragEndDate = getDetailedDateForPosition(xPos);
                     scope.drawSelection(scope.dragStartPosition, xPos);
 
-                    if(scope.dragStartPosition < xPos) {
+                    if (scope.dragStartPosition < xPos) {
                         clickPreview.attr('x', scope.dragStartPosition);
                         clickPreview.attr('width', xPos - scope.dragStartPosition)
-                    } else if(scope.dragStartPosition > xPos) {
+                    } else if (scope.dragStartPosition > xPos) {
                         clickPreview.attr('x', xPos);
                         clickPreview.attr('width', scope.dragStartPosition - xPos)
                     }
 
-                    if(scope.reportOnDrag  === 'true'){
+                    if (scope.reportOnDrag === 'true') {
                         scope.evaluateState();
                     }
                 }
 
                 function dragEnd() {
-                    if(scope.reportOnDrag !== 'true'){
+                    if (scope.reportOnDrag !== 'true') {
                         var mousePosition = d3.mouse(this);
                         var xPos = mousePosition[0];
 
-                        if(xPos < 0) xPos = 0;
-                        if(xPos > width) xPos = width;
+                        if (xPos < 0) xPos = 0;
+                        if (xPos > width) xPos = width;
 
                         scope.dragEndPosition = xPos;
-                        if(scope.dragStartPosition === scope.dragEndPosition){
+                        if (scope.dragStartPosition === scope.dragEndPosition) {
                             scope.dragStartDate = new Date(
                                 getDateForPosition(xPos)
                             );
-                            scope.dragEndDate =  new Date(
+                            scope.dragEndDate = new Date(
                                 (getDateForPosition(xPos).getFullYear() + 1).toString()
                             );
                         } else {
@@ -270,7 +269,7 @@ export default function() {
                     }
                 }
 
-                function getDateForPosition(xPos){
+                function getDateForPosition(xPos) {
                     // Get the x-axis data index where the current xPos value would be inserted...
                     var i = bisectDate(scope.binnedData, x.invert(xPos), 1);
                     // ... then check which of the neighbouring values is closer and return the closer one's date.
@@ -296,14 +295,14 @@ export default function() {
 
             scope.evaluateState = function () {
 
-                if(scope.dragStartDate != null && scope.dragEndDate != null){
+                if (scope.dragStartDate != null && scope.dragEndDate != null) {
                     scope.minDate = null;
                     scope.maxDate = null;
 
-                    if(scope.dragStartDate < scope.dragEndDate){
+                    if (scope.dragStartDate < scope.dragEndDate) {
                         scope.minDate = scope.dragStartDate;
                         scope.maxDate = scope.dragEndDate;
-                    } else if(scope.dragStartDate > scope.dragEndDate){
+                    } else if (scope.dragStartDate > scope.dragEndDate) {
                         scope.minDate = scope.dragEndDate;
                         scope.maxDate = scope.dragStartDate;
                     } else {
@@ -314,17 +313,17 @@ export default function() {
 
                 scope.zoomActive = (scope.noZoomMaxValue != scope.zoomMaxValue);
 
-                if(!scope.$root.$$phase && !scope.$$phase) {
+                if (!scope.$root.$$phase && !scope.$$phase) {
                     scope.$apply();
                 }
             };
 
-            scope.drawSelection = function(x1, x2){
-                if(x1 < x2) {
+            scope.drawSelection = function (x1, x2) {
+                if (x1 < x2) {
                     scope.selectionBox.attr("opacity", .5);
                     scope.selectionBox.attr('x', x1);
                     scope.selectionBox.attr('width', x2 - x1)
-                } else if(x1 > x2) {
+                } else if (x1 > x2) {
                     scope.selectionBox.attr("opacity", .5);
                     scope.selectionBox.attr('x', x2);
                     scope.selectionBox.attr('width', x1 - x2)
@@ -333,16 +332,15 @@ export default function() {
                 }
             };
 
-            scope.reset = function() {
+            scope.reset = function () {
                 scope.dragStartDate = scope.overallMinDate;
                 scope.dragEndDate = scope.overallMaxDate;
                 scope.evaluateState();
             };
 
-            scope.recreate = function() {
+            scope.recreate = function () {
 
-                if(scope.binnedData.length === 0){
-                    console.log("No time data.");
+                if (scope.binnedData.length === 0) {
                     return;
                 }
 
@@ -358,8 +356,8 @@ export default function() {
                 scope.dragEndPosition = scope.getPositionForDate(scope.dragEndDate);
 
                 scope.zoomMaxValue = Number.MIN_VALUE;
-                for(var i = 0; i < scope.binnedData.length; i++){
-                    if(scope.binnedData[i].count > scope.zoomMaxValue){
+                for (var i = 0; i < scope.binnedData.length; i++) {
+                    if (scope.binnedData[i].count > scope.zoomMaxValue) {
                         scope.zoomMaxValue = scope.binnedData[i].count;
                     }
                 }
@@ -368,13 +366,13 @@ export default function() {
                 scope.drawSelection(scope.dragStartPosition, scope.dragEndPosition);
             };
 
-            scope.getPositionForDate = function(date){
+            scope.getPositionForDate = function (date) {
                 return scope.xDetailed(date)
             };
 
-            scope.toggleZoom = function(){
+            scope.toggleZoom = function () {
 
-                if(!scope.zoomActive) return;
+                if (!scope.zoomActive) return;
 
                 scope.zoomed = !scope.zoomed;
                 scope.initializeD3();
@@ -386,8 +384,8 @@ export default function() {
             scope.zoomed = false;
             scope.zoomMaxValue = Number.MIN_VALUE;
 
-            scope.$watch('binnedData', function(newValue, oldValue) {
-                if(typeof newValue === 'undefined'){
+            scope.$watch('binnedData', function (newValue, oldValue) {
+                if (typeof newValue === 'undefined') {
                     return;
                 }
                 scope.recreate();

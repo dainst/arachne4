@@ -50,44 +50,40 @@ export default function() {
                 }
             };
 
-            scope.updateDisplayedList = function(){
+            scope.updateDisplayedList = function () {
 
-                if(typeof scope.itemList === 'undefined'){
+                if (typeof scope.itemList === 'undefined') {
                     return;
                 }
                 scope.displayedList = angular.copy(scope.itemList);
 
-                if(scope.orderType === 0) {
-                    scope.orderGlyph = 'glyphicon-sort-by-alphabet';
+                if (scope.orderType === 0) {
                     scope.displayedList.sort(function (a, b) {
                         return a.label.toLowerCase() > b.label.toLowerCase() ? 1 : -1;
                     });
-                } else if(scope.orderType === 1){
-                    scope.orderGlyph = 'glyphicon-sort-by-alphabet-alt';
+                } else if (scope.orderType === 1) {
                     scope.displayedList.sort(function (a, b) {
                         return a.label.toLowerCase() > b.label.toLowerCase() ? -1 : 1;
                     });
-                } else if(scope.orderType === 2){
-                    scope.orderGlyph =  'glyphicon-sort-by-order-alt';
-                    scope.displayedList.sort(function(a, b){
-                        if(a.count > b.count){
+                } else if (scope.orderType === 2) {
+                    scope.displayedList.sort(function (a, b) {
+                        if (a.count > b.count) {
                             return -1;
                         } else if (a.count < b.count) {
                             return 1;
                         } else {
-                            return  a.label.toLowerCase() < b.label.toLowerCase() ? -1 : 1;
+                            return a.label.toLowerCase() < b.label.toLowerCase() ? -1 : 1;
                         }
                     });
                 } else {
-                    scope.orderGlyph = 'glyphicon-sort-by-order';
                     scope.displayedList.sort(function (a, b) {
 
-                        if(a.count > b.count){
+                        if (a.count > b.count) {
                             return 1;
                         } else if (a.count < b.count) {
                             return -1;
                         } else {
-                            return  a.label.toLowerCase() < b.label.toLowerCase() ? -1 : 1;
+                            return a.label.toLowerCase() < b.label.toLowerCase() ? -1 : 1;
                         }
                     });
                 }

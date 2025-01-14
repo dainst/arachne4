@@ -40,6 +40,7 @@ services:
     volumes:
       - ${ARCHAEOCLOUD_PATH}:/media/archaeocloud
     hostname: "${HOST_NAME}"
+    user: "${UID}:${GID}"
     labels:
       - traefik.enable=true
       - traefik.http.routers.backend.rule=Host(`${SERVER_ADDRESS}`) && PathPrefix(`/data`)

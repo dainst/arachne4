@@ -1,12 +1,10 @@
 export default function (arachneSettings, $http, $uibModal, Catalog, CatalogEntry) {
-    console.log('construct catalog-occurrences.directive.js');
     return {
         scope: {
             entity: '='
         },
         template: require('./ar-catalog-occurrences.html'),
         link: function (scope, element, attrs) {
-            console.log('link catalog-occurrences.directive.js');
             scope.catalogEntries = [];
             scope.catalogEntrySets = [];
 
@@ -37,7 +35,7 @@ export default function (arachneSettings, $http, $uibModal, Catalog, CatalogEntr
                     editEntryModal.close = function (newEntry) {
                         CatalogEntry.save([newEntry], function (data) {
                             if (data.error_message) {
-                                console.log(data.error_message);
+                                console.error(data.error_message);
                             } else {
                                 scope.loadOccurences();
                             }
@@ -61,37 +59,37 @@ export default function (arachneSettings, $http, $uibModal, Catalog, CatalogEntr
                         scope.arrangeEntries();
 
                     }).catch(function (result) {
-                        console.log("Error Arachne dataservice not reachable");
+                        console.error("Error Arachne dataservice not reachable");
                     });
                 }
             };
 
-            scope.arrangeEntries = function() {
+            scope.arrangeEntries = function () {
                 var i, j, n, len = scope.catalogEntries.length, curi, curj, curk, duplicateAlreadyAdded, newCatalog;
 
-                for(i = 0; i < len; i++) {
+                for (i = 0; i < len; i++) {
                     curi = scope.catalogEntries[i];
                     scope.loadParentLabel(curi.entry);
-                    if(curi.duplicate)
+                    if (curi.duplicate)
                         continue;
                     duplicateAlreadyAdded = false;
-                    for(j = i; j < len; j++) {
+                    for (j = i; j < len; j++) {
                         curj = scope.catalogEntries[j];
-                        if(curi.entry.catalogId === curj.entry.catalogId) {
-                            if(!duplicateAlreadyAdded) {
+                        if (curi.entry.catalogId === curj.entry.catalogId) {
+                            if (!duplicateAlreadyAdded) {
                                 scope.catalogEntrySets.push(scope.getNewCatalogEntrySet(curi));
                                 duplicateAlreadyAdded = true;
                             } else {
-                                for(n = 0; n < scope.catalogEntrySets.length; n++) {
+                                for (n = 0; n < scope.catalogEntrySets.length; n++) {
                                     curk = scope.catalogEntrySets[n];
-                                    if(curk.catalogId === curj.entry.catalogId)
+                                    if (curk.catalogId === curj.entry.catalogId)
                                         scope.catalogEntrySets[n].entries.push(curj.entry);
                                 }
                             }
                             curi.duplicate = curj.duplicate = true;
                         }
                     }
-                    if(!curi.duplicate) {
+                    if (!curi.duplicate) {
                         scope.catalogEntrySets.push(scope.getNewCatalogEntrySet(curi));
                     }
                 }
@@ -99,8 +97,8 @@ export default function (arachneSettings, $http, $uibModal, Catalog, CatalogEntr
 
             // used to load the parent label in order to distinguish entries when multiple
             // entries for the same entity are present in the same catalog
-            scope.loadParentLabel = function(entry) {
-                CatalogEntry.get({id:entry.parentId, limit:1, full:false}, function(result) {
+            scope.loadParentLabel = function (entry) {
+                CatalogEntry.get({ id: entry.parentId, limit: 1, full: false }, function (result) {
                     entry.parentLabel = result.label;
                 });
             };
