@@ -5,7 +5,7 @@
         <small>({{entity.imageSize}})</small>
     </a>
     <span ng-if="entity.images.length == 1">{{'entity_image'|transl8}}></span>
-    <a ng-if="hacViaUrl" class="btn btn-default" target="_blank" href="{{hacViaUrl}}">
+    <a ng-if="hacViaUrl && user.groupID >= 600" class="btn btn-default" target="_blank" href="{{hacViaUrl}}">
         <span class="glyphicon glyphicon-folder-open"></span>
         {{"image_archive_button"|transl8}}
     </a>
