@@ -111,6 +111,26 @@ services:
       - com.centurylinklabs.watchtower.enable=true
     user: "${UID}:${GID}"
     restart: always
+  hac_via:
+    image: ghcr.io/dainst/hac_via:latest
+    volumes:
+     - ${HAC_VIA_ARCHIVE_DIR}:/archive
+     - ${HAC_VIA_PREVIEW_DIR}:/previews
+     - ${ARCHAEOCLOUD_PATH}/aronscans/objectscans/:/published_jpg
+     - ${ARCHAEOCLOUD_PATH}/S-Arachne/arachne4scans/arachne4webimages/objectscans/:/published_ptif
+    environment:
+     - PHX_HOST=images.${SERVER_ADDRESS}
+     - DATABASE_URL=ecto://arachne:${DB_PASSWORD}@arachne4_db/arachne
+     - SECRET_KEY_BASE=${HAC_VIA_KEY_BASE}
+     - ARACHNE_BASE_URL=https://${SERVER_ADDRESS}
+    labels:
+     - traefik.enable=true
+     - traefik.http.routers.hac_via.rule=Host(`images.${SERVER_ADDRESS}`)
+     - traefik.http.routers.hac_via.entrypoints=websecure
+     - traefik.http.routers.hac_via.tls.certresolver=myresolver
+     - traefik.http.services.hac_via.loadbalancer.server.port=4000
+     - com.centurylinklabs.watchtower.enable=true
+    restart: always
 
   traefik:
     image: traefik:v2.5
