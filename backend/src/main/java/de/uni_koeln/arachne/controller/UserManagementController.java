@@ -279,10 +279,10 @@ public class UserManagementController {
 			if(!isTestUser(user)){
 
 				// mail to user
-				String messageBody = "Ihre Anmeldung bei Arachne ist eingegangen und wird in Kürze von uns bearbeitet "
-						+ "werden." + newLine + newLine + "Mit freundlichen Grüßen" + newLine + "das Arachne-Team";
+				String messageBody = "Your registration was successful and will be reviewed shortly."
+				+ newLine + newLine + "Mit freundlichen Grüßen" + newLine + "das Arachne-Team";
 
-				if (!mailService.sendMail(user.getEmail(), "Ihre Anmeldung bei Arachne", messageBody)) {
+				if (!mailService.sendMail(user.getEmail(), "Your registration with iDAI.objects/Arachne", messageBody)) {
 					LOGGER.error("Unable to send registration eMail to user.");
 					throw new FormDataException("ui.registration.emailFailed");
 				}
@@ -461,7 +461,7 @@ public class UserManagementController {
                 + newLine + "You can use the following link to reset your password: " + linkString
                 + newLine + "The link is valid until " + expirationDateString + ".";
 
-        if (!isTestUser(userByEmail) && !mailService.sendMail(userByEmail.getEmail(), "Passwort zurückgesetzt bei Arachne", messageBody)) {
+        if (!isTestUser(userByEmail) && !mailService.sendMail(userByEmail.getEmail(), "Passwort reset for iDAI.objects/Arachne", messageBody)) {
             LOGGER.error("Unable to send password activation eMail to user: " + userByEmail.getEmail());
             resetPasswordRequestDao.delete(request);
             result.put("success", "false");
