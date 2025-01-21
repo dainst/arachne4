@@ -256,13 +256,7 @@ public class UserManagementController {
 			
 			user.setFirstname(getFormData(formData, "firstname", true, "ui.register."));
 			user.setLastname(getFormData(formData, "lastname", true, "ui.register."));
-			user.setStreet(getFormData(formData, "street", true, "ui.register."));
-			user.setZip(getFormData(formData, "zip", true, "ui.register."));
-			user.setPlace(getFormData(formData, "place", true, "ui.register."));
-			user.setCountry(getFormData(formData, "country", true, "ui.register."));
 			user.setInstitution(getFormData(formData, "institution", false, "ui.register."));
-			user.setHomepage(getFormData(formData, "homepage", false, "ui.register."));
-			user.setTelephone(getFormData(formData, "telephone", false, "ui.register."));
 			user.setAll_groups(false);
 			user.setGroupID(500);
 			if(isTestUser(user)){
