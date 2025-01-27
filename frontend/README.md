@@ -8,27 +8,14 @@ npm install && npm run build && npm start
 
 ## Development
 
-The repository includes a [gulp](http://gulpjs.com/) configuration for setting up a local server, preconfigured with:
-* proxying to the backend running on the development server
-* url rewriting for AngularJS' HTML5 mode
-* live reloading
-
 ### Prerequisites
 
 You need the following components in order for the local server to work:
 * [NodeJS](https://nodejs.org/)
-* [gulp](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md)
 
 To install the necessary dependencies for the app run the following command in the working directory:
 ```bash
 npm install
-```
-
-On Debian-based systems, if you have trouble installing dependencies use the 'nodejs-legacy'-package instead of 'nodejs'. Also gulp needs to be installed globally to run 'gulp server'.
-
-```bash
-sudo apt-get install nodejs-legacy
-sudo npm install -g gulp
 ```
 
 ### Deployment
@@ -43,17 +30,7 @@ npm run build
 
 The static files representing the project pages are stored in the directory `con10t`.
 
-The `con10t`-repository (https://github.com/dainst/con10t) is automatically checked out when building Arachne 4 Frontend with "npm run build" if the con10t-folder doesn't already exist.
-
 The con10t submodule provides many valuable widgets which can be used on project pages. You can find a demonstration of the widgets at https://arachne.dainst.org/project/widgetsdemo.
-
-#### Updating the submodule con10t
-
-Within the folder of the submodule execute
-```bash
-git pull origin master
-```
-to get the latest con10t version.
 
 ### Configuring the Development Server
 
@@ -94,28 +71,3 @@ export LC_NUMERIC="en_US.UTF-8" && npm run e2e
 ```
 
 to run the e2e tests matching the filename pattern `e2e/*.spec.js`. Precondition for this to work is that you have the `dist` dir that gets served at `localhost:8080` by defaiöt, as is the case when you run `npm start`.
-
-### Server Configuration
-
-In order for AngularJS' HTML5 mode to work use the following configurations:
-
-#### nginx
-```
-server {
-    listen   80;
-    root /usr/share/nginx/www;
-    try_files $uri $uri/ /index.html =404;
-}
-```
-
-#### Apache
-
-```
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond $1#%{REQUEST_URI} ([^#]*)#(.*)\1$
-	RewriteRule ^(.*)$ %2index.html [QSA,L]
-</IfModule>
-```

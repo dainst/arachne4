@@ -1,4 +1,4 @@
-export default function($location, $filter) {
+export default function ($location, $filter) {
     return {
         restrict: 'E',
         template: require('./con10t-search.html'),
@@ -9,21 +9,19 @@ export default function($location, $filter) {
             scopeName: '@',
             searchPage: '@'
         },
-        link: function(scope, element, attrs) {
+        link: function (scope, element, attrs) {
             scope.placeholder = attrs.searchPlaceholder;
-            scope.slashRegex  = /\//g;
+            scope.slashRegex = /\//g;
 
-            if(!scope.placeholder)
+            if (!scope.placeholder)
                 scope.placeholder = $filter('transl8')('ui_projectsearchplaceholder');
 
-            scope.search = function() {
+            scope.search = function () {
 
                 //  http://localhost:8082/project/syrher?lang=en%2Fsearch%3Fq%3D*  /search?q=*
 
                 var url = '';
-                console.log($location.url().split("?")[0])
                 if (typeof scope.scopeName === "undefined") {
-                    console.log($location.url().split("?")[0])
                     url += $location.url().split("?")[0] + '/';
                 } else {
                     url += 'project/' + scope.scopeName + '/';
@@ -33,10 +31,10 @@ export default function($location, $filter) {
 
                 url += "?q=";
 
-                if(scope.catalogId != undefined && scope.catalogId != "")
-                    url += "catalogPaths:"+$filter('escapeSlashes')(scope.catalogId)+"+";
+                if (scope.catalogId != undefined && scope.catalogId != "")
+                    url += "catalogPaths:" + $filter('escapeSlashes')(scope.catalogId) + "+";
 
-                if(scope.q != null && scope.q != "")
+                if (scope.q != null && scope.q != "")
                     url += scope.q;
                 else
                     url += "*";
@@ -44,13 +42,13 @@ export default function($location, $filter) {
                 if (scope.appendQuery)
                     url += " AND " + scope.appendQuery;
 
-                if(scope.fq != undefined && scope.fq != "") {
+                if (scope.fq != undefined && scope.fq != "") {
                     // split at every NOT escaped comma by replacing the comma with ETB, then split at every ETB
                     var fqs = scope.fq.replace(/([^\\]),/g, '$1\u0017').split('\u0017');
-                    fqs.forEach(function(fq) {
+                    fqs.forEach(function (fq) {
                         var split = fq.split(':');
                         // remove backslash in front of escaped commas (de-escape)
-                        url += '&fq='+split[0]+':"'+split[1].replace(/\\,/g, ',')+'"';
+                        url += '&fq=' + split[0] + ':"' + split[1].replace(/\\,/g, ',') + '"';
                     });
                 }
                 $location.url(url);

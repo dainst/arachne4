@@ -256,13 +256,7 @@ public class UserManagementController {
 			
 			user.setFirstname(getFormData(formData, "firstname", true, "ui.register."));
 			user.setLastname(getFormData(formData, "lastname", true, "ui.register."));
-			user.setStreet(getFormData(formData, "street", true, "ui.register."));
-			user.setZip(getFormData(formData, "zip", true, "ui.register."));
-			user.setPlace(getFormData(formData, "place", true, "ui.register."));
-			user.setCountry(getFormData(formData, "country", true, "ui.register."));
 			user.setInstitution(getFormData(formData, "institution", false, "ui.register."));
-			user.setHomepage(getFormData(formData, "homepage", false, "ui.register."));
-			user.setTelephone(getFormData(formData, "telephone", false, "ui.register."));
 			user.setAll_groups(false);
 			user.setGroupID(500);
 			if(isTestUser(user)){
@@ -285,10 +279,10 @@ public class UserManagementController {
 			if(!isTestUser(user)){
 
 				// mail to user
-				String messageBody = "Ihre Anmeldung bei Arachne ist eingegangen und wird in Kürze von uns bearbeitet "
-						+ "werden." + newLine + newLine + "Mit freundlichen Grüßen" + newLine + "das Arachne-Team";
+				String messageBody = "Your registration was successful and will be reviewed shortly."
+				+ newLine + newLine + "Mit freundlichen Grüßen" + newLine + "das Arachne-Team";
 
-				if (!mailService.sendMail(user.getEmail(), "Ihre Anmeldung bei Arachne", messageBody)) {
+				if (!mailService.sendMail(user.getEmail(), "Your registration with iDAI.objects/Arachne", messageBody)) {
 					LOGGER.error("Unable to send registration eMail to user.");
 					throw new FormDataException("ui.registration.emailFailed");
 				}
@@ -427,31 +421,19 @@ public class UserManagementController {
 
         if (userRightsService.isSignedInUser()) return result;
 
-        final String userName = getFormData(userCredentials, "username", true, "ui.passwordreset.");
         final String eMailAddress = getFormData(userCredentials, "email", true, "ui.passwordreset.");
-        final String firstName = getFormData(userCredentials, "firstname", true, "ui.passwordreset.");
-        final String lastName = getFormData(userCredentials, "lastname", true, "ui.passwordreset.");
 
-        User userByName = userDao.findByName(userName);
-        if (userByName == null) {
-        	LOGGER.info("User not found: {}", userName);
-        	return result;
-		}
-        if (!userByName.getEmail().equals(eMailAddress)) {
-        	LOGGER.info("Wrong eMail provided for user '{}': {}", userName, eMailAddress);
-        	return result;
-		}
-        if (!userByName.getFirstname().equals(firstName) ||
-                !userByName.getLastname().equals(lastName)) {
-			LOGGER.info("Wrong first or last name provided for user '{}': {}, {}", userName, firstName, lastName);
+        User userByEmail = userDao.findByEMailAddress(eMailAddress);
+        if (userByEmail == null) {
+        	LOGGER.info("User not found: {}", eMailAddress);
         	return result;
 		}
 
         resetPasswordRequestDao.deleteExpiredRequests(); // get rid of all expired requests
         // if there is already a request pending do not allow to add a new one
-        if (resetPasswordRequestDao.getByUserId(userByName.getId()) != null) {
+        if (resetPasswordRequestDao.getByUserId(userByEmail.getId()) != null) {
         	result.put("message", "ui.passwordreset.already_present");
-			LOGGER.info("A non-expired password request is already present in the database for user: {}", userName);
+			LOGGER.info("A non-expired password request is already present in the database for user: {}", eMailAddress);
         	return result;
 		}
 
@@ -465,7 +447,7 @@ public class UserManagementController {
 
         ResetPasswordRequest request = new ResetPasswordRequest();
         request.setToken(token);
-        request.setUserId(userByName.getId());
+        request.setUserId(userByEmail.getId());
         request.setExpirationDate(expirationDate);
         resetPasswordRequestDao.save(request);
 
@@ -473,14 +455,14 @@ public class UserManagementController {
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         final String nowString = dateFormat.format(now);
         final String expirationDateString = dateFormat.format(expirationDate);
-        final String linkString = "http://" + serverAddress + "/user/activation/" + token;
+        final String linkString = "https://" + serverAddress + "/user/activation/" + token;
 
-        final String messageBody = "Sie haben ihr Passwort bei Arachne am " + nowString + " zurückgesetzt."
-                + newLine + "Bitte folgen sie diesem Link um den Prozess abzuschließen: " + linkString
-                + newLine + "Dieser Link ist bis zum " + expirationDateString + " gültig.";
+        final String messageBody = "A password reset was requested for iDAI.objects/Arachne on " + nowString + "."
+                + newLine + "You can use the following link to reset your password: " + linkString
+                + newLine + "The link is valid until " + expirationDateString + ".";
 
-        if (!isTestUser(userByName) && !mailService.sendMail(userByName.getEmail(), "Passwort zurückgesetzt bei Arachne", messageBody)) {
-            LOGGER.error("Unable to send password activation eMail to user: " + userByName.getEmail());
+        if (!isTestUser(userByEmail) && !mailService.sendMail(userByEmail.getEmail(), "Passwort reset for iDAI.objects/Arachne", messageBody)) {
+            LOGGER.error("Unable to send password activation eMail to user: " + userByEmail.getEmail());
             resetPasswordRequestDao.delete(request);
             result.put("success", "false");
             response.setStatus(400);

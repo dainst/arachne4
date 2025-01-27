@@ -439,6 +439,7 @@ export default {
     "facet_bennenungallg": "General designation",
     "ui.passwordchange.illegal": "The old and new password can't be the same!",
     "edit_button": "Edit",
+    "image_archive_button": "Archive",
     "undefined": "undefined",
     "catalog_no_catalog_info": "A catalog in Arachne is an ordered list of archaeological objects.",
     "general_hint": "Note:",

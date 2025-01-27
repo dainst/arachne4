@@ -3,7 +3,7 @@
  *
  * @author: Daniel M. de Oliveira
  */
-export default function($scope, $stateParams, $filter, $location, PwdActivation, messages) {
+export default function ($scope, $stateParams, $filter, $location, PwdActivation, messages) {
 
     /**
      * Copy the user so that the shown passwords
@@ -31,12 +31,11 @@ export default function($scope, $stateParams, $filter, $location, PwdActivation,
     };
 
     var handleActivationError = function (data) {
-        console.log(data);
         messages.add('ui.register.passwordsDontMatch', 'danger');
     };
 
     $scope.submit = function () {
-        PwdActivation.save({token: $stateParams.token},
+        PwdActivation.save({ token: $stateParams.token },
             copyUser($scope.user),
             handleActivationSuccess,
             handleActivationError
