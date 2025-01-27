@@ -8,11 +8,6 @@ npm install && npm run build && npm start
 
 ## Development
 
-The repository includes a [gulp](http://gulpjs.com/) configuration for setting up a local server, preconfigured with:
-* proxying to the backend running on the development server
-* url rewriting for AngularJS' HTML5 mode
-* live reloading
-
 ### Prerequisites
 
 You need the following components in order for the local server to work:
