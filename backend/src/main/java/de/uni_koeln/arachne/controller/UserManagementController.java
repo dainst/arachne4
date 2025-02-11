@@ -457,7 +457,7 @@ public class UserManagementController {
         final String expirationDateString = dateFormat.format(expirationDate);
         final String linkString = "https://" + serverAddress + "/user/activation/" + token;
 
-        final String messageBody = "A password reset was requested for iDAI.objects/Arachne on " + nowString + "."
+        final String messageBody = "A password reset was requested for user '" + userByEmail.getUsername() + "' in iDAI.objects/Arachne on " + nowString + "."
                 + newLine + "You can use the following link to reset your password: " + linkString
                 + newLine + "The link is valid until " + expirationDateString + ".";
 
