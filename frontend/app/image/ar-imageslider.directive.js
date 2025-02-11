@@ -12,7 +12,8 @@ const hacViaEntityCategories = [
     "reproduktion",
     "rezeption",
     "sammlungen",
-    "typus"
+    "typus",
+    "topographie"
 ]
 
 export default function (arachneSettings, authService) {

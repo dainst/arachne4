@@ -13,6 +13,8 @@ export default function ($rootScope, $stateParams, searchService, $scope, Entity
     $scope.user = authService.getUser();
     $scope.serverUri = "http://" + document.location.host + document.getElementById('baseLink').getAttribute("href");
 
+    $scope.showArachne3Edit = (document.location.host == "arachne.dainst.org") ? true : false;
+
     categoryService.getCategoriesAsync().then(function (categories) {
         $scope.categories = categories;
     });
