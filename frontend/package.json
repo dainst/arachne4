@@ -66,7 +66,6 @@
     "karma-webpack": "^5.0.0",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^2.4.5",
-    "node-sass": "^6.0.1",
     "protractor": "~5.4.0",
     "protractor-console-plugin": "~0.1.1",
     "proxy-middleware": "~0.15.0",
