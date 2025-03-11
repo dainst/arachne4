@@ -18,6 +18,7 @@ public class SQLToolbox { // NOPMD
 	static {
 		PRIMARY_KEY_NAMES.put("marbilder", "PS_MARBilderID");
 		PRIMARY_KEY_NAMES.put("zenon", "zenonid");
+		PRIMARY_KEY_NAMES.put("datenblattberlin_inschrift", "PS_DatenblattBerlinInschriftID");
 	}
 	
 	/**
