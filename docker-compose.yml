@@ -37,6 +37,10 @@ services:
       - "SMTP_USER_PASSWORD=${SMTP_USER_PASSWORD}"
       - "IIPIMAGE_SERVER=frontend"
       - "ELASTICSEARCH_SERVER=elasticsearch"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     volumes:
       - ${ARCHAEOCLOUD_PATH}:/media/archaeocloud
     hostname: "${HOST_NAME}"
