@@ -2,6 +2,12 @@
 <category xmlns="http://arachne.uni-koeln.de/schemas/category"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="gruppen"
 	xsi:schemaLocation="http://arachne.uni-koeln.de/schemas/category category.xsd">
+	<subtables>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">
+						datenblattberlin</subtable>
+		<subtable connectFieldParent="PrimaryKey" connectFieldSubTable="FS_ObjektID">
+						datenblattberlin_inschrift</subtable>
+	</subtables>
 	<display>
 		<title>
 			<section>
@@ -20,13 +26,101 @@
 			</section>
 		</subtitle>
 		<datasections>
+			<section labelKey="Datenblatt der Antikensammlung Berlin">
+				<section labelKey="Name">
+					<field datasource="datenblattberlin.Name" />
+				</section>
+				<section labelKey="Inventarnummer">
+					<field datasource="datenblattberlin.Inventarnummer" />
+				</section>
+				<section labelKey="Autor">
+					<field datasource="datenblattberlin.Autor" />
+				</section>
+				<section labelKey="Herkunft">
+					<field datasource="datenblattberlin.Herkunft_Berlin" />
+				</section>
+				<section labelKey="Maße">
+					<field datasource="datenblattberlin.Masze" />
+				</section>
+				<section labelKey="Material/Technik">
+					<field datasource="datenblattberlin.MaterialTechnik" />
+				</section>
+				<section labelKey="Erhaltung">
+					<field datasource="datenblattberlin.Erhaltung_Berlin" />
+				</section>
+				<section labelKey="Ergänzungen">
+					<field datasource="datenblattberlin.Ergaenzungen" />
+				</section>
+				<section labelKey="Inschrift">
+					<field datasource="datenblattberlin.Inschrift" />
+				</section>
+				<section labelKey="Inventare/Archivalien">
+					<field datasource="datenblattberlin.InventareArchivalien" />
+				</section>
+				<section labelKey="Kataloge">
+					<field datasource="datenblattberlin.Kataloge" />
+				</section>
+				<section labelKey="Literatur">
+					<field datasource="datenblattberlin.Literatur" />
+				</section>
+				<section labelKey="Beschreibung">
+					<field datasource="datenblattberlin.Beschreibung_Berlin" />
+				</section>
+				<section labelKey="Datierung">
+					<field datasource="datenblattberlin.Datierung" />
+				</section>
+				<section labelKey="Interpretation">
+					<field datasource="datenblattberlin.Interpretation" />
+				</section>
+				<section labelKey="Rezeption">
+					<field datasource="datenblattberlin.Rezeption" />
+				</section>
+				<section labelKey="Standort">
+					<field datasource="datenblattberlin.Standort" />
+				</section>
+			</section>
+			<section labelKey="Datenblatt Inschrift der Antikensammlung Berlin">
+				<section labelKey="Anbringunsort">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Anbringungsort" />
+				</section>
+				<section labelKey="Besonderheiten">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Besonderheiten" />
+				</section>
+				<section labelKey="Buchstabenhöhe">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Buchstabenhoehe" />
+				</section>
+				<section labelKey="Zeilabstand">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Zeilenabstand" />
+				</section>
+				<section labelKey="Interpunktion">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Interpunktion" />
+				</section>
+				<section labelKey="Wortlaut">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Wortlaut" />
+				</section>
+				<section labelKey="Kritischer Apparat">
+					<field datasource="datenblattberlin_inschrift.Inschrift_kritApparat" />
+				</section>
+				<section labelKey="Übersetzung">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Uebersetzung" />
+				</section>
+				<section labelKey="Literatur">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Literatur" />
+				</section>
+				<section labelKey="Kommentar">
+					<field datasource="datenblattberlin_inschrift.Inschrift_Kommentar" />
+				</section>
+			</section>
+
 			<section labelKey="Informationen zum mehrteiligen Denkmal (Gruppe)">
 				<include type="ort" />
 				<include type="datierung" />
 				<section labelKey="Allgemein">
-					<field datasource="gruppen.alternativeBezeichnung" prefix="Alternative Bezeichnung: " />
+					<field datasource="gruppen.alternativeBezeichnung"
+						prefix="Alternative Bezeichnung: " />
 					<field datasource="gruppen.ArtDerGruppe" prefix="Art des Denkmals: " />
-					<field datasource="gruppen.AnzahlFigurenGruppen" prefix="Anzahl der Figuren/Objekte: " />
+					<field datasource="gruppen.AnzahlFigurenGruppen"
+						prefix="Anzahl der Figuren/Objekte: " />
 					<field datasource="gruppen.Aufbau" prefix="Aufbau: " />
 					<field datasource="gruppen.Zusammengehoerigkeit" prefix="Zusammengehörigkeit: " />
 				</section>
