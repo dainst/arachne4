@@ -42,7 +42,8 @@
 			<span class="glyphicon glyphicon-repeat"></span> {{ 'entity.image.rotate' | transl8 }}
 		</button>
 
-		<div ng-if="accessInfo !== {}" class="image-license-panel">
+		<div ng-if="accessInfo.license_label || accessInfo.license_url || accessInfo.contact"
+			class="image-license-panel">
 			<a ng-if="accessInfo.license_label && accessInfo.license_url" ng-href="{{accessInfo.license_url}}"
 				target="_blank">
 				{{accessInfo.license_label}}
