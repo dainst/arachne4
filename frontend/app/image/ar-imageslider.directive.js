@@ -27,8 +27,8 @@ export default function (arachneSettings, authService) {
             }
 
             scope.user = authService.getUser();
-            var thumbRow = angular.element(angular.element(element.children()[0]).children()[0]).children()[2];
-            var sliderRow = angular.element(element.children()[0]).children()[0];
+            var thumbBox = document.querySelector("#thumbbox");
+            var sliderRow = document.querySelector(".thumb-row");
 
             scope.currentImgNo = 0;
             scope.offset = 0;
@@ -81,7 +81,7 @@ export default function (arachneSettings, authService) {
             scope.pageThumbsRight = function () {
                 var rowRect = sliderRow.getBoundingClientRect();
                 var offset = scope.offset + rowRect.width;
-                scope.max = thumbRow.getBoundingClientRect().width + 15 - rowRect.width;
+                scope.max = thumbBox.getBoundingClientRect().width + 15 - rowRect.width;
                 if (offset < scope.max) {
                     scope.offset = offset;
                 } else {
@@ -92,7 +92,7 @@ export default function (arachneSettings, authService) {
             scope.setImage = function (imgNo) {
                 scope.currentImgNo = imgNo;
                 var rowRect = sliderRow.getBoundingClientRect();
-                var thumbEl = angular.element(thumbRow).find('img')[imgNo];
+                var thumbEl = angular.element(thumbBox).find('img')[imgNo];
                 var thumbRect = thumbEl.getBoundingClientRect();
                 var relOffset = thumbRect.left - rowRect.left;
                 if (relOffset < 0) {
