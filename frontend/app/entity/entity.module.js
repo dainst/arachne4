@@ -27,8 +27,8 @@ export default angular.module('arachne.entity', ['arachne.scope'])
     .directive('arEntitySections', arEntitySections)
     .directive('arEntityTitle', arEntityTitle)
     .directive('arFacetBrowser', ['Entity', arFacetBrowser])
-    .directive('arSchemaorgJsonld', ['$filter' ,'$sce' , arSchemaorgJsonld])
-    .controller('EntityImageController', ['$stateParams', '$scope', 'Entity', 'authService', 'searchService', '$rootScope', 'messageService', 'lazyLoad', EntityImageController])
+    .directive('arSchemaorgJsonld', ['$filter', '$sce', arSchemaorgJsonld])
+    .controller('EntityImageController', ['$stateParams', '$scope', 'Entity', 'arachneSettings', 'authService', 'searchService', '$rootScope', 'messageService', 'lazyLoad', EntityImageController])
     .controller('EntityImagesController', ['$stateParams', '$scope', 'Entity', '$filter', 'searchService', '$rootScope', 'messageService', EntityImagesController])
     .controller('EntityController', ['$rootScope', '$stateParams', 'searchService', '$scope', 'Entity',
         '$location', 'authService', 'categoryService', 'Query',
