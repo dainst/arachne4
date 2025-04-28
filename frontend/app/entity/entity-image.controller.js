@@ -1,4 +1,4 @@
-export default function ($stateParams, $scope, Entity, authService, searchService, $rootScope, messages, lazyLoad) {
+export default function ($stateParams, $scope, Entity, arachneSettings, authService, searchService, $rootScope, messages, lazyLoad) {
 
     lazyLoad(import('../image/image.module.js')).then(mod => $scope.lazyLoadImage = mod);
 
@@ -52,9 +52,13 @@ export default function ($stateParams, $scope, Entity, authService, searchServic
     $scope.currentQuery = searchService.currentQuery();
     $scope.entityId = $stateParams.entityId;
     $scope.imageId = $stateParams.imageId;
-    Entity.get({id: $stateParams.entityId}, function (data) {
+    $scope.accessInfo = {};
+    $scope.marbildId = null;
 
+    Entity.get({ id: $stateParams.entityId }, function (data) {
         $scope.entity = data;
+        $scope.marbildId = data.internalId;
+
         $scope.refreshImageIndex();
     }, function (response) {
         messages.add("entity_" + response.status);
@@ -86,6 +90,22 @@ export default function ($stateParams, $scope, Entity, authService, searchServic
 
     $scope.$watch("imageId", function () {
         $scope.refreshImageIndex();
+    });
+
+    $scope.$watch("marbildId", async function () {
+        if ($scope.marbildId == null) return;
+
+        const response = await fetch(`${arachneSettings.hacViaUrl}/api/published/access_info/${5110657}`)
+
+        if (response.status === 200) {
+            $scope.accessInfo = await response.json();
+
+            if ($scope.accessInfo.archive_id) {
+                $scope.accessInfo.download = `${arachneSettings.hacViaUrl}/api/archive/${$scope.accessInfo.archive_id}`
+            }
+        } else {
+            $scope.accessInfo = {};
+        }
     });
 
 };
