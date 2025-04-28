@@ -192,7 +192,7 @@ angular.module('arachne', [
     arachneUrl: 'https://arachne.dainst.org',
     dataserviceUri: "//" + document.location.host + "/data",
     hacViaUrl: function () {
-        return document.location.host == "arachne.dainst.org" ? "//images.arachne.dainst.org" : "//images.arachne.test.dainst.org"
+            return document.location.host == "arachne.dainst.org" ? "https://images.arachne.dainst.org" : "https://images.arachne.test.dainst.org"
     }(),
     limit: 50,
     facetLimit: 20,
