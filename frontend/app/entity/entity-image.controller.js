@@ -95,7 +95,7 @@ export default function ($stateParams, $scope, Entity, arachneSettings, authServ
     $scope.$watch("marbildId", async function () {
         if ($scope.marbildId == null) return;
 
-        const response = await fetch(`${arachneSettings.hacViaUrl}/api/published/access_info/${5110657}`)
+        const response = await fetch(`${arachneSettings.hacViaUrl}/api/published/access_info/${$scope.marbildId}`)
 
         if (response.status === 200) {
             $scope.accessInfo = await response.json();
