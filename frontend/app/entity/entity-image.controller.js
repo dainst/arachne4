@@ -88,14 +88,10 @@ export default function ($stateParams, $scope, Entity, arachneSettings, authServ
         container.style.transform = "rotate("+ rotation + "deg)";
     }
 
-    $scope.$watch("imageId", function () {
+    $scope.$watch("imageId", async function () {
         $scope.refreshImageIndex();
-    });
 
-    $scope.$watch("marbildId", async function () {
-        if ($scope.marbildId == null) return;
-
-        const response = await fetch(`${arachneSettings.hacViaUrl}/api/published/access_info/${$scope.marbildId}`)
+        const response = await fetch(`${arachneSettings.hacViaUrl}/api/published/access_info/${$stateParams.imageId}`)
 
         if (response.status === 200) {
             $scope.accessInfo = await response.json();
@@ -107,5 +103,4 @@ export default function ($stateParams, $scope, Entity, arachneSettings, authServ
             $scope.accessInfo = {};
         }
     });
-
 };
