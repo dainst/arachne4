@@ -41,8 +41,29 @@
 		<button class="btn btn-default btn-sm" ng-click="rotateRight()">
 			<span class="glyphicon glyphicon-repeat"></span> {{ 'entity.image.rotate' | transl8 }}
 		</button>
-		<a ng-if="entity.images.length > 1"
-				ar-scoped-href="entity/{{entity.entityId}}/images"
+
+		<div ng-if="accessInfo.license_label || accessInfo.license_url || accessInfo.contact || accessInfo.photographer"
+			class="image-license-panel">
+			<a ng-if="accessInfo.license_label && accessInfo.license_url" ng-href="{{accessInfo.license_url}}"
+				target="_blank">
+				{{accessInfo.license_label}}
+			</a>
+			<div ng-if="accessInfo.license_label && !accessInfo.license_url">
+				{{accessInfo.license_label}}
+			</div>
+			<div ng-if="accessInfo.photographer">
+				<span class="glyphicon glyphicon-camera"></span> {{accessInfo.photographer}}
+			</div>
+			<div ng-if="accessInfo.contact">
+				<span class="glyphicon glyphicon-envelope"></span> {{accessInfo.contact}}
+			</div>
+		</div>
+
+		<a class="btn btn-default btn-sm" ng-if="accessInfo.download" ng-href="{{accessInfo.download}}" target="_blank">
+			<span class="glyphicon glyphicon-download-alt"></span> Download
+		</a>
+
+		<a ng-if="entity.images.length > 1" ar-scoped-href="entity/{{entity.entityId}}/images"
 				 class="btn btn-default btn-sm ">
 			<span class="glyphicon glyphicon-th"></span> {{ 'entity.image.all_images' | transl8 }} ({{entity.images.length}})
 		</a>

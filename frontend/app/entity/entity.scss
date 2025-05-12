@@ -135,3 +135,20 @@
   height: auto;
   white-space: normal;
 }
+
+
+.image-license-panel {
+  // Style mimicks the button group
+  margin-top: -1px;
+  margin-bottom: -1px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #fff;
+  border-color: #ccc;
+  color: #333;
+  border-width: 1px;
+  border-style: solid;
+  text-align: center;
+}
