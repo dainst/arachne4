@@ -5,12 +5,8 @@
 # Read .env file and use as environment variables
 export $(cat .env | sed 's/#.*//g' | xargs)
 
-BACKUP_DIR="/mnt/cephfs/idai_world/backups/idai_objects"
+BACKUP_DIR="/opt/backup"
 
-docker exec arachne4_db sh -c "mariadb-dump -uroot -p${DB_ROOT_PASSWORD} --ignore-table-data=arachne.verwaltung_benutzer arachne" > $BACKUP_DIR/arachne_dump.sql
-gzip -c $BACKUP_DIR/arachne_dump.sql > $BACKUP_DIR/arachne_dump_$(date +"%Y_%m_%d").gz
-rm $BACKUP_DIR/arachne_dump.sql
-
-docker exec arachne4_db sh -c "mariadb-dump -uroot -p${DB_ROOT_PASSWORD} arachne verwaltung_benutzer" > $BACKUP_DIR/verwaltung_benutzer_dump.sql
-gzip -c $BACKUP_DIR/verwaltung_benutzer_dump.sql > $BACKUP_DIR/verwaltung_benutzer_dump_$(date +"%Y_%m_%d").gz
-rm $BACKUP_DIR/verwaltung_benutzer_dump.sql
+docker exec arachne4_db sh -c "mariadb-dump -uroot -p${DB_ROOT_PASSWORD} arachne" > $BACKUP_DIR/arachne_dump_complete.sql
+gzip -c $BACKUP_DIR/arachne_dump_complete.sql > $BACKUP_DIR/arachne_dump_complete_$(date +"%Y_%m_%d").gz
+rm $BACKUP_DIR/arachne_dump_complete.sql
