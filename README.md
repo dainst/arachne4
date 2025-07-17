@@ -13,3 +13,5 @@ The easiest way to get started with developing is using already running test or 
 This repository includes several workflows that test and build the components. The resulting container images are automatically deployed to the GitHub Container Registry. Changes to the main branch are published under the `latest` tag, changes to the stable branch are published to the `stable` tag.
 
 Test and production deployment is realized with docker-compose. Services are automatically updated with [watchtower](https://containrrr.dev/watchtower/) so that new instances of the `latest` images are automatically published to the test system while pushing to the `stable` branch triggers production updates.
+
+Merges into stable have to be done via pull request and approved by another member of the organization.
