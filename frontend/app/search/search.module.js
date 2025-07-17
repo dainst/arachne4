@@ -14,7 +14,7 @@ export default angular.module('arachne.search', [
     scopeModule.name,
     imageModule.name,
     indexModule.name,
-    catalogModule.name
+    //catalogModule.name
 ])
     .config(['$stateProvider', $stateProvider => {
         $stateProvider.state({ name: 'scopedSearch',  url: '/project/:title/search?q&fq&view&sort&offset&limit&desc&bbox&ghprec&group', template: require('./search.html'), data: {scoped: true}});
