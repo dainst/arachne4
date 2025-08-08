@@ -18,7 +18,7 @@ Test and production deployment is realized with docker-compose. Services are aut
 
 If you wish to develop a feature or make changes to arachne4, you can! 
 
-As a member of the [dainst](https://github.com/dainst/)-organization, open a new branch for your feature if you wish to change anything in the code base and open a pull request to main, including feature description. Unless you are part of the core team, you should request a review at this point. If you just want to adjust content in the frontend under `con10t`, you can push directly to main. If you are not a member, you can do so from your fork. 
+As a member of the [dainst](https://github.com/dainst/)-organization, open a new branch for your feature if you wish to change anything in the code base and open a pull request to main, including feature description. Unless you are part of the core team, you should request a review at this point. If you just want to adjust content in the frontend under `con10t` (or otherwise purely "content"-related), you can push directly to main. If you are not a member, you can do so from your fork. 
 
 Merges into stable have to be done via pull request and have to be approved by another member of the organization.
 
