@@ -1,6 +1,6 @@
 package de.uni_koeln.arachne.response;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 /**
  * Class to hold a single <code>String</code> value.
@@ -19,7 +19,7 @@ public class Field extends AbstractContent {
 	public void setValue(final String value) {
 		this.value = value;
 	}
-	
+
 	@Override
 	public String toString() {
 		return getValue();
@@ -55,6 +55,6 @@ public class Field extends AbstractContent {
 			}
 		}
 		return true;
-	}	
-	
+	}
+
 }

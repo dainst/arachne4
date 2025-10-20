@@ -7,10 +7,9 @@ import de.uni_koeln.arachne.testconfig.EmbeddedDataSourceConfig;
 import de.uni_koeln.arachne.testconfig.TestUserData;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -19,21 +18,19 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyString;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @WebAppConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = EmbeddedDataSourceConfig.class)
+@SpringJUnitConfig(classes = EmbeddedDataSourceConfig.class)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class TestGenericSQLDao {
 
@@ -66,7 +63,7 @@ public class TestGenericSQLDao {
 
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		when(userRightsService.isSignedInUser()).thenReturn(true);
@@ -80,7 +77,7 @@ public class TestGenericSQLDao {
 		testUserData = new TestUserData(jdbcTemplate);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		testUserData.dropUserTable();
 		jdbcTemplate.execute("DROP TABLE IF EXISTS marbilder; ");
@@ -130,7 +127,7 @@ public class TestGenericSQLDao {
 		return true;
 	}
 
-	@Test
+	/* ~~(org/openrewrite/staticanalysis/LambdaBlockToExpression)~~> */@Test
 	public void testGetStringFieldKeyEqualsTablename() {
 		if (!setUpTestGetStringFieldKeyEqualsTablename())
 			fail("could not set up string field");

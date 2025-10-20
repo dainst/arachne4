@@ -1,25 +1,26 @@
 package de.uni_koeln.arachne.mapping.hibernate;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,6 +42,7 @@ public class User extends ProtectedObject implements UserDetails {
 	/**
 	 * Default serial version.
 	 */
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	public enum BOOLEAN {
@@ -180,7 +182,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param groupID
-	 *            the groupID to set
+	 *                the groupID to set
 	 * @return {@code this}
 	 */
 	public User setGroupID(final int groupID) {
@@ -198,7 +200,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param username
-	 *            the username to set
+	 *                 the username to set
 	 * @return {@code this}
 	 */
 	public User setUsername(final String username) {
@@ -217,7 +219,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param password
-	 *            the password to set
+	 *                 the password to set
 	 * @return {@code this}
 	 */
 	public User setPassword(final String password) {
@@ -234,7 +236,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param institution
-	 *            the institution to set
+	 *                    the institution to set
 	 * @return {@code this}
 	 */
 	public User setInstitution(final String institution) {
@@ -251,7 +253,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param firstname
-	 *            the firstname to set
+	 *                  the firstname to set
 	 * @return {@code this}
 	 */
 	public User setFirstname(final String firstname) {
@@ -268,7 +270,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param lastname
-	 *            the lastname to set
+	 *                 the lastname to set
 	 * @return {@code this}
 	 */
 	public User setLastname(final String lastname) {
@@ -285,7 +287,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param email
-	 *            the email to set
+	 *              the email to set
 	 * @return {@code this}
 	 */
 	public User setEmail(final String email) {
@@ -302,7 +304,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param street
-	 *            the street to set
+	 *               the street to set
 	 * @return {@code this}
 	 */
 	public User setStreet(final String street) {
@@ -336,7 +338,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param place
-	 *            the place to set
+	 *              the place to set
 	 * @return {@code this}
 	 */
 	public User setPlace(final String place) {
@@ -353,7 +355,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param homepage
-	 *            the homepage to set
+	 *                 the homepage to set
 	 * @return {@code this}
 	 */
 	public User setHomepage(final String homepage) {
@@ -370,7 +372,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param country
-	 *            the country to set
+	 *                the country to set
 	 * @return {@code this}
 	 */
 	public User setCountry(final String country) {
@@ -387,7 +389,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param telephone
-	 *            the telephone to set
+	 *                  the telephone to set
 	 * @return {@code this}
 	 */
 	public User setTelephone(final String telephone) {
@@ -404,7 +406,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param all_groups
-	 *            the all_groups to set
+	 *                   the all_groups to set
 	 * @return {@code this}
 	 */
 	public User setAll_groups(final boolean all_groups) {
@@ -421,7 +423,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param login_permission
-	 *            the login_permission to set
+	 *                         the login_permission to set
 	 * @return {@code this}
 	 */
 	public User setLogin_permission(final boolean login_permission) {
@@ -438,7 +440,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param lastLogin
-	 *            the lastLogin to set
+	 *                  the lastLogin to set
 	 * @return {@code this}
 	 */
 	public User setLastLogin(final Date lastLogin) {
@@ -455,7 +457,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param datasetGroups
-	 *            the datasetGroups to set
+	 *                      the datasetGroups to set
 	 * @return {@code this}
 	 */
 	public User setDatasetGroups(final Set<DatasetGroup> datasetGroups) {
@@ -487,7 +489,7 @@ public class User extends ProtectedObject implements UserDetails {
 
 	/**
 	 * @param emailAuth
-	 *            the emailAuth to set
+	 *                  the emailAuth to set
 	 * @return {@code this}
 	 */
 	public User setEmailAuth(String emailAuth) {
@@ -562,7 +564,9 @@ public class User extends ProtectedObject implements UserDetails {
 						+ (lastLogin != null ? "lastLogin=" + lastLogin : "") + "]");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -592,7 +596,9 @@ public class User extends ProtectedObject implements UserDetails {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

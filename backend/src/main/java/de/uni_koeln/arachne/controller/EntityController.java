@@ -23,32 +23,32 @@ import de.uni_koeln.arachne.util.EntityId;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 
 /**
- * Handles http requests (currently only get) for <code>/entity<code> and <code>/data</code>.
+ * Handles http requests (currently only get) for
+ * <code>/entity<code> and <code>/data</code>.
  */
 @Controller
 public class EntityController {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityController.class);
-	
+
 	@Autowired
 	private transient EntityService entityService;
-	
+
 	@Autowired
 	private transient EntityIdentificationService entityIdentificationService;
-	
+
 	@Autowired
 	private transient ImageService imageService;
 
 	@Autowired
 	private transient ESService esService;
-	
+
 	/**
 	 * Handles HTTP request for /entity/count.
-	 * @return The number of entities in the elasticsearch index. 
+	 * 
+	 * @return The number of entities in the elasticsearch index.
 	 */
-	@RequestMapping(value="/entity/count", 
-			method=RequestMethod.GET, 
-			produces={APPLICATION_JSON_UTF8_VALUE})
+	@GetMapping(value = "/entity/count", produces = { APPLICATION_JSON_UTF8_VALUE })
 	public @ResponseBody ResponseEntity<String> handleGetEntityCountRequest() {
 		final long count = esService.getCount();
 		if (count > -1) {
@@ -57,22 +57,22 @@ public class EntityController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"entityCount\":" + count + "}");
 		}
 	}
-	
+
 	/**
 	 * Handles http request for /{entityId}.
 	 * Requests for /entity/* return formatted data as JSON.
-	 * @param entityId The unique entity id of the item to fetch.
-	 * @param isLive If the entity shall be fetched from DB (<code>true</code>) or ES (<code>false</code>)
-	 * @param paramLang The language HTTP request parameter.
+	 * 
+	 * @param entityId   The unique entity id of the item to fetch.
+	 * @param isLive     If the entity shall be fetched from DB (<code>true</code>)
+	 *                   or ES (<code>false</code>)
+	 * @param paramLang  The language HTTP request parameter.
 	 * @param headerLang The value of the 'Accept-Language' HTTP header.
-     * @return A response object containing the data (this is serialized to JSON).
-	 * @throws Transl8Exception if transl8 cannot be reached. 
-     */
-	@RequestMapping(value="/entity/{entityId}", 
-			method=RequestMethod.GET, 
-			produces={APPLICATION_JSON_UTF8_VALUE})
+	 * @return A response object containing the data (this is serialized to JSON).
+	 * @throws Transl8Exception if transl8 cannot be reached.
+	 */
+	@GetMapping(value = "/entity/{entityId}", produces = { APPLICATION_JSON_UTF8_VALUE })
 	public @ResponseBody ResponseEntity<String> handleGetFormattedEntityByIdRequest(
-			@PathVariable("entityId") final Long entityId,
+			@PathVariable final Long entityId,
 			@RequestParam(value = "live", required = false, defaultValue = "false") final Boolean isLive,
 			@RequestParam(value = "lang", required = false) final String paramLang,
 			@RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLang) throws Transl8Exception {
@@ -81,94 +81,90 @@ public class EntityController {
 		return getFormattedEntityResponse(entityId, null, lang, isLive);
 	}
 
-    /**
-     * Handles http request for /{category}/{id}
-     * Requests for /entity/* return formatted data as JSON.
-     * @param category The database table to fetch the item from.
-     * @param categoryId The internal id of the item to fetch.
-	 * @param isLive If the entity shall be fetched from DB (<code>true</code>) or ES (<code>false</code>)
-     * @param paramLang The language as HTTP parameter.
-     * @param headerLang The value of the 'Accept-Language' HTTP header.
-     * @return A response object containing the data (this is serialized to JSON).
-     */
-    @RequestMapping(value="/entity/{category}/{categoryId}", 
-    		method=RequestMethod.GET, 
-    		produces={APPLICATION_JSON_UTF8_VALUE})
-    public @ResponseBody ResponseEntity<String> handleGetFormattedEntityByCategoryIdRequest(
-    		@PathVariable("category") final String category,
-    		@PathVariable("categoryId") final Long categoryId,
-    		@RequestParam(value = "live", required = false, defaultValue = "false") final boolean isLive,
-            @RequestParam(value = "lang", required = false) final String paramLang,
+	/**
+	 * Handles http request for /{category}/{id}
+	 * Requests for /entity/* return formatted data as JSON.
+	 * 
+	 * @param category   The database table to fetch the item from.
+	 * @param categoryId The internal id of the item to fetch.
+	 * @param isLive     If the entity shall be fetched from DB (<code>true</code>)
+	 *                   or ES (<code>false</code>)
+	 * @param paramLang  The language as HTTP parameter.
+	 * @param headerLang The value of the 'Accept-Language' HTTP header.
+	 * @return A response object containing the data (this is serialized to JSON).
+	 */
+	@GetMapping(value = "/entity/{category}/{categoryId}", produces = { APPLICATION_JSON_UTF8_VALUE })
+	public @ResponseBody ResponseEntity<String> handleGetFormattedEntityByCategoryIdRequest(
+			@PathVariable final String category,
+			@PathVariable final Long categoryId,
+			@RequestParam(value = "live", required = false, defaultValue = "false") final boolean isLive,
+			@RequestParam(value = "lang", required = false) final String paramLang,
 			@RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLang) {
-    	
-    	LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
+
+		LOGGER.debug("Request for category: " + category + " - id: " + categoryId);
 		final String lang = (paramLang == null) ? headerLang : paramLang;
 		return getFormattedEntityResponse(categoryId, category, lang, isLive);
-    }
-    
-    /**
-     * Handles HTTP requests for /entity/{entityId}/images.
-     * @param entityId The entity id.
-     * @param offset An offset into the image list.
-     * @param limit The maximum number of images in the list.
-     * @return The list of connected images limited by 'offset' and 'limit'.
-     */
-    @RequestMapping(value="/entity/{entityId}/images", 
-    		method=RequestMethod.GET, 
-    		produces={APPLICATION_JSON_UTF8_VALUE})
-    public @ResponseBody ResponseEntity<ImageListResponse> handleImagesRequest(
-    		@PathVariable("entityId") final long entityId,
-    		@RequestParam(value = "offset", required = false) final Integer offset,
-    		@RequestParam(value = "limit", required = false) final Integer limit) {
-    	
-    	TypeWithHTTPStatus<List<Image>> result;
-    	int imageOffset = (offset == null) ? 0 : offset;
-    	int imageLimit = (limit == null) ? 0 : limit;
-    	final EntityId fullEntityId = entityIdentificationService.getId(entityId);
-    	if (fullEntityId != null) {
-    		result = imageService.getImagesSubList(fullEntityId, imageOffset, imageLimit);
-    		return ResponseEntity.status(result.getStatus()).body(new ImageListResponse(result.getValue()));
-    	}
-    	return new ResponseEntity<ImageListResponse>(HttpStatus.NOT_FOUND);
-    }
+	}
 
-    
-    //////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    /**
-     * Handles http request for /data/{id}.
-     * Requests for /data/* return the raw data.
-     * Depending on content negotiation either JSON or XML is returned.
-     * @param entityId The unique entityID.
-     * @return The <code>Dataset</code> of the requested entity.
-     */
-    @RequestMapping(value="/data/{entityId}",
-			method=RequestMethod.GET,
-			produces={APPLICATION_JSON_UTF8_VALUE})
-    public @ResponseBody ResponseEntity<String> handleGetRawEntityByIdRequest(
-    		@PathVariable("entityId") final Long entityId) {
-    	return getRawEntityResponse(entityId, null);
-    }
+	/**
+	 * Handles HTTP requests for /entity/{entityId}/images.
+	 * 
+	 * @param entityId The entity id.
+	 * @param offset   An offset into the image list.
+	 * @param limit    The maximum number of images in the list.
+	 * @return The list of connected images limited by 'offset' and 'limit'.
+	 */
+	@GetMapping(value = "/entity/{entityId}/images", produces = { APPLICATION_JSON_UTF8_VALUE })
+	public @ResponseBody ResponseEntity<ImageListResponse> handleImagesRequest(
+			@PathVariable final long entityId,
+			@RequestParam(required = false) final Integer offset,
+			@RequestParam(required = false) final Integer limit) {
 
-    /**
-     * Handles http request for /data/{category}/{id}.
-     * Requests for /data/* return the raw data.
-     * Depending on content negotiation either JSON or XML is returned.
-     * @param categoryId The internal ID of the requested entity.
-     * @param category The category to query.
-     * @return The <code>Dataset</code> of the requested entity
-     */
-    @RequestMapping(value="/data/{category}/{categoryId}",
-			method=RequestMethod.GET,
-			produces={APPLICATION_JSON_UTF8_VALUE})
-    public @ResponseBody ResponseEntity<String> handleGetRawEntityByCategoryIdRequest(
-    		@PathVariable("category") final String category,
-			@PathVariable("categoryId") final Long categoryId) {
-    	return getRawEntityResponse(categoryId, category);
-    }
+		TypeWithHTTPStatus<List<Image>> result;
+		int imageOffset = (offset == null) ? 0 : offset;
+		int imageLimit = (limit == null) ? 0 : limit;
+		final EntityId fullEntityId = entityIdentificationService.getId(entityId);
+		if (fullEntityId != null) {
+			result = imageService.getImagesSubList(fullEntityId, imageOffset, imageLimit);
+			return ResponseEntity.status(result.getStatus()).body(new ImageListResponse(result.getValue()));
+		}
+		return new ResponseEntity<ImageListResponse>(HttpStatus.NOT_FOUND);
+	}
 
-    private ResponseEntity<String> getFormattedEntityResponse(
-    		final long id,
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Handles http request for /data/{id}.
+	 * Requests for /data/* return the raw data.
+	 * Depending on content negotiation either JSON or XML is returned.
+	 * 
+	 * @param entityId The unique entityID.
+	 * @return The <code>Dataset</code> of the requested entity.
+	 */
+	@GetMapping(value = "/data/{entityId}", produces = { APPLICATION_JSON_UTF8_VALUE })
+	public @ResponseBody ResponseEntity<String> handleGetRawEntityByIdRequest(
+			@PathVariable final Long entityId) {
+		return getRawEntityResponse(entityId, null);
+	}
+
+	/**
+	 * Handles http request for /data/{category}/{id}.
+	 * Requests for /data/* return the raw data.
+	 * Depending on content negotiation either JSON or XML is returned.
+	 * 
+	 * @param categoryId The internal ID of the requested entity.
+	 * @param category   The category to query.
+	 * @return The <code>Dataset</code> of the requested entity
+	 */
+	@GetMapping(value = "/data/{category}/{categoryId}", produces = { APPLICATION_JSON_UTF8_VALUE })
+	public @ResponseBody ResponseEntity<String> handleGetRawEntityByCategoryIdRequest(
+			@PathVariable final String category,
+			@PathVariable final Long categoryId) {
+		return getRawEntityResponse(categoryId, category);
+	}
+
+	private ResponseEntity<String> getFormattedEntityResponse(
+			final long id,
 			final String category,
 			final String lang,
 			final boolean isLive) {
@@ -185,8 +181,8 @@ public class EntityController {
 			result = new TypeWithHTTPStatus<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return ResponseEntity.status(result.getStatus())
-			.headers(result.getHeaders())
-			.body(result.getValue());
+				.headers(result.getHeaders())
+				.body(result.getValue());
 
 	}
 

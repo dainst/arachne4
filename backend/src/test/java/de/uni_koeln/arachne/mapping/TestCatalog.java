@@ -1,14 +1,14 @@
 package de.uni_koeln.arachne.mapping;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.net.URL;
 
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -18,12 +18,12 @@ import com.google.common.io.Resources;
 
 import de.uni_koeln.arachne.mapping.jdbc.Catalog;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(MethodName.class)
 public class TestCatalog {
 
 	public static Catalog catalog;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() throws JsonParseException, JsonMappingException,
 			IOException {
 		URL resource = TestCatalog.class
@@ -33,7 +33,7 @@ public class TestCatalog {
 				Resources.toString(resource, Charsets.UTF_8), Catalog.class);
 	}
 
-	@Test
+	/* ~~(org/openrewrite/staticanalysis/LambdaBlockToExpression)~~> */@Test
 	public void test1Deserialization() {
 		assertNotNull(catalog);
 		assertNotNull(catalog.getRoot());

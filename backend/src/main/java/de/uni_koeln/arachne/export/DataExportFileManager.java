@@ -6,12 +6,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * @author Paf
@@ -37,7 +36,7 @@ public class DataExportFileManager {
 
         final File file = new File(getFileName(task));
 
-        if(!file.exists()){
+        if (!file.exists()) {
             throw new DataExportException("not_found", file.toString(), HttpStatus.NOT_FOUND);
         }
 
@@ -51,7 +50,7 @@ public class DataExportFileManager {
     }
 
     public void deleteFile(DataExportTask task) {
-        final Path path = Paths.get(getFileName(task));
+        final Path path = Path.of(getFileName(task));
 
         try {
             Files.delete(path);
@@ -66,7 +65,7 @@ public class DataExportFileManager {
     public long getFileSize(DataExportTask task) {
         final String fileName = getFileName(task);
         try {
-            return Files.size(Paths.get(fileName));
+            return Files.size(Path.of(fileName));
         } catch (IOException e) {
             throw new DataExportException("io_error", fileName, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -86,7 +85,7 @@ public class DataExportFileManager {
         try {
             final File file = new File(getFileName(task));
             @SuppressWarnings("resource")
-			final FileOutputStream fileOutputStream = new FileOutputStream(file);
+            final FileOutputStream fileOutputStream = new FileOutputStream(file);
             file.getParentFile().mkdirs();
             file.createNewFile();
             task.perform(fileOutputStream);

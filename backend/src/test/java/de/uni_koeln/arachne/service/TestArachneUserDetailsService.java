@@ -1,6 +1,6 @@
 package de.uni_koeln.arachne.service;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import static de.uni_koeln.arachne.util.security.SecurityUtils.*;
@@ -11,10 +11,10 @@ import java.util.HashSet;
 import java.util.Locale;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,7 +26,7 @@ import de.uni_koeln.arachne.service.ArachneUserDetailsService.NoLoginPermissionE
 import de.uni_koeln.arachne.testconfig.TestUserData;
 import de.uni_koeln.arachne.util.security.SecurityUtils;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class TestArachneUserDetailsService {
 
 	@Mock
@@ -35,7 +35,7 @@ public class TestArachneUserDetailsService {
 	@InjectMocks
 	ArachneUserDetailsService userDetailsService = new ArachneUserDetailsService();
 
-	@Test
+	/* ~~(org/openrewrite/staticanalysis/LambdaBlockToExpression)~~> */@Test
 	public void testLoadUserByUsername_Admin() {
 		User expectedUser = TestUserData.getAdmin();
 		HashSet<GrantedAuthority> authorities = new HashSet<>(
@@ -62,7 +62,7 @@ public class TestArachneUserDetailsService {
 		User expectedUser = TestUserData.getUser();
 		ArrayList<String> datasetGroups = new ArrayList<>(2);
 		expectedUser.getDatasetGroups().forEach(g -> datasetGroups.add(GROUP_PREFIX + g.getName()));
-		
+
 		HashSet<GrantedAuthority> authorities = new HashSet<>(Arrays.asList(new SimpleGrantedAuthority(USER),
 				new SimpleGrantedAuthority(datasetGroups.get(0)),
 				new SimpleGrantedAuthority(datasetGroups.get(1))));
@@ -80,14 +80,14 @@ public class TestArachneUserDetailsService {
 	public void testLoadUserByUsername_NoLoginPermission() {
 		User user = TestUserData.getUserNoLogin();
 		when(userDao.findByName(user.getUsername())).thenReturn(user);
-		
+
 		userDetailsService.loadUserByUsername(user.getUsername());
 	}
-	
+
 	private void testUser(User expectedUser) {
 		User user = new User();
 		BeanUtils.copyProperties(expectedUser, user);
-		
+
 		when(userDao.findByName(expectedUser.getUsername())).thenReturn(user);
 
 		User actualUser = (User) userDetailsService.loadUserByUsername(user.getUsername());
@@ -98,5 +98,4 @@ public class TestArachneUserDetailsService {
 				"ROLE_" + actualUser.getLastname().toUpperCase(Locale.ROOT)));
 	}
 
-	
 }

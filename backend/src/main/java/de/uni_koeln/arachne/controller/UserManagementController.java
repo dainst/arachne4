@@ -29,7 +29,7 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -37,16 +37,17 @@ import java.util.*;
 import static de.uni_koeln.arachne.util.FormDataUtils.*;
 
 /**
- * Controller that handles user registration and password reset/activation requests.
+ * Controller that handles user registration and password reset/activation
+ * requests.
  * 
  * @author scuy
  * @author Reimar Grabowski
  */
 @Controller
 public class UserManagementController {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserManagementController.class);
-	
+
 	private static final String newLine = System.lineSeparator();
 
 	@Value("${testUserName:null}") // should default to null value in when using production configuration
@@ -54,30 +55,31 @@ public class UserManagementController {
 
 	@Autowired
 	private transient UserDao userDao;
-	
+
 	@Autowired
 	private transient ResetPasswordRequestDao resetPasswordRequestDao;
-	
+
 	@Autowired
 	private transient Random random;
-	
+
 	@Autowired
-	private transient MailService mailService; 
-	
+	private transient MailService mailService;
+
 	@Autowired
 	private transient UserRightsService userRightsService;
-	
-	private transient final List<String> defaultDatasetGroups; 
+
+	private transient final List<String> defaultDatasetGroups;
 	private transient final String adminEmail;
 	private transient final String serverAddress;
-	
+
 	/**
-	 * Constructor setting the default dataset groups, the admin eMail and the server address. 
+	 * Constructor setting the default dataset groups, the admin eMail and the
+	 * server address.
+	 * 
 	 * @param defaultDatasetGroups The list of default dataset groups.
-	 * @param adminEmail The admin eMail address.
-	 * @param serverAddress The server address.
+	 * @param adminEmail           The admin eMail address.
+	 * @param serverAddress        The server address.
 	 */
-	@Autowired
 	public UserManagementController(
 			final @Value("#{'${defaultDatasetGroups}'.split(',')}") List<String> defaultDatasetGroups,
 			final @Value("${adminEmail}") String adminEmail,
@@ -86,21 +88,22 @@ public class UserManagementController {
 		this.adminEmail = adminEmail;
 		this.serverAddress = serverAddress;
 	}
-	
+
 	/**
-	 * End point to retrieve user information. Admins get more information returned than a normal user.
+	 * End point to retrieve user information. Admins get more information returned
+	 * than a normal user.
+	 * 
 	 * @param username The username of interest.
 	 * @return A JSON serialization of the corresponding User object.
 	 */
-	// use regex addon to disable extension recognition and allow usernames that include dots
-	@RequestMapping(value="/userinfo/{username:.+}",
-			method=RequestMethod.GET, 
-			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
-	public ResponseEntity<MappingJacksonValue> getUserInfo(@PathVariable("username") String username) {
+	// use regex addon to disable extension recognition and allow usernames that
+	// include dots
+	@GetMapping(value = "/userinfo/{username:.+}", produces = { CustomMediaType.APPLICATION_JSON_UTF8_VALUE })
+	public ResponseEntity<MappingJacksonValue> getUserInfo(@PathVariable String username) {
 		LOGGER.info("username: {}", username);
 		if (!userRightsService.isSignedInUser())
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-		
+
 		User user = userDao.findByName(username);
 		MappingJacksonValue wrapper = new MappingJacksonValue(user);
 		if (userRightsService.userHasRole(ADMIN)) {
@@ -116,14 +119,14 @@ public class UserManagementController {
 	}
 
 	/**
-	 * End point to retrieve user information based on their id. Admins get more information returned than a normal user.
+	 * End point to retrieve user information based on their id. Admins get more
+	 * information returned than a normal user.
+	 * 
 	 * @param uid The user id of interest.
 	 * @return A JSON serialization of the corresponding User object.
 	 */
-	@RequestMapping(value="/userid/{uid}",
-			method=RequestMethod.GET,
-			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
-	public ResponseEntity<MappingJacksonValue> getUserInfo(@PathVariable("uid") long uid) {
+	@GetMapping(value = "/userid/{uid}", produces = { CustomMediaType.APPLICATION_JSON_UTF8_VALUE })
+	public ResponseEntity<MappingJacksonValue> getUserInfo(@PathVariable long uid) {
 		if (!userRightsService.isSignedInUser())
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
@@ -143,25 +146,26 @@ public class UserManagementController {
 	}
 
 	/**
-	 * End point to update (not create) user information. Admins can change more fields (all_groups, etc.) than a 
+	 * End point to update (not create) user information. Admins can change more
+	 * fields (all_groups, etc.) than a
 	 * normal user.
+	 * 
 	 * @param username The username of interest.
 	 * @param formData The form data as map.
 	 * @return The JSON serialization of a success message.
-	 * @throws FormDataException if the email address is invalid or already taken or the username is already taken.
+	 * @throws FormDataException if the email address is invalid or already taken or
+	 *                           the username is already taken.
 	 */
-	@RequestMapping(value="/userinfo/{username:.+}",
-			method=RequestMethod.PUT, 
-			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
-	public ResponseEntity<Map<String,String>> updateUserInfo(@PathVariable("username") String username, 
-			@RequestBody Map<String,String> formData) throws FormDataException {
+	@PutMapping(value = "/userinfo/{username:.+}", produces = { CustomMediaType.APPLICATION_JSON_UTF8_VALUE })
+	public ResponseEntity<Map<String, String>> updateUserInfo(@PathVariable String username,
+			@RequestBody Map<String, String> formData) throws FormDataException {
 		if (userRightsService.isSignedInUser()) {
 			checkForBot(formData, "ui.update.");
 			// remove bot data as we want to traverse the map later on
 			formData.remove("iAmHuman");
-			Map<String,String> result = new HashMap<String,String>();
+			Map<String, String> result = new HashMap<String, String>();
 			User user = userDao.findByName(username);
-			
+
 			// check if new email shall be set and if then check if it is unique
 			final String eMail = getFormData(formData, "email", false, "ui.update.");
 			if (!StrUtils.isEmptyOrNull(eMail)) {
@@ -173,7 +177,7 @@ public class UserManagementController {
 					throw new FormDataException("ui.update.emailTaken");
 				}
 			}
-			
+
 			// check if new username shall be set and if then check if it is unique
 			final String usernameForm = getFormData(formData, "username", false, "ui.update.");
 			if (!StrUtils.isEmptyOrNull(usernameForm)) {
@@ -182,14 +186,14 @@ public class UserManagementController {
 					throw new FormDataException("ui.update.usernameTaken");
 				}
 			}
-			
+
 			if (userRightsService.userHasRole(ADMIN) ||
 					userRightsService.getCurrentUser().equals(user)) {
-				
+
 				try {
 					for (Map.Entry<String, String> entry : formData.entrySet()) {
-						userRightsService.setPropertyOnProtectedObject(entry.getKey(), entry.getValue(), user
-								, SecurityUtils.USER);
+						userRightsService.setPropertyOnProtectedObject(entry.getKey(), entry.getValue(), user,
+								SecurityUtils.USER);
 					}
 					userDao.updateUser(user);
 				} catch (de.uni_koeln.arachne.service.UserRightsService.ObjectAccessException e) {
@@ -204,47 +208,46 @@ public class UserManagementController {
 		}
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
-	
+
 	/**
 	 * HTTP endpoint for registering a new user.
+	 * 
 	 * @param formData The registration from data.
 	 * @param response The HTTP response.
 	 * @return The JSON serialization of a success message.
 	 * @throws FormDataException if the form data cannot be validated.
 	 */
 	@ResponseBody
-	@RequestMapping(value="/user/register", 
-			method=RequestMethod.POST, 
-			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
-	public Map<String,String> register(@RequestBody Map<String,String> formData, HttpServletResponse response) 
+	@PostMapping(value = "/user/register", produces = { CustomMediaType.APPLICATION_JSON_UTF8_VALUE })
+	public Map<String, String> register(@RequestBody Map<String, String> formData, HttpServletResponse response)
 			throws FormDataException {
-		
-		Map<String,String> result = new HashMap<String,String>();
+
+		Map<String, String> result = new HashMap<String, String>();
 		if (!userRightsService.isSignedInUser()) {
 			checkForBot(formData, "ui.register.");
 
 			User user = new User();
-			
+
 			user.setUsername(getFormData(formData, "username", true, "ui.register."));
 			User existingUser = userDao.findByName(user.getUsername());
 			if (existingUser != null) {
 				throw new FormDataException("ui.register.usernameTaken");
 			}
-			
+
 			final String eMail = getFormData(formData, "email", true, "ui.register.");
 			if (!mailService.isValidEmailAddress(eMail)) {
 				throw new FormDataException("ui.register.emailInvalid");
 			}
-			
+
 			if (userDao.findByEMailAddress(eMail) != null) {
 				throw new FormDataException("ui.register.emailTaken");
 			}
-			
+
 			if (!eMail.equals(formData.get("emailValidation"))) {
 				throw new FormDataException("ui.register.emailsDontMatch");
 			}
 			user.setEmail(eMail);
-			
+
 			final String password = getFormData(formData, "password", true, "ui.register.");
 			if (!password.equals(formData.get("passwordValidation"))) {
 				throw new FormDataException("ui.register.passwordsDontMatch");
@@ -253,36 +256,37 @@ public class UserManagementController {
 				throw new FormDataException("ui.register.passwordTooShort");
 			}
 			user.setPassword(password);
-			
+
 			user.setFirstname(getFormData(formData, "firstname", true, "ui.register."));
 			user.setLastname(getFormData(formData, "lastname", true, "ui.register."));
 			user.setInstitution(getFormData(formData, "institution", false, "ui.register."));
 			user.setAll_groups(false);
 			user.setGroupID(500);
-			if(isTestUser(user)){
+			if (isTestUser(user)) {
 				user.setLogin_permission(true);
-			}
-			else {
+			} else {
 				user.setLogin_permission(false);
 			}
 
 			HashSet<DatasetGroup> datasetGroups = new HashSet<DatasetGroup>();
 			for (String dgName : defaultDatasetGroups) {
 				DatasetGroup datasetGroup = userDao.findDatasetGroupByName(dgName);
-				if (datasetGroup == null) continue;
+				if (datasetGroup == null)
+					continue;
 				datasetGroups.add(datasetGroup);
 			}
 			user.setDatasetGroups(datasetGroups);
 
 			userDao.createUser(user);
 
-			if(!isTestUser(user)){
+			if (!isTestUser(user)) {
 
 				// mail to user
 				String messageBody = "Your registration was successful and will be reviewed shortly."
-				+ newLine + newLine + "Mit freundlichen Grüßen" + newLine + "das Arachne-Team";
+						+ newLine + newLine + "Mit freundlichen Grüßen" + newLine + "das Arachne-Team";
 
-				if (!mailService.sendMail(user.getEmail(), "Your registration with iDAI.objects/Arachne", messageBody)) {
+				if (!mailService.sendMail(user.getEmail(), "Your registration with iDAI.objects/Arachne",
+						messageBody)) {
 					LOGGER.error("Unable to send registration eMail to user.");
 					throw new FormDataException("ui.registration.emailFailed");
 				}
@@ -314,26 +318,26 @@ public class UserManagementController {
 	}
 
 	/**
-	 * HTTP endpoint for deleting a user. Users can delete themselves or be deleted by admins.
+	 * HTTP endpoint for deleting a user. Users can delete themselves or be deleted
+	 * by admins.
+	 * 
 	 * @param username The username of interest.
 	 * @param response The HTTP response.
 	 * @return The JSON serialization of a success message.
 	 */
 
 	@ResponseBody
-	@RequestMapping(value="/userinfo/{username:.+}",
-			method=RequestMethod.DELETE,
-			produces= {CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
-	public Map<String,String> delete(@PathVariable("username") String username, HttpServletResponse response) {
-		Map<String,String> result = new HashMap<String,String>();
+	@DeleteMapping(value = "/userinfo/{username:.+}", produces = { CustomMediaType.APPLICATION_JSON_UTF8_VALUE })
+	public Map<String, String> delete(@PathVariable String username, HttpServletResponse response) {
+		Map<String, String> result = new HashMap<String, String>();
 
-		if(!userRightsService.isSignedInUser()) {
+		if (!userRightsService.isSignedInUser()) {
 			result.put("success", "false");
 			response.setStatus(401);
 			return result;
 		}
 
-		if(username.compareTo(userRightsService.getCurrentUser().getUsername()) != 0
+		if (username.compareTo(userRightsService.getCurrentUser().getUsername()) != 0
 				&& !userRightsService.userHasRole(ADMIN)) {
 			result.put("success", "false");
 			response.setStatus(403);
@@ -351,18 +355,17 @@ public class UserManagementController {
 	 * Endpoint to change a users password.
 	 * 
 	 * @param userCredentials The old, new and new confirmed passwords.
-	 * @param response The HTTP servlet response.
+	 * @param response        The HTTP servlet response.
 	 * @return The JSON serialization of a success message.
 	 *
 	 */
 	@ResponseBody
-	@RequestMapping(value="/user/change",
-		method=RequestMethod.POST,
-		produces= {CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
-	public Map<String, String> changePassword(@RequestBody Map<String, String> userCredentials, HttpServletResponse response) {
+	@PostMapping(value = "/user/change", produces = { CustomMediaType.APPLICATION_JSON_UTF8_VALUE })
+	public Map<String, String> changePassword(@RequestBody Map<String, String> userCredentials,
+			HttpServletResponse response) {
 		Map<String, String> result = new HashMap<>();
 
-		if(!userRightsService.isSignedInUser()) {
+		if (!userRightsService.isSignedInUser()) {
 			result.put("success", "false");
 			response.setStatus(401);
 			return result;
@@ -372,9 +375,10 @@ public class UserManagementController {
 
 		final String oldPassword = getFormData(userCredentials, "password", true, "ui.passwordchange.");
 		final String newPassword = getFormData(userCredentials, "newPassword", true, "ui.passwordchange.");
-		final String repeatNewPassword = getFormData(userCredentials, "newPasswordValidation", true, "ui.passwordchange.");
+		final String repeatNewPassword = getFormData(userCredentials, "newPasswordValidation", true,
+				"ui.passwordchange.");
 
-		if(user.getPassword().compareTo(oldPassword) != 0) {
+		if (user.getPassword().compareTo(oldPassword) != 0) {
 			result.put("success", "false");
 			response.setStatus(400);
 			return result;
@@ -382,11 +386,9 @@ public class UserManagementController {
 
 		if (!newPassword.equals(repeatNewPassword)) {
 			throw new FormDataException("ui.register.passwordsDontMatch");
-		}
-		else if (newPassword.length() < 10) {
+		} else if (newPassword.length() < 10) {
 			throw new FormDataException("ui.register.passwordTooShort");
-		}
-		else {
+		} else {
 			user.setPassword(newPassword);
 			userDao.updateUser(user);
 
@@ -397,98 +399,104 @@ public class UserManagementController {
 	}
 
 	/**
-	 * If enough information about the user account is provided (meaning user name, eMail address, first name)
-	 * then a request to change the password of the identified user account is created.
-	 * An eMail containing a registration link that is valid for 12 hours is sent to the user.
+	 * If enough information about the user account is provided (meaning user name,
+	 * eMail address, first name)
+	 * then a request to change the password of the identified user account is
+	 * created.
+	 * An eMail containing a registration link that is valid for 12 hours is sent to
+	 * the user.
 	 * <br/>
-	 * If the validation of the user fails no information is returned why it failed (this is on purpose to not disclose 
+	 * If the validation of the user fails no information is returned why it failed
+	 * (this is on purpose to not disclose
 	 * information to a potential attacker).
-	 * @param userCredentials Credentials to identify the User including the new password as JSON object.
-	 * @param response The outgoing HTTP response.
+	 * 
+	 * @param userCredentials Credentials to identify the User including the new
+	 *                        password as JSON object.
+	 * @param response        The outgoing HTTP response.
 	 * @return A message indicating success or failure.
 	 */
 	@ResponseBody
-	@RequestMapping(value="/user/reset", 
-	method=RequestMethod.POST,
-	produces= {CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
-	public Map<String,String> reset(@RequestBody Map<String,String> userCredentials, HttpServletResponse response) {
-		Map<String,String> result = new HashMap<String,String>();
+	@PostMapping(value = "/user/reset", produces = { CustomMediaType.APPLICATION_JSON_UTF8_VALUE })
+	public Map<String, String> reset(@RequestBody Map<String, String> userCredentials, HttpServletResponse response) {
+		Map<String, String> result = new HashMap<String, String>();
 
 		checkForBot(userCredentials, "ui.passwordreset.");
 
-        result.put("success", "false");
-        response.setStatus(400);
+		result.put("success", "false");
+		response.setStatus(400);
 
-        if (userRightsService.isSignedInUser()) return result;
+		if (userRightsService.isSignedInUser())
+			return result;
 
-        final String eMailAddress = getFormData(userCredentials, "email", true, "ui.passwordreset.");
+		final String eMailAddress = getFormData(userCredentials, "email", true, "ui.passwordreset.");
 
-        User userByEmail = userDao.findByEMailAddress(eMailAddress);
-        if (userByEmail == null) {
-        	LOGGER.info("User not found: {}", eMailAddress);
-        	return result;
+		User userByEmail = userDao.findByEMailAddress(eMailAddress);
+		if (userByEmail == null) {
+			LOGGER.info("User not found: {}", eMailAddress);
+			return result;
 		}
 
-        resetPasswordRequestDao.deleteExpiredRequests(); // get rid of all expired requests
-        // if there is already a request pending do not allow to add a new one
-        if (resetPasswordRequestDao.getByUserId(userByEmail.getId()) != null) {
-        	result.put("message", "ui.passwordreset.already_present");
+		resetPasswordRequestDao.deleteExpiredRequests(); // get rid of all expired requests
+		// if there is already a request pending do not allow to add a new one
+		if (resetPasswordRequestDao.getByUserId(userByEmail.getId()) != null) {
+			result.put("message", "ui.passwordreset.already_present");
 			LOGGER.info("A non-expired password request is already present in the database for user: {}", eMailAddress);
-        	return result;
+			return result;
 		}
 
+		final String token = random.getNewToken();
+		final Calendar calender = Calendar.getInstance();
+		final long now = calender.getTime().getTime();
+		calender.setTimeInMillis(now);
+		calender.add(Calendar.HOUR_OF_DAY, 25);
+		final Timestamp expirationDate = new Timestamp(calender.getTime().getTime());
 
-        final String token = random.getNewToken();
-        final Calendar calender = Calendar.getInstance();
-        final long now = calender.getTime().getTime();
-        calender.setTimeInMillis(now);
-        calender.add(Calendar.HOUR_OF_DAY, 25);
-        final Timestamp expirationDate = new Timestamp(calender.getTime().getTime());
+		ResetPasswordRequest request = new ResetPasswordRequest();
+		request.setToken(token);
+		request.setUserId(userByEmail.getId());
+		request.setExpirationDate(expirationDate);
+		resetPasswordRequestDao.save(request);
 
-        ResetPasswordRequest request = new ResetPasswordRequest();
-        request.setToken(token);
-        request.setUserId(userByEmail.getId());
-        request.setExpirationDate(expirationDate);
-        resetPasswordRequestDao.save(request);
+		// sent mail with activation link to user
+		final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		final String nowString = dateFormat.format(now);
+		final String expirationDateString = dateFormat.format(expirationDate);
+		final String linkString = "https://" + serverAddress + "/user/activation/" + token;
 
-        // sent mail with activation link to user
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        final String nowString = dateFormat.format(now);
-        final String expirationDateString = dateFormat.format(expirationDate);
-        final String linkString = "https://" + serverAddress + "/user/activation/" + token;
+		final String messageBody = "A password reset was requested for user '" + userByEmail.getUsername()
+				+ "' in iDAI.objects/Arachne on " + nowString + "."
+				+ newLine + "You can use the following link to reset your password: " + linkString
+				+ newLine + "The link is valid until " + expirationDateString + ".";
 
-        final String messageBody = "A password reset was requested for user '" + userByEmail.getUsername() + "' in iDAI.objects/Arachne on " + nowString + "."
-                + newLine + "You can use the following link to reset your password: " + linkString
-                + newLine + "The link is valid until " + expirationDateString + ".";
-
-        if (!isTestUser(userByEmail) && !mailService.sendMail(userByEmail.getEmail(), "Passwort reset for iDAI.objects/Arachne", messageBody)) {
-            LOGGER.error("Unable to send password activation eMail to user: " + userByEmail.getEmail());
-            resetPasswordRequestDao.delete(request);
-            result.put("success", "false");
-            response.setStatus(400);
-        } else {
-            result.put("success", "true");
-            response.setStatus(200);
-        }
-        return result;
+		if (!isTestUser(userByEmail) && !mailService.sendMail(userByEmail.getEmail(),
+				"Passwort reset for iDAI.objects/Arachne", messageBody)) {
+			LOGGER.error("Unable to send password activation eMail to user: " + userByEmail.getEmail());
+			resetPasswordRequestDao.delete(request);
+			result.put("success", "false");
+			response.setStatus(400);
+		} else {
+			result.put("success", "true");
+			response.setStatus(200);
+		}
+		return result;
 	}
 
 	/**
-	 * This method is the second and last step in the 'forgot password' process. It changes the password of a user to 
+	 * This method is the second and last step in the 'forgot password' process. It
+	 * changes the password of a user to
 	 * the provided on.
-	 * @param token The token representing the 'PasswordResetRequest'.
+	 * 
+	 * @param token    The token representing the 'PasswordResetRequest'.
 	 * @param password The new password to set
 	 * @param response The HTTP servlet response.
 	 */
 	@ResponseBody
-	@RequestMapping(value="/user/activation/{token}",
-			method=RequestMethod.POST,
-			produces={CustomMediaType.APPLICATION_JSON_UTF8_VALUE})
-	public void changePasswordAfterResetRequest(@PathVariable("token") final String token,
-			@RequestBody Map<String,String> password, HttpServletResponse response) {
-		
+	@PostMapping(value = "/user/activation/{token}", produces = { CustomMediaType.APPLICATION_JSON_UTF8_VALUE })
+	public void changePasswordAfterResetRequest(@PathVariable final String token,
+			@RequestBody Map<String, String> password, HttpServletResponse response) {
+
 		checkForBot(password, "ui.passwordactivation.");
-		
+
 		response.setStatus(404);
 		if (!userRightsService.isSignedInUser()) {
 			final ResetPasswordRequest resetPasswordRequest = resetPasswordRequestDao.getByToken(token);
@@ -510,17 +518,19 @@ public class UserManagementController {
 			}
 		}
 	}
-	
+
 	/**
 	 * Exception handler for {@link FormDataException}s.
-	 * @param e The exception.
+	 * 
+	 * @param e        The exception.
 	 * @param response The HTTP response.
-	 * @return A message indicating failure including the original exceptions message.
+	 * @return A message indicating failure including the original exceptions
+	 *         message.
 	 */
 	@ResponseBody
 	@ExceptionHandler(FormDataException.class)
-	public Map<String,String> handleRequiredFieldException(FormDataException e, HttpServletResponse response) {
-		Map<String,String> result = new HashMap<String,String>();
+	public Map<String, String> handleRequiredFieldException(FormDataException e, HttpServletResponse response) {
+		Map<String, String> result = new HashMap<String, String>();
 		result.put("success", "false");
 		result.put("message", e.getMessage());
 		response.setStatus(400);
@@ -528,7 +538,7 @@ public class UserManagementController {
 	}
 
 	private boolean isTestUser(User user) {
-		if(testUserName == null)
+		if (testUserName == null)
 			return false;
 		else
 			return user.getUsername().compareTo(testUserName) == 0;

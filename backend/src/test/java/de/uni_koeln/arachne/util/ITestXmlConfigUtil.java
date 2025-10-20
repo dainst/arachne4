@@ -1,21 +1,18 @@
 package de.uni_koeln.arachne.util;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.mock.web.MockServletContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-@RunWith(SpringJUnit4ClassRunner.class) 
-@ContextConfiguration(locations={"classpath:test-context.xml"})
+@SpringJUnitConfig(locations = { "classpath:test-context.xml" })
 @WebAppConfiguration
 public class ITestXmlConfigUtil {
 	private transient XmlConfigUtil xmlConfigUtil;
-	
-	@Test
+
+	/* ~~(org/openrewrite/staticanalysis/LambdaBlockToExpression)~~> */@Test
 	public void testForDocumentCompleteness() {
 		xmlConfigUtil = new XmlConfigUtil();
 		xmlConfigUtil.setServletContext(new MockServletContext("file:src/main/webapp"));
@@ -46,7 +43,7 @@ public class ITestXmlConfigUtil {
 		assertNotNull(xmlConfigUtil.getDocument("sarkophag"));
 		assertNotNull(xmlConfigUtil.getDocument("topographie"));
 		assertNotNull(xmlConfigUtil.getDocument("typus"));
-				
+
 		xmlConfigUtil = null;
 	}
 }

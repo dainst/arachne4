@@ -56,7 +56,6 @@ public class EntityService {
 	private transient final boolean PROFILING;
 	private transient final String[] internalFields;
 
-	@Autowired
 	public EntityService(final @Value("${profilingEntityRetrieval}") boolean profiling,
 			final @Value("#{'${internalFields}'.split(',')}") String[] internalFields) {
 		this.PROFILING = profiling;
@@ -181,127 +180,136 @@ public class EntityService {
 	}
 
 	/**
-	 * This functions retrieves a <code>FromattedArachneEntity</code> as JSON <code>String</code>.
+	 * This functions retrieves a <code>FromattedArachneEntity</code> as JSON
+	 * <code>String</code>.
+	 * 
 	 * @param entityId The corresponding EntityId object.
-	 * @param lang the language in which the json is to be returned
-	 * @return The requested formatted entity as JSON <code>String</code> or "forbidden" to indicate that the user is 
-	 * not allowed to see this entity.
-	 * @throws Transl8Exception if tranl8 cannot be reached. 
+	 * @param lang     the language in which the json is to be returned
+	 * @return The requested formatted entity as JSON <code>String</code> or
+	 *         "forbidden" to indicate that the user is
+	 *         not allowed to see this entity.
+	 * @throws Transl8Exception if tranl8 cannot be reached.
 	 */
-	public String getFormattedEntityByIdAsJsonString(final EntityId entityId, final String lang) throws Transl8Exception {
+	public String getFormattedEntityByIdAsJsonString(final EntityId entityId, final String lang)
+			throws Transl8Exception {
 		long startTime = 0;
 		if (PROFILING) {
 			startTime = System.currentTimeMillis();
 		}
-		
+
 		final String datasetGroupName = singleEntityDataService.getDatasetGroup(entityId);
-    	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
-    	
-    	LOGGER.debug("Indexer(" + entityId.getArachneEntityID() + "): " + userRightsService.isDataimporter());
-    	
-    	if (!userRightsService.isDataimporter() && !userRightsService.userHasDatasetGroup(datasetGroup)) {
-    		LOGGER.debug("Forbidden!");
-    		return "forbidden";
-    	}
-    	
-    	final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(entityId);
-    	
-    	LOGGER.debug(arachneDataset.toString());
-    	
-    	String result = null;
-    	if (PROFILING) {
-    		final long fetchTime = System.currentTimeMillis() - startTime;
-    		long nextTime = System.currentTimeMillis();
+		final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
 
-    		imageService.addImages(arachneDataset);
-    		modelService.addModels(arachneDataset);
+		LOGGER.debug("Indexer(" + entityId.getArachneEntityID() + "): " + userRightsService.isDataimporter());
 
-    		final long imageTime = System.currentTimeMillis() - nextTime;
-    		nextTime = System.currentTimeMillis();
+		if (!userRightsService.isDataimporter() && !userRightsService.userHasDatasetGroup(datasetGroup)) {
+			LOGGER.debug("Forbidden!");
+			return "forbidden";
+		}
 
-    		contextService.addMandatoryContexts(arachneDataset, lang);
+		final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(entityId);
 
-    		final long contextTime = System.currentTimeMillis() - nextTime;
-    		nextTime = System.currentTimeMillis();
+		LOGGER.debug(arachneDataset.toString());
 
-    		result = responseFactory.createFormattedArachneEntityAsJsonString(arachneDataset, lang);
+		String result = null;
+		if (PROFILING) {
+			final long fetchTime = System.currentTimeMillis() - startTime;
+			long nextTime = System.currentTimeMillis();
 
-    		LOGGER.info("-- Fetching entity took " + fetchTime + " ms");
-    		LOGGER.info("-- Adding images took " + imageTime + " ms");
-    		LOGGER.info("-- Adding contexts took " + contextTime + " ms");
-    		LOGGER.info("-- Creating response took " + (System.currentTimeMillis() - nextTime) + " ms");
-    	} else {
-    		imageService.addImages(arachneDataset);
-    		modelService.addModels(arachneDataset);
+			imageService.addImages(arachneDataset);
+			modelService.addModels(arachneDataset);
 
-    		contextService.addMandatoryContexts(arachneDataset, lang);
+			final long imageTime = System.currentTimeMillis() - nextTime;
+			nextTime = System.currentTimeMillis();
 
-    		result = responseFactory.createFormattedArachneEntityAsJsonString(arachneDataset, lang);
-    	}
-    	return result;
+			contextService.addMandatoryContexts(arachneDataset, lang);
+
+			final long contextTime = System.currentTimeMillis() - nextTime;
+			nextTime = System.currentTimeMillis();
+
+			result = responseFactory.createFormattedArachneEntityAsJsonString(arachneDataset, lang);
+
+			LOGGER.info("-- Fetching entity took " + fetchTime + " ms");
+			LOGGER.info("-- Adding images took " + imageTime + " ms");
+			LOGGER.info("-- Adding contexts took " + contextTime + " ms");
+			LOGGER.info("-- Creating response took " + (System.currentTimeMillis() - nextTime) + " ms");
+		} else {
+			imageService.addImages(arachneDataset);
+			modelService.addModels(arachneDataset);
+
+			contextService.addMandatoryContexts(arachneDataset, lang);
+
+			result = responseFactory.createFormattedArachneEntityAsJsonString(arachneDataset, lang);
+		}
+		return result;
 	}
-	
+
 	/**
-	 * This functions retrieves a <code>FromattedArachneEntity</code> as JSON raw <code>byte</code> array.
-	 * IMPORTANT: Do no use the raw byte representation for the live retrieval of entities. It is only meant to be used 
+	 * This functions retrieves a <code>FromattedArachneEntity</code> as JSON raw
+	 * <code>byte</code> array.
+	 * IMPORTANT: Do no use the raw byte representation for the live retrieval of
+	 * entities. It is only meant to be used
 	 * by the dataimport. Use the <code>String</code> version instead.
+	 * 
 	 * @param entityId The corresponding EntityId object.
-	 * @param lang The language.
-	 * @return The requested formatted entity object as JSON raw <code>byte</code> array or <code>null</code> to 
-	 * indicate that the user is not allowed to see this entity or any error occurs.
-	 * @throws Transl8Exception if transl8 cannot be reached. 
+	 * @param lang     The language.
+	 * @return The requested formatted entity object as JSON raw <code>byte</code>
+	 *         array or <code>null</code> to
+	 *         indicate that the user is not allowed to see this entity or any error
+	 *         occurs.
+	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
 	public byte[] getFormattedEntityByIdAsJson(final EntityId entityId, final String lang) throws Transl8Exception {
 		long startTime = 0;
 		if (PROFILING) {
 			startTime = System.currentTimeMillis();
 		}
-		
+
 		final String datasetGroupName = singleEntityDataService.getDatasetGroup(entityId);
-    	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
-    	
-    	LOGGER.debug("Indexer(" + entityId.getArachneEntityID() + "): " + userRightsService.isDataimporter());
-    	
-    	if (!userRightsService.isDataimporter() && !userRightsService.userHasDatasetGroup(datasetGroup)) {
-    		LOGGER.debug("Forbidden!");
-    		return null;
-    	}
-    	
-    	final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(entityId);
-    	
-    	LOGGER.debug(arachneDataset.toString());
-    	
-    	byte[] result = null;
-    	if (PROFILING) {
-    		final long fetchTime = System.currentTimeMillis() - startTime;
-    		long nextTime = System.currentTimeMillis();
+		final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
 
-    		imageService.addImages(arachneDataset);
-    		modelService.addModels(arachneDataset);
+		LOGGER.debug("Indexer(" + entityId.getArachneEntityID() + "): " + userRightsService.isDataimporter());
 
-    		final long imageTime = System.currentTimeMillis() - nextTime;
-    		nextTime = System.currentTimeMillis();
+		if (!userRightsService.isDataimporter() && !userRightsService.userHasDatasetGroup(datasetGroup)) {
+			LOGGER.debug("Forbidden!");
+			return null;
+		}
 
-    		contextService.addMandatoryContexts(arachneDataset, lang);
+		final Dataset arachneDataset = singleEntityDataService.getSingleEntityByArachneId(entityId);
 
-    		final long contextTime = System.currentTimeMillis() - nextTime;
-    		nextTime = System.currentTimeMillis();
+		LOGGER.debug(arachneDataset.toString());
 
-    		result = responseFactory.createFormattedArachneEntityAsJson(arachneDataset, lang);
+		byte[] result = null;
+		if (PROFILING) {
+			final long fetchTime = System.currentTimeMillis() - startTime;
+			long nextTime = System.currentTimeMillis();
 
-    		LOGGER.info("-- Fetching entity took " + fetchTime + " ms");
-    		LOGGER.info("-- Adding images took " + imageTime + " ms");
-    		LOGGER.info("-- Adding contexts took " + contextTime + " ms");
-    		LOGGER.info("-- Creating response took " + (System.currentTimeMillis() - nextTime) + " ms");
-    	} else {
-    		imageService.addImages(arachneDataset);
-    		modelService.addModels(arachneDataset);
+			imageService.addImages(arachneDataset);
+			modelService.addModels(arachneDataset);
 
-    		contextService.addMandatoryContexts(arachneDataset, lang);
+			final long imageTime = System.currentTimeMillis() - nextTime;
+			nextTime = System.currentTimeMillis();
 
-    		result = responseFactory.createFormattedArachneEntityAsJson(arachneDataset, lang);
-    	}
-    	return result;
+			contextService.addMandatoryContexts(arachneDataset, lang);
+
+			final long contextTime = System.currentTimeMillis() - nextTime;
+			nextTime = System.currentTimeMillis();
+
+			result = responseFactory.createFormattedArachneEntityAsJson(arachneDataset, lang);
+
+			LOGGER.info("-- Fetching entity took " + fetchTime + " ms");
+			LOGGER.info("-- Adding images took " + imageTime + " ms");
+			LOGGER.info("-- Adding contexts took " + contextTime + " ms");
+			LOGGER.info("-- Creating response took " + (System.currentTimeMillis() - nextTime) + " ms");
+		} else {
+			imageService.addImages(arachneDataset);
+			modelService.addModels(arachneDataset);
+
+			contextService.addMandatoryContexts(arachneDataset, lang);
+
+			result = responseFactory.createFormattedArachneEntityAsJson(arachneDataset, lang);
+		}
+		return result;
 	}
 
 	/**
@@ -312,19 +320,22 @@ public class EntityService {
 	 *
 	 * If the entity is not found a HTTP 404 error message is returned.
 	 *
-	 * If the user does not have permission to see an entity a HTTP 403 status message is returned.
+	 * If the user does not have permission to see an entity a HTTP 403 status
+	 * message is returned.
 	 *
-	 * @param id The unique entity ID if no category is given else the internal ID.
+	 * @param id       The unique entity ID if no category is given else the
+	 *                 internal ID.
 	 * @param category The category to query or <code>null</code>.
 	 * @return The response body as <code>String</code>.
 	 * @throws Transl8Exception if tranl8 cannot be reached.
 	 */
-	public TypeWithHTTPStatus<String> getDataset(final long id, final String category) throws Transl8Exception  {
+	public TypeWithHTTPStatus<String> getDataset(final long id, final String category) throws Transl8Exception {
 
 		final EntityId entityId = getEntityId(id, category);
 
 		TypeWithHTTPStatus<String> checkResult = checkEntityId(entityId);
-		if (checkResult != null) return checkResult;
+		if (checkResult != null)
+			return checkResult;
 
 		final String datasetGroupName = singleEntityDataService.getDatasetGroup(entityId);
 		final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);

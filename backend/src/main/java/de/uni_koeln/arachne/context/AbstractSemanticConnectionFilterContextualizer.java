@@ -67,7 +67,7 @@ abstract class AbstractSemanticConnectionFilterContextualizer extends AbstractCo
 
 		final List<Dataset> filtered = datasets.stream().filter(ds -> filter(parent, ds)).collect(Collectors.toList());
 
-		LOGGER.debug(String.format("Filtered datasets of context %s: %d/%d", getContextType(), filtered.size(),
+		LOGGER.debug("Filtered datasets of context %s: %d/%d".formatted(getContextType(), filtered.size(),
 				datasets.size()));
 
 		List<ArachneLink> result = SemanticConnectionsUtil.createArachneLinks(parent, filtered);

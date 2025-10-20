@@ -1,6 +1,5 @@
 package de.uni_koeln.arachne.util.network;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -18,23 +17,27 @@ import org.springframework.web.client.RestTemplate;
 public class ArachneRestTemplate extends RestTemplate {
 
 	/**
-	 * Constructor which sets the connection and read timeouts from 'applicatrion.properties' and adds a byte array 
+	 * Constructor which sets the connection and read timeouts from
+	 * 'applicatrion.properties' and adds a byte array
 	 * message converter.
+	 * 
 	 * @param restConnectionTimeout The connection timeout value.
-	 * @param restReadTimeout The read timeout value.
+	 * @param restReadTimeout       The read timeout value.
 	 */
-	@Autowired
 	public ArachneRestTemplate(final @Value("${restConnectionTimeout}") int restConnectionTimeout,
 			final @Value("${restReadTimeout}") int restReadTimeout) {
-		
+
 		if (getRequestFactory() instanceof SimpleClientHttpRequestFactory) {
-            ((SimpleClientHttpRequestFactory)getRequestFactory()).setConnectTimeout(restConnectionTimeout);
-            ((SimpleClientHttpRequestFactory)getRequestFactory()).setReadTimeout(restReadTimeout);
-        } else if (getRequestFactory() instanceof HttpComponentsClientHttpRequestFactory) {
-            ((HttpComponentsClientHttpRequestFactory)getRequestFactory()).setConnectTimeout(restConnectionTimeout);
-        	((HttpComponentsClientHttpRequestFactory)getRequestFactory()).setReadTimeout(restReadTimeout);
-        }
-		
+			((SimpleClientHttpRequestFactory) getRequestFactory()).setConnectTimeout(restConnectionTimeout);
+			((SimpleClientHttpRequestFactory) getRequestFactory()).setReadTimeout(restReadTimeout);
+		} else if (getRequestFactory() instanceof HttpComponentsClientHttpRequestFactory) {
+			((HttpComponentsClientHttpRequestFactory) getRequestFactory()).setConnectTimeout(restConnectionTimeout);
+			// Manual migration to `SocketConfig.Builder.setSoTimeout(Timeout)` necessary;
+			// see:
+			// https://docs.spring.io/spring-framework/docs/6.0.0/javadoc-api/org/springframework/http/client/HttpComponentsClientHttpRequestFactory.html#setReadTimeout(int)
+			((HttpComponentsClientHttpRequestFactory) getRequestFactory()).setReadTimeout(restReadTimeout);
+		}
+
 		this.getMessageConverters().add(new ByteArrayHttpMessageConverter());
 	}
 }

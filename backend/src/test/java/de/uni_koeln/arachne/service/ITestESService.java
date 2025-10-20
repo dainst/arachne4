@@ -1,21 +1,19 @@
 package de.uni_koeln.arachne.service;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockServletContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -24,19 +22,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.uni_koeln.arachne.service.ESService;
 
-@RunWith(SpringJUnit4ClassRunner.class) 
-@ContextConfiguration(locations = {"classpath:test-context.xml"}) 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@SpringJUnitConfig(locations = { "classpath:test-context.xml" })
+@TestMethodOrder(MethodName.class)
 @WebAppConfiguration
 public class ITestESService {
 	// TODO add exception handler(?) to remove the test indices on failed tests
 	@Autowired
 	private transient ESService esService;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		esService.setServletContext(new MockServletContext("file:src/main/webapp"));
-		
+
 		try {
 			Field indexName;
 			indexName = ESService.class.getDeclaredField("INDEX_1");
@@ -49,23 +46,23 @@ public class ITestESService {
 			e.printStackTrace();
 		}
 	}
-	
-	@Test
+
+	/* ~~(org/openrewrite/staticanalysis/LambdaBlockToExpression)~~> */@Test
 	public void test1ValidateSetting() {
 		try {
 			final Field settingsFile = ESService.class.getDeclaredField("SETTINGS_FILE");
 			settingsFile.setAccessible(true);
 			final Method getJsonFromFile = ESService.class.getDeclaredMethod("getJsonFromFile", String.class);
 			getJsonFromFile.setAccessible(true);
-			final String filename = (String)settingsFile.get(esService);
-			final String json = (String)getJsonFromFile.invoke(esService, filename);
-			assertTrue("File 'src/main/webapp" + filename + "' is not valid JSON!", isValidJson(json));
-		} catch (NoSuchFieldException | NoSuchMethodException | SecurityException | IllegalAccessException 
+			final String filename = (String) settingsFile.get(esService);
+			final String json = (String) getJsonFromFile.invoke(esService, filename);
+			assertTrue(isValidJson(json), "File 'src/main/webapp" + filename + "' is not valid JSON!");
+		} catch (NoSuchFieldException | NoSuchMethodException | SecurityException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException e) {
 			fail(e.toString());
 		}
 	}
-	
+
 	@Test
 	public void test2ValidateMapping() {
 		try {
@@ -73,45 +70,46 @@ public class ITestESService {
 			mappingFile.setAccessible(true);
 			final Method getJsonFromFile = ESService.class.getDeclaredMethod("getJsonFromFile", String.class);
 			getJsonFromFile.setAccessible(true);
-			final String filename = (String)mappingFile.get(esService);
-			final String json = (String)getJsonFromFile.invoke(esService, filename);
-			assertTrue("File 'src/main/webapp" + filename + "' is not valid JSON!", isValidJson(json));
-		} catch (NoSuchFieldException | NoSuchMethodException | SecurityException | IllegalAccessException 
+			final String filename = (String) mappingFile.get(esService);
+			final String json = (String) getJsonFromFile.invoke(esService, filename);
+			assertTrue(isValidJson(json), "File 'src/main/webapp" + filename + "' is not valid JSON!");
+		} catch (NoSuchFieldException | NoSuchMethodException | SecurityException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException e) {
 			fail(e.toString());
 		}
 	}
-	
+
 	@Test
 	public void test3GetClient() {
 		assertNotNull(esService.getClient());
 	}
-	
+
 	@Test
 	public void test4GetDataimportIndex() {
 		final String index = esService.getDataImportIndex();
 		assertNotEquals("NoIndex", index);
 	}
-	
+
 	@Test
 	public void test5UpdateSearchIndex() {
 		assertEquals("test_arachne4_1", esService.updateSearchIndex());
 		esService.getDataImportIndex();
 		assertEquals("test_arachne4_2", esService.updateSearchIndex());
 	}
-	
+
 	@Test
 	public void test6DeleteIndex() {
-		assertTrue("Deletion of index 'test_arachne4_2' failed!", esService.deleteIndex("test_arachne4_2"));
+		assertTrue(esService.deleteIndex("test_arachne4_2"), "Deletion of index 'test_arachne4_2' failed!");
 	}
-	
+
 	private boolean isValidJson(final String json) {
 		boolean result = false;
 		JsonParser parser = null;
 		try {
 			parser = new ObjectMapper().getFactory().createParser(json);
-			while (parser.nextToken() != null) {}
-		    result = true;
+			while (parser.nextToken() != null) {
+			}
+			result = true;
 		} catch (IOException e) {
 			System.out.println("Exception while parsing '" + json + "'");
 			e.printStackTrace();
@@ -125,7 +123,7 @@ public class ITestESService {
 				}
 			}
 		}
-		
+
 		// check for duplicate keys
 		if (result) {
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -137,7 +135,7 @@ public class ITestESService {
 				result = false;
 			}
 		}
-		
+
 		return result;
 	}
 

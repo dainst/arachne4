@@ -2,7 +2,7 @@ package de.uni_koeln.arachne.response;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -13,56 +13,59 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * @author Reimar Grabowski
  */
 @XmlRootElement
-@JsonInclude(value=Include.NON_EMPTY)
+@JsonInclude(value = Include.NON_EMPTY)
 public class StatusResponse {
 	/**
 	 * The message body of the response.
 	 */
 	private String message;
-	
+
 	private String status;
-	
+
 	private String elapsedTime;
-	
+
 	private String estimatedTimeRemaining;
-	
+
 	private Long count;
-	
+
 	private Long indexedDocuments;
-	
+
 	private Float documentsPerSecond;
-	
+
 	private List<String> cachedDocuments;
-	
+
 	private List<String> cachedIncludeElements;
-	
+
 	/**
 	 * Empty default constructor.
 	 */
 	public StatusResponse() {
 		// just to make JAXB happy.
 	}
-	
+
 	/**
 	 * Convenience constructor to set the message field.
+	 * 
 	 * @param message The status response message.
 	 */
 	public StatusResponse(final String message) {
 		this.message = message;
 	}
-	
+
 	/**
 	 * Convenience constructor to set the message field.
+	 * 
 	 * @param message The status response message.
-	 * @param status A status desciption.
+	 * @param status  A status desciption.
 	 */
 	public StatusResponse(final String message, final String status) {
 		this.message = message;
 		this.status = status;
 	}
-	
+
 	/**
-	 * Getter for the message field.	
+	 * Getter for the message field.
+	 * 
 	 * @return The message.
 	 */
 	public String getMessage() {
@@ -71,6 +74,7 @@ public class StatusResponse {
 
 	/**
 	 * Setter for the message field.
+	 * 
 	 * @param message The message.
 	 */
 	public void setMessage(final String message) {
@@ -79,6 +83,7 @@ public class StatusResponse {
 
 	/**
 	 * Getter for the status field.
+	 * 
 	 * @return The status.
 	 */
 	public String getStatus() {
@@ -87,6 +92,7 @@ public class StatusResponse {
 
 	/**
 	 * Setter for the status field.
+	 * 
 	 * @param status The status.
 	 */
 	public void setStatus(String status) {
@@ -95,6 +101,7 @@ public class StatusResponse {
 
 	/**
 	 * Getter for the elapsed time.
+	 * 
 	 * @return The elapsed time
 	 */
 	public String getElapsedTime() {
@@ -103,6 +110,7 @@ public class StatusResponse {
 
 	/**
 	 * Setter for the elapsed time.
+	 * 
 	 * @param elapsedTime The elapsed time
 	 */
 	public void setElapsedTime(String elapsedTime) {
@@ -111,6 +119,7 @@ public class StatusResponse {
 
 	/**
 	 * Getter for the indexed documents.
+	 * 
 	 * @return The number of indexed documents.
 	 */
 	public Long getIndexedDocuments() {
@@ -119,6 +128,7 @@ public class StatusResponse {
 
 	/**
 	 * Setter for the indexed documents.
+	 * 
 	 * @param indexedDocuments The number of indexed documents.
 	 */
 	public void setIndexedDocuments(Long indexedDocuments) {
@@ -127,6 +137,7 @@ public class StatusResponse {
 
 	/**
 	 * Getter for documents per second.
+	 * 
 	 * @return The documents per second.
 	 */
 	public Float getDocumentsPerSecond() {
@@ -135,6 +146,7 @@ public class StatusResponse {
 
 	/**
 	 * Setter for the documents per second.
+	 * 
 	 * @param documentsPerSecond The documents per second.
 	 */
 	public void setDocumentsPerSecond(Float documentsPerSecond) {
@@ -143,6 +155,7 @@ public class StatusResponse {
 
 	/**
 	 * Getter for the estimated time remining.
+	 * 
 	 * @return The estimated time remaining.
 	 */
 	public String getEstimatedTimeRemaining() {
@@ -151,6 +164,7 @@ public class StatusResponse {
 
 	/**
 	 * Setter for the estimated time remaining.
+	 * 
 	 * @param estimatedTimeRemaining The estimated time remaining.
 	 */
 	public void setEstimatedTimeRemaining(String estimatedTimeRemaining) {
@@ -159,6 +173,7 @@ public class StatusResponse {
 
 	/**
 	 * Getter for the document count.
+	 * 
 	 * @return The document count.
 	 */
 	public Long getCount() {
@@ -167,6 +182,7 @@ public class StatusResponse {
 
 	/**
 	 * Setter for the document count.
+	 * 
 	 * @param count The document count.
 	 */
 	public void setCount(Long count) {
@@ -175,6 +191,7 @@ public class StatusResponse {
 
 	/**
 	 * Getter for the cached documents.
+	 * 
 	 * @return A list of cached document names.
 	 */
 	public List<String> getCachedDocuments() {
@@ -183,6 +200,7 @@ public class StatusResponse {
 
 	/**
 	 * Setter for the cached documents.
+	 * 
 	 * @param cachedDocuments A list of document names.
 	 */
 	public void setCachedDocuments(List<String> cachedDocuments) {
@@ -191,6 +209,7 @@ public class StatusResponse {
 
 	/**
 	 * Getter for the cached include elements.
+	 * 
 	 * @return A list of cached include document names.
 	 */
 	public List<String> getCachedIncludeElements() {
@@ -199,9 +218,10 @@ public class StatusResponse {
 
 	/**
 	 * Setter for the cached include documents
-	 * @param cachedIncludeElements A list of include document names. 
+	 * 
+	 * @param cachedIncludeElements A list of include document names.
 	 */
 	public void setCachedIncludeElements(List<String> cachedIncludeElements) {
 		this.cachedIncludeElements = cachedIncludeElements;
-	}	
+	}
 }

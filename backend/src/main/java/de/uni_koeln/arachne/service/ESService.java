@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.PreDestroy;
-import javax.servlet.ServletContext;
+import jakarta.annotation.PreDestroy;
+import jakarta.servlet.ServletContext;
 
 import org.elasticsearch.action.admin.indices.alias.get.GetAliasesRequest;
 import org.elasticsearch.action.admin.indices.close.CloseIndexResponse;
@@ -70,46 +70,42 @@ public class ESService implements ServletContextAware {
 
 	@Autowired
 	private transient UserRightsService userRightsService;
-	
-	@Autowired
-	private transient Transl8Service ts;
-	
-	private transient final String esClusterName;
-	private transient final String esAliasName;
-		
-	private transient final int esBulkActions;
-	private transient final int esBulkSize;
-	
-	private transient final Client client;
 
 	@Autowired
-	public ESService(final @Value("${esProtocol}") String esProtocol
-			, final @Value("${esAddress}") String esAddress
-			, final @Value("${esRemotePort}") int esRemotePort
-			, final @Value("${esClusterName}") String esClusterName
-			, final @Value("${esAliasName}") String esAliasName
-			, final @Value("${esIndexName}") String esIndexName
-			, final @Value("${esBulkActions}") int esBulkActions
-			, final @Value("${esBulkSize}") int esBulkSize
-			, final @Value("${esRESTPort}") String esRESTPort) {
+	private transient Transl8Service ts;
+
+	private transient final String esClusterName;
+	private transient final String esAliasName;
+
+	private transient final int esBulkActions;
+	private transient final int esBulkSize;
+
+	private transient final Client client;
+
+	public ESService(final @Value("${esProtocol}") String esProtocol, final @Value("${esAddress}") String esAddress,
+			final @Value("${esRemotePort}") int esRemotePort, final @Value("${esClusterName}") String esClusterName,
+			final @Value("${esAliasName}") String esAliasName, final @Value("${esIndexName}") String esIndexName,
+			final @Value("${esBulkActions}") int esBulkActions, final @Value("${esBulkSize}") int esBulkSize,
+			final @Value("${esRESTPort}") String esRESTPort) {
 
 		this.esClusterName = esClusterName;
 		INDEX_1 = esIndexName + "_1";
 		INDEX_2 = esIndexName + "_2";
 		this.esAliasName = esAliasName;
-		
+
 		this.esBulkActions = esBulkActions;
 		this.esBulkSize = esBulkSize;
-		
+
 		LOGGER.info("Setting up elasticsearch transport client...");
 		final Settings settings = Settings.builder().put("cluster.name", esClusterName).build();
 		client = new PreBuiltTransportClient(settings)
-			.addTransportAddress(new TransportAddress(new InetSocketAddress(esAddress, esRemotePort)));
-		
+				.addTransportAddress(new TransportAddress(new InetSocketAddress(esAddress, esRemotePort)));
+
 	}
 
 	/**
 	 * Deletes the elasticsearch index with the given name.
+	 * 
 	 * @param indexName The name of the index to delete.
 	 * @return A boolean value indicating success.
 	 */
@@ -139,7 +135,9 @@ public class ESService implements ServletContextAware {
 	}
 
 	/**
-	 * This method constructs a access control query filter for Elasticsearch using the <code>UserRightsService</code>.
+	 * This method constructs a access control query filter for Elasticsearch using
+	 * the <code>UserRightsService</code>.
+	 * 
 	 * @return The constructed filter.
 	 */
 	public BoolQueryBuilder getAccessControlFilter() {
@@ -149,7 +147,7 @@ public class ESService implements ServletContextAware {
 		} else {
 			final Set<DatasetGroup> datasetGroups = user.getDatasetGroups();
 			final BoolQueryBuilder orFilter = QueryBuilders.boolQuery();
-			for (final DatasetGroup datasetGroup: datasetGroups) {
+			for (final DatasetGroup datasetGroup : datasetGroups) {
 				orFilter.should(QueryBuilders.termQuery("datasetGroup", datasetGroup.getName()));
 			}
 			return QueryBuilders.boolQuery().must(orFilter);
@@ -158,6 +156,7 @@ public class ESService implements ServletContextAware {
 
 	/**
 	 * Returns the maximum number of actions that are bulked in one request.
+	 * 
 	 * @return The maximum number of actions for a bulk.
 	 */
 	public int getBulkActions() {
@@ -166,6 +165,7 @@ public class ESService implements ServletContextAware {
 
 	/**
 	 * Returns the maximum size for a bulk request.
+	 * 
 	 * @return The maximum size for a bulk request in MB.
 	 */
 	public int getBulkSize() {
@@ -174,6 +174,7 @@ public class ESService implements ServletContextAware {
 
 	/**
 	 * Gets the current elasticsearch client for re-use.
+	 * 
 	 * @return The elasticsearch client.
 	 */
 	public Client getClient() {
@@ -181,8 +182,11 @@ public class ESService implements ServletContextAware {
 	}
 
 	/**
-	 * This method creates the new elasticsearch index that will be used for the dataimport and sets its mapping. It deletes any
-	 * existing index of the same name and it fails if the the mapping cannot be set.
+	 * This method creates the new elasticsearch index that will be used for the
+	 * dataimport and sets its mapping. It deletes any
+	 * existing index of the same name and it fails if the the mapping cannot be
+	 * set.
+	 * 
 	 * @return The index name of the new index or "NoIndex" in case of failure.
 	 */
 	public String getDataImportIndex() {
@@ -228,6 +232,7 @@ public class ESService implements ServletContextAware {
 
 	/**
 	 * Gets the elasticsearch cluster name.
+	 * 
 	 * @return The clustername as <code>String</code>.
 	 */
 	public String getClusterName() {
@@ -236,6 +241,7 @@ public class ESService implements ServletContextAware {
 
 	/**
 	 * Gets the alias of the current search index.
+	 * 
 	 * @return The alias as <code>String</code>.
 	 */
 	public String getSearchIndexAlias() {
@@ -243,7 +249,7 @@ public class ESService implements ServletContextAware {
 	}
 
 	public void setRefreshInterval(final String indexName, final boolean enabled) {
-		// close index		
+		// close index
 		final CloseIndexResponse closeResponse = client.admin().indices()
 				.prepareClose(indexName)
 				.execute().actionGet();
@@ -286,19 +292,23 @@ public class ESService implements ServletContextAware {
 			LOGGER.error("Failed to set 'max_result_window' to " + value + " on index '" + indexName + "'.");
 		}
 	}
-	
+
 	@Override
 	public void setServletContext(final ServletContext servletContext) {
 		this.servletContext = servletContext;
 	}
 
 	/**
-	 * Updates the elasticsearch indices by changing the index alias and deleting the unused index. If this fails it 
-	 * tries to only set the new alias (this should only occur on the first dataimport as no alias to delete exists at 
-	 * that point). If this also fails the method throws the corresponding exception.
+	 * Updates the elasticsearch indices by changing the index alias and deleting
+	 * the unused index. If this fails it
+	 * tries to only set the new alias (this should only occur on the first
+	 * dataimport as no alias to delete exists at
+	 * that point). If this also fails the method throws the corresponding
+	 * exception.
+	 * 
 	 * @throws IllegalStateException if the index alias could not be set.
 	 * @Throws IndexNotFoundException if the index does not exist.
-	 * @return The name of the current search index. 
+	 * @return The name of the current search index.
 	 */
 	public String updateSearchIndex() throws IllegalStateException {
 		final String indexName = getDataImportIndexName();
@@ -311,7 +321,7 @@ public class ESService implements ServletContextAware {
 			LOGGER.debug("Trying to set alias for '" + indexName + "' and delete alias for '" + oldName + "'");
 			if (indexResponse.isAcknowledged()) {
 				LOGGER.info("Set alias for '" + indexName + "'");
-				LOGGER.info("Removed alias for '" + oldName  + "'");
+				LOGGER.info("Removed alias for '" + oldName + "'");
 				deleteIndex(oldName);
 			} else {
 				LOGGER.error("Failed to set alias.");
@@ -321,7 +331,8 @@ public class ESService implements ServletContextAware {
 			LOGGER.warn("Failed to set alias. Index Missing. Trying to just set the new one.");
 			// perhaps we are running for the first time so try just to add the new alias
 			try {
-				final AcknowledgedResponse indexResponse = client.admin().indices().prepareAliases().addAlias(indexName, esAliasName)
+				final AcknowledgedResponse indexResponse = client.admin().indices().prepareAliases()
+						.addAlias(indexName, esAliasName)
 						.execute().actionGet();
 				if (indexResponse.isAcknowledged()) {
 					LOGGER.info("Set alias for '" + indexName + "'");
@@ -341,6 +352,7 @@ public class ESService implements ServletContextAware {
 
 	/**
 	 * Returns the number of documents in the search index.
+	 * 
 	 * @return The number of documents or -1 on error.
 	 */
 	public long getCount() {
@@ -349,6 +361,7 @@ public class ESService implements ServletContextAware {
 
 	/**
 	 * Returns the number of documents in the given index.
+	 * 
 	 * @param indexName The index name.
 	 * @return The number of documents or -1 on error.
 	 */
@@ -366,19 +379,22 @@ public class ESService implements ServletContextAware {
 			return -1;
 		}
 	}
-	
+
 	/**
-	 * Retrieves a document from the current index. Access control is handled transparently.
-	 * @param id The entityId of the document or the internal ID of the entity if a category is given.
-	 * @param category The category of the entity (may be <code>null</code>).
+	 * Retrieves a document from the current index. Access control is handled
+	 * transparently.
+	 * 
+	 * @param id             The entityId of the document or the internal ID of the
+	 *                       entity if a category is given.
+	 * @param category       The category of the entity (may be <code>null</code>).
 	 * @param internalFields Fields that must not be included in the response.
-	 * @param lang The language.
+	 * @param lang           The language.
 	 * @return The entity or <code>null</code> and an HTTP status code.
-	 * @throws Transl8Exception if transl8 cannot be reached. 
+	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
-	public TypeWithHTTPStatus<String> getDocumentFromCurrentIndex(final long id, final String category
-			, final String[] internalFields, final String lang) throws Transl8Exception {
-		
+	public TypeWithHTTPStatus<String> getDocumentFromCurrentIndex(final long id, final String category,
+			final String[] internalFields, final String lang) throws Transl8Exception {
+
 		SearchResponse searchResponse = null;
 		SearchResponse acLessSearchResponse = null;
 		final QueryBuilder accessFilter = getAccessControlFilter();
@@ -389,7 +405,7 @@ public class ESService implements ServletContextAware {
 			LOGGER.debug("Entity query [" + id + "]: " + query);
 			searchResponse = getClient().prepareSearch(getSearchIndexAlias())
 					.setQuery(query)
-					.setFetchSource(new String[] {"*"}, internalFields)
+					.setFetchSource(new String[] { "*" }, internalFields)
 					.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 					.setFrom(0)
 					.setSize(1)
@@ -399,7 +415,7 @@ public class ESService implements ServletContextAware {
 			LOGGER.debug("Entity query [" + id + "] (no access control): " + acLessQuery);
 			acLessSearchResponse = getClient().prepareSearch(getSearchIndexAlias())
 					.setQuery(acLessQuery)
-					.setFetchSource(new String[] {"*"}, internalFields)
+					.setFetchSource(new String[] { "*" }, internalFields)
 					.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 					.setFrom(0)
 					.setSize(1)
@@ -411,7 +427,7 @@ public class ESService implements ServletContextAware {
 			LOGGER.debug("Entity query [" + ts.transl8(category, lang) + "/" + id + "]: " + query);
 			searchResponse = getClient().prepareSearch(getSearchIndexAlias())
 					.setQuery(query)
-					.setFetchSource(new String[] {"*"}, internalFields)
+					.setFetchSource(new String[] { "*" }, internalFields)
 					.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 					.setFrom(0)
 					.setSize(1)
@@ -420,28 +436,31 @@ public class ESService implements ServletContextAware {
 			final QueryBuilder acLessQuery = QueryBuilders.boolQuery()
 					.must(QueryBuilders.termQuery("type", ts.transl8(category, lang)))
 					.must(QueryBuilders.termQuery("internalId", id));
-			LOGGER.debug("Entity query [" + ts.transl8(category, lang) + "/" + id + "] (no access control): " + acLessQuery);
+			LOGGER.debug(
+					"Entity query [" + ts.transl8(category, lang) + "/" + id + "] (no access control): " + acLessQuery);
 			acLessSearchResponse = getClient().prepareSearch(getSearchIndexAlias())
 					.setQuery(acLessQuery)
-					.setFetchSource(new String[] {"*"}, internalFields)
+					.setFetchSource(new String[] { "*" }, internalFields)
 					.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 					.setFrom(0)
 					.setSize(1)
 					.execute().actionGet();
 		}
-		
+
 		if (searchResponse.getHits().getTotalHits().value == 1) {
-    		return new TypeWithHTTPStatus<String>(searchResponse.getHits().getAt(0).getSourceAsString());
-    	} else {
-    		if (acLessSearchResponse.getHits().getTotalHits().value == 1) {
-    			return new TypeWithHTTPStatus<String>(HttpStatus.FORBIDDEN);
-    		}
-    	}
-    	return new TypeWithHTTPStatus<String>(HttpStatus.NOT_FOUND);
+			return new TypeWithHTTPStatus<String>(searchResponse.getHits().getAt(0).getSourceAsString());
+		} else {
+			if (acLessSearchResponse.getHits().getTotalHits().value == 1) {
+				return new TypeWithHTTPStatus<String>(HttpStatus.FORBIDDEN);
+			}
+		}
+		return new TypeWithHTTPStatus<String>(HttpStatus.NOT_FOUND);
 	}
-	
+
 	/**
-	 * Sends a HTTP request to the elasticsearch alias endpoint to determine the index name to use for the dataimport.
+	 * Sends a HTTP request to the elasticsearch alias endpoint to determine the
+	 * index name to use for the dataimport.
+	 * 
 	 * @return The index name of the index currently not in use.
 	 */
 	private String getDataImportIndexName() {
@@ -452,23 +471,25 @@ public class ESService implements ServletContextAware {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Finds all indices in a given alias name.
+	 * 
 	 * @param aliasName The alias name to find indices in.
 	 * @return The set of found indices.
 	 */
 	private Set<String> getIndicesFromAliasName(String aliasName) {
-	    final IndicesAdminClient indicesAdminClient = client.admin().indices();
-	    final ImmutableOpenMap<String, List<AliasMetadata>> map 
-	    		= indicesAdminClient.getAliases(new GetAliasesRequest(aliasName)).actionGet().getAliases();
-	    final Set<String> allIndices = new HashSet<>();
-	    map.keysIt().forEachRemaining(allIndices::add);
-	    return allIndices;
+		final IndicesAdminClient indicesAdminClient = client.admin().indices();
+		final ImmutableOpenMap<String, List<AliasMetadata>> map = indicesAdminClient
+				.getAliases(new GetAliasesRequest(aliasName)).actionGet().getAliases();
+		final Set<String> allIndices = new HashSet<>();
+		map.keysIt().forEachRemaining(allIndices::add);
+		return allIndices;
 	}
 
 	/**
-	 * Reads the elastic search json configs from the given file   
+	 * Reads the elastic search json configs from the given file
+	 * 
 	 * @param filename The path to the json file.
 	 * @return The JSON as <code>String</code>.
 	 */
@@ -501,8 +522,10 @@ public class ESService implements ServletContextAware {
 	}
 
 	/**
-	 * Sets the elasticsearch mapping on the specified index by reading the 'mapping.json' file and sending it as REST request to 
+	 * Sets the elasticsearch mapping on the specified index by reading the
+	 * 'mapping.json' file and sending it as REST request to
 	 * elasticsearch.
+	 * 
 	 * @return A status message.
 	 */
 	private String setMapping(final String indexName) {

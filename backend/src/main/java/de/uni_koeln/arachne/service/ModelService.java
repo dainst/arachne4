@@ -20,24 +20,26 @@ import de.uni_koeln.arachne.util.EntityId;
  */
 @Service("ModelService")
 public class ModelService {
-	
+
 	@Autowired
-	private GenericSQLDao genericSQLDao; 
-	
+	private GenericSQLDao genericSQLDao;
+
 	private transient final List<String> includeList;
-	
+
 	/**
 	 * Constructor setting the list of types that do not have any connected models.
+	 * 
 	 * @param modelIncludeList The list of types without images.
 	 */
-	@Autowired
 	public ModelService(final @Value("#{'${modelIncludeList}'.split(',')}") List<String> modelIncludeList) {
 		includeList = modelIncludeList;
 	}
-    
-    /**
-	 * This method retrieves the model ids for a given dataset from the database and adds them to the datasets list
+
+	/**
+	 * This method retrieves the model ids for a given dataset from the database and
+	 * adds them to the datasets list
 	 * of 3d models.
+	 * 
 	 * @param dataset The dataset to add models to.
 	 */
 	public void addModels(final Dataset dataset) {
@@ -55,8 +57,8 @@ public class ModelService {
 				modelList.add(model);
 				dataset.setModels(modelList);
 			} else {
-				final List<Model> modelList = (List<Model>) genericSQLDao.getModelList(arachneId.getTableName()
-						, arachneId.getInternalKey());
+				final List<Model> modelList = (List<Model>) genericSQLDao.getModelList(arachneId.getTableName(),
+						arachneId.getInternalKey());
 				dataset.setModels(modelList);
 			}
 		}

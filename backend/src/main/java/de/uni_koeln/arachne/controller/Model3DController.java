@@ -4,11 +4,10 @@ import java.util.Arrays;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,13 +33,14 @@ import de.uni_koeln.arachne.util.JSONUtil;
 import de.uni_koeln.arachne.util.image.ImageMimeUtil;
 
 /**
- * This class serves 3D model data and texture data as well as the JSON meta data needed by the Javascript 3D viewer.
+ * This class serves 3D model data and texture data as well as the JSON meta
+ * data needed by the Javascript 3D viewer.
  */
 @Controller
 public class Model3DController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Model3DController.class);
 
-	private static final String[] BINARY_FORMATS = {"ply", "nxs", "nxz"};
+	private static final String[] BINARY_FORMATS = { "ply", "nxs", "nxz" };
 
 	@Autowired
 	private transient EntityIdentificationService entityIdentificationService;
@@ -55,9 +55,9 @@ public class Model3DController {
 
 	/**
 	 * Constructor setting the path to the 3D models directory.
+	 * 
 	 * @param basePath The path.
 	 */
-	@Autowired
 	public Model3DController(final @Value("${model3dBasePath}") String basePath) {
 		this.basePath = basePath;
 	}
@@ -73,17 +73,18 @@ public class Model3DController {
 	 * This method acts as a facade and forwards to more specific endpoints that
 	 * can also be used directly in order to avoid getting the dataset twice.
 	 *
-	 * @param modelId The internal ID of the 3D model.
-	 * @param isMeta Flag to indicate wether meta data or the actual model should be served.
+	 * @param modelId  The internal ID of the 3D model.
+	 * @param isMeta   Flag to indicate wether meta data or the actual model should
+	 *                 be served.
 	 * @param response The <code>HTTPServeletResponse</code>
-	 * @param headers The request's <code>HttpHeaders</code>
-	 * @return Either the metadata as JSON or model data in one of the supported formats.
+	 * @param headers  The request's <code>HttpHeaders</code>
+	 * @return Either the metadata as JSON or model data in one of the supported
+	 *         formats.
 	 */
-	@RequestMapping(value = "/model/{modelId}", method = RequestMethod.GET)
-	public String handleModelRequest(@PathVariable("modelId") final Long modelId
-			, @RequestParam(value = "meta", required = false) final Boolean isMeta
-			, final HttpServletResponse response
-			, @RequestHeader final HttpHeaders headers) {
+	@GetMapping("/model/{modelId}")
+	public String handleModelRequest(@PathVariable final Long modelId,
+			@RequestParam(value = "meta", required = false) final Boolean isMeta, final HttpServletResponse response,
+			@RequestHeader final HttpHeaders headers) {
 
 		final Dataset dataset = getDataset(modelId, response);
 
@@ -105,13 +106,14 @@ public class Model3DController {
 
 	/**
 	 * Sends full model data.
-	 * @param modelId The internal ID of the 3D model.
+	 * 
+	 * @param modelId  The internal ID of the 3D model.
 	 * @param response <code>The HTTPServeletResponse</code>
 	 * @return The model data
 	 */
-	@RequestMapping(value = "/model/full/{modelId}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<byte[]> handleFullModelRequest(@PathVariable("modelId") final Long modelId
-			, final HttpServletResponse response) {
+	@GetMapping("/model/full/{modelId}")
+	public @ResponseBody ResponseEntity<byte[]> handleFullModelRequest(@PathVariable final Long modelId,
+			final HttpServletResponse response) {
 
 		final Dataset dataset = getDataset(modelId, response);
 		if (dataset == null) {
@@ -122,15 +124,15 @@ public class Model3DController {
 
 	/**
 	 * Sends partial model data as given in the Range header.
-	 * @param modelId The internal ID of the 3D model.
+	 * 
+	 * @param modelId  The internal ID of the 3D model.
 	 * @param response <code>The HTTPServeletResponse</code>
-	 * @param headers The request's <code>HttpHeaders</code>
+	 * @param headers  The request's <code>HttpHeaders</code>
 	 * @return The partial model data
 	 */
-	@RequestMapping(value = "/model/partial/{modelId}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<ResourceRegion> handlePartialModelRequest(@PathVariable("modelId") final Long modelId
-			, final HttpServletResponse response
-			, @RequestHeader final HttpHeaders headers) {
+	@GetMapping("/model/partial/{modelId}")
+	public @ResponseBody ResponseEntity<ResourceRegion> handlePartialModelRequest(@PathVariable final Long modelId,
+			final HttpServletResponse response, @RequestHeader final HttpHeaders headers) {
 
 		final Dataset dataset = getDataset(modelId, response);
 		if (dataset == null) {
@@ -148,13 +150,14 @@ public class Model3DController {
 
 	/**
 	 * Sends model metadata.
-	 * @param modelId The internal ID of the 3D model.
+	 * 
+	 * @param modelId  The internal ID of the 3D model.
 	 * @param response <code>The HTTPServeletResponse</code>
 	 * @return Model metadata as JSON
 	 */
-	@RequestMapping(value = "/model/meta/{modelId}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<String> handleMetadataRequest(@PathVariable("modelId") final Long modelId
-			, final HttpServletResponse response) {
+	@GetMapping("/model/meta/{modelId}")
+	public @ResponseBody ResponseEntity<String> handleMetadataRequest(@PathVariable final Long modelId,
+			final HttpServletResponse response) {
 
 		final Dataset dataset = getDataset(modelId, response);
 		if (dataset == null) {
@@ -165,13 +168,14 @@ public class Model3DController {
 
 	/**
 	 * Request handler for material data. The only supported format is '.mtl'.
-	 * @param modelId The ID of the 3D model.
+	 * 
+	 * @param modelId  The ID of the 3D model.
 	 * @param response The <code>HTTPServletResponse</code>
 	 * @return The '.mtl'-file.
 	 */
-	@RequestMapping(value = "/model/material/{modelId}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<String> handleMaterialRequest(@PathVariable("modelId") final Long modelId
-			, final HttpServletResponse response) {
+	@GetMapping("/model/material/{modelId}")
+	public @ResponseBody ResponseEntity<String> handleMaterialRequest(@PathVariable final Long modelId,
+			final HttpServletResponse response) {
 
 		final Dataset dataset = getDataset(modelId, response);
 
@@ -180,23 +184,22 @@ public class Model3DController {
 		}
 		final String materialData = getMaterialData(dataset);
 		final HttpHeaders responseHeaders = new HttpHeaders();
-	    responseHeaders.add("Content-Type", "text/plain; charset=utf-8");
-	    return new ResponseEntity<String>(materialData, responseHeaders, HttpStatus.OK);
+		responseHeaders.add("Content-Type", "text/plain; charset=utf-8");
+		return new ResponseEntity<String>(materialData, responseHeaders, HttpStatus.OK);
 	}
 
 	/**
 	 * Request handler for texture requests.
-	 * @param modelId The internal ID of the 3D Model.
-	 * @param request The <code>HTTPServletRequest</code>
+	 * 
+	 * @param modelId  The internal ID of the 3D Model.
+	 * @param request  The <code>HTTPServletRequest</code>
 	 * @param response The <code>HTTPServletResponse</code>
 	 * @return The image file.
 	 */
-	@RequestMapping(value = "/model/material/{modelId}/**",
-			method = RequestMethod.GET,
-			produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
-	public @ResponseBody ResponseEntity<byte[]> handleTextureRequest(@PathVariable("modelId") final Long modelId
-			, final HttpServletRequest request
-			, final HttpServletResponse response) {
+	@GetMapping(value = "/model/material/{modelId}/**", produces = { MediaType.IMAGE_JPEG_VALUE,
+			MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE })
+	public @ResponseBody ResponseEntity<byte[]> handleTextureRequest(@PathVariable final Long modelId,
+			final HttpServletRequest request, final HttpServletResponse response) {
 
 		final Dataset dataset = getDataset(modelId, response);
 
@@ -214,18 +217,18 @@ public class Model3DController {
 		}
 
 		final HttpHeaders responseHeaders = new HttpHeaders();
-	    responseHeaders.add("Content-Type", mimeType + "; charset=utf-8");
+		responseHeaders.add("Content-Type", mimeType + "; charset=utf-8");
 		return new ResponseEntity<byte[]>(textureData, responseHeaders, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/model/file/**", method = RequestMethod.GET)
+	@GetMapping("/model/file/**")
 	public @ResponseBody ResponseEntity<byte[]> handleModelFileRequest(final HttpServletRequest request,
 			final HttpServletResponse response) {
 
 		String requestURL = request.getRequestURL().toString();
 		String pathInput = requestURL.split("/model/file/")[1];
 		// Get rid of any '..' which could (theoretically) escape the model dir.
-		Path normalized = Paths.get(pathInput).normalize();
+		Path normalized = Path.of(pathInput).normalize();
 
 		final String fileName = normalized.getFileName().toString();
 		final String contentType = hasBinaryFileEnding(fileName) ? "application/octet-stream"
@@ -280,30 +283,33 @@ public class Model3DController {
 
 	/**
 	 * Retrieves the dataset for the give entity id.
-	 * @param modelId The internal ID of the 3D model.
+	 * 
+	 * @param modelId  The internal ID of the 3D model.
 	 * @param response The <code>HTTPServletResponse</code>
 	 * @return The dataset.
 	 */
 	private Dataset getDataset(final long modelId, final HttpServletResponse response) {
 		final EntityId arachneId = entityIdentificationService.getId("modell3d", modelId);
 
-    	if (arachneId == null || arachneId.isDeleted()) {
-    		response.setStatus(404);
-    		return null;
-    	}
+		if (arachneId == null || arachneId.isDeleted()) {
+			response.setStatus(404);
+			return null;
+		}
 
-    	final String datasetGroupName = singleEntityDataService.getDatasetGroup(arachneId);
-    	final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
-    	if (!userRightsService.userHasDatasetGroup(datasetGroup)) {
-    		response.setStatus(403);
-    		return null;
-    	}
+		final String datasetGroupName = singleEntityDataService.getDatasetGroup(arachneId);
+		final DatasetGroup datasetGroup = new DatasetGroup(datasetGroupName);
+		if (!userRightsService.userHasDatasetGroup(datasetGroup)) {
+			response.setStatus(403);
+			return null;
+		}
 
-    	return singleEntityDataService.getSingleEntityByArachneId(arachneId);
+		return singleEntityDataService.getSingleEntityByArachneId(arachneId);
 	}
 
 	/**
-	 * Retrieves the information needed by the Javascript 3D-Viewer from the dataset.
+	 * Retrieves the information needed by the Javascript 3D-Viewer from the
+	 * dataset.
+	 * 
 	 * @param dataset The dataset of interest.
 	 * @return The meta data as JSON.
 	 */
@@ -321,8 +327,10 @@ public class Model3DController {
 
 	/**
 	 * Reads model data from disk (binary or text).
+	 * 
 	 * @param dataset The dataset describing the model.
-	 * @return The model data as <code>byte</code> array or <code>null</code> on failure.
+	 * @return The model data as <code>byte</code> array or <code>null</code> on
+	 *         failure.
 	 */
 	private byte[] getModelData(final Dataset dataset) {
 		final File modelFile = getModelFile(dataset);
@@ -349,18 +357,20 @@ public class Model3DController {
 	}
 
 	/**
-	 * Determines if a .stl file is binary or ASCII encoded by looking at the number of triangles in the file and calculating
+	 * Determines if a .stl file is binary or ASCII encoded by looking at the number
+	 * of triangles in the file and calculating
 	 * an expected binary size. If the size does not match it is a text file.
+	 * 
 	 * @return <code>true</code> if the file is binary.
 	 */
 	private boolean isBinary(final Dataset dataset, final byte[] data) {
 		String format = dataset.getFieldFromFields("modell3d.Dateiformat");
 		if (format.equals("stl")) {
-			// Get the first four bytes after the 80 character header of a binary stl file as an unsigned 32 bit integer value.
+			// Get the first four bytes after the 80 character header of a binary stl file
+			// as an unsigned 32 bit integer value.
 			// This is the number of triangles in the file.
-			final long triangles =
-					((data[80] & 0xFF) <<  0) |
-					((data[81] & 0xFF) <<  8) |
+			final long triangles = ((data[80] & 0xFF) << 0) |
+					((data[81] & 0xFF) << 8) |
 					((data[82] & 0xFF) << 16) |
 					((data[83] & 0xFF) << 24);
 
@@ -392,6 +402,7 @@ public class Model3DController {
 
 	/**
 	 * Reads a mtl-file from disk.
+	 * 
 	 * @param dataset The dataset of interest.
 	 * @return The material file as String.
 	 */
@@ -419,9 +430,11 @@ public class Model3DController {
 
 	/**
 	 * Reads an image file from disc.
-	 * @param dataset The dataset of interest.
+	 * 
+	 * @param dataset     The dataset of interest.
 	 * @param texturePath The path of the image file.
-	 * @return The image data as <code>byte</code> array or <code>null</code> on failure.
+	 * @return The image data as <code>byte</code> array or <code>null</code> on
+	 *         failure.
 	 */
 	private byte[] getTextureData(final Dataset dataset, final String texturePath) {
 		String modelPath = dataset.getFieldFromFields("modell3d.Pfad");

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @ComponentScan("de.uni_koeln.arachne")
 @Configuration
@@ -17,10 +17,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableAsync
 @EnableSpringConfigured
 @PropertySource("classpath:config/application.properties")
-public class EmbeddedDataSourceConfig extends WebMvcConfigurerAdapter {
+public class EmbeddedDataSourceConfig implements WebMvcConfigurer {
 
-    @Bean(destroyMethod="shutdown")
-    public DataSource dataSource() {
+    @Bean(destroyMethod = "shutdown")
+    DataSource dataSource() {
         return new EmbeddedMysqlDatabaseBuilder().build();
     }
 }

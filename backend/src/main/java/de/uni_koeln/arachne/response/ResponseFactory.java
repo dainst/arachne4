@@ -40,9 +40,12 @@ import de.uni_koeln.arachne.util.security.SecurityUtils;
 
 /**
  * Factory class to create the different kinds of responses from a dataset.
- * The <code>createX</code> methods may access xml config files to create the response objects. These config files are
- * found in the <code>WEB-INF/xml/</code> directory. Currently only the <code>createFormattedArachneEntity</code>
- * method uses these files so that the naming scheme <code>$(TYPE).xml</code> is sufficient. If other methods
+ * The <code>createX</code> methods may access xml config files to create the
+ * response objects. These config files are
+ * found in the <code>WEB-INF/xml/</code> directory. Currently only the
+ * <code>createFormattedArachneEntity</code>
+ * method uses these files so that the naming scheme <code>$(TYPE).xml</code> is
+ * sufficient. If other methods
  * want to use different xml config files a new naming scheme is needed.
  * <br>
  * This class can be autowired.
@@ -50,15 +53,15 @@ import de.uni_koeln.arachne.util.security.SecurityUtils;
  * @author Reimar Grabowski
  */
 @Component
-@Configurable(preConstruction=true)
+@Configurable(preConstruction = true)
 public class ResponseFactory {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseFactory.class);
 
-	public static final String[] PHOTO_DATE_FIELDS =  {
-		"marbilder.Fotodatum",
-		"marbilderbestand.Aufnahmedatum",
-		"marbilderinventar.03_Aufnahmedatum"
+	public static final String[] PHOTO_DATE_FIELDS = {
+			"marbilder.Fotodatum",
+			"marbilderbestand.Aufnahmedatum",
+			"marbilderinventar.03_Aufnahmedatum"
 	};
 
 	@Autowired
@@ -93,28 +96,33 @@ public class ResponseFactory {
 
 	final private int imageLimit;
 
-	@Autowired
-	public ResponseFactory(final @Value("${serverAddress}") String serverAddress
-			, final @Value("#{'${esSuggestFacets}'.split(',')}") List<String> suggestFacetList
-			, final @Value("${imageLimit}") int imageLimit) {
+	public ResponseFactory(final @Value("${serverAddress}") String serverAddress,
+			final @Value("#{'${esSuggestFacets}'.split(',')}") List<String> suggestFacetList,
+			final @Value("${imageLimit}") int imageLimit) {
 		this.serverAddress = serverAddress;
 		this.suggestFacetList = suggestFacetList;
 		this.imageLimit = imageLimit;
 	}
 
 	/**
-	 * Creates a formatted response object as used by the front-end. The structure of this object is defined in the xml
-	 * config files. First the type of the object will be determined from the dataset (e.g. bauwerk). Based on the type
-	 * the corresponding xml file <code>$(TYPE).xml</code> is read. The response is then created, according to the xml
+	 * Creates a formatted response object as used by the front-end. The structure
+	 * of this object is defined in the xml
+	 * config files. First the type of the object will be determined from the
+	 * dataset (e.g. bauwerk). Based on the type
+	 * the corresponding xml file <code>$(TYPE).xml</code> is read. The response is
+	 * then created, according to the xml
 	 * file, from the dataset.
 	 * <br>
-	 * The validity of the xml file is not checked as this is covered by 'category.xsd'.
+	 * The validity of the xml file is not checked as this is covered by
+	 * 'category.xsd'.
+	 * 
 	 * @param dataset The dataset which encapsulates the SQL query results.
-     * @param lang the language in which the json should be returned
+	 * @param lang    the language in which the json should be returned
 	 * @return A <code>FormattedArachneEntity</code> as JSON (<code>String</code>).
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
-	public String createFormattedArachneEntityAsJsonString(final Dataset dataset, final String lang) throws Transl8Exception {
+	public String createFormattedArachneEntityAsJsonString(final Dataset dataset, final String lang)
+			throws Transl8Exception {
 
 		final EntityId arachneId = dataset.getArachneId();
 		final String tableName = arachneId.getTableName();
@@ -122,7 +130,7 @@ public class ResponseFactory {
 
 		final FormattedArachneEntity response = createFormattedArachneEntity(dataset, arachneId, tableName, lang);
 		if (document != null) {
-			//Set additional Content
+			// Set additional Content
 			response.setAdditionalContent(dataset.getAdditionalContent());
 			return getEntityAsJson(dataset, document, response, lang).toString();
 		}
@@ -132,15 +140,21 @@ public class ResponseFactory {
 	}
 
 	/**
-	 * Creates a formatted response object as used by the front-end. The structure of this object is defined in the xml
-	 * config files. First the type of the object will be determined from the dataset (e.g. bauwerk). Based on the type
-	 * the corresponding xml file <code>$(TYPE).xml</code> is read. The response is then created, according to the xml
+	 * Creates a formatted response object as used by the front-end. The structure
+	 * of this object is defined in the xml
+	 * config files. First the type of the object will be determined from the
+	 * dataset (e.g. bauwerk). Based on the type
+	 * the corresponding xml file <code>$(TYPE).xml</code> is read. The response is
+	 * then created, according to the xml
 	 * file, from the dataset.
 	 * <br>
-	 * The validity of the xml file is not checked as this is covered by 'category.xsd'.
+	 * The validity of the xml file is not checked as this is covered by
+	 * 'category.xsd'.
+	 * 
 	 * @param dataset The dataset which encapsulates the SQL query results.
-	 * @param lang The language.
-	 * @return A <code>FormattedArachneEntity</code> as JSON (<code>raw bytes</code>).
+	 * @param lang    The language.
+	 * @return A <code>FormattedArachneEntity</code> as JSON
+	 *         (<code>raw bytes</code>).
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
 	public byte[] createFormattedArachneEntityAsJson(final Dataset dataset, final String lang) throws Transl8Exception {
@@ -152,7 +166,7 @@ public class ResponseFactory {
 		final FormattedArachneEntity response = createFormattedArachneEntity(dataset, arachneId, tableName, lang);
 
 		if (document != null) {
-			//Set additional Content
+			// Set additional Content
 			response.setAdditionalContent(dataset.getAdditionalContent());
 
 			byte[] json = null;
@@ -228,21 +242,25 @@ public class ResponseFactory {
 		final double logImages = Math.log10(imageCount + 1.0d) + 1.0d;
 		final double logDegree = Math.log10(Math.sqrt(response.getDegree() + 1.0d)) + 1.0d;
 		double boost = logFields * logImages * logDegree / 5.0 + 1.0d;
-		boost *= customBooster.getCategoryBoost(tableName) * customBooster.getSingleEntityBoosts(response.getEntityId());
+		boost *= customBooster.getCategoryBoost(tableName)
+				* customBooster.getSingleEntityBoosts(response.getEntityId());
 		response.setBoost(boost);
-		response.getSuggest().setWeight((int) (boost*100));
+		response.getSuggest().setWeight((int) (boost * 100));
 
 		// set dataset group
-		// workaround for table marbilder as it does not adhere to the naming conventions
+		// workaround for table marbilder as it does not adhere to the naming
+		// conventions
 		String datasetGroupFieldName = null;
 		if ("marbilder".equals(tableName)) {
 			datasetGroupFieldName = "marbilder.DatensatzGruppeMARBilder";
 		} else {
-			datasetGroupFieldName = tableName+".DatensatzGruppe"+tableName.substring(0,1).toUpperCase()+tableName.substring(1);
+			datasetGroupFieldName = tableName + ".DatensatzGruppe" + tableName.substring(0, 1).toUpperCase()
+					+ tableName.substring(1);
 		}
 		response.setDatasetGroup(dataset.getFieldFromFields(datasetGroupFieldName));
 
-		// set datasetGroup to "Arachne" (visible for all) for entities that do not have a datasetGroup like 'literatur' to
+		// set datasetGroup to "Arachne" (visible for all) for entities that do not have
+		// a datasetGroup like 'literatur' to
 		// make the access control in the search easier/consistent
 		if (response.getDatasetGroup() == null) {
 			response.setDatasetGroup("Arachne");
@@ -265,11 +283,11 @@ public class ResponseFactory {
 		ArrayList<Place> places = new ArrayList<Place>();
 
 		if (placeContext != null) {
-			for (AbstractLink link: placeContext.getAllContexts()) {
-			    final String city = link.getFieldFromFields("ort.Stadt");
-			    final String region = link.getFieldFromFields("ort.Region");
+			for (AbstractLink link : placeContext.getAllContexts()) {
+				final String city = link.getFieldFromFields("ort.Stadt");
+				final String region = link.getFieldFromFields("ort.Region");
 				final String subregion = link.getFieldFromFields("ort.Subregion");
-                final String country = link.getFieldFromFields("ort.Land");
+				final String country = link.getFieldFromFields("ort.Land");
 				final String additionalInfo = link.getFieldFromFields("ort.Aufbewahrungsort");
 
 				final List<String> placeNameArray = new ArrayList<String>();
@@ -300,7 +318,7 @@ public class ResponseFactory {
 
 				if (!StrUtils.isEmptyOrNull(placeName)) {
 					final Place place = new Place(placeName);
-					if(!StrUtils.isEmptyOrNull(relation)) {
+					if (!StrUtils.isEmptyOrNull(relation)) {
 						place.setRelation(relation);
 					}
 					if (!StrUtils.isEmptyOrNull(latitude) && !StrUtils.isEmptyOrNull(latitude)) {
@@ -309,98 +327,98 @@ public class ResponseFactory {
 					if (gazetteerId != null) {
 						place.setGazetteerId(Long.parseLong(gazetteerId));
 					}
-                    if(!StrUtils.isEmptyOrNull(storageFromDay)) {
+					if (!StrUtils.isEmptyOrNull(storageFromDay)) {
 						place.setStorageFromDay(Integer.parseInt(storageFromDay));
 					}
-                    if(!StrUtils.isEmptyOrNull(storageFromMonth)) {
+					if (!StrUtils.isEmptyOrNull(storageFromMonth)) {
 						place.setStorageFromMonth(Integer.parseInt(storageFromMonth));
 					}
-                    if(!StrUtils.isEmptyOrNull(storageFromYear)) {
-                        place.setStorageFromYear(Integer.parseInt(storageFromYear));
-                    }
-                    if(!StrUtils.isEmptyOrNull(storageToDay)) {
+					if (!StrUtils.isEmptyOrNull(storageFromYear)) {
+						place.setStorageFromYear(Integer.parseInt(storageFromYear));
+					}
+					if (!StrUtils.isEmptyOrNull(storageToDay)) {
 						place.setStorageToDay(Integer.parseInt(storageToDay));
 					}
-                    if(!StrUtils.isEmptyOrNull(storageToMonth)) {
+					if (!StrUtils.isEmptyOrNull(storageToMonth)) {
 						place.setStorageToMonth(Integer.parseInt(storageToMonth));
 					}
-                    if(!StrUtils.isEmptyOrNull(storageToYear)) {
+					if (!StrUtils.isEmptyOrNull(storageToYear)) {
 						place.setStorageToYear(Integer.parseInt(storageToYear));
 					}
-                    if(!StrUtils.isEmptyOrNull(country)) {
-                        place.setCountry(country);
-                    }
-                    if(!StrUtils.isEmptyOrNull(city)) {
-                        place.setCity(city);
-                    }
-                    if(!StrUtils.isEmptyOrNull(region)) {
-                        place.setRegion(region);
-                    }
-                    if(!StrUtils.isEmptyOrNull(subregion)) {
-                        place.setSubregion(subregion);
-                    }
-                    if(!StrUtils.isEmptyOrNull(additionalInfo)) {
+					if (!StrUtils.isEmptyOrNull(country)) {
+						place.setCountry(country);
+					}
+					if (!StrUtils.isEmptyOrNull(city)) {
+						place.setCity(city);
+					}
+					if (!StrUtils.isEmptyOrNull(region)) {
+						place.setRegion(region);
+					}
+					if (!StrUtils.isEmptyOrNull(subregion)) {
+						place.setSubregion(subregion);
+					}
+					if (!StrUtils.isEmptyOrNull(additionalInfo)) {
 						place.setLocality(additionalInfo);
 					}
-                    places.add(place);
+					places.add(place);
 				}
 			}
-			//Sort places by start date
+			// Sort places by start date
 			try {
-    			Collections.sort(places, new Comparator<Place>() {
-    				@Override
-    			    public int compare(Place p1, Place p2) {
-                        try {
-                            // shuffle Fundorte to the top
-                            if (p1.getRelation().equals("Fundort")) {
-                                return -1;
-                            } else if (p2.getRelation().equals("Fundort")) {
-                                return 1;
-                            }
-                            Integer datePart1 = p1.getStorageFromYear(); //holds year, month or day part of the date
-                            Integer datePart2 = p2.getStorageFromYear();
+				Collections.sort(places, new Comparator<Place>() {
+					@Override
+					public int compare(Place p1, Place p2) {
+						try {
+							// shuffle Fundorte to the top
+							if (p1.getRelation().equals("Fundort")) {
+								return -1;
+							} else if (p2.getRelation().equals("Fundort")) {
+								return 1;
+							}
+							Integer datePart1 = p1.getStorageFromYear(); // holds year, month or day part of the date
+							Integer datePart2 = p2.getStorageFromYear();
 
-                            if (datePart1 == null || datePart2 == null) {
-                                if (datePart1 != null) {
-                                    return -1;
-                                }
-                                if (datePart2 != null) {
-                                    return 1;
-                                }
-                                return 0;
-                            } else {
-                                if (datePart1 == datePart2) {
-                                    try {
-                                        datePart1 = p1.getStorageFromMonth();
-                                        datePart2 = p2.getStorageFromMonth();
-                                    } catch(IllegalArgumentException e) {
-                                        return 0;
-                                    }
-                                }
+							if (datePart1 == null || datePart2 == null) {
+								if (datePart1 != null) {
+									return -1;
+								}
+								if (datePart2 != null) {
+									return 1;
+								}
+								return 0;
+							} else {
+								if (datePart1 == datePart2) {
+									try {
+										datePart1 = p1.getStorageFromMonth();
+										datePart2 = p2.getStorageFromMonth();
+									} catch (IllegalArgumentException e) {
+										return 0;
+									}
+								}
 
-                                if (datePart1 == datePart2) {
-                                    try {
-                                        datePart1 = p1.getStorageFromDay();
-                                        datePart2 = p2.getStorageFromDay();
-                                    } catch(IllegalArgumentException e) {
-                                        return 0;
-                                    }
-                                }
+								if (datePart1 == datePart2) {
+									try {
+										datePart1 = p1.getStorageFromDay();
+										datePart2 = p2.getStorageFromDay();
+									} catch (IllegalArgumentException e) {
+										return 0;
+									}
+								}
 
-                                return datePart1 > datePart2 ? 1 : -1;
-                            }
+								return datePart1 > datePart2 ? 1 : -1;
+							}
 
-                        } catch (Exception e) {
-//                            throw new IllegalArgumentException(e);
-                            LOGGER.debug("A problem occured sorting places. Most likely missing date data.");
-                            return 0;
-                        }
-                    }
-    			});
+						} catch (Exception e) {
+							// throw new IllegalArgumentException(e);
+							LOGGER.debug("A problem occured sorting places. Most likely missing date data.");
+							return 0;
+						}
+					}
+				});
 			} catch (NullPointerException e) {
-			    LOGGER.debug("A problem occured sorting places. Most likely missing date data.");
+				LOGGER.debug("A problem occured sorting places. Most likely missing date data.");
 			}
-			for (Place place: places) {
+			for (Place place : places) {
 				response.addPlace(place);
 			}
 		}
@@ -409,7 +427,7 @@ public class ResponseFactory {
 		// TODO set parsed date when available in database
 		Context dateContext = dataset.getContext("datierung");
 		if (dateContext != null) {
-			for (AbstractLink link: dateContext.getAllContexts()) {
+			for (AbstractLink link : dateContext.getAllContexts()) {
 				final String startEra = link.getFieldFromFields("datierung.AnfEpoche");
 				if (!StrUtils.isEmptyOrNull(startEra)) {
 					final DateAssertion dateAssertion = new DateAssertion(startEra, "Datierung");
@@ -426,19 +444,17 @@ public class ResponseFactory {
 		// add references from literatur
 		Context referencesContext = dataset.getContext("literatur");
 		if (referencesContext != null) {
-			for (AbstractLink link: referencesContext.getAllContexts()) {
+			for (AbstractLink link : referencesContext.getAllContexts()) {
 
-			    final String reference = link.getFieldFromFields("literatur.DAIRichtlinien");
-			    final String ZenonID = link.getFieldFromFields("literatur.ZenonID");
+				final String reference = link.getFieldFromFields("literatur.DAIRichtlinien");
+				final String ZenonID = link.getFieldFromFields("literatur.ZenonID");
 
-                if (!(StrUtils.isEmptyOrNull(ZenonID) && StrUtils.isEmptyOrNull(reference))) {
-                    response.addReference(
-                            new LitReference(
-                                StrUtils.isEmptyOrNull(ZenonID) ? "" : ZenonID,
-                                StrUtils.isEmptyOrNull(reference) ? "" : reference
-                            )
-                    );
-                }
+				if (!(StrUtils.isEmptyOrNull(ZenonID) && StrUtils.isEmptyOrNull(reference))) {
+					response.addReference(
+							new LitReference(
+									StrUtils.isEmptyOrNull(ZenonID) ? "" : ZenonID,
+									StrUtils.isEmptyOrNull(reference) ? "" : reference));
+				}
 			}
 		}
 
@@ -447,7 +463,8 @@ public class ResponseFactory {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			for (String field : PHOTO_DATE_FIELDS) {
 				String value = dataset.getField(field);
-				if (value == null) continue;
+				if (value == null)
+					continue;
 				Date date = DateUtils.parseDate(value);
 				if (date != null) {
 					DateAssertion dateAssertion = new DateAssertion(value, "Aufnahme", format.format(date));
@@ -461,6 +478,7 @@ public class ResponseFactory {
 
 	/**
 	 * Method to construct a response object for a deleted entity.
+	 * 
 	 * @param entityId The ID of the entity.
 	 * @return The JSON for the deleted entity as <code>String</code>.
 	 */
@@ -475,6 +493,7 @@ public class ResponseFactory {
 
 	/**
 	 * Method to construct a response object for a deleted entity.
+	 * 
 	 * @param entityId The ID of the entity.
 	 * @return The JSON for the deleted entity as <code>String</code>.
 	 */
@@ -489,9 +508,10 @@ public class ResponseFactory {
 
 	/**
 	 * Retrieves the ids (if any) defined in the <code>additonalIds</code> tag.
-	 * @param dataset The current dataset.
+	 * 
+	 * @param dataset   The current dataset.
 	 * @param namespace The document namespace
-	 * @param search The search element.
+	 * @param search    The search element.
 	 * @return A <code>List<String></code> containg the additional ids.
 	 */
 	private List<String> getAdditionalIds(final Dataset dataset, final Namespace namespace, final Element search) {
@@ -514,9 +534,10 @@ public class ResponseFactory {
 
 	/**
 	 * Retrieves the filename (if any) defined in the <code>filename</code> tag.
-	 * @param dataset The current dataset.
+	 * 
+	 * @param dataset   The current dataset.
 	 * @param namespace The document namespace
-	 * @param search The search element.
+	 * @param search    The search element.
 	 * @return The filename as <code>String</code>.
 	 */
 	private String getFileName(final Dataset dataset, final Namespace namespace, final Element search) {
@@ -532,30 +553,36 @@ public class ResponseFactory {
 
 	/**
 	 * Retrieves the title for the response.
-	 * @param dataset The current dataset.
+	 * 
+	 * @param dataset   The current dataset.
 	 * @param namespace The document namespace.
-	 * @param display The display element.
-	 * @return A <code>String</code> containing the concatenated values of the <code>title</code> tag.
+	 * @param display   The display element.
+	 * @return A <code>String</code> containing the concatenated values of the
+	 *         <code>title</code> tag.
 	 */
-	private String getTitleString(final Dataset dataset, final Namespace namespace, final Element display, final String lang) {
+	private String getTitleString(final Dataset dataset, final Namespace namespace, final Element display,
+			final String lang) {
 		String result = "";
 		final Element title = display.getChild("title", namespace);
-    	if (title.getChild("field", namespace) == null) {
-    		result = contentListToString(getContentList(dataset, namespace, title, lang));
-    	} else {
-    		result = dataset.getField(title.getChild("field", namespace).getAttributeValue("datasource"));
-    	}
-    	return result;
+		if (title.getChild("field", namespace) == null) {
+			result = contentListToString(getContentList(dataset, namespace, title, lang));
+		} else {
+			result = dataset.getField(title.getChild("field", namespace).getAttributeValue("datasource"));
+		}
+		return result;
 	}
 
 	/**
 	 * Retrieves the subtitle for the response.
-	 * @param dataset The current dataset.
+	 * 
+	 * @param dataset   The current dataset.
 	 * @param namespace The document namespace.
-	 * @param display The display element.
-	 * @return A <code>String</code> containing the concatenated values of the <code>subtitle</code> tag.
+	 * @param display   The display element.
+	 * @return A <code>String</code> containing the concatenated values of the
+	 *         <code>subtitle</code> tag.
 	 */
-	private String getSubTitle(final Dataset dataset, final Namespace namespace, final Element display, final String lang) {
+	private String getSubTitle(final Dataset dataset, final Namespace namespace, final Element display,
+			final String lang) {
 
 		String result = "";
 		final Element subtitle = display.getChild("subtitle", namespace);
@@ -568,13 +595,16 @@ public class ResponseFactory {
 	}
 
 	/**
-	 * Sets the sections of the response according to the definitions in the corresponing xml config file.
-	 * @param dataset The current dataset.
+	 * Sets the sections of the response according to the definitions in the
+	 * corresponing xml config file.
+	 * 
+	 * @param dataset   The current dataset.
 	 * @param namespace The document namespace.
-	 * @param display The display element.
-	 * @param response The response object to add the sections to.
+	 * @param display   The display element.
+	 * @param response  The response object to add the sections to.
 	 */
-	private void setSections(final Dataset dataset, final Namespace namespace, final Element display, final FormattedArachneEntity response, final String lang) {
+	private void setSections(final Dataset dataset, final Namespace namespace, final Element display,
+			final FormattedArachneEntity response, final String lang) {
 
 		final Element sections = display.getChild("datasections", namespace);
 		final List<AbstractContent> contentList = getContentList(dataset, namespace, sections, lang);
@@ -585,30 +615,36 @@ public class ResponseFactory {
 	}
 
 	/**
-	 * Sets the external links of the response according to the list of link resolvers defined.
-	 * @param dataset The current dataset.
+	 * Sets the external links of the response according to the list of link
+	 * resolvers defined.
+	 * 
+	 * @param dataset  The current dataset.
 	 * @param response The response object to add the links to.
 	 */
 	private void setExternalLinks(final Dataset dataset, final FormattedArachneEntity response) {
 		final List<ExternalLink> externalLinks = new ArrayList<ExternalLink>();
-		if (externalLinkResolvers != null) for (ExternalLinkResolver resolver : externalLinkResolvers) {
-			final ExternalLink externalLink = resolver.resolve(dataset);
-			if (externalLink != null) {
-			    externalLinks.add(externalLink);
+		if (externalLinkResolvers != null)
+			for (ExternalLinkResolver resolver : externalLinkResolvers) {
+				final ExternalLink externalLink = resolver.resolve(dataset);
+				if (externalLink != null) {
+					externalLinks.add(externalLink);
+				}
 			}
-		}
-		if (!externalLinks.isEmpty()) response.setExternalLinks(externalLinks);
+		if (!externalLinks.isEmpty())
+			response.setExternalLinks(externalLinks);
 	}
 
 	/**
-	 * Sets the part of the response that is defined in the corresponding XML config file.
-	 * @param dataset The current dataset.
+	 * Sets the part of the response that is defined in the corresponding XML config
+	 * file.
+	 * 
+	 * @param dataset  The current dataset.
 	 * @param document The xml document describing the output format.
 	 * @param response The response object to add the content to.
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
-	private ObjectNode getEntityAsJson(final Dataset dataset, final Document document
-			, final FormattedArachneEntity response, final String lang) throws Transl8Exception {
+	private ObjectNode getEntityAsJson(final Dataset dataset, final Document document,
+			final FormattedArachneEntity response, final String lang) throws Transl8Exception {
 
 		final Namespace namespace = document.getRootElement().getNamespace();
 
@@ -672,36 +708,39 @@ public class ResponseFactory {
 		return getFacettedEntityAsJson(dataset, document, response, namespace, lang);
 	}
 
-	private void setEditorSection(Dataset dataset, Namespace namespace,	Element display
-			, FormattedArachneEntity response, final String lang) {
+	private void setEditorSection(Dataset dataset, Namespace namespace, Element display,
+			FormattedArachneEntity response, final String lang) {
 
 		if (userRightsService.userHasRole(SecurityUtils.EDITOR)
 				|| userRightsService.isDataimporter()) {
 			final Element editorSectionElement = display.getChild("editorsection", namespace);
 			if (editorSectionElement != null) {
-				final Section editorSection = (Section)xmlConfigUtil.getContentFromSections(editorSectionElement, namespace
-						, dataset, lang);
+				final Section editorSection = (Section) xmlConfigUtil.getContentFromSections(editorSectionElement,
+						namespace, dataset, lang);
 				if (editorSection != null && !editorSection.getContent().isEmpty()) {
-					response.setEditorSection((Section)editorSection.content.get(0));
+					response.setEditorSection((Section) editorSection.content.get(0));
 				}
 			}
 		}
 	}
 
 	/**
-	 * This method serializes the <code>FormattedArachneEntity</code> to JSON and adds the facets.
-	 * @param dataset The current dataset.
-	 * @param document The xml document describing the output format.
-	 * @param response The response object to add the content to.
+	 * This method serializes the <code>FormattedArachneEntity</code> to JSON and
+	 * adds the facets.
+	 * 
+	 * @param dataset   The current dataset.
+	 * @param document  The xml document describing the output format.
+	 * @param response  The response object to add the content to.
 	 * @param namespace The document namespace.
 	 * @return A Jackson ObjectNode representing the JSON as tree.
 	 * @throws Transl8Exception if transl8 cannot be reached.
 	 */
-	private ObjectNode getFacettedEntityAsJson(final Dataset dataset, final Document document
-			, final FormattedArachneEntity response, final Namespace namespace, final String lang) throws Transl8Exception {
+	private ObjectNode getFacettedEntityAsJson(final Dataset dataset, final Document document,
+			final FormattedArachneEntity response, final Namespace namespace, final String lang)
+			throws Transl8Exception {
 
 		ObjectNode json = JSONUtil.MAPPER.valueToTree(response);
-		ArrayNode suggestInput = (ArrayNode)json.get("suggest").get("input");
+		ArrayNode suggestInput = (ArrayNode) json.get("suggest").get("input");
 
 		// set image facet
 		if (dataset.getThumbnailId() == null) {
@@ -714,7 +753,7 @@ public class ResponseFactory {
 		Context placeContext = dataset.getContext("ort");
 		if (placeContext != null) {
 			ArrayNode placesNode = json.arrayNode();
-			for (AbstractLink link: placeContext.getAllContexts()) {
+			for (AbstractLink link : placeContext.getAllContexts()) {
 				final String city = link.getFieldFromFields("ort.Stadt");
 				final String country = link.getFieldFromFields("ort.Land");
 				final String additionalInfo = link.getFieldFromFields("ort.Aufbewahrungsort");
@@ -733,7 +772,8 @@ public class ResponseFactory {
 				final String gazId = link.getFieldFromFields("ort.Gazetteerid");
 
 				ObjectNode placeNode = json.objectNode();
-				if (place != null) placeNode.put("name", place);
+				if (place != null)
+					placeNode.put("name", place);
 				if (lat != null && lon != null) {
 					ObjectNode locationNode = json.objectNode();
 					locationNode.put("lat", lat);
@@ -767,14 +807,14 @@ public class ResponseFactory {
 		final Element facets = document.getRootElement().getChild("facets", namespace);
 		final List<Facet> facetList = getFacets(dataset, namespace, facets, lang).getList();
 
-		for (final Facet facet: facetList ) {
+		for (final Facet facet : facetList) {
 			final String facetName = facet.getName();
 			final String facetOutputName = "facet_" + facetName;
 			List<String> facetValues = facet.getValues();
 
 			// split multi value facets at ';' and look for facet translations
 			final List<String> finalFacetValues = new ArrayList<String>();
-			for (String facetValue: facetValues) {
+			for (String facetValue : facetValues) {
 				if (facetValue.contains(";")) {
 					// remove leading semicola
 					if (facetValue.startsWith(";")) {
@@ -789,7 +829,7 @@ public class ResponseFactory {
 
 			ArrayNode arrayNode = json.arrayNode();
 			// add facet values to suggest for entities with datasetGroup 'Arachne'
-			for (final String finalFacetValue: finalFacetValues) {
+			for (final String finalFacetValue : finalFacetValues) {
 				arrayNode.add(ts.transl8Facet(facetName, finalFacetValue, lang));
 				if ("Arachne".equals(response.getDatasetGroup()) && suggestFacetList.contains(facetOutputName)) {
 					suggestInput.add(finalFacetValue);
@@ -802,25 +842,30 @@ public class ResponseFactory {
 	}
 
 	/**
-	 * Internal function to retrieve the contents of a <code>section</code> or <code>context</code>.
-	 * @param dataset The current dataset.
+	 * Internal function to retrieve the contents of a <code>section</code> or
+	 * <code>context</code>.
+	 * 
+	 * @param dataset   The current dataset.
 	 * @param namespace The document namespace.
-	 * @param element The DOM element to retrieve the content of.
+	 * @param element   The DOM element to retrieve the content of.
 	 * @return A list containing the content of the passed in element.
 	 */
-	private List<AbstractContent> getContentList(final Dataset dataset, final Namespace namespace, final Element element, final String lang) {
+	private List<AbstractContent> getContentList(final Dataset dataset, final Namespace namespace,
+			final Element element, final String lang) {
 
 		final List<AbstractContent> contentList = new ArrayList<AbstractContent>();
 
 		final List<Element> children = element.getChildren();
-		for (final Element currentElement:children) {
+		for (final Element currentElement : children) {
 			if (currentElement.getName().equals("section")) {
-				final Section section = (Section)xmlConfigUtil.getContentFromSections(currentElement, namespace, dataset, lang);
+				final Section section = (Section) xmlConfigUtil.getContentFromSections(currentElement, namespace,
+						dataset, lang);
 				if (section != null && !section.getContent().isEmpty()) {
 					contentList.add(section);
 				}
 			} else {
-				final Section section = (Section)xmlConfigUtil.getContentFromContext(currentElement, namespace, dataset, lang);
+				final Section section = (Section) xmlConfigUtil.getContentFromContext(currentElement, namespace,
+						dataset, lang);
 				if (section != null && !section.getContent().isEmpty()) {
 					contentList.add(section);
 				}
@@ -835,7 +880,9 @@ public class ResponseFactory {
 	}
 
 	/**
-	 * Converts a list of <code>AbstractContent</code> objects to a <code>string</code>.
+	 * Converts a list of <code>AbstractContent</code> objects to a
+	 * <code>string</code>.
+	 * 
 	 * @param contentList The list to convert.
 	 * @return The flattened representation of the list content.
 	 */
@@ -851,29 +898,33 @@ public class ResponseFactory {
 	}
 
 	/**
-	 * This function retrieves the facets from the current config document and the corresponding values from the dataset.
+	 * This function retrieves the facets from the current config document and the
+	 * corresponding values from the dataset.
+	 * 
 	 * @param dataset The current dataset.
-	 * @param facets The facet element of the current config file.
+	 * @param facets  The facet element of the current config file.
 	 * @return A list of facets.
 	 */
-	private FacetList getFacets(final Dataset dataset, final Namespace namespace, final Element facets, final String lang) {
+	private FacetList getFacets(final Dataset dataset, final Namespace namespace, final Element facets,
+			final String lang) {
 		final FacetList result = new FacetList();
 		final List<Element> children = facets.getChildren();
-		for (final Element element:children) {
+		for (final Element element : children) {
 			if ("facet".equals(element.getName())) {
 				final String name = element.getAttributeValue("name");
 				final String labelKey = element.getAttributeValue("labelKey");
 				final String group = element.getAttributeValue("group");
 				final String dependsOn = element.getAttributeValue("dependsOn");
 				final Facet facet = new Facet(name, labelKey, group, dependsOn);
-				final Element child = (Element)element.getChildren().get(0);
+				final Element child = (Element) element.getChildren().get(0);
 				if (child != null) {
 					final List<String> values = new ArrayList<String>();
 					final String childName = child.getName();
 					if ("field".equals(childName)) {
 						String value = dataset.getField(child.getAttributeValue("datasource"));
 						if (value == null) {
-							final StringBuilder ifEmtpyValue = xmlConfigUtil.getIfEmptyFromField(child, namespace, dataset);
+							final StringBuilder ifEmtpyValue = xmlConfigUtil.getIfEmptyFromField(child, namespace,
+									dataset);
 							if (!StrUtils.isEmptyOrNull(ifEmtpyValue)) {
 								value = ifEmtpyValue.toString();
 							}
@@ -900,18 +951,21 @@ public class ResponseFactory {
 	}
 
 	/**
-	 * This function retrieves the facets from a context element and the corresponding values from the dataset.
+	 * This function retrieves the facets from a context element and the
+	 * corresponding values from the dataset.
+	 * 
 	 * @param dataset The current dataset.
-	 * @param child The context element of the current facet element.
-	 * @param values A list of facets to add the new facets to.
+	 * @param child   The context element of the current facet element.
+	 * @param values  A list of facets to add the new facets to.
 	 */
-	private void getFacetContext(final Dataset dataset, final Element child, final List<String> values, final String lang) {
+	private void getFacetContext(final Dataset dataset, final Element child, final List<String> values,
+			final String lang) {
 
 		final Section section = xmlConfigUtil.getContentFromContext(child, null, dataset, lang);
 		if (section != null) {
-			for (final AbstractContent content:section.getContent()) {
-				if (content instanceof FieldList) {
-					for (final String value: ((FieldList)content).getValue()) {
+			for (final AbstractContent content : section.getContent()) {
+				if (content instanceof FieldList list) {
+					for (final String value : list.getValue()) {
 						if (value != null) {
 							values.add(value);
 						}

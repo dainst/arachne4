@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import static de.uni_koeln.arachne.util.network.CustomMediaType.APPLICATION_JSON_UTF8_VALUE;
@@ -23,11 +22,10 @@ public class InfoController {
 
     /**
      * Hnadles info requests for the build number.
+     * 
      * @return An HTTP response containing the build number as JSON.
      */
-    @RequestMapping(value="/info",
-            method= RequestMethod.GET,
-            produces = {APPLICATION_JSON_UTF8_VALUE})
+    @GetMapping(value = "/info", produces = { APPLICATION_JSON_UTF8_VALUE })
     public @ResponseBody ResponseEntity<String> handleInfoRequest() {
 
         String responseBody = "{";
@@ -45,6 +43,7 @@ public class InfoController {
 
     /**
      * Setter for the build number.
+     * 
      * @param buildNumber The build number.
      */
     @Value("${buildNumber:}")
@@ -56,6 +55,7 @@ public class InfoController {
 
     /**
      * Setter for the build date.
+     * 
      * @param buildDate The build date.
      */
     @Value("${buildDate:}")

@@ -21,35 +21,40 @@ import de.uni_koeln.arachne.util.image.ImageUtils;
 import de.uni_koeln.arachne.util.sql.SQLToolbox;
 
 /**
- * This service class provides the means to retrieve image meta data from the database.
+ * This service class provides the means to retrieve image meta data from the
+ * database.
  * 
  * @author Reimar Grabowski
  */
 @Service("ImageService")
 public class ImageService {
-	
-	//private static final Logger LOGGER = LoggerFactory.getLogger(ImageService.class);
-	
+
+	// private static final Logger LOGGER =
+	// LoggerFactory.getLogger(ImageService.class);
+
 	@Autowired
 	private transient DataIntegrityLogService dataIntegrityLogService;
-	
+
 	@Autowired
-	private transient GenericSQLDao genericSQLDao; 
-	
+	private transient GenericSQLDao genericSQLDao;
+
 	private transient final List<String> excludeList;
-	
+
 	/**
 	 * Constructor setting the list of types that do not have any connected images.
+	 * 
 	 * @param imageExcludeList The list of types without images.
 	 */
-	@Autowired
 	public ImageService(final @Value("#{'${imageExcludeList}'.split(',')}") List<String> imageExcludeList) {
 		excludeList = imageExcludeList;
 	}
-	
+
 	/**
-	 * This method retrieves the image ids for a given dataset from the database and adds them to the datasets list
-	 * of images. It also finds the preview thumbnail from this list and adds it to the dataset.    
+	 * This method retrieves the image ids for a given dataset from the database and
+	 * adds them to the datasets list
+	 * of images. It also finds the preview thumbnail from this list and adds it to
+	 * the dataset.
+	 * 
 	 * @param dataset The dataset to add images to.
 	 */
 	public void addImages(final Dataset dataset) {
@@ -67,8 +72,8 @@ public class ImageService {
 				dataset.setImages(imageList);
 				dataset.setThumbnailId(arachneId.getArachneEntityID());
 			} else {
-				final List<Image> imageList = (List<Image>) genericSQLDao.getImageList(arachneId.getTableName()
-						, arachneId.getInternalKey());
+				final List<Image> imageList = (List<Image>) genericSQLDao.getImageList(arachneId.getTableName(),
+						arachneId.getInternalKey());
 				// sort image List
 				if (imageList != null && imageList.size() > 1) {
 					Collections.sort(imageList, new ImageComparator());
@@ -80,9 +85,9 @@ public class ImageService {
 					final Long thumbnailId = ImageUtils.findThumbnailId(imageList);
 					dataset.setThumbnailId(thumbnailId);
 					if (thumbnailId == null) {
-						dataIntegrityLogService.logWarning(arachneId.getInternalKey()
-								, SQLToolbox.generatePrimaryKeyName(arachneId.getTableName()), "Could not determine "
-								+ "thumbnailId.");
+						dataIntegrityLogService.logWarning(arachneId.getInternalKey(),
+								SQLToolbox.generatePrimaryKeyName(arachneId.getTableName()), "Could not determine "
+										+ "thumbnailId.");
 					}
 				}
 			}
@@ -90,28 +95,33 @@ public class ImageService {
 	}
 
 	/**
-	 * Method to get a sublist of connected images. It will not return images for entities which themselves are images 
-	 * (in contrast to 'addImages') as the only image connected to such entity is itself. 
+	 * Method to get a sublist of connected images. It will not return images for
+	 * entities which themselves are images
+	 * (in contrast to 'addImages') as the only image connected to such entity is
+	 * itself.
+	 * 
 	 * @param arachneId The entity ID object of an entity.
-	 * @param offset An offset into the image list. 
-	 * @param limit The maximum number of images in the sublist (0 for no limit).
+	 * @param offset    An offset into the image list.
+	 * @param limit     The maximum number of images in the sublist (0 for no
+	 *                  limit).
 	 * @return The image sublist and a corresponding HTTP status.
 	 */
-	public TypeWithHTTPStatus<List<Image>> getImagesSubList(final EntityId arachneId, final int offset, final int limit) {
+	public TypeWithHTTPStatus<List<Image>> getImagesSubList(final EntityId arachneId, final int offset,
+			final int limit) {
 		if (!excludeList.contains(arachneId.getTableName()) && (!"marbilder".equals(arachneId.getTableName()))) {
-			final List<Image> imageList = (List<Image>) genericSQLDao.getImageList(arachneId.getTableName()
-					, arachneId.getInternalKey());
-			
+			final List<Image> imageList = (List<Image>) genericSQLDao.getImageList(arachneId.getTableName(),
+					arachneId.getInternalKey());
+
 			if (imageList == null) {
 				return new TypeWithHTTPStatus<>(HttpStatus.NO_CONTENT);
 			}
-			
+
 			// sort image List
 			if (imageList.size() > 1) {
 				Collections.sort(imageList, new ImageComparator());
 			}
 			int upperBound = limit + offset;
-			upperBound = (upperBound > imageList.size() || limit == 0) ? imageList.size() : upperBound; 
+			upperBound = (upperBound > imageList.size() || limit == 0) ? imageList.size() : upperBound;
 			try {
 				return new TypeWithHTTPStatus<List<Image>>(imageList.subList(offset, upperBound));
 			} catch (IllegalArgumentException | IndexOutOfBoundsException e) {

@@ -16,6 +16,7 @@ import de.uni_koeln.arachne.util.security.ArachneAuthenticationEntryPoint;
 
 /**
  * Spring security configuration class.
+ * 
  * @author Reimar Grabowski
  *
  */
@@ -25,39 +26,42 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private transient ArachneUserDetailsService arachneUserDetailsService;
-	
-	@Override
+
+	/*
+	 * ~~(Migrate manually based on
+	 * https://spring.io/blog/2022/02/21/spring-security-without-the-
+	 * websecurityconfigureradapter)~~>
+	 */@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(arachneUserDetailsService);
-	}	
-	
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			.csrf().disable()
-			.authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/admin/**").hasAnyRole("USER", "ADMIN", "ANONYMOUS")
-				.antMatchers(HttpMethod.POST, "/admin/**").hasRole("ADMIN")
-				.antMatchers(HttpMethod.GET, "/userinfo/**").hasAnyRole("USER", "ADMIN")
-				.antMatchers(HttpMethod.PUT, "/userinfo/**").hasAnyRole("USER", "ADMIN")
-				.antMatchers(HttpMethod.POST, "/user/**").hasAnyRole("ANONYMOUS", "USER", "ADMIN")
-				.antMatchers(HttpMethod.GET, "/search/scroll/**").hasAnyRole("USER", "ADMIN")
-				.antMatchers(HttpMethod.GET, "/entity/**/images").hasAnyRole("USER", "ADMIN")
-				.antMatchers("/**").hasAnyRole("USER", "ADMIN", "ANONYMOUS")
-			.and()
-				.httpBasic()
-				.authenticationEntryPoint(authenticationEntryPoint())
-			.and()
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.csrf(csrf -> csrf.disable())
+				.authorizeRequests(requests -> requests
+						.requestMatchers(HttpMethod.GET, "/admin/**").hasAnyRole("USER", "ADMIN", "ANONYMOUS")
+						.requestMatchers(HttpMethod.POST, "/admin/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/userinfo/**").hasAnyRole("USER", "ADMIN")
+						.requestMatchers(HttpMethod.PUT, "/userinfo/**").hasAnyRole("USER", "ADMIN")
+						.requestMatchers(HttpMethod.POST, "/user/**").hasAnyRole("ANONYMOUS", "USER", "ADMIN")
+						.requestMatchers(HttpMethod.GET, "/search/scroll/**").hasAnyRole("USER", "ADMIN")
+						.requestMatchers(HttpMethod.GET, "/entity/**/images").hasAnyRole("USER", "ADMIN")
+						.requestMatchers("/**").hasAnyRole("USER", "ADMIN", "ANONYMOUS"))
+				.httpBasic(basic -> basic
+						.authenticationEntryPoint(authenticationEntryPoint()))
+				.sessionManagement(management -> management
+						.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 	}
 
 	/**
 	 * Returns a new {@link ArachneAuthenticationEntryPoint}.
+	 * 
 	 * @return The entry point.
 	 */
 	@Bean
-	public AuthenticationEntryPoint authenticationEntryPoint() {
+	AuthenticationEntryPoint authenticationEntryPoint() {
 		return new ArachneAuthenticationEntryPoint();
 	}
 }

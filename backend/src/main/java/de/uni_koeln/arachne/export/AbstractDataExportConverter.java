@@ -8,8 +8,8 @@ import de.uni_koeln.arachne.response.search.SearchResult;
 import de.uni_koeln.arachne.service.*;
 import de.uni_koeln.arachne.util.TypeWithHTTPStatus;
 import de.uni_koeln.arachne.util.search.SearchParameters;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.hc.core5.net.URLEncodedUtils;
+import org.apache.hc.core5.http.NameValuePair;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,7 +24,7 @@ import org.springframework.http.converter.AbstractHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 /**
  * @author Paf
  *
- * Base class for all converters.
+ *         Base class for all converters.
  * 
  * @param <T> The type the converter handles.
  *
@@ -72,8 +72,8 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     // settings; to overwrite in implementation if wanted
 
     protected Boolean handleOnlyFirstPlace = false;
-    protected List<String> skipFacets = Arrays.asList("facet_land", "facet_ort", "facet_ortsangabe", "facet_image", "facet_geo", "facet_literatur");
-
+    protected List<String> skipFacets = Arrays.asList("facet_land", "facet_ort", "facet_ortsangabe", "facet_image",
+            "facet_geo", "facet_literatur");
 
     // constructors
 
@@ -85,7 +85,8 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         super(mediaTypes);
     }
 
-    // because we can not use @Autowired (by any reason) here, we have to use these shitty injection function here. plz don't hate me.
+    // because we can not use @Autowired (by any reason) here, we have to use these
+    // shitty injection function here. plz don't hate me.
 
     public void injectService(EntityService entityService) {
         this.entityService = entityService;
@@ -120,15 +121,14 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     }
 
     @Override
-    protected T readInternal(Class<? extends T> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
+    protected T readInternal(Class<? extends T> aClass, HttpInputMessage httpInputMessage)
+            throws IOException, HttpMessageNotReadableException {
         throw new UnsupportedOperationException("Reading other file formats is not implemented.");
     }
-
 
     // functions to be implemented
 
     abstract void convert(DataExportConversionObject conversionObject, OutputStream outputStream) throws IOException;
-
 
     // conversion control functions
 
@@ -170,7 +170,8 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     }
 
     void enqueueIfHuge(Catalog catalog, Integer limit) {
-        checkForHugeAndEnqueue((long) catalog.getRoot().getAllSuccessors(), limit, new DataExportConversionObject(catalog));
+        checkForHugeAndEnqueue((long) catalog.getRoot().getAllSuccessors(), limit,
+                new DataExportConversionObject(catalog));
     }
 
     // helping functions, most converters would use
@@ -225,16 +226,16 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
 
         Object boxContent = box.has("content") ? box.get("content") : null;
 
-        if (boxContent instanceof JSONObject) {
-            serializeSection(row, (JSONObject) boxContent, label, 0);
-        } else if (boxContent instanceof JSONArray) {
-            for (int ii = 0; ii < ((JSONArray) boxContent).length(); ii++) {
-                serializeSection(row, ((JSONArray) boxContent).getJSONObject(ii), label, ii);
+        if (boxContent instanceof JSONObject object) {
+            serializeSection(row, object, label, 0);
+        } else if (boxContent instanceof JSONArray array) {
+            for (int ii = 0; ii < array.length(); ii++) {
+                serializeSection(row, array.getJSONObject(ii), label, ii);
             }
         }
     }
 
-    //serialized a complete Entity to
+    // serialized a complete Entity to
     public DataExportRow getDetails(JSONObject fullEntity) {
 
         final DataExportRow row = exportTable.newRow();
@@ -265,7 +266,8 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         return row;
     }
 
-    // serlializes the facets of a given Fullentity (without knowing them beforehand)
+    // serlializes the facets of a given Fullentity (without knowing them
+    // beforehand)
     private void serializeFacets(DataExportRow row, JSONObject fullEntity) {
         Object value;
         String fullFacetName;
@@ -293,18 +295,22 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         }
     }
 
-    protected void serializeFacetValues(String facetName, String facetFullName, JSONArray facetValues, DataExportRow collector) {
+    protected void serializeFacetValues(String facetName, String facetFullName, JSONArray facetValues,
+            DataExportRow collector) {
         for (int i = 0; i < facetValues.length(); i++) {
             collector.put(facetName, facetFullName, facetValues.get(i).toString());
         }
     };
 
-    // extracts place information from fulLEntity and add it to collector - accorind to implementation if serializePlaces function
+    // extracts place information from fulLEntity and add it to collector - accorind
+    // to implementation if serializePlaces function
     protected void serializePlaces(JSONObject fullEntity, DataExportRow collector) {
         if (fullEntity.has("places")) {
             serializePlacesArray((JSONArray) fullEntity.get("places"), collector);
         } else if (fullEntity.has("facet_geo")) {
-            // some entities (iE http://bogusman02.dai-cloud.uni-koeln.de/data/entity/1179020) has a facet_geo, but no places
+            // some entities (iE
+            // http://bogusman02.dai-cloud.uni-koeln.de/data/entity/1179020) has a
+            // facet_geo, but no places
             serializePlacesArray(unpackFacetGeo((JSONArray) fullEntity.get("facet_geo")), collector);
         }
     }
@@ -317,7 +323,7 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
             String gaz = "";
             String lat = "";
             String lon = "";
-            String name= "";
+            String name = "";
             String rel = "";
 
             final JSONObject entry = places.getJSONObject(i);
@@ -347,14 +353,16 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
     }
 
     // implement this to define how places shall get serialized!
-    void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel, DataExportRow collector) {
+    void serializePlaces(Integer number, String name, String gazetteerId, String lat, String lon, String rel,
+            DataExportRow collector) {
     };
 
     // helper function to extract useful information about place from facet_geo
     private JSONArray unpackFacetGeo(JSONArray facetGeo) {
         for (int i = 0; i < (handleOnlyFirstPlace ? 1 : facetGeo.length()); i++) {
             Object entryBox = facetGeo.get(i);
-            facetGeo.put(i, new JSONObject("" + entryBox)); // don't you remove the "" + -, it won't work then and I have no idea
+            facetGeo.put(i, new JSONObject("" + entryBox)); // don't you remove the "" + -, it won't work then and I
+                                                            // have no idea
         }
         return facetGeo;
     }
@@ -370,7 +378,9 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
             final String regex = "facet_(\\w+):\\\"(.*)\\\"";
             final Pattern pattern = Pattern.compile(regex);
             final List<NameValuePair> params = URLEncodedUtils.parse(new URI(task.getRequestUrl()), "UTF-8");
-            final ArrayList<String> queryFilters = new ArrayList<String>(){private static final long serialVersionUID = 1L;};
+            final ArrayList<String> queryFilters = new ArrayList<String>() {
+                private static final long serialVersionUID = 1L;
+            };
             for (NameValuePair param : params) {
                 if (param.getName().equals("q")) {
                     queryFilters.add(0, "'" + param.getValue() + "'");
@@ -399,7 +409,8 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         }
     }
 
-    // because catalog endpoint is not necessarily called with full-parameter, children might be missing
+    // because catalog endpoint is not necessarily called with full-parameter,
+    // children might be missing
     List<CatalogEntry> realGetChildren(CatalogEntry catalogEntry) {
         final List<CatalogEntry> storedChildren = catalogEntry.getChildren();
         if (storedChildren != null) {
@@ -422,7 +433,8 @@ public abstract class AbstractDataExportConverter<T> extends AbstractHttpMessage
         searchParameters.setLimit(totalMaximumForExport);
         final SearchRequestBuilder searchRequestBuilder;
         try {
-            searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters, result.getFilters(), task.getLanguage());
+            searchRequestBuilder = searchService.buildDefaultSearchRequest(searchParameters, result.getFilters(),
+                    task.getLanguage());
             final SearchResult fullResult = searchService.executeSearchRequest(searchRequestBuilder, -1, 0,
                     result.getFilters(), 0, searchParameters);
             return fullResult;

@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.util.image;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Comparator;
 
@@ -13,10 +14,11 @@ import de.uni_koeln.arachne.response.Image;
  */
 public class ImageComparator implements Comparator<Image>, Serializable {
 	// Do not forget to update this version number if the comparator is changed
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImageComparator.class);
-	
+
 	@Override
 	public int compare(Image image1, Image image2) {
 		String subTitle1 = image1.getImageSubtitle();
@@ -31,14 +33,16 @@ public class ImageComparator implements Comparator<Image>, Serializable {
 		}
 
 		// Use Interger.MIN_VALUE / 4 to not generate an overflow;
-		int imageNumber1 = subTitle1.contains(",") ? ImageUtils.extractNumberFromImageFilename(image1.getImageSubtitle()) 
+		int imageNumber1 = subTitle1.contains(",")
+				? ImageUtils.extractNumberFromImageFilename(image1.getImageSubtitle())
 				: Integer.MIN_VALUE / 4;
-		int imageNumber2 = subTitle2.contains(",") ? ImageUtils.extractNumberFromImageFilename(image2.getImageSubtitle()) 
+		int imageNumber2 = subTitle2.contains(",")
+				? ImageUtils.extractNumberFromImageFilename(image2.getImageSubtitle())
 				: Integer.MIN_VALUE / 4;
 
 		LOGGER.debug("Compare: " + subTitle1 + "[" + imageNumber1 + "]" + " - " + subTitle2 + "[" + imageNumber2 + "]");
 		LOGGER.debug("Comparison result : " + (imageNumber1 - imageNumber2));
-		
+
 		return imageNumber1 - imageNumber2;
 	}
 }

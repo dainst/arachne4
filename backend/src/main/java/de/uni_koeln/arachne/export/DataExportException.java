@@ -2,18 +2,20 @@ package de.uni_koeln.arachne.export;
 
 import org.springframework.http.HttpStatus;
 
+import java.io.Serial;
+
 /**
  * @author Paf
  */
 
 public class DataExportException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
-	
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     public String type = "";
     public HttpStatus status;
     public String untranslatableContent = "";
-
 
     public DataExportException(String type, HttpStatus status) {
         this.type = type;

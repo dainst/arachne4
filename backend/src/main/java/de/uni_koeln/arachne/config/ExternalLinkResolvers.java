@@ -24,10 +24,11 @@ public class ExternalLinkResolvers {
 	 * @return The link resolver.
 	 */
 	@Bean
-	public SimpleExternalLinkResolver viewerSVG() {
+	SimpleExternalLinkResolver viewerSVG() {
 		final SimpleExternalLinkResolver result = new SimpleExternalLinkResolver();
 		result.setLabel("SVG Viewer");
-		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "modell3d", "modell3d.Dateiformat", "svg");
+		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "modell3d", "modell3d.Dateiformat",
+				"svg");
 		result.setCriteria(criteria);
 		result.setMatchAllCriteria(true);
 		result.setLinkPattern("https://arachne.dainst.org/svg?id=%s");
@@ -41,10 +42,11 @@ public class ExternalLinkResolvers {
 	 * @return The link resolver.
 	 */
 	@Bean
-	public SimpleExternalLinkResolver viewer3D() {
+	SimpleExternalLinkResolver viewer3D() {
 		final SimpleExternalLinkResolver result = new SimpleExternalLinkResolver();
 		result.setLabel("3D-Modell Viewer");
-		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "modell3d", "modell3d.Dateiformat", "obj");
+		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "modell3d", "modell3d.Dateiformat",
+				"obj");
 		result.setCriteria(criteria);
 		result.setMatchAllCriteria(true);
 		result.setLinkPattern("https://arachne.dainst.org/3d?id=%s");
@@ -58,10 +60,11 @@ public class ExternalLinkResolvers {
 	 * @return The link resolver.
 	 */
 	@Bean
-	public SimpleExternalLinkResolver viewer3Dmtl() {
+	SimpleExternalLinkResolver viewer3Dmtl() {
 		final SimpleExternalLinkResolver result = new SimpleExternalLinkResolver();
 		result.setLabel("3D-Modell Viewer");
-		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "modell3d", "modell3d.Dateiformat", "objmtl");
+		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "modell3d", "modell3d.Dateiformat",
+				"objmtl");
 		result.setCriteria(criteria);
 		result.setMatchAllCriteria(true);
 		result.setLinkPattern("https://arachne.dainst.org/3d?id=%s");
@@ -75,10 +78,11 @@ public class ExternalLinkResolvers {
 	 * @return The link resolver.
 	 */
 	@Bean
-	public SimpleExternalLinkResolver viewer3Dnxz() {
+	SimpleExternalLinkResolver viewer3Dnxz() {
 		final SimpleExternalLinkResolver result = new SimpleExternalLinkResolver();
 		result.setLabel("3D-Modell Viewer");
-		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "modell3d", "modell3d.Dateiformat", "nxz");
+		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "modell3d", "modell3d.Dateiformat",
+				"nxz");
 		result.setCriteria(criteria);
 		result.setMatchAllCriteria(true);
 		result.setLinkPattern("https://arachne.dainst.org/3dhop/full.html?model=/data/model/%s.nxz");
@@ -92,7 +96,7 @@ public class ExternalLinkResolvers {
 	 * @return The link resolver.
 	 */
 	@Bean
-	public SimpleExternalLinkResolver teiViewerBook() {
+	SimpleExternalLinkResolver teiViewerBook() {
 		final SimpleExternalLinkResolver result = new SimpleExternalLinkResolver();
 		result.setLabel("TEI-Viewer");
 		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "buch");
@@ -109,10 +113,10 @@ public class ExternalLinkResolvers {
 	 * @return The link resolver.
 	 */
 	@Bean
-	public SimpleExternalLinkResolver dfgViewer() {
+	SimpleExternalLinkResolver dfgViewer() {
 		final SimpleExternalLinkResolver result = new SimpleExternalLinkResolver();
 		result.setLabel("DFG-Viewer");
-        result.setDatasetGroup("Arachne");
+		result.setDatasetGroup("Arachne");
 		final Map<String, String> criteria = ImmutableMap.of("Dataset.TableName", "buch");
 		result.setCriteria(criteria);
 		result.setLinkPattern("http://dfg-viewer.de/show/"
@@ -122,7 +126,6 @@ public class ExternalLinkResolvers {
 		return result;
 	}
 
-
 	/**
 	 * Resolver for bookviewer links from the gelehrtenbriefe project.
 	 *
@@ -131,7 +134,7 @@ public class ExternalLinkResolvers {
 	// NOTE: It is unclear to what extent the book viewer will be used in the
 	// future. For this reason we did not attempt a more general solution.
 	@Bean
-	public SimpleExternalLinkResolver bookviewerGelehrtenbriefe() {
+	SimpleExternalLinkResolver bookviewerGelehrtenbriefe() {
 		final SimpleExternalLinkResolver result = new SimpleExternalLinkResolver();
 		result.setLabel("Book-Viewer");
 		final Map<String, String> criteria = ImmutableMap.of("buch.ArbeitsnotizBuch", "TranskriptionGelehrtenbriefe");

@@ -1,6 +1,6 @@
 package de.uni_koeln.arachne.response;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 /**
  * Base class for arachne entities.
@@ -14,19 +14,19 @@ public class BaseArachneEntity {
 	 * Identification of the Dataset
 	 */
 	protected Long entityId = -1L;
-	
+
 	/**
 	 * The tablename field of the ArachneEntity table
 	 */
 	protected String type = null;
-	
+
 	/**
 	 * The foreignKey field of the ArachneEntity table
 	 */
 	protected Long internalId = -1L;
 
 	/**
-	 * The group of the dataset used for rights management 
+	 * The group of the dataset used for rights management
 	 */
 	protected String datasetGroup = null;
 
@@ -34,23 +34,26 @@ public class BaseArachneEntity {
 	 * The image file name if the Entity represents an image
 	 */
 	protected String imageFilename = null;
-	
+
 	/**
 	 * Field for additional content of any type.
 	 */
 	protected AdditionalContent additionalContent = null;
-	
+
 	/**
-	 * Constructor setting the type. This is the only way to set the type of an entity to ensure that there are no 
+	 * Constructor setting the type. This is the only way to set the type of an
+	 * entity to ensure that there are no
 	 * entities created without a type.
+	 * 
 	 * @param type The type of the entity.
 	 */
 	public BaseArachneEntity(final String type) {
 		this.type = type;
 	}
-	
+
 	/**
 	 * Entity id getter.
+	 * 
 	 * @return The entity id.
 	 */
 	public Long getEntityId() {
@@ -59,6 +62,7 @@ public class BaseArachneEntity {
 
 	/**
 	 * Entity id setter.
+	 * 
 	 * @param entiyId An entity id.
 	 */
 	public void setEntityId(final Long entiyId) {
@@ -67,6 +71,7 @@ public class BaseArachneEntity {
 
 	/**
 	 * Type getter.
+	 * 
 	 * @return The type.
 	 */
 	public String getType() {
@@ -75,6 +80,7 @@ public class BaseArachneEntity {
 
 	/**
 	 * Internal id getter.
+	 * 
 	 * @return The internal id.
 	 */
 	public Long getInternalId() {
@@ -83,6 +89,7 @@ public class BaseArachneEntity {
 
 	/**
 	 * Internal id setter.
+	 * 
 	 * @param internalId An internal id.
 	 */
 	public void setInternalId(final Long internalId) {
@@ -91,6 +98,7 @@ public class BaseArachneEntity {
 
 	/**
 	 * Dataset group getter.
+	 * 
 	 * @return The dataset group.
 	 */
 	public String getDatasetGroup() {
@@ -99,6 +107,7 @@ public class BaseArachneEntity {
 
 	/**
 	 * Dataset group setter.
+	 * 
 	 * @param datasetGroup A dataset group.
 	 */
 	public void setDatasetGroup(final String datasetGroup) {
@@ -107,6 +116,7 @@ public class BaseArachneEntity {
 
 	/**
 	 * Image filename getter.
+	 * 
 	 * @return The image filename.
 	 */
 	public String getImageFilename() {
@@ -115,22 +125,25 @@ public class BaseArachneEntity {
 
 	/**
 	 * Image filename setter.
+	 * 
 	 * @param imageFilename A image filename.
 	 */
 	public void setImageFilename(final String imageFilename) {
 		this.imageFilename = imageFilename;
 	}
-	
+
 	/**
 	 * Additonal content getter.
+	 * 
 	 * @return The additional content.
 	 */
 	public AdditionalContent getAdditionalContent() {
 		return additionalContent;
 	}
-	
+
 	/**
 	 * Additional content setter.
+	 * 
 	 * @param additionalContent Some additional content.
 	 */
 	public void setAdditionalContent(final AdditionalContent additionalContent) {

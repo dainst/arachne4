@@ -2,32 +2,33 @@ package de.uni_koeln.arachne.mapping.hibernate;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
  * Mapping class for the "verwaltung_benutzer_password_reset_request"-table.
+ * 
  * @author Reimar Grabowski
  */
 @Entity
-@Table(name="verwaltung_benutzer_reset_password_request")
+@Table(name = "verwaltung_benutzer_reset_password_request")
 public class ResetPasswordRequest {
 
 	@Id
 	@GeneratedValue
-	@Column(name="PS_verwaltung_benutzer_reset_password_requestID")
+	@Column(name = "PS_verwaltung_benutzer_reset_password_requestID")
 	private Long id = -1L;
-	
-	@Column(name="FS_uid")
+
+	@Column(name = "FS_uid")
 	private Long userId;
-	
-	@Column(name="token")
+
+	@Column(name = "token")
 	private String token;
-	
-	@Column(name="expiration_date")
+
+	@Column(name = "expiration_date")
 	private Timestamp expirationDate;
 
 	/**

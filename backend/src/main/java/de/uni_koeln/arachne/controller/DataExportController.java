@@ -20,7 +20,7 @@ import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.accept.ParameterContentNegotiationStrategy;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -50,12 +50,11 @@ public class DataExportController {
     @Autowired
     private ContentNegotiationManager contentNegotiationManager;
 
-    @RequestMapping(value = "/file/{exportId}", method = RequestMethod.GET)
+    @GetMapping("/file/{exportId}")
     public void handleGetExportFile(
-            @PathVariable("exportId") final String exportId,
+            @PathVariable final String exportId,
             @RequestHeader(value = "Accept-Language", defaultValue = "de") String headerLanguage,
-            HttpServletResponse response
-    ) {
+            HttpServletResponse response) {
 
         LOGGER.debug("get file named " + exportId);
 
@@ -67,7 +66,8 @@ public class DataExportController {
         final InputStream fileStream = dataExportFileManager.getFile(task);
         response.setHeader("Content-Type", task.getMediaType().toString() + "; charset=utf-8");
         response.setHeader("Content-Length", Long.toString(dataExportFileManager.getFileSize(task)));
-        response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", dataExportFileManager.getFileName(task)));
+        response.setHeader("Content-Disposition",
+                "attachment; filename=\"%s\"".formatted(dataExportFileManager.getFileName(task)));
 
         response.setStatus(HttpStatus.OK.value());
         try {
@@ -81,22 +81,19 @@ public class DataExportController {
         }
     }
 
-
-    @RequestMapping(value = "/status", method = RequestMethod.GET, produces={APPLICATION_JSON_UTF8_VALUE})
+    @GetMapping(value = "/status", produces = { APPLICATION_JSON_UTF8_VALUE })
     ResponseEntity<String> handleGetExportStatus() {
 
         final User user = userRightsService.userHasRole(ADMIN) ? null : userRightsService.getCurrentUser();
         return ResponseEntity.status(HttpStatus.OK).body(dataExportStack.getStatus(user).toString());
     }
 
-
-    @RequestMapping(value = "/types", method = RequestMethod.GET, produces={APPLICATION_JSON_UTF8_VALUE})
+    @GetMapping(value = "/types", produces = { APPLICATION_JSON_UTF8_VALUE })
     ResponseEntity<String> handleGetMediaTypes() {
 
-        final Map<String, MediaType> mediaTypeList =
-                contentNegotiationManager
-                        .getStrategy(ParameterContentNegotiationStrategy.class)
-                        .getMediaTypes();
+        final Map<String, MediaType> mediaTypeList = contentNegotiationManager
+                .getStrategy(ParameterContentNegotiationStrategy.class)
+                .getMediaTypes();
 
         final HashMap<String, String> collectedTypes = new HashMap<String, String>();
         for (String mKey : mediaTypeList.keySet()) {
@@ -107,15 +104,15 @@ public class DataExportController {
         return ResponseEntity.status(HttpStatus.OK).body(new JSONObject(collectedTypes).toString());
     }
 
-    @RequestMapping(value = "/cancel/{exportId}", method = RequestMethod.POST, produces={APPLICATION_JSON_UTF8_VALUE})
+    @PostMapping(value = "/cancel/{exportId}", produces = { APPLICATION_JSON_UTF8_VALUE })
     ResponseEntity<String> handleAbortTask(
-            @PathVariable("exportId") final String exportId
-    ) {
+            @PathVariable final String exportId) {
 
         DataExportTask task = dataExportStack.getEnqueuedTaskById(exportId);
 
         if (task != null) {
-            if (!userRightsService.userHasRole(ADMIN) && (userRightsService.getCurrentUser().getId() != task.getOwner().getId())) {
+            if (!userRightsService.userHasRole(ADMIN)
+                    && (userRightsService.getCurrentUser().getId() != task.getOwner().getId())) {
                 throw new DataExportException("not_allowed", HttpStatus.FORBIDDEN);
             }
 
@@ -124,11 +121,11 @@ public class DataExportController {
             return ResponseEntity.status(HttpStatus.OK).body("[\"" + exportId + "\"]");
         }
 
-
         task = dataExportStack.getRunningTaskById(exportId);
 
         if (task != null) {
-            if (!userRightsService.userHasRole(ADMIN) && (userRightsService.getCurrentUser().getId() != task.getOwner().getId())) {
+            if (!userRightsService.userHasRole(ADMIN)
+                    && (userRightsService.getCurrentUser().getId() != task.getOwner().getId())) {
                 throw new DataExportException("not_allowed", HttpStatus.FORBIDDEN);
             }
 
@@ -140,11 +137,9 @@ public class DataExportController {
         throw new DataExportException("task_not_found", HttpStatus.NOT_FOUND);
     }
 
-
-    @RequestMapping(value = "/clean/{exportId}", method = RequestMethod.POST, produces={APPLICATION_JSON_UTF8_VALUE})
+    @PostMapping(value = "/clean/{exportId}", produces = { APPLICATION_JSON_UTF8_VALUE })
     ResponseEntity<String> handleCleanTask(
-            @PathVariable("exportId") final String exportId
-    ) {
+            @PathVariable final String exportId) {
 
         final DataExportTask task = dataExportStack.getFinishedTaskById(exportId);
 
@@ -152,7 +147,8 @@ public class DataExportController {
             throw new DataExportException("task_not_found", HttpStatus.NOT_FOUND);
         }
 
-        if (!userRightsService.userHasRole(ADMIN) && (userRightsService.getCurrentUser().getId() != task.getOwner().getId())) {
+        if (!userRightsService.userHasRole(ADMIN)
+                && (userRightsService.getCurrentUser().getId() != task.getOwner().getId())) {
             throw new DataExportException("not_allowed", HttpStatus.FORBIDDEN);
         }
 
@@ -166,12 +162,9 @@ public class DataExportController {
         return ResponseEntity.status(HttpStatus.OK).body("[\"" + exportId + "\"]");
     }
 
-
-    @RequestMapping(value = "/clean", method = RequestMethod.POST)
+    @PostMapping("/clean")
     ResponseEntity<String> handleClean(
-            @RequestBody Map<String, Boolean> settings
-    ) throws InterruptedException {
-
+            @RequestBody Map<String, Boolean> settings) throws InterruptedException {
 
         final Boolean outdated = (settings.get("outdated") == null) ? true : settings.get("outdated");
         final Boolean everyones = (settings.get("everyones") == null) ? false : settings.get("everyones");

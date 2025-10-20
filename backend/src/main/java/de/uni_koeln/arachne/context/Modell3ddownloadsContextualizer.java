@@ -1,6 +1,6 @@
 package de.uni_koeln.arachne.context;
 
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,13 +40,13 @@ public class Modell3ddownloadsContextualizer extends AbstractContextualizer {
 			// final String format = parent.getField("modell3d.Dateiformat");
 
 			// if (!StrUtils.isEmptyOrNull(model)) {
-			// 	String path = buildPath(folder, model);
-			// 	if (!StrUtils.isEmptyOrNull(format) && format.equals("objmtl")) {
-			// 		int index = path.lastIndexOf(".");
-			// 		path = path.substring(0, index) + ".zip";
-			// 	}
-			//  	links.add(new LinkWithAddedDownloadPath(parent, path));	
-			// }	
+			// String path = buildPath(folder, model);
+			// if (!StrUtils.isEmptyOrNull(format) && format.equals("objmtl")) {
+			// int index = path.lastIndexOf(".");
+			// path = path.substring(0, index) + ".zip";
+			// }
+			// links.add(new LinkWithAddedDownloadPath(parent, path));
+			// }
 			final String model = parent.getField("modell3d.Dateiname");
 			if (!StrUtils.isEmptyOrNull(model)) {
 				links.add(new LinkWithAddedDownloadPath(parent, buildPath(folder, model)));
@@ -60,7 +60,7 @@ public class Modell3ddownloadsContextualizer extends AbstractContextualizer {
 	}
 
 	private static final String buildPath(String folder, String file) {
-		String path = Paths.get(folder, file).toString();
+		String path = Path.of(folder, file).toString();
 		while (path.startsWith("/")) {
 			path = path.replaceFirst("/", "");
 		}

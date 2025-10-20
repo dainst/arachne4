@@ -5,19 +5,15 @@ import static de.uni_koeln.arachne.util.security.SecurityUtils.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit; 
+import java.util.concurrent.TimeUnit;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.bind.annotation.*;
 import de.uni_koeln.arachne.response.StatusResponse;
 import de.uni_koeln.arachne.service.DataImportService;
 import de.uni_koeln.arachne.service.UserRightsService;
@@ -26,31 +22,34 @@ import de.uni_koeln.arachne.util.XmlConfigUtil;
 
 /**
  * Handles http requests for <code>/admin<code>.
- * This includes requests for statuses (cache or dataimport) as well admin tasks (clearing the cache or starting a dataimport).
+ * This includes requests for statuses (cache or dataimport) as well admin tasks
+ * (clearing the cache or starting a dataimport).
  */
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-	//private static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
-		
+	// private static final Logger LOGGER =
+	// LoggerFactory.getLogger(AdminController.class);
+
 	@Autowired
 	private transient UserRightsService userRightsService;
-	
+
 	@Autowired
 	private transient XmlConfigUtil xmlConfigUtil;
-	
+
 	@Autowired
 	private transient DataImportService dataImportService;
 
 	/**
-	 * Handles HTTP GET requests to /admin/cache.   
+	 * Handles HTTP GET requests to /admin/cache.
+	 * 
 	 * @param response The outgoing HTTP response.
-	 * @return A <code>StatusResponse</code> containing the status of the XML configuration document cache or <code>null</code> on error-
+	 * @return A <code>StatusResponse</code> containing the status of the XML
+	 *         configuration document cache or <code>null</code> on error-
 	 */
-	@RequestMapping(value = "cache", method = RequestMethod.GET
-			, produces = {APPLICATION_JSON_UTF8_VALUE})
+	@GetMapping(value = "cache", produces = { APPLICATION_JSON_UTF8_VALUE })
 	public @ResponseBody StatusResponse getCacheStatus(final HttpServletResponse response) {
-		
+
 		if (userRightsService.userHasRole(ADMIN)) {
 			final StatusResponse result = new StatusResponse();
 			final List<String> cachedDocuments = xmlConfigUtil.getXMLConfigDocumentList();
@@ -72,17 +71,18 @@ public class AdminController {
 		response.setStatus(403);
 		return null;
 	}
-		
+
 	/**
 	 * Handles HTTP DELETE requests to /admin/cache.
-	 * Deletes the cache.  
+	 * Deletes the cache.
+	 * 
 	 * @param response The outgoing HTTP response.
-	 * @return A <code>StatusResponse</code> containing the status of the XML configuration document cache or <code>null<code> on error.
+	 * @return A <code>StatusResponse</code> containing the status of the XML
+	 *         configuration document cache or <code>null<code> on error.
 	 */
-	@RequestMapping(value="cache", method=RequestMethod.DELETE
-			, produces = {APPLICATION_JSON_UTF8_VALUE})
+	@DeleteMapping(value = "cache", produces = { APPLICATION_JSON_UTF8_VALUE })
 	public @ResponseBody StatusResponse handleCache(final HttpServletResponse response) {
-				
+
 		if (userRightsService.userHasRole(ADMIN)) {
 			xmlConfigUtil.clearCache();
 			return new StatusResponse("Cache", "cleared");
@@ -94,44 +94,48 @@ public class AdminController {
 	/**
 	 * Handles HTTP GET requests to /admin/dataimport.
 	 * Returns the current status of the Elasticsearch data import.
+	 * 
 	 * @return A <code>StatusResponse</code> object.
 	 */
-	@RequestMapping(value="dataimport", method=RequestMethod.GET
-			, produces = {APPLICATION_JSON_UTF8_VALUE})
+	@GetMapping(value = "dataimport", produces = { APPLICATION_JSON_UTF8_VALUE })
 	public @ResponseBody StatusResponse getDataImportStatus() {
-		
+
 		if (dataImportService.isRunning()) {
 			final long elapsedTime = dataImportService.getElapsedTime();
 			final StatusResponse response = new StatusResponse("Dataimport", "running");
-			response.setElapsedTime(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes(elapsedTime)
-					,TimeUnit.MILLISECONDS.toSeconds(elapsedTime) 
-					- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime))) + " minutes");
-			
+			response.setElapsedTime(
+					"%d:%02d".formatted(TimeUnit.MILLISECONDS.toMinutes(elapsedTime),
+							TimeUnit.MILLISECONDS.toSeconds(elapsedTime)
+									- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(elapsedTime)))
+							+ " minutes");
+
 			response.setCount(dataImportService.getCount());
 			response.setIndexedDocuments(dataImportService.getIndexedDocuments());
 			final long etr = dataImportService.getEstimatedTimeRemaining();
-			response.setEstimatedTimeRemaining(String.format("%d:%02d", TimeUnit.SECONDS.toMinutes(etr)
-					,TimeUnit.SECONDS.toSeconds(etr) 
-					- TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(etr))) + " minutes");
-			response.setDocumentsPerSecond((float)dataImportService.getAverageDPS());
+			response.setEstimatedTimeRemaining(
+					"%d:%02d".formatted(TimeUnit.SECONDS.toMinutes(etr), TimeUnit.SECONDS.toSeconds(etr)
+							- TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(etr))) + " minutes");
+			response.setDocumentsPerSecond((float) dataImportService.getAverageDPS());
 			return response;
 		} else {
 			return new StatusResponse("Dataimport", "idle");
 		}
 	}
-	
+
 	/**
 	 * Handles HTTP POST requests to start or stop the Elasticsearch dataimport.
-	 * For this it utilizes the <code>dataimportService</code> where the real work is done. 
-	 * @param command The supported commands are "start" and "stop".
+	 * For this it utilizes the <code>dataimportService</code> where the real work
+	 * is done.
+	 * 
+	 * @param command  The supported commands are "start" and "stop".
 	 * @param response The outgoing HTTP response.
-	 * @return A <code>StatusResponse</code> containing the current dataimport status or <code>null</code> on error.
+	 * @return A <code>StatusResponse</code> containing the current dataimport
+	 *         status or <code>null</code> on error.
 	 */
-	@RequestMapping(value="dataimport", method=RequestMethod.POST
-			, produces = {APPLICATION_JSON_UTF8_VALUE})
-	public @ResponseBody StatusResponse handleDataImport(@RequestParam(value = "command", required = true) final String command
-			, final HttpServletResponse response) {
-		
+	@PostMapping(value = "dataimport", produces = { APPLICATION_JSON_UTF8_VALUE })
+	public @ResponseBody StatusResponse handleDataImport(@RequestParam(required = true) final String command,
+			final HttpServletResponse response) {
+
 		if (StrUtils.isEmptyOrNullOrZero(command)) {
 			response.setStatus(400);
 			return null;
@@ -140,7 +144,7 @@ public class AdminController {
 				if (dataImportService.isRunning()) {
 					return new StatusResponse("Dataimport", "already running");
 				} else {
-					dataImportService.start();				
+					dataImportService.start();
 					return new StatusResponse("Dataimport", "started");
 				}
 			} else {

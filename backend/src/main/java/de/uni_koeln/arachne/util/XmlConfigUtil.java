@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import de.uni_koeln.arachne.context.JointContextDefinition;
 import org.jdom2.Document;
@@ -98,12 +98,12 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * The validity of the xml file is not checked!!!
 	 * 
 	 * @param context
-	 *            The xml context <code>Element</code> to parse.
+	 *                  The xml context <code>Element</code> to parse.
 	 * @param namespace
-	 *            The namespace of the document.
+	 *                  The namespace of the document.
 	 * @param dataset
-	 *            The dataset that contains the SQL query results.
-	 * @param lang The language.
+	 *                  The dataset that contains the SQL query results.
+	 * @param lang      The language.
 	 * @return A <code>Section</code> object containing the context sections
 	 *         content or <code>null</code> if access is denied.
 	 */
@@ -372,12 +372,12 @@ public class XmlConfigUtil implements ServletContextAware {
 	/**
 	 * Adds a context within a context.
 	 * 
-	 * @param parent The parent section.
+	 * @param parent        The parent section.
 	 * @param parentContext The parent context.
-	 * @param subContext The sub context.
-	 * @param namespace The namespace.
-	 * @param dataset The dataset.
-	 * @param lang The language.
+	 * @param subContext    The sub context.
+	 * @param namespace     The namespace.
+	 * @param dataset       The dataset.
+	 * @param lang          The language.
 	 */
 	public void addSubContext(Section parent, String parentContext, Element subContext, Namespace namespace,
 			Dataset dataset, String lang) {
@@ -394,12 +394,12 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * The validity of the xml file is not checked!!!
 	 * 
 	 * @param section
-	 *            The xml section <code>Element</code> to parse.
+	 *                  The xml section <code>Element</code> to parse.
 	 * @param namespace
-	 *            The namespace of the document.
+	 *                  The namespace of the document.
 	 * @param dataset
-	 *            The dataset that contains the SQL query results.
-	 * @param lang The language.
+	 *                  The dataset that contains the SQL query results.
+	 * @param lang      The language.
 	 * @return A <code>Content</code> object containing the sections content.
 	 */
 	public AbstractContent getContentFromSections(final Element section, final Namespace namespace,
@@ -427,31 +427,31 @@ public class XmlConfigUtil implements ServletContextAware {
 
 			for (final Element element : children) {
 				switch (element.getName()) {
-				case "field":
-					addFieldToResult(element, namespace, result, dataset, separator);
-					break;
+					case "field":
+						addFieldToResult(element, namespace, result, dataset, separator);
+						break;
 
-				case "linkField":
-					addLinkFieldToResult(element, result, dataset, separator, lang);
-					break;
+					case "linkField":
+						addLinkFieldToResult(element, result, dataset, separator, lang);
+						break;
 
-				case "plain":
-					addPlainTextToResult(element, result, dataset, lang);
-					break;
+					case "plain":
+						addPlainTextToResult(element, result, dataset, lang);
+						break;
 
-				case "context":
-					final Section nextContext = (Section) getContentFromContext(element, namespace, dataset, lang);
-					if (nextContext != null && !((Section) nextContext).getContent().isEmpty()) {
-						result.add(nextContext);
-					}
-					break;
+					case "context":
+						final Section nextContext = (Section) getContentFromContext(element, namespace, dataset, lang);
+						if (nextContext != null && !((Section) nextContext).getContent().isEmpty()) {
+							result.add(nextContext);
+						}
+						break;
 
-				default:
-					final Section nextSection = (Section) getContentFromSections(element, namespace, dataset, lang);
-					if (nextSection != null && !((Section) nextSection).getContent().isEmpty()) {
-						result.add(nextSection);
-					}
-					break;
+					default:
+						final Section nextSection = (Section) getContentFromSections(element, namespace, dataset, lang);
+						if (nextSection != null && !((Section) nextSection).getContent().isEmpty()) {
+							result.add(nextSection);
+						}
+						break;
 				}
 			}
 			return result;
@@ -467,7 +467,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * parses the instances from the XML-document
 	 * 
 	 * @param type
-	 *            The type of the dataset.
+	 *             The type of the dataset.
 	 * @return A list of context image desciptors.
 	 */
 	public List<ContextImageDescriptor> getContextImagesNames(final String type) {
@@ -487,7 +487,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * parsed documents are cached and simply returned.
 	 * 
 	 * @param type
-	 *            The type of the dataset.
+	 *             The type of the dataset.
 	 * @return A XML document or <code>null</code> if none is found.
 	 */
 	public Document getDocument(final String type) {
@@ -506,7 +506,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * returned.
 	 * 
 	 * @param type
-	 *            The category of the parent dataset.
+	 *             The category of the parent dataset.
 	 * @return A list containing the names of the explicit contextualizers (may
 	 *         be empty).
 	 */
@@ -541,7 +541,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * category.
 	 * 
 	 * @param type
-	 *            The name of the category.
+	 *             The name of the category.
 	 * @return A <code>Set&lt;String></code> of the category specific facets.
 	 */
 	public Set<String> getFacetsFromXMLFile(final String type) {
@@ -572,9 +572,9 @@ public class XmlConfigUtil implements ServletContextAware {
 	}
 
 	/**
-	 * Gets a {@link SearchResultFacet} from the facet cache. 
+	 * Gets a {@link SearchResultFacet} from the facet cache.
 	 *
-	 * @param category The category.
+	 * @param category  The category.
 	 * @param facetName The facet name with or without "facet_" - prefix.
 	 * @return SearchResultFacet The facet
 	 */
@@ -607,12 +607,12 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * <code>ifEmpty-Element</code> as a child.
 	 * 
 	 * @param field
-	 *            The XML element describing the parent of the
-	 *            <code>ifEmpty</code> element.
+	 *                  The XML element describing the parent of the
+	 *                  <code>ifEmpty</code> element.
 	 * @param dataset
-	 *            The current dataset.
+	 *                  The current dataset.
 	 * @param namespace
-	 *            The current namespace.
+	 *                  The current namespace.
 	 * @return A <code>StringBuilder</code> containing the formatted value or
 	 *         <code>null</code> if no value could be retrieved or the passed in
 	 *         <code>Element</code> does not have an
@@ -643,16 +643,16 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * not have an <code>ifEmpty</code>-Element as a child.
 	 * 
 	 * @param element
-	 *            The XML element describing the parent of the
-	 *            <code>ifEmpty</code> element.
+	 *                    The XML element describing the parent of the
+	 *                    <code>ifEmpty</code> element.
 	 * @param namespace
-	 *            The current namespace.
+	 *                    The current namespace.
 	 * @param dataset
-	 *            The current dataset.
+	 *                    The current dataset.
 	 * @param contextType
-	 *            The type of the context.
+	 *                    The type of the context.
 	 * @param index
-	 *            The index of the context.
+	 *                    The index of the context.
 	 * @return A <code>StringBuilder</code> containing the formatted value or
 	 *         <code>null</code> if no value could be retrieved or the passed in
 	 *         <code>Element</code> does not have an
@@ -688,7 +688,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * not cached.
 	 * 
 	 * @param type
-	 *            The category of the parent dataset.
+	 *             The category of the parent dataset.
 	 * @return A list containing the names of the mandatory contexts or may be
 	 *         empty if the type does not need external contexts.
 	 */
@@ -730,7 +730,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * information.
 	 * 
 	 * @param type
-	 *            The category type.
+	 *             The category type.
 	 * @return A list of <code>TableConnectionDescriptions</code>. The list may
 	 *         be empty.
 	 */
@@ -819,19 +819,20 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * according to the XML description of this field.
 	 * 
 	 * @param element
-	 *            The XML description of the field to add.
+	 *                    The XML description of the field to add.
 	 * @param fieldList
-	 *            The values of the fields in this context.
+	 *                    The values of the fields in this context.
 	 * @param index
-	 *            The index of the context (as <code>Contexts</code> are
-	 *            multivalued a single dataset may have several contexts of a
-	 *            given type).
+	 *                    The index of the context (as <code>Contexts</code> are
+	 *                    multivalued a single dataset may have several contexts of
+	 *                    a
+	 *                    given type).
 	 * @param dataset
-	 *            The current dataset.
+	 *                    The current dataset.
 	 * @param contextType
-	 *            The type of the context.
+	 *                    The type of the context.
 	 * @param separator
-	 *            the currently active separator.
+	 *                    the currently active separator.
 	 * @return the separator that must be used next.
 	 */
 	private String addContextFieldToFieldList(final Element element, final Namespace namespace,
@@ -907,13 +908,13 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * Internal function adds the passed field to the passed result
 	 * 
 	 * @param field
-	 *            Field, whose datasource is added
+	 *                   Field, whose datasource is added
 	 * @param parentType
-	 *            The category of the dataset
+	 *                   The category of the dataset
 	 * @param result
-	 *            The result list containing the full qualified field names.
+	 *                   The result list containing the full qualified field names.
 	 * @param context
-	 *            Context which is used to qualify the field names
+	 *                   Context which is used to qualify the field names
 	 */
 	private void addContextFieldToList(final Element field, final String parentType, final List<String> result,
 			final String context) {
@@ -964,19 +965,20 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * according to the XML description of the fields.
 	 * 
 	 * @param children
-	 *            The XML descriptions of the fields to add.
+	 *                    The XML descriptions of the fields to add.
 	 * @param fieldList
-	 *            The values of the fields in this context.
+	 *                    The values of the fields in this context.
 	 * @param index
-	 *            The index of the context (as <code>Contexts</code> are
-	 *            multivalued a single dataset may have several contexts of a
-	 *            given type).
+	 *                    The index of the context (as <code>Contexts</code> are
+	 *                    multivalued a single dataset may have several contexts of
+	 *                    a
+	 *                    given type).
 	 * @param dataset
-	 *            The current dataset.
+	 *                    The current dataset.
 	 * @param contextType
-	 *            The type of the context.
+	 *                    The type of the context.
 	 * @param separator
-	 *            the currently active separator.
+	 *                    the currently active separator.
 	 */
 	private void addFieldsToFieldList(final List<Element> children, final Namespace namespace,
 			final FieldList fieldList, final int index, final Dataset dataset, final String contextType,
@@ -1000,13 +1002,13 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * <code>Section</code>.
 	 * 
 	 * @param dataset
-	 *            The current dataset.
+	 *                  The current dataset.
 	 * @param result
-	 *            The <code>Section</code> the field belongs to.
+	 *                  The <code>Section</code> the field belongs to.
 	 * @param separator
-	 *            The currently active separator.
+	 *                  The currently active separator.
 	 * @param element
-	 *            The description of the field as XML element.
+	 *                  The description of the field as XML element.
 	 */
 	private void addFieldToResult(final Element element, final Namespace namespace, final Section result,
 			final Dataset dataset, String separator) {
@@ -1055,13 +1057,13 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * <code>Section</code>.
 	 * 
 	 * @param dataset
-	 *            The current dataset.
+	 *                  The current dataset.
 	 * @param result
-	 *            The <code>Section</code> the field belongs to.
+	 *                  The <code>Section</code> the field belongs to.
 	 * @param separator
-	 *            The currently active separator.
+	 *                  The currently active separator.
 	 * @param element
-	 *            The description of the field as XML element.
+	 *                  The description of the field as XML element.
 	 */
 	private void addLinkFieldToResult(final Element element, final Section result, final Dataset dataset,
 			String separator, final String lang) {
@@ -1121,13 +1123,13 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * <code>Section</code>.
 	 * 
 	 * @param dataset
-	 *            The current dataset.
+	 *                The current dataset.
 	 * @param result
-	 *            The <code>Section</code> the field belongs to.
+	 *                The <code>Section</code> the field belongs to.
 	 * @param element
-	 *            The description of the field as XML element.
+	 *                The description of the field as XML element.
 	 * @param lang
-	 *            The language code for the transl8 service
+	 *                The language code for the transl8 service
 	 */
 	private void addPlainTextToResult(final Element element, final Section result, final Dataset dataset,
 			final String lang) {
@@ -1159,7 +1161,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * contextImage tags of the XML documents.
 	 * 
 	 * @param type
-	 *            The parents type.
+	 *             The parents type.
 	 * @return A list of unique context names.
 	 */
 	private List<String> getContextImageContextNames(final String type) {
@@ -1182,7 +1184,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * returns its filename.
 	 * 
 	 * @param type
-	 *            Type of the config to look for.
+	 *             Type of the config to look for.
 	 * @return The filename of the XML config file for the given type or
 	 *         <code>"unknown"</code> if no config file is found.
 	 */
@@ -1202,7 +1204,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * the resulting document into the cache.
 	 * 
 	 * @param type
-	 *            A <code>String</code> specifying the category type.
+	 *             A <code>String</code> specifying the category type.
 	 * @return A fully assembled document.
 	 */
 	private Document getDocumentFromFile(final String type) {
@@ -1234,7 +1236,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * <code>Elements</code>.
 	 * 
 	 * @param type
-	 *            The type of the include elements.
+	 *             The type of the include elements.
 	 * @return The <code>Elements</code> extracted from the DOM of the XML
 	 *         include file.
 	 */
@@ -1288,7 +1290,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * the document.
 	 * 
 	 * @param type
-	 *            The type of the document.
+	 *             The type of the document.
 	 * @return A list of full qualified external field names.
 	 */
 	private List<String> getExternalFields(final String type) {
@@ -1313,9 +1315,9 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * <code>Element</code> and its children to the result list.
 	 * 
 	 * @param element
-	 *            The XML node to check for external fields.
+	 *                   The XML node to check for external fields.
 	 * @param parentType
-	 *            The type of the <code>ArachneDataset</code>.
+	 *                   The type of the <code>ArachneDataset</code>.
 	 * @return A list of full qualified external field names.
 	 */
 	private List<String> getFieldNames(final Element element, final String parentType) {
@@ -1334,13 +1336,13 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * <code>result</code>.
 	 * 
 	 * @param element
-	 *            The element to process.
+	 *                   The element to process.
 	 * @param parentType
-	 *            The category of the dataset.
+	 *                   The category of the dataset.
 	 * @param result
-	 *            The result list containing the full qualified field names.
+	 *                   The result list containing the full qualified field names.
 	 * @param children
-	 *            The children of <code>element</code>.
+	 *                   The children of <code>element</code>.
 	 */
 	private void getFieldNamesFromContext(final Element element, final String parentType, final List<String> result,
 			final List<Element> children) {
@@ -1367,13 +1369,13 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * intrinsic to the dataset so no contextualizer shall be used on them.
 	 * 
 	 * @param element
-	 *            The element to process.
+	 *                   The element to process.
 	 * @param parentType
-	 *            The category of the dataset.
+	 *                   The category of the dataset.
 	 * @param result
-	 *            The result list containing the full qualified field names.
+	 *                   The result list containing the full qualified field names.
 	 * @param children
-	 *            The children of <code>element</code>.
+	 *                   The children of <code>element</code>.
 	 */
 	private void getFieldNamesFromField(final Element element, final String parentType, final List<String> result,
 			final List<Element> children) {
@@ -1402,8 +1404,8 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * xml-descriptions
 	 * 
 	 * @param type
-	 *            Name of the category / XML-Document from which the
-	 *            descriptor-instance are created
+	 *             Name of the category / XML-Document from which the
+	 *             descriptor-instance are created
 	 * @return List containing an ContextImageDescriptor-instance for every
 	 *         contextImage-Element within the XML-document
 	 */
@@ -1443,7 +1445,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * list.
 	 * 
 	 * @param include
-	 *            The include element to replace.
+	 *                The include element to replace.
 	 * @return The real element the include element is replaced with.
 	 */
 	private List<Element> getInclude(final Element include) {
@@ -1465,7 +1467,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * returns its filename.
 	 * 
 	 * @param type
-	 *            Type of the include to look for.
+	 *             Type of the include to look for.
 	 * @return The filename of the XML include file for the given type or
 	 *         <code>"unknown"</code> if no include file is found.
 	 */
@@ -1484,9 +1486,9 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * Method implementing the text edit attributes of the XML elements.
 	 * 
 	 * @param element
-	 *            Element containing the value.
+	 *                Element containing the value.
 	 * @param value
-	 *            Stringbuilder which contains the current element-content.
+	 *                Stringbuilder which contains the current element-content.
 	 * @return The edited value.
 	 */
 	private StringBuilder processValueEdits(final Element element, final StringBuilder value) {
@@ -1521,7 +1523,7 @@ public class XmlConfigUtil implements ServletContextAware {
 	 * replace them by their corresponding real <code>Element</code>.
 	 * 
 	 * @param element
-	 *            The DOM element to scan for include elements.
+	 *                The DOM element to scan for include elements.
 	 */
 	private void replaceInclude(final Element element) {
 		if (element != null) {

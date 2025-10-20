@@ -12,12 +12,12 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -29,19 +29,19 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class TestExport {
 
     @InjectMocks
@@ -122,7 +122,8 @@ public class TestExport {
         }
 
         @Override
-        protected void writeInternal(Object o, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
+        protected void writeInternal(Object o, HttpOutputMessage httpOutputMessage)
+                throws IOException, HttpMessageNotWritableException {
 
         }
     }
@@ -168,12 +169,14 @@ public class TestExport {
         }
 
         // System.out.println("----- status -----");
-        // taskStatusCounter.forEach((key, value) -> {System.out.println(key + " : " + value);});
+        // taskStatusCounter.forEach((key, value) -> {System.out.println(key + " : " +
+        // value);});
 
         return taskStatusCounter;
     }
 
-    private String convert(AbstractDataExportConverter<?> converter, DataExportConversionObject conversion) throws IOException {
+    private String convert(AbstractDataExportConverter<?> converter, DataExportConversionObject conversion)
+            throws IOException {
 
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         prepareConverter(converter, conversion);
@@ -200,7 +203,7 @@ public class TestExport {
                 .replaceAll("\\p{Pd}", "-"); // normalize dashes
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Transl8Service.Transl8Exception, IOException {
 
         // request
@@ -235,17 +238,17 @@ public class TestExport {
         when(user.getId()).thenReturn((long) 1);
         when(otherUser.getId()).thenReturn((long) 2);
 
-        // multi-threading  (from https://dzone.com/articles/workaround-multi-threaded)
+        // multi-threading (from https://dzone.com/articles/workaround-multi-threaded)
         doAnswer((Answer<Object>) invocation -> {
             Object[] args = invocation.getArguments();
-            Runnable runnable = (Runnable)args[0];
+            Runnable runnable = (Runnable) args[0];
             runnable.run();
             return null;
         }).when(taskExecutor).submit(any(Runnable.class));
 
     }
 
-    @Test
+    /* ~~(org/openrewrite/staticanalysis/LambdaBlockToExpression)~~> */@Test
     public void testSearchResultToCsvExport() throws Exception {
 
         final SearchResult2CsvConverter converter = new SearchResult2CsvConverter();
@@ -286,30 +289,23 @@ public class TestExport {
 
         assertEquals(
                 "transl8ed: search_result_for 'test'",
-                doc.select(".doc-title").first().textNodes().get(0).text()
-        );
+                doc.select(".doc-title").first().textNodes().get(0).text());
         assertEquals(
                 "Test title",
-                doc.select("h1.title").first().text()
-        );
+                doc.select("h1.title").first().text());
         assertEquals(
                 10,
-                doc.select(".page:nth-child(3) .dataset > tbody > tr").size()
-        );
+                doc.select(".page:nth-child(3) .dataset > tbody > tr").size());
         assertEquals(
                 "Subtitle of the Test",
-                doc.select(".page:nth-child(3) .dataset > tbody > tr > td").first().text()
-        );
+                doc.select(".page:nth-child(3) .dataset > tbody > tr > td").first().text());
         assertEquals(
                 "section",
-                doc.select(".page:nth-child(3) .dataset > tbody > tr > td").first().attr("class")
-        );
+                doc.select(".page:nth-child(3) .dataset > tbody > tr > td").first().attr("class"));
         assertEquals(
                 "data:image/png;base64,iVBORw",
-                doc.select("img.logo-img").first().attr("src").substring(0, 28)
-        );
+                doc.select("img.logo-img").first().attr("src").substring(0, 28));
     }
-
 
     @Test
     public void testCatalogToHtmlExport() throws Exception {
@@ -324,18 +320,14 @@ public class TestExport {
 
         assertEquals(
                 "label: root",
-                doc.select(".doc-title").first().textNodes().get(0).text()
-        );
+                doc.select(".doc-title").first().textNodes().get(0).text());
         assertEquals(
                 "*label*: text entry nr: 1",
-                doc.select("h1.title").first().text()
-        );
+                doc.select("h1.title").first().text());
         assertEquals(
                 "data:image/png;base64,iVBORw",
-                doc.select("img.logo-img").first().attr("src").substring(0, 28)
-        );
+                doc.select("img.logo-img").first().attr("src").substring(0, 28));
     }
-
 
     @Test
     public void testSearchResultToPdfExport() throws Exception {
@@ -361,7 +353,6 @@ public class TestExport {
         assertEquals("transl8ed: test test facet value", page2[3]);
     }
 
-
     @Test
     public void testCatalogToPdfExport() throws Exception {
 
@@ -386,7 +377,6 @@ public class TestExport {
         assertEquals("*label*: text entry nr: 1", page2[1]);
         assertEquals("Subtitle of the Test", page2[2]);
     }
-
 
     @Test
     public void testStack() throws Exception {
@@ -479,7 +469,7 @@ public class TestExport {
 
         // write testfile
         @SuppressWarnings("resource")
-		final FileOutputStream outputStream = new FileOutputStream(name);
+        final FileOutputStream outputStream = new FileOutputStream(name);
         outputStream.write(fileContent.getBytes());
         outputStream.close();
 

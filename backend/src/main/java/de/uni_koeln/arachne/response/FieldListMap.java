@@ -1,11 +1,13 @@
 package de.uni_koeln.arachne.response;
 
+import java.io.Serial;
 import java.util.HashMap;
 
 public class FieldListMap extends HashMap<String, FieldList> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-	private FieldList mainList;
+    private FieldList mainList;
     private HashMap<String, String> labels = new HashMap<String, String>();
 
     public FieldListMap(FieldList mainList) {
@@ -28,7 +30,7 @@ public class FieldListMap extends HashMap<String, FieldList> {
     }
 
     private String fullFilterCriterion(String filterCriterion) {
-        return  "[^\\.]*\\." + filterCriterion + "(\\.[^\\.]*)?";
+        return "[^\\.]*\\." + filterCriterion + "(\\.[^\\.]*)?";
     }
 
     public FieldList get(String field) {
@@ -45,10 +47,11 @@ public class FieldListMap extends HashMap<String, FieldList> {
     }
 
     /*
-    public void compile() {
-        for (String key : keySet()) {
-            mainList.add(super.get(key));
-        }
-    }*/
+     * public void compile() {
+     * for (String key : keySet()) {
+     * mainList.add(super.get(key));
+     * }
+     * }
+     */
 
 }

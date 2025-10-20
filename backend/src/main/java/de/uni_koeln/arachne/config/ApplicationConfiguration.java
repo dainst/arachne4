@@ -5,6 +5,7 @@ import de.uni_koeln.arachne.export.*;
 import de.uni_koeln.arachne.dao.jdbc.CatalogEntryDao;
 import de.uni_koeln.arachne.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -24,11 +25,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import javax.inject.Inject;
-import javax.servlet.ServletContext;
+import jakarta.inject.Inject;
+import jakarta.servlet.ServletContext;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -36,8 +37,10 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * This class holds the application configuration. It configures message converters, view resolvers, datasources, etc.
- * It replaces the old Spring XML config files. All interaction with this class is automatically done by Spring.
+ * This class holds the application configuration. It configures message
+ * converters, view resolvers, datasources, etc.
+ * It replaces the old Spring XML config files. All interaction with this class
+ * is automatically done by Spring.
  *
  * @author Reimar Grabowski
  * @author Patrick Jominet
@@ -50,7 +53,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableSpringConfigured
 @PropertySource("classpath:config/application.properties")
-public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
+public class ApplicationConfiguration implements WebMvcConfigurer {
 
     @Inject
     private Environment environment;
@@ -128,7 +131,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
                 .parameterName("mediaType")
                 .ignoreAcceptHeader(true)
                 .useJaf(false)
-                .mediaType("json", MediaType.APPLICATION_JSON_UTF8)
+                .mediaType("json", MediaType.APPLICATION_JSON)
                 .mediaType("pdf", MediaType.APPLICATION_PDF)
                 .mediaType("html", MediaType.TEXT_HTML)
                 .mediaType("csv", new MediaType("text", "csv"));
@@ -140,19 +143,20 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
      * @return A property sources place holder configurer.
      */
     @Bean
-    public static PropertySourcesPlaceholderConfigurer propertyPlaceHolderConfigurer() {
+    static PropertySourcesPlaceholderConfigurer propertyPlaceHolderConfigurer() {
         PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
         propertySourcesPlaceholderConfigurer.setLocation(new ClassPathResource("config/application.properties"));
         return propertySourcesPlaceholderConfigurer;
     }
 
     /**
-     * Configures the JDBC datasource (connection to the DB). A Hikari connection pool is utilized.
+     * Configures the JDBC datasource (connection to the DB). A Hikari connection
+     * pool is utilized.
      *
      * @return The configured datasource.
      */
     @Bean(destroyMethod = "close")
-    public DataSource dataSource() {
+    DataSource dataSource() {
         final HikariDataSource hikariDataSource = new HikariDataSource();
         hikariDataSource.setDriverClassName(environment.getProperty("jdbcDriverClassName"));
         hikariDataSource.setJdbcUrl(environment.getProperty("jdbcUrl"));
@@ -166,7 +170,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
             @SuppressWarnings("unused")
             public void close() throws SQLException {
                 @SuppressWarnings("resource")
-				HikariDataSource datasource = (HikariDataSource) super.getTargetDataSource();
+                HikariDataSource datasource = (HikariDataSource) super.getTargetDataSource();
                 datasource.close();
             }
         };
@@ -178,7 +182,8 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
      * @return The configured session factory.
      */
     @Bean
-    public LocalSessionFactoryBean sessionFactory() {
+    @DependsOnDatabaseInitialization
+    LocalSessionFactoryBean sessionFactory() {
         final Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         hibernateProperties.setProperty("hibernate.show_sql", "false");
@@ -199,7 +204,8 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
      * @return A new transaction manager.
      */
     @Bean
-    public HibernateTransactionManager transactionManager() {
+    @DependsOnDatabaseInitialization
+    HibernateTransactionManager transactionManager() {
         return new HibernateTransactionManager(sessionFactory().getObject());
     }
 }

@@ -1,5 +1,6 @@
 package de.uni_koeln.arachne.export;
 
+import java.io.Serial;
 import java.util.LinkedHashMap;
 
 /**
@@ -8,8 +9,9 @@ import java.util.LinkedHashMap;
 
 public class DataExportRow extends LinkedHashMap<String, DataExportCell> {
 
-	private static final long serialVersionUID = 1L;
-	
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private DataExportTable _table;
 
     public DataExportRow(DataExportTable table) {
@@ -21,10 +23,11 @@ public class DataExportRow extends LinkedHashMap<String, DataExportCell> {
     }
 
     /**
-     * creates a unique columns name for a given row (this), so it can be used as key.
+     * creates a unique columns name for a given row (this), so it can be used as
+     * key.
      * also registers the usage of this name for this table if desired
      *
-     * @param col the column
+     * @param col      the column
      * @param register if the column should be added to the list of table headers
      * @return the column name
      */
@@ -44,7 +47,6 @@ public class DataExportRow extends LinkedHashMap<String, DataExportCell> {
         return col;
     }
 
-
     public String getColumnName(String col) {
         return getColumnName(col, true);
     }
@@ -56,7 +58,6 @@ public class DataExportRow extends LinkedHashMap<String, DataExportCell> {
     public DataExportCell put(String key, String value) {
         return super.put(getColumnName(key), new DataExportCell(key, value));
     }
-
 
     public DataExportCell putHeadline(String value) {
         return super.put(getColumnName(), new DataExportCell("", value, true));

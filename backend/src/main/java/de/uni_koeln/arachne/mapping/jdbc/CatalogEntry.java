@@ -3,6 +3,7 @@ package de.uni_koeln.arachne.mapping.jdbc;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 @JsonInclude(Include.NON_EMPTY)
 public class CatalogEntry implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private Long id = null;
@@ -202,14 +204,16 @@ public class CatalogEntry implements Serializable {
     }
 
     /**
-     * @return the total number of successors combined (children, grandchildren, etc)
+     * @return the total number of successors combined (children, grandchildren,
+     *         etc)
      */
     public int getAllSuccessors() {
         return allSuccessors;
     }
 
     /**
-     * @param allSuccessors the total number of successors (children, grandchildren, etc)
+     * @param allSuccessors the total number of successors (children, grandchildren,
+     *                      etc)
      */
     public void setAllSuccessors(int allSuccessors) {
         this.allSuccessors = allSuccessors;

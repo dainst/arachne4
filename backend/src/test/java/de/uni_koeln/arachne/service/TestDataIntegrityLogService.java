@@ -1,24 +1,24 @@
 package de.uni_koeln.arachne.service;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 public class TestDataIntegrityLogService {
 
 	private transient DataIntegrityLogService dataIntegrityLogService;
-	
+
 	private final String newLine = System.lineSeparator();
-	
-	@Before
+
+	@BeforeEach
 	public void setUp() throws Exception {
 		dataIntegrityLogService = new DataIntegrityLogService();
 	}
 
-	@Test
+	/* ~~(org/openrewrite/staticanalysis/LambdaBlockToExpression)~~> */@Test
 	public void testGetSummary() {
-		assertEquals("Data Integrity Report" + newLine + "---------------------" + newLine 
+		assertEquals("Data Integrity Report" + newLine + "---------------------" + newLine
 				+ "No warnings.", dataIntegrityLogService.getSummary());
 		logTestWarnings();
 		assertEquals("Data Integrity Report" + newLine
@@ -27,15 +27,14 @@ public class TestDataIntegrityLogService {
 				+ "'Test Warning #2.': 3" + newLine
 				+ "'Test Warning #3.': 2" + newLine
 				+ newLine
-				+ "Total warnings: 10"
-				, dataIntegrityLogService.getSummary());
+				+ "Total warnings: 10", dataIntegrityLogService.getSummary());
 	}
-	
+
 	@Test
 	public void testClear() {
 		logTestWarnings();
 		dataIntegrityLogService.clear();
-		assertEquals("Data Integrity Report" + newLine + "---------------------" + newLine 
+		assertEquals("Data Integrity Report" + newLine + "---------------------" + newLine
 				+ "No warnings.", dataIntegrityLogService.getSummary());
 	}
 

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.HashMap;
@@ -58,15 +58,15 @@ public class DataExportStack {
             final @Value("${dataExportMaxStackSize:10}") Integer maxStackSize,
             final @Value("${dataExportMaxThreads:4}") Integer maxThreads,
             final @Value("${dataExportMaxTaskLifeTime:86400000}") Integer maxLifeTime,
-            final @Value("${serverAddress}") String serverAddress
-    ) {
+            final @Value("${serverAddress}") String serverAddress) {
         dataExportMaxStackSize = maxStackSize;
         dataExportMaxThreads = maxThreads;
         dataExportMaxTaskLifeTime = maxLifeTime;
         this.serverAddress = serverAddress + "/data";
     }
 
-    public DataExportTask newTask(AbstractDataExportConverter<?> converter, DataExportConversionObject conversionObject) {
+    public DataExportTask newTask(AbstractDataExportConverter<?> converter,
+            DataExportConversionObject conversionObject) {
 
         DataExportTask task = new DataExportTask(converter, conversionObject);
         task.setOwner(userRightsService.getCurrentUser());
@@ -92,7 +92,7 @@ public class DataExportStack {
             throw new DataExportException("stack_full", HttpStatus.SERVICE_UNAVAILABLE);
         }
 
-        if(running.size() >= dataExportMaxThreads) {
+        if (running.size() >= dataExportMaxThreads) {
             stack.add(task);
             LOGGER.info("added task " + task.uuid.toString() + " to stack (" + stack.size() + ")");
         } else {
@@ -184,7 +184,7 @@ public class DataExportStack {
     }
 
     public DataExportTask getEnqueuedTaskById(String taskId) {
-        for (DataExportTask task: stack) {
+        for (DataExportTask task : stack) {
             if (task.uuid.toString().equals(taskId)) {
                 return task;
             }
@@ -214,17 +214,17 @@ public class DataExportStack {
         status.put("tasks_enqueued", stack.size());
         final JSONObject taskList = new JSONObject();
 
-        for (DataExportTask task: getEnqueuedTasks(owner)) {
+        for (DataExportTask task : getEnqueuedTasks(owner)) {
             final JSONObject info = task.getInfoAsJSON();
             info.put("status", "enqueued");
             taskList.put(task.uuid.toString(), info);
         }
-        for (DataExportTask task: getRunningTasks(owner)) {
+        for (DataExportTask task : getRunningTasks(owner)) {
             final JSONObject info = task.getInfoAsJSON();
             info.put("status", "running");
             taskList.put(task.uuid.toString(), info);
         }
-        for (DataExportTask task: getFinishedTasks(owner, false)) {
+        for (DataExportTask task : getFinishedTasks(owner, false)) {
             final JSONObject info = task.getInfoAsJSON();
             info.put("status", (task.error != null) ? task.error : "finished");
             taskList.put(task.uuid.toString(), info);
@@ -235,7 +235,7 @@ public class DataExportStack {
 
     public ArrayList<DataExportTask> getEnqueuedTasks(User owner) {
         final ArrayList<DataExportTask> taskList = new ArrayList<DataExportTask>();
-        for (DataExportTask task: stack) {
+        for (DataExportTask task : stack) {
             if (isTaskOwnedBy(owner, task)) {
                 taskList.add(task);
             }
@@ -245,7 +245,7 @@ public class DataExportStack {
 
     public ArrayList<DataExportTask> getRunningTasks(User owner) {
         final ArrayList<DataExportTask> taskList = new ArrayList<DataExportTask>();
-        for (HashMap.Entry<String, DataExportTask> taskItem: running.entrySet()) {
+        for (HashMap.Entry<String, DataExportTask> taskItem : running.entrySet()) {
             if (isTaskOwnedBy(owner, taskItem.getValue())) {
                 taskList.add(taskItem.getValue());
             }
@@ -255,7 +255,7 @@ public class DataExportStack {
 
     public ArrayList<DataExportTask> getFinishedTasks(User owner, Boolean outdated) {
         final ArrayList<DataExportTask> taskList = new ArrayList<DataExportTask>();
-        for (HashMap.Entry<String, DataExportTask> taskItem: finished.entrySet()) {
+        for (HashMap.Entry<String, DataExportTask> taskItem : finished.entrySet()) {
             if (isTaskOwnedBy(owner, taskItem.getValue())) {
                 if (!outdated || isTaskOutdated(taskItem.getValue())) {
                     taskList.add(taskItem.getValue());
@@ -291,7 +291,5 @@ public class DataExportStack {
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         return sra.getRequest();
     }
-
-
 
 }

@@ -11,9 +11,9 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java-version>1.8</java-version>
-		<org.springframework-version>4.3.22.RELEASE</org.springframework-version>
-		<org.springframework.security-version>4.2.11.RELEASE</org.springframework.security-version>
+		<java-version>1.25</java-version>
+		<org.springframework-version>6.2.12</org.springframework-version>
+		<org.springframework.security-version>6.2.8</org.springframework.security-version>
 		<org.aspectj-version>1.9.2</org.aspectj-version>
 		<org.slf4j-version>1.7.21</org.slf4j-version>
 		<!-- External lib versions -->
@@ -44,14 +44,14 @@
 		<!-- Commons IO -->
 		<commons-io-version>2.5</commons-io-version>
 		<!-- HTTP Client -->
-		<httpclient-version>4.5.2</httpclient-version>
+		<httpclient-version>4.5.14</httpclient-version>
 		<!-- Log4J -->
 		<log4j-version>2.17.0</log4j-version>
 		<!-- Testing -->
 		<!-- JUnit -->
 		<junit-version>4.12</junit-version>
 		<!-- mockito -->
-		<org.mockito-version>1.10.19</org.mockito-version>
+		<org.mockito-version>5.20.0</org.mockito-version>
 		<!-- JSONassert -->
 		<jsonassert-version>1.5.0</jsonassert-version>
 		<!-- JSON path -->
@@ -62,12 +62,12 @@
 		<pdfbox-version>2.0.8</pdfbox-version>
 		<!-- Plugin Versions -->
 		<aspectj-maven-version>1.11</aspectj-maven-version>
-		<maven-failsafe-version>2.22.1</maven-failsafe-version>
+		<maven-failsafe-version>3.1.2</maven-failsafe-version>
 		<maven-javadoc-version>2.10.4</maven-javadoc-version>
 		<maven-tomcat-version>2.2</maven-tomcat-version>
 		<maven-dependency-version>3.1.1</maven-dependency-version>
-		<maven-war-version>3.2.2</maven-war-version>
-		<maven-compiler-version>3.8.0</maven-compiler-version>
+		<maven-war-version>3.4.0</maven-war-version>
+		<maven-compiler-version>3.14.1</maven-compiler-version>
 	</properties>
 
 	<dependencies>
@@ -130,13 +130,6 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 
-		<!-- AspectJ -->
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>${org.aspectj-version}</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjtools</artifactId>
@@ -179,6 +172,12 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>4.0.6</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
 			<version>${log4j-version}</version>
@@ -205,16 +204,16 @@
 
 		<!-- @Inject -->
 		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-			<version>1</version>
+			<groupId>jakarta.inject</groupId>
+			<artifactId>jakarta.inject-api</artifactId>
+			<version>2.0.1</version>
 		</dependency>
 
 		<!-- Servlet -->
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.0.1</version>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>6.1.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -230,14 +229,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Test -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit-version}</version>
-			<scope>test</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
@@ -249,6 +240,12 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-mxj</artifactId>
 			<version>5.0.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>5.14.0</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -284,16 +281,16 @@
 
 		<!-- Hibernate -->
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>${org.hibernate-version}</version>
+			<version>6.5.3.Final</version>
 		</dependency>
 
 		<!-- MySQL Connector -->
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql-connector-java-version}</version>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<version>8.0.33</version>
 		</dependency>
 
 		<!-- JDom -->
@@ -394,6 +391,16 @@
 			<artifactId>commons-io</artifactId>
 			<version>${commons-io-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>1.3.5</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>4.0.4</version>
+		</dependency>
 
 		<dependency>
 			<!-- Required for CSV output. -->
@@ -444,9 +451,9 @@
 
 		<!-- Apache HTTP Components (needed to support SSL with RestTemplate) -->
 		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>${httpclient-version}</version>
+			<groupId>org.apache.httpcomponents.client5</groupId>
+			<artifactId>httpclient5</artifactId>
+			<version>5.4.4</version>
 		</dependency>
 
 		<!-- hack to overcome http://jira.codehaus.org/browse/MSITE-228 -->
@@ -499,9 +506,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-version}</version>
 				<configuration>
-					<source>${java-version}</source>
-					<target>${java-version}</target>
 					<encoding>UTF-8</encoding>
+					<release>17</release>
 				</configuration>
 			</plugin>
 			<plugin>

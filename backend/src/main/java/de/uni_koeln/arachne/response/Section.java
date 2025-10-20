@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.XmlElementWrapper;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * A class for organizing and holding content of either type <code>Field</code> or <code>Section</code>.
+ * A class for organizing and holding content of either type <code>Field</code>
+ * or <code>Section</code>.
  */
 @XmlRootElement
 public class Section extends AbstractContent {
@@ -19,16 +20,18 @@ public class Section extends AbstractContent {
 	 * The label used by the frontend.
 	 */
 	protected String label;
-	
+
 	protected String separator;
 
 	/**
 	 * A list of content (either <code>Field</code> or <code>Section</code>).
 	 */
 	protected transient final List<AbstractContent> content = new ArrayList<AbstractContent>();
-	
+
 	/**
-	 * Convenient function that adds a content object to the list of <code>Content</code>.
+	 * Convenient function that adds a content object to the list of
+	 * <code>Content</code>.
+	 * 
 	 * @param content the <code>Content</code> object to be added.
 	 * @return a <code>boolean</code> indicating success.
 	 */
@@ -39,12 +42,12 @@ public class Section extends AbstractContent {
 			return this.content.add(content);
 		}
 	}
-	
+
 	@XmlElementWrapper
 	public List<AbstractContent> getContent() {
 		return this.content;
 	}
-	
+
 	public String getLabel() {
 		return this.label;
 	}
@@ -52,21 +55,21 @@ public class Section extends AbstractContent {
 	public void setLabel(final String label) {
 		this.label = label;
 	}
-	
+
 	@JsonIgnore
 	@XmlTransient
 	public String getSeparator() {
 		return this.separator;
 	}
-	
+
 	public void setSeparator(final String separator) {
 		this.separator = separator;
 	}
-	
+
 	@Override
 	public String toString() {
 		final StringBuilder stringBuilder = new StringBuilder();
-		
+
 		final Iterator<AbstractContent> iterator = content.iterator();
 		while (iterator.hasNext()) {
 			final AbstractContent currentContent = (AbstractContent) iterator.next();
@@ -75,7 +78,7 @@ public class Section extends AbstractContent {
 				stringBuilder.append(separator);
 			}
 		}
-		
+
 		if (label == null) {
 			return stringBuilder.toString();
 		}
@@ -114,7 +117,7 @@ public class Section extends AbstractContent {
 				return false;
 			}
 		}
-			
+
 		if (label == null) {
 			if (other.label != null) {
 				return false;
@@ -124,7 +127,7 @@ public class Section extends AbstractContent {
 				return false;
 			}
 		}
-			
+
 		if (separator == null) {
 			if (other.separator != null) {
 				return false;
@@ -134,8 +137,8 @@ public class Section extends AbstractContent {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 }
