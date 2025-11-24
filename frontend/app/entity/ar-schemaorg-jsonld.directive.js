@@ -17,7 +17,6 @@ const pseudoPlaces = ["unbekannt", "verschollen", "Privatbesitz"];
 /***
  * CONSTANTS for authors and publisher
 */
-
 const daiOrganization = {
     "@type": "Organization",
     "identifier": {
@@ -54,7 +53,6 @@ export default function ($filter, $sce) {
             { entity: '=', lastmodified: '=' },
         replace: true,
         link: function (scope, element) {
-            console.log(scope, element);
             scope.updateJsonContent = (entity) => {
                 let jsonLDScript;
                 if (entity){
@@ -69,15 +67,12 @@ export default function ($filter, $sce) {
                         jsonLDScript.textContent = this.getJson(entity);
                         element[0].appendChild(jsonLDScript);
                     }
-                    console.log(jsonLDScript);
                 } else return;
             }
 
             scope.$watch('entity', scope.updateJsonContent);
         },
         getJson: (entity) => {
-            console.log(entity);
-
             // detect image entity pages:
             let isImageEntity = false;
             if(entity.categoryKey == "marbilder") {
