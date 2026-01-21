@@ -116,8 +116,7 @@ export default function (
       $scope.accessInfo = await response.json();
 
       if ($scope.accessInfo.archive_id) {
-        // The archive_name can be an arbitrary string and is ignored by HacVia, it is only added to make sure the user's download is named properly. Without ti
-        // the downloaded file name would be archive_id.
+        // The archive_name can be an arbitrary string and is ignored by HacVia, it is only added to make sure the user's download is named properly.
         $scope.accessInfo.download = `${arachneSettings.hacViaUrl}/api/archive/${$scope.accessInfo.archive_id}/${$scope.accessInfo.archive_name}`;
       }
     } else {
