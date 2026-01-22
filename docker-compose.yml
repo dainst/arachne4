@@ -6,7 +6,7 @@ services:
       - ${ARCHAEOCLOUD_PATH}:/media/archaeocloud
       - /opt/arachne_sitemap:/var/www/sitemap
     labels:
-      - traefik.enable=true     
+      - traefik.enable=true
       - traefik.http.routers.frontend.rule=Host(`${SERVER_ADDRESS}`)
       - traefik.http.routers.frontend.entrypoints=websecure
       - traefik.http.routers.frontend.tls.certresolver=myresolver
@@ -117,6 +117,7 @@ services:
     volumes:
      - ${HAC_VIA_ARCHIVE_DIR}:/archive
      - ${HAC_VIA_PREVIEW_DIR}:/previews
+     - ${HAC_VIA_STAGING_DIR}:/staging
      - ${ARCHAEOCLOUD_PATH}/aronscans/objectscans/:/published_jpg
      - ${ARCHAEOCLOUD_PATH}/S-Arachne/arachne4scans/arachne4webimages/objectscans/:/published_ptif
     environment:
