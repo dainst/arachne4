@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export VERBOSITY=2
+export VERBOSITY=1
 export MAX_IMAGE_CACHE_SIZE=0
 
 FASTCGI_USER=nobody
@@ -33,4 +33,3 @@ wait -n
 
 # Exit with status of process that exited first
 exit $?
-
