@@ -5,6 +5,7 @@ services:
     volumes:
       - ${ARCHAEOCLOUD_PATH}:/media/archaeocloud
       - /opt/arachne_sitemap:/var/www/sitemap
+      - /opt/robots:/var/www/robots
     labels:
       - traefik.enable=true
       - traefik.http.routers.frontend.rule=Host(`${SERVER_ADDRESS}`)
