@@ -151,8 +151,8 @@ public class SearchController {
 				.setSortField(sortField)
 				.setOrderDesc(orderDesc)
 				.setLexical(lexical)
-				.setBoundingBox(boundingBox)
-				.setGeoHashPrecision(geoHashPrecision)
+				// .setBoundingBox(boundingBox)
+				// .setGeoHashPrecision(geoHashPrecision)
 				.setFacetsToSort(facetsToSort)
 				.setFacet(facet)
 				.setScrollMode(scrollMode);
