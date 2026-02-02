@@ -145,7 +145,7 @@ public class SearchController {
 		final SearchParameters searchParameters = new SearchParameters(defaultLimit, defaultFacetLimit)
 				.setQuery(queryString)
 				.setLimit(limit)
-				.setOffset(offset)
+				//.setOffset(offset)
 				.setFacetLimit(facetLimit)
 				.setFacetOffset(facetOffset)
 				//.setSortField(sortField)
