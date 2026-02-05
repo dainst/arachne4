@@ -6,6 +6,7 @@ services:
       - ${ARCHAEOCLOUD_PATH}:/media/archaeocloud
       - /opt/arachne_sitemap:/var/www/sitemap
       - /opt/robots:/var/www/robots
+      - /var/log/nginx:/var/log/nginx:rw
     labels:
       - traefik.enable=true
       - traefik.http.routers.frontend.rule=Host(`${SERVER_ADDRESS}`)
@@ -30,17 +31,11 @@ services:
       - "ELASTICSEARCH_SERVER=elasticsearch"
     volumes:
       - ${ARCHAEOCLOUD_PATH}:/media/archaeocloud
+      - ${ARACHNE4_IMAGE_CACHE_PATH}:/tmp/arachne4ImageCache
     hostname: "${HOST_NAME}"
     user: "${UID}:${GID}"
     labels:
       - traefik.enable=false
-      # - traefik.http.routers.backend.rule=Host(`${SERVER_ADDRESS}`) && PathPrefix(`/data`)
-      # - traefik.http.routers.backend.entrypoints=websecure
-      # - traefik.http.routers.backend.tls.certresolver=myresolver
-      # - traefik.port=8080
-      # - traefik.http.middlewares.backend-compress.compress=true
-      # - traefik.http.middlewares.backend-headers.headers.accesscontrolalloworiginlist=*
-      # - traefik.http.routers.backend.middlewares=backend-compress,backend-headers
       - "com.centurylinklabs.watchtower.enable=true"
     user: "${UID}:${GID}"
     restart: always

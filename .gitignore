@@ -2,3 +2,4 @@
 letsencrypt/
 aiax-data/
 db_data/
+.arachne4ImageCache/
