@@ -5,10 +5,11 @@ services:
     volumes:
       - ${ARCHAEOCLOUD_PATH}:/media/archaeocloud
       - /opt/arachne_sitemap:/var/www/sitemap
+      - /opt/robots:/var/www/robots
+      - /var/log/nginx:/var/log/nginx:rw
     labels:
-      - traefik.enable=true     
+      - traefik.enable=true
       - traefik.port=80
-
       - traefik.http.middlewares.frontend-compress.compress=true
       - traefik.http.routers.frontend.middlewares=frontend-compress
       - traefik.http.routers.frontend.rule=Host(`${SERVER_ADDRESS}`)
@@ -43,17 +44,11 @@ services:
         max-file: "3"
     volumes:
       - ${ARCHAEOCLOUD_PATH}:/media/archaeocloud
+      - ${ARACHNE4_IMAGE_CACHE_PATH}:/tmp/arachne4ImageCache
     hostname: "${HOST_NAME}"
     user: "${UID}:${GID}"
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.backend.rule=Host(`${SERVER_ADDRESS}`) && PathPrefix(`/data`)
-      - traefik.http.routers.backend.entrypoints=websecure
-      - traefik.http.routers.backend.tls.certresolver=myresolver
-      - traefik.port=8080
-      - traefik.http.middlewares.backend-compress.compress=true
-      - traefik.http.middlewares.backend-headers.headers.accesscontrolalloworiginlist=*
-      - traefik.http.routers.backend.middlewares=backend-compress,backend-headers
+      - traefik.enable=false
       - "com.centurylinklabs.watchtower.enable=true"
     user: "${UID}:${GID}"
     restart: always
@@ -91,7 +86,7 @@ services:
     restart: always
 
   elasticsearch:
-    build: ./elasticsearch
+    image: ghcr.io/dainst/arachne4-elastic-search:${ELASTIC_SEARCH_VERSION}
     environment:
       - discovery.type=single-node
       - cluster.name=arachne4
@@ -101,7 +96,7 @@ services:
     restart: always
 
   iipimage:
-    build: ./iipimage
+    image: ghcr.io/dainst/arachne4-image-server:${IMAGE_SERVER_VERSION}
     volumes:
       - ${ARCHAEOCLOUD_PATH}:/media/archaeocloud
     user: "${UID}:${GID}"
@@ -125,11 +120,14 @@ services:
       - com.centurylinklabs.watchtower.enable=true
     user: "${UID}:${GID}"
     restart: always
+
   hac_via:
     image: ghcr.io/dainst/hac_via:latest
     volumes:
      - ${HAC_VIA_ARCHIVE_DIR}:/archive
      - ${HAC_VIA_PREVIEW_DIR}:/previews
+     - ${HAC_VIA_STAGING_DIR}:/staging
+     - ${HAC_VIA_TAPE_DIR}:/tape_dir
      - ${ARCHAEOCLOUD_PATH}/aronscans/objectscans/:/published_jpg
      - ${ARCHAEOCLOUD_PATH}/S-Arachne/arachne4scans/arachne4webimages/objectscans/:/published_ptif
     environment:
