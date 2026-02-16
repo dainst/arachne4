@@ -171,9 +171,6 @@ public class SearchController {
 		    return ResponseEntity.status(503).body(null);
 		}
 
-		if (offset >= 10) {
-            return ResponseEntity.status(503).body(null);
-		}
 
 		if (boundingBox != null && bbLength != 4) {
 			return ResponseEntity.badRequest()
