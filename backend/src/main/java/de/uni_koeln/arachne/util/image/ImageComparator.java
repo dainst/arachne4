@@ -19,26 +19,29 @@ public class ImageComparator implements Comparator<Image>, Serializable {
 	
 	@Override
 	public int compare(Image image1, Image image2) {
-		String subTitle1 = image1.getImageSubtitle();
-		String subTitle2 = image2.getImageSubtitle();
 
-		if (subTitle1 == null) {
-			return 0;
-		}
+		return image1.getEntityOrder() - image2.getEntityOrder();
 
-		if (subTitle2 == null) {
-			return 0;
-		}
+		// String subTitle1 = image1.getImageSubtitle();
+		// String subTitle2 = image2.getImageSubtitle();
 
-		// Use Interger.MIN_VALUE / 4 to not generate an overflow;
-		int imageNumber1 = subTitle1.contains(",") ? ImageUtils.extractNumberFromImageFilename(image1.getImageSubtitle()) 
-				: Integer.MIN_VALUE / 4;
-		int imageNumber2 = subTitle2.contains(",") ? ImageUtils.extractNumberFromImageFilename(image2.getImageSubtitle()) 
-				: Integer.MIN_VALUE / 4;
+		// if (subTitle1 == null) {
+		// 	return 0;
+		// }
 
-		LOGGER.debug("Compare: " + subTitle1 + "[" + imageNumber1 + "]" + " - " + subTitle2 + "[" + imageNumber2 + "]");
-		LOGGER.debug("Comparison result : " + (imageNumber1 - imageNumber2));
+		// if (subTitle2 == null) {
+		// 	return 0;
+		// }
+
+		// // Use Interger.MIN_VALUE / 4 to not generate an overflow;
+		// int imageNumber1 = subTitle1.contains(",") ? ImageUtils.extractNumberFromImageFilename(image1.getImageSubtitle()) 
+		// 		: Integer.MIN_VALUE / 4;
+		// int imageNumber2 = subTitle2.contains(",") ? ImageUtils.extractNumberFromImageFilename(image2.getImageSubtitle()) 
+		// 		: Integer.MIN_VALUE / 4;
+
+		// LOGGER.debug("Compare: " + subTitle1 + "[" + imageNumber1 + "]" + " - " + subTitle2 + "[" + imageNumber2 + "]");
+		// LOGGER.debug("Comparison result : " + (imageNumber1 - imageNumber2));
 		
-		return imageNumber1 - imageNumber2;
+		// return imageNumber1 - imageNumber2;
 	}
 }

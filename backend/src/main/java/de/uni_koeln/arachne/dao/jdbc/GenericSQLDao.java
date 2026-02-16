@@ -271,12 +271,13 @@ public class GenericSQLDao extends SQLDao {
 	 */
 	public List<Image> getImageList(final String type, final long internalId) {
 		List<Image> result = query(con -> {
-			final String sql = "SELECT `marbilder`.`DateinameMarbilder`, `arachneentityidentification`.`ArachneEntityID` "
+			final String sql = "SELECT `marbilder`.`DateinameMarbilder`, `arachneentityidentification`.`ArachneEntityID`, `marbilder`.`EntityOrder`"
 					+ "FROM `marbilder` " + "LEFT JOIN `arachneentityidentification` "
 					+ "ON (`arachneentityidentification`.`TableName` = 'marbilder' "
 					+ "AND `arachneentityidentification`.`ForeignKey` = `marbilder`.`PS_MARBilderID`) " + "WHERE "
-					+ SQLToolbox.getQualifiedFieldname("marbilder", SQLToolbox.generateForeignKeyName(type)) + " = ?"
-					+ userRightsService.getSQL("marbilder");
+					+ SQLToolbox.getQualifiedFieldname("marbilder", SQLToolbox.generateForeignKeyName(type)) + " = ? AND `arachneentityidentification`.`isDeleted` = 0 "
+					+ userRightsService.getSQL("marbilder")
+					+ " ORDER BY `marbilder`.`EntityOrder` ASC";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setLong(1, internalId);
 			return ps;
@@ -289,6 +290,7 @@ public class GenericSQLDao extends SQLDao {
 				dataIntegrityLogService.logWarning(rs.getLong(2), "PS_MARBilderID", "Image without filename.");
 			}
 			image.setImageId(rs.getLong(2));
+			image.setEntityOrder(rs.getInt(3));
 			return image;
 		});
 

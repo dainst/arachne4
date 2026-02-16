@@ -166,6 +166,12 @@ public class SearchController {
 		}
 
 		int bbLength = searchParameters.getBoundingBox().length;
+
+		if (boundingBox != null) {
+		    return ResponseEntity.status(503).body(null);
+		}
+
+
 		if (boundingBox != null && bbLength != 4) {
 			return ResponseEntity.badRequest()
 					.header("Warning", "199", "arachnedataservice", "Invalid bounding box coordinates.")
