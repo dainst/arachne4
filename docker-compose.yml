@@ -50,7 +50,6 @@ services:
     labels:
       - traefik.enable=false
       - "com.centurylinklabs.watchtower.enable=true"
-    user: "${UID}:${GID}"
     restart: always
 
   db:
