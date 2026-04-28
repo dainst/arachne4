@@ -1,5 +1,4 @@
 services:
-
   frontend:
     image: ghcr.io/dainst/arachne4-frontend:${ARACHNE_FRONTEND_IMAGE_VERSION}
     volumes:
@@ -10,19 +9,20 @@ services:
     labels:
       - traefik.enable=true
       - traefik.port=80
-      - traefik.http.middlewares.frontend-compress.compress=true
-      - traefik.http.routers.frontend.middlewares=frontend-compress
       - traefik.http.routers.frontend.rule=Host(`${SERVER_ADDRESS}`)
       - traefik.http.routers.frontend.entrypoints=websecure
       - traefik.http.routers.frontend.tls.certresolver=myresolver
+      - traefik.http.middlewares.frontend-compress.compress=true
+      - traefik.http.routers.frontend.middlewares=frontend-compress,realip,anubis@docker
 
       # This block should only be added in the `stable` branch/be active on the production server.
-      - traefik.http.middlewares.alt-redirect.redirectregex.regex=.*
-      - traefik.http.middlewares.alt-redirect.redirectregex.replacement=https://arachne.dainst.org
-      - traefik.http.routers.alt.middlewares=alt-redirect
-      - traefik.http.routers.alt.rule=Host(`objects.idai.world`)
-      - traefik.http.routers.alt.entrypoints=websecure
-      - traefik.http.routers.alt.tls.certresolver=myresolver
+      #      - traefik.http.middlewares.alt-redirect.redirectregex.regex=.*
+      #      - traefik.http.middlewares.alt-redirect.redirectregex.replacement=https://arachne.dainst.org
+      #      - traefik.http.routers.alt.middlewares=alt-redirect
+      #      - traefik.http.routers.alt.rule=Host(`objects.idai.world`)
+      #      - traefik.http.routers.alt.tls.certresolver=myresolver
+      #      - traefik.http.routers.alt.entrypoints=websecure
+      # ^- end of production only block
 
       - "com.centurylinklabs.watchtower.enable=true"
     user: "${UID}:${GID}"
@@ -121,30 +121,49 @@ services:
     restart: always
 
   hac_via:
-    image: ghcr.io/dainst/hac_via:latest
+    image: ghcr.io/dainst/hac_via:${HAC_VIA_VERSION}
     volumes:
-     - ${HAC_VIA_ARCHIVE_DIR}:/archive
-     - ${HAC_VIA_PREVIEW_DIR}:/previews
-     - ${HAC_VIA_STAGING_DIR}:/staging
-     - ${HAC_VIA_TAPE_DIR}:/tape_dir
-     - ${ARCHAEOCLOUD_PATH}/aronscans/objectscans/:/published_jpg
-     - ${ARCHAEOCLOUD_PATH}/S-Arachne/arachne4scans/arachne4webimages/objectscans/:/published_ptif
+      - ${HAC_VIA_ARCHIVE_DIR}:/archive
+      - ${HAC_VIA_PREVIEW_DIR}:/previews
+      - ${HAC_VIA_STAGING_DIR}:/staging
+      - ${HAC_VIA_TAPE_DIR}:/tape_dir
+      - ${ARCHAEOCLOUD_PATH}/aronscans/objectscans/:/published_jpg
+      - ${ARCHAEOCLOUD_PATH}/S-Arachne/arachne4scans/arachne4webimages/objectscans/:/published_ptif
     environment:
-     - PHX_HOST=images.${SERVER_ADDRESS}
-     - DATABASE_URL=ecto://arachne:${DB_PASSWORD}@arachne4_db/arachne
-     - SECRET_KEY_BASE=${HAC_VIA_KEY_BASE}
-     - ARACHNE_BASE_URL=https://${SERVER_ADDRESS}
+      - PHX_HOST=images.${SERVER_ADDRESS}
+      - DATABASE_NAME=arachne
+      - DATABASE_USER=arachne
+      - DATABASE_PASSWORD=${DB_PASSWORD}
+      - DATABASE_HOST=arachne4_db
+      - SECRET_KEY_BASE=${HAC_VIA_KEY_BASE}
+      - ARACHNE_BASE_URL=https://${SERVER_ADDRESS}
     labels:
-     - traefik.enable=true
-     - traefik.http.routers.hac_via.rule=Host(`images.${SERVER_ADDRESS}`)
-     - traefik.http.routers.hac_via.entrypoints=websecure
-     - traefik.http.routers.hac_via.tls.certresolver=myresolver
-     - traefik.http.services.hac_via.loadbalancer.server.port=4000
-     - com.centurylinklabs.watchtower.enable=true
+      - traefik.enable=true
+      - traefik.http.routers.hac_via.rule=Host(`images.${SERVER_ADDRESS}`)
+      - traefik.http.routers.hac_via.entrypoints=websecure
+      - traefik.http.routers.hac_via.tls.certresolver=myresolver
+      - traefik.http.services.hac_via.loadbalancer.server.port=4000
     restart: always
 
+  anubis:
+    image: ghcr.io/techarohq/anubis:v1.25.0
+    restart: unless-stopped
+    environment:
+      TARGET: " "
+      BIND: ":8080"
+      REDIRECT_DOMAINS: ${SERVER_ADDRESS}
+      PUBLIC_URL: "https://anubis.${SERVER_ADDRESS}"
+      COOKIE_DOMAIN: ${SERVER_ADDRESS}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.anubis.rule=Host(`anubis.${SERVER_ADDRESS}`)
+      - traefik.http.routers.anubis.entrypoints=websecure
+      - traefik.http.routers.anubis.tls.certresolver=myresolver
+      - traefik.http.services.anubis.loadbalancer.server.port=8080 # Telling Traefik where to receive requests
+      - traefik.http.routers.anubis.service=anubis # Telling Traefik to use the above specified port
+
   traefik:
-    image: traefik:v2.5
+    image: traefik:v3.6
     restart: always
     command:
       - "--providers.docker=true"
@@ -165,6 +184,10 @@ services:
       - target: 443
         published: 443
         mode: host
+    labels:
+      - traefik.enable=true
+      - traefik.http.middlewares.anubis.forwardauth.address=http://anubis:8080/.within.website/x/cmd/anubis/api/check
+      - traefik.http.middlewares.realip.headers.customRequestHeaders.X-Forwarded-For=>CF-Connecting-IP
 
   watchtower:
     image: containrrr/watchtower:latest
