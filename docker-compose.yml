@@ -12,7 +12,7 @@ services:
 
       - traefik.http.routers.frontend.rule=Host(`${SERVER_ADDRESS}`)
       - traefik.http.routers.frontend.entrypoints=websecure
-      - traefik.http.routers.frontend.tls.certresolver=myresolver
+      - traefik.http.routers.frontend.tls.certresolver=${CERT_RESOLVER}
       - traefik.http.middlewares.frontend-compress.compress=true
       - traefik.http.routers.frontend.middlewares=frontend-compress,realip,anubis@docker
 
@@ -74,10 +74,10 @@ services:
       - traefik.enable=true
       - traefik.http.routers.phpmyadmin.rule=Host(`${SERVER_ADDRESS}`) && PathPrefix(`/phpmyadmin`)
       - traefik.http.routers.phpmyadmin.entrypoints=websecure
-      - traefik.http.routers.phpmyadmin.tls.certresolver=myresolver
+      - traefik.http.routers.phpmyadmin.tls.certresolver=${CERT_RESOLVER}
       - traefik.http.middlewares.phpmyadmin-strip.stripprefix.prefixes=/phpmyadmin
-      - traefik.http.middlewares.phpmyadmin-ipwhitelist.ipwhitelist.sourcerange=134.95.0.0/16,172.28.0.0/20,195.37.61.194,195.37.61.201,172.18.0.0/16,77.39.225.242,77.39.225.250,213.233.42.42
-      - traefik.http.routers.phpmyadmin.middlewares=phpmyadmin-strip,phpmyadmin-ipwhitelist
+      - traefik.http.middlewares.phpmyadmin-ipallowlist.IPAllowList.sourcerange=134.95.0.0/16,172.28.0.0/20,195.37.61.194,195.37.61.201,172.18.0.0/16,77.39.225.242,77.39.225.250,213.233.42.42
+      - traefik.http.routers.phpmyadmin.middlewares=phpmyadmin-strip,phpmyadmin-ipallowlist
       - traefik.port=80
     restart: always
 
@@ -111,7 +111,7 @@ services:
       - traefik.enable=true
       - traefik.http.routers.aiax.rule=Host(`${SERVER_ADDRESS}`) && PathPrefix(`/aiax`)
       - traefik.http.routers.aiax.entrypoints=websecure
-      - traefik.http.routers.aiax.tls.certresolver=myresolver
+      - traefik.http.routers.aiax.tls.certresolver=${CERT_RESOLVER}
       - traefik.port=80
       - com.centurylinklabs.watchtower.enable=true
     user: "${UID}:${GID}"
@@ -138,7 +138,7 @@ services:
       - traefik.enable=true
       - traefik.http.routers.hac_via.rule=Host(`images.${SERVER_ADDRESS}`)
       - traefik.http.routers.hac_via.entrypoints=websecure
-      - traefik.http.routers.hac_via.tls.certresolver=myresolver
+      - traefik.http.routers.hac_via.tls.certresolver=${CERT_RESOLVER}
       - traefik.http.services.hac_via.loadbalancer.server.port=4000
     restart: always
 
@@ -151,29 +151,25 @@ services:
       REDIRECT_DOMAINS: ${SERVER_ADDRESS}
       PUBLIC_URL: "https://anubis.${SERVER_ADDRESS}"
       COOKIE_DOMAIN: ${SERVER_ADDRESS}
+      POLICY_FNAME: "/data/cfg/botPolicy.yaml"
+    volumes:
+      - "./botPolicy.yaml:/data/cfg/botPolicy.yaml:ro"
     labels:
       - traefik.enable=true
       - traefik.http.routers.anubis.rule=Host(`anubis.${SERVER_ADDRESS}`)
       - traefik.http.routers.anubis.entrypoints=websecure
-      - traefik.http.routers.anubis.tls.certresolver=myresolver
+      - traefik.http.routers.anubis.tls.certresolver=${CERT_RESOLVER}
       - traefik.http.services.anubis.loadbalancer.server.port=8080 # Telling Traefik where to receive requests
       - traefik.http.routers.anubis.service=anubis # Telling Traefik to use the above specified port
 
   traefik:
     image: traefik:v3.6
     restart: always
-    command:
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.email=dev@dainst.org"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./letsencrypt:/letsencrypt"
+      - "./acme.json:/acme.json"
+      - "./traefik/config.yml:/etc/traefik/traefik.yml"
+
     ports:
       - target: 80
         published: 80
