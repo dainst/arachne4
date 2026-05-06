@@ -21,7 +21,7 @@ services:
       #      - traefik.http.middlewares.alt-redirect.redirectregex.replacement=https://arachne.dainst.org
       #      - traefik.http.routers.alt.middlewares=alt-redirect
       #      - traefik.http.routers.alt.rule=Host(`objects.idai.world`)
-      #      - traefik.http.routers.alt.tls.certresolver=myresolver
+      #      - traefik.http.routers.alt.tls.certresolver=${CERT_RESOLVER}
       #      - traefik.http.routers.alt.entrypoints=websecure
       # ^- end of production only block
 
