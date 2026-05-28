@@ -87,6 +87,9 @@
       }
     ]
   },
+  "disiecta_membra": {
+    "q": "catalogPaths:2080"
+  },
   "ewert": {
     "facets": [
       {
