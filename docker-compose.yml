@@ -24,6 +24,10 @@ services:
       #      - traefik.http.routers.alt.entrypoints=websecure
       # ^- end of production only block
 
+      # This block should only be added in the `latest` branch/be active on the development server only.   
+      # - traefik.http.middlewares.frontend-ipwhitelist.ipwhitelist.sourcerange=${CIDR_WHITELIST}
+      # - traefik.http.routers.frontend.middlewares=frontend-ipwhitelist
+      
       - "com.centurylinklabs.watchtower.enable=true"
     user: "${UID}:${GID}"
     restart: always
