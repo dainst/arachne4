@@ -1046,7 +1046,15 @@
           },
           "hidden": false
         },
-		{
+        {
+          "id": "AvP-III-4_Kaestner",
+          "title": {
+            "de": "V. Kästner, Die Architektur des Pergamonaltares: Aufbau und Rekonstruktion, Altertümer von Pergamon III-4 (Berlin 2026), Digitaler Bildkatalog (2026)",
+            "en": "V. Kästner, Die Architektur des Pergamonaltares: Aufbau und Rekonstruktion, Altertümer von Pergamon III-4 (Berlin 2026), Digital Image Catalog (2026)"
+          },
+          "hidden": false
+        },
+        {
           "id": "Jdi_137_Lang",
           "title": {
             "de": "J. Lang, Hellenistisch-römische Wohnkultur in der ersten römischen Provinz – Häuser in Solunt im Spiegel ihrer dauerhaften Ausstattung. Mit Beiträgen von Melanie Lang und Julika Steglich, JdI 137, 2022, 39–140. Supplement",
