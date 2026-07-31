@@ -150,7 +150,7 @@ services:
     restart: always
 
   anubis:
-    image: ghcr.io/techarohq/anubis:v1.25.0
+    image: ghcr.io/techarohq/anubis:v1.26.2
     restart: unless-stopped
     environment:
       TARGET: " "
