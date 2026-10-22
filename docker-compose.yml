@@ -9,6 +9,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.port=80
+
       - traefik.http.routers.frontend.rule=Host(`${SERVER_ADDRESS}`)
       - traefik.http.routers.frontend.entrypoints=websecure
       - traefik.http.routers.frontend.tls.certresolver=${CERT_RESOLVER}
@@ -72,7 +73,7 @@ services:
     restart: always
 
   phpmyadmin:
-    image: phpmyadmin:apache
+    image: phpmyadmin:latest
     environment:
       - "PMA_HOST=arachne4_db"
       - "PMA_ABSOLUTE_URI=https://${SERVER_ADDRESS}/phpmyadmin/"
@@ -86,7 +87,7 @@ services:
       - traefik.http.middlewares.phpmyadmin-ipallowlist.IPAllowList.sourcerange=134.95.0.0/16,172.28.0.0/20,195.37.61.194,195.37.61.201,172.18.0.0/16,77.39.225.242,77.39.225.250,213.233.42.42
       - traefik.http.routers.phpmyadmin.middlewares=phpmyadmin-strip,phpmyadmin-ipallowlist
       - traefik.port=80
-    restart: always
+    restart: unless-stopped
 
   elasticsearch:
     image: ghcr.io/dainst/arachne4-elastic-search:${ELASTIC_SEARCH_VERSION}
@@ -122,7 +123,7 @@ services:
       - traefik.port=80
       - com.centurylinklabs.watchtower.enable=true
     user: "${UID}:${GID}"
-    restart: always
+    restart: unless-stopped
 
   hac_via:
     image: ghcr.io/dainst/hac_via:${HAC_VIA_VERSION}
